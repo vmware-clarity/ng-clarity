@@ -1,0 +1,120 @@
+<h3 data-toc-item cds-text="section" id="color-system-status" class="clr-mt-32px">Status</h3>
+<p cds-text="body" class="clr-mt-16px">
+  Status is a method of visually coding a component to align with its intent or importance. Status colors are often
+  referred to as stoplight or traffic light colors.
+</p>
+<p cds-text="body" class="clr-mt-16px">
+  Clarity provides the following status types: Info, Success, Warning, and Danger. These are colors selected from the
+  Blue, Green, Ochre, and Red sets in the Clarity globals.
+</p>
+<p cds-text="body" class="clr-mt-16px">
+  Status colors selected from the global palette can be mapped to specific functions and meanings, which allows their
+  usage consistently throughout your application.
+</p>
+<p cds-text="body" class="clr-mt-16px">
+  Each status color normally has three values. This provides a consistent primary color and accounts for color shifts
+  needed for dynamic states, and visual accents when a component needs more than a single shade. Warning and Danger have
+  a 4th shade called dark to account for additional needs for these statuses
+</p>
+<p cds-text="body" class="clr-mt-16px">Status also includes a neutral state as well as disabled and an alt.</p>
+<div class="clr-row clr-mt-24px">
+  <div class="clr-col-3">
+    <h4 cds-text="body medium">Info</h4>
+    <app-color-example-item
+      *ngFor="let item of colorStatus.info"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+  </div>
+  <div class="clr-col-3">
+    <h4 cds-text="body medium">Success</h4>
+    <app-color-example-item
+      *ngFor="let item of colorStatus.success"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+  </div>
+  <div class="clr-col-3">
+    <h4 cds-text="body medium">Warning</h4>
+    <app-color-example-item
+      *ngFor="let item of colorStatus.warning"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+  </div>
+  <div class="clr-col-3">
+    <h4 cds-text="body medium">Danger</h4>
+    <app-color-example-item
+      *ngFor="let item of colorStatus.danger"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+  </div>
+</div>
+<div class="clr-row clr-mt-24px">
+  <div class="clr-col-3">
+    <h4 cds-text="body medium">Neutral</h4>
+    <app-color-example-item
+      *ngFor="let item of colorStatus.neutral"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+  </div>
+  <div class="clr-col-3">
+    <h4 cds-text="body medium">Alt</h4>
+    <app-color-example-item
+      *ngFor="let item of colorStatus.alt"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+  </div>
+  <div class="clr-col-3">
+    <h4 cds-text="body medium">Disabled</h4>
+    <app-color-example-item
+      *ngFor="let item of colorStatus.disabled"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+  </div>
+</div>
+<div class="clr-row">
+  <div class="clr-col-8 color-example-container clr-mt-24px">
+    <clr-alert
+      #alert7
+      clrAlertType="danger"
+      [clrAlertClosable]="true"
+      (clrAlertClosedChange)="preventAlertClose(alert7)"
+    >
+      <clr-alert-item>
+        <span class="alert-text">Your license is about to expire.</span>
+      </clr-alert-item>
+    </clr-alert>
+    <clr-alert
+      #alert2
+      clrAlertType="warning"
+      [clrAlertClosable]="true"
+      (clrAlertClosedChange)="preventAlertClose(alert2)"
+    >
+      <clr-alert-item>
+        <span class="alert-text">This feature is still under development.</span>
+      </clr-alert-item>
+    </clr-alert>
+    <clr-alert #alert3 clrAlertType="info" [clrAlertClosable]="true" (clrAlertClosedChange)="preventAlertClose(alert3)">
+      <clr-alert-item>
+        <span class="alert-text">You can customize your host.</span>
+      </clr-alert-item>
+    </clr-alert>
+    <clr-alert
+      #alert10
+      clrAlertType="success"
+      [clrAlertClosable]="true"
+      (clrAlertClosedChange)="preventAlertClose(alert10)"
+    >
+      <clr-alert-item>
+        <span class="alert-text">Your container has been created.</span>
+      </clr-alert-item>
+    </clr-alert>
+  </div>
+</div>
+
+<p class="clr-mt-16px" cds-text="subsection">Status colors as used in the alert component</p>

@@ -1,0 +1,75 @@
+<ng-template #localLink let-item>
+  <a clrVerticalNavLink clrAriaCurrentLink [routerLink]="item.url" routerLinkActive="active">
+    {{ item.label }}
+  </a>
+</ng-template>
+<ng-template #externalLink let-item>
+  <a clrVerticalNavLink target="_blank" rel="noopener" [href]="item.url">
+    {{ item.label }}
+  </a>
+</ng-template>
+
+<clr-vertical-nav [clr-nav-level]="1">
+  <ng-container *ngFor="let navGroup of navGroups">
+    <clr-vertical-nav-group
+      *ngIf="!navGroup.url"
+      [clrVerticalNavGroupExpanded]="navExpandedState[navGroup.label]!"
+      (clrVerticalNavGroupExpandedChange)="cacheNavState($event, navGroup.label)"
+    >
+      {{ navGroup.label }}
+      <clr-vertical-nav-group-children>
+        <ng-container [ngSwitch]="navGroup.label">
+          <ng-container *ngSwitchCase="'Components'">
+            <ng-container *ngTemplateOutlet="componentLinks"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'Addons'">
+            <ng-container *ngTemplateOutlet="addonsLinks"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchDefault="">
+            <ng-container *ngTemplateOutlet="pageLinks"></ng-container>
+          </ng-container>
+        </ng-container>
+
+        <ng-template #pageLinks>
+          <ng-container *ngFor="let item of navGroup.links">
+            <ng-container
+              *ngTemplateOutlet="(item.url | urlIsExternal) ? externalLink : localLink; context: { $implicit: item }"
+            ></ng-container>
+          </ng-container>
+        </ng-template>
+
+        <ng-template #componentLinks>
+          <ng-container *ngFor="let component of components">
+            <a
+              clrVerticalNavLink
+              clrAriaCurrentLink
+              [routerLink]="['/documentation', component.url]"
+              routerLinkActive="active"
+              *ngIf="component.type == 'component'"
+            >
+              {{ component.text }}
+            </a>
+          </ng-container>
+        </ng-template>
+        <ng-template #addonsLinks>
+          <ng-container *ngFor="let component of components">
+            <a
+              clrVerticalNavLink
+              clrAriaCurrentLink
+              [routerLink]="['/documentation', component.url]"
+              routerLinkActive="active"
+              *ngIf="component.type == 'addons'"
+            >
+              {{ component.text }}
+            </a>
+          </ng-container>
+        </ng-template>
+      </clr-vertical-nav-group-children>
+    </clr-vertical-nav-group>
+    <ng-container *ngIf="navGroup.url">
+      <ng-container
+        *ngTemplateOutlet="(navGroup.url | urlIsExternal) ? externalLink : localLink; context: { $implicit: navGroup }"
+      ></ng-container>
+    </ng-container>
+  </ng-container>
+</clr-vertical-nav>

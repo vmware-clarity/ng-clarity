@@ -1,0 +1,18 @@
+<form clrForm [formGroup]="exampleForm">
+  <clr-input-container>
+    <input clrInput formControlName="sample" />
+  </clr-input-container>
+  <button class="btn btn-primary" type="submit" (click)="submit()">Submit</button>
+</form>
+
+<clr-alert *ngIf="submitted" [clrAlertLightweight]="true" [clrAlertType]="'success'">
+  <clr-alert-item>
+    <span class="alert-text">Form is submitted.</span>
+  </clr-alert-item>
+</clr-alert>
+
+<clr-alert *ngIf="error" [clrAlertLightweight]="true" [clrAlertType]="'danger'">
+  <clr-alert-item>
+    <span class="alert-text">Form has errors.</span>
+  </clr-alert-item>
+</clr-alert>

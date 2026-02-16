@@ -1,0 +1,104 @@
+<h2 id="angular-component">Angular Component</h2>
+
+<h3><code cds-text="code">[clrStepper]</code> directive</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Input / Output</th>
+      <th class="left clr-hidden-xs-down">Values</th>
+      <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">[clrInitialStep]</b>
+        <div class="clr-hidden-sm-up">Type: String</div>
+        <div class="clr-hidden-sm-up">Default: ''</div>
+      </td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left clr-hidden-xs-down">''</td>
+      <td class="left">
+        Expects the name of the starting <code>formGroupName</code> or <code>ngModelGroup</code> to initialize stepper.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><code cds-text="code">&lt;clr-stepper-panel&gt;</code> component</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Directive</th>
+      <th class="left clr-hidden-xs-down">Values</th>
+      <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">[formGroupName | ngModelGroup]</b>
+        <div class="clr-hidden-sm-up">Type: FormGroupName | NgModelGroup</div>
+        <div class="clr-hidden-sm-up">Default: ''</div>
+      </td>
+      <td class="left clr-hidden-xs-down">FormGroupName | NgModelGroup</td>
+      <td class="left clr-hidden-xs-down">''</td>
+      <td class="left">
+        Expects a <code>formGroupName</code> or <code>ngModelGroup</code> directive to initialize the stepper panel.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><code cds-text="code">[clrStepButton]</code> directive</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Input / Output</th>
+      <th class="left clr-hidden-xs-down">Values</th>
+      <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">[clrStepButton]</b>
+        <div class="clr-hidden-sm-up">Type: ClrStepButtonType | string</div>
+        <div class="clr-hidden-sm-up">Default: ClrStepButtonType.Next | 'next'</div>
+      </td>
+      <td class="left clr-hidden-xs-down">ClrStepButtonType | string</td>
+      <td class="left clr-hidden-xs-down">ClrStepButtonType.Next | 'next'</td>
+      <td class="left">
+        Expects a string value of 'next' or 'submit' to determine if button should navigate to next step or submit form.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><code cds-text="code">*clrIfExpanded</code> directive</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Input/Output</th>
+      <th class="clr-hidden-xs-down">Values</th>
+      <th class="clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">[(clrIfExpanded)]</b>
+        <div class="clr-hidden-sm-up">Type: boolean</div>
+        <div class="clr-hidden-sm-up">Default: false</div>
+      </td>
+      <td class="clr-hidden-xs-down">Boolean</td>
+      <td class="clr-hidden-xs-down">false</td>
+      <td class="left">Two-way binding DOM rendering optimization for collapsed state</td>
+    </tr>
+  </tbody>
+</table>

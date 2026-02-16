@@ -1,0 +1,25 @@
+<button
+  class="color-palette-section"
+  [attr.aria-label]="'Copy ' + color + ' ' + colorCode + ' color token to clipboard'"
+  [ngClass]="{
+    uppercase: !copied,
+    'color-palette-section--copied': copied,
+    'color-palette-section--bordered': color === 'white' || copied
+  }"
+  [ngStyle]="{ '--color': colorToken | cssVariable }"
+  (mouseover)="showColorCode = false"
+  (mouseleave)="showColorCode = true"
+  (click)="copyTokenToClipboard()"
+>
+  <span *ngIf="copied" cds-text="caption">Copied!</span>
+  <span
+    *ngIf="!copied && color && colorCode && showColorCode"
+    [ngStyle]="{
+      color: copied || color == 'white' || colorCode <= (colorContrastThreshold[color] || 0) ? '#000' : '#fff'
+    }"
+  >
+    <ng-container *ngIf="colorCode">{{ colorCode }}</ng-container>
+    <ng-container *ngIf="color === 'black'">Black</ng-container>
+    <ng-container *ngIf="color === 'white'">White</ng-container>
+  </span>
+</button>

@@ -1,0 +1,25 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<form clrForm clrLayout="value" [formGroup]="model">
+  <clr-datalist-container>
+    <label>Datalist - Reactive Form</label>
+    <input clrDatalistInput autocomplete="off" formControlName="item" />
+    <datalist>
+      <option *ngFor="let item of items" [value]="item"></option>
+    </datalist>
+    <clr-control-helper>Helper text</clr-control-helper>
+    <clr-control-error>There was an error</clr-control-error>
+  </clr-datalist-container>
+  <button class="btn btn-primary" type="submit" [disabled]="model.invalid" (click)="submit()">Submit</button>
+</form>
+
+<app-stackblitz-example
+  name="datalist with reactive validation"
+  [componentTemplate]="reactiveHTML"
+  [componentClass]="reactiveTS"
+></app-stackblitz-example>

@@ -1,0 +1,7 @@
+[
+  { "version": "17", "url": "https://clarity.design", "latest": true },
+  { "version": "16", "url": "https://v16.clarity.design" },
+  { "version": "15", "url": "https://v15.clarity.design" },
+  { "version": "13", "url": "https://v13.clarity.design" },
+  { "version": "12", "url": "https://v12.clarity.design" }
+]

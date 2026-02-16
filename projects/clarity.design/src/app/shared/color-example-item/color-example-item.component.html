@@ -1,0 +1,22 @@
+<div *ngIf="number" class="color-example-item-number">{{ number }}</div>
+<button
+  *ngIf="token"
+  class="color-example-item-button"
+  [attr.aria-label]="'Copy ' + text + ' ' + tokenType + ' token to clipboard'"
+  [ngClass]="{ 'color-example-item-button--copied': copied }"
+  [ngStyle]="{
+    'border-color': borderColor ? 'var(' + borderColor + ')' : '',
+    '--color': tokenType === 'color' ? (token | cssVariable) : null,
+    '--box-shadow': tokenType === 'shadow' ? (token | cssVariable) : null
+  }"
+  (click)="copyTokenToClipboard()"
+>
+  <span *ngIf="copied" cds-text="caption">Copied!</span>
+</button>
+<div class="color-example-item-text">
+  <ng-container *ngIf="text; else content">{{ text }}</ng-container>
+</div>
+
+<ng-template #content>
+  <ng-content></ng-content>
+</ng-template>

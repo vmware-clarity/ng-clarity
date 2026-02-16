@@ -1,0 +1,44 @@
+<h2 id="nesting" cds-text="title" class="clr-mt-24px">Nesting</h2>
+
+<p class="clr-mt-24px" cds-text="body">Some components are not recommended for nesting within {{ componentName }}.</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left clr-col-6">Component</th>
+      <th class="left clr-col-6">Can be nested in {{ componentName }} {{ subComponentName }}:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="canNestComponents">
+      <td class="left vertical-middle">{{ canNestComponents }}</td>
+      <td class="left">
+        <clr-alert [clrAlertLightweight]="true" [clrAlertType]="'success'" [clrAlertSizeSmall]="true">
+          <clr-alert-item>
+            <span class="alert-text">Yes</span>
+          </clr-alert-item>
+        </clr-alert>
+      </td>
+    </tr>
+    <tr *ngIf="cannotNestComponents">
+      <td class="left vertical-middle">{{ cannotNestComponents }}</td>
+      <td class="left">
+        <clr-alert [clrAlertLightweight]="true" [clrAlertType]="'danger'" [clrAlertSizeSmall]="true">
+          <clr-alert-item>
+            <span class="alert-text">No</span>
+          </clr-alert-item>
+        </clr-alert>
+      </td>
+    </tr>
+    <tr *ngFor="let item of conditionalNesting">
+      <td class="left vertical-middle">{{ item.component }}</td>
+      <td class="left">
+        <clr-alert [clrAlertLightweight]="true" [clrAlertType]="'warning'" [clrAlertSizeSmall]="true">
+          <clr-alert-item>
+            <span class="alert-text">{{ item.description }}</span>
+          </clr-alert-item>
+        </clr-alert>
+      </td>
+    </tr>
+  </tbody>
+</table>

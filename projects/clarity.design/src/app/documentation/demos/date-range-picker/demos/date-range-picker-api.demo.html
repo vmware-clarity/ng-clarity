@@ -1,0 +1,133 @@
+<h3 data-toc-item id="api-demo" cds-text="section" class="clr-mt-32px">API</h3>
+<h4 cds-text="subsection" class="clr-mt-32px">
+  <code cds-text="code">clrStartDate</code> and <code cds-text="code">clrEndDate</code> Directive
+</h4>
+<p cds-text="body" class="clr-mt-16px">
+  To use the date range picker, add <code cds-text="code">clrStartDate</code> and
+  <code cds-text="code">clrEndDate</code> directive to the start and end date <code cds-text="code">input</code> fields
+  respectively. Then, place the input inside the <code cds-text="code">clr-date-range-container</code> container
+  element.
+</p>
+<form clrForm clrLayout="vertical">
+  <clr-date-range-container>
+    <label>Basic Demo</label>
+    <input
+      id="startDate"
+      aria-labelledby="dateRangeCtrl"
+      name="startDateBasicDemo"
+      type="date"
+      clrStartDate
+      [(ngModel)]="startDateBasicDemo"
+    />
+    <input
+      id="endDate"
+      aria-labelledby="dateRangeCtrl"
+      name="endDateBasicDemo"
+      type="date"
+      clrEndDate
+      [(ngModel)]="endDateBasicDemo"
+    />
+  </clr-date-range-container>
+</form>
+<app-stackblitz-example
+  name="datepicker"
+  [componentTemplate]="basicExample"
+  [componentClass]="basicExampleTs"
+  [showComponentClass]="false"
+></app-stackblitz-example>
+
+<clr-alert [clrAlertClosable]="false">
+  <div class="alert-item">
+    <span class="alert-text">
+      It is recommended that you set the <code cds-text="code">type</code> to <code cds-text="code">date</code> as it
+      increases readability of your code, helps with SEO, and keeps your HTML markup semantic. When the date picker is
+      enabled, this <code cds-text="code">type</code> is overridden to <code cds-text="code">text</code> to disable the
+      built-in date pickers that some desktop browsers provide.
+    </span>
+  </div>
+</clr-alert>
+
+<h4 cds-text="subsection" class="clr-mt-32px">Min/Max attributes</h4>
+<p cds-text="body" class="clr-mt-16px">
+  The earliest and latest acceptable dates can also be set. Just like the native HTML5 date spec a
+  <code cds-text="code">yyyy-mm-dd</code> string can be used in the value for min or max. If the max value isn't a
+  possible date then that the input has no max value. Similar for min values, if the string used is not a possible date
+  then the input will not have a min value.
+</p>
+<p cds-text="body" class="clr-mt-16px">
+  Only dates inside the min/max range will be selectable for the input when there is a bound placed for the min or max
+  attribute.
+</p>
+
+<h5 cds-text="subsection" class="clr-mt-24px">Only Min</h5>
+<form clrForm clrLayout="vertical">
+  <clr-date-range-container min="2025-01-01">
+    <label>Min date: 2025-01-01</label>
+    <input type="date" autocomplete="off" clrStartDate name="startDateMinDemo" [(ngModel)]="startDateMinDemo" />
+    <input type="date" autocomplete="off" clrEndDate name="endDateMinDemo" [(ngModel)]="endDateMinDemo" />
+    <clr-control-error *clrIfError="'min'">Error message about min date</clr-control-error>
+  </clr-date-range-container>
+</form>
+<app-stackblitz-example
+  name="datepicker with min"
+  [componentTemplate]="minExample"
+  [componentClass]="minExampleTs"
+  [showComponentClass]="false"
+></app-stackblitz-example>
+
+<h5 cds-text="subsection" class="clr-mt-24px">Only Max</h5>
+<form clrForm clrLayout="vertical">
+  <clr-date-range-container max="2025-12-31">
+    <label>Max date: 2025-12-31</label>
+    <input type="date" autocomplete="off" clrStartDate name="startDateMaxDemo" [(ngModel)]="startDateMaxDemo" />
+    <input type="date" autocomplete="off" clrEndDate name="endDateMaxDemo" [(ngModel)]="endDateMaxDemo" />
+    <clr-control-error *clrIfError="'max'">Error message about max date</clr-control-error>
+  </clr-date-range-container>
+</form>
+<app-stackblitz-example
+  name="datepicker with max"
+  [componentTemplate]="maxExample"
+  [componentClass]="maxExampleTs"
+  [showComponentClass]="false"
+></app-stackblitz-example>
+
+<h5 cds-text="subsection" class="clr-mt-24px">Min and Max</h5>
+<form clrForm clrLayout="vertical">
+  <clr-date-range-container min="2025-01-01" max="2025-12-31">
+    <label>Min date: 2025-01-01 AND Max date: 2025-12-31</label>
+    <input type="date" autocomplete="off" clrStartDate name="startDateMinMaxDemo" [(ngModel)]="startDateMinMaxDemo" />
+    <input type="date" autocomplete="off" clrEndDate name="endDateMinMaxDemo" [(ngModel)]="endDateMinMaxDemo" />
+    <clr-control-error *clrIfError="'min'">Error message about min date</clr-control-error>
+    <clr-control-error *clrIfError="'max'">Error message about max date</clr-control-error>
+  </clr-date-range-container>
+</form>
+<app-stackblitz-example
+  name="datepicker with min/max"
+  [componentTemplate]="minMaxExample"
+  [componentClass]="minMaxExampleTs"
+  [showComponentClass]="false"
+></app-stackblitz-example>
+
+<h4 cds-text="subsection" class="clr-mt-32px">Predefined Range Options</h4>
+<p cds-text="body" class="clr-mt-16px">
+  "Predefined Range Options" refers to a set of readily available time periods (like "Today", "This Week", "Last Month",
+  "This Year") that users can select from when choosing a date range in a system, rather than having to manually input a
+  start and end date each time. Essentially, a quick way to access common date ranges without needing to customize them
+  every time. Range options is an array of object with <code cds-text="code">label</code> and
+  <code cds-text="code">value</code> properties. Label refers to time periods (like "Today", "This Week") and value will
+  be array of date objects with start and end values.
+</p>
+<form clrForm clrLayout="vertical">
+  <clr-date-range-container [rangeOptions]="dateRangeOptions">
+    <label>Date</label>
+    <input type="date" autocomplete="off" clrStartDate name="startDateRangeDemo" [(ngModel)]="startDateRangeDemo" />
+    <input type="date" autocomplete="off" clrEndDate name="endDateRangeDemo" [(ngModel)]="endDateRangeDemo" />
+    <clr-control-error *clrIfError="'min'">Error message about min date</clr-control-error>
+  </clr-date-range-container>
+</form>
+<app-stackblitz-example
+  name="datepicker with min"
+  [componentTemplate]="predefinedRangeOptionsExample"
+  [componentClass]="predefinedRangeOptionsExampleTs"
+  [showComponentClass]="false"
+></app-stackblitz-example>

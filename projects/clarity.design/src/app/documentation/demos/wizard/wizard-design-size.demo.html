@@ -1,0 +1,59 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="size-row">
+  <div class="size-column">
+    <div class="size-style">M</div>
+    <h3 id="medium-modal" cds-text="subsection" class="size-heading">Medium Wizard</h3>
+    <div cds-text="body" class="size-width">Width: 576px</div>
+    <button type="button" class="btn btn-sm size-launch-btn" (click)="openWizard('md')">Launch</button>
+  </div>
+
+  <div class="size-column">
+    <div class="size-style">L</div>
+    <h3 id="large-modal" cds-text="subsection" class="size-heading">Large Wizard</h3>
+    <div cds-text="body" class="size-width">Width: 864px</div>
+    <button type="button" class="btn btn-sm size-launch-btn" (click)="openWizard('lg')">Launch</button>
+  </div>
+
+  <div class="size-column">
+    <div class="size-style">XL</div>
+    <h3 id="x-large-modal" cds-text="subsection" class="size-heading">X-Large Wizard</h3>
+    <div cds-text="body" class="size-width">Width: 1152px</div>
+    <button type="button" class="btn btn-sm size-launch-btn" (click)="openWizard('xl')">Launch</button>
+  </div>
+
+  <div class="size-column">
+    <div class="size-style full-screen"><cds-icon shape="resize"></cds-icon></div>
+    <h3 id="full-screen-modal" cds-text="subsection" class="size-heading">Full-Screen Wizard</h3>
+    <button type="button" class="btn btn-sm size-launch-btn" (click)="openWizard('full-screen')">Launch</button>
+  </div>
+</div>
+
+<clr-wizard #wizard [(clrWizardOpen)]="open" [clrWizardSize]="size">
+  <clr-wizard-title>{{ textSize }} Wizard</clr-wizard-title>
+
+  <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+  <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+  <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+  <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Page 1</ng-template>
+    <p>Content for step 1</p>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Page 2</ng-template>
+    <p>Content for step 2</p>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Page 3</ng-template>
+    <p>Content for step 3</p>
+  </clr-wizard-page>
+</clr-wizard>

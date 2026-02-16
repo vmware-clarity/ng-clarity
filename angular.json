@@ -182,6 +182,94 @@
           }
         }
       }
+    },
+     "website": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "projects/clarity.design/",
+      "sourceRoot": "projects/clarity.design/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/website",
+            "index": "projects/clarity.design/src/index.html",
+            "main": "projects/clarity.design/src/main.ts",
+            "polyfills": "projects/clarity.design/src/polyfills.ts",
+            "tsConfig": "projects/clarity.design/tsconfig.app.json",
+            "allowedCommonJsDependencies": ["prismjs"],
+            "assets": [
+              "projects/clarity.design/src/favicon.ico",
+              "projects/clarity.design/src/manifest.json",
+              "projects/clarity.design/src/robots.txt",
+              "projects/clarity.design/src/service-worker.js",
+              {
+                "glob": "projects/clarity.design/versions.json",
+                "input": "projects/clarity.design/src/settings/",
+                "output": "projects/clarity.design/"
+              },
+              {
+                "glob": "*",
+                "input": "projects/clarity.design/src/admin/",
+                "output": "projects/clarity.design//admin/"
+              },
+              "projects/clarity.design/src/assets"
+            ],
+            "styles": [
+              "projects/angular/src/styles/core/global.scss",
+              "projects/angular/src/styles/core/theme.dark.scss",
+              "projects/ui/clr-ui.scss",
+              "projects/clarity.design/src/styles/main.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["node_modules"]
+            },
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/clarity.design/src/environments/environment.ts",
+                  "with": "projects/clarity.design/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          },
+          "defaultConfiguration": ""
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "website:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "website:build:production"
+            }
+          }
+        }
+      }
     }
   },
   "schematics": {

@@ -1,0 +1,86 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="size-row">
+  <div class="size-column">
+    <div class="size-style">S</div>
+    <h3 id="small-modal" cds-text="subsection" class="size-heading">Small Modal</h3>
+    <div cds-text="body" class="size-width">Width: 288px</div>
+    <button type="button" class="btn btn-sm size-launch-btn" (click)="small = true">Launch</button>
+  </div>
+
+  <div class="size-column">
+    <div class="size-style">M</div>
+    <h3 id="medium-modal" cds-text="subsection" class="size-heading">Medium Modal</h3>
+    <div cds-text="body" class="size-width">Width: 576px</div>
+    <button type="button" class="btn btn-sm size-launch-btn" (click)="medium = true">Launch</button>
+  </div>
+
+  <div class="size-column">
+    <div class="size-style">L</div>
+    <h3 id="large-modal" cds-text="subsection" class="size-heading">Large Modal</h3>
+    <div cds-text="body" class="size-width">Width: 864px</div>
+    <button type="button" class="btn btn-sm size-launch-btn" (click)="large = true">Launch</button>
+  </div>
+
+  <div class="size-column">
+    <div class="size-style">XL</div>
+    <h3 id="x-large-modal" cds-text="subsection" class="size-heading">X-Large Modal</h3>
+    <div cds-text="body" class="size-width">Width: 1152px</div>
+    <button type="button" class="btn btn-sm size-launch-btn" (click)="extraLarge = true">Launch</button>
+  </div>
+
+  <div class="size-column">
+    <div class="size-style full-screen"><cds-icon shape="resize"></cds-icon></div>
+    <h3 id="x-large-modal" cds-text="subsection" class="size-heading">Full-Screen Modal</h3>
+    <button type="button" class="btn btn-sm size-launch-btn" (click)="fullScreen = true">Launch</button>
+  </div>
+</div>
+
+<clr-modal [(clrModalOpen)]="small" [clrModalSize]="'sm'">
+  <div class="modal-title">Small modal</div>
+  <div class="modal-body">I am a small modal.</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="small = false">Ok</button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="medium" [clrModalSize]="'md'">
+  <div class="modal-title">Medium modal</div>
+  <div class="modal-body">I am a medium modal. I am the default size.</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="medium = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="medium = false">Ok</button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="large" [clrModalSize]="'lg'">
+  <div class="modal-title">Large modal</div>
+  <div class="modal-body">I am a large modal.</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="large = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="large = false">Ok</button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="extraLarge" [clrModalSize]="'xl'">
+  <div class="modal-title">Extra-large modal</div>
+  <div class="modal-body">I am an extra-large modal.</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="extraLarge = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="extraLarge = false">Ok</button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="fullScreen" [clrModalSize]="'full-screen'">
+  <div class="modal-title">Full-screen modal</div>
+  <div class="modal-body">I am a full-screen modal.</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="fullScreen = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="fullScreen = false">Ok</button>
+  </div>
+</clr-modal>

@@ -1,0 +1,34 @@
+<!--
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example nomargin">
+  <div class="main-container">
+    <header class="header">
+      <div class="branding">
+        <a routerLink="./framework" routerLinkActive="active">
+          <cds-icon shape="cog"></cds-icon>
+          <span class="title">Technology</span>
+        </a>
+      </div>
+    </header>
+    <div class="content-container">
+      <clr-vertical-nav>
+        <a clrVerticalNavLink routerLink="./framework" routerLinkActive="active">Framework</a>
+      </clr-vertical-nav>
+      <div class="content-area breadcrumbs-content-area">
+        <clr-breadcrumbs [items]="(breadcrumbs | async) || []"></clr-breadcrumbs>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+<app-stackblitz-example
+  name="Breadcrumbs routing"
+  [componentTemplate]="htmlExample"
+  [componentClass]="tsExample"
+  [additionalFiles]="additionalFiles"
+></app-stackblitz-example>

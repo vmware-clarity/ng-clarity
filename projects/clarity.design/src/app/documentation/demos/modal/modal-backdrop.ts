@@ -1,0 +1,35 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+
+const EXAMPLE = `
+<div>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper nec ex in volutpat.
+  Maecenas consectetur, dui quis accumsan pellentesque, dui sem ultricies nulla, sed auctor magna diam
+  vel neque. Nullam id est vel purus volutpat accumsan non quis enim. Curabitur non turpis eu nunc
+  faucibus venenatis quis ut neque. Integer in mattis tortor, eu sollicitudin sapien. Vestibulum
+  convallis et quam vitae auctor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
+  ridiculus mus. Nam sagittis facilisis sapien, a malesuada purus. Donec vel dui sit amet orci semper
+  accumsan sit amet non enim. Nulla sit amet commodo justo, ut pellentesque mauris. Pellentesque
+  sollicitudin vestibulum ante eleifend pharetra. Nullam dignissim risus eget feugiat scelerisque.
+  Nullam vehicula porta ex ac hendrerit. Phasellus laoreet felis et lacinia tincidunt. Nullam mattis sit
+  amet est a maximus.
+  <br />
+  <button class="btn btn-primary">Ut dolor ipsum</button>
+</div>
+<div class="modal-backdrop" aria-hidden="true"></div>
+`;
+
+@Component({
+  selector: 'clr-modal-backdrop-demo',
+  templateUrl: './modal-backdrop.demo.html',
+  standalone: false,
+})
+export class ModalBackdropDemo {
+  example = EXAMPLE;
+}

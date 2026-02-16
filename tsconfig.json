@@ -18,6 +18,9 @@
     "target": "es2022",
     "useDefineForClassFields": false,
     "paths": {
+      "@cds/core/icon": ["projects/angular/icon/index.ts"],
+      "@cds/core/icon/*": ["projects/angular/icon/*"],
+      "@cds/core/internal": ["projects/clarity.design/src/legacy/core-internal.ts"],
       "@clr/angular": ["projects/angular/index.ts"],
       "@clr/angular/*": ["projects/angular/*"],
       "@clr/addons": ["projects/addons/index.ts"],

@@ -1,0 +1,18 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'projects/angular/styles/core/tokens/variables.tokens' as tokens;
+
+
+.accordion-states-image {
+  border: 1px solid;
+  border-radius: 0.3em;
+  border-color: tokens.$cds-global-color-construction-400;
+  padding: tokens.$cds-global-space-9 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

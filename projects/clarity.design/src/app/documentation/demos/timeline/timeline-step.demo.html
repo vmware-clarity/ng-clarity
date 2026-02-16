@@ -1,0 +1,18 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h5 cds-text="subsection" class="clr-mt-24px">Timeline Step Container</h5>
+<app-code-snippet [code]="timelineStep"></app-code-snippet>
+<clr-alert [clrAlertType]="'warning'" [clrAlertClosable]="false">
+  <clr-alert-item>
+    <span class="alert-text">
+      For loading steps, notice that instead of a <code cds-text="code">cds-icon</code> element we use a ClrSpinner
+      component.
+    </span>
+  </clr-alert-item>
+</clr-alert>
+<app-code-snippet [code]="spinner"></app-code-snippet>

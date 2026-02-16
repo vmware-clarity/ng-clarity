@@ -1,0 +1,73 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+
+const HTML_EXAMPLE = `
+<div class="clr-row">
+  <div class="clr-col-lg-6 clr-col-12">
+    <div class="card">
+      <div class="card-header">Header</div>
+      <div class="card-block">
+        <div class="card-media-block">
+          <img
+            src="/assets/images/documentation/cards/placeholder_60x60.png"
+            class="card-media-image"
+            alt="Example of Image in a Card"
+          />
+          <div class="card-media-description">
+            <span class="card-media-title">Project A</span>
+            <span class="card-media-text">Owner: John Doe</span>
+          </div>
+        </div>
+        <div class="card-text">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt excepturi labore explicabo
+          temporibus, enim voluptate saepe corrupti illum earum eveniet ab veniam vel nisi fugit
+          accusantium perferendis quas facilis quod.
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-sm btn-link">Action</button>
+      </div>
+    </div>
+  </div>
+  <div class="clr-col-lg-6 clr-col-12">
+    <div class="card">
+      <div class="card-header">Header</div>
+      <div class="card-block">
+        <div class="card-media-block wrap">
+          <img
+            src="/assets/images/documentation/cards/placeholder_60x60.png"
+            class="card-media-image"
+            alt="Example of Image in a Card"
+          />
+          <div class="card-media-description">
+            <span class="card-media-title">Project B</span>
+            <span class="card-media-text">Owner: Jane Doe</span>
+          </div>
+        </div>
+        <div class="card-text">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum, ipsum?
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-sm btn-link">Action</button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+@Component({
+  selector: 'clr-card-media-block-demo',
+  styleUrl: './card.demo.scss',
+  templateUrl: './card-media-block.html',
+  standalone: false,
+})
+export class CardMediaBlockDemo {
+  htmlExample = HTML_EXAMPLE;
+}

@@ -1,0 +1,11 @@
+<div *ngIf="links" class="clr-row">
+  <div *ngFor="let link of links" class="clr-col-xl-{{ linkColWidth }} clr-col-lg-4 clr-col-md-4">
+    <a [routerLink]="link.routerLink" class="card clickable card-link">
+      <div class="hexagon" [class]="link.hexagonColor">
+        <cds-icon class="hexagon-icon" size="md" [attr.shape]="link.iconShape"></cds-icon>
+      </div>
+      <div class="card-text">{{ link.text }}</div>
+      <cds-icon class="arrow-icon" shape="arrow" style="transform: rotate(45deg)"></cds-icon>
+    </a>
+  </div>
+</div>

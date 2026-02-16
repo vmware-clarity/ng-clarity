@@ -1,0 +1,97 @@
+<h2 id="categorical" cds-text="title" cds-layout="m-t:xxl">Categorical</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  <strong cds-text="medium">Token library</strong>: <code cds-text="code">--cds-alias-viz-general-</code>
+</p>
+
+<p cds-text="body" cds-layout="m-t:md">
+  Categorical palettes are used to highlight distinct categories without a specific order.
+</p>
+
+<div cds-layout="m-t:xl grid cols@sm:6 gap:lg">
+  <div *ngFor="let palette of palettes">
+    <h3 cds-text="subsection" cds-layout="m-b:sm">{{ palette.name }}</h3>
+    <app-color-example-item
+      *ngFor="let color of palette.colors"
+      [text]="color"
+      [token]="color"
+      [number]="color | appVizGeneralColorNumber"
+    ></app-color-example-item>
+  </div>
+</div>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Examples</h3>
+
+<div cds-layout="m-t:lg grid cols@sm:6 cols@md:4 gap:lg">
+  <div>
+    <h4 cds-text="medium" cds-layout="m-b:sm">Bar Chart</h4>
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-colors-categorical-examples-bar-chart.svg'"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-colors-categorical-examples-bar-chart.svg'"
+      [imageAlt]="'bar chart example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+  <div>
+    <h4 cds-text="medium" cds-layout="m-b:sm">Stacked Bar Chart</h4>
+    <app-themed-image
+      [lightSrc]="
+        '/assets/images/documentation/charts/light-theme/charts-colors-categorical-examples-stacked-bar-chart.svg'
+      "
+      [darkSrc]="
+        '/assets/images/documentation/charts/dark-theme/charts-colors-categorical-examples-stacked-bar-chart.svg'
+      "
+      [imageAlt]="'stacked bar chart example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+  <div>
+    <h4 cds-text="medium" cds-layout="m-b:sm">Line Chart</h4>
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-colors-categorical-examples-line-chart.svg'"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-colors-categorical-examples-line-chart.svg'"
+      [imageAlt]="'line chart example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+  <div>
+    <h4 cds-text="medium" cds-layout="m-b:sm">Pie Chart</h4>
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-colors-categorical-examples-pie-chart.svg'"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-colors-categorical-examples-pie-chart.svg'"
+      [imageAlt]="'pie chart example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+  <div>
+    <h4 cds-text="medium" cds-layout="m-b:sm">Scatter Plot Chart</h4>
+    <app-themed-image
+      [lightSrc]="
+        '/assets/images/documentation/charts/light-theme/charts-colors-categorical-examples-scatter-plot-chart.svg'
+      "
+      [darkSrc]="
+        '/assets/images/documentation/charts/dark-theme/charts-colors-categorical-examples-scatter-plot-chart.svg'
+      "
+      [imageAlt]="'scatter plot chart example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+</div>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Best Practices</h3>
+
+<ul cds-text="body" cds-layout="m-t:md m-l:xs">
+  <li>Limit colors to 8 for optimal readability. If needed, use additional colors from the palette.</li>
+  <li>Avoid exceeding 16 colors; consider grouping or rethinking visualization design.</li>
+</ul>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Color Application</h3>
+
+<p cds-text="body" cds-layout="m-t:md">Colors are ordered from 1 to 16 for optimal contrast.</p>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Accessibility</h3>
+
+<ul cds-text="body" cds-layout="m-t:md m-l:xs">
+  <li>Utilize 1 px stroke in pie charts or similar instances with clustered colors.</li>
+  <li>Stroke color should match the background: white for light theme, dark for dark theme.</li>
+</ul>

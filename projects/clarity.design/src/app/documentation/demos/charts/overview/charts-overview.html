@@ -1,0 +1,153 @@
+<app-themed-image
+  class="component-banner-image"
+  [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-overview-banner.svg'"
+  [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-overview-banner.svg'"
+  [imageAlt]="''"
+  [imageStyle]="'max-width: 100%'"
+>
+</app-themed-image>
+
+<h2 id="data-visualization" cds-text="title" cds-layout="m-t:xxl">Data Visualization</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  Data visualization, often called charts, is the presentation of data in a graphical format. It helps communicate
+  complex ideas in a clear and understandable way.
+</p>
+
+<p cds-text="body" cds-layout="m-t:md">We visualize data to:</p>
+<ul cds-text="body" cds-layout="m-t:md m-l:xs">
+  <li><strong cds-text="medium">Explain</strong>: answer a question in a visual format</li>
+  <li><strong cds-text="medium">Explore</strong>: find patterns, trends and insights in data</li>
+  <li><strong cds-text="medium">Monitor</strong>: check performance and focus on leading indicators</li>
+</ul>
+
+<h2 id="chart-anatomy" cds-text="title" cds-layout="m-t:xxl">Chart Anatomy</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  Understanding the components of a chart is crucial for creating effective data visualizations. Here are the key
+  elements to consider:
+</p>
+
+<h3 id="chart-anatomy-title" cds-text="section" cds-layout="m-t:lg" data-toc-item>Title</h3>
+
+<div cds-layout="m-t:sm grid cols@md:6 gap:lg">
+  <app-themed-image
+    [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-overview-anatomy-title.svg'"
+    [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-overview-anatomy-title.svg'"
+    [imageAlt]="'chart axis illustration'"
+    [imageStyle]="'max-width: 100%'"
+  >
+  </app-themed-image>
+  <div>
+    <p cds-text="body">
+      <strong cds-text="medium">Purpose</strong>: Clearly communicates the main topic or insight of the chart.
+    </p>
+    <p cds-text="body" cds-layout="m-t:sm">
+      <strong cds-text="medium">Best Practices</strong>: Keep it concise and descriptive. Ensure it provides enough
+      context for viewers to understand what the chart is about at a glance.
+    </p>
+  </div>
+</div>
+
+<h3 id="chart-anatomy-axis" cds-text="section" cds-layout="m-t:lg" data-toc-item>Axis</h3>
+
+<div cds-layout="m-t:sm grid cols@sm:12 cols@md:6 gap:lg">
+  <app-themed-image
+    [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-overview-anatomy-axis.svg'"
+    [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-overview-anatomy-axis.svg'"
+    [imageAlt]="'chart axis illustration'"
+    [imageStyle]="'max-width: 100%'"
+  >
+  </app-themed-image>
+  <div>
+    <p cds-text="body">
+      <strong cds-text="medium">X-Axis (Horizontal)</strong>: Typically represents the categorical or time-based data
+      points.
+    </p>
+    <p cds-text="body" cds-layout="m-t:sm">
+      <strong cds-text="medium">Y-Axis (Vertical)</strong>: Typically represents the quantitative values.
+    </p>
+    <p cds-text="body" cds-layout="m-t:sm">
+      <strong cds-text="medium">Best Practices</strong>: Label both axes clearly with units of measurement if
+      applicable. Ensure the scale is appropriate for the data being displayed. Avoid clutter by using only necessary
+      gridlines.
+    </p>
+  </div>
+</div>
+
+<h3 id="chart-anatomy-labels-and-legends" cds-text="section" cds-layout="m-t:lg" data-toc-item>Labels and Legends</h3>
+
+<div cds-layout="m-t:sm grid cols@sm:12 cols@md:6 gap:lg">
+  <app-themed-image
+    [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-overview-anatomy-labels-and-legends.svg'"
+    [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-overview-anatomy-labels-and-legends.svg'"
+    [imageAlt]="'chart labels and legends illustration'"
+    [imageStyle]="'max-width: 100%'"
+  >
+  </app-themed-image>
+  <div>
+    <p cds-text="body">
+      <strong cds-text="medium">Labels</strong>: Text elements that provide information about data points or axis
+      values.
+    </p>
+    <p cds-text="body" cds-layout="m-t:sm">
+      <strong cds-text="medium">Best Practices</strong>: Use clear, readable
+      <a routerLink="/documentation/typography">fonts</a>. Place labels close to the data points or axes they refer to
+      without overlapping other elements.
+    </p>
+    <p cds-text="body" cds-layout="m-t:sm">
+      <strong cds-text="medium">Legends</strong>: A key that explains the colors, shapes, or patterns used in the chart.
+    </p>
+    <p cds-text="body" cds-layout="m-t:sm">
+      <strong cds-text="medium">Best Practices</strong>: Position legends in a way that they are easily visible but do
+      not obstruct the chart. Ensure each legend item is clearly labeled and matches the corresponding chart elements.
+    </p>
+  </div>
+</div>
+
+<h3 id="chart-anatomy-tooltips" cds-text="section" cds-layout="m-t:lg" data-toc-item>Tooltips</h3>
+
+<div cds-layout="m-t:sm grid cols@sm:12 cols@md:6 gap:lg">
+  <app-themed-image
+    [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-overview-anatomy-tooltips.svg'"
+    [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-overview-anatomy-tooltips.svg'"
+    [imageAlt]="'chart tooltips illustration'"
+    [imageStyle]="'max-width: 100%'"
+  >
+  </app-themed-image>
+  <div>
+    <p cds-text="body">
+      <strong cds-text="medium">Purpose</strong>: Provide additional information when users hover over data points.
+    </p>
+    <p cds-text="body" cds-layout="m-t:sm">
+      <strong cds-text="medium">Best Practices</strong>: Include relevant details such as exact values, categories, or
+      dates. Ensure tooltips are easily readable and have sufficient contrast against the background. Avoid excessive
+      information that could overwhelm the user.
+    </p>
+  </div>
+</div>
+
+<h3 id="chart-anatomy-data-in-table-format" cds-text="section" cds-layout="m-t:lg" data-toc-item>
+  Data in Table Format
+</h3>
+
+<div cds-layout="m-t:sm grid cols@sm:12 cols@md:6 gap:lg">
+  <app-themed-image
+    [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-overview-anatomy-data-in-table-format.svg'"
+    [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-overview-anatomy-data-in-table-format.svg'"
+    [imageAlt]="'data in table format illustration'"
+    [imageStyle]="'max-width: 100%'"
+  >
+  </app-themed-image>
+  <div>
+    <p cds-text="body">
+      <strong cds-text="medium">Purpose</strong>: Display the underlying data in a tabular format for precise reference.
+    </p>
+    <p cds-text="body" cds-layout="m-t:sm">
+      <strong cds-text="medium">Best Practices</strong>: Position the table near the chart for easy comparison. Ensure
+      the table is formatted for readability, with appropriate spacing, alignment, and clear headers.
+    </p>
+  </div>
+</div>
+
+<app-link-cards [links]="links"></app-link-cards>

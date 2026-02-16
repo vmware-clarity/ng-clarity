@@ -1,0 +1,55 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<p>
+  <button class="btn btn-primary" (click)="small = true">Small modal</button>
+  <button class="btn btn-primary" (click)="large = true">Large modal</button>
+  <button class="btn btn-primary" (click)="extraLarge = true">Extra large modal</button>
+  <button class="btn btn-primary" (click)="fullScreen = true">Full-Screen modal</button>
+</p>
+
+<clr-modal [(clrModalOpen)]="small" [clrModalSize]="'sm'">
+  <div class="modal-title">Small modal</div>
+  <div class="modal-body">I am a small modal.</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="small = false">Ok</button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="large" [clrModalSize]="'lg'">
+  <div class="modal-title">Large modal</div>
+  <div class="modal-body">I am a large modal.</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="large = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="large = false">Ok</button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="extraLarge" [clrModalSize]="'xl'">
+  <div class="modal-title">Extra large modal</div>
+  <div class="modal-body">I am an extra large modal.</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="extraLarge = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="extraLarge = false">Ok</button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="fullScreen" [clrModalSize]="'full-screen'">
+  <div class="modal-title">Full-Screen modal</div>
+  <div class="modal-body">I am a full-screen modal.</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="fullScreen = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="fullScreen = false">Ok</button>
+  </div>
+</clr-modal>
+
+<app-stackblitz-example
+  name="Modal Sizes"
+  [componentTemplate]="example"
+  [componentClass]="exampleTs"
+  [showComponentClass]="false"
+></app-stackblitz-example>

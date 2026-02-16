@@ -1,0 +1,75 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use 'projects/angular/styles/core/tokens/variables.tokens' as tokens;
+
+@use 'packages/angular/styles/variables/variables.layout' as variables;
+
+@mixin modal-wizard-size-row($columns) {
+  $size-row-gap: tokens.$cds-global-space-9;
+  $size-column-width: calc((100% - $size-row-gap * ($columns - 1)) / $columns) !default;
+
+  .size-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $size-row-gap;
+    margin-top: tokens.$cds-global-layout-space-lg;
+
+    .size-column {
+      display: flex;
+      flex-direction: column;
+      border: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-border-color;
+      border-radius: tokens.$cds-alias-object-border-radius-100;
+      padding: tokens.$cds-global-space-6;
+      flex: 0 0 100%;
+      max-width: 100%;
+
+      @media screen and (min-width: map.get(variables.$clr-grid-breakpoints, sm)) {
+        flex: 0 0 $size-column-width;
+        max-width: $size-column-width;
+      }
+
+      .size-style {
+        color: tokens.$cds-alias-typography-color-500;
+        font-size: tokens.$cds-global-space-12;
+        line-height: tokens.$cds-global-space-12;
+        font-weight: tokens.$cds-alias-typography-font-weight-semibold;
+
+        &.full-screen {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: tokens.$cds-global-space-12;
+          height: tokens.$cds-global-space-12;
+          border: tokens.$cds-alias-object-border-width-300 solid tokens.$cds-alias-typography-color-500;
+          border-radius: tokens.$cds-alias-object-border-radius-100;
+
+          cds-icon {
+            width: tokens.$cds-global-space-11;
+            height: tokens.$cds-global-space-11;
+
+            --color: #{tokens.$cds-alias-typography-color-500};
+          }
+        }
+      }
+
+      .size-heading {
+        margin-top: tokens.$cds-global-space-6;
+      }
+
+      .size-width {
+        color: tokens.$cds-alias-typography-color-300;
+        margin: tokens.$cds-global-space-8 0;
+      }
+
+      .size-launch-btn {
+        align-self: flex-start;
+        margin-top: auto;
+      }
+    }
+  }
+}

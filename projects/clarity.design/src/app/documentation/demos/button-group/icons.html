@@ -1,0 +1,66 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example" style="min-height: 144px">
+  <div class="btn-group btn-primary btn-icon">
+    <button class="btn" aria-label="home icon">
+      <cds-icon shape="home"></cds-icon>
+      <span class="clr-icon-title">Home</span>
+    </button>
+    <button class="btn" aria-label="settings icon">
+      <cds-icon shape="cog"></cds-icon>
+      <span class="clr-icon-title">Settings</span>
+    </button>
+    <div class="btn-group-overflow open">
+      <button class="btn dropdown-toggle" aria-label="dropdown toggle">
+        <cds-icon shape="ellipsis-horizontal"></cds-icon>
+      </button>
+      <div class="dropdown-menu" role="menu">
+        <button class="btn" role="menuitem" aria-label="user icon">
+          <cds-icon shape="user"></cds-icon>
+          <span class="clr-icon-title">User</span>
+        </button>
+        <button class="btn" role="menuitem" aria-label="cloud icon">
+          <cds-icon shape="cloud"></cds-icon>
+          <span class="clr-icon-title">Cloud</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<app-stackblitz-example name="icon button group" [componentTemplate]="htmlExample"></app-stackblitz-example>
+
+<h4 cds-text="subsection" class="clr-mt-32px">With Text</h4>
+
+<div class="clr-example" style="min-height: 144px">
+  <div class="btn-group btn-primary">
+    <button class="btn">
+      <cds-icon shape="home"></cds-icon>
+      Home
+    </button>
+    <button class="btn">
+      <cds-icon shape="cog"></cds-icon>
+      Settings
+    </button>
+    <div class="btn-group-overflow open">
+      <button class="btn dropdown-toggle" aria-label="dropdown toggle">
+        <cds-icon shape="ellipsis-horizontal"></cds-icon>
+      </button>
+      <div class="dropdown-menu" role="menu">
+        <button class="btn" role="menuitem">
+          <cds-icon shape="user"></cds-icon>
+          User
+        </button>
+        <button class="btn" role="menuitem">
+          <cds-icon shape="cloud"></cds-icon>
+          Cloud
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<app-stackblitz-example name="icon with text button group" [componentTemplate]="htmlExample2"></app-stackblitz-example>

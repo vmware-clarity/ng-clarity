@@ -1,0 +1,472 @@
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      Datagrids organize large volumes of data in columns and rows allowing users to scan, compare, and perform other
+      actions.
+    </p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      The Datagrid component works best for structured and large volumes of data.
+    </p>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="for-structured-content">For Structured Content</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Datagrids work best for structured, homogeneous content, where each object has the same attributes. When common
+      attributes are directly aligned in columns, users can quickly scan and compare them.
+    </p>
+    <br />
+    <p cds-text="body" class="clr-mt-16px">
+      For data sets with a blend of text, images, and data visualizations, or content with mixed formatting,
+      <a routerLink="/documentation/card">cards</a> offer a better layout.
+    </p>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="for-large-volumes-of-data">For Large Volumes of Data</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      A datagrid is well-suited for presenting large volumes of data that doesn’t fit on one page. Users can filter and
+      sort the data according to preference.
+    </p>
+    <br />
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      For smaller amounts of data (10 to 20 lines), use a <a routerLink="/documentation/table">table</a>. However, you
+      still consider using a datagrid under the following circumstances:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>The data set will grow.</li>
+      <li>Users need search, filter, or batch operations.</li>
+    </ul>
+
+    <h2 id="features" class="clr-mt-48px" cds-text="title" id="features">Features</h2>
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="data-processing">Data Processing</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      You can allow Clarity to handle all the data processing needed by the various features or you can customize
+      presentation and behavior.
+    </p>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="cell-content">Cell Content</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      The contents of datagrid cells or column headers can be as complex as you need them to be, with nested components
+      and interpolation.
+    </p>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="sorting">Sorting</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Sometimes, the natural sort order for a property is not the relevant one. You can specify a custom comparator to
+      sort columns to fit your needs. You can also specify presorted tables in ascending or descending order.
+    </p>
+    <div class="clr-mt-24px">
+      <clr-datagrid>
+        <clr-dg-column>User ID</clr-dg-column>
+        <clr-dg-column>Name</clr-dg-column>
+        <clr-dg-column>Creation date</clr-dg-column>
+        <clr-dg-column [clrDgField]="'pokemon.name'" [clrDgSortBy]="pokemonComparator" [(clrDgSortOrder)]="sortOrder">
+          Pokemon
+        </clr-dg-column>
+        <clr-dg-column>Favorite color</clr-dg-column>
+        <clr-dg-row *clrDgItems="let user of exampleData1">
+          <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+          <clr-dg-cell>
+            {{ user.pokemon.name }} <span class="badge badge-5">#{{ user.pokemon.number }}</span>
+          </clr-dg-cell>
+          <clr-dg-cell>
+            <span class="color-square" [style.backgroundColor]="user.color"></span>
+          </clr-dg-cell>
+        </clr-dg-row>
+      </clr-datagrid>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="filtering">Filtering</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Clarity offers string and numeric filters. You can also write your own filter with fully customized template and
+      controller.
+    </p>
+    <div class="clr-mt-24px">
+      <clr-datagrid>
+        <clr-dg-column>User ID</clr-dg-column>
+        <clr-dg-column>Name</clr-dg-column>
+        <clr-dg-column>Creation date</clr-dg-column>
+        <clr-dg-column>Pokemon</clr-dg-column>
+        <clr-dg-column>
+          Favorite color
+          <clr-dg-filter [clrDgFilter]="colorFilter">
+            <clr-datagrid-color-filter #colorFilter class="color-filter"></clr-datagrid-color-filter>
+          </clr-dg-filter>
+        </clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let user of exampleData2">
+          <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+          <clr-dg-cell>
+            <span class="color-square" [style.backgroundColor]="user.color"></span>
+          </clr-dg-cell>
+        </clr-dg-row>
+      </clr-datagrid>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="pagination">Pagination</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Since the point of a datagrid is to display large amounts of data, often you cannot display it all on the same
+      page. To solve this, our datagrid supports pagination.
+    </p>
+
+    <h4 id="pagination-benefits" class="clr-mt-24px" cds-text="subsection">Benefits</h4>
+    <p cds-text="body" class="clr-mt-8px">
+      With pagination the user can control the number of rows per page and can carefully review the information page by
+      page.
+    </p>
+
+    <div class="clr-mt-24px">
+      <clr-datagrid>
+        <clr-dg-column>User ID</clr-dg-column>
+        <clr-dg-column>Name</clr-dg-column>
+        <clr-dg-column>Creation date</clr-dg-column>
+        <clr-dg-column>Favorite color</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let user of exampleData3">
+          <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+          <clr-dg-cell>
+            <span class="color-square" [style.backgroundColor]="user.color"></span>
+          </clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>
+          <clr-dg-pagination #pagination [clrDgPageSize]="10">
+            <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Users per page</clr-dg-page-size>
+            {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} users
+          </clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="virtual-scrolling">Virtual Scrolling</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      With virtual scrolling users can vertically scroll through all records in the datagrid instead of navigating
+      through pagination. Unlike infinite scrolling, which continuously adds new rows, virtual scrolling loads new rows
+      and removes previous rows from view, improving rendering performance.
+    </p>
+
+    <h4 id="loading-methods" class="clr-mt-24px" cds-text="subsection">Loading Methods</h4>
+    <div class="clr-mt-8px">
+      <ul class="list">
+        <li>Server-side loading: Fetch content from the server in chunks during scrolling.</li>
+        <li>Client-side loading: Load all content at once and store it in the browser.</li>
+      </ul>
+    </div>
+
+    <h4 id="virtual-scroll-usage" class="clr-mt-24px" cds-text="subsection">Usage</h4>
+    <p cds-text="body" class="clr-mt-8px">
+      Use virtual scroll instead of pagination when you want to speed up users’ workflow.
+    </p>
+
+    <h4 id="virtual-scroll-benefits" class="clr-mt-24px" cds-text="subsection">Benefits</h4>
+    <p cds-text="body" class="clr-mt-8px">
+      With virtual scroll the user can quickly glance through large amounts of information and that way we may speed up
+      their workflow in in cases where we value more speed over details.
+    </p>
+
+    <h4 id="considerations" class="clr-mt-24px" cds-text="subsection">Considerations</h4>
+    <div class="clr-mt-8px">
+      <ul class="list">
+        <li>Select all functionality is not supported with virtual scrolling.</li>
+        <li>Client-side loading may impact initial load time and browser performance.</li>
+      </ul>
+    </div>
+
+    <h4 id="accessibility" class="clr-mt-24px" cds-text="subsection">Accessibility</h4>
+    <div class="clr-mt-8px">
+      <ul class="list">
+        <li>Keyboard-only users: virtual scrolling may pose challenges.</li>
+        <li>Consider providing a downloadable file for better accessibility.</li>
+      </ul>
+    </div>
+
+    <div class="clr-mt-24px">
+      <clr-datagrid style="height: 24rem">
+        <clr-dg-column>User ID</clr-dg-column>
+        <clr-dg-column>Name</clr-dg-column>
+        <clr-dg-column>Creation date</clr-dg-column>
+        <clr-dg-column>Pokemon</clr-dg-column>
+        <clr-dg-column>Favorite color</clr-dg-column>
+        <clr-dg-column>Wins</clr-dg-column>
+
+        <ng-template ClrVirtualScroll let-user [clrVirtualRowsOf]="exampleData3">
+          <clr-dg-row [clrDgItem]="user">
+            <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+            <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+            <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+            <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+            <clr-dg-cell>
+              <span class="color-square" [style.backgroundColor]="user.color"></span>
+            </clr-dg-cell>
+            <clr-dg-cell>{{ user.wins }}</clr-dg-cell>
+          </clr-dg-row>
+        </ng-template>
+
+        <clr-dg-footer> {{ exampleData3.length }}</clr-dg-footer>
+      </clr-datagrid>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="selection">Selection</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      For multiple selections, users can click the checkbox on each selected row. The header row also has a checkbox if
+      the user wants to select all of the currently visible rows.
+    </p>
+    <br />
+    <p cds-text="body" class="clr-mt-16px">
+      You can also restrict users to selecting only one row or disable selection of a row.
+    </p>
+    <div class="clr-mt-24px">
+      <clr-datagrid [(clrDgSelected)]="selected">
+        <clr-dg-column>User ID</clr-dg-column>
+        <clr-dg-column>Name</clr-dg-column>
+        <clr-dg-column>Creation date</clr-dg-column>
+        <clr-dg-column>Favorite color</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let user of exampleData4" [clrDgItem]="user">
+          <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+          <clr-dg-cell>
+            <span class="color-square" [style.backgroundColor]="user.color"></span>
+          </clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>{{ exampleData4.length }} users</clr-dg-footer>
+      </clr-datagrid>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="detail-pane">Detail Pane</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Clarity offers a detail pane to show additional details for a record. The detail pane condenses the datagrid to
+      show a primary column and a panel to the right, which has more details about the record. This allows you to show
+      the full content of the record in a larger scrollable space. The detail pane is also fully accessible for keyboard
+      and screen reader users.
+    </p>
+
+    <p cds-text="body" class="clr-mt-16px">Edge cases:</p>
+    <ul class="list" cds-layout="m-t:md m-l:lg" cds-text="body">
+      <li>
+        Hide the details pane icon for records without additional details when we have a mix of some records with and
+        others without additional details.
+      </li>
+      <li>Use a disabled icon when we have details, but the user has no permission to see them.</li>
+    </ul>
+    <div class="clr-mt-24px">
+      <clr-datagrid [(clrDgSelected)]="detailStateSelected">
+        <clr-dg-column>User ID</clr-dg-column>
+        <clr-dg-column>Name</clr-dg-column>
+
+        <clr-dg-row
+          *clrDgItems="let user of exampleData3; let i = index"
+          [clrDgItem]="user"
+          [clrDgDetailHidden]="i === 2"
+          [clrDgDetailDisabled]="i === 1"
+        >
+          <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+        </clr-dg-row>
+
+        <ng-template [(clrIfDetail)]="detailState" let-detail>
+          <clr-dg-detail *clrIfDetail="let detail">
+            <clr-dg-detail-header>{{ detail.name }}</clr-dg-detail-header>
+            <clr-dg-detail-body>
+              <b cds-text="medium">Additional Details</b>
+              <table class="table">
+                <tr>
+                  <th>Property</th>
+                  <th>Value</th>
+                </tr>
+                <tr>
+                  <td>ID</td>
+                  <td>{{ detail.id }}</td>
+                </tr>
+                <tr>
+                  <td>Wins</td>
+                  <td>{{ detail.wins }}</td>
+                </tr>
+                <tr>
+                  <td>Favorite Color</td>
+                  <td>{{ detail.color }} <span class="color-square" [style.backgroundColor]="detail.color"></span></td>
+                </tr>
+                <tr>
+                  <td>Creation</td>
+                  <td>{{ detail.creation | date }}</td>
+                </tr>
+              </table>
+            </clr-dg-detail-body>
+          </clr-dg-detail>
+        </ng-template>
+
+        <clr-dg-footer>
+          <clr-dg-pagination #pagination [clrDgPageSize]="10">
+            <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Users per page</clr-dg-page-size>
+            {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} users
+          </clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="expandable-row">Expandable row</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Use expandable rows when you have additional information for a row, or row cells that do not need to be shown at
+      all times. This helps minimize visual clutter. It also frees up the need of a second datagrid that gets updated
+      with details. This is sometimes called a master-detail or master-child pattern.
+    </p>
+    <br />
+    <p cds-text="body" class="clr-mt-16px">
+      Another use is replacing original row data with a customized view or layout that includes most or all of the
+      original row data. The expanded area can be loaded with other components as well to fit your needs.
+    </p>
+    <div class="clr-mt-24px">
+      <clr-datagrid>
+        <clr-dg-column>User ID</clr-dg-column>
+        <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+        <clr-dg-column [clrDgField]="'creation'">
+          Creation date
+          <clr-dg-string-filter [clrDgStringFilter]="dateFilter"></clr-dg-string-filter>
+        </clr-dg-column>
+        <clr-dg-column [clrDgField]="'pokemon.name'">Pokemon</clr-dg-column>
+        <clr-dg-column [clrDgField]="'color'">Favorite color</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let user of exampleData2" [clrDgItem]="user">
+          <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+          <clr-dg-cell>
+            <span class="color-square" [style.backgroundColor]="user.color"></span>
+          </clr-dg-cell>
+
+          <clr-dg-row-detail [clrDgReplace]="replace" *clrIfExpanded="user.expanded">
+            <ng-template clrLoading>
+              <ng-container *ngIf="detail === 'default'">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed
+                quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget,
+                pellentesque sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean
+                sagittis nibh lacus, in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor.
+                Vestibulum vulputate sollicitudin dolor ut tincidunt. Phasellus vitae blandit felis. Nullam posuere
+                ipsum tincidunt velit pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis
+                sit amet metus finibus hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo,
+                at suscipit diam.
+              </ng-container>
+
+              <ng-container *ngIf="detail === 'columns'">
+                <clr-dg-cell>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</clr-dg-cell>
+                <clr-dg-cell>Proin in neque in ante placerat mattis id sed quam.</clr-dg-cell>
+                <clr-dg-cell>Proin rhoncus lacus et tempor dignissim.</clr-dg-cell>
+                <clr-dg-cell>Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed arcu.</clr-dg-cell>
+                <clr-dg-cell>Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.</clr-dg-cell>
+              </ng-container>
+            </ng-template>
+          </clr-dg-row-detail>
+        </clr-dg-row>
+      </clr-datagrid>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="Compact-datagrid">Compact Datagrid</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      You can increase the information density of your datagrid to decrease the amount of space it takes up.
+      <br />
+      Datagrid columns also can be temporarily hidden if more visibility is needed for the data.
+    </p>
+    <div class="clr-mt-24px">
+      <clr-datagrid class="datagrid-compact">
+        <clr-dg-column>User ID</clr-dg-column>
+        <clr-dg-column>Name</clr-dg-column>
+        <clr-dg-column>Pokemon</clr-dg-column>
+        <clr-dg-row *ngFor="let user of exampleData4; let i = index">
+          <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+          <clr-dg-cell>
+            <cds-icon shape="user"></cds-icon>
+            {{ user.name }}
+          </clr-dg-cell>
+          <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>{{ exampleData4.length }} users</clr-dg-footer>
+      </clr-datagrid>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="scrolling">Scrolling</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Datagrids scroll easily if you set their height. The header and footer stay fixed, only the body containing the
+      rows scrolls.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <p class="component-summary">
+      We have {{ childRoutes?.length }} datagrid demos. Starting with the basics, each demo shows you one or more of the
+      advanced Datagrid features.
+    </p>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12">
+        <ul class="list demo-list">
+          <li *ngFor="let route of childRoutes">
+            <a [routerLink]="[route?.path]">{{ route?.data?.demoName }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div #demoView></div>
+
+    <router-outlet></router-outlet>
+
+    <div class="datagrid-demo-pagination" cds-layout="m-t:sm">
+      <button class="btn btn-primary demo-pagination-prev" *ngIf="previous && previousRoute" (click)="movePrevious()">
+        <cds-icon shape="angle" direction="left"></cds-icon>
+        {{ previousRoute.data.demoName }}
+      </button>
+      <button class="btn btn-primary demo-pagination-next" *ngIf="next && nextRoute" (click)="moveNext()">
+        {{ nextRoute.data.demoName }}
+        <cds-icon shape="angle" direction="right"></cds-icon>
+      </button>
+    </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 class="clr-mt-48px" cds-text="title">Angular Components</h2>
+    <clr-accordion class="clr-mt-24px">
+      <clr-accordion-panel *ngFor="let api of apis">
+        <clr-accordion-title>{{ api.name }} API ({{ api.selector }})</clr-accordion-title>
+        <clr-accordion-content class="api-accordion">
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="left">Input/Output</th>
+                <th class="left hidden-xs-down">Type</th>
+                <th class="left hidden-xs-down">Default</th>
+                <th class="left">Effect</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let prop of api.props">
+                <td class="left">
+                  <b cds-text="medium">{{ prop.name }}</b>
+                </td>
+                <td class="left hidden-xs-down">{{ prop.type }}</td>
+                <td class="left hidden-xs-down">{{ prop.defaultValue }}</td>
+                <td class="left">{{ prop.description }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </clr-accordion-content>
+      </clr-accordion-panel>
+    </clr-accordion>
+
+    <app-style-docs styleDocsKey="Datagrid"></app-style-docs>
+  </app-doc-tab>
+
+  <app-doc-tab tab="accessibility">
+    <h3 cds-text="section" class="clr-mt-32px">Accessibility Guidance for Detail Pane</h3>
+    <app-datagrid-detail-accessibility-guidance></app-datagrid-detail-accessibility-guidance>
+  </app-doc-tab>
+</app-doc-tabs>

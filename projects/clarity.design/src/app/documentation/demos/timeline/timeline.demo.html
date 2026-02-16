@@ -1,0 +1,405 @@
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      The timeline component is a visual indicator that shows progress through a workflow. It can also guide the user
+      through specific processes or pre-defined steps.
+    </p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Use a timeline when users will be helped by gaining an overview of a workflow, and where they are in the
+      process.<br /><br />
+
+      Timelines should break the workflow up into concrete steps and a pre-determined goal. For each step, a timeline
+      can provide additional information, such as a header (timestamp), an icon showing state, a title, and a
+      description that optionally includes related contextual actions.
+    </p>
+    <p class="clr-mt-32px" cds-text="body">
+      Check in the patterns which component and when is best to use for your multi-step process:
+    </p>
+    <app-link-cards [linkColWidth]="4" [links]="patternLinks"></app-link-cards>
+
+    <h2 id="layout" class="clr-mt-48px" cds-text="title">Layout</h2>
+    <p class="clr-mt-16px" cds-text="body">There are two types of layouts, horizontal and vertical.</p>
+
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-6">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/timeline/light-theme/timeline_horizontal.svg'"
+          [darkSrc]="'/assets/images/documentation/timeline/dark-theme/timeline_horizontal.svg'"
+          [imageAlt]="'timeline horizontal layout'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-6">
+        <h3 class="clr-mb-16px" cds-text="section disable-lhe" id="horizontal">Horizontal</h3>
+        <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+          <li>Used when a workflow has three to five steps</li>
+          <li>Used when all steps can be displayed without wrapping</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-6">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/timeline/light-theme/timeline_vertical.svg'"
+          [darkSrc]="'/assets/images/documentation/timeline/dark-theme/timeline_vertical.svg'"
+          [imageAlt]="'timeline vertical layout'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-6">
+        <h3 class="clr-mb-16px" cds-text="section disable-lhe" id="vertical">Vertical</h3>
+        <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+          <li>Used when a workflow has more than five steps</li>
+          <li>Used when timestamps are optional</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 id="states" class="clr-mt-48px" cds-text="title">States</h2>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="timeline-visual-states">Timeline Visual States</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Every timeline step has one of five visual states. With one exception, these steps are represented with a Clarity
+      Icon. The exception is for loading state which uses the
+      <code cds-text="code">clr-spinner</code> component.
+    </p>
+    <div class="clr-row clr-ml-32px clr-mt-24px">
+      <div class="clr-col-9">
+        <cds-icon role="img" size="36" class="is-success" shape="success-standard" aria-label="step complete">
+        </cds-icon>
+        - <strong cds-text="medium">Step complete</strong> uses the <code cds-text="code">success-standard</code> shape
+      </div>
+      <div class="clr-col-9">
+        <cds-icon role="img" size="36" class="is-info" shape="dot-circle" aria-label="Current"> </cds-icon>
+        - <strong cds-text="medium">Current step</strong> uses the <code cds-text="code">dot-circle</code> shape
+      </div>
+      <div class="clr-col-9">
+        <cds-icon role="img" size="36" shape="circle" aria-label="Not started"></cds-icon>
+        - <strong cds-text="medium">Not started, available to start</strong> uses the
+        <code cds-text="code">circle</code> shape
+      </div>
+      <div class="clr-col-9">
+        <clr-spinner clrMedium aria-label="In progress" class="clr-align-middle no-spinner-animation">
+          Fetching data
+        </clr-spinner>
+        - <strong cds-text="medium">Processing user initiated action</strong> uses the
+        <code cds-text="code">clr-spinner</code> (w/ clrMedium size) component
+      </div>
+      <div class="clr-col-9">
+        <cds-icon role="img" size="36" class="is-error" shape="error-standard" aria-label="Error"></cds-icon>
+        - <strong cds-text="medium">Error completing step</strong> uses the <code cds-text="code">error</code> shape
+      </div>
+    </div>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="additional-states">Additional States</h3>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-6">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/timeline/light-theme/timeline_error.svg'"
+          [darkSrc]="'/assets/images/documentation/timeline/dark-theme/timeline_error.svg'"
+          [imageAlt]="'timeline error state'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-6">
+        <h4 class="clr-mb-16px" cds-text="subsection disable-lhe">Error</h4>
+        <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+          <li>Display the error message under the error icon if needed.</li>
+          <li>Tooltips are not recommended.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-6">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/timeline/light-theme/timeline_loading.svg'"
+          [darkSrc]="'/assets/images/documentation/timeline/dark-theme/timeline_loading.svg'"
+          [imageAlt]="'timeline loading state'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-6">
+        <h4 class="clr-mb-16px" cds-text="subsection disable-lhe">Loading</h4>
+        <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+          <li>When loading or taking action, display a spinner.</li>
+          <li>Disable buttons when loading or make buttons contextual for the loading state (for example, CANCEL).</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 id="behavior" class="clr-mt-48px" cds-text="title">Behavior</h2>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-8">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/timeline/light-theme/timeline_behavior_1.svg'"
+          [darkSrc]="'/assets/images/documentation/timeline/dark-theme/timeline_behavior_1.svg'"
+          [imageAlt]="'default timeline behavior'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-4">
+        <p>By default, step one is highlighted as the current step.</p>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-8">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/timeline/light-theme/timeline_behavior_2.svg'"
+          [darkSrc]="'/assets/images/documentation/timeline/dark-theme/timeline_behavior_2.svg'"
+          [imageAlt]="'timeline behavior where step two is highlighted'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-4">
+        <p>When step one is complete, step two is highlighted.</p>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-8">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/timeline/light-theme/timeline_behavior_3.svg'"
+          [darkSrc]="'/assets/images/documentation/timeline/dark-theme/timeline_behavior_3.svg'"
+          [imageAlt]="'timeline behavior where step three is highlighted'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-4">
+        <p>When steps one and two are complete, step three is highlighted.</p>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-8">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/timeline/light-theme/timeline_behavior_4.svg'"
+          [darkSrc]="'/assets/images/documentation/timeline/dark-theme/timeline_behavior_4.svg'"
+          [imageAlt]="'timeline behavior where all the steps are completed'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-4">
+        <p>After the last step is complete, all steps in the timeline are displayed as complete.</p>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-32px" cds-text="title" id="step-description">Step Description</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      You can optionally add a step description that provides additional information and guidance to the user. This
+      information can be displayed at all times or only for the current step.
+    </p>
+
+    <div class="clr-mt-24px">
+      <h3 id="description-on-a-single-step" cds-text="section">Description on a single step</h3>
+      <div class="clr-ml-32px clr-mt-24px">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/timeline/light-theme/timeline_single_step_description.svg'"
+          [darkSrc]="'/assets/images/documentation/timeline/dark-theme/timeline_single_step_description.svg'"
+          [imageAlt]="'timeline example with single step description'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+    </div>
+
+    <div class="clr-mt-24px">
+      <h3 id="description-on-all-steps" cds-text="section">Descriptions on all steps</h3>
+      <div class="clr-ml-32px clr-mt-24px">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/timeline/light-theme/timeline_all_steps_description.svg'"
+          [darkSrc]="'/assets/images/documentation/timeline/dark-theme/timeline_all_steps_description.svg'"
+          [imageAlt]="'timeline example with description on all the steps'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+    </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
+    <h3 data-toc-item id="structure" cds-text="section" class="clr-mt-32px">Structure</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      A Timeline is structured as a container component with classes placed on the correct DOM structure to target
+      elements for timeline specific style and layout. The first container element is an unordered list element with
+      <code cds-text="code">.clr-timeline</code> class. Each list item corresponds to a step that has the
+      <code cds-text="code">.clr-timeline-step</code> class on it. Steps are composed with several children elements.
+      Timelines can be either horizontal or vertical and it is specified by the css class declared with the
+      <code cds-text="code">.clr-timeline</code>element.
+    </p>
+    <p cds-text="body" class="clr-mt-16px">Each timeline step can have three children elements:</p>
+
+    <ol class="list list-spacer">
+      <li>
+        An optional header (<code cds-text="code">.clr-timeline-step-header</code>) that appears above the timeline when
+        its horizontal and to the left of the timeline when its vertical. In the demos they are populated with times.
+        e.g 11:59am.
+      </li>
+      <li>
+        An icon shape that corresponds to the correct step state (note usage of
+        <code cds-text="code">aria-label</code> for accessibility):
+        <ul class="list">
+          <li>
+            <cds-icon role="img" size="18" class="is-success" shape="success-standard" aria-label="step complete">
+            </cds-icon>
+            : <strong cds-text="medium">Step complete</strong> uses the
+            <code cds-text="code">success-standard</code> shape
+          </li>
+          <li>
+            <cds-icon role="img" size="18" class="is-info" shape="dot-circle" aria-label="Current"></cds-icon>
+            : <strong cds-text="medium">Current step</strong> uses the <code cds-text="code">dot-circle</code> shape
+          </li>
+          <li>
+            <cds-icon role="img" size="18" shape="circle" aria-label="Not started"></cds-icon>
+            : <strong cds-text="medium">Not started, available to start</strong> uses the
+            <code cds-text="code">circle</code> shape
+          </li>
+          <li>
+            <span class="spinner spinner-inline spinner-sm no-spinner-animation spinner-mr-0"> Loading... </span>
+            : <strong cds-text="medium">Processing user initiated action</strong> uses the
+            <code cds-text="code">spinner</code> shape
+          </li>
+          <li>
+            <cds-icon role="img" size="18" class="is-error" shape="error-standard" aria-label="Error"></cds-icon>
+            : <strong cds-text="medium">Error completing step</strong> uses the <code cds-text="code">error</code> shape
+          </li>
+        </ul>
+      </li>
+      <li>
+        A container element for the <code cds-text="code">.clr-timeline-step-body</code> that contains two children
+        elements:
+        <ul>
+          <li>
+            A <code cds-text="code">.clr-timeline-step-title</code> for calling out the step title below the step icon
+            when horizontal and on the right at the top of the step when it is vertical
+          </li>
+          <li>
+            A <code cds-text="code">.clr-timeline-step-description</code>
+            to put a longer description that wraps with the width of the step container. This is also where (optional)
+            action buttons will be placed.
+          </li>
+        </ul>
+      </li>
+    </ol>
+
+    <h4 cds-text="subsection" class="clr-mt-32px">CSS Classes (for Clarity UI static implementation)</h4>
+    <table class="table">
+      <thead>
+        <tr>
+          <th width="288px">Classname</th>
+          <th class="left">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <code cds-text="code">.clr-timeline</code>
+          </td>
+          <td class="left">
+            Designates the timeline container element and is used on an unordered list
+            <code cds-text="code">ul</code>. This class should only contain <code cds-text="code">li</code> children
+            with the <code cds-text="code">clr-timeline-step</code> class.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code cds-text="code">.clr-timeline-vertical</code>
+          </td>
+          <td class="left">
+            Used in conjunction with <code cds-text="code">clr-timeline</code> class to designate a vertical timeline.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code cds-text="code">.clr-timeline-step</code>
+          </td>
+          <td class="left">
+            A class to designate a step container. It should be placed on an <code cds-text="code">li</code> element as
+            a child of the <code cds-text="code">clr-timeline</code> class.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code cds-text="code">.clr-timeline-step-header</code>
+          </td>
+          <td class="left">
+            Used to display information like a time or a date. This element will appear
+            <strong cds-text="medium">above</strong> the <a routerLink="/documentation/icons">ClarityIcon</a> used in
+            the time line step when its a horizontal timeline and to the <strong cds-text="medium">left</strong> when it
+            is a vertical timeline.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code cds-text="code">clr-timeline-step-body</code>
+          </td>
+          <td class="left">
+            This is a container class used to group the <code cds-text="code">.clr-timeline-step-title</code> and
+            <code cds-text="code">.clr-timeline-step-description</code> elements. This element will appear
+            <strong cds-text="medium">below</strong> the <a routerLink="/documentation/icons">ClarityIcon</a> used in
+            the timeline step when its a horizontal timeline and to the <strong cds-text="medium">right</strong> when it
+            is a vertical timeline.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code cds-text="code">.clr-timeline-step-title</code>
+          </td>
+          <td class="left">
+            Used inside of the <code cds-text="code">clr-timeline-step-body</code> container this is a bolded title that
+            describes the step.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code cds-text="code">.clr-timeline-step-description</code>
+          </td>
+          <td class="left">
+            This element contains a longer description and details about the step it is used on. This is also where
+            consumers should place any action buttons that may be used in <strong cds-text="medium">this</strong> step.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 data-toc-item id="timeline-examples" cds-text="section" class="clr-mt-32px">Examples</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Lets look at some of the elements in isolation and then put everything together at the bottom of the page.
+    </p>
+
+    <!--      includes vertical and horizontal code snippets-->
+    <h4 cds-text="subsection" class="clr-mt-32px">Timeline</h4>
+    <clr-timeline-container-demo></clr-timeline-container-demo>
+
+    <!--      includes optional header, clr icon and step-body-->
+    <h4 cds-text="subsection" class="clr-mt-32px">Timeline Step</h4>
+    <clr-timeline-step-demo></clr-timeline-step-demo>
+
+    <!--      includes body elements title and description (multiple descriptions with -->
+    <!--      title description, desc +button, desc + button link-->
+    <h4 cds-text="subsection" class="clr-mt-32px">Timeline Step Body</h4>
+    <clr-timeline-body-demo></clr-timeline-body-demo>
+
+    <h3 data-toc-item id="full-demo" cds-text="section" class="clr-mt-32px">Full Demo</h3>
+    <clr-timeline-full-demo></clr-timeline-full-demo>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h3 data-toc-item id="summary" cds-text="section" class="clr-mt-32px">Angular components</h3>
+    <clr-timeline-component></clr-timeline-component>
+
+    <app-style-docs styleDocsKey="Timeline"></app-style-docs>
+  </app-doc-tab>
+
+  <app-doc-tab tab="accessibility">
+    <p class="clr-mt-16px" cds-text="body">
+      Aria roles for list and listitem are supported in the Timeline component but it doesn't distinguish between
+      ordered or unordered list. Visible numbers (1., 2. , 3., etc) or alphabets (a., b., c. etc) should be added when
+      applicable to help with usability.
+    </p>
+  </app-doc-tab>
+</app-doc-tabs>

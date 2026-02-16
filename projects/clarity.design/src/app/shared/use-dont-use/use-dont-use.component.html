@@ -1,0 +1,19 @@
+<div
+  class="heading"
+  [ngClass]="
+  {
+    'heading--use': type === 'use',
+    'heading--dont-use': type === 'dont_use',
+  }"
+>
+  <div class="clr-row">
+    <div class="clr-col-1 heading__icon">
+      <cds-icon size="md" [attr.shape]="'UseDontUseComponent:' + type"></cds-icon>
+    </div>
+    <div class="clr-col-8 heading__text" cds-text="secondary bold">
+      {{ heading }}
+    </div>
+  </div>
+  <div class="heading__bar"></div>
+</div>
+<ng-content></ng-content>

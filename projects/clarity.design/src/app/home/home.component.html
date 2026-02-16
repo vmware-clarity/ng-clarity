@@ -1,0 +1,154 @@
+<app-site-nav></app-site-nav>
+<main class="content-area" style="overflow-y: hidden">
+  <section class="home-page-content">
+    <div class="home-page-banner" cds-layout="p-l:xl">
+      <div class="home-page-banner-headings" cds-layout="p-t:xl">
+        <app-themed-image
+          class="banner-small"
+          [lightSrc]="'/assets/images/home/light-theme/banner-small.svg'"
+          [darkSrc]="'/assets/images/home/dark-theme/banner-small.svg'"
+          [imageAlt]="'Clarity home page banner'"
+          [imageStyle]="'height: 100%'"
+        ></app-themed-image>
+
+        <!-- Directly using H1 affects negatively the ability of the text to get wrapped by the banner image -->
+        <div role="heading" aria-level="1" cds-text="display">Clarity Design System</div>
+
+        <p cds-layout="m-t:xl" cds-text="section">Simplifying the complexity of enterprise products</p>
+
+        <div cds-layout="m-t:xl">
+          <button routerLink="/pages/introduction" class="btn btn-primary">Get Started using Clarity</button>
+        </div>
+      </div>
+
+      <app-themed-image
+        class="banner-large"
+        [lightSrc]="'/assets/images/home/light-theme/home-page-banner.svg'"
+        [darkSrc]="'/assets/images/home/dark-theme/home-page-banner.svg'"
+        [imageAlt]="'Clarity home page banner'"
+        [imageStyle]="'height: 320px'"
+      ></app-themed-image>
+    </div>
+
+    <div class="home-page-content-wrapper" cds-layout="m-l:lg m-t:lg m-r:lg m-l@lg:xl m-t@lg:xl m-r@lg:xl">
+      <section class="highlights" cds-layout="gap:lg gap@lg:xl">
+        <div class="highlight home-panel">
+          <app-themed-image
+            [lightSrc]="'/assets/images/home/light-theme/designing.svg'"
+            [darkSrc]="'/assets/images/home/dark-theme/designing.svg'"
+            [imageAlt]="''"
+            [imageStyle]="'height: 80px'"
+          ></app-themed-image>
+
+          <div class="highlight-content">
+            <h2 cds-text="title">Designing</h2>
+
+            <p cds-text="paragraph regular">Quickly start designing with 30+ components and 200+ icons.</p>
+
+            <a routerLink="/pages/designing" aria-label="Get started designing">Get started</a>
+          </div>
+        </div>
+
+        <div class="highlight home-panel">
+          <app-themed-image
+            [lightSrc]="'/assets/images/home/light-theme/developing.svg'"
+            [darkSrc]="'/assets/images/home/dark-theme/developing.svg'"
+            [imageAlt]="''"
+            [imageStyle]="'height: 80px'"
+          ></app-themed-image>
+
+          <div class="highlight-content">
+            <h2 cds-text="title">Developing</h2>
+
+            <p cds-text="paragraph regular">Build powerful and stable applications with Angular components.</p>
+
+            <a routerLink="/pages/developing" aria-label="Get started developing">Get started</a>
+
+            <a href="https://github.com/vmware-clarity" target="_blank" rel="noopener">Explore our GitHub</a>
+          </div>
+        </div>
+
+        <div class="highlight home-panel">
+          <app-themed-image
+            [lightSrc]="'/assets/images/home/light-theme/a11y.svg'"
+            [darkSrc]="'/assets/images/home/dark-theme/a11y.svg'"
+            [imageAlt]="''"
+            [imageStyle]="'height: 80px'"
+          ></app-themed-image>
+
+          <div class="highlight-content">
+            <h2 cds-text="title">Accessibility</h2>
+
+            <p cds-text="paragraph regular">
+              Follow our WCAG-informed accessibility guidelines to ensure your application is inclusive and usable for
+              all.
+            </p>
+
+            <a routerLink="/pages/accessibility" aria-label="Learn more about accessibility">Learn more</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="home-panel" cds-layout="m-t:lg m-t@lg:xl">
+        <h2 cds-text="title">New: Version 17.0.0 Release</h2>
+
+        <div class="home-list" cds-layout="m-t:xl">
+          <div class="list-item">
+            <h3 cds-text="headline section" cds-layout="m-b:xs">Tokens Integration</h3>
+            Design system tokens are now fully integrated into Clarity Angular components. Tokens align the CSS
+            architecture and naming conventions needed to more efficiently express the VMware brand experience, and to
+            help ensure consistency across products.
+          </div>
+          <div class="list-item">
+            <h3 cds-text="headline section" cds-layout="m-b:xs">Themes</h3>
+            We've introduced an accessible Dark UI Theme to ensure inclusivity and compliance with WCAG guidelines, in
+            addition to supporting an accessible Light UI Theme. Teams can extend the theme capabilities, as well, to
+            support unique needs.
+          </div>
+          <div class="list-item">
+            <h3 cds-text="headline section" cds-layout="m-b:xs">Updated Design Language</h3>
+            Our design language has been updated to align with the latest Clarity design standards and accessibility
+            guidance, providing a more inclusive user experience.
+          </div>
+        </div>
+      </div>
+
+      <div class="home-panel" cds-layout="m-t:lg m-t@lg:xl">
+        <h2 cds-text="title">Why Update to v17?</h2>
+        <div class="home-list" cds-layout="m-t:xl">
+          <div class="list-item">
+            <h3 cds-text="headline section" cds-layout="m-b:xs">Design Tokens Ease Future Work</h3>
+            With v17, references to design tokens are now mandatory. By updating to and leveraging this new tokens
+            system, components and their surrounding UI's should update more easily and stay consistently aligned with
+            the system in the future.
+          </div>
+          <div class="list-item">
+            <h3 cds-text="headline section" cds-layout="m-b:xs">Future Flexibility</h3>
+            Design tokens are now foundational in design system technology. They can be used to create additional themes
+            to support wide screens, high contrast, colorblind corrections, and even data-dense themes, so that teams
+            could offer their customers new choices for the displays they prefer.
+          </div>
+        </div>
+      </div>
+
+      <div class="centered-panel" cds-layout="gap:lg">
+        <h2 cds-text="headline" cds-layout="m-t:xxl">Let’s build better products together</h2>
+
+        <p cds-layout="m-t:lg" cds-text="body">
+          Clarity is open source because community is important. See our GitHub priority list, our code and
+          <br />
+          documentation. Join our community.
+        </p>
+
+        <div class="centered-buttons" cds-layout="horizontal gap:lg align:horizontal-center">
+          <a routerLink="/pages/designing" class="btn btn-secondary">Get started designing</a>
+          <a class="btn btn-secondary" href="https://github.com/vmware-clarity" target="_blank" rel="noopener">
+            Explore our github
+          </a>
+        </div>
+      </div>
+
+      <app-site-footer></app-site-footer>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,27 @@
+<div class="animated-example" [ngClass]="{ 'animated-example--center': !show || centerContent }">
+  <div
+    class="animated-example__content"
+    [ngClass]="{ 'animated-example__content--full-width': show && fullWidthContent }"
+  >
+    <ng-content *ngIf="show"></ng-content>
+    <cds-icon *ngIf="!show" class="animated-example__hide-icon" shape="eye-hide" size="md" status="neutral"></cds-icon>
+  </div>
+
+  <button
+    #showButton
+    class="btn btn-sm btn-link animated-example__toggle-btn"
+    [style.display]="show ? 'none' : 'block'"
+    (click)="showExample()"
+  >
+    Show {{ label }} Animation
+  </button>
+
+  <button
+    #hideButton
+    class="btn btn-sm btn-link animated-example__toggle-btn"
+    [style.display]="show ? 'block' : 'none'"
+    (click)="hideExample()"
+  >
+    Hide {{ label }} Animation
+  </button>
+</div>

@@ -1,0 +1,17 @@
+<clr-main-container>
+  <app-skip-link></app-skip-link>
+  <clr-header role="banner" class="header-1" #header>
+    <div class="branding">
+      <a routerLink="/" class="logo-and-title">
+        <span class="clr-icon clarity-logo"></span>
+        <span class="title">Clarity Design</span>
+      </a>
+      <app-version-select></app-version-select>
+    </div>
+    <div class="header-actions">
+      <app-theme-toggle *ngIf="header.openNavLevel !== 1"></app-theme-toggle>
+      <app-density-toggle *ngIf="header.openNavLevel !== 1"></app-density-toggle>
+    </div>
+  </clr-header>
+  <router-outlet></router-outlet>
+</clr-main-container>

@@ -1,0 +1,34 @@
+<h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+
+<p class="clr-mt-16px" cds-text="body">
+  A file picker allows users to upload content. It is commonly found in forms and consists of a label, a button and an
+  optional helper message. After clicking the button, the user is prompted with a file selection dialog. Once the user
+  has selected files from the dialog, they will populate in the file picker and a close icon button will appear for
+  removing them.
+</p>
+
+<form class="no-padding" clrForm clrLayout="vertical" [formGroup]="form">
+  <div class="clrweb-DoxMedia">
+    <div class="clrweb-DoxMedia-block component-box-container">
+      <clr-file-input-container class="file-picker-usage-example">
+        <label>Label</label>
+        <input type="file" clrFileInput />
+        <clr-control-helper>Helper message</clr-control-helper>
+      </clr-file-input-container>
+      <clr-file-input-container class="file-picker-usage-example">
+        <label>Upload your script</label>
+        <input #singleFileInput type="file" formControlName="singleFile" clrFileInput required />
+        <clr-control-success>File uploaded!</clr-control-success>
+        <clr-control-error>Required!</clr-control-error>
+      </clr-file-input-container>
+      <clr-file-input-container class="file-picker-usage-example">
+        <label>Import files</label>
+        <input #multipleFilesInput type="file" formControlName="multipleFiles" clrFileInput required />
+        <clr-control-success>Uploaded successfully!</clr-control-success>
+        <clr-control-error>Required!</clr-control-error>
+      </clr-file-input-container>
+    </div>
+  </div>
+</form>
+<p class="clr-mt-32px" cds-text="body">See more usage guidelines in our patterns:</p>
+<app-link-cards [linkColWidth]="4" [links]="patternLinks"></app-link-cards>

@@ -1,0 +1,45 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example">
+  <clr-stack-view appRemoveStackViewHeadings>
+    <clr-stack-header>
+      Lazily loaded children
+      <button class="stack-action btn btn-sm btn-link" (click)="resetChildren()" type="button">Reset</button>
+    </clr-stack-header>
+
+    <clr-stack-block
+      #lazyBlock
+      [clrSbExpandable]="true"
+      (clrSbExpandedChange)="fetchChildren()"
+      [clrStackViewLevel]="1"
+    >
+      <clr-stack-label>Label 1</clr-stack-label>
+      <clr-stack-content>Content 1</clr-stack-content>
+
+      <clr-stack-block *ngIf="children.length == 0" [clrStackViewLevel]="2">
+        <clr-spinner clrAssertive clrInline> Loading... </clr-spinner>
+      </clr-stack-block>
+
+      <clr-stack-block *ngFor="let child of children; let i = index" [clrStackViewLevel]="2">
+        <clr-stack-label>{{ child.title }}</clr-stack-label>
+        <clr-stack-content>{{ child.content }}</clr-stack-content>
+      </clr-stack-block>
+    </clr-stack-block>
+
+    <clr-stack-block [clrStackViewLevel]="1">
+      <clr-stack-label>Label 2</clr-stack-label>
+      <clr-stack-content>Content 2</clr-stack-content>
+    </clr-stack-block>
+  </clr-stack-view>
+</div>
+<app-stackblitz-example
+  name="stackview angular basic example"
+  [componentTemplate]="example"
+  [componentClass]="code"
+  [showComponentClass]="false"
+></app-stackblitz-example>

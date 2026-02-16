@@ -1,0 +1,14 @@
+<form clrForm clrLayout="vertical" #simpleForm="ngForm">
+  <h3 data-toc-item id="template-driven-demo" cds-text="section" class="clr-mt-32px">Template Driven Form Demo</h3>
+  <clr-date-range-container>
+    <label>Enter Date</label>
+    <input type="date" autocomplete="off" name="startDate" [(ngModel)]="startDate" clrStartDate />
+    <input type="date" autocomplete="off" name="endDate" [(ngModel)]="endDate" clrEndDate />
+  </clr-date-range-container>
+</form>
+<pre>{{ simpleForm.value | json }}</pre>
+<app-stackblitz-example
+  name="datepicker (template form)"
+  [componentTemplate]="htmlExample"
+  [componentClass]="tsExample"
+></app-stackblitz-example>

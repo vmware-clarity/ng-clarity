@@ -1,0 +1,44 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2 class="clr-mt-48px" cds-text="title">Smart iterator</h2>
+
+<p class="clr-mt-16px clr-mb-16px" cds-text="body">
+  If you want to let us handle all the data processing needed by our various features, you will need to use
+  <code cds-text="code">*clrDgItems</code> instead of <code cds-text="code">*ngFor</code>. They have the exact syntax
+  and behave the same way, but the former lets us have full control what is actually being displayed. As you can see in
+  the following example it doesn't change anything for our simple case, but it will as soon as we start adding features
+  like sorting, filtering, pagination, ...
+</p>
+
+<clr-datagrid>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>Favorite color</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Smart Iterator"
+  [componentTemplate]="exampleHtml"
+  [componentClass]="exampleTs"
+  [showComponentClass]="false"
+  [componentStyles]="exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="additionalFiles"
+></app-stackblitz-example>

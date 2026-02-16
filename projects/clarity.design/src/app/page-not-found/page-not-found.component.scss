@@ -1,0 +1,31 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'projects/angular/styles/core/tokens/variables.tokens' as tokens;
+
+@use 'projects/angular/styles/mixins';
+
+.clrweb-error-block {
+  margin: 0 auto;
+  text-align: center;
+  padding-top: tokens.$cds-global-space-9;
+}
+
+.clrweb-error-block .logo-block img {
+  width: 100%;
+  max-width: mixins.baselinePx(380);
+  text-align: center;
+  height: mixins.baselinePx(286);
+  opacity: 0.28;
+}
+
+.clrweb-error-block p.error-code {
+  font-size: #{tokens.$cds-global-space-13};
+  font-weight: 200;
+  line-height: 1em;
+  opacity: 0.5;
+  margin-top: 0;
+}

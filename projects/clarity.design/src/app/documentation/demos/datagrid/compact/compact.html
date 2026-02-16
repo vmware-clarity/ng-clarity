@@ -1,0 +1,173 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2 class="clr-mt-48px" cds-text="title">Compact Datagrid</h2>
+
+<p class="clr-mt-16px" cds-text="body">
+  One way to increase the information density of your Datagrid or to decrease the amount of space it takes up, add the
+  <code cds-text="code">datagrid-compact</code> class to it. This class decreases the amount of whitespace paddings in
+  the default Datagrid style.
+</p>
+
+<clr-datagrid class="datagrid-compact">
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Pokemon</clr-dg-column>
+  <clr-dg-row *ngFor="let user of users; let i = index">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>
+      <cds-icon shape="user"></cds-icon>
+      {{ user.name }}
+    </clr-dg-cell>
+    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Compact"
+  [componentTemplate]="compactExample"
+  [componentClass]="commonFiles.exampleTs"
+  [showComponentClass]="false"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>
+
+<h2 class="clr-mt-48px" cds-text="subtitle">Overflow ellipsis</h2>
+
+<p class="clr-mt-16px" cds-text="body">
+  Another way to increase the information density of your Datagrid is to add
+  <code class="clr-code">datagrid-overflow-ellipsis</code> class to it. This class will truncate the visible data in the
+  default Datagrid style so that you can display more rows in the fixed height.
+</p>
+
+<clr-datagrid class="datagrid-overflow-ellipsis">
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column [style.width.px]="300">Long Text Static Width 300px</clr-dg-column>
+  <clr-dg-column>Pokemon</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-row *ngFor="let user of users; let i = index">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>
+      <cds-icon shape="user"></cds-icon>
+      {{ user.name }}
+    </clr-dg-cell>
+    <clr-dg-cell>{{ longString }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Overflow Ellipsis"
+  [componentTemplate]="ellipsisExample"
+  [componentClass]="commonFiles.exampleTs"
+  [showComponentClass]="false"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>
+
+<h2 class="clr-mt-48px" cds-text="subtitle">Full example</h2>
+<ul cds-text="body" cds-layout="m-t:md m-l:xs">
+  <li><code class="clr-code">datagrid-compact</code> will reduce datagrid cell vertical padding.</li>
+  <li>
+    <code class="clr-code">datagrid-overflow-ellipsis</code> will set datagrid cell overflow to ellipsis and will
+    truncate the visible data. Because this class is visually limiting please consider one of the following examples
+    below.
+  </li>
+  <ol cds-text="body" cds-layout="m-l:xs">
+    <li><code class="clr-code">clr-tooltip</code> component in the beginning of the cell.</li>
+    <li>
+      <code class="clr-code">clr-dg-row-detail</code> with <code class="clr-code">clrDgReplace</code> set to true. Use
+      this method if there is no contradiction with your current implementation of
+      <code class="clr-code">clr-dg-row-detail</code>.
+    </li>
+    <li><code class="clr-code">title</code> HTML attribute (is A11Y contrast limited). Not recommended.</li>
+  </ol>
+</ul>
+
+<form clrForm>
+  <clr-radio-container>
+    <label>Overflow examples</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="detail" value="tooltip" [(ngModel)]="detail" />
+      <label>Tooltip</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="detail" value="rowDetails" [(ngModel)]="detail" />
+      <label>Row details</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="detail" value="title" [(ngModel)]="detail" />
+      <label>Title (is A11Y contrast limited)</label>
+    </clr-radio-wrapper>
+  </clr-radio-container>
+  <clr-toggle-container>
+    <label>Compact</label>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle name="compact" [(ngModel)]="compact" />
+      <label>{{ compact ? 'ON' : 'OFF' }}</label>
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
+</form>
+
+<clr-datagrid [class.datagrid-compact]="compact" class="datagrid-overflow-ellipsis">
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column [style.width.px]="300">Long Text Static Width 300px</clr-dg-column>
+  <clr-dg-column>Pokemon</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-row *ngFor="let user of users; let i = index">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>
+      <cds-icon shape="user"></cds-icon>
+      {{ user.name }}
+    </clr-dg-cell>
+    <clr-dg-cell [attr.title]="detail === 'title' ? longString : null">
+      <clr-tooltip *ngIf="detail === 'tooltip'">
+        <cds-icon clrTooltipTrigger shape="info-circle" solid></cds-icon>
+        <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
+          {{ longString }}
+        </clr-tooltip-content>
+      </clr-tooltip>
+      {{ longString }}
+    </clr-dg-cell>
+    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+
+    <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="detail === 'rowDetails'">
+      <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="true">
+        <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+        <clr-dg-cell>
+          <cds-icon shape="user"></cds-icon>
+          {{ user.name }}
+        </clr-dg-cell>
+        <clr-dg-cell>{{ longString }}</clr-dg-cell>
+        <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+        <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+      </clr-dg-row-detail>
+    </ng-container>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Compact with Overflow Ellipsis"
+  [componentTemplate]="fullExampleHtml"
+  [componentClass]="fullExampleTs"
+  [showComponentClass]="false"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>

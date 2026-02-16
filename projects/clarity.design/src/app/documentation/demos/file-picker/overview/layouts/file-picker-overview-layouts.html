@@ -1,0 +1,42 @@
+<h2 id="layouts" cds-text="title" cds-layout="m-t:xxl">Layouts</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  File pickers are available in vertical, horizontal, and compact layouts. See more layout guidelines on the
+  <a routerLink="/documentation/forms">forms page</a>.
+</p>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Vertical</h3>
+
+<form clrForm clrLayout="vertical" [formGroup]="verticalForm">
+  <clr-file-input-container>
+    <label>Label</label>
+    <input type="file" clrFileInput formControlName="file" required />
+    <clr-control-helper>Helper message</clr-control-helper>
+    <clr-control-success>Success message</clr-control-success>
+    <clr-control-error>Error message</clr-control-error>
+  </clr-file-input-container>
+</form>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Horizontal</h3>
+
+<form clrForm clrLayout="horizontal" [formGroup]="horizontalForm">
+  <clr-file-input-container>
+    <label>Label</label>
+    <input type="file" clrFileInput formControlName="file" required />
+    <clr-control-helper>Helper message</clr-control-helper>
+    <clr-control-success>Success message</clr-control-success>
+    <clr-control-error>Error message</clr-control-error>
+  </clr-file-input-container>
+</form>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Compact</h3>
+
+<form clrForm clrLayout="compact" [formGroup]="compactForm">
+  <clr-file-input-container>
+    <label>Label</label>
+    <input type="file" clrFileInput formControlName="file" required />
+    <clr-control-helper>Helper message</clr-control-helper>
+    <clr-control-success>Success message</clr-control-success>
+    <clr-control-error>Error message</clr-control-error>
+  </clr-file-input-container>
+</form>

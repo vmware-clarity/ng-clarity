@@ -1,0 +1,49 @@
+<!-- If Styles or Typescript content is available then show code snippet in tabs -->
+<clr-tabs
+  *ngIf="(showComponentStyles && !!componentStyles) || (showComponentClass && !!componentClass); else noTabs"
+  class="code-snippet-tabs"
+>
+  <clr-tab *ngIf="showComponentTemplate && (componentTemplateSnippet || componentTemplate)">
+    <button clrTabLink>HTML</button>
+    <clr-tab-content *clrIfActive>
+      <app-code-snippet [code]="componentTemplateSnippet || componentTemplate" language="html"></app-code-snippet>
+    </clr-tab-content>
+  </clr-tab>
+  <clr-tab *ngIf="showComponentClass && componentClass">
+    <button clrTabLink>TypeScript</button>
+    <clr-tab-content *clrIfActive>
+      <app-code-snippet [code]="componentClass | appCondenseComponentClass" language="typescript"></app-code-snippet>
+    </clr-tab-content>
+  </clr-tab>
+  <clr-tab *ngIf="showComponentStyles && componentStyles">
+    <button clrTabLink>CSS</button>
+    <clr-tab-content *clrIfActive>
+      <app-code-snippet [code]="componentStyles" language="css"></app-code-snippet>
+    </clr-tab-content>
+  </clr-tab>
+</clr-tabs>
+
+<ng-template #noTabs>
+  <app-code-snippet
+    *ngIf="componentTemplateSnippet || componentTemplate"
+    [code]="componentTemplateSnippet || componentTemplate"
+    language="html"
+  ></app-code-snippet>
+</ng-template>
+
+<div class="addons">
+  <button class="btn btn-link" (click)="copyCode()" [attr.aria-label]="'Copy ' + name + ' example code to clipboard'">
+    <cds-icon shape="copy"></cds-icon>
+    {{ copied ? 'Copied!' : 'Copy Code' }}
+  </button>
+  <button
+    class="btn btn-link"
+    (click)="openInStackBlitz()"
+    [attr.aria-label]="'Open ' + name + ' example in StackBlitz'"
+  >
+    <cds-icon shape="stackblitz"></cds-icon>
+    <span class="clr-hidden-sm-down">Open in Stackblitz</span>
+    <span class="clr-hidden-md-up">Stackblitz</span>
+    <cds-icon shape="arrow" style="transform: rotate(45deg)"></cds-icon>
+  </button>
+</div>

@@ -1,0 +1,43 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<p cds-text="body" class="clr-mt-24px">
+  Use the <code cds-text="code">.spinner</code> to create a default page spinner.
+</p>
+<div class="clr-mt-24px">
+  <app-animated-example [label]="'Page Spinner'">
+    <div class="spinner">Loading...</div>
+  </app-animated-example>
+  <app-stackblitz-example name="page spinner" [componentTemplate]="example"></app-stackblitz-example>
+</div>
+
+<h4 cds-layout="m-b:md" cds-text="subsection" class="clr-mt-32px">Inline Spinners</h4>
+
+<p cds-text="body" class="clr-mt-16px">
+  Extend the <code cds-text="code">.spinner-inline</code> class with <code cds-text="code">.spinner</code> to create an
+  inline spinner.
+</p>
+<div class="clr-mt-24px">
+  <app-animated-example [label]="'Inline Spinner'">
+    <span class="spinner spinner-inline"> Loading... </span>
+    <span> Loading... </span>
+  </app-animated-example>
+  <app-stackblitz-example name="inline spinner" [componentTemplate]="example1"></app-stackblitz-example>
+</div>
+
+<h4 cds-layout="m-b:md" cds-text="subsection" class="clr-mt-32px">Spinners on a dark background</h4>
+
+<p cds-text="body" class="clr-mt-16px">
+  Extend the <code cds-text="code">.spinner-inverse</code> class with <code cds-text="code">.spinner</code> to create a
+  spinner for dark backgrounds.
+</p>
+<div class="clr-mt-24px">
+  <app-animated-example class="dark" [label]="'Dark Spinner'">
+    <span class="spinner spinner-inverse"> Loading... </span>
+  </app-animated-example>
+  <app-stackblitz-example name="spinner large" [componentTemplate]="example2"></app-stackblitz-example>
+</div>

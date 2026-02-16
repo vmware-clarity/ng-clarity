@@ -1,0 +1,66 @@
+<h2 cds-text="title" class="clr-mt-48px" id="types">Types</h2>
+<p class="clr-mt-16px" cds-text="body">
+  Clarity has three navigation components: header, sub navigation, and vertical navigation. The following sections
+  provide information about the possible navigation types.
+</p>
+
+<h3 cds-text="section" class="clr-mt-32px" id="header-sub-navigation">Header + Sub Navigation</h3>
+<p class="clr-mt-16px" cds-text="body">
+  Because both patterns are horizontal, use this combination only when the secondary navigation does not warrant the
+  space taken up by the vertical navigation.
+</p>
+<p class="clr-mt-16px" cds-text="body">
+  When the header is the primary navigation and sub navigation is the secondary navigation combine the header component
+  with a sub navigation using the DOM structure shown in the code examples.
+</p>
+
+<clr-layout-no-vertical-nav-demo [showCode]="false"></clr-layout-no-vertical-nav-demo>
+
+<h3 cds-text="section" class="clr-mt-32px" id="header-vertical-navigation">Header + Vertical Navigation</h3>
+<p class="clr-mt-16px" cds-text="body">
+  This is a common pattern for two levels of navigation. The primary navigation is in the header, secondary is in the
+  vertical navigation.
+</p>
+<p class="clr-mt-16px" cds-text="body">
+  Combine the header component with a vertical navigation using the DOM structure shown in code examples.
+</p>
+<clr-layout-no-subnav-demo [showCode]="false"></clr-layout-no-subnav-demo>
+
+<h3 cds-text="section" class="clr-mt-32px" id="header">Header</h3>
+<p class="clr-mt-16px" cds-text="body">
+  When there are only a few locations for users to navigate, use a header as the sole navigation element between pages.
+</p>
+<clr-layout-only-header-demo [showCode]="false"></clr-layout-only-header-demo>
+
+<h3 cds-text="section" class="clr-mt-32px" id="vertical-navigation">Vertical Navigation</h3>
+<p class="clr-mt-16px" cds-text="body">
+  When there are more links that can fit into the header or a sub navigation, consider using only a vertical navigation
+  and combining the navigation into organized groups of locations.
+</p>
+<clr-layout-only-vertical-nav-primary [showCode]="false"></clr-layout-only-vertical-nav-primary>
+
+<h3 cds-text="section" class="clr-mt-32px" id="sub-navigation-vertical-navigation">
+  Sub Navigation + Vertical Navigation
+</h3>
+<p class="clr-mt-16px" cds-text="body">
+  This combination can be a resolution to scenarios, such as those in the following list.
+</p>
+<ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+  <li>Your links don’t fit in the header and you need to use a sub navigation for primary navigation.</li>
+  <li>
+    Your top-level locations have child navigation locations, so you combine sub navigation with vertical navigation
+    elements specific to each top-level location.
+  </li>
+</ul>
+<clr-layout-only-subnav-primary [showCode]="false"></clr-layout-only-subnav-primary>
+
+<h3 cds-text="section" class="clr-mt-32px" id="header-sub-navigation-vertical-navigation">
+  Header + Sub Navigation + Vertical Navigation
+</h3>
+<p class="clr-mt-16px" cds-text="body">
+  This schema will not result in a clear visual hierarchy because of the adjacent horizontal patterns.
+</p>
+<p class="clr-mt-16px" cds-text="body">
+  An alternative is to use the header and vertical navigation and then provide further navigation in the content area by
+  using tabs.
+</p>

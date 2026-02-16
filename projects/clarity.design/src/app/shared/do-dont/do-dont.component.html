@@ -1,0 +1,34 @@
+<ng-content></ng-content>
+<div
+  [ngClass]="{
+    bar: true,
+    'bar-do': type === 'do',
+    'bar-dont': type === 'dont',
+    'bar-warn': type === 'warn',
+    'clr-mt-24px bar-card': isCard === true
+  }"
+></div>
+<div class="clr-row clr-mt-8px">
+  <div class="clr-col-1">
+    <cds-icon
+      [ngClass]="'icon-' + type"
+      attr.shape="{{ type === 'do' ? 'check' : type == 'dont' ? 'times' : 'warning-standard' }}"
+      size="md"
+    ></cds-icon>
+  </div>
+  <div class="clr-col-10" cds-text="secondary bold" [ngClass]="'text-' + type">
+    {{ typeDisplayText[type] }}
+  </div>
+</div>
+<div class="clr-mt-8px" cds-text="secondary">
+  <div
+    *ngIf="heading && headingLevel"
+    cds-text="medium"
+    cds-layout="m-b:xxs"
+    role="heading"
+    [attr.aria-level]="headingLevel"
+  >
+    {{ heading }}
+  </div>
+  {{ caption }}
+</div>

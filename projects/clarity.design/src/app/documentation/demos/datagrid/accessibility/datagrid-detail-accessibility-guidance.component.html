@@ -1,0 +1,22 @@
+<ul class="list" cds-layout="m-t:md m-l:lg" cds-text="body">
+  <li>
+    By default if the user does not add anything, <code cds-text="code">aria-labelledby</code> will be added by the
+    Clarity Library with the id of the modal title.
+  </li>
+  <li>
+    The user can set additional <code cds-text="code">aria-labelledby</code> (using the
+    <code cds-text="code">[clrDetailAriaLabelledBy]</code> input) which should have an HTML ID referencing other text on
+    the page , it can have multiple space separated ids. In this case, the default title ID will be added along with the
+    user-defined IDs.
+  </li>
+  <li>
+    The user can add an <code cds-text="code">aria-label</code> (using the
+    <code cds-text="code">[clrDetailAriaLabel]</code> input). In this case, the
+    <code cds-text="code">aria-label</code> provided will be used. The <code cds-text="code">aria-label</code>
+    provided must be unique for each row in the datagrid.
+  </li>
+  <li>
+    If both <code cds-text="code">aria-label</code> and <code cds-text="code">aria-labelledby</code> is added by the
+    user, then only <code cds-text="code">aria-labelledby</code> will be added to the modal.
+  </li>
+</ul>

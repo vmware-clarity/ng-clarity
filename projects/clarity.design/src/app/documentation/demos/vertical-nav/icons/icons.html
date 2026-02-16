@@ -1,0 +1,55 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example example-margin">
+  <div class="main-container nav-box">
+    <div class="content-container">
+      <clr-vertical-nav>
+        <a clrVerticalNavLink href="javascript://">
+          <cds-icon shape="user" clrVerticalNavIcon></cds-icon>
+          Normal
+        </a>
+        <a clrVerticalNavLink href="javascript://" class="active">
+          <cds-icon shape="flame" clrVerticalNavIcon></cds-icon>
+          Fire
+        </a>
+        <a clrVerticalNavLink href="javascript://">
+          <cds-icon *ngIf="!demoHideIcons" shape="download-cloud" clrVerticalNavIcon></cds-icon>
+          Water
+        </a>
+        <a clrVerticalNavLink href="javascript://">
+          <cds-icon shape="bolt" clrVerticalNavIcon></cds-icon>
+          Electric
+        </a>
+        <a clrVerticalNavLink href="javascript://">
+          <cds-icon *ngIf="!demoHideIcons" shape="bug" clrVerticalNavIcon></cds-icon>
+          Grass
+        </a>
+        <a clrVerticalNavLink href="javascript://">
+          <cds-icon shape="block" clrVerticalNavIcon></cds-icon>
+          Ice
+        </a>
+        <a clrVerticalNavLink href="javascript://" *ngIf="!demoLongLabel">
+          <cds-icon *ngIf="!demoHideIcons" shape="shield" clrVerticalNavIcon></cds-icon>
+          Fighting
+        </a>
+        <a clrVerticalNavLink href="javascript://" *ngIf="demoLongLabel">
+          <cds-icon *ngIf="!demoHideIcons" shape="shield" clrVerticalNavIcon></cds-icon>
+          Fighting, Psychic, Dragon, Fairy, Rock, Dark
+        </a>
+        <a clrVerticalNavLink href="javascript://">
+          <cds-icon shape="sad-face" clrVerticalNavIcon></cds-icon>
+          Poison
+        </a>
+        <a clrVerticalNavLink href="javascript://">
+          <cds-icon shape="image" clrVerticalNavIcon></cds-icon>
+          Ground
+        </a>
+      </clr-vertical-nav>
+    </div>
+  </div>
+</div>

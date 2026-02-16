@@ -1,0 +1,73 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary" id="summary">
+      You can easily translate internal Clarity text into multiple languages.
+    </p>
+
+    <h2 id="internal-language-strings" class="clr-mt-48px" cds-text="title">Internal language strings</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Clarity Design System has a list of text strings that it uses internally for items such as icon alt text or button
+      text. When possible, Clarity avoids using text strings that must be translated, and rarely changes the text string
+      list. Any Clarity application that needs to support multiple languages can create different translations and use
+      them for the corresponding languages.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      To improve accessibility of the components, Clarity includes a default English title for all icons or non-text
+      interactive elements internal to its components. In order to internationalize them, Clarity includes a
+      <code cds-text="code">ClrCommonStringsService</code> service. This service allows you to provide localized strings
+      for your entire application that will override our default titles.
+    </p>
+
+    <h2 id="how-to-localize" class="clr-mt-48px" cds-text="title">How to Localize</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      1. Create a new object that has a key value pair for each string that you want to localize. If you are making full
+      translation, use <code cds-text="code">ClrCommonStrings</code>. If you only need to define some of the strings,
+      use <code cds-text="code">Partial&lt;ClrCommonStrings&gt;</code>. For example:
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="klingonTranslationExample" language="typescript"></app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      2. Inject the <code cds-text="code">ClrCommonStringsService</code> into your
+      <code cds-text="code">AppComponent</code> and pass in the localized strings. For example:
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="localizeCommonStringsExample" language="typescript"></app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      <strong cds-text="medium">Note:</strong> It’s possible to call the
+      <code cds-text="code">ClrCommonStringsService.localize()</code> method anytime and change the translation. You
+      also could call a backend service to load these translation strings and then update them on the fly when a user
+      changes translations in your app.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="asyncLocalizeCommonStringsExample" language="typescript"></app-code-snippet>
+    </div>
+
+    <h2 id="localization-strings" class="clr-mt-48px" cds-text="title">Localization Strings</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      The following table shows the strings that you can configure. These can also be found by simply looking at the
+      declaration of the <code cds-text="code">ClrCommonStrings</code> interface.
+    </p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Property name</th>
+          <th class="left">Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let string of strings">
+          <td class="left">{{ string.key }}</td>
+          <td class="left">{{ string.role }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </app-doc-tab>
+</app-doc-tabs>

@@ -1,0 +1,65 @@
+<!--
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h3 cds-text="section" class="clr-mt-32px">Responsive Behavior</h3>
+
+<p class="clr-mt-16px" cds-text="body">
+  Use <code cds-text="code">clr-main-container</code> and <code cds-text="code">clr-header</code> to build the layout of
+  your application for Responsive navigation.
+</p>
+
+<app-stackblitz-example
+  name="Vertical Nav Basic structure"
+  [componentTemplate]="htmlExample"
+  [componentClass]="tsExample"
+  [showComponentClass]="false"
+  [additionalFiles]="additionalFiles"
+>
+</app-stackblitz-example>
+
+<div class="clr-mt-24px" cds-text="body">
+  <ul>
+    <li>
+      A <code cds-text="code">clr-nav-level</code> value of <code cds-text="code">1</code> is for primary navigation
+      (screenshot on the left).
+    </li>
+    <li>
+      A <code cds-text="code">clr-nav-level</code> value of <code cds-text="code">2</code> is for secondary navigation
+      (screenshot on the right).
+    </li>
+  </ul>
+</div>
+<p class="clr-mt-24px" cds-text="body">
+  Read the <a routerLink="/documentation/navigation" fragment="behavior">Responsive section in Navigation</a> for more
+  information.
+</p>
+<div class="clr-row" class="clr-mt-16px">
+  <div class="clr-col-12 clr-col-md-12">
+    <div class="clr-mt-16px">
+      <div class="clrweb-DoxMedia-block box-padding clr-mt-16px">
+        <div class="clr-row">
+          <div class="clr-col-md-6 clr-col-12">
+            <app-themed-image
+              [lightSrc]="'/assets/images/documentation/vertical-nav/light-theme/responsive-left.svg'"
+              [darkSrc]="'/assets/images/documentation/vertical-nav/dark-theme/responsive-left.svg'"
+              [imageAlt]="'Responsive Vertical Nav with left side navigation'"
+              [imageStyle]="'max-width: 100%'"
+            ></app-themed-image>
+          </div>
+          <div class="clr-col-md-6 clr-col-12">
+            <app-themed-image
+              [lightSrc]="'/assets/images/documentation/vertical-nav/light-theme/responsive-right.svg'"
+              [darkSrc]="'/assets/images/documentation/vertical-nav/dark-theme/responsive-right.svg'"
+              [imageAlt]="'Responsive Vertical Nav with right side navigation'"
+              [imageStyle]="'max-width: 100%'"
+            ></app-themed-image>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

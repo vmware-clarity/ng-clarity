@@ -1,0 +1,12 @@
+<ng-container *ngIf="page | async; let page; else: notFound">
+  <app-site-nav></app-site-nav>
+  <main #scrollParent class="content-area" appHashListener>
+    <app-table-of-contents [scrollParent]="scrollParent"></app-table-of-contents>
+    <section class="cms-content" [innerHTML]="page.html | appSafeHtml" (click)="onContentClick($event)"></section>
+    <app-site-footer></app-site-footer>
+  </main>
+</ng-container>
+
+<ng-template #notFound>
+  <page-not-found></page-not-found>
+</ng-template>

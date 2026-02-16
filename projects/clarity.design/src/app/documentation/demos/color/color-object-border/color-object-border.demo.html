@@ -1,0 +1,52 @@
+<h3 data-toc-item cds-text="section" id="color-system-objects-borders" class="clr-mt-32px">Objects and Borders</h3>
+<div class="clr-row clr-mt-24px">
+  <div class="clr-col-3">
+    <h4 cds-text="body medium" class="clr-mt-16px">Application Background</h4>
+    <app-color-example-item
+      *ngFor="let item of colorObjectBorder.applicationBackground"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+    <h4 cds-text="body medium" class="clr-mt-16px">Object Borders</h4>
+    <app-color-example-item
+      *ngFor="let item of colorObjectBorder.objectBorders"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+  </div>
+
+  <div class="clr-col-3">
+    <h4 cds-text="body medium" class="clr-mt-16px">Hover / Active / Selected</h4>
+    <app-color-example-item
+      *ngFor="let item of colorObjectBorder.states"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+  </div>
+
+  <div class="clr-col-3">
+    <h4 cds-text="body medium" class="clr-mt-16px">Containers</h4>
+    <app-color-example-item
+      *ngFor="let item of colorObjectBorder.containers"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+  </div>
+
+  <div class="clr-col-3">
+    <h4 cds-text="body medium" class="clr-mt-16px">Shadows</h4>
+    <app-color-example-item
+      *ngFor="let item of colorObjectBorder.shadows"
+      [text]="item.text"
+      [token]="item.boxShadow"
+      [tokenType]="'shadow'"
+    ></app-color-example-item>
+
+    <h4 cds-text="body medium" class="clr-mt-16px">Black / White</h4>
+    <app-color-example-item
+      *ngFor="let item of colorObjectBorder.blackWhite"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+  </div>
+</div>

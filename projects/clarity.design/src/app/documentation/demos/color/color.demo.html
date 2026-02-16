@@ -1,0 +1,37 @@
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      The Clarity color system is based on a set of global colors that support Clarity’s default light and dark themes
+      and charts. The colors can also be used as spot color in your application or to design your own custom theme.
+      Clarity prefers HSL color definitions.
+    </p>
+
+    <h2 cds-text="title" id="usage" class="clr-mt-48px">Usage</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Clarity uses a functional naming system to tie colors to their purpose. For example, info blue is HSL: (198, 100%,
+      34%) which is also referred to as <code cds-text="code">--cds-global-color-blue-700</code> and, when used as the
+      default info color, by its alias <code cds-text="code">--cds-alias-status-info</code>. The system extends the
+      status colors since these components often require more than one color to enable interactive changes and
+      multicolor designs. A similar system is used for interaction styles in all non-status components. Typography also
+      follows these same conventions.
+    </p>
+    <p cds-text="body" class="clr-mt-16px">
+      By using this system throughout your application, especially in cases where you design custom components, you can
+      ensure consistency with Clarity components while remaining accessible and theme-able. Using this system also
+      ensures future changes in Clarity will be automatically applied to your application. This greatly reduces the
+      effort required to stay current with the latest version of Clarity.
+    </p>
+    <p cds-text="body" class="clr-mt-16px">
+      We provide a detailed specification both here and in storybook, and suggest becoming familiar with the way it
+      works to avail yourself of the benefits.
+    </p>
+
+    <h2 cds-text="title" id="color-system" class="clr-mt-48px">Color System</h2>
+    <clr-color-status></clr-color-status>
+    <clr-color-interaction></clr-color-interaction>
+    <clr-color-object-border></clr-color-object-border>
+    <clr-color-type></clr-color-type>
+    <clr-color-utility></clr-color-utility>
+    <clr-color-palette></clr-color-palette>
+  </app-doc-tab>
+</app-doc-tabs>

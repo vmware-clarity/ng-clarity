@@ -1,0 +1,13 @@
+<clr-select-container>
+  <label>Locale</label>
+  <select clrSelect name="locales" [(ngModel)]="translateService.locale">
+    <option *ngFor="let locale of locales" [value]="locale[1]">{{ locale[0] }}</option>
+  </select>
+</clr-select-container>
+
+<p>
+  {{ 'hello-world' | translate }}
+</p>
+<p>
+  {{ getNow() | dateTime: dateTimeFormat }}
+</p>

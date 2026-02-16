@@ -1,0 +1,136 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use 'projects/angular/styles/core/tokens/variables.tokens' as tokens;
+
+@use 'packages/angular/styles/variables/variables.layout' as variables;
+
+.home-page-content {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: 100% !important;
+  border-top: tokens.$cds-alias-object-border-width-100 solid transparent;
+  height: 100%;
+  overflow-x: hidden;
+
+  @media screen and (min-width: map.get(variables.$clr-grid-breakpoints, sm)) {
+    overflow-y: scroll;
+  }
+
+  .home-page-banner {
+    position: relative;
+    display: flex;
+    background-color: tokens.$cds-alias-object-interaction-info-secondary-hover;
+
+    .home-page-banner-headings {
+      width: 100%;
+      padding-right: tokens.$cds-global-space-9;
+      position: absolute;
+
+      @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, xl)) {
+        position: static;
+      }
+    }
+
+    .banner-small {
+      display: none;
+      margin-left: tokens.$cds-global-space-9;
+
+      @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
+        height: baselinePx(123); // design spec
+      }
+    }
+
+    @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, xl)) {
+      padding-bottom: tokens.$cds-global-space-9;
+
+      .banner-large {
+        display: none;
+      }
+
+      .banner-small {
+        display: block;
+        float: right;
+      }
+    }
+  }
+
+  .home-page-content-wrapper {
+    max-width: baselinePx(1134); // design spec
+
+    .home-panel {
+      padding: tokens.$cds-global-layout-space-lg;
+      background-color: tokens.$cds-alias-object-container-background;
+      border: 1px solid tokens.$cds-alias-object-border-color;
+      border-radius: tokens.$cds-alias-object-border-radius-100;
+    }
+
+    .highlights {
+      display: flex;
+
+      @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, xl)) {
+        flex-direction: column;
+      }
+
+      .highlight {
+        flex: 1 1;
+        display: flex;
+        gap: tokens.$cds-global-layout-space-lg;
+
+        .highlight-content {
+          display: flex;
+          flex-direction: column;
+          gap: tokens.$cds-global-layout-space-xs;
+
+          h2 {
+            display: inherit;
+          }
+
+          a {
+            line-height: tokens.$cds-global-space-9;
+            font-size: tokens.$cds-global-typography-font-size-5;
+          }
+        }
+      }
+    }
+
+    .centered-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      .centered-buttons > a {
+        margin: 0;
+      }
+    }
+  }
+}
+
+.home-nested-list {
+  list-style-type: disc;
+}
+
+.home-list {
+  --clr-list-item-margin-left: #{tokens.$cds-global-space-9};
+
+  display: flex;
+  gap: tokens.$cds-global-layout-space-xl;
+
+  .list-item {
+    flex: 1;
+  }
+
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, xl)) {
+    gap: tokens.$cds-global-layout-space-lg;
+    flex-wrap: wrap;
+
+    .list-item {
+      flex: 0 0 100%;
+    }
+  }
+}

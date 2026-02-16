@@ -1,0 +1,411 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      Onboarding is a set of workflows or prompts that actively guide users to continously find new values in your
+      product. The value of a product is often referred as a user’s aha moment. The product/feature onboarding
+      experience extends throughout the user lifecycle. A good onboarding experience can increase conversation rate,
+      retention rate, customer satisfaction, and reduce support requests.
+    </p>
+
+    <h2 cds-text="title" class="clr-mt-48px" id="usage">Usage</h2>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-6">
+        <app-use-dont-use type="use" heading="Use onboarding">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>
+              When the users are new to the product or features and
+              <strong cds-text="medium">ready to learn more</strong>.
+            </li>
+            <li>For complex products that require some initial guidance to get up to speed.</li>
+            <li>To show the product value and how it works in context.</li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <app-use-dont-use type="dont_use" heading="Don't use onboarding">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>When the users are experienced and there is nothing new to learn.</li>
+            <li>For self-explanatory products that the users can learn without any guidance.</li>
+            <li>To show marketing materials again and educate the users what the product does.</li>
+            <li>
+              To upsell additional services to the customer, as that would erode trust in the onboarding being useful to
+              what they do now.
+            </li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="intuitive-ui-user-onboarding">Intuitive UI - User Onboarding</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Intuitive UI and onboarding share a similar goal to make your product easier to understand for users. However,
+      they cannot replace each other. Optimized UI is intuitive for daily operations. However, some UI doesn’t always do
+      a good job of introducing users' key features and values This is where product/features onboarding comes in, to
+      lead the users from the start until they are up and running in the product.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="scenarios">Scenarios</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      There are three common scenarios to use an onboarding: initial product setup, the first time in trial/product, and
+      the first time since major updates.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="initial-product-setup">Initial Product Setup</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Some products require initial product setup to enable the product for all other users.
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Intended for system admins who installed or created the account for their organizations.</li>
+      <li>Guide the admins through the complex setup process to match their specific user cases.</li>
+      <li>Focus on the key tasks that the admins would want to unblock for their users.</li>
+    </ul>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="first time-in-trial-or-product">First Time in Trial or Product</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      It is a great opportunity to welcome your users, and show them how your products can help them solve their
+      problems.
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        Trial users sign up to evaluate the product value with respect to the price. Keep it fast, lightweight, and with
+        minimal user input.
+      </li>
+      <li>First time users are looking to properly set up and get up to speed with their day to day operations.</li>
+      <li>
+        Focus on the top 3-5 tasks that best showcase the key value proposition of the product. You don’t have to show
+        them everything in the onboarding.
+      </li>
+    </ul>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="first-time-since-major-updates">First Time Since Major Updates</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Onboarding can continue even when a user is already fully up to speed since your product will also be evolving.
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        Existing users who are more experienced with your product would like to learn new features to continue realizing
+        the product’s value.
+      </li>
+      <li>
+        Give them an overview of the new features and benefits. Your users are not likely to keep checking your
+        marketing materials after purchasing your product.
+      </li>
+      <li>Show them how the new feature works.</li>
+      <li>
+        Be mindful of the timing and how you show them the new features. Don’t force it to your users as they might be
+        in the middle of their daily tasks.
+      </li>
+    </ul>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="how-to-design-an-onboarding-experience">
+      How to Design an Onboarding Experience
+    </h2>
+    <p class="clr-mt-16px" cds-text="body">Pick one or more patterns based on your use cases.</p>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="welcome-the-user">Welcome the User</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Welcome the user and makes a positive first impression. Use a welcome message at the beginning of a product or
+      feature onboarding as an opportunity to start building trust and show value in the product. Make the user feel
+      supported and inspired to explore the content. It can be combined with a product overview or announcement of new
+      features, with a call to action to learn and explore. It can also include illustrations or a featured video
+      highlighting the new features. The welcome message can be shown in a modal, a dismissable card, or in page. See
+      examples in Figma.
+    </p>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-4 clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/onboarding/light-theme/welcome-example1.svg'"
+          [darkSrc]="'/assets/images/documentation/onboarding/dark-theme/welcome-example1.svg'"
+          [imageAlt]="'Welcome example 1'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-12 clr-col-md-4 clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/onboarding/light-theme/welcome-example2.svg'"
+          [darkSrc]="'/assets/images/documentation/onboarding/dark-theme/welcome-example2.svg'"
+          [imageAlt]="'Welcome example 2'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-12 clr-col-md-4 clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/onboarding/light-theme/welcome-example3.svg'"
+          [darkSrc]="'/assets/images/documentation/onboarding/dark-theme/welcome-example3.svg'"
+          [imageAlt]="'Welcome example 3'"
+        ></app-themed-image>
+      </div>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      Personalize for multiple personas. Your users might have different roles, different goals, different level of
+      domain knowledge and experience with your product. Personalization can make it more relavant to their specific
+      needs. Also, consider what the percentage of each persona is, whether you need to focus on one over the others.
+      See examples in figma.
+    </p>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-6">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/onboarding/light-theme/welcome-example4.svg'"
+          [darkSrc]="'/assets/images/documentation/onboarding/dark-theme/welcome-example4.svg'"
+          [imageAlt]="'Welcome example 4'"
+        ></app-themed-image>
+        <app-use-dont-use class="clr-mt-24px" type="use" heading="Use a modal">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>When you need to grab user’s immediate attention</li>
+            <li>For brief system announcement or updates overview</li>
+            <li>
+              When you need to ask for information that might impact the following workflow, for example, user roles and
+              goals
+            </li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/onboarding/light-theme/welcome-example5.svg'"
+          [darkSrc]="'/assets/images/documentation/onboarding/dark-theme/welcome-example5.svg'"
+          [imageAlt]="'Welcome example 4'"
+        ></app-themed-image>
+        <app-use-dont-use class="clr-mt-24px" type="use" heading="Use a dismissible card or display directly in page">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>When it’s ok for the user to take their own pace to consume the content</li>
+            <li>For longer onboarding workflows that the user might not complete in one session</li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="guide-the-user-through-key-tasks">
+      Guide the User Through Key Tasks
+    </h3>
+    <p class="clr-mt-16px" cds-text="body">There are a few patterns to consider based on your use cases.</p>
+
+    <h4 class="clr-mt-24px" cds-text="subsection">Empty States</h4>
+    <p class="clr-mt-16px" cds-text="body">
+      Empty states is placeholder messages that tell users that there’s no content yet, and more importantly, what they
+      can do next.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      Use empty states to give users a preview of, or value proposition for a future experience. It provides an
+      integrated experience that shows the users how valuable this area can be and get them started by providing a clear
+      call to action.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      Empty states consist of a title (optional), a message, a call to action, and illustration (optional). Empty states
+      can be placed in the container or layout. See examples in figma.
+    </p>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-6 clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/onboarding/light-theme/empty-state.svg'"
+          [darkSrc]="'/assets/images/documentation/onboarding/dark-theme/empty-state.svg'"
+          [imageAlt]="'Empty state in use'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/onboarding/light-theme/non-empty-state.svg'"
+          [darkSrc]="'/assets/images/documentation/onboarding/dark-theme/non-empty-state.svg'"
+          [imageAlt]="'No empty state used'"
+        ></app-themed-image>
+      </div>
+    </div>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-6">
+        <app-use-dont-use type="use" heading="Use empty states">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>To encourage users to <strong cds-text="medium">explore on their own</strong></li>
+            <li>
+              To leverage the screen real estate that the content will show up and guide the user in place in a less
+              obtrusive way
+            </li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <app-use-dont-use type="dont_use" heading="Don't use empty states">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>
+              If the users are not likely to land the page by themselves. Consider a more proactive pattern, such as a
+              product walkthrough
+            </li>
+            <li>
+              To simply report that “There is not data to display” or even condemn the users “You have not done anything
+              yet”
+            </li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="product-walkthrough">Product Walkthrough</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Product walkthrough is one or a series of popover elements that provides contextual information to the users. Use
+      a product walkthrough to show key UI elements or guide through critical workflows. It may be triggered by a user
+      initiation, or may simply appear the first time a user arrives on a new or updated page. See examples in figma.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">There are two types of product walkthroughs:</p>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-6 clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/onboarding/light-theme/walkthrough1.svg'"
+          [darkSrc]="'/assets/images/documentation/onboarding/dark-theme/walkthrough1.svg'"
+          [imageAlt]="'Walkthrough the UI'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/onboarding/light-theme/walkthrough2.svg'"
+          [darkSrc]="'/assets/images/documentation/onboarding/dark-theme/walkthrough2.svg'"
+          [imageAlt]="'Walkthrough using Workflow'"
+        ></app-themed-image>
+      </div>
+    </div>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-6">
+        <h4 cds-text="subsection">UI Walkthrough</h4>
+        <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+          <li>Highlights key features in place to help users familiarize with the UI</li>
+          <li>Use to introduces new features, or point out significant changes.</li>
+          <li>It is recommended to include no more than 5 items at a time.</li>
+        </ul>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <h4 cds-text="subsection">Workflow Walkthrough</h4>
+        <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+          <li>Action-driven and a step-by-step guide to achieve a specific goal</li>
+          <li>It can be used on a single page or across multiple pages.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-6">
+        <app-use-dont-use type="use" heading="Use empty states">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>
+              To <strong cds-text="medium">highlight the location</strong> of core features
+              <strong cds-text="medium">or guide</strong> the user step by step
+              <strong cds-text="medium">in context</strong> to showcase your product’s core value
+            </li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <app-use-dont-use type="dont_use" heading="Don't use empty states">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>To show non-critical details since user can learn about them later</li>
+            <li>With too many steps and force the user to complete all at once</li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="custom-created-experience">Custom-Created Experience</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Custom created onboarding experience is a set of dedicated widgets or screens created for the key onboarding
+      tasks. Use it to help users complete the basic setup in one place before the user starts interacting with the
+      regular product UI. This can be used for setup, guidance or information for the users. See the pattern Multi-step
+      workflows for more details.
+    </p>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-6 clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/onboarding/light-theme/custom1.svg'"
+          [darkSrc]="'/assets/images/documentation/onboarding/dark-theme/custom1.svg'"
+          [imageAlt]="'Custom-created experience in the UI'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/onboarding/light-theme/custom2.svg'"
+          [darkSrc]="'/assets/images/documentation/onboarding/dark-theme/custom2.svg'"
+          [imageAlt]="'No custom-created experience in the UI'"
+        ></app-themed-image>
+      </div>
+    </div>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-6">
+        <app-use-dont-use type="use" heading="Use a custom-created experience">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>To consolidates all important steps in one place for first time users</li>
+            <li>
+              To reduce friction of complex configurations which can be difficult for users to complete on their own
+            </li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <app-use-dont-use type="dont_use" heading="Don't use empty states">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>For simple setup, this can be an overkill.</li>
+            <li>For tasks that are centrally located in the UI, a product tour can better alternative</li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="learn-at-their-own-pace">Learn at Their Own Pace</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      An onboarding experience should empower users, not control them. Users should be able to learn at their own pace.
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Let the user control the onboarding and move on to the next step when they are ready.</li>
+      <li>
+        Give the user an option to skip a part or whole of the onboarding. If the user has skipped the onboarding, keep
+        it hidden until the user invokes it.
+      </li>
+      <li>Allow the user to quit halfway and revisit later.</li>
+    </ul>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-6 clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/onboarding/light-theme/learn1.svg'"
+          [darkSrc]="'/assets/images/documentation/onboarding/dark-theme/learn1.svg'"
+          [imageAlt]="'Learn at own pace example 1'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/onboarding/light-theme/learn2.svg'"
+          [darkSrc]="'/assets/images/documentation/onboarding/dark-theme/learn2.svg'"
+          [imageAlt]="'Learn at own pace example 2'"
+        ></app-themed-image>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="celebrate-achievement">Celebrate Achievement</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Let users know that they are doing great by acknowledging their key milestones and achievement. It provides users
+      a positive reinforcement and keeps them motivated, building a stronger emotional connection and encouraging
+      long-term engagement from your users. The major milestones could be creating the first object, completing a
+      critical system configuration, or resolving the first ticket. However, don't abuse it as it might create the
+      opposite effects. See examples in Figma.
+    </p>
+    <div class="clr-mt-24px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/onboarding/light-theme/celebrate.svg'"
+        [darkSrc]="'/assets/images/documentation/onboarding/dark-theme/celebrate.svg'"
+        [imageAlt]="'Celebrate achievement with message'"
+      ></app-themed-image>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="revisit-the-onboarding">Revisit the Onboarding</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Users might need to revisit the onboarding content after their first completion. Consider providing access to
+      revisit the onboarding. Inform the user at the end of the onboarding upon the first completion so that they know
+      where to access them again for higher proficiency with your product.
+    </p>
+    <div class="clr-mt-24px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/onboarding/light-theme/revisit-onboarding.svg'"
+        [darkSrc]="'/assets/images/documentation/onboarding/dark-theme/revisit-onboarding.svg'"
+        [imageAlt]="'Revisit the onboarding flow in help section'"
+      ></app-themed-image>
+    </div>
+  </app-doc-tab>
+</app-doc-tabs>

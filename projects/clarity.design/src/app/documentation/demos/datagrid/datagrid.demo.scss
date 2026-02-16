@@ -1,0 +1,72 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'projects/angular/styles/core/tokens/variables.tokens' as tokens;
+
+@use 'projects/angular/styles/mixins';
+
+.color-square {
+  display: inline-block;
+  vertical-align: text-bottom;
+  height: tokens.$cds-global-space-7;
+  width: tokens.$cds-global-space-7;
+  border: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-global-color-construction-1000;
+  border-radius: tokens.$cds-global-space-3;
+}
+
+.color-filter {
+  display: block;
+  width: mixins.baselinePx(100);
+}
+
+.color-selectable {
+  cursor: pointer;
+  margin: tokens.$cds-global-space-2;
+  opacity: 0.2;
+
+  &:hover,
+  &.color-selected {
+    opacity: 1;
+  }
+}
+
+.lorem-ipsum {
+  max-width: mixins.baselinePx(300);
+}
+
+.username-list {
+  margin-bottom: 0;
+
+  .username:not(:last-child)::after {
+    content: ', ';
+  }
+
+  .username:last-child::after {
+    content: '.';
+  }
+}
+
+h2:first-child {
+  margin-top: tokens.$cds-global-space-9;
+}
+
+.limit-height clr-datagrid {
+  height: mixins.baselinePx(288px);
+}
+
+.footer-counters {
+  display: inline-block;
+  border-right: tokens.$cds-alias-object-border-color solid tokens.$cds-alias-object-border-width-100;
+  padding: 0 tokens.$cds-global-space-5;
+  margin: 0 tokens.$cds-global-space-5;
+  font-weight: tokens.$cds-global-typography-font-weight-semibold;
+}
+
+.footer-button {
+  min-width: tokens.$cds-global-space-8;
+  margin: 0 0 0 tokens.$cds-global-space-5;
+  padding: 0;
+}

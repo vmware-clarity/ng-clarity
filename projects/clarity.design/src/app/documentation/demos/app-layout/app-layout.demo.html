@@ -1,0 +1,281 @@
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      A properly structured layout enforces an optimal, consistent experience across your application.
+    </p>
+
+    <h2 id="layout" class="clr-mt-48px" cds-text="title">Layout</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      A Clarity application layout includes a main container and content container.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="main-container">Main Container</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      The main container (<code cds-text="code">.main-container</code>) is a vertical flexbox that wraps the following
+      components:
+    </p>
+
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>App-level alerts</li>
+      <li>Header and any sub navigation under the header</li>
+      <li>Content container</li>
+    </ul>
+    <p>
+      For information on navigation components, header, sub navigation, see
+      <a routerLink="/documentation/navigation">Navigation</a>.
+    </p>
+    <p cds-text="body" class="clr-mt-16px">
+      <strong cds-text="medium">Note:</strong> Although Clarity does not have a footer component, a custom footer can be
+      added in the main container.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="content-container">Content Container</h3>
+    <div>
+      <p cds-text="body" class="clr-mt-16px">
+        The Content Container (<code cds-text="code">.content-container</code>) is a horizontal flexbox that wraps the
+        following components:
+      </p>
+      <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+        <li>Content Area</li>
+        <li><a routerLink="/documentation/vertical-nav">Vertical Nav</a></li>
+      </ul>
+    </div>
+    <clr-layout-all-demo></clr-layout-all-demo>
+
+    <h2 class="clr-mt-48px" id="basic-structure" cds-text="title">Basic Structure</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Two constants of an application built in Clarity are the header and content area. These are the blocks upon which
+      you build your application model.
+    </p>
+
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-4">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/app-layout/light-theme/header_contentarea.svg'"
+          [darkSrc]="'/assets/images/documentation/app-layout/dark-theme/header_contentarea.svg'"
+          [imageAlt]="'Header and Content Area'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="header">Header</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      The header is for branding and app-level elements, such as navigation, search, and account settings. See
+      <a routerLink="/documentation/header">Header</a> for more information.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="content-area">Content Area</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      The content area is where users focus their attention most of the time, gathering information and performing
+      tasks–it is the canvas for your application. As the largest portion of your application, the content area is
+      always visible.
+    </p>
+
+    <h2 id="content-area-layout" class="clr-mt-48px" cds-text="title">Content Area Layout</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Your layout should reflect the information or workflow of the selected navigation. When laying out the content,
+      keep the following considerations in mind:
+    </p>
+
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        The flow of content, specifically how to create a hierarchy and layout that draws attention to the areas of
+        importance
+      </li>
+      <li>The importance of designing to the grid</li>
+      <li>How to help users complete their tasks</li>
+      <li>How to handle large amounts of data</li>
+      <li>Responsive design (if that is part of your product’s goals)</li>
+    </ul>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Content can consist of Clarity components, or no components and just information. The following sections cover
+      common layout patterns and usage recommendations.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="cards">Cards</h3>
+
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-3">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/app-layout/light-theme/cards.svg'"
+          [darkSrc]="'/assets/images/documentation/app-layout/dark-theme/cards.svg'"
+          [imageAlt]="'Cards'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-12 clr-col-md-9">
+        <p cds-text="body">
+          Cards present high-level information and guide users to related actions and details. Cards can include a
+          combination of text, images, and data visualisations.
+        </p>
+        <p cds-text="body" class="clr-mt-16px">Benefits of using cards include:</p>
+        <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+          <li>Helps to see data in a collection</li>
+          <li>Facilitates the scanning of information</li>
+          <li>Works well across platforms</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="tables-and-datagrids">Tables and Datagrids</h3>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-3">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/app-layout/light-theme/tables.svg'"
+          [darkSrc]="'/assets/images/documentation/app-layout/dark-theme/tables.svg'"
+          [imageAlt]="'Tables and Datagrids'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-12 clr-col-md-9">
+        <p cds-text="body">
+          Tables and datagrids are good for managing large amounts of data. These layouts work well when users need to
+          compare data and perform batch operations.
+        </p>
+        <p cds-text="body" class="clr-mt-16px">
+          A table is a static view. A datagrid provides users flexibility to view the data, including filtering and
+          sorting.<br />
+          Complex tables and datagrids work best on larger screens.
+        </p>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="forms">Forms</h3>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-3">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/app-layout/light-theme/forms.svg'"
+          [darkSrc]="'/assets/images/documentation/app-layout/dark-theme/forms.svg'"
+          [imageAlt]="'Forms'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-12 clr-col-md-9">
+        <p cds-text="body">
+          Forms collect data from users. Forms are comprised of other components, including labels, input fields,
+          labels, check boxes, radio buttons, and text.
+        </p>
+        <p cds-text="body" class="clr-mt-16px">
+          Forms allow user to quickly see what information they must provide. However, too many fields can discourage
+          the user.<br />
+          Inline forms are better than modals when you don't want to block users from performing other actions.
+        </p>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="tabs">Tabs</h3>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-3">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/app-layout/light-theme/tabs.svg'"
+          [darkSrc]="'/assets/images/documentation/app-layout/dark-theme/tabs.svg'"
+          [imageAlt]="'Tabs'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-12 clr-col-md-9">
+        <p cds-text="body">
+          Tabs appear in a single, non-scrollable row at the top of the content area. They are good for breaking content
+          into separate, related views.
+        </p>
+        <p cds-text="body" class="clr-mt-16px">Tabs are not appropriate if users need to compare data across views.</p>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="white-space-and-typography">White Space and Typography</h3>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-3">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/app-layout/light-theme/typography.svg'"
+          [darkSrc]="'/assets/images/documentation/app-layout/dark-theme/typography.svg'"
+          [imageAlt]="'White Space and Typography'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-12 clr-col-md-9">
+        <p cds-text="body">
+          White space and <a routerLink="/documentation/typography">typography</a> are important elements in conveying
+          hierarchy. These elements direct users to what they should view next and make the content and data easier to
+          parse. They also help bring consistency to an app.
+        </p>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="button-placement">Button Placement</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      In the content area, buttons are left-aligned, with the primary button in the leftmost position. This placement
+      supports the F-pattern layout.
+    </p>
+
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-10">
+        <div class="clr-row">
+          <div class="clr-col-6">
+            <app-do-dont type="do" caption="Left-alignment puts buttons closest to the content.">
+              <app-themed-image
+                [lightSrc]="'/assets/images/documentation/app-layout/light-theme/do_button_alignment.svg'"
+                [darkSrc]="'/assets/images/documentation/app-layout/dark-theme/do_button_alignment.svg'"
+                [imageAlt]="'Buttons align left in content area'"
+                [imageStyle]="'max-width: 100%'"
+              ></app-themed-image>
+            </app-do-dont>
+          </div>
+          <div class="clr-col-6">
+            <app-do-dont type="dont" caption="On the right, buttons might appear separate from content.">
+              <app-themed-image
+                [lightSrc]="'/assets/images/documentation/app-layout/light-theme/dont_button_alignment.svg'"
+                [darkSrc]="'/assets/images/documentation/app-layout/dark-theme/dont_button_alignment.svg'"
+                [imageAlt]="'Buttons do not align right in content area'"
+                [imageStyle]="'max-width: 100%'"
+              ></app-themed-image>
+            </app-do-dont>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-48px" id="using-vertical-rhythm-for-layout" cds-text="title">Using Vertical Rhythm for Layout</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Vertical rhythm is the repetition of spatial relationships in a design. A consistent rhythm gives elements a
+      uniform and balanced placement in a design. The more consistent the design, the easier it is for users to read and
+      understand.
+    </p>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The Clarity Baseline is 24px<br />
+      All elements in Clarity are designed with a 24px baseline:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>The visual heights of all components, line heights and spacing is divisible by 4.</li>
+      <li>The vertical white space between elements is in multiples of 24px.</li>
+    </ul>
+
+    <div class="clr-mt-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/app-layout/light-theme/24_baseline.svg'"
+        [darkSrc]="'/assets/images/documentation/app-layout/dark-theme/24_baseline.svg'"
+        [imageAlt]="'layout example using vertical rhythm with clarity baseline as 24px'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <p cds-text="body" class="clr-mt-16px">Repeat 24px in Your Layout</p>
+    <p cds-text="body" class="clr-mt-16px">
+      Design the vertical margins and padding between elements using the Clarity baseline. A multiple of 24px can be a
+      whole or fractional as long as it’s divisible by 4. For example: 4px, 8px, 12px, 16px, 20px, 24px, 28px, 32px,
+      36px, etc.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 cds-text="title" class="clr-mt-48px" id="examples">Code &amp; Examples</h2>
+
+    <clr-layout-all-demo [showCode]="true"></clr-layout-all-demo>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <app-style-docs styleDocsKey="Layout"></app-style-docs>
+  </app-doc-tab>
+</app-doc-tabs>

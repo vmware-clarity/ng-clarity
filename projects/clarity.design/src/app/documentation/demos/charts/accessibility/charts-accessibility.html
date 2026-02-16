@@ -1,0 +1,173 @@
+<p class="component-summary">
+  Ensuring that your data visualizations are accessible is crucial for inclusivity. Here you can find some guidelines
+  and best practices.
+</p>
+
+<h2 id="patterns-and-textures" cds-text="title" cds-layout="m-t:xxl">Use Patterns and Textures</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  Color blindness affects a significant portion of the population, making it difficult for these individuals to
+  distinguish between certain colors. By incorporating patterns and textures, you can ensure that your visualizations
+  are accessible to everyone, regardless of their ability to perceive color.
+</p>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Application</h3>
+
+<p cds-text="body" cds-layout="m-t:md">
+  Apply patterns or textures to different data points in charts to differentiate between categories, series, or data
+  sets.
+</p>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Dual Encoding</h3>
+
+<p cds-text="body" cds-layout="m-t:md">
+  Use both color and pattern to encode information. This ensures that even if color perception is impaired, the patterns
+  can still convey the necessary distinctions.
+</p>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Examples</h3>
+
+<div cds-layout="m-t:sm grid cols@sm:6 gap:lg">
+  <app-do-dont
+    *ngFor="let example of patternsTexturesExamples"
+    [type]="example.type"
+    [heading]="example.heading"
+    [headingLevel]="4"
+    [caption]="example.caption"
+  >
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/' + example.imageFilename"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/' + example.imageFilename"
+      [imageAlt]="example.imageAlt"
+      [imageStyle]="'width: 100%'"
+    ></app-themed-image>
+  </app-do-dont>
+</div>
+
+<h2 id="high-constrast-colors" cds-text="title" cds-layout="m-t:xxl">Use High Contrast Colors</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  Choose color combinations with high contrast to make distinctions more apparent. Avoid color pairs that are
+  problematic for color blind users, such as red-green or blue-purple. Use palettes like
+  <code cds-text="code">--cds-alias-viz-general-</code>, <code cds-text="code">--cds-alias-viz-sequential-</code>,
+  <code cds-text="code">--cds-alias-viz-diverging-</code>, and
+  <code cds-text="code">--cds-alias-viz-severity-</code> for better distinction and the suggested border token to ensure
+  clear visibility of borders regardless of the data range.
+</p>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Examples</h3>
+
+<div cds-layout="m-t:sm grid cols@sm:6 gap:lg">
+  <app-do-dont
+    *ngFor="let example of highContrastExamples"
+    [type]="example.type"
+    [heading]="example.heading"
+    [headingLevel]="4"
+    [caption]="example.caption"
+  >
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/' + example.imageFilename"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/' + example.imageFilename"
+      [imageAlt]="example.imageAlt"
+      [imageStyle]="'width: 100%'"
+    ></app-themed-image>
+  </app-do-dont>
+</div>
+
+<h2 id="avoid-information-overload" cds-text="title" cds-layout="m-t:xxl">Avoid Information Overload</h2>
+
+<div cds-layout="m-t:lg grid cols@sm:6 gap:lg">
+  <app-do-dont
+    *ngFor="let example of informationOverloadExamples"
+    [type]="example.type"
+    [heading]="example.heading"
+    [headingLevel]="2"
+    [caption]="example.caption"
+  >
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/' + example.imageFilename"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/' + example.imageFilename"
+      [imageAlt]="example.imageAlt"
+      [imageStyle]="'width: 100%'"
+    ></app-themed-image>
+  </app-do-dont>
+</div>
+
+<h2 id="provide-clear-labels" cds-text="title" cds-layout="m-t:xxl">Provide Clear Labels</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  Ensure that all data points, lines, and areas are clearly labeled. This reduces the reliance on color alone to
+  interpret the data.
+</p>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Examples</h3>
+
+<div cds-layout="m-t:lg grid cols@sm:6 gap:lg">
+  <div>
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-accessibility-label.svg'"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-accessibility-label.svg'"
+      [imageAlt]="'example of a chart label'"
+      [imageStyle]="'width: 100%'"
+    ></app-themed-image>
+    <p cds-text="body" cds-layout="m-t:sm">Add direct labels to bars, lines, and segments.</p>
+  </div>
+  <div>
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-accessibility-annotation.svg'"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-accessibility-annotation.svg'"
+      [imageAlt]="'example of a chart label'"
+      [imageStyle]="'width: 100%'"
+    ></app-themed-image>
+    <p cds-text="body" cds-layout="m-t:sm">Use callouts or annotations to highlight key data points.</p>
+  </div>
+</div>
+
+<h2 id="interactive-elements" cds-text="title" cds-layout="m-t:xxl">Interactive Elements</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  For digital visualizations, incorporate interactive elements that allow users to hover over or click on data points to
+  get more information.
+</p>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Examples</h3>
+
+<div cds-layout="m-t:lg grid cols@sm:6 gap:lg">
+  <div>
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-accessibility-tooltip.svg'"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-accessibility-tooltip.svg'"
+      [imageAlt]="'example of an interactive chart tooltip'"
+      [imageStyle]="'width: 100%'"
+    ></app-themed-image>
+    <p cds-text="body" cds-layout="m-t:sm">Tooltips that display detailed data values.</p>
+  </div>
+  <div>
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-accessibility-legend.svg'"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-accessibility-legend.svg'"
+      [imageAlt]="'example of an interactive chart legend'"
+      [imageStyle]="'width: 100%'"
+    ></app-themed-image>
+    <p cds-text="body" cds-layout="m-t:sm">Interactive legends that highlight corresponding data on the chart.</p>
+  </div>
+</div>
+
+<h2 id="alternative-format" cds-text="title" cds-layout="m-t:xxl">Alternative Format</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  Provide data in alternative formats such as a downloadable file or a table. This enables users to review data in their
+  preferred format.
+</p>
+
+<h2 id="testing-validation" cds-text="title" cds-layout="m-t:xxl">Testing and Validation</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  <strong cds-text="medium">Simulators and Tools</strong>: Use color blindness simulators and accessibility testing
+  tools to check how your visualizations appear to users with different types of color blindness.
+</p>
+
+<p cds-text="body" cds-layout="m-t:md">
+  <strong cds-text="medium">Examples</strong>: Online tools like Coblis (Color Blindness Simulator) or built-in
+  accessibility features in design software such as Stark for Figma.
+</p>

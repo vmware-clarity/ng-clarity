@@ -1,0 +1,35 @@
+<h3 data-toc-item cds-text="section" id="color-system-interaction" class="clr-mt-32px">Interaction</h3>
+<p cds-text="body" class="clr-mt-16px">
+  Interaction styles define the look and feel of interactive elements within Clarity.
+</p>
+
+<h4 cds-text="body medium" class="clr-mt-16px">Objects - Hover / Active / Selected</h4>
+<div class="clr-row">
+  <div class="clr-col-3" *ngFor="let item of colorInteraction.objectItems">
+    <app-color-example-item [text]="item.text" [token]="item.color"></app-color-example-item>
+  </div>
+</div>
+
+<h4 cds-text="body medium" class="clr-mt-16px">Buttons - Hover / Active / Selected</h4>
+<div class="clr-row">
+  <div class="clr-col-3 clr-mb-24px" *ngFor="let colorVariants of colorInteraction.buttonItems">
+    <app-color-example-item
+      *ngFor="let item of colorVariants"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+  </div>
+</div>
+<div class="clr-row">
+  <div class="clr-col-8">
+    <div class="color-example-container">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/color/light-theme/accordion-panel-states.svg'"
+        [darkSrc]="'/assets/images/documentation/color/dark-theme/accordion-panel-states.svg'"
+        [imageAlt]="'Accordion example showing color states for expanded, disabled, collapsed.'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+  </div>
+  <p class="clr-mt-16px" cds-text="subsection">Interaction colors as used in accordion component</p>
+</div>

@@ -1,0 +1,69 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'projects/angular/styles/core/tokens/variables.tokens' as tokens;
+
+
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$cds-global-space-6;
+  padding: tokens.$cds-global-space-6;
+
+  .hexagon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    min-width: 36px;
+    clip-path: polygon(-50% 50%, 50% 100%, 150% 50%, 50% 0);
+
+    cds-icon.hexagon-icon {
+      margin-left: 0;
+    }
+
+    &.status-info {
+      background: tokens.$cds-alias-status-info;
+
+      cds-icon.hexagon-icon {
+        --color: #{tokens.$cds-alias-typography-color-100};
+      }
+    }
+
+    &.gray {
+      background: tokens.$cds-alias-object-container-background-dark;
+
+      cds-icon.hexagon-icon {
+        --color: #{tokens.$cds-alias-typography-color-500};
+      }
+    }
+
+    &.utility-tangerine {
+      background: tokens.$cds-alias-utility-tangerine;
+
+      cds-icon.hexagon-icon {
+        --color: #{tokens.$cds-alias-typography-color-500};
+      }
+    }
+
+    &.sequential-blue {
+      background: tokens.$cds-alias-viz-sequential-blue-200;
+
+      cds-icon.hexagon-icon {
+        --color: #{tokens.$cds-alias-typography-color-500};
+      }
+    }
+  }
+
+  cds-icon.arrow-icon {
+    margin-left: auto;
+  }
+
+  .card-text {
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,109 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h3 cds-text="section" class="clr-mt-32px">Collapsible Vertical Nav</h3>
+
+<p cds-text="body" class="clr-mt-16px">
+  <code cds-text="code">[clrVerticalNavCollapsible]</code> input can be used to toggle the collapsible behavior of the
+  Vertical Nav. The state of the nav can be controlled by the
+  <code cds-text="code">[(clrVerticalNavCollapsed)]</code> input.
+</p>
+
+<div class="clr-example">
+  <div class="main-container" style="height: 420px">
+    <header class="header">
+      <div class="branding">
+        <a href="javascript://">
+          <cds-icon shape="bolt"></cds-icon>
+          <span class="title">Project Pokémon</span>
+        </a>
+      </div>
+    </header>
+    <div class="content-container">
+      <clr-vertical-nav [clrVerticalNavCollapsible]="collapsible" [(clrVerticalNavCollapsed)]="collapsed">
+        <a clrVerticalNavLink routerLink="./normal" routerLinkActive="active">
+          <cds-icon clrVerticalNavIcon shape="user"></cds-icon>
+          Normal
+        </a>
+        <a clrVerticalNavLink routerLink="./electric" routerLinkActive="active">
+          <cds-icon clrVerticalNavIcon shape="bolt"></cds-icon>
+          Electric
+        </a>
+        <a clrVerticalNavLink routerLink="./poison" routerLinkActive="active">
+          <cds-icon clrVerticalNavIcon shape="sad-face"></cds-icon>
+          Poison
+        </a>
+        <a clrVerticalNavLink routerLink="./grass" routerLinkActive="active">
+          <cds-icon clrVerticalNavIcon shape="bug"></cds-icon>
+          Grass
+        </a>
+        <a clrVerticalNavLink routerLink="./fighting" routerLinkActive="active">
+          <cds-icon clrVerticalNavIcon shape="shield"></cds-icon>
+          Fighting
+        </a>
+        <a clrVerticalNavLink routerLink="./credit" routerLinkActive="active">
+          <cds-icon clrVerticalNavIcon shape="certificate"></cds-icon>
+          Credit
+        </a>
+      </clr-vertical-nav>
+      <div class="content-area">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-stackblitz-example
+  name="Vertical Nav Top Collapsable"
+  [componentTemplate]="htmlExampleTop"
+  [componentClass]="tsExample"
+  [showComponentClass]="false"
+  [additionalFiles]="additionalFiles"
+></app-stackblitz-example>
+
+<p cds-text="body" class="clr-mt-16px">
+  To place the collapse/expand trigger after the links, use the <code cds-text="code">.nav-trigger--bottom</code> class
+  along with <code cds-text="code">clr-vertical-nav</code>.
+</p>
+
+<div class="clr-example">
+  <div class="main-container" style="height: 400px">
+    <header class="header">
+      <div class="branding">
+        <a href="javascript://">
+          <cds-icon shape="bolt"></cds-icon>
+          <span class="title">Project Pokémon</span>
+        </a>
+      </div>
+    </header>
+    <div class="content-container">
+      <clr-vertical-nav [clrVerticalNavCollapsible]="true" class="nav-trigger--bottom">
+        <a clrVerticalNavLink href="javascript://" class="active">
+          <cds-icon clrVerticalNavIcon shape="user"></cds-icon>
+          Normal
+        </a>
+        <a clrVerticalNavLink href="javascript://">
+          <cds-icon clrVerticalNavIcon shape="bolt"></cds-icon>
+          Electric
+        </a>
+      </clr-vertical-nav>
+      <div class="content-area demo-allow-scroll">
+        Normal The Normal type is the most basic type of Pokémon. They are very common and appear from the very first
+        route you visit. Most Normal Pokémon are single type, but there is a large contingent having a second type of
+        Flying.
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-stackblitz-example
+  name="Vertical Nav Bottom Collapsable"
+  [componentTemplate]="htmlExampleBottom"
+  [componentClass]="tsExample"
+  [showComponentClass]="false"
+  [additionalFiles]="additionalFiles"
+></app-stackblitz-example>

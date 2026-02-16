@@ -1,0 +1,159 @@
+<!--
+  ~ Copyright (c) 2016-2024 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      Breadcrumbs provide information about a page's structural hierarchy. They contain links back to each previous page
+      the user navigated through to get to the current page.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="usage">Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Use Breadcrumbs only when nested pages can't be avoided and there is no visual option from the navigation to lead
+      the user back to the first nested page. Be advised that nested pages are not recommended best practice and try to
+      evade using this approach.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      Use Breadcrumbs when there are more than 3 nested pages, if less use the Back button.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      The first link on the Breadcrumb should be the first actionable item from the vertical navigation. It could be on
+      every level of the vertical navigation.
+    </p>
+
+    <div class="clrweb-DoxMedia">
+      <div class="clrweb-DoxMedia-block component-box-container">
+        <clr-breadcrumbs [items]="breadcrumbs"></clr-breadcrumbs>
+      </div>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      If there are more than 3 pages to show in the breadcrumb, use the collapsable instance of the component.
+    </p>
+    <div class="clrweb-DoxMedia">
+      <div class="clrweb-DoxMedia-block component-box-container">
+        <clr-breadcrumbs [items]="breadcrumbsCollapsed"></clr-breadcrumbs>
+      </div>
+    </div>
+    <h2 class="clr-mt-48px" cds-text="title" id="anatomy">Anatomy</h2>
+    <p class="clr-mt-16px" cds-text="body">A breadcrumb consist of the following elements:</p>
+    <div class="clr-row clr-mt-32px clr-col-10">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/breadcrumbs/light-theme/breadcrumb-anatomy-light.svg'"
+        [darkSrc]="'/assets/images/documentation/breadcrumbs/dark-theme/breadcrumb-anatomy-dark.svg'"
+        [imageAlt]="'Anatomy of the Breadcrumb'"
+        [imageStyle]="'height: 200px'"
+      ></app-themed-image>
+    </div>
+    <h3 class="clr-mt-24px" cds-text="subsection">Interactive Item</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Each item represents a single section in a hierarchical path. A clickable item contains a link to its
+      corresponding page in the hierarchy.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="subsection">Separator</h3>
+    <p class="clr-mt-16px" cds-text="body">Separates the breadcrumb items from each other.</p>
+
+    <h3 class="clr-mt-24px" cds-text="subsection">Non Interactive Item / Current page</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      The current page is the last item of the breadcrumb. It is a not interactive item.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="back-button">Back Button</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Use a back button instead of using breadcrumbs, if there are less than 3 nested pages.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">Back button is a Clarity Flat Compact button component</p>
+    <div class="clr-row clr-mt-32px clr-col-10">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/breadcrumbs/light-theme/breadcrumb-back-button-anatomy-light.svg'"
+        [darkSrc]="'/assets/images/documentation/breadcrumbs/dark-theme/breadcrumb-back-button-anatomy-dark.svg'"
+        [imageAlt]="'Back Button'"
+        [imageStyle]="'height: 200px'"
+      ></app-themed-image>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="placement">Placement</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Breadcrumbs or the Back button should be placed in the header bar, above the page title.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
+
+    <h3 id="breadcrumbs-routing" data-toc-item cds-text="section" class="clr-mt-48px">Basic Example with Routing</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Breadcrumbs are configured by passing a list of routerLink urls in the <code cds-text="code">Items</code> input
+      array. These urls bind to Angular's <code cds-text="code">[routerLink]</code> directive.
+    </p>
+    <clr-breadcrumb-routing-example-demo></clr-breadcrumb-routing-example-demo>
+
+    <h3 id="dynamic-breadcrumbs" data-toc-item cds-text="section" class="clr-mt-48px">
+      Dynamic Breadcrumbs with Routing
+    </h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Breadcrumbs can be configured dynamically based on the application's routing configuration.
+    </p>
+    <p cds-text="body" class="clr-mt-16px">
+      In the below example, we use the data attribute of the route, a <code cds-text="code">breadcrumb</code> property
+      is added to the data object to store its display name and dynamically generate the
+      <code cds-text="code">Items</code> input array based on the activated route.
+    </p>
+    <clr-breadcrumb-full-routing-example-demo></clr-breadcrumb-full-routing-example-demo>
+
+    <h3 data-toc-item id="breadcrumbs-href" cds-text="section" class="clr-mt-48px">Example with Href</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Breadcrumbs can be configured by passing the href url in the <code cds-text="code">Items</code> input array which
+      then binds to <code cds-text="code">[href]</code> directive.
+    </p>
+    <clr-breadcrumb-href-example-demo></clr-breadcrumb-href-example-demo>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 cds-text="title" cds-layout="m-t:lg">Angular Components</h2>
+
+    <h3 cds-text="section" cds-layout="m-t:lg"><code cds-text="code">&lt;clr-breadcrumbs&gt;</code> component</h3>
+    <table class="table" cds-text="body" cds-layout="m-t:md">
+      <thead>
+        <tr>
+          <th class="left">Input / Output</th>
+          <th class="left clr-hidden-xs-down">Type</th>
+          <th class="left clr-hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            [items]
+            <div class="clr-hidden-sm-up">Type: BreadcrumbItem[]</div>
+            <div class="clr-hidden-sm-up">Default: []</div>
+          </td>
+          <td class="left clr-hidden-xs-down">BreadcrumbItem[]</td>
+          <td class="left clr-hidden-xs-down">[]</td>
+          <td class="left">List of breadcrumb menu items</td>
+        </tr>
+        <tr>
+          <td class="left">
+            (clrBreadcrumbItemClick)
+            <div class="clr-hidden-sm-up">Type: BreadcrumbItem&lt;T&gt;</div>
+            <div class="clr-hidden-sm-up">Default: N/A</div>
+          </td>
+          <td class="left clr-hidden-xs-down">BreadcrumbItem&lt;T&gt;</td>
+          <td class="left clr-hidden-xs-down">N/A</td>
+          <td class="left">emits when the breadcrumb item is clicked</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-style-docs styleDocsKey="Breadcrumbs"></app-style-docs>
+  </app-doc-tab>
+</app-doc-tabs>

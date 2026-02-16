@@ -1,0 +1,294 @@
+<app-doc-tabs>
+  <app-doc-tab tab="code">
+    <p class="component-summary" id="tabs-divide-content-into-separate-views-which-users-navigate-between">
+      Tabs divide content into separate views which users navigate between.
+    </p>
+    <h2 id="angular-component" cds-text="title" class="clr-mt-48px">Angular Tab Component</h2>
+
+    <h3 data-toc-item id="simple-tabs" cds-text="subsection" class="clr-mt-32px">Simple Tabs</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The tabs component uses the <code cds-text="code">*clrIfActive</code> structural directive to lazy load the
+      content of an active tab. For simple cases, using the microsyntax as shown below would suffice.
+    </p>
+    <clr-modal-tabs-angular-simple></clr-modal-tabs-angular-simple>
+
+    <h3 cds-text="subsection" class="clr-mt-32px">Tabs with dynamic selection</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Another use of <code cds-text="code">*clrIfActive</code> is to set the current tab, so passing a positive value of
+      <code cds-text="code">true</code> for the second tab will set it as current. If there is no tab with
+      <code cds-text="code">true</code> set, then the default behavior is to set the first one as current.
+    </p>
+    <tabs-angular-dynamic-selection></tabs-angular-dynamic-selection>
+
+    <h3 data-toc-item id="two-way-tabs" cds-text="subsection" class="clr-mt-32px">Tabs with two-way binding</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      If you'd like to use two-way binding on the active state of the tabs, we recommend that you use the de-sugared
+      syntax of the structural directive by wrapping it in <code cds-text="code">ng-template</code> as shown below.
+    </p>
+
+    <clr-modal-tabs-angular></clr-modal-tabs-angular>
+
+    <h3 data-toc-item id="overflow-tabs" cds-text="subsection" class="clr-mt-32px">Tab Overflow</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Tab overflow is used when the tab group is larger than its containing space, or used to preserve space. The
+      overflow is configurable so you can assign tabs to the dropdown menu.
+    </p>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Tab overflow is shown below as an ellipsis button in the tab group and is the last position to the right. Clicking
+      on the ellipsis will show the overflow dropdown menu.
+    </p>
+
+    <p cds-text="body" class="clr-mt-16px">
+      We recommend that a overflow dropdown have at least two options in it. We also recommend that you test out
+      scenarios with tab labels that may vary in length or when translated to another language to make sure there is
+      enough room for them.
+    </p>
+
+    <clr-modal-tabs-angular-overflow></clr-modal-tabs-angular-overflow>
+
+    <h3 data-toc-item id="vertical-tabs" cds-text="subsection" class="clr-mt-32px">Vertical Tabs</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      If you'd like to use vertical tabs add <code cds-text="code">clrLayout="vertical"</code> parameter to the
+      <code cds-text="code">clr-tabs</code> component.
+    </p>
+    <clr-tabs-angular-vertical></clr-tabs-angular-vertical>
+
+    <h3 data-toc-item id="actions-button-tabs" cds-text="subsection" class="clr-mt-32px">Tabs Action Buttons</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Use <code cds-text="code">clr-tabs-actions</code> directive to add custom content inside tabs header. Create
+      custom tabs dynamically by adding action to tabs header.
+    </p>
+    <clr-tabs-angular-actions-button></clr-tabs-angular-actions-button>
+
+    <h3 data-toc-item id="accessibility-angular" cds-text="subsection" class="clr-mt-32px" id="accessibility-1">
+      Accessibility
+    </h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      All attributes associated with accessibility (<code cds-text="code">aria-controls</code>,
+      <code cds-text="code">aria-selected</code>, <code cds-text="code">aria-hidden</code>,
+      <code cds-text="code">aria-labelledby</code>, <code cds-text="code">role</code>) are automatically created and
+      managed by the angular component.
+    </p>
+
+    <h2 cds-text="title" class="clr-mt-32px" id="css-component">CSS Tab Component</h2>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The following is a static example of tabs with their associated sections. You cannot switch between tabs in this
+      static demo because it does not contain the JavaScript to handle this behavior.
+    </p>
+    <p cds-text="body" class="clr-mt-16px">
+      The active tab should have the additional class <code cds-text="code">active</code>. The stylesheet will hide all
+      the section elements where attribute <code cds-text="code">aria-hidden</code> is set to
+      <code cds-text="code">true</code>.
+    </p>
+
+    <clr-tabs-demo-static></clr-tabs-demo-static>
+
+    <h3 data-toc-item id="vertical-tabs" cds-text="subsection" class="clr-mt-32px" id="vertical">Vertical Tabs</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      If you'd like to use vertical tabs add <code cds-text="code">tabs-vertical</code> class to the container.
+    </p>
+
+    <clr-tabs-vertical-demo-static></clr-tabs-vertical-demo-static>
+
+    <h3 data-toc-item cds-text="subsection" class="clr-mt-32px" id="accessibility">Accessibility</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The active tab should have the attribute <code cds-text="code">aria-selected</code> set to
+      <code cds-text="code">true</code>, and the others to false.
+    </p>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The active panel associated with the active tab should have the attribute
+      <code cds-text="code">aria-hidden</code> set to <code cds-text="code">true</code>, and the others
+      <code cds-text="code">to false</code>.
+    </p>
+
+    <p cds-text="body" class="clr-mt-16px">
+      In addition, each tab should have an aria-controls attribute set to the id of the matching panel and each panel
+      should have an <code cds-text="code">aria-labelledby</code> attribute set to the id of the tab associated with the
+      panel.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 id="angular-component">Angular Component</h2>
+
+    <h3>Tabs Component (clrTabs)</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="hidden-xs-down">Values</th>
+          <th class="hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrLayout]</b>
+            <div class="hidden-sm-up">Values:<br />&lt;'horizontal', 'vertical'&gt;</div>
+            <div class="hidden-sm-up">Default: 'horizontal'</div>
+          </td>
+          <td class="hidden-xs-down">&lt;'horizontal', 'vertical'&gt;</td>
+          <td class="hidden-xs-down">'horizontal'</td>
+          <td class="left">If set to 'vertical', will change tabs layout to vertical.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Tab Link Directive (clrTabLink)</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="hidden-xs-down">Values</th>
+          <th class="hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[id]</b>
+            <div class="hidden-sm-up">Values:<br />&lt;any valid id for html element&gt;</div>
+            <div class="hidden-sm-up">Default: auto-generated</div>
+          </td>
+          <td class="hidden-xs-down">&lt;any valid id for html element&gt;</td>
+          <td class="hidden-xs-down">auto-generated</td>
+          <td class="left">
+            If explicitly set, will assign the set id as the id for the element. If not set, the component will
+            auto-generate the id.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Tab Content (clr-tab-content)</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="hidden-xs-down">Values</th>
+          <th class="hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrTabLinkInOverflow]</b>
+            <div class="hidden-sm-up">Values:<br />true, false</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="hidden-xs-down">&lt;true, false&gt;</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">If true, then this tab link will go into the overflow section of the tabs.</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[id]</b>
+            <div class="hidden-sm-up">Values:<br />&lt;any valid id for html element&gt;</div>
+            <div class="hidden-sm-up">Default: auto-generated</div>
+          </td>
+          <td class="hidden-xs-down">&lt;any valid id for html element&gt;</td>
+          <td class="hidden-xs-down">auto-generated</td>
+          <td class="left">
+            Used on &lt;clr-tab-content&gt;. If explicitly set, will assign the set id as the id for the element. If not
+            set, the component will auto-generate the id.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Directives used along with clr-tab-content</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="hidden-xs-down">Values</th>
+          <th class="hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[(clrIfActive)]</b>
+            <div class="hidden-sm-up">Values:<br />true, false</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="hidden-xs-down">&lt;true, false&gt;</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">
+            Two-way binding on the state of the tab content. The content of the active tab will lazily load when set to
+            true, and destroy it when set to false.
+            <br />
+            Used on &lt;clr-tab-content&gt;. If explicitly set as true, will set that specific &lt;clr-tab&gt; as the
+            current tab.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-style-docs styleDocsKey="Tabs"></app-style-docs>
+  </app-doc-tab>
+
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      Tabs are components that organize the content of a page into multiple panes. Users can see the content of one tab
+      at a time, yet quickly navigate to another tab.
+    </p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Use tabs for alternate views within a
+      <a routerLink="/documentation/vertical-nav">vertical nav</a> or main content area.
+    </p>
+    <p>
+      Don’t use tabs to break user interactions into a series of steps. Serial workflows are best presented in a
+      <a routerLink="/documentation/stepper">stepper</a> or <a routerLink="/documentation/wizard">wizard</a>. Avoid
+      using tabs in cards and modals.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="placement">Placement</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Place tabs in a single, non-scrollable row, above their content. The width of each tab is dependent on its label.
+    </p>
+    <p>
+      To ensure that all tabs appear in the container, avoid using more than seven tabs and limit labels to one or two
+      words.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="content">Content</h2>
+    <p class="clr-mt-16px clr-mb-16px" cds-text="body">
+      While the content within tabs is flexible, use the following guidelines for organization and presentation:
+    </p>
+    <ul>
+      <li>Ensure that the content in each tab is independent of the content in other tabs.</li>
+      <li>Don’t force users to navigate back and forth to compare data. Instead keep such content in the same view.</li>
+      <li>Avoid cross-linking between tabs.</li>
+      <li>If the content within a tab is broad, divide it into subsections.</li>
+    </ul>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="labels">Labels</h2>
+    <p class="clr-mt-16px clr-mb-16px" cds-text="body">Use the following guidelines for tab labels:</p>
+    <ul>
+      <li>Ensure that the labels show a clear relationship between the tabs.</li>
+      <li>Favor nouns over verbs, for example, Settings, Permissions, and Performance.</li>
+      <li>Avoid generic labels such as General or Advanced.</li>
+      <li>Use title-style capitalization.</li>
+      <li>Avoid using icons in labels.</li>
+    </ul>
+  </app-doc-tab>
+</app-doc-tabs>

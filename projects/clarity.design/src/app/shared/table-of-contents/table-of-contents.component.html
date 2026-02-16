@@ -1,0 +1,26 @@
+<div *ngIf="tableOfContents && tableOfContents.length" class="table-of-contents">
+  <span class="title">Content</span>
+  <ng-container *ngTemplateOutlet="tocList; context: { $implicit: tableOfContents }"></ng-container>
+  <button class="scroll-to-top" *ngIf="showScrollToTopButton" (click)="scrollToTop()" aria-label="Scroll to top">
+    <cds-icon shape="angle"></cds-icon>
+  </button>
+</div>
+
+<ng-template #tocList let-entries>
+  <ul *ngIf="entries?.length" class="list-unstyled toc-list">
+    <li *ngFor="let entry of entries">
+      <a
+        routerLink="."
+        [fragment]="entry.id"
+        [replaceUrl]="true"
+        [ngClass]="{ active: activeHash === entry.id }"
+        (click)="onClick(entry.id)"
+        (pointerdown)="smoothScroll(true)"
+        (pointerup)="smoothScroll(false)"
+      >
+        {{ entry.label }}
+      </a>
+      <ng-container *ngTemplateOutlet="tocList; context: { $implicit: entry.children }"></ng-container>
+    </li>
+  </ul>
+</ng-template>

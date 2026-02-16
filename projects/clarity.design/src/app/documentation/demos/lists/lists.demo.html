@@ -1,0 +1,135 @@
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">Lists show vertical groups of items and can be nested to show hierarchy.</p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Use a list to group related items and organize them vertically for easy scanning.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="types">Types</h2>
+    <p class="clr-mt-16px" cds-text="body">There are three types of lists: unordered, ordered, and unstyled.</p>
+
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="unordered-list">Unordered List</h3>
+    <p class="clr-mt-16px" cds-text="body">Use an unordered list when the order does not matter.</p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-t:md m-l:xxl">
+      <li>Chicken Breast</li>
+      <li>Flour</li>
+      <li>Garlic</li>
+      <li>Honey</li>
+    </ul>
+
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="ordered-list">Ordered List</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Use an ordered list when you need to convey a priority, hierarchy, or sequence between list items.
+    </p>
+    <ol class="list" cds-text="body" cds-layout="m-t:md m-t:md m-l:xxl">
+      <li>Split chicken breast in half.</li>
+      <li>Dust chicken with flour.</li>
+      <li>Sear chicken, add butter, garlic, vinegar, soy sauce, honey.</li>
+      <li>Simmer until the sauce thickens.</li>
+    </ol>
+
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="unstyled-list">Unstyled List</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Use an unstyled list when styling is unnecessary to improve comprehension or hierarchy.
+    </p>
+    <ul class="list-unstyled" cds-text="body" cds-layout="m-t:md m-t:md m-l:xl">
+      <li>Calories: 323 cal</li>
+      <li>Carbohydrates: 23g</li>
+      <li>Protein: 28g</li>
+      <li>Fat: 13g</li>
+    </ul>
+
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="nested-lists">Nested Lists</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Lists can be nested, and the varieties can be mixed within nested groupings.
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-t:md m-l:xxl">
+      <li>Gluten free</li>
+      <li>Soy sauce</li>
+      <li>
+        Other proteins
+        <ul class="list-unordered" cds-text="body" cds-layout="m-y:xxs m-l:lg">
+          <li>Tofu</li>
+          <li>Prawns/shrimp</li>
+          <li>Fish</li>
+        </ul>
+      </li>
+      <li>Nutrition</li>
+    </ul>
+  </app-doc-tab>
+  <app-doc-tab tab="code">
+    <h2 class="clr-mt-48px" cds-text="title" id="css-classes">Code &amp; Examples</h2>
+
+    <p>Use the class <code cds-text="code">.list</code> in all types of list elements.</p>
+    <h3 data-toc-item id="unordered-list" cds-text="subsection" class="clr-mt-32px">Unordered List</h3>
+    <div cds-text="body" class="clr-mt-24px">
+      <ul class="list">
+        <li *ngFor="let item of listItems; let i = index">
+          {{ item }}
+        </li>
+      </ul>
+    </div>
+    <app-stackblitz-example name="list unordered" [componentTemplate]="example2"></app-stackblitz-example>
+
+    <h3 data-toc-item id="ordered-list" cds-text="subsection" class="clr-mt-32px">Ordered List</h3>
+    <div cds-text="body" class="clr-mt-24px">
+      <ol class="list">
+        <li *ngFor="let item of listItemsOrdered; let i = index">
+          {{ item }}
+        </li>
+      </ol>
+    </div>
+    <app-stackblitz-example name="list ordered" [componentTemplate]="example1"></app-stackblitz-example>
+
+    <h3 data-toc-item id="unstyled-list" cds-text="subsection" class="clr-mt-32px">Unstyled List</h3>
+    <p>Use the class <code cds-text="code">.list-unstyled</code> to remove styling.</p>
+
+    <div cds-text="body" class="clr-mt-24px">
+      <ul class="list list-unstyled">
+        <li>Calories: 323 cal</li>
+        <li>Carbohydrates: 23g</li>
+        <li>Protein: 28g</li>
+        <li>Fat: 13g</li>
+      </ul>
+    </div>
+    <app-stackblitz-example name="list unstyled" [componentTemplate]="example3"></app-stackblitz-example>
+
+    <h3 data-toc-item id="nested-list" cds-text="subsection" class="clr-mt-32px">Nested List</h3>
+    <div cds-text="body" class="clr-mt-24px">
+      <ul class="list">
+        <li>Calories</li>
+        <li>Fat</li>
+        <li>Protein</li>
+        <li>
+          Diet type
+          <ul class="list list-unordered">
+            <li>Vegan</li>
+            <li>Gluten Free</li>
+            <li>Vegetarian</li>
+          </ul>
+        </li>
+        <li>
+          Allergens
+          <ul class="list">
+            <li>Peanut</li>
+            <li>Shellfish</li>
+            <li>Soy</li>
+          </ul>
+        </li>
+        <li>Other Allergens</li>
+      </ul>
+      <ul class="list list-spacer">
+        <li>Fish</li>
+        <li>Groundnut or tree nuts</li>
+        <li>Eggs</li>
+        <li>Dairy</li>
+      </ul>
+    </div>
+    <app-stackblitz-example name="list nested" [componentTemplate]="example4"></app-stackblitz-example>
+  </app-doc-tab>
+  <app-doc-tab tab="api">
+    <app-style-docs styleDocsKey="Lists"></app-style-docs>
+  </app-doc-tab>
+</app-doc-tabs>

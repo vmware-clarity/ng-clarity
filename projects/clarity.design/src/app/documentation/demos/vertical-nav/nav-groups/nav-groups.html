@@ -1,0 +1,91 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example example-margin">
+  <div class="main-container nav-box">
+    <div class="content-container">
+      <clr-vertical-nav [clrVerticalNavCollapsible]="demoCollapsible">
+        <clr-vertical-nav-group>
+          <cds-icon shape="user" clrVerticalNavIcon *ngIf="!demoHideIcons"></cds-icon>
+          Normal
+          <clr-vertical-nav-group-children>
+            <a href="javascript://" clrVerticalNavLink> Pidgey </a>
+            <a href="javascript://" clrVerticalNavLink> Rattata </a>
+            <a href="javascript://" clrVerticalNavLink> Spearow </a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        <clr-vertical-nav-group class="active" [clrVerticalNavGroupExpanded]="demoExpandedGroup">
+          <cds-icon shape="flame" clrVerticalNavIcon *ngIf="!demoHideIcons"></cds-icon>
+          Fire
+          <clr-vertical-nav-group-children>
+            <a href="javascript://" clrVerticalNavLink class="active"> Charmander </a>
+            <a href="javascript://" clrVerticalNavLink> Charmeleon </a>
+            <a href="javascript://" clrVerticalNavLink *ngIf="!demoLongLabel"> Charizard </a>
+            <a href="javascript://" clrVerticalNavLink *ngIf="demoLongLabel">
+              Ultra Rare Mega Charizard (Secret Rare)
+            </a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        <a href="javascript://" clrVerticalNavLink *ngIf="demoMixedNav"> Ice </a>
+        <a href="javascript://" clrVerticalNavLink *ngIf="demoMixedNavWithIcons">
+          <cds-icon shape="block" clrVerticalNavIcon *ngIf="!demoHideIcons"></cds-icon>
+          Ice
+        </a>
+        <clr-vertical-nav-group>
+          <cds-icon shape="download-cloud" clrVerticalNavIcon *ngIf="!demoHideIcons"></cds-icon>
+          Water
+          <clr-vertical-nav-group-children>
+            <a href="javascript://" clrVerticalNavLink> Blastoise </a>
+            <a href="javascript://" clrVerticalNavLink> Squirtle </a>
+            <a href="javascript://" clrVerticalNavLink> Wartortle </a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        <clr-vertical-nav-group>
+          <cds-icon shape="bolt" clrVerticalNavIcon *ngIf="!demoHideIcons"></cds-icon>
+          Electric
+          <clr-vertical-nav-group-children>
+            <a href="javascript://" clrVerticalNavLink> Magnemite </a>
+            <a href="javascript://" clrVerticalNavLink> Pikachu </a>
+            <a href="javascript://" clrVerticalNavLink> Raichu </a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        <a href="javascript://" clrVerticalNavLink *ngIf="demoMixedNav"> Poison </a>
+        <a href="javascript://" clrVerticalNavLink *ngIf="demoMixedNavWithIcons">
+          <cds-icon shape="sad-face" clrVerticalNavIcon *ngIf="!demoHideIcons"></cds-icon>
+          Poison
+        </a>
+        <clr-vertical-nav-group *ngIf="!demoLongLabel">
+          <cds-icon shape="bug" clrVerticalNavIcon *ngIf="!demoHideIcons"></cds-icon>
+          Grass
+          <clr-vertical-nav-group-children>
+            <a href="javascript://" clrVerticalNavLink> Bulbasaur </a>
+            <a href="javascript://" clrVerticalNavLink> Ivysaur </a>
+            <a href="javascript://" clrVerticalNavLink> Venusaur </a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        <clr-vertical-nav-group *ngIf="demoLongLabel">
+          <cds-icon shape="bug" clrVerticalNavIcon *ngIf="!demoHideIcons"></cds-icon>
+          Grass, Fighting, Dragon, Steel, Psychic
+          <clr-vertical-nav-group-children>
+            <a href="javascript://" clrVerticalNavLink> Bulbasaur </a>
+            <a href="javascript://" clrVerticalNavLink> Ivysaur </a>
+            <a href="javascript://" clrVerticalNavLink> Venusaur </a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        <clr-vertical-nav-group>
+          <cds-icon shape="block" clrVerticalNavIcon *ngIf="!demoHideIcons"></cds-icon>
+          Ice
+          <clr-vertical-nav-group-children>
+            <a href="javascript://" clrVerticalNavLink> Articuno </a>
+            <a href="javascript://" clrVerticalNavLink> Dewgong </a>
+            <a href="javascript://" clrVerticalNavLink> Jynx </a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+      </clr-vertical-nav>
+    </div>
+  </div>
+</div>

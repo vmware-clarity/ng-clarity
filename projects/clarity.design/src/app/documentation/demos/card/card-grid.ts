@@ -1,0 +1,68 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+
+const HTML_EXAMPLE = `
+<div class="clr-row">
+  <div class="clr-col-lg-4 clr-col-12">
+    <div class="card">
+      <div class="card-block">
+        <div class="card-title">Card 1</div>
+        <p class="card-text">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+          laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+      </div>
+      <div class="card-footer">
+        <a href="javascript://" class="btn btn-sm btn-link">Action 1</a>
+      </div>
+    </div>
+  </div>
+  <div class="clr-col-lg-4 clr-col-12">
+    <div class="card">
+      <div class="card-block">
+        <div class="card-title">Card 2</div>
+        <p class="card-text">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+          laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+      </div>
+      <div class="card-footer">
+        <a href="javascript://" class="btn btn-sm btn-link">Action 2</a>
+      </div>
+    </div>
+  </div>
+  <div class="clr-col-lg-4 clr-col-12">
+    <div class="card">
+      <div class="card-block">
+        <div class="card-title">Card 3</div>
+        <p class="card-text">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+          laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+      </div>
+      <div class="card-footer">
+        <a href="javascript://" class="btn btn-sm btn-link">Action 3</a>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+@Component({
+  selector: 'clr-card-grid-demo',
+  styleUrl: './card.demo.scss',
+  templateUrl: './card-grid.html',
+  standalone: false,
+})
+export class CardGridDemo {
+  htmlExample = HTML_EXAMPLE;
+}

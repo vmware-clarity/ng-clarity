@@ -1,0 +1,86 @@
+<ng-container *ngIf="currentTab | async; let currentTab">
+  <div class="dox-header">
+    <section>
+      <h1 cds-text="headline">{{ title }}</h1>
+
+      <a
+        class="storybook"
+        *ngIf="type === 'component'"
+        href="{{ storybookURL + (storybookPath || componentPath) }}"
+        target="_blank"
+      >
+        <span class="clr-hidden-sm-down storybook-text">Explore in Storybook</span>
+        <span class="clr-hidden-md-up storybook-text">Storybook</span>
+        <cds-icon shape="arrow" class="arrow-icon"></cds-icon>
+      </a>
+
+      <clr-tabs class="dox-tabs clr-mt-16px">
+        <clr-tab>
+          <a clrTabLink [routerLink]="[componentURL]" (keyup.space)="$any($event.target).click()">Overview</a>
+          <ng-template [clrIfActive]="currentTab === 'overview'"></ng-template>
+        </clr-tab>
+        <clr-tab *ngIf="availableTabs['themes']">
+          <a clrTabLink [routerLink]="[componentURL, 'themes']" (keyup.space)="$any($event.target).click()">Themes</a>
+          <ng-template [clrIfActive]="currentTab === 'themes'"></ng-template>
+        </clr-tab>
+        <clr-tab *ngIf="availableTabs['density']">
+          <a clrTabLink [routerLink]="[componentURL, 'density']" (keyup.space)="$any($event.target).click()">Density</a>
+          <ng-template [clrIfActive]="currentTab === 'density'"></ng-template>
+        </clr-tab>
+        <clr-tab *ngIf="availableTabs['usage']">
+          <a clrTabLink [routerLink]="[componentURL, 'usage']" (keyup.space)="$any($event.target).click()">Usage</a>
+          <ng-template [clrIfActive]="currentTab === 'usage'"></ng-template>
+        </clr-tab>
+        <clr-tab *ngIf="availableTabs['colors']">
+          <a clrTabLink [routerLink]="[componentURL, 'colors']" (keyup.space)="$any($event.target).click()">Colors</a>
+          <ng-template [clrIfActive]="currentTab === 'colors'"></ng-template>
+        </clr-tab>
+        <clr-tab *ngIf="availableTabs['shapes']">
+          <a clrTabLink [routerLink]="[componentURL, 'shapes']" (keyup.space)="$any($event.target).click()">Shapes</a>
+          <ng-template [clrIfActive]="currentTab === 'shapes'"></ng-template>
+        </clr-tab>
+        <clr-tab *ngIf="availableTabs['design']">
+          <a clrTabLink [routerLink]="[componentURL, 'design']" (keyup.space)="$any($event.target).click()">Design</a>
+          <ng-template [clrIfActive]="currentTab === 'design'"></ng-template>
+        </clr-tab>
+        <clr-tab *ngIf="availableTabs['code']">
+          <a clrTabLink [routerLink]="[componentURL, 'code']" (keyup.space)="$any($event.target).click()">Code</a>
+          <ng-template [clrIfActive]="currentTab === 'code'"></ng-template>
+        </clr-tab>
+        <clr-tab *ngIf="availableTabs['api']">
+          <a clrTabLink [routerLink]="[componentURL, 'api']" (keyup.space)="$any($event.target).click()">API</a>
+          <ng-template [clrIfActive]="currentTab === 'api'"></ng-template>
+        </clr-tab>
+        <clr-tab *ngIf="availableTabs['accessibility'] && (accessibilityEnabled || type !== 'component')">
+          <a clrTabLink [routerLink]="[componentURL, 'accessibility']" (keyup.space)="$any($event.target).click()">
+            Accessibility
+          </a>
+          <ng-template [clrIfActive]="currentTab === 'accessibility'"></ng-template>
+        </clr-tab>
+      </clr-tabs>
+    </section>
+  </div>
+  <section #doxContent class="dox-content">
+    <div class="dox-content-wrapper" id="moveTop" appHashListener>
+      <app-table-of-contents
+        *ngIf="
+          scrollParent &&
+          (currentTab === 'overview' ||
+            currentTab === 'design' ||
+            currentTab === 'code' ||
+            currentTab === 'colors' ||
+            currentTab === 'accessibility')
+        "
+        [scrollParent]="scrollParent"
+      ></app-table-of-contents>
+      <ng-container *ngIf="currentTabComponent | async; let currentTabComponent">
+        <ng-container *ngTemplateOutlet="currentTabComponent.templateRef!"></ng-container>
+      </ng-container>
+      <app-link-cards
+        *ngIf="type === 'component' && currentTab === 'overview'"
+        [links]="availableTabs | appDocTabsLinkCardsLinks"
+      ></app-link-cards>
+      <app-site-footer></app-site-footer>
+    </div>
+  </section>
+</ng-container>

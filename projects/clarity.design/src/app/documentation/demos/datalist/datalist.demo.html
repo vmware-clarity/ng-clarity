@@ -1,0 +1,287 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      Datalist is a type of list that becomes contextualized through the selection of extensive pre-defined filters.
+      Datalists can allow a custom input value. For example, if your users must select a country from a long list, you
+      could provide pre-defined filters for each continent. You could also allow the user to start typing the name of
+      the country to narrow down the options.
+    </p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Use a datalist when the item list is long and you want to allow users to filter it to a manageable size and easily
+      find the right selections. With a datalist, you can provide pre-defined filter options and allow users to input
+      their own filter value.
+    </p>
+
+    <p class="clr-mt-24px" cds-text="body">
+      Do not confuse a datalist element with the select input. Datalist elements usually have more than 13 options that
+      the user will need to filter or narrow down before making a choice. If there are 3-13 options, consider using the
+      select input.
+    </p>
+
+    <div class="clrweb-DoxVersusBox clr-mt-24px">
+      <div class="clrweb-DoxVersusBox-items clrweb-DoxVersusBox-vsContent">
+        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+          <div class="clrweb-DoxVersusBox-item">
+            <form clrForm clrLayout="horizontal">
+              <clr-datalist-container>
+                <label>Default</label>
+                <input clrDatalistInput placeholder="Placeholder text" name="Option" [(ngModel)]="item" />
+                <datalist>
+                  <option *ngFor="let item of items" [value]="item"></option>
+                </datalist>
+                <clr-control-helper>Helper message</clr-control-helper>
+              </clr-datalist-container>
+            </form>
+            <span>Use a datalist:</span>
+            <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+              <li>When the user needs to choose from a long list of items to be filtered before selection</li>
+              <li>When there are pre-defined options but the user needs the ability to input a custom value</li>
+              <li>With more than 13 options</li>
+            </ul>
+          </div>
+        </div>
+        <div class="clrweb-DoxVersusBox-vsWrapper clr-col-12">
+          <app-themed-image
+            [lightSrc]="'/assets/images/versus-icon-light.svg'"
+            [darkSrc]="'/assets/images/versus-icon-dark.svg'"
+            [imageAlt]="'versus'"
+            [imageStyle]="'margin: 0 auto;width: 72px;'"
+          ></app-themed-image>
+        </div>
+        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+          <div class="clrweb-DoxVersusBox-item">
+            <form clrForm clrLayout="horizontal">
+              <div class="component-label">
+                <label for="select-full" class="clr-control-label">Select</label>
+                <div class="clr-control-container">
+                  <div class="clr-select-wrapper">
+                    <select id="select-full" class="clr-select">
+                      <option value="1">select one</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                    <cds-icon class="clr-validate-icon" shape="exclamation-circle"></cds-icon>
+                  </div>
+                  <clr-control-helper>Helper message></clr-control-helper>
+                </div>
+              </div>
+            </form>
+            <span>Use a select:</span>
+            <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+              <li>When a custom input value is not allowed</li>
+              <li>With 3-13 options</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="clr-mt-32px" cds-text="body">See more usage guidelines in our patterns:</p>
+    <app-link-cards [linkColWidth]="4" [links]="patternLinks"></app-link-cards>
+
+    <h2 id="states" class="clr-mt-48px" cds-text="title">States</h2>
+
+    <h3 id="enabled" class="clr-mt-32px" cds-text="section">Enabled</h3>
+    <p class="clr-mt-16px" cds-text="body">Use when the datalist is interactive.</p>
+    <div class="clr-mt-24px clr-ml-32px">
+      <clr-datalist-container>
+        <label>ice cream flavor</label>
+        <input clrDatalistInput autocomplete="off" [(ngModel)]="item2" placeholder="Choose a flavor" />
+        <datalist>
+          <option *ngFor="let item of items" [value]="item"></option>
+        </datalist>
+        <clr-control-helper>Helper message</clr-control-helper>
+        <clr-control-error>There was an error</clr-control-error>
+      </clr-datalist-container>
+    </div>
+
+    <h3 id="active" class="clr-mt-32px" cds-text="section">Active</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Use when a datalist item is selected by a user using an input method, such as a mouse or the keyboard.
+    </p>
+    <div class="clr-mt-24px clr-ml-32px">
+      <clr-datalist-container>
+        <label>ice cream flavor</label>
+        <input clrDatalistInput autocomplete="off" [(ngModel)]="item3" value="Cherry" />
+        <datalist content="Cherry">
+          <option *ngFor="let item of items" [value]="item"></option>
+        </datalist>
+        <clr-control-helper>Helper message</clr-control-helper>
+        <clr-control-error>There was an error</clr-control-error>
+      </clr-datalist-container>
+    </div>
+
+    <h3 id="disabled" class="clr-mt-32px" cds-text="section">Disabled</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Use when the datalist is not interactive. For example, when a user does not have permission to change specific
+      settings.
+    </p>
+    <div class="clr-mt-24px clr-ml-32px">
+      <clr-datalist-container>
+        <label>ice cream flavor</label>
+        <input clrDatalistInput placeholder="Cherry" disabled="true" [(ngModel)]="item4" />
+        <datalist>
+          <option *ngFor="let item of items" [value]="item + ' dl 1'"></option>
+        </datalist>
+        <clr-control-helper>disabled message</clr-control-helper>
+      </clr-datalist-container>
+    </div>
+
+    <h3 id="error" class="clr-mt-32px" cds-text="section">Error</h3>
+    <p class="clr-mt-16px clr-mb-16px" cds-text="body">
+      Use to communicate a user or system error. For example, this state can happen in the following scenarios:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>When the user enters an invalid character</li>
+      <li>During validation if the user moves away from the datalist without making a selection</li>
+      <li>When the user attempts to submit a form containing a datalist with no selection.</li>
+    </ul>
+    <div class="clr-mt-24px clr-ml-32px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/datalist/light-theme/datalist-error.svg'"
+        [darkSrc]="'/assets/images/documentation/datalist/dark-theme/datalist-error.svg'"
+        [imageAlt]="'datalist input with red error icon and text'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h3 id="success" class="clr-mt-32px" cds-text="section">Success</h3>
+    <p>Use to provide real-time feedback immediately after a user’s valid input.</p>
+    <div class="clr-mt-24px clr-ml-32px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/datalist/light-theme/datalist-sucess.svg'"
+        [darkSrc]="'/assets/images/documentation/datalist/dark-theme/datalist-sucess.svg'"
+        [imageAlt]="'datalist input with green success icon and text'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h2 class="clr-mt-48px" id="layouts" cds-text="title">Layouts</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Datalists are available in <b cds-text="medium">Vertical, </b> <b cds-text="medium">Horizontal, </b> and
+      <b cds-text="medium">Compact</b> layout. See more layout guidelines on the
+      <a routerLink="/documentation/forms">forms page</a>.
+    </p>
+
+    <h3 class="clr-mt-32px" id="vertical" cds-text="section">Vertical</h3>
+    <div class="clr-mt-24px clr-ml-32px">
+      <form clrForm clrLayout="vertical">
+        <clr-datalist-container>
+          <label>Label</label>
+          <input clrDatalistInput placeholder="name" name="Option" autocomplete="off" [(ngModel)]="item5" />
+          <datalist>
+            <option *ngFor="let item of items" [value]="item + ' dl 1'"></option>
+          </datalist>
+          <clr-control-helper>message text</clr-control-helper>
+        </clr-datalist-container>
+      </form>
+    </div>
+
+    <h3 class="clr-mt-32px" id="horizontal" cds-text="section">Horizontal</h3>
+    <div class="clr-mt-24px clr-ml-32px">
+      <form clrForm clrLayout="horizontal">
+        <clr-datalist-container>
+          <label class="clr-control-label">label</label>
+          <input clrDatalistInput placeholder="name" name="Option" autocomplete="off" [(ngModel)]="item6" />
+          <datalist>
+            <option *ngFor="let item of items" [value]="item + ' dl 1'"></option>
+          </datalist>
+          <clr-control-helper>message text</clr-control-helper>
+        </clr-datalist-container>
+      </form>
+    </div>
+
+    <h3 class="clr-mt-32px" id="compact" cds-text="section">Compact</h3>
+    <div class="clr-mt-24px clr-ml-32px">
+      <form clrForm clrLayout="compact">
+        <clr-datalist-container>
+          <label class="clr-control-label">label</label>
+          <input clrDatalistInput placeholder="name" name="Option" autocomplete="off" [(ngModel)]="item7" />
+          <datalist>
+            <option *ngFor="let item of items" [value]="item + ' dl 1'"></option>
+          </datalist>
+          <clr-control-helper>message text</clr-control-helper>
+        </clr-datalist-container>
+      </form>
+    </div>
+
+    <h2 id="behavior" class="clr-mt-48px" cds-text="title">Behavior</h2>
+    <p class="clr-mt-16px" cds-text="body">Datalists natively supports autocomplete behavior.</p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" class="clr-mt-48px" cds-text="title">Code &amp; Examples</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      The HTML <code cds-text="code">datalist</code> element contains a list of pre-defined
+      <code cds-text="code">option</code> elements that can be chosen for an input control value. Or, the user can type
+      a different value into the input.
+    </p>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Natively, the <code cds-text="code">id</code> for a datalist provides the link to an input via the value given for
+      the input's <code cds-text="code">list</code> attribute. Clarity handles this association by default; it generates
+      and associates the datalist id with its corresponding input element via the
+      <code cds-text="code">list</code> attribute on the input. The app marks the input for a datalist by using the
+      <code cds-text="code">clrDatalistInput</code> directive on the input and default, unique values are generated for
+      the component. If there is an application side need to declare a custom id for the datalist, this value will be
+      used instead of the generated id.
+    </p>
+
+    <h3 data-toc-item id="validation" cds-text="section" class="clr-mt-32px">Validation</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Datalists in template driven forms implement the same validation attributes that are described by native HTML form
+      validation. Datalists in reactive forms allow apps to utilize the built in Angular validators (e.g
+      <code cds-text="code">required</code> or <code cds-text="code">minlength</code>) or, they can add custom validator
+      functions directly to the form control model in the component class.
+    </p>
+
+    <p class="clr-mt-16px" cds-text="body">
+      As with other Clarity form controls, the datalist and its associated input belong inside a container. In this case
+      it is named <code cds-text="code">clr-datalist-container</code>. Besides the required input with the
+      <code cds-text="code">clrDatalistInput</code> directive and the datalist element this container takes three other
+      optional elements. An optional <code cds-text="code">label</code> element,
+      <code cds-text="code">clr-control-helper</code> and the <code cds-text="code">clr-control-error</code> elements if
+      there is validation for it.
+    </p>
+
+    <h3 data-toc-item id="basic-demo" cds-text="section" class="clr-mt-32px">Basic Example</h3>
+    <clr-datalist-basic-demo></clr-datalist-basic-demo>
+
+    <h3 data-toc-item id="template-validation" cds-text="section" cds-layout="m-b:xs" class="clr-mt-32px">
+      Template Validation
+    </h3>
+    <clr-datalist-template-validation-demo></clr-datalist-template-validation-demo>
+
+    <h3 data-toc-item id="reactive-validation" cds-text="section" class="clr-mt-32px">Reactive Validation</h3>
+    <clr-datalist-reactive-validation-demo></clr-datalist-reactive-validation-demo>
+  </app-doc-tab>
+
+  <app-doc-tab tab="accessibility">
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      The Datalist component contains a native input & datalist form element(all native element’s limitations apply),
+      label, helper text, and error.
+    </p>
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      Nesting components inside helper text, and error might lead to component overloading, check your design team for
+      assistance.
+    </p>
+    <app-nesting-table
+      componentName="Datalist"
+      subComponentName="label"
+      [canNestComponents]="canNestComponents"
+      [cannotNestComponents]="cannotNestComponents"
+      [conditionalNesting]="conditionalNesting"
+    >
+    </app-nesting-table>
+  </app-doc-tab>
+</app-doc-tabs>

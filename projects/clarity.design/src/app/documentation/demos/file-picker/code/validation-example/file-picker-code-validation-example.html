@@ -1,0 +1,56 @@
+<h2 id="validation-example" cds-text="title" cds-layout="m-t:xxl">Validation Example</h2>
+
+<p cds-text="body" cds-layout="m-t:md">Several validations are supported out of the box:</p>
+
+<ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+  <li>
+    Required: Use the native <code cds-text="code">required</code> attribute on the file input element. The validation
+    will pass if at least one file is selected.
+  </li>
+  <li>
+    File type: Use the native <code cds-text="code">accept</code> attribute on the file input element. It is recommended
+    to include both file extensions and MIME types for the best browser and OS support. The validation will pass if all
+    selected files match an accepted file extension or MIME type.
+  </li>
+  <li>
+    File size: Use the <code cds-text="code">[clrMinFileSize]</code> and
+    <code cds-text="code">[clrMaxFileSize]</code> inputs on the file input element. The validation will pass if all
+    selected files are within the given range (measured in bytes). If only the min or the max file size is specified,
+    the allowed file size range will be open ended.
+  </li>
+</ul>
+
+<form clrForm clrLayout="vertical" [formGroup]="form">
+  <clr-file-input-container>
+    <label>Label</label>
+    <input
+      type="file"
+      formControlName="files"
+      accept=".txt,text/plain"
+      multiple
+      required
+      clrFileInput
+      [clrMinFileSize]="100"
+      [clrMaxFileSize]="1000"
+    />
+    <clr-control-helper>Helper message</clr-control-helper>
+    <clr-control-success>Success message</clr-control-success>
+    <clr-control-error *clrIfError="'required'">Required</clr-control-error>
+    <clr-control-error *clrIfError="'accept'; let error = error">
+      Only text files are allowed ({{ error | json }})
+    </clr-control-error>
+    <clr-control-error *clrIfError="'minFileSize'; let error = error">
+      File is too small ({{ error | json }})
+    </clr-control-error>
+    <clr-control-error *clrIfError="'maxFileSize'; let error = error">
+      File is too large ({{ error | json }})
+    </clr-control-error>
+  </clr-file-input-container>
+</form>
+
+<app-stackblitz-example
+  name="file picker validation"
+  [componentTemplate]="componentTemplate"
+  [componentClass]="componentClass"
+>
+</app-stackblitz-example>

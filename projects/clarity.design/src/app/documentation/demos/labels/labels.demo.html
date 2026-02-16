@@ -1,0 +1,248 @@
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary" id="labels-header">Labels show concise metadata in a compact format.</p>
+    <div class="clr-mt-24px clr-ml-32px">
+      <span class="label label-blue">john&#64;example.com</span>
+      <span class="label label-blue">james&#64;example.com</span>
+    </div>
+
+    <h2 id="style" class="clr-mt-48px" cds-text="title">Style</h2>
+
+    <p cds-text="body" class="clr-mt-16px">Labels are visually styled to differentiate them from buttons.</p>
+
+    <h3 data-toc-item id="overall-style" class="clr-mt-32px" cds-text="section">Overall Style</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The distinctive visual style of labels deliberately deviates them from buttons. This prevents users from confusing
+      labels with buttons and allows labels to co-exist with other components without competing for a user's attention
+      with primary and secondary buttons on the screen.
+    </p>
+
+    <div class="clr-mt-24px clr-ml-32px">
+      <span class="label label-purple">Fruit</span>
+      <span class="label label-purple">Meat</span>
+      <span class="label label-purple">Drink</span>
+      <span class="label label-purple">Vegetable</span>
+    </div>
+
+    <h3 data-toc-item id="color" class="clr-mt-32px" cds-text="section">Color</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The Clarity color palette and the colors you use throughout your application should guide the colors you choose
+      for your labels. We recommend reserving red, yellow, and green to display state or status.<br />
+      If the intent is to use colors as a way to have groups of labels be visually distinct from one another, keep in
+      mind that there might be accessibility issues around using color as your sole differentiator.<br />
+      Avoid using too many colors within the same context. Displaying too many colors may distract the user from the
+      core of your application and the information it presents.
+    </p>
+
+    <table class="table table-noborder clr-mt-24px">
+      <thead>
+        <tr>
+          <th class="left">Status</th>
+          <th class="left">Background</th>
+          <th class="left">Border</th>
+          <th class="left">Text</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <span class="label label-danger">Error</span>
+          </td>
+          <td class="left">--cds-alias-utility-red-tint</td>
+          <td class="left">--cds-alias-utility-red</td>
+          <td class="left">--cds-alias-typography-color-500</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <span class="label label-warning">Warning</span>
+          </td>
+          <td class="left">--cds-alias-utility-yellow-tint</td>
+          <td class="left">--cds-alias-utility-yellow</td>
+          <td class="left">--cds-alias-typography-color-500</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <span class="label label-success">Success</span>
+          </td>
+          <td class="left">--cds-alias-utility-green-tint</td>
+          <td class="left">--cds-alias-utility-green</td>
+          <td class="left">--cds-alias-typography-color-500</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <span class="label label-info">Info</span>
+          </td>
+          <td class="left">--cds-alias-utility-blue-tint</td>
+          <td class="left">--cds-alias-utility-blue</td>
+          <td class="left">--cds-alias-typography-color-500</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="clr-mt-24px" cds-text="body">Status colors are generally reserved to display state or status.</p>
+
+    <h3 data-toc-item id="Typography" class="clr-mt-32px" cds-text="section">Typography</h3>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-6">
+        <h4 id="capitalization" cds-text="subsection">Capitalization</h4>
+        <p cds-text="body" class="clr-mt-16px">
+          To differentiate labels from buttons, it is recommended that you avoid using all caps in labels. Using all
+          caps might make the user think the label is a button and conflates the use case for labels with actions and
+          buttons.
+        </p>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <app-do-dont type="dont" caption="Don’t use all caps in labels.">
+          <div class="clrweb-DoxMedia clr-mt-0px">
+            <div class="clrweb-DoxMedia-block component-box-container clr-demo-container label-container">
+              <span class="label label-purple">LONDON (LOCATION)</span>
+              <span class="label label-purple">NABLUS (LOCATION)</span>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-6">
+        <h4 id="multi-line-text" cds-text="subsection">Multi-line text</h4>
+        <p cds-text="body" class="clr-mt-16px">
+          Keep labels to one line of concise text. The use case for labels is to showcase information in a compact
+          format.
+        </p>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <app-do-dont type="dont" caption="Don’t use multiple lines of text within a single label.">
+          <div class="clrweb-DoxMedia clr-mt-0px">
+            <div class="clrweb-DoxMedia-block component-box-container clr-demo-container label-container">
+              <span style="padding: 15px; text-align: center" class="label label-purple">
+                LONDON<br />
+                (LOCATION)
+              </span>
+              <span style="padding: 15px; text-align: center" class="label label-purple">
+                NABLUS<br />
+                (LOCATION)
+              </span>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+    </div>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-6">
+        <h4 id="additinal-metadata" cds-text="subsection">Additional Metadata</h4>
+        <p cds-text="body" class="clr-mt-16px">
+          Describe additional information or metadata in parenthesis if necessary.
+        </p>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <app-do-dont type="do" caption="Use parenthesis for additional metadata displayed in the same label.">
+          <div class="clrweb-DoxMedia clr-mt-0px">
+            <div class="clrweb-DoxMedia-block component-box-container clr-demo-container label-container">
+              <span class="label label-purple">London (Location)</span>
+              <span class="label label-purple">Nablus (Location)</span>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+    </div>
+
+    <h2 id="behavior" class="clr-mt-48px" cds-text="title">Behavior</h2>
+
+    <h3 data-toc-item id="clicking-labels" class="clr-mt-32px" cds-text="section">Clicking Labels</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Labels can be clickable. In this case, clicking on a label should perform an action related to that label.
+      Clicking on a location label used as a tag, for example, could serve to filter the results in a nearby list by
+      that location. Clicking a label could also display more information about the metadata described by that label.
+    </p>
+
+    <div class="clr-mt-24px clr-ml-32px">
+      <span><a href="javascript://" class="label label-purple clickable">Chocolate</a></span>
+      <span class="clr-ml-16px">
+        <a href="javascript://" class="label label-purple clickable clr-ml-16px">Vanilla</a>
+      </span>
+      <span class="clr-ml-16px">
+        <a href="javascript://" class="label label-purple clickable clr-ml-16px">Mixed</a>
+      </span>
+    </div>
+
+    <h3 data-toc-item id="dismissing-labels" class="clr-mt-32px" cds-text="section">Dismissing Labels</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      A label can be dismissed. Use a close icon at the right-most side of a label to dismiss it.
+    </p>
+
+    <div class="clr-mt-24px clr-ml-32px">
+      <span>
+        <a *ngIf="!hideJames" (click)="hideJames = true" href="javascript://" class="label label-blue">
+          james&#64;test.com
+          <cds-icon shape="times"></cds-icon>
+        </a>
+      </span>
+      <span class="clr-ml-16px">
+        <a *ngIf="!hideJimmy" (click)="hideJimmy = true" href="javascript://" class="label label-blue">
+          jimmy&#64;test.com
+          <cds-icon shape="times"></cds-icon>
+        </a>
+      </span>
+    </div>
+
+    <h3 data-toc-item id="labels-and-badges" class="clr-mt-32px" cds-text="section">Labels and Badges</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Labels and badges can be used together to show a count relating to the metadata displayed in the label.
+    </p>
+
+    <div class="clr-mt-24px clr-ml-32px">
+      <span class="label label-light-blue">
+        Production
+        <span class="badge badge-light-blue">12</span>
+      </span>
+      <span class="label label-light-blue clr-ml-16px">
+        Dev/Test
+        <span class="badge badge-light-blue">99+</span>
+      </span>
+    </div>
+
+    <p class="clr-mt-24px" cds-text="body">
+      Documentation for Badges is available <a routerLink="/documentation/badge">here</a>.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      A label is a visual tag that provides additional information about data in the UI.
+    </p>
+
+    <h3 data-toc-item id="labels-not-clickable" cds-text="section" class="clr-mt-32px">Labels (not clickable)</h3>
+
+    <clr-labels-default-demo></clr-labels-default-demo>
+
+    <h3 data-toc-item id="color-options" cds-text="section" class="clr-mt-32px">Color Options</h3>
+
+    <clr-labels-color-options-demo></clr-labels-color-options-demo>
+
+    <h3 data-toc-item id="clickable-labels" cds-text="section" class="clr-mt-32px">Clickable Labels</h3>
+
+    <clr-labels-clickable-demo></clr-labels-clickable-demo>
+
+    <h3 data-toc-item id="status-labels-not-clickable" cds-text="section" class="clr-mt-32px">
+      Status Labels (not clickable)
+    </h3>
+
+    <clr-labels-status-demo></clr-labels-status-demo>
+
+    <h3 data-toc-item id="labels-with-badges" cds-text="section" class="clr-mt-32px">Labels with Badges</h3>
+
+    <clr-labels-with-badges-demo></clr-labels-with-badges-demo>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <app-style-docs styleDocsKey="Label"></app-style-docs>
+  </app-doc-tab>
+</app-doc-tabs>

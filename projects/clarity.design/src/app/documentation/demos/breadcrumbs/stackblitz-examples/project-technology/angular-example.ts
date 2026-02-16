@@ -1,0 +1,24 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
+@Component({
+  selector: 'app-angular-example',
+  template: `<h2>Angular</h2>
+    <p>
+      A TypeScript-based open-source Front-End framework that is widely used for building dynamic, single-page
+      applications. Angular provides a robust set of features, including data binding, dependency injection, and more.
+    </p>
+    <ul>
+      <li><a [routerLink]="['./clarity']">Clarity</a></li>
+    </ul>
+    <router-outlet></router-outlet>`,
+  imports: [RouterModule],
+})
+export class AngularExample {}

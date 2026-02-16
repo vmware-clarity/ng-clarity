@@ -1,0 +1,87 @@
+<form clrForm>
+  <clr-number-input-container cds-layout="m-t:xs">
+    <label>Number of items</label>
+    <input clrNumberInput type="number" name="total" [(ngModel)]="options.totalItems" />
+  </clr-number-input-container>
+
+  <clr-select-container cds-layout="m-t:xs">
+    <label>Selection type</label>
+    <select
+      clrSelect
+      name="selection-type"
+      [ngModel]="options.selectionType"
+      (ngModelChange)="onSelectionTypeChange($event)"
+    >
+      <option [value]="SelectionType.None">No selection</option>
+      <option [value]="SelectionType.Single">Single selection</option>
+      <option [value]="SelectionType.Multi">Multi selection</option>
+    </select>
+  </clr-select-container>
+
+  <clr-select-container cds-layout="m-t:xs">
+    <label>Page size</label>
+    <select clrSelect name="page-size" [ngModel]="options.pageSize" (ngModelChange)="onPageSizeChange($event)">
+      <option [value]="0">No pagination</option>
+      <option [value]="5">5</option>
+      <option [value]="10">10</option>
+      <option [value]="25">25</option>
+      <option [value]="50">50</option>
+      <option [value]="100">100</option>
+    </select>
+  </clr-select-container>
+
+  <clr-input-container cds-layout="m-t:xs">
+    <label>Page size options</label>
+    <input
+      clrInput
+      type="text"
+      name="paginationOptions"
+      [ngModel]="options.pageSizeOptions"
+      (ngModelChange)="onPageSizeOptionsChange($event)"
+    />
+  </clr-input-container>
+
+  <clr-toggle-container clrInline cds-layout="m-t:xs">
+    <label>Layout model</label>
+
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle [(ngModel)]="options.compactDatagrid" name="compactDatagrid" />
+      <label>Compact grid</label>
+    </clr-toggle-wrapper>
+
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle [(ngModel)]="options.disabled" name="gridDisabled" />
+      <label>Disabled</label>
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
+
+  <clr-toggle-container clrInline cds-layout="m-t:xs">
+    <label>Footer model</label>
+    <clr-checkbox-wrapper *ngIf="options.enableExport !== undefined">
+      <input type="checkbox" clrToggle [(ngModel)]="options.enableExport" name="showExport" />
+      <label>Enable export</label>
+    </clr-checkbox-wrapper>
+
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle [(ngModel)]="options.showColumnToggle" name="showColumnToggle" />
+      <label>Show column toggle</label>
+    </clr-toggle-wrapper>
+
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrToggle [(ngModel)]="options.showFooter" name="showFooter" />
+      <label>Show footer</label>
+    </clr-checkbox-wrapper>
+  </clr-toggle-container>
+
+  <clr-toggle-container clrInline cds-layout="m-t:xs">
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle [(ngModel)]="options.enableRowSelection" name="enableRowSelection" />
+      <label>Row Selection</label>
+    </clr-toggle-wrapper>
+
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle [(ngModel)]="options.loading" name="showLoading" />
+      <label>Loading</label>
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
+</form>

@@ -1,0 +1,309 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT License.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      A theme is the collection of visual attributes that specify the look and feel of your application.
+    </p>
+
+    <h2 id="theming-in-clarity-core" class="clr-mt-48px" cds-text="title">Theming in Clarity</h2>
+
+    <div class="clr-mt-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/themes/light-theme/theming_in_clarity.svg'"
+        [darkSrc]="'/assets/images/documentation/themes/dark-theme/theming_in_clarity.svg'"
+        [imageAlt]="'Theming in clarity image'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Clarity is based on a system of design tokens and aliases. This allows many theming functions to be achieved with
+      a simple switch of the token or re-assignment of an alias. The Clarity dark theme accomplishes a complete switch
+      from light mode to dark using this method and is contained in about 50 lines of code. Simple themes can be created
+      using this approach. For more complex themes where there are changes in sizes, spacing, and layout, as well as
+      aspects like typeface and type scale, the complexity increases.
+    </p>
+
+    <h3 id="simple-themes" class="clr-mt-32px" cds-text="section">Simple themes</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Simple themes are built much like the Clarity dark theme, by remapping aliases. With a large palette of global
+      colors, a complete set of sizing increments, and clearly named attributes, such as --cds-global-border-radius, you
+      can achieve a different look and feel relatively easily.
+    </p>
+
+    <h3 id="complex-themes" class="clr-mt-32px" cds-text="section">Complex themes</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      A complex theme is one in which a simple remapping of an alias is insufficient to achieve the desired results.
+      This could be because brand colors are not contained in the global palette, or because a different typeface or
+      type scale is needed, The process of creating such advanced themes requires careful attention to many details to
+      ensure accessibility and that components behave as expected.
+    </p>
+
+    <h2 id="theme-attributes" class="clr-mt-48px" cds-text="title">Theme attributes</h2>
+
+    <div class="clr-mt-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/themes/light-theme/theme_attributes.svg'"
+        [darkSrc]="'/assets/images/documentation/themes/dark-theme/theme_attributes.svg'"
+        [imageAlt]="'Theme attributes image'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h3 id="type" class="clr-mt-32px" cds-text="section">Type</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The benefit of switching the typeface is enormous. There is no more effective way to make a substantial change to
+      the visual appeal of an application. Switching out the typeface is in itself a simple task, but weighing the
+      ramifications is more complex. Even substantially similar typefaces will have differing horizontal spacing causing
+      lines to wrap in different ways. This might lead to unexpected results especially within components. You should
+      thoroughly test a typeface across the entire system for a refined and successful theme.
+    </p>
+
+    <h4 id="simple" class="clr-mt-32px" cds-text="subsection">Simple</h4>
+
+    <p cds-text="body" class="clr-mt-16px">
+      At the simple level, you continue to use the Clarity type classes with all their size and space attributes as-is.
+      This will be the least intrusive, resulting in the smallest layout and spacing changes. However, you should still
+      complete a full system audit to review the details of the change.
+    </p>
+
+    <h4 id="complex" class="clr-mt-32px" cds-text="subsection">Complex</h4>
+
+    <p cds-text="body" class="clr-mt-16px">
+      At a more complex level, you can also adjust the size and space attributes of one or more type classes. This will
+      lead to many more areas where careful attention is needed to assess the design changes.
+    </p>
+
+    <h3 id="color" class="clr-mt-32px" cds-text="section">Color</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Identifying colors by their usage is a best practice for assessing changes and their ramifications when you want
+      to create a theme that uses different colors than are used in Clarity.
+    </p>
+
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Status – colors such as action, success, warning, and danger</li>
+      <li>Container – colors that define the attributes of containers</li>
+      <li>Interaction – colors provided to enable all interactive states</li>
+      <li>Utility – decorative colors used on components such as badges and tags</li>
+      <li>Type colors – for headings and paragraphs including links—normal, clicked, and visited</li>
+    </ul>
+
+    <p class="clr-mt-24px" cds-text="body">
+      Semantic color, known as status-color in Clarity, uses a multi-color system. There is a primary color with
+      additional lighter and darker companion colors. These are selected from the scales in the Clarity Global Tokens.
+      By examining the logic behind the selection and use of these colors in any Clarity theme, their relationship will
+      be apparent. A common use is for the main color to define the solid border around a container, while the tint is
+      used for the light background and the shade is used for the hover state. These will differ in light and dark
+      themes.
+    </p>
+    <p class="clr-mt-24px" cds-text="body">
+      To build a theme, at a minimum, you must define the mapping for all of these aliases for Clarity color tokens. For
+      more information, <a routerLink="/documentation/color">see Color.</a>
+    </p>
+    <p class="clr-mt-24px">
+      <clr-alert [clrAlertClosable]="false">
+        <clr-alert-item>
+          <span class="alert-text">
+            For accessibility, do not rely on color alone to distinguish meaning. Add text to convey the color
+            differences or use visual cues such as underline or icons. For more information, see
+            <a href="https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html" target="_blank">
+              WCAG: Use of Color.
+            </a>
+          </span>
+        </clr-alert-item>
+      </clr-alert>
+    </p>
+
+    <h3 id="sizes-and-space" class="clr-mt-32px" cds-text="section">Sizes and space</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Clarity uses a <strong cds-text="medium">space</strong> token system for specifying the sizes within components,
+      and a <strong cds-text="medium">layout-space</strong> system for controlling the space between components. These
+      systems offer powerful control, not only of individual components with regard to how they are sized, but to the
+      way they fit together to create a complete layout. Changing any of the spacing tokens, while being a powerful way
+      to globally adjust the way your application uses whitespace, is also very advanced and requires a great deal of
+      attention to detail to avoid unintended consequences.
+    </p>
+
+    <h3 id="corners-and-shadows" class="clr-mt-32px" cds-text="section">Corners and shadows</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Adjusting border radius, shadow density, and distance can create a substantial change in visual appeal. These
+      adjustments are less difficult than other adjustments since there is virtually no domino effect.
+    </p>
+
+    <h2 id="advanced-theming" class="clr-mt-48px" cds-text="title">Advanced theming</h2>
+
+    <h3 id="altering-base-colors" class="clr-mt-32px" cds-text="section">Altering base colors</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The Clarity color system uses aliases to semantically define the usage of colors in your application. Changing the
+      color to which an alias points is a simple level of changing the appeal of your application. This is limited to
+      the Clarity color set as defined in the global tokens file. If you wish to have other colors to choose from, the
+      base values must be changed. These consist of a scale of values, each described by their base HUE in HSL:
+    </p>
+
+    <h4 id="altering-base-colors-status" class="clr-mt-32px" cds-text="subsection">Status</h4>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>(Success) Green - 93</li>
+      <li>(Action) Blue - 198</li>
+      <li>(Secondary Action) Violet - 282</li>
+      <li>(Warning) Ochre (hue shift 41-35)</li>
+      <li>(Danger) Red - 9</li>
+    </ul>
+
+    <h4 id="altering-base-colors-utility" class="clr-mt-32px" cds-text="subsection">Utility</h4>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Lavender - 238</li>
+      <li>Azure - 211</li>
+      <li>Aqua - 184</li>
+      <li>Jade - 160</li>
+      <li>Yellow (hue shift 40-50)</li>
+      <li>Tangerine - 25</li>
+      <li>Magenta - 345</li>
+      <li>Pink - 324</li>
+    </ul>
+
+    <h4 id="altering-base-colors-muted" class="clr-mt-32px" cds-text="subsection">Muted</h4>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>WarmGray - 282</li>
+      <li>CoolGray - 211</li>
+      <li>Slate - 238</li>
+      <li>Ice - 211</li>
+      <li>Tan - 41</li>
+    </ul>
+
+    <h4 id="altering-base-colors-construction" class="clr-mt-32px" cds-text="subsection">Construction</h4>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Construction - 198</li>
+    </ul>
+
+    <p class="clr-mt-24px" cds-text="body">
+      Changing this set will create a (color-only) theme, and if done with extreme care might not require the changing
+      of any aliases. Beware that this set was carefully chosen to work with the aliases and it results in fully
+      accessible components in every case. While it might be tempting to shift only the HUE and allow the scales of
+      lightness and saturation to remain as-is, it is important to remember that different hues result in different
+      luminance levels with the same lightness and saturation, and consequently will not have the same accessibility
+      values as one another. To preserve accessibility, the scales will not always be able to retain the increments in
+      the Clarity globals. Shifting the base color tokens will end up being a large project to ensure everything is
+      working properly.
+    </p>
+
+    <h3 id="altering-type-classes" class="clr-mt-32px" cds-text="section">Altering Type Classes</h3>
+
+    <h4 id="simple-altering-type" class="clr-mt-32px" cds-text="subsection">Simple</h4>
+
+    <p cds-text="body" class="clr-mt-16px">
+      At the simple level, you continue to use the Clarity type classes with all their size and space attributes as-is.
+      This will be the least intrusive, resulting in the smallest layout and spacing changes. However, this still
+      requires a full system audit.
+    </p>
+
+    <h4 id="complex-altering-type" class="clr-mt-32px" cds-text="subsection">Complex</h4>
+
+    <p cds-text="body" class="clr-mt-16px">
+      At a more complex level, you can adjust the size and space attributes of one or more type classes. This will lead
+      to many more areas where careful attention is needed for assessment of consequences.
+    </p>
+
+    <h3 id="recommendation-switching-themes-as-a-testing-method" class="clr-mt-32px" cds-text="section">
+      Recommendation: Switching themes as a testing method
+    </h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The best way to create a Clarity theme is to begin with singular adjustments and use these to create a style sheet
+      that can be previewed. By checking your work step-by-step, and running the changes through a browser accessibility
+      check, you can ensure that both your aesthetic and accessibility needs are proceeding as desired. When the theme
+      is behaving as desired, it is time to make other changes and build your application with your theme. Remember to
+      test throughout the process. Accessibility is always a very important factor and when colors shift, they can cross
+      the line from accessibility-compliant to non-compliant easily.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="themes">
+    <h2 id="themes" class="clr-mt-48px" cds-text="title">Themes</h2>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Clarity offers two default themes—light and dark. These themes can be used without modification to optimize user
+      experience or they can be used as a guideline for creating custom themes in Clarity.
+    </p>
+
+    <h3 id="light-theme" class="clr-mt-32px" cds-text="section">Light Theme</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The light theme is Clarity’s default theme. It is best suited to
+      <strong cds-text="medium">content-rich applications,</strong> where users will be working with the application in
+      <strong cds-text="medium">well-lit conditions</strong> for brief periods of time throughout the day. A light theme
+      can help prevent eye strain in applications where a user is expected to
+      <strong cds-text="medium">read a large amount of content</strong> — like documentation or a blog.
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6 clr-mt-16px">
+        <img src="/assets/images/documentation/themes/theme-light.svg" alt="light Theme" class="clrweb-Img" />
+      </div>
+    </div>
+
+    <h3 id="dark-theme" class="clr-mt-32px" cds-text="section">Dark Theme</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The dark theme is best suited for applications that are
+      <strong cds-text="medium">content-sparse, yet highly interactive.</strong> A dark theme can help with eye strain
+      if the user works with an application over a long span of time, but in a way that requires
+      <strong cds-text="medium">focus but not a great amount of reading.</strong>
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6 clr-mt-16px">
+        <img src="/assets/images/documentation/themes/theme-dark.svg" alt="Dark Theme" class="clrweb-Img" />
+      </div>
+    </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 cds-layout="m-t:xxl" cds-text="title">Code & Examples</h2>
+
+    <h3 cds-text="section disable-lhe" cds-layout="m-t:xl">Theme Switching</h3>
+
+    <p cds-text="body" cds-layout="m-t:md m-b:lg">
+      The Clarity Design System offers a light and dark theme that can be changed by updating the
+      <code cds-text="code">cds-theme</code> attribute on the <code cds-text="code">body</code> tag.
+    </p>
+
+    <app-code-snippet [code]="uiCdsDarkMode" language="html"></app-code-snippet>
+
+    <h3 cds-text="section disable-lhe" cds-layout="m-t:xl">Custom Components</h3>
+
+    <p cds-text="body" cds-layout="m-t:md m-b:lg">
+      When developing custom components for your product or application, you can take advantage of the theming
+      functionality by leveraging the design system alias tokens. These tokens are designed to be mapped to their
+      appropriate constant value based on the theme definition. Take a look at the following example from our system.
+    </p>
+
+    <app-code-snippet [code]="uiCdsTokensExample" language="css"></app-code-snippet>
+
+    <p cds-text="body" cds-layout="m-t:md m-b:lg">
+      There may be some instances where the alias tokens aren't appropriate for your use case. In these instances, you
+      can still add your own application specific design tokens and can handle the theme remapping yourself.
+    </p>
+
+    <app-code-snippet [code]="uiCdsCustomTokensExample" language="css"></app-code-snippet>
+
+    <p cds-text="body" cds-layout="m-t:md m-b:lg">
+      If you're using SCSS and want to take advantage of runtime checking of design tokens from the Clarity Design
+      System, you can import the tokens and set them using the SCSS variable.
+    </p>
+
+    <app-code-snippet [code]="uiCdsUseScssVariables" language="css"></app-code-snippet>
+  </app-doc-tab>
+</app-doc-tabs>

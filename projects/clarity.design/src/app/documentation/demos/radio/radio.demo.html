@@ -1,0 +1,631 @@
+<app-doc-tabs>
+  <app-doc-tab tab="code">
+    <p class="component-summary" id="summary">
+      Using radio buttons, users can select one option from a group of options.
+    </p>
+
+    <h2 id="forms-code-samples" class="clr-mt-48px" cds-text="title">Angular Radio Component</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      If you are using Angular, the recommended approach is to always use the
+      <code cds-text="code">ClrRadio</code> directive on your radio buttons to help manage the form control. By using
+      <code cds-text="code">ClrRadio</code>, you'll automatically be able to leverage built in validation, helper text,
+      and layout features in forms.
+    </p>
+
+    <h3 data-toc-item id="angular-basic" class="clr-mt-32px" cds-text="section">Basic radio button</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      While it is possible to create a radio button without a label, the cases are rare. However, it is possible by just
+      adding <code cds-text="code">clrRadio</code> to your radio button to wire up the directive. Notice, it is
+      necessary to add <code cds-text="code">type="radio"</code>.
+    </p>
+
+    <div class="clr-mt-24px">
+      <input type="radio" aria-label="basic" clrRadio />
+    </div>
+
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="radio button ng basic"
+        [componentTemplate]="ngBasic.default"
+      ></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="labels" class="clr-mt-32px" cds-text="section">Labels</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      For anything beyond a standalone radio button, you'll need to wrap your radios with the
+      <code cds-text="code">ClrRadioWrapper</code>
+      component when you include a label. This manages the label and display of the radio button for you.
+    </p>
+
+    <div class="clr-mt-24px">
+      <clr-radio-wrapper>
+        <input type="radio" clrRadio name="test2" value="option1" />
+        <label>Option 1</label>
+      </clr-radio-wrapper>
+      <clr-radio-wrapper>
+        <input type="radio" clrRadio name="test2" value="option2" />
+        <label>Option 2</label>
+      </clr-radio-wrapper>
+    </div>
+
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="radio button ng label"
+        [componentTemplate]="ngLabel.default"
+      ></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="helper-and-error" class="clr-mt-32px" cds-text="section">Helper and error messages</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      To leverage helper and validation messages, you'll need to wrap all of the radios inside of a
+      <code cds-text="code">ClrRadioContainer</code> component. The radio button container tracks the the validations
+      placed on a radio button, such as <code cds-text="code">required</code> or even custom built validators in
+      Angular. Under the hood, it looks at the <code cds-text="code">NgControl</code> values to determine the control
+      validity, and display the helper text and error message accordingly.
+    </p>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Note: the validation in this example only displays an error after you focus and leave focus without selecting a
+      value. The easiest way to do this is to highlight the text in this paragraph, and hit tab a few times to change
+      the focus.
+    </p>
+
+    <div class="clr-mt-24px">
+      <clr-radio-container>
+        <label>Full radio example</label>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="test3" required value="option1" [(ngModel)]="exampleOne" />
+          <label>Option 1</label>
+        </clr-radio-wrapper>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="test3" required value="option2" [(ngModel)]="exampleOne" />
+          <label>Option 2</label>
+        </clr-radio-wrapper>
+        <clr-control-helper>Helper text</clr-control-helper>
+        <clr-control-error>This field is required!</clr-control-error>
+      </clr-radio-container>
+    </div>
+
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="radio button ng helpers"
+        [componentTemplate]="ngHelpers.default"
+        [componentClass]="angularTs"
+        [showComponentClass]="false"
+      ></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="inline-radios" class="clr-mt-32px" cds-text="section">Inline radio</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Radio buttons can be placed inline by adding the <code cds-text="code">clrInline</code> directive to your radio
+      container elements. The radio buttons will wrap if there is not enough space.
+    </p>
+
+    <div class="clr-mt-24px">
+      <clr-radio-container clrInline>
+        <label>Inline radio example</label>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="test4" required value="option1" [(ngModel)]="exampleTwo" />
+          <label>Option 1</label>
+        </clr-radio-wrapper>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="test4" required value="option2" [(ngModel)]="exampleTwo" />
+          <label>Option 2</label>
+        </clr-radio-wrapper>
+        <clr-control-helper>Helper text</clr-control-helper>
+        <clr-control-error>This field is required!</clr-control-error>
+      </clr-radio-container>
+    </div>
+
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="radio button ng inline"
+        [componentTemplate]="ngInline.default"
+        [componentClass]="angularTs"
+        [showComponentClass]="false"
+      ></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="disabled-radios" class="clr-mt-32px" cds-text="section">Disabled radio</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      A radio can be disabled by simply putting the <code cds-text="code">disabled</code> attribute on the radio input.
+      This does require the radio to be inside of a radio container. Also, for groups of radios you have to put the
+      disabled attribute on the last radio and cannot disable individual ones, as Angular doesn't have support to
+      disable individual radios in a group.
+    </p>
+
+    <div class="clr-mt-24px">
+      <clr-radio-container>
+        <label>Disabled radio example</label>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="test5" value="option1" [(ngModel)]="exampleThree" disabled />
+          <label>Option 1</label>
+        </clr-radio-wrapper>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="test5" value="option2" [(ngModel)]="exampleThree" disabled />
+          <label>Option 2</label>
+        </clr-radio-wrapper>
+        <clr-control-helper>Helper text</clr-control-helper>
+      </clr-radio-container>
+    </div>
+
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="radio button ng disabled"
+        [componentTemplate]="ngDisabled.default"
+        [componentClass]="angularTs"
+        [showComponentClass]="false"
+      ></app-stackblitz-example>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="css-component">CSS Radio Component</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Radio buttons can be used without Angular, but without some of the automatic interactivity. If you intend to
+      create your own components, here are the basic features you'll need to build out.
+    </p>
+
+    <h3 data-toc-item id="css-basic" class="clr-mt-32px" cds-text="section">Basic radio button</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      This is the minimal markup needed to style the radio button control by wrapping it with the an element with the
+      <code cds-text="code">clr-radio-wrapper</code> class. You must then put the input first, then the label like you
+      see below (the CSS selectors are specific about this ordering). You'll want to tie the input and label together by
+      providing an id for the label to connect. Ensure you add the <code cds-text="code">clr-radio</code> class to the
+      radio button as well.
+    </p>
+
+    <div class="clr-radio-wrapper clr-mt-24px">
+      <input type="radio" id="radio0" name="radio-basic" value="option1" class="clr-radio" />
+      <label for="radio0" class="clr-control-label">My choice</label>
+    </div>
+
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="radio button ui basic"
+        [componentTemplate]="uiBasic.default"
+      ></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="full-display" class="clr-mt-32px" cds-text="section">Full input display</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Each form control has a <code cds-text="code">.clr-form-control</code> wrapper, as well as a specific DOM
+      structure necessary to layout the form control as desired. This works with all layout options as well without
+      needing to change the DOM structure in any way.
+    </p>
+
+    <div class="clr-form-control clr-mt-24px">
+      <label class="clr-control-label">Full radio example</label>
+      <div class="clr-control-container">
+        <div class="clr-radio-wrapper">
+          <input type="radio" id="radio1" name="radio-full" value="option1" class="clr-radio" />
+          <label for="radio1" class="clr-control-label">option 1</label>
+        </div>
+        <div class="clr-radio-wrapper">
+          <input type="radio" id="radio2" name="radio-full" value="option2" class="clr-radio" />
+          <label for="radio2" class="clr-control-label">option 2</label>
+        </div>
+        <div class="clr-radio-wrapper">
+          <input type="radio" id="radio3" name="radio-full" value="option3" class="clr-radio" />
+          <label for="radio3" class="clr-control-label">option 3</label>
+        </div>
+        <div class="clr-subtext-wrapper">
+          <cds-icon class="clr-validate-icon" shape="exclamation-circle"></cds-icon>
+          <span class="clr-subtext">Helper Text</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="clr-mt-24px">
+      <app-stackblitz-example name="radio button ui full" [componentTemplate]="uiFull.default"></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="error-state" class="clr-mt-32px" cds-text="section">Error state</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      To signify an error state, you need to add the <code cds-text="code">.clr-error</code> class to the
+      <code cds-text="code">.clr-control-container</code> element. This will show the
+      <code cds-text="code">.clr-validate-icon</code> and turn the <code cds-text="code">.clr-subtext</code> message to
+      red. If you have helper text that needs to change to error content, you'll have to handle the hiding and showing
+      of that content inside of the <code cds-text="code">.clr-subtext</code> element.
+    </p>
+
+    <div class="clr-form-control clr-mt-24px">
+      <label class="clr-control-label">Error radio</label>
+      <div class="clr-control-container clr-error">
+        <div class="clr-radio-wrapper">
+          <input type="radio" id="radio4" name="radio-error" value="option1" class="clr-radio" />
+          <label for="radio4" class="clr-control-label">option 1</label>
+        </div>
+        <div class="clr-radio-wrapper">
+          <input type="radio" id="radio5" name="radio-error" value="option2" class="clr-radio" />
+          <label for="radio5" class="clr-control-label">option 2</label>
+        </div>
+        <div class="clr-radio-wrapper">
+          <input type="radio" id="radio6" name="radio-error" value="option3" class="clr-radio" />
+          <label for="radio6" class="clr-control-label">option 3</label>
+        </div>
+        <div class="clr-subtext-wrapper">
+          <cds-icon class="clr-validate-icon" shape="exclamation-circle"></cds-icon>
+          <span class="clr-subtext">Error message</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="radio button ui error"
+        [componentTemplate]="uiError.default"
+      ></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="css-inline-radios" class="clr-mt-32px" cds-text="section">Inline radio</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Radio buttons can be placed inline by adding the
+      <code cds-text="code">clr-control-inline</code> directive to your radio container. The radio buttons will wrap if
+      there is not enough space.
+    </p>
+
+    <p class="clr-mt-16px" cds-text="body">
+      The subtext content, the icon and subtext messages, also must be wrapped in a
+      <code cds-text="code">clr-subtext-wrapper</code> element so it can properly layout in all layout variations. If
+      you omit this, the validation icon and text may appear in the wrong place.
+    </p>
+
+    <div class="clr-form-control clr-mt-24px">
+      <label class="clr-control-label">Inline radio example</label>
+      <div class="clr-control-container clr-control-inline">
+        <div class="clr-radio-wrapper">
+          <input type="radio" id="radio7" name="radio-error-inline" value="option1" class="clr-radio" />
+          <label for="radio7" class="clr-control-label">option 1</label>
+        </div>
+        <div class="clr-radio-wrapper">
+          <input type="radio" id="radio8" name="radio-error-inline" value="option2" class="clr-radio" />
+          <label for="radio8" class="clr-control-label">option 2</label>
+        </div>
+        <div class="clr-radio-wrapper">
+          <input type="radio" id="radio9" name="radio-error-inline" value="option3" class="clr-radio" />
+          <label for="radio9" class="clr-control-label">option 3</label>
+        </div>
+        <div class="clr-subtext-wrapper">
+          <cds-icon class="clr-validate-icon" shape="exclamation-circle"></cds-icon>
+          <span class="clr-subtext">Helper text</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="radio button ui inline"
+        [componentTemplate]="uiInline.default"
+      ></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="css-disabled-radios" class="clr-mt-32px" cds-text="section">Disabled radios</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      In order to disable buttons, you'll add the <code cds-text="code">disabled</code> attribute on the radio and
+      putting the <code cds-text="code">clr-form-control-disabled</code> class onto the form control wrapper. This helps
+      setup the correct styling for the labels and other aspects of the form control when it is disabled.
+    </p>
+
+    <div class="clr-form-control clr-form-control-disabled clr-mt-24px">
+      <label class="clr-control-label">Disabled radio example</label>
+      <div class="clr-control-container">
+        <div class="radio">
+          <input type="radio" id="radio10" name="radio-error" value="option1" class="clr-radio" disabled />
+          <label for="radio10" class="clr-control-label">option 1</label>
+        </div>
+        <div class="clr-radio-wrapper">
+          <input type="radio" id="radio11" name="radio-error" value="option2" class="clr-radio" disabled />
+          <label for="radio11" class="clr-control-label">option 2</label>
+        </div>
+        <div class="clr-radio-wrapper">
+          <input type="radio" id="radio12" name="radio-error" value="option3" class="clr-radio" disabled />
+          <label for="radio12" class="clr-control-label">option 3</label>
+        </div>
+        <div class="clr-subtext-wrapper">
+          <cds-icon class="clr-validate-icon" shape="exclamation-circle"></cds-icon>
+          <span class="clr-subtext">Helper text</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="radio button ui disabled"
+        [componentTemplate]="uiDisabled.default"
+      ></app-stackblitz-example>
+    </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      The radio button component is a form element consisting of a list of items that allow the user to select one of
+      the options in the list.
+    </p>
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Use radio buttons when you want users to see all available mutually exclusive options and you have a short list of
+      options.
+    </p>
+
+    <div class="clrweb-DoxVersusBox clr-mt-24px clr-component-no-top-margin">
+      <div class="clrweb-DoxVersusBox-items clrweb-DoxVersusBox-vsContent">
+        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+          <div class="clrweb-DoxVersusBox-item">
+            <form clrForm clrLayout="horizontal">
+              <clr-radio-container>
+                <clr-radio-wrapper>
+                  <input type="radio" clrRadio name="horizontal" value="radio1" checked />
+                  <label>Radio Label</label>
+                </clr-radio-wrapper>
+              </clr-radio-container>
+            </form>
+            <span class="clr-mt-8px">Use radio buttons for six or fewer options.</span>
+          </div>
+        </div>
+        <div class="clrweb-DoxVersusBox-vsWrapper clr-col-12">
+          <app-themed-image
+            [lightSrc]="'/assets/images/versus-icon-light.svg'"
+            [darkSrc]="'/assets/images/versus-icon-dark.svg'"
+            [imageAlt]="'versus'"
+            [imageStyle]="'margin: 0 auto;width: 72px;'"
+          ></app-themed-image>
+        </div>
+        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+          <div class="clrweb-DoxVersusBox-item clr-row">
+            <form clrForm clrLayout="horizontal">
+              <clr-select-container>
+                <label>Select</label>
+                <select clrSelect name="options" required>
+                  <option value="one" selected>Option One</option>
+                </select>
+              </clr-select-container>
+            </form>
+            <span>
+              Use a <a routerLink="/documentation/select">select box</a> for more than six options, or a
+              <a routerLink="/documentation/datalist">datalist</a> for more than 13 options. Both prompt users to
+              interact with the component to show the various options.
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="clr-mt-32px" cds-text="body">See more usage guidelines in our patterns:</p>
+    <app-link-cards [linkColWidth]="4" [links]="patternLinks"></app-link-cards>
+
+    <h2 id="states" class="clr-mt-48px" cds-text="title">States</h2>
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-6">
+        <div class="component-box-container">
+          <clr-radio-container>
+            <label>Select size</label>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio name="enabled" value="Small" />
+              <label>Small</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio name="enabled" value="Large" />
+              <label>Large</label>
+            </clr-radio-wrapper>
+          </clr-radio-container>
+        </div>
+      </div>
+      <div class="clr-col-6">
+        <h3 class="clr-mt-0px" cds-text="section disable-lhe" id="enabled">Enabled</h3>
+        <p class="clr-mt-16px" cds-text="body">Use when interactive and ready for input.</p>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-6">
+        <div class="component-box-container">
+          <clr-radio-container>
+            <label>Select size</label>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio name="disabled" value="Small" disabled [(ngModel)]="options" />
+              <label>Small</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio name="disabled" value="Large" disabled [(ngModel)]="options" />
+              <label>Large</label>
+            </clr-radio-wrapper>
+          </clr-radio-container>
+        </div>
+      </div>
+      <div class="clr-col-6">
+        <h3 class="clr-mt-0px" cds-text="section disable-lhe" id="disabled">Disabled</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          Use when not interactive. For example, when a user does not have permissions to edit the input.
+        </p>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-6">
+        <div class="component-box-container">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/radios/light-theme/radio-error.svg'"
+            [darkSrc]="'/assets/images/documentation/radios/dark-theme/radio-error.svg'"
+            [imageAlt]="'radio button group with red error icon and error message'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+      </div>
+      <div class="clr-col-6">
+        <h3 class="clr-mt-0px" cds-text="section disable-lhe" id="error">Error</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          Use to communicate a user or system error. This validation can happen when the user moves away from the input
+          or after attempting to submit a form.
+        </p>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-6">
+        <div class="component-box-container">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/radios/light-theme/radio-success.svg'"
+            [darkSrc]="'/assets/images/documentation/radios/dark-theme/radio-success.svg'"
+            [imageAlt]="'radio button group with green success icon and success message'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+      </div>
+      <div class="clr-col-6">
+        <h3 class="clr-mt-0px" cds-text="section disable-lhe" id="success">Success</h3>
+        <p class="clr-mt-16px" cds-text="body">Use to provide real-time feedback immediately after a user’s input.</p>
+      </div>
+    </div>
+
+    <h2 id="layouts" class="clr-mt-48px" cds-text="title">Layouts</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Radio buttons are available in vertical, horizontal, and compact layouts. See more layout guidelines on the
+      <a routerLink="/documentation/forms">forms page</a>
+    </p>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="vertical">Vertical</h3>
+    <div class="clr-ml-32px">
+      <clr-radio-container>
+        <label>label</label>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="vertical" value="radio1" checked />
+          <label>radio 1</label>
+        </clr-radio-wrapper>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="vertical" value="radio2" />
+          <label>radio 2</label>
+        </clr-radio-wrapper>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="vertical" value="radio3" />
+          <label>radio 3</label>
+        </clr-radio-wrapper>
+        <clr-control-helper>message text</clr-control-helper>
+      </clr-radio-container>
+    </div>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="vertical-inline">Vertical Inline</h3>
+    <div class="clr-ml-32px">
+      <clr-radio-container [clrInline]="true">
+        <label>label</label>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="verticalInline" value="radio1" checked />
+          <label>radio 1</label>
+        </clr-radio-wrapper>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="verticalInline" value="radio2" />
+          <label>radio 2</label>
+        </clr-radio-wrapper>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="verticalInline" value="radio3" />
+          <label>radio 3</label>
+        </clr-radio-wrapper>
+        <clr-control-helper>message text</clr-control-helper>
+      </clr-radio-container>
+    </div>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="horizontal">Horizontal</h3>
+    <form clrForm clrLayout="horizontal">
+      <div class="clr-row">
+        <div class="clr-ml-32px clr-col-6">
+          <clr-radio-container>
+            <label>label</label>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio name="horizontal" value="radio1" checked />
+              <label>radio 1</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio name="horizontal" value="radio2" />
+              <label>radio 2</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio name="horizontal" value="radio3" />
+              <label>radio 3</label>
+            </clr-radio-wrapper>
+            <clr-control-helper>message text</clr-control-helper>
+          </clr-radio-container>
+        </div>
+      </div>
+    </form>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="horizontal-inline">Horizontal Inline</h3>
+    <form clrForm clrLayout="horizontal">
+      <div class="clr-row">
+        <div class="clr-ml-32px clr-col-6">
+          <clr-radio-container [clrInline]="true">
+            <label>label</label>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio name="horizontalInline" value="radio1" checked />
+              <label>radio 1</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio name="horizontalInline" value="radio2" />
+              <label>radio 2</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio name="horizontalInline" value="radio3" />
+              <label>radio 3</label>
+            </clr-radio-wrapper>
+            <clr-control-helper>message text</clr-control-helper>
+          </clr-radio-container>
+        </div>
+      </div>
+    </form>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="compact">Compact</h3>
+    <form clrForm clrLayout="compact">
+      <div class="clr-row">
+        <div class="clr-ml-32px clr-col-6">
+          <clr-radio-container>
+            <label>label</label>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio name="compact" value="radio1" checked />
+              <label>radio 1</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio name="compact" value="radio2" />
+              <label>radio 2</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio name="compact" value="radio3" />
+              <label>radio 3</label>
+            </clr-radio-wrapper>
+            <clr-control-helper>message text</clr-control-helper>
+          </clr-radio-container>
+        </div>
+      </div>
+    </form>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <app-style-docs styleDocsKey="Radio"></app-style-docs>
+  </app-doc-tab>
+
+  <app-doc-tab tab="accessibility">
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      The Radio Button component includes a native input type radio form element (with all native limitations), a label,
+      helper text, and status messaging.
+    </p>
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      Avoid nesting components within helper text or error messages, as this can cause overloading. Consult your design
+      team for guidance.
+    </p>
+    <app-nesting-table
+      componentName="Radio"
+      subComponentName="label"
+      [canNestComponents]="canNestComponents"
+      [cannotNestComponents]="cannotNestComponents"
+      [conditionalNesting]="conditionalNesting"
+    >
+    </app-nesting-table>
+  </app-doc-tab>
+</app-doc-tabs>

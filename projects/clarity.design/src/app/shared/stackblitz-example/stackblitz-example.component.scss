@@ -1,0 +1,46 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'projects/angular/styles/core/tokens/variables.tokens' as tokens;
+
+@use 'projects/angular/styles/mixins';
+
+:host ::ng-deep pre {
+  margin-bottom: 0;
+  border-radius: tokens.$cds-global-space-3 tokens.$cds-global-space-3 0 0;
+  max-height: mixins.baselinePx(600);
+}
+
+.addons {
+  display: flex;
+  border-radius: 0 0 tokens.$cds-global-space-3 tokens.$cds-global-space-3;
+  border-right: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-container-border-color;
+  border-bottom: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-container-border-color;
+  border-left: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-container-border-color;
+  background: tokens.$cds-alias-object-container-background;
+
+  button {
+    margin: 0;
+  }
+}
+
+.code-snippet-tabs ::ng-deep {
+  pre {
+    border-radius: 0;
+    margin-top: 0;
+  }
+
+  .nav {
+    margin-top: tokens.$cds-global-space-6;
+    padding: tokens.$cds-global-space-5 tokens.$cds-global-space-6;
+    box-shadow: none;
+    border-radius: tokens.$cds-alias-object-border-radius-100 tokens.$cds-alias-object-border-radius-100 0 0;
+    border-top: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-container-border-color;
+    border-right: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-container-border-color;
+    border-left: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-container-border-color;
+    background: tokens.$cds-alias-object-container-background;
+  }
+}

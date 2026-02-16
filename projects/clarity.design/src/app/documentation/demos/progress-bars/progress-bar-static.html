@@ -1,0 +1,40 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="progbar-examples">
+  <h4 class="clr-mt-32px" cds-text="subsection">Static Progress Bar</h4>
+  <div class="progress-static clr-mt-8px">
+    <div
+      class="progress-meter"
+      [attr.data-value]="staticProgbarValue"
+      [attr.data-displayval]="staticProgbarValue + '%'"
+    ></div>
+  </div>
+
+  <h4 class="clr-mt-32px" cds-text="subsection">Labeled, Static Progress Bar</h4>
+  <div class="progress-static labeled clr-mt-8px">
+    <div
+      class="progress-meter"
+      [attr.data-value]="staticLabeledProgbarValue"
+      [attr.data-displayval]="staticLabeledProgbarValue + '%'"
+    ></div>
+    <span>{{ staticLabeledProgbarValue }}%</span>
+  </div>
+
+  <h4 class="clr-mt-32px" cds-text="subsection">Red Static Progress Bar</h4>
+  <div class="progress-static danger clr-mt-8px">
+    <div class="progress-meter" [attr.data-value]="staticDangerValue"></div>
+  </div>
+
+  <h4 class="clr-mt-32px" cds-text="subsection">Green Static Progress Bar</h4>
+  <div class="progress-static success clr-mt-8px">
+    <div class="progress-meter" [attr.data-value]="staticSuccessValue"></div>
+  </div>
+  <p><button class="btn btn-outline" (click)="setNewValues()">Load New Values</button></p>
+</div>
+
+<app-stackblitz-example name="progress bar static" [componentTemplate]="example"></app-stackblitz-example>

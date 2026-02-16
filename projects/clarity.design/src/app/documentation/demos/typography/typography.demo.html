@@ -1,0 +1,1004 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      The default font for Clarity Design System is
+      <a href="https://github.com/dw5/Metropolis" target="_blank">Metropolis</a>
+      <span class="clr-ml-4px">
+        <img src="/assets/images/pop-out.svg" alt="pop-out" />
+      </span>
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="type-styles">Type styles</h2>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Heading and paragraph classes have been replaced with names according to their common usage. These include names
+      such as Headline, Title, Body, and Caption. Usage guidelines assist in determining which is appropriate for most
+      common design requirements.
+    </p>
+
+    <table class="table typography-demo-table clr-mt-16px">
+      <thead>
+        <tr>
+          <th class="left">Style Name (in Figma)</th>
+          <th class="left">Example</th>
+          <th class="left">Suggested use</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="display">Display</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="display">40px Medium</p>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled" cds-text="body">
+              <li>Login screen - product name</li>
+              <li>Landing page - title/headline</li>
+              <li>Charts/data visualization - large display numbers</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="headline">Headline</p>
+            &nbsp;
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="headline">32px Medium</p>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled" cds-text="body">
+              <li>Main content title</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="title">Title</p>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="title">24px Medium</p>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled" cds-text="body">
+              <li>Secondary content title</li>
+              <li>Modal/Wizard/Dialog title</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="section">Section</p>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="section">20px Medium</p>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled" cds-text="body">
+              <li>Section name</li>
+              <li>introductory paragraph</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="subsection">Subsection</p>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="subsection">16px Medium</p>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled" cds-text="body">
+              <li>Subsection name</li>
+              <li>Subsection of Section</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="message">Message</p>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="message">16px Regular</p>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            Larger running text, often for brief messages in application pages
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled" cds-text="body">
+              <li><p cds-text="body regular">Body-rg</p></li>
+              <li><p cds-text="body medium">Body-me</p></li>
+              <li><p cds-text="body semibold">Body-sb</p></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled" cds-text="body">
+              <li><p cds-text="body regular">14px Regular</p></li>
+              <li><p cds-text="body medium">14px Medium</p></li>
+              <li><p cds-text="body semibold">14px Semibold</p></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled" cds-text="body">
+              <li>Default text styling</li>
+              <li>Body text in cards</li>
+              <li>Text and dropdowns</li>
+              <li>Tab navigation links</li>
+              <li>Wizard steps and table of contents</li>
+              <li>General paragraphs, sentences, lists</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled" cds-text="body">
+              <li><p cds-text="secondary regular">Secondary-rg</p></li>
+              <li><p cds-text="secondary medium">Secondary-me</p></li>
+              <li><p cds-text="secondary semibold">Secondary-sb</p></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled" cds-text="body">
+              <li><p cds-text="secondary regular">13px Regular</p></li>
+              <li><p cds-text="secondary medium">13px Medium</p></li>
+              <li><p cds-text="secondary semibold">13px Semibold</p></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled" cds-text="body">
+              <li>Medium and Semibold: Forms, Tree view</li>
+              <li>Regular:</li>
+              <li>Text in alerts</li>
+              <li>Stack view text</li>
+              <li>Form text</li>
+              <li>Tree view text</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="caption">Caption-LG-11</p>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="smallcaption">11px Regular</p>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">Labels, Form inputs - Helper messages</td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="smallcaption">Caption-SM-10</p>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="smallcaption">10px Medium</p>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">Text inside badges</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="line-heights-and-vertical-rhythm">Line heights and vertical rhythm</h2>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Clarity uses a 4 px grid and a 24 px baseline for vertical rhythm to create visually harmonious layouts. With the
+      exception of Display and Headline, Clarity type styles include variable line heights: standard, compact and
+      expanded. All line heights are divisible by 4. The variable line heights add versatility to the type system.
+    </p>
+    <p class="clr-mt-24px" cds-text="body">
+      Standard line height maintains adequate spacing for the type to retain vertical rhythm and ease of reading. Use
+      standard line height when the text is a stand alone unit such as an inline message or description. The compact
+      line height is appropriate for use within containers. This allows increased information density when space is
+      tight. Users often prefer such information density, and given the structure created by the container, the type is
+      often easier to read as it establishes its own visual unit within. Clarity components can employ compact type or
+      may be customized to do so whenever appropriate.
+    </p>
+    <p cds-text="body" class="clr-mt-16px">
+      Applications will often have landing pages and other screens with a marketing or informational function. Such
+      screens often exhibit a lot of negative space, have different design sensibilities and consequently require
+      different strategies for handling typography. When designing a screen in this style, where type is both the
+      structure and the content, it is essential that vertical rhythm is strong and effective because there is often no
+      other device to give unity to the page. The expanded line heights are useful in establishing vertical rhythm in
+      such designs.
+    </p>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Select type classes paying careful attention to their line height. The large classes (Display, Headline, Title)
+      will most often be used in single lines. If a larger size is carrying text that wraps to several lines, this may
+      be a sign that a smaller size is needed. Each of the larger typographic elements should sit solidly upon the
+      baseline grid.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="information-hierarchy">Information hierarchy</h2>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The primary purpose in having a variety of type sizes and weights is to assist designers in achieving effective
+      information hierarchy. By selecting the most appropriate sizes and weights across a screen, the user is aided in
+      easily scanning the content and finding what they are looking for. Here are a few example layouts to assist the
+      process.
+    </p>
+    <div class="clrweb-DoxMedia">
+      <div class="clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/typography/light-theme/info_hierarchy_one.svg'"
+          [darkSrc]="'/assets/images/documentation/typography/dark-theme/info_hierarchy_one.svg'"
+          [imageAlt]="'Layout example 1: Display, Body, Headline, Body, Headline, Section, Body'"
+        ></app-themed-image>
+      </div>
+    </div>
+    <div class="clrweb-DoxMedia">
+      <div class="clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/typography/light-theme/info_hierarchy_two.svg'"
+          [darkSrc]="'/assets/images/documentation/typography/dark-theme/info_hierarchy_two.svg'"
+          [imageAlt]="'Layout example 2: Title, Tabs, Section, Body, Key/Value Pairs, Body, Button'"
+        ></app-themed-image>
+      </div>
+    </div>
+    <div class="clrweb-DoxMedia">
+      <div class="clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/typography/light-theme/info_hierarchy_three.svg'"
+          [darkSrc]="'/assets/images/documentation/typography/dark-theme/info_hierarchy_three.svg'"
+          [imageAlt]="'Layout example 3: Title, Section, Subsection, Key/Value Pairs, Button'"
+        ></app-themed-image>
+      </div>
+    </div>
+    <div class="clrweb-DoxMedia">
+      <div class="clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/typography/light-theme/info_hierarchy_four.svg'"
+          [darkSrc]="'/assets/images/documentation/typography/dark-theme/info_hierarchy_four.svg'"
+          [imageAlt]="'Layout example 4: Title, Tabs, Section, Message, Subsection, Key/Value Pairs, Button'"
+        ></app-themed-image>
+      </div>
+    </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 cds-layout="m-t:xxl" cds-text="title">Code & Examples</h2>
+
+    <p cds-text="body" cds-layout="m-t:md">
+      Within the Clarity Design System there are multiple ways to manipulate type styles for different use cases
+    </p>
+
+    <div cds-layout="m-l:md">
+      <ul class="list list-spacer">
+        <li>
+          <code cds-text="code">[cds-text]</code> is the most common way type styles are set (this page uses this
+          method)
+        </li>
+        <li>CSS variables are also available to give teams a granular layer of control over type styles</li>
+      </ul>
+    </div>
+
+    <h3 cds-text="section disable-lhe" cds-layout="m-t:xl">Font Styles</h3>
+
+    <p cds-text="body" cds-layout="m-t:md">
+      Using the <code cds-text="code">[cds-text]</code> attribute on an element will add specific css variables to the
+      common font CSS styles (<code cds-text="code">font-size</code>, <code cds-text="code">font-family</code>,
+      <code cds-text="code">font-weight</code>, <code cds-text="code">line-height</code>). The following table shows the
+      type style mapped to both the cds-text value, as well as the individual CSS variables that are used.
+    </p>
+
+    <table class="table typography-demo-table" cds-layout="m-t:lg">
+      <thead>
+        <tr>
+          <th class="left">Style Name (in Figma)</th>
+          <th class="left">Attribute</th>
+          <th class="left">CSS variables</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="display">Display</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="display"]</code></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>--cds-global-typography-display-font-size</code></li>
+              <li><code>--cds-global-typography-display-font-weight</code></li>
+              <li><code>--cds-global-typography-display-line-height</code></li>
+              <li><code>--cds-global-typography-display-letter-spacing</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="headline">Headline</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="headline"]</code></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>--cds-global-typography-headline-font-size</code></li>
+              <li><code>--cds-global-typography-headline-font-weight</code></li>
+              <li><code>--cds-global-typography-headline-line-height</code></li>
+              <li><code>--cds-global-typography-headline-letter-spacing</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="title">Title</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="title"]</code></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>--cds-global-typography-title-font-size</code></li>
+              <li><code>--cds-global-typography-title-font-weight</code></li>
+              <li><code>--cds-global-typography-title-line-height</code></li>
+              <li><code>--cds-global-typography-title-letter-spacing</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="section">Section</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="section"]</code></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>--cds-global-typography-section-font-size</code></li>
+              <li><code>--cds-global-typography-section-font-weight</code></li>
+              <li><code>--cds-global-typography-section-line-height</code></li>
+              <li><code>--cds-global-typography-section-letter-spacing</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="subsection">Subsection</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="subsection"]</code></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>--cds-global-typography-subsection-font-size</code></li>
+              <li><code>--cds-global-typography-subsection-font-weight</code></li>
+              <li><code>--cds-global-typography-subsection-line-height</code></li>
+              <li><code>--cds-global-typography-subsection-letter-spacing</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="message">Message</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="message"]</code></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>--cds-global-typography-message-font-size</code></li>
+              <li><code>--cds-global-typography-message-font-weight</code></li>
+              <li><code>--cds-global-typography-message-line-height</code></li>
+              <li><code>--cds-global-typography-message-letter-spacing</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><p cds-text="body regular">Body</p></li>
+            </ul>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="body"]</code></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>--cds-global-typography-body-font-size</code></li>
+              <li><code>--cds-global-typography-body-font-weight</code></li>
+              <li><code>--cds-global-typography-body-line-height</code></li>
+              <li><code>--cds-global-typography-body-letter-spacing</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><p cds-text="secondary regular">Secondary-rg</p></li>
+            </ul>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="secondary regular"]</code></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>--cds-global-typography-secondary-font-size</code></li>
+              <li><code>--cds-global-typography-font-weight-regular</code></li>
+              <li><code>--cds-global-typography-secondary-line-height</code></li>
+              <li><code>--cds-global-typography-secondary-letter-spacing</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="caption">Caption-LG-11</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="caption"]</code></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>--cds-global-typography-caption-font-size</code></li>
+              <li><code>--cds-global-typography-caption-font-weight</code></li>
+              <li><code>--cds-global-typography-caption-line-height</code></li>
+              <li><code>--cds-global-typography-caption-letter-spacing</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="smallcaption">Caption-SM-10</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="smallcaption"]</code></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>--cds-global-typography-smallcaption-font-size</code></li>
+              <li><code>--cds-global-typography-smallcaption-font-weight</code></li>
+              <li><code>--cds-global-typography-smallcaption-line-height</code></li>
+              <li><code>--cds-global-typography-smallcaption-letter-spacing</code></li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 cds-text="section disable-lhe" cds-layout="m-t:xl">Font Weights</h3>
+
+    <p cds-text="body" cds-layout="m-t:md">
+      The <code>[cds-text]</code> attribute can also be used to override the default font-weight by adding the font
+      weight style to the attribute.
+    </p>
+
+    <table class="table typography-demo-table" cds-layout="m-t:lg">
+      <thead>
+        <tr>
+          <th class="left">Font weight type</th>
+          <th class="left">Attribute</th>
+          <th class="left">CSS variable</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="body regular">Demo content (regular)</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="body regular"]</code></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>--cds-global-typography-font-weight-regular</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="body medium">Demo content (medium)</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="body medium"]</code></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>--cds-global-typography-font-weight-medium</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="body semibold">Demo content (semibold)</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="body semibold"]</code></li>
+            </ul>
+          </td>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>--cds-global-typography-font-weight-semibold</code></li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <clr-alert clrAlertType="warning" cds-layout="m-t:xl" [clrAlertClosable]="false">
+      <clr-alert-item>
+        There are 9 weights available in Metropolis. The Clarity Design System recommends using only Regular, Medium,
+        and Semibold in your applications. Enhancements to the typeface that will enable the use of more styles are in
+        progress.
+      </clr-alert-item>
+    </clr-alert>
+
+    <h3 cds-text="section disable-lhe" cds-layout="m-t:xl">Transforms, Positions, Links</h3>
+
+    <p cds-text="body" cds-layout="m-t:md">
+      The <code cds-text="code">[cds-text]</code> attribute also has a set of transforms, positions and link styles that
+      can all be set using the same mechanism
+    </p>
+
+    <table class="table typography-demo-table" cds-layout="m-t:lg">
+      <thead>
+        <tr>
+          <th class="left">Modifier</th>
+          <th class="left">Attribute</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="body capitalize">demo content (capitalize)</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="body capitalize"]</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="body uppercase">Demo content (uppercase)</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="body uppercase"]</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="body lowercase">Demo content (lowercase)</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="body lowercase"]</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="body truncate">Demo content (truncate)</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="body truncate"]</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="body disable-lhe">Demo content (disable-lhe)</p>
+            <p cds-text="body disable-lhe">Disables the line-height eraser</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="body disable-lhe"]</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="body left">Demo content (left)</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="body left"]</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="body right">Demo content (right)</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="body right"]</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="body center">Demo content (center)</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="body center"]</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="body justify">Demo content (justify)</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="body justify"]</code></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left" cds-layout="p-t:lg p-b:lg">
+            <p cds-text="code">Demo content (code)</p>
+          </td>
+          <td class="left nowrap-md" cds-layout="p-t:lg p-b:lg">
+            <ul class="list-unstyled">
+              <li><code>[cds-text="code"]</code></li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <clr-alert clrAlertType="warning" cds-layout="m-t:xl" [clrAlertClosable]="false">
+      <clr-alert-item>
+        The original typography styles that are applied to semantic HTML elements (p, h1, h3, etc) still exist.
+        Overriding these semantic elements to align to a specific visual style leads teams to use headings and other
+        elements out of order which causes issues for those using assistive technologies. While the underlying styles
+        still exist, our recommendation is that you're more explicit with your visual styling in a way that preserves
+        the semantic nature of the elements you're using.
+      </clr-alert-item>
+    </clr-alert>
+  </app-doc-tab>
+
+  <app-doc-tab tab="usage">
+    <p class="component-summary">
+      Clarity provides a collection of semantically named type classes to meet all your design needs.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title">How to use</h2>
+
+    <p class="clr-mt-16px" cds-text="body">Clarity type styles have recommended purposes and follow a hierarchy.</p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Use Display and Headline to anchor key information.</li>
+      <li>Use Title / Section / Subsection for secondary headings.</li>
+      <li>Use Body and Secondary for the majority of content.</li>
+      <li>Use Caption Lg and Sm for supporting information.</li>
+    </ul>
+
+    <h2 class="clr-mt-48px" cds-text="title">Color</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Each type style has a default color best suited to its most common use. Additional colors are available to use for
+      fine tuning of hierarchy. Components will often use these additional colors in cases such as placeholder and
+      helper text.
+    </p>
+
+    <clr-color-type></clr-color-type>
+
+    <h2 class="clr-mt-48px" cds-text="title">Line Height</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Clarity typography features variable line heights to assist in balancing the needs of vertical rhythm and data
+      density. While all line heights are available to all type classes, we recommend using them as follows:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        In most cases the default line height will be the correct choice. This is a compromise between the compact and
+        expanded options and establishes good vertical rhythm and density.
+      </li>
+      <li>
+        In dense screens such as dashboards, in components where visual focus is governed by the bounding box of a
+        container, or where several discrete type objects are near one another, the compact line height works well.
+      </li>
+      <li>
+        In broad compositions such as landing or marketing pages where there is a lot of negative space and the type
+        must stand on its own, the expanded line height works well in establishing a vertical rhythm at larger
+        increments helping give order to the screen.
+      </li>
+    </ul>
+
+    <h3 class="clr-mt-24px" cds-text="body medium">Body Compact line height 14px / 16px</h3>
+
+    <div class="clr-row clr-mt-8px">
+      <div class="clr-col-12 clr-col-md-8">
+        <div class="line-height-container">
+          <p class="clr-lh-16px" cds-text="body">
+            Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast
+            quarter crow's nest nipperkin grog yardarm hempen halter furl. Swab barque interloper chantey doubloon.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="body medium">Body Standard line height 14px / 20px</h3>
+
+    <div class="clr-row clr-mt-8px">
+      <div class="clr-col-12 clr-col-md-8">
+        <div class="line-height-container">
+          <p cds-text="body">
+            Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast
+            quarter crow's nest nipperkin grog yardarm hempen halter furl. Swab barque interloper chantey doubloon.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="body medium">Body Expanded line height 14px / 24px</h3>
+
+    <div class="clr-row clr-mt-8px">
+      <div class="clr-col-12 clr-col-md-8">
+        <div class="line-height-container">
+          <p class="clr-lh-24px" cds-text="body">
+            Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast
+            quarter crow's nest nipperkin grog yardarm hempen halter furl. Swab barque interloper chantey doubloon.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title">Line Length</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      When setting running copy, particularly in the body and secondary sizes such as 14px and 13px be conscious of
+      character counts. Extremely long or short lines are more difficult to read. The users eye remaining on the current
+      line as they read it, then returning to the beginning of the next line is most successful when lines are of
+      standard length.<br />
+      <strong cds-text="medium">50 characters min / 75 characters max; 60-65 is ideal.</strong>
+    </p>
+
+    <div class="clrweb-DoxMedia-block component-box-container clr-mt-16px">
+      <div class="clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/typography/light-theme/line_length.svg'"
+          [darkSrc]="'/assets/images/documentation/typography/dark-theme/line_length.svg'"
+          [imageAlt]="'line length'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title">Copy Casting</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Selecting sizes weights colors and styles in relation to the content is sometimes known as copy casting and is
+      important when making decisions regarding how type elements may best serve the desired outcome.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="body medium">Bold</h3>
+
+    <p class="clr-mt-24px" cds-text="body">
+      Use bold type for strong emphasis. Clarity uses
+      <span cds-text="semibold">semibold</span>
+      for key value pairs and form element labels
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="body medium">Italics or oblique type</h3>
+
+    <p class="clr-mt-24px" cds-text="body">
+      Italics are used primarily to denote titles and names of particular works or objects in order to allow that title
+      or name to stand out from the surrounding sentence. Italics may also be used for emphasis.
+    </p>
+
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Emphasis: <em>Gentle</em> - use bold for stronger emphasis.</li>
+      <li>Titles of work: <em>John Steinbeck's The Grapes of Wrath</em></li>
+      <li>
+        Foreign words: Using the correct options for foreign characters gives polish and accuracy to your work: é ñ
+      </li>
+      <li>Names of vehicles: <em>Freedies Ice Cream Truck</em></li>
+      <li>Words as sounds (Onomatopoeia): <em>Vroooom!</em></li>
+      <li>
+        Referring to a specific word: When using ostensible be sure to understand the meaning so you use it correctly.
+      </li>
+    </ul>
+
+    <p class="clr-mt-24px" cds-text="body">
+      Bold and italic are mutually exclusive - don’t use them together. Don’t overuse bold or italic, their function is
+      to individualize small parts of your text elements and using them too much dilutes this purpose - if everything
+      has emphasis, nothing does.
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6 clr-mt-16px">
+        <app-do-dont type="do" caption="Use italic and bold independently for mild and stronger emphasis.">
+          <div class="clrweb-DoxMedia-block component-box-container">
+            <div class="clrweb-DoxMedia-img">
+              <div>This is a gentle <span class="italic">emphasis</span> with italic.</div>
+              <div>This is a strong <span cds-text="bold">emphasis</span> with bold.</div>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clr-mt-16px">
+        <app-do-dont type="dont" caption="Use bold and italic simultaneously">
+          <div class="clrweb-DoxMedia-block component-box-container">
+            <div class="clrweb-DoxMedia-img">
+              <div>
+                <span class="italic" cds-text="bold">Confusing</span> and
+                <span class="italic" cds-text="bold">over afforded</span><br />
+                simultaneous use of bold and italic.
+              </div>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="body medium">All caps</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      <span cds-text="medium">ALL CAPS</span> should be used very rarely. They are difficult to parse, not preferred for
+      accessibility, and may create confusing hierarchy when used too frequently. ALL CAPS are good for Logos / brands,
+      headlines. Bold is the preferred method for creating emphasis.
+    </p>
+
+    <p class="clr-mt-24px" cds-text="body">
+      <span cds-text="medium">Use all caps for acronyms.</span> Other cases are not recommended. Best typography
+      practice specifies the only other usage is for titles such as in advertisements (brand names), and print style
+      graphics.
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6 clr-mt-16px">
+        <app-do-dont type="do" caption="Use all caps to clarify acronyms">
+          <div class="clrweb-DoxMedia-block component-box-container">
+            <div class="clrweb-DoxMedia-img">
+              <div>ASAP is an example of a commonly used acronym.</div>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clr-mt-16px">
+        <app-do-dont type="dont" caption="Use all caps to emphasize an important message.">
+          <div class="clrweb-DoxMedia-block component-box-container">
+            <div class="clrweb-DoxMedia-img">
+              <div cds-text="uppercase">Do not miss this important message.</div>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="body medium">Sizes and weights</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Key/Value pairs use pair classes with the heavier weight for the key and the lighter for the content (value). When
+      a stronger relationship for key value pairs is needed use regular / medium of the same size and color - over
+      affording type relationship hierarchy (especially by using different sizes) is not a good practice. <br />
+      Do not differentiate pairs e.g. Key/Value by using different sizes. Clarity recommends using lighter colors for
+      the key / darker for the value. Use weight rather than size when greater differentiation is needed.
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6 clr-mt-16px">
+        <app-do-dont type="do" caption="Use different weights to differentiate key from value in key-value pairs">
+          <div class="clrweb-DoxMedia-block component-box-container">
+            <div class="clrweb-DoxMedia-img" cds-text="left">
+              <div class="clr-row">
+                <div class="clr-col-6" cds-text="bold">Toast</div>
+                <div class="clr-col-6">Sourdough</div>
+              </div>
+              <div class="clr-row">
+                <div class="clr-col-6" cds-text="bold">Potatoes</div>
+                <div class="clr-col-6">Home fries</div>
+              </div>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clr-mt-16px">
+        <app-do-dont type="dont" caption="Use different sizes to differentiate between key and value">
+          <div class="clrweb-DoxMedia-block component-box-container">
+            <div class="clrweb-DoxMedia-img" cds-text="left">
+              <div class="clr-row">
+                <div class="clr-col-6" cds-text="bold">Toast</div>
+                <div class="clr-col-6" cds-text="bold">Sourdough</div>
+              </div>
+              <div class="clr-row">
+                <div class="clr-col-6" cds-text="bold">Potatoes</div>
+                <div class="clr-col-6" cds-text="bold">Home fries</div>
+              </div>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="body medium">Mixed case</h3>
+
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        Title case - sense of formality, gravitas, good for important messages - distinction between modern and
+        traditional types. More sophisticated / more error prone.
+      </li>
+      <li>
+        Sentence case - most friendly, best for any extended passage of text i.e. body copy. Easiest to use / fewest
+        errors / greatest consistency.
+      </li>
+    </ul>
+    <p class="clr-mt-24px" cds-text="body">
+      Clarity recommends to use sentence case for consistency unless case specific formatting requires otherwise. Title
+      case would be preferred for titles (any text using the largest 3 classes: display, heading, title) but this should
+      be considered with caution as errors are more likely. Should you wish to use title case: Use it for TITLES only -
+      if a text object is a complete sentence it is less likely to be a title and less likely to be an appropriate use
+      of title case. Title case follows the pattern of capitalizing all important words - what is an important word? Any
+      word that carries content - nouns, verbs and adjectives, not words which assist or connect such as articles,
+      prepositions or conjunctions.
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6 clr-mt-24px">
+        <h4 cds-text="body medium">Sentence case examples:</h4>
+        <div class="clrweb-DoxMedia-block component-box-container clr-mt-8px">
+          <div>
+            <div
+              [innerHTML]="'The amazing dogs of the northern provinces in action.' | appColorizeCapitalizedLetters"
+            ></div>
+            <div
+              [innerHTML]="'Overview screen for the virtual network in pictures.' | appColorizeCapitalizedLetters"
+            ></div>
+            <div [innerHTML]="'The lover tells of the rose in his heart.' | appColorizeCapitalizedLetters"></div>
+          </div>
+        </div>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clr-mt-24px">
+        <h4 cds-text="body medium">Title case examples:</h4>
+        <div class="clrweb-DoxMedia-block component-box-container clr-mt-8px">
+          <div>
+            <div
+              [innerHTML]="'The Amazing Dogs of the Northern Provinces in Action.' | appColorizeCapitalizedLetters"
+            ></div>
+            <div
+              [innerHTML]="'Overview Screen for the Virtual Network in Pictures.' | appColorizeCapitalizedLetters"
+            ></div>
+            <div [innerHTML]="'The Lover Tells of the Rose in His Heart.' | appColorizeCapitalizedLetters"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      This is a useful copy casting resource with a lot of general typography best practices as well:
+      <a href="https://practicaltypography.com/" target="_blank" rel="noopener">https://practicaltypography.com/</a>
+      <br />
+      Here is a useful tool
+      <a href=" https://titlecaseconverter.com/" target="_blank" rel="noopener">https://titlecaseconverter.com/</a>
+    </p>
+  </app-doc-tab>
+</app-doc-tabs>

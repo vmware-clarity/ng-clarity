@@ -1,0 +1,245 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div style="margin-top: 1rem">
+  <clr-tabs>
+    <clr-tab>
+      <button clrTabLink>Clarity UI (Static Horizontal)</button>
+      <clr-tab-content *clrIfActive>
+        <h4 cds-text="subsection" class="clr-mt-32px">Horizontal Timeline</h4>
+        <ul class="clr-timeline">
+          <li class="clr-timeline-step disabled">
+            <div class="clr-timeline-step-header">11:59 am</div>
+            <cds-icon role="img" shape="circle" aria-label="Not started"></cds-icon>
+            <div class="clr-timeline-step-body">
+              <span class="clr-timeline-step-title">Add KMS</span>
+              <span class="clr-timeline-step-description">Root CA certificate requested.</span>
+            </div>
+          </li>
+          <li class="clr-timeline-step">
+            <div class="clr-timeline-step-header">11:59 am</div>
+            <cds-icon role="img" shape="dot-circle" aria-label="Current"></cds-icon>
+            <div class="clr-timeline-step-body">
+              <span class="clr-timeline-step-title">Add KMS</span>
+              <span class="clr-timeline-step-description">
+                Root CA certificate requested. Upload it to the KMS to complete the connection.
+                <button class="btn btn-sm">Upload Certificate</button>
+              </span>
+            </div>
+          </li>
+          <li class="clr-timeline-step">
+            <div class="clr-timeline-step-header">11:59 am</div>
+            <clr-spinner class="no-spinner-animation" clrMedium aria-label="In progress">Fetching data</clr-spinner>
+            <div class="clr-timeline-step-body">
+              <span class="clr-timeline-step-title">Make vCenter trust KMS</span>
+              <span class="clr-timeline-step-description">
+                Root CA certificate requested. Upload it to the KMS to complete the connection. Third sentence is very
+                long and very long. (Spinner animation disabled here so it doesn't loop forever.)
+              </span>
+            </div>
+          </li>
+          <li class="clr-timeline-step">
+            <div class="clr-timeline-step-header">11:59 am</div>
+            <cds-icon role="img" shape="success-standard" aria-label="Completed"></cds-icon>
+            <div class="clr-timeline-step-body">
+              <span class="clr-timeline-step-title">Make KMS trust vCenter</span>
+              <span class="clr-timeline-step-description">
+                Upload it to the KMS to complete the connection. Third sentence.
+                <button class="btn btn-sm btn-link">Authorize</button>
+              </span>
+            </div>
+          </li>
+          <li class="clr-timeline-step">
+            <div class="clr-timeline-step-header">11:59 am</div>
+            <cds-icon role="img" shape="error-standard" aria-label="Error"></cds-icon>
+            <div class="clr-timeline-step-body">
+              <span class="clr-timeline-step-title">Connected</span>
+              <span class="clr-timeline-step-description">No. It's not connected.</span>
+            </div>
+          </li>
+        </ul>
+        <app-stackblitz-example
+          name="Clarity UI (Static Horizontal)"
+          [componentTemplate]="staticHorizontal"
+        ></app-stackblitz-example>
+      </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Clarity UI (Static Vertical)</button>
+      <clr-tab-content *clrIfActive>
+        <h4 cds-text="subsection" class="clr-mt-32px">Vertical Timeline</h4>
+        <p>
+          When you inspect this example, notice that its inside of a four column grid container. To restrict the size of
+          a vertical timeline there are two options. First, you can use CSS directly on the
+          <code cds-text="code">.clr-timeline</code> element. The second option is to put the vertical timeline inside
+          of a defined column and let it expand to the space of its container.
+        </p>
+        <div class="clr-row">
+          <div class="clr-col-4">
+            <ul class="clr-timeline clr-timeline-vertical">
+              <li class="clr-timeline-step">
+                <div class="clr-timeline-step-header">11:59 am</div>
+                <cds-icon role="img" shape="circle" aria-label="Not started"></cds-icon>
+                <div class="clr-timeline-step-body">
+                  <span class="clr-timeline-step-title">Add KMS</span>
+                  <span class="clr-timeline-step-description">Root CA certificate requested.</span>
+                </div>
+              </li>
+              <li class="clr-timeline-step">
+                <div class="clr-timeline-step-header">11:59 am</div>
+                <cds-icon role="img" shape="dot-circle" aria-label="Current"></cds-icon>
+                <div class="clr-timeline-step-body">
+                  <span class="clr-timeline-step-title">Add KMS</span>
+                  <span class="clr-timeline-step-description">
+                    Root CA certificate requested. Upload it to the KMS to complete the connection.
+                    <img
+                      src="/assets/images/documentation/cards/placeholder_350x150.png"
+                      alt="Example of an Image in a Card"
+                    />
+                  </span>
+                </div>
+              </li>
+              <li class="clr-timeline-step">
+                <span class="clr-timeline-step-header">11:59 am</span>
+                <clr-spinner class="no-spinner-animation" clrMedium aria-label="In progress">Fetching data</clr-spinner>
+                <div class="clr-timeline-step-body">
+                  <span class="clr-timeline-step-title">Make vCenter trust KMS</span>
+                  <span class="clr-timeline-step-description">
+                    Root CA certificate requested. Upload it to the KMS to complete the connection. Third sentence is
+                    very long and very long. (Spinner animation disabled here so it doesn't loop forever.)
+                  </span>
+                </div>
+              </li>
+              <li class="clr-timeline-step">
+                <div class="clr-timeline-step-header">11:59 am</div>
+                <cds-icon role="img" shape="success-standard" aria-label="Completed"></cds-icon>
+                <div class="clr-timeline-step-body">
+                  <span class="clr-timeline-step-title">Make KMS trust vCenter</span>
+                  <span class="clr-timeline-step-description">
+                    Upload it to the KMS to complete the connection. Third sentence.
+                    <button class="btn btn-sm">Refresh</button>
+                  </span>
+                </div>
+              </li>
+              <li class="clr-timeline-step">
+                <div class="clr-timeline-step-header"></div>
+                <cds-icon role="img" shape="error-standard" aria-label="Error"></cds-icon>
+                <div class="clr-timeline-step-body">
+                  <span class="clr-timeline-step-title">Connected</span>
+                  <span class="clr-timeline-step-description">No. It's not connected.</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <app-stackblitz-example
+          name="Clarity UI (Static Vertical)"
+          [componentTemplate]="staticVertical"
+        ></app-stackblitz-example>
+      </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Clarity Angular (Horizontal)</button>
+      <clr-tab-content *clrIfActive>
+        <h4 cds-text="subsection" class="clr-mt-32px">Horizontal Timeline</h4>
+        <clr-timeline>
+          <clr-timeline-step [clrState]="ClrTimelineStepState.NOT_STARTED">
+            <clr-timeline-step-header>11:59 am</clr-timeline-step-header>
+            <clr-timeline-step-title>Add KMS</clr-timeline-step-title>
+            <clr-timeline-step-description>Root CA certificate requested.</clr-timeline-step-description>
+          </clr-timeline-step>
+          <clr-timeline-step [clrState]="ClrTimelineStepState.CURRENT">
+            <clr-timeline-step-header>11:59 am</clr-timeline-step-header>
+            <clr-timeline-step-title>Add KMS</clr-timeline-step-title>
+            <clr-timeline-step-description>
+              Root CA certificate requested. Upload it to the KMS to complete the connection.
+              <button class="btn btn-sm">Upload Certificate</button>
+            </clr-timeline-step-description>
+          </clr-timeline-step>
+          <clr-timeline-step class="gemini-ignore no-spinner-animation" [clrState]="ClrTimelineStepState.PROCESSING">
+            <clr-timeline-step-header>11:59 am</clr-timeline-step-header>
+            <clr-timeline-step-title>Make vCenter trust KMS</clr-timeline-step-title>
+            <clr-timeline-step-description>
+              Root CA certificate requested. Upload it to the KMS to complete the connection. Third sentence is very
+              long and very long. (Spinner animation disabled here so it doesn't loop forever.)
+            </clr-timeline-step-description>
+          </clr-timeline-step>
+          <clr-timeline-step [clrState]="ClrTimelineStepState.SUCCESS">
+            <clr-timeline-step-header>11:59 am</clr-timeline-step-header>
+            <clr-timeline-step-title>Make KMS trust vCenter</clr-timeline-step-title>
+            <clr-timeline-step-description>
+              Upload it to the KMS to complete the connection. Third sentence.
+              <button class="btn btn-sm btn-link">Authorize</button>
+            </clr-timeline-step-description>
+          </clr-timeline-step>
+          <clr-timeline-step [clrState]="ClrTimelineStepState.ERROR">
+            <clr-timeline-step-header>11:59 am</clr-timeline-step-header>
+            <clr-timeline-step-title>Connected</clr-timeline-step-title>
+            <clr-timeline-step-description>No. It's not connected.</clr-timeline-step-description>
+          </clr-timeline-step>
+        </clr-timeline>
+        <app-stackblitz-example
+          name="Clarity Angular (Horizontal)"
+          [componentTemplate]="componentHorizontal"
+          [componentClass]="angularClass"
+          [showComponentClass]="false"
+        ></app-stackblitz-example>
+      </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Clarity Angular (Vertical)</button>
+      <clr-tab-content *clrIfActive>
+        <h4 cds-text="subsection" class="clr-mt-32px">Vertical Timeline</h4>
+        <clr-timeline [clrLayout]="ClrTimelineLayout.VERTICAL" style="width: 50%">
+          <clr-timeline-step [clrState]="ClrTimelineStepState.NOT_STARTED">
+            <clr-timeline-step-header>11:59 am</clr-timeline-step-header>
+            <clr-timeline-step-title>Add KMS</clr-timeline-step-title>
+            <clr-timeline-step-description>Root CA certificate requested.</clr-timeline-step-description>
+          </clr-timeline-step>
+          <clr-timeline-step [clrState]="ClrTimelineStepState.CURRENT">
+            <clr-timeline-step-header>11:59 am</clr-timeline-step-header>
+            <clr-timeline-step-title>Add KMS</clr-timeline-step-title>
+            <clr-timeline-step-description>
+              Root CA certificate requested. Upload it to the KMS to complete the connection.
+              <img
+                src="/assets/images/documentation/cards/placeholder_350x150.png"
+                alt="Example of an Image in a Card"
+              />
+            </clr-timeline-step-description>
+          </clr-timeline-step>
+          <clr-timeline-step class="gemini-ignore" [clrState]="ClrTimelineStepState.PROCESSING">
+            <clr-timeline-step-header>11:59 am</clr-timeline-step-header>
+            <clr-timeline-step-title>Make vCenter trust KMS</clr-timeline-step-title>
+            <clr-timeline-step-description>
+              Root CA certificate requested. Upload it to the KMS to complete the connection. Third sentence is very
+              long and very long.
+            </clr-timeline-step-description>
+          </clr-timeline-step>
+          <clr-timeline-step [clrState]="ClrTimelineStepState.SUCCESS">
+            <clr-timeline-step-header>11:59 am</clr-timeline-step-header>
+            <clr-timeline-step-title>Make KMS trust vCenter</clr-timeline-step-title>
+            <clr-timeline-step-description>
+              Upload it to the KMS to complete the connection. Third sentence.
+              <button class="btn btn-sm">Refresh</button>
+            </clr-timeline-step-description>
+          </clr-timeline-step>
+          <clr-timeline-step [clrState]="ClrTimelineStepState.ERROR">
+            <clr-timeline-step-header></clr-timeline-step-header>
+            <clr-timeline-step-title>Connected</clr-timeline-step-title>
+            <clr-timeline-step-description>No. It's not connected.</clr-timeline-step-description>
+          </clr-timeline-step>
+        </clr-timeline>
+        <app-stackblitz-example
+          name="Clarity Angular (Vertical)"
+          [componentTemplate]="componentVertical"
+          [componentClass]="angularClass"
+          [showComponentClass]="false"
+        ></app-stackblitz-example>
+      </clr-tab-content>
+    </clr-tab>
+  </clr-tabs>
+</div>

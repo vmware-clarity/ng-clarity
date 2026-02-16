@@ -1,0 +1,20 @@
+<clr-alert [clrAlertClosable]="false">
+  <div class="alert-item">
+    <span class="alert-text">
+      Date picker emits <code cds-text="code">null</code> when an invalid date is entered after a valid date was set.
+    </span>
+  </div>
+</clr-alert>
+<form clrForm clrLayout="vertical">
+  <clr-date-container>
+    <label>Date Object</label>
+    <input type="date" autocomplete="off" [(clrDate)]="date" />
+  </clr-date-container>
+</form>
+<pre>{{ date | json }}</pre>
+<app-stackblitz-example
+  name="datepicker (date object output)"
+  [componentTemplate]="htmlExample"
+  [componentClass]="tsExample"
+  [showComponentClass]="false"
+></app-stackblitz-example>

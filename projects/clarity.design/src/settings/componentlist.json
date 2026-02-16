@@ -1,0 +1,320 @@
+{
+  "list": [
+    {
+      "url": "accessibility",
+      "text": "Accessibility",
+      "type": "pattern"
+    },
+    {
+      "url": "app-layout",
+      "text": "Layouts",
+      "type": "pattern"
+    },
+    {
+      "url": "accordion",
+      "text": "Accordion",
+      "type": "component"
+    },
+    {
+      "url": "alert",
+      "text": "Alert",
+      "type": "component"
+    },
+    {
+      "url": "badge",
+      "text": "Badge",
+      "type": "component"
+    },
+    {
+      "url": "breadcrumbs",
+      "text": "Breadcrumbs",
+      "type": "component"
+    },
+    {
+      "url": "button",
+      "text": "Button",
+      "type": "component"
+    },
+    {
+      "url": "button-group",
+      "text": "Button Group",
+      "type": "component",
+      "storybookPath": "button"
+    },
+    {
+      "url": "card",
+      "text": "Card",
+      "type": "component"
+    },
+    {
+      "url": "charts",
+      "text": "Charts",
+      "type": "pattern"
+    },
+    {
+      "url": "checkbox",
+      "text": "Checkbox",
+      "type": "component",
+      "storybookPath": "checkbox-or-toggle"
+    },
+    {
+      "url": "color",
+      "text": "Color",
+      "type": "pattern"
+    },
+    {
+      "url": "combobox",
+      "text": "Combobox",
+      "type": "component"
+    },
+    {
+      "url": "datagrid",
+      "text": "Datagrid",
+      "type": "component"
+    },
+    {
+      "url": "datalist",
+      "text": "Datalist",
+      "type": "component"
+    },
+    {
+      "url": "datepicker",
+      "text": "Date Picker",
+      "type": "component"
+    },
+    {
+      "url": "date-range-picker",
+      "text": "Date Range Picker",
+      "type": "component",
+      "designDocKey": "1010",
+      "storybookPath": "datepicker-daterangepicker"
+    },
+    {
+      "url": "dropdown",
+      "text": "Dropdown",
+      "type": "component"
+    },
+    {
+      "url": "file-picker",
+      "text": "File Picker",
+      "type": "component",
+      "storybookPath": "file-input"
+    },
+    {
+      "url": "forms",
+      "text": "Forms",
+      "type": "pattern"
+    },
+    {
+      "url": "grid",
+      "text": "Grid",
+      "type": "pattern"
+    },
+    {
+      "url": "header",
+      "text": "Header",
+      "type": "component"
+    },
+    {
+      "url": "icons",
+      "text": "Icons",
+      "type": "pattern"
+    },
+    {
+      "url": "input",
+      "text": "Input",
+      "type": "component",
+      "storybookPath": "forms-reactive"
+    },
+    {
+      "url": "internationalization",
+      "text": "Internationalization",
+      "type": "pattern"
+    },
+    {
+      "url": "label",
+      "text": "Label",
+      "type": "component"
+    },
+    {
+      "url": "list",
+      "text": "List",
+      "type": "component"
+    },
+    {
+      "url": "login",
+      "text": "Login Page",
+      "type": "component"
+    },
+    {
+      "url": "modal",
+      "text": "Modal",
+      "type": "component"
+    },
+    {
+      "url": "multi-step-workflow",
+      "text": "Multi-Step Workflow",
+      "type": "pattern"
+    },
+    {
+      "url": "navigation",
+      "text": "Navigation",
+      "type": "pattern"
+    },
+    {
+      "url": "notifications",
+      "text": "Notifications",
+      "type": "pattern"
+    },
+    {
+      "url": "onboarding",
+      "text": "Onboarding Pattern",
+      "type": "pattern"
+    },
+    {
+      "url": "password",
+      "text": "Password",
+      "type": "component",
+      "storybookPath": "forms-reactive"
+    },
+    {
+      "url": "progress",
+      "text": "Progress Bar",
+      "type": "component"
+    },
+    {
+      "url": "radio",
+      "text": "Radio Button",
+      "type": "component"
+    },
+    {
+      "url": "range",
+      "text": "Range Input",
+      "type": "component"
+    },
+    {
+      "url": "select",
+      "text": "Select",
+      "type": "component"
+    },
+    {
+      "url": "side-panel",
+      "text": "Side Panel",
+      "type": "component",
+      "storybookPath": "modal-side-panel"
+    },
+    {
+      "url": "signpost",
+      "text": "Signpost",
+      "type": "component"
+    },
+    {
+      "url": "spacing",
+      "text": "Spacing",
+      "type": "pattern"
+    },
+    {
+      "url": "spinner",
+      "text": "Spinner",
+      "type": "component"
+    },
+    {
+      "url": "stack-view",
+      "text": "Stack View",
+      "type": "component"
+    },
+    {
+      "url": "stepper",
+      "text": "Stepper",
+      "type": "component"
+    },
+    {
+      "url": "table",
+      "text": "Table",
+      "type": "component"
+    },
+    {
+      "url": "tabs",
+      "text": "Tabs",
+      "type": "component"
+    },
+    {
+      "url": "textarea",
+      "text": "Textarea",
+      "type": "component",
+      "storybookPath": "forms-reactive"
+    },
+    {
+      "url": "themes",
+      "text": "Themes",
+      "type": "pattern"
+    },
+    {
+      "url": "density",
+      "text": "Density",
+      "type": "pattern"
+    },
+    {
+      "url": "toggle-switch",
+      "text": "Toggle Switch",
+      "type": "component",
+      "storybookPath": "checkbox-or-toggle"
+    },
+    {
+      "url": "tokens",
+      "text": "Tokens",
+      "type": "pattern"
+    },
+    {
+      "url": "tooltip",
+      "text": "Tooltip",
+      "type": "component"
+    },
+    {
+      "url": "timeline",
+      "text": "Timeline",
+      "type": "component"
+    },
+    {
+      "url": "tree-view",
+      "text": "Tree View",
+      "type": "component",
+      "storybookPath": "tree"
+    },
+    {
+      "url": "typography",
+      "text": "Typography",
+      "type": "pattern"
+    },
+    {
+      "url": "vertical-nav",
+      "text": "Vertical Nav",
+      "type": "component"
+    },
+    {
+      "url": "wizard",
+      "text": "Wizard",
+      "type": "component"
+    },
+    {
+      "url": "a11y",
+      "text": "Accessibility",
+      "type": "addons"
+    },
+    {
+      "url": "advanced-datagrid",
+      "text": "Advanced Datagrid",
+      "type": "addons"
+    },
+    {
+      "url": "drag-and-drop",
+      "text": "Drag and Drop",
+      "type": "addons"
+    },
+    {
+      "url": "translate",
+      "text": "Translate",
+      "type": "addons"
+    }
+  ]
+}

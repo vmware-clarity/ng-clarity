@@ -1,0 +1,29 @@
+<ng-container *ngFor="let iconSet of iconSets | async">
+  <ng-container *ngIf="iconSet.icons.length > 0">
+    <h2 cds-text="headline" class="icon-section-title clr-mt-48px">{{ iconSet.setName }}</h2>
+    <div class="clr-mt-16px icon-section">
+      <ng-container *ngFor="let icon of iconSet.icons">
+        <button
+          class="icon-section__button"
+          [ngClass]="{ 'icon-section__button--selected': selectedIcon === icon.name }"
+          (click)="onIconClick(icon.name)"
+        >
+          <cds-icon
+            cds-layout="m-l:sm m-r:sm"
+            size="md"
+            status="neutral"
+            [attr.shape]="icon.name"
+            [attr.solid]="formOptions?.solid"
+            [attr.badge]="formOptions?.badge | appIconBadge: icon"
+          ></cds-icon>
+          <div class="icon-section__text" cds-text="body">{{ icon.name }}</div>
+        </button>
+        <div class="icon-section__detail" *ngIf="selectedIcon === icon.name">
+          <app-icon-details [icon]="icon" [formOptions]="formOptions"></app-icon-details>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+</ng-container>
+
+<span class="clr-sr-only" role="status">{{ iconCountForScreenReader | async }} search results found</span>

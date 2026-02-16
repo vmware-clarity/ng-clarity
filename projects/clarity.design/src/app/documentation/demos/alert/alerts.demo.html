@@ -1,0 +1,866 @@
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      Alerts are banners that draw the user's attention to an important message. Elements of an alert, such as icons and
+      color, indicate the type and urgency of the message's information.
+    </p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Use alerts to grab the user’s attention to provide critical information needed in context.
+    </p>
+    <p class="clr-mt-32px" cds-text="body">See more usage guidelines in our patterns:</p>
+    <app-link-cards [linkColWidth]="4" [links]="patternLinks"></app-link-cards>
+
+    <h2 id="types" class="clr-mt-48px" cds-text="title">Types</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      There are two types of alerts: <strong cds-text="medium">Standard</strong> and
+      <strong cds-text="medium">App-level.</strong>
+    </p>
+
+    <h3 id="standard-alerts" cds-text="section" class="clr-mt-32px">Standard Alerts</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Use standard alerts for messages that reflect the context of where the user is in the application.
+    </p>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-7">
+        <clr-alert
+          #alert1
+          clrAlertType="danger"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert1)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">Your license is about to expire.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+      <div class="clr-col-7 clr-mt-8px">
+        <clr-alert
+          #alert2
+          clrAlertType="warning"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert2)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">This feature is still under development.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+      <div class="clr-col-7 clr-mt-8px">
+        <clr-alert
+          #alert3
+          clrAlertType="info"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert3)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">You can customize your host.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+      <div class="clr-col-7 clr-mt-8px">
+        <clr-alert
+          #alert4
+          clrAlertType="success"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert4)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">Success! Your subscription payment has been processed.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+    </div>
+
+    <h3 id="lightweight-alerts" cds-text="section" class="clr-mt-32px">Lightweight Alerts</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Lightweight alerts are for use inside containers, other components and layouts.
+    </p>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-7">
+        <clr-alert [clrAlertLightweight]="true" clrAlertType="danger">
+          <clr-alert-item>
+            <span class="alert-text">Your license is about to expire.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+      <div class="clr-col-7 clr-mt-8px">
+        <clr-alert [clrAlertLightweight]="true" clrAlertType="warning">
+          <clr-alert-item>
+            <span class="alert-text">This feature is still under development.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+      <div class="clr-col-7 clr-mt-8px">
+        <clr-alert [clrAlertLightweight]="true" clrAlertType="info">
+          <clr-alert-item>
+            <span class="alert-text">You can customize your host.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+      <div class="clr-col-7 clr-mt-8px">
+        <clr-alert [clrAlertLightweight]="true" clrAlertType="success">
+          <clr-alert-item>
+            <span class="alert-text">Success! Your subscription payment has been processed.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+      <div class="clr-col-7 clr-mt-8px">
+        <clr-alert [clrAlertLightweight]="true" clrAlertType="neutral">
+          <clr-alert-item>
+            <span class="alert-text">Accessibility test environment.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+      <div class="clr-col-7 clr-mt-8px">
+        <clr-alert [clrAlertLightweight]="true" clrAlertType="loading">
+          <clr-alert-item>
+            <span class="alert-text">Uploading document.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+      <div class="clr-col-7 clr-mt-8px">
+        <clr-alert [clrAlertLightweight]="true" clrAlertType="unknown">
+          <clr-alert-item>
+            <span class="alert-text">Host status is unknown.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+    </div>
+
+    <h3 id="app-level-alerts" cds-text="section" class="clr-mt-32px">App-Level Alerts</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Use app-level alerts in the global context of an application. Place them at the top of all content and navigation.
+    </p>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12">
+        <clr-alert
+          #alert5
+          clrAlertType="danger"
+          [clrAlertAppLevel]="true"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert5)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">Your license is about to expire.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+      <div class="clr-col-12 clr-mt-8px">
+        <clr-alert
+          #alert6
+          clrAlertType="warning"
+          [clrAlertAppLevel]="true"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert6)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">This feature is still under development.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+      <div class="clr-col-12 clr-mt-8px">
+        <clr-alert
+          #alert7
+          clrAlertType="info"
+          [clrAlertAppLevel]="true"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert7)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">You can customize your VM in the Settings Panel.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+    </div>
+
+    <h2 id="standard-alert" cds-text="title" class="clr-mt-48px">Standard Alert</h2>
+    <p cds-text="body" class="clr-mt-16px">Standard alerts are for use in the context of an application.</p>
+
+    <h3 id="standard-alert-status" cds-text="section" class="clr-mt-32px">Status</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      There are four different status of standard Alerts: <strong cds-text="medium">Error, Warning, Info,</strong> and
+      <strong cds-text="medium">Success.</strong>
+    </p>
+
+    <h4 id="standard-alert-error" cds-text="subsection" class="clr-mt-24px">Error</h4>
+    <p cds-text="body" class="clr-mt-16px">
+      Use only for errors, malfunctions, and critical issues, such as license expiration.
+    </p>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-9">
+        <clr-alert
+          #alert8
+          clrAlertType="danger"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert8)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">Your license is about to expire.</span>
+            <div class="alert-actions">
+              <a class="alert-action" href="javascript://">Renew</a>
+            </div>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+    </div>
+
+    <h4 id="standard-alert-warning" cds-text="subsection" class="clr-mt-24px">Warning</h4>
+    <p cds-text="body" class="clr-mt-16px">
+      Use only for messages that need a user's attention or acknowledgment but might not cause errors.
+    </p>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-9">
+        <clr-alert
+          #alert9
+          clrAlertType="warning"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert9)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">This feature is still under development.</span>
+            <div class="alert-actions">
+              <a class="alert-action" href="javascript://">View Roadmap</a>
+            </div>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+    </div>
+
+    <h4 id="standard-alert-info" cds-text="subsection" class="clr-mt-24px">Info</h4>
+    <p cds-text="body" class="clr-mt-16px">
+      Use to provide information to a user’s in context. Be careful not to overuse to replace regular content.
+    </p>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-9">
+        <clr-alert
+          #alert10
+          clrAlertType="info"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert10)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">You can customize your host in the settings panel.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+    </div>
+
+    <h4 id="standard-alert-success" cds-text="subsection" class="clr-mt-24px">Success</h4>
+    <p cds-text="body" class="clr-mt-16px">Use to provide a static, persistent success message.</p>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-9">
+        <clr-alert
+          #alert11
+          clrAlertType="success"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert11)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">Your container has been created.</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+    </div>
+
+    <h3 id="alert-group" cds-text="section" class="clr-mt-32px">Alert Group</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      In cases where there are more than one alert of any sub-type, group them by sub-type and show in order of urgency.
+      For example, show multiple errors before the first warning.
+    </p>
+
+    <div class="clr-mt-24px">
+      <clr-alert
+        #alert12
+        [clrAlertSizeSmall]="false"
+        clrAlertType="danger"
+        [clrAlertClosable]="true"
+        (clrAlertClosedChange)="preventAlertClose(alert12)"
+      >
+        <clr-alert-item>
+          <span class="alert-text">Your license is about to expire.</span>
+          <div class="alert-actions">
+            <a class="alert-action" href="javascript://">Renew</a>
+          </div>
+        </clr-alert-item>
+        <clr-alert-item>
+          <span class="alert-text">Your license is about to expire.</span>
+          <div class="alert-actions">
+            <a class="alert-action" href="javascript://">View host</a>
+          </div>
+        </clr-alert-item>
+      </clr-alert>
+    </div>
+
+    <div class="clr-mt-8px">
+      <clr-alert
+        #alert13
+        [clrAlertSizeSmall]="false"
+        clrAlertType="warning"
+        [clrAlertClosable]="true"
+        (clrAlertClosedChange)="preventAlertClose(alert13)"
+      >
+        <clr-alert-item>
+          <span class="alert-text">Warning</span>
+        </clr-alert-item>
+        <clr-alert-item>
+          <span class="alert-text">This feature is still under development.</span>
+          <div class="alert-actions">
+            <a class="alert-action" href="javascript://">View Contact</a>
+          </div>
+        </clr-alert-item>
+      </clr-alert>
+    </div>
+
+    <div class="clr-mt-8px">
+      <clr-alert
+        #alert14
+        [clrAlertSizeSmall]="false"
+        clrAlertType="info"
+        [clrAlertClosable]="true"
+        (clrAlertClosedChange)="preventAlertClose(alert14)"
+      >
+        <clr-alert-item>
+          <span class="alert-text">You can customize your host in the settings panel.</span>
+        </clr-alert-item>
+      </clr-alert>
+    </div>
+
+    <div class="clr-mt-8px">
+      <clr-alert
+        #alert15
+        [clrAlertSizeSmall]="false"
+        clrAlertType="success"
+        [clrAlertClosable]="true"
+        (clrAlertClosedChange)="preventAlertClose(alert15)"
+      >
+        <clr-alert-item>
+          <span class="alert-text">Your container has been created.</span>
+          <div class="alert-actions">
+            <a class="alert-action" href="javascript://">Acknowledge</a>
+          </div>
+        </clr-alert-item>
+      </clr-alert>
+    </div>
+
+    <h3 id="sizes" cds-text="section" class="clr-mt-32px">Sizes</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      There are two sizes of standard alerts: default and compact. Use the compact alert only in places where vertical
+      space is scarce, and information density is needed.
+    </p>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-9">
+        <clr-alert
+          #alert16
+          clrAlertType="info"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert16)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">Info</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+    </div>
+    <div class="clr-row clr-mt-8px">
+      <div class="clr-col-9">
+        <clr-alert
+          #alert17
+          clrAlertType="info"
+          [clrAlertSizeSmall]="true"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert17)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">Compact Info</span>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+    </div>
+
+    <h3 id="standard-alert-placement" cds-text="section" class="clr-mt-32px">Placement</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Place standard alerts either in the content area itself or within components.
+    </p>
+
+    <h4 id="in-modals" cds-text="subsection" class="clr-mt-24px">In Modals</h4>
+    <p cds-text="body" class="clr-mt-16px">
+      Alerts can appear within modals. Clarity recommends that no more than one alert appears within a modal.
+    </p>
+
+    <div class="in-place-takeover clr-mt-24px">
+      <div class="clr-example">
+        <div class="backdrop-example-container">
+          <div class="modal static">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button aria-label="Close" class="close" type="button">
+                    <cds-icon aria-hidden="true" shape="times"></cds-icon>
+                  </button>
+                  <div class="modal-title">Delete file</div>
+                </div>
+                <div class="modal-body">
+                  <clr-alert clrAlertType="warning" [clrAlertClosable]="false">
+                    <clr-alert-item>
+                      <span class="alert-text">The file is currently open and cannot be deleted.</span>
+                    </clr-alert-item>
+                  </clr-alert>
+                  <p>Are you sure you want to delete the file “mockup.sketch”?</p>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-outline" type="button">Cancel</button>
+                  <button class="btn btn-danger disabled" type="button">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4 id="in-cards" cds-text="subsection" class="clr-mt-24px">In Cards</h4>
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      You can use an alert at the very top of a card, above the card title.<br />
+      See the following best practices for using alerts in cards:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Use concise language within the alert.</li>
+      <li>
+        Use a compact-size alert. The focus of the alert should be on its content, not on the alert appearing in it.
+      </li>
+      <li>
+        Place the alert at the very top of a card, before the title. An alert is meant to attract the attention of the
+        user.
+      </li>
+      <li>
+        Don’t use more than one alert in cards, if possible. Seeing more than one alert within a card distracts the user
+        and dilutes the importance of the alerts displayed.
+      </li>
+    </ul>
+
+    <div class="clr-row">
+      <div class="clr-col-6 clr-offset-3">
+        <div class="card">
+          <div class="card-header">
+            <clr-alert clrAlertType="warning" [clrAlertClosable]="false" [clrAlertSizeSmall]="true">
+              <clr-alert-item>
+                <span class="alert-text">Data might be outdated. Last update: 16 hours ago.</span>
+              </clr-alert-item>
+            </clr-alert>
+            <div class="card-title">Memory</div>
+          </div>
+          <div class="card-block">
+            <div class="text-align-center">
+              <p>10.5 GB free</p>
+              <div class="progress success" style="position: static; margin: 0; text-align: left; left: auto">
+                <progress
+                  max="100"
+                  value="23"
+                  data-displayval="23%"
+                  style="position: static; display: block"
+                ></progress>
+              </div>
+              <span cds-text="caption">1.9 GB used in 11.9 GB total</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-sm btn-link">view details</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="app-level-alert" cds-text="title" class="clr-mt-48px">App-Level Alert</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Use app-level alerts in the global context of an application. Place them above all content and navigation.
+    </p>
+
+    <h3 id="app-level-alert-status" cds-text="section" class="clr-mt-32px">Status</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      There are three different statuses of app-level alerts: <strong cds-text="medium">Error, Warning,</strong> and
+      <strong cds-text="medium">Info.</strong>
+      App-level alerts follow the same urgency order as standard alerts: error, warning, and info.
+    </p>
+    <div class="clrweb-DoxMedia is-horizontal">
+      <div class="clrweb-DoxMedia-block">
+        <app-themed-image
+          [lightSrc]="'/assets/images/help-info-icon-light.svg'"
+          [darkSrc]="'/assets/images/help-info-icon-dark.svg'"
+          [imageAlt]="'Help info'"
+          [imageStyle]="'margin: 0 auto;'"
+        ></app-themed-image>
+        <div class="clrweb-DoxVersusBox-items">
+          <div class="why-no-success-app-level-alert-box">
+            <div class="clrweb-DoxVersusBox-item">
+              <p><strong cds-text="medium">Why no success app-level alert?</strong></p>
+              <p>
+                App-level alerts are global in nature. To report the success of an operation, communicate that within
+                context or as a notification message.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4 id="app-level-alert-error" cds-text="subsection" class="clr-mt-24px">Error</h4>
+    <p cds-text="body" class="clr-mt-16px">Use for malfunctions and critical issue, such as license expiration.</p>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12">
+        <clr-alert
+          #alert18
+          clrAlertType="danger"
+          [clrAlertAppLevel]="true"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert18)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">Your license is about to expire.</span>
+            <div class="alert-actions">
+              <button class="btn alert-action">renew</button>
+            </div>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+    </div>
+
+    <h4 id="app-level-alert-warning" cds-text="subsection" class="clr-mt-24px">Warning</h4>
+    <p cds-text="body" class="clr-mt-16px">
+      Use only for messages that need the user’s attention but might not cause errors.
+    </p>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12">
+        <clr-alert
+          #alert19
+          clrAlertType="warning"
+          [clrAlertAppLevel]="true"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert19)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">Upcoming maintenance on 10/30/2024.</span>
+            <div class="alert-actions">
+              <button class="btn alert-action">edit</button>
+            </div>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+    </div>
+
+    <h4 id="app-level-alert-info" cds-text="subsection" class="clr-mt-24px">Info</h4>
+    <p cds-text="body" class="clr-mt-16px">
+      Use to display general info to the user in context. Be careful not to overuse or replace regular content.
+    </p>
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12">
+        <clr-alert
+          #alert20
+          clrAlertType="info"
+          [clrAlertAppLevel]="true"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert20)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">New version available.</span>
+            <div class="alert-actions">
+              <button class="btn alert-action">view</button>
+            </div>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="app-level-alert-placement">Placement</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Place app-level alerts at the very top of the global context. Be careful not to place them in any other
+      configuration.
+    </p>
+
+    <div class="clr-example clr-mt-24px">
+      <div class="main-container">
+        <clr-alert
+          #alert21
+          [clrAlertType]="'info'"
+          [clrAlertAppLevel]="true"
+          [clrAlertClosable]="true"
+          (clrAlertClosedChange)="preventAlertClose(alert21)"
+        >
+          <clr-alert-item>
+            <span class="alert-text">New version available.</span>
+            <div class="alert-actions">
+              <button class="btn alert-action">view</button>
+            </div>
+          </clr-alert-item>
+        </clr-alert>
+        <header class="header header-6">
+          <div class="branding">
+            <span class="title">Application Header</span>
+          </div>
+        </header>
+      </div>
+    </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 cds-text="title" class="clr-mt-48px" id="angular-alerts-component">Angular Alerts Component</h2>
+
+    <h3 data-toc-item cds-text="section" class="clr-mt-32px" id="angular-component-examples">Examples</h3>
+
+    <h5 cds-text="subsection" class="clr-mt-24px" id="clralertclosable-set-to-false-default-value-is-true">
+      1. clrAlertClosable set to false. Default value is true.
+    </h5>
+
+    <clr-alert-not-closable-demo-angular></clr-alert-not-closable-demo-angular>
+
+    <h5 cds-text="subsection" class="clr-mt-24px" id="clralerttype-set-to-alert-success">
+      2. clrAlertType set to alert-success. Default value is alert-info. Accepts values same as the static alert type
+      classes.
+    </h5>
+
+    <clr-alert-success-demo-angular></clr-alert-success-demo-angular>
+
+    <h5 cds-text="subsection" class="clr-mt-24px" id="clralertsizesmall-set-to-true">
+      3. clrAlertSizeSmall set to true. Default value is false.
+    </h5>
+
+    <clr-alert-small-demo-angular></clr-alert-small-demo-angular>
+
+    <h5 cds-text="subsection" class="clr-mt-24px" id="clralertlightweight-set-to-true">
+      4. clrAlertLightweight set to true. Default value is false.
+    </h5>
+
+    <clr-alert-lightweight-demo-angular></clr-alert-lightweight-demo-angular>
+
+    <h5 cds-text="subsection" class="clr-mt-24px" id="binding-to-closedchange-event">
+      5. Binding to the clrAlertClosedChange event.
+    </h5>
+
+    <clr-alert-close-event-demo-angular></clr-alert-close-event-demo-angular>
+
+    <h5 cds-text="subsection" class="clr-mt-24px" id="applevelalert-set-to-true">
+      6. clrAlertAppLevel set to true. Default is false.
+    </h5>
+
+    <clr-alert-app-level-demo-angular></clr-alert-app-level-demo-angular>
+
+    <h5 cds-text="subsection" class="clr-mt-24px" id="applevelalert-pager">
+      7. Multiple app level alerts can be displayed with previous and next buttons.
+    </h5>
+
+    <clr-alert-app-level-alerts-demo-angular></clr-alert-app-level-alerts-demo-angular>
+
+    <h2 cds-text="title" class="clr-mt-48px" id="css-classes">CSS Alerts Component</h2>
+
+    <h3 data-toc-item cds-text="section" class="clr-mt-32px" id="types">Types</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Clarity has error, warning, information, and success alerts denoted by the following classes:
+    </p>
+
+    <ul class="list list-spacer">
+      <li>.alert-danger</li>
+      <li>.alert-warning</li>
+      <li>.alert-info</li>
+      <li>.alert-success</li>
+    </ul>
+
+    <clr-alert-demo-styles></clr-alert-demo-styles>
+
+    <h3 data-toc-item cds-text="section" class="clr-mt-32px" id="placement">Placement</h3>
+
+    <h4 cds-text="subsection" class="clr-mt-32px" id="alerts-in-the-content-area">Alerts in the Content Area</h4>
+
+    <clr-alert-demo-content-area></clr-alert-demo-content-area>
+
+    <h4 cds-text="subsection" class="clr-mt-32px" id="alerts-in-cards">Alerts in Cards</h4>
+
+    <clr-alert-demo-cards></clr-alert-demo-cards>
+
+    <h4 cds-text="subsection" class="clr-mt-32px" id="alerts-in-modals">Alerts in Modals</h4>
+
+    <clr-alert-demo-modals></clr-alert-demo-modals>
+
+    <h3 data-toc-item cds-text="section" class="clr-mt-32px" id="size">Size</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Use the <code cds-text="code">.alert-sm</code> class with <code cds-text="code">.alert</code> for an alert 24
+      pixels in height. Or use <code cds-text="code">.alert-lightweight</code> for a borderless lightweight alert. The
+      default is 36 pixels.
+    </p>
+
+    <clr-alert-demo-sizes></clr-alert-demo-sizes>
+
+    <h3 data-toc-item cds-text="section" class="clr-mt-32px" id="app-level-alerts">App-Level Alerts</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Use the <code cds-text="code">.alert-app-level</code> class with <code cds-text="code">.alert</code> to render an
+      app-level alert.
+    </p>
+
+    <clr-alert-demo-app-level></clr-alert-demo-app-level>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 id="css">CSS</h2>
+
+    <p>
+      Several classes and elements are required to implement the Clarity alert layout. A table of these classes and
+      elements with a brief description of each follows:
+    </p>
+
+    <table class="table table-vertical">
+      <tbody>
+        <tr>
+          <th style="width: 100px">.alert</th>
+          <td>
+            This class is a wrapper around <code cds-text="code">.alert-items</code> and the
+            <code cds-text="code">.close</code> button. Place the <code cds-text="code">.close</code> button before the
+            alert items.
+          </td>
+        </tr>
+        <tr>
+          <th>.alert-items</th>
+          <td>This class is a wrapper around one or more <code cds-text="code">.alert-item</code> elements.</td>
+        </tr>
+        <tr>
+          <th>.alert-item</th>
+          <td>
+            This class is a wrapper around <code cds-text="code">.alert-text</code>,
+            <code cds-text="code">.alert-icon-wrapper</code>, and <code cds-text="code">.alert-actions</code>.
+          </td>
+        </tr>
+        <tr>
+          <th>.alert-icon-wrapper</th>
+          <td>
+            <code cds-text="code">.alert-icon-wrapper</code> contains a <code cds-text="code">cds-icon</code> with the
+            classname <code cds-text="code">.alert-icon</code> applied to it. The icons used for the different alert
+            types of success, danger, warning, and info are, respectively:
+            <code cds-text="code">success-standard</code>, <code cds-text="code">error-standard</code>,
+            <code cds-text="code">warning-standard</code>, and <code cds-text="code">info-standard</code>.
+          </td>
+        </tr>
+        <tr>
+          <th>.alert-actions</th>
+          <td>
+            <code cds-text="code">.alert-actions</code> can consist of dropdowns or links. Each action should extend the
+            <code cds-text="code">.alert-action</code> class.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="angular-component">Angular Component</h2>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input</th>
+          <th class="left hidden-xs-down">Values</th>
+          <th class="hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrAlertClosable]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+            <div class="hidden-sm-up">Default: true</div>
+          </td>
+          <td class="left hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">true</td>
+          <td class="left">If false, the alert will not be closable by clicking on the top-right "x".</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[(clrAlertClosed)]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="left hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">Two-way binding on the state of the alert: opened or closed.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrAlertType]</b>
+            <div class="hidden-sm-up">Type: String</div>
+            <div class="hidden-sm-up">Default:<br />"info"</div>
+          </td>
+          <td class="left hidden-xs-down">
+            "info", "warning", "success", "danger", "neutral", "loading" and "unknown"
+          </td>
+          <td class="hidden-xs-down">"info"</td>
+          <td class="left">Sets the type of the alert.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrAlertSizeSmall]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="left hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">If true, renders a small alert.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrAlertLightweight]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="left hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">If true, renders a lightweight alert.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrAlertIcon]</b>
+            <div class="hidden-sm-up">Type: String</div>
+            <div class="hidden-sm-up">Default: varies</div>
+          </td>
+          <td class="left hidden-xs-down">icon name as string</td>
+          <td class="hidden-xs-down">varies</td>
+          <td class="left">View <a routerLink="/documentation/icons">supported icons</a>.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrAlertAppLevel]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="left hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">If true, renders an app-level alert.</td>
+        </tr>
+
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrCloseButtonAriaLabel]</b>
+            <div class="hidden-sm-up">Type: String</div>
+            <div class="hidden-sm-up">Default: Close alert</div>
+          </td>
+          <td class="left hidden-xs-down">Close alert</td>
+          <td class="hidden-xs-down">Close alert</td>
+          <td class="left">Overwrite default aria-label for close alert button</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-style-docs styleDocsKey="Alert"></app-style-docs>
+  </app-doc-tab>
+
+  <app-doc-tab tab="accessibility">
+    <app-nesting-table
+      componentName="Alert"
+      [canNestComponents]="canNestComponents"
+      [cannotNestComponents]="cannotNestComponents"
+      [conditionalNesting]="conditionalNesting"
+    >
+    </app-nesting-table>
+  </app-doc-tab>
+</app-doc-tabs>

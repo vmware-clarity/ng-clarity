@@ -1,0 +1,76 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use 'projects/angular/styles/core/tokens/variables.tokens' as tokens;
+
+@use '../../../styles/variables' as variables;
+@use 'projects/angular/styles/mixins';
+@use 'packages/angular/styles/variables/variables.layout' as clr-variables;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.dox-header {
+  padding-top: tokens.$cds-global-space-12;
+  flex: 0 0 #{tokens.$cds-global-space-15};
+  padding-left: #{tokens.$cds-global-space-11};
+  position: relative;
+
+  .dox-tabs {
+    display: block;
+
+    a {
+      color: var(--clr-nav-link) !important;
+    }
+  }
+}
+
+.dox-content {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: 100% !important;
+  border-top: tokens.$cds-alias-object-border-width-100 solid transparent;
+  height: 100%;
+
+  @media screen and (min-width: map.get(clr-variables.$clr-grid-breakpoints, sm)) {
+    overflow-y: scroll;
+  }
+
+  .dox-content-wrapper {
+    padding-left: #{tokens.$cds-global-space-11};
+    padding-top: variables.$dox-content-wrapper-padding-top;
+    max-width: calc(variables.$clrweb-content-maxwidth + #{tokens.$cds-global-space-11});
+    width: 100%;
+  }
+}
+
+@media (max-width: 991px) {
+  .dox-header,
+  .dox-content .dox-content-wrapper {
+    padding-left: tokens.$cds-global-space-9;
+    padding-right: tokens.$cds-global-space-9;
+  }
+}
+
+.storybook {
+  float: right;
+  background: url('/assets/images/documentation/storybook.svg') left no-repeat;
+  padding: 0 tokens.$cds-global-space-7;
+  margin-left: tokens.$cds-global-space-5;
+
+  .arrow-icon {
+    transform: rotate(45deg);
+  }
+
+  .storybook-text {
+    line-height: tokens.$cds-global-space-9;
+    text-decoration-line: underline;
+  }
+}

@@ -1,0 +1,35 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-row">
+  <div class="clr-col-12" [class.clr-col-md-4]="showHalf">
+    <clr-tree>
+      <clr-tree-node *ngFor="let directory of rootDirectory" [(clrExpanded)]="directory.expanded">
+        <cds-icon [attr.shape]="directory.icon"></cds-icon>
+        {{ directory.name }}
+        <clr-tree-node *ngFor="let file of directory.files">
+          <button (click)="openFile(directory.name, file.name)" class="clr-treenode-link" [class.active]="file.active">
+            <cds-icon [attr.shape]="file.icon"></cds-icon>
+            {{ file.name }}
+          </button>
+        </clr-tree-node>
+      </clr-tree-node>
+    </clr-tree>
+  </div>
+  <div *ngIf="showHalf" class="clr-col-12 clr-col-md-8">
+    <pre class="example-display-json">{{ rootDirectory | json }}</pre>
+  </div>
+</div>
+
+<div *ngIf="showCode">
+  <app-stackblitz-example
+    name="dynamic tree view"
+    [componentTemplate]="exampleHtml"
+    [componentClass]="exampleTs"
+    [additionalFiles]="additionalFiles"
+  ></app-stackblitz-example>
+</div>

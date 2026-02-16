@@ -1,0 +1,13 @@
+<form clrForm clrLayout="vertical" [formGroup]="dateForm" novalidate>
+  <h3 data-toc-item id="reactive-demo" cds-text="section" class="clr-mt-32px">Reactive Form Demo</h3>
+  <clr-date-container>
+    <label>Date</label>
+    <input type="date" autocomplete="off" clrDate formControlName="date" />
+  </clr-date-container>
+</form>
+<pre>{{ dateForm.value | json }}</pre>
+<app-stackblitz-example
+  name="datepicker (reactive form)"
+  [componentTemplate]="htmlExample"
+  [componentClass]="tsExample"
+></app-stackblitz-example>

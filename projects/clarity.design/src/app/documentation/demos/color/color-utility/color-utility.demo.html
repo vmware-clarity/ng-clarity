@@ -1,0 +1,10 @@
+<h3 data-toc-item cds-text="section" id="color-system-utility" class="clr-mt-32px">Utility Colors</h3>
+<div class="clr-row">
+  <div class="clr-col-3 clr-mt-24px" *ngFor="let colorVariants of colorUtility">
+    <app-color-example-item
+      *ngFor="let item of colorVariants"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+  </div>
+</div>

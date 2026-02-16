@@ -1,0 +1,178 @@
+---
+title: Developing
+---
+
+# Developing
+
+<p class="component-summary">
+  This page provides general installation instructions. You can:
+</p>
+
+- (Option A) Install the Clarity HTML/CSS Framework and start using it to build your application.
+- (Option B) Install Clarity into an existing Angular application.
+
+<div cds-layout="m-t:xxl">
+  <app-cms-themed-image
+    light-src="/assets/images/clarity-developing-banner.svg"
+    dark-src="/assets/images/clarity-developing-banner-dark.svg"
+    image-alt=""
+    image-style="max-width: 100%"
+  ></app-cms-themed-image>
+</div>
+
+<p class="clr-mt-16px" cds-text="subsection">
+  Both options are covered in the following sections.
+</p>
+
+## Installing the Clarity HTML/CSS Framework
+
+If you just want to use our HTML/CSS implementations, use the following instructions.
+
+### Step 1. Install the Clarity Package from npm:
+
+```bash
+npm install @clr/ui @cds/core --save
+```
+
+### Step 2: Include the Clarity and Core Styles
+
+Include `@cds/core/global.min.css`, `@cds/core/styles/theme.dark.min.css`, and `@clr/ui/clr-ui.min.css` 
+in your app's stylesheet. You will need to ensure your build process is configured to bundle CSS from 
+npm packages.
+
+```css
+@import '@cds/core/global.min.css';
+@import '@cds/core/styles/theme.dark.min.css';
+@import '@clr/ui/clr-ui.min.css';
+```
+
+Alternatively, you can load the theme files using the `npm unpkg` content delivery network (CDN). See
+[unpkg.com](https://unpkg.com) for more details. For example:
+
+```html
+<!-- Load the latest version -->
+<link rel="stylesheet" href="https://unpkg.com/@cds/core/global.min.css" />
+<link rel="stylesheet" href="https://unpkg.com/@cds/core/styles/theme.dark.min.css" />
+<link rel="stylesheet" href="https://unpkg.com/@clr/ui/clr-ui.min.css" />
+<!-- Or load a specific version, recommended -->
+<link rel="stylesheet" href="https://unpkg.com/@cds/core@6.9.2/global.min.css" />
+<link rel="stylesheet" href="https://unpkg.com/@cds/core@6.9.2/styles/theme.dark.min.css" />
+<link rel="stylesheet" href="https://unpkg.com/@clr/ui@17.0.0/clr-ui.min.css" />
+```
+
+### Step 3: Set the Theme
+
+Add the `cds-theme=”light”` attribute to the body element in your main HTML file.
+
+```html
+<body cds-theme="light" />
+```
+
+You can toggle to dark theme by setting `cds-theme="dark"`.
+
+## Adding Clarity to an Existing Angular Application
+
+You can build an Angular app, then install Clarity onto your project.
+
+### Step 1: Build an Angular App
+
+Create a new Angular application. If you need a quick start, go through the
+[Angular tutorial.](https://angular.io/docs/ts/latest/quickstart.html)
+
+### Step 2: Install Clarity Packages
+
+Clarity is published as three separate packages on npm. The names of these packages are shown in the
+following list:
+
+- `@cds/core`: The library of web components, design tokens and foundational pieces also used in Angular components.
+- `@clr/ui`: Contains the static styles for building HTML components.
+- `@clr/angular`: Contains the Angular components. This package depends on @clr/ui for styles.
+
+Install all the packages by running the following command with npm:
+
+```bash
+npm install @cds/core @clr/angular @clr/ui --save
+```
+
+### Step 3: Include the Clarity Styles
+
+If you’re using the Angular CLI, add the following snippet to the `styles` array in your
+angular.json file. For example:
+
+```json
+"styles": [
+    "node_modules/@cds/core/global.min.css",
+    "node_modules/@cds/core/styles/theme.dark.min.css",
+    "node_modules/@clr/ui/clr-ui.min.css"
+    ...any other styles
+    ]
+```
+
+If you aren’t using the Angular CLI, include the styles by adding them to the `<head>` element in
+your index.html file:
+
+```html
+<link rel="stylesheet" href="path/to/node_modules/@cds/core/global.min.css" />
+<link rel="stylesheet" href="path/to/node_modules/@cds/core/styles/theme.dark.min.css" />
+<link rel="stylesheet" href="path/to/node_modules/@clr/ui/clr-ui.min.css" />
+```
+
+### Step 4: Set the Theme
+
+Add the `cds-theme=”light”` attribute to the body element in your main HTML file:
+
+```html
+<body cds-theme="light" />
+```
+
+You can toggle to dark theme by setting `cds-theme="dark"`.
+
+### Step 5: Add Clarity to Angular Application
+
+Import the `ClarityModule` and `BrowserAnimationsModule` into your Angular application's module. For
+example:
+
+```typescript
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { ClarityModule } from "@clr/angular";
+
+import { AppComponent } from "./app.component";
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    ClarityModule,
+    ...
+  ],
+  declarations: [ AppComponent ],
+  bootstrap: [ AppComponent ]
+})
+export class AppModule { }
+```
+
+### Step 6: Run Your App
+
+```bash
+npm start
+```
+
+## Contributing to Clarity
+
+The Clarity team welcomes contributions from the community. See our
+[contribution guidelines](https://github.com/vmware-clarity/ng-clarity/blob/main/docs/CONTRIBUTING.md)
+on GitHub.
+
+## Reporting an Issue
+
+Feel free to file feature requests or report any issues on our Clarity
+[GitHub Issues](https://github.com/vmware-clarity/ng-clarity/issues/new/choose) site.
+
+If you are a VMware internal user, you can go to the Clarity Jira site to see instructions about how to submit requests and report issues internally. When submitting issues, provide a minimal app that demonstrates the issue by forking one of the Clarity Stackblitz projects. Since it depends on your issue, starting with the correct Clarity version and theme will help us deliver support. The Jira site also includes a link to the Stackblitz templates.
+
+## Attributions
+
+See the [legal attributions](https://github.com/vmware-clarity/ng-clarity/blob/main/docs/ATTRIBUTION.md)
+for third party software included in Clarity.

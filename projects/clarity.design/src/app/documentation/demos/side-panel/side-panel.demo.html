@@ -1,0 +1,285 @@
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary" id="sidePanelsComponentSummary">
+      Side panels display supplementary contextual actions and information.
+    </p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Side panel component can be used similarly to a <a routerLink="/documentation/modal">modal</a> that slides over
+      the primary content. Use it for additional information or actions that complement the main content on the page.
+    </p>
+
+    <h2 id="position" class="clr-mt-48px" cds-text="title">Position</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      By default the side panels are positioned on the right side of the document body.
+    </p>
+    <clr-side-panel-angular-demo [showCode]="false"></clr-side-panel-angular-demo>
+
+    <p>
+      But using the <code cds-text="code">clrModalHost</code> directive, they can be positioned inside an arbitrary
+      container, that only occupies a portion of the screen.
+    </p>
+
+    <clr-side-panel-angular-inline-demo [showCode]="false"></clr-side-panel-angular-inline-demo>
+
+    <h2 id="pinning" class="clr-mt-48px" cds-text="title">Pinning</h2>
+    <p class="clr-mt-16px" cds-text="body" cds-layout="m-b:md">
+      The side panel has a pinning functionality, which gives the user the capability to "freeze" the panel. This is
+      achieved through the <code cds-text="code">clrSidePanelPinnable</code> input. Currently, the side panel pinning
+      also depends on the <code cds-text="code">clrSidePanelSize</code> input to work properly. When pinned, all normal
+      ways to close the panel are blocked and it's displayed side by side with the content, instead of overlapping it. A
+      pinnable container can also be inline.
+    </p>
+    <clr-side-panel-angular-pinnable-demo [showCode]="false"></clr-side-panel-angular-pinnable-demo>
+
+    <h2 id="sizes" class="clr-mt-48px" cds-text="title">Sizes</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      There are multiple sizes for side panels. The default size is medium, however other sizes are available. Select
+      the size best suited for the content and screen size displaying the side panel. Remember to test responsiveness.
+    </p>
+    <clr-side-panel-size-design-demo></clr-side-panel-size-design-demo>
+
+    <h2 id="behavior" class="clr-mt-48px" cds-text="title">Behavior</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Consider using side panels for the following scenarios: alerting the user, confirmation dialog boxes, and
+      task-oriented workflows.
+    </p>
+    <div class="clr-mt-16px">
+      <div class="clr-row">
+        <div class="clr-col-6">
+          <app-do-dont type="do">
+            <app-themed-image
+              [lightSrc]="'/assets/images/documentation/modals/light-theme/sidepanel_do.svg'"
+              [darkSrc]="'/assets/images/documentation/modals/dark-theme/sidepanel_do.svg'"
+              [imageAlt]="'Dismissing side panels'"
+              [imageStyle]="'max-width: 100%'"
+            >
+            </app-themed-image>
+          </app-do-dont>
+
+          <h3 data-toc-item id="dismissing-side-panels" class="clr-mt-8px" cds-text="subsection">
+            Dismissing Side Panels
+          </h3>
+          <p class="clr-mt-16px" cds-text="body">
+            There are different ways to dismiss a side panel but a user needs to intentionally make that choice. A side
+            panel should not disappear on its own.
+          </p>
+          <p class="clr-mt-24px" cds-text="body">
+            Provide options using action buttons to either cancel or proceed or a close button that should eventually
+            dismiss the side panel.
+          </p>
+        </div>
+        <div class="clr-col-6">
+          <app-do-dont type="dont">
+            <app-themed-image
+              [lightSrc]="'/assets/images/documentation/modals/light-theme/sidepanel_dont.svg'"
+              [darkSrc]="'/assets/images/documentation/modals/dark-theme/sidepanel_dont.svg'"
+              [imageAlt]="'Don`t stack side panels on top of each other'"
+              [imageStyle]="'max-width: 100%'"
+            >
+            </app-themed-image>
+          </app-do-dont>
+
+          <h3 data-toc-item id="stacking-side-panels" class="clr-mt-8px" cds-text="subsection">Stacking Side Panels</h3>
+          <p class="clr-mt-16px" cds-text="body">
+            Side Panels should not launch other side panels. Stacking side panels makes it hard to dismiss them and
+            confuses the user on their levels of importance and context.
+          </p>
+          <p class="clr-mt-16px" cds-text="body">
+            Instead of stacking, seek alternatives such as inline expansion and inline task completion within the side
+            panel.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="accessibility-and-managing-focus" class="clr-mt-32px" cds-text="title">Accessibility and managing focus</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      The VMware Accessibility team recommends forcing focus to the title of a side panel when it is first opened.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      Note that the <code cds-text="code">clr-side-panel</code> component automatically focuses the side panel title.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="angular-component" class="clr-mt-48px" cds-text="title">Side Panel Component</h2>
+
+    <clr-side-panel-angular-demo></clr-side-panel-angular-demo>
+
+    <h3 data-toc-item id="clrsidepanelinline" class="clr-mt-24px" cds-text="section">Inline</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      The side-panel can be displayed inline in an arbitrary container instead of on the page body. This is done through
+      the <code cds-text="code">clrModalHost</code> directive on the desired container.
+    </p>
+
+    <clr-side-panel-angular-inline-demo></clr-side-panel-angular-inline-demo>
+
+    <h3 data-toc-item id="clrsidepanelpinnable" class="clr-mt-24px" cds-text="section">Pinning</h3>
+
+    <p class="clr-mt-16px" cds-text="body">The side-panel can be pinned to the container.</p>
+
+    <clr-side-panel-angular-pinnable-demo></clr-side-panel-angular-pinnable-demo>
+
+    <p class="clr-mt-16px" cds-text="body">
+      The side-panel pinning can be pinned by default with no pin/unpin buttons.
+    </p>
+
+    <clr-side-panel-angular-pinned-demo></clr-side-panel-angular-pinned-demo>
+
+    <h3 data-toc-item id="clrsidepanelsize" class="clr-mt-24px" cds-text="section">Sizes</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      The component offers different sizes through the
+      <code cds-text="code">clrSidePanelSize</code> input. The default, empty size is medium.
+    </p>
+
+    <clr-side-panel-angular-size-demo></clr-side-panel-angular-size-demo>
+
+    <h3 data-toc-item id="clrsidepanelstaticbackdrop" class="clr-mt-24px" cds-text="section">Static Backdrop</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      If you want the side panel not to be closable with a click on the backdrop, use the
+      <code cds-text="code">clrSidePanelStaticBackdrop</code>. If <code cds-text="code">true</code>, clicks on the
+      background will not close the side panel. The default value is <code cds-text="code">false</code>.
+    </p>
+
+    <clr-side-panel-angular-static-backdrop-demo></clr-side-panel-angular-static-backdrop-demo>
+
+    <h3 data-toc-item id="clrsidepanelaltclose" class="clr-mt-24px" cds-text="section">Alternate Close</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      If you want to intercept the side panel close event, use <code cds-text="code">clrSidePanelPreventClose</code> and
+      <code cds-text="code">clrSidePanelAlternateClose</code>. This can be used to request confirmation on close.
+    </p>
+    <clr-side-panel-angular-alt-close-demo></clr-side-panel-angular-alt-close-demo>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 id="angular-component" class="clr-mt-48px" cds-text="title">Angular Component</h2>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="hidden-xs-down">Values</th>
+          <th class="hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[(clrSidePanelOpen)]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+          </td>
+          <td class="hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">Two-way binding on the state of the side panel: opened or closed.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrSidePanelSize]</b>
+            <div class="hidden-sm-up">Values:<br />"sm", "md";, "lg", "xl"</div>
+          </td>
+          <td class="hidden-xs-down">"sm", "md", "lg", "xl"</td>
+          <td class="hidden-xs-down">"md"</td>
+          <td class="left">Sets the size of the side panel. Default is medium size.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrSidePanelBackdrop]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+          </td>
+          <td class="hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">true</td>
+          <td class="left">If false, the side panel will not have a backdrop.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrSidePanelPreventClose]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+          </td>
+          <td class="hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">
+            If true, the side panel will not be closed by clicking on backdrop, close button or by the close() method.
+            It will emit (clrSidePanelAlternateClose) instead.
+          </td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">(clrSidePanelAlternateClose)</b>
+          </td>
+          <td class="hidden-xs-down"></td>
+          <td class="hidden-xs-down"></td>
+          <td class="left">Emits when clrSidePanelPreventClose is true and closing the side panel was attempted.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrSidePanelSkipAnimation]</b>
+            <div class="hidden-sm-up">Type: String</div>
+          </td>
+          <td class="hidden-xs-down">"true", "false"</td>
+          <td class="hidden-xs-down">"false"</td>
+          <td class="left">If "true", the side panel state changes will not be animated.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrSidePanelCloseButtonAriaLabel]</b>
+            <div class="hidden-sm-up">Type: String</div>
+          </td>
+          <td class="hidden-xs-down"></td>
+          <td class="hidden-xs-down">"Close"</td>
+          <td class="left">Sets the <code>aria-label</code> of the side panel's close button (top-right "x").</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrSidePanelStaticBackdrop]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+          </td>
+          <td class="hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">true</td>
+          <td class="left">If true, the side panel will not close when the user clicks outside of the side panel.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrSidePanelPinnable]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+          </td>
+          <td class="hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">Enables pinning functionality of the side panel.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrSidePanelPinned]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+          </td>
+          <td class="hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">If true, the panel is pinned side by side with the container content.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">clrModalHost</b>
+          </td>
+          <td class="hidden-xs-down"></td>
+          <td class="hidden-xs-down"></td>
+          <td class="left">A directive that marks a container as the host element for the side panel.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="angular-component" class="clr-mt-48px" cds-text="title">Style</h2>
+
+    <p>
+      The Side Panel component is based on the Modal, so it can be customized through the
+      <a routerLink="/documentation/modal/api">Modal</a>
+      CSS Custom Properties and CSS Classes.
+    </p>
+  </app-doc-tab>
+</app-doc-tabs>

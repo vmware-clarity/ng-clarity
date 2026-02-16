@@ -1,0 +1,18 @@
+<div class="clr-row">
+  <div class="clr-col-6 clr-col-md-3 clr-mt-24px">
+    <h3 cds-text="subsection">Basic Type</h3>
+    <app-color-example-item
+      *ngFor="let item of colorType.basicType"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+  </div>
+  <div class="clr-col-6 clr-col-md-3 clr-mt-24px">
+    <h3 cds-text="subsection">Links</h3>
+    <app-color-example-item
+      *ngFor="let item of colorType.links"
+      [text]="item.text"
+      [token]="item.color"
+    ></app-color-example-item>
+  </div>
+</div>

@@ -1,0 +1,493 @@
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary" id="dropdown-header">
+      A dropdown menu allows the user to choose an option or action from a contextual list. The source of the dropdown
+      is usually a button.
+    </p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Dropdown menus present a list of options that take an immediate action or navigate the user outside of the current
+      context.
+    </p>
+    <div class="clrweb-DoxVersusBox clr-mt-24px">
+      <div class="clrweb-DoxVersusBox-items clrweb-DoxVersusBox-vsContent">
+        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+          <div class="clrweb-DoxVersusBox-item">
+            <clr-dropdown>
+              <button type="button" clrDropdownTrigger class="btn btn-link">
+                Action
+                <cds-icon shape="angle" direction="down"></cds-icon>
+              </button>
+              <clr-dropdown-menu clrPosition="bottom-left">
+                <button type="button" clrDropdownItem>Art</button>
+                <button type="button" clrDropdownItem>Business</button>
+                <button type="button" clrDropdownItem>Science</button>
+                <button type="button" clrDropdownItem>Mathematics</button>
+              </clr-dropdown-menu>
+            </clr-dropdown>
+            <p class="clr-mt-16px" cds-text="body">
+              Dropdown menus present a list of options that take an immediate action or navigate the user outside of the
+              current context.
+            </p>
+          </div>
+        </div>
+        <div class="clrweb-DoxVersusBox-vsWrapper clr-col-12">
+          <app-themed-image
+            [lightSrc]="'/assets/images/versus-icon-light.svg'"
+            [darkSrc]="'/assets/images/versus-icon-dark.svg'"
+            [imageAlt]="'versus'"
+            [imageStyle]="'margin: 0 auto;width: 72px;'"
+          ></app-themed-image>
+        </div>
+        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+          <div class="clrweb-DoxVersusBox-item">
+            <div class="clr-select-wrapper">
+              <select id="selects_3" class="clr-select">
+                <option>Select Option</option>
+                <option>San Francisco</option>
+                <option>Austin</option>
+                <option>Paris</option>
+                <option>Seattle</option>
+              </select>
+            </div>
+            <p class="clr-mt-16px" cds-text="body">
+              Select boxes present a list of options that the user can choose from and apply to an input field.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="anatomy" class="clr-mt-48px" cds-text="title">Anatomy</h2>
+
+    <h3 id="toggle" class="clr-mt-32px" cds-text="section">Toggle</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Use a button for the toggle. The button can contain either text or an icon plus text.
+    </p>
+
+    <h3 id="menu-items" class="clr-mt-32px" cds-text="section">Menu Items</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Keep the text for menu items short and concise. Long menu items are truncated from the end and an ellipsis added.
+      <br />
+      Order menu items by usage, except for destructive actions, which belong at the bottom.
+    </p>
+
+    <h3 id="header-and-dividers" class="clr-mt-32px" cds-text="section">Header and Dividers</h3>
+
+    <p class="clr-mt-16px" cds-text="body">Headers and dividers can be used to organize a longer list of items.</p>
+    <div class="clrweb-DoxMedia">
+      <div class="clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/dropdowns/light-theme/headers_and_dividers.svg'"
+          [darkSrc]="'/assets/images/documentation/dropdowns/dark-theme/headers_and_dividers.svg'"
+          [imageAlt]="'header and dividers dropdown menu'"
+        ></app-themed-image>
+      </div>
+    </div>
+
+    <h2 id="behavior" class="clr-mt-48px" cds-text="title">Behavior</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Clicking on the toggle (button) opens the dropdown.
+      <br />By default, selecting a menu item or clicking outside the menu dismisses the menu. You can change this
+      behavior to keep the menu open on item selection
+    </p>
+
+    <h2 id="placement" class="clr-mt-32px" cds-text="title">Placement</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      By default, a dropdown opens from the bottom of the toggle, along the left side. You can change the placement by
+      using one of the eight direction classes.
+    </p>
+    <div class="clrweb-DoxMedia">
+      <div class="clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/dropdowns/light-theme/placement_dropdown.svg'"
+          [darkSrc]="'/assets/images/documentation/dropdowns/dark-theme/placement_dropdown.svg'"
+          [imageAlt]="'placement dropdown menu'"
+        ></app-themed-image>
+      </div>
+    </div>
+
+    <h2 id="states" class="clr-mt-48px" cds-text="title">States</h2>
+
+    <p class="clr-mt-16px" cds-text="body">Items in the dropdown menu have hover and click states.</p>
+
+    <h2 id="nested-menus" class="clr-mt-32px" cds-text="title">Nested Menus</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Nested menus are an extension of dropdown menus. They save screen space by organizing a long list of items into
+      categories that the user can click to reveal deeper levels.
+      <br />
+      The best practice is to limit menus to three levels, which would be the root menu plus up to two levels of nested
+      menus.
+    </p>
+
+    <h3 id="interaction-for-nested-menus" class="clr-mt-32px" cds-text="section">Interaction for nested menus</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      With a mouse, the user clicks a category menu item to reveal a nested menu. The category (or group) name stays in
+      selected state to serve as a breadcrumb.
+      <br />
+      Clicking outside the menu dismisses all menus.
+    </p>
+    <div class="clrweb-DoxMedia">
+      <div class="clrweb-DoxMedia-img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/dropdowns/light-theme/interaction_nested_menu.svg'"
+          [darkSrc]="'/assets/images/documentation/dropdowns/dark-theme/interaction_nested_menu.svg'"
+          [imageAlt]="'interaction for nested dropdown menus'"
+        ></app-themed-image>
+      </div>
+    </div>
+
+    <h3 id="placement-for-nested-menus" class="clr-mt-32px" cds-text="section">Placement for nested menus</h3>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-lg-6">
+        <div class="clrweb-DoxMedia">
+          <div class="clrweb-DoxMedia-img">
+            <app-themed-image
+              [lightSrc]="'/assets/images/documentation/dropdowns/light-theme/default_placement_stackorder.svg'"
+              [darkSrc]="'/assets/images/documentation/dropdowns/dark-theme/default_placement_stackorder.svg'"
+              [imageAlt]="'Default placement and stackorder dropdown'"
+              [imageStyle]="'max-width: 100%'"
+            ></app-themed-image>
+          </div>
+        </div>
+        <div class="clrweb-DoxMedia-text">
+          <h4 class="clr-mt-8px">Default placement and stack order</h4>
+          <p class="clr-mt-16px" cds-text="body">
+            By default, a nested menu pops up on the right side of its root menu.
+          </p>
+        </div>
+      </div>
+
+      <div class="clr-col-12 clr-col-lg-6">
+        <div class="clrweb-DoxMedia">
+          <div class="clrweb-DoxMedia-img">
+            <app-themed-image
+              [lightSrc]="'/assets/images/documentation/dropdowns/light-theme/placement_stackorder_resp.svg'"
+              [darkSrc]="'/assets/images/documentation/dropdowns/dark-theme/placement_stackorder_resp.svg'"
+              [imageAlt]="'Responsive placement and stack order dropdown'"
+              [imageStyle]="'max-width: 100%'"
+            ></app-themed-image>
+          </div>
+          <div class="clrweb-DoxMedia-text">
+            <h4 class="clr-mt-8px">Small screen / responsive placement and stack order (<544px)</h4>
+            <p class="clr-mt-16px" cds-text="body">
+              If screen space isn’t available to the right of the root menu, the nested menu appears on the left side.
+              If there is a second nested menu, it appears to the right of the first nested menu, creating a zig-zag
+              pattern.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="angular-component" class="clr-mt-48px" cds-text="title">Angular Dropdown Component</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      The dropdown component uses the <code cds-text="code">*clrIfOpen</code> structural directive (detailed
+      documentation coming soon) on the menu to indicate clearly that the menu is only present in the DOM when open. We
+      heavily recommend using it for many reasons: better performance, making the intent clear in your own templates,
+      and following a more natural lifecycle for any directives or components inside of the menu.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      If for some reason this behavior was not the one you wanted, we also support the dropdown menu without a
+      <code cds-text="code">*clrIfOpen</code> directive on it. It will be created eagerly when the dropdown itself
+      initializes, and will not be destroyed or recreated until the dropdown itself is. Please make sure you know
+      exactly why you are omitting this directive if you end up doing so.
+    </p>
+
+    <h3 id="angular-component-examples" data-toc-item class="clr-mt-32px" cds-text="section">Examples</h3>
+
+    <h4 id="clrmenuposition-is-set-to-top-left-default-is-bottom-left" class="clr-mt-32px" cds-text="subsection">
+      1. <code cds-text="code">clrPosition</code> is set to top-left. Default is bottom-left. For nested
+      <code cds-text="code">&lt;clr-dropdown&gt;</code>, only the following positions are valid: bottom-left,
+      bottom-right, top-left, top-right.
+    </h4>
+
+    <clr-dropdown-angular-positioning-demo></clr-dropdown-angular-positioning-demo>
+
+    <h4 id="clrclosemenuonitemclick-is-set-to-false-default-is-true" class="clr-mt-32px" cds-text="subsection">
+      2. clrCloseMenuOnItemClick is set to false. Default is true.
+    </h4>
+
+    <clr-dropdown-angular-close-item-false-demo></clr-dropdown-angular-close-item-false-demo>
+
+    <h2 id="css-dropdown-component" class="clr-mt-48px" cds-text="title">CSS Dropdown Component</h2>
+
+    <h3 id="css-classes" data-toc-item class="clr-mt-32px" cds-text="section">CSS Classes</h3>
+
+    <h4 id="dropdown-class" class="clr-mt-32px" cds-text="subsection">.dropdown:</h4>
+
+    <p cds-text="body" class="clr-mt-16px">
+      This class is a wrapper class around the <code cds-text="code">.dropdown-toggle</code> and th
+      <code cds-text="code">.dropdown-menu</code>
+    </p>
+
+    <h4 id="dropdown-toggle" class="clr-mt-32px" cds-text="subsection">.dropdown-toggle:</h4>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Extend this class on a button, icon or text link clicking on which the dropdown menu will be activated.
+    </p>
+
+    <h4 id="dropdown-menu" class="clr-mt-32px" cds-text="subsection">.dropdown-menu:</h4>
+
+    <p class="clr-mt-16px" cds-text="body">
+      A required wrapper intended to contain the dropdown menu. Items in the menu should extend the
+      <code cds-text="code">.dropdown-header</code> or <code cds-text="code">.dropdown-item</code> class.
+      <code cds-text="code">.dropdown-divider</code>
+      can be on a block element used to separate item groups.
+      <code cds-text="code">.active</code> class with <code cds-text="code">.dropdown-item</code> adds a different
+      styling for selected elements. Add the <code cds-text="code">.disabled</code> class to dropdown items to style
+      them as disabled.
+    </p>
+
+    <h4 id="open" class="clr-mt-32px" cds-text="subsection">.open:</h4>
+
+    <p class="clr-mt-16px" cds-text="body">
+      A class to open the dropdown menu. Must be applied with <code cds-text="code">.dropdown</code>
+    </p>
+
+    <p class="clr-mt-16px" cds-text="body">
+      The following classes when extended along with <code cds-text="code">.dropdown</code> will open the menu in the
+      respective directions:
+    </p>
+
+    <ul class="list list-spacer">
+      <li>.bottom-left</li>
+      <li>.bottom-right</li>
+      <li>.top-left</li>
+      <li>.top-right</li>
+      <li>.left-bottom</li>
+      <li>.left-top</li>
+      <li>.right-top</li>
+      <li>.right-bottom</li>
+    </ul>
+
+    <p class="clr-mt-16px" cds-text="body">
+      If used in one of the nested menus (that is, not the root level <code cds-text="code">.dropdown</code>), only the
+      following classes are valid:
+    </p>
+
+    <ul class="list list-spacer">
+      <li>.bottom-left</li>
+      <li>.bottom-right</li>
+      <li>.top-left</li>
+      <li>.top-right</li>
+    </ul>
+
+    <h3 id="examples" data-toc-item class="clr-mt-48px" cds-text="title">Static Examples</h3>
+
+    <h3 id="default-dropdown-bottom-left" class="clr-mt-32px" cds-text="section">1. Default dropdown (bottom-left):</h3>
+
+    <clr-dropdown-static-default-demo></clr-dropdown-static-default-demo>
+
+    <h3 id="bottom-right" class="clr-mt-32px" cds-text="section">2. Bottom-right</h3>
+
+    <clr-dropdown-static-positioning-demo></clr-dropdown-static-positioning-demo>
+
+    <h3 id="clarity-icon-as-the-dropdown-toggle" class="clr-mt-32px" cds-text="section">
+      3. Clarity icon as the dropdown toggle
+    </h3>
+
+    <clr-dropdown-static-icon-toggle-demo></clr-dropdown-static-icon-toggle-demo>
+
+    <h3 id="link-button-as-the-dropdown-toggle" class="clr-mt-32px" cds-text="section">
+      4. Link Button as the dropdown toggle
+    </h3>
+
+    <clr-dropdown-static-buttonlink-toggle-demo></clr-dropdown-static-buttonlink-toggle-demo>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 id="angular-components" class="clr-mt-48px" cds-text="title">Angular Components</h2>
+
+    <h3 class="clr-mt-32px" cds-text="section"><code cds-text="code">&lt;clr-dropdown&gt;</code> component</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input / Output</th>
+          <th class="left hidden-xs-down">Values</th>
+          <th class="left hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrCloseMenuOnItemClick]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+            <div class="hidden-sm-up">Default: true</div>
+          </td>
+          <td class="left hidden-xs-down">Boolean</td>
+          <td class="left hidden-xs-down">true</td>
+          <td class="left">If true, the menu will close when a dropdown item is clicked</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="clr-mt-32px" cds-text="section"><code cds-text="code">&lt;clr-dropdown-menu&gt;</code> component</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input / Output</th>
+          <th class="left hidden-xs-down">Values</th>
+          <th class="left hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrPosition]</b>
+            <div class="hidden-sm-up">Values:<br />Direction classnames</div>
+            <div class="hidden-sm-up">Default: "bottom-left"</div>
+          </td>
+          <td class="left hidden-xs-down">CSS dropdown menu direction classnames.</td>
+          <td class="left hidden-xs-down">bottom-left</td>
+          <td class="left">
+            Sets the direction in which the menu will open. If used in one of the nested menus, only four classes are
+            valid: bottom-left, bottom-right, top-left, and top-right.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="clr-mt-32px" cds-text="section"><code cds-text="code">clrDropdownItem</code> directive</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input / Output</th>
+          <th class="left hidden-xs-down">Values</th>
+          <th class="left hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrDisabled]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="left hidden-xs-down">Boolean</td>
+          <td class="left hidden-xs-down">false</td>
+          <td class="left">
+            If true, the menu item will have disabled style and set the aria-disabled attribute to true.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-style-docs styleDocsKey="Dropdown"></app-style-docs>
+  </app-doc-tab>
+
+  <app-doc-tab tab="accessibility">
+    <h2 id="accessibility" class="clr-mt-48px" cds-text="title">Accessibility</h2>
+
+    <div class="clr-mt-24px">
+      <clr-alert [clrAlertType]="'warning'" [clrAlertClosable]="false">
+        <clr-alert-item>
+          <span class="alert-text">
+            The Clarity static (HTML/CSS) component does not come ready with all the necessary ARIA attributes. The
+            application developer should follow the guidelines below to implement them.
+          </span>
+        </clr-alert-item>
+      </clr-alert>
+    </div>
+
+    <p class="clr-mt-32px clr-mt-16px" cds-text="body">Clarity Angular component follows these guidelines:</p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        A dropdown menu should have an element with the role <code cds-text="code">button</code> that opens the menu.
+      </li>
+      <li>
+        The element with the <code cds-text="code">button</code> role should also have an
+        <code cds-text="code">aria-expanded</code>
+        attribute which is set to true when the dropdown menu is open.
+      </li>
+      <li>
+        The items should be inside an element with the role <code cds-text="code">menu</code>, and have the role
+        <code cds-text="code">menuitem</code>.
+      </li>
+      <li>If the menu uses headings, the heading should be used as an accessible description for each related item.</li>
+      <li>
+        A visual element with role <code cds-text="code">separator</code> can be used between groups of items within a
+        menu. The separator can not receive input focus and is not interactive.
+      </li>
+      <li>
+        An element that is not a menu item inside the menu should have the
+        <code cds-text="code">aria-hidden</code> attribute set to <code cds-text="code">true</code>.
+      </li>
+      <li>
+        A menu item should not use the <code cds-text="code">disabled</code> attribute so
+        <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_disabled_controls" target="_blank">
+          disabled items can receive input focus.
+        </a>
+        Instead, use <code cds-text="code">[clrDisabled]</code> to add the disabled visual style and ARIA attribute when
+        needed.
+      </li>
+    </ul>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="keyboard-interaction">Keyboard Interaction</h3>
+    <div class="clr-mt-24px">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="left">Status Type</th>
+            <th class="left">Sample</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="left">Enter, Space, Down Arrow on the menu button</td>
+            <td class="left">Opens the menu and focuses on the first item</td>
+          </tr>
+          <tr>
+            <td class="left">Up Arrow on menu</td>
+            <td class="left">Focus on the previous item, or the last item if currently on the first one</td>
+          </tr>
+          <tr>
+            <td class="left">Down Arrow on menu</td>
+            <td class="left">Focus on the next item, or the first item if currently on the first one</td>
+          </tr>
+          <tr>
+            <td class="left">Right Arrow on a menu item with submenu</td>
+            <td class="left">Opens the submenu and focuses on the first item</td>
+          </tr>
+          <tr>
+            <td class="left">Left Arrow on a submenu</td>
+            <td class="left">Closes the submenu and focuses on its parent item</td>
+          </tr>
+          <tr>
+            <td class="left">Esc</td>
+            <td class="left">
+              Closes the menu and focuses on the trigger (in the case of submenu the trigger is its parent item).
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="clr-mt-32px clr-mt-16px" cds-text="body">
+      The Dropdown component contains a native button element (all native elements limitations apply), label, and menu
+      item.
+    </p>
+
+    <app-nesting-table
+      componentName="Dropdown"
+      subComponentName="label and menu item"
+      [canNestComponents]="canNestComponents"
+      [cannotNestComponents]="cannotNestComponents"
+      [conditionalNesting]="conditionalNesting"
+    >
+    </app-nesting-table>
+  </app-doc-tab>
+</app-doc-tabs>

@@ -1,0 +1,123 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example">
+  <div class="main-container">
+    <header class="header-6 space-below">
+      <div class="branding">
+        <a href="javascript://" class="nav-link">
+          <cds-icon shape="vm-bug"></cds-icon>
+          <span class="title">Clarity Design</span>
+        </a>
+      </div>
+      <div class="header-nav">
+        <a href="javascript://" class="active nav-link nav-text">Dashboard</a>
+        <a href="javascript://" class="nav-link nav-text">Interactive Analytics</a>
+      </div>
+      <div class="header-actions">
+        <a href="javascript://" class="nav-link nav-icon" aria-label="settings">
+          <cds-icon shape="cog"></cds-icon>
+        </a>
+      </div>
+    </header>
+
+    <header class="header-6 space-below">
+      <div class="branding">
+        <a href="javascript://" class="nav-link">
+          <cds-icon shape="vm-bug"></cds-icon>
+          <span class="title">Clarity Design</span>
+        </a>
+      </div>
+      <form class="search">
+        <label for="search_input">
+          <input id="search_input" type="text" placeholder="Search for keywords..." />
+        </label>
+      </form>
+      <div class="header-actions">
+        <a href="javascript://" class="nav-link nav-icon" aria-label="settings">
+          <cds-icon shape="cog"></cds-icon>
+        </a>
+      </div>
+    </header>
+
+    <header class="header-6 space-below">
+      <div class="branding">
+        <a href="javascript://" class="nav-link">
+          <cds-icon shape="vm-bug"></cds-icon>
+          <span class="title">Clarity Design</span>
+        </a>
+      </div>
+      <div class="header-actions">
+        <clr-dropdown>
+          <button class="nav-icon" clrDropdownTrigger aria-label="toggle settings menu">
+            <cds-icon shape="cog"></cds-icon>
+            <cds-icon shape="angle" direction="down"></cds-icon>
+          </button>
+          <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+            <a href="javascript://" clrDropdownItem>About</a>
+            <a href="javascript://" clrDropdownItem>Preferences</a>
+            <a href="javascript://" clrDropdownItem>Log out</a>
+          </clr-dropdown-menu>
+        </clr-dropdown>
+      </div>
+    </header>
+
+    <header class="header-6 space-below">
+      <div class="branding">
+        <a href="javascript://" class="nav-link">
+          <cds-icon shape="vm-bug"></cds-icon>
+          <span class="title">Clarity Design</span>
+        </a>
+      </div>
+      <div class="header-actions">
+        <a href="javascript://" class="nav-link nav-text"> Log Out </a>
+      </div>
+    </header>
+
+    <header class="header-6 space-below">
+      <div class="branding">
+        <a href="javascript://" class="nav-link">
+          <cds-icon shape="vm-bug"></cds-icon>
+          <span class="title">Clarity Design</span>
+        </a>
+      </div>
+      <div class="header-actions header-actions--overflow">
+        <clr-dropdown>
+          <button class="nav-text" clrDropdownTrigger aria-label="open user profile">
+            john.doe&#64;vmware.com
+            <cds-icon shape="angle" direction="down"></cds-icon>
+          </button>
+          <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+            <a href="javascript://" clrDropdownItem>Preferences</a>
+            <a href="javascript://" clrDropdownItem>Log out</a>
+          </clr-dropdown-menu>
+        </clr-dropdown>
+      </div>
+    </header>
+
+    <header class="header-6">
+      <div class="branding">
+        <a href="javascript://" class="nav-link">
+          <cds-icon shape="vm-bug"></cds-icon>
+          <span class="title">Clarity Design</span>
+        </a>
+      </div>
+      <div class="header-actions">
+        <a href="javascript://" class="nav-link nav-icon-text">
+          <cds-icon shape="user"></cds-icon>
+          <span class="nav-text">username</span>
+        </a>
+      </div>
+    </header>
+  </div>
+</div>
+<app-stackblitz-example
+  name="header types"
+  [componentTemplate]="example"
+  [componentStyles]="exampleCss"
+  [showComponentStyles]="false"
+></app-stackblitz-example>

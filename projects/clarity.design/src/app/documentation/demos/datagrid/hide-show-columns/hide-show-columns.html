@@ -1,0 +1,68 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2 class="clr-mt-48px" cds-text="title">Hide/Show Columns</h2>
+
+<p class="clr-mt-16px" cds-text="body">
+  Datagrid columns are hideable with the <code cds-text="code">*clrDgHideableColumn</code> directive. Because this is a
+  structural directive it cannot be used on the <code cds-text="code">clr-dg-column</code> component directly. Instead,
+  you use <code cds-text="code">*clrDgHideableColumn</code> on an ng-container inside your
+  <code cds-text="code">clr-dg-column</code>. It defaults to showing the column but you can use the hidden property to
+  pre-configure it.
+</p>
+
+<clr-datagrid>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{ hidden: false }"> User ID </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{ hidden: false }"> Name </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{ hidden: false }"> Creation date </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{ hidden: true }"> Pokemon </ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn> Favorite color </ng-container>
+  </clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} users
+    <clr-dg-pagination #pagination [clrDgPageSize]="currentPageSize"></clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Hide/SHow Columns"
+  [componentTemplate]="example"
+  [componentClass]="commonFiles.exampleTs"
+  [showComponentClass]="false"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>
+
+<h3 cds-text="section" class="clr-mt-32px">Custom Toggle Strings</h3>
+
+<p class="clr-mt-16px" cds-text="body">
+  If you need to customize the hide/show toggle component, you can override the
+  <code cds-text="code">showColumns</code> and <code cds-text="code">selectAll</code> common strings. See the
+  <a routerLink="/documentation/internationalization">internationalization documentation</a> for instructions on how to
+  change the language strings.
+</p>

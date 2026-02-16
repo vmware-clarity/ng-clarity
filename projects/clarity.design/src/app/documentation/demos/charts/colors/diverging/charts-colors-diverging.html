@@ -1,0 +1,117 @@
+<h2 id="diverging" cds-text="title" cds-layout="m-t:xxl">Diverging</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  <strong cds-text="medium">Token library</strong>: <code cds-text="code">--cds-alias-viz-diverging-</code>
+</p>
+
+<p cds-text="body" cds-layout="m-t:md">
+  Diverging palettes are used to highlight data that has a meaningful midpoint, with values diverging in opposite
+  directions. This is particularly useful for showing data with positive and negative associations, such as profit and
+  loss, temperatures above and below freezing, or performance metrics.
+</p>
+
+<div cds-layout="m-t:xl grid cols@sm:6 gap:lg">
+  <div *ngFor="let palette of palettes">
+    <h3 cds-text="subsection" cds-layout="m-b:sm">{{ palette.name }}</h3>
+    <app-color-example-item
+      *ngFor="let color of palette.colors"
+      [text]="color"
+      [token]="color"
+    ></app-color-example-item>
+  </div>
+</div>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Examples</h3>
+
+<div cds-layout="m-t:lg grid cols@sm:6 cols@md:4 gap:lg">
+  <div>
+    <h4 cds-text="medium" cds-layout="m-b:sm">Bar Chart</h4>
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-colors-diverging-examples-bar-chart.svg'"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-colors-diverging-examples-bar-chart.svg'"
+      [imageAlt]="'bar chart example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+  <div>
+    <h4 cds-text="medium" cds-layout="m-b:sm">Heatmap</h4>
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-colors-diverging-examples-heatmap.svg'"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-colors-diverging-examples-heatmap.svg'"
+      [imageAlt]="'heatmap example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+  <div>
+    <h4 cds-text="medium" cds-layout="m-b:sm">Area Chart</h4>
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-colors-diverging-examples-area-chart.svg'"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-colors-diverging-examples-area-chart.svg'"
+      [imageAlt]="'area chart example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+</div>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Best Practices</h3>
+
+<ul cds-text="body" cds-layout="m-t:md m-l:xs">
+  <li>
+    <strong cds-text="medium">Midpoint Clarity</strong>: Ensure the midpoint (e.g., zero or average value) is clearly
+    defined in the visualization.
+  </li>
+  <li>
+    <strong cds-text="medium">Consistent Scaling</strong>: Use a consistent color scale to avoid misinterpretation of
+    data values.
+  </li>
+</ul>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Color Application</h3>
+
+<p cds-text="body" cds-layout="m-t:md">Diverging palettes do not differ between light and dark themes.</p>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Accessibility</h3>
+
+<div cds-layout="m-t:lg grid cols@sm:6 gap:lg">
+  <div>
+    <h4 cds-text="medium">Stroke Contrast</h4>
+    <p cds-text="body" cds-layout="m-t:xs">
+      Use <code cds-text="code">--cds-alias-viz-border</code> to ensure stroke usage has adequate contrast against the
+      background. This ensures clear visibility of borders regardless of the data range.
+    </p>
+  </div>
+  <div>
+    <app-themed-image
+      [lightSrc]="
+        '/assets/images/documentation/charts/light-theme/charts-colors-diverging-accessibility-stroke-contrast.svg'
+      "
+      [darkSrc]="
+        '/assets/images/documentation/charts/dark-theme/charts-colors-diverging-accessibility-stroke-contrast.svg'
+      "
+      [imageAlt]="'stroke contrast example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+</div>
+
+<div cds-layout="m-t:lg grid cols@sm:6 gap:lg">
+  <div>
+    <h4 cds-text="medium">Border Color</h4>
+    <p cds-text="body" cds-layout="m-t:xs">
+      Utilize 1 px stroke and use <code cds-text="code">--cds-alias-viz-border</code> for the border color at the end of
+      each bar, heatmap, segment, or other elements using sequential palettes.
+    </p>
+  </div>
+  <div>
+    <app-themed-image
+      [lightSrc]="
+        '/assets/images/documentation/charts/light-theme/charts-colors-sequential-accessibility-border-color.svg'
+      "
+      [darkSrc]="
+        '/assets/images/documentation/charts/dark-theme/charts-colors-sequential-accessibility-border-color.svg'
+      "
+      [imageAlt]="'border color example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'projects/angular/styles/core/tokens/variables.tokens' as tokens;
+
+
+.clr-example {
+  .clr-example-col-value {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: #{tokens.$cds-global-space-11};
+    border-radius: tokens.$cds-alias-object-border-radius-100;
+    background: tokens.$cds-alias-object-container-background-shade;
+    margin: #{tokens.$cds-global-space-4} 0;
+  }
+
+  .clr-example-row,
+  .clr-example-nesting-row {
+    background: tokens.$cds-alias-object-container-background-inverse-tint;
+    margin: #{tokens.$cds-global-space-4} 0;
+  }
+
+  .clr-example-row {
+    height: #{tokens.$cds-global-space-15};
+  }
+
+  .clr-example-nesting-row {
+    .clr-example-nesting-row {
+      background: tokens.$cds-alias-utility-gray;
+    }
+  }
+}

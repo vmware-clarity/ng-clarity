@@ -1,0 +1,2202 @@
+[
+  {
+    "id": 42654,
+    "name": "Sibyl",
+    "creation": "2018-01-06T09:33:46.839Z",
+    "color": "Orange",
+    "pokemon": {
+      "number": 3,
+      "name": "Venusaur"
+    },
+    "wins": 73
+  },
+  {
+    "id": 74892,
+    "name": "Dorian",
+    "creation": "2017-08-13T15:14:18.514Z",
+    "color": "Yellow",
+    "pokemon": {
+      "number": 24,
+      "name": "Arbok"
+    },
+    "wins": 58
+  },
+  {
+    "id": 79719,
+    "name": "Nidia",
+    "creation": "2020-04-08T19:32:32.658Z",
+    "color": "Magenta",
+    "pokemon": {
+      "number": 9,
+      "name": "Blastoise"
+    },
+    "wins": 49
+  },
+  {
+    "id": 82285,
+    "name": "Marcella",
+    "creation": "2017-11-05T14:07:35.159Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 49,
+      "name": "Venomoth"
+    },
+    "wins": 63
+  },
+  {
+    "id": 73542,
+    "name": "Darla",
+    "creation": "2016-04-12T02:12:34.133Z",
+    "color": "Brown",
+    "pokemon": {
+      "number": 112,
+      "name": "Rhydon"
+    },
+    "wins": 76
+  },
+  {
+    "id": 47470,
+    "name": "Letisha",
+    "creation": "2020-06-23T05:47:20.944Z",
+    "color": "Brown",
+    "pokemon": {
+      "number": 111,
+      "name": "Rhyhorn"
+    },
+    "wins": 82
+  },
+  {
+    "id": 35306,
+    "name": "Beverly",
+    "creation": "2018-11-09T19:15:13.369Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 26,
+      "name": "Raichu"
+    },
+    "wins": 92
+  },
+  {
+    "id": 26398,
+    "name": "Brynn",
+    "creation": "2018-10-19T15:01:50.477Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 114,
+      "name": "Tangela"
+    },
+    "wins": 10
+  },
+  {
+    "id": 12312,
+    "name": "Brynn",
+    "creation": "2014-05-17T08:56:27.474Z",
+    "color": "Black",
+    "pokemon": {
+      "number": 23,
+      "name": "Ekans"
+    },
+    "wins": 58
+  },
+  {
+    "id": 87400,
+    "name": "Sibyl",
+    "creation": "2020-10-25T11:35:03.721Z",
+    "color": "Black",
+    "pokemon": {
+      "number": 110,
+      "name": "Weezing"
+    },
+    "wins": 63
+  },
+  {
+    "id": 71818,
+    "name": "Genoveva",
+    "creation": "2014-01-14T13:35:29.318Z",
+    "color": "Green",
+    "pokemon": {
+      "number": 75,
+      "name": "Graveler"
+    },
+    "wins": 85
+  },
+  {
+    "id": 38913,
+    "name": "Nidia",
+    "creation": "2021-11-29T16:25:45.054Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 36,
+      "name": "Clefable"
+    },
+    "wins": 63
+  },
+  {
+    "id": 39077,
+    "name": "Lottie",
+    "creation": "2021-06-08T07:16:45.730Z",
+    "color": "White",
+    "pokemon": {
+      "number": 120,
+      "name": "Staryu"
+    },
+    "wins": 75
+  },
+  {
+    "id": 31214,
+    "name": "Brad",
+    "creation": "2018-11-02T21:28:26.044Z",
+    "color": "Orange",
+    "pokemon": {
+      "number": 67,
+      "name": "Machoke"
+    },
+    "wins": 46
+  },
+  {
+    "id": 46698,
+    "name": "Johnson",
+    "creation": "2017-01-19T19:51:00.287Z",
+    "color": "Cyan",
+    "pokemon": {
+      "number": 88,
+      "name": "Grimer"
+    },
+    "wins": 6
+  },
+  {
+    "id": 44699,
+    "name": "Genoveva",
+    "creation": "2016-06-10T20:20:04.040Z",
+    "color": "Magenta",
+    "pokemon": {
+      "number": 98,
+      "name": "Krabby"
+    },
+    "wins": 84
+  },
+  {
+    "id": 33150,
+    "name": "Olene",
+    "creation": "2022-10-27T11:41:42.354Z",
+    "color": "Violet",
+    "pokemon": {
+      "number": 2,
+      "name": "Ivysaur"
+    },
+    "wins": 6
+  },
+  {
+    "id": 41916,
+    "name": "Ellen",
+    "creation": "2017-10-01T06:46:38.688Z",
+    "color": "Black",
+    "pokemon": {
+      "number": 77,
+      "name": "Ponyta"
+    },
+    "wins": 68
+  },
+  {
+    "id": 62879,
+    "name": "Sibyl",
+    "creation": "2021-01-29T19:50:09.911Z",
+    "color": "Yellow",
+    "pokemon": {
+      "number": 46,
+      "name": "Paras"
+    },
+    "wins": 74
+  },
+  {
+    "id": 85533,
+    "name": "Graham",
+    "creation": "2021-03-09T15:01:00.006Z",
+    "color": "White",
+    "pokemon": {
+      "number": 1,
+      "name": "Bulbasaur"
+    },
+    "wins": 47
+  },
+  {
+    "id": 34646,
+    "name": "Jeana",
+    "creation": "2021-05-17T11:47:38.714Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 84,
+      "name": "Doduo"
+    },
+    "wins": 48
+  },
+  {
+    "id": 50811,
+    "name": "Lenny",
+    "creation": "2016-04-20T12:33:13.102Z",
+    "color": "Green",
+    "pokemon": {
+      "number": 34,
+      "name": "Nidoking"
+    },
+    "wins": 5
+  },
+  {
+    "id": 2589,
+    "name": "Beverly",
+    "creation": "2015-10-02T14:12:54.510Z",
+    "color": "Magenta",
+    "pokemon": {
+      "number": 111,
+      "name": "Rhyhorn"
+    },
+    "wins": 86
+  },
+  {
+    "id": 64669,
+    "name": "Olene",
+    "creation": "2016-09-07T21:15:13.328Z",
+    "color": "Orange",
+    "pokemon": {
+      "number": 43,
+      "name": "Oddish"
+    },
+    "wins": 77
+  },
+  {
+    "id": 22168,
+    "name": "Nelson",
+    "creation": "2022-04-16T19:35:34.033Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 19,
+      "name": "Rattata"
+    },
+    "wins": 46
+  },
+  {
+    "id": 25033,
+    "name": "Jeana",
+    "creation": "2014-05-12T11:27:35.081Z",
+    "color": "Orange",
+    "pokemon": {
+      "number": 127,
+      "name": "Pinsir"
+    },
+    "wins": 73
+  },
+  {
+    "id": 88031,
+    "name": "Jeana",
+    "creation": "2020-09-02T16:27:19.775Z",
+    "color": "Pink",
+    "pokemon": {
+      "number": 127,
+      "name": "Pinsir"
+    },
+    "wins": 11
+  },
+  {
+    "id": 53289,
+    "name": "Lucius",
+    "creation": "2015-02-10T08:17:45.709Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 116,
+      "name": "Horsea"
+    },
+    "wins": 24
+  },
+  {
+    "id": 94061,
+    "name": "Nelson",
+    "creation": "2022-12-14T03:06:02.324Z",
+    "color": "Violet",
+    "pokemon": {
+      "number": 102,
+      "name": "Exeggcute"
+    },
+    "wins": 66
+  },
+  {
+    "id": 78029,
+    "name": "Alica",
+    "creation": "2019-05-09T21:16:58.583Z",
+    "color": "Pink",
+    "pokemon": {
+      "number": 13,
+      "name": "Weedle"
+    },
+    "wins": 77
+  },
+  {
+    "id": 62362,
+    "name": "Lucius",
+    "creation": "2019-04-10T10:21:01.018Z",
+    "color": "White",
+    "pokemon": {
+      "number": 4,
+      "name": "Charmander"
+    },
+    "wins": 83
+  },
+  {
+    "id": 82090,
+    "name": "Georgia",
+    "creation": "2014-03-09T10:55:55.010Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 118,
+      "name": "Goldeen"
+    },
+    "wins": 5
+  },
+  {
+    "id": 15160,
+    "name": "Johnson",
+    "creation": "2021-12-02T05:34:18.770Z",
+    "color": "Brown",
+    "pokemon": {
+      "number": 41,
+      "name": "Zubat"
+    },
+    "wins": 1
+  },
+  {
+    "id": 77562,
+    "name": "Brad",
+    "creation": "2020-11-28T16:35:37.350Z",
+    "color": "White",
+    "pokemon": {
+      "number": 25,
+      "name": "Pikachu"
+    },
+    "wins": 87
+  },
+  {
+    "id": 24745,
+    "name": "Rhona",
+    "creation": "2022-10-14T11:45:53.023Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 87,
+      "name": "Dewgong"
+    },
+    "wins": 33
+  },
+  {
+    "id": 78602,
+    "name": "Darla",
+    "creation": "2014-06-21T14:03:23.555Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 81,
+      "name": "Magnemite"
+    },
+    "wins": 88
+  },
+  {
+    "id": 19428,
+    "name": "Olene",
+    "creation": "2014-01-04T06:28:12.012Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 139,
+      "name": "Omastar"
+    },
+    "wins": 53
+  },
+  {
+    "id": 27350,
+    "name": "Johnson",
+    "creation": "2017-11-11T18:57:45.780Z",
+    "color": "Pink",
+    "pokemon": {
+      "number": 56,
+      "name": "Mankey"
+    },
+    "wins": 15
+  },
+  {
+    "id": 57732,
+    "name": "Dorian",
+    "creation": "2020-11-03T12:54:15.456Z",
+    "color": "Green",
+    "pokemon": {
+      "number": 140,
+      "name": "Kabuto"
+    },
+    "wins": 20
+  },
+  {
+    "id": 98678,
+    "name": "Olene",
+    "creation": "2020-03-10T10:56:43.933Z",
+    "color": "Black",
+    "pokemon": {
+      "number": 26,
+      "name": "Raichu"
+    },
+    "wins": 16
+  },
+  {
+    "id": 84860,
+    "name": "Rhona",
+    "creation": "2017-09-28T01:05:12.382Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 151,
+      "name": "Mew"
+    },
+    "wins": 38
+  },
+  {
+    "id": 50963,
+    "name": "Darla",
+    "creation": "2014-05-02T06:58:40.604Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 30,
+      "name": "Nidorina"
+    },
+    "wins": 17
+  },
+  {
+    "id": 95937,
+    "name": "Nidia",
+    "creation": "2020-01-20T12:56:09.265Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 24,
+      "name": "Arbok"
+    },
+    "wins": 70
+  },
+  {
+    "id": 77034,
+    "name": "Marcella",
+    "creation": "2022-06-27T07:32:33.985Z",
+    "color": "Orange",
+    "pokemon": {
+      "number": 27,
+      "name": "Sandshrew"
+    },
+    "wins": 10
+  },
+  {
+    "id": 16245,
+    "name": "Johnson",
+    "creation": "2015-09-13T12:46:35.876Z",
+    "color": "White",
+    "pokemon": {
+      "number": 83,
+      "name": "Farfetch'd"
+    },
+    "wins": 3
+  },
+  {
+    "id": 57310,
+    "name": "Graham",
+    "creation": "2020-07-30T21:55:36.723Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 132,
+      "name": "Ditto"
+    },
+    "wins": 59
+  },
+  {
+    "id": 13050,
+    "name": "Rhona",
+    "creation": "2019-07-17T11:07:45.068Z",
+    "color": "White",
+    "pokemon": {
+      "number": 11,
+      "name": "Metapod"
+    },
+    "wins": 7
+  },
+  {
+    "id": 94174,
+    "name": "Kaitlin",
+    "creation": "2021-08-03T21:31:08.547Z",
+    "color": "Green",
+    "pokemon": {
+      "number": 108,
+      "name": "Lickitung"
+    },
+    "wins": 40
+  },
+  {
+    "id": 16533,
+    "name": "Graham",
+    "creation": "2014-01-31T07:09:00.209Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 110,
+      "name": "Weezing"
+    },
+    "wins": 3
+  },
+  {
+    "id": 22819,
+    "name": "Desirae",
+    "creation": "2020-02-01T21:36:56.035Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 60,
+      "name": "Poliwag"
+    },
+    "wins": 53
+  },
+  {
+    "id": 96208,
+    "name": "Ellen",
+    "creation": "2015-05-05T00:19:06.639Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 40,
+      "name": "Wigglytuff"
+    },
+    "wins": 34
+  },
+  {
+    "id": 54765,
+    "name": "Darla",
+    "creation": "2021-06-24T17:03:33.762Z",
+    "color": "Violet",
+    "pokemon": {
+      "number": 91,
+      "name": "Cloyster"
+    },
+    "wins": 83
+  },
+  {
+    "id": 91250,
+    "name": "Dorian",
+    "creation": "2015-10-27T21:52:01.352Z",
+    "color": "Brown",
+    "pokemon": {
+      "number": 108,
+      "name": "Lickitung"
+    },
+    "wins": 45
+  },
+  {
+    "id": 80258,
+    "name": "Sheridan",
+    "creation": "2016-06-04T23:05:55.526Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 83,
+      "name": "Farfetch'd"
+    },
+    "wins": 92
+  },
+  {
+    "id": 58245,
+    "name": "Sibyl",
+    "creation": "2018-11-29T12:14:58.849Z",
+    "color": "White",
+    "pokemon": {
+      "number": 136,
+      "name": "Flareon"
+    },
+    "wins": 41
+  },
+  {
+    "id": 72949,
+    "name": "Keenan",
+    "creation": "2017-04-22T14:23:58.845Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 110,
+      "name": "Weezing"
+    },
+    "wins": 21
+  },
+  {
+    "id": 1229,
+    "name": "Brad",
+    "creation": "2019-01-24T12:24:26.691Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 88,
+      "name": "Grimer"
+    },
+    "wins": 76
+  },
+  {
+    "id": 43206,
+    "name": "Marcella",
+    "creation": "2014-06-30T15:40:56.816Z",
+    "color": "Yellow",
+    "pokemon": {
+      "number": 145,
+      "name": "Zapdos"
+    },
+    "wins": 44
+  },
+  {
+    "id": 77781,
+    "name": "Alica",
+    "creation": "2014-12-06T01:01:23.564Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 88,
+      "name": "Grimer"
+    },
+    "wins": 86
+  },
+  {
+    "id": 45335,
+    "name": "Dorian",
+    "creation": "2017-01-01T11:39:37.262Z",
+    "color": "Black",
+    "pokemon": {
+      "number": 59,
+      "name": "Arcanine"
+    },
+    "wins": 35
+  },
+  {
+    "id": 28924,
+    "name": "Ellen",
+    "creation": "2015-07-06T08:04:58.402Z",
+    "color": "Green",
+    "pokemon": {
+      "number": 47,
+      "name": "Parasect"
+    },
+    "wins": 55
+  },
+  {
+    "id": 91684,
+    "name": "Brynn",
+    "creation": "2021-03-05T13:29:37.135Z",
+    "color": "Violet",
+    "pokemon": {
+      "number": 79,
+      "name": "Slowpoke"
+    },
+    "wins": 59
+  },
+  {
+    "id": 86226,
+    "name": "Olene",
+    "creation": "2016-03-23T02:22:30.423Z",
+    "color": "Green",
+    "pokemon": {
+      "number": 127,
+      "name": "Pinsir"
+    },
+    "wins": 99
+  },
+  {
+    "id": 38540,
+    "name": "Sibyl",
+    "creation": "2015-05-30T08:02:03.611Z",
+    "color": "Blue",
+    "pokemon": {
+      "number": 133,
+      "name": "Eevee"
+    },
+    "wins": 97
+  },
+  {
+    "id": 90648,
+    "name": "Dorian",
+    "creation": "2020-03-25T08:30:49.621Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 90,
+      "name": "Shellder"
+    },
+    "wins": 42
+  },
+  {
+    "id": 34521,
+    "name": "Johnson",
+    "creation": "2014-05-29T10:56:12.164Z",
+    "color": "Black",
+    "pokemon": {
+      "number": 8,
+      "name": "Wartortle"
+    },
+    "wins": 84
+  },
+  {
+    "id": 43086,
+    "name": "Lucius",
+    "creation": "2021-12-28T13:17:22.302Z",
+    "color": "Blue",
+    "pokemon": {
+      "number": 93,
+      "name": "Haunter"
+    },
+    "wins": 14
+  },
+  {
+    "id": 93120,
+    "name": "Darla",
+    "creation": "2020-06-24T10:10:21.216Z",
+    "color": "Pink",
+    "pokemon": {
+      "number": 49,
+      "name": "Venomoth"
+    },
+    "wins": 6
+  },
+  {
+    "id": 69194,
+    "name": "Sheridan",
+    "creation": "2015-12-16T17:16:31.997Z",
+    "color": "Cyan",
+    "pokemon": {
+      "number": 98,
+      "name": "Krabby"
+    },
+    "wins": 78
+  },
+  {
+    "id": 25050,
+    "name": "Johnson",
+    "creation": "2016-11-15T02:48:07.075Z",
+    "color": "Brown",
+    "pokemon": {
+      "number": 131,
+      "name": "Lapras"
+    },
+    "wins": 58
+  },
+  {
+    "id": 99934,
+    "name": "Graham",
+    "creation": "2015-08-15T09:55:21.248Z",
+    "color": "Black",
+    "pokemon": {
+      "number": 134,
+      "name": "Vaporeon"
+    },
+    "wins": 68
+  },
+  {
+    "id": 3211,
+    "name": "Keenan",
+    "creation": "2016-08-20T00:03:51.841Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 66,
+      "name": "Machop"
+    },
+    "wins": 52
+  },
+  {
+    "id": 20777,
+    "name": "Brad",
+    "creation": "2020-06-15T05:05:56.049Z",
+    "color": "White",
+    "pokemon": {
+      "number": 16,
+      "name": "Pidgey"
+    },
+    "wins": 53
+  },
+  {
+    "id": 38855,
+    "name": "Keenan",
+    "creation": "2022-05-10T01:46:14.000Z",
+    "color": "Magenta",
+    "pokemon": {
+      "number": 52,
+      "name": "Meowth"
+    },
+    "wins": 31
+  },
+  {
+    "id": 81689,
+    "name": "Beverly",
+    "creation": "2015-07-25T08:51:27.611Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 84,
+      "name": "Doduo"
+    },
+    "wins": 0
+  },
+  {
+    "id": 39270,
+    "name": "Shenika",
+    "creation": "2016-08-14T16:15:46.755Z",
+    "color": "Pink",
+    "pokemon": {
+      "number": 51,
+      "name": "Dugtrio"
+    },
+    "wins": 1
+  },
+  {
+    "id": 97777,
+    "name": "Genoveva",
+    "creation": "2016-04-12T09:09:22.501Z",
+    "color": "Brown",
+    "pokemon": {
+      "number": 58,
+      "name": "Growlithe"
+    },
+    "wins": 26
+  },
+  {
+    "id": 6330,
+    "name": "Kaitlin",
+    "creation": "2016-04-07T16:21:10.957Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 30,
+      "name": "Nidorina"
+    },
+    "wins": 3
+  },
+  {
+    "id": 77811,
+    "name": "Johnson",
+    "creation": "2023-03-31T01:28:47.190Z",
+    "color": "Pink",
+    "pokemon": {
+      "number": 29,
+      "name": "Nidoran-f"
+    },
+    "wins": 18
+  },
+  {
+    "id": 84763,
+    "name": "Lottie",
+    "creation": "2018-07-01T04:57:22.027Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 138,
+      "name": "Omanyte"
+    },
+    "wins": 12
+  },
+  {
+    "id": 49816,
+    "name": "Jeana",
+    "creation": "2015-07-23T22:40:40.250Z",
+    "color": "Brown",
+    "pokemon": {
+      "number": 31,
+      "name": "Nidoqueen"
+    },
+    "wins": 39
+  },
+  {
+    "id": 11695,
+    "name": "Lottie",
+    "creation": "2023-07-15T06:55:05.385Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 117,
+      "name": "Seadra"
+    },
+    "wins": 9
+  },
+  {
+    "id": 40364,
+    "name": "Lottie",
+    "creation": "2018-02-07T21:36:27.333Z",
+    "color": "Yellow",
+    "pokemon": {
+      "number": 59,
+      "name": "Arcanine"
+    },
+    "wins": 43
+  },
+  {
+    "id": 83414,
+    "name": "Genoveva",
+    "creation": "2022-10-15T20:33:36.893Z",
+    "color": "Blue",
+    "pokemon": {
+      "number": 130,
+      "name": "Gyarados"
+    },
+    "wins": 37
+  },
+  {
+    "id": 62353,
+    "name": "Sheridan",
+    "creation": "2018-02-14T21:32:54.308Z",
+    "color": "Violet",
+    "pokemon": {
+      "number": 68,
+      "name": "Machamp"
+    },
+    "wins": 45
+  },
+  {
+    "id": 82285,
+    "name": "Darla",
+    "creation": "2015-02-15T04:37:01.062Z",
+    "color": "Black",
+    "pokemon": {
+      "number": 103,
+      "name": "Exeggutor"
+    },
+    "wins": 8
+  },
+  {
+    "id": 41253,
+    "name": "Desirae",
+    "creation": "2019-04-22T03:19:18.945Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 104,
+      "name": "Cubone"
+    },
+    "wins": 24
+  },
+  {
+    "id": 77057,
+    "name": "Dorian",
+    "creation": "2015-11-01T22:02:59.040Z",
+    "color": "Brown",
+    "pokemon": {
+      "number": 111,
+      "name": "Rhyhorn"
+    },
+    "wins": 99
+  },
+  {
+    "id": 94113,
+    "name": "Lenny",
+    "creation": "2021-11-20T20:31:17.107Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 101,
+      "name": "Electrode"
+    },
+    "wins": 24
+  },
+  {
+    "id": 98522,
+    "name": "Lottie",
+    "creation": "2015-05-16T03:21:46.046Z",
+    "color": "White",
+    "pokemon": {
+      "number": 80,
+      "name": "Slowbro"
+    },
+    "wins": 47
+  },
+  {
+    "id": 14229,
+    "name": "Lenny",
+    "creation": "2021-01-09T14:06:52.032Z",
+    "color": "Black",
+    "pokemon": {
+      "number": 76,
+      "name": "Golem"
+    },
+    "wins": 81
+  },
+  {
+    "id": 9488,
+    "name": "Genoveva",
+    "creation": "2020-06-12T15:15:45.262Z",
+    "color": "Black",
+    "pokemon": {
+      "number": 60,
+      "name": "Poliwag"
+    },
+    "wins": 42
+  },
+  {
+    "id": 23811,
+    "name": "Brad",
+    "creation": "2015-11-21T08:04:10.343Z",
+    "color": "Green",
+    "pokemon": {
+      "number": 97,
+      "name": "Hypno"
+    },
+    "wins": 7
+  },
+  {
+    "id": 34851,
+    "name": "Alica",
+    "creation": "2023-07-13T04:34:13.416Z",
+    "color": "Orange",
+    "pokemon": {
+      "number": 127,
+      "name": "Pinsir"
+    },
+    "wins": 17
+  },
+  {
+    "id": 53187,
+    "name": "Marcella",
+    "creation": "2023-04-09T14:08:50.083Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 89,
+      "name": "Muk"
+    },
+    "wins": 19
+  },
+  {
+    "id": 23219,
+    "name": "Lenny",
+    "creation": "2014-09-12T22:34:35.701Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 11,
+      "name": "Metapod"
+    },
+    "wins": 23
+  },
+  {
+    "id": 1938,
+    "name": "Jeana",
+    "creation": "2023-06-16T18:41:22.646Z",
+    "color": "Black",
+    "pokemon": {
+      "number": 100,
+      "name": "Voltorb"
+    },
+    "wins": 44
+  },
+  {
+    "id": 44004,
+    "name": "Jeana",
+    "creation": "2016-05-07T21:01:14.091Z",
+    "color": "Cyan",
+    "pokemon": {
+      "number": 72,
+      "name": "Tentacool"
+    },
+    "wins": 70
+  },
+  {
+    "id": 85504,
+    "name": "Brynn",
+    "creation": "2023-03-02T20:33:44.451Z",
+    "color": "Cyan",
+    "pokemon": {
+      "number": 57,
+      "name": "Primeape"
+    },
+    "wins": 21
+  },
+  {
+    "id": 95123,
+    "name": "Nelson",
+    "creation": "2017-04-13T13:55:39.212Z",
+    "color": "Green",
+    "pokemon": {
+      "number": 44,
+      "name": "Gloom"
+    },
+    "wins": 23
+  },
+  {
+    "id": 23233,
+    "name": "Lucius",
+    "creation": "2014-03-18T21:17:56.216Z",
+    "color": "Green",
+    "pokemon": {
+      "number": 144,
+      "name": "Articuno"
+    },
+    "wins": 72
+  },
+  {
+    "id": 30248,
+    "name": "Georgia",
+    "creation": "2019-07-24T07:35:59.935Z",
+    "color": "Cyan",
+    "pokemon": {
+      "number": 39,
+      "name": "Jigglypuff"
+    },
+    "wins": 14
+  },
+  {
+    "id": 59180,
+    "name": "Graham",
+    "creation": "2015-12-02T17:35:10.834Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 147,
+      "name": "Dratini"
+    },
+    "wins": 99
+  },
+  {
+    "id": 53882,
+    "name": "Marcella",
+    "creation": "2023-07-28T13:40:50.279Z",
+    "color": "Magenta",
+    "pokemon": {
+      "number": 119,
+      "name": "Seaking"
+    },
+    "wins": 78
+  },
+  {
+    "id": 47093,
+    "name": "Ellen",
+    "creation": "2020-06-04T15:32:29.653Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 14,
+      "name": "Kakuna"
+    },
+    "wins": 25
+  },
+  {
+    "id": 27452,
+    "name": "Graham",
+    "creation": "2014-05-05T14:30:13.126Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 126,
+      "name": "Magmar"
+    },
+    "wins": 28
+  },
+  {
+    "id": 64198,
+    "name": "Dorian",
+    "creation": "2022-09-30T03:57:13.661Z",
+    "color": "Pink",
+    "pokemon": {
+      "number": 27,
+      "name": "Sandshrew"
+    },
+    "wins": 61
+  },
+  {
+    "id": 87555,
+    "name": "Desirae",
+    "creation": "2014-12-30T13:44:24.610Z",
+    "color": "Magenta",
+    "pokemon": {
+      "number": 98,
+      "name": "Krabby"
+    },
+    "wins": 59
+  },
+  {
+    "id": 90051,
+    "name": "Keenan",
+    "creation": "2016-03-17T22:51:19.885Z",
+    "color": "Pink",
+    "pokemon": {
+      "number": 66,
+      "name": "Machop"
+    },
+    "wins": 19
+  },
+  {
+    "id": 62530,
+    "name": "Lottie",
+    "creation": "2017-03-25T09:31:40.406Z",
+    "color": "Magenta",
+    "pokemon": {
+      "number": 6,
+      "name": "Charizard"
+    },
+    "wins": 28
+  },
+  {
+    "id": 54194,
+    "name": "Darla",
+    "creation": "2019-04-22T05:34:47.617Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 106,
+      "name": "Hitmonlee"
+    },
+    "wins": 19
+  },
+  {
+    "id": 86652,
+    "name": "Brynn",
+    "creation": "2014-04-17T05:50:24.741Z",
+    "color": "Violet",
+    "pokemon": {
+      "number": 38,
+      "name": "Ninetales"
+    },
+    "wins": 73
+  },
+  {
+    "id": 18832,
+    "name": "Olene",
+    "creation": "2016-09-15T05:00:54.107Z",
+    "color": "Orange",
+    "pokemon": {
+      "number": 63,
+      "name": "Abra"
+    },
+    "wins": 36
+  },
+  {
+    "id": 18079,
+    "name": "Luna",
+    "creation": "2016-03-27T14:10:13.926Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 111,
+      "name": "Rhyhorn"
+    },
+    "wins": 28
+  },
+  {
+    "id": 71843,
+    "name": "Darla",
+    "creation": "2015-07-26T05:21:45.515Z",
+    "color": "Orange",
+    "pokemon": {
+      "number": 91,
+      "name": "Cloyster"
+    },
+    "wins": 8
+  },
+  {
+    "id": 70299,
+    "name": "Sibyl",
+    "creation": "2021-02-16T00:56:16.682Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 69,
+      "name": "Bellsprout"
+    },
+    "wins": 75
+  },
+  {
+    "id": 47753,
+    "name": "Ellen",
+    "creation": "2014-07-28T07:43:35.697Z",
+    "color": "White",
+    "pokemon": {
+      "number": 71,
+      "name": "Victreebel"
+    },
+    "wins": 33
+  },
+  {
+    "id": 38550,
+    "name": "Letisha",
+    "creation": "2021-03-02T13:46:32.796Z",
+    "color": "Blue",
+    "pokemon": {
+      "number": 51,
+      "name": "Dugtrio"
+    },
+    "wins": 72
+  },
+  {
+    "id": 97324,
+    "name": "Letisha",
+    "creation": "2018-10-27T14:54:05.285Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 75,
+      "name": "Graveler"
+    },
+    "wins": 86
+  },
+  {
+    "id": 37122,
+    "name": "Nelson",
+    "creation": "2020-02-23T15:19:27.481Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 123,
+      "name": "Scyther"
+    },
+    "wins": 66
+  },
+  {
+    "id": 52881,
+    "name": "Beverly",
+    "creation": "2018-12-17T07:30:03.074Z",
+    "color": "Brown",
+    "pokemon": {
+      "number": 126,
+      "name": "Magmar"
+    },
+    "wins": 0
+  },
+  {
+    "id": 31342,
+    "name": "Jeana",
+    "creation": "2015-04-18T16:53:58.796Z",
+    "color": "Orange",
+    "pokemon": {
+      "number": 10,
+      "name": "Caterpie"
+    },
+    "wins": 2
+  },
+  {
+    "id": 24548,
+    "name": "Luna",
+    "creation": "2015-10-07T23:23:17.741Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 146,
+      "name": "Moltres"
+    },
+    "wins": 55
+  },
+  {
+    "id": 82995,
+    "name": "Dorian",
+    "creation": "2020-01-01T20:02:05.755Z",
+    "color": "Green",
+    "pokemon": {
+      "number": 110,
+      "name": "Weezing"
+    },
+    "wins": 45
+  },
+  {
+    "id": 77275,
+    "name": "Graham",
+    "creation": "2016-10-30T08:44:57.396Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 28,
+      "name": "Sandslash"
+    },
+    "wins": 9
+  },
+  {
+    "id": 22750,
+    "name": "Georgia",
+    "creation": "2023-07-10T22:20:56.306Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 65,
+      "name": "Alakazam"
+    },
+    "wins": 48
+  },
+  {
+    "id": 38391,
+    "name": "Kaitlin",
+    "creation": "2020-08-23T16:29:42.810Z",
+    "color": "Blue",
+    "pokemon": {
+      "number": 98,
+      "name": "Krabby"
+    },
+    "wins": 8
+  },
+  {
+    "id": 88603,
+    "name": "Keenan",
+    "creation": "2015-07-26T18:35:25.124Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 107,
+      "name": "Hitmonchan"
+    },
+    "wins": 69
+  },
+  {
+    "id": 44854,
+    "name": "Luna",
+    "creation": "2018-07-26T23:23:15.123Z",
+    "color": "Pink",
+    "pokemon": {
+      "number": 50,
+      "name": "Diglett"
+    },
+    "wins": 13
+  },
+  {
+    "id": 90980,
+    "name": "Brad",
+    "creation": "2014-08-29T00:27:26.342Z",
+    "color": "Green",
+    "pokemon": {
+      "number": 141,
+      "name": "Kabutops"
+    },
+    "wins": 53
+  },
+  {
+    "id": 18594,
+    "name": "Sheridan",
+    "creation": "2015-02-11T06:20:52.662Z",
+    "color": "Yellow",
+    "pokemon": {
+      "number": 128,
+      "name": "Tauros"
+    },
+    "wins": 66
+  },
+  {
+    "id": 65152,
+    "name": "Sibyl",
+    "creation": "2022-01-31T18:15:03.745Z",
+    "color": "Magenta",
+    "pokemon": {
+      "number": 141,
+      "name": "Kabutops"
+    },
+    "wins": 62
+  },
+  {
+    "id": 23365,
+    "name": "Shenika",
+    "creation": "2018-02-01T00:11:17.478Z",
+    "color": "Yellow",
+    "pokemon": {
+      "number": 1,
+      "name": "Bulbasaur"
+    },
+    "wins": 22
+  },
+  {
+    "id": 78690,
+    "name": "Debby",
+    "creation": "2017-05-11T07:05:44.359Z",
+    "color": "Green",
+    "pokemon": {
+      "number": 106,
+      "name": "Hitmonlee"
+    },
+    "wins": 99
+  },
+  {
+    "id": 80047,
+    "name": "Desirae",
+    "creation": "2022-12-07T22:39:31.850Z",
+    "color": "White",
+    "pokemon": {
+      "number": 25,
+      "name": "Pikachu"
+    },
+    "wins": 83
+  },
+  {
+    "id": 51628,
+    "name": "Desirae",
+    "creation": "2020-08-01T02:18:23.818Z",
+    "color": "Magenta",
+    "pokemon": {
+      "number": 61,
+      "name": "Poliwhirl"
+    },
+    "wins": 78
+  },
+  {
+    "id": 12733,
+    "name": "Johnson",
+    "creation": "2016-05-16T03:20:24.270Z",
+    "color": "Brown",
+    "pokemon": {
+      "number": 117,
+      "name": "Seadra"
+    },
+    "wins": 21
+  },
+  {
+    "id": 29033,
+    "name": "Darla",
+    "creation": "2019-04-18T01:02:20.759Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 28,
+      "name": "Sandslash"
+    },
+    "wins": 94
+  },
+  {
+    "id": 2147,
+    "name": "Shenika",
+    "creation": "2014-04-10T01:17:02.795Z",
+    "color": "Brown",
+    "pokemon": {
+      "number": 56,
+      "name": "Mankey"
+    },
+    "wins": 47
+  },
+  {
+    "id": 14004,
+    "name": "Kaitlin",
+    "creation": "2021-02-13T07:09:09.976Z",
+    "color": "White",
+    "pokemon": {
+      "number": 58,
+      "name": "Growlithe"
+    },
+    "wins": 35
+  },
+  {
+    "id": 97605,
+    "name": "Graham",
+    "creation": "2014-09-16T02:27:31.628Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 46,
+      "name": "Paras"
+    },
+    "wins": 81
+  },
+  {
+    "id": 85996,
+    "name": "Shenika",
+    "creation": "2021-10-12T23:55:24.795Z",
+    "color": "Violet",
+    "pokemon": {
+      "number": 89,
+      "name": "Muk"
+    },
+    "wins": 26
+  },
+  {
+    "id": 14817,
+    "name": "Genoveva",
+    "creation": "2016-07-16T15:46:17.155Z",
+    "color": "Orange",
+    "pokemon": {
+      "number": 78,
+      "name": "Rapidash"
+    },
+    "wins": 17
+  },
+  {
+    "id": 84031,
+    "name": "Ellen",
+    "creation": "2016-05-16T10:54:32.507Z",
+    "color": "Brown",
+    "pokemon": {
+      "number": 66,
+      "name": "Machop"
+    },
+    "wins": 50
+  },
+  {
+    "id": 69891,
+    "name": "Brad",
+    "creation": "2014-11-02T03:02:15.476Z",
+    "color": "Magenta",
+    "pokemon": {
+      "number": 69,
+      "name": "Bellsprout"
+    },
+    "wins": 42
+  },
+  {
+    "id": 78210,
+    "name": "Alica",
+    "creation": "2022-09-19T13:20:02.496Z",
+    "color": "Violet",
+    "pokemon": {
+      "number": 15,
+      "name": "Beedrill"
+    },
+    "wins": 67
+  },
+  {
+    "id": 88863,
+    "name": "Debby",
+    "creation": "2017-08-26T18:31:38.299Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 76,
+      "name": "Golem"
+    },
+    "wins": 28
+  },
+  {
+    "id": 24461,
+    "name": "Luna",
+    "creation": "2018-10-01T06:03:06.323Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 131,
+      "name": "Lapras"
+    },
+    "wins": 25
+  },
+  {
+    "id": 75278,
+    "name": "Johnson",
+    "creation": "2016-11-02T23:53:10.155Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 114,
+      "name": "Tangela"
+    },
+    "wins": 0
+  },
+  {
+    "id": 70208,
+    "name": "Ellen",
+    "creation": "2015-09-07T00:10:46.868Z",
+    "color": "Brown",
+    "pokemon": {
+      "number": 36,
+      "name": "Clefable"
+    },
+    "wins": 18
+  },
+  {
+    "id": 25124,
+    "name": "Kaitlin",
+    "creation": "2015-05-09T12:42:17.923Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 119,
+      "name": "Seaking"
+    },
+    "wins": 6
+  },
+  {
+    "id": 29160,
+    "name": "Marcella",
+    "creation": "2016-08-28T05:28:57.471Z",
+    "color": "Green",
+    "pokemon": {
+      "number": 37,
+      "name": "Vulpix"
+    },
+    "wins": 32
+  },
+  {
+    "id": 44279,
+    "name": "Nelson",
+    "creation": "2018-06-19T20:36:14.395Z",
+    "color": "Orange",
+    "pokemon": {
+      "number": 80,
+      "name": "Slowbro"
+    },
+    "wins": 67
+  },
+  {
+    "id": 30545,
+    "name": "Letisha",
+    "creation": "2018-08-15T04:25:35.287Z",
+    "color": "Cyan",
+    "pokemon": {
+      "number": 51,
+      "name": "Dugtrio"
+    },
+    "wins": 39
+  },
+  {
+    "id": 12809,
+    "name": "Nelson",
+    "creation": "2021-06-28T15:00:31.290Z",
+    "color": "Brown",
+    "pokemon": {
+      "number": 82,
+      "name": "Magneton"
+    },
+    "wins": 63
+  },
+  {
+    "id": 85418,
+    "name": "Shenika",
+    "creation": "2019-11-14T19:44:26.095Z",
+    "color": "Blue",
+    "pokemon": {
+      "number": 33,
+      "name": "Nidorino"
+    },
+    "wins": 70
+  },
+  {
+    "id": 78884,
+    "name": "Sibyl",
+    "creation": "2017-12-23T02:22:07.805Z",
+    "color": "White",
+    "pokemon": {
+      "number": 83,
+      "name": "Farfetch'd"
+    },
+    "wins": 92
+  },
+  {
+    "id": 48642,
+    "name": "Lenny",
+    "creation": "2021-07-23T19:47:12.188Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 98,
+      "name": "Krabby"
+    },
+    "wins": 66
+  },
+  {
+    "id": 82090,
+    "name": "Alica",
+    "creation": "2020-11-14T18:02:42.236Z",
+    "color": "White",
+    "pokemon": {
+      "number": 80,
+      "name": "Slowbro"
+    },
+    "wins": 43
+  },
+  {
+    "id": 16978,
+    "name": "Keenan",
+    "creation": "2020-12-07T05:47:23.894Z",
+    "color": "Yellow",
+    "pokemon": {
+      "number": 41,
+      "name": "Zubat"
+    },
+    "wins": 46
+  },
+  {
+    "id": 1469,
+    "name": "Genoveva",
+    "creation": "2014-01-11T20:10:05.717Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 108,
+      "name": "Lickitung"
+    },
+    "wins": 58
+  },
+  {
+    "id": 33641,
+    "name": "Keenan",
+    "creation": "2016-07-31T09:21:47.668Z",
+    "color": "Orange",
+    "pokemon": {
+      "number": 149,
+      "name": "Dragonite"
+    },
+    "wins": 95
+  },
+  {
+    "id": 78326,
+    "name": "Shenika",
+    "creation": "2019-07-16T18:59:54.683Z",
+    "color": "Pink",
+    "pokemon": {
+      "number": 134,
+      "name": "Vaporeon"
+    },
+    "wins": 72
+  },
+  {
+    "id": 33401,
+    "name": "Dorian",
+    "creation": "2017-12-25T23:05:51.810Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 4,
+      "name": "Charmander"
+    },
+    "wins": 57
+  },
+  {
+    "id": 1875,
+    "name": "Lottie",
+    "creation": "2018-09-02T12:59:28.374Z",
+    "color": "Magenta",
+    "pokemon": {
+      "number": 56,
+      "name": "Mankey"
+    },
+    "wins": 93
+  },
+  {
+    "id": 58226,
+    "name": "Graham",
+    "creation": "2019-09-07T10:26:28.327Z",
+    "color": "Violet",
+    "pokemon": {
+      "number": 100,
+      "name": "Voltorb"
+    },
+    "wins": 94
+  },
+  {
+    "id": 51254,
+    "name": "Marcella",
+    "creation": "2015-12-12T19:30:44.703Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 17,
+      "name": "Pidgeotto"
+    },
+    "wins": 86
+  },
+  {
+    "id": 62856,
+    "name": "Rhona",
+    "creation": "2017-11-24T21:18:58.970Z",
+    "color": "Green",
+    "pokemon": {
+      "number": 52,
+      "name": "Meowth"
+    },
+    "wins": 22
+  },
+  {
+    "id": 16258,
+    "name": "Debby",
+    "creation": "2016-03-11T16:16:38.237Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 77,
+      "name": "Ponyta"
+    },
+    "wins": 19
+  },
+  {
+    "id": 39454,
+    "name": "Ellen",
+    "creation": "2019-10-04T19:43:56.932Z",
+    "color": "Black",
+    "pokemon": {
+      "number": 24,
+      "name": "Arbok"
+    },
+    "wins": 94
+  },
+  {
+    "id": 28275,
+    "name": "Marcella",
+    "creation": "2016-06-03T01:12:09.769Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 100,
+      "name": "Voltorb"
+    },
+    "wins": 17
+  },
+  {
+    "id": 17544,
+    "name": "Beverly",
+    "creation": "2022-01-24T13:23:03.328Z",
+    "color": "Black",
+    "pokemon": {
+      "number": 40,
+      "name": "Wigglytuff"
+    },
+    "wins": 5
+  },
+  {
+    "id": 35935,
+    "name": "Beverly",
+    "creation": "2014-09-01T15:43:53.552Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 138,
+      "name": "Omanyte"
+    },
+    "wins": 85
+  },
+  {
+    "id": 69441,
+    "name": "Sheridan",
+    "creation": "2016-01-11T07:56:51.634Z",
+    "color": "Violet",
+    "pokemon": {
+      "number": 47,
+      "name": "Parasect"
+    },
+    "wins": 81
+  },
+  {
+    "id": 27920,
+    "name": "Roslyn",
+    "creation": "2019-09-09T16:19:51.714Z",
+    "color": "Orange",
+    "pokemon": {
+      "number": 64,
+      "name": "Kadabra"
+    },
+    "wins": 88
+  },
+  {
+    "id": 29796,
+    "name": "Debby",
+    "creation": "2017-09-28T07:18:24.429Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 68,
+      "name": "Machamp"
+    },
+    "wins": 3
+  },
+  {
+    "id": 90335,
+    "name": "Beverly",
+    "creation": "2019-11-20T21:03:29.465Z",
+    "color": "White",
+    "pokemon": {
+      "number": 16,
+      "name": "Pidgey"
+    },
+    "wins": 57
+  },
+  {
+    "id": 86620,
+    "name": "Lottie",
+    "creation": "2019-11-03T22:15:34.979Z",
+    "color": "Yellow",
+    "pokemon": {
+      "number": 67,
+      "name": "Machoke"
+    },
+    "wins": 90
+  },
+  {
+    "id": 51919,
+    "name": "Kaitlin",
+    "creation": "2014-10-13T11:39:29.682Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 54,
+      "name": "Psyduck"
+    },
+    "wins": 80
+  },
+  {
+    "id": 81700,
+    "name": "Letisha",
+    "creation": "2022-05-03T11:38:53.367Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 129,
+      "name": "Magikarp"
+    },
+    "wins": 85
+  },
+  {
+    "id": 9696,
+    "name": "Letisha",
+    "creation": "2019-03-01T04:05:03.598Z",
+    "color": "Yellow",
+    "pokemon": {
+      "number": 14,
+      "name": "Kakuna"
+    },
+    "wins": 68
+  },
+  {
+    "id": 47889,
+    "name": "Johnson",
+    "creation": "2018-05-30T00:38:49.083Z",
+    "color": "Blue",
+    "pokemon": {
+      "number": 19,
+      "name": "Rattata"
+    },
+    "wins": 18
+  },
+  {
+    "id": 47799,
+    "name": "Olene",
+    "creation": "2019-10-10T02:46:32.603Z",
+    "color": "Green",
+    "pokemon": {
+      "number": 101,
+      "name": "Electrode"
+    },
+    "wins": 20
+  },
+  {
+    "id": 8388,
+    "name": "Lottie",
+    "creation": "2023-05-09T03:24:39.131Z",
+    "color": "Cyan",
+    "pokemon": {
+      "number": 30,
+      "name": "Nidorina"
+    },
+    "wins": 96
+  },
+  {
+    "id": 27775,
+    "name": "Jeana",
+    "creation": "2015-05-05T04:03:50.712Z",
+    "color": "Red",
+    "pokemon": {
+      "number": 71,
+      "name": "Victreebel"
+    },
+    "wins": 90
+  },
+  {
+    "id": 89424,
+    "name": "Kaitlin",
+    "creation": "2019-12-23T12:02:09.942Z",
+    "color": "Yellow",
+    "pokemon": {
+      "number": 4,
+      "name": "Charmander"
+    },
+    "wins": 89
+  },
+  {
+    "id": 77662,
+    "name": "Rhona",
+    "creation": "2018-12-09T23:05:26.251Z",
+    "color": "Purple",
+    "pokemon": {
+      "number": 11,
+      "name": "Metapod"
+    },
+    "wins": 14
+  },
+  {
+    "id": 65021,
+    "name": "Johnson",
+    "creation": "2022-02-14T15:02:27.255Z",
+    "color": "Yellow",
+    "pokemon": {
+      "number": 81,
+      "name": "Magnemite"
+    },
+    "wins": 2
+  },
+  {
+    "id": 99923,
+    "name": "Keenan",
+    "creation": "2018-12-04T17:16:23.518Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 35,
+      "name": "Clefairy"
+    },
+    "wins": 13
+  },
+  {
+    "id": 12621,
+    "name": "Sibyl",
+    "creation": "2022-10-01T17:27:40.206Z",
+    "color": "Brown",
+    "pokemon": {
+      "number": 81,
+      "name": "Magnemite"
+    },
+    "wins": 77
+  },
+  {
+    "id": 97418,
+    "name": "Sibyl",
+    "creation": "2014-11-19T00:27:46.138Z",
+    "color": "White",
+    "pokemon": {
+      "number": 1,
+      "name": "Bulbasaur"
+    },
+    "wins": 91
+  },
+  {
+    "id": 66544,
+    "name": "Graham",
+    "creation": "2019-03-05T13:49:10.915Z",
+    "color": "Blue",
+    "pokemon": {
+      "number": 57,
+      "name": "Primeape"
+    },
+    "wins": 93
+  },
+  {
+    "id": 63569,
+    "name": "Darla",
+    "creation": "2021-09-24T03:46:31.350Z",
+    "color": "Blue",
+    "pokemon": {
+      "number": 36,
+      "name": "Clefable"
+    },
+    "wins": 95
+  },
+  {
+    "id": 56930,
+    "name": "Lottie",
+    "creation": "2015-11-11T15:38:57.177Z",
+    "color": "White",
+    "pokemon": {
+      "number": 61,
+      "name": "Poliwhirl"
+    },
+    "wins": 33
+  },
+  {
+    "id": 4072,
+    "name": "Kaitlin",
+    "creation": "2019-08-16T12:42:40.567Z",
+    "color": "Pink",
+    "pokemon": {
+      "number": 4,
+      "name": "Charmander"
+    },
+    "wins": 57
+  },
+  {
+    "id": 84499,
+    "name": "Sibyl",
+    "creation": "2015-02-24T21:15:27.921Z",
+    "color": "Violet",
+    "pokemon": {
+      "number": 75,
+      "name": "Graveler"
+    },
+    "wins": 55
+  },
+  {
+    "id": 16281,
+    "name": "Jeana",
+    "creation": "2021-03-20T03:17:16.117Z",
+    "color": "Violet",
+    "pokemon": {
+      "number": 32,
+      "name": "Nidoran-m"
+    },
+    "wins": 40
+  },
+  {
+    "id": 76548,
+    "name": "Marcella",
+    "creation": "2017-06-13T21:06:21.157Z",
+    "color": "Indigo",
+    "pokemon": {
+      "number": 124,
+      "name": "Jynx"
+    },
+    "wins": 9
+  },
+  {
+    "id": 63118,
+    "name": "Brad",
+    "creation": "2014-02-16T09:30:42.964Z",
+    "color": "Yellow",
+    "pokemon": {
+      "number": 42,
+      "name": "Golbat"
+    },
+    "wins": 82
+  },
+  {
+    "id": 45196,
+    "name": "Debby",
+    "creation": "2022-09-14T14:40:16.857Z",
+    "color": "Gray",
+    "pokemon": {
+      "number": 92,
+      "name": "Gastly"
+    },
+    "wins": 52
+  }
+]

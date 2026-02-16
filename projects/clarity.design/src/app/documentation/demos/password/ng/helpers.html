@@ -1,0 +1,17 @@
+<form clrForm>
+  <clr-password-container>
+    <label>Password</label>
+    <input
+      clrPassword
+      autocomplete="current-password"
+      placeholder="Password please!"
+      [(ngModel)]="password"
+      name="password"
+      required
+      minlength="8"
+    />
+    <clr-control-helper>Must contain at least 8 characters!</clr-control-helper>
+    <clr-control-error *clrIfError="'required'">This field is required!</clr-control-error>
+    <clr-control-error *clrIfError="'minlength'">It must be at least 8 characters!</clr-control-error>
+  </clr-password-container>
+</form>

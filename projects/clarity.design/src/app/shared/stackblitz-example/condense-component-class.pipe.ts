@@ -1,0 +1,22 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'appCondenseComponentClass',
+})
+export class CondenseComponentClassPipe implements PipeTransform {
+  transform(componentClass: string) {
+    const condensedComponentClass = `
+@Component({ /* ... */ })
+${componentClass.substring(componentClass.indexOf('export class'))}
+`;
+
+    return condensedComponentClass.trim();
+  }
+}

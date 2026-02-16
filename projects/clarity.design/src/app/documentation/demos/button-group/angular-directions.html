@@ -1,0 +1,21 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example space-below">
+  <clr-button-group [clrMenuPosition]="'bottom-right'">
+    <clr-button>Add</clr-button>
+    <clr-button>Edit</clr-button>
+    <clr-button>Download</clr-button>
+    <clr-button [clrInMenu]="true">Assign</clr-button>
+    <clr-button [clrInMenu]="true">Move</clr-button>
+    <clr-button [clrInMenu]="true">Delete</clr-button>
+  </clr-button-group>
+</div>
+<app-stackblitz-example
+  name="button group component menu direction"
+  [componentTemplate]="htmlExample"
+></app-stackblitz-example>

@@ -1,0 +1,44 @@
+<div *ngIf="icon && selectedIconVariant" class="card icon-detail-card">
+  <div class="card-block">
+    <div class="card-title" cds-text="medium" cds-layout="horizontal m-b:lg m-t:md gap:sm">
+      <div>{{ icon.name }}</div>
+      <div
+        *ngIf="icon.name | appIconAliases; let iconAliases"
+        class="icon-detail-card__aliases"
+        cds-text="caption"
+        cds-layout="m-t:xs"
+      >
+        aliases: {{ iconAliases | json }}
+      </div>
+    </div>
+    <div class="card-text">
+      <app-code-snippet [code]="icon.name | appIconCode: selectedIconVariant"></app-code-snippet>
+      <div cds-layout="m-t:lg">
+        <div *ngIf="hasIconVariants" cds-layout="m-y:md">Select the desired icon design to get its code snippet:</div>
+        <button
+          *ngFor="let iconVariant of iconVariants"
+          [attr.aria-label]="icon.name | appIconAriaLabel: iconVariant"
+          class="icon-detail-card__variant"
+          [ngClass]="{
+            'icon-detail-card__variant--selected':
+              selectedIconVariant.solid === iconVariant.solid && selectedIconVariant.badge === iconVariant.badge
+          }"
+          (click)="selectedIconVariant = iconVariant"
+        >
+          <cds-icon
+            size="md"
+            [attr.shape]="icon.name"
+            [attr.solid]="iconVariant.solid"
+            [attr.badge]="iconVariant.badge"
+          ></cds-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div cds-layout="horizontal" class="card-footer">
+    See more usage options in <a routerLink="/documentation/icons/api/">How To Use</a>
+    <button class="btn btn-outline btn-sm" cds-layout="align:right" (click)="downloadSelectedIcon()">
+      <cds-icon shape="download" class="download-svg-icon"></cds-icon> SVG Icon
+    </button>
+  </div>
+</div>

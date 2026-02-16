@@ -1,0 +1,85 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2 class="clr-mt-48px" cds-text="title">Server-Driven datagrid</h2>
+
+<p class="clr-mt-16px" cds-text="body">
+  When dealing with large amounts of data or heavy processing, a datagrid often has access the currently displayed data
+  only, requesting only the necessary pieces from the server. This is a very common case that we fully support.
+</p>
+<p class="clr-mt-16px clr-mb-16px" cds-text="body">
+  We expose events and hooks on all parts of the datagrid to make sure you can trigger any requests you need based on
+  precise user actions. But an important thing to note is that when the server does handle pagination, it needs to also
+  deal with sorting and filtering, because all three are tightly coupled. In light of this, we decided to expose a
+  single global output <code cds-text="code">(clrDgRefresh)</code> that emits the current "state" of the datagrid
+  whenever it changes due to a user action or an external one. This state has the following format:
+</p>
+<app-code-snippet [code]="examples.stateInterface" language="typescript"></app-code-snippet>
+<p class="clr-mt-16px" cds-text="body">
+  It contains all the information you need to send to the server in order to get the slice of data currently displayed.
+  It even contains redundant information (
+  <code cds-text="code">page.to</code> and <code cds-text="code">page.size</code> for instance), to make sure you have
+  access to the most practical for you without extra processing.
+</p>
+<p class="clr-mt-16px" cds-text="body">
+  The <code cds-text="code">filters</code> array contains either a custom state object returned by the
+  <code cds-text="code">state</code> method of the filter or the filter instance itself if the optional
+  <code cds-text="code">state</code> method is not implemented.
+</p>
+<p class="clr-mt-16px" cds-text="body">
+  One important thing to note is that since you don't have all the data available at once, you cannot use the smart
+  iterator
+  <code cds-text="code">*clrDgItems</code>: it would sort, filter and paginate a subset of the data that has already
+  gone through all that. So all you need to do is to go back to a simple <code cds-text="code">*ngFor</code>, which we
+  support.
+</p>
+<p class="clr-mt-16px" cds-text="body">
+  Finally, since server calls are involved, we need some way of notifying the user that his action has been acknowledged
+  and that we are currently working on it. To this effect, we provide an input
+  <code cds-text="code">[clrDgLoading]</code> that you can use to display the datagrid in a loading state, while
+  fetching data.
+</p>
+
+<p class="clr-mt-16px clr-mb-16px" cds-text="body">
+  Here is an example showcasing all this with a fake server latency of 500ms. It also demonstrates how to adapt the
+  state we emit when it does not match exactly your server's API: in this example, the filters are re-formatted from an
+  array to a map.
+</p>
+
+<clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading">
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+  <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
+  <clr-dg-column [clrDgField]="'pokemon'">Pokemon</clr-dg-column>
+  <clr-dg-column [clrDgField]="'color'">Favorite color</clr-dg-column>
+
+  <clr-dg-row *ngFor="let user of users">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="totalUserCount">
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Users per page</clr-dg-page-size>
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} users
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Server Driven"
+  [componentTemplate]="examples.serverDrivenHTML"
+  [componentClass]="examples.serverDrivenTS"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>

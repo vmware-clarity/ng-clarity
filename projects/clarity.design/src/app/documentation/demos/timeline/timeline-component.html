@@ -1,0 +1,79 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h4 cds-text="subsection" class="clr-mt-32px">Timeline component <code cds-text="code">&lt;clr-timeline&gt;</code></h4>
+
+<p cds-text="body" class="clr-mt-16px">
+  The orientation is controlled by the <code cds-text="code">[clrLayout]</code> input. This input receives a
+  <code cds-text="code">ClrTimelineLayout</code> enum value, which can be <code cds-text="code">HORIZONTAL</code> or
+  <code cds-text="code">VERTICAL</code>.
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Input/Output</th>
+      <th class="left hidden-xs-down">Values</th>
+      <th class="left hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let prop of props">
+      <td class="left">
+        <b cds-text="medium">{{ prop.name }}</b>
+      </td>
+      <td class="left hidden-xs-down">{{ prop.values }}</td>
+      <td class="left hidden-xs-down">{{ prop.defaultValue }}</td>
+      <td class="left">{{ prop.description }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 cds-text="subsection" class="clr-mt-32px">
+  TimelineStep component <code cds-text="code">&lt;clr-timeline-step&gt;</code>
+</h4>
+
+<p cds-text="body" class="clr-mt-16px">
+  The icon shown in the step is controlled by the <code cds-text="code">[clrState]</code> input. This input receives a
+  <code cds-text="code">ClrTimelineStepState</code> enum value, which can be <code cds-text="code">NOT_STARTED</code>,
+  <code cds-text="code">CURRENT</code>, <code cds-text="code">SUCCESS</code>, <code cds-text="code">ERROR</code> or
+  <code cds-text="code">PROCESSING</code>.
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Input/Output</th>
+      <th class="left hidden-xs-down">Values</th>
+      <th class="left hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let prop of stepProps">
+      <td class="left">
+        <b cds-text="medium">{{ prop.name }}</b>
+      </td>
+      <td class="left hidden-xs-down">{{ prop.values }}</td>
+      <td class="left hidden-xs-down">{{ prop.defaultValue }}</td>
+      <td class="left">{{ prop.description }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 cds-text="subsection" class="clr-mt-32px">
+  TimelineStepHeader component <code cds-text="code">&lt;clr-timeline-step-header&gt;</code>
+</h4>
+
+<h4 cds-text="subsection" class="clr-mt-32px">
+  TimelineStepTitle component <code cds-text="code">&lt;clr-timeline-step-title&gt;</code>
+</h4>
+
+<h4 cds-text="subsection" class="clr-mt-32px">
+  TimelineStepDescription component <code cds-text="code">&lt;clr-timeline-step-description&gt;</code>
+</h4>

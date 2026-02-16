@@ -1,0 +1,63 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+
+import { pokemonComponents } from '../stackblitz-examples/pokemon-component-generator';
+
+const HTML_EXAMPLE = `
+<div class="main-container">
+  <header class="header">
+    <div class="branding">
+      <a routerLink="/" routerLinkActive="active">
+        <cds-icon shape="bolt"></cds-icon>
+        <span class="title">Project Pokémon</span>
+      </a>
+    </div>
+  </header>
+  <div class="content-container">
+    <clr-vertical-nav>
+      <a clrVerticalNavLink routerLink="./charizard" routerLinkActive="active">Charizard</a>
+      <a clrVerticalNavLink routerLink="./charmander" routerLinkActive="active">Charmander</a>
+      <a clrVerticalNavLink routerLink="./jigglypuff" routerLinkActive="active">Jigglypuff</a>
+      <a clrVerticalNavLink routerLink="./pidgey" routerLinkActive="active">Pidgey</a>
+      <a clrVerticalNavLink routerLink="./pikachu" routerLinkActive="active">Pikachu</a>
+      <a clrVerticalNavLink routerLink="./raichu" routerLinkActive="active">Raichu</a>
+      <a clrVerticalNavLink routerLink="./snorlax" routerLinkActive="active">Snorlax</a>
+      <div class="nav-divider"></div>
+      <a clrVerticalNavLink routerLink="./credit" routerLinkActive="active">Credit</a>
+    </clr-vertical-nav>
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+`;
+
+/* eslint-disable @typescript-eslint/no-var-requires */
+const EXAMPLE_TS = require('!raw-loader!../stackblitz-examples/example.component').default;
+
+const additionalFiles = {
+  ...pokemonComponents,
+  'app.routes.ts': require('!raw-loader!../stackblitz-examples/pokemon.routes').default,
+  'project-pokemon/project-pokemon.ts': require('!raw-loader!../stackblitz-examples/project-pokemon/project-pokemon')
+    .default,
+  'credits/pokedex.ts': require('!raw-loader!../stackblitz-examples/credits/pokedex').default,
+};
+/* eslint-enable @typescript-eslint/no-var-requires */
+
+@Component({
+  selector: 'clr-basic-structure-vertical-nav-demo',
+  templateUrl: './basic-structure.html',
+  styleUrl: '../../vertical-nav.demo.scss',
+  standalone: false,
+})
+export class BasicNavStructureDemo {
+  htmlExample = HTML_EXAMPLE;
+  tsExample = EXAMPLE_TS;
+  additionalFiles = additionalFiles;
+}

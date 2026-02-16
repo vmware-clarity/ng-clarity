@@ -1,0 +1,159 @@
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">A spinner is a visual indicator of an ongoing, user-initiated process.</p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">Clarity has two types of spinners, each with its own use case:</p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Page Spinners: For tracking the progress of an operation related to an entire page.</li>
+      <li>Inline Spinners: For tracking the progress of an operation related to a specific component.</li>
+    </ul>
+
+    <h3 class="spinner-examples clr-mt-24px" cds-text="section" id="page-spinner-example">Page spinner example</h3>
+    <app-animated-example [label]="'page spinner'" class="clr-mt-16px">
+      <div class="spinner-box">
+        <div class="spinner">Loading...</div>
+        <span>Processing...</span>
+      </div>
+    </app-animated-example>
+
+    <h3 class="spinner-examples clr-mt-24px" cds-text="section" id="inline-spinner-example">Inline spinner example</h3>
+    <app-animated-example [label]="'inline spinner'" class="clr-mt-16px">
+      <div class="spinner-box">
+        <span class="spinner spinner-inline">Loading...</span>
+        <span>Processing...</span>
+      </div>
+    </app-animated-example>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="sizes">Sizes</h2>
+
+    <table class="table clr-mt-16px">
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">Large</b>
+            <div class="hidden-sm-up nowrap">72px &times; 72px</div>
+          </td>
+          <td class="left hidden-xs-down nowrap">72px &times; 72px</td>
+          <td class="left">
+            Use to track the progress of an operation related to a page. For example, in the login form, a large spinner
+            replaces the form fields while the data is being authenticated.
+          </td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">Medium</b>
+            <div class="hidden-sm-up nowrap">36px &times; 36px</div>
+          </td>
+          <td class="left hidden-xs-down nowrap">36px &times; 36px</td>
+          <td class="left">Use when content is being loaded, for example, in a table or datagrid.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">Small</b>
+            <div class="hidden-sm-up">18px &times; 18px</div>
+          </td>
+          <td class="left hidden-xs-down">18px &times; 18px</td>
+          <td class="left">
+            Use in constrained spaces, such as in an input field or next to a button. The spinner animates and the field
+            or button is disabled until the action is complete.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="placement">Placement</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Place the spinner where you want to focus the user’s attention when the process completes.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="label">Label</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Optionally, provide a brief description of the process, for example, “Loading …”
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="spinners-versus-progress-bars">Spinners Versus Progress Bars</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Clarity provides a linear, indeterminate
+      <a routerLink="/documentation/progress">progress bar</a>
+      that serves the same use cases as a spinner. Using a spinner or an indeterminate progress bar is a matter of
+      spacing, visual consistency, and the object that the user selected to begin the process.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="accessibility">Accessibility</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      For accessibility, there are two methods to let the user know that something is loading:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Move the focus to the spinner if that is logical for the user.</li>
+      <li>
+        If moving focus to the spinner is not logical for the user, the best practice is to
+        <a routerLink="/documentation/accessibility">announce that new content is loaded via aria-live.</a>
+      </li>
+    </ul>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <clr-spinner-component *appIfTabActive></clr-spinner-component>
+
+    <h2 id="css-component" cds-text="title" class="clr-mt-48px">CSS Spinner Component</h2>
+
+    <h3 data-toc-item id="css-examples" cds-text="section" class="clr-mt-32px">Examples</h3>
+
+    <clr-spinner-types></clr-spinner-types>
+
+    <h3 data-toc-item id="spinner-sizes" cds-text="section" class="clr-mt-32px">Sizes</h3>
+
+    <p cds-text="body" class="clr-mt-16px">Clarity spinners can be displayed in three sizes:</p>
+
+    <ul class="list list-spacer">
+      <li>
+        <strong cds-text="medium">Small:</strong> This is the required sizing for inline spinners (see below). It
+        measures 18x18 pixels. Use class <code cds-text="code">.spinner-sm</code> for small size.
+      </li>
+      <li>
+        <strong cds-text="medium">Medium:</strong> Medium spinners measure 36x36 pixels. Use
+        <code cds-text="code">.spinner-md</code> for medium size
+      </li>
+      <li>
+        <strong cds-text="medium">Large:</strong> This is the default size for page spinners (see below). Use
+        <code cds-text="code">.spinner-lg</code> for large size
+      </li>
+    </ul>
+    <p cds-text="body" class="clr-mt-16px">
+      Note that using the <code cds-text="code">.spinner-inline</code> class will force a spinner to the small size and
+      that <code cds-text="code">.spinner-lg</code> is the default sizing of page spinners.
+    </p>
+
+    <h4 id="examples-1" cds-text="subsection" class="clr-mt-32px">Examples</h4>
+
+    <clr-spinner-sizes></clr-spinner-sizes>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 id="angular-component">Angular Component</h2>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="left hidden-xs-down">Type</th>
+          <th class="left hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let prop of props">
+          <td class="left">
+            <b cds-text="medium">{{ prop.name }}</b>
+          </td>
+          <td class="left hidden-xs-down">{{ prop.type }}</td>
+          <td class="left hidden-xs-down">{{ prop.defaultValue }}</td>
+          <td class="left">{{ prop.description }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-style-docs styleDocsKey="Spinner"></app-style-docs>
+  </app-doc-tab>
+</app-doc-tabs>

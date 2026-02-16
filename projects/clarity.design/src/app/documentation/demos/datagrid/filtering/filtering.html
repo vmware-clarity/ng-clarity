@@ -1,0 +1,145 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2 class="clr-mt-48px" cds-text="title">Custom filters</h2>
+
+<p class="clr-mt-16px" cds-text="body">
+  Similarly to the advanced sorting features, sometimes the default filter on a string property is not what you need.
+  When this is the case you can write your own filter, with fully custom template and controller, and both wrap it in
+  and pass it to a
+  <code cds-text="code">&lt;clr-dg-filter&gt;</code> component in your column declaration. This can be done whether or
+  not your column is declared as a <code cds-text="code">clrDgField</code>, and will always take precedence over it if
+  it is.
+</p>
+<p class="clr-mt-16px clr-mb-16px" cds-text="body">
+  The filter you provide to the <code cds-text="code">&lt;clr-dg-filter&gt;</code> component needs to implement the
+  <code cds-text="code">ClrDatagridFilterInterface</code> interface provided by Clarity:
+</p>
+<app-code-snippet [code]="examples.filterInterface" language="typescript"></app-code-snippet>
+
+<p class="clr-mt-16px" cds-text="body">
+  There are several ways to pass your filter to the
+  <code cds-text="code">&lt;clr-dg-filter&gt;</code> component:
+</p>
+<ul class="list list-spacer">
+  <li>
+    The simplest, but less reusable way, is to simply inline your filter's template in the column and use the
+    <code cds-text="code">[clrDgFilter]</code> input to pass your filter instance:
+    <app-stackblitz-example
+      name="Datagrid Inline Filters"
+      [componentTemplate]="examples.inlineFilterHTML"
+      [componentClass]="examples.inlineFilterTS"
+      [componentStyles]="commonFiles.exampleCss"
+      [showComponentStyles]="false"
+      [additionalFiles]="commonFiles.additionalFiles"
+    ></app-stackblitz-example>
+  </li>
+  <li>
+    A more reusable way is to write an actual component for your custom filter, and inject its
+    <code cds-text="code">DatagridFilter</code> parent in its constructor so that it can register itself:
+    <app-stackblitz-example
+      name="Datagrid Custom Component Filters"
+      [componentTemplate]="examples.customFilterComponentHTML"
+      [componentClass]="examples.customFilterComponentTS"
+      [componentStyles]="commonFiles.exampleCss"
+      [showComponentStyles]="false"
+      [additionalFiles]="colorFilters"
+    ></app-stackblitz-example>
+  </li>
+  <li>
+    Finally, if you want to have a completely reusable filter independently of our Datagrid, you can write a component
+    for it and use a template reference variable to declare the filter to its container:
+    <app-stackblitz-example
+      name="Datagrid Reusable Filters"
+      [componentTemplate]="examples.templateVariableHTML"
+      [componentClass]="examples.templateVariableTS"
+      [componentStyles]="commonFiles.exampleCss"
+      [showComponentStyles]="false"
+      [additionalFiles]="colorFiltersTemplateVariable"
+    ></app-stackblitz-example>
+  </li>
+</ul>
+
+<clr-datagrid>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>Pokemon</clr-dg-column>
+  <clr-dg-column>
+    Favorite color
+    <clr-dg-filter [clrDgFilter]="colorFilter">
+      <clr-datagrid-color-filter #colorFilter class="color-filter"> </clr-datagrid-color-filter>
+    </clr-dg-filter>
+  </clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<p class="clr-mt-16px" cds-text="body">
+  By default, filtering searches the original model value for matches. In cases where you format the text for display
+  (such as using a pipe), you may want to create a custom filter to handle searching the formatted text. Otherwise, the
+  results you see may not be filtered in the way you expect.
+</p>
+
+<app-code-snippet [code]="examples.filterSearchResults" language="html"></app-code-snippet>
+
+<p class="clr-mt-16px" cds-text="body">
+  In the example above you will need to go with custom filters that will take into account the data that the user sees
+  is the same that he is searching into.
+</p>
+
+<h2 class="clr-mt-48px" cds-text="title">Preset Column Filters</h2>
+
+<p class="clr-mt-16px" cds-text="body">
+  You can use a preset filter on columns to initialize the data grid to a specific filtered state.
+  <code cds-text="code">[(clrFilterValue)]</code> can be pre-set.
+</p>
+
+<clr-datagrid>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column [clrDgField]="'name'" [(clrFilterValue)]="myFilterValue">Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>
+    Pokemon
+    <clr-dg-string-filter [clrDgStringFilter]="pokemonFilter"></clr-dg-string-filter>
+  </clr-dg-column>
+  <clr-dg-column>Favorite color</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>
+      {{ user.pokemon.name }} <span class="badge badge-5">#{{ user.pokemon.number }}</span>
+    </clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Model Based Filters with 2 way binding"
+  [componentTemplate]="examples.stringFilterColumnPresetHTML"
+  [componentClass]="examples.stringFilterColumnPresetTS"
+  [showComponentClass]="false"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="pokemonFilters"
+></app-stackblitz-example>

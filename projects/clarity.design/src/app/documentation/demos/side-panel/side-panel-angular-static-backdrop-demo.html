@@ -1,0 +1,27 @@
+<!--
+  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<p>
+  <button class="btn btn-primary" (click)="static = true">Show side panel</button>
+</p>
+
+<clr-side-panel [(clrSidePanelOpen)]="static" [clrSidePanelStaticBackdrop]="true">
+  <div class="side-panel-title">Static backdrop</div>
+  <div class="side-panel-body">
+    <p>Clicking on the backdrop does not close the side panel.</p>
+  </div>
+  <div class="side-panel-footer">
+    <button type="button" class="btn btn-primary" (click)="static = false">Ok</button>
+  </div>
+</clr-side-panel>
+
+<app-stackblitz-example
+  name="Side panel Angular static backdrop"
+  [componentTemplate]="example"
+  [componentClass]="exampleTs"
+  [showComponentClass]="false"
+></app-stackblitz-example>
