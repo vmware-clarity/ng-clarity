@@ -58,7 +58,7 @@ export class ClrComboboxContainer extends ClrAbstractContainer implements AfterC
     controlClassService: ControlClassService,
     ngControlService: NgControlService,
     private containerService: ComboboxContainerService,
-    private el: ElementRef<HTMLElement>
+    public el: ElementRef<HTMLElement>
   ) {
     super(layoutService, controlClassService, ngControlService);
   }
