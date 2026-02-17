@@ -32,10 +32,6 @@
       "types": "./index.d.ts",
       "default": "./fesm2022/clr-angular.mjs"
     },
-    "./accordion": {
-      "types": "./accordion/index.d.ts",
-      "default": "./fesm2022/clr-angular-accordion.mjs"
-    },
     "./button": {
       "types": "./button/index.d.ts",
       "default": "./fesm2022/clr-angular-button.mjs"
@@ -43,6 +39,10 @@
     "./data": {
       "types": "./data/index.d.ts",
       "default": "./fesm2022/clr-angular-data.mjs"
+    },
+    "./accordion": {
+      "types": "./accordion/index.d.ts",
+      "default": "./fesm2022/clr-angular-accordion.mjs"
     },
     "./emphasis": {
       "types": "./emphasis/index.d.ts",
@@ -84,13 +84,13 @@
       "types": "./wizard/index.d.ts",
       "default": "./fesm2022/clr-angular-wizard.mjs"
     },
-    "./data/stack-view": {
-      "types": "./data/stack-view/index.d.ts",
-      "default": "./fesm2022/clr-angular-data-stack-view.mjs"
-    },
     "./data/datagrid": {
       "types": "./data/datagrid/index.d.ts",
       "default": "./fesm2022/clr-angular-data-datagrid.mjs"
+    },
+    "./data/stack-view": {
+      "types": "./data/stack-view/index.d.ts",
+      "default": "./fesm2022/clr-angular-data-stack-view.mjs"
     },
     "./data/tree-view": {
       "types": "./data/tree-view/index.d.ts",
@@ -100,13 +100,13 @@
       "types": "./emphasis/alert/index.d.ts",
       "default": "./fesm2022/clr-angular-emphasis-alert.mjs"
     },
-    "./emphasis/common": {
-      "types": "./emphasis/common/index.d.ts",
-      "default": "./fesm2022/clr-angular-emphasis-common.mjs"
-    },
     "./emphasis/badge": {
       "types": "./emphasis/badge/index.d.ts",
       "default": "./fesm2022/clr-angular-emphasis-badge.mjs"
+    },
+    "./emphasis/common": {
+      "types": "./emphasis/common/index.d.ts",
+      "default": "./fesm2022/clr-angular-emphasis-common.mjs"
     },
     "./emphasis/label": {
       "types": "./emphasis/label/index.d.ts",
@@ -164,10 +164,6 @@
       "types": "./forms/textarea/index.d.ts",
       "default": "./fesm2022/clr-angular-forms-textarea.mjs"
     },
-    "./layout/breadcrumbs": {
-      "types": "./layout/breadcrumbs/index.d.ts",
-      "default": "./fesm2022/clr-angular-layout-breadcrumbs.mjs"
-    },
     "./layout/main-container": {
       "types": "./layout/main-container/index.d.ts",
       "default": "./fesm2022/clr-angular-layout-main-container.mjs"
@@ -183,6 +179,10 @@
     "./layout/vertical-nav": {
       "types": "./layout/vertical-nav/index.d.ts",
       "default": "./fesm2022/clr-angular-layout-vertical-nav.mjs"
+    },
+    "./layout/breadcrumbs": {
+      "types": "./layout/breadcrumbs/index.d.ts",
+      "default": "./fesm2022/clr-angular-layout-breadcrumbs.mjs"
     },
     "./popover/common": {
       "types": "./popover/common/index.d.ts",
@@ -221,5 +221,5 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "version": "0.0.0-preview.4e3d597"
+  "version": "0.0.0-preview.1e0a480"
 }
