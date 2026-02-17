@@ -16,9 +16,11 @@
         <cds-icon shape="angle" direction="right" class="clr-accordion-angle clr-step-angle"></cds-icon>
         <span class="clr-step-status-icon">
           @if (panel.status === AccordionStatus.Error) {
-          <cds-icon status="danger" shape="exclamation-circle" class="clr-step-error-icon"></cds-icon>
+          <cds-icon status="danger" shape="error-standard" class="clr-step-error-icon"></cds-icon>
           } @if (panel.status === AccordionStatus.Complete) {
-          <cds-icon status="success" shape="check-circle" class="clr-step-complete-icon"></cds-icon>
+          <cds-icon status="success" shape="success-standard" class="clr-step-complete-icon"></cds-icon>
+          } @if (panel.open && panel.status === AccordionStatus.Inactive) {
+          <cds-icon status="info" shape="dot-circle" class="clr-step-current-icon"></cds-icon>
           }
         </span>
       </span>
