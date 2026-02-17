@@ -1035,11 +1035,6 @@
 | --clr-header-nav-hover-opacity             | Header nav item opacity on hover                       |
 | --clr-header-2-bg-color                    | Second version of header background color              |
 | --clr-header-3-bg-color                    | Third version of header background color               |
-| --clr-header-4-bg-color                    | Fourth version of header background color              |
-| --clr-header-5-bg-color                    | Fifth version of header background color               |
-| --clr-header-6-bg-color                    | Sixth version of header background color               |
-| --clr-header-7-bg-color                    | Seventh version of header background color             |
-| --clr-header-8-bg-color                    | Eighth version of header background color              |
 | --clr-header-font-color                    | Header text color                                      |
 | --clr-header-font-color-hover              | Header hovered item color                              |
 | --clr-header-title-color                   | Header branding title text color                       |
@@ -1060,8 +1055,8 @@
 
 | Class name               | Description                          |
 | ------------------------ | ------------------------------------ |
-| clr-header               | Application header element           |
-| clr-header > search      | Header search field                  |
+| header                   | Application header element           |
+| header > search          | Header search field                  |
 | header-hamburger-trigger | Hamburger icon for responsive header |
 | header-actions           | Responsive header actions            |
 
