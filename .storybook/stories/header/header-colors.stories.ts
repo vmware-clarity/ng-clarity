@@ -10,16 +10,7 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
-const HEADER_VARIANTS = [
-  'header-1',
-  'header-2',
-  'header-3',
-  'header-4',
-  'header-5',
-  'header-6',
-  'header-7',
-  'header-8',
-];
+const HEADER_VARIANTS = ['header-1', 'header-2', 'header-3'];
 
 export default {
   title: 'Header/Header Colors',
