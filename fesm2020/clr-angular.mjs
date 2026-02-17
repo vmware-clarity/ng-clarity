@@ -32,9 +32,9 @@ import '@cds/core/icon/register';
  */
 class ClrIconCustomTag {
 }
-ClrIconCustomTag.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIconCustomTag, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-ClrIconCustomTag.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrIconCustomTag, selector: "clr-icon", ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIconCustomTag, decorators: [{
+ClrIconCustomTag.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIconCustomTag, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+ClrIconCustomTag.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrIconCustomTag, selector: "clr-icon", ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIconCustomTag, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-icon',
@@ -42,9 +42,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
         }] });
 class CdsIconCustomTag {
 }
-CdsIconCustomTag.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: CdsIconCustomTag, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-CdsIconCustomTag.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: CdsIconCustomTag, selector: "cds-icon", ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: CdsIconCustomTag, decorators: [{
+CdsIconCustomTag.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: CdsIconCustomTag, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+CdsIconCustomTag.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: CdsIconCustomTag, selector: "cds-icon", ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: CdsIconCustomTag, decorators: [{
             type: Directive,
             args: [{
                     selector: 'cds-icon',
@@ -60,10 +60,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
 const CLR_ICON_DIRECTIVES = [ClrIconCustomTag, CdsIconCustomTag];
 class ClrIconModule {
 }
-ClrIconModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIconModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrIconModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrIconModule, declarations: [ClrIconCustomTag, CdsIconCustomTag], imports: [CommonModule], exports: [ClrIconCustomTag, CdsIconCustomTag] });
-ClrIconModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIconModule, imports: [CommonModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIconModule, decorators: [{
+ClrIconModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIconModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrIconModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrIconModule, declarations: [ClrIconCustomTag, CdsIconCustomTag], imports: [CommonModule], exports: [ClrIconCustomTag, CdsIconCustomTag] });
+ClrIconModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIconModule, imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIconModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -126,9 +126,9 @@ class ClrLoading {
         this.loadingState = ClrLoadingState.DEFAULT;
     }
 }
-ClrLoading.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLoading, deps: [{ token: LoadingListener, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
-ClrLoading.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrLoading, selector: "[clrLoading]", inputs: { loadingState: ["clrLoading", "loadingState"] }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLoading, decorators: [{
+ClrLoading.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLoading, deps: [{ token: LoadingListener, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
+ClrLoading.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrLoading, selector: "[clrLoading]", inputs: { loadingState: ["clrLoading", "loadingState"] }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLoading, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrLoading]',
@@ -190,9 +190,9 @@ class IfExpandService {
         }
     }
 }
-IfExpandService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: IfExpandService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-IfExpandService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: IfExpandService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: IfExpandService, decorators: [{
+IfExpandService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: IfExpandService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+IfExpandService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: IfExpandService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: IfExpandService, decorators: [{
             type: Injectable
         }] });
 
@@ -215,9 +215,9 @@ function uniqueIdFactory() {
  */
 class ClrAccordionDescription {
 }
-ClrAccordionDescription.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAccordionDescription, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrAccordionDescription.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrAccordionDescription, selector: "clr-accordion-description, clr-step-description", host: { properties: { "class.clr-accordion-description": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAccordionDescription, decorators: [{
+ClrAccordionDescription.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAccordionDescription, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrAccordionDescription.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrAccordionDescription, selector: "clr-accordion-description, clr-step-description", host: { properties: { "class.clr-accordion-description": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAccordionDescription, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-accordion-description, clr-step-description',
@@ -442,9 +442,9 @@ class ClrCommonStringsService {
         return output;
     }
 }
-ClrCommonStringsService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCommonStringsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-ClrCommonStringsService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCommonStringsService, providedIn: 'root' });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCommonStringsService, decorators: [{
+ClrCommonStringsService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCommonStringsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+ClrCommonStringsService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCommonStringsService, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCommonStringsService, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root',
@@ -572,9 +572,9 @@ class AccordionService {
         this._panelsChanges.next(this.accordion.panels);
     }
 }
-AccordionService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: AccordionService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-AccordionService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: AccordionService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: AccordionService, decorators: [{
+AccordionService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: AccordionService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+AccordionService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: AccordionService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: AccordionService, decorators: [{
             type: Injectable
         }] });
 
@@ -675,9 +675,9 @@ class ClrAccordionPanel {
         }
     }
 }
-ClrAccordionPanel.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAccordionPanel, deps: [{ token: ClrAccordionPanel, optional: true, skipSelf: true }, { token: ClrCommonStringsService }, { token: AccordionService }, { token: IfExpandService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
-ClrAccordionPanel.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrAccordionPanel, selector: "clr-accordion-panel", inputs: { disabled: ["clrAccordionPanelDisabled", "disabled"], panelOpen: ["clrAccordionPanelOpen", "panelOpen"], headingEnabled: ["clrAccordionPanelHeadingEnabled", "headingEnabled"], explicitHeadingLevel: ["clrAccordionPanelHeadingLevel", "explicitHeadingLevel"] }, outputs: { panelOpenChange: "clrAccordionPanelOpenChange" }, host: { properties: { "class.clr-accordion-panel": "true", "class.clr-accordion-panel-disabled": "this.disabled" } }, providers: [IfExpandService], queries: [{ propertyName: "accordionDescription", predicate: ClrAccordionDescription }], usesOnChanges: true, ngImport: i0, template: "<ng-container *ngIf=\"panel | async; let panel\">\n  <div [ngClass]=\"getPanelStateClasses(panel)\">\n    <div\n      class=\"clr-accordion-header\"\n      [attr.role]=\"headingEnabled || explicitHeadingLevel ? 'heading' : null\"\n      [attr.aria-level]=\"headingEnabled || explicitHeadingLevel ? headingLevel : null\"\n    >\n      <button\n        type=\"button\"\n        class=\"clr-accordion-header-button\"\n        (click)=\"togglePanel()\"\n        [id]=\"getAccordionHeaderId(panel.templateId)\"\n        [disabled]=\"panel.disabled\"\n        [attr.aria-controls]=\"!panel.disabled && panel.open ? getAccordionContentId(panel.templateId) : null\"\n        [attr.aria-expanded]=\"panel.open\"\n        [class.clr-accordion-header-has-description]=\"(accordionDescription.changes | async)?.length || accordionDescription.length\"\n        #headerButton\n      >\n        <span class=\"clr-accordion-status\">\n          <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-accordion-angle\"></cds-icon>\n        </span>\n        <ng-content select=\"clr-accordion-title, clr-step-title\"></ng-content>\n        <ng-content select=\"clr-accordion-description, clr-step-description\"></ng-content>\n      </button>\n    </div>\n    <div\n      @skipInitialRender\n      role=\"region\"\n      class=\"clr-accordion-content-region\"\n      [id]=\"getAccordionContentId(panel.templateId)\"\n      [attr.aria-hidden]=\"!panel.open\"\n      [attr.aria-labelledby]=\"getAccordionHeaderId(panel.templateId)\"\n    >\n      <div\n        *ngIf=\"panel.open\"\n        @toggle\n        (@toggle.done)=\"collapsePanelOnAnimationDone(panel)\"\n        class=\"clr-accordion-content\"\n      >\n        <div class=\"clr-accordion-inner-content\">\n          <ng-content></ng-content>\n        </div>\n      </div>\n    </div>\n  </div>\n</ng-container>\n", dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "pipe", type: i5.AsyncPipe, name: "async" }], animations: panelAnimation, changeDetection: i0.ChangeDetectionStrategy.OnPush });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAccordionPanel, decorators: [{
+ClrAccordionPanel.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAccordionPanel, deps: [{ token: ClrAccordionPanel, optional: true, skipSelf: true }, { token: ClrCommonStringsService }, { token: AccordionService }, { token: IfExpandService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
+ClrAccordionPanel.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrAccordionPanel, selector: "clr-accordion-panel", inputs: { disabled: ["clrAccordionPanelDisabled", "disabled"], panelOpen: ["clrAccordionPanelOpen", "panelOpen"], headingEnabled: ["clrAccordionPanelHeadingEnabled", "headingEnabled"], explicitHeadingLevel: ["clrAccordionPanelHeadingLevel", "explicitHeadingLevel"] }, outputs: { panelOpenChange: "clrAccordionPanelOpenChange" }, host: { properties: { "class.clr-accordion-panel": "true", "class.clr-accordion-panel-disabled": "this.disabled" } }, providers: [IfExpandService], queries: [{ propertyName: "accordionDescription", predicate: ClrAccordionDescription }], usesOnChanges: true, ngImport: i0, template: "<ng-container *ngIf=\"panel | async; let panel\">\n  <div [ngClass]=\"getPanelStateClasses(panel)\">\n    <div\n      class=\"clr-accordion-header\"\n      [attr.role]=\"headingEnabled || explicitHeadingLevel ? 'heading' : null\"\n      [attr.aria-level]=\"headingEnabled || explicitHeadingLevel ? headingLevel : null\"\n    >\n      <button\n        type=\"button\"\n        class=\"clr-accordion-header-button\"\n        (click)=\"togglePanel()\"\n        [id]=\"getAccordionHeaderId(panel.templateId)\"\n        [disabled]=\"panel.disabled\"\n        [attr.aria-controls]=\"!panel.disabled && panel.open ? getAccordionContentId(panel.templateId) : null\"\n        [attr.aria-expanded]=\"panel.open\"\n        [class.clr-accordion-header-has-description]=\"(accordionDescription.changes | async)?.length || accordionDescription.length\"\n        #headerButton\n      >\n        <span class=\"clr-accordion-status\">\n          <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-accordion-angle\"></cds-icon>\n        </span>\n        <ng-content select=\"clr-accordion-title, clr-step-title\"></ng-content>\n        <ng-content select=\"clr-accordion-description, clr-step-description\"></ng-content>\n      </button>\n    </div>\n    <div\n      @skipInitialRender\n      role=\"region\"\n      class=\"clr-accordion-content-region\"\n      [id]=\"getAccordionContentId(panel.templateId)\"\n      [attr.aria-hidden]=\"!panel.open\"\n      [attr.aria-labelledby]=\"getAccordionHeaderId(panel.templateId)\"\n    >\n      <div\n        *ngIf=\"panel.open\"\n        @toggle\n        (@toggle.done)=\"collapsePanelOnAnimationDone(panel)\"\n        class=\"clr-accordion-content\"\n      >\n        <div class=\"clr-accordion-inner-content\">\n          <ng-content></ng-content>\n        </div>\n      </div>\n    </div>\n  </div>\n</ng-container>\n", dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "pipe", type: i5.AsyncPipe, name: "async" }], animations: panelAnimation, changeDetection: i0.ChangeDetectionStrategy.OnPush });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAccordionPanel, decorators: [{
             type: Component,
             args: [{ selector: 'clr-accordion-panel', host: { '[class.clr-accordion-panel]': 'true' }, changeDetection: ChangeDetectionStrategy.OnPush, animations: panelAnimation, providers: [IfExpandService], template: "<ng-container *ngIf=\"panel | async; let panel\">\n  <div [ngClass]=\"getPanelStateClasses(panel)\">\n    <div\n      class=\"clr-accordion-header\"\n      [attr.role]=\"headingEnabled || explicitHeadingLevel ? 'heading' : null\"\n      [attr.aria-level]=\"headingEnabled || explicitHeadingLevel ? headingLevel : null\"\n    >\n      <button\n        type=\"button\"\n        class=\"clr-accordion-header-button\"\n        (click)=\"togglePanel()\"\n        [id]=\"getAccordionHeaderId(panel.templateId)\"\n        [disabled]=\"panel.disabled\"\n        [attr.aria-controls]=\"!panel.disabled && panel.open ? getAccordionContentId(panel.templateId) : null\"\n        [attr.aria-expanded]=\"panel.open\"\n        [class.clr-accordion-header-has-description]=\"(accordionDescription.changes | async)?.length || accordionDescription.length\"\n        #headerButton\n      >\n        <span class=\"clr-accordion-status\">\n          <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-accordion-angle\"></cds-icon>\n        </span>\n        <ng-content select=\"clr-accordion-title, clr-step-title\"></ng-content>\n        <ng-content select=\"clr-accordion-description, clr-step-description\"></ng-content>\n      </button>\n    </div>\n    <div\n      @skipInitialRender\n      role=\"region\"\n      class=\"clr-accordion-content-region\"\n      [id]=\"getAccordionContentId(panel.templateId)\"\n      [attr.aria-hidden]=\"!panel.open\"\n      [attr.aria-labelledby]=\"getAccordionHeaderId(panel.templateId)\"\n    >\n      <div\n        *ngIf=\"panel.open\"\n        @toggle\n        (@toggle.done)=\"collapsePanelOnAnimationDone(panel)\"\n        class=\"clr-accordion-content\"\n      >\n        <div class=\"clr-accordion-inner-content\">\n          <ng-content></ng-content>\n        </div>\n      </div>\n    </div>\n  </div>\n</ng-container>\n" }]
         }], ctorParameters: function () { return [{ type: ClrAccordionPanel, decorators: [{
@@ -743,9 +743,9 @@ class ClrAccordion {
             .subscribe((panels) => this.accordionService.updatePanelOrder(panels.toArray().map(p => p.id)));
     }
 }
-ClrAccordion.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAccordion, deps: [{ token: AccordionService }], target: i0.ɵɵFactoryTarget.Component });
-ClrAccordion.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrAccordion, selector: "clr-accordion", inputs: { multiPanel: ["clrAccordionMultiPanel", "multiPanel"] }, host: { properties: { "class.clr-accordion": "true" } }, providers: [AccordionService], queries: [{ propertyName: "panels", predicate: ClrAccordionPanel }], usesOnChanges: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAccordion, decorators: [{
+ClrAccordion.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAccordion, deps: [{ token: AccordionService }], target: i0.ɵɵFactoryTarget.Component });
+ClrAccordion.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrAccordion, selector: "clr-accordion", inputs: { multiPanel: ["clrAccordionMultiPanel", "multiPanel"] }, host: { properties: { "class.clr-accordion": "true" } }, providers: [AccordionService], queries: [{ propertyName: "panels", predicate: ClrAccordionPanel }], usesOnChanges: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAccordion, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-accordion',
@@ -770,9 +770,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrAccordionContent {
 }
-ClrAccordionContent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAccordionContent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrAccordionContent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrAccordionContent, selector: "clr-accordion-content, clr-step-content", ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAccordionContent, decorators: [{
+ClrAccordionContent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAccordionContent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrAccordionContent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrAccordionContent, selector: "clr-accordion-content, clr-step-content", ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAccordionContent, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-accordion-content, clr-step-content',
@@ -789,9 +789,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrAccordionTitle {
 }
-ClrAccordionTitle.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAccordionTitle, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrAccordionTitle.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrAccordionTitle, selector: "clr-accordion-title, clr-step-title", host: { properties: { "class.clr-accordion-title": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAccordionTitle, decorators: [{
+ClrAccordionTitle.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAccordionTitle, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrAccordionTitle.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrAccordionTitle, selector: "clr-accordion-title, clr-step-title", host: { properties: { "class.clr-accordion-title": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAccordionTitle, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-accordion-title, clr-step-title',
@@ -829,9 +829,9 @@ class WillyWonka {
         }
     }
 }
-WillyWonka.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: WillyWonka, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-WillyWonka.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: WillyWonka, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: WillyWonka, decorators: [{
+WillyWonka.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: WillyWonka, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+WillyWonka.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: WillyWonka, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: WillyWonka, decorators: [{
             type: Directive
         }] });
 
@@ -859,9 +859,9 @@ class OompaLoompa {
         this.subscription.unsubscribe();
     }
 }
-OompaLoompa.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: OompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: WillyWonka }], target: i0.ɵɵFactoryTarget.Directive });
-OompaLoompa.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: OompaLoompa, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: OompaLoompa, decorators: [{
+OompaLoompa.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: OompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: WillyWonka }], target: i0.ɵɵFactoryTarget.Directive });
+OompaLoompa.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: OompaLoompa, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: OompaLoompa, decorators: [{
             type: Directive
         }], ctorParameters: function () { return [{ type: i0.ChangeDetectorRef }, { type: WillyWonka }]; } });
 
@@ -873,9 +873,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class AccordionWillyWonka extends WillyWonka {
 }
-AccordionWillyWonka.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: AccordionWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive });
-AccordionWillyWonka.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: AccordionWillyWonka, selector: "clr-accordion", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: AccordionWillyWonka, decorators: [{
+AccordionWillyWonka.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: AccordionWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive });
+AccordionWillyWonka.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: AccordionWillyWonka, selector: "clr-accordion", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: AccordionWillyWonka, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-accordion',
@@ -900,9 +900,9 @@ class AccordionOompaLoompa extends OompaLoompa {
         return this.expand.expanded;
     }
 }
-AccordionOompaLoompa.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: AccordionOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: AccordionWillyWonka, optional: true }, { token: IfExpandService }], target: i0.ɵɵFactoryTarget.Directive });
-AccordionOompaLoompa.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: AccordionOompaLoompa, selector: "clr-accordion-panel", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: AccordionOompaLoompa, decorators: [{
+AccordionOompaLoompa.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: AccordionOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: AccordionWillyWonka, optional: true }, { token: IfExpandService }], target: i0.ɵɵFactoryTarget.Directive });
+AccordionOompaLoompa.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: AccordionOompaLoompa, selector: "clr-accordion-panel", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: AccordionOompaLoompa, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-accordion-panel',
@@ -931,8 +931,8 @@ class ClrAccordionModule {
         ClarityIcons.addIcons(angleIcon, exclamationCircleIcon, checkCircleIcon);
     }
 }
-ClrAccordionModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAccordionModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrAccordionModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrAccordionModule, declarations: [ClrAccordion,
+ClrAccordionModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAccordionModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrAccordionModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrAccordionModule, declarations: [ClrAccordion,
         ClrAccordionPanel,
         ClrAccordionTitle,
         ClrAccordionDescription,
@@ -945,8 +945,8 @@ ClrAccordionModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", vers
         ClrAccordionContent,
         AccordionOompaLoompa,
         AccordionWillyWonka] });
-ClrAccordionModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAccordionModule, imports: [CommonModule, ClrIconModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAccordionModule, decorators: [{
+ClrAccordionModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAccordionModule, imports: [CommonModule, ClrIconModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAccordionModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIconModule],
@@ -1182,9 +1182,9 @@ class StepperService extends AccordionService {
         return this._panelsChanges.pipe(map(() => this.accordion.allPanelsCompleted), distinctUntilChanged());
     }
 }
-StepperService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: StepperService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-StepperService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: StepperService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: StepperService, decorators: [{
+StepperService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: StepperService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+StepperService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: StepperService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: StepperService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return []; } });
 
@@ -1252,9 +1252,9 @@ class ClrStepperPanel extends ClrAccordionPanel {
         }
     }
 }
-ClrStepperPanel.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStepperPanel, deps: [{ token: PLATFORM_ID }, { token: ClrCommonStringsService }, { token: i1.FormGroupName, optional: true }, { token: i1.NgModelGroup, optional: true }, { token: StepperService }, { token: IfExpandService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
-ClrStepperPanel.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrStepperPanel, selector: "clr-stepper-panel", host: { properties: { "class.clr-stepper-panel": "true" } }, providers: [IfExpandService], viewQueries: [{ propertyName: "headerButton", first: true, predicate: ["headerButton"], descendants: true }], usesInheritance: true, ngImport: i0, template: "<ng-container *ngIf=\"panel | async; let panel\">\n  <div [ngClass]=\"getPanelStateClasses(panel)\">\n    <div class=\"clr-accordion-header clr-stepper-header\">\n      <button\n        type=\"button\"\n        class=\"clr-accordion-header-button\"\n        (click)=\"togglePanel()\"\n        [id]=\"getAccordionHeaderId(panel.templateId)\"\n        [attr.aria-disabled]=\"panel.disabled\"\n        [attr.aria-controls]=\"getAccordionContentId(panel.templateId)\"\n        [attr.aria-expanded]=\"panel.open\"\n        [class.clr-accordion-header-has-description]=\"(accordionDescription.changes | async)?.length || accordionDescription.length\"\n        #headerButton\n      >\n        <span class=\"clr-step-status\">\n          <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-accordion-angle clr-step-angle\"></cds-icon>\n          <span class=\"clr-step-status-icon\">\n            <cds-icon\n              status=\"danger\"\n              *ngIf=\"panel.status === AccordionStatus.Error\"\n              shape=\"exclamation-circle\"\n              class=\"clr-step-error-icon\"\n            ></cds-icon>\n            <cds-icon\n              status=\"success\"\n              *ngIf=\"panel.status === AccordionStatus.Complete\"\n              shape=\"check-circle\"\n              class=\"clr-step-complete-icon\"\n            ></cds-icon>\n          </span>\n        </span>\n        <span class=\"clr-step-title-wrapper\">\n          <span class=\"clr-step-number\">{{panelNumber}}.</span>\n          <ng-content select=\"clr-step-title\"></ng-content>\n        </span>\n        <ng-content select=\"clr-step-description\"></ng-content>\n      </button>\n      <div class=\"clr-sr-only\" role=\"status\">\n        <ng-container *ngIf=\"panel.status === AccordionStatus.Error\"> {{ stepErrorText(panelNumber)}} </ng-container>\n        <ng-container *ngIf=\"panel.status === AccordionStatus.Complete\">\n          {{ stepCompleteText(panelNumber)}}\n        </ng-container>\n      </div>\n    </div>\n    <div\n      @skipInitialRender\n      role=\"region\"\n      class=\"clr-accordion-content-region\"\n      [id]=\"getAccordionContentId(panel.templateId)\"\n      [attr.aria-hidden]=\"!panel.open\"\n      [attr.aria-labelledby]=\"getAccordionHeaderId(panel.templateId)\"\n    >\n      <div\n        *ngIf=\"panel.open\"\n        @toggle\n        (@toggle.done)=\"collapsePanelOnAnimationDone(panel)\"\n        class=\"clr-accordion-content\"\n      >\n        <div class=\"clr-accordion-inner-content\">\n          <ng-content></ng-content>\n        </div>\n      </div>\n    </div>\n  </div>\n</ng-container>\n", dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "pipe", type: i5.AsyncPipe, name: "async" }], animations: stepAnimation, changeDetection: i0.ChangeDetectionStrategy.OnPush });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStepperPanel, decorators: [{
+ClrStepperPanel.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStepperPanel, deps: [{ token: PLATFORM_ID }, { token: ClrCommonStringsService }, { token: i1.FormGroupName, optional: true }, { token: i1.NgModelGroup, optional: true }, { token: StepperService }, { token: IfExpandService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
+ClrStepperPanel.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrStepperPanel, selector: "clr-stepper-panel", host: { properties: { "class.clr-stepper-panel": "true" } }, providers: [IfExpandService], viewQueries: [{ propertyName: "headerButton", first: true, predicate: ["headerButton"], descendants: true }], usesInheritance: true, ngImport: i0, template: "<ng-container *ngIf=\"panel | async; let panel\">\n  <div [ngClass]=\"getPanelStateClasses(panel)\">\n    <div class=\"clr-accordion-header clr-stepper-header\">\n      <button\n        type=\"button\"\n        class=\"clr-accordion-header-button\"\n        (click)=\"togglePanel()\"\n        [id]=\"getAccordionHeaderId(panel.templateId)\"\n        [attr.aria-disabled]=\"panel.disabled\"\n        [attr.aria-controls]=\"getAccordionContentId(panel.templateId)\"\n        [attr.aria-expanded]=\"panel.open\"\n        [class.clr-accordion-header-has-description]=\"(accordionDescription.changes | async)?.length || accordionDescription.length\"\n        #headerButton\n      >\n        <span class=\"clr-step-status\">\n          <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-accordion-angle clr-step-angle\"></cds-icon>\n          <span class=\"clr-step-status-icon\">\n            <cds-icon\n              status=\"danger\"\n              *ngIf=\"panel.status === AccordionStatus.Error\"\n              shape=\"exclamation-circle\"\n              class=\"clr-step-error-icon\"\n            ></cds-icon>\n            <cds-icon\n              status=\"success\"\n              *ngIf=\"panel.status === AccordionStatus.Complete\"\n              shape=\"check-circle\"\n              class=\"clr-step-complete-icon\"\n            ></cds-icon>\n          </span>\n        </span>\n        <span class=\"clr-step-title-wrapper\">\n          <span class=\"clr-step-number\">{{panelNumber}}.</span>\n          <ng-content select=\"clr-step-title\"></ng-content>\n        </span>\n        <ng-content select=\"clr-step-description\"></ng-content>\n      </button>\n      <div class=\"clr-sr-only\" role=\"status\">\n        <ng-container *ngIf=\"panel.status === AccordionStatus.Error\"> {{ stepErrorText(panelNumber)}} </ng-container>\n        <ng-container *ngIf=\"panel.status === AccordionStatus.Complete\">\n          {{ stepCompleteText(panelNumber)}}\n        </ng-container>\n      </div>\n    </div>\n    <div\n      @skipInitialRender\n      role=\"region\"\n      class=\"clr-accordion-content-region\"\n      [id]=\"getAccordionContentId(panel.templateId)\"\n      [attr.aria-hidden]=\"!panel.open\"\n      [attr.aria-labelledby]=\"getAccordionHeaderId(panel.templateId)\"\n    >\n      <div\n        *ngIf=\"panel.open\"\n        @toggle\n        (@toggle.done)=\"collapsePanelOnAnimationDone(panel)\"\n        class=\"clr-accordion-content\"\n      >\n        <div class=\"clr-accordion-inner-content\">\n          <ng-content></ng-content>\n        </div>\n      </div>\n    </div>\n  </div>\n</ng-container>\n", dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "pipe", type: i5.AsyncPipe, name: "async" }], animations: stepAnimation, changeDetection: i0.ChangeDetectionStrategy.OnPush });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStepperPanel, decorators: [{
             type: Component,
             args: [{ selector: 'clr-stepper-panel', host: { '[class.clr-stepper-panel]': 'true' }, changeDetection: ChangeDetectionStrategy.OnPush, animations: stepAnimation, providers: [IfExpandService], template: "<ng-container *ngIf=\"panel | async; let panel\">\n  <div [ngClass]=\"getPanelStateClasses(panel)\">\n    <div class=\"clr-accordion-header clr-stepper-header\">\n      <button\n        type=\"button\"\n        class=\"clr-accordion-header-button\"\n        (click)=\"togglePanel()\"\n        [id]=\"getAccordionHeaderId(panel.templateId)\"\n        [attr.aria-disabled]=\"panel.disabled\"\n        [attr.aria-controls]=\"getAccordionContentId(panel.templateId)\"\n        [attr.aria-expanded]=\"panel.open\"\n        [class.clr-accordion-header-has-description]=\"(accordionDescription.changes | async)?.length || accordionDescription.length\"\n        #headerButton\n      >\n        <span class=\"clr-step-status\">\n          <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-accordion-angle clr-step-angle\"></cds-icon>\n          <span class=\"clr-step-status-icon\">\n            <cds-icon\n              status=\"danger\"\n              *ngIf=\"panel.status === AccordionStatus.Error\"\n              shape=\"exclamation-circle\"\n              class=\"clr-step-error-icon\"\n            ></cds-icon>\n            <cds-icon\n              status=\"success\"\n              *ngIf=\"panel.status === AccordionStatus.Complete\"\n              shape=\"check-circle\"\n              class=\"clr-step-complete-icon\"\n            ></cds-icon>\n          </span>\n        </span>\n        <span class=\"clr-step-title-wrapper\">\n          <span class=\"clr-step-number\">{{panelNumber}}.</span>\n          <ng-content select=\"clr-step-title\"></ng-content>\n        </span>\n        <ng-content select=\"clr-step-description\"></ng-content>\n      </button>\n      <div class=\"clr-sr-only\" role=\"status\">\n        <ng-container *ngIf=\"panel.status === AccordionStatus.Error\"> {{ stepErrorText(panelNumber)}} </ng-container>\n        <ng-container *ngIf=\"panel.status === AccordionStatus.Complete\">\n          {{ stepCompleteText(panelNumber)}}\n        </ng-container>\n      </div>\n    </div>\n    <div\n      @skipInitialRender\n      role=\"region\"\n      class=\"clr-accordion-content-region\"\n      [id]=\"getAccordionContentId(panel.templateId)\"\n      [attr.aria-hidden]=\"!panel.open\"\n      [attr.aria-labelledby]=\"getAccordionHeaderId(panel.templateId)\"\n    >\n      <div\n        *ngIf=\"panel.open\"\n        @toggle\n        (@toggle.done)=\"collapsePanelOnAnimationDone(panel)\"\n        class=\"clr-accordion-content\"\n      >\n        <div class=\"clr-accordion-inner-content\">\n          <ng-content></ng-content>\n        </div>\n      </div>\n    </div>\n  </div>\n</ng-container>\n" }]
         }], ctorParameters: function () { return [{ type: undefined, decorators: [{
@@ -1301,9 +1301,9 @@ class ClrStepButton {
         this.stepperService.navigateToNextPanel(this.clrStep.id, this.clrStep.formGroup.valid);
     }
 }
-ClrStepButton.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStepButton, deps: [{ token: ClrStepperPanel }, { token: StepperService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrStepButton.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrStepButton, selector: "[clrStepButton]", inputs: { type: ["clrStepButton", "type"] }, host: { listeners: { "click": "navigateToNextPanel()" }, properties: { "class.clr-step-button": "true", "class.btn": "true", "type": "'button'", "class.btn-success": "this.submitButton", "class.btn-link": "this.previousButton" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStepButton, decorators: [{
+ClrStepButton.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStepButton, deps: [{ token: ClrStepperPanel }, { token: StepperService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrStepButton.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrStepButton, selector: "[clrStepButton]", inputs: { type: ["clrStepButton", "type"] }, host: { listeners: { "click": "navigateToNextPanel()" }, properties: { "class.clr-step-button": "true", "class.btn": "true", "type": "'button'", "class.btn-success": "this.submitButton", "class.btn-link": "this.previousButton" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStepButton, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrStepButton]',
@@ -1385,9 +1385,9 @@ class ClrStepper {
         });
     }
 }
-ClrStepper.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStepper, deps: [{ token: i1.FormGroupDirective, optional: true }, { token: i1.NgForm, optional: true }, { token: StepperService }], target: i0.ɵɵFactoryTarget.Component });
-ClrStepper.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrStepper, selector: "form[clrStepper]", inputs: { initialPanel: ["clrInitialStep", "initialPanel"] }, host: { properties: { "class.clr-accordion": "true", "class.clr-stepper-forms": "true" } }, providers: [StepperService, { provide: AccordionService, useExisting: StepperService }], queries: [{ propertyName: "panels", predicate: ClrStepperPanel, descendants: true }], usesOnChanges: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStepper, decorators: [{
+ClrStepper.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStepper, deps: [{ token: i1.FormGroupDirective, optional: true }, { token: i1.NgForm, optional: true }, { token: StepperService }], target: i0.ɵɵFactoryTarget.Component });
+ClrStepper.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrStepper, selector: "form[clrStepper]", inputs: { initialPanel: ["clrInitialStep", "initialPanel"] }, host: { properties: { "class.clr-accordion": "true", "class.clr-stepper-forms": "true" } }, providers: [StepperService, { provide: AccordionService, useExisting: StepperService }], queries: [{ propertyName: "panels", predicate: ClrStepperPanel, descendants: true }], usesOnChanges: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStepper, decorators: [{
             type: Component,
             args: [{
                     selector: 'form[clrStepper]',
@@ -1431,9 +1431,9 @@ function fromControlReset(control) {
  */
 class StepperWillyWonka extends WillyWonka {
 }
-StepperWillyWonka.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: StepperWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive });
-StepperWillyWonka.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: StepperWillyWonka, selector: "form[clrStepper]", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: StepperWillyWonka, decorators: [{
+StepperWillyWonka.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: StepperWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive });
+StepperWillyWonka.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: StepperWillyWonka, selector: "form[clrStepper]", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: StepperWillyWonka, decorators: [{
             type: Directive,
             args: [{
                     selector: 'form[clrStepper]',
@@ -1458,9 +1458,9 @@ class StepperOompaLoompa extends OompaLoompa {
         return this.expand.expanded;
     }
 }
-StepperOompaLoompa.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: StepperOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: StepperWillyWonka, optional: true }, { token: IfExpandService }], target: i0.ɵɵFactoryTarget.Directive });
-StepperOompaLoompa.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: StepperOompaLoompa, selector: "clr-stepper-panel, [clrStepButton]", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: StepperOompaLoompa, decorators: [{
+StepperOompaLoompa.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: StepperOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: StepperWillyWonka, optional: true }, { token: IfExpandService }], target: i0.ɵɵFactoryTarget.Directive });
+StepperOompaLoompa.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: StepperOompaLoompa, selector: "clr-stepper-panel, [clrStepButton]", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: StepperOompaLoompa, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-stepper-panel, [clrStepButton]',
@@ -1478,10 +1478,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
 const declarations = [ClrStepper, ClrStepButton, ClrStepperPanel, StepperOompaLoompa, StepperWillyWonka];
 class ClrStepperModule {
 }
-ClrStepperModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStepperModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrStepperModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrStepperModule, declarations: [ClrStepper, ClrStepButton, ClrStepperPanel, StepperOompaLoompa, StepperWillyWonka], imports: [CommonModule, ClrIconModule, ClrAccordionModule], exports: [ClrStepper, ClrStepButton, ClrStepperPanel, StepperOompaLoompa, StepperWillyWonka, ClrAccordionModule] });
-ClrStepperModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStepperModule, imports: [CommonModule, ClrIconModule, ClrAccordionModule, ClrAccordionModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStepperModule, decorators: [{
+ClrStepperModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStepperModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrStepperModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrStepperModule, declarations: [ClrStepper, ClrStepButton, ClrStepperPanel, StepperOompaLoompa, StepperWillyWonka], imports: [CommonModule, ClrIconModule, ClrAccordionModule], exports: [ClrStepper, ClrStepButton, ClrStepperPanel, StepperOompaLoompa, StepperWillyWonka, ClrAccordionModule] });
+ClrStepperModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStepperModule, imports: [CommonModule, ClrIconModule, ClrAccordionModule, ClrAccordionModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStepperModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIconModule, ClrAccordionModule],
@@ -1632,9 +1632,9 @@ class ClrPopoverToggleService {
         this._popoverAligned.next(popoverNode);
     }
 }
-ClrPopoverToggleService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverToggleService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-ClrPopoverToggleService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverToggleService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverToggleService, decorators: [{
+ClrPopoverToggleService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverToggleService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+ClrPopoverToggleService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverToggleService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverToggleService, decorators: [{
             type: Injectable
         }] });
 
@@ -1765,9 +1765,9 @@ class ClrPopoverEventsService {
         this.removeEscapeListener();
     }
 }
-ClrPopoverEventsService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverEventsService, deps: [{ token: i0.Renderer2 }, { token: ClrPopoverToggleService }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
-ClrPopoverEventsService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverEventsService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverEventsService, decorators: [{
+ClrPopoverEventsService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverEventsService, deps: [{ token: i0.Renderer2 }, { token: ClrPopoverToggleService }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
+ClrPopoverEventsService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverEventsService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverEventsService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: i0.Renderer2 }, { type: ClrPopoverToggleService }, { type: HTMLDocument, decorators: [{
                     type: Inject,
@@ -1785,9 +1785,9 @@ class ClrPopoverAnchor {
         smartEventService.anchorButtonRef = element;
     }
 }
-ClrPopoverAnchor.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverAnchor, deps: [{ token: ClrPopoverEventsService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrPopoverAnchor.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrPopoverAnchor, selector: "[clrPopoverAnchor]", host: { properties: { "class.clr-anchor": "true" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverAnchor, decorators: [{
+ClrPopoverAnchor.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverAnchor, deps: [{ token: ClrPopoverEventsService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrPopoverAnchor.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrPopoverAnchor, selector: "[clrPopoverAnchor]", host: { properties: { "class.clr-anchor": "true" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverAnchor, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrPopoverAnchor]',
@@ -1826,9 +1826,9 @@ class ClrPopoverCloseButton {
         this.subscriptions.forEach(sub => sub.unsubscribe());
     }
 }
-ClrPopoverCloseButton.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverCloseButton, deps: [{ token: i0.ElementRef }, { token: ClrPopoverEventsService }, { token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrPopoverCloseButton.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: { closeChange: "clrPopoverOnCloseChange" }, host: { listeners: { "click": "handleClick($event)" }, properties: { "class.clr-smart-close-button": "true" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverCloseButton, decorators: [{
+ClrPopoverCloseButton.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverCloseButton, deps: [{ token: i0.ElementRef }, { token: ClrPopoverEventsService }, { token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrPopoverCloseButton.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: { closeChange: "clrPopoverOnCloseChange" }, host: { listeners: { "click": "handleClick($event)" }, properties: { "class.clr-smart-close-button": "true" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverCloseButton, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrPopoverCloseButton]',
@@ -2275,9 +2275,9 @@ class ClrPopoverPositionService {
         }
     }
 }
-ClrPopoverPositionService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverPositionService, deps: [{ token: ClrPopoverEventsService }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
-ClrPopoverPositionService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverPositionService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverPositionService, decorators: [{
+ClrPopoverPositionService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverPositionService, deps: [{ token: ClrPopoverEventsService }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
+ClrPopoverPositionService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverPositionService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverPositionService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: ClrPopoverEventsService }, { type: undefined, decorators: [{
                     type: Inject,
@@ -2414,9 +2414,9 @@ class ClrPopoverContent {
         this.smartOpenService.popoverAlignedEmit(this.view.rootNodes[0]);
     }
 }
-ClrPopoverContent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverContent, deps: [{ token: DOCUMENT }, { token: i0.ViewContainerRef }, { token: i0.TemplateRef }, { token: i0.Renderer2 }, { token: ClrPopoverPositionService }, { token: ClrPopoverEventsService }, { token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrPopoverContent.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrPopoverContent, selector: "[clrPopoverContent]", inputs: { open: ["clrPopoverContent", "open"], contentAt: ["clrPopoverContentAt", "contentAt"], outsideClickClose: ["clrPopoverContentOutsideClickToClose", "outsideClickClose"], scrollToClose: ["clrPopoverContentScrollToClose", "scrollToClose"] }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverContent, decorators: [{
+ClrPopoverContent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverContent, deps: [{ token: DOCUMENT }, { token: i0.ViewContainerRef }, { token: i0.TemplateRef }, { token: i0.Renderer2 }, { token: ClrPopoverPositionService }, { token: ClrPopoverEventsService }, { token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrPopoverContent.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrPopoverContent, selector: "[clrPopoverContent]", inputs: { open: ["clrPopoverContent", "open"], contentAt: ["clrPopoverContentAt", "contentAt"], outsideClickClose: ["clrPopoverContentOutsideClickToClose", "outsideClickClose"], scrollToClose: ["clrPopoverContentScrollToClose", "scrollToClose"] }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverContent, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrPopoverContent]',
@@ -2460,9 +2460,9 @@ class ClrPopoverOpenCloseButton {
         this.subscriptions.forEach(sub => sub.unsubscribe());
     }
 }
-ClrPopoverOpenCloseButton.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverOpenCloseButton, deps: [{ token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrPopoverOpenCloseButton.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: { openCloseChange: "clrPopoverOpenCloseChange" }, host: { listeners: { "click": "handleClick($event)" }, properties: { "class.clr-smart-open-close": "true" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverOpenCloseButton, decorators: [{
+ClrPopoverOpenCloseButton.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverOpenCloseButton, deps: [{ token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrPopoverOpenCloseButton.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: { openCloseChange: "clrPopoverOpenCloseChange" }, host: { listeners: { "click": "handleClick($event)" }, properties: { "class.clr-smart-open-close": "true" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverOpenCloseButton, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrPopoverOpenCloseButton]',
@@ -2486,10 +2486,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrPopoverModuleNext {
 }
-ClrPopoverModuleNext.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverModuleNext, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrPopoverModuleNext.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverModuleNext, declarations: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent], exports: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent] });
-ClrPopoverModuleNext.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverModuleNext });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverModuleNext, decorators: [{
+ClrPopoverModuleNext.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverModuleNext, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrPopoverModuleNext.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverModuleNext, declarations: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent], exports: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent] });
+ClrPopoverModuleNext.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverModuleNext });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverModuleNext, decorators: [{
             type: NgModule,
             args: [{
                     imports: [],
@@ -2515,9 +2515,9 @@ class ButtonInGroupService {
         this._changes.next(button);
     }
 }
-ButtonInGroupService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ButtonInGroupService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-ButtonInGroupService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ButtonInGroupService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ButtonInGroupService, decorators: [{
+ButtonInGroupService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ButtonInGroupService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+ButtonInGroupService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ButtonInGroupService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ButtonInGroupService, decorators: [{
             type: Injectable
         }] });
 
@@ -2614,8 +2614,8 @@ class ClrButton {
         this._click.emit(true);
     }
 }
-ClrButton.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrButton, deps: [{ token: i1$1.RouterLinkActive, optional: true }, { token: ButtonInGroupService, optional: true, skipSelf: true }], target: i0.ɵɵFactoryTarget.Component });
-ClrButton.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrButton, selector: "clr-button", inputs: { routerLinkActiveClasses: ["routerLinkActive", "routerLinkActiveClasses"], inMenu: ["clrInMenu", "inMenu"], classNames: ["class", "classNames"], name: "name", type: "type", id: "id", disabled: "disabled" }, outputs: { _click: "click" }, providers: [{ provide: LoadingListener, useExisting: ClrButton }], viewQueries: [{ propertyName: "templateRef", first: true, predicate: ["buttonProjectedRef"], descendants: true, static: true }], ngImport: i0, template: `
+ClrButton.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrButton, deps: [{ token: i1$1.RouterLinkActive, optional: true }, { token: ButtonInGroupService, optional: true, skipSelf: true }], target: i0.ɵɵFactoryTarget.Component });
+ClrButton.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrButton, selector: "clr-button", inputs: { routerLinkActiveClasses: ["routerLinkActive", "routerLinkActiveClasses"], inMenu: ["clrInMenu", "inMenu"], classNames: ["class", "classNames"], name: "name", type: "type", id: "id", disabled: "disabled" }, outputs: { _click: "click" }, providers: [{ provide: LoadingListener, useExisting: ClrButton }], viewQueries: [{ propertyName: "templateRef", first: true, predicate: ["buttonProjectedRef"], descendants: true, static: true }], ngImport: i0, template: `
     <ng-template #buttonProjectedRef>
       <button
         [class]="classNames"
@@ -2631,7 +2631,7 @@ ClrButton.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15
       </button>
     </ng-template>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrButton, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrButton, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-button',
@@ -2724,9 +2724,9 @@ class ClrDestroyService extends Subject {
         this.complete();
     }
 }
-ClrDestroyService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDestroyService, deps: null, target: i0.ɵɵFactoryTarget.Injectable });
-ClrDestroyService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDestroyService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDestroyService, decorators: [{
+ClrDestroyService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDestroyService, deps: null, target: i0.ɵɵFactoryTarget.Injectable });
+ClrDestroyService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDestroyService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDestroyService, decorators: [{
             type: Injectable
         }] });
 
@@ -2821,9 +2821,9 @@ let FocusService$1 = class FocusService {
         this._unlistenFuncs.forEach(unlisten => unlisten());
     }
 };
-FocusService$1.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: FocusService$1, deps: [{ token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Injectable });
-FocusService$1.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: FocusService$1 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: FocusService$1, decorators: [{
+FocusService$1.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: FocusService$1, deps: [{ token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Injectable });
+FocusService$1.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: FocusService$1 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: FocusService$1, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: i0.Renderer2 }]; } });
 function clrFocusServiceFactory(existing, renderer) {
@@ -2940,9 +2940,9 @@ class ClrStopEscapePropagationDirective {
         }
     }
 }
-ClrStopEscapePropagationDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStopEscapePropagationDirective, deps: [{ token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrStopEscapePropagationDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrStopEscapePropagationDirective, isStandalone: true, host: { listeners: { "keyup.escape": "onEscapeKey($event)" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStopEscapePropagationDirective, decorators: [{
+ClrStopEscapePropagationDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStopEscapePropagationDirective, deps: [{ token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrStopEscapePropagationDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrStopEscapePropagationDirective, isStandalone: true, host: { listeners: { "keyup.escape": "onEscapeKey($event)" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStopEscapePropagationDirective, decorators: [{
             type: Directive,
             args: [{
                     standalone: true,
@@ -2960,14 +2960,14 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrPopoverHostDirective {
 }
-ClrPopoverHostDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverHostDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-ClrPopoverHostDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrPopoverHostDirective, isStandalone: true, providers: [
+ClrPopoverHostDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverHostDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+ClrPopoverHostDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrPopoverHostDirective, isStandalone: true, providers: [
         ClrPopoverToggleService,
         ClrPopoverEventsService,
         ClrPopoverPositionService,
         { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef },
     ], hostDirectives: [{ directive: ClrStopEscapePropagationDirective }], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverHostDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverHostDirective, decorators: [{
             type: Directive,
             args: [{
                     standalone: true,
@@ -3099,9 +3099,9 @@ class DomAdapter {
         element.focus();
     }
 }
-DomAdapter.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DomAdapter, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-DomAdapter.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DomAdapter });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DomAdapter, decorators: [{
+DomAdapter.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DomAdapter, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+DomAdapter.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DomAdapter });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DomAdapter, decorators: [{
             type: Injectable
         }] });
 
@@ -3142,9 +3142,9 @@ class BaseExpandableAnimation {
         });
     }
 }
-BaseExpandableAnimation.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: BaseExpandableAnimation, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Directive });
-BaseExpandableAnimation.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: BaseExpandableAnimation, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: BaseExpandableAnimation, decorators: [{
+BaseExpandableAnimation.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: BaseExpandableAnimation, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Directive });
+BaseExpandableAnimation.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: BaseExpandableAnimation, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: BaseExpandableAnimation, decorators: [{
             type: Directive
         }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: DomAdapter }, { type: i0.Renderer2 }]; } });
 
@@ -3173,9 +3173,9 @@ class ClrExpandableAnimation extends BaseExpandableAnimation {
         }
     }
 }
-ClrExpandableAnimation.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrExpandableAnimation, deps: null, target: i0.ɵɵFactoryTarget.Component });
-ClrExpandableAnimation.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrExpandableAnimation, selector: "clr-expandable-animation", inputs: { clrExpandTrigger: "clrExpandTrigger" }, host: { listeners: { "@expandAnimation.start": "animationStart($event)", "@expandAnimation.done": "animationDone($event)" }, properties: { "@expandAnimation": "this.expandAnimation" } }, providers: [DomAdapter], usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, styles: [":host{display:block}\n"], animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrExpandableAnimation, decorators: [{
+ClrExpandableAnimation.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrExpandableAnimation, deps: null, target: i0.ɵɵFactoryTarget.Component });
+ClrExpandableAnimation.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrExpandableAnimation, selector: "clr-expandable-animation", inputs: { clrExpandTrigger: "clrExpandTrigger" }, host: { listeners: { "@expandAnimation.start": "animationStart($event)", "@expandAnimation.done": "animationDone($event)" }, properties: { "@expandAnimation": "this.expandAnimation" } }, providers: [DomAdapter], usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, styles: [":host{display:block}\n"], animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrExpandableAnimation, decorators: [{
             type: Component,
             args: [{ selector: 'clr-expandable-animation', template: `<ng-content></ng-content>`, animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])], providers: [DomAdapter], styles: [":host{display:block}\n"] }]
         }], propDecorators: { clrExpandTrigger: [{
@@ -3223,9 +3223,9 @@ class ClrExpandableAnimationDirective extends BaseExpandableAnimation {
         this.player.play();
     }
 }
-ClrExpandableAnimationDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrExpandableAnimationDirective, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }, { token: i2.AnimationBuilder }], target: i0.ɵɵFactoryTarget.Directive });
-ClrExpandableAnimationDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrExpandableAnimationDirective, selector: "[clrExpandableAnimation]", inputs: { expanded: ["clrExpandableAnimation", "expanded"] }, host: { properties: { "class.clr-expandable-animation": "true" } }, providers: [DomAdapter], usesInheritance: true, usesOnChanges: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrExpandableAnimationDirective, decorators: [{
+ClrExpandableAnimationDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrExpandableAnimationDirective, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }, { token: i2.AnimationBuilder }], target: i0.ɵɵFactoryTarget.Directive });
+ClrExpandableAnimationDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrExpandableAnimationDirective, selector: "[clrExpandableAnimation]", inputs: { expanded: ["clrExpandableAnimation", "expanded"] }, host: { properties: { "class.clr-expandable-animation": "true" } }, providers: [DomAdapter], usesInheritance: true, usesOnChanges: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrExpandableAnimationDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrExpandableAnimation]',
@@ -3355,10 +3355,10 @@ function slide(direction) {
 const CLR_LOADING_DIRECTIVES = [ClrLoading];
 class ClrLoadingModule {
 }
-ClrLoadingModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLoadingModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrLoadingModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrLoadingModule, declarations: [ClrLoading], imports: [CommonModule], exports: [ClrLoading] });
-ClrLoadingModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLoadingModule, imports: [CommonModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLoadingModule, decorators: [{
+ClrLoadingModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLoadingModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrLoadingModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrLoadingModule, declarations: [ClrLoading], imports: [CommonModule], exports: [ClrLoading] });
+ClrLoadingModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLoadingModule, imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLoadingModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -3436,9 +3436,9 @@ class IfActiveService {
         }
     }
 }
-IfActiveService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: IfActiveService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-IfActiveService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: IfActiveService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: IfActiveService, decorators: [{
+IfActiveService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: IfActiveService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+IfActiveService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: IfActiveService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: IfActiveService, decorators: [{
             type: Injectable
         }] });
 
@@ -3518,9 +3518,9 @@ class ClrIfActive {
         }
     }
 }
-ClrIfActive.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIfActive, deps: [{ token: IfActiveService }, { token: IF_ACTIVE_ID }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrIfActive.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrIfActive, selector: "[clrIfActive]", inputs: { active: ["clrIfActive", "active"] }, outputs: { activeChange: "clrIfActiveChange" }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIfActive, decorators: [{
+ClrIfActive.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIfActive, deps: [{ token: IfActiveService }, { token: IF_ACTIVE_ID }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrIfActive.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrIfActive, selector: "[clrIfActive]", inputs: { active: ["clrIfActive", "active"] }, outputs: { activeChange: "clrIfActiveChange" }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIfActive, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrIfActive]',
@@ -3599,9 +3599,9 @@ class ClrIfOpen {
         }
     }
 }
-ClrIfOpen.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIfOpen, deps: [{ token: ClrPopoverToggleService }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrIfOpen.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrIfOpen, selector: "[clrIfOpen]", inputs: { open: ["clrIfOpen", "open"] }, outputs: { openChange: "clrIfOpenChange" }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIfOpen, decorators: [{
+ClrIfOpen.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIfOpen, deps: [{ token: ClrPopoverToggleService }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrIfOpen.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrIfOpen, selector: "[clrIfOpen]", inputs: { open: ["clrIfOpen", "open"] }, outputs: { openChange: "clrIfOpenChange" }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIfOpen, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrIfOpen]',
@@ -3690,9 +3690,9 @@ class ClrIfExpanded {
         }
     }
 }
-ClrIfExpanded.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIfExpanded, deps: [{ token: i0.TemplateRef, optional: true }, { token: i0.ViewContainerRef }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: IfExpandService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrIfExpanded.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrIfExpanded, selector: "[clrIfExpanded]", inputs: { expanded: ["clrIfExpanded", "expanded"] }, outputs: { expandedChange: "clrIfExpandedChange" }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIfExpanded, decorators: [{
+ClrIfExpanded.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIfExpanded, deps: [{ token: i0.TemplateRef, optional: true }, { token: i0.ViewContainerRef }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: IfExpandService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrIfExpanded.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrIfExpanded, selector: "[clrIfExpanded]", inputs: { expanded: ["clrIfExpanded", "expanded"] }, outputs: { expandedChange: "clrIfExpandedChange" }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIfExpanded, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrIfExpanded]',
@@ -3716,10 +3716,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
 const CONDITIONAL_DIRECTIVES = [ClrIfActive, ClrIfOpen, ClrIfExpanded];
 class ClrConditionalModule {
 }
-ClrConditionalModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrConditionalModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrConditionalModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrConditionalModule, declarations: [ClrIfActive, ClrIfOpen, ClrIfExpanded], imports: [CommonModule], exports: [ClrIfActive, ClrIfOpen, ClrIfExpanded] });
-ClrConditionalModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrConditionalModule, imports: [CommonModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrConditionalModule, decorators: [{
+ClrConditionalModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrConditionalModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrConditionalModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrConditionalModule, declarations: [ClrIfActive, ClrIfOpen, ClrIfExpanded], imports: [CommonModule], exports: [ClrIfActive, ClrIfOpen, ClrIfExpanded] });
+ClrConditionalModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrConditionalModule, imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrConditionalModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -3840,9 +3840,9 @@ class ClrFocusOnViewInit {
         }
     }
 }
-ClrFocusOnViewInit.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFocusOnViewInit, deps: [{ token: i0.ElementRef }, { token: PLATFORM_ID }, { token: FOCUS_ON_VIEW_INIT }, { token: DOCUMENT }, { token: i0.Renderer2 }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Directive });
-ClrFocusOnViewInit.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrFocusOnViewInit, selector: "[clrFocusOnViewInit]", inputs: { isEnabled: ["clrFocusOnViewInit", "isEnabled"] }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFocusOnViewInit, decorators: [{
+ClrFocusOnViewInit.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFocusOnViewInit, deps: [{ token: i0.ElementRef }, { token: PLATFORM_ID }, { token: FOCUS_ON_VIEW_INIT }, { token: DOCUMENT }, { token: i0.Renderer2 }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Directive });
+ClrFocusOnViewInit.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrFocusOnViewInit, selector: "[clrFocusOnViewInit]", inputs: { isEnabled: ["clrFocusOnViewInit", "isEnabled"] }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFocusOnViewInit, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrFocusOnViewInit]',
@@ -3870,10 +3870,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
 const FOCUS_ON_VIEW_INIT_DIRECTIVES = [ClrFocusOnViewInit];
 class ClrFocusOnViewInitModule {
 }
-ClrFocusOnViewInitModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFocusOnViewInitModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrFocusOnViewInitModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrFocusOnViewInitModule, declarations: [ClrFocusOnViewInit], imports: [CommonModule], exports: [ClrFocusOnViewInit] });
-ClrFocusOnViewInitModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFocusOnViewInitModule, providers: [FOCUS_ON_VIEW_INIT_PROVIDER], imports: [CommonModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFocusOnViewInitModule, decorators: [{
+ClrFocusOnViewInitModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFocusOnViewInitModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrFocusOnViewInitModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrFocusOnViewInitModule, declarations: [ClrFocusOnViewInit], imports: [CommonModule], exports: [ClrFocusOnViewInit] });
+ClrFocusOnViewInitModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFocusOnViewInitModule, providers: [FOCUS_ON_VIEW_INIT_PROVIDER], imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFocusOnViewInitModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -3906,9 +3906,9 @@ class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
         super(elementRef, focusTrapFactory, document);
     }
 }
-ClrStandaloneCdkTrapFocus.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStandaloneCdkTrapFocus, deps: [{ token: i0.ElementRef }, { token: i1$2.FocusTrapFactory }, { token: DOCUMENT, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
-ClrStandaloneCdkTrapFocus.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrStandaloneCdkTrapFocus, isStandalone: true, usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStandaloneCdkTrapFocus, decorators: [{
+ClrStandaloneCdkTrapFocus.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStandaloneCdkTrapFocus, deps: [{ token: i0.ElementRef }, { token: i1$2.FocusTrapFactory }, { token: DOCUMENT, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
+ClrStandaloneCdkTrapFocus.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrStandaloneCdkTrapFocus, isStandalone: true, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStandaloneCdkTrapFocus, decorators: [{
             type: Directive,
             args: [{
                     standalone: true,
@@ -4023,9 +4023,9 @@ class ButtonGroupFocusHandler {
         this.initialFocus = InitialFocus.FIRST_ITEM;
     }
 }
-ButtonGroupFocusHandler.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ButtonGroupFocusHandler, deps: [{ token: FocusService$1 }, { token: ClrPopoverToggleService }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Injectable });
-ButtonGroupFocusHandler.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ButtonGroupFocusHandler });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ButtonGroupFocusHandler, decorators: [{
+ButtonGroupFocusHandler.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ButtonGroupFocusHandler, deps: [{ token: FocusService$1 }, { token: ClrPopoverToggleService }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Injectable });
+ButtonGroupFocusHandler.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ButtonGroupFocusHandler });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ButtonGroupFocusHandler, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: FocusService$1 }, { type: ClrPopoverToggleService }, { type: i0.Renderer2 }]; } });
 const BUTTON_GROUP_FOCUS_HANDLER_PROVIDER = {
@@ -4151,9 +4151,9 @@ class ClrButtonGroup {
         });
     }
 }
-ClrButtonGroup.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrButtonGroup, deps: [{ token: ButtonInGroupService }, { token: ClrPopoverToggleService }, { token: ClrCommonStringsService }, { token: ClrDestroyService }, { token: ButtonGroupFocusHandler }], target: i0.ɵɵFactoryTarget.Component });
-ClrButtonGroup.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrButtonGroup, selector: "clr-button-group", inputs: { clrToggleButtonAriaLabel: "clrToggleButtonAriaLabel", menuPosition: ["clrMenuPosition", "menuPosition"] }, host: { properties: { "class.btn-group": "true" } }, providers: [ButtonInGroupService, ClrDestroyService, BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FOCUS_SERVICE_PROVIDER], queries: [{ propertyName: "buttons", predicate: ClrButton }], viewQueries: [{ propertyName: "menuToggle", first: true, predicate: ["menuToggle"], descendants: true }, { propertyName: "menu", first: true, predicate: ["menu"], descendants: true }], hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-template *ngFor=\"let inlineButton of inlineButtons\" [ngTemplateOutlet]=\"inlineButton.templateRef\"></ng-template>\n\n<div *ngIf=\"menuButtons.length > 0\" class=\"btn-group-overflow open\" [ngClass]=\"menuPosition\">\n  <button\n    #menuToggle\n    class=\"btn dropdown-toggle\"\n    clrPopoverAnchor\n    clrPopoverOpenCloseButton\n    (keydown.arrowup)=\"openMenu($event, InitialFocus.LAST_ITEM)\"\n    (keydown.arrowdown)=\"openMenu($event, InitialFocus.FIRST_ITEM)\"\n    [attr.aria-controls]=\"popoverId\"\n    [attr.aria-expanded]=\"open\"\n    [attr.aria-label]=\"clrToggleButtonAriaLabel\"\n  >\n    <cds-icon shape=\"ellipsis-horizontal\" [attr.title]=\"commonStrings.keys.more\"></cds-icon>\n  </button>\n  <div\n    #menu\n    role=\"menu\"\n    class=\"dropdown-menu clr-button-group-menu\"\n    [id]=\"popoverId\"\n    [attr.id]=\"popoverId\"\n    [attr.aria-hidden]=\"!open\"\n    *clrPopoverContent=\"open at popoverPosition; outsideClickToClose: true; scrollToClose: true\"\n  >\n    <ng-template *ngFor=\"let menuButton of menuButtons\" [ngTemplateOutlet]=\"menuButton.templateRef\"></ng-template>\n  </div>\n</div>\n", dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrButtonGroup, decorators: [{
+ClrButtonGroup.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrButtonGroup, deps: [{ token: ButtonInGroupService }, { token: ClrPopoverToggleService }, { token: ClrCommonStringsService }, { token: ClrDestroyService }, { token: ButtonGroupFocusHandler }], target: i0.ɵɵFactoryTarget.Component });
+ClrButtonGroup.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrButtonGroup, selector: "clr-button-group", inputs: { clrToggleButtonAriaLabel: "clrToggleButtonAriaLabel", menuPosition: ["clrMenuPosition", "menuPosition"] }, host: { properties: { "class.btn-group": "true" } }, providers: [ButtonInGroupService, ClrDestroyService, BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FOCUS_SERVICE_PROVIDER], queries: [{ propertyName: "buttons", predicate: ClrButton }], viewQueries: [{ propertyName: "menuToggle", first: true, predicate: ["menuToggle"], descendants: true }, { propertyName: "menu", first: true, predicate: ["menu"], descendants: true }], hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-template *ngFor=\"let inlineButton of inlineButtons\" [ngTemplateOutlet]=\"inlineButton.templateRef\"></ng-template>\n\n<div *ngIf=\"menuButtons.length > 0\" class=\"btn-group-overflow open\" [ngClass]=\"menuPosition\">\n  <button\n    #menuToggle\n    class=\"btn dropdown-toggle\"\n    clrPopoverAnchor\n    clrPopoverOpenCloseButton\n    (keydown.arrowup)=\"openMenu($event, InitialFocus.LAST_ITEM)\"\n    (keydown.arrowdown)=\"openMenu($event, InitialFocus.FIRST_ITEM)\"\n    [attr.aria-controls]=\"popoverId\"\n    [attr.aria-expanded]=\"open\"\n    [attr.aria-label]=\"clrToggleButtonAriaLabel\"\n  >\n    <cds-icon shape=\"ellipsis-horizontal\" [attr.title]=\"commonStrings.keys.more\"></cds-icon>\n  </button>\n  <div\n    #menu\n    role=\"menu\"\n    class=\"dropdown-menu clr-button-group-menu\"\n    [id]=\"popoverId\"\n    [attr.id]=\"popoverId\"\n    [attr.aria-hidden]=\"!open\"\n    *clrPopoverContent=\"open at popoverPosition; outsideClickToClose: true; scrollToClose: true\"\n  >\n    <ng-template *ngFor=\"let menuButton of menuButtons\" [ngTemplateOutlet]=\"menuButton.templateRef\"></ng-template>\n  </div>\n</div>\n", dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrButtonGroup, decorators: [{
             type: Component,
             args: [{ selector: 'clr-button-group', providers: [ButtonInGroupService, ClrDestroyService, BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FOCUS_SERVICE_PROVIDER], hostDirectives: [ClrPopoverHostDirective], host: { '[class.btn-group]': 'true' }, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-template *ngFor=\"let inlineButton of inlineButtons\" [ngTemplateOutlet]=\"inlineButton.templateRef\"></ng-template>\n\n<div *ngIf=\"menuButtons.length > 0\" class=\"btn-group-overflow open\" [ngClass]=\"menuPosition\">\n  <button\n    #menuToggle\n    class=\"btn dropdown-toggle\"\n    clrPopoverAnchor\n    clrPopoverOpenCloseButton\n    (keydown.arrowup)=\"openMenu($event, InitialFocus.LAST_ITEM)\"\n    (keydown.arrowdown)=\"openMenu($event, InitialFocus.FIRST_ITEM)\"\n    [attr.aria-controls]=\"popoverId\"\n    [attr.aria-expanded]=\"open\"\n    [attr.aria-label]=\"clrToggleButtonAriaLabel\"\n  >\n    <cds-icon shape=\"ellipsis-horizontal\" [attr.title]=\"commonStrings.keys.more\"></cds-icon>\n  </button>\n  <div\n    #menu\n    role=\"menu\"\n    class=\"dropdown-menu clr-button-group-menu\"\n    [id]=\"popoverId\"\n    [attr.id]=\"popoverId\"\n    [attr.aria-hidden]=\"!open\"\n    *clrPopoverContent=\"open at popoverPosition; outsideClickToClose: true; scrollToClose: true\"\n  >\n    <ng-template *ngFor=\"let menuButton of menuButtons\" [ngTemplateOutlet]=\"menuButton.templateRef\"></ng-template>\n  </div>\n</div>\n" }]
         }], ctorParameters: function () { return [{ type: ButtonInGroupService }, { type: ClrPopoverToggleService }, { type: ClrCommonStringsService }, { type: ClrDestroyService }, { type: ButtonGroupFocusHandler }]; }, propDecorators: { clrToggleButtonAriaLabel: [{
@@ -4182,10 +4182,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
 const CLR_BUTTON_GROUP_DIRECTIVES = [ClrButton, ClrButtonGroup];
 class ClrButtonGroupModule {
 }
-ClrButtonGroupModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrButtonGroupModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrButtonGroupModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrButtonGroupModule, declarations: [ClrButton, ClrButtonGroup], imports: [CommonModule, ClrIconModule, ClrPopoverModuleNext], exports: [ClrButton, ClrButtonGroup] });
-ClrButtonGroupModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrButtonGroupModule, imports: [CommonModule, ClrIconModule, ClrPopoverModuleNext] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrButtonGroupModule, decorators: [{
+ClrButtonGroupModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrButtonGroupModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrButtonGroupModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrButtonGroupModule, declarations: [ClrButton, ClrButtonGroup], imports: [CommonModule, ClrIconModule, ClrPopoverModuleNext], exports: [ClrButton, ClrButtonGroup] });
+ClrButtonGroupModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrButtonGroupModule, imports: [CommonModule, ClrIconModule, ClrPopoverModuleNext] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrButtonGroupModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIconModule, ClrPopoverModuleNext],
@@ -4247,8 +4247,8 @@ class ClrLoadingButton {
         }
     }
 }
-ClrLoadingButton.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLoadingButton, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Component });
-ClrLoadingButton.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrLoadingButton, selector: "button[clrLoading]", inputs: { disabled: "disabled" }, outputs: { clrLoadingChange: "clrLoadingChange" }, host: { properties: { "attr.disabled": "disabled? '' : null" } }, providers: [{ provide: LoadingListener, useExisting: ClrLoadingButton }], ngImport: i0, template: `
+ClrLoadingButton.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLoadingButton, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Component });
+ClrLoadingButton.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrLoadingButton, selector: "button[clrLoading]", inputs: { disabled: "disabled" }, outputs: { clrLoadingChange: "clrLoadingChange" }, host: { properties: { "attr.disabled": "disabled? '' : null" } }, providers: [{ provide: LoadingListener, useExisting: ClrLoadingButton }], ngImport: i0, template: `
     <span @parent [ngSwitch]="state">
       <ng-container *ngSwitchCase="buttonState.LOADING">
         <span @spinner class="spinner spinner-inline"></span>
@@ -4292,7 +4292,7 @@ ClrLoadingButton.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", versi
             transition(':leave', [style({ opacity: 1 }), animate('100ms ease-out', style({ opacity: 0 }))]),
         ]),
     ] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLoadingButton, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLoadingButton, decorators: [{
             type: Component,
             args: [{
                     selector: 'button[clrLoading]',
@@ -4361,10 +4361,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
 const CLR_LOADING_BUTTON_DIRECTIVES = [ClrLoadingButton];
 class ClrLoadingButtonModule {
 }
-ClrLoadingButtonModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLoadingButtonModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrLoadingButtonModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrLoadingButtonModule, declarations: [ClrLoadingButton], imports: [CommonModule], exports: [ClrLoadingButton] });
-ClrLoadingButtonModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLoadingButtonModule, imports: [CommonModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLoadingButtonModule, decorators: [{
+ClrLoadingButtonModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLoadingButtonModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrLoadingButtonModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrLoadingButtonModule, declarations: [ClrLoadingButton], imports: [CommonModule], exports: [ClrLoadingButton] });
+ClrLoadingButtonModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLoadingButtonModule, imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLoadingButtonModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -4384,10 +4384,10 @@ class ClrButtonModule {
         ClarityIcons.addIcons(ellipsisHorizontalIcon);
     }
 }
-ClrButtonModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrButtonModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrButtonModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrButtonModule, exports: [ClrLoadingButtonModule, ClrButtonGroupModule] });
-ClrButtonModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrButtonModule, imports: [ClrLoadingButtonModule, ClrButtonGroupModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrButtonModule, decorators: [{
+ClrButtonModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrButtonModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrButtonModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrButtonModule, exports: [ClrLoadingButtonModule, ClrButtonGroupModule] });
+ClrButtonModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrButtonModule, imports: [ClrLoadingButtonModule, ClrButtonGroupModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrButtonModule, decorators: [{
             type: NgModule,
             args: [{
                     exports: [ClrLoadingButtonModule, ClrButtonGroupModule],
@@ -4402,9 +4402,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class EmptyAnchor {
 }
-EmptyAnchor.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: EmptyAnchor, deps: [], target: i0.ɵɵFactoryTarget.Component });
-EmptyAnchor.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: EmptyAnchor, selector: "ng-component", ngImport: i0, template: '', isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: EmptyAnchor, decorators: [{
+EmptyAnchor.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: EmptyAnchor, deps: [], target: i0.ɵɵFactoryTarget.Component });
+EmptyAnchor.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: EmptyAnchor, selector: "ng-component", ngImport: i0, template: '', isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: EmptyAnchor, decorators: [{
             type: Component,
             args: [{
                     template: '',
@@ -4422,10 +4422,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrHostWrappingModule {
 }
-ClrHostWrappingModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrHostWrappingModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrHostWrappingModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrHostWrappingModule, declarations: [EmptyAnchor], exports: [EmptyAnchor] });
-ClrHostWrappingModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrHostWrappingModule });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrHostWrappingModule, decorators: [{
+ClrHostWrappingModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrHostWrappingModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrHostWrappingModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrHostWrappingModule, declarations: [EmptyAnchor], exports: [EmptyAnchor] });
+ClrHostWrappingModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrHostWrappingModule });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrHostWrappingModule, decorators: [{
             type: NgModule,
             args: [{
                     declarations: [EmptyAnchor],
@@ -4456,9 +4456,9 @@ class ControlIdService {
         return this._idChange.asObservable();
     }
 }
-ControlIdService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ControlIdService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-ControlIdService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ControlIdService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ControlIdService, decorators: [{
+ControlIdService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ControlIdService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+ControlIdService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ControlIdService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ControlIdService, decorators: [{
             type: Injectable
         }] });
 
@@ -4492,9 +4492,9 @@ class ContainerIdService {
         return this._idChange.asObservable();
     }
 }
-ContainerIdService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ContainerIdService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-ContainerIdService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ContainerIdService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ContainerIdService, decorators: [{
+ContainerIdService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ContainerIdService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+ContainerIdService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ContainerIdService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ContainerIdService, decorators: [{
             type: Injectable
         }] });
 
@@ -4535,9 +4535,9 @@ class ClrAbstractControl {
         return null;
     }
 }
-ClrAbstractControl.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAbstractControl, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
-ClrAbstractControl.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrAbstractControl, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAbstractControl, decorators: [{
+ClrAbstractControl.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAbstractControl, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
+ClrAbstractControl.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrAbstractControl, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAbstractControl, decorators: [{
             type: Directive
         }], ctorParameters: function () { return [{ type: ControlIdService, decorators: [{
                     type: Optional
@@ -4559,9 +4559,9 @@ class ClrControlError extends ClrAbstractControl {
         this.controlIdSuffix = CONTROL_SUFFIX.ERROR;
     }
 }
-ClrControlError.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrControlError, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component });
-ClrControlError.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrControlError, selector: "clr-control-error", host: { properties: { "class.clr-subtext": "true", "class.error": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrControlError, decorators: [{
+ClrControlError.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrControlError, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component });
+ClrControlError.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrControlError, selector: "clr-control-error", host: { properties: { "class.clr-subtext": "true", "class.error": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrControlError, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-control-error',
@@ -4592,9 +4592,9 @@ class ClrControlHelper extends ClrAbstractControl {
         this.controlIdSuffix = CONTROL_SUFFIX.HELPER;
     }
 }
-ClrControlHelper.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrControlHelper, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component });
-ClrControlHelper.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrControlHelper, selector: "clr-control-helper", host: { properties: { "class.clr-subtext": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrControlHelper, decorators: [{
+ClrControlHelper.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrControlHelper, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component });
+ClrControlHelper.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrControlHelper, selector: "clr-control-helper", host: { properties: { "class.clr-subtext": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrControlHelper, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-control-helper',
@@ -4654,9 +4654,9 @@ class NgControlService {
         this._helpers.next(state);
     }
 }
-NgControlService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: NgControlService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-NgControlService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: NgControlService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: NgControlService, decorators: [{
+NgControlService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: NgControlService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+NgControlService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: NgControlService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: NgControlService, decorators: [{
             type: Injectable
         }] });
 
@@ -4707,9 +4707,9 @@ class IfControlStateService {
         }), startWith$1(CONTROL_STATE.NONE));
     }
 }
-IfControlStateService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: IfControlStateService, deps: [{ token: NgControlService }], target: i0.ɵɵFactoryTarget.Injectable });
-IfControlStateService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: IfControlStateService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: IfControlStateService, decorators: [{
+IfControlStateService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: IfControlStateService, deps: [{ token: NgControlService }], target: i0.ɵɵFactoryTarget.Injectable });
+IfControlStateService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: IfControlStateService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: IfControlStateService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: NgControlService }]; } });
 
@@ -4917,9 +4917,9 @@ class DropdownFocusHandler {
         return wrapObservable(of(this), () => (this.toggleService.open = false));
     }
 }
-DropdownFocusHandler.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DropdownFocusHandler, deps: [{ token: i0.Renderer2 }, { token: DropdownFocusHandler, optional: true, skipSelf: true }, { token: ClrPopoverToggleService }, { token: FocusService$1 }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
-DropdownFocusHandler.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DropdownFocusHandler });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DropdownFocusHandler, decorators: [{
+DropdownFocusHandler.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DropdownFocusHandler, deps: [{ token: i0.Renderer2 }, { token: DropdownFocusHandler, optional: true, skipSelf: true }, { token: ClrPopoverToggleService }, { token: FocusService$1 }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
+DropdownFocusHandler.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DropdownFocusHandler });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DropdownFocusHandler, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: i0.Renderer2 }, { type: DropdownFocusHandler, decorators: [{
                     type: SkipSelf
@@ -4948,9 +4948,9 @@ class RootDropdownService {
         this._changes.next(false);
     }
 }
-RootDropdownService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: RootDropdownService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-RootDropdownService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: RootDropdownService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: RootDropdownService, decorators: [{
+RootDropdownService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: RootDropdownService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+RootDropdownService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: RootDropdownService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: RootDropdownService, decorators: [{
             type: Injectable
         }] });
 function clrRootDropdownFactory(existing) {
@@ -4982,9 +4982,9 @@ class ClrDropdown {
         this.subscriptions.forEach(sub => sub.unsubscribe());
     }
 }
-ClrDropdown.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdown, deps: [{ token: ClrDropdown, optional: true, skipSelf: true }, { token: ClrPopoverToggleService }, { token: DropdownFocusHandler }, { token: i0.ChangeDetectorRef }, { token: RootDropdownService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDropdown.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDropdown, selector: "clr-dropdown", inputs: { isMenuClosable: ["clrCloseMenuOnItemClick", "isMenuClosable"] }, host: { properties: { "class.dropdown": "true", "class.open": "toggleService.open" } }, providers: [ROOT_DROPDOWN_PROVIDER, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER], hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: '<ng-content></ng-content>', isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdown, decorators: [{
+ClrDropdown.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDropdown, deps: [{ token: ClrDropdown, optional: true, skipSelf: true }, { token: ClrPopoverToggleService }, { token: DropdownFocusHandler }, { token: i0.ChangeDetectorRef }, { token: RootDropdownService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDropdown.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDropdown, selector: "clr-dropdown", inputs: { isMenuClosable: ["clrCloseMenuOnItemClick", "isMenuClosable"] }, host: { properties: { "class.dropdown": "true", "class.open": "toggleService.open" } }, providers: [ROOT_DROPDOWN_PROVIDER, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER], hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: '<ng-content></ng-content>', isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDropdown, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dropdown',
@@ -5394,9 +5394,9 @@ class AbstractPopover {
         }
     }
 }
-AbstractPopover.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: AbstractPopover, deps: [{ token: i0.Injector }, { token: i0.ElementRef, skipSelf: true }], target: i0.ɵɵFactoryTarget.Directive });
-AbstractPopover.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: AbstractPopover, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: AbstractPopover, decorators: [{
+AbstractPopover.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: AbstractPopover, deps: [{ token: i0.Injector }, { token: i0.ElementRef, skipSelf: true }], target: i0.ɵɵFactoryTarget.Directive });
+AbstractPopover.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: AbstractPopover, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: AbstractPopover, decorators: [{
             type: Directive
         }], ctorParameters: function () { return [{ type: i0.Injector }, { type: i0.ElementRef, decorators: [{
                     type: SkipSelf
@@ -5481,9 +5481,9 @@ class ClrDropdownMenu extends AbstractPopover {
         this.focusHandler.resetChildren();
     }
 }
-ClrDropdownMenu.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownMenu, deps: [{ token: i0.Injector }, { token: POPOVER_HOST_ANCHOR, optional: true }, { token: ClrDropdownMenu, optional: true, skipSelf: true }, { token: DropdownFocusHandler }], target: i0.ɵɵFactoryTarget.Component });
-ClrDropdownMenu.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDropdownMenu, selector: "clr-dropdown-menu", inputs: { position: ["clrPosition", "position"] }, host: { properties: { "class.dropdown-menu": "true", "attr.role": "\"menu\"" } }, queries: [{ propertyName: "items", predicate: FocusableItem }], usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownMenu, decorators: [{
+ClrDropdownMenu.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDropdownMenu, deps: [{ token: i0.Injector }, { token: POPOVER_HOST_ANCHOR, optional: true }, { token: ClrDropdownMenu, optional: true, skipSelf: true }, { token: DropdownFocusHandler }], target: i0.ɵɵFactoryTarget.Component });
+ClrDropdownMenu.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDropdownMenu, selector: "clr-dropdown-menu", inputs: { position: ["clrPosition", "position"] }, host: { properties: { "class.dropdown-menu": "true", "attr.role": "\"menu\"" } }, queries: [{ propertyName: "items", predicate: FocusableItem }], usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDropdownMenu, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dropdown-menu',
@@ -5535,9 +5535,9 @@ class ClrDropdownTrigger {
         this.toggleService.toggleWithEvent(event);
     }
 }
-ClrDropdownTrigger.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownTrigger, deps: [{ token: ClrDropdown }, { token: ClrPopoverToggleService }, { token: i0.ElementRef }, { token: DropdownFocusHandler }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Directive });
-ClrDropdownTrigger.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDropdownTrigger, selector: "[clrDropdownTrigger],[clrDropdownToggle]", host: { listeners: { "click": "onDropdownTriggerClick($event)" }, properties: { "class.dropdown-toggle": "isRootLevelToggle", "class.dropdown-item": "!isRootLevelToggle", "class.expandable": "!isRootLevelToggle", "class.active": "active", "attr.aria-haspopup": "\"menu\"", "attr.aria-expanded": "active" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownTrigger, decorators: [{
+ClrDropdownTrigger.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDropdownTrigger, deps: [{ token: ClrDropdown }, { token: ClrPopoverToggleService }, { token: i0.ElementRef }, { token: DropdownFocusHandler }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Directive });
+ClrDropdownTrigger.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrDropdownTrigger, selector: "[clrDropdownTrigger],[clrDropdownToggle]", host: { listeners: { "click": "onDropdownTriggerClick($event)" }, properties: { "class.dropdown-toggle": "isRootLevelToggle", "class.dropdown-item": "!isRootLevelToggle", "class.expandable": "!isRootLevelToggle", "class.active": "active", "attr.aria-haspopup": "\"menu\"", "attr.aria-expanded": "active" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDropdownTrigger, decorators: [{
             type: Directive,
             args: [{
                     // We support both selectors for legacy reasons
@@ -5591,9 +5591,9 @@ class BasicFocusableItem {
         }
     }
 }
-BasicFocusableItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: BasicFocusableItem, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
-BasicFocusableItem.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: BasicFocusableItem });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: BasicFocusableItem, decorators: [{
+BasicFocusableItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: BasicFocusableItem, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
+BasicFocusableItem.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: BasicFocusableItem });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: BasicFocusableItem, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: i0.Renderer2 }, { type: undefined, decorators: [{
                     type: Inject,
@@ -5673,9 +5673,9 @@ class ClrDropdownItem {
         return rootDropdown;
     }
 }
-ClrDropdownItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownItem, deps: [{ token: ClrDropdown }, { token: RootDropdownService }, { token: FocusableItem }, { token: i0.ElementRef }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Directive });
-ClrDropdownItem.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDropdownItem, selector: "[clrDropdownItem]", inputs: { disabled: ["clrDisabled", "disabled"], dropdownItemId: ["id", "dropdownItemId"] }, host: { listeners: { "click": "onDropdownItemClick()", "keydown.space": "onSpaceKeydown($event)", "keydown.enter": "onEnterKeydown($event)" }, properties: { "class.disabled": "disabled", "class.dropdown-item": "true", "attr.role": "\"menuitem\"", "attr.aria-disabled": "disabled", "attr.id": "dropdownItemId" } }, providers: [BASIC_FOCUSABLE_ITEM_PROVIDER], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownItem, decorators: [{
+ClrDropdownItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDropdownItem, deps: [{ token: ClrDropdown }, { token: RootDropdownService }, { token: FocusableItem }, { token: i0.ElementRef }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Directive });
+ClrDropdownItem.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrDropdownItem, selector: "[clrDropdownItem]", inputs: { disabled: ["clrDisabled", "disabled"], dropdownItemId: ["id", "dropdownItemId"] }, host: { listeners: { "click": "onDropdownItemClick()", "keydown.space": "onSpaceKeydown($event)", "keydown.enter": "onEnterKeydown($event)" }, properties: { "class.disabled": "disabled", "class.dropdown-item": "true", "attr.role": "\"menuitem\"", "attr.aria-disabled": "disabled", "attr.id": "dropdownItemId" } }, providers: [BASIC_FOCUSABLE_ITEM_PROVIDER], ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDropdownItem, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrDropdownItem]',
@@ -5731,10 +5731,10 @@ const CLR_MENU_POSITIONS = [
 const CLR_DROPDOWN_DIRECTIVES = [ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem];
 class ClrDropdownModule {
 }
-ClrDropdownModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrDropdownModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownModule, declarations: [ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem], imports: [CommonModule], exports: [ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, ClrConditionalModule, ClrIconModule] });
-ClrDropdownModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownModule, imports: [CommonModule, ClrConditionalModule, ClrIconModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDropdownModule, decorators: [{
+ClrDropdownModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDropdownModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrDropdownModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrDropdownModule, declarations: [ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem], imports: [CommonModule], exports: [ClrDropdown, ClrDropdownMenu, ClrDropdownTrigger, ClrDropdownItem, ClrConditionalModule, ClrIconModule] });
+ClrDropdownModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDropdownModule, imports: [CommonModule, ClrConditionalModule, ClrIconModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDropdownModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -5766,9 +5766,9 @@ class SignpostFocusManager {
         }
     }
 }
-SignpostFocusManager.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: SignpostFocusManager, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-SignpostFocusManager.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: SignpostFocusManager });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: SignpostFocusManager, decorators: [{
+SignpostFocusManager.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: SignpostFocusManager, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+SignpostFocusManager.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: SignpostFocusManager });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: SignpostFocusManager, decorators: [{
             type: Injectable
         }] });
 
@@ -5789,9 +5789,9 @@ class SignpostIdService {
         this._id.next(id);
     }
 }
-SignpostIdService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: SignpostIdService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-SignpostIdService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: SignpostIdService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: SignpostIdService, decorators: [{
+SignpostIdService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: SignpostIdService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+SignpostIdService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: SignpostIdService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: SignpostIdService, decorators: [{
             type: Injectable
         }] });
 
@@ -5855,9 +5855,9 @@ class ClrSignpostTrigger {
         }
     }
 }
-ClrSignpostTrigger.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSignpostTrigger, deps: [{ token: ClrPopoverToggleService }, { token: i0.ElementRef }, { token: SignpostIdService }, { token: SignpostFocusManager }, { token: DOCUMENT }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Directive });
-ClrSignpostTrigger.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrSignpostTrigger, selector: "[clrSignpostTrigger]", host: { listeners: { "click": "onSignpostTriggerClick($event)" }, properties: { "attr.aria-expanded": "ariaExpanded", "attr.aria-controls": "ariaControl", "class.active": "isOpen" }, classAttribute: "signpost-trigger" }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSignpostTrigger, decorators: [{
+ClrSignpostTrigger.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSignpostTrigger, deps: [{ token: ClrPopoverToggleService }, { token: i0.ElementRef }, { token: SignpostIdService }, { token: SignpostFocusManager }, { token: DOCUMENT }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Directive });
+ClrSignpostTrigger.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrSignpostTrigger, selector: "[clrSignpostTrigger]", host: { listeners: { "click": "onSignpostTriggerClick($event)" }, properties: { "attr.aria-expanded": "ariaExpanded", "attr.aria-controls": "ariaControl", "class.active": "isOpen" }, classAttribute: "signpost-trigger" }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSignpostTrigger, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrSignpostTrigger]',
@@ -5917,8 +5917,8 @@ class ClrSignpost {
         this.useCustomTrigger = !!trigger;
     }
 }
-ClrSignpost.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSignpost, deps: [{ token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrSignpost.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrSignpost, selector: "clr-signpost", inputs: { signpostTriggerAriaLabel: ["clrSignpostTriggerAriaLabel", "signpostTriggerAriaLabel"] }, host: { properties: { "class.signpost": "true" } }, providers: [SignpostFocusManager, SignpostIdService], queries: [{ propertyName: "customTrigger", first: true, predicate: ClrSignpostTrigger, descendants: true }], hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `
+ClrSignpost.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSignpost, deps: [{ token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrSignpost.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrSignpost, selector: "clr-signpost", inputs: { signpostTriggerAriaLabel: ["clrSignpostTriggerAriaLabel", "signpostTriggerAriaLabel"] }, host: { properties: { "class.signpost": "true" } }, providers: [SignpostFocusManager, SignpostIdService], queries: [{ propertyName: "customTrigger", first: true, predicate: ClrSignpostTrigger, descendants: true }], hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `
     <ng-container *ngIf="!useCustomTrigger">
       <button
         type="button"
@@ -5932,7 +5932,7 @@ ClrSignpost.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "
 
     <ng-content></ng-content>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrSignpostTrigger, selector: "[clrSignpostTrigger]" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSignpost, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSignpost, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-signpost',
@@ -6086,8 +6086,8 @@ class ClrSignpostContent extends AbstractPopover {
         }
     }
 }
-ClrSignpostContent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSignpostContent, deps: [{ token: i0.Injector }, { token: POPOVER_HOST_ANCHOR, optional: true }, { token: ClrCommonStringsService }, { token: SignpostIdService }, { token: SignpostFocusManager }, { token: PLATFORM_ID }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component });
-ClrSignpostContent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrSignpostContent, selector: "clr-signpost-content", inputs: { signpostCloseAriaLabel: ["clrSignpostCloseAriaLabel", "signpostCloseAriaLabel"], position: ["clrPosition", "position"] }, host: { properties: { "class.signpost-content": "true", "id": "signpostContentId" } }, usesInheritance: true, ngImport: i0, template: `
+ClrSignpostContent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSignpostContent, deps: [{ token: i0.Injector }, { token: POPOVER_HOST_ANCHOR, optional: true }, { token: ClrCommonStringsService }, { token: SignpostIdService }, { token: SignpostFocusManager }, { token: PLATFORM_ID }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component });
+ClrSignpostContent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrSignpostContent, selector: "clr-signpost-content", inputs: { signpostCloseAriaLabel: ["clrSignpostCloseAriaLabel", "signpostCloseAriaLabel"], position: ["clrPosition", "position"] }, host: { properties: { "class.signpost-content": "true", "id": "signpostContentId" } }, usesInheritance: true, ngImport: i0, template: `
     <div class="signpost-wrap">
       <div class="popover-pointer"></div>
       <div class="signpost-content-header">
@@ -6107,7 +6107,7 @@ ClrSignpostContent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", ver
       </div>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSignpostContent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSignpostContent, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-signpost-content',
@@ -6160,9 +6160,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrSignpostTitle {
 }
-ClrSignpostTitle.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSignpostTitle, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrSignpostTitle.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrSignpostTitle, selector: "clr-signpost-title", host: { properties: { "class.signpost-title": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSignpostTitle, decorators: [{
+ClrSignpostTitle.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSignpostTitle, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrSignpostTitle.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrSignpostTitle, selector: "clr-signpost-title", host: { properties: { "class.signpost-title": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSignpostTitle, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-signpost-title',
@@ -6188,16 +6188,16 @@ class ClrSignpostModule {
         ClarityIcons.addIcons(windowCloseIcon, infoCircleIcon);
     }
 }
-ClrSignpostModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSignpostModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrSignpostModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrSignpostModule, declarations: [ClrSignpost,
+ClrSignpostModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSignpostModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrSignpostModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrSignpostModule, declarations: [ClrSignpost,
         ClrSignpostContent,
         ClrSignpostTrigger,
         ClrSignpostTitle], imports: [CommonModule, ClrIconModule, ClrFocusOnViewInitModule], exports: [ClrSignpost,
         ClrSignpostContent,
         ClrSignpostTrigger,
         ClrSignpostTitle, ClrConditionalModule] });
-ClrSignpostModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSignpostModule, imports: [CommonModule, ClrIconModule, ClrFocusOnViewInitModule, ClrConditionalModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSignpostModule, decorators: [{
+ClrSignpostModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSignpostModule, imports: [CommonModule, ClrIconModule, ClrFocusOnViewInitModule, ClrConditionalModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSignpostModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIconModule, ClrFocusOnViewInitModule],
@@ -6223,9 +6223,9 @@ class TooltipIdService {
         this._id.next(id);
     }
 }
-TooltipIdService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TooltipIdService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-TooltipIdService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TooltipIdService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TooltipIdService, decorators: [{
+TooltipIdService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TooltipIdService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+TooltipIdService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TooltipIdService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TooltipIdService, decorators: [{
             type: Injectable
         }] });
 
@@ -6264,9 +6264,9 @@ class TooltipMouseService {
         }, 0);
     }
 }
-TooltipMouseService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TooltipMouseService, deps: [{ token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Injectable });
-TooltipMouseService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TooltipMouseService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TooltipMouseService, decorators: [{
+TooltipMouseService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TooltipMouseService, deps: [{ token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Injectable });
+TooltipMouseService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TooltipMouseService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TooltipMouseService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: ClrPopoverToggleService }]; } });
 
@@ -6278,9 +6278,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrTooltip {
 }
-ClrTooltip.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTooltip, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrTooltip.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrTooltip, selector: "clr-tooltip", host: { properties: { "class.tooltip": "true" } }, providers: [TooltipIdService, TooltipMouseService], hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTooltip, decorators: [{
+ClrTooltip.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTooltip, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrTooltip.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrTooltip, selector: "clr-tooltip", host: { properties: { "class.tooltip": "true" } }, providers: [TooltipIdService, TooltipMouseService], hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTooltip, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-tooltip',
@@ -6394,9 +6394,9 @@ class ClrTooltipContent extends AbstractPopover {
         this.renderer.addClass(this.el.nativeElement, newClass);
     }
 }
-ClrTooltipContent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTooltipContent, deps: [{ token: i0.Injector }, { token: POPOVER_HOST_ANCHOR, optional: true }, { token: TooltipIdService }, { token: TooltipMouseService }], target: i0.ɵɵFactoryTarget.Component });
-ClrTooltipContent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrTooltipContent, selector: "clr-tooltip-content", inputs: { id: "id", position: ["clrPosition", "position"], size: ["clrSize", "size"] }, host: { listeners: { "mouseenter": "onMouseEnter()", "mouseleave": "onMouseLeave()" }, properties: { "class.tooltip-content": "true", "style.opacity": "1", "attr.role": "\"tooltip\"", "id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTooltipContent, decorators: [{
+ClrTooltipContent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTooltipContent, deps: [{ token: i0.Injector }, { token: POPOVER_HOST_ANCHOR, optional: true }, { token: TooltipIdService }, { token: TooltipMouseService }], target: i0.ɵɵFactoryTarget.Component });
+ClrTooltipContent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrTooltipContent, selector: "clr-tooltip-content", inputs: { id: "id", position: ["clrPosition", "position"], size: ["clrSize", "size"] }, host: { listeners: { "mouseenter": "onMouseEnter()", "mouseleave": "onMouseLeave()" }, properties: { "class.tooltip-content": "true", "style.opacity": "1", "attr.role": "\"tooltip\"", "id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTooltipContent, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-tooltip-content',
@@ -6459,9 +6459,9 @@ class ClrTooltipTrigger {
         this.tooltipMouseService.onMouseLeaveTrigger();
     }
 }
-ClrTooltipTrigger.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTooltipTrigger, deps: [{ token: ClrPopoverToggleService }, { token: TooltipIdService }, { token: TooltipMouseService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrTooltipTrigger.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrTooltipTrigger, selector: "[clrTooltipTrigger]", host: { attributes: { "tabindex": "0" }, listeners: { "focus": "showTooltip()", "blur": "hideTooltip()", "mouseenter": "onMouseEnter()", "mouseleave": "onMouseLeave()" }, properties: { "class.tooltip-trigger": "true", "attr.aria-describedby": "ariaDescribedBy", "attr.role": "\"button\"" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTooltipTrigger, decorators: [{
+ClrTooltipTrigger.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTooltipTrigger, deps: [{ token: ClrPopoverToggleService }, { token: TooltipIdService }, { token: TooltipMouseService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrTooltipTrigger.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrTooltipTrigger, selector: "[clrTooltipTrigger]", host: { attributes: { "tabindex": "0" }, listeners: { "focus": "showTooltip()", "blur": "hideTooltip()", "mouseenter": "onMouseEnter()", "mouseleave": "onMouseLeave()" }, properties: { "class.tooltip-trigger": "true", "attr.aria-describedby": "ariaDescribedBy", "attr.role": "\"button\"" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTooltipTrigger, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrTooltipTrigger]',
@@ -6495,10 +6495,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
 const CLR_TOOLTIP_DIRECTIVES = [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent];
 class ClrTooltipModule {
 }
-ClrTooltipModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTooltipModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrTooltipModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrTooltipModule, declarations: [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent], imports: [CommonModule], exports: [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, ClrConditionalModule, ClrIconModule] });
-ClrTooltipModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTooltipModule, imports: [CommonModule, ClrConditionalModule, ClrIconModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTooltipModule, decorators: [{
+ClrTooltipModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTooltipModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrTooltipModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrTooltipModule, declarations: [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent], imports: [CommonModule], exports: [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, ClrConditionalModule, ClrIconModule] });
+ClrTooltipModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTooltipModule, imports: [CommonModule, ClrConditionalModule, ClrIconModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTooltipModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -6515,10 +6515,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrPopoverModule {
 }
-ClrPopoverModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrPopoverModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverModule, exports: [ClrDropdownModule, ClrSignpostModule, ClrTooltipModule] });
-ClrPopoverModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverModule, imports: [ClrDropdownModule, ClrSignpostModule, ClrTooltipModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPopoverModule, decorators: [{
+ClrPopoverModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrPopoverModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverModule, exports: [ClrDropdownModule, ClrSignpostModule, ClrTooltipModule] });
+ClrPopoverModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverModule, imports: [ClrDropdownModule, ClrSignpostModule, ClrTooltipModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPopoverModule, decorators: [{
             type: NgModule,
             args: [{
                     exports: [ClrDropdownModule, ClrSignpostModule, ClrTooltipModule],
@@ -6596,9 +6596,9 @@ class LayoutService {
         return Number.isInteger(labelSize) && labelSize >= this.minLabelSize && labelSize <= this.maxLabelSize;
     }
 }
-LayoutService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: LayoutService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-LayoutService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: LayoutService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: LayoutService, decorators: [{
+LayoutService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: LayoutService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+LayoutService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: LayoutService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: LayoutService, decorators: [{
             type: Injectable
         }] });
 
@@ -6665,9 +6665,9 @@ class ClrLabel {
         }
     }
 }
-ClrLabel.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLabel, deps: [{ token: ControlIdService, optional: true }, { token: LayoutService, optional: true }, { token: NgControlService, optional: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrLabel.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrLabel, selector: "label", inputs: { idInput: ["id", "idInput"], forAttr: ["for", "forAttr"] }, host: { listeners: { "click": "onClick($event)" }, properties: { "attr.id": "this.idAttr", "attr.for": "this.forAttr" } }, queries: [{ propertyName: "signpost", first: true, predicate: ClrSignpost, descendants: true, read: ElementRef }], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLabel, decorators: [{
+ClrLabel.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLabel, deps: [{ token: ControlIdService, optional: true }, { token: LayoutService, optional: true }, { token: NgControlService, optional: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrLabel.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrLabel, selector: "label", inputs: { idInput: ["id", "idInput"], forAttr: ["for", "forAttr"] }, host: { listeners: { "click": "onClick($event)" }, properties: { "attr.id": "this.idAttr", "attr.for": "this.forAttr" } }, queries: [{ propertyName: "signpost", first: true, predicate: ClrSignpost, descendants: true, read: ElementRef }], ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLabel, decorators: [{
             type: Directive,
             args: [{
                     selector: 'label',
@@ -6712,9 +6712,9 @@ class ClrControlSuccess extends ClrAbstractControl {
         this.controlIdSuffix = CONTROL_SUFFIX.SUCCESS;
     }
 }
-ClrControlSuccess.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrControlSuccess, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component });
-ClrControlSuccess.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrControlSuccess, selector: "clr-control-success", host: { properties: { "class.clr-subtext": "true", "class.success": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrControlSuccess, decorators: [{
+ClrControlSuccess.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrControlSuccess, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component });
+ClrControlSuccess.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrControlSuccess, selector: "clr-control-success", host: { properties: { "class.clr-subtext": "true", "class.success": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrControlSuccess, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-control-success',
@@ -6772,9 +6772,9 @@ class ControlClassService {
         }
     }
 }
-ControlClassService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ControlClassService, deps: [{ token: LayoutService, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
-ControlClassService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ControlClassService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ControlClassService, decorators: [{
+ControlClassService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ControlClassService, deps: [{ token: LayoutService, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
+ControlClassService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ControlClassService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ControlClassService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: LayoutService, decorators: [{
                     type: Optional
@@ -6884,9 +6884,9 @@ class ClrAbstractContainer {
         }
     }
 }
-ClrAbstractContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAbstractContainer, deps: [{ token: IfControlStateService }, { token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrAbstractContainer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrAbstractContainer, queries: [{ propertyName: "label", first: true, predicate: ClrLabel, descendants: true }, { propertyName: "controlSuccessComponent", first: true, predicate: ClrControlSuccess, descendants: true }, { propertyName: "controlErrorComponent", first: true, predicate: ClrControlError, descendants: true }, { propertyName: "controlHelperComponent", first: true, predicate: ClrControlHelper, descendants: true }], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAbstractContainer, decorators: [{
+ClrAbstractContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAbstractContainer, deps: [{ token: IfControlStateService }, { token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrAbstractContainer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrAbstractContainer, queries: [{ propertyName: "label", first: true, predicate: ClrLabel, descendants: true }, { propertyName: "controlSuccessComponent", first: true, predicate: ClrControlSuccess, descendants: true }, { propertyName: "controlErrorComponent", first: true, predicate: ClrControlError, descendants: true }, { propertyName: "controlHelperComponent", first: true, predicate: ClrControlHelper, descendants: true }], ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAbstractContainer, decorators: [{
             type: Directive
         }], ctorParameters: function () { return [{ type: IfControlStateService }, { type: LayoutService, decorators: [{
                     type: Optional
@@ -6912,8 +6912,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrControlContainer extends ClrAbstractContainer {
 }
-ClrControlContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrControlContainer, deps: null, target: i0.ɵɵFactoryTarget.Component });
-ClrControlContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrControlContainer, selector: "clr-control-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
+ClrControlContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrControlContainer, deps: null, target: i0.ɵɵFactoryTarget.Component });
+ClrControlContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrControlContainer, selector: "clr-control-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
@@ -6939,7 +6939,7 @@ ClrControlContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", ve
       <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrControlContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrControlContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-control-container',
@@ -7035,9 +7035,9 @@ class MarkControlService {
         this._touched.next();
     }
 }
-MarkControlService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: MarkControlService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-MarkControlService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: MarkControlService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: MarkControlService, decorators: [{
+MarkControlService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: MarkControlService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+MarkControlService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: MarkControlService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: MarkControlService, decorators: [{
             type: Injectable
         }] });
 
@@ -7208,9 +7208,9 @@ class WrappedFormControl {
         return describedByIds.join(' ');
     }
 }
-WrappedFormControl.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: WrappedFormControl, deps: [{ token: i0.ViewContainerRef }, { token: i0.Type }, { token: i0.Injector }, { token: i1.NgControl }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-WrappedFormControl.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: WrappedFormControl, inputs: { id: "id" }, host: { listeners: { "blur": "triggerValidation()" }, properties: { "id": "this.id" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: WrappedFormControl, decorators: [{
+WrappedFormControl.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: WrappedFormControl, deps: [{ token: i0.ViewContainerRef }, { token: i0.Type }, { token: i0.Injector }, { token: i1.NgControl }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+WrappedFormControl.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: WrappedFormControl, inputs: { id: "id" }, host: { listeners: { "blur": "triggerValidation()" }, properties: { "id": "this.id" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: WrappedFormControl, decorators: [{
             type: Directive
         }], ctorParameters: function () { return [{ type: i0.ViewContainerRef }, { type: i0.Type }, { type: i0.Injector }, { type: i1.NgControl }, { type: i0.Renderer2 }, { type: i0.ElementRef }]; }, propDecorators: { id: [{
                 type: Input
@@ -7233,9 +7233,9 @@ class ClrControl extends WrappedFormControl {
         this.index = 1;
     }
 }
-ClrControl.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrControl, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrControl.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrControl, selector: "[clrControl]", host: { properties: { "class.clr-input": "true" } }, usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrControl, decorators: [{
+ClrControl.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrControl, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrControl.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrControl, selector: "[clrControl]", host: { properties: { "class.clr-input": "true" } }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrControl, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrControl]',
@@ -7270,9 +7270,9 @@ class ClrForm {
         this.markControlService.markAsTouched();
     }
 }
-ClrForm.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrForm, deps: [{ token: LayoutService }, { token: MarkControlService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrForm.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrForm, selector: "[clrForm]", inputs: { labelSize: ["clrLabelSize", "labelSize"] }, host: { listeners: { "submit": "onFormSubmit()" }, properties: { "class.clr-form": "true", "class.clr-form-horizontal": "layoutService.isHorizontal()", "class.clr-form-compact": "layoutService.isCompact()" } }, providers: [LayoutService, MarkControlService], queries: [{ propertyName: "labels", predicate: ClrLabel, descendants: true }], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrForm, decorators: [{
+ClrForm.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrForm, deps: [{ token: LayoutService }, { token: MarkControlService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrForm.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrForm, selector: "[clrForm]", inputs: { labelSize: ["clrLabelSize", "labelSize"] }, host: { listeners: { "submit": "onFormSubmit()" }, properties: { "class.clr-form": "true", "class.clr-form-horizontal": "layoutService.isHorizontal()", "class.clr-form-compact": "layoutService.isCompact()" } }, providers: [LayoutService, MarkControlService], queries: [{ propertyName: "labels", predicate: ClrLabel, descendants: true }], ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrForm, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrForm]',
@@ -7326,9 +7326,9 @@ class AbstractIfState {
         /* overwrite in implementation to handle status change */
     }
 }
-AbstractIfState.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: AbstractIfState, deps: [{ token: IfControlStateService, optional: true }, { token: NgControlService, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
-AbstractIfState.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: AbstractIfState, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: AbstractIfState, decorators: [{
+AbstractIfState.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: AbstractIfState, deps: [{ token: IfControlStateService, optional: true }, { token: NgControlService, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
+AbstractIfState.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: AbstractIfState, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: AbstractIfState, decorators: [{
             type: Directive
         }], ctorParameters: function () { return [{ type: IfControlStateService, decorators: [{
                     type: Optional
@@ -7389,9 +7389,9 @@ class ClrIfError extends AbstractIfState {
         }
     }
 }
-ClrIfError.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIfError, deps: [{ token: IfControlStateService, optional: true }, { token: NgControlService, optional: true }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrIfError.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrIfError, selector: "[clrIfError]", inputs: { error: ["clrIfError", "error"] }, usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIfError, decorators: [{
+ClrIfError.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIfError, deps: [{ token: IfControlStateService, optional: true }, { token: NgControlService, optional: true }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrIfError.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrIfError, selector: "[clrIfError]", inputs: { error: ["clrIfError", "error"] }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIfError, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrIfError]',
@@ -7434,9 +7434,9 @@ class ClrIfSuccess extends AbstractIfState {
         this.displayedContent = isValid;
     }
 }
-ClrIfSuccess.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIfSuccess, deps: [{ token: IfControlStateService, optional: true }, { token: NgControlService, optional: true }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrIfSuccess.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrIfSuccess, selector: "[clrIfSuccess]", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIfSuccess, decorators: [{
+ClrIfSuccess.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIfSuccess, deps: [{ token: IfControlStateService, optional: true }, { token: NgControlService, optional: true }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrIfSuccess.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrIfSuccess, selector: "[clrIfSuccess]", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIfSuccess, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrIfSuccess]',
@@ -7464,9 +7464,9 @@ class ClrLayout {
         }
     }
 }
-ClrLayout.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLayout, deps: [{ token: LayoutService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrLayout.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrLayout, selector: "[clrForm][clrLayout]", inputs: { layout: ["clrLayout", "layout"] }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLayout, decorators: [{
+ClrLayout.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLayout, deps: [{ token: LayoutService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrLayout.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrLayout, selector: "[clrForm][clrLayout]", inputs: { layout: ["clrLayout", "layout"] }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLayout, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrForm][clrLayout]',
@@ -7487,8 +7487,8 @@ class ClrCommonFormsModule {
         ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
     }
 }
-ClrCommonFormsModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCommonFormsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrCommonFormsModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrCommonFormsModule, declarations: [ClrLabel,
+ClrCommonFormsModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCommonFormsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrCommonFormsModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrCommonFormsModule, declarations: [ClrLabel,
         ClrControlError,
         ClrControlSuccess,
         ClrControlHelper,
@@ -7507,8 +7507,8 @@ ClrCommonFormsModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", ve
         ClrLayout,
         ClrControlContainer,
         ClrControl] });
-ClrCommonFormsModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCommonFormsModule, imports: [CommonModule, ClrIconModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCommonFormsModule, decorators: [{
+ClrCommonFormsModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCommonFormsModule, imports: [CommonModule, ClrIconModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCommonFormsModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIconModule],
@@ -7567,13 +7567,13 @@ class ClrCheckboxWrapper {
         this.subscriptions.forEach(sub => sub.unsubscribe());
     }
 }
-ClrCheckboxWrapper.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCheckboxWrapper, deps: [{ token: IS_TOGGLE }], target: i0.ɵɵFactoryTarget.Component });
-ClrCheckboxWrapper.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrCheckboxWrapper, selector: "clr-checkbox-wrapper,clr-toggle-wrapper", host: { properties: { "class.clr-checkbox-wrapper": "!toggle", "class.clr-checkbox-wrapper-disabled": "checkbox?.controlDisabled", "class.clr-toggle-wrapper": "toggle" } }, providers: [ControlIdService, IS_TOGGLE_PROVIDER], queries: [{ propertyName: "label", first: true, predicate: ClrLabel, descendants: true, static: true }, { propertyName: "checkbox", first: true, predicate: i0.forwardRef(function () { return ClrCheckbox; }), descendants: true, static: true }], ngImport: i0, template: `
+ClrCheckboxWrapper.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCheckboxWrapper, deps: [{ token: IS_TOGGLE }], target: i0.ɵɵFactoryTarget.Component });
+ClrCheckboxWrapper.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrCheckboxWrapper, selector: "clr-checkbox-wrapper,clr-toggle-wrapper", host: { properties: { "class.clr-checkbox-wrapper": "!toggle", "class.clr-checkbox-wrapper-disabled": "checkbox?.controlDisabled", "class.clr-toggle-wrapper": "toggle" } }, providers: [ControlIdService, IS_TOGGLE_PROVIDER], queries: [{ propertyName: "label", first: true, predicate: ClrLabel, descendants: true, static: true }, { propertyName: "checkbox", first: true, predicate: i0.forwardRef(function () { return ClrCheckbox; }), descendants: true, static: true }], ngImport: i0, template: `
     <ng-content select="[clrCheckbox],[clrToggle]"></ng-content>
     <ng-content select="label"></ng-content>
     <label *ngIf="!label"></label>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCheckboxWrapper, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCheckboxWrapper, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-checkbox-wrapper,clr-toggle-wrapper',
@@ -7629,9 +7629,9 @@ class ClrCheckbox extends WrappedFormControl {
         }
     }
 }
-ClrCheckbox.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCheckbox, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: 'clrToggle', attribute: true }], target: i0.ɵɵFactoryTarget.Directive });
-ClrCheckbox.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrCheckbox, selector: "[clrCheckbox],[clrToggle]", host: { properties: { "attr.role": "toggle !== null ? \"switch\" : null" } }, usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCheckbox, decorators: [{
+ClrCheckbox.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCheckbox, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: 'clrToggle', attribute: true }], target: i0.ɵɵFactoryTarget.Directive });
+ClrCheckbox.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrCheckbox, selector: "[clrCheckbox],[clrToggle]", host: { properties: { "attr.role": "toggle !== null ? \"switch\" : null" } }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCheckbox, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrCheckbox],[clrToggle]',
@@ -7691,8 +7691,8 @@ class ClrCheckboxContainer extends ClrAbstractContainer {
         this.role = this.checkboxes.length ? 'group' : null;
     }
 }
-ClrCheckboxContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCheckboxContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component });
-ClrCheckboxContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrCheckboxContainer, selector: "clr-checkbox-container,clr-toggle-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "allCheckboxesDisabled", "class.clr-row": "addGrid()", "attr.role": "role" } }, providers: [IfControlStateService, NgControlService, ControlClassService, ContainerIdService], queries: [{ propertyName: "checkboxes", predicate: ClrCheckbox, descendants: true }], usesInheritance: true, ngImport: i0, template: `
+ClrCheckboxContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCheckboxContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component });
+ClrCheckboxContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrCheckboxContainer, selector: "clr-checkbox-container,clr-toggle-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "allCheckboxesDisabled", "class.clr-row": "addGrid()", "attr.role": "role" } }, providers: [IfControlStateService, NgControlService, ControlClassService, ContainerIdService], queries: [{ propertyName: "checkboxes", predicate: ClrCheckbox, descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [class.clr-control-inline]="clrInline" [ngClass]="controlClass()">
@@ -7720,7 +7720,7 @@ ClrCheckboxContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", v
       </div>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCheckboxContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCheckboxContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-checkbox-container,clr-toggle-container',
@@ -7780,10 +7780,10 @@ class ClrCheckboxModule {
         ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
     }
 }
-ClrCheckboxModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCheckboxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrCheckboxModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrCheckboxModule, declarations: [ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper], imports: [CommonModule, ClrIconModule, ClrCommonFormsModule, ClrHostWrappingModule], exports: [ClrCommonFormsModule, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper] });
-ClrCheckboxModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCheckboxModule, imports: [CommonModule, ClrIconModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrCommonFormsModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCheckboxModule, decorators: [{
+ClrCheckboxModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCheckboxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrCheckboxModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrCheckboxModule, declarations: [ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper], imports: [CommonModule, ClrIconModule, ClrCommonFormsModule, ClrHostWrappingModule], exports: [ClrCommonFormsModule, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper] });
+ClrCheckboxModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCheckboxModule, imports: [CommonModule, ClrIconModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrCommonFormsModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCheckboxModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIconModule, ClrCommonFormsModule, ClrHostWrappingModule],
@@ -7863,9 +7863,9 @@ class ClrSpinner {
         this._medium = isBooleanAttributeSet(value);
     }
 }
-ClrSpinner.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSpinner, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrSpinner.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrSpinner, selector: "clr-spinner", inputs: { clrInline: "clrInline", clrInverse: "clrInverse", clrSmall: "clrSmall", clrMedium: "clrMedium" }, host: { properties: { "attr.aria-busy": "true", "class.spinner": "this.spinnerClass", "class.spinner-inline": "this.inlineClass", "class.spinner-inverse": "this.inverseClass", "class.spinner-sm": "this.smallClass", "class.spinner-md": "this.mediumClass" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSpinner, decorators: [{
+ClrSpinner.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSpinner, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrSpinner.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrSpinner, selector: "clr-spinner", inputs: { clrInline: "clrInline", clrInverse: "clrInverse", clrSmall: "clrSmall", clrMedium: "clrMedium" }, host: { properties: { "attr.aria-busy": "true", "class.spinner": "this.spinnerClass", "class.spinner-inline": "this.inlineClass", "class.spinner-inverse": "this.inverseClass", "class.spinner-sm": "this.smallClass", "class.spinner-md": "this.mediumClass" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSpinner, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-spinner',
@@ -7912,10 +7912,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
 const CLR_SPINNER_DIRECTIVES = [ClrSpinner];
 class ClrSpinnerModule {
 }
-ClrSpinnerModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSpinnerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrSpinnerModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrSpinnerModule, declarations: [ClrSpinner], imports: [CommonModule], exports: [ClrSpinner] });
-ClrSpinnerModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSpinnerModule, imports: [CommonModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSpinnerModule, decorators: [{
+ClrSpinnerModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSpinnerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrSpinnerModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrSpinnerModule, declarations: [ClrSpinner], imports: [CommonModule], exports: [ClrSpinner] });
+ClrSpinnerModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSpinnerModule, imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSpinnerModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -7957,9 +7957,9 @@ class ClrKeyFocusItem {
         }
     }
 }
-ClrKeyFocusItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrKeyFocusItem, deps: [{ token: i0.ElementRef }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Directive });
-ClrKeyFocusItem.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrKeyFocusItem, selector: "[clrKeyFocusItem]", ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrKeyFocusItem, decorators: [{
+ClrKeyFocusItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrKeyFocusItem, deps: [{ token: i0.ElementRef }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Directive });
+ClrKeyFocusItem.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrKeyFocusItem, selector: "[clrKeyFocusItem]", ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrKeyFocusItem, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrKeyFocusItem]',
@@ -8131,9 +8131,9 @@ class ClrKeyFocus {
         });
     }
 }
-ClrKeyFocus.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrKeyFocus, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component });
-ClrKeyFocus.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrKeyFocus, selector: "[clrKeyFocus]", inputs: { direction: ["clrDirection", "direction"], focusOnLoad: ["clrFocusOnLoad", "focusOnLoad"], focusableItems: ["clrKeyFocus", "focusableItems"] }, outputs: { focusChange: "clrFocusChange" }, host: { listeners: { "keydown": "handleKeyboardEvent($event)", "click": "setClickedItemCurrent($event)" } }, queries: [{ propertyName: "clrKeyFocusItems", predicate: ClrKeyFocusItem, descendants: true }], ngImport: i0, template: '<ng-content></ng-content>', isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrKeyFocus, decorators: [{
+ClrKeyFocus.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrKeyFocus, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component });
+ClrKeyFocus.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrKeyFocus, selector: "[clrKeyFocus]", inputs: { direction: ["clrDirection", "direction"], focusOnLoad: ["clrFocusOnLoad", "focusOnLoad"], focusableItems: ["clrKeyFocus", "focusableItems"] }, outputs: { focusChange: "clrFocusChange" }, host: { listeners: { "keydown": "handleKeyboardEvent($event)", "click": "setClickedItemCurrent($event)" } }, queries: [{ propertyName: "clrKeyFocusItems", predicate: ClrKeyFocusItem, descendants: true }], ngImport: i0, template: '<ng-content></ng-content>', isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrKeyFocus, decorators: [{
             type: Component,
             args: [{
                     selector: '[clrKeyFocus]',
@@ -8245,9 +8245,9 @@ class ClrRovingTabindex extends ClrKeyFocus {
         }
     }
 }
-ClrRovingTabindex.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRovingTabindex, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Component });
-ClrRovingTabindex.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrRovingTabindex, selector: "[clrRovingTabindex]", inputs: { rovingIndexItems: ["clrRovingTabindex", "rovingIndexItems"], rovingTabindexDisabled: ["clrRovingTabindexDisabled", "rovingTabindexDisabled"] }, usesInheritance: true, ngImport: i0, template: '<ng-content></ng-content>', isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRovingTabindex, decorators: [{
+ClrRovingTabindex.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRovingTabindex, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Component });
+ClrRovingTabindex.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrRovingTabindex, selector: "[clrRovingTabindex]", inputs: { rovingIndexItems: ["clrRovingTabindex", "rovingIndexItems"], rovingTabindexDisabled: ["clrRovingTabindexDisabled", "rovingTabindexDisabled"] }, usesInheritance: true, ngImport: i0, template: '<ng-content></ng-content>', isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRovingTabindex, decorators: [{
             type: Component,
             args: [{
                     selector: '[clrRovingTabindex]',
@@ -8270,10 +8270,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
 const KEY_FOCUS_DIRECTIVES = [ClrKeyFocus, ClrRovingTabindex, ClrKeyFocusItem];
 class ClrKeyFocusModule {
 }
-ClrKeyFocusModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrKeyFocusModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrKeyFocusModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrKeyFocusModule, declarations: [ClrKeyFocus, ClrRovingTabindex, ClrKeyFocusItem], imports: [CommonModule], exports: [ClrKeyFocus, ClrRovingTabindex, ClrKeyFocusItem] });
-ClrKeyFocusModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrKeyFocusModule, imports: [CommonModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrKeyFocusModule, decorators: [{
+ClrKeyFocusModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrKeyFocusModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrKeyFocusModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrKeyFocusModule, declarations: [ClrKeyFocus, ClrRovingTabindex, ClrKeyFocusItem], imports: [CommonModule], exports: [ClrKeyFocus, ClrRovingTabindex, ClrKeyFocusItem] });
+ClrKeyFocusModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrKeyFocusModule, imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrKeyFocusModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -8293,9 +8293,9 @@ class ComboboxContainerService {
         this.labelOffset = 0;
     }
 }
-ComboboxContainerService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ComboboxContainerService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-ComboboxContainerService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ComboboxContainerService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ComboboxContainerService, decorators: [{
+ComboboxContainerService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ComboboxContainerService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+ComboboxContainerService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ComboboxContainerService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ComboboxContainerService, decorators: [{
             type: Injectable
         }] });
 
@@ -8321,8 +8321,8 @@ class ClrComboboxContainer extends ClrAbstractContainer {
             this.controlContainer.nativeElement.offsetHeight - this.el.nativeElement.offsetHeight;
     }
 }
-ClrComboboxContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrComboboxContainer, deps: [{ token: IfControlStateService }, { token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: ComboboxContainerService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component });
-ClrComboboxContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrComboboxContainer, selector: "clr-combobox-container", host: { properties: { "class.clr-form-control": "true", "class.clr-combobox-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService, ComboboxContainerService], viewQueries: [{ propertyName: "controlContainer", first: true, predicate: ["controlContainer"], descendants: true }], usesInheritance: true, ngImport: i0, template: `
+ClrComboboxContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrComboboxContainer, deps: [{ token: IfControlStateService }, { token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: ComboboxContainerService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component });
+ClrComboboxContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrComboboxContainer, selector: "clr-combobox-container", host: { properties: { "class.clr-form-control": "true", "class.clr-combobox-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService, ComboboxContainerService], viewQueries: [{ propertyName: "controlContainer", first: true, predicate: ["controlContainer"], descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()" #controlContainer>
@@ -8346,7 +8346,7 @@ ClrComboboxContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", v
       <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrComboboxContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrComboboxContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-combobox-container',
@@ -8521,9 +8521,9 @@ class ClrOptionSelected {
         this.template = template;
     }
 }
-ClrOptionSelected.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrOptionSelected, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrOptionSelected.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrOptionSelected, selector: "[clrOptionSelected]", inputs: { selected: ["clrOptionSelected", "selected"] }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrOptionSelected, decorators: [{
+ClrOptionSelected.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrOptionSelected, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrOptionSelected.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrOptionSelected, selector: "[clrOptionSelected]", inputs: { selected: ["clrOptionSelected", "selected"] }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrOptionSelected, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrOptionSelected]',
@@ -8630,9 +8630,9 @@ class OptionSelectionService {
         this._selectionChanged.next(this.selectionModel);
     }
 }
-OptionSelectionService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: OptionSelectionService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-OptionSelectionService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: OptionSelectionService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: OptionSelectionService, decorators: [{
+OptionSelectionService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: OptionSelectionService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+OptionSelectionService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: OptionSelectionService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: OptionSelectionService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return []; } });
 
@@ -8825,9 +8825,9 @@ class ComboboxFocusHandler {
         return !(this.textInput.contains(target) || this.trigger.contains(target) || this.listbox.contains(target));
     }
 }
-ComboboxFocusHandler.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ComboboxFocusHandler, deps: [{ token: i0.RendererFactory2 }, { token: ClrPopoverToggleService }, { token: OptionSelectionService }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
-ComboboxFocusHandler.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ComboboxFocusHandler });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ComboboxFocusHandler, decorators: [{
+ComboboxFocusHandler.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ComboboxFocusHandler, deps: [{ token: i0.RendererFactory2 }, { token: ClrPopoverToggleService }, { token: OptionSelectionService }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
+ComboboxFocusHandler.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ComboboxFocusHandler });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ComboboxFocusHandler, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: i0.RendererFactory2 }, { type: ClrPopoverToggleService }, { type: OptionSelectionService }, { type: undefined, decorators: [{
                     type: Inject,
@@ -8904,12 +8904,12 @@ class ClrOption {
         this.focusHandler.focusInput();
     }
 }
-ClrOption.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrOption, deps: [{ token: i0.ElementRef }, { token: ClrCommonStringsService }, { token: ComboboxFocusHandler }, { token: OptionSelectionService }], target: i0.ɵɵFactoryTarget.Component });
-ClrOption.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrOption, selector: "clr-option", inputs: { optionId: ["id", "optionId"], value: ["clrValue", "value"] }, host: { listeners: { "click": "onClick($event)" }, properties: { "class.clr-combobox-option": "true", "attr.role": "\"option\"", "attr.tabindex": "-1", "attr.id": "optionId", "class.active": "this.selected", "class.clr-focus": "this.focusClass" } }, ngImport: i0, template: `
+ClrOption.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrOption, deps: [{ token: i0.ElementRef }, { token: ClrCommonStringsService }, { token: ComboboxFocusHandler }, { token: OptionSelectionService }], target: i0.ɵɵFactoryTarget.Component });
+ClrOption.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrOption, selector: "clr-option", inputs: { optionId: ["id", "optionId"], value: ["clrValue", "value"] }, host: { listeners: { "click": "onClick($event)" }, properties: { "class.clr-combobox-option": "true", "attr.role": "\"option\"", "attr.tabindex": "-1", "attr.id": "optionId", "class.active": "this.selected", "class.clr-focus": "this.focusClass" } }, ngImport: i0, template: `
     <ng-content></ng-content>
     <span *ngIf="selected" class="clr-sr-only">{{ commonStrings.keys.comboboxSelected }}</span>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrOption, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrOption, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-option',
@@ -9012,8 +9012,8 @@ class ClrOptions {
         this.loading = state === ClrLoadingState.LOADING;
     }
 }
-ClrOptions.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrOptions, deps: [{ token: OptionSelectionService }, { token: IF_ACTIVE_ID }, { token: i0.ElementRef }, { token: ClrCommonStringsService }, { token: ComboboxFocusHandler }, { token: ClrPopoverToggleService }, { token: POPOVER_HOST_ANCHOR, optional: true }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component });
-ClrOptions.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrOptions, selector: "clr-options", inputs: { optionsId: ["id", "optionsId"] }, host: { properties: { "class.clr-combobox-options": "true", "attr.role": "\"listbox\"", "id": "optionsId" } }, providers: [{ provide: LoadingListener, useExisting: ClrOptions }], queries: [{ propertyName: "items", predicate: ClrOption, descendants: true }], ngImport: i0, template: `
+ClrOptions.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrOptions, deps: [{ token: OptionSelectionService }, { token: IF_ACTIVE_ID }, { token: i0.ElementRef }, { token: ClrCommonStringsService }, { token: ComboboxFocusHandler }, { token: ClrPopoverToggleService }, { token: POPOVER_HOST_ANCHOR, optional: true }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component });
+ClrOptions.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrOptions, selector: "clr-options", inputs: { optionsId: ["id", "optionsId"] }, host: { properties: { "class.clr-combobox-options": "true", "attr.role": "\"listbox\"", "id": "optionsId" } }, providers: [{ provide: LoadingListener, useExisting: ClrOptions }], queries: [{ propertyName: "items", predicate: ClrOption, descendants: true }], ngImport: i0, template: `
     <div *ngIf="optionSelectionService.loading" class="clr-combobox-options-loading">
       <clr-spinner clrInline>
         {{ commonStrings.keys.loading }}
@@ -9033,7 +9033,7 @@ ClrOptions.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "1
     <!--Option Groups and Options will be projected here-->
     <ng-content></ng-content>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "component", type: ClrSpinner, selector: "clr-spinner", inputs: ["clrInline", "clrInverse", "clrSmall", "clrMedium"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrOptions, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrOptions, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-options',
@@ -9342,15 +9342,15 @@ class ClrCombobox extends WrappedFormControl {
         return [this.optionSelectionService.selectionModel.model];
     }
 }
-ClrCombobox.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCombobox, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: OptionSelectionService }, { token: ClrCommonStringsService }, { token: ClrPopoverToggleService }, { token: ClrPopoverPositionService }, { token: IfControlStateService, optional: true }, { token: ComboboxContainerService, optional: true }, { token: PLATFORM_ID }, { token: ComboboxFocusHandler }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
-ClrCombobox.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrCombobox, selector: "clr-combobox", inputs: { placeholder: "placeholder", multiSelect: ["clrMulti", "multiSelect"] }, outputs: { clrInputChange: "clrInputChange", clrOpenChange: "clrOpenChange", clrSelectionChange: "clrSelectionChange" }, host: { listeners: { "keydown": "onKeyUp($event)" }, properties: { "class.aria-required": "true", "class.clr-combobox": "true", "class.clr-combobox-disabled": "control?.disabled" } }, providers: [
+ClrCombobox.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCombobox, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: OptionSelectionService }, { token: ClrCommonStringsService }, { token: ClrPopoverToggleService }, { token: ClrPopoverPositionService }, { token: IfControlStateService, optional: true }, { token: ComboboxContainerService, optional: true }, { token: PLATFORM_ID }, { token: ComboboxFocusHandler }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
+ClrCombobox.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrCombobox, selector: "clr-combobox", inputs: { placeholder: "placeholder", multiSelect: ["clrMulti", "multiSelect"] }, outputs: { clrInputChange: "clrInputChange", clrOpenChange: "clrOpenChange", clrSelectionChange: "clrSelectionChange" }, host: { listeners: { "keydown": "onKeyUp($event)" }, properties: { "class.aria-required": "true", "class.clr-combobox": "true", "class.clr-combobox-disabled": "control?.disabled" } }, providers: [
         OptionSelectionService,
         { provide: LoadingListener, useExisting: ClrCombobox },
         IF_ACTIVE_ID_PROVIDER,
         FOCUS_SERVICE_PROVIDER,
         COMBOBOX_FOCUS_HANDLER_PROVIDER,
     ], queries: [{ propertyName: "optionSelected", first: true, predicate: ClrOptionSelected, descendants: true }, { propertyName: "options", first: true, predicate: ClrOptions, descendants: true }], viewQueries: [{ propertyName: "textbox", first: true, predicate: ["textboxInput"], descendants: true }, { propertyName: "trigger", first: true, predicate: ["trigger"], descendants: true }], usesInheritance: true, hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n-->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\n     width of the component, after being wrapped to a new line -->\n<div\n  class=\"clr-combobox-wrapper\"\n  clrPopoverAnchor\n  (click)=\"focusInput()\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"invalid\"\n  [class.disabled]=\"control?.disabled? true: null\"\n>\n  <span\n    *ngIf=\"multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0\"\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    <span *ngFor=\"let item of multiSelectModel; let i = index\" class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n          <ng-container\n            *ngIf=\"optionSelected\"\n            [ngTemplateOutlet]=\"optionSelected.template\"\n            [ngTemplateOutletContext]=\"{$implicit: optionSelectionService.selectionModel.model[i]}\"\n          ></ng-container>\n        </span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          [disabled]=\"control?.disabled? true: null\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n          (click)=\"unselect(item)\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n  </span>\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    clrPopoverOpenCloseButton\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually due to issues in Edge browser.\n     Additionally 'outsideClickToClose' has complex handling that's necessary\n     to be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState at smartPosition; outsideClickToClose: false; scrollToClose: false\">\n  <ng-content></ng-content>\n</div>\n", dependencies: [{ kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i1.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: ClrRovingTabindex, selector: "[clrRovingTabindex]", inputs: ["clrRovingTabindex", "clrRovingTabindexDisabled"] }, { kind: "directive", type: ClrKeyFocusItem, selector: "[clrKeyFocusItem]" }, { kind: "directive", type: ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCombobox, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCombobox, decorators: [{
             type: Component,
             args: [{ selector: 'clr-combobox', providers: [
                         OptionSelectionService,
@@ -9486,9 +9486,9 @@ class ClrOptionItems {
         this.iterableProxy.ngForOf = this.filteredItems;
     }
 }
-ClrOptionItems.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrOptionItems, deps: [{ token: i0.TemplateRef }, { token: i0.IterableDiffers }, { token: OptionSelectionService }, { token: ClrPopoverPositionService }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrOptionItems.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrOptionItems, selector: "[clrOptionItems][clrOptionItemsOf]", inputs: { rawItems: ["clrOptionItemsOf", "rawItems"], trackBy: ["clrOptionItemsTrackBy", "trackBy"], field: ["clrOptionItemsField", "field"] }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrOptionItems, decorators: [{
+ClrOptionItems.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrOptionItems, deps: [{ token: i0.TemplateRef }, { token: i0.IterableDiffers }, { token: OptionSelectionService }, { token: ClrPopoverPositionService }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrOptionItems.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrOptionItems, selector: "[clrOptionItems][clrOptionItemsOf]", inputs: { rawItems: ["clrOptionItemsOf", "rawItems"], trackBy: ["clrOptionItemsTrackBy", "trackBy"], field: ["clrOptionItemsField", "field"] }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrOptionItems, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrOptionItems][clrOptionItemsOf]',
@@ -9522,12 +9522,12 @@ class ClrOptionGroup {
         this.labelId = uniqueIdFactory();
     }
 }
-ClrOptionGroup.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrOptionGroup, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrOptionGroup.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrOptionGroup, selector: "clr-option-group", inputs: { label: ["clrOptionGroupLabel", "label"] }, host: { properties: { "attr.role": "\"group\"", "attr.aria-labelledby": "labelId", "style.display": "clrOptionItems.hasResults ? undefined : \"none\"" } }, queries: [{ propertyName: "clrOptionItems", first: true, predicate: ClrOptionItems, descendants: true }], ngImport: i0, template: `
+ClrOptionGroup.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrOptionGroup, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrOptionGroup.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrOptionGroup, selector: "clr-option-group", inputs: { label: ["clrOptionGroupLabel", "label"] }, host: { properties: { "attr.role": "\"group\"", "attr.aria-labelledby": "labelId", "style.display": "clrOptionItems.hasResults ? undefined : \"none\"" } }, queries: [{ propertyName: "clrOptionItems", first: true, predicate: ClrOptionItems, descendants: true }], ngImport: i0, template: `
     <span [id]="labelId" class="clr-option-group-label" role="presentation">{{ label }}</span>
     <ng-content></ng-content>
   `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrOptionGroup, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrOptionGroup, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-option-group',
@@ -9560,8 +9560,8 @@ class ClrComboboxModule {
         ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, angleIcon, windowCloseIcon);
     }
 }
-ClrComboboxModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrComboboxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrComboboxModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrComboboxModule, declarations: [ClrCombobox,
+ClrComboboxModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrComboboxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrComboboxModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrComboboxModule, declarations: [ClrCombobox,
         ClrComboboxContainer,
         ClrOptions,
         ClrOption,
@@ -9583,7 +9583,7 @@ ClrComboboxModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", versi
         ClrOptionSelected,
         ClrConditionalModule,
         ClrOptionItems] });
-ClrComboboxModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrComboboxModule, imports: [CommonModule,
+ClrComboboxModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrComboboxModule, imports: [CommonModule,
         FormsModule,
         ClrIconModule,
         ClrKeyFocusModule,
@@ -9592,7 +9592,7 @@ ClrComboboxModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", versi
         ClrPopoverModuleNext,
         ClrSpinnerModule, ClrCommonFormsModule,
         ClrConditionalModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrComboboxModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrComboboxModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [
@@ -9636,8 +9636,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrInputContainer extends ClrAbstractContainer {
 }
-ClrInputContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrInputContainer, deps: null, target: i0.ɵɵFactoryTarget.Component });
-ClrInputContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrInputContainer, selector: "clr-input-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
+ClrInputContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrInputContainer, deps: null, target: i0.ɵɵFactoryTarget.Component });
+ClrInputContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrInputContainer, selector: "clr-input-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
@@ -9667,7 +9667,7 @@ ClrInputContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", vers
       <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrInputContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrInputContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-input-container',
@@ -9731,9 +9731,9 @@ class ClrInput extends WrappedFormControl {
         }
     }
 }
-ClrInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrInput, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrInput, selector: "[clrInput]", host: { properties: { "class.clr-input": "true" } }, usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrInput, decorators: [{
+ClrInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrInput, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrInput, selector: "[clrInput]", host: { properties: { "class.clr-input": "true" } }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrInput, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrInput]',
@@ -9757,10 +9757,10 @@ class ClrInputModule {
         );
     }
 }
-ClrInputModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrInputModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrInputModule, declarations: [ClrInput, ClrInputContainer], imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrInput, ClrInputContainer] });
-ClrInputModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrInputModule, imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule, ClrCommonFormsModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrInputModule, decorators: [{
+ClrInputModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrInputModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrInputModule, declarations: [ClrInput, ClrInputContainer], imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrInput, ClrInputContainer] });
+ClrInputModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrInputModule, imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule, ClrCommonFormsModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrInputModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
@@ -9792,9 +9792,9 @@ class DatalistIdService {
         return this._idChange.asObservable();
     }
 }
-DatalistIdService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatalistIdService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-DatalistIdService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatalistIdService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatalistIdService, decorators: [{
+DatalistIdService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatalistIdService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+DatalistIdService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatalistIdService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatalistIdService, decorators: [{
             type: Injectable
         }] });
 
@@ -9828,9 +9828,9 @@ class ClrDatalist {
         this.subscriptions.forEach(sub => sub.unsubscribe());
     }
 }
-ClrDatalist.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatalist, deps: [{ token: DatalistIdService, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
-ClrDatalist.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatalist, selector: "datalist", inputs: { id: "id" }, host: { properties: { "id": "datalistId" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatalist, decorators: [{
+ClrDatalist.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatalist, deps: [{ token: DatalistIdService, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
+ClrDatalist.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatalist, selector: "datalist", inputs: { id: "id" }, host: { properties: { "id": "datalistId" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatalist, decorators: [{
             type: Directive,
             args: [{
                     selector: 'datalist',
@@ -9861,9 +9861,9 @@ class FocusService {
         this._focused.next(state);
     }
 }
-FocusService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: FocusService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-FocusService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: FocusService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: FocusService, decorators: [{
+FocusService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: FocusService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+FocusService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: FocusService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: FocusService, decorators: [{
             type: Injectable
         }] });
 
@@ -9881,8 +9881,8 @@ class ClrDatalistContainer extends ClrAbstractContainer {
         this.subscriptions.push(focusService.focusChange.subscribe(state => (this.focus = state)));
     }
 }
-ClrDatalistContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatalistContainer, deps: [{ token: ControlClassService }, { token: LayoutService, optional: true }, { token: NgControlService }, { token: FocusService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatalistContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatalistContainer, selector: "clr-datalist-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [
+ClrDatalistContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatalistContainer, deps: [{ token: ControlClassService }, { token: LayoutService, optional: true }, { token: NgControlService }, { token: FocusService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatalistContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatalistContainer, selector: "clr-datalist-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [
         ControlClassService,
         ControlIdService,
         FocusService,
@@ -9919,7 +9919,7 @@ ClrDatalistContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", v
       <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatalistContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatalistContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-datalist-container',
@@ -10002,9 +10002,9 @@ class ClrDatalistInput extends WrappedFormControl {
         }
     }
 }
-ClrDatalistInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatalistInput, deps: [{ token: FocusService, optional: true }, { token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: DatalistIdService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrDatalistInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatalistInput, selector: "[clrDatalistInput]", host: { listeners: { "focus": "triggerFocus()", "blur": "triggerValidation()" }, properties: { "class.clr-input": "true", "attr.list": "listValue" } }, usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatalistInput, decorators: [{
+ClrDatalistInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatalistInput, deps: [{ token: FocusService, optional: true }, { token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: DatalistIdService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrDatalistInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatalistInput, selector: "[clrDatalistInput]", host: { listeners: { "focus": "triggerFocus()", "blur": "triggerValidation()" }, properties: { "class.clr-input": "true", "attr.list": "listValue" } }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatalistInput, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrDatalistInput]',
@@ -10038,10 +10038,10 @@ class ClrDatalistModule {
         ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
     }
 }
-ClrDatalistModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatalistModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrDatalistModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrDatalistModule, declarations: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer], imports: [CommonModule, ClrInputModule, ClrIconModule], exports: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer] });
-ClrDatalistModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatalistModule, imports: [CommonModule, ClrInputModule, ClrIconModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatalistModule, decorators: [{
+ClrDatalistModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatalistModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrDatalistModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrDatalistModule, declarations: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer], imports: [CommonModule, ClrInputModule, ClrIconModule], exports: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer] });
+ClrDatalistModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatalistModule, imports: [CommonModule, ClrInputModule, ClrIconModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatalistModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrInputModule, ClrIconModule],
@@ -10066,9 +10066,9 @@ const MAX_DISPLAY_ITEMS = 3;
  */
 class ClrBreadcrumbItem {
 }
-ClrBreadcrumbItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrBreadcrumbItem, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrBreadcrumbItem.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrBreadcrumbItem, selector: "clr-breadcrumb-item", host: { properties: { "attr.role": "\"list-item\"" }, classAttribute: "clr-breadcrumb-item" }, ngImport: i0, template: '<ng-content />', isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrBreadcrumbItem, decorators: [{
+ClrBreadcrumbItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrBreadcrumbItem, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrBreadcrumbItem.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrBreadcrumbItem, selector: "clr-breadcrumb-item", host: { properties: { "attr.role": "\"list-item\"" }, classAttribute: "clr-breadcrumb-item" }, ngImport: i0, template: '<ng-content />', isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrBreadcrumbItem, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-breadcrumb-item',
@@ -10103,9 +10103,9 @@ class ClrBreadcrumbs {
         this.clrBreadcrumbItemClick.emit(breadcrumb);
     }
 }
-ClrBreadcrumbs.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrBreadcrumbs, deps: [{ token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrBreadcrumbs.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrBreadcrumbs, selector: "clr-breadcrumbs", inputs: { items: "items" }, outputs: { clrBreadcrumbItemClick: "clrBreadcrumbItemClick" }, host: { properties: { "attr.aria-label": "commonStrings.keys.breadcrumbsLabel", "attr.role": "\"navigation\"" }, classAttribute: "clr-breadcrumb" }, ngImport: i0, template: "<div *ngIf=\"items?.length\" role=\"list\" class=\"clr-breadcrumb-menu\">\n  <clr-breadcrumb-item *ngIf=\"items.length > max && !isExpanded\">\n    <button\n      [attr.aria-label]=\"commonStrings.keys.expandBreadcrumbsLabel\"\n      class=\"btn btn-link btn-sm clr-breadcrumb-expand\"\n      (click)=\"expand()\"\n      (keydown)=\"expand()\"\n    >\n      <cds-icon shape=\"ellipsis-horizontal\"></cds-icon>\n    </button>\n  </clr-breadcrumb-item>\n  <clr-breadcrumb-item *ngFor=\"let breadcrumb of items | slice: -limit : items.length; let isLastItem=last\">\n    <span *ngIf=\"isLastItem; else breadcrumbLinks\" aria-current=\"page\">{{ breadcrumb.label }}</span>\n\n    <ng-template #breadcrumbLinks>\n      <a\n        *ngIf=\"breadcrumb.routerLink\"\n        [routerLink]=\"breadcrumb.routerLink\"\n        [queryParams]=\"breadcrumb.queryParams\"\n        [target]=\"breadcrumb.target || '_self'\"\n        (click)=\"handleItemClick(breadcrumb)\"\n      >\n        {{ breadcrumb.label }}\n      </a>\n      <a\n        *ngIf=\"breadcrumb.href\"\n        [href]=\"breadcrumb.href\"\n        [target]=\"breadcrumb.target || '_self'\"\n        (click)=\"handleItemClick(breadcrumb)\"\n      >\n        {{ breadcrumb.label }}\n      </a>\n    </ng-template>\n  </clr-breadcrumb-item>\n</div>\n", styles: [":where(:root,:host),:where(:root,:host) [clr-density]{--clr-breadcrumb-item-space: var(--clr-base-gap-s)}.clr-breadcrumb-menu{display:flex;flex-wrap:wrap;align-items:center}.clr-breadcrumb-menu .clr-breadcrumb-item{display:flex;align-items:center;height:var(--clr-base-row-height-s);color:var(--cds-alias-typography-color-400);font-size:var(--clr-base-typography-font-size-inline);font-weight:var(--cds-alias-typography-secondary-font-weight);line-height:var(--clr-base-typography-line-height-16);letter-spacing:calc(-.1 * (1rem / var(--cds-global-base)))}.clr-breadcrumb-menu .clr-breadcrumb-item a{text-decoration:none;text-align:center}.clr-breadcrumb-menu .clr-breadcrumb-item a:visited{color:var(--clr-link-color)}.clr-breadcrumb-menu .clr-breadcrumb-item a:visited:hover{color:var(--clr-link-hover-color)}.clr-breadcrumb-menu .clr-breadcrumb-item a:visited:active{color:var(--clr-link-active-color)}.clr-breadcrumb-menu .clr-breadcrumb-item:not(:last-child):after{content:\"/\";margin:0 var(--clr-breadcrumb-item-space)}.clr-breadcrumb-menu .clr-breadcrumb-expand{height:var(--clr-base-icon-size-l);width:var(--clr-base-icon-size-l);min-height:var(--clr-base-icon-size-l);min-width:var(--clr-base-icon-size-l);margin:0;padding:0;gap:0}\n"], dependencies: [{ kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: i1$1.RouterLink, selector: "[routerLink]", inputs: ["target", "queryParams", "fragment", "queryParamsHandling", "state", "relativeTo", "preserveFragment", "skipLocationChange", "replaceUrl", "routerLink"] }, { kind: "component", type: ClrBreadcrumbItem, selector: "clr-breadcrumb-item" }, { kind: "pipe", type: i5.SlicePipe, name: "slice" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrBreadcrumbs, decorators: [{
+ClrBreadcrumbs.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrBreadcrumbs, deps: [{ token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrBreadcrumbs.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrBreadcrumbs, selector: "clr-breadcrumbs", inputs: { items: "items" }, outputs: { clrBreadcrumbItemClick: "clrBreadcrumbItemClick" }, host: { properties: { "attr.aria-label": "commonStrings.keys.breadcrumbsLabel", "attr.role": "\"navigation\"" }, classAttribute: "clr-breadcrumb" }, ngImport: i0, template: "<div *ngIf=\"items?.length\" role=\"list\" class=\"clr-breadcrumb-menu\">\n  <clr-breadcrumb-item *ngIf=\"items.length > max && !isExpanded\">\n    <button\n      [attr.aria-label]=\"commonStrings.keys.expandBreadcrumbsLabel\"\n      class=\"btn btn-link btn-sm clr-breadcrumb-expand\"\n      (click)=\"expand()\"\n      (keydown)=\"expand()\"\n    >\n      <cds-icon shape=\"ellipsis-horizontal\"></cds-icon>\n    </button>\n  </clr-breadcrumb-item>\n  <clr-breadcrumb-item *ngFor=\"let breadcrumb of items | slice: -limit : items.length; let isLastItem=last\">\n    <span *ngIf=\"isLastItem; else breadcrumbLinks\" aria-current=\"page\">{{ breadcrumb.label }}</span>\n\n    <ng-template #breadcrumbLinks>\n      <a\n        *ngIf=\"breadcrumb.routerLink\"\n        [routerLink]=\"breadcrumb.routerLink\"\n        [queryParams]=\"breadcrumb.queryParams\"\n        [target]=\"breadcrumb.target || '_self'\"\n        (click)=\"handleItemClick(breadcrumb)\"\n      >\n        {{ breadcrumb.label }}\n      </a>\n      <a\n        *ngIf=\"breadcrumb.href\"\n        [href]=\"breadcrumb.href\"\n        [target]=\"breadcrumb.target || '_self'\"\n        (click)=\"handleItemClick(breadcrumb)\"\n      >\n        {{ breadcrumb.label }}\n      </a>\n    </ng-template>\n  </clr-breadcrumb-item>\n</div>\n", styles: [":where(:root,:host),:where(:root,:host) [clr-density]{--clr-breadcrumb-item-space: var(--clr-base-gap-s)}.clr-breadcrumb-menu{display:flex;flex-wrap:wrap;align-items:center}.clr-breadcrumb-menu .clr-breadcrumb-item{display:flex;align-items:center;height:var(--clr-base-row-height-s);color:var(--cds-alias-typography-color-400);font-size:var(--clr-base-typography-font-size-inline);font-weight:var(--cds-alias-typography-secondary-font-weight);line-height:var(--clr-base-typography-line-height-16);letter-spacing:calc(-.1 * (1rem / var(--cds-global-base)))}.clr-breadcrumb-menu .clr-breadcrumb-item a{text-decoration:none;text-align:center}.clr-breadcrumb-menu .clr-breadcrumb-item a:visited{color:var(--clr-link-color)}.clr-breadcrumb-menu .clr-breadcrumb-item a:visited:hover{color:var(--clr-link-hover-color)}.clr-breadcrumb-menu .clr-breadcrumb-item a:visited:active{color:var(--clr-link-active-color)}.clr-breadcrumb-menu .clr-breadcrumb-item:not(:last-child):after{content:\"/\";margin:0 var(--clr-breadcrumb-item-space)}.clr-breadcrumb-menu .clr-breadcrumb-expand{height:var(--clr-base-icon-size-l);width:var(--clr-base-icon-size-l);min-height:var(--clr-base-icon-size-l);min-width:var(--clr-base-icon-size-l);margin:0;padding:0;gap:0}\n"], dependencies: [{ kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: i1$1.RouterLink, selector: "[routerLink]", inputs: ["target", "queryParams", "fragment", "queryParamsHandling", "state", "relativeTo", "preserveFragment", "skipLocationChange", "replaceUrl", "routerLink"] }, { kind: "component", type: ClrBreadcrumbItem, selector: "clr-breadcrumb-item" }, { kind: "pipe", type: i5.SlicePipe, name: "slice" }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrBreadcrumbs, decorators: [{
             type: Component,
             args: [{ selector: 'clr-breadcrumbs', host: {
                         class: 'clr-breadcrumb',
@@ -10126,10 +10126,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrBreadcrumbsModule {
 }
-ClrBreadcrumbsModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrBreadcrumbsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrBreadcrumbsModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrBreadcrumbsModule, declarations: [ClrBreadcrumbs, ClrBreadcrumbItem], imports: [CommonModule, ClrIconModule, ClrHostWrappingModule, RouterModule], exports: [ClrBreadcrumbs] });
-ClrBreadcrumbsModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrBreadcrumbsModule, imports: [CommonModule, ClrIconModule, ClrHostWrappingModule, RouterModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrBreadcrumbsModule, decorators: [{
+ClrBreadcrumbsModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrBreadcrumbsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrBreadcrumbsModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrBreadcrumbsModule, declarations: [ClrBreadcrumbs, ClrBreadcrumbItem], imports: [CommonModule, ClrIconModule, ClrHostWrappingModule, RouterModule], exports: [ClrBreadcrumbs] });
+ClrBreadcrumbsModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrBreadcrumbsModule, imports: [CommonModule, ClrIconModule, ClrHostWrappingModule, RouterModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrBreadcrumbsModule, decorators: [{
             type: NgModule,
             args: [{
                     declarations: [ClrBreadcrumbs, ClrBreadcrumbItem],
@@ -10241,9 +10241,9 @@ class ResponsiveNavigationService {
         this.controlNavSubject.next(message);
     }
 }
-ResponsiveNavigationService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ResponsiveNavigationService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-ResponsiveNavigationService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ResponsiveNavigationService, providedIn: 'root' });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ResponsiveNavigationService, decorators: [{
+ResponsiveNavigationService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ResponsiveNavigationService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+ResponsiveNavigationService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ResponsiveNavigationService, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ResponsiveNavigationService, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }], ctorParameters: function () { return []; } });
@@ -10296,9 +10296,9 @@ class ClrMainContainer {
         this._subscription.unsubscribe();
     }
 }
-ClrMainContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrMainContainer, deps: [{ token: i0.ElementRef }, { token: ResponsiveNavigationService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrMainContainer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrMainContainer, selector: "clr-main-container", host: { properties: { "class.main-container": "true" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrMainContainer, decorators: [{
+ClrMainContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrMainContainer, deps: [{ token: i0.ElementRef }, { token: ResponsiveNavigationService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrMainContainer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrMainContainer, selector: "clr-main-container", host: { properties: { "class.main-container": "true" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrMainContainer, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-main-container',
@@ -10315,10 +10315,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
 const CLR_LAYOUT_DIRECTIVES = [ClrMainContainer];
 class ClrMainContainerModule {
 }
-ClrMainContainerModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrMainContainerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrMainContainerModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrMainContainerModule, declarations: [ClrMainContainer], imports: [CommonModule, ClrIconModule], exports: [ClrMainContainer] });
-ClrMainContainerModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrMainContainerModule, imports: [CommonModule, ClrIconModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrMainContainerModule, decorators: [{
+ClrMainContainerModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrMainContainerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrMainContainerModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrMainContainerModule, declarations: [ClrMainContainer], imports: [CommonModule, ClrIconModule], exports: [ClrMainContainer] });
+ClrMainContainerModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrMainContainerModule, imports: [CommonModule, ClrIconModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrMainContainerModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIconModule],
@@ -10346,9 +10346,9 @@ class ClrAriaCurrentLink {
         this.subscription.unsubscribe();
     }
 }
-ClrAriaCurrentLink.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAriaCurrentLink, deps: [{ token: i1$1.RouterLinkActive }], target: i0.ɵɵFactoryTarget.Directive });
-ClrAriaCurrentLink.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrAriaCurrentLink, selector: "[clrAriaCurrentLink]", host: { properties: { "attr.aria-current": "ariaCurrent" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAriaCurrentLink, decorators: [{
+ClrAriaCurrentLink.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAriaCurrentLink, deps: [{ token: i1$1.RouterLinkActive }], target: i0.ɵɵFactoryTarget.Directive });
+ClrAriaCurrentLink.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrAriaCurrentLink, selector: "[clrAriaCurrentLink]", host: { properties: { "attr.aria-current": "ariaCurrent" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAriaCurrentLink, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrAriaCurrentLink]',
@@ -10364,9 +10364,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class MainContainerWillyWonka extends WillyWonka {
 }
-MainContainerWillyWonka.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: MainContainerWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive });
-MainContainerWillyWonka.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: MainContainerWillyWonka, selector: "clr-main-container", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: MainContainerWillyWonka, decorators: [{
+MainContainerWillyWonka.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: MainContainerWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive });
+MainContainerWillyWonka.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: MainContainerWillyWonka, selector: "clr-main-container", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: MainContainerWillyWonka, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-main-container',
@@ -10393,9 +10393,9 @@ class NavDetectionOompaLoompa extends OompaLoompa {
         return this.responsiveNavService.responsiveNavList.reduce((sum, navLevel) => sum + navLevel, 0);
     }
 }
-NavDetectionOompaLoompa.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: NavDetectionOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: MainContainerWillyWonka, optional: true }, { token: ResponsiveNavigationService }], target: i0.ɵɵFactoryTarget.Directive });
-NavDetectionOompaLoompa.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: NavDetectionOompaLoompa, selector: "clr-header", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: NavDetectionOompaLoompa, decorators: [{
+NavDetectionOompaLoompa.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: NavDetectionOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: MainContainerWillyWonka, optional: true }, { token: ResponsiveNavigationService }], target: i0.ɵɵFactoryTarget.Directive });
+NavDetectionOompaLoompa.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: NavDetectionOompaLoompa, selector: "clr-header", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: NavDetectionOompaLoompa, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-header',
@@ -10493,8 +10493,8 @@ class ClrHeader {
         this._subscription.unsubscribe();
     }
 }
-ClrHeader.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrHeader, deps: [{ token: ResponsiveNavigationService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrHeader.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrHeader, selector: "clr-header", inputs: { role: "role" }, host: { properties: { "class.header": "true", "attr.role": "this.role" } }, ngImport: i0, template: `
+ClrHeader.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrHeader, deps: [{ token: ResponsiveNavigationService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrHeader.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrHeader, selector: "clr-header", inputs: { role: "role" }, host: { properties: { "class.header": "true", "attr.role": "this.role" } }, ngImport: i0, template: `
     <button
       type="button"
       *ngIf="isNavLevel1OnPage"
@@ -10516,7 +10516,7 @@ ClrHeader.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15
     </button>
     <div class="header-backdrop" (click)="closeOpenNav()"></div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrHeader, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrHeader, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-header',
@@ -10735,9 +10735,9 @@ class ClrNavLevel {
         this.renderer.removeAttribute(this.elementRef.nativeElement.querySelector('.clr-nav-close'), 'hidden');
     }
 }
-ClrNavLevel.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrNavLevel, deps: [{ token: PLATFORM_ID }, { token: ClrStandaloneCdkTrapFocus }, { token: ResponsiveNavigationService }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i0.Injector }], target: i0.ɵɵFactoryTarget.Directive });
-ClrNavLevel.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrNavLevel, selector: "[clr-nav-level]", inputs: { _level: ["clr-nav-level", "_level"], closeButtonAriaLabel: ["closeAriaLabel", "closeButtonAriaLabel"] }, host: { listeners: { "window:resize": "onResize($event)", "click": "onMouseClick($event.target)" } }, hostDirectives: [{ directive: ClrStandaloneCdkTrapFocus }], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrNavLevel, decorators: [{
+ClrNavLevel.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrNavLevel, deps: [{ token: PLATFORM_ID }, { token: ClrStandaloneCdkTrapFocus }, { token: ResponsiveNavigationService }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i0.Injector }], target: i0.ɵɵFactoryTarget.Directive });
+ClrNavLevel.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrNavLevel, selector: "[clr-nav-level]", inputs: { _level: ["clr-nav-level", "_level"], closeButtonAriaLabel: ["closeAriaLabel", "closeButtonAriaLabel"] }, host: { listeners: { "window:resize": "onResize($event)", "click": "onMouseClick($event.target)" } }, hostDirectives: [{ directive: ClrStandaloneCdkTrapFocus }], ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrNavLevel, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clr-nav-level]',
@@ -10775,8 +10775,8 @@ const CLR_NAVIGATION_DIRECTIVES = [
 ];
 class ClrNavigationModule {
 }
-ClrNavigationModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrNavigationModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrNavigationModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrNavigationModule, declarations: [ClrHeader,
+ClrNavigationModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrNavigationModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrNavigationModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrNavigationModule, declarations: [ClrHeader,
         ClrNavLevel,
         ClrAriaCurrentLink,
         NavDetectionOompaLoompa,
@@ -10785,8 +10785,8 @@ ClrNavigationModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", ver
         ClrAriaCurrentLink,
         NavDetectionOompaLoompa,
         MainContainerWillyWonka] });
-ClrNavigationModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrNavigationModule, imports: [CommonModule, ClrIconModule, ClrDropdownModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrNavigationModule, decorators: [{
+ClrNavigationModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrNavigationModule, imports: [CommonModule, ClrIconModule, ClrDropdownModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrNavigationModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIconModule, ClrDropdownModule],
@@ -10803,13 +10803,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class TemplateRefContainer {
 }
-TemplateRefContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TemplateRefContainer, deps: [], target: i0.ɵɵFactoryTarget.Component });
-TemplateRefContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: TemplateRefContainer, selector: "ng-component", viewQueries: [{ propertyName: "template", first: true, predicate: TemplateRef, descendants: true }], ngImport: i0, template: `
+TemplateRefContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TemplateRefContainer, deps: [], target: i0.ɵɵFactoryTarget.Component });
+TemplateRefContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: TemplateRefContainer, selector: "ng-component", viewQueries: [{ propertyName: "template", first: true, predicate: TemplateRef, descendants: true }], ngImport: i0, template: `
     <ng-template>
       <ng-content></ng-content>
     </ng-template>
   `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TemplateRefContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TemplateRefContainer, decorators: [{
             type: Component,
             args: [{
                     template: `
@@ -10839,10 +10839,10 @@ const TEMPLATE_REF_DIRECTIVES = [TemplateRefContainer];
  */
 class ClrTemplateRefModule {
 }
-ClrTemplateRefModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTemplateRefModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrTemplateRefModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrTemplateRefModule, declarations: [TemplateRefContainer], imports: [CommonModule], exports: [TemplateRefContainer] });
-ClrTemplateRefModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTemplateRefModule, imports: [CommonModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTemplateRefModule, decorators: [{
+ClrTemplateRefModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTemplateRefModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrTemplateRefModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrTemplateRefModule, declarations: [TemplateRefContainer], imports: [CommonModule], exports: [TemplateRefContainer] });
+ClrTemplateRefModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTemplateRefModule, imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTemplateRefModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -10859,9 +10859,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class TabsWillyWonka extends WillyWonka {
 }
-TabsWillyWonka.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TabsWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive });
-TabsWillyWonka.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: TabsWillyWonka, selector: "clr-tabs", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TabsWillyWonka, decorators: [{
+TabsWillyWonka.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TabsWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive });
+TabsWillyWonka.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: TabsWillyWonka, selector: "clr-tabs", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TabsWillyWonka, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-tabs',
@@ -10887,9 +10887,9 @@ class ActiveOompaLoompa extends OompaLoompa {
         return this.ifActive.current === this.id;
     }
 }
-ActiveOompaLoompa.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ActiveOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: TabsWillyWonka, optional: true }, { token: IF_ACTIVE_ID }, { token: IfActiveService }], target: i0.ɵɵFactoryTarget.Directive });
-ActiveOompaLoompa.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ActiveOompaLoompa, selector: "[clrTabLink], clr-tab-content", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ActiveOompaLoompa, decorators: [{
+ActiveOompaLoompa.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ActiveOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: TabsWillyWonka, optional: true }, { token: IF_ACTIVE_ID }, { token: IfActiveService }], target: i0.ɵɵFactoryTarget.Directive });
+ActiveOompaLoompa.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ActiveOompaLoompa, selector: "[clrTabLink], clr-tab-content", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ActiveOompaLoompa, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrTabLink], clr-tab-content',
@@ -10950,9 +10950,9 @@ class TabsService {
         }
     }
 }
-TabsService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TabsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-TabsService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TabsService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TabsService, decorators: [{
+TabsService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TabsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+TabsService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TabsService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TabsService, decorators: [{
             type: Injectable
         }] });
 
@@ -10991,8 +10991,8 @@ class ClrTabContent {
         }
     }
 }
-ClrTabContent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTabContent, deps: [{ token: IfActiveService }, { token: IF_ACTIVE_ID }, { token: TabsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrTabContent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrTabContent, selector: "clr-tab-content", inputs: { tabContentId: ["id", "tabContentId"] }, viewQueries: [{ propertyName: "templateRef", first: true, predicate: ["tabContentProjectedRef"], descendants: true, static: true }], ngImport: i0, template: `
+ClrTabContent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTabContent, deps: [{ token: IfActiveService }, { token: IF_ACTIVE_ID }, { token: TabsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrTabContent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrTabContent, selector: "clr-tab-content", inputs: { tabContentId: ["id", "tabContentId"] }, viewQueries: [{ propertyName: "templateRef", first: true, predicate: ["tabContentProjectedRef"], descendants: true, static: true }], ngImport: i0, template: `
     <ng-template #tabContentProjectedRef>
       <section
         [id]="tabContentId"
@@ -11007,7 +11007,7 @@ ClrTabContent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version:
       </section>
     </ng-template>
   `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTabContent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTabContent, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-tab-content',
@@ -11101,9 +11101,9 @@ class ClrTabLink {
         this.ifActiveService.current = this.id;
     }
 }
-ClrTabLink.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTabLink, deps: [{ token: IfActiveService }, { token: IF_ACTIVE_ID }, { token: i0.ElementRef }, { token: i0.ComponentFactoryResolver }, { token: i0.ViewContainerRef }, { token: TabsService }, { token: TABS_ID }], target: i0.ɵɵFactoryTarget.Directive });
-ClrTabLink.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrTabLink, selector: "[clrTabLink]", inputs: { tabLinkId: ["id", "tabLinkId"], inOverflow: ["clrTabLinkInOverflow", "inOverflow"] }, host: { attributes: { "role": "tab", "type": "button" }, listeners: { "click": "activate()" }, properties: { "class.btn": "true", "id": "this.tabLinkId", "class.btn-link": "this.addLinkClasses", "class.nav-link": "this.addLinkClasses", "attr.aria-controls": "this.ariaControls", "class.active": "this.active", "attr.aria-selected": "this.active", "attr.tabindex": "this.tabindex" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTabLink, decorators: [{
+ClrTabLink.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTabLink, deps: [{ token: IfActiveService }, { token: IF_ACTIVE_ID }, { token: i0.ElementRef }, { token: i0.ComponentFactoryResolver }, { token: i0.ViewContainerRef }, { token: TabsService }, { token: TABS_ID }], target: i0.ɵɵFactoryTarget.Directive });
+ClrTabLink.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrTabLink, selector: "[clrTabLink]", inputs: { tabLinkId: ["id", "tabLinkId"], inOverflow: ["clrTabLinkInOverflow", "inOverflow"] }, host: { attributes: { "role": "tab", "type": "button" }, listeners: { "click": "activate()" }, properties: { "class.btn": "true", "id": "this.tabLinkId", "class.btn-link": "this.addLinkClasses", "class.nav-link": "this.addLinkClasses", "attr.aria-controls": "this.ariaControls", "class.active": "this.active", "attr.aria-selected": "this.active", "attr.tabindex": "this.tabindex" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTabLink, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrTabLink]',
@@ -11171,9 +11171,9 @@ class ClrTab {
         this.tabsService.unregister(this);
     }
 }
-ClrTab.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTab, deps: [{ token: IfActiveService }, { token: IF_ACTIVE_ID }, { token: TabsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrTab.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrTab, selector: "clr-tab", providers: [IF_ACTIVE_ID_PROVIDER], queries: [{ propertyName: "tabLink", first: true, predicate: ClrTabLink, descendants: true, static: true }, { propertyName: "tabContent", first: true, predicate: ClrTabContent, descendants: true, static: true }], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTab, decorators: [{
+ClrTab.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTab, deps: [{ token: IfActiveService }, { token: IF_ACTIVE_ID }, { token: TabsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrTab.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrTab, selector: "clr-tab", providers: [IF_ACTIVE_ID_PROVIDER], queries: [{ propertyName: "tabLink", first: true, predicate: ClrTabLink, descendants: true, static: true }, { propertyName: "tabContent", first: true, predicate: ClrTabContent, descendants: true, static: true }], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTab, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-tab',
@@ -11199,9 +11199,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrTabAction {
 }
-ClrTabAction.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTabAction, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-ClrTabAction.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrTabAction, selector: "[clrTabAction]", host: { attributes: { "tabindex": "0" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTabAction, decorators: [{
+ClrTabAction.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTabAction, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+ClrTabAction.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrTabAction, selector: "[clrTabAction]", host: { attributes: { "tabindex": "0" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTabAction, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrTabAction]',
@@ -11219,9 +11219,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrTabOverflowContent {
 }
-ClrTabOverflowContent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTabOverflowContent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrTabOverflowContent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrTabOverflowContent, selector: "clr-tab-overflow-content", host: { properties: { "class.dropdown-menu": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTabOverflowContent, decorators: [{
+ClrTabOverflowContent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTabOverflowContent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrTabOverflowContent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrTabOverflowContent, selector: "clr-tab-overflow-content", host: { properties: { "class.dropdown-menu": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTabOverflowContent, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-tab-overflow-content',
@@ -11384,8 +11384,8 @@ class ClrTabs {
         return this.tabsActions.changes.subscribe(() => this.setTabLinkElements());
     }
 }
-ClrTabs.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTabs, deps: [{ token: IfActiveService }, { token: ClrPopoverToggleService }, { token: TabsService }, { token: TABS_ID }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrTabs.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrTabs, selector: "clr-tabs", inputs: { layout: ["clrLayout", "layout"] }, host: { properties: { "class.tabs-vertical": "this.isVertical" } }, providers: [IfActiveService, TabsService, TABS_ID_PROVIDER], queries: [{ propertyName: "tabsActions", predicate: ClrTabAction, descendants: true, read: ElementRef }, { propertyName: "tabs", predicate: ClrTab }], viewQueries: [{ propertyName: "keyFocus", first: true, predicate: ClrKeyFocus, descendants: true, static: true }, { propertyName: "tabOverflowEl", first: true, predicate: ClrTabOverflowContent, descendants: true, read: ElementRef }, { propertyName: "tabContentViewContainer", first: true, predicate: ["tabContentViewContainer"], descendants: true, read: ViewContainerRef, static: true }], hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `
+ClrTabs.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTabs, deps: [{ token: IfActiveService }, { token: ClrPopoverToggleService }, { token: TabsService }, { token: TABS_ID }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrTabs.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrTabs, selector: "clr-tabs", inputs: { layout: ["clrLayout", "layout"] }, host: { properties: { "class.tabs-vertical": "this.isVertical" } }, providers: [IfActiveService, TabsService, TABS_ID_PROVIDER], queries: [{ propertyName: "tabsActions", predicate: ClrTabAction, descendants: true, read: ElementRef }, { propertyName: "tabs", predicate: ClrTab }], viewQueries: [{ propertyName: "keyFocus", first: true, predicate: ClrKeyFocus, descendants: true, static: true }, { propertyName: "tabOverflowEl", first: true, predicate: ClrTabOverflowContent, descendants: true, read: ElementRef }, { propertyName: "tabContentViewContainer", first: true, predicate: ["tabContentViewContainer"], descendants: true, read: ViewContainerRef, static: true }], hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `
     <ul
       class="nav"
       role="tablist"
@@ -11445,7 +11445,7 @@ ClrTabs.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2
     </ul>
     <ng-container #tabContentViewContainer></ng-container>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: ClrKeyFocus, selector: "[clrKeyFocus]", inputs: ["clrDirection", "clrFocusOnLoad", "clrKeyFocus"], outputs: ["clrFocusChange"] }, { kind: "component", type: ClrTabOverflowContent, selector: "clr-tab-overflow-content" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTabs, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTabs, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-tabs',
@@ -11549,13 +11549,13 @@ class ClrTabsActions {
         this.position = 'right';
     }
 }
-ClrTabsActions.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTabsActions, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrTabsActions.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrTabsActions, selector: "clr-tabs-actions", inputs: { position: "position" }, host: { properties: { "class.tabs-actions": "true", "attr.position": "this.position" } }, ngImport: i0, template: `
+ClrTabsActions.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTabsActions, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrTabsActions.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrTabsActions, selector: "clr-tabs-actions", inputs: { position: "position" }, host: { properties: { "class.tabs-actions": "true", "attr.position": "this.position" } }, ngImport: i0, template: `
     <div class="tabs-actions-wrapper">
       <ng-content></ng-content>
     </div>
   `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTabsActions, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTabsActions, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-tabs-actions',
@@ -11597,8 +11597,8 @@ class ClrTabsModule {
         ClarityIcons.addIcons(ellipsisHorizontalIcon);
     }
 }
-ClrTabsModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTabsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrTabsModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrTabsModule, declarations: [ClrTabContent,
+ClrTabsModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTabsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrTabsModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrTabsModule, declarations: [ClrTabContent,
         ClrTab,
         ClrTabs,
         ClrTabOverflowContent,
@@ -11615,8 +11615,8 @@ ClrTabsModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: 
         ClrTabsActions,
         TabsWillyWonka,
         ActiveOompaLoompa, ClrConditionalModule] });
-ClrTabsModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTabsModule, imports: [CommonModule, ClrConditionalModule, ClrIconModule, ClrTemplateRefModule, ClrKeyFocusModule, ClrConditionalModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTabsModule, decorators: [{
+ClrTabsModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTabsModule, imports: [CommonModule, ClrConditionalModule, ClrIconModule, ClrTemplateRefModule, ClrKeyFocusModule, ClrConditionalModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTabsModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrConditionalModule, ClrIconModule, ClrTemplateRefModule, ClrKeyFocusModule],
@@ -11642,9 +11642,9 @@ class VerticalNavGroupRegistrationService {
         this.navGroupCount--;
     }
 }
-VerticalNavGroupRegistrationService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: VerticalNavGroupRegistrationService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-VerticalNavGroupRegistrationService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: VerticalNavGroupRegistrationService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: VerticalNavGroupRegistrationService, decorators: [{
+VerticalNavGroupRegistrationService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: VerticalNavGroupRegistrationService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+VerticalNavGroupRegistrationService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: VerticalNavGroupRegistrationService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: VerticalNavGroupRegistrationService, decorators: [{
             type: Injectable
         }] });
 
@@ -11668,9 +11668,9 @@ class VerticalNavIconService {
         this._icons--;
     }
 }
-VerticalNavIconService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: VerticalNavIconService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-VerticalNavIconService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: VerticalNavIconService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: VerticalNavIconService, decorators: [{
+VerticalNavIconService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: VerticalNavIconService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+VerticalNavIconService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: VerticalNavIconService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: VerticalNavIconService, decorators: [{
             type: Injectable
         }] });
 
@@ -11720,9 +11720,9 @@ class VerticalNavService {
         this._collapsedChanged.next(value);
     }
 }
-VerticalNavService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: VerticalNavService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-VerticalNavService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: VerticalNavService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: VerticalNavService, decorators: [{
+VerticalNavService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: VerticalNavService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+VerticalNavService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: VerticalNavService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: VerticalNavService, decorators: [{
             type: Injectable
         }] });
 
@@ -11775,9 +11775,9 @@ class ClrVerticalNav {
         this.collapsed = !this.collapsed;
     }
 }
-ClrVerticalNav.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrVerticalNav, deps: [{ token: VerticalNavService }, { token: VerticalNavIconService }, { token: VerticalNavGroupRegistrationService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrVerticalNav.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrVerticalNav, selector: "clr-vertical-nav", inputs: { toggleLabel: ["clrVerticalNavToggleLabel", "toggleLabel"], collapsible: ["clrVerticalNavCollapsible", "collapsible"], collapsed: ["clrVerticalNavCollapsed", "collapsed"] }, outputs: { _collapsedChanged: "clrVerticalNavCollapsedChange" }, host: { properties: { "class.is-collapsed": "collapsed", "class.has-nav-groups": "hasNavGroups", "class.has-icons": "hasIcons" }, classAttribute: "clr-vertical-nav" }, providers: [VerticalNavService, VerticalNavIconService, VerticalNavGroupRegistrationService], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<button\n  type=\"button\"\n  class=\"nav-trigger\"\n  [class.on-collapse]=\"collapsed\"\n  [attr.aria-controls]=\"contentId\"\n  [attr.aria-expanded]=\"ariaExpanded\"\n  [attr.aria-label]=\"toggleLabel || commonStrings.keys.verticalNavToggle\"\n  (click)=\"toggleByButton()\"\n  *ngIf=\"collapsible\"\n>\n  <cds-icon\n    shape=\"angle-double\"\n    class=\"nav-trigger-icon\"\n    [attr.direction]=\"(this.collapsed) ? 'right' : 'left'\"\n  ></cds-icon>\n</button>\n<div [id]=\"contentId\" class=\"nav-content\">\n  <ng-content></ng-content>\n  <button\n    type=\"button\"\n    (click)=\"collapsed = false\"\n    class=\"nav-btn\"\n    aria-hidden=\"true\"\n    tabindex=\"-1\"\n    [attr.aria-controls]=\"contentId\"\n    [attr.aria-label]=\"toggleLabel || commonStrings.keys.verticalNavToggle\"\n    *ngIf=\"collapsible && collapsed\"\n  ></button>\n</div>\n", dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrVerticalNav, decorators: [{
+ClrVerticalNav.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrVerticalNav, deps: [{ token: VerticalNavService }, { token: VerticalNavIconService }, { token: VerticalNavGroupRegistrationService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrVerticalNav.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrVerticalNav, selector: "clr-vertical-nav", inputs: { toggleLabel: ["clrVerticalNavToggleLabel", "toggleLabel"], collapsible: ["clrVerticalNavCollapsible", "collapsible"], collapsed: ["clrVerticalNavCollapsed", "collapsed"] }, outputs: { _collapsedChanged: "clrVerticalNavCollapsedChange" }, host: { properties: { "class.is-collapsed": "collapsed", "class.has-nav-groups": "hasNavGroups", "class.has-icons": "hasIcons" }, classAttribute: "clr-vertical-nav" }, providers: [VerticalNavService, VerticalNavIconService, VerticalNavGroupRegistrationService], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<button\n  type=\"button\"\n  class=\"nav-trigger\"\n  [class.on-collapse]=\"collapsed\"\n  [attr.aria-controls]=\"contentId\"\n  [attr.aria-expanded]=\"ariaExpanded\"\n  [attr.aria-label]=\"toggleLabel || commonStrings.keys.verticalNavToggle\"\n  (click)=\"toggleByButton()\"\n  *ngIf=\"collapsible\"\n>\n  <cds-icon\n    shape=\"angle-double\"\n    class=\"nav-trigger-icon\"\n    [attr.direction]=\"(this.collapsed) ? 'right' : 'left'\"\n  ></cds-icon>\n</button>\n<div [id]=\"contentId\" class=\"nav-content\">\n  <ng-content></ng-content>\n  <button\n    type=\"button\"\n    (click)=\"collapsed = false\"\n    class=\"nav-btn\"\n    aria-hidden=\"true\"\n    tabindex=\"-1\"\n    [attr.aria-controls]=\"contentId\"\n    [attr.aria-label]=\"toggleLabel || commonStrings.keys.verticalNavToggle\"\n    *ngIf=\"collapsible && collapsed\"\n  ></button>\n</div>\n", dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrVerticalNav, decorators: [{
             type: Component,
             args: [{ selector: 'clr-vertical-nav', providers: [VerticalNavService, VerticalNavIconService, VerticalNavGroupRegistrationService], host: {
                         class: 'clr-vertical-nav',
@@ -11816,9 +11816,9 @@ class VerticalNavGroupService {
         this._expandChange.next(true);
     }
 }
-VerticalNavGroupService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: VerticalNavGroupService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-VerticalNavGroupService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: VerticalNavGroupService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: VerticalNavGroupService, decorators: [{
+VerticalNavGroupService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: VerticalNavGroupService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+VerticalNavGroupService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: VerticalNavGroupService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: VerticalNavGroupService, decorators: [{
             type: Injectable
         }] });
 
@@ -11945,15 +11945,15 @@ class ClrVerticalNavGroup {
         }
     }
 }
-ClrVerticalNavGroup.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrVerticalNavGroup, deps: [{ token: IfExpandService }, { token: VerticalNavGroupRegistrationService }, { token: VerticalNavGroupService }, { token: VerticalNavService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrVerticalNavGroup.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrVerticalNavGroup, selector: "clr-vertical-nav-group", inputs: { userExpandedInput: ["clrVerticalNavGroupExpanded", "userExpandedInput"] }, outputs: { expandedChange: "clrVerticalNavGroupExpandedChange" }, host: { properties: { "class.is-expanded": "this.expanded" }, classAttribute: "nav-group" }, providers: [IfExpandService, VerticalNavGroupService], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"nav-group-content\">\n  <ng-content select=\"[clrVerticalNavLink]\"></ng-content>\n  <button class=\"nav-group-trigger\" type=\"button\" [attr.aria-expanded]=\"expanded\" (click)=\"toggleExpand()\">\n    <ng-content select=\"[clrVerticalNavIcon]\"></ng-content>\n    <div class=\"nav-group-text\">\n      <ng-content></ng-content>\n    </div>\n    <cds-icon shape=\"angle\" class=\"nav-group-trigger-icon\" [attr.direction]=\"expanded ? 'down' : 'right'\"></cds-icon>\n  </button>\n</div>\n<!--TODO: This animation needs to be added to the clr-vertical-nav-group-children component-->\n<div class=\"nav-group-children\" [@clrExpand]=\"expandAnimationState\" (@clrExpand.done)=\"expandAnimationDone($event)\">\n  <ng-content select=\"[clrIfExpanded], clr-vertical-nav-group-children\"></ng-content>\n</div>\n", dependencies: [{ kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }], animations: [
+ClrVerticalNavGroup.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrVerticalNavGroup, deps: [{ token: IfExpandService }, { token: VerticalNavGroupRegistrationService }, { token: VerticalNavGroupService }, { token: VerticalNavService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrVerticalNavGroup.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrVerticalNavGroup, selector: "clr-vertical-nav-group", inputs: { userExpandedInput: ["clrVerticalNavGroupExpanded", "userExpandedInput"] }, outputs: { expandedChange: "clrVerticalNavGroupExpandedChange" }, host: { properties: { "class.is-expanded": "this.expanded" }, classAttribute: "nav-group" }, providers: [IfExpandService, VerticalNavGroupService], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"nav-group-content\">\n  <ng-content select=\"[clrVerticalNavLink]\"></ng-content>\n  <button class=\"nav-group-trigger\" type=\"button\" [attr.aria-expanded]=\"expanded\" (click)=\"toggleExpand()\">\n    <ng-content select=\"[clrVerticalNavIcon]\"></ng-content>\n    <div class=\"nav-group-text\">\n      <ng-content></ng-content>\n    </div>\n    <cds-icon shape=\"angle\" class=\"nav-group-trigger-icon\" [attr.direction]=\"expanded ? 'down' : 'right'\"></cds-icon>\n  </button>\n</div>\n<!--TODO: This animation needs to be added to the clr-vertical-nav-group-children component-->\n<div class=\"nav-group-children\" [@clrExpand]=\"expandAnimationState\" (@clrExpand.done)=\"expandAnimationDone($event)\">\n  <ng-content select=\"[clrIfExpanded], clr-vertical-nav-group-children\"></ng-content>\n</div>\n", dependencies: [{ kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }], animations: [
         trigger('clrExpand', [
             state(EXPANDED_STATE, style({ height: '*' })),
             state(COLLAPSED_STATE, style({ height: 0, visibility: 'hidden' })),
             transition(`${EXPANDED_STATE} <=> ${COLLAPSED_STATE}`, animate('0.2s ease-in-out')),
         ]),
     ] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrVerticalNavGroup, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrVerticalNavGroup, decorators: [{
             type: Component,
             args: [{ selector: 'clr-vertical-nav-group', providers: [IfExpandService, VerticalNavGroupService], animations: [
                         trigger('clrExpand', [
@@ -11981,9 +11981,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrVerticalNavGroupChildren {
 }
-ClrVerticalNavGroupChildren.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrVerticalNavGroupChildren, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrVerticalNavGroupChildren.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrVerticalNavGroupChildren, selector: "clr-vertical-nav-group-children", ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrVerticalNavGroupChildren, decorators: [{
+ClrVerticalNavGroupChildren.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrVerticalNavGroupChildren, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrVerticalNavGroupChildren.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrVerticalNavGroupChildren, selector: "clr-vertical-nav-group-children", ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrVerticalNavGroupChildren, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-vertical-nav-group-children',
@@ -12006,9 +12006,9 @@ class ClrVerticalNavIcon {
         this._verticalNavIconService.unregisterIcon();
     }
 }
-ClrVerticalNavIcon.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrVerticalNavIcon, deps: [{ token: VerticalNavIconService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrVerticalNavIcon.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrVerticalNavIcon, selector: "[clrVerticalNavIcon]", host: { classAttribute: "nav-icon" }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrVerticalNavIcon, decorators: [{
+ClrVerticalNavIcon.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrVerticalNavIcon, deps: [{ token: VerticalNavIconService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrVerticalNavIcon.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrVerticalNavIcon, selector: "[clrVerticalNavIcon]", host: { classAttribute: "nav-icon" }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrVerticalNavIcon, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrVerticalNavIcon]',
@@ -12039,14 +12039,14 @@ class ClrVerticalNavLink {
         this.destroy$.next();
     }
 }
-ClrVerticalNavLink.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrVerticalNavLink, deps: [{ token: i0.ElementRef }, { token: i0.ChangeDetectorRef }, { token: VerticalNavGroupService, optional: true }], target: i0.ɵɵFactoryTarget.Component });
-ClrVerticalNavLink.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrVerticalNavLink, selector: "[clrVerticalNavLink]", host: { classAttribute: "nav-link" }, ngImport: i0, template: `
+ClrVerticalNavLink.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrVerticalNavLink, deps: [{ token: i0.ElementRef }, { token: i0.ChangeDetectorRef }, { token: VerticalNavGroupService, optional: true }], target: i0.ɵɵFactoryTarget.Component });
+ClrVerticalNavLink.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrVerticalNavLink, selector: "[clrVerticalNavLink]", host: { classAttribute: "nav-link" }, ngImport: i0, template: `
     <ng-content select="[clrVerticalNavIcon]"></ng-content>
     <span class="nav-text">
       <ng-content></ng-content>
     </span>
   `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrVerticalNavLink, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrVerticalNavLink, decorators: [{
             type: Component,
             args: [{
                     selector: '[clrVerticalNavLink]',
@@ -12085,8 +12085,8 @@ class ClrVerticalNavModule {
         ClarityIcons.addIcons(angleIcon, angleDoubleIcon);
     }
 }
-ClrVerticalNavModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrVerticalNavModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrVerticalNavModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrVerticalNavModule, declarations: [ClrVerticalNav,
+ClrVerticalNavModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrVerticalNavModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrVerticalNavModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrVerticalNavModule, declarations: [ClrVerticalNav,
         ClrVerticalNavLink,
         ClrVerticalNavGroup,
         ClrVerticalNavGroupChildren,
@@ -12095,8 +12095,8 @@ ClrVerticalNavModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", ve
         ClrVerticalNavGroup,
         ClrVerticalNavGroupChildren,
         ClrVerticalNavIcon, ClrConditionalModule, ClrIconModule, ClrFocusOnViewInitModule] });
-ClrVerticalNavModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrVerticalNavModule, imports: [CommonModule, ClrIconModule, ClrConditionalModule, ClrFocusOnViewInitModule, ClrConditionalModule, ClrIconModule, ClrFocusOnViewInitModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrVerticalNavModule, decorators: [{
+ClrVerticalNavModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrVerticalNavModule, imports: [CommonModule, ClrIconModule, ClrConditionalModule, ClrFocusOnViewInitModule, ClrConditionalModule, ClrIconModule, ClrFocusOnViewInitModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrVerticalNavModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIconModule, ClrConditionalModule, ClrFocusOnViewInitModule],
@@ -12113,10 +12113,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrLayoutModule {
 }
-ClrLayoutModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLayoutModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrLayoutModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrLayoutModule, exports: [ClrMainContainerModule, ClrNavigationModule, ClrTabsModule, ClrVerticalNavModule, ClrBreadcrumbsModule] });
-ClrLayoutModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLayoutModule, imports: [ClrMainContainerModule, ClrNavigationModule, ClrTabsModule, ClrVerticalNavModule, ClrBreadcrumbsModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrLayoutModule, decorators: [{
+ClrLayoutModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLayoutModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrLayoutModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrLayoutModule, exports: [ClrMainContainerModule, ClrNavigationModule, ClrTabsModule, ClrVerticalNavModule, ClrBreadcrumbsModule] });
+ClrLayoutModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLayoutModule, imports: [ClrMainContainerModule, ClrNavigationModule, ClrTabsModule, ClrVerticalNavModule, ClrBreadcrumbsModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrLayoutModule, decorators: [{
             type: NgModule,
             args: [{
                     exports: [ClrMainContainerModule, ClrNavigationModule, ClrTabsModule, ClrVerticalNavModule, ClrBreadcrumbsModule],
@@ -12184,9 +12184,9 @@ class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
         super(elementRef, focusTrapFactory, document);
     }
 }
-CdkTrapFocusModule_CdkTrapFocus.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: CdkTrapFocusModule_CdkTrapFocus, deps: [{ token: i0.ElementRef }, { token: i1$2.FocusTrapFactory }, { token: DOCUMENT, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
-CdkTrapFocusModule_CdkTrapFocus.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: CdkTrapFocusModule_CdkTrapFocus, decorators: [{
+CdkTrapFocusModule_CdkTrapFocus.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: CdkTrapFocusModule_CdkTrapFocus, deps: [{ token: i0.ElementRef }, { token: i1$2.FocusTrapFactory }, { token: DOCUMENT, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
+CdkTrapFocusModule_CdkTrapFocus.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: CdkTrapFocusModule_CdkTrapFocus, decorators: [{
             type: Directive,
             args: [{
                     selector: '[cdkTrapFocus]',
@@ -12202,10 +12202,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class CdkTrapFocusModule {
 }
-CdkTrapFocusModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: CdkTrapFocusModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-CdkTrapFocusModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: CdkTrapFocusModule, declarations: [CdkTrapFocusModule_CdkTrapFocus], exports: [CdkTrapFocusModule_CdkTrapFocus] });
-CdkTrapFocusModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: CdkTrapFocusModule });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: CdkTrapFocusModule, decorators: [{
+CdkTrapFocusModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: CdkTrapFocusModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+CdkTrapFocusModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: CdkTrapFocusModule, declarations: [CdkTrapFocusModule_CdkTrapFocus], exports: [CdkTrapFocusModule_CdkTrapFocus] });
+CdkTrapFocusModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: CdkTrapFocusModule });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: CdkTrapFocusModule, decorators: [{
             type: NgModule,
             args: [{
                     declarations: [CdkTrapFocusModule_CdkTrapFocus],
@@ -12666,9 +12666,9 @@ class LocaleHelperService {
         this._localeDateFormat = getLocaleDateFormat(this.locale, FormatWidth.Short);
     }
 }
-LocaleHelperService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: LocaleHelperService, deps: [{ token: LOCALE_ID }], target: i0.ɵɵFactoryTarget.Injectable });
-LocaleHelperService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: LocaleHelperService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: LocaleHelperService, decorators: [{
+LocaleHelperService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: LocaleHelperService, deps: [{ token: LOCALE_ID }], target: i0.ɵɵFactoryTarget.Injectable });
+LocaleHelperService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: LocaleHelperService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: LocaleHelperService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: undefined, decorators: [{
                     type: Inject,
@@ -12935,9 +12935,9 @@ class DateNavigationService {
         this._today = new DayModel(this._todaysFullDate.getFullYear(), this._todaysFullDate.getMonth(), this._todaysFullDate.getDate());
     }
 }
-DateNavigationService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DateNavigationService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-DateNavigationService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DateNavigationService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DateNavigationService, decorators: [{
+DateNavigationService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DateNavigationService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+DateNavigationService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DateNavigationService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DateNavigationService, decorators: [{
             type: Injectable
         }] });
 
@@ -12976,9 +12976,9 @@ class DatepickerFocusService {
         return this._ngZone.onStable.asObservable().pipe(first(), filter(() => isPlatformBrowser(this.platformId)));
     }
 }
-DatepickerFocusService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatepickerFocusService, deps: [{ token: i0.NgZone }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
-DatepickerFocusService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatepickerFocusService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatepickerFocusService, decorators: [{
+DatepickerFocusService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatepickerFocusService, deps: [{ token: i0.NgZone }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
+DatepickerFocusService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatepickerFocusService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatepickerFocusService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: i0.NgZone }, { type: undefined, decorators: [{
                     type: Inject,
@@ -13168,9 +13168,9 @@ class DateIOService {
         return result !== -1 ? new Date(result, m, d) : null;
     }
 }
-DateIOService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DateIOService, deps: [{ token: LocaleHelperService }], target: i0.ɵɵFactoryTarget.Injectable });
-DateIOService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DateIOService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DateIOService, decorators: [{
+DateIOService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DateIOService, deps: [{ token: LocaleHelperService }], target: i0.ɵɵFactoryTarget.Injectable });
+DateIOService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DateIOService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DateIOService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: LocaleHelperService }]; } });
 
@@ -13202,9 +13202,9 @@ class DateFormControlService {
         this.disabled = state;
     }
 }
-DateFormControlService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DateFormControlService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-DateFormControlService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DateFormControlService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DateFormControlService, decorators: [{
+DateFormControlService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DateFormControlService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+DateFormControlService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DateFormControlService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DateFormControlService, decorators: [{
             type: Injectable
         }] });
 
@@ -13289,8 +13289,8 @@ class ClrDay {
         }
     }
 }
-ClrDay.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDay, deps: [{ token: DateNavigationService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDay.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDay, selector: "clr-day", inputs: { dayView: ["clrDayView", "dayView"] }, outputs: { onSelectDay: "selectDay" }, host: { listeners: { "mouseenter": "hoverListener()" }, properties: { "class.day": "true" } }, ngImport: i0, template: `
+ClrDay.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDay, deps: [{ token: DateNavigationService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDay.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDay, selector: "clr-day", inputs: { dayView: ["clrDayView", "dayView"] }, outputs: { onSelectDay: "selectDay" }, host: { listeners: { "mouseenter": "hoverListener()" }, properties: { "class.day": "true" } }, ngImport: i0, template: `
     <button
       class="day-btn"
       type="button"
@@ -13311,7 +13311,7 @@ ClrDay.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.
       {{ dayView.dayModel.date }}
     </button>
   `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDay, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDay, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-day',
@@ -13500,9 +13500,9 @@ class ClrCalendar {
         this.calendarViewModel = new CalendarViewModel(this.calendar, this.selectedDay, this.selectedEndDay, this.focusedDay, this.today, this._localeHelperService.firstDayOfWeek, this._dateIOService.disabledDates);
     }
 }
-ClrCalendar.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCalendar, deps: [{ token: LocaleHelperService }, { token: DateNavigationService }, { token: DatepickerFocusService }, { token: DateIOService }, { token: i0.ElementRef }, { token: DateFormControlService }, { token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Component });
-ClrCalendar.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrCalendar, selector: "clr-calendar", host: { listeners: { "keydown": "onKeyDown($event)" } }, ngImport: i0, template: "<table class=\"calendar-table\" role=\"presentation\">\n  <tr class=\"calendar-row weekdays\">\n    <th *ngFor=\"let day of localeDays\" class=\"calendar-cell weekday\">\n      <span [attr.aria-label]=\"day.day\">{{day.narrow}}</span>\n    </th>\n  </tr>\n  <tr class=\"calendar-row\" *ngFor=\"let row of calendarViewModel.calendarView\">\n    <td *ngFor=\"let dayView of row\" class=\"calendar-cell\">\n      <clr-day [clrDayView]=\"dayView\" (selectDay)=\"setSelectedDay($event)\"></clr-day>\n    </td>\n  </tr>\n</table>\n", dependencies: [{ kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "component", type: ClrDay, selector: "clr-day", inputs: ["clrDayView"], outputs: ["selectDay"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrCalendar, decorators: [{
+ClrCalendar.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCalendar, deps: [{ token: LocaleHelperService }, { token: DateNavigationService }, { token: DatepickerFocusService }, { token: DateIOService }, { token: i0.ElementRef }, { token: DateFormControlService }, { token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Component });
+ClrCalendar.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrCalendar, selector: "clr-calendar", host: { listeners: { "keydown": "onKeyDown($event)" } }, ngImport: i0, template: "<table class=\"calendar-table\" role=\"presentation\">\n  <tr class=\"calendar-row weekdays\">\n    <th *ngFor=\"let day of localeDays\" class=\"calendar-cell weekday\">\n      <span [attr.aria-label]=\"day.day\">{{day.narrow}}</span>\n    </th>\n  </tr>\n  <tr class=\"calendar-row\" *ngFor=\"let row of calendarViewModel.calendarView\">\n    <td *ngFor=\"let dayView of row\" class=\"calendar-cell\">\n      <clr-day [clrDayView]=\"dayView\" (selectDay)=\"setSelectedDay($event)\"></clr-day>\n    </td>\n  </tr>\n</table>\n", dependencies: [{ kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "component", type: ClrDay, selector: "clr-day", inputs: ["clrDayView"], outputs: ["selectDay"] }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrCalendar, decorators: [{
             type: Component,
             args: [{ selector: 'clr-calendar', template: "<table class=\"calendar-table\" role=\"presentation\">\n  <tr class=\"calendar-row weekdays\">\n    <th *ngFor=\"let day of localeDays\" class=\"calendar-cell weekday\">\n      <span [attr.aria-label]=\"day.day\">{{day.narrow}}</span>\n    </th>\n  </tr>\n  <tr class=\"calendar-row\" *ngFor=\"let row of calendarViewModel.calendarView\">\n    <td *ngFor=\"let dayView of row\" class=\"calendar-cell\">\n      <clr-day [clrDayView]=\"dayView\" (selectDay)=\"setSelectedDay($event)\"></clr-day>\n    </td>\n  </tr>\n</table>\n" }]
         }], ctorParameters: function () { return [{ type: LocaleHelperService }, { type: DateNavigationService }, { type: DatepickerFocusService }, { type: DateIOService }, { type: i0.ElementRef }, { type: DateFormControlService }, { type: ClrPopoverToggleService }]; }, propDecorators: { onKeyDown: [{
@@ -13543,9 +13543,9 @@ class DatepickerEnabledService {
         return true;
     }
 }
-DatepickerEnabledService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatepickerEnabledService, deps: [{ token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
-DatepickerEnabledService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatepickerEnabledService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatepickerEnabledService, decorators: [{
+DatepickerEnabledService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatepickerEnabledService, deps: [{ token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
+DatepickerEnabledService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatepickerEnabledService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatepickerEnabledService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: undefined, decorators: [{
                     type: Inject,
@@ -13774,9 +13774,9 @@ class ClrDateInputBase extends WrappedFormControl {
         }
     }
 }
-ClrDateInputBase.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDateInputBase, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i1.NgControl, optional: true, self: true }, { token: forwardRef(() => ClrDateContainer), optional: true }, { token: DateIOService, optional: true }, { token: DateNavigationService, optional: true }, { token: DatepickerEnabledService, optional: true }, { token: DateFormControlService, optional: true }, { token: PLATFORM_ID }, { token: FocusService, optional: true }, { token: DatepickerFocusService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrDateInputBase.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDateInputBase, inputs: { placeholder: "placeholder", disabled: "disabled" }, host: { listeners: { "focus": "setFocusStates()", "blur": "triggerValidation()", "change": "onValueChange($event.target)" }, properties: { "disabled": "this.disabled", "attr.placeholder": "this.placeholderText", "attr.type": "this.inputType" } }, usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDateInputBase, decorators: [{
+ClrDateInputBase.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDateInputBase, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i1.NgControl, optional: true, self: true }, { token: forwardRef(() => ClrDateContainer), optional: true }, { token: DateIOService, optional: true }, { token: DateNavigationService, optional: true }, { token: DatepickerEnabledService, optional: true }, { token: DateFormControlService, optional: true }, { token: PLATFORM_ID }, { token: FocusService, optional: true }, { token: DatepickerFocusService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrDateInputBase.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrDateInputBase, inputs: { placeholder: "placeholder", disabled: "disabled" }, host: { listeners: { "focus": "setFocusStates()", "blur": "triggerValidation()", "change": "onValueChange($event.target)" }, properties: { "disabled": "this.disabled", "attr.placeholder": "this.placeholderText", "attr.type": "this.inputType" } }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDateInputBase, decorators: [{
             type: Directive
         }], ctorParameters: function () { return [{ type: i0.ViewContainerRef }, { type: i0.Injector }, { type: i0.ElementRef }, { type: i0.Renderer2 }, { type: i1.NgControl, decorators: [{
                     type: Self
@@ -13856,9 +13856,9 @@ class ClrEndDateInput extends ClrDateInputBase {
         this.dateNavigationService.persistedEndDate = this.dateNavigationService.selectedEndDay = dayModel;
     }
 }
-ClrEndDateInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrEndDateInput, deps: null, target: i0.ɵɵFactoryTarget.Directive });
-ClrEndDateInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrEndDateInput, selector: "[clrEndDate]", inputs: { inputWidth: "inputWidth", date: ["clrEndDate", "date"] }, outputs: { dateChange: "clrEndDateChange" }, host: { properties: { "class.clr-input": "true", "attr.size": "this.inputSize" } }, providers: [DatepickerFocusService], usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrEndDateInput, decorators: [{
+ClrEndDateInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrEndDateInput, deps: null, target: i0.ɵɵFactoryTarget.Directive });
+ClrEndDateInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrEndDateInput, selector: "[clrEndDate]", inputs: { inputWidth: "inputWidth", date: ["clrEndDate", "date"] }, outputs: { dateChange: "clrEndDateChange" }, host: { properties: { "class.clr-input": "true", "attr.size": "this.inputSize" } }, providers: [DatepickerFocusService], usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrEndDateInput, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrEndDate]',
@@ -13917,9 +13917,9 @@ class ClrDateInput extends ClrDateInputBase {
         }
     }
 }
-ClrDateInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDateInput, deps: null, target: i0.ɵɵFactoryTarget.Directive });
-ClrDateInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDateInput, selector: "[clrDate]", inputs: { date: ["clrDate", "date"], min: "min", max: "max" }, outputs: { dateChange: "clrDateChange" }, host: { properties: { "class.clr-input": "true" } }, providers: [DatepickerFocusService], usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDateInput, decorators: [{
+ClrDateInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDateInput, deps: null, target: i0.ɵɵFactoryTarget.Directive });
+ClrDateInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrDateInput, selector: "[clrDate]", inputs: { date: ["clrDate", "date"], min: "min", max: "max" }, outputs: { dateChange: "clrDateChange" }, host: { properties: { "class.clr-input": "true" } }, providers: [DatepickerFocusService], usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDateInput, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrDate]',
@@ -13971,9 +13971,9 @@ class ClrStartDateInput extends ClrDateInputBase {
         this.dateNavigationService.persistedDate = this.dateNavigationService.selectedDay = dayModel;
     }
 }
-ClrStartDateInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStartDateInput, deps: null, target: i0.ɵɵFactoryTarget.Directive });
-ClrStartDateInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrStartDateInput, selector: "[clrStartDate]", inputs: { inputWidth: "inputWidth", date: ["clrStartDate", "date"] }, outputs: { dateChange: "clrStartDateChange" }, host: { properties: { "class.clr-input": "true", "style.text-align": "'right'", "attr.size": "this.inputSize" } }, providers: [DatepickerFocusService], usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStartDateInput, decorators: [{
+ClrStartDateInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStartDateInput, deps: null, target: i0.ɵɵFactoryTarget.Directive });
+ClrStartDateInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrStartDateInput, selector: "[clrStartDate]", inputs: { inputWidth: "inputWidth", date: ["clrStartDate", "date"] }, outputs: { dateChange: "clrStartDateChange" }, host: { properties: { "class.clr-input": "true", "style.text-align": "'right'", "attr.size": "this.inputSize" } }, providers: [DatepickerFocusService], usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStartDateInput, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrStartDate]',
@@ -14030,9 +14030,9 @@ class ViewManagerService {
         this._currentView = "DAYVIEW" /* DatepickerViewEnum.DAYVIEW */;
     }
 }
-ViewManagerService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ViewManagerService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-ViewManagerService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ViewManagerService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ViewManagerService, decorators: [{
+ViewManagerService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ViewManagerService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+ViewManagerService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ViewManagerService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ViewManagerService, decorators: [{
             type: Injectable
         }] });
 
@@ -14219,8 +14219,8 @@ class ClrMonthpicker {
         }
     }
 }
-ClrMonthpicker.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrMonthpicker, deps: [{ token: LocaleHelperService }, { token: DateNavigationService }, { token: DatepickerFocusService }, { token: i0.ElementRef }, { token: ViewManagerService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrMonthpicker.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrMonthpicker, selector: "clr-monthpicker", host: { attributes: { "role": "application" }, listeners: { "keydown": "onKeyDown($event)" }, properties: { "class.monthpicker": "true" } }, ngImport: i0, template: `
+ClrMonthpicker.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrMonthpicker, deps: [{ token: LocaleHelperService }, { token: DateNavigationService }, { token: DatepickerFocusService }, { token: i0.ElementRef }, { token: ViewManagerService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrMonthpicker.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrMonthpicker, selector: "clr-monthpicker", host: { attributes: { "role": "application" }, listeners: { "keydown": "onKeyDown($event)" }, properties: { "class.monthpicker": "true" } }, ngImport: i0, template: `
     <div class="calendar-header in-monthpicker">
       <div class="year-view-switcher">
         <button
@@ -14278,7 +14278,7 @@ ClrMonthpicker.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version
       </button>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrMonthpicker, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrMonthpicker, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-monthpicker',
@@ -14575,8 +14575,8 @@ class ClrYearpicker {
         this._datepickerFocusService.focusCell(this._elRef);
     }
 }
-ClrYearpicker.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrYearpicker, deps: [{ token: DateNavigationService }, { token: ViewManagerService }, { token: DatepickerFocusService }, { token: i0.ElementRef }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrYearpicker.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrYearpicker, selector: "clr-yearpicker", host: { attributes: { "role": "application" }, listeners: { "keydown": "onKeyDown($event)" }, properties: { "class.yearpicker": "true" } }, ngImport: i0, template: `
+ClrYearpicker.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrYearpicker, deps: [{ token: DateNavigationService }, { token: ViewManagerService }, { token: DatepickerFocusService }, { token: i0.ElementRef }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrYearpicker.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrYearpicker, selector: "clr-yearpicker", host: { attributes: { "role": "application" }, listeners: { "keydown": "onKeyDown($event)" }, properties: { "class.yearpicker": "true" } }, ngImport: i0, template: `
     <div class="calendar-header">
       <div class="calendar-pickers">
         <button class="calendar-btn yearpicker-trigger year-range" type="button" (click)="changeToDayView()">
@@ -14633,7 +14633,7 @@ ClrYearpicker.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version:
       </button>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrYearpicker, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrYearpicker, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-yearpicker',
@@ -14770,9 +14770,9 @@ class ClrDaypicker {
         this._dateNavigationService.moveToCurrentMonth();
     }
 }
-ClrDaypicker.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDaypicker, deps: [{ token: ViewManagerService }, { token: DateNavigationService }, { token: LocaleHelperService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDaypicker.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDaypicker, selector: "clr-daypicker", host: { attributes: { "role": "application" }, properties: { "class.daypicker": "true" } }, ngImport: i0, template: "<div class=\"clr-sr-only\">{{commonStrings.keys.modalContentStart}}</div>\n<div class=\"calendar-header\">\n  <div class=\"calendar-pickers\">\n    <button\n      class=\"calendar-btn monthpicker-trigger\"\n      type=\"button\"\n      (click)=\"changeToMonthView()\"\n      [attr.aria-label]=\"monthAttrString\"\n      [attr.title]=\"monthAttrString\"\n    >\n      {{calendarMonth}}\n    </button>\n    <button\n      class=\"calendar-btn yearpicker-trigger\"\n      type=\"button\"\n      (click)=\"changeToYearView()\"\n      [attr.aria-label]=\"yearAttrString\"\n      [attr.title]=\"yearAttrString\"\n    >\n      {{calendarYear}}\n    </button>\n  </div>\n  <div class=\"calendar-switchers\">\n    <button\n      class=\"calendar-btn switcher\"\n      type=\"button\"\n      (click)=\"previousMonth()\"\n      [attr.aria-label]=\"commonStrings.keys.datepickerPreviousMonth\"\n    >\n      <cds-icon shape=\"angle\" direction=\"left\" [attr.title]=\"commonStrings.keys.datepickerPreviousMonth\"></cds-icon>\n    </button>\n    <button\n      class=\"calendar-btn switcher\"\n      type=\"button\"\n      (click)=\"currentMonth()\"\n      [attr.aria-label]=\"commonStrings.keys.datepickerCurrentMonth\"\n    >\n      <cds-icon shape=\"event\" [attr.title]=\"commonStrings.keys.datepickerCurrentMonth\"></cds-icon>\n    </button>\n    <button\n      class=\"calendar-btn switcher\"\n      type=\"button\"\n      (click)=\"nextMonth()\"\n      [attr.aria-label]=\"commonStrings.keys.datepickerNextMonth\"\n    >\n      <cds-icon shape=\"angle\" direction=\"right\" [attr.title]=\"commonStrings.keys.datepickerNextMonth\"></cds-icon>\n    </button>\n  </div>\n</div>\n<clr-calendar></clr-calendar>\n<div class=\"clr-sr-only\">{{commonStrings.keys.modalContentEnd}}</div>\n", dependencies: [{ kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: ClrCalendar, selector: "clr-calendar" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDaypicker, decorators: [{
+ClrDaypicker.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDaypicker, deps: [{ token: ViewManagerService }, { token: DateNavigationService }, { token: LocaleHelperService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDaypicker.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDaypicker, selector: "clr-daypicker", host: { attributes: { "role": "application" }, properties: { "class.daypicker": "true" } }, ngImport: i0, template: "<div class=\"clr-sr-only\">{{commonStrings.keys.modalContentStart}}</div>\n<div class=\"calendar-header\">\n  <div class=\"calendar-pickers\">\n    <button\n      class=\"calendar-btn monthpicker-trigger\"\n      type=\"button\"\n      (click)=\"changeToMonthView()\"\n      [attr.aria-label]=\"monthAttrString\"\n      [attr.title]=\"monthAttrString\"\n    >\n      {{calendarMonth}}\n    </button>\n    <button\n      class=\"calendar-btn yearpicker-trigger\"\n      type=\"button\"\n      (click)=\"changeToYearView()\"\n      [attr.aria-label]=\"yearAttrString\"\n      [attr.title]=\"yearAttrString\"\n    >\n      {{calendarYear}}\n    </button>\n  </div>\n  <div class=\"calendar-switchers\">\n    <button\n      class=\"calendar-btn switcher\"\n      type=\"button\"\n      (click)=\"previousMonth()\"\n      [attr.aria-label]=\"commonStrings.keys.datepickerPreviousMonth\"\n    >\n      <cds-icon shape=\"angle\" direction=\"left\" [attr.title]=\"commonStrings.keys.datepickerPreviousMonth\"></cds-icon>\n    </button>\n    <button\n      class=\"calendar-btn switcher\"\n      type=\"button\"\n      (click)=\"currentMonth()\"\n      [attr.aria-label]=\"commonStrings.keys.datepickerCurrentMonth\"\n    >\n      <cds-icon shape=\"event\" [attr.title]=\"commonStrings.keys.datepickerCurrentMonth\"></cds-icon>\n    </button>\n    <button\n      class=\"calendar-btn switcher\"\n      type=\"button\"\n      (click)=\"nextMonth()\"\n      [attr.aria-label]=\"commonStrings.keys.datepickerNextMonth\"\n    >\n      <cds-icon shape=\"angle\" direction=\"right\" [attr.title]=\"commonStrings.keys.datepickerNextMonth\"></cds-icon>\n    </button>\n  </div>\n</div>\n<clr-calendar></clr-calendar>\n<div class=\"clr-sr-only\">{{commonStrings.keys.modalContentEnd}}</div>\n", dependencies: [{ kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: ClrCalendar, selector: "clr-calendar" }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDaypicker, decorators: [{
             type: Component,
             args: [{ selector: 'clr-daypicker', host: { '[class.daypicker]': 'true', role: 'application' }, template: "<div class=\"clr-sr-only\">{{commonStrings.keys.modalContentStart}}</div>\n<div class=\"calendar-header\">\n  <div class=\"calendar-pickers\">\n    <button\n      class=\"calendar-btn monthpicker-trigger\"\n      type=\"button\"\n      (click)=\"changeToMonthView()\"\n      [attr.aria-label]=\"monthAttrString\"\n      [attr.title]=\"monthAttrString\"\n    >\n      {{calendarMonth}}\n    </button>\n    <button\n      class=\"calendar-btn yearpicker-trigger\"\n      type=\"button\"\n      (click)=\"changeToYearView()\"\n      [attr.aria-label]=\"yearAttrString\"\n      [attr.title]=\"yearAttrString\"\n    >\n      {{calendarYear}}\n    </button>\n  </div>\n  <div class=\"calendar-switchers\">\n    <button\n      class=\"calendar-btn switcher\"\n      type=\"button\"\n      (click)=\"previousMonth()\"\n      [attr.aria-label]=\"commonStrings.keys.datepickerPreviousMonth\"\n    >\n      <cds-icon shape=\"angle\" direction=\"left\" [attr.title]=\"commonStrings.keys.datepickerPreviousMonth\"></cds-icon>\n    </button>\n    <button\n      class=\"calendar-btn switcher\"\n      type=\"button\"\n      (click)=\"currentMonth()\"\n      [attr.aria-label]=\"commonStrings.keys.datepickerCurrentMonth\"\n    >\n      <cds-icon shape=\"event\" [attr.title]=\"commonStrings.keys.datepickerCurrentMonth\"></cds-icon>\n    </button>\n    <button\n      class=\"calendar-btn switcher\"\n      type=\"button\"\n      (click)=\"nextMonth()\"\n      [attr.aria-label]=\"commonStrings.keys.datepickerNextMonth\"\n    >\n      <cds-icon shape=\"angle\" direction=\"right\" [attr.title]=\"commonStrings.keys.datepickerNextMonth\"></cds-icon>\n    </button>\n  </div>\n</div>\n<clr-calendar></clr-calendar>\n<div class=\"clr-sr-only\">{{commonStrings.keys.modalContentEnd}}</div>\n" }]
         }], ctorParameters: function () { return [{ type: ViewManagerService }, { type: DateNavigationService }, { type: LocaleHelperService }, { type: ClrCommonStringsService }]; } });
@@ -14811,12 +14811,12 @@ class ClrDatepickerActions {
         this.toggleService.open = false;
     }
 }
-ClrDatepickerActions.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatepickerActions, deps: [{ token: ClrCommonStringsService }, { token: ClrPopoverToggleService }, { token: DateNavigationService }, { token: DateFormControlService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatepickerActions.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatepickerActions, selector: "clr-datepicker-actions", host: { properties: { "class.datepicker-actions": "true" } }, ngImport: i0, template: `
+ClrDatepickerActions.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatepickerActions, deps: [{ token: ClrCommonStringsService }, { token: ClrPopoverToggleService }, { token: DateNavigationService }, { token: DateFormControlService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatepickerActions.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatepickerActions, selector: "clr-datepicker-actions", host: { properties: { "class.datepicker-actions": "true" } }, ngImport: i0, template: `
     <button class="btn btn-outline" (click)="cancel()">{{ commonStrings.keys.cancel }}</button>
     <button class="btn btn-primary" (click)="apply()">{{ commonStrings.keys.apply }}</button>
   `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatepickerActions, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatepickerActions, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-datepicker-actions',
@@ -14876,9 +14876,9 @@ class ClrDatepickerViewManager {
         this.dateNavigationService.moveToSpecificMonth(startDate);
     }
 }
-ClrDatepickerViewManager.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatepickerViewManager, deps: [{ token: ClrCommonStringsService }, { token: ViewManagerService }, { token: DateNavigationService }, { token: DateIOService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatepickerViewManager.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatepickerViewManager, selector: "clr-datepicker-view-manager", host: { attributes: { "role": "dialog" }, properties: { "class.datepicker": "true", "class.has-range-option": "hasRangeOptions", "class.has-action-buttons": "hasActionButtons", "attr.aria-modal": "true", "attr.aria-label": "commonStrings.keys.datepickerDialogLabel" } }, providers: [DatepickerFocusService], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n-->\n\n<ng-container *ngIf=\"hasRangeOptions; else calendarView\">\n  <clr-vertical-nav class=\"clr-date-range-picker-nav\">\n    <ng-container *ngFor=\"let option of dateRangeOptions\">\n      <a\n        clrVerticalNavLink\n        href=\"javascript:void(0)\"\n        [attr.aria-label]=\"option?.label\"\n        tabindex=\"0\"\n        (keyup.enter)=\"onRangeOptionSelect(option)\"\n        (click)=\"onRangeOptionSelect(option)\"\n      >\n        {{option.label}}\n      </a>\n    </ng-container>\n  </clr-vertical-nav>\n\n  <ng-container *ngTemplateOutlet=\"calendarView\"></ng-container>\n</ng-container>\n\n<ng-template #calendarView>\n  <div class=\"datepicker-view-manager\">\n    <clr-monthpicker *ngIf=\"isMonthView\"></clr-monthpicker>\n    <clr-yearpicker *ngIf=\"isYearView\"></clr-yearpicker>\n    <clr-daypicker *ngIf=\"isDayView\"></clr-daypicker>\n    <clr-datepicker-actions *ngIf=\"hasActionButtons\"></clr-datepicker-actions>\n  </div>\n</ng-template>\n", dependencies: [{ kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: ClrVerticalNav, selector: "clr-vertical-nav", inputs: ["clrVerticalNavToggleLabel", "clrVerticalNavCollapsible", "clrVerticalNavCollapsed"], outputs: ["clrVerticalNavCollapsedChange"] }, { kind: "component", type: ClrVerticalNavLink, selector: "[clrVerticalNavLink]" }, { kind: "component", type: ClrMonthpicker, selector: "clr-monthpicker" }, { kind: "component", type: ClrYearpicker, selector: "clr-yearpicker" }, { kind: "component", type: ClrDaypicker, selector: "clr-daypicker" }, { kind: "component", type: ClrDatepickerActions, selector: "clr-datepicker-actions" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatepickerViewManager, decorators: [{
+ClrDatepickerViewManager.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatepickerViewManager, deps: [{ token: ClrCommonStringsService }, { token: ViewManagerService }, { token: DateNavigationService }, { token: DateIOService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatepickerViewManager.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatepickerViewManager, selector: "clr-datepicker-view-manager", host: { attributes: { "role": "dialog" }, properties: { "class.datepicker": "true", "class.has-range-option": "hasRangeOptions", "class.has-action-buttons": "hasActionButtons", "attr.aria-modal": "true", "attr.aria-label": "commonStrings.keys.datepickerDialogLabel" } }, providers: [DatepickerFocusService], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n-->\n\n<ng-container *ngIf=\"hasRangeOptions; else calendarView\">\n  <clr-vertical-nav class=\"clr-date-range-picker-nav\">\n    <ng-container *ngFor=\"let option of dateRangeOptions\">\n      <a\n        clrVerticalNavLink\n        href=\"javascript:void(0)\"\n        [attr.aria-label]=\"option?.label\"\n        tabindex=\"0\"\n        (keyup.enter)=\"onRangeOptionSelect(option)\"\n        (click)=\"onRangeOptionSelect(option)\"\n      >\n        {{option.label}}\n      </a>\n    </ng-container>\n  </clr-vertical-nav>\n\n  <ng-container *ngTemplateOutlet=\"calendarView\"></ng-container>\n</ng-container>\n\n<ng-template #calendarView>\n  <div class=\"datepicker-view-manager\">\n    <clr-monthpicker *ngIf=\"isMonthView\"></clr-monthpicker>\n    <clr-yearpicker *ngIf=\"isYearView\"></clr-yearpicker>\n    <clr-daypicker *ngIf=\"isDayView\"></clr-daypicker>\n    <clr-datepicker-actions *ngIf=\"hasActionButtons\"></clr-datepicker-actions>\n  </div>\n</ng-template>\n", dependencies: [{ kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: ClrVerticalNav, selector: "clr-vertical-nav", inputs: ["clrVerticalNavToggleLabel", "clrVerticalNavCollapsible", "clrVerticalNavCollapsed"], outputs: ["clrVerticalNavCollapsedChange"] }, { kind: "component", type: ClrVerticalNavLink, selector: "[clrVerticalNavLink]" }, { kind: "component", type: ClrMonthpicker, selector: "clr-monthpicker" }, { kind: "component", type: ClrYearpicker, selector: "clr-yearpicker" }, { kind: "component", type: ClrDaypicker, selector: "clr-daypicker" }, { kind: "component", type: ClrDatepickerActions, selector: "clr-datepicker-actions" }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatepickerViewManager, decorators: [{
             type: Component,
             args: [{ selector: 'clr-datepicker-view-manager', providers: [DatepickerFocusService], host: {
                         '[class.datepicker]': 'true',
@@ -15050,8 +15050,8 @@ class ClrDateContainer extends ClrAbstractContainer {
         }
     }
 }
-ClrDateContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDateContainer, deps: [{ token: i0.Renderer2 }, { token: i0.ElementRef }, { token: ClrPopoverToggleService }, { token: DateNavigationService }, { token: DatepickerEnabledService }, { token: DateFormControlService }, { token: DateIOService }, { token: ClrCommonStringsService }, { token: FocusService }, { token: ViewManagerService }, { token: ControlClassService }, { token: LayoutService, optional: true }, { token: NgControlService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDateContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDateContainer, selector: "clr-date-container, clr-date-range-container", inputs: { showActionButtons: "showActionButtons", clrPosition: "clrPosition", rangeOptions: "rangeOptions", min: "min", max: "max" }, host: { properties: { "class.clr-date-container": "true", "class.clr-form-control-disabled": "isInputDateDisabled", "class.clr-form-control": "true", "class.clr-row": "addGrid()" } }, providers: [
+ClrDateContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDateContainer, deps: [{ token: i0.Renderer2 }, { token: i0.ElementRef }, { token: ClrPopoverToggleService }, { token: DateNavigationService }, { token: DatepickerEnabledService }, { token: DateFormControlService }, { token: DateIOService }, { token: ClrCommonStringsService }, { token: FocusService }, { token: ViewManagerService }, { token: ControlClassService }, { token: LayoutService, optional: true }, { token: NgControlService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDateContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDateContainer, selector: "clr-date-container, clr-date-range-container", inputs: { showActionButtons: "showActionButtons", clrPosition: "clrPosition", rangeOptions: "rangeOptions", min: "min", max: "max" }, host: { properties: { "class.clr-date-container": "true", "class.clr-form-control-disabled": "isInputDateDisabled", "class.clr-form-control": "true", "class.clr-row": "addGrid()" } }, providers: [
         ControlIdService,
         LocaleHelperService,
         ControlClassService,
@@ -15112,7 +15112,7 @@ ClrDateContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", versi
       <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: ClrDatepickerViewManager, selector: "clr-datepicker-view-manager" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDateContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDateContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-date-container, clr-date-range-container',
@@ -15239,9 +15239,9 @@ class ClrDateInputValidator {
         return null;
     }
 }
-ClrDateInputValidator.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDateInputValidator, deps: [{ token: DateIOService, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
-ClrDateInputValidator.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDateInputValidator, selector: "[clrDate], [clrStartDate], [clrEndDate]", providers: [{ provide: NG_VALIDATORS, useExisting: ClrDateInputValidator, multi: true }], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDateInputValidator, decorators: [{
+ClrDateInputValidator.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDateInputValidator, deps: [{ token: DateIOService, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
+ClrDateInputValidator.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrDateInputValidator, selector: "[clrDate], [clrStartDate], [clrEndDate]", providers: [{ provide: NG_VALIDATORS, useExisting: ClrDateInputValidator, multi: true }], ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDateInputValidator, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrDate], [clrStartDate], [clrEndDate]',
@@ -15266,9 +15266,9 @@ class ClrStartDateInputValidator {
         return null;
     }
 }
-ClrStartDateInputValidator.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStartDateInputValidator, deps: [{ token: DateIOService, optional: true }, { token: DateNavigationService, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
-ClrStartDateInputValidator.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrStartDateInputValidator, selector: "[clrStartDate]", providers: [{ provide: NG_VALIDATORS, useExisting: ClrStartDateInputValidator, multi: true }], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStartDateInputValidator, decorators: [{
+ClrStartDateInputValidator.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStartDateInputValidator, deps: [{ token: DateIOService, optional: true }, { token: DateNavigationService, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
+ClrStartDateInputValidator.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrStartDateInputValidator, selector: "[clrStartDate]", providers: [{ provide: NG_VALIDATORS, useExisting: ClrStartDateInputValidator, multi: true }], ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStartDateInputValidator, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrStartDate]',
@@ -15295,9 +15295,9 @@ class ClrEndDateInputValidator {
         return null;
     }
 }
-ClrEndDateInputValidator.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrEndDateInputValidator, deps: [{ token: DateIOService, optional: true }, { token: DateNavigationService, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
-ClrEndDateInputValidator.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrEndDateInputValidator, selector: "[clrEndDate]", providers: [{ provide: NG_VALIDATORS, useExisting: ClrEndDateInputValidator, multi: true }], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrEndDateInputValidator, decorators: [{
+ClrEndDateInputValidator.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrEndDateInputValidator, deps: [{ token: DateIOService, optional: true }, { token: DateNavigationService, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
+ClrEndDateInputValidator.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrEndDateInputValidator, selector: "[clrEndDate]", providers: [{ provide: NG_VALIDATORS, useExisting: ClrEndDateInputValidator, multi: true }], ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrEndDateInputValidator, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrEndDate]',
@@ -15336,8 +15336,8 @@ class ClrDatepickerModule {
         ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, angleIcon, eventIcon, calendarIcon);
     }
 }
-ClrDatepickerModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatepickerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrDatepickerModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrDatepickerModule, declarations: [ClrDay,
+ClrDatepickerModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatepickerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrDatepickerModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrDatepickerModule, declarations: [ClrDay,
         ClrDateContainer,
         ClrDateInput,
         ClrDateInputValidator,
@@ -15371,7 +15371,7 @@ ClrDatepickerModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", ver
         ClrDaypicker,
         ClrCalendar,
         ClrDatepickerActions] });
-ClrDatepickerModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatepickerModule, imports: [CommonModule,
+ClrDatepickerModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatepickerModule, imports: [CommonModule,
         CdkTrapFocusModule,
         ClrHostWrappingModule,
         ClrConditionalModule,
@@ -15379,7 +15379,7 @@ ClrDatepickerModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", ver
         ClrIconModule,
         ClrCommonFormsModule,
         ClrVerticalNavModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatepickerModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatepickerModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [
@@ -15428,9 +15428,9 @@ function clearFiles(fileInputElement) {
 const CLR_FILE_MESSAGES_TEMPLATE_CONTEXT = new InjectionToken('ClrFileMessagesTemplateContext');
 class ClrFileInfo {
 }
-ClrFileInfo.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInfo, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrFileInfo.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrFileInfo, selector: "clr-file-info", host: { properties: { "class.clr-subtext": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInfo, decorators: [{
+ClrFileInfo.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileInfo, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrFileInfo.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrFileInfo, selector: "clr-file-info", host: { properties: { "class.clr-subtext": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileInfo, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-info',
@@ -15445,9 +15445,9 @@ class ClrFileSuccess {
         this.context = inject(CLR_FILE_MESSAGES_TEMPLATE_CONTEXT);
     }
 }
-ClrFileSuccess.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileSuccess, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrFileSuccess.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrFileSuccess, selector: "clr-file-success", host: { properties: { "style.display": "context.success ? \"inline-block\" : \"none\"", "class.clr-subtext": "true", "class.success": "true" } }, ngImport: i0, template: `<ng-content *ngIf="context.success"></ng-content>`, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileSuccess, decorators: [{
+ClrFileSuccess.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileSuccess, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrFileSuccess.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrFileSuccess, selector: "clr-file-success", host: { properties: { "style.display": "context.success ? \"inline-block\" : \"none\"", "class.clr-subtext": "true", "class.success": "true" } }, ngImport: i0, template: `<ng-content *ngIf="context.success"></ng-content>`, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileSuccess, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-success',
@@ -15462,9 +15462,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
         }] });
 class ClrFileError {
 }
-ClrFileError.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileError, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrFileError.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrFileError, selector: "clr-file-error", host: { properties: { "class.clr-subtext": "true", "class.error": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileError, decorators: [{
+ClrFileError.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileError, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrFileError.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrFileError, selector: "clr-file-error", host: { properties: { "class.clr-subtext": "true", "class.error": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileError, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-error',
@@ -15491,9 +15491,9 @@ class ClrFileMessagesTemplate {
         return true;
     }
 }
-ClrFileMessagesTemplate.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileMessagesTemplate, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-ClrFileMessagesTemplate.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrFileMessagesTemplate, selector: "ng-template[clr-file-messages]", ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileMessagesTemplate, decorators: [{
+ClrFileMessagesTemplate.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileMessagesTemplate, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+ClrFileMessagesTemplate.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrFileMessagesTemplate, selector: "ng-template[clr-file-messages]", ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileMessagesTemplate, decorators: [{
             type: Directive,
             args: [{
                     selector: 'ng-template[clr-file-messages]',
@@ -15555,8 +15555,8 @@ class ClrFileList {
         });
     }
 }
-ClrFileList.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileList, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrFileList.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrFileList, selector: "clr-file-list", host: { properties: { "attr.role": "\"list\"", "class.clr-file-list": "true" } }, queries: [{ propertyName: "fileMessagesTemplate", first: true, predicate: ClrFileMessagesTemplate, descendants: true }], ngImport: i0, template: `
+ClrFileList.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileList, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrFileList.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrFileList, selector: "clr-file-list", host: { properties: { "attr.role": "\"list\"", "class.clr-file-list": "true" } }, queries: [{ propertyName: "fileMessagesTemplate", first: true, predicate: ClrFileMessagesTemplate, descendants: true }], ngImport: i0, template: `
     <ng-container *ngFor="let file of files">
       <div
         *ngIf="createFileMessagesTemplateContext(file); let fileMessagesTemplateContext"
@@ -15596,7 +15596,7 @@ ClrFileList.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "
       </div>
     </ng-container>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileList, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileList, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-list',
@@ -15711,8 +15711,8 @@ class ClrFileInputContainer extends ClrAbstractContainer {
         selectFiles(this.fileInput.elementRef.nativeElement, mergedFiles);
     }
 }
-ClrFileInputContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInputContainer, deps: null, target: i0.ɵɵFactoryTarget.Component });
-ClrFileInputContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrFileInputContainer, selector: "clr-file-input-container", inputs: { customButtonLabel: ["clrButtonLabel", "customButtonLabel"] }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "fileInput", first: true, predicate: i0.forwardRef(function () { return ClrFileInput; }), descendants: true }, { propertyName: "fileList", first: true, predicate: i0.forwardRef(function () { return ClrFileList; }), descendants: true }, { propertyName: "fileSuccessComponent", first: true, predicate: ClrFileSuccess, descendants: true }, { propertyName: "fileErrorComponent", first: true, predicate: ClrFileError, descendants: true }], viewQueries: [{ propertyName: "browseButtonElementRef", first: true, predicate: ["browseButton"], descendants: true }, { propertyName: "fileListFileInputElementRef", first: true, predicate: ["fileListFileInput"], descendants: true }], usesInheritance: true, ngImport: i0, template: `
+ClrFileInputContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileInputContainer, deps: null, target: i0.ɵɵFactoryTarget.Component });
+ClrFileInputContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrFileInputContainer, selector: "clr-file-input-container", inputs: { customButtonLabel: ["clrButtonLabel", "customButtonLabel"] }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "fileInput", first: true, predicate: i0.forwardRef(function () { return ClrFileInput; }), descendants: true }, { propertyName: "fileList", first: true, predicate: i0.forwardRef(function () { return ClrFileList; }), descendants: true }, { propertyName: "fileSuccessComponent", first: true, predicate: ClrFileSuccess, descendants: true }, { propertyName: "fileErrorComponent", first: true, predicate: ClrFileError, descendants: true }], viewQueries: [{ propertyName: "browseButtonElementRef", first: true, predicate: ["browseButton"], descendants: true }, { propertyName: "fileListFileInputElementRef", first: true, predicate: ["fileListFileInput"], descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
@@ -15779,7 +15779,7 @@ ClrFileInputContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", 
       </ng-container>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInputContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileInputContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-input-container',
@@ -15927,9 +15927,9 @@ class ClrFileInput extends WrappedFormControl {
         };
     }
 }
-ClrFileInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInput, deps: [{ token: i0.Injector }, { token: i0.Renderer2 }, { token: i0.ViewContainerRef }, { token: i0.ElementRef }, { token: i1.NgControl, optional: true, self: true }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrFileInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrFileInput, selector: "input[type=\"file\"][clrFileInput]", host: { attributes: { "tabindex": "-1", "aria-hidden": "true" }, listeners: { "change": "handleChange()" }, properties: { "class.clr-file-input": "true", "disabled": "this.disabled" } }, usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInput, decorators: [{
+ClrFileInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileInput, deps: [{ token: i0.Injector }, { token: i0.Renderer2 }, { token: i0.ViewContainerRef }, { token: i0.ElementRef }, { token: i1.NgControl, optional: true, self: true }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrFileInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrFileInput, selector: "input[type=\"file\"][clrFileInput]", host: { attributes: { "tabindex": "-1", "aria-hidden": "true" }, listeners: { "change": "handleChange()" }, properties: { "class.clr-file-input": "true", "disabled": "this.disabled" } }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileInput, decorators: [{
             type: Directive,
             args: [{
                     selector: 'input[type="file"][clrFileInput]',
@@ -16033,9 +16033,9 @@ class ClrFileInputValidator {
         return false;
     }
 }
-ClrFileInputValidator.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInputValidator, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrFileInputValidator.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrFileInputValidator, selector: "input[type=\"file\"][clrFileInput]", inputs: { minFileSize: ["clrMinFileSize", "minFileSize"], maxFileSize: ["clrMaxFileSize", "maxFileSize"] }, providers: [{ provide: NG_VALIDATORS, useExisting: ClrFileInputValidator, multi: true }], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInputValidator, decorators: [{
+ClrFileInputValidator.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileInputValidator, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrFileInputValidator.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrFileInputValidator, selector: "input[type=\"file\"][clrFileInput]", inputs: { minFileSize: ["clrMinFileSize", "minFileSize"], maxFileSize: ["clrMaxFileSize", "maxFileSize"] }, providers: [{ provide: NG_VALIDATORS, useExisting: ClrFileInputValidator, multi: true }], ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileInputValidator, decorators: [{
             type: Directive,
             args: [{
                     selector: 'input[type="file"][clrFileInput]',
@@ -16092,9 +16092,9 @@ class ClrFileInputValueAccessor {
         this.onChange(this.elementRef.nativeElement.files);
     }
 }
-ClrFileInputValueAccessor.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInputValueAccessor, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrFileInputValueAccessor.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrFileInputValueAccessor, selector: "input[type=\"file\"][clrFileInput]", host: { listeners: { "change": "handleChange()" } }, providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: ClrFileInputValueAccessor, multi: true }], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInputValueAccessor, decorators: [{
+ClrFileInputValueAccessor.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileInputValueAccessor, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrFileInputValueAccessor.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrFileInputValueAccessor, selector: "input[type=\"file\"][clrFileInput]", host: { listeners: { "change": "handleChange()" } }, providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: ClrFileInputValueAccessor, multi: true }], ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileInputValueAccessor, decorators: [{
             type: Directive,
             args: [{
                     selector: 'input[type="file"][clrFileInput]',
@@ -16116,8 +16116,8 @@ class ClrFileInputModule {
         ClarityIcons.addIcons(folderOpenIcon);
     }
 }
-ClrFileInputModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrFileInputModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInputModule, declarations: [ClrFileInput,
+ClrFileInputModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrFileInputModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrFileInputModule, declarations: [ClrFileInput,
         ClrFileInputContainer,
         ClrFileInputValidator,
         ClrFileInputValueAccessor,
@@ -16135,8 +16135,8 @@ ClrFileInputModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", vers
         ClrFileInfo,
         ClrFileSuccess,
         ClrFileError] });
-ClrFileInputModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInputModule, imports: [CommonModule, ClrIconModule, ClrCommonFormsModule, ClrCommonFormsModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFileInputModule, decorators: [{
+ClrFileInputModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileInputModule, imports: [CommonModule, ClrIconModule, ClrCommonFormsModule, ClrCommonFormsModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFileInputModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIconModule, ClrCommonFormsModule],
@@ -16190,8 +16190,8 @@ class ClrNumberInputContainer extends ClrAbstractContainer {
         this.input.dispatchBlur();
     }
 }
-ClrNumberInputContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrNumberInputContainer, deps: [{ token: ControlClassService }, { token: LayoutService, optional: true }, { token: NgControlService }, { token: FocusService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component });
-ClrNumberInputContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrNumberInputContainer, selector: "clr-number-input-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-form-control-readonly": "input.readonly", "class.clr-row": "addGrid()" } }, providers: [FocusService, IfControlStateService, NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "input", first: true, predicate: i0.forwardRef(function () { return ClrNumberInput; }), descendants: true }], usesInheritance: true, ngImport: i0, template: `
+ClrNumberInputContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrNumberInputContainer, deps: [{ token: ControlClassService }, { token: LayoutService, optional: true }, { token: NgControlService }, { token: FocusService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component });
+ClrNumberInputContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrNumberInputContainer, selector: "clr-number-input-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-form-control-readonly": "input.readonly", "class.clr-row": "addGrid()" } }, providers: [FocusService, IfControlStateService, NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "input", first: true, predicate: i0.forwardRef(function () { return ClrNumberInput; }), descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
@@ -16238,7 +16238,7 @@ ClrNumberInputContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0"
       <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrNumberInputContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrNumberInputContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-number-input-container',
@@ -16355,9 +16355,9 @@ class ClrNumberInput extends WrappedFormControl {
         this.el.nativeElement.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
     }
 }
-ClrNumberInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrNumberInput, deps: [{ token: FocusService, optional: true }, { token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrNumberInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrNumberInput, selector: "input[type=\"number\"][clrNumberInput]", host: { listeners: { "focus": "triggerFocus()", "blur": "triggerValidation()" }, properties: { "class.clr-input": "true", "class.clr-number-input": "true" } }, usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrNumberInput, decorators: [{
+ClrNumberInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrNumberInput, deps: [{ token: FocusService, optional: true }, { token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrNumberInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrNumberInput, selector: "input[type=\"number\"][clrNumberInput]", host: { listeners: { "focus": "triggerFocus()", "blur": "triggerValidation()" }, properties: { "class.clr-input": "true", "class.clr-number-input": "true" } }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrNumberInput, decorators: [{
             type: Directive,
             args: [{
                     selector: 'input[type="number"][clrNumberInput]',
@@ -16388,10 +16388,10 @@ class ClrNumberInputModule {
         ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, minusIcon, plusIcon);
     }
 }
-ClrNumberInputModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrNumberInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrNumberInputModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrNumberInputModule, declarations: [ClrNumberInput, ClrNumberInputContainer], imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrNumberInput, ClrNumberInputContainer] });
-ClrNumberInputModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrNumberInputModule, imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule, ClrCommonFormsModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrNumberInputModule, decorators: [{
+ClrNumberInputModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrNumberInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrNumberInputModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrNumberInputModule, declarations: [ClrNumberInput, ClrNumberInputContainer], imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrNumberInput, ClrNumberInputContainer] });
+ClrNumberInputModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrNumberInputModule, imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule, ClrCommonFormsModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrNumberInputModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
@@ -16445,8 +16445,8 @@ class ClrPasswordContainer extends ClrAbstractContainer {
         return this.commonStrings.parse(this.commonStrings.keys.passwordHide, { LABEL: label });
     }
 }
-ClrPasswordContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPasswordContainer, deps: [{ token: IfControlStateService }, { token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: FocusService }, { token: TOGGLE_SERVICE }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrPasswordContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrPasswordContainer, selector: "clr-password-container", inputs: { clrToggle: "clrToggle" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [
+ClrPasswordContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPasswordContainer, deps: [{ token: IfControlStateService }, { token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: FocusService }, { token: TOGGLE_SERVICE }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrPasswordContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrPasswordContainer, selector: "clr-password-container", inputs: { clrToggle: "clrToggle" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [
         NgControlService,
         ControlIdService,
         ControlClassService,
@@ -16493,7 +16493,7 @@ ClrPasswordContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", v
       <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPasswordContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPasswordContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-password-container',
@@ -16591,9 +16591,9 @@ class ClrPassword extends WrappedFormControl {
         }
     }
 }
-ClrPassword.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPassword, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: FocusService, optional: true }, { token: TOGGLE_SERVICE, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
-ClrPassword.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrPassword, selector: "[clrPassword]", host: { listeners: { "focus": "triggerFocus()", "blur": "triggerValidation()" }, properties: { "class.clr-input": "true" } }, usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPassword, decorators: [{
+ClrPassword.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPassword, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: FocusService, optional: true }, { token: TOGGLE_SERVICE, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
+ClrPassword.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrPassword, selector: "[clrPassword]", host: { listeners: { "focus": "triggerFocus()", "blur": "triggerValidation()" }, properties: { "class.clr-input": "true" } }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPassword, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrPassword]',
@@ -16629,10 +16629,10 @@ class ClrPasswordModule {
         ClarityIcons.addIcons(eyeHideIcon, eyeIcon, exclamationCircleIcon, checkCircleIcon);
     }
 }
-ClrPasswordModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPasswordModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrPasswordModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrPasswordModule, declarations: [ClrPassword, ClrPasswordContainer], imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrPassword, ClrPasswordContainer] });
-ClrPasswordModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPasswordModule, imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule, ClrCommonFormsModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrPasswordModule, decorators: [{
+ClrPasswordModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPasswordModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrPasswordModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrPasswordModule, declarations: [ClrPassword, ClrPasswordContainer], imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrPassword, ClrPasswordContainer] });
+ClrPasswordModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPasswordModule, imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule, ClrCommonFormsModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrPasswordModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
@@ -16654,13 +16654,13 @@ class ClrRadioWrapper {
         }
     }
 }
-ClrRadioWrapper.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRadioWrapper, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrRadioWrapper.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrRadioWrapper, selector: "clr-radio-wrapper", host: { properties: { "class.clr-radio-wrapper": "true" } }, providers: [ControlIdService], queries: [{ propertyName: "label", first: true, predicate: ClrLabel, descendants: true, static: true }], ngImport: i0, template: `
+ClrRadioWrapper.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRadioWrapper, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrRadioWrapper.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrRadioWrapper, selector: "clr-radio-wrapper", host: { properties: { "class.clr-radio-wrapper": "true" } }, providers: [ControlIdService], queries: [{ propertyName: "label", first: true, predicate: ClrLabel, descendants: true, static: true }], ngImport: i0, template: `
     <ng-content select="[clrRadio]"></ng-content>
     <ng-content select="label"></ng-content>
     <label *ngIf="!label"></label>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRadioWrapper, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRadioWrapper, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-radio-wrapper',
@@ -16690,9 +16690,9 @@ class ClrRadio extends WrappedFormControl {
         super(vcr, ClrRadioWrapper, injector, control, renderer, el);
     }
 }
-ClrRadio.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRadio, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrRadio.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrRadio, selector: "[clrRadio]", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRadio, decorators: [{
+ClrRadio.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRadio, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrRadio.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrRadio, selector: "[clrRadio]", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRadio, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrRadio]',
@@ -16761,8 +16761,8 @@ class ClrRadioContainer extends ClrAbstractContainer {
         }
     }
 }
-ClrRadioContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRadioContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component });
-ClrRadioContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrRadioContainer, selector: "clr-radio-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()", "attr.role": "role", "attr.aria-labelledby": "ariaLabelledBy" } }, providers: [NgControlService, IfControlStateService, ControlClassService, ContainerIdService], queries: [{ propertyName: "groupLabel", first: true, predicate: ClrLabel, descendants: true, read: ElementRef, static: true }, { propertyName: "radios", predicate: ClrRadio, descendants: true }], usesInheritance: true, ngImport: i0, template: `
+ClrRadioContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRadioContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component });
+ClrRadioContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrRadioContainer, selector: "clr-radio-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()", "attr.role": "role", "attr.aria-labelledby": "ariaLabelledBy" } }, providers: [NgControlService, IfControlStateService, ControlClassService, ContainerIdService], queries: [{ propertyName: "groupLabel", first: true, predicate: ClrLabel, descendants: true, read: ElementRef, static: true }, { propertyName: "radios", predicate: ClrRadio, descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [class.clr-control-inline]="clrInline" [ngClass]="controlClass()">
@@ -16790,7 +16790,7 @@ ClrRadioContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", vers
       </div>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRadioContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRadioContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-radio-container',
@@ -16854,10 +16854,10 @@ class ClrRadioModule {
         ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
     }
 }
-ClrRadioModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRadioModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrRadioModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrRadioModule, declarations: [ClrRadio, ClrRadioContainer, ClrRadioWrapper], imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule], exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper] });
-ClrRadioModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRadioModule, imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule, ClrCommonFormsModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRadioModule, decorators: [{
+ClrRadioModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRadioModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrRadioModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrRadioModule, declarations: [ClrRadio, ClrRadioContainer, ClrRadioWrapper], imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule], exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper] });
+ClrRadioModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRadioModule, imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule, ClrCommonFormsModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRadioModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule],
@@ -16915,8 +16915,8 @@ class ClrRangeContainer extends ClrAbstractContainer {
         }
     }
 }
-ClrRangeContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRangeContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: i0.Renderer2 }, { token: ControlIdService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component });
-ClrRangeContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrRangeContainer, selector: "clr-range-container", inputs: { hasProgress: ["clrRangeHasProgress", "hasProgress"] }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
+ClrRangeContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRangeContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: i0.Renderer2 }, { token: ControlIdService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component });
+ClrRangeContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrRangeContainer, selector: "clr-range-container", inputs: { hasProgress: ["clrRangeHasProgress", "hasProgress"] }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
@@ -16943,7 +16943,7 @@ ClrRangeContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", vers
       <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRangeContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRangeContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-range-container',
@@ -16999,9 +16999,9 @@ class ClrRange extends WrappedFormControl {
         super(vcr, ClrRangeContainer, injector, control, renderer, el);
     }
 }
-ClrRange.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRange, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrRange.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrRange, selector: "[clrRange]", host: { properties: { "class.clr-range": "true" } }, usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRange, decorators: [{
+ClrRange.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRange, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrRange.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrRange, selector: "[clrRange]", host: { properties: { "class.clr-range": "true" } }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRange, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrRange]',
@@ -17024,10 +17024,10 @@ class ClrRangeModule {
         ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
     }
 }
-ClrRangeModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRangeModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrRangeModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrRangeModule, declarations: [ClrRange, ClrRangeContainer], imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule], exports: [ClrCommonFormsModule, ClrRange, ClrRangeContainer] });
-ClrRangeModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRangeModule, imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule, ClrCommonFormsModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRangeModule, decorators: [{
+ClrRangeModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRangeModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrRangeModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrRangeModule, declarations: [ClrRange, ClrRangeContainer], imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule], exports: [ClrCommonFormsModule, ClrRange, ClrRangeContainer] });
+ClrRangeModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRangeModule, imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule, ClrCommonFormsModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRangeModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIconModule],
@@ -17064,8 +17064,8 @@ class ClrSelectContainer extends ClrAbstractContainer {
         return this.multi ? 'clr-multiselect-wrapper' : 'clr-select-wrapper';
     }
 }
-ClrSelectContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSelectContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component });
-ClrSelectContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrSelectContainer, selector: "clr-select-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "multiple", first: true, predicate: SelectMultipleControlValueAccessor, descendants: true }], usesInheritance: true, ngImport: i0, template: `
+ClrSelectContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSelectContainer, deps: [{ token: LayoutService, optional: true }, { token: ControlClassService }, { token: NgControlService }, { token: IfControlStateService }], target: i0.ɵɵFactoryTarget.Component });
+ClrSelectContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrSelectContainer, selector: "clr-select-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "multiple", first: true, predicate: SelectMultipleControlValueAccessor, descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
@@ -17091,7 +17091,7 @@ ClrSelectContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", ver
       <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSelectContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSelectContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-select-container',
@@ -17147,9 +17147,9 @@ class ClrSelect extends WrappedFormControl {
         this.index = 1;
     }
 }
-ClrSelect.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSelect, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrSelect.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrSelect, selector: "[clrSelect]", host: { properties: { "class.clr-select": "true" } }, usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSelect, decorators: [{
+ClrSelect.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSelect, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrSelect.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrSelect, selector: "[clrSelect]", host: { properties: { "class.clr-select": "true" } }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSelect, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrSelect]',
@@ -17172,10 +17172,10 @@ class ClrSelectModule {
         ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
     }
 }
-ClrSelectModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSelectModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrSelectModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrSelectModule, declarations: [ClrSelect, ClrSelectContainer], imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrSelect, ClrSelectContainer] });
-ClrSelectModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSelectModule, imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule, ClrCommonFormsModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSelectModule, decorators: [{
+ClrSelectModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSelectModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrSelectModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrSelectModule, declarations: [ClrSelect, ClrSelectContainer], imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrSelect, ClrSelectContainer] });
+ClrSelectModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSelectModule, imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule, ClrCommonFormsModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSelectModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
@@ -17192,8 +17192,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrTextareaContainer extends ClrAbstractContainer {
 }
-ClrTextareaContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTextareaContainer, deps: null, target: i0.ɵɵFactoryTarget.Component });
-ClrTextareaContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrTextareaContainer, selector: "clr-textarea-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
+ClrTextareaContainer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTextareaContainer, deps: null, target: i0.ɵɵFactoryTarget.Component });
+ClrTextareaContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrTextareaContainer, selector: "clr-textarea-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
@@ -17219,7 +17219,7 @@ ClrTextareaContainer.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", v
       <ng-content select="clr-control-success" *ngIf="showValid"></ng-content>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTextareaContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTextareaContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-textarea-container',
@@ -17270,9 +17270,9 @@ class ClrTextarea extends WrappedFormControl {
         this.index = 1;
     }
 }
-ClrTextarea.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTextarea, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrTextarea.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrTextarea, selector: "[clrTextarea]", host: { properties: { "class.clr-textarea": "true" } }, usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTextarea, decorators: [{
+ClrTextarea.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTextarea, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrTextarea.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrTextarea, selector: "[clrTextarea]", host: { properties: { "class.clr-textarea": "true" } }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTextarea, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrTextarea]',
@@ -17295,10 +17295,10 @@ class ClrTextareaModule {
         ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
     }
 }
-ClrTextareaModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTextareaModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrTextareaModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrTextareaModule, declarations: [ClrTextarea, ClrTextareaContainer], imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrTextarea, ClrTextareaContainer] });
-ClrTextareaModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTextareaModule, imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule, ClrCommonFormsModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTextareaModule, decorators: [{
+ClrTextareaModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTextareaModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrTextareaModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrTextareaModule, declarations: [ClrTextarea, ClrTextareaContainer], imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrTextarea, ClrTextareaContainer] });
+ClrTextareaModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTextareaModule, imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule, ClrCommonFormsModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTextareaModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, ClrIconModule, ClrCommonFormsModule],
@@ -17315,8 +17315,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrFormsModule {
 }
-ClrFormsModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFormsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrFormsModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrFormsModule, imports: [CommonModule], exports: [ClrCommonFormsModule,
+ClrFormsModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFormsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrFormsModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrFormsModule, imports: [CommonModule], exports: [ClrCommonFormsModule,
         ClrCheckboxModule,
         ClrComboboxModule,
         ClrDatepickerModule,
@@ -17329,7 +17329,7 @@ ClrFormsModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version:
         ClrRangeModule,
         ClrDatalistModule,
         ClrNumberInputModule] });
-ClrFormsModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFormsModule, imports: [CommonModule, ClrCommonFormsModule,
+ClrFormsModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFormsModule, imports: [CommonModule, ClrCommonFormsModule,
         ClrCheckboxModule,
         ClrComboboxModule,
         ClrDatepickerModule,
@@ -17342,7 +17342,7 @@ ClrFormsModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version:
         ClrRangeModule,
         ClrDatalistModule,
         ClrNumberInputModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrFormsModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrFormsModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -17372,10 +17372,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrExpandableAnimationModule {
 }
-ClrExpandableAnimationModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrExpandableAnimationModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrExpandableAnimationModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrExpandableAnimationModule, declarations: [ClrExpandableAnimation, ClrExpandableAnimationDirective], imports: [CommonModule], exports: [ClrExpandableAnimation, ClrExpandableAnimationDirective] });
-ClrExpandableAnimationModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrExpandableAnimationModule, imports: [CommonModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrExpandableAnimationModule, decorators: [{
+ClrExpandableAnimationModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrExpandableAnimationModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrExpandableAnimationModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrExpandableAnimationModule, declarations: [ClrExpandableAnimation, ClrExpandableAnimationDirective], imports: [CommonModule], exports: [ClrExpandableAnimation, ClrExpandableAnimationDirective] });
+ClrExpandableAnimationModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrExpandableAnimationModule, imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrExpandableAnimationModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -17397,9 +17397,9 @@ class CdkDragModule_CdkDrag extends CdkDrag {
         super(elementRef, dropContainer, document, ngZone, viewContainerRef, config, dir, dragDrop, changeDetectorRef);
     }
 }
-CdkDragModule_CdkDrag.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: CdkDragModule_CdkDrag, deps: [{ token: i0.ElementRef }, { token: CDK_DROP_LIST, optional: true }, { token: DOCUMENT, optional: true }, { token: i0.NgZone }, { token: i0.ViewContainerRef }, { token: CDK_DRAG_CONFIG, optional: true }, { token: i1$3.Directionality }, { token: i2$1.DragDrop }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Directive });
-CdkDragModule_CdkDrag.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: CdkDragModule_CdkDrag, selector: "[cdkDrag]", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: CdkDragModule_CdkDrag, decorators: [{
+CdkDragModule_CdkDrag.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: CdkDragModule_CdkDrag, deps: [{ token: i0.ElementRef }, { token: CDK_DROP_LIST, optional: true }, { token: DOCUMENT, optional: true }, { token: i0.NgZone }, { token: i0.ViewContainerRef }, { token: CDK_DRAG_CONFIG, optional: true }, { token: i1$3.Directionality }, { token: i2$1.DragDrop }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Directive });
+CdkDragModule_CdkDrag.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: CdkDragModule_CdkDrag, selector: "[cdkDrag]", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: CdkDragModule_CdkDrag, decorators: [{
             type: Directive,
             args: [{
                     selector: '[cdkDrag]',
@@ -17425,10 +17425,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class CdkDragModule {
 }
-CdkDragModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: CdkDragModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-CdkDragModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: CdkDragModule, declarations: [CdkDragModule_CdkDrag], exports: [CdkDragModule_CdkDrag] });
-CdkDragModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: CdkDragModule });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: CdkDragModule, decorators: [{
+CdkDragModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: CdkDragModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+CdkDragModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: CdkDragModule, declarations: [CdkDragModule_CdkDrag], exports: [CdkDragModule_CdkDrag] });
+CdkDragModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: CdkDragModule });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: CdkDragModule, decorators: [{
             type: NgModule,
             args: [{
                     declarations: [CdkDragModule_CdkDrag],
@@ -17468,9 +17468,9 @@ class OutsideClick {
         this.documentClickListener();
     }
 }
-OutsideClick.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: OutsideClick, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Directive });
-OutsideClick.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: OutsideClick, selector: "[clrOutsideClick]", inputs: { strict: ["clrStrict", "strict"] }, outputs: { outsideClick: "clrOutsideClick" }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: OutsideClick, decorators: [{
+OutsideClick.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: OutsideClick, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Directive });
+OutsideClick.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: OutsideClick, selector: "[clrOutsideClick]", inputs: { strict: ["clrStrict", "strict"] }, outputs: { outsideClick: "clrOutsideClick" }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: OutsideClick, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrOutsideClick]',
@@ -17499,10 +17499,10 @@ const OUSTIDE_CLICK_DIRECTIVES = [OutsideClick];
  */
 class ClrOutsideClickModule {
 }
-ClrOutsideClickModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrOutsideClickModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrOutsideClickModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrOutsideClickModule, declarations: [OutsideClick], imports: [CommonModule], exports: [OutsideClick] });
-ClrOutsideClickModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrOutsideClickModule, imports: [CommonModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrOutsideClickModule, decorators: [{
+ClrOutsideClickModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrOutsideClickModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrOutsideClickModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrOutsideClickModule, declarations: [OutsideClick], imports: [CommonModule], exports: [OutsideClick] });
+ClrOutsideClickModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrOutsideClickModule, imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrOutsideClickModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -17554,9 +17554,9 @@ class StateDebouncer {
         }
     }
 }
-StateDebouncer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: StateDebouncer, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-StateDebouncer.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: StateDebouncer });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: StateDebouncer, decorators: [{
+StateDebouncer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: StateDebouncer, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+StateDebouncer.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: StateDebouncer });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: StateDebouncer, decorators: [{
             type: Injectable
         }] });
 
@@ -17706,9 +17706,9 @@ class Page {
         this.size = 0;
     }
 }
-Page.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Page, deps: [{ token: StateDebouncer }], target: i0.ɵɵFactoryTarget.Injectable });
-Page.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Page });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Page, decorators: [{
+Page.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: Page, deps: [{ token: StateDebouncer }], target: i0.ɵɵFactoryTarget.Injectable });
+Page.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: Page });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: Page, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: StateDebouncer }]; } });
 
@@ -17807,9 +17807,9 @@ class FiltersProvider {
         this.stateDebouncer.changeDone();
     }
 }
-FiltersProvider.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: FiltersProvider, deps: [{ token: Page }, { token: StateDebouncer }], target: i0.ɵɵFactoryTarget.Injectable });
-FiltersProvider.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: FiltersProvider });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: FiltersProvider, decorators: [{
+FiltersProvider.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: FiltersProvider, deps: [{ token: Page }, { token: StateDebouncer }], target: i0.ɵɵFactoryTarget.Injectable });
+FiltersProvider.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: FiltersProvider });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: FiltersProvider, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: Page }, { type: StateDebouncer }]; } });
 class RegisteredFilter {
@@ -17852,9 +17852,9 @@ class DatagridFilterRegistrar {
         }
     }
 }
-DatagridFilterRegistrar.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridFilterRegistrar, deps: [{ token: FiltersProvider }], target: i0.ɵɵFactoryTarget.Directive });
-DatagridFilterRegistrar.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: DatagridFilterRegistrar, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridFilterRegistrar, decorators: [{
+DatagridFilterRegistrar.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridFilterRegistrar, deps: [{ token: FiltersProvider }], target: i0.ɵɵFactoryTarget.Directive });
+DatagridFilterRegistrar.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: DatagridFilterRegistrar, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridFilterRegistrar, decorators: [{
             type: Directive
         }], ctorParameters: function () { return [{ type: FiltersProvider }]; } });
 
@@ -18542,9 +18542,9 @@ class KeyNavigationGridController {
         elementToFocus.focus(options);
     }
 }
-KeyNavigationGridController.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: KeyNavigationGridController, deps: [{ token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Injectable });
-KeyNavigationGridController.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: KeyNavigationGridController });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: KeyNavigationGridController, decorators: [{
+KeyNavigationGridController.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: KeyNavigationGridController, deps: [{ token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Injectable });
+KeyNavigationGridController.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: KeyNavigationGridController });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: KeyNavigationGridController, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: i0.NgZone }]; } });
 
@@ -18616,8 +18616,8 @@ class ClrDatagridFilter extends DatagridFilterRegistrar {
         this.subs.forEach(sub => sub.unsubscribe());
     }
 }
-ClrDatagridFilter.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridFilter, deps: [{ token: FiltersProvider }, { token: ClrCommonStringsService }, { token: ClrPopoverToggleService }, { token: PLATFORM_ID }, { token: i0.ElementRef }, { token: KeyNavigationGridController, optional: true }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridFilter.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridFilter, selector: "clr-dg-filter", inputs: { open: ["clrDgFilterOpen", "open"], customFilter: ["clrDgFilter", "customFilter"] }, outputs: { openChange: "clrDgFilterOpenChange" }, providers: [{ provide: CustomFilter, useExisting: ClrDatagridFilter }], viewQueries: [{ propertyName: "anchor", first: true, predicate: ["anchor"], descendants: true, read: ElementRef }], usesInheritance: true, ngImport: i0, template: `
+ClrDatagridFilter.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridFilter, deps: [{ token: FiltersProvider }, { token: ClrCommonStringsService }, { token: ClrPopoverToggleService }, { token: PLATFORM_ID }, { token: i0.ElementRef }, { token: KeyNavigationGridController, optional: true }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridFilter.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridFilter, selector: "clr-dg-filter", inputs: { open: ["clrDgFilterOpen", "open"], customFilter: ["clrDgFilter", "customFilter"] }, outputs: { openChange: "clrDgFilterOpenChange" }, providers: [{ provide: CustomFilter, useExisting: ClrDatagridFilter }], viewQueries: [{ propertyName: "anchor", first: true, predicate: ["anchor"], descendants: true, read: ElementRef }], usesInheritance: true, ngImport: i0, template: `
     <button
       class="datagrid-filter-toggle"
       type="button"
@@ -18653,7 +18653,7 @@ ClrDatagridFilter.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", vers
       <ng-content></ng-content>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: ClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridFilter, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridFilter, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-filter',
@@ -19010,8 +19010,8 @@ class DatagridNumericFilter extends DatagridFilterRegistrar {
         });
     }
 }
-DatagridNumericFilter.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridNumericFilter, deps: [{ token: FiltersProvider }, { token: DomAdapter }, { token: ClrCommonStringsService }, { token: ClrPopoverToggleService }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Component });
-DatagridNumericFilter.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: DatagridNumericFilter, selector: "clr-dg-numeric-filter", inputs: { minPlaceholder: ["clrFilterMinPlaceholder", "minPlaceholder"], maxPlaceholder: ["clrFilterMaxPlaceholder", "maxPlaceholder"], fromLabel: ["clrFilterFromLabel", "fromLabel"], toLabel: ["clrFilterToLabel", "toLabel"], value: ["clrFilterValue", "value"], customNumericFilter: ["clrDgNumericFilter", "customNumericFilter"] }, outputs: { filterValueChange: "clrFilterValueChange" }, providers: [{ provide: CustomFilter, useExisting: DatagridNumericFilter }], viewQueries: [{ propertyName: "input", first: true, predicate: ["input_low"], descendants: true }, { propertyName: "filterContainer", first: true, predicate: ClrDatagridFilter, descendants: true }], usesInheritance: true, ngImport: i0, template: `
+DatagridNumericFilter.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridNumericFilter, deps: [{ token: FiltersProvider }, { token: DomAdapter }, { token: ClrCommonStringsService }, { token: ClrPopoverToggleService }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Component });
+DatagridNumericFilter.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: DatagridNumericFilter, selector: "clr-dg-numeric-filter", inputs: { minPlaceholder: ["clrFilterMinPlaceholder", "minPlaceholder"], maxPlaceholder: ["clrFilterMaxPlaceholder", "maxPlaceholder"], fromLabel: ["clrFilterFromLabel", "fromLabel"], toLabel: ["clrFilterToLabel", "toLabel"], value: ["clrFilterValue", "value"], customNumericFilter: ["clrDgNumericFilter", "customNumericFilter"] }, outputs: { filterValueChange: "clrFilterValueChange" }, providers: [{ provide: CustomFilter, useExisting: DatagridNumericFilter }], viewQueries: [{ propertyName: "input", first: true, predicate: ["input_low"], descendants: true }, { propertyName: "filterContainer", first: true, predicate: ClrDatagridFilter, descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
       <div class="datagrid-numeric-filter-form">
         <clr-number-input-container>
@@ -19045,7 +19045,7 @@ DatagridNumericFilter.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", 
       </div>
     </clr-dg-filter>
   `, isInline: true, dependencies: [{ kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: ClrNumberInput, selector: "input[type=\"number\"][clrNumberInput]" }, { kind: "component", type: ClrNumberInputContainer, selector: "clr-number-input-container" }, { kind: "directive", type: i1.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i1.NumberValueAccessor, selector: "input[type=number][formControlName],input[type=number][formControl],input[type=number][ngModel]" }, { kind: "directive", type: i1.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: ClrDatagridFilter, selector: "clr-dg-filter", inputs: ["clrDgFilterOpen", "clrDgFilter"], outputs: ["clrDgFilterOpenChange"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridNumericFilter, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridNumericFilter, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-numeric-filter',
@@ -19325,8 +19325,8 @@ class DatagridStringFilter extends DatagridFilterRegistrar {
         });
     }
 }
-DatagridStringFilter.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridStringFilter, deps: [{ token: FiltersProvider }, { token: DomAdapter }, { token: ClrCommonStringsService }, { token: ClrPopoverToggleService }, { token: i0.ElementRef }, { token: i0.ChangeDetectorRef }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Component });
-DatagridStringFilter.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: DatagridStringFilter, selector: "clr-dg-string-filter", inputs: { placeholder: ["clrFilterPlaceholder", "placeholder"], label: ["clrFilterLabel", "label"], customStringFilter: ["clrDgStringFilter", "customStringFilter"], value: ["clrFilterValue", "value"] }, outputs: { filterValueChange: "clrFilterValueChange" }, providers: [{ provide: CustomFilter, useExisting: DatagridStringFilter }], viewQueries: [{ propertyName: "input", first: true, predicate: ["input"], descendants: true }, { propertyName: "filterContainer", first: true, predicate: ClrDatagridFilter, descendants: true }], usesInheritance: true, usesOnChanges: true, ngImport: i0, template: `
+DatagridStringFilter.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridStringFilter, deps: [{ token: FiltersProvider }, { token: DomAdapter }, { token: ClrCommonStringsService }, { token: ClrPopoverToggleService }, { token: i0.ElementRef }, { token: i0.ChangeDetectorRef }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Component });
+DatagridStringFilter.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: DatagridStringFilter, selector: "clr-dg-string-filter", inputs: { placeholder: ["clrFilterPlaceholder", "placeholder"], label: ["clrFilterLabel", "label"], customStringFilter: ["clrDgStringFilter", "customStringFilter"], value: ["clrFilterValue", "value"] }, outputs: { filterValueChange: "clrFilterValueChange" }, providers: [{ provide: CustomFilter, useExisting: DatagridStringFilter }], viewQueries: [{ propertyName: "input", first: true, predicate: ["input"], descendants: true }, { propertyName: "filterContainer", first: true, predicate: ClrDatagridFilter, descendants: true }], usesInheritance: true, usesOnChanges: true, ngImport: i0, template: `
     <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
       <clr-input-container>
         <label>{{ labelValue }}</label>
@@ -19343,7 +19343,7 @@ DatagridStringFilter.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", v
       </clr-input-container>
     </clr-dg-filter>
   `, isInline: true, dependencies: [{ kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: ClrInput, selector: "[clrInput]" }, { kind: "component", type: ClrInputContainer, selector: "clr-input-container" }, { kind: "directive", type: i1.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i1.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: ClrDatagridFilter, selector: "clr-dg-filter", inputs: ["clrDgFilterOpen", "clrDgFilter"], outputs: ["clrDgFilterOpenChange"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridStringFilter, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridStringFilter, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-string-filter',
@@ -19397,9 +19397,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class DatagridWillyWonka extends WillyWonka {
 }
-DatagridWillyWonka.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive });
-DatagridWillyWonka.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: DatagridWillyWonka, selector: "clr-datagrid", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridWillyWonka, decorators: [{
+DatagridWillyWonka.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive });
+DatagridWillyWonka.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: DatagridWillyWonka, selector: "clr-datagrid", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridWillyWonka, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-datagrid',
@@ -19429,9 +19429,9 @@ class RowActionService {
         this.actionableCount--;
     }
 }
-RowActionService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: RowActionService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-RowActionService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: RowActionService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: RowActionService, decorators: [{
+RowActionService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: RowActionService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+RowActionService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: RowActionService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: RowActionService, decorators: [{
             type: Injectable
         }] });
 
@@ -19453,9 +19453,9 @@ class ActionableOompaLoompa extends OompaLoompa {
         return this.rowActions.hasActionableRow;
     }
 }
-ActionableOompaLoompa.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ActionableOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: DatagridWillyWonka, optional: true }, { token: RowActionService }], target: i0.ɵɵFactoryTarget.Directive });
-ActionableOompaLoompa.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ActionableOompaLoompa, selector: "clr-datagrid, clr-dg-row", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ActionableOompaLoompa, decorators: [{
+ActionableOompaLoompa.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ActionableOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: DatagridWillyWonka, optional: true }, { token: RowActionService }], target: i0.ɵɵFactoryTarget.Directive });
+ActionableOompaLoompa.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ActionableOompaLoompa, selector: "clr-datagrid, clr-dg-row", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ActionableOompaLoompa, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-datagrid, clr-dg-row',
@@ -19502,9 +19502,9 @@ class ModalStackService {
         }
     }
 }
-ModalStackService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ModalStackService, deps: [{ token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
-ModalStackService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ModalStackService, providedIn: 'root' });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ModalStackService, decorators: [{
+ModalStackService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ModalStackService, deps: [{ token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
+ModalStackService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ModalStackService, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ModalStackService, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }], ctorParameters: function () { return [{ type: undefined, decorators: [{
@@ -19578,9 +19578,9 @@ class DetailService {
         return !!(this.toggleState && this.cache === item);
     }
 }
-DetailService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DetailService, deps: [{ token: ModalStackService }], target: i0.ɵɵFactoryTarget.Injectable });
-DetailService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DetailService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DetailService, decorators: [{
+DetailService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DetailService, deps: [{ token: ModalStackService }], target: i0.ɵɵFactoryTarget.Injectable });
+DetailService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DetailService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DetailService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: ModalStackService }]; } });
 
@@ -19609,9 +19609,9 @@ class ExpandableRowsCount {
         this.expandableCount--;
     }
 }
-ExpandableRowsCount.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ExpandableRowsCount, deps: [{ token: DetailService }], target: i0.ɵɵFactoryTarget.Injectable });
-ExpandableRowsCount.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ExpandableRowsCount });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ExpandableRowsCount, decorators: [{
+ExpandableRowsCount.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ExpandableRowsCount, deps: [{ token: DetailService }], target: i0.ɵɵFactoryTarget.Injectable });
+ExpandableRowsCount.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ExpandableRowsCount });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ExpandableRowsCount, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: DetailService }]; } });
 
@@ -19633,9 +19633,9 @@ class ExpandableOompaLoompa extends OompaLoompa {
         return this.expandableCount.hasExpandableRow;
     }
 }
-ExpandableOompaLoompa.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ExpandableOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: DatagridWillyWonka, optional: true }, { token: ExpandableRowsCount }], target: i0.ɵɵFactoryTarget.Directive });
-ExpandableOompaLoompa.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ExpandableOompaLoompa, selector: "clr-datagrid, clr-dg-row", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ExpandableOompaLoompa, decorators: [{
+ExpandableOompaLoompa.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ExpandableOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: DatagridWillyWonka, optional: true }, { token: ExpandableRowsCount }], target: i0.ɵɵFactoryTarget.Directive });
+ExpandableOompaLoompa.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ExpandableOompaLoompa, selector: "clr-datagrid, clr-dg-row", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ExpandableOompaLoompa, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-datagrid, clr-dg-row',
@@ -19737,13 +19737,13 @@ class WrappedColumn {
         this.columnView.destroy();
     }
 }
-WrappedColumn.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: WrappedColumn, deps: [], target: i0.ɵɵFactoryTarget.Component });
-WrappedColumn.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: WrappedColumn, selector: "dg-wrapped-column", viewQueries: [{ propertyName: "templateRef", first: true, predicate: ["columnPortal"], descendants: true }], ngImport: i0, template: `
+WrappedColumn.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: WrappedColumn, deps: [], target: i0.ɵɵFactoryTarget.Component });
+WrappedColumn.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: WrappedColumn, selector: "dg-wrapped-column", viewQueries: [{ propertyName: "templateRef", first: true, predicate: ["columnPortal"], descendants: true }], ngImport: i0, template: `
     <ng-template #columnPortal>
       <ng-content></ng-content>
     </ng-template>
   `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: WrappedColumn, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: WrappedColumn, decorators: [{
             type: Component,
             args: [{
                     selector: 'dg-wrapped-column',
@@ -19834,9 +19834,9 @@ class Sort {
         this._change.next(this);
     }
 }
-Sort.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Sort, deps: [{ token: StateDebouncer }], target: i0.ɵɵFactoryTarget.Injectable });
-Sort.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Sort });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Sort, decorators: [{
+Sort.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: Sort, deps: [{ token: StateDebouncer }], target: i0.ɵɵFactoryTarget.Injectable });
+Sort.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: Sort });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: Sort, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: StateDebouncer }]; } });
 
@@ -19883,9 +19883,9 @@ class DatagridRenderOrganizer {
         this._renderStep.next(DatagridRenderStep.CALCULATE_MODE_OFF);
     }
 }
-DatagridRenderOrganizer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridRenderOrganizer, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-DatagridRenderOrganizer.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridRenderOrganizer });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridRenderOrganizer, decorators: [{
+DatagridRenderOrganizer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridRenderOrganizer, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+DatagridRenderOrganizer.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridRenderOrganizer });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridRenderOrganizer, decorators: [{
             type: Injectable
         }] });
 
@@ -19937,9 +19937,9 @@ class ColumnResizerService {
         }
     }
 }
-ColumnResizerService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ColumnResizerService, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: DatagridRenderOrganizer }], target: i0.ɵɵFactoryTarget.Injectable });
-ColumnResizerService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ColumnResizerService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ColumnResizerService, decorators: [{
+ColumnResizerService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ColumnResizerService, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: DatagridRenderOrganizer }], target: i0.ɵɵFactoryTarget.Injectable });
+ColumnResizerService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ColumnResizerService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ColumnResizerService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: DomAdapter }, { type: DatagridRenderOrganizer }]; } });
 
@@ -19976,9 +19976,9 @@ class TableSizeService {
         return `${this.tableRef.clientHeight}px`;
     }
 }
-TableSizeService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TableSizeService, deps: [{ token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
-TableSizeService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TableSizeService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TableSizeService, decorators: [{
+TableSizeService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TableSizeService, deps: [{ token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
+TableSizeService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TableSizeService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TableSizeService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: undefined, decorators: [{
                     type: Inject,
@@ -20090,8 +20090,8 @@ class ClrDatagridColumnSeparator {
         return normalizeKey(event.key) === Keys.ArrowRight;
     }
 }
-ClrDatagridColumnSeparator.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridColumnSeparator, deps: [{ token: ColumnResizerService }, { token: i0.Renderer2 }, { token: i0.NgZone }, { token: TableSizeService }, { token: ClrCommonStringsService }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridColumnSeparator.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridColumnSeparator, selector: "clr-dg-column-separator", host: { properties: { "class.datagrid-column-separator": "true" } }, viewQueries: [{ propertyName: "resizeTrackerRef", first: true, predicate: ["resizeTracker"], descendants: true }, { propertyName: "columnHandleRef", first: true, predicate: ["columnHandle"], descendants: true }], ngImport: i0, template: `
+ClrDatagridColumnSeparator.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridColumnSeparator, deps: [{ token: ColumnResizerService }, { token: i0.Renderer2 }, { token: i0.NgZone }, { token: TableSizeService }, { token: ClrCommonStringsService }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridColumnSeparator.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridColumnSeparator, selector: "clr-dg-column-separator", host: { properties: { "class.datagrid-column-separator": "true" } }, viewQueries: [{ propertyName: "resizeTrackerRef", first: true, predicate: ["resizeTracker"], descendants: true }, { propertyName: "columnHandleRef", first: true, predicate: ["columnHandle"], descendants: true }], ngImport: i0, template: `
     <button
       type="button"
       class="datagrid-column-handle"
@@ -20109,7 +20109,7 @@ ClrDatagridColumnSeparator.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0
     </span>
     <div class="datagrid-column-resize-tracker" #resizeTracker></div>
   `, isInline: true, dependencies: [{ kind: "directive", type: CdkDragModule_CdkDrag, selector: "[cdkDrag]" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridColumnSeparator, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridColumnSeparator, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-column-separator',
@@ -20409,8 +20409,8 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
         }
     }
 }
-ClrDatagridColumn.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridColumn, deps: [{ token: i0.ElementRef }, { token: Sort }, { token: FiltersProvider }, { token: i0.ViewContainerRef }, { token: DetailService }, { token: i0.ChangeDetectorRef }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridColumn.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridColumn, selector: "clr-dg-column", inputs: { filterStringPlaceholder: ["clrFilterStringPlaceholder", "filterStringPlaceholder"], filterNumberMaxPlaceholder: ["clrFilterNumberMaxPlaceholder", "filterNumberMaxPlaceholder"], filterNumberMinPlaceholder: ["clrFilterNumberMinPlaceholder", "filterNumberMinPlaceholder"], colType: ["clrDgColType", "colType"], field: ["clrDgField", "field"], sortBy: ["clrDgSortBy", "sortBy"], sortOrder: ["clrDgSortOrder", "sortOrder"], updateFilterValue: ["clrFilterValue", "updateFilterValue"] }, outputs: { sortOrderChange: "clrDgSortOrderChange", filterValueChange: "clrFilterValueChange" }, host: { attributes: { "role": "columnheader" }, properties: { "class.datagrid-column": "true", "attr.aria-sort": "ariaSort" } }, queries: [{ propertyName: "projectedFilter", first: true, predicate: CustomFilter, descendants: true }], viewQueries: [{ propertyName: "titleContainer", first: true, predicate: ["titleContainer"], descendants: true, read: ElementRef }], usesInheritance: true, usesOnChanges: true, hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `
+ClrDatagridColumn.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridColumn, deps: [{ token: i0.ElementRef }, { token: Sort }, { token: FiltersProvider }, { token: i0.ViewContainerRef }, { token: DetailService }, { token: i0.ChangeDetectorRef }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridColumn.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridColumn, selector: "clr-dg-column", inputs: { filterStringPlaceholder: ["clrFilterStringPlaceholder", "filterStringPlaceholder"], filterNumberMaxPlaceholder: ["clrFilterNumberMaxPlaceholder", "filterNumberMaxPlaceholder"], filterNumberMinPlaceholder: ["clrFilterNumberMinPlaceholder", "filterNumberMinPlaceholder"], colType: ["clrDgColType", "colType"], field: ["clrDgField", "field"], sortBy: ["clrDgSortBy", "sortBy"], sortOrder: ["clrDgSortOrder", "sortOrder"], updateFilterValue: ["clrFilterValue", "updateFilterValue"] }, outputs: { sortOrderChange: "clrDgSortOrderChange", filterValueChange: "clrFilterValueChange" }, host: { attributes: { "role": "columnheader" }, properties: { "class.datagrid-column": "true", "attr.aria-sort": "ariaSort" } }, queries: [{ propertyName: "projectedFilter", first: true, predicate: CustomFilter, descendants: true }], viewQueries: [{ propertyName: "titleContainer", first: true, predicate: ["titleContainer"], descendants: true, read: ElementRef }], usesInheritance: true, usesOnChanges: true, hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `
     <div class="datagrid-column-flex">
       <button class="datagrid-column-title" *ngIf="sortable" (click)="sort()" type="button" #titleContainer>
         <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
@@ -20451,7 +20451,7 @@ ClrDatagridColumn.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", vers
       <clr-dg-column-separator *ngIf="showSeparator"></clr-dg-column-separator>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: ClrDatagridColumnSeparator, selector: "clr-dg-column-separator" }, { kind: "component", type: DatagridNumericFilter, selector: "clr-dg-numeric-filter", inputs: ["clrFilterMinPlaceholder", "clrFilterMaxPlaceholder", "clrFilterFromLabel", "clrFilterToLabel", "clrFilterValue", "clrDgNumericFilter"], outputs: ["clrFilterValueChange"] }, { kind: "component", type: DatagridStringFilter, selector: "clr-dg-string-filter", inputs: ["clrFilterPlaceholder", "clrFilterLabel", "clrDgStringFilter", "clrFilterValue"], outputs: ["clrFilterValueChange"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridColumn, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridColumn, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-column',
@@ -20707,9 +20707,9 @@ class Items {
         this.emitChange();
     }
 }
-Items.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Items, deps: [{ token: FiltersProvider }, { token: Sort }, { token: Page }], target: i0.ɵɵFactoryTarget.Injectable });
-Items.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Items });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Items, decorators: [{
+Items.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: Items, deps: [{ token: FiltersProvider }, { token: Sort }, { token: Page }], target: i0.ɵɵFactoryTarget.Injectable });
+Items.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: Items });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: Items, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: FiltersProvider }, { type: Sort }, { type: Page }]; } });
 
@@ -20766,9 +20766,9 @@ class ClrDatagridItems {
         this.subscriptions.forEach(sub => sub.unsubscribe());
     }
 }
-ClrDatagridItems.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridItems, deps: [{ token: i0.TemplateRef }, { token: i0.IterableDiffers }, { token: Items }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrDatagridItems.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridItems, selector: "[clrDgItems][clrDgItemsOf]", inputs: { rawItems: ["clrDgItemsOf", "rawItems"], trackBy: ["clrDgItemsTrackBy", "trackBy"] }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridItems, decorators: [{
+ClrDatagridItems.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridItems, deps: [{ token: i0.TemplateRef }, { token: i0.IterableDiffers }, { token: Items }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrDatagridItems.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridItems, selector: "[clrDgItems][clrDgItemsOf]", inputs: { rawItems: ["clrDgItemsOf", "rawItems"], trackBy: ["clrDgItemsTrackBy", "trackBy"] }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridItems, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrDgItems][clrDgItemsOf]',
@@ -20798,14 +20798,14 @@ class ClrDatagridPlaceholder {
         return !this.items.loading && (!this.items.displayed || this.items.displayed.length === 0);
     }
 }
-ClrDatagridPlaceholder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridPlaceholder, deps: [{ token: Items }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridPlaceholder.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridPlaceholder, selector: "clr-dg-placeholder", host: { properties: { "class.datagrid-placeholder-container": "true" } }, ngImport: i0, template: `
+ClrDatagridPlaceholder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridPlaceholder, deps: [{ token: Items }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridPlaceholder.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridPlaceholder, selector: "clr-dg-placeholder", host: { properties: { "class.datagrid-placeholder-container": "true" } }, ngImport: i0, template: `
     <div class="datagrid-placeholder" [class.datagrid-empty]="emptyDatagrid">
       <div class="datagrid-placeholder-image" *ngIf="emptyDatagrid"></div>
       <span class="datagrid-placeholder-content"><ng-content *ngIf="emptyDatagrid"></ng-content></span>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridPlaceholder, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridPlaceholder, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-placeholder',
@@ -20833,13 +20833,13 @@ class WrappedCell {
         this.cellView.destroy();
     }
 }
-WrappedCell.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: WrappedCell, deps: [], target: i0.ɵɵFactoryTarget.Component });
-WrappedCell.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: WrappedCell, selector: "dg-wrapped-cell", viewQueries: [{ propertyName: "templateRef", first: true, predicate: ["cellPortal"], descendants: true }], ngImport: i0, template: `
+WrappedCell.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: WrappedCell, deps: [], target: i0.ɵɵFactoryTarget.Component });
+WrappedCell.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: WrappedCell, selector: "dg-wrapped-cell", viewQueries: [{ propertyName: "templateRef", first: true, predicate: ["cellPortal"], descendants: true }], ngImport: i0, template: `
     <ng-template #cellPortal>
       <ng-content></ng-content>
     </ng-template>
   `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: WrappedCell, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: WrappedCell, decorators: [{
             type: Component,
             args: [{
                     selector: 'dg-wrapped-cell',
@@ -20871,9 +20871,9 @@ class ClrDatagridCell {
         this.wrappedInjector = new HostWrapper(WrappedCell, this.vcr);
     }
 }
-ClrDatagridCell.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridCell, deps: [{ token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridCell.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridCell, selector: "clr-dg-cell", host: { attributes: { "role": "gridcell" }, properties: { "class.datagrid-cell": "true", "class.datagrid-signpost-trigger": "signpost.length > 0" } }, queries: [{ propertyName: "signpost", predicate: ClrSignpost }], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridCell, decorators: [{
+ClrDatagridCell.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridCell, deps: [{ token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridCell.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridCell, selector: "clr-dg-cell", host: { attributes: { "role": "gridcell" }, properties: { "class.datagrid-cell": "true", "class.datagrid-signpost-trigger": "signpost.length > 0" } }, queries: [{ propertyName: "signpost", predicate: ClrSignpost }], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridCell, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-cell',
@@ -20933,9 +20933,9 @@ class DatagridIfExpandService extends IfExpandService {
         this._replace.next(replaceValue);
     }
 }
-DatagridIfExpandService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridIfExpandService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-DatagridIfExpandService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridIfExpandService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridIfExpandService, decorators: [{
+DatagridIfExpandService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridIfExpandService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+DatagridIfExpandService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridIfExpandService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridIfExpandService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return []; } });
 
@@ -20979,13 +20979,13 @@ class WrappedRow {
         this.rowView.destroy();
     }
 }
-WrappedRow.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: WrappedRow, deps: [], target: i0.ɵɵFactoryTarget.Component });
-WrappedRow.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: WrappedRow, selector: "dg-wrapped-row", viewQueries: [{ propertyName: "templateRef", first: true, predicate: ["rowPortal"], descendants: true }], ngImport: i0, template: `
+WrappedRow.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: WrappedRow, deps: [], target: i0.ɵɵFactoryTarget.Component });
+WrappedRow.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: WrappedRow, selector: "dg-wrapped-row", viewQueries: [{ propertyName: "templateRef", first: true, predicate: ["rowPortal"], descendants: true }], ngImport: i0, template: `
     <ng-template #rowPortal>
       <ng-content></ng-content>
     </ng-template>
   `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: WrappedRow, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: WrappedRow, decorators: [{
             type: Component,
             args: [{
                     selector: 'dg-wrapped-row',
@@ -21352,9 +21352,9 @@ class Selection {
         this._currentSelectionRefs = this._current?.map(item => this._items.trackBy(item)) || [];
     }
 }
-Selection.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Selection, deps: [{ token: Items }, { token: FiltersProvider }, { token: i0.IterableDiffers }], target: i0.ɵɵFactoryTarget.Injectable });
-Selection.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Selection });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: Selection, decorators: [{
+Selection.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: Selection, deps: [{ token: Items }, { token: FiltersProvider }, { token: i0.IterableDiffers }], target: i0.ɵɵFactoryTarget.Injectable });
+Selection.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: Selection });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: Selection, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: Items }, { type: FiltersProvider }, { type: i0.IterableDiffers }]; } });
 
@@ -21382,9 +21382,9 @@ class DisplayModeService {
         this.subscriptions.forEach(sub => sub.unsubscribe());
     }
 }
-DisplayModeService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DisplayModeService, deps: [{ token: DatagridRenderOrganizer }], target: i0.ɵɵFactoryTarget.Injectable });
-DisplayModeService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DisplayModeService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DisplayModeService, decorators: [{
+DisplayModeService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DisplayModeService, deps: [{ token: DatagridRenderOrganizer }], target: i0.ɵɵFactoryTarget.Injectable });
+DisplayModeService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DisplayModeService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DisplayModeService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: DatagridRenderOrganizer }]; } });
 
@@ -21410,9 +21410,9 @@ class ClrDatagridSelectionCellDirective {
         }
     }
 }
-ClrDatagridSelectionCellDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridSelectionCellDirective, deps: [{ token: Selection }], target: i0.ɵɵFactoryTarget.Directive });
-ClrDatagridSelectionCellDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridSelectionCellDirective, selector: ".datagrid-select", host: { listeners: { "click": "onSelectionCellClick($event)" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridSelectionCellDirective, decorators: [{
+ClrDatagridSelectionCellDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridSelectionCellDirective, deps: [{ token: Selection }], target: i0.ɵɵFactoryTarget.Directive });
+ClrDatagridSelectionCellDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridSelectionCellDirective, selector: ".datagrid-select", host: { listeners: { "click": "onSelectionCellClick($event)" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridSelectionCellDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '.datagrid-select',
@@ -21462,15 +21462,15 @@ class ClrDatagridSingleSelectionValueAccessor {
         this.renderer.setProperty(this.elementRef.nativeElement, 'checked', model === value);
     }
 }
-ClrDatagridSingleSelectionValueAccessor.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridSingleSelectionValueAccessor, deps: [{ token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrDatagridSingleSelectionValueAccessor.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridSingleSelectionValueAccessor, selector: "input[type=radio][clrDgSingleSelectionRadio]", inputs: { value: "value", clrDgItemsTrackBy: "clrDgItemsTrackBy" }, host: { listeners: { "change": "onChange(value)", "blur": "onTouched()" } }, providers: [
+ClrDatagridSingleSelectionValueAccessor.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridSingleSelectionValueAccessor, deps: [{ token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrDatagridSingleSelectionValueAccessor.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridSingleSelectionValueAccessor, selector: "input[type=radio][clrDgSingleSelectionRadio]", inputs: { value: "value", clrDgItemsTrackBy: "clrDgItemsTrackBy" }, host: { listeners: { "change": "onChange(value)", "blur": "onTouched()" } }, providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             useExisting: forwardRef(() => ClrDatagridSingleSelectionValueAccessor),
             multi: true,
         },
     ], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridSingleSelectionValueAccessor, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridSingleSelectionValueAccessor, decorators: [{
             type: Directive,
             args: [{
                     selector: 'input[type=radio][clrDgSingleSelectionRadio]',
@@ -21756,13 +21756,13 @@ class ClrDatagridRow {
         }
     }
 }
-ClrDatagridRow.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridRow, deps: [{ token: Selection }, { token: RowActionService }, { token: ExpandableRowsCount }, { token: DatagridIfExpandService }, { token: DetailService }, { token: DisplayModeService }, { token: i0.ViewContainerRef }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: ClrCommonStringsService }, { token: Items }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridRow.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridRow, selector: "clr-dg-row", inputs: { detailDisabled: ["clrDgDetailDisabled", "detailDisabled"], detailHidden: ["clrDgDetailHidden", "detailHidden"], skeletonLoading: ["clrDgSkeletonLoading", "skeletonLoading"], item: ["clrDgItem", "item"], clrDgSelectable: "clrDgSelectable", selected: ["clrDgSelected", "selected"], expanded: ["clrDgExpanded", "expanded"], clrDgDetailOpenLabel: "clrDgDetailOpenLabel", clrDgDetailCloseLabel: "clrDgDetailCloseLabel", clrDgRowSelectionLabel: "clrDgRowSelectionLabel" }, outputs: { selectedChanged: "clrDgSelectedChange", expandedChange: "clrDgExpandedChange" }, host: { attributes: { "role": "rowgroup" }, properties: { "class.datagrid-row": "true", "class.datagrid-row-skeleton": "skeletonLoading", "class.datagrid-selected": "selected", "attr.aria-owns": "id" } }, providers: [
+ClrDatagridRow.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridRow, deps: [{ token: Selection }, { token: RowActionService }, { token: ExpandableRowsCount }, { token: DatagridIfExpandService }, { token: DetailService }, { token: DisplayModeService }, { token: i0.ViewContainerRef }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: ClrCommonStringsService }, { token: Items }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridRow.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridRow, selector: "clr-dg-row", inputs: { detailDisabled: ["clrDgDetailDisabled", "detailDisabled"], detailHidden: ["clrDgDetailHidden", "detailHidden"], skeletonLoading: ["clrDgSkeletonLoading", "skeletonLoading"], item: ["clrDgItem", "item"], clrDgSelectable: "clrDgSelectable", selected: ["clrDgSelected", "selected"], expanded: ["clrDgExpanded", "expanded"], clrDgDetailOpenLabel: "clrDgDetailOpenLabel", clrDgDetailCloseLabel: "clrDgDetailCloseLabel", clrDgRowSelectionLabel: "clrDgRowSelectionLabel" }, outputs: { selectedChanged: "clrDgSelectedChange", expandedChange: "clrDgExpandedChange" }, host: { attributes: { "role": "rowgroup" }, properties: { "class.datagrid-row": "true", "class.datagrid-row-skeleton": "skeletonLoading", "class.datagrid-selected": "selected", "attr.aria-owns": "id" } }, providers: [
         DatagridIfExpandService,
         { provide: IfExpandService, useExisting: DatagridIfExpandService },
         { provide: LoadingListener, useExisting: DatagridIfExpandService },
     ], queries: [{ propertyName: "dgCells", predicate: ClrDatagridCell }], viewQueries: [{ propertyName: "expandAnimation", first: true, predicate: ClrExpandableAnimationDirective, descendants: true }, { propertyName: "detailButton", first: true, predicate: ["detailButton"], descendants: true }, { propertyName: "_stickyCells", first: true, predicate: ["stickyCells"], descendants: true, read: ViewContainerRef }, { propertyName: "_scrollableCells", first: true, predicate: ["scrollableCells"], descendants: true, read: ViewContainerRef }, { propertyName: "_calculatedCells", first: true, predicate: ["calculatedCells"], descendants: true, read: ViewContainerRef }, { propertyName: "_fixedCellTemplate", first: true, predicate: ["fixedCellTemplate"], descendants: true }], ngImport: i0, template: "<div\n  role=\"row\"\n  [id]=\"id\"\n  class=\"datagrid-row-master datagrid-row-flex\"\n  [clrExpandableAnimation]=\"expandAnimationTrigger\"\n  (mousedown)=\"clearRanges($event)\"\n  (click)=\"selectRow(!selected, $event)\"\n  [class.datagrid-row-clickable]=\"selection.rowSelectionMode\"\n  [class.datagrid-row-detail-open]=\"detailService.isRowOpen(item)\"\n>\n  <div class=\"datagrid-row-sticky\">\n    <!-- Sticky elements here -->\n    <ng-container #stickyCells>\n      <div\n        *ngIf=\"selection.selectionType === SELECTION_TYPE.Multi\"\n        class=\"datagrid-select datagrid-fixed-column datagrid-cell\"\n        [ngClass]=\"{ 'clr-form-control-disabled': !clrDgSelectable }\"\n        role=\"gridcell\"\n      >\n        <div class=\"clr-checkbox-wrapper\">\n          <input\n            tabindex=\"-1\"\n            type=\"checkbox\"\n            [ngModel]=\"selected\"\n            (ngModelChange)=\"toggle($event)\"\n            [id]=\"checkboxId\"\n            [disabled]=\"clrDgSelectable ? null : true\"\n            [attr.aria-disabled]=\"clrDgSelectable ? null : true\"\n          />\n          <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->\n          <label [for]=\"checkboxId\" class=\"clr-control-label clr-col-null\" (click)=\"clearRanges($event)\">\n            <span class=\"clr-sr-only\">{{clrDgRowSelectionLabel || commonStrings.keys.select}}</span>\n          </label>\n        </div>\n      </div>\n      <div\n        *ngIf=\"selection.selectionType === SELECTION_TYPE.Single\"\n        class=\"datagrid-select datagrid-fixed-column datagrid-cell\"\n        [ngClass]=\"{ 'clr-form-control-disabled': !clrDgSelectable }\"\n        role=\"gridcell\"\n      >\n        <clr-radio-wrapper>\n          <input\n            tabindex=\"-1\"\n            type=\"radio\"\n            clrRadio\n            clrDgSingleSelectionRadio\n            [clrDgItemsTrackBy]=\"trackBy\"\n            [id]=\"radioId\"\n            [name]=\"selection.id + '-radio'\"\n            [value]=\"item\"\n            [(ngModel)]=\"selection.currentSingle\"\n            [disabled]=\"clrDgSelectable ? null : true\"\n            [attr.aria-disabled]=\"clrDgSelectable ? null : true\"\n          />\n          <label class=\"clr-control-label clr-col-null\" [for]=\"radioId\">\n            <span class=\"clr-sr-only\">{{ clrDgRowSelectionLabel || commonStrings.keys.select }}</span>\n          </label>\n        </clr-radio-wrapper>\n      </div>\n      <div\n        *ngIf=\"rowActionService.hasActionableRow\"\n        class=\"datagrid-row-actions datagrid-fixed-column datagrid-cell\"\n        role=\"gridcell\"\n      >\n        <ng-content select=\"clr-dg-action-overflow\"></ng-content>\n      </div>\n      <div\n        *ngIf=\"globalExpandable.hasExpandableRow\"\n        class=\"datagrid-expandable-caret datagrid-fixed-column datagrid-cell\"\n        role=\"gridcell\"\n      >\n        <ng-container *ngIf=\"expand.expandable\">\n          <button\n            tabindex=\"-1\"\n            *ngIf=\"!expand.loading\"\n            (click)=\"toggleExpand()\"\n            type=\"button\"\n            class=\"datagrid-expandable-caret-button\"\n            [attr.aria-expanded]=\"expand.expanded\"\n            [attr.aria-label]=\"expand.expanded ? clrDgDetailCloseLabel : clrDgDetailOpenLabel\"\n            [attr.aria-controls]=\"expand.hasExpandTemplate && !expand.expanded ? null : expandableId\"\n          >\n            <cds-icon\n              shape=\"angle\"\n              class=\"datagrid-expandable-caret-icon\"\n              [attr.direction]=\"expand.expanded ? 'down' : 'right'\"\n              [attr.title]=\"expand.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand\"\n            ></cds-icon>\n          </button>\n          <clr-spinner *ngIf=\"expand.loading\" clrSmall>{{ commonStrings.keys.loading }}</clr-spinner>\n        </ng-container>\n      </div>\n      <div\n        *ngIf=\"detailService.enabled\"\n        class=\"datagrid-detail-caret datagrid-fixed-column datagrid-cell\"\n        role=\"gridcell\"\n      >\n        <button\n          tabindex=\"-1\"\n          (click)=\"detailService.toggle(item, detailButton)\"\n          type=\"button\"\n          #detailButton\n          class=\"datagrid-detail-caret-button\"\n          [disabled]=\"detailDisabled\"\n          *ngIf=\"!detailHidden\"\n          [class.is-open]=\"detailService.isRowOpen(item)\"\n          [attr.aria-label]=\"detailService.isRowOpen(item) ? clrDgDetailCloseLabel : clrDgDetailOpenLabel\"\n          [attr.aria-expanded]=\"detailService.isRowOpen(item)\"\n          [attr.aria-controls]=\"detailService.id\"\n          aria-haspopup=\"dialog\"\n        >\n          <cds-icon\n            shape=\"angle-double\"\n            [attr.direction]=\"detailService.isRowOpen(item) ? 'left' : 'right'\"\n            class=\"datagrid-detail-caret-icon\"\n            [attr.title]=\"detailService.isRowOpen(item) ? commonStrings.keys.close: commonStrings.keys.open\"\n          ></cds-icon>\n        </button>\n      </div>\n    </ng-container>\n    <!-- placeholder for projecting other sticky cells as pinned-->\n  </div>\n  <div class=\"datagrid-row-scrollable\" [ngClass]=\"{'is-replaced': replaced && expanded}\">\n    <div class=\"datagrid-scrolling-cells\">\n      <ng-content select=\"clr-dg-cell\"></ng-content>\n      <ng-container #scrollableCells></ng-container>\n    </div>\n    <!-- details here when replace, re-visit when sticky container is used for pinned cells -->\n    <ng-template *ngIf=\"replaced && !expand.loading\" [ngTemplateOutlet]=\"detail\"></ng-template>\n    <ng-template *ngIf=\"!replaced && !expand.loading\" [ngTemplateOutlet]=\"detail\"></ng-template>\n  </div>\n</div>\n<!--\n    We need the \"project into template\" hacks because we need this in 2 different places\n    depending on whether the details replace the row or not.\n-->\n<ng-template #detail>\n  <ng-content select=\"clr-dg-row-detail\"></ng-content>\n</ng-template>\n\n<ng-container #calculatedCells></ng-container>\n\n<ng-template #fixedCellTemplate>\n  <div class=\"datagrid-fixed-column datagrid-cell\" role=\"gridcell\"></div>\n</ng-template>\n", dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: ClrRadio, selector: "[clrRadio]" }, { kind: "component", type: ClrRadioWrapper, selector: "clr-radio-wrapper" }, { kind: "directive", type: i1.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i1.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i1.RadioControlValueAccessor, selector: "input[type=radio][formControlName],input[type=radio][formControl],input[type=radio][ngModel]", inputs: ["name", "formControlName", "value"] }, { kind: "directive", type: i1.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "directive", type: ClrExpandableAnimationDirective, selector: "[clrExpandableAnimation]", inputs: ["clrExpandableAnimation"] }, { kind: "component", type: ClrSpinner, selector: "clr-spinner", inputs: ["clrInline", "clrInverse", "clrSmall", "clrMedium"] }, { kind: "directive", type: ClrDatagridSelectionCellDirective, selector: ".datagrid-select" }, { kind: "directive", type: ClrDatagridSingleSelectionValueAccessor, selector: "input[type=radio][clrDgSingleSelectionRadio]", inputs: ["value", "clrDgItemsTrackBy"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridRow, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridRow, decorators: [{
             type: Component,
             args: [{ selector: 'clr-dg-row', host: {
                         '[class.datagrid-row]': 'true',
@@ -21903,9 +21903,9 @@ class ColumnsService {
         this.columnsStateChange.next(changedState);
     }
 }
-ColumnsService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ColumnsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-ColumnsService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ColumnsService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ColumnsService, decorators: [{
+ColumnsService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ColumnsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+ColumnsService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ColumnsService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ColumnsService, decorators: [{
             type: Injectable
         }] });
 
@@ -22145,9 +22145,9 @@ class ClrDatagridVirtualScrollDirective {
         return virtualScrollViewport;
     }
 }
-ClrDatagridVirtualScrollDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridVirtualScrollDirective, deps: [{ token: i0.ChangeDetectorRef }, { token: i0.IterableDiffers }, { token: Items }, { token: i0.NgZone }, { token: i0.Renderer2 }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }, { token: i1$3.Directionality }, { token: i3$1.ScrollDispatcher }, { token: i3$1.ViewportRuler }, { token: forwardRef(() => ClrDatagrid) }, { token: ColumnsService }, { token: i0.EnvironmentInjector }], target: i0.ɵɵFactoryTarget.Directive });
-ClrDatagridVirtualScrollDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridVirtualScrollDirective, selector: "[clrVirtualScroll],[ClrVirtualScroll]", inputs: { persistItems: ["clrVirtualPersistItems", "persistItems"], cdkVirtualForOf: ["clrVirtualRowsOf", "cdkVirtualForOf"], cdkVirtualForTrackBy: ["clrVirtualRowsTrackBy", "cdkVirtualForTrackBy"], cdkVirtualForTemplate: ["clrVirtualRowsTemplate", "cdkVirtualForTemplate"], cdkVirtualForTemplateCacheSize: ["clrVirtualRowsTemplateCacheSize", "cdkVirtualForTemplateCacheSize"], itemSize: ["clrVirtualRowsItemSize", "itemSize"], minBufferPx: ["clrVirtualRowsMinBufferPx", "minBufferPx"], maxBufferPx: ["clrVirtualRowsMaxBufferPx", "maxBufferPx"], dataRange: ["clrVirtualDataRange", "dataRange"] }, outputs: { renderedRangeChange: "renderedRangeChange" }, providers: [Items], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridVirtualScrollDirective, decorators: [{
+ClrDatagridVirtualScrollDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridVirtualScrollDirective, deps: [{ token: i0.ChangeDetectorRef }, { token: i0.IterableDiffers }, { token: Items }, { token: i0.NgZone }, { token: i0.Renderer2 }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }, { token: i1$3.Directionality }, { token: i3$1.ScrollDispatcher }, { token: i3$1.ViewportRuler }, { token: forwardRef(() => ClrDatagrid) }, { token: ColumnsService }, { token: i0.EnvironmentInjector }], target: i0.ɵɵFactoryTarget.Directive });
+ClrDatagridVirtualScrollDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridVirtualScrollDirective, selector: "[clrVirtualScroll],[ClrVirtualScroll]", inputs: { persistItems: ["clrVirtualPersistItems", "persistItems"], cdkVirtualForOf: ["clrVirtualRowsOf", "cdkVirtualForOf"], cdkVirtualForTrackBy: ["clrVirtualRowsTrackBy", "cdkVirtualForTrackBy"], cdkVirtualForTemplate: ["clrVirtualRowsTemplate", "cdkVirtualForTemplate"], cdkVirtualForTemplateCacheSize: ["clrVirtualRowsTemplateCacheSize", "cdkVirtualForTemplateCacheSize"], itemSize: ["clrVirtualRowsItemSize", "itemSize"], minBufferPx: ["clrVirtualRowsMinBufferPx", "minBufferPx"], maxBufferPx: ["clrVirtualRowsMaxBufferPx", "maxBufferPx"], dataRange: ["clrVirtualDataRange", "dataRange"] }, outputs: { renderedRangeChange: "renderedRangeChange" }, providers: [Items], ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridVirtualScrollDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrVirtualScroll],[ClrVirtualScroll]',
@@ -22297,9 +22297,9 @@ class StateProvider {
         return state;
     }
 }
-StateProvider.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: StateProvider, deps: [{ token: FiltersProvider }, { token: Sort }, { token: Page }, { token: StateDebouncer }], target: i0.ɵɵFactoryTarget.Injectable });
-StateProvider.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: StateProvider });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: StateProvider, decorators: [{
+StateProvider.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: StateProvider, deps: [{ token: FiltersProvider }, { token: Sort }, { token: Page }, { token: StateDebouncer }], target: i0.ɵɵFactoryTarget.Injectable });
+StateProvider.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: StateProvider });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: StateProvider, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: FiltersProvider }, { type: Sort }, { type: Page }, { type: StateDebouncer }]; } });
 
@@ -22348,9 +22348,9 @@ class DatagridCellRenderer {
         this.renderer.setStyle(this.el.nativeElement, 'width', null);
     }
 }
-DatagridCellRenderer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridCellRenderer, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }, { token: DatagridRenderOrganizer }], target: i0.ɵɵFactoryTarget.Directive });
-DatagridCellRenderer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: DatagridCellRenderer, selector: "clr-dg-cell", ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridCellRenderer, decorators: [{
+DatagridCellRenderer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridCellRenderer, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }, { token: DatagridRenderOrganizer }], target: i0.ɵɵFactoryTarget.Directive });
+DatagridCellRenderer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: DatagridCellRenderer, selector: "clr-dg-cell", ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridCellRenderer, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-dg-cell',
@@ -22403,9 +22403,9 @@ class DatagridRowRenderer {
         }
     }
 }
-DatagridRowRenderer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridRowRenderer, deps: [{ token: ColumnsService }], target: i0.ɵɵFactoryTarget.Directive });
-DatagridRowRenderer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: DatagridRowRenderer, selector: "clr-dg-row", queries: [{ propertyName: "cells", predicate: DatagridCellRenderer }], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridRowRenderer, decorators: [{
+DatagridRowRenderer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridRowRenderer, deps: [{ token: ColumnsService }], target: i0.ɵɵFactoryTarget.Directive });
+DatagridRowRenderer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: DatagridRowRenderer, selector: "clr-dg-row", queries: [{ propertyName: "cells", predicate: DatagridCellRenderer }], ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridRowRenderer, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-dg-row',
@@ -22777,8 +22777,8 @@ class ClrDatagrid {
         }
     }
 }
-ClrDatagrid.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagrid, deps: [{ token: DatagridRenderOrganizer }, { token: Items }, { token: ExpandableRowsCount }, { token: Selection }, { token: RowActionService }, { token: StateProvider }, { token: DisplayModeService }, { token: i0.Renderer2 }, { token: DetailService }, { token: DOCUMENT }, { token: i0.ElementRef }, { token: Page }, { token: ClrCommonStringsService }, { token: KeyNavigationGridController }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagrid.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagrid, selector: "clr-datagrid", inputs: { loadingMoreItems: ["clrLoadingMoreItems", "loadingMoreItems"], clrDgSingleSelectionAriaLabel: "clrDgSingleSelectionAriaLabel", clrDgSingleActionableAriaLabel: "clrDgSingleActionableAriaLabel", clrDetailExpandableAriaLabel: "clrDetailExpandableAriaLabel", clrDgDisablePageFocus: "clrDgDisablePageFocus", customSelectAllEnabled: ["clrDgCustomSelectAllEnabled", "customSelectAllEnabled"], loading: ["clrDgLoading", "loading"], selected: ["clrDgSelected", "selected"], singleSelected: ["clrDgSingleSelected", "singleSelected"], clrDgPreserveSelection: "clrDgPreserveSelection", rowSelectionMode: ["clrDgRowSelection", "rowSelectionMode"], trackBy: ["clrDgItemsTrackBy", "trackBy"] }, outputs: { selectedChanged: "clrDgSelectedChange", singleSelectedChanged: "clrDgSingleSelectedChange", refresh: "clrDgRefresh", customSelectAll: "clrDgCustomSelectAll" }, host: { properties: { "class.datagrid-host": "true", "class.datagrid-detail-open": "detailService.isOpen", "class.datagrid-virtual-scroll": "!!virtualScroll" } }, providers: [
+ClrDatagrid.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagrid, deps: [{ token: DatagridRenderOrganizer }, { token: Items }, { token: ExpandableRowsCount }, { token: Selection }, { token: RowActionService }, { token: StateProvider }, { token: DisplayModeService }, { token: i0.Renderer2 }, { token: DetailService }, { token: DOCUMENT }, { token: i0.ElementRef }, { token: Page }, { token: ClrCommonStringsService }, { token: KeyNavigationGridController }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagrid.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagrid, selector: "clr-datagrid", inputs: { loadingMoreItems: ["clrLoadingMoreItems", "loadingMoreItems"], clrDgSingleSelectionAriaLabel: "clrDgSingleSelectionAriaLabel", clrDgSingleActionableAriaLabel: "clrDgSingleActionableAriaLabel", clrDetailExpandableAriaLabel: "clrDetailExpandableAriaLabel", clrDgDisablePageFocus: "clrDgDisablePageFocus", customSelectAllEnabled: ["clrDgCustomSelectAllEnabled", "customSelectAllEnabled"], loading: ["clrDgLoading", "loading"], selected: ["clrDgSelected", "selected"], singleSelected: ["clrDgSingleSelected", "singleSelected"], clrDgPreserveSelection: "clrDgPreserveSelection", rowSelectionMode: ["clrDgRowSelection", "rowSelectionMode"], trackBy: ["clrDgItemsTrackBy", "trackBy"] }, outputs: { selectedChanged: "clrDgSelectedChange", singleSelectedChanged: "clrDgSingleSelectedChange", refresh: "clrDgRefresh", customSelectAll: "clrDgCustomSelectAll" }, host: { properties: { "class.datagrid-host": "true", "class.datagrid-detail-open": "detailService.isOpen", "class.datagrid-virtual-scroll": "!!virtualScroll" } }, providers: [
         Selection,
         Sort,
         FiltersProvider,
@@ -22795,7 +22795,7 @@ ClrDatagrid.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "
         DisplayModeService,
         KeyNavigationGridController,
     ], queries: [{ propertyName: "iterator", first: true, predicate: ClrDatagridItems, descendants: true }, { propertyName: "placeholder", first: true, predicate: ClrDatagridPlaceholder, descendants: true }, { propertyName: "_virtualScroll", predicate: ClrDatagridVirtualScrollDirective }, { propertyName: "columns", predicate: ClrDatagridColumn }, { propertyName: "rows", predicate: ClrDatagridRow, emitDistinctChangesOnly: false }], viewQueries: [{ propertyName: "datagrid", first: true, predicate: ["datagrid"], descendants: true, read: ElementRef }, { propertyName: "datagridTable", first: true, predicate: ["datagridTable"], descendants: true, read: ElementRef }, { propertyName: "datagridHeader", first: true, predicate: ["datagridHeader"], descendants: true, read: ElementRef }, { propertyName: "contentWrapper", first: true, predicate: ["contentWrapper"], descendants: true, read: ElementRef, static: true }, { propertyName: "rowsWrapper", first: true, predicate: ["rowsWrapper"], descendants: true, read: ElementRef, static: true }, { propertyName: "scrollableColumns", first: true, predicate: ["scrollableColumns"], descendants: true, read: ViewContainerRef }, { propertyName: "_projectedDisplayColumns", first: true, predicate: ["projectedDisplayColumns"], descendants: true, read: ViewContainerRef }, { propertyName: "_projectedCalculationColumns", first: true, predicate: ["projectedCalculationColumns"], descendants: true, read: ViewContainerRef }, { propertyName: "_displayedRows", first: true, predicate: ["displayedRows"], descendants: true, read: ViewContainerRef }, { propertyName: "_calculationRows", first: true, predicate: ["calculationRows"], descendants: true, read: ViewContainerRef }, { propertyName: "_fixedColumnTemplate", first: true, predicate: ["fixedColumnTemplate"], descendants: true }, { propertyName: "selectAllCheckbox", first: true, predicate: ["selectAllCheckbox"], descendants: true }, { propertyName: "stickyHeaders", predicate: ["stickyHeader"], descendants: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-content select=\"clr-dg-action-bar\"></ng-content>\n<div class=\"datagrid-outer-wrapper\">\n  <div class=\"datagrid-inner-wrapper\">\n    <div class=\"datagrid\" #datagrid [attr.aria-hidden]=\"detailService.isOpen ? true : null\">\n      <div class=\"datagrid-table-wrapper\">\n        <div role=\"grid\" class=\"datagrid-table\" tabindex=\"-1\" #datagridTable>\n          <div role=\"rowgroup\" class=\"datagrid-header\" #datagridHeader>\n            <div role=\"row\" class=\"datagrid-row\">\n              <div class=\"datagrid-row-master datagrid-row-flex\">\n                <div class=\"datagrid-row-sticky\">\n                  <!--header for datagrid where you can select multiple rows -->\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-select datagrid-fixed-column\"\n                    *ngIf=\"selection.selectionType === SELECTION_TYPE.Multi\"\n                    (keydown.space)=\"toggleAllSelected($event)\"\n                  >\n                    <div *ngIf=\"!virtualScroll || customSelectAllEnabled\" class=\"clr-checkbox-wrapper\">\n                      <!-- We need to move focus and space-key handling to the parent because of keyboard arrow key navigation,\n                           which is not able to transfer focus directly on the input when focused with the tab key -->\n                      <input\n                        #selectAllCheckbox\n                        type=\"checkbox\"\n                        [id]=\"selectAllId\"\n                        [(ngModel)]=\"allSelected\"\n                        [attr.aria-label]=\"commonStrings.keys.selectAll\"\n                        tabindex=\"-1\"\n                      />\n                      <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->\n                      <label [for]=\"selectAllId\" class=\"clr-control-label clr-col-null\">\n                        <span class=\"clr-sr-only\">{{commonStrings.keys.selectAll}}</span>\n                      </label>\n                    </div>\n\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  <!-- header for datagrid where you can select one row only -->\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-select datagrid-fixed-column\"\n                    *ngIf=\"selection.selectionType === SELECTION_TYPE.Single\"\n                  >\n                    <div class=\"clr-sr-only\">{{clrDgSingleSelectionAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  <!-- header for single row action; only displayType if we have at least one actionable row in datagrid -->\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-row-actions datagrid-fixed-column\"\n                    *ngIf=\"rowActionService.hasActionableRow\"\n                  >\n                    <div class=\"clr-sr-only\">{{clrDgSingleActionableAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  <!-- header for carets; only displayType if we have at least one expandable row in datagrid -->\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-expandable-caret datagrid-fixed-column\"\n                    *ngIf=\"expandableRows.hasExpandableRow || detailService.enabled\"\n                  >\n                    <div class=\"clr-sr-only\">{{clrDetailExpandableAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                </div>\n                <div class=\"datagrid-row-scrollable\">\n                  <ng-container #projectedDisplayColumns></ng-container>\n                </div>\n                <div *ngIf=\"virtualScroll\" class=\"datagrid-row-sticky datagrid-row-sticky-scroll\">\n                  <div class=\"datagrid-column\"></div>\n                </div>\n              </div>\n            </div>\n          </div>\n\n          <div class=\"datagrid-content\" [class.datagrid-content-virtual]=\"virtualScroll\" #contentWrapper>\n            <div\n              *ngIf=\"virtualScroll\"\n              class=\"datagrid-content-virtual-spacer\"\n              [style.height]=\"virtualScroll?.totalContentHeight\"\n            ></div>\n            <div role=\"presentation\" #rowsWrapper class=\"datagrid-rows\">\n              <clr-dg-row class=\"datagrid-row-loading\" *ngIf=\"loadingMoreItems\">\n                <clr-dg-cell>\n                  <clr-spinner clrMedium></clr-spinner>\n                  <span>{{ commonStrings.keys.loading }}</span>\n                </clr-dg-cell>\n              </clr-dg-row>\n\n              <ng-container #displayedRows></ng-container>\n\n              <clr-dg-row class=\"datagrid-row-loading\" *ngIf=\"loadingMoreItems\">\n                <clr-dg-cell>\n                  <clr-spinner clrMedium></clr-spinner>\n                  <span>{{ commonStrings.keys.loading }}</span>\n                </clr-dg-cell>\n              </clr-dg-row>\n\n              <!-- Custom placeholder overrides the default empty one -->\n              <ng-content select=\"clr-dg-placeholder\"></ng-content>\n              <clr-dg-placeholder *ngIf=\"!placeholder\"></clr-dg-placeholder>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <ng-content select=\"clr-dg-footer\"></ng-content>\n    <div class=\"datagrid-spinner\" *ngIf=\"loading\">\n      <clr-spinner clrMedium>Loading</clr-spinner>\n    </div>\n  </div>\n  <ng-content select=\"[clrIfDetail],clr-dg-detail\"></ng-content>\n</div>\n\n<div class=\"datagrid-calculation-table\">\n  <div class=\"datagrid-calculation-header\">\n    <ng-container #projectedCalculationColumns></ng-container>\n  </div>\n  <ng-container #calculationRows></ng-container>\n</div>\n\n<ng-template #fixedColumnTemplate>\n  <div class=\"datagrid-column datagrid-fixed-column\"></div>\n</ng-template>\n", dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i1.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i1.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: ClrSpinner, selector: "clr-spinner", inputs: ["clrInline", "clrInverse", "clrSmall", "clrMedium"] }, { kind: "component", type: ClrDatagridCell, selector: "clr-dg-cell" }, { kind: "component", type: ClrDatagridPlaceholder, selector: "clr-dg-placeholder" }, { kind: "component", type: ClrDatagridRow, selector: "clr-dg-row", inputs: ["clrDgDetailDisabled", "clrDgDetailHidden", "clrDgSkeletonLoading", "clrDgItem", "clrDgSelectable", "clrDgSelected", "clrDgExpanded", "clrDgDetailOpenLabel", "clrDgDetailCloseLabel", "clrDgRowSelectionLabel"], outputs: ["clrDgSelectedChange", "clrDgExpandedChange"] }, { kind: "directive", type: ClrDatagridSelectionCellDirective, selector: ".datagrid-select" }, { kind: "directive", type: DatagridCellRenderer, selector: "clr-dg-cell" }, { kind: "directive", type: DatagridRowRenderer, selector: "clr-dg-row" }, { kind: "directive", type: ActionableOompaLoompa, selector: "clr-datagrid, clr-dg-row" }, { kind: "directive", type: ExpandableOompaLoompa, selector: "clr-datagrid, clr-dg-row" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagrid, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagrid, decorators: [{
             type: Component,
             args: [{ selector: 'clr-datagrid', providers: [
                         Selection,
@@ -22928,9 +22928,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrDatagridActionBar {
 }
-ClrDatagridActionBar.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridActionBar, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridActionBar.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridActionBar, selector: "clr-dg-action-bar", host: { properties: { "class.datagrid-action-bar": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridActionBar, decorators: [{
+ClrDatagridActionBar.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridActionBar, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridActionBar.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridActionBar, selector: "clr-dg-action-bar", host: { properties: { "class.datagrid-action-bar": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridActionBar, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-action-bar',
@@ -23009,8 +23009,8 @@ class ClrDatagridActionOverflow {
         }
     }
 }
-ClrDatagridActionOverflow.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridActionOverflow, deps: [{ token: RowActionService }, { token: ClrCommonStringsService }, { token: PLATFORM_ID }, { token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridActionOverflow.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridActionOverflow, selector: "clr-dg-action-overflow", inputs: { buttonLabel: ["clrDgActionOverflowButtonLabel", "buttonLabel"], open: ["clrDgActionOverflowOpen", "open"] }, outputs: { openChange: "clrDgActionOverflowOpenChange" }, viewQueries: [{ propertyName: "keyFocus", first: true, predicate: ClrKeyFocus, descendants: true }], hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `
+ClrDatagridActionOverflow.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridActionOverflow, deps: [{ token: RowActionService }, { token: ClrCommonStringsService }, { token: PLATFORM_ID }, { token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridActionOverflow.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridActionOverflow, selector: "clr-dg-action-overflow", inputs: { buttonLabel: ["clrDgActionOverflowButtonLabel", "buttonLabel"], open: ["clrDgActionOverflowOpen", "open"] }, outputs: { openChange: "clrDgActionOverflowOpenChange" }, viewQueries: [{ propertyName: "keyFocus", first: true, predicate: ClrKeyFocus, descendants: true }], hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `
     <button
       tabindex="-1"
       class="datagrid-action-toggle"
@@ -23040,7 +23040,7 @@ ClrDatagridActionOverflow.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.
       <ng-content></ng-content>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }, { kind: "component", type: ClrKeyFocus, selector: "[clrKeyFocus]", inputs: ["clrDirection", "clrFocusOnLoad", "clrKeyFocus"], outputs: ["clrFocusChange"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridActionOverflow, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridActionOverflow, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-action-overflow',
@@ -23130,8 +23130,8 @@ class ClrDatagridColumnToggleButton {
         return this.columnsService.columns.filter(column => column.value.hideable);
     }
 }
-ClrDatagridColumnToggleButton.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridColumnToggleButton, deps: [{ token: ClrCommonStringsService }, { token: ColumnsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridColumnToggleButton.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridColumnToggleButton, selector: "clr-dg-column-toggle-button", outputs: { clrAllSelected: "clrAllSelected" }, ngImport: i0, template: `
+ClrDatagridColumnToggleButton.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridColumnToggleButton, deps: [{ token: ClrCommonStringsService }, { token: ColumnsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridColumnToggleButton.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridColumnToggleButton, selector: "clr-dg-column-toggle-button", outputs: { clrAllSelected: "clrAllSelected" }, ngImport: i0, template: `
     <button
       class="btn btn-sm btn-link switch-button"
       (click)="selectAll()"
@@ -23141,7 +23141,7 @@ ClrDatagridColumnToggleButton.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "1
       {{ commonStrings.keys.selectAll }}
     </button>
   `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridColumnToggleButton, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridColumnToggleButton, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-column-toggle-button',
@@ -23217,8 +23217,8 @@ class ClrDatagridColumnToggle {
         this.allSelectedElement.nativeElement.focus();
     }
 }
-ClrDatagridColumnToggle.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridColumnToggle, deps: [{ token: ClrCommonStringsService }, { token: ColumnsService }, { token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridColumnToggle.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridColumnToggle, selector: "clr-dg-column-toggle", host: { properties: { "class.column-switch-wrapper": "true", "class.active": "openState" } }, viewQueries: [{ propertyName: "allSelectedElement", first: true, predicate: ["allSelected"], descendants: true, read: ElementRef }], hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `
+ClrDatagridColumnToggle.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridColumnToggle, deps: [{ token: ClrCommonStringsService }, { token: ColumnsService }, { token: ClrPopoverToggleService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridColumnToggle.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridColumnToggle, selector: "clr-dg-column-toggle", host: { properties: { "class.column-switch-wrapper": "true", "class.active": "openState" } }, viewQueries: [{ propertyName: "allSelectedElement", first: true, predicate: ["allSelected"], descendants: true, read: ElementRef }], hostDirectives: [{ directive: ClrPopoverHostDirective }], ngImport: i0, template: `
     <button
       role="button"
       type="button"
@@ -23273,7 +23273,7 @@ ClrDatagridColumnToggle.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0"
       </div>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: ClrCheckbox, selector: "[clrCheckbox],[clrToggle]" }, { kind: "component", type: ClrCheckboxWrapper, selector: "clr-checkbox-wrapper,clr-toggle-wrapper" }, { kind: "directive", type: i1.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i1.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "directive", type: ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: ClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }, { kind: "component", type: ClrDatagridColumnToggleButton, selector: "clr-dg-column-toggle-button", outputs: ["clrAllSelected"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridColumnToggle, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridColumnToggle, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-column-toggle',
@@ -23358,8 +23358,8 @@ class ClrDatagridDetailHeader {
         this.title.nativeElement.focus();
     }
 }
-ClrDatagridDetailHeader.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridDetailHeader, deps: [{ token: DetailService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridDetailHeader.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridDetailHeader, selector: "clr-dg-detail-header", host: { properties: { "class.datagrid-detail-header": "true" } }, viewQueries: [{ propertyName: "title", first: true, predicate: ["title"], descendants: true }], ngImport: i0, template: `
+ClrDatagridDetailHeader.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridDetailHeader, deps: [{ token: DetailService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridDetailHeader.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridDetailHeader, selector: "clr-dg-detail-header", host: { properties: { "class.datagrid-detail-header": "true" } }, viewQueries: [{ propertyName: "title", first: true, predicate: ["title"], descendants: true }], ngImport: i0, template: `
     <div #title class="datagrid-detail-header-title" tabindex="-1" [id]="titleId">
       <ng-content></ng-content>
     </div>
@@ -23374,7 +23374,7 @@ ClrDatagridDetailHeader.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0"
       </button>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridDetailHeader, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridDetailHeader, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-detail-header',
@@ -23437,8 +23437,8 @@ class ClrDatagridDetail {
         this.detailService.close();
     }
 }
-ClrDatagridDetail.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridDetail, deps: [{ token: DetailService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridDetail.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridDetail, selector: "clr-dg-detail", inputs: { ariaLabelledBy: ["clrDetailAriaLabelledBy", "ariaLabelledBy"], ariaLabel: ["clrDetailAriaLabel", "ariaLabel"] }, host: { properties: { "class.datagrid-detail-pane": "true" } }, queries: [{ propertyName: "header", first: true, predicate: ClrDatagridDetailHeader, descendants: true }], ngImport: i0, template: `
+ClrDatagridDetail.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridDetail, deps: [{ token: DetailService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridDetail.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridDetail, selector: "clr-dg-detail", inputs: { ariaLabelledBy: ["clrDetailAriaLabelledBy", "ariaLabelledBy"], ariaLabel: ["clrDetailAriaLabel", "ariaLabel"] }, host: { properties: { "class.datagrid-detail-pane": "true" } }, queries: [{ propertyName: "header", first: true, predicate: ClrDatagridDetailHeader, descendants: true }], ngImport: i0, template: `
     <div
       cdkTrapFocus
       [cdkTrapFocusAutoCapture]="!header"
@@ -23455,7 +23455,7 @@ ClrDatagridDetail.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", vers
       <div class="clr-sr-only">{{ commonStrings.keys.detailPaneEnd }}</div>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridDetail, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridDetail, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-detail',
@@ -23501,13 +23501,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrDatagridDetailBody {
 }
-ClrDatagridDetailBody.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridDetailBody, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridDetailBody.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridDetailBody, selector: "clr-dg-detail-body", host: { properties: { "class.datagrid-detail-body": "true" } }, ngImport: i0, template: `
+ClrDatagridDetailBody.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridDetailBody, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridDetailBody.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridDetailBody, selector: "clr-dg-detail-body", host: { properties: { "class.datagrid-detail-body": "true" } }, ngImport: i0, template: `
     <div class="clr-dg-detail-body-wrapper">
       <ng-content></ng-content>
     </div>
   `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridDetailBody, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridDetailBody, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-detail-body',
@@ -23545,9 +23545,9 @@ class DatagridDetailRegisterer {
         }
     }
 }
-DatagridDetailRegisterer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridDetailRegisterer, deps: [{ token: ExpandableRowsCount, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
-DatagridDetailRegisterer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: DatagridDetailRegisterer, selector: "[clrIfExpanded]", ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridDetailRegisterer, decorators: [{
+DatagridDetailRegisterer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridDetailRegisterer, deps: [{ token: ExpandableRowsCount, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
+DatagridDetailRegisterer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: DatagridDetailRegisterer, selector: "[clrIfExpanded]", ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridDetailRegisterer, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrIfExpanded]',
@@ -23575,8 +23575,8 @@ class ClrDatagridFooter {
         return this.columnsService.hasHideableColumns;
     }
 }
-ClrDatagridFooter.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridFooter, deps: [{ token: Selection }, { token: DetailService }, { token: ColumnsService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridFooter.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridFooter, selector: "clr-dg-footer", host: { properties: { "class.datagrid-footer": "true" } }, ngImport: i0, template: `
+ClrDatagridFooter.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridFooter, deps: [{ token: Selection }, { token: DetailService }, { token: ColumnsService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridFooter.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridFooter, selector: "clr-dg-footer", host: { properties: { "class.datagrid-footer": "true" } }, ngImport: i0, template: `
     <ng-container *ngIf="selection.selectionType === SELECTION_TYPE.Multi && selection.current.length > 0">
       <div class="clr-form-control-disabled">
         <clr-checkbox-wrapper class="datagrid-footer-select">
@@ -23594,7 +23594,7 @@ ClrDatagridFooter.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", vers
     </ng-container>
     <ng-content select="clr-dg-pagination"></ng-content>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: ClrCheckbox, selector: "[clrCheckbox],[clrToggle]" }, { kind: "component", type: ClrCheckboxWrapper, selector: "clr-checkbox-wrapper,clr-toggle-wrapper" }, { kind: "component", type: ClrDatagridColumnToggle, selector: "clr-dg-column-toggle" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridFooter, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridFooter, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-footer',
@@ -23716,9 +23716,9 @@ class ClrDatagridHideableColumn {
         this.subscriptions.forEach(sub => sub.unsubscribe());
     }
 }
-ClrDatagridHideableColumn.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridHideableColumn, deps: [{ token: i0.TemplateRef }, { token: i0.ViewContainerRef }, { token: ColumnsService }, { token: COLUMN_STATE, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
-ClrDatagridHideableColumn.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridHideableColumn, selector: "[clrDgHideableColumn]", inputs: { clrDgHideableColumn: "clrDgHideableColumn", clrDgHidden: "clrDgHidden" }, outputs: { hiddenChange: "clrDgHiddenChange" }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridHideableColumn, decorators: [{
+ClrDatagridHideableColumn.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridHideableColumn, deps: [{ token: i0.TemplateRef }, { token: i0.ViewContainerRef }, { token: ColumnsService }, { token: COLUMN_STATE, optional: true }], target: i0.ɵɵFactoryTarget.Directive });
+ClrDatagridHideableColumn.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridHideableColumn, selector: "[clrDgHideableColumn]", inputs: { clrDgHideableColumn: "clrDgHideableColumn", clrDgHidden: "clrDgHidden" }, outputs: { hiddenChange: "clrDgHiddenChange" }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridHideableColumn, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrDgHideableColumn]',
@@ -23817,9 +23817,9 @@ class ClrIfDetail {
         });
     }
 }
-ClrIfDetail.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIfDetail, deps: [{ token: i0.TemplateRef }, { token: i0.ViewContainerRef }, { token: DetailService }], target: i0.ɵɵFactoryTarget.Directive });
-ClrIfDetail.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrIfDetail, selector: "[clrIfDetail]", inputs: { state: ["clrIfDetail", "state"] }, outputs: { stateChange: "clrIfDetailChange" }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrIfDetail, decorators: [{
+ClrIfDetail.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIfDetail, deps: [{ token: i0.TemplateRef }, { token: i0.ViewContainerRef }, { token: DetailService }], target: i0.ɵɵFactoryTarget.Directive });
+ClrIfDetail.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrIfDetail, selector: "[clrIfDetail]", inputs: { state: ["clrIfDetail", "state"] }, outputs: { stateChange: "clrIfDetailChange" }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrIfDetail, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrIfDetail]',
@@ -23938,8 +23938,8 @@ class ClrDatagridPageSize {
         }
     }
 }
-ClrDatagridPageSize.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridPageSize, deps: [{ token: Page }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridPageSize.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridPageSize, selector: "clr-dg-page-size", inputs: { pageSizeOptions: ["clrPageSizeOptions", "pageSizeOptions"], pageSizeOptionsId: ["clrPageSizeOptionsId", "pageSizeOptionsId"] }, viewQueries: [{ propertyName: "label", first: true, predicate: ClrLabel, descendants: true, static: true }], ngImport: i0, template: `
+ClrDatagridPageSize.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridPageSize, deps: [{ token: Page }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridPageSize.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridPageSize, selector: "clr-dg-page-size", inputs: { pageSizeOptions: ["clrPageSizeOptions", "pageSizeOptions"], pageSizeOptionsId: ["clrPageSizeOptionsId", "pageSizeOptionsId"] }, viewQueries: [{ propertyName: "label", first: true, predicate: ClrLabel, descendants: true, static: true }], ngImport: i0, template: `
     <label [for]="pageSizeOptionsId"><ng-content></ng-content></label>
     <div class="clr-select-wrapper">
       <select [id]="pageSizeOptionsId" [class.clr-page-size-select]="true" [(ngModel)]="page.size">
@@ -23947,7 +23947,7 @@ ClrDatagridPageSize.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", ve
       </select>
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: ClrLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i1.NgSelectOption, selector: "option", inputs: ["ngValue", "value"] }, { kind: "directive", type: i1.ɵNgSelectMultipleOption, selector: "option", inputs: ["ngValue", "value"] }, { kind: "directive", type: i1.SelectControlValueAccessor, selector: "select:not([multiple])[formControlName],select:not([multiple])[formControl],select:not([multiple])[ngModel]", inputs: ["compareWith"] }, { kind: "directive", type: i1.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridPageSize, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridPageSize, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-page-size',
@@ -24122,8 +24122,8 @@ class ClrDatagridPagination {
         this.currentPageInputRef.nativeElement.value = this.page.current.toString();
     }
 }
-ClrDatagridPagination.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridPagination, deps: [{ token: Page }, { token: ClrCommonStringsService }, { token: DetailService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridPagination.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridPagination, selector: "clr-dg-pagination", inputs: { disableCurrentPageInput: ["clrDgPageInputDisabled", "disableCurrentPageInput"], pageSize: ["clrDgPageSize", "pageSize"], totalItems: ["clrDgTotalItems", "totalItems"], lastPage: ["clrDgLastPage", "lastPage"], currentPage: ["clrDgPage", "currentPage"] }, outputs: { currentChanged: "clrDgPageChange" }, host: { properties: { "class.pagination": "true" } }, queries: [{ propertyName: "_pageSizeComponent", first: true, predicate: ClrDatagridPageSize, descendants: true }], viewQueries: [{ propertyName: "currentPageInputRef", first: true, predicate: ["currentPageInput"], descendants: true }], ngImport: i0, template: `
+ClrDatagridPagination.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridPagination, deps: [{ token: Page }, { token: ClrCommonStringsService }, { token: DetailService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridPagination.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridPagination, selector: "clr-dg-pagination", inputs: { disableCurrentPageInput: ["clrDgPageInputDisabled", "disableCurrentPageInput"], pageSize: ["clrDgPageSize", "pageSize"], totalItems: ["clrDgTotalItems", "totalItems"], lastPage: ["clrDgLastPage", "lastPage"], currentPage: ["clrDgPage", "currentPage"] }, outputs: { currentChanged: "clrDgPageChange" }, host: { properties: { "class.pagination": "true" } }, queries: [{ propertyName: "_pageSizeComponent", first: true, predicate: ClrDatagridPageSize, descendants: true }], viewQueries: [{ propertyName: "currentPageInputRef", first: true, predicate: ["currentPageInput"], descendants: true }], ngImport: i0, template: `
     <ng-container *ngIf="!detailService.isOpen">
       <div class="pagination-size" *ngIf="_pageSizeComponent">
         <ng-content select="clr-dg-page-size"></ng-content>
@@ -24221,7 +24221,7 @@ ClrDatagridPagination.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", 
       </div>
     </ng-container>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridPagination, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridPagination, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-pagination',
@@ -24393,8 +24393,8 @@ class ClrDatagridRowDetail {
         this.subscriptions.forEach(sub => sub.unsubscribe());
     }
 }
-ClrDatagridRowDetail.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridRowDetail, deps: [{ token: Selection }, { token: RowActionService }, { token: DatagridIfExpandService }, { token: ExpandableRowsCount }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrDatagridRowDetail.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrDatagridRowDetail, selector: "clr-dg-row-detail", inputs: { _beginningOfExpandableContentAriaText: ["clrRowDetailBeginningAriaText", "_beginningOfExpandableContentAriaText"], _endOfExpandableContentAriaText: ["clrRowDetailEndAriaText", "_endOfExpandableContentAriaText"], replace: ["clrDgReplace", "replace"] }, host: { attributes: { "role": "row" }, properties: { "class.datagrid-row-flex": "true", "class.datagrid-row-detail": "true", "attr.id": "expand.expandableId" } }, queries: [{ propertyName: "cells", predicate: ClrDatagridCell }], ngImport: i0, template: `
+ClrDatagridRowDetail.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridRowDetail, deps: [{ token: Selection }, { token: RowActionService }, { token: DatagridIfExpandService }, { token: ExpandableRowsCount }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrDatagridRowDetail.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrDatagridRowDetail, selector: "clr-dg-row-detail", inputs: { _beginningOfExpandableContentAriaText: ["clrRowDetailBeginningAriaText", "_beginningOfExpandableContentAriaText"], _endOfExpandableContentAriaText: ["clrRowDetailEndAriaText", "_endOfExpandableContentAriaText"], replace: ["clrDgReplace", "replace"] }, host: { attributes: { "role": "row" }, properties: { "class.datagrid-row-flex": "true", "class.datagrid-row-detail": "true", "attr.id": "expand.expandableId" } }, queries: [{ propertyName: "cells", predicate: ClrDatagridCell }], ngImport: i0, template: `
     <div class="clr-sr-only">
       {{ beginningOfExpandableContentAriaText }}
       {{ commonStrings.keys.datagridExpandableRowsHelperText }}
@@ -24412,7 +24412,7 @@ ClrDatagridRowDetail.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", v
     </ng-template>
     <div class="clr-sr-only">{{ endOfExpandableContentAriaText }}</div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: ClrDatagridCell, selector: "clr-dg-cell" }, { kind: "directive", type: DatagridCellRenderer, selector: "clr-dg-cell" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridRowDetail, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridRowDetail, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-dg-row-detail',
@@ -24545,9 +24545,9 @@ class DatagridHeaderRenderer {
         return width;
     }
 }
-DatagridHeaderRenderer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridHeaderRenderer, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }, { token: DatagridRenderOrganizer }, { token: DomAdapter }, { token: ColumnResizerService }, { token: ColumnsService }, { token: COLUMN_STATE }], target: i0.ɵɵFactoryTarget.Directive });
-DatagridHeaderRenderer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: DatagridHeaderRenderer, selector: "clr-dg-column", outputs: { resizeEmitter: "clrDgColumnResize" }, providers: [ColumnResizerService, COLUMN_STATE_PROVIDER], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridHeaderRenderer, decorators: [{
+DatagridHeaderRenderer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridHeaderRenderer, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }, { token: DatagridRenderOrganizer }, { token: DomAdapter }, { token: ColumnResizerService }, { token: ColumnsService }, { token: COLUMN_STATE }], target: i0.ɵɵFactoryTarget.Directive });
+DatagridHeaderRenderer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: DatagridHeaderRenderer, selector: "clr-dg-column", outputs: { resizeEmitter: "clrDgColumnResize" }, providers: [ColumnResizerService, COLUMN_STATE_PROVIDER], ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridHeaderRenderer, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-dg-column',
@@ -24597,9 +24597,9 @@ class NoopDomAdapter {
         // Do nothing
     }
 }
-NoopDomAdapter.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: NoopDomAdapter, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-NoopDomAdapter.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: NoopDomAdapter });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: NoopDomAdapter, decorators: [{
+NoopDomAdapter.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: NoopDomAdapter, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+NoopDomAdapter.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: NoopDomAdapter });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: NoopDomAdapter, decorators: [{
             type: Injectable
         }] });
 
@@ -24855,9 +24855,9 @@ class DatagridMainRenderer {
         });
     }
 }
-DatagridMainRenderer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridMainRenderer, deps: [{ token: ClrDatagrid }, { token: DatagridRenderOrganizer }, { token: Items }, { token: Page }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: DetailService }, { token: TableSizeService }, { token: ColumnsService }, { token: i0.NgZone }, { token: KeyNavigationGridController }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Directive });
-DatagridMainRenderer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: DatagridMainRenderer, selector: "clr-datagrid", providers: [{ provide: DomAdapter, useFactory: domAdapterFactory, deps: [PLATFORM_ID] }], queries: [{ propertyName: "headers", predicate: DatagridHeaderRenderer }, { propertyName: "rows", predicate: DatagridRowRenderer }], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridMainRenderer, decorators: [{
+DatagridMainRenderer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridMainRenderer, deps: [{ token: ClrDatagrid }, { token: DatagridRenderOrganizer }, { token: Items }, { token: Page }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: DetailService }, { token: TableSizeService }, { token: ColumnsService }, { token: i0.NgZone }, { token: KeyNavigationGridController }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Directive });
+DatagridMainRenderer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: DatagridMainRenderer, selector: "clr-datagrid", providers: [{ provide: DomAdapter, useFactory: domAdapterFactory, deps: [PLATFORM_ID] }], queries: [{ propertyName: "headers", predicate: DatagridHeaderRenderer }, { propertyName: "rows", predicate: DatagridRowRenderer }], ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridMainRenderer, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-datagrid',
@@ -24888,9 +24888,9 @@ class DatagridRowDetailRenderer extends DatagridRowRenderer {
         super.ngOnDestroy();
     }
 }
-DatagridRowDetailRenderer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridRowDetailRenderer, deps: [{ token: DatagridRowRenderer }, { token: ColumnsService }], target: i0.ɵɵFactoryTarget.Directive });
-DatagridRowDetailRenderer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: DatagridRowDetailRenderer, selector: "clr-dg-row-detail", usesInheritance: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: DatagridRowDetailRenderer, decorators: [{
+DatagridRowDetailRenderer.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridRowDetailRenderer, deps: [{ token: DatagridRowRenderer }, { token: ColumnsService }], target: i0.ɵɵFactoryTarget.Directive });
+DatagridRowDetailRenderer.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: DatagridRowDetailRenderer, selector: "clr-dg-row-detail", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: DatagridRowDetailRenderer, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-dg-row-detail',
@@ -24951,8 +24951,8 @@ class ClrDatagridModule {
         ClarityIcons.addIcons(ellipsisVerticalIcon, viewColumnsIcon, windowCloseIcon, arrowIcon, timesIcon, stepForward2Icon, angleDoubleIcon, filterGridCircleIcon, filterGridIcon);
     }
 }
-ClrDatagridModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrDatagridModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridModule, declarations: [
+ClrDatagridModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrDatagridModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridModule, declarations: [
         // Core
         ClrDatagrid,
         ClrDatagridActionBar,
@@ -25045,7 +25045,7 @@ ClrDatagridModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", versi
         // Built-in shortcuts
         DatagridNumericFilter,
         DatagridStringFilter] });
-ClrDatagridModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridModule, imports: [CommonModule,
+ClrDatagridModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridModule, imports: [CommonModule,
         CdkDragModule,
         CdkTrapFocusModule,
         ClrIconModule,
@@ -25058,7 +25058,7 @@ ClrDatagridModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", versi
         ClrSpinnerModule,
         ClrPopoverModuleNext,
         ClrKeyFocusModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDatagridModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDatagridModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [
@@ -25089,9 +25089,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrStackViewCustomTags {
 }
-ClrStackViewCustomTags.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStackViewCustomTags, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-ClrStackViewCustomTags.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrStackViewCustomTags, selector: "clr-stack-content", ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStackViewCustomTags, decorators: [{
+ClrStackViewCustomTags.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStackViewCustomTags, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+ClrStackViewCustomTags.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrStackViewCustomTags, selector: "clr-stack-content", ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStackViewCustomTags, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-stack-content',
@@ -25120,9 +25120,9 @@ class ClrStackViewLabel {
         }
     }
 }
-ClrStackViewLabel.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStackViewLabel, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrStackViewLabel.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrStackViewLabel, selector: "clr-stack-label", inputs: { id: "id" }, host: { properties: { "attr.id": "id" } }, ngImport: i0, template: '<ng-content></ng-content>', isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStackViewLabel, decorators: [{
+ClrStackViewLabel.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStackViewLabel, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrStackViewLabel.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrStackViewLabel, selector: "clr-stack-label", inputs: { id: "id" }, host: { properties: { "attr.id": "id" } }, ngImport: i0, template: '<ng-content></ng-content>', isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStackViewLabel, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-stack-label',
@@ -25232,8 +25232,8 @@ class ClrStackBlock {
         event.preventDefault();
     }
 }
-ClrStackBlock.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStackBlock, deps: [{ token: ClrStackBlock, optional: true, skipSelf: true }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrStackBlock.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrStackBlock, selector: "clr-stack-block", inputs: { expanded: ["clrSbExpanded", "expanded"], expandable: ["clrSbExpandable", "expandable"], ariaLevel: ["clrStackViewLevel", "ariaLevel"], setChangedValue: ["clrSbNotifyChange", "setChangedValue"] }, outputs: { expandedChange: "clrSbExpandedChange" }, host: { properties: { "class.stack-block": "true", "attr.role": "\"heading\"", "attr.aria-level": "headingLevel", "class.stack-block-expanded": "this.expanded", "class.stack-block-expandable": "this.expandable", "class.stack-block-changed": "this.getChangedValue", "class.on-focus": "this.onStackLabelFocus" } }, queries: [{ propertyName: "stackBlockTitle", first: true, predicate: ClrStackViewLabel, descendants: true }], ngImport: i0, template: `
+ClrStackBlock.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStackBlock, deps: [{ token: ClrStackBlock, optional: true, skipSelf: true }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrStackBlock.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrStackBlock, selector: "clr-stack-block", inputs: { expanded: ["clrSbExpanded", "expanded"], expandable: ["clrSbExpandable", "expandable"], ariaLevel: ["clrStackViewLevel", "ariaLevel"], setChangedValue: ["clrSbNotifyChange", "setChangedValue"] }, outputs: { expandedChange: "clrSbExpandedChange" }, host: { properties: { "class.stack-block": "true", "attr.role": "\"heading\"", "attr.aria-level": "headingLevel", "class.stack-block-expanded": "this.expanded", "class.stack-block-expandable": "this.expandable", "class.stack-block-changed": "this.getChangedValue", "class.on-focus": "this.onStackLabelFocus" } }, queries: [{ propertyName: "stackBlockTitle", first: true, predicate: ClrStackViewLabel, descendants: true }], ngImport: i0, template: `
     <!-- The 'preventDefault' for the space keydown event prevents the page
          from scrolling when a stack block is toggled via the space key. -->
     <div
@@ -25274,7 +25274,7 @@ ClrStackBlock.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version:
       </div>
     </clr-expandable-animation>
   `, isInline: true, styles: [":host{display:block}\n"], dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: ClrExpandableAnimation, selector: "clr-expandable-animation", inputs: ["clrExpandTrigger"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStackBlock, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStackBlock, decorators: [{
             type: Component,
             args: [{ selector: 'clr-stack-block', template: `
     <!-- The 'preventDefault' for the space keydown event prevents the page
@@ -25374,9 +25374,9 @@ class ClrStackContentInput {
         this.uniqueId = uniqueIdFactory();
     }
 }
-ClrStackContentInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStackContentInput, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-ClrStackContentInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrStackContentInput, selector: "[clrStackInput]", host: { properties: { "class.clr-input": "true", "attr.aria-labelledby": "uniqueId" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStackContentInput, decorators: [{
+ClrStackContentInput.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStackContentInput, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+ClrStackContentInput.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrStackContentInput, selector: "[clrStackInput]", host: { properties: { "class.clr-input": "true", "attr.aria-labelledby": "uniqueId" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStackContentInput, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrStackInput]',
@@ -25395,12 +25395,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrStackView {
 }
-ClrStackView.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStackView, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrStackView.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrStackView, selector: "clr-stack-view", ngImport: i0, template: `
+ClrStackView.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStackView, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrStackView.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrStackView, selector: "clr-stack-view", ngImport: i0, template: `
     <ng-content select="clr-stack-header"></ng-content>
     <div class="stack-view"><ng-content></ng-content></div>
   `, isInline: true, styles: [":host{display:block}\n"] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStackView, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStackView, decorators: [{
             type: Component,
             args: [{ selector: 'clr-stack-view', template: `
     <ng-content select="clr-stack-header"></ng-content>
@@ -25419,8 +25419,8 @@ class ClrStackHeader {
         this.stackView = stackView;
     }
 }
-ClrStackHeader.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStackHeader, deps: [{ token: ClrStackView }], target: i0.ɵɵFactoryTarget.Component });
-ClrStackHeader.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrStackHeader, selector: "clr-stack-header", ngImport: i0, template: `
+ClrStackHeader.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStackHeader, deps: [{ token: ClrStackView }], target: i0.ɵɵFactoryTarget.Component });
+ClrStackHeader.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrStackHeader, selector: "clr-stack-header", ngImport: i0, template: `
     <div class="stack-header">
       <h4 class="stack-title"><ng-content></ng-content></h4>
 
@@ -25429,7 +25429,7 @@ ClrStackHeader.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version
       </span>
     </div>
   `, isInline: true, styles: [":host{display:block}\n"] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStackHeader, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStackHeader, decorators: [{
             type: Component,
             args: [{ selector: 'clr-stack-header', template: `
     <div class="stack-header">
@@ -25461,8 +25461,8 @@ class ClrStackViewModule {
         ClarityIcons.addIcons(angleIcon);
     }
 }
-ClrStackViewModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStackViewModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrStackViewModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrStackViewModule, declarations: [ClrStackView,
+ClrStackViewModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStackViewModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrStackViewModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrStackViewModule, declarations: [ClrStackView,
         ClrStackHeader,
         ClrStackBlock,
         ClrStackContentInput,
@@ -25473,8 +25473,8 @@ ClrStackViewModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", vers
         ClrStackContentInput,
         ClrStackViewLabel,
         ClrStackViewCustomTags] });
-ClrStackViewModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStackViewModule, imports: [CommonModule, FormsModule, ClrIconModule, ClrExpandableAnimationModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrStackViewModule, decorators: [{
+ClrStackViewModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStackViewModule, imports: [CommonModule, FormsModule, ClrIconModule, ClrExpandableAnimationModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrStackViewModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, ClrIconModule, ClrExpandableAnimationModule],
@@ -25496,9 +25496,9 @@ class TreeFeaturesService {
         this.childrenFetched = new Subject();
     }
 }
-TreeFeaturesService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TreeFeaturesService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-TreeFeaturesService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TreeFeaturesService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TreeFeaturesService, decorators: [{
+TreeFeaturesService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TreeFeaturesService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+TreeFeaturesService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TreeFeaturesService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TreeFeaturesService, decorators: [{
             type: Injectable
         }] });
 function treeFeaturesFactory(existing) {
@@ -25568,15 +25568,15 @@ class RecursiveChildren {
         this.role = this.parent ? 'group' : null;
     }
 }
-RecursiveChildren.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: RecursiveChildren, deps: [{ token: TreeFeaturesService }, { token: IfExpandService, optional: true }], target: i0.ɵɵFactoryTarget.Component });
-RecursiveChildren.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: RecursiveChildren, selector: "clr-recursive-children", inputs: { parent: "parent", children: "children" }, host: { properties: { "attr.role": "role" } }, ngImport: i0, template: `
+RecursiveChildren.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: RecursiveChildren, deps: [{ token: TreeFeaturesService }, { token: IfExpandService, optional: true }], target: i0.ɵɵFactoryTarget.Component });
+RecursiveChildren.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: RecursiveChildren, selector: "clr-recursive-children", inputs: { parent: "parent", children: "children" }, host: { properties: { "attr.role": "role" } }, ngImport: i0, template: `
     <ng-container *ngIf="shouldRender()">
       <ng-container *ngFor="let child of parent?.children || children">
         <ng-container *ngTemplateOutlet="featuresService.recursion.template; context: getContext(child)"></ng-container>
       </ng-container>
     </ng-container>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: RecursiveChildren, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: RecursiveChildren, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-recursive-children',
@@ -25854,9 +25854,9 @@ class ClrRecursiveForOf {
         }
     }
 }
-ClrRecursiveForOf.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRecursiveForOf, deps: [{ token: i0.TemplateRef }, { token: TreeFeaturesService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrRecursiveForOf.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrRecursiveForOf, selector: "[clrRecursiveFor][clrRecursiveForOf]", inputs: { nodes: ["clrRecursiveForOf", "nodes"], getChildren: ["clrRecursiveForGetChildren", "getChildren"] }, usesOnChanges: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrRecursiveForOf, decorators: [{
+ClrRecursiveForOf.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRecursiveForOf, deps: [{ token: i0.TemplateRef }, { token: TreeFeaturesService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrRecursiveForOf.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrRecursiveForOf, selector: "[clrRecursiveFor][clrRecursiveForOf]", inputs: { nodes: ["clrRecursiveForOf", "nodes"], getChildren: ["clrRecursiveForGetChildren", "getChildren"] }, usesOnChanges: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrRecursiveForOf, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrRecursiveFor][clrRecursiveForOf]',
@@ -26050,9 +26050,9 @@ class TreeFocusManagerService {
         return this.findNodeStartsWith(searchString, model.parent);
     }
 }
-TreeFocusManagerService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TreeFocusManagerService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-TreeFocusManagerService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TreeFocusManagerService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TreeFocusManagerService, decorators: [{
+TreeFocusManagerService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TreeFocusManagerService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+TreeFocusManagerService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TreeFocusManagerService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TreeFocusManagerService, decorators: [{
             type: Injectable
         }] });
 
@@ -26111,9 +26111,9 @@ class ClrTreeNodeLink {
         }
     }
 }
-ClrTreeNodeLink.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTreeNodeLink, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrTreeNodeLink.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrTreeNodeLink, selector: ".clr-treenode-link", ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTreeNodeLink, decorators: [{
+ClrTreeNodeLink.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTreeNodeLink, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrTreeNodeLink.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrTreeNodeLink, selector: ".clr-treenode-link", ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTreeNodeLink, decorators: [{
             type: Directive,
             args: [{
                     selector: '.clr-treenode-link',
@@ -26385,8 +26385,8 @@ class ClrTreeNode {
         }
     }
 }
-ClrTreeNode.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTreeNode, deps: [{ token: PLATFORM_ID }, { token: ClrTreeNode, optional: true, skipSelf: true }, { token: TreeFeaturesService }, { token: IfExpandService }, { token: ClrCommonStringsService }, { token: TreeFocusManagerService }, { token: i0.ElementRef }, { token: i0.Injector }], target: i0.ɵɵFactoryTarget.Component });
-ClrTreeNode.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrTreeNode, selector: "clr-tree-node", inputs: { expandable: ["clrExpandable", "expandable"], disabled: ["clrDisabled", "disabled"], selected: ["clrSelected", "selected"], expanded: ["clrExpanded", "expanded"], clrForTypeAhead: "clrForTypeAhead" }, outputs: { selectedChange: "clrSelectedChange", expandedChange: "clrExpandedChange" }, host: { properties: { "class.clr-tree-node": "true", "class.disabled": "this._model.disabled" } }, providers: [TREE_FEATURES_PROVIDER, IfExpandService, { provide: LoadingListener, useExisting: IfExpandService }], queries: [{ propertyName: "treeNodeLinkList", predicate: ClrTreeNodeLink }], viewQueries: [{ propertyName: "contentContainer", first: true, predicate: ["contentContainer"], descendants: true, read: ElementRef, static: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div\n  #contentContainer\n  role=\"treeitem\"\n  class=\"clr-tree-node-content-container\"\n  tabindex=\"-1\"\n  [class.clr-form-control-disabled]=\"disabled\"\n  [attr.aria-disabled]=\"disabled\"\n  [attr.aria-expanded]=\"isExpandable() ? expanded : null\"\n  [attr.aria-selected]=\"ariaSelected\"\n  (keydown)=\"onKeyDown($event)\"\n  (focus)=\"broadcastFocusOnContainer()\"\n>\n  <button\n    *ngIf=\"isExpandable() && !isModelLoading && !expandService.loading\"\n    aria-hidden=\"true\"\n    type=\"button\"\n    tabindex=\"-1\"\n    class=\"clr-treenode-caret\"\n    (click)=\"expandService.toggle();\"\n    (focus)=\"focusTreeNode()\"\n    [disabled]=\"disabled\"\n  >\n    <cds-icon\n      class=\"clr-treenode-caret-icon\"\n      shape=\"angle\"\n      [attr.direction]=\"expandService.expanded ? 'down' : 'right'\"\n    ></cds-icon>\n  </button>\n  <div class=\"clr-treenode-spinner-container\" *ngIf=\"expandService.loading || isModelLoading\">\n    <span class=\"clr-treenode-spinner spinner\"></span>\n  </div>\n  <div class=\"clr-checkbox-wrapper clr-treenode-checkbox\" *ngIf=\"featuresService.selectable\">\n    <input\n      aria-hidden=\"true\"\n      type=\"checkbox\"\n      [id]=\"nodeId + '-check'\"\n      class=\"clr-checkbox\"\n      [disabled]=\"disabled\"\n      [checked]=\"_model.selected.value === STATES.SELECTED\"\n      [indeterminate]=\"_model.selected.value === STATES.INDETERMINATE\"\n      (change)=\"_model.toggleSelection(featuresService.eager)\"\n      (focus)=\"focusTreeNode()\"\n      tabindex=\"-1\"\n    />\n    <label [for]=\"nodeId + '-check'\" class=\"clr-control-label\">\n      <ng-container [ngTemplateOutlet]=\"treenodeContent\"></ng-container>\n    </label>\n  </div>\n  <div class=\"clr-treenode-content\" (mouseup)=\"focusTreeNode()\" *ngIf=\"!featuresService.selectable\">\n    <ng-container [ngTemplateOutlet]=\"treenodeContent\"></ng-container>\n  </div>\n\n  <ng-template #treenodeContent>\n    <ng-content></ng-content>\n    <div class=\"clr-sr-only\" *ngIf=\"featuresService.selectable || ariaSelected\">\n      <span> {{ariaSelected ? commonStrings.keys.selectedTreeNode : commonStrings.keys.unselectedTreeNode}}</span>\n    </div>\n  </ng-template>\n</div>\n<div\n  class=\"clr-treenode-children\"\n  [@toggleChildrenAnim]=\"expandService.expanded ? 'expanded' : 'collapsed'\"\n  [attr.role]=\"isExpandable() && !featuresService.recursion ? 'group' : null\"\n>\n  <ng-content select=\"clr-tree-node\"></ng-content>\n  <ng-content select=\"[clrIfExpanded]\"></ng-content>\n  <clr-recursive-children [parent]=\"_model\"></clr-recursive-children>\n</div>\n", dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: RecursiveChildren, selector: "clr-recursive-children", inputs: ["parent", "children"] }], animations: [
+ClrTreeNode.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTreeNode, deps: [{ token: PLATFORM_ID }, { token: ClrTreeNode, optional: true, skipSelf: true }, { token: TreeFeaturesService }, { token: IfExpandService }, { token: ClrCommonStringsService }, { token: TreeFocusManagerService }, { token: i0.ElementRef }, { token: i0.Injector }], target: i0.ɵɵFactoryTarget.Component });
+ClrTreeNode.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrTreeNode, selector: "clr-tree-node", inputs: { expandable: ["clrExpandable", "expandable"], disabled: ["clrDisabled", "disabled"], selected: ["clrSelected", "selected"], expanded: ["clrExpanded", "expanded"], clrForTypeAhead: "clrForTypeAhead" }, outputs: { selectedChange: "clrSelectedChange", expandedChange: "clrExpandedChange" }, host: { properties: { "class.clr-tree-node": "true", "class.disabled": "this._model.disabled" } }, providers: [TREE_FEATURES_PROVIDER, IfExpandService, { provide: LoadingListener, useExisting: IfExpandService }], queries: [{ propertyName: "treeNodeLinkList", predicate: ClrTreeNodeLink }], viewQueries: [{ propertyName: "contentContainer", first: true, predicate: ["contentContainer"], descendants: true, read: ElementRef, static: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div\n  #contentContainer\n  role=\"treeitem\"\n  class=\"clr-tree-node-content-container\"\n  tabindex=\"-1\"\n  [class.clr-form-control-disabled]=\"disabled\"\n  [attr.aria-disabled]=\"disabled\"\n  [attr.aria-expanded]=\"isExpandable() ? expanded : null\"\n  [attr.aria-selected]=\"ariaSelected\"\n  (keydown)=\"onKeyDown($event)\"\n  (focus)=\"broadcastFocusOnContainer()\"\n>\n  <button\n    *ngIf=\"isExpandable() && !isModelLoading && !expandService.loading\"\n    aria-hidden=\"true\"\n    type=\"button\"\n    tabindex=\"-1\"\n    class=\"clr-treenode-caret\"\n    (click)=\"expandService.toggle();\"\n    (focus)=\"focusTreeNode()\"\n    [disabled]=\"disabled\"\n  >\n    <cds-icon\n      class=\"clr-treenode-caret-icon\"\n      shape=\"angle\"\n      [attr.direction]=\"expandService.expanded ? 'down' : 'right'\"\n    ></cds-icon>\n  </button>\n  <div class=\"clr-treenode-spinner-container\" *ngIf=\"expandService.loading || isModelLoading\">\n    <span class=\"clr-treenode-spinner spinner\"></span>\n  </div>\n  <div class=\"clr-checkbox-wrapper clr-treenode-checkbox\" *ngIf=\"featuresService.selectable\">\n    <input\n      aria-hidden=\"true\"\n      type=\"checkbox\"\n      [id]=\"nodeId + '-check'\"\n      class=\"clr-checkbox\"\n      [disabled]=\"disabled\"\n      [checked]=\"_model.selected.value === STATES.SELECTED\"\n      [indeterminate]=\"_model.selected.value === STATES.INDETERMINATE\"\n      (change)=\"_model.toggleSelection(featuresService.eager)\"\n      (focus)=\"focusTreeNode()\"\n      tabindex=\"-1\"\n    />\n    <label [for]=\"nodeId + '-check'\" class=\"clr-control-label\">\n      <ng-container [ngTemplateOutlet]=\"treenodeContent\"></ng-container>\n    </label>\n  </div>\n  <div class=\"clr-treenode-content\" (mouseup)=\"focusTreeNode()\" *ngIf=\"!featuresService.selectable\">\n    <ng-container [ngTemplateOutlet]=\"treenodeContent\"></ng-container>\n  </div>\n\n  <ng-template #treenodeContent>\n    <ng-content></ng-content>\n    <div class=\"clr-sr-only\" *ngIf=\"featuresService.selectable || ariaSelected\">\n      <span> {{ariaSelected ? commonStrings.keys.selectedTreeNode : commonStrings.keys.unselectedTreeNode}}</span>\n    </div>\n  </ng-template>\n</div>\n<div\n  class=\"clr-treenode-children\"\n  [@toggleChildrenAnim]=\"expandService.expanded ? 'expanded' : 'collapsed'\"\n  [attr.role]=\"isExpandable() && !featuresService.recursion ? 'group' : null\"\n>\n  <ng-content select=\"clr-tree-node\"></ng-content>\n  <ng-content select=\"[clrIfExpanded]\"></ng-content>\n  <clr-recursive-children [parent]=\"_model\"></clr-recursive-children>\n</div>\n", dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: RecursiveChildren, selector: "clr-recursive-children", inputs: ["parent", "children"] }], animations: [
         trigger('toggleChildrenAnim', [
             transition('collapsed => expanded', [style({ height: 0 }), animate(200, style({ height: '*' }))]),
             transition('expanded => collapsed', [style({ height: '*' }), animate(200, style({ height: 0 }))]),
@@ -26394,7 +26394,7 @@ ClrTreeNode.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "
             state('collapsed', style({ height: 0 })),
         ]),
     ] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTreeNode, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTreeNode, decorators: [{
             type: Component,
             args: [{ selector: 'clr-tree-node', providers: [TREE_FEATURES_PROVIDER, IfExpandService, { provide: LoadingListener, useExisting: IfExpandService }], animations: [
                         trigger('toggleChildrenAnim', [
@@ -26505,15 +26505,15 @@ class ClrTree {
         this.focusManagerService.rootNodeModels = this.rootNodes.map(node => node._model).filter(node => !node.parent);
     }
 }
-ClrTree.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTree, deps: [{ token: TreeFeaturesService }, { token: TreeFocusManagerService }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Component });
-ClrTree.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrTree, selector: "clr-tree", inputs: { lazy: ["clrLazy", "lazy"] }, host: { attributes: { "tabindex": "0" }, properties: { "attr.role": "\"tree\"" } }, providers: [TREE_FEATURES_PROVIDER, TreeFocusManagerService], queries: [{ propertyName: "rootNodes", predicate: ClrTreeNode }], ngImport: i0, template: `
+ClrTree.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTree, deps: [{ token: TreeFeaturesService }, { token: TreeFocusManagerService }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Component });
+ClrTree.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrTree, selector: "clr-tree", inputs: { lazy: ["clrLazy", "lazy"] }, host: { attributes: { "tabindex": "0" }, properties: { "attr.role": "\"tree\"" } }, providers: [TREE_FEATURES_PROVIDER, TreeFocusManagerService], queries: [{ propertyName: "rootNodes", predicate: ClrTreeNode }], ngImport: i0, template: `
     <ng-content></ng-content>
     <clr-recursive-children
       *ngIf="featuresService.recursion"
       [children]="featuresService.recursion.root"
     ></clr-recursive-children>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "component", type: RecursiveChildren, selector: "clr-recursive-children", inputs: ["parent", "children"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTree, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTree, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-tree',
@@ -26550,10 +26550,10 @@ class ClrTreeViewModule {
         ClarityIcons.addIcons(angleIcon);
     }
 }
-ClrTreeViewModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTreeViewModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrTreeViewModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrTreeViewModule, declarations: [ClrTree, ClrTreeNode, ClrRecursiveForOf, ClrTreeNodeLink, RecursiveChildren], imports: [CommonModule, ClrIconModule, ClrLoadingModule], exports: [ClrTree, ClrTreeNode, ClrRecursiveForOf, ClrTreeNodeLink] });
-ClrTreeViewModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTreeViewModule, imports: [CommonModule, ClrIconModule, ClrLoadingModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTreeViewModule, decorators: [{
+ClrTreeViewModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTreeViewModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrTreeViewModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrTreeViewModule, declarations: [ClrTree, ClrTreeNode, ClrRecursiveForOf, ClrTreeNodeLink, RecursiveChildren], imports: [CommonModule, ClrIconModule, ClrLoadingModule], exports: [ClrTree, ClrTreeNode, ClrRecursiveForOf, ClrTreeNodeLink] });
+ClrTreeViewModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTreeViewModule, imports: [CommonModule, ClrIconModule, ClrLoadingModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTreeViewModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIconModule, ClrLoadingModule],
@@ -26570,10 +26570,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrDataModule {
 }
-ClrDataModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDataModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrDataModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrDataModule, exports: [ClrDatagridModule, ClrStackViewModule, ClrTreeViewModule] });
-ClrDataModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDataModule, imports: [ClrDatagridModule, ClrStackViewModule, ClrTreeViewModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrDataModule, decorators: [{
+ClrDataModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDataModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrDataModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrDataModule, exports: [ClrDatagridModule, ClrStackViewModule, ClrTreeViewModule] });
+ClrDataModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDataModule, imports: [ClrDatagridModule, ClrStackViewModule, ClrTreeViewModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrDataModule, decorators: [{
             type: NgModule,
             args: [{
                     exports: [ClrDatagridModule, ClrStackViewModule, ClrTreeViewModule],
@@ -26676,9 +26676,9 @@ class AlertIconAndTypesService {
         return returnObj;
     }
 }
-AlertIconAndTypesService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: AlertIconAndTypesService, deps: [{ token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Injectable });
-AlertIconAndTypesService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: AlertIconAndTypesService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: AlertIconAndTypesService, decorators: [{
+AlertIconAndTypesService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: AlertIconAndTypesService, deps: [{ token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Injectable });
+AlertIconAndTypesService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: AlertIconAndTypesService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: AlertIconAndTypesService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: ClrCommonStringsService }]; } });
 
@@ -26770,9 +26770,9 @@ class MultiAlertService {
         }
     }
 }
-MultiAlertService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: MultiAlertService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-MultiAlertService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: MultiAlertService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: MultiAlertService, decorators: [{
+MultiAlertService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: MultiAlertService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+MultiAlertService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: MultiAlertService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: MultiAlertService, decorators: [{
             type: Injectable
         }] });
 
@@ -26875,9 +26875,9 @@ class ClrAlert {
         this._closedChanged.emit(true);
     }
 }
-ClrAlert.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAlert, deps: [{ token: AlertIconAndTypesService }, { token: i0.ChangeDetectorRef }, { token: MultiAlertService, optional: true }, { token: ClrCommonStringsService }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component });
-ClrAlert.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrAlert, selector: "clr-alert", inputs: { isSmall: ["clrAlertSizeSmall", "isSmall"], closable: ["clrAlertClosable", "closable"], isAppLevel: ["clrAlertAppLevel", "isAppLevel"], clrCloseButtonAriaLabel: "clrCloseButtonAriaLabel", isLightweight: ["clrAlertLightweight", "isLightweight"], alertType: ["clrAlertType", "alertType"], alertIconShape: ["clrAlertIcon", "alertIconShape"], closed: ["clrAlertClosed", "closed"] }, outputs: { _closedChanged: "clrAlertClosedChange" }, providers: [AlertIconAndTypesService], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div\n  *ngIf=\"!_closed\"\n  class=\"alert\"\n  [ngClass]=\"alertClass\"\n  [class.alert-sm]=\"isSmall\"\n  [class.alert-lightweight]=\"isLightweight\"\n  [class.alert-app-level]=\"isAppLevel\"\n>\n  <div class=\"alert-items\">\n    <ng-content></ng-content>\n  </div>\n  <button type=\"button\" class=\"close\" *ngIf=\"closable\" (click)=\"close()\" [attr.aria-label]=\"clrCloseButtonAriaLabel\">\n    <cds-icon shape=\"times\"></cds-icon>\n  </button>\n</div>\n", dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAlert, decorators: [{
+ClrAlert.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAlert, deps: [{ token: AlertIconAndTypesService }, { token: i0.ChangeDetectorRef }, { token: MultiAlertService, optional: true }, { token: ClrCommonStringsService }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component });
+ClrAlert.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrAlert, selector: "clr-alert", inputs: { isSmall: ["clrAlertSizeSmall", "isSmall"], closable: ["clrAlertClosable", "closable"], isAppLevel: ["clrAlertAppLevel", "isAppLevel"], clrCloseButtonAriaLabel: "clrCloseButtonAriaLabel", isLightweight: ["clrAlertLightweight", "isLightweight"], alertType: ["clrAlertType", "alertType"], alertIconShape: ["clrAlertIcon", "alertIconShape"], closed: ["clrAlertClosed", "closed"] }, outputs: { _closedChanged: "clrAlertClosedChange" }, providers: [AlertIconAndTypesService], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div\n  *ngIf=\"!_closed\"\n  class=\"alert\"\n  [ngClass]=\"alertClass\"\n  [class.alert-sm]=\"isSmall\"\n  [class.alert-lightweight]=\"isLightweight\"\n  [class.alert-app-level]=\"isAppLevel\"\n>\n  <div class=\"alert-items\">\n    <ng-content></ng-content>\n  </div>\n  <button type=\"button\" class=\"close\" *ngIf=\"closable\" (click)=\"close()\" [attr.aria-label]=\"clrCloseButtonAriaLabel\">\n    <cds-icon shape=\"times\"></cds-icon>\n  </button>\n</div>\n", dependencies: [{ kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAlert, decorators: [{
             type: Component,
             args: [{ selector: 'clr-alert', providers: [AlertIconAndTypesService], template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div\n  *ngIf=\"!_closed\"\n  class=\"alert\"\n  [ngClass]=\"alertClass\"\n  [class.alert-sm]=\"isSmall\"\n  [class.alert-lightweight]=\"isLightweight\"\n  [class.alert-app-level]=\"isAppLevel\"\n>\n  <div class=\"alert-items\">\n    <ng-content></ng-content>\n  </div>\n  <button type=\"button\" class=\"close\" *ngIf=\"closable\" (click)=\"close()\" [attr.aria-label]=\"clrCloseButtonAriaLabel\">\n    <cds-icon shape=\"times\"></cds-icon>\n  </button>\n</div>\n" }]
         }], ctorParameters: function () { return [{ type: AlertIconAndTypesService }, { type: i0.ChangeDetectorRef }, { type: MultiAlertService, decorators: [{
@@ -26921,8 +26921,8 @@ class ClrAlertItem {
         this.iconService = iconService;
     }
 }
-ClrAlertItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAlertItem, deps: [{ token: AlertIconAndTypesService }], target: i0.ɵɵFactoryTarget.Component });
-ClrAlertItem.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrAlertItem, selector: "clr-alert-item", host: { classAttribute: "alert-item" }, ngImport: i0, template: `
+ClrAlertItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAlertItem, deps: [{ token: AlertIconAndTypesService }], target: i0.ɵɵFactoryTarget.Component });
+ClrAlertItem.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrAlertItem, selector: "clr-alert-item", host: { classAttribute: "alert-item" }, ngImport: i0, template: `
     <div class="alert-icon-wrapper">
       <clr-spinner class="alert-spinner" clrInline *ngIf="iconService.alertIconShape === 'loading'"></clr-spinner>
       <cds-icon
@@ -26935,7 +26935,7 @@ ClrAlertItem.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: 
     </div>
     <ng-content></ng-content>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: ClrSpinner, selector: "clr-spinner", inputs: ["clrInline", "clrInverse", "clrSmall", "clrMedium"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAlertItem, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAlertItem, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-alert-item',
@@ -26968,9 +26968,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrAlertText {
 }
-ClrAlertText.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAlertText, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-ClrAlertText.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrAlertText, selector: ".alert-text", ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAlertText, decorators: [{
+ClrAlertText.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAlertText, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+ClrAlertText.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrAlertText, selector: ".alert-text", ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAlertText, decorators: [{
             type: Directive,
             args: [{
                     selector: '.alert-text',
@@ -27040,9 +27040,9 @@ class ClrAlertsPager {
         this.multiAlertService.previous();
     }
 }
-ClrAlertsPager.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAlertsPager, deps: [{ token: MultiAlertService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrAlertsPager.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrAlertsPager, selector: "clr-alerts-pager", inputs: { currentAlert: ["clrCurrentAlert", "currentAlert"], currentAlertIndex: ["clrCurrentAlertIndex", "currentAlertIndex"] }, outputs: { currentAlertChange: "clrCurrentAlertChange", currentAlertIndexChange: "clrCurrentAlertIndexChange" }, host: { properties: { "class.alerts-pager": "true" } }, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"alerts-pager-control\">\n  <div class=\"alerts-page-down\">\n    <button class=\"alerts-pager-button\" type=\"button\" (click)=\"pageDown()\" [attr.aria-label]=\"previousAlertAriaLabel\">\n      <cds-icon shape=\"angle\" direction=\"left\" [attr.title]=\"commonStrings.keys.previous\"></cds-icon>\n    </button>\n  </div>\n  <div class=\"alerts-pager-text\">{{this.multiAlertService.current+1}} / {{this.multiAlertService.count}}</div>\n  <div class=\"alerts-page-up\">\n    <button class=\"alerts-pager-button\" type=\"button\" (click)=\"pageUp()\" [attr.aria-label]=\"nextAlertAriaLabel\">\n      <cds-icon shape=\"angle\" direction=\"right\" [attr.title]=\"commonStrings.keys.next\"></cds-icon>\n    </button>\n  </div>\n</div>\n", dependencies: [{ kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAlertsPager, decorators: [{
+ClrAlertsPager.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAlertsPager, deps: [{ token: MultiAlertService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrAlertsPager.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrAlertsPager, selector: "clr-alerts-pager", inputs: { currentAlert: ["clrCurrentAlert", "currentAlert"], currentAlertIndex: ["clrCurrentAlertIndex", "currentAlertIndex"] }, outputs: { currentAlertChange: "clrCurrentAlertChange", currentAlertIndexChange: "clrCurrentAlertIndexChange" }, host: { properties: { "class.alerts-pager": "true" } }, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"alerts-pager-control\">\n  <div class=\"alerts-page-down\">\n    <button class=\"alerts-pager-button\" type=\"button\" (click)=\"pageDown()\" [attr.aria-label]=\"previousAlertAriaLabel\">\n      <cds-icon shape=\"angle\" direction=\"left\" [attr.title]=\"commonStrings.keys.previous\"></cds-icon>\n    </button>\n  </div>\n  <div class=\"alerts-pager-text\">{{this.multiAlertService.current+1}} / {{this.multiAlertService.count}}</div>\n  <div class=\"alerts-page-up\">\n    <button class=\"alerts-pager-button\" type=\"button\" (click)=\"pageUp()\" [attr.aria-label]=\"nextAlertAriaLabel\">\n      <cds-icon shape=\"angle\" direction=\"right\" [attr.title]=\"commonStrings.keys.next\"></cds-icon>\n    </button>\n  </div>\n</div>\n", dependencies: [{ kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAlertsPager, decorators: [{
             type: Component,
             args: [{ selector: 'clr-alerts-pager', host: { '[class.alerts-pager]': 'true' }, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"alerts-pager-control\">\n  <div class=\"alerts-page-down\">\n    <button class=\"alerts-pager-button\" type=\"button\" (click)=\"pageDown()\" [attr.aria-label]=\"previousAlertAriaLabel\">\n      <cds-icon shape=\"angle\" direction=\"left\" [attr.title]=\"commonStrings.keys.previous\"></cds-icon>\n    </button>\n  </div>\n  <div class=\"alerts-pager-text\">{{this.multiAlertService.current+1}} / {{this.multiAlertService.count}}</div>\n  <div class=\"alerts-page-up\">\n    <button class=\"alerts-pager-button\" type=\"button\" (click)=\"pageUp()\" [attr.aria-label]=\"nextAlertAriaLabel\">\n      <cds-icon shape=\"angle\" direction=\"right\" [attr.title]=\"commonStrings.keys.next\"></cds-icon>\n    </button>\n  </div>\n</div>\n" }]
         }], ctorParameters: function () { return [{ type: MultiAlertService }, { type: ClrCommonStringsService }]; }, propDecorators: { currentAlertChange: [{
@@ -27125,9 +27125,9 @@ class ClrAlerts {
         this.multiAlertService.destroy();
     }
 }
-ClrAlerts.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAlerts, deps: [{ token: MultiAlertService }], target: i0.ɵɵFactoryTarget.Component });
-ClrAlerts.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrAlerts, selector: "clr-alerts", inputs: { _inputCurrentIndex: ["clrCurrentAlertIndex", "_inputCurrentIndex"], currentAlert: ["clrCurrentAlert", "currentAlert"] }, outputs: { currentAlertChange: "clrCurrentAlertChange", currentAlertIndexChange: "clrCurrentAlertIndexChange" }, host: { properties: { "class.alerts": "true", "class.alert-danger": "this.currentAlertType == 'danger'", "class.alert-info": "this.currentAlertType == 'info'", "class.alert-success": "this.currentAlertType == 'success'", "class.alert-warning": "this.currentAlertType == 'warning'", "class.alert-neutral": "this.currentAlertType == 'neutral'" } }, providers: [MultiAlertService], queries: [{ propertyName: "allAlerts", predicate: ClrAlert }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div class=\"alerts-wrapper\">\n  <clr-alerts-pager *ngIf=\"multiAlertService.count > 1\" [clrCurrentAlertIndex]=\"currentAlertIndex\"></clr-alerts-pager>\n  <ng-content select=\"clr-alert\"></ng-content>\n</div>\n", styles: [":host{display:block}\n"], dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "component", type: ClrAlertsPager, selector: "clr-alerts-pager", inputs: ["clrCurrentAlert", "clrCurrentAlertIndex"], outputs: ["clrCurrentAlertChange", "clrCurrentAlertIndexChange"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAlerts, decorators: [{
+ClrAlerts.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAlerts, deps: [{ token: MultiAlertService }], target: i0.ɵɵFactoryTarget.Component });
+ClrAlerts.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrAlerts, selector: "clr-alerts", inputs: { _inputCurrentIndex: ["clrCurrentAlertIndex", "_inputCurrentIndex"], currentAlert: ["clrCurrentAlert", "currentAlert"] }, outputs: { currentAlertChange: "clrCurrentAlertChange", currentAlertIndexChange: "clrCurrentAlertIndexChange" }, host: { properties: { "class.alerts": "true", "class.alert-danger": "this.currentAlertType == 'danger'", "class.alert-info": "this.currentAlertType == 'info'", "class.alert-success": "this.currentAlertType == 'success'", "class.alert-warning": "this.currentAlertType == 'warning'", "class.alert-neutral": "this.currentAlertType == 'neutral'" } }, providers: [MultiAlertService], queries: [{ propertyName: "allAlerts", predicate: ClrAlert }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div class=\"alerts-wrapper\">\n  <clr-alerts-pager *ngIf=\"multiAlertService.count > 1\" [clrCurrentAlertIndex]=\"currentAlertIndex\"></clr-alerts-pager>\n  <ng-content select=\"clr-alert\"></ng-content>\n</div>\n", styles: [":host{display:block}\n"], dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "component", type: ClrAlertsPager, selector: "clr-alerts-pager", inputs: ["clrCurrentAlert", "clrCurrentAlertIndex"], outputs: ["clrCurrentAlertChange", "clrCurrentAlertIndexChange"] }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAlerts, decorators: [{
             type: Component,
             args: [{ selector: 'clr-alerts', providers: [MultiAlertService], host: {
                         '[class.alerts]': 'true',
@@ -27166,10 +27166,10 @@ class ClrAlertModule {
         ClarityIcons.addIcons(errorStandardIcon, helpIcon, infoStandardIcon, noteIcon, successStandardIcon, warningStandardIcon, windowCloseIcon);
     }
 }
-ClrAlertModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAlertModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrAlertModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrAlertModule, declarations: [ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, ClrAlertText], imports: [CommonModule, ClrIconModule, ClrDropdownModule, ClrSpinnerModule], exports: [ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, ClrAlertText] });
-ClrAlertModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAlertModule, imports: [CommonModule, ClrIconModule, ClrDropdownModule, ClrSpinnerModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrAlertModule, decorators: [{
+ClrAlertModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAlertModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrAlertModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrAlertModule, declarations: [ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, ClrAlertText], imports: [CommonModule, ClrIconModule, ClrDropdownModule, ClrSpinnerModule], exports: [ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, ClrAlertText] });
+ClrAlertModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAlertModule, imports: [CommonModule, ClrIconModule, ClrDropdownModule, ClrSpinnerModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrAlertModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIconModule, ClrDropdownModule, ClrSpinnerModule],
@@ -27186,10 +27186,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrEmphasisModule {
 }
-ClrEmphasisModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrEmphasisModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrEmphasisModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrEmphasisModule, exports: [ClrAlertModule] });
-ClrEmphasisModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrEmphasisModule, imports: [ClrAlertModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrEmphasisModule, decorators: [{
+ClrEmphasisModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrEmphasisModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrEmphasisModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrEmphasisModule, exports: [ClrAlertModule] });
+ClrEmphasisModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrEmphasisModule, imports: [ClrAlertModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrEmphasisModule, decorators: [{
             type: NgModule,
             args: [{
                     exports: [ClrAlertModule],
@@ -27215,9 +27215,9 @@ class ScrollingService {
         }
     }
 }
-ScrollingService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ScrollingService, deps: [{ token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
-ScrollingService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ScrollingService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ScrollingService, decorators: [{
+ScrollingService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ScrollingService, deps: [{ token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
+ScrollingService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ScrollingService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ScrollingService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: undefined, decorators: [{
                     type: Inject,
@@ -27236,9 +27236,9 @@ class ClrModalConfigurationService {
         this.backdrop = true;
     }
 }
-ClrModalConfigurationService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrModalConfigurationService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-ClrModalConfigurationService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrModalConfigurationService, providedIn: 'root' });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrModalConfigurationService, decorators: [{
+ClrModalConfigurationService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrModalConfigurationService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+ClrModalConfigurationService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrModalConfigurationService, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrModalConfigurationService, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }] });
@@ -27328,8 +27328,8 @@ class ClrModal {
         this.bodyElementRef.nativeElement.scrollTo(0, 0);
     }
 }
-ClrModal.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrModal, deps: [{ token: ScrollingService }, { token: ClrCommonStringsService }, { token: ModalStackService }, { token: ClrModalConfigurationService }], target: i0.ɵɵFactoryTarget.Component });
-ClrModal.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrModal, selector: "clr-modal", inputs: { _open: ["clrModalOpen", "_open"], closable: ["clrModalClosable", "closable"], closeButtonAriaLabel: ["clrModalCloseButtonAriaLabel", "closeButtonAriaLabel"], size: ["clrModalSize", "size"], staticBackdrop: ["clrModalStaticBackdrop", "staticBackdrop"], skipAnimation: ["clrModalSkipAnimation", "skipAnimation"], stopClose: ["clrModalPreventClose", "stopClose"], labelledBy: ["clrModalLabelledById", "labelledBy"], bypassScrollService: ["clrModalOverrideScrollService", "bypassScrollService"] }, outputs: { _openChanged: "clrModalOpenChange", altClose: "clrModalAlternateClose" }, host: { properties: { "class.open": "this._open" } }, queries: [{ propertyName: "modalContentTemplate", first: true, predicate: ["clrInternalModalContentTemplate"], descendants: true }], viewQueries: [{ propertyName: "title", first: true, predicate: ["title"], descendants: true }, { propertyName: "bodyElementRef", first: true, predicate: ["body"], descendants: true }], usesOnChanges: true, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div *ngIf=\"_open\" class=\"modal\" [class.modal-full-screen]=\"size == 'full-screen'\">\n  <!--fixme: revisit when ngClass works with exit animation-->\n  <div\n    cdkTrapFocus\n    [cdkTrapFocusAutoCapture]=\"true\"\n    [@fadeMove]=\"fadeMove\"\n    (@fadeMove.done)=\"fadeDone($event)\"\n    class=\"modal-dialog\"\n    [class.modal-sm]=\"size == 'sm'\"\n    [class.modal-lg]=\"size == 'lg'\"\n    [class.modal-xl]=\"size == 'xl'\"\n    role=\"dialog\"\n    aria-modal=\"true\"\n    [attr.aria-hidden]=\"!_open\"\n    [attr.aria-labelledby]=\"labelledBy || modalId\"\n  >\n    <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentStart}}</div>\n    <!-- This wizard is tightly coupled to the modal styles, so changes here could require changes in the wizard. -->\n    <div *ngIf=\"!modalContentTemplate; else modalContentTemplate\" class=\"modal-content-wrapper\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header--accessible\">\n          <ng-content select=\".leading-button\"></ng-content>\n          <div class=\"modal-title-wrapper\" #title [id]=\"modalId\" cdkFocusInitial tabindex=\"-1\">\n            <ng-content select=\".modal-title\"></ng-content>\n          </div>\n          <button\n            type=\"button\"\n            [attr.aria-label]=\"closeButtonAriaLabel || commonStrings.keys.close\"\n            class=\"close\"\n            *ngIf=\"closable\"\n            (click)=\"close()\"\n          >\n            <cds-icon shape=\"window-close\"></cds-icon>\n          </button>\n        </div>\n        <div #body class=\"modal-body-wrapper\">\n          <ng-content select=\".modal-body\"></ng-content>\n        </div>\n        <ng-content select=\".modal-footer\"></ng-content>\n      </div>\n    </div>\n    <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentEnd}}</div>\n  </div>\n  <div [@fade] *ngIf=\"backdrop\" class=\"modal-backdrop\" aria-hidden=\"true\" (click)=\"backdropClick()\"></div>\n</div>\n", styles: [":host{display:none}:host.open{display:inline}\n"], dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }], viewProviders: [ScrollingService], animations: [
+ClrModal.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrModal, deps: [{ token: ScrollingService }, { token: ClrCommonStringsService }, { token: ModalStackService }, { token: ClrModalConfigurationService }], target: i0.ɵɵFactoryTarget.Component });
+ClrModal.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrModal, selector: "clr-modal", inputs: { _open: ["clrModalOpen", "_open"], closable: ["clrModalClosable", "closable"], closeButtonAriaLabel: ["clrModalCloseButtonAriaLabel", "closeButtonAriaLabel"], size: ["clrModalSize", "size"], staticBackdrop: ["clrModalStaticBackdrop", "staticBackdrop"], skipAnimation: ["clrModalSkipAnimation", "skipAnimation"], stopClose: ["clrModalPreventClose", "stopClose"], labelledBy: ["clrModalLabelledById", "labelledBy"], bypassScrollService: ["clrModalOverrideScrollService", "bypassScrollService"] }, outputs: { _openChanged: "clrModalOpenChange", altClose: "clrModalAlternateClose" }, host: { properties: { "class.open": "this._open" } }, queries: [{ propertyName: "modalContentTemplate", first: true, predicate: ["clrInternalModalContentTemplate"], descendants: true }], viewQueries: [{ propertyName: "title", first: true, predicate: ["title"], descendants: true }, { propertyName: "bodyElementRef", first: true, predicate: ["body"], descendants: true }], usesOnChanges: true, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div *ngIf=\"_open\" class=\"modal\" [class.modal-full-screen]=\"size == 'full-screen'\">\n  <!--fixme: revisit when ngClass works with exit animation-->\n  <div\n    cdkTrapFocus\n    [cdkTrapFocusAutoCapture]=\"true\"\n    [@fadeMove]=\"fadeMove\"\n    (@fadeMove.done)=\"fadeDone($event)\"\n    class=\"modal-dialog\"\n    [class.modal-sm]=\"size == 'sm'\"\n    [class.modal-lg]=\"size == 'lg'\"\n    [class.modal-xl]=\"size == 'xl'\"\n    role=\"dialog\"\n    aria-modal=\"true\"\n    [attr.aria-hidden]=\"!_open\"\n    [attr.aria-labelledby]=\"labelledBy || modalId\"\n  >\n    <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentStart}}</div>\n    <!-- This wizard is tightly coupled to the modal styles, so changes here could require changes in the wizard. -->\n    <div *ngIf=\"!modalContentTemplate; else modalContentTemplate\" class=\"modal-content-wrapper\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header--accessible\">\n          <ng-content select=\".leading-button\"></ng-content>\n          <div class=\"modal-title-wrapper\" #title [id]=\"modalId\" cdkFocusInitial tabindex=\"-1\">\n            <ng-content select=\".modal-title\"></ng-content>\n          </div>\n          <button\n            type=\"button\"\n            [attr.aria-label]=\"closeButtonAriaLabel || commonStrings.keys.close\"\n            class=\"close\"\n            *ngIf=\"closable\"\n            (click)=\"close()\"\n          >\n            <cds-icon shape=\"window-close\"></cds-icon>\n          </button>\n        </div>\n        <div #body class=\"modal-body-wrapper\">\n          <ng-content select=\".modal-body\"></ng-content>\n        </div>\n        <ng-content select=\".modal-footer\"></ng-content>\n      </div>\n    </div>\n    <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentEnd}}</div>\n  </div>\n  <div [@fade] *ngIf=\"backdrop\" class=\"modal-backdrop\" aria-hidden=\"true\" (click)=\"backdropClick()\"></div>\n</div>\n", styles: [":host{display:none}:host.open{display:inline}\n"], dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }], viewProviders: [ScrollingService], animations: [
         trigger('fadeMove', [
             transition('* => fadeDown', [
                 style({ opacity: 0, transform: 'translate(0, -25%)' }),
@@ -27348,7 +27348,7 @@ ClrModal.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.
             transition('* => void', [animate('0.2s ease-in-out', style({ opacity: 0 }))]),
         ]),
     ] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrModal, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrModal, decorators: [{
             type: Component,
             args: [{ selector: 'clr-modal', viewProviders: [ScrollingService], animations: [
                         trigger('fadeMove', [
@@ -27470,9 +27470,9 @@ class ClrModalBody {
         }
     }
 }
-ClrModalBody.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrModalBody, deps: [{ token: i0.Renderer2 }, { token: i0.ElementRef }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Directive });
-ClrModalBody.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrModalBody, selector: ".modal-body", ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrModalBody, decorators: [{
+ClrModalBody.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrModalBody, deps: [{ token: i0.Renderer2 }, { token: i0.ElementRef }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Directive });
+ClrModalBody.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrModalBody, selector: ".modal-body", ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrModalBody, decorators: [{
             type: Directive,
             args: [{
                     selector: '.modal-body',
@@ -27487,13 +27487,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrModalHostComponent {
 }
-ClrModalHostComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrModalHostComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrModalHostComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrModalHostComponent, selector: "[clrModalHost]", host: { properties: { "class.clr-modal-host": "true" } }, ngImport: i0, template: `
+ClrModalHostComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrModalHostComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrModalHostComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrModalHostComponent, selector: "[clrModalHost]", host: { properties: { "class.clr-modal-host": "true" } }, ngImport: i0, template: `
     <div class="clr-modal-host-scrollable">
       <ng-content></ng-content>
     </div>
   `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrModalHostComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrModalHostComponent, decorators: [{
             type: Component,
             args: [{
                     selector: '[clrModalHost]',
@@ -27518,10 +27518,10 @@ class ClrModalModule {
         ClarityIcons.addIcons(windowCloseIcon);
     }
 }
-ClrModalModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrModalModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrModalModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrModalModule, declarations: [ClrModal, ClrModalBody, ClrModalHostComponent], imports: [CommonModule, CdkTrapFocusModule, ClrIconModule], exports: [ClrModal, ClrModalBody, ClrModalHostComponent, ClrIconModule] });
-ClrModalModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrModalModule, imports: [CommonModule, CdkTrapFocusModule, ClrIconModule, ClrIconModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrModalModule, decorators: [{
+ClrModalModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrModalModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrModalModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrModalModule, declarations: [ClrModal, ClrModalBody, ClrModalHostComponent], imports: [CommonModule, CdkTrapFocusModule, ClrIconModule], exports: [ClrModal, ClrModalBody, ClrModalHostComponent, ClrIconModule] });
+ClrModalModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrModalModule, imports: [CommonModule, CdkTrapFocusModule, ClrIconModule, ClrIconModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrModalModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, CdkTrapFocusModule, ClrIconModule],
@@ -27690,9 +27690,9 @@ class ClrSidePanel {
         this.hostElement.classList.add(`clr-side-panel-pinned-${this.position}-${this.size}`);
     }
 }
-ClrSidePanel.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSidePanel, deps: [{ token: i0.ElementRef }, { token: ClrModalConfigurationService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
-ClrSidePanel.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrSidePanel, selector: "clr-side-panel", inputs: { closeButtonAriaLabel: ["clrSidePanelCloseButtonAriaLabel", "closeButtonAriaLabel"], skipAnimation: ["clrSidePanelSkipAnimation", "skipAnimation"], labelledById: ["clrSidePanelLabelledById", "labelledById"], staticBackdrop: ["clrSidePanelStaticBackdrop", "staticBackdrop"], closable: ["clrSidePanelClosable", "closable"], preventClose: ["clrSidePanelPreventClose", "preventClose"], _open: ["clrSidePanelOpen", "_open"], size: ["clrSidePanelSize", "size"], position: ["clrSidePanelPosition", "position"], pinned: ["clrSidePanelPinned", "pinned"], clrSidePanelBackdrop: "clrSidePanelBackdrop", clrSidePanelPinnable: "clrSidePanelPinnable" }, outputs: { openChange: "clrSidePanelOpenChange", altClose: "clrSidePanelAlternateClose" }, host: { listeners: { "document:pointerup": "documentClick($event)" }, properties: { "class.side-panel": "true", "class.side-panel-bottom": "this.bottomPositionCssClass" } }, viewQueries: [{ propertyName: "modal", first: true, predicate: ClrModal, descendants: true }], ngImport: i0, template: "<clr-modal\n  [clrModalOpen]=\"_open\"\n  (clrModalOpenChange)=\"handleModalOpen($event)\"\n  [clrModalCloseButtonAriaLabel]=\"closeButtonAriaLabel\"\n  [clrModalSize]=\"size\"\n  [clrModalSkipAnimation]=\"skipAnimation\"\n  [clrModalStaticBackdrop]=\"staticBackdrop\"\n  [clrModalLabelledById]=\"labelledById\"\n  [clrModalPreventClose]=\"preventClose\"\n  [clrModalClosable]=\"closable\"\n  (clrModalAlternateClose)=\"altClose.emit($event)\"\n  [clrModalOverrideScrollService]=\"true\"\n>\n  <button\n    type=\"button\"\n    [attr.aria-label]=\"commonStrings.keys.sidePanelPin\"\n    class=\"leading-button pinnable\"\n    *ngIf=\"clrSidePanelPinnable\"\n    (click)=\"togglePinned()\"\n  >\n    <cds-icon [attr.shape]=\"pinned ? 'unpin' : 'pin'\"></cds-icon>\n  </button>\n  <div class=\"modal-title\"><ng-content select=\".side-panel-title\"></ng-content></div>\n  <div class=\"modal-body\"><ng-content select=\".side-panel-body\"></ng-content></div>\n  <div class=\"modal-footer\"><ng-content select=\".side-panel-footer\"></ng-content></div>\n</clr-modal>\n", dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: ClrModal, selector: "clr-modal", inputs: ["clrModalOpen", "clrModalClosable", "clrModalCloseButtonAriaLabel", "clrModalSize", "clrModalStaticBackdrop", "clrModalSkipAnimation", "clrModalPreventClose", "clrModalLabelledById", "clrModalOverrideScrollService"], outputs: ["clrModalOpenChange", "clrModalAlternateClose"] }, { kind: "directive", type: ClrModalBody, selector: ".modal-body" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSidePanel, decorators: [{
+ClrSidePanel.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSidePanel, deps: [{ token: i0.ElementRef }, { token: ClrModalConfigurationService }, { token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component });
+ClrSidePanel.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrSidePanel, selector: "clr-side-panel", inputs: { closeButtonAriaLabel: ["clrSidePanelCloseButtonAriaLabel", "closeButtonAriaLabel"], skipAnimation: ["clrSidePanelSkipAnimation", "skipAnimation"], labelledById: ["clrSidePanelLabelledById", "labelledById"], staticBackdrop: ["clrSidePanelStaticBackdrop", "staticBackdrop"], closable: ["clrSidePanelClosable", "closable"], preventClose: ["clrSidePanelPreventClose", "preventClose"], _open: ["clrSidePanelOpen", "_open"], size: ["clrSidePanelSize", "size"], position: ["clrSidePanelPosition", "position"], pinned: ["clrSidePanelPinned", "pinned"], clrSidePanelBackdrop: "clrSidePanelBackdrop", clrSidePanelPinnable: "clrSidePanelPinnable" }, outputs: { openChange: "clrSidePanelOpenChange", altClose: "clrSidePanelAlternateClose" }, host: { listeners: { "document:pointerup": "documentClick($event)" }, properties: { "class.side-panel": "true", "class.side-panel-bottom": "this.bottomPositionCssClass" } }, viewQueries: [{ propertyName: "modal", first: true, predicate: ClrModal, descendants: true }], ngImport: i0, template: "<clr-modal\n  [clrModalOpen]=\"_open\"\n  (clrModalOpenChange)=\"handleModalOpen($event)\"\n  [clrModalCloseButtonAriaLabel]=\"closeButtonAriaLabel\"\n  [clrModalSize]=\"size\"\n  [clrModalSkipAnimation]=\"skipAnimation\"\n  [clrModalStaticBackdrop]=\"staticBackdrop\"\n  [clrModalLabelledById]=\"labelledById\"\n  [clrModalPreventClose]=\"preventClose\"\n  [clrModalClosable]=\"closable\"\n  (clrModalAlternateClose)=\"altClose.emit($event)\"\n  [clrModalOverrideScrollService]=\"true\"\n>\n  <button\n    type=\"button\"\n    [attr.aria-label]=\"commonStrings.keys.sidePanelPin\"\n    class=\"leading-button pinnable\"\n    *ngIf=\"clrSidePanelPinnable\"\n    (click)=\"togglePinned()\"\n  >\n    <cds-icon [attr.shape]=\"pinned ? 'unpin' : 'pin'\"></cds-icon>\n  </button>\n  <div class=\"modal-title\"><ng-content select=\".side-panel-title\"></ng-content></div>\n  <div class=\"modal-body\"><ng-content select=\".side-panel-body\"></ng-content></div>\n  <div class=\"modal-footer\"><ng-content select=\".side-panel-footer\"></ng-content></div>\n</clr-modal>\n", dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: ClrModal, selector: "clr-modal", inputs: ["clrModalOpen", "clrModalClosable", "clrModalCloseButtonAriaLabel", "clrModalSize", "clrModalStaticBackdrop", "clrModalSkipAnimation", "clrModalPreventClose", "clrModalLabelledById", "clrModalOverrideScrollService"], outputs: ["clrModalOpenChange", "clrModalAlternateClose"] }, { kind: "directive", type: ClrModalBody, selector: ".modal-body" }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSidePanel, decorators: [{
             type: Component,
             args: [{ selector: 'clr-side-panel', host: {
                         '[class.side-panel]': 'true',
@@ -27757,10 +27757,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
 const CLR_SIDEPANEL_DIRECTIVES = [ClrSidePanel];
 class ClrSidePanelModule {
 }
-ClrSidePanelModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSidePanelModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrSidePanelModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrSidePanelModule, declarations: [ClrSidePanel], imports: [CommonModule, CdkTrapFocusModule, ClrIconModule, ClrModalModule], exports: [ClrSidePanel, ClrModalModule, ClrIconModule] });
-ClrSidePanelModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSidePanelModule, imports: [CommonModule, CdkTrapFocusModule, ClrIconModule, ClrModalModule, ClrModalModule, ClrIconModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrSidePanelModule, decorators: [{
+ClrSidePanelModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSidePanelModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrSidePanelModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrSidePanelModule, declarations: [ClrSidePanel], imports: [CommonModule, CdkTrapFocusModule, ClrIconModule, ClrModalModule], exports: [ClrSidePanel, ClrModalModule, ClrIconModule] });
+ClrSidePanelModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSidePanelModule, imports: [CommonModule, CdkTrapFocusModule, ClrIconModule, ClrModalModule, ClrModalModule, ClrIconModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrSidePanelModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, CdkTrapFocusModule, ClrIconModule, ClrModalModule],
@@ -27861,12 +27861,12 @@ class ClrProgressBar {
         return this._labeled;
     }
 }
-ClrProgressBar.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrProgressBar, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrProgressBar.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrProgressBar, selector: "clr-progress-bar", inputs: { max: ["clrMax", "max"], displayval: ["clrDisplayval", "displayval"], color: ["clrColor", "color"], value: ["clrValue", "value"], id: "id", clrCompact: "clrCompact", clrLabeled: "clrLabeled", clrFade: "clrFade", clrLoop: "clrLoop", clrFlash: "clrFlash", clrFlashDanger: "clrFlashDanger" }, host: { properties: { "attr.id": "this.externalId", "class.progress": "this.progressClass", "class.compact": "this.compactClass", "class.labeled": "this.labeledClass", "class.progress-fade": "this.fadeClass", "class.loop": "this.loopClass", "class.warning": "this.warningClass", "class.success": "this.successClass", "class.danger": "this.dangerClass", "class.flash": "this.flashClass", "class.flash-danger": "this.flashDangerClass" } }, ngImport: i0, template: `
+ClrProgressBar.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrProgressBar, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrProgressBar.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrProgressBar, selector: "clr-progress-bar", inputs: { max: ["clrMax", "max"], displayval: ["clrDisplayval", "displayval"], color: ["clrColor", "color"], value: ["clrValue", "value"], id: "id", clrCompact: "clrCompact", clrLabeled: "clrLabeled", clrFade: "clrFade", clrLoop: "clrLoop", clrFlash: "clrFlash", clrFlashDanger: "clrFlashDanger" }, host: { properties: { "attr.id": "this.externalId", "class.progress": "this.progressClass", "class.compact": "this.compactClass", "class.labeled": "this.labeledClass", "class.progress-fade": "this.fadeClass", "class.loop": "this.loopClass", "class.warning": "this.warningClass", "class.success": "this.successClass", "class.danger": "this.dangerClass", "class.flash": "this.flashClass", "class.flash-danger": "this.flashDangerClass" } }, ngImport: i0, template: `
     <progress [id]="id" [attr.max]="max" [attr.value]="value" [attr.data-displayval]="displayValue"></progress>
     <span *ngIf="displayStringValue()">{{ displayValue }}</span>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrProgressBar, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrProgressBar, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-progress-bar',
@@ -27951,10 +27951,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
 const CLR_PROGRESS_BAR_DIRECTIVES = [ClrProgressBar];
 class ClrProgressBarModule {
 }
-ClrProgressBarModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrProgressBarModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrProgressBarModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrProgressBarModule, declarations: [ClrProgressBar], imports: [CommonModule], exports: [ClrProgressBar] });
-ClrProgressBarModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrProgressBarModule, imports: [CommonModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrProgressBarModule, decorators: [{
+ClrProgressBarModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrProgressBarModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrProgressBarModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrProgressBarModule, declarations: [ClrProgressBar], imports: [CommonModule], exports: [ClrProgressBar] });
+ClrProgressBarModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrProgressBarModule, imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrProgressBarModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -28035,9 +28035,9 @@ class TimelineIconAttributeService {
         return this.attributeMap.get(step).iconStatus;
     }
 }
-TimelineIconAttributeService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TimelineIconAttributeService, deps: [{ token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Injectable });
-TimelineIconAttributeService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TimelineIconAttributeService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: TimelineIconAttributeService, decorators: [{
+TimelineIconAttributeService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TimelineIconAttributeService, deps: [{ token: ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Injectable });
+TimelineIconAttributeService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TimelineIconAttributeService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: TimelineIconAttributeService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: ClrCommonStringsService }]; } });
 
@@ -28055,9 +28055,9 @@ class ClrTimeline {
         return this.layout === ClrTimelineLayout.VERTICAL;
     }
 }
-ClrTimeline.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTimeline, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrTimeline.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrTimeline, selector: "clr-timeline", inputs: { layout: ["clrLayout", "layout"] }, host: { properties: { "class.clr-timeline": "true", "attr.role": "\"list\"", "class.clr-timeline-vertical": "this.isVertical" } }, providers: [TimelineIconAttributeService], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTimeline, decorators: [{
+ClrTimeline.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTimeline, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrTimeline.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrTimeline, selector: "clr-timeline", inputs: { layout: ["clrLayout", "layout"] }, host: { properties: { "class.clr-timeline": "true", "attr.role": "\"list\"", "class.clr-timeline-vertical": "this.isVertical" } }, providers: [TimelineIconAttributeService], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTimeline, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-timeline',
@@ -28091,9 +28091,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrTimelineStepTitle {
 }
-ClrTimelineStepTitle.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTimelineStepTitle, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrTimelineStepTitle.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrTimelineStepTitle, selector: "clr-timeline-step-title", host: { properties: { "class.clr-timeline-step-title": "true", "attr.aria-hidden": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTimelineStepTitle, decorators: [{
+ClrTimelineStepTitle.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTimelineStepTitle, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrTimelineStepTitle.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrTimelineStepTitle, selector: "clr-timeline-step-title", host: { properties: { "class.clr-timeline-step-title": "true", "attr.aria-hidden": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTimelineStepTitle, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-timeline-step-title',
@@ -28132,8 +28132,8 @@ class ClrTimelineStep {
         }
     }
 }
-ClrTimelineStep.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTimelineStep, deps: [{ token: TimelineIconAttributeService }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Component });
-ClrTimelineStep.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrTimelineStep, selector: "clr-timeline-step", inputs: { state: ["clrState", "state"] }, host: { properties: { "class.clr-timeline-step": "true", "attr.role": "\"listitem\"" } }, queries: [{ propertyName: "stepTitle", first: true, predicate: ClrTimelineStepTitle, descendants: true, read: ElementRef }], ngImport: i0, template: `
+ClrTimelineStep.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTimelineStep, deps: [{ token: TimelineIconAttributeService }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Component });
+ClrTimelineStep.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrTimelineStep, selector: "clr-timeline-step", inputs: { state: ["clrState", "state"] }, host: { properties: { "class.clr-timeline-step": "true", "attr.role": "\"listitem\"" } }, queries: [{ propertyName: "stepTitle", first: true, predicate: ClrTimelineStepTitle, descendants: true, read: ElementRef }], ngImport: i0, template: `
     <ng-content select="clr-timeline-step-header"></ng-content>
     <span class="clr-sr-only">{{ stepTitleText }}</span>
     <ng-container *ngIf="!isProcessing; else processing">
@@ -28153,7 +28153,7 @@ ClrTimelineStep.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", versio
       <clr-spinner clrMedium [attr.aria-label]="iconAriaLabel"></clr-spinner>
     </ng-template>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: ClrSpinner, selector: "clr-spinner", inputs: ["clrInline", "clrInverse", "clrSmall", "clrMedium"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTimelineStep, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTimelineStep, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-timeline-step',
@@ -28198,9 +28198,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrTimelineStepDescription {
 }
-ClrTimelineStepDescription.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTimelineStepDescription, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrTimelineStepDescription.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrTimelineStepDescription, selector: "clr-timeline-step-description", host: { properties: { "class.clr-timeline-step-description": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTimelineStepDescription, decorators: [{
+ClrTimelineStepDescription.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTimelineStepDescription, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrTimelineStepDescription.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrTimelineStepDescription, selector: "clr-timeline-step-description", host: { properties: { "class.clr-timeline-step-description": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTimelineStepDescription, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-timeline-step-description',
@@ -28217,9 +28217,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrTimelineStepHeader {
 }
-ClrTimelineStepHeader.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTimelineStepHeader, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrTimelineStepHeader.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrTimelineStepHeader, selector: "clr-timeline-step-header", host: { properties: { "class.clr-timeline-step-header": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTimelineStepHeader, decorators: [{
+ClrTimelineStepHeader.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTimelineStepHeader, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrTimelineStepHeader.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrTimelineStepHeader, selector: "clr-timeline-step-header", host: { properties: { "class.clr-timeline-step-header": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTimelineStepHeader, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-timeline-step-header',
@@ -28246,8 +28246,8 @@ class ClrTimelineModule {
         ClarityIcons.addIcons(circleIcon, dotCircleIcon, errorStandardIcon, successStandardIcon);
     }
 }
-ClrTimelineModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTimelineModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrTimelineModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrTimelineModule, declarations: [ClrTimeline,
+ClrTimelineModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTimelineModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrTimelineModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrTimelineModule, declarations: [ClrTimeline,
         ClrTimelineStep,
         ClrTimelineStepDescription,
         ClrTimelineStepHeader,
@@ -28256,8 +28256,8 @@ ClrTimelineModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", versi
         ClrTimelineStepDescription,
         ClrTimelineStepHeader,
         ClrTimelineStepTitle, ClrIconModule, ClrSpinnerModule] });
-ClrTimelineModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTimelineModule, imports: [CommonModule, ClrIconModule, ClrSpinnerModule, ClrIconModule, ClrSpinnerModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrTimelineModule, decorators: [{
+ClrTimelineModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTimelineModule, imports: [CommonModule, ClrIconModule, ClrSpinnerModule, ClrIconModule, ClrSpinnerModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrTimelineModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIconModule, ClrSpinnerModule],
@@ -28321,9 +28321,9 @@ class ButtonHubService {
         }
     }
 }
-ButtonHubService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ButtonHubService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-ButtonHubService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ButtonHubService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ButtonHubService, decorators: [{
+ButtonHubService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ButtonHubService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+ButtonHubService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ButtonHubService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ButtonHubService, decorators: [{
             type: Injectable
         }] });
 
@@ -28678,9 +28678,9 @@ class PageCollectionService {
         }
     }
 }
-PageCollectionService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: PageCollectionService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-PageCollectionService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: PageCollectionService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: PageCollectionService, decorators: [{
+PageCollectionService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: PageCollectionService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+PageCollectionService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: PageCollectionService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: PageCollectionService, decorators: [{
             type: Injectable
         }] });
 
@@ -29248,9 +29248,9 @@ class WizardNavigationService {
         }
     }
 }
-WizardNavigationService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: WizardNavigationService, deps: [{ token: PageCollectionService }, { token: ButtonHubService }], target: i0.ɵɵFactoryTarget.Injectable });
-WizardNavigationService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: WizardNavigationService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: WizardNavigationService, decorators: [{
+WizardNavigationService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: WizardNavigationService, deps: [{ token: PageCollectionService }, { token: ButtonHubService }], target: i0.ɵɵFactoryTarget.Injectable });
+WizardNavigationService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: WizardNavigationService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: WizardNavigationService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: PageCollectionService }, { type: ButtonHubService }]; } });
 
@@ -29281,9 +29281,9 @@ class HeaderActionService {
         return this.currentPageHasHeaderActions || this.wizardHasHeaderActions;
     }
 }
-HeaderActionService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: HeaderActionService, deps: [{ token: WizardNavigationService }], target: i0.ɵɵFactoryTarget.Injectable });
-HeaderActionService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: HeaderActionService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: HeaderActionService, decorators: [{
+HeaderActionService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: HeaderActionService, deps: [{ token: WizardNavigationService }], target: i0.ɵɵFactoryTarget.Injectable });
+HeaderActionService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: HeaderActionService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: HeaderActionService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: WizardNavigationService }]; } });
 
@@ -29317,8 +29317,8 @@ class ClrWizardHeaderAction {
         this.headerActionClicked.emit(this._id);
     }
 }
-ClrWizardHeaderAction.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardHeaderAction, deps: [], target: i0.ɵɵFactoryTarget.Component });
-ClrWizardHeaderAction.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrWizardHeaderAction, selector: "clr-wizard-header-action", inputs: { title: "title", _id: ["id", "_id"], disabled: ["clrWizardHeaderActionDisabled", "disabled"] }, outputs: { headerActionClicked: "actionClicked" }, host: { classAttribute: "clr-wizard-header-action-wrapper" }, ngImport: i0, template: `
+ClrWizardHeaderAction.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardHeaderAction, deps: [], target: i0.ɵɵFactoryTarget.Component });
+ClrWizardHeaderAction.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrWizardHeaderAction, selector: "clr-wizard-header-action", inputs: { title: "title", _id: ["id", "_id"], disabled: ["clrWizardHeaderActionDisabled", "disabled"] }, outputs: { headerActionClicked: "actionClicked" }, host: { classAttribute: "clr-wizard-header-action-wrapper" }, ngImport: i0, template: `
     <button
       type="button"
       class="btn clr-wizard-header-action btn-link"
@@ -29330,7 +29330,7 @@ ClrWizardHeaderAction.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", 
       <ng-content></ng-content>
     </button>
   `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardHeaderAction, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardHeaderAction, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-wizard-header-action',
@@ -29373,9 +29373,9 @@ class ClrWizardPageButtons {
         this.pageButtonsTemplateRef = pageButtonsTemplateRef;
     }
 }
-ClrWizardPageButtons.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardPageButtons, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrWizardPageButtons.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrWizardPageButtons, selector: "[clrPageButtons]", ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardPageButtons, decorators: [{
+ClrWizardPageButtons.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardPageButtons, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrWizardPageButtons.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrWizardPageButtons, selector: "[clrPageButtons]", ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardPageButtons, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrPageButtons]',
@@ -29393,9 +29393,9 @@ class ClrWizardPageHeaderActions {
         this.pageHeaderActionsTemplateRef = pageHeaderActionsTemplateRef;
     }
 }
-ClrWizardPageHeaderActions.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardPageHeaderActions, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrWizardPageHeaderActions.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrWizardPageHeaderActions, selector: "[clrPageHeaderActions]", ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardPageHeaderActions, decorators: [{
+ClrWizardPageHeaderActions.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardPageHeaderActions, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrWizardPageHeaderActions.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrWizardPageHeaderActions, selector: "[clrPageHeaderActions]", ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardPageHeaderActions, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrPageHeaderActions]',
@@ -29413,9 +29413,9 @@ class ClrWizardPageNavTitle {
         this.pageNavTitleTemplateRef = pageNavTitleTemplateRef;
     }
 }
-ClrWizardPageNavTitle.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardPageNavTitle, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrWizardPageNavTitle.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrWizardPageNavTitle, selector: "[clrPageNavTitle]", ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardPageNavTitle, decorators: [{
+ClrWizardPageNavTitle.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardPageNavTitle, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrWizardPageNavTitle.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrWizardPageNavTitle, selector: "[clrPageNavTitle]", ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardPageNavTitle, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrPageNavTitle]',
@@ -29433,9 +29433,9 @@ class ClrWizardPageTitle {
         this.pageTitleTemplateRef = pageTitleTemplateRef;
     }
 }
-ClrWizardPageTitle.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardPageTitle, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
-ClrWizardPageTitle.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrWizardPageTitle, selector: "[clrPageTitle]", inputs: { headingLevel: ["clrHeadingLevel", "headingLevel"] }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardPageTitle, decorators: [{
+ClrWizardPageTitle.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardPageTitle, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
+ClrWizardPageTitle.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrWizardPageTitle, selector: "[clrPageTitle]", inputs: { headingLevel: ["clrHeadingLevel", "headingLevel"] }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardPageTitle, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrPageTitle]',
@@ -30002,9 +30002,9 @@ class ClrWizardPage {
         this.navService.currentPage = this;
     }
 }
-ClrWizardPage.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardPage, deps: [{ token: WizardNavigationService }, { token: PageCollectionService }, { token: ButtonHubService }], target: i0.ɵɵFactoryTarget.Component });
-ClrWizardPage.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrWizardPage, selector: "clr-wizard-page", inputs: { _id: ["id", "_id"], preventDefault: ["clrWizardPagePreventDefault", "preventDefault"], nextStepDisabled: ["clrWizardPageNextDisabled", "nextStepDisabled"], previousStepDisabled: ["clrWizardPagePreviousDisabled", "previousStepDisabled"], hasError: ["clrWizardPageHasError", "hasError"], stopCancel: ["clrWizardPagePreventDefaultCancel", "stopCancel"], stopNext: ["clrWizardPagePreventDefaultNext", "stopNext"] }, outputs: { nextStepDisabledChange: "clrWizardPageNextDisabledChange", previousStepDisabledChange: "clrWizardPagePreviousDisabledChange", stopCancelChange: "clrWizardPagePreventDefaultCancelChange", onCommit: "clrWizardPageOnCommit", onLoad: "clrWizardPageOnLoad", pageOnCancel: "clrWizardPageOnCancel", finishButtonClicked: "clrWizardPageFinish", previousButtonClicked: "clrWizardPagePrevious", nextButtonClicked: "clrWizardPageNext", dangerButtonClicked: "clrWizardPageDanger", primaryButtonClicked: "clrWizardPagePrimary", customButtonClicked: "clrWizardPageCustomButton" }, host: { properties: { "id": "id", "attr.aria-hidden": "!current", "attr.aria-labelledby": "stepItemId", "class.active": "current", "class.clr-wizard-page": "true" } }, queries: [{ propertyName: "pageTitle", first: true, predicate: ClrWizardPageTitle, descendants: true, static: true }, { propertyName: "pageNavTitle", first: true, predicate: ClrWizardPageNavTitle, descendants: true, static: true }, { propertyName: "_buttons", first: true, predicate: ClrWizardPageButtons, descendants: true, static: true }, { propertyName: "_headerActions", first: true, predicate: ClrWizardPageHeaderActions, descendants: true, static: true }], ngImport: i0, template: '<ng-content></ng-content>', isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardPage, decorators: [{
+ClrWizardPage.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardPage, deps: [{ token: WizardNavigationService }, { token: PageCollectionService }, { token: ButtonHubService }], target: i0.ɵɵFactoryTarget.Component });
+ClrWizardPage.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrWizardPage, selector: "clr-wizard-page", inputs: { _id: ["id", "_id"], preventDefault: ["clrWizardPagePreventDefault", "preventDefault"], nextStepDisabled: ["clrWizardPageNextDisabled", "nextStepDisabled"], previousStepDisabled: ["clrWizardPagePreviousDisabled", "previousStepDisabled"], hasError: ["clrWizardPageHasError", "hasError"], stopCancel: ["clrWizardPagePreventDefaultCancel", "stopCancel"], stopNext: ["clrWizardPagePreventDefaultNext", "stopNext"] }, outputs: { nextStepDisabledChange: "clrWizardPageNextDisabledChange", previousStepDisabledChange: "clrWizardPagePreviousDisabledChange", stopCancelChange: "clrWizardPagePreventDefaultCancelChange", onCommit: "clrWizardPageOnCommit", onLoad: "clrWizardPageOnLoad", pageOnCancel: "clrWizardPageOnCancel", finishButtonClicked: "clrWizardPageFinish", previousButtonClicked: "clrWizardPagePrevious", nextButtonClicked: "clrWizardPageNext", dangerButtonClicked: "clrWizardPageDanger", primaryButtonClicked: "clrWizardPagePrimary", customButtonClicked: "clrWizardPageCustomButton" }, host: { properties: { "id": "id", "attr.aria-hidden": "!current", "attr.aria-labelledby": "stepItemId", "class.active": "current", "class.clr-wizard-page": "true" } }, queries: [{ propertyName: "pageTitle", first: true, predicate: ClrWizardPageTitle, descendants: true, static: true }, { propertyName: "pageNavTitle", first: true, predicate: ClrWizardPageNavTitle, descendants: true, static: true }, { propertyName: "_buttons", first: true, predicate: ClrWizardPageButtons, descendants: true, static: true }, { propertyName: "_headerActions", first: true, predicate: ClrWizardPageHeaderActions, descendants: true, static: true }], ngImport: i0, template: '<ng-content></ng-content>', isInline: true });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardPage, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-wizard-page',
@@ -30096,9 +30096,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClrWizardTitle {
 }
-ClrWizardTitle.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardTitle, deps: [], target: i0.ɵɵFactoryTarget.Directive });
-ClrWizardTitle.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.2", type: ClrWizardTitle, selector: "clr-wizard-title", inputs: { headingLevel: ["clrHeadingLevel", "headingLevel"] }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardTitle, decorators: [{
+ClrWizardTitle.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardTitle, deps: [], target: i0.ɵɵFactoryTarget.Directive });
+ClrWizardTitle.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "15.2.10", type: ClrWizardTitle, selector: "clr-wizard-title", inputs: { headingLevel: ["clrHeadingLevel", "headingLevel"] }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardTitle, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-wizard-title',
@@ -30225,8 +30225,8 @@ class ClrWizardStepnavItem {
         }));
     }
 }
-ClrWizardStepnavItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardStepnavItem, deps: [{ token: WizardNavigationService }, { token: PageCollectionService }, { token: ClrCommonStringsService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component });
-ClrWizardStepnavItem.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrWizardStepnavItem, selector: "[clr-wizard-stepnav-item]", inputs: { page: "page" }, host: { properties: { "id": "id", "attr.aria-current": "stepAriaCurrent", "attr.aria-controls": "page.id", "class.clr-nav-link": "true", "class.nav-item": "true", "class.active": "isCurrent", "class.disabled": "isDisabled", "class.no-click": "!canNavigate", "class.complete": "isComplete", "class.error": "hasError" } }, ngImport: i0, template: `
+ClrWizardStepnavItem.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardStepnavItem, deps: [{ token: WizardNavigationService }, { token: PageCollectionService }, { token: ClrCommonStringsService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component });
+ClrWizardStepnavItem.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrWizardStepnavItem, selector: "[clr-wizard-stepnav-item]", inputs: { page: "page" }, host: { properties: { "id": "id", "attr.aria-current": "stepAriaCurrent", "attr.aria-controls": "page.id", "class.clr-nav-link": "true", "class.nav-item": "true", "class.active": "isCurrent", "class.disabled": "isDisabled", "class.no-click": "!canNavigate", "class.complete": "isComplete", "class.error": "hasError" } }, ngImport: i0, template: `
     <button
       type="button"
       class="btn btn-link clr-wizard-stepnav-link"
@@ -30254,7 +30254,7 @@ ClrWizardStepnavItem.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", v
       </span>
     </button>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardStepnavItem, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardStepnavItem, decorators: [{
             type: Component,
             args: [{
                     selector: '[clr-wizard-stepnav-item]',
@@ -30315,8 +30315,8 @@ class ClrWizardStepnav {
         this.pageService = pageService;
     }
 }
-ClrWizardStepnav.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardStepnav, deps: [{ token: PageCollectionService }], target: i0.ɵɵFactoryTarget.Component });
-ClrWizardStepnav.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrWizardStepnav, selector: "clr-wizard-stepnav", inputs: { label: "label" }, host: { classAttribute: "clr-wizard-stepnav" }, ngImport: i0, template: `
+ClrWizardStepnav.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardStepnav, deps: [{ token: PageCollectionService }], target: i0.ɵɵFactoryTarget.Component });
+ClrWizardStepnav.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrWizardStepnav, selector: "clr-wizard-stepnav", inputs: { label: "label" }, host: { classAttribute: "clr-wizard-stepnav" }, ngImport: i0, template: `
     <nav [attr.aria-label]="label">
       <ol class="clr-wizard-stepnav-list">
         <li
@@ -30330,7 +30330,7 @@ ClrWizardStepnav.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", versi
       </ol>
     </nav>
   `, isInline: true, dependencies: [{ kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "component", type: ClrWizardStepnavItem, selector: "[clr-wizard-stepnav-item]", inputs: ["page"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardStepnav, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardStepnav, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-wizard-stepnav',
@@ -30764,9 +30764,9 @@ class ClrWizard {
         this.wizardFinished.emit();
     }
 }
-ClrWizard.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizard, deps: [{ token: PLATFORM_ID }, { token: ClrCommonStringsService }, { token: WizardNavigationService }, { token: PageCollectionService }, { token: ButtonHubService }, { token: HeaderActionService }, { token: i0.ElementRef }, { token: i0.IterableDiffers }], target: i0.ɵɵFactoryTarget.Component });
-ClrWizard.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrWizard, selector: "clr-wizard", inputs: { stepnavAriaLabel: ["clrWizardStepnavAriaLabel", "stepnavAriaLabel"], size: ["clrWizardSize", "size"], inPage: ["clrWizardInPage", "inPage"], inPageFillContentArea: ["clrWizardInPageFillContentArea", "inPageFillContentArea"], closable: ["clrWizardClosable", "closable"], _stopModalAnimations: ["clrWizardPreventModalAnimation", "_stopModalAnimations"], forceForward: ["clrWizardForceForwardNavigation", "forceForward"], clrWizardOpen: "clrWizardOpen", stopNext: ["clrWizardPreventDefaultNext", "stopNext"], stopCancel: ["clrWizardPreventDefaultCancel", "stopCancel"], stopNavigation: ["clrWizardPreventNavigation", "stopNavigation"], disableStepnav: ["clrWizardDisableStepnav", "disableStepnav"] }, outputs: { _openChanged: "clrWizardOpenChange", onCancel: "clrWizardOnCancel", wizardFinished: "clrWizardOnFinish", onReset: "clrWizardOnReset", currentPageChanged: "clrWizardCurrentPageChanged", onMoveNext: "clrWizardOnNext", onMovePrevious: "clrWizardOnPrevious" }, host: { properties: { "class.clr-wizard": "true", "class.wizard-md": "size == 'md'", "class.wizard-lg": "size == 'lg'", "class.wizard-xl": "size == 'xl'", "class.wizard-in-page": "inPage", "class.wizard-in-page--fill-content-area": "inPage && inPageFillContentArea" } }, providers: [WizardNavigationService, PageCollectionService, ButtonHubService, HeaderActionService], queries: [{ propertyName: "wizardTitle", first: true, predicate: ClrWizardTitle, descendants: true }, { propertyName: "pages", predicate: ClrWizardPage, descendants: true }, { propertyName: "headerActions", predicate: ClrWizardHeaderAction }], viewQueries: [{ propertyName: "pageTitle", first: true, predicate: ["pageTitle"], descendants: true }, { propertyName: "bodyElementRef", first: true, predicate: ["body"], descendants: true }, { propertyName: "modal", first: true, predicate: ClrModal, descendants: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-container *ngIf=\"inPage; then wizardTemplate; else wizardModalTemplate\"></ng-container>\n\n<ng-template #wizardModalTemplate>\n  <clr-modal\n    [clrModalOpen]=\"_open\"\n    [clrModalSize]=\"size\"\n    [clrModalClosable]=\"closable\"\n    [clrModalStaticBackdrop]=\"true\"\n    [clrModalSkipAnimation]=\"stopModalAnimations\"\n    [clrModalOverrideScrollService]=\"isInline\"\n    [clrModalPreventClose]=\"true\"\n    (clrModalAlternateClose)=\"modalCancel()\"\n    [clrModalLabelledById]=\"wizardId\"\n  >\n    <ng-template #clrInternalModalContentTemplate>\n      <ng-container [ngTemplateOutlet]=\"wizardTemplate\"></ng-container>\n    </ng-template>\n  </clr-modal>\n</ng-template>\n\n<!-- This template is tightly coupled to the modal styles. -->\n<ng-template #wizardTemplate>\n  <div class=\"modal-content-wrapper\">\n    <div class=\"modal-nav clr-wizard-stepnav-wrapper\" role=\"region\">\n      <div class=\"clr-wizard-title\" [id]=\"wizardId\" role=\"heading\" [attr.aria-level]=\"wizardTitle.headingLevel || 1\">\n        <ng-content select=\"clr-wizard-title\"></ng-content>\n      </div>\n      <clr-wizard-stepnav [label]=\"stepnavAriaLabel\"></clr-wizard-stepnav>\n    </div>\n\n    <div class=\"modal-content\">\n      <div class=\"modal-header--accessible\">\n        <div class=\"modal-title-wrapper\" #title cdkFocusInitial tabindex=\"-1\">\n          <div\n            class=\"modal-title\"\n            role=\"heading\"\n            [attr.aria-level]=\"navService.currentPage?.pageTitle.headingLevel || 2\"\n          >\n            <span tabindex=\"-1\" #pageTitle class=\"modal-title-text\">\n              <ng-template [ngTemplateOutlet]=\"navService.currentPageTitle\"></ng-template>\n            </span>\n          </div>\n        </div>\n        <div class=\"modal-header-actions-wrapper\" *ngIf=\"headerActionService.displayHeaderActionsWrapper\">\n          <div *ngIf=\"headerActionService.showWizardHeaderActions\">\n            <ng-content select=\"clr-wizard-header-action\"></ng-content>\n          </div>\n          <div *ngIf=\"headerActionService.currentPageHasHeaderActions\">\n            <ng-template [ngTemplateOutlet]=\"navService.currentPage.headerActions\"></ng-template>\n          </div>\n        </div>\n        <button\n          *ngIf=\"closable && !inPage\"\n          type=\"button\"\n          class=\"close\"\n          [attr.aria-label]=\"commonStrings.keys.close\"\n          (click)=\"modalCancel()\"\n        >\n          <cds-icon shape=\"window-close\"></cds-icon>\n        </button>\n      </div>\n      <div #body class=\"modal-body-wrapper\">\n        <div class=\"modal-body\">\n          <main clr-wizard-pages-wrapper class=\"clr-wizard-content\">\n            <ng-content></ng-content>\n          </main>\n        </div>\n      </div>\n      <div class=\"modal-footer clr-wizard-footer\">\n        <div class=\"clr-wizard-footer-buttons\">\n          <div\n            *ngIf=\"navService.currentPage && !navService.currentPage.hasButtons\"\n            class=\"clr-wizard-footer-buttons-wrapper\"\n          >\n            <ng-content select=\"clr-wizard-button\"></ng-content>\n          </div>\n          <div\n            *ngIf=\"navService.currentPage && navService.currentPage.hasButtons\"\n            class=\"clr-wizard-footer-buttons-wrapper\"\n          >\n            <ng-template [ngTemplateOutlet]=\"navService.currentPage.buttons\"></ng-template>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</ng-template>\n", dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: ClrModal, selector: "clr-modal", inputs: ["clrModalOpen", "clrModalClosable", "clrModalCloseButtonAriaLabel", "clrModalSize", "clrModalStaticBackdrop", "clrModalSkipAnimation", "clrModalPreventClose", "clrModalLabelledById", "clrModalOverrideScrollService"], outputs: ["clrModalOpenChange", "clrModalAlternateClose"] }, { kind: "directive", type: ClrModalBody, selector: ".modal-body" }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: ClrWizardStepnav, selector: "clr-wizard-stepnav", inputs: ["label"] }] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizard, decorators: [{
+ClrWizard.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizard, deps: [{ token: PLATFORM_ID }, { token: ClrCommonStringsService }, { token: WizardNavigationService }, { token: PageCollectionService }, { token: ButtonHubService }, { token: HeaderActionService }, { token: i0.ElementRef }, { token: i0.IterableDiffers }], target: i0.ɵɵFactoryTarget.Component });
+ClrWizard.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrWizard, selector: "clr-wizard", inputs: { stepnavAriaLabel: ["clrWizardStepnavAriaLabel", "stepnavAriaLabel"], size: ["clrWizardSize", "size"], inPage: ["clrWizardInPage", "inPage"], inPageFillContentArea: ["clrWizardInPageFillContentArea", "inPageFillContentArea"], closable: ["clrWizardClosable", "closable"], _stopModalAnimations: ["clrWizardPreventModalAnimation", "_stopModalAnimations"], forceForward: ["clrWizardForceForwardNavigation", "forceForward"], clrWizardOpen: "clrWizardOpen", stopNext: ["clrWizardPreventDefaultNext", "stopNext"], stopCancel: ["clrWizardPreventDefaultCancel", "stopCancel"], stopNavigation: ["clrWizardPreventNavigation", "stopNavigation"], disableStepnav: ["clrWizardDisableStepnav", "disableStepnav"] }, outputs: { _openChanged: "clrWizardOpenChange", onCancel: "clrWizardOnCancel", wizardFinished: "clrWizardOnFinish", onReset: "clrWizardOnReset", currentPageChanged: "clrWizardCurrentPageChanged", onMoveNext: "clrWizardOnNext", onMovePrevious: "clrWizardOnPrevious" }, host: { properties: { "class.clr-wizard": "true", "class.wizard-md": "size == 'md'", "class.wizard-lg": "size == 'lg'", "class.wizard-xl": "size == 'xl'", "class.wizard-in-page": "inPage", "class.wizard-in-page--fill-content-area": "inPage && inPageFillContentArea" } }, providers: [WizardNavigationService, PageCollectionService, ButtonHubService, HeaderActionService], queries: [{ propertyName: "wizardTitle", first: true, predicate: ClrWizardTitle, descendants: true }, { propertyName: "pages", predicate: ClrWizardPage, descendants: true }, { propertyName: "headerActions", predicate: ClrWizardHeaderAction }], viewQueries: [{ propertyName: "pageTitle", first: true, predicate: ["pageTitle"], descendants: true }, { propertyName: "bodyElementRef", first: true, predicate: ["body"], descendants: true }, { propertyName: "modal", first: true, predicate: ClrModal, descendants: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2025 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-container *ngIf=\"inPage; then wizardTemplate; else wizardModalTemplate\"></ng-container>\n\n<ng-template #wizardModalTemplate>\n  <clr-modal\n    [clrModalOpen]=\"_open\"\n    [clrModalSize]=\"size\"\n    [clrModalClosable]=\"closable\"\n    [clrModalStaticBackdrop]=\"true\"\n    [clrModalSkipAnimation]=\"stopModalAnimations\"\n    [clrModalOverrideScrollService]=\"isInline\"\n    [clrModalPreventClose]=\"true\"\n    (clrModalAlternateClose)=\"modalCancel()\"\n    [clrModalLabelledById]=\"wizardId\"\n  >\n    <ng-template #clrInternalModalContentTemplate>\n      <ng-container [ngTemplateOutlet]=\"wizardTemplate\"></ng-container>\n    </ng-template>\n  </clr-modal>\n</ng-template>\n\n<!-- This template is tightly coupled to the modal styles. -->\n<ng-template #wizardTemplate>\n  <div class=\"modal-content-wrapper\">\n    <div class=\"modal-nav clr-wizard-stepnav-wrapper\" role=\"region\">\n      <div class=\"clr-wizard-title\" [id]=\"wizardId\" role=\"heading\" [attr.aria-level]=\"wizardTitle.headingLevel || 1\">\n        <ng-content select=\"clr-wizard-title\"></ng-content>\n      </div>\n      <clr-wizard-stepnav [label]=\"stepnavAriaLabel\"></clr-wizard-stepnav>\n    </div>\n\n    <div class=\"modal-content\">\n      <div class=\"modal-header--accessible\">\n        <div class=\"modal-title-wrapper\" #title cdkFocusInitial tabindex=\"-1\">\n          <div\n            class=\"modal-title\"\n            role=\"heading\"\n            [attr.aria-level]=\"navService.currentPage?.pageTitle.headingLevel || 2\"\n          >\n            <span tabindex=\"-1\" #pageTitle class=\"modal-title-text\">\n              <ng-template [ngTemplateOutlet]=\"navService.currentPageTitle\"></ng-template>\n            </span>\n          </div>\n        </div>\n        <div class=\"modal-header-actions-wrapper\" *ngIf=\"headerActionService.displayHeaderActionsWrapper\">\n          <div *ngIf=\"headerActionService.showWizardHeaderActions\">\n            <ng-content select=\"clr-wizard-header-action\"></ng-content>\n          </div>\n          <div *ngIf=\"headerActionService.currentPageHasHeaderActions\">\n            <ng-template [ngTemplateOutlet]=\"navService.currentPage.headerActions\"></ng-template>\n          </div>\n        </div>\n        <button\n          *ngIf=\"closable && !inPage\"\n          type=\"button\"\n          class=\"close\"\n          [attr.aria-label]=\"commonStrings.keys.close\"\n          (click)=\"modalCancel()\"\n        >\n          <cds-icon shape=\"window-close\"></cds-icon>\n        </button>\n      </div>\n      <div #body class=\"modal-body-wrapper\">\n        <div class=\"modal-body\">\n          <main clr-wizard-pages-wrapper class=\"clr-wizard-content\">\n            <ng-content></ng-content>\n          </main>\n        </div>\n      </div>\n      <div class=\"modal-footer clr-wizard-footer\">\n        <div class=\"clr-wizard-footer-buttons\">\n          <div\n            *ngIf=\"navService.currentPage && !navService.currentPage.hasButtons\"\n            class=\"clr-wizard-footer-buttons-wrapper\"\n          >\n            <ng-content select=\"clr-wizard-button\"></ng-content>\n          </div>\n          <div\n            *ngIf=\"navService.currentPage && navService.currentPage.hasButtons\"\n            class=\"clr-wizard-footer-buttons-wrapper\"\n          >\n            <ng-template [ngTemplateOutlet]=\"navService.currentPage.buttons\"></ng-template>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</ng-template>\n", dependencies: [{ kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: ClrModal, selector: "clr-modal", inputs: ["clrModalOpen", "clrModalClosable", "clrModalCloseButtonAriaLabel", "clrModalSize", "clrModalStaticBackdrop", "clrModalSkipAnimation", "clrModalPreventClose", "clrModalLabelledById", "clrModalOverrideScrollService"], outputs: ["clrModalOpenChange", "clrModalAlternateClose"] }, { kind: "directive", type: ClrModalBody, selector: ".modal-body" }, { kind: "directive", type: CdsIconCustomTag, selector: "cds-icon" }, { kind: "component", type: ClrWizardStepnav, selector: "clr-wizard-stepnav", inputs: ["label"] }] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizard, decorators: [{
             type: Component,
             args: [{ selector: 'clr-wizard', providers: [WizardNavigationService, PageCollectionService, ButtonHubService, HeaderActionService], host: {
                         '[class.clr-wizard]': 'true',
@@ -30981,8 +30981,8 @@ class ClrWizardButton {
         return false;
     }
 }
-ClrWizardButton.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardButton, deps: [{ token: WizardNavigationService }, { token: ButtonHubService }], target: i0.ɵɵFactoryTarget.Component });
-ClrWizardButton.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.2", type: ClrWizardButton, selector: "clr-wizard-button", inputs: { type: "type", disabled: ["clrWizardButtonDisabled", "disabled"], hidden: ["clrWizardButtonHidden", "hidden"] }, outputs: { wasClicked: "clrWizardButtonClicked" }, host: { properties: { "attr.aria-hidden": "isHidden" }, classAttribute: "clr-wizard-btn-wrapper" }, ngImport: i0, template: `
+ClrWizardButton.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardButton, deps: [{ token: WizardNavigationService }, { token: ButtonHubService }], target: i0.ɵɵFactoryTarget.Component });
+ClrWizardButton.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.2.10", type: ClrWizardButton, selector: "clr-wizard-button", inputs: { type: "type", disabled: ["clrWizardButtonDisabled", "disabled"], hidden: ["clrWizardButtonHidden", "hidden"] }, outputs: { wasClicked: "clrWizardButtonClicked" }, host: { properties: { "attr.aria-hidden": "isHidden" }, classAttribute: "clr-wizard-btn-wrapper" }, ngImport: i0, template: `
     <button
       type="button"
       class="btn clr-wizard-btn"
@@ -31001,7 +31001,7 @@ ClrWizardButton.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", versio
       <ng-content></ng-content>
     </button>
   `, isInline: true });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardButton, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardButton, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-wizard-button',
@@ -31064,8 +31064,8 @@ class ClrWizardModule {
         ClarityIcons.addIcons(errorStandardIcon, successStandardIcon);
     }
 }
-ClrWizardModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClrWizardModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardModule, declarations: [ClrWizard,
+ClrWizardModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClrWizardModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardModule, declarations: [ClrWizard,
         ClrWizardPage,
         ClrWizardStepnav,
         ClrWizardStepnavItem,
@@ -31086,8 +31086,8 @@ ClrWizardModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version
         ClrWizardPageNavTitle,
         ClrWizardPageButtons,
         ClrWizardPageHeaderActions] });
-ClrWizardModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardModule, imports: [CommonModule, ClrModalModule, ClrAlertModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClrWizardModule, decorators: [{
+ClrWizardModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardModule, imports: [CommonModule, ClrModalModule, ClrAlertModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClrWizardModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrModalModule, ClrAlertModule],
@@ -31104,8 +31104,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImpor
  */
 class ClarityModule {
 }
-ClarityModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClarityModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-ClarityModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.2", ngImport: i0, type: ClarityModule, exports: [ClrEmphasisModule,
+ClarityModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClarityModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+ClarityModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "15.2.10", ngImport: i0, type: ClarityModule, exports: [ClrEmphasisModule,
         ClrDataModule,
         ClrIconModule,
         ClrModalModule,
@@ -31123,7 +31123,7 @@ ClarityModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: 
         ClrProgressBarModule,
         ClrPopoverModuleNext,
         ClrTimelineModule] });
-ClarityModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClarityModule, imports: [ClrEmphasisModule,
+ClarityModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClarityModule, imports: [ClrEmphasisModule,
         ClrDataModule,
         ClrIconModule,
         ClrModalModule,
@@ -31141,7 +31141,7 @@ ClarityModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: 
         ClrProgressBarModule,
         ClrPopoverModuleNext,
         ClrTimelineModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.2", ngImport: i0, type: ClarityModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.2.10", ngImport: i0, type: ClarityModule, decorators: [{
             type: NgModule,
             args: [{
                     exports: [
