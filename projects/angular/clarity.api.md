@@ -6650,7 +6650,7 @@ export const dataClusterIconName = "data-cluster";
 // Warning: (ae-forgotten-export) The symbol "DatagridNumericFilterImpl_3" needs to be exported by the entry point clr-angular.d.ts
 //
 // @public (undocumented)
-export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar_3<T, DatagridNumericFilterImpl_3<T>> implements CustomFilter_3, AfterViewInit {
+export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar_3<T, DatagridNumericFilterImpl_3<T>> implements CustomFilter_3 {
     // Warning: (ae-forgotten-export) The symbol "DomAdapter_2" needs to be exported by the entry point clr-angular.d.ts
     constructor(filters: FiltersProvider_3<T>, domAdapter: DomAdapter_2, commonStrings: ClrCommonStringsService_2, popoverService: ClrPopoverService_2, ngZone: NgZone);
     // (undocumented)
@@ -6678,8 +6678,6 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar_3<T,
     minPlaceholder: string;
     // (undocumented)
     get minPlaceholderValue(): string;
-    // (undocumented)
-    ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     open: boolean;
@@ -6729,7 +6727,7 @@ export class DatagridPropertyStringFilter<T = any> implements ClrDatagridStringF
 // Warning: (ae-forgotten-export) The symbol "DatagridStringFilterImpl_3" needs to be exported by the entry point clr-angular.d.ts
 //
 // @public (undocumented)
-export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar_3<T, DatagridStringFilterImpl_3<T>> implements CustomFilter_3, AfterViewInit, OnChanges, OnDestroy {
+export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar_3<T, DatagridStringFilterImpl_3<T>> implements CustomFilter_3, OnChanges, OnDestroy {
     constructor(filters: FiltersProvider_3<T>, domAdapter: DomAdapter_2, commonStrings: ClrCommonStringsService_2, popoverService: ClrPopoverService_2, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, ngZone: NgZone);
     // (undocumented)
     commonStrings: ClrCommonStringsService_2;
@@ -6742,8 +6740,6 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar_3<T, 
     label: string;
     // (undocumented)
     labelValue: string;
-    // (undocumented)
-    ngAfterViewInit(): void;
     // (undocumented)
     ngOnChanges(): void;
     // (undocumented)
