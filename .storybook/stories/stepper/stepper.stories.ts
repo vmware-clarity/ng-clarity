@@ -101,9 +101,11 @@ export const StepperAlignmentTest: StoryObj = {
 
 export const StepperPanelStatusIndicators: StoryObj = {
   render: StepperTemplate,
-  play({ canvasElement }) {
-    canvasElement.querySelector<HTMLButtonElement>('#next-button-1').click();
-    canvasElement.querySelector<HTMLButtonElement>('#next-button-2').click();
+  play: async ({ canvasElement, userEvent }) => {
+    const nextButton1 = await canvasElement.querySelector<HTMLButtonElement>('#next-button-1');
+    await userEvent.click(nextButton1);
+    const nextButton2 = await canvasElement.querySelector<HTMLButtonElement>('#next-button-2');
+    await userEvent.click(nextButton2);
     removeFocusOutline({ canvasElement });
   },
   argTypes: {

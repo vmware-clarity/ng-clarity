@@ -42,7 +42,7 @@ export class ClrPopoverCloseButton implements OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     this.popoverService.closeButtonRef = this.elementRef;
-    this.popoverService.focusCloseButton();
+    // this.popoverService.focusCloseButton();
   }
 
   ngOnDestroy() {

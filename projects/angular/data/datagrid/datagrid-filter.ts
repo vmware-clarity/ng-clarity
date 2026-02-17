@@ -48,12 +48,13 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
       class="datagrid-filter"
       [id]="popoverId"
       cdkTrapFocus
+      cdkTrapFocusAutoCapture
       *clrPopoverContent="open; at: popoverPosition; type: popoverType; outsideClickToClose: true; scrollToClose: false"
       role="dialog"
       [attr.aria-label]="commonStrings.keys.datagridFilterDialogAriaLabel"
     >
       <div class="datagrid-filter-close-wrapper">
-        <button type="button" class="close" clrPopoverCloseButton>
+        <button type="button" class="close">
           <cds-icon shape="window-close" [attr.title]="commonStrings.keys.close"></cds-icon>
         </button>
       </div>

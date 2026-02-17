@@ -6,7 +6,6 @@
  */
 
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -38,6 +37,7 @@ import { DatagridFilterRegistrar } from '../../utils/datagrid-filter-registrar';
         <label>{{ labelValue }}</label>
         <input
           #input
+          cdkFocusInitial
           type="text"
           autocomplete="off"
           name="search"
@@ -53,7 +53,7 @@ import { DatagridFilterRegistrar } from '../../utils/datagrid-filter-registrar';
 })
 export class DatagridStringFilter<T = any>
   extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>>
-  implements CustomFilter, AfterViewInit, OnChanges, OnDestroy
+  implements CustomFilter, OnChanges, OnDestroy
 {
   /**
    * Provide a way to pass external placeholder and aria-label to the filter input
@@ -138,25 +138,6 @@ export class DatagridStringFilter<T = any>
 
   get placeholderValue() {
     return this.placeholder || this.commonStrings.keys.filterItems;
-  }
-
-  ngAfterViewInit() {
-    this.subs.push(
-      this.popoverService.openChange.subscribe(openChange => {
-        this.open = openChange;
-        // Note: this is being run outside of the Angular zone because `element.focus()` doesn't require
-        // running change detection.
-        this.ngZone.runOutsideAngular(() => {
-          // The animation frame in used because when this executes, the input isn't displayed.
-          // Note: `element.focus()` causes re-layout and this may lead to frame drop on slower devices.
-          // `setTimeout` is a macrotask and macrotasks are executed within the current rendering frame.
-          // Animation tasks are executed within the next rendering frame.
-          requestAnimationFrame(() => {
-            this.domAdapter.focus(this.input.nativeElement);
-          });
-        });
-      })
-    );
   }
 
   ngOnChanges() {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, NgZone, Output, ViewChild } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { ClrCommonStringsService, DomAdapter } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
@@ -26,6 +26,7 @@ import { DatagridFilterRegistrar } from '../../utils/datagrid-filter-registrar';
         <clr-number-input-container>
           <label class="clr-control-label">{{ fromLabelValue }}</label>
           <input
+            cdkFocusInitial
             clrNumberInput
             class="datagrid-numeric-filter-input"
             #input_low
@@ -58,7 +59,7 @@ import { DatagridFilterRegistrar } from '../../utils/datagrid-filter-registrar';
 })
 export class DatagridNumericFilter<T = any>
   extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>>
-  implements CustomFilter, AfterViewInit
+  implements CustomFilter
 {
   @Input('clrFilterMinPlaceholder') minPlaceholder: string;
   @Input('clrFilterMaxPlaceholder') maxPlaceholder: string;
@@ -193,25 +194,6 @@ export class DatagridNumericFilter<T = any>
       this.filter.high = null;
       this.filterValueChange.emit([this.filter.low, this.filter.high]);
     }
-  }
-
-  ngAfterViewInit() {
-    this.subscriptions.push(
-      this.popoverService.openChange.subscribe(openChange => {
-        this.open = openChange;
-        // Note: this is being run outside of the Angular zone because `element.focus()` doesn't require
-        // running change detection.
-        this.ngZone.runOutsideAngular(() => {
-          // The animation frame in used because when this executes, the input isn't displayed.
-          // Note: `element.focus()` causes re-layout and this may lead to frame drop on slower devices.
-          // `setTimeout` is a macrotask and macrotasks are executed within the current rendering frame.
-          // Animation tasks are executed within the next rendering frame.
-          requestAnimationFrame(() => {
-            this.domAdapter.focus(this.input.nativeElement);
-          });
-        });
-      })
-    );
   }
 
   override ngOnDestroy() {
