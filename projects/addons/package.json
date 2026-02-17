@@ -26,6 +26,6 @@
     "@angular/platform-browser": "^21",
     "@angular/router": "^21",
     "@clr/angular": ">= 18",
-    "rxjs": "^7.4.0"
+    "rxjs": "^7.8.0"
   }
 }
