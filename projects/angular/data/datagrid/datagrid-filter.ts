@@ -54,7 +54,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
       [attr.aria-label]="commonStrings.keys.datagridFilterDialogAriaLabel"
     >
       <div class="datagrid-filter-close-wrapper">
-        <button type="button" class="close">
+        <button type="button" class="close" clrPopoverCloseButton>
           <cds-icon shape="window-close" [attr.title]="commonStrings.keys.close"></cds-icon>
         </button>
       </div>
