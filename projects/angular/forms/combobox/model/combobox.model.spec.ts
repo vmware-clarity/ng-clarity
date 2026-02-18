@@ -159,5 +159,49 @@ export default function () {
       pseudoFocusModel.select('giant squid');
       expect(changeValue).toBe('giant squid');
     });
+
+    describe('identityFn', () => {
+      const byId = (item: { id: number }) => item.id;
+
+      it('SingleSelectComboboxModel containsItem uses identityFn when set', () => {
+        const model = new SingleSelectComboboxModel<{ id: number; name: string }>();
+        model.model = { id: 1, name: 'A' };
+        expect(model.containsItem({ id: 1, name: 'Other' })).toBeFalse();
+
+        model.identityFn = byId;
+        expect(model.containsItem({ id: 1, name: 'Other' })).toBeTrue();
+        expect(model.containsItem({ id: 2, name: 'B' })).toBeFalse();
+      });
+
+      it('SingleSelectComboboxModel containsItem uses reference when identityFn not set', () => {
+        const model = new SingleSelectComboboxModel<{ id: number }>();
+        const obj = { id: 1 };
+        model.model = obj;
+        expect(model.containsItem(obj)).toBeTrue();
+        expect(model.containsItem({ id: 1 })).toBeFalse();
+      });
+
+      it('MultiSelectComboboxModel containsItem uses identityFn when set', () => {
+        const model = new MultiSelectComboboxModel<{ id: number; name: string }>();
+        model.model = [
+          { id: 1, name: 'A' },
+          { id: 2, name: 'B' },
+        ];
+        model.identityFn = byId;
+        expect(model.containsItem({ id: 1, name: 'Other' })).toBeTrue();
+        expect(model.containsItem({ id: 3, name: 'C' })).toBeFalse();
+      });
+
+      it('MultiSelectComboboxModel removeItem uses identityFn when set', () => {
+        const model = new MultiSelectComboboxModel<{ id: number; name: string }>();
+        model.model = [
+          { id: 1, name: 'A' },
+          { id: 2, name: 'B' },
+        ];
+        model.identityFn = byId;
+        model.unselect({ id: 2, name: 'Different ref' } as any);
+        expect(model.model).toEqual([{ id: 1, name: 'A' }]);
+      });
+    });
   });
 }

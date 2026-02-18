@@ -5,9 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+export type ClrComboboxIdentityFunction<T> = (item: T) => any;
+
 export abstract class ComboboxModel<T> {
   model: T | T[];
   displayField?: string;
+  identityFn?: ClrComboboxIdentityFunction<T>;
   abstract containsItem(item: T): boolean;
   abstract select(item: T): void;
   abstract unselect(item: T): void;

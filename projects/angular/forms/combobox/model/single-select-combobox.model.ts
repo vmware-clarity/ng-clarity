@@ -7,10 +7,13 @@
 
 import { ComboboxModel } from './combobox.model';
 
-export class SingleSelectComboboxModel<T> implements ComboboxModel<T> {
-  model: T;
+export class SingleSelectComboboxModel<T> extends ComboboxModel<T> {
+  override model: T;
 
   containsItem(item: T): boolean {
+    if (this.identityFn) {
+      return this.model !== null && this.identityFn(this.model) === this.identityFn(item);
+    }
     return this.model === item;
   }
 

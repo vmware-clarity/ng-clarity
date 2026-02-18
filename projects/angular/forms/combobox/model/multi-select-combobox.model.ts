@@ -7,22 +7,21 @@
 
 import { ComboboxModel } from './combobox.model';
 
-export class MultiSelectComboboxModel<T> implements ComboboxModel<T> {
-  model: T[];
-  displayField: string;
+export class MultiSelectComboboxModel<T> extends ComboboxModel<T> {
+  override model: T[];
+  override displayField: string;
 
   containsItem(item: T): boolean {
-    if (this.model) {
-      if (this.displayField && typeof item === 'object') {
-        const includes = this.model.some(modelItem => {
-          return modelItem[this.displayField] === item[this.displayField];
-        });
-        return includes;
-      } else {
-        return this.model.includes(item);
-      }
+    if (!this.model) {
+      return false;
     }
-    return false;
+    if (this.identityFn) {
+      return this.model.some(m => this.identityFn(m) === this.identityFn(item));
+    }
+    if (this.displayField && typeof item === 'object') {
+      return this.model.some(modelItem => modelItem[this.displayField] === (item as any)[this.displayField]);
+    }
+    return this.model.includes(item);
   }
 
   select(item: T): void {
@@ -92,7 +91,9 @@ export class MultiSelectComboboxModel<T> implements ComboboxModel<T> {
       return;
     }
 
-    const index = this.model.indexOf(item);
+    const index = this.identityFn
+      ? this.model.findIndex(m => this.identityFn(m) === this.identityFn(item))
+      : this.model.indexOf(item);
 
     if (index > -1) {
       this.model.splice(index, 1);
