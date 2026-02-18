@@ -154,10 +154,9 @@ export const MultipleSeparatedAlerts: StoryObj = {
   },
 };
 
-function openDropdown({ canvasElement }: StoryContext) {
-  canvasElement.querySelector<HTMLButtonElement>('button[clrDropdownTrigger]').click();
+async function openDropdown({ canvasElement, userEvent }: StoryContext) {
+  const dropdownTriggerButton = await canvasElement.querySelector<HTMLButtonElement>('button[clrDropdownTrigger]');
+  await userEvent.click(dropdownTriggerButton);
 
-  setTimeout(() => {
-    removeFocusOutline({ canvasElement });
-  }, 0);
+  await removeFocusOutline({ canvasElement });
 }

@@ -206,8 +206,9 @@ export const PredefinedDateRangesOpen: StoryObj = {
     clrStartDate: staticStartDate,
     clrEndDate: staticEndDate,
   },
-  play({ canvasElement }) {
-    (canvasElement.querySelector('button.clr-smart-open-close') as HTMLElement)?.click();
+  play: async ({ canvasElement, userEvent }) => {
+    const smartOpenCloseButton = await canvasElement.querySelector('button.clr-smart-open-close');
+    await userEvent.click(smartOpenCloseButton);
     (canvasElement.parentElement.querySelector('button.day-btn.is-today') as HTMLElement)?.classList.remove('is-today');
     (canvasElement.parentElement.querySelector('button:not(.is-excluded).day-btn') as HTMLElement)?.classList.add(
       'is-today'

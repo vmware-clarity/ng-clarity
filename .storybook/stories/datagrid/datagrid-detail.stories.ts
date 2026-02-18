@@ -6,7 +6,7 @@
  */
 
 import { ClrConditionalModule, ClrDatagridDetail, ClrDatagridModule } from '@clr/angular';
-import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
+import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { removeFocusOutline } from '../../helpers/common';
 import { Element, elements } from '../../helpers/elements.data';
@@ -195,10 +195,13 @@ export const Detail: StoryObj = {
 
 export const OpenDetail: StoryObj = {
   render: DetailTemplate,
-  play({ canvasElement }: StoryContext) {
-    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+  play: async ({ canvasElement, userEvent }) => {
+    const detailCaretButton = await canvasElement.querySelector<HTMLButtonElement>(
+      'button.datagrid-detail-caret-button'
+    );
+    await userEvent.click(detailCaretButton);
 
-    removeFocusOutline({ canvasElement });
+    await removeFocusOutline({ canvasElement });
   },
   args: {
     detailContentType: 'datagrid',
@@ -208,10 +211,13 @@ export const OpenDetail: StoryObj = {
 };
 export const OpenDetailWithRemovedMargin: StoryObj = {
   render: DetailTemplate,
-  play({ canvasElement }: StoryContext) {
-    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+  play: async ({ canvasElement, userEvent }) => {
+    const detailCaretButton = await canvasElement.querySelector<HTMLButtonElement>(
+      'button.datagrid-detail-caret-button'
+    );
+    await userEvent.click(detailCaretButton);
 
-    removeFocusOutline({ canvasElement });
+    await removeFocusOutline({ canvasElement });
   },
   args: {
     removeMargin: true,
@@ -222,10 +228,13 @@ export const OpenDetailWithRemovedMargin: StoryObj = {
 };
 export const CompactOpenDetailWithRemovedMargin: StoryObj = {
   render: DetailTemplate,
-  play({ canvasElement }: StoryContext) {
-    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+  play: async ({ canvasElement, userEvent }) => {
+    const detailCaretButton = await canvasElement.querySelector<HTMLButtonElement>(
+      'button.datagrid-detail-caret-button'
+    );
+    await userEvent.click(detailCaretButton);
 
-    removeFocusOutline({ canvasElement });
+    await removeFocusOutline({ canvasElement });
   },
   args: {
     removeMargin: true,
@@ -238,10 +247,13 @@ export const CompactOpenDetailWithRemovedMargin: StoryObj = {
 
 export const OpenLongContentDetail: StoryObj = {
   render: DetailTemplate,
-  play({ canvasElement }: StoryContext) {
-    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+  play: async ({ canvasElement, userEvent }) => {
+    const detailCaretButton = await canvasElement.querySelector<HTMLButtonElement>(
+      'button.datagrid-detail-caret-button'
+    );
+    await userEvent.click(detailCaretButton);
 
-    removeFocusOutline({ canvasElement });
+    await removeFocusOutline({ canvasElement });
   },
   args: {
     detailContentType: 'datagrid',
@@ -252,10 +264,13 @@ export const OpenLongContentDetail: StoryObj = {
 // Open uninterrupted content cell regression test for nested datagrid CDE-2208.
 export const OpenLongUninterruptedContentDetail: StoryObj = {
   render: DetailTemplate,
-  play({ canvasElement }: StoryContext) {
-    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+  play: async ({ canvasElement, userEvent }) => {
+    const detailCaretButton = await canvasElement.querySelector<HTMLButtonElement>(
+      'button.datagrid-detail-caret-button'
+    );
+    await userEvent.click(detailCaretButton);
 
-    removeFocusOutline({ canvasElement });
+    await removeFocusOutline({ canvasElement });
   },
   args: {
     detailContentType: 'datagrid',
@@ -265,10 +280,13 @@ export const OpenLongUninterruptedContentDetail: StoryObj = {
 
 export const DisabledDetailButton: StoryObj = {
   render: DetailTemplate,
-  play({ canvasElement }: StoryContext) {
-    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+  play: async ({ canvasElement, userEvent }) => {
+    const detailCaretButton = await canvasElement.querySelector<HTMLButtonElement>(
+      'button.datagrid-detail-caret-button'
+    );
+    await userEvent.click(detailCaretButton);
 
-    removeFocusOutline({ canvasElement });
+    await removeFocusOutline({ canvasElement });
   },
   args: {
     detailContentType: 'datagrid',
@@ -278,10 +296,13 @@ export const DisabledDetailButton: StoryObj = {
 
 export const HiddenDetailButton: StoryObj = {
   render: DetailTemplate,
-  play({ canvasElement }: StoryContext) {
-    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
+  play: async ({ canvasElement, userEvent }) => {
+    const detailCaretButton = await canvasElement.querySelector<HTMLButtonElement>(
+      'button.datagrid-detail-caret-button'
+    );
+    await userEvent.click(detailCaretButton);
 
-    removeFocusOutline({ canvasElement });
+    await removeFocusOutline({ canvasElement });
   },
   args: {
     detailContentType: 'datagrid',

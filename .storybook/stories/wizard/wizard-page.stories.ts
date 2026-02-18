@@ -128,7 +128,7 @@ export const WizardPage: StoryObj = {
 export const WizardPageStatusIndicators: StoryObj = {
   render: WizardPageTemplate,
   play: async ({ canvasElement, userEvent }) => {
-    removeFocusOutline({ canvasElement });
+    await removeFocusOutline({ canvasElement });
 
     // navigate to the last page
     const nextButtonElement = await canvasElement.querySelector<HTMLButtonElement>(
@@ -144,16 +144,21 @@ export const WizardPageStatusIndicators: StoryObj = {
 
 export const WizardPageStatusIndicatorsWithCurrentStepError: StoryObj = {
   render: WizardPageTemplate,
-  play({ canvasElement }) {
-    removeFocusOutline({ canvasElement });
+  play: async ({ canvasElement, userEvent }) => {
+    await removeFocusOutline({ canvasElement });
 
     // navigate to the last page
-    const nextButtonElement = canvasElement.querySelector<HTMLButtonElement>('clr-wizard-button[type="next"] button');
-    nextButtonElement.click();
-    nextButtonElement.click();
+    const nextButtonElement = await canvasElement.querySelector<HTMLButtonElement>(
+      'clr-wizard-button[type="next"] button'
+    );
+    await userEvent.click(nextButtonElement);
+    await userEvent.click(nextButtonElement);
 
     // navigate back to the error step
-    canvasElement.querySelector<HTMLButtonElement>('clr-wizard-button[type="previous"] button').click();
+    const previousButtonElement = await canvasElement.querySelector<HTMLButtonElement>(
+      'clr-wizard-button[type="previous"] button'
+    );
+    await userEvent.click(previousButtonElement);
   },
   args: {
     clrWizardPageHasError: true,

@@ -106,7 +106,7 @@ export const StepperPanelStatusIndicators: StoryObj = {
     await userEvent.click(nextButton1);
     const nextButton2 = await canvasElement.querySelector<HTMLButtonElement>('#next-button-2');
     await userEvent.click(nextButton2);
-    removeFocusOutline({ canvasElement });
+    await removeFocusOutline({ canvasElement });
   },
   argTypes: {
     // story helpers
