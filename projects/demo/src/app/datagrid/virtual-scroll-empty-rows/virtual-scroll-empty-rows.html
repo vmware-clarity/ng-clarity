@@ -84,8 +84,8 @@
   <clr-dg-column [clrDgField]="'pokemon'"><ng-container *clrDgHideableColumn>Pokemon</ng-container></clr-dg-column>
   <clr-dg-column [clrDgField]="'color'"><ng-container *clrDgHideableColumn>Favorite color</ng-container></clr-dg-column>
 
+  @if (showVirtualScroller) {
   <ng-template
-    *ngIf="showVirtualScroller"
     clrVirtualScroll
     let-user
     let-index="index"
@@ -118,6 +118,7 @@
       </ng-container>
     </clr-dg-row>
   </ng-template>
+  }
 
   <!--  <clr-dg-detail *clrIfDetail="let detail">-->
   <!--    <clr-dg-detail-header> {{detail.name}} </clr-dg-detail-header>-->

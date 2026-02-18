@@ -126,9 +126,11 @@ const ColumnFilterTemplate: StoryFn = args => ({
           {{ element.electronegativity }}
           <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
         </clr-dg-cell>
-        <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
-          <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
-        </ng-container>
+        @if (expandable) {
+          <ng-container ngProjectAs="clr-dg-row-detail">
+            <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
+          </ng-container>
+        }
       </clr-dg-row>
 
       <clr-dg-footer>

@@ -403,6 +403,7 @@ export default function (): void {
             const previous = context.testElement.querySelector('.clr-wizard-btn--secondary');
             const next = context.testElement.querySelector('.clr-wizard-btn--primary:not(.disabled)');
             const finish = context.testElement.querySelector('.clr-wizard-btn--primary.disabled');
+
             expect(cancel).toBeTruthy();
             expect(previous).toBeTruthy();
             expect(next).toBeTruthy();

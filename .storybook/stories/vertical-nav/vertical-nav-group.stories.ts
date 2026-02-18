@@ -70,19 +70,24 @@ const NavGroupTemplate: StoryFn = args => ({
             [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
             (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
           >
-            <cds-icon *ngIf="includeIcons" shape="bars" clrVerticalNavIcon></cds-icon>
+            @if (includeIcons) {
+              <cds-icon shape="bars" clrVerticalNavIcon></cds-icon>
+            }
             Menu
             <clr-vertical-nav-group-children>
-              <a
-                *ngFor="let navLink of navLinks; let index = index"
-                clrVerticalNavLink
-                [ngClass]="{ active: index == activeIndex }"
-                href="javascript:void(0)"
-                (click)="activeIndex = index"
-              >
-                <cds-icon *ngIf="includeIcons" [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-                {{ navLink.text }}
-              </a>
+              @for (navLink of navLinks; track navLink; let index = $index) {
+                <a
+                  clrVerticalNavLink
+                  [ngClass]="{ active: index == activeIndex }"
+                  href="javascript:void(0)"
+                  (click)="activeIndex = index"
+                >
+                  @if (includeIcons) {
+                    <cds-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+                  }
+                  {{ navLink.text }}
+                </a>
+              }
             </clr-vertical-nav-group-children>
           </clr-vertical-nav-group>
         </clr-vertical-nav>

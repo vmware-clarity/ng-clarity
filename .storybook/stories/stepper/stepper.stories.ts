@@ -45,25 +45,33 @@ export default {
 const StepperTemplate: StoryFn = args => ({
   template: `
     <form clrStepper [clrInitialStep]="clrInitialStep" [formGroup]="form" (ngSubmit)="ngSubmit()">
-      <clr-stepper-panel *ngFor="let _ of createArray(stepCount); let i = index" formGroupName="step{{ i + 1 }}">
-        <clr-step-title>Step {{ i + 1 }} {{ alignmentTest && i === 2 ? '(alignment test)' : '' }}</clr-step-title>
-        <clr-step-description>Step {{ i + 1 }} description.</clr-step-description>
-        <clr-step-content *clrIfExpanded>
-          <clr-input-container>
-            <label>Value</label>
-            <input clrInput formControlName="value" required />
-          </clr-input-container>
+      @for (_ of createArray(stepCount); track $index; let i = $index) {
+        <clr-stepper-panel formGroupName="step{{ i + 1 }}">
+          <clr-step-title>Step {{ i + 1 }} {{ alignmentTest && i === 2 ? '(alignment test)' : '' }}</clr-step-title>
+          <clr-step-description>Step {{ i + 1 }} description.</clr-step-description>
+          <clr-step-content *clrIfExpanded>
+            <clr-input-container>
+              <label>Value</label>
+              <input clrInput formControlName="value" required />
+            </clr-input-container>
 
-          <br />
-          <button class="btn" (click)="form.patchValue({})">Patch Form</button>
-          <button class="btn" (click)="form.reset()">Reset Form</button>
+            <br />
+            <button class="btn" (click)="form.patchValue({})">Patch Form</button>
+            <button class="btn" (click)="form.reset()">Reset Form</button>
 
-          <br />
-          <button *ngIf="showPreviousButton" clrStepButton="previous">previous</button>
-          <button *ngIf="stepCount > i + 1" id="next-button-{{ i + 1 }}" clrStepButton="next">next</button>
-          <button *ngIf="stepCount === i + 1" clrStepButton="submit">submit</button>
-        </clr-step-content>
-      </clr-stepper-panel>
+            <br />
+            @if (showPreviousButton) {
+              <button clrStepButton="previous">previous</button>
+            }
+            @if (stepCount > i + 1) {
+              <button id="next-button-{{ i + 1 }}" clrStepButton="next">next</button>
+            }
+            @if (stepCount === i + 1) {
+              <button clrStepButton="submit">submit</button>
+            }
+          </clr-step-content>
+        </clr-stepper-panel>
+      }
     </form>
   `,
   props: { ...args },

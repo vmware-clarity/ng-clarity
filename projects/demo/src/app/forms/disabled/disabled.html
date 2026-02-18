@@ -96,7 +96,9 @@
       <label>Datalist</label>
       <input clrDatalistInput [disabled]="disabled" name="datalist" [(ngModel)]="data.datalist" />
       <datalist>
-        <option *ngFor="let item of items" [value]="item"></option>
+        @for (item of items; track item) {
+        <option [value]="item"></option>
+        }
       </datalist>
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-datalist-container>

@@ -39,9 +39,11 @@ const DatalistTemplate: StoryFn = args => ({
       <label>Element</label>
       <input clrDatalistInput [disabled]="disabled" [placeholder]="placeholder" />
       <datalist>
-        <ng-container *ngFor="let element of elements; let i = index">
-          <option *ngIf="i < optionCount" [value]="element.symbol">{{ element.name }}</option>
-        </ng-container>
+        @for (element of elements; track element; let i = $index) {
+          @if (i < optionCount) {
+            <option [value]="element.symbol">{{ element.name }}</option>
+          }
+        }
       </datalist>
       <clr-control-helper>Helper text</clr-control-helper>
       <clr-control-error>There was an error</clr-control-error>

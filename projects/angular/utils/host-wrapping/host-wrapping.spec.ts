@@ -131,7 +131,7 @@ describe('Host wrapping', function () {
     });
   });
 
-  describe('with *ngIf', function () {
+  describe('with @if', function () {
     beforeEach(function (this: TestContext<NgIfTest>) {
       setupTest(this, NgIfTest);
     });
