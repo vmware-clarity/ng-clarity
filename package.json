@@ -73,6 +73,8 @@
     "@compodoc/compodoc": "1.2.1",
     "@eslint/js": "9.39.2",
     "@eslint/json": "1.0.0",
+    "@html-eslint/eslint-plugin": "0.55.0",
+    "@html-eslint/parser": "0.55.0",
     "@microsoft/api-extractor": "7.56.3",
     "@playwright/test": "1.58.2",
     "@semantic-release/exec": "7.1.0",
