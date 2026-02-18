@@ -11,19 +11,19 @@
       type="button"
       class="clr-stepper-header-button"
       (click)="togglePanel()"
-      [id]="getAccordionHeaderId(panel.templateId)"
+      [id]="getHeaderId(panel.templateId)"
       [attr.aria-disabled]="panel.disabled"
-      [attr.aria-controls]="getAccordionContentId(panel.templateId)"
+      [attr.aria-controls]="getContentId(panel.templateId)"
       [attr.aria-expanded]="panel.open"
-      [class.clr-stepper-header-has-description]="(accordionDescription.changes | async)?.length || accordionDescription.length"
+      [class.clr-stepper-header-has-description]="(stepDescription.changes | async)?.length || stepDescription.length"
       #headerButton
     >
       <span class="clr-step-status">
         <cds-icon shape="angle" direction="right" class="clr-stepper-angle clr-step-angle"></cds-icon>
         <span class="clr-step-status-icon">
-          @if (panel.status === AccordionStatus.Error) {
+          @if (panel.status === PanelStatus.Error) {
           <cds-icon status="danger" shape="exclamation-circle" class="clr-step-error-icon"></cds-icon>
-          } @if (panel.status === AccordionStatus.Complete) {
+          } @if (panel.status === PanelStatus.Complete) {
           <cds-icon status="success" shape="check-circle" class="clr-step-complete-icon"></cds-icon>
           }
         </span>
@@ -35,17 +35,17 @@
       <ng-content select="clr-step-description"></ng-content>
     </button>
     <div class="clr-sr-only" role="status">
-      @if (panel.status === AccordionStatus.Error) { {{ stepErrorText(panelNumber)}} } @if (panel.status ===
-      AccordionStatus.Complete) { {{ stepCompleteText(panelNumber)}} }
+      @if (panel.status === PanelStatus.Error) { {{ stepErrorText(panelNumber)}} } @if (panel.status ===
+      PanelStatus.Complete) { {{ stepCompleteText(panelNumber)}} }
     </div>
   </div>
   <div
     @skipInitialRender
     role="region"
     class="clr-stepper-content-region"
-    [id]="getAccordionContentId(panel.templateId)"
+    [id]="getContentId(panel.templateId)"
     [attr.aria-hidden]="!panel.open"
-    [attr.aria-labelledby]="getAccordionHeaderId(panel.templateId)"
+    [attr.aria-labelledby]="getHeaderId(panel.templateId)"
   >
     @if (panel.open) {
     <div @toggle (@toggle.done)="collapsePanelOnAnimationDone(panel)" class="clr-stepper-content">

@@ -5,8 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export enum AccordionStatus {
-  Inactive = 'inactive',
-  Error = 'error',
-  Complete = 'complete',
+export enum CollapsiblePanelStrategy {
+  Default = 'default',
+  Multi = 'multi',
 }

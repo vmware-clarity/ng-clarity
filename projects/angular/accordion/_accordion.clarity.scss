@@ -11,7 +11,7 @@
 @use '../styles/core/tokens/variables.tokens' as tokens;
 @use 'variables.accordion' as accordion-variables;
 @use '../styles/variables/variables.density' as density;
-@use 'collapsible-panel';
+@use '../collapsible-panel/collapsible-panel';
 
 @include meta.load-css('properties.accordion');
 @include mixins.exports('accordion.clarity') {
@@ -20,7 +20,7 @@
     margin-bottom: density.$clr-base-vertical-offset-xl;
   }
 
-  @include collapsible-panel.collapsible-panel-base('clr-accordion');
+  @include collapsible-panel.collapsible-panel('clr-accordion');
 
   .clr-accordion {
     .clr-accordion-header {

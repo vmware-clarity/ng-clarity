@@ -15,9 +15,9 @@
       type="button"
       class="clr-accordion-header-button"
       (click)="togglePanel()"
-      [id]="getAccordionHeaderId(panel.templateId)"
+      [id]="getHeaderId(panel.templateId)"
       [disabled]="panel.disabled"
-      [attr.aria-controls]="!panel.disabled && panel.open ? getAccordionContentId(panel.templateId) : null"
+      [attr.aria-controls]="!panel.disabled && panel.open ? getContentId(panel.templateId) : null"
       [attr.aria-expanded]="panel.open"
       [class.clr-accordion-header-has-description]="(accordionDescription.changes | async)?.length || accordionDescription.length"
       #headerButton
@@ -33,9 +33,9 @@
     @skipInitialRender
     role="region"
     class="clr-accordion-content-region"
-    [id]="getAccordionContentId(panel.templateId)"
+    [id]="getContentId(panel.templateId)"
     [attr.aria-hidden]="!panel.open"
-    [attr.aria-labelledby]="getAccordionHeaderId(panel.templateId)"
+    [attr.aria-labelledby]="getHeaderId(panel.templateId)"
   >
     @if (panel.open) {
     <div @toggle (@toggle.done)="collapsePanelOnAnimationDone(panel)" class="clr-accordion-content">

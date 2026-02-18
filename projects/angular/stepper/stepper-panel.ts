@@ -21,42 +21,46 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
-import { AccordionPanelModel, AccordionStatus, ClrAccordionPanel } from '@clr/angular/accordion';
+import {
+  CollapsiblePanel,
+  collapsiblePanelAnimation,
+  CollapsiblePanelModel,
+  CollapsiblePanelStatus,
+} from '@clr/angular/collapsible-panel';
 import { ClrCommonStringsService, IfExpandService, triggerAllFormControlValidation } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, skipUntil, tap } from 'rxjs/operators';
 
 import { StepperService } from './providers/stepper.service';
 import { ClrStepDescription } from './step-description';
-import { stepAnimation } from './utils/animation';
 
 @Component({
   selector: 'clr-stepper-panel',
   templateUrl: 'stepper-panel.html',
   host: { '[class.clr-stepper-panel]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: stepAnimation,
+  animations: collapsiblePanelAnimation,
   providers: [IfExpandService],
   standalone: false,
 })
-export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
+export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   @ViewChild('headerButton') headerButton: ElementRef<HTMLButtonElement>;
-  @ContentChildren(ClrStepDescription) override accordionDescription: QueryList<ClrStepDescription>;
-  @HostBinding('class.clr-stepper-panel-disabled') override disabled = false;
-  readonly AccordionStatus = AccordionStatus;
+  @ContentChildren(ClrStepDescription) stepDescription: QueryList<ClrStepDescription>;
+  @HostBinding('class.clr-stepper-panel-disabled') disabled = false;
+  readonly PanelStatus = CollapsiblePanelStatus;
 
   private subscriptions: Subscription[] = [];
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
-    public override commonStrings: ClrCommonStringsService,
+    public commonStrings: ClrCommonStringsService,
     @Optional() private formGroupName: FormGroupName,
     @Optional() private ngModelGroup: NgModelGroup,
     private stepperService: StepperService,
     ifExpandService: IfExpandService,
     cdr: ChangeDetectorRef
   ) {
-    super(null, commonStrings, stepperService, ifExpandService, cdr);
+    super(stepperService, ifExpandService, cdr);
   }
 
   override get id(): string {
@@ -74,15 +78,15 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     return this.formGroupName ? this.formGroupName.control : this.ngModelGroup.control;
   }
 
-  override getPanelStateClasses(panel: AccordionPanelModel) {
+  getPanelStateClasses(panel: CollapsiblePanelModel) {
     return `clr-stepper-panel-${panel.status} ${panel.open ? 'clr-stepper-panel-open' : ''}`;
   }
 
-  override getAccordionContentId(id: string) {
+  getContentId(id: string) {
     return `clr-stepper-content-${id}'`;
   }
 
-  override getAccordionHeaderId(id: string) {
+  getHeaderId(id: string) {
     return `clr-stepper-header-${id}`;
   }
 
@@ -92,9 +96,7 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     this.stepperService.disablePanel(this.id, true);
     this.listenToFocusChanges();
 
-    // not all stepper panels are guaranteed to have a form (i.e. empty template-driven)
     if (this.formGroup) {
-      // set panel status on form status change only after the form becomes invalid
       const invalidStatusTrigger = this.formGroup.statusChanges.pipe(filter(status => status === 'INVALID'));
 
       this.subscriptions.push(
@@ -135,8 +137,8 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     );
   }
 
-  private triggerAllFormControlValidationIfError(panel: AccordionPanelModel) {
-    if (panel.status === AccordionStatus.Error) {
+  private triggerAllFormControlValidationIfError(panel: CollapsiblePanelModel) {
+    if (panel.status === CollapsiblePanelStatus.Error) {
       triggerAllFormControlValidation(this.formGroup);
     }
   }

@@ -5,49 +5,49 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+@use 'sass:meta';
 @use '../styles/mixins';
-@use '../styles/core/tokens/variables.tokens' as tokens;
-@use '../styles/variables/variables.density' as density;
 
+@include meta.load-css('../collapsible-panel/properties.collapsible-panel');
 @include mixins.exports('accordion.properties') {
   @include mixins.root-or-host() {
     &,
-    [clr-density] {
-      --clr-accordion-border-radius: #{density.$clr-base-border-radius-s};
-      --clr-accordion-step-title-min-width: #{density.$clr-base-layout-space-4xl};
-      --clr-accordion-content-font-size: #{density.$clr-base-typography-font-size-inline};
+    [cds-theme] {
+      --clr-accordion-text-color: var(--clr-collapsible-panel-text-color);
+      --clr-accordion-text-color-hover: var(--clr-collapsible-panel-text-color-hover);
+      --clr-accordion-text-color-active: var(--clr-collapsible-panel-text-color-active);
+      --clr-accordion-panel-disabled-color: var(--clr-collapsible-panel-panel-disabled-color);
+
+      // @TODO (v18) remove in favor of `clr-accordion-header-open-background-color`
+      --clr-accordion-active-background-color: var(--clr-collapsible-panel-active-background-color);
+      --clr-accordion-content-background-color: var(--clr-collapsible-panel-content-background-color);
+      --clr-accordion-content-color: var(--clr-collapsible-panel-content-color);
+      --clr-accordion-header-background-color: var(--clr-collapsible-panel-header-background-color);
+      --clr-accordion-header-disabled-background-color: var(--clr-collapsible-panel-header-disabled-background-color);
+      --clr-accordion-header-hover-background-color: var(--clr-collapsible-panel-header-hover-background-color);
+      --clr-accordion-header-active-background-color: var(--clr-collapsible-panel-header-active-background-color);
+      // @TODO (v18) set to `$cds-alias-object-interaction-background-selected` when `clr-accordion-active-background-color` is removed
+      --clr-accordion-header-open-background-color: var(--clr-collapsible-panel-header-open-background-color);
+      --clr-accordion-header-open-active-background-color: var(
+        --clr-collapsible-panel-header-open-active-background-color
+      );
+      --clr-accordion-header-open-hover-background-color: var(
+        --clr-collapsible-panel-header-open-hover-background-color
+      );
+      --clr-accordion-error-color: var(--clr-collapsible-panel-error-color);
+      --clr-accordion-complete-color: var(--clr-collapsible-panel-complete-color);
+      --clr-accordion-border-color: var(--clr-collapsible-panel-border-color);
+      --clr-accordion-border-left-color-complete: var(--clr-collapsible-panel-border-left-color-complete);
+      --clr-accordion-border-left-color-error: var(--clr-collapsible-panel-border-left-color-error);
+      --clr-accordion-header-left-indicator: var(--clr-collapsible-panel-header-left-indicator);
+      --clr-accordion-header-left-current-indicator: var(--clr-collapsible-panel-header-left-current-indicator);
     }
 
     &,
-    [cds-theme] {
-      --clr-accordion-text-color: #{tokens.$cds-alias-object-interaction-color};
-      --clr-accordion-text-color-hover: #{tokens.$cds-alias-object-interaction-color-hover};
-      --clr-accordion-text-color-active: #{tokens.$cds-alias-object-interaction-color-active};
-      --clr-accordion-panel-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
-
-      // @TODO (v18) remove in favor of `clr-accordion-header-open-background-color`
-      --clr-accordion-active-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
-      --clr-accordion-content-background-color: #{tokens.$cds-alias-object-container-background};
-      --clr-accordion-content-color: #{tokens.$cds-alias-typography-color-450};
-      --clr-accordion-header-background-color: #{tokens.$cds-alias-object-container-background};
-      --clr-accordion-header-disabled-background-color: #{tokens.$cds-alias-object-container-background};
-      --clr-accordion-header-hover-background-color: #{tokens.$cds-alias-object-interaction-background-hover};
-      --clr-accordion-header-active-background-color: #{tokens.$cds-alias-object-interaction-background-active};
-      // @TODO (v18) set to `$cds-alias-object-interaction-background-selected` when `clr-accordion-active-background-color` is removed
-      --clr-accordion-header-open-background-color: var(--clr-accordion-active-background-color);
-      --clr-accordion-header-open-active-background-color: var(
-        --cds-alias-object-interaction-background-selected-active
-      );
-      --clr-accordion-header-open-hover-background-color: var(--cds-alias-object-interaction-background-selected-hover);
-      --clr-accordion-error-color: #{tokens.$cds-alias-status-danger};
-      --clr-accordion-complete-color: #{tokens.$cds-alias-status-success};
-      --clr-accordion-border-color: #{tokens.$cds-alias-object-border-color};
-      --clr-accordion-border-left-color-complete: #{tokens.$cds-alias-status-success};
-      --clr-accordion-border-left-color-error: #{tokens.$cds-alias-status-danger};
-      --clr-accordion-header-left-indicator: inset #{tokens.$cds-global-space-5} 0 0
-        #{tokens.$cds-alias-status-neutral-tint};
-      --clr-accordion-header-left-current-indicator: inset #{tokens.$cds-global-space-5} 0 0
-        #{tokens.$cds-alias-object-interaction-background-highlight};
+    [clr-density] {
+      --clr-accordion-border-radius: var(--clr-collapsible-panel-border-radius);
+      --clr-accordion-step-title-min-width: var(--clr-collapsible-panel-step-title-min-width);
+      --clr-accordion-content-font-size: var(--clr-collapsible-panel-content-font-size);
     }
   }
 }

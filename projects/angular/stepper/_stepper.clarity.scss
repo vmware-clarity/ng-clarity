@@ -8,13 +8,13 @@
 @use 'sass:meta';
 @use '../styles/a11y';
 @use '../styles/mixins';
-@use '../accordion/variables.accordion' as accordion-variables;
-@use '../accordion/collapsible-panel';
+@use '../collapsible-panel/variables.collapsible-panel' as panel-variables;
+@use '../collapsible-panel/collapsible-panel';
 @use '../styles/variables/variables.density' as density;
 
-@include meta.load-css('../accordion/properties.accordion');
+@include meta.load-css('../collapsible-panel/properties.collapsible-panel');
 @include mixins.exports('stepper.clarity') {
-  @include collapsible-panel.collapsible-panel-base('clr-stepper');
+  @include collapsible-panel.collapsible-panel('clr-stepper');
 
   .clr-stepper-forms {
     .clr-stepper-header > .clr-stepper-header-button {
@@ -40,17 +40,17 @@
           }
 
           > .clr-step-error-icon {
-            color: accordion-variables.$clr-accordion-error-color;
+            color: panel-variables.$clr-collapsible-panel-error-color;
           }
 
           > .clr-step-complete-icon {
-            color: accordion-variables.$clr-accordion-complete-color;
+            color: panel-variables.$clr-collapsible-panel-complete-color;
           }
         }
       }
 
       > .clr-step-title-wrapper {
-        min-width: accordion-variables.$clr-accordion-step-title-min-width;
+        min-width: panel-variables.$clr-collapsible-panel-step-title-min-width;
         max-width: calc(264 * (1rem / var(--cds-global-base)));
         width: 100%;
         display: inline-flex;
@@ -78,7 +78,7 @@
         @include mixins.generate-typography-token('BODY-14-RG-EXP');
       }
 
-      @media (max-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+      @media (max-width: panel-variables.$clr-collapsible-panel-responsive-breakpoint) {
         gap: density.$clr-base-gap-xs;
 
         > .clr-step-status {
@@ -104,7 +104,7 @@
     .clr-stepper-panel-inactive:not(.clr-stepper-panel-open) > .clr-stepper-header .clr-step-angle {
       visibility: hidden;
 
-      @media (max-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+      @media (max-width: panel-variables.$clr-collapsible-panel-responsive-breakpoint) {
         display: none;
       }
     }

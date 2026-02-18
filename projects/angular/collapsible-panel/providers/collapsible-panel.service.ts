@@ -9,43 +9,43 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { AccordionStrategy } from '../enums/accordion-strategy.enum';
-import { AccordionModel, AccordionPanelModel } from '../models/accordion.model';
+import { CollapsiblePanelStrategy } from '../enums/collapsible-panel-strategy.enum';
+import { CollapsiblePanelGroupModel, CollapsiblePanelModel } from '../models/collapsible-panel.model';
 
 @Injectable()
-export class AccordionService {
-  protected accordion = new AccordionModel();
-  protected readonly _panelsChanges = new BehaviorSubject(this.accordion.panels);
+export class CollapsiblePanelService {
+  protected panelGroup = new CollapsiblePanelGroupModel();
+  protected readonly _panelsChanges = new BehaviorSubject(this.panelGroup.panels);
 
-  getPanelChanges(panelId: string): Observable<AccordionPanelModel> {
+  getPanelChanges(panelId: string): Observable<CollapsiblePanelModel> {
     return this._panelsChanges.pipe(map(panels => panels.find(s => s.id === panelId)));
   }
 
-  setStrategy(strategy: AccordionStrategy) {
-    this.accordion.setStrategy(strategy);
+  setStrategy(strategy: CollapsiblePanelStrategy) {
+    this.panelGroup.setStrategy(strategy);
   }
 
   addPanel(panelId: string, open = false) {
-    this.accordion.addPanel(panelId, open);
+    this.panelGroup.addPanel(panelId, open);
     this.emitUpdatedPanels();
   }
 
   togglePanel(panelId: string, open?: boolean) {
-    this.accordion.togglePanel(panelId, open);
+    this.panelGroup.togglePanel(panelId, open);
     this.emitUpdatedPanels();
   }
 
   disablePanel(panelId: string, disabled?: boolean) {
-    this.accordion.disablePanel(panelId, disabled);
+    this.panelGroup.disablePanel(panelId, disabled);
     this.emitUpdatedPanels();
   }
 
   updatePanelOrder(ids: string[]) {
-    this.accordion.updatePanelOrder(ids);
+    this.panelGroup.updatePanelOrder(ids);
     this.emitUpdatedPanels();
   }
 
   protected emitUpdatedPanels() {
-    this._panelsChanges.next(this.accordion.panels);
+    this._panelsChanges.next(this.panelGroup.panels);
   }
 }

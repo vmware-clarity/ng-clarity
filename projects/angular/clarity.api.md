@@ -109,93 +109,6 @@ export const accessibility2Icon: IconShapeTuple;
 export const accessibility2IconName = "accessibility-2";
 
 // @public (undocumented)
-export class AccordionModel {
-    // (undocumented)
-    protected accordionCount: number;
-    // (undocumented)
-    addPanel(id: string, open?: boolean): void;
-    // (undocumented)
-    disablePanel(panelId: string, disabled: boolean): void;
-    // (undocumented)
-    get panels(): AccordionPanelModel[];
-    // (undocumented)
-    protected _panels: {
-        [id: string]: AccordionPanelModel;
-    };
-    // (undocumented)
-    setStrategy(strategy: AccordionStrategy): void;
-    // (undocumented)
-    protected strategy: AccordionStrategy;
-    // (undocumented)
-    togglePanel(panelId: string, open?: boolean): void;
-    // (undocumented)
-    updatePanelOrder(ids: string[]): void;
-}
-
-// @public (undocumented)
-export class AccordionPanelModel {
-    constructor(id: string, accordionId: number | string);
-    // (undocumented)
-    accordionId: number | string;
-    // (undocumented)
-    disabled: boolean;
-    // (undocumented)
-    id: string;
-    // (undocumented)
-    index: number;
-    // (undocumented)
-    open: boolean;
-    // (undocumented)
-    status: AccordionStatus;
-    // (undocumented)
-    templateId: string;
-}
-
-// @public (undocumented)
-export class AccordionService {
-    // (undocumented)
-    protected accordion: AccordionModel;
-    // (undocumented)
-    addPanel(panelId: string, open?: boolean): void;
-    // (undocumented)
-    disablePanel(panelId: string, disabled?: boolean): void;
-    // (undocumented)
-    protected emitUpdatedPanels(): void;
-    // (undocumented)
-    getPanelChanges(panelId: string): Observable<AccordionPanelModel>;
-    // (undocumented)
-    protected readonly _panelsChanges: BehaviorSubject<AccordionPanelModel[]>;
-    // (undocumented)
-    setStrategy(strategy: AccordionStrategy): void;
-    // (undocumented)
-    togglePanel(panelId: string, open?: boolean): void;
-    // (undocumented)
-    updatePanelOrder(ids: string[]): void;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<AccordionService, never>;
-    // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<AccordionService>;
-}
-
-// @public (undocumented)
-export enum AccordionStatus {
-    // (undocumented)
-    Complete = "complete",
-    // (undocumented)
-    Error = "error",
-    // (undocumented)
-    Inactive = "inactive"
-}
-
-// @public (undocumented)
-export enum AccordionStrategy {
-    // (undocumented)
-    Default = "default",// only one panel at a time
-    // (undocumented)
-    Multi = "multi"
-}
-
-// @public (undocumented)
 export const addTextIcon: IconShapeTuple;
 
 // @public (undocumented)
@@ -847,13 +760,14 @@ export class ClarityModule {
     // Warning: (ae-forgotten-export) The symbol "i9" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i10" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i12_2" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i8$1" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i13_2" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i16" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, [typeof i5.ClrIcon], [typeof i2_2.ClrEmphasisModule, typeof i3_2.ClrDataModule, typeof i5.ClrIcon, typeof i5.ClrIconModule, typeof i4.ClrModalModule, typeof i39.ClrLoadingModule, typeof i39.ClrConditionalModule, typeof i39.ClrFocusOnViewInitModule, typeof i6_2.ClrButtonModule, typeof i7.ClrFormsModule, typeof i8_3.ClrLayoutModule, typeof i9.ClrPopoverModule, typeof i10.ClrWizardModule, typeof i4.ClrSidePanelModule, typeof i11.ClrStepperModule, typeof i8$1.ClrSpinnerModule, typeof i13_2.ClrProgressBarModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i15.ClrTimelineModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, [typeof i5.ClrIcon], [typeof i2_2.ClrEmphasisModule, typeof i3_2.ClrDataModule, typeof i5.ClrIcon, typeof i5.ClrIconModule, typeof i4.ClrModalModule, typeof i39.ClrLoadingModule, typeof i39.ClrConditionalModule, typeof i39.ClrFocusOnViewInitModule, typeof i6_2.ClrButtonModule, typeof i7.ClrFormsModule, typeof i8_3.ClrLayoutModule, typeof i9.ClrPopoverModule, typeof i10.ClrWizardModule, typeof i4.ClrSidePanelModule, typeof i11.ClrAccordionModule, typeof i12_2.ClrStepperModule, typeof i8$1.ClrSpinnerModule, typeof i14.ClrProgressBarModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i16.ClrTimelineModule]>;
 }
 
 // @public (undocumented)
@@ -1034,7 +948,8 @@ export abstract class ClrAbstractContainer implements OnDestroy {
 
 // @public (undocumented)
 export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-    constructor(accordionService: AccordionService);
+    // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelService_2" needs to be exported by the entry point index.d.ts
+    constructor(panelService: CollapsiblePanelService_2);
     // (undocumented)
     multiPanel: boolean | string;
     // (undocumented)
@@ -1082,49 +997,38 @@ export class ClrAccordionModule {
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAccordionModule, [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof ÇlrAccordionOompaLoompa, typeof ÇlrAccordionWillyWonka], [typeof i2.CommonModule, typeof i5.ClrIcon], [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof ÇlrAccordionOompaLoompa, typeof ÇlrAccordionWillyWonka]>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "CollapsiblePanel_2" needs to be exported by the entry point index.d.ts
+//
 // @public (undocumented)
-export class ClrAccordionPanel implements OnInit, OnChanges {
-    // Warning: (ae-forgotten-export) The symbol "IfExpandService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(parent: ClrAccordionPanel, commonStrings: ClrCommonStringsService_2, accordionService: AccordionService, ifExpandService: IfExpandService_2, cdr: ChangeDetectorRef);
+export class ClrAccordionPanel extends CollapsiblePanel_2 implements OnInit, OnChanges {
+    // Warning: (ae-forgotten-export) The symbol "IfExpandService_2" needs to be exported by the entry point index.d.ts
+    constructor(panelService: CollapsiblePanelService_2, ifExpandService: IfExpandService_2, cdr: ChangeDetectorRef);
     // (undocumented)
     accordionDescription: QueryList<ClrAccordionDescription>;
-    // (undocumented)
-    collapsePanelOnAnimationDone(panel: AccordionPanelModel): void;
-    // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService_2" needs to be exported by the entry point clr-angular.d.ts
-    //
-    // (undocumented)
-    commonStrings: ClrCommonStringsService_2;
     // (undocumented)
     disabled: boolean;
     // Warning: (ae-forgotten-export) The symbol "HeadingLevel_2" needs to be exported by the entry point clr-angular.d.ts
     explicitHeadingLevel: HeadingLevel_2;
     // (undocumented)
-    getAccordionContentId(id: string): string;
+    getContentId(id: string): string;
     // (undocumented)
-    getAccordionHeaderId(id: string): string;
+    getHeaderId(id: string): string;
+    // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelModel_2" needs to be exported by the entry point index.d.ts
+    //
     // (undocumented)
-    getPanelStateClasses(panel: AccordionPanelModel): string;
-    // (undocumented)
-    get id(): string;
-    set id(value: string);
+    getPanelStateClasses(panel: CollapsiblePanelModel_2): string;
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    panel: Observable<AccordionPanelModel>;
-    // (undocumented)
-    protected _panelIndex: number;
-    // (undocumented)
     panelOpen: boolean;
     // (undocumented)
     panelOpenChange: EventEmitter<boolean>;
     // (undocumented)
-    togglePanel(): void;
-    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": { "alias": "clrAccordionPanelDisabled"; "required": false; }; "panelOpen": { "alias": "clrAccordionPanelOpen"; "required": false; }; "explicitHeadingLevel": { "alias": "clrAccordionPanelHeadingLevel"; "required": false; }; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title", "clr-accordion-description", "*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, never>;
 }
 
 // @public (undocumented)
@@ -1137,8 +1041,9 @@ export class ClrAccordionTitle {
 
 // @public (undocumented)
 export class ClrAlert implements OnInit, OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "AlertIconAndTypesService_3" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "MultiAlertService_3" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "AlertIconAndTypesService_3" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "MultiAlertService_3" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService_2" needs to be exported by the entry point index.d.ts
     constructor(iconService: AlertIconAndTypesService_3, cdr: ChangeDetectorRef, multiAlertService: MultiAlertService_3, commonStrings: ClrCommonStringsService_2, renderer: Renderer2, hostElement: ElementRef<HTMLElement>);
     // (undocumented)
     get alertClass(): string;
@@ -5382,23 +5287,13 @@ export class ClrStepperModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStepperModule>;
-    // Warning: (ae-forgotten-export) The symbol "_clr_angular_accordion" needs to be exported by the entry point clr-angular.d.ts
-    //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka], [typeof i2.CommonModule, typeof i5.ClrIcon, typeof _clr_angular_accordion.ClrAccordionModule], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka, typeof _clr_angular_accordion.ClrAccordionModule, typeof i5.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka], [typeof i2.CommonModule, typeof i5.ClrIcon], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka, typeof i5.ClrIcon]>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "ClrAccordionPanel_2" needs to be exported by the entry point clr-angular.d.ts
-//
 // @public (undocumented)
-export class ClrStepperPanel extends ClrAccordionPanel_2 implements OnInit {
+export class ClrStepperPanel extends CollapsiblePanel_2 implements OnInit {
     constructor(platformId: any, commonStrings: ClrCommonStringsService_2, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService_2, ifExpandService: IfExpandService_2, cdr: ChangeDetectorRef);
-    // (undocumented)
-    accordionDescription: QueryList<ClrStepDescription>;
-    // Warning: (ae-forgotten-export) The symbol "AccordionStatus_2" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    readonly AccordionStatus: typeof AccordionStatus_2;
     // (undocumented)
     commonStrings: ClrCommonStringsService_2;
     // (undocumented)
@@ -5406,13 +5301,11 @@ export class ClrStepperPanel extends ClrAccordionPanel_2 implements OnInit {
     // (undocumented)
     get formGroup(): i46.FormGroup<any>;
     // (undocumented)
-    getAccordionContentId(id: string): string;
+    getContentId(id: string): string;
     // (undocumented)
-    getAccordionHeaderId(id: string): string;
-    // Warning: (ae-forgotten-export) The symbol "AccordionPanelModel_2" needs to be exported by the entry point index.d.ts
-    //
+    getHeaderId(id: string): string;
     // (undocumented)
-    getPanelStateClasses(panel: AccordionPanelModel_2): string;
+    getPanelStateClasses(panel: CollapsiblePanelModel_2): string;
     // (undocumented)
     headerButton: ElementRef<HTMLButtonElement>;
     // (undocumented)
@@ -5424,12 +5317,18 @@ export class ClrStepperPanel extends ClrAccordionPanel_2 implements OnInit {
     ngOnInit(): void;
     // (undocumented)
     get panelNumber(): number;
+    // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelStatus_2" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    readonly PanelStatus: typeof CollapsiblePanelStatus_2;
     // (undocumented)
     protected stepCompleteText(panelNumber: number): string;
     // (undocumented)
+    stepDescription: QueryList<ClrStepDescription>;
+    // (undocumented)
     protected stepErrorText(panelNumber: number): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, ["accordionDescription"], ["clr-step-title", "clr-step-description", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, ["stepDescription"], ["clr-step-title", "clr-step-description", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
 }
@@ -6468,6 +6367,139 @@ export const collapseCardIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const collapseCardIconName = "collapse-card";
+
+// @public (undocumented)
+export abstract class CollapsiblePanel implements OnInit {
+    constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService_2, cdr: ChangeDetectorRef);
+    // (undocumented)
+    protected cdr: ChangeDetectorRef;
+    // (undocumented)
+    collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
+    // (undocumented)
+    abstract get disabled(): boolean;
+    // (undocumented)
+    abstract getContentId(id: string): string;
+    // (undocumented)
+    abstract getHeaderId(id: string): string;
+    // (undocumented)
+    abstract getPanelStateClasses(panel: CollapsiblePanelModel): string;
+    // (undocumented)
+    get id(): string;
+    set id(value: string);
+    // (undocumented)
+    protected ifExpandService: IfExpandService_2;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    panel: Observable<CollapsiblePanelModel>;
+    // (undocumented)
+    protected _panelIndex: number;
+    // (undocumented)
+    panelOpen: boolean;
+    // (undocumented)
+    panelOpenChange: EventEmitter<boolean>;
+    // (undocumented)
+    protected panelService: CollapsiblePanelService;
+    // (undocumented)
+    togglePanel(): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<CollapsiblePanel, never, never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<CollapsiblePanel, never>;
+}
+
+// @public (undocumented)
+export const collapsiblePanelAnimation: _angular_animations.AnimationTriggerMetadata[];
+
+// @public (undocumented)
+export const collapsiblePanelExpandAnimation: _angular_animations.AnimationTriggerMetadata[];
+
+// @public (undocumented)
+export class CollapsiblePanelGroupModel {
+    // (undocumented)
+    addPanel(id: string, open?: boolean): void;
+    // (undocumented)
+    disablePanel(panelId: string, disabled: boolean): void;
+    // (undocumented)
+    protected panelGroupCount: number;
+    // (undocumented)
+    get panels(): CollapsiblePanelModel[];
+    // (undocumented)
+    protected _panels: {
+        [id: string]: CollapsiblePanelModel;
+    };
+    // (undocumented)
+    setStrategy(strategy: CollapsiblePanelStrategy): void;
+    // (undocumented)
+    protected strategy: CollapsiblePanelStrategy;
+    // (undocumented)
+    togglePanel(panelId: string, open?: boolean): void;
+    // (undocumented)
+    updatePanelOrder(ids: string[]): void;
+}
+
+// @public (undocumented)
+export class CollapsiblePanelModel {
+    constructor(id: string, groupId: number | string);
+    // (undocumented)
+    disabled: boolean;
+    // (undocumented)
+    groupId: number | string;
+    // (undocumented)
+    id: string;
+    // (undocumented)
+    index: number;
+    // (undocumented)
+    open: boolean;
+    // (undocumented)
+    status: CollapsiblePanelStatus;
+    // (undocumented)
+    templateId: string;
+}
+
+// @public (undocumented)
+export class CollapsiblePanelService {
+    // (undocumented)
+    addPanel(panelId: string, open?: boolean): void;
+    // (undocumented)
+    disablePanel(panelId: string, disabled?: boolean): void;
+    // (undocumented)
+    protected emitUpdatedPanels(): void;
+    // (undocumented)
+    getPanelChanges(panelId: string): Observable<CollapsiblePanelModel>;
+    // (undocumented)
+    protected panelGroup: CollapsiblePanelGroupModel;
+    // (undocumented)
+    protected readonly _panelsChanges: BehaviorSubject<CollapsiblePanelModel[]>;
+    // (undocumented)
+    setStrategy(strategy: CollapsiblePanelStrategy): void;
+    // (undocumented)
+    togglePanel(panelId: string, open?: boolean): void;
+    // (undocumented)
+    updatePanelOrder(ids: string[]): void;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<CollapsiblePanelService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<CollapsiblePanelService>;
+}
+
+// @public (undocumented)
+export enum CollapsiblePanelStatus {
+    // (undocumented)
+    Complete = "complete",
+    // (undocumented)
+    Error = "error",
+    // (undocumented)
+    Inactive = "inactive"
+}
+
+// @public (undocumented)
+export enum CollapsiblePanelStrategy {
+    // (undocumented)
+    Default = "default",
+    // (undocumented)
+    Multi = "multi"
+}
 
 // @public (undocumented)
 export const colorPaletteIcon: IconShapeTuple;
@@ -8273,7 +8305,10 @@ export const paintRollerIcon: IconShapeTuple;
 export const paintRollerIconName = "paint-roller";
 
 // @public (undocumented)
-export const panelAnimation: _angular_animations.AnimationTriggerMetadata[];
+export const panelCollapseTransition: _angular_animations.AnimationTransitionMetadata;
+
+// @public (undocumented)
+export const panelExpandTransition: _angular_animations.AnimationTransitionMetadata;
 
 // @public (undocumented)
 export const paperclipIcon: IconShapeTuple;
@@ -8736,6 +8771,9 @@ export const shuffleIconName = "shuffle";
 
 // @public (undocumented)
 export const SIGNPOST_POSITIONS: ClrPopoverPosition[];
+
+// @public (undocumented)
+export const skipInitialRenderTrigger: _angular_animations.AnimationTriggerMetadata;
 
 // @public (undocumented)
 export function slide(direction: string): AnimationMetadata[];

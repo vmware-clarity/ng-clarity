@@ -7,20 +7,20 @@
 
 @use '../styles/mixins';
 @use '../styles/core/tokens/variables.tokens' as tokens;
-@use 'variables.accordion' as accordion-variables;
+@use 'variables.collapsible-panel' as panel-variables;
 @use '../styles/variables/variables.density' as density;
 
-@mixin collapsible-panel-base($prefix) {
+@mixin collapsible-panel($prefix) {
   .#{$prefix}-panel {
     display: block;
   }
 
   .#{$prefix}-header {
-    color: accordion-variables.$clr-accordion-text-color;
-    box-shadow: accordion-variables.$clr-accordion-header-left-indicator;
-    background: accordion-variables.$clr-accordion-header-background-color;
+    color: panel-variables.$clr-collapsible-panel-text-color;
+    box-shadow: panel-variables.$clr-collapsible-panel-header-left-indicator;
+    background: panel-variables.$clr-collapsible-panel-header-background-color;
     transition: all 200ms ease-in-out;
-    border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
+    border: tokens.$cds-global-space-1 solid panel-variables.$clr-collapsible-panel-border-color;
     border-bottom-width: 0;
     width: 100%;
 
@@ -29,30 +29,30 @@
     text-align: left;
 
     &:hover {
-      color: accordion-variables.$clr-accordion-text-color-hover;
-      background-color: accordion-variables.$clr-accordion-header-hover-background-color;
+      color: panel-variables.$clr-collapsible-panel-text-color-hover;
+      background-color: panel-variables.$clr-collapsible-panel-header-hover-background-color;
     }
 
     &:active {
-      color: accordion-variables.$clr-accordion-text-color-active;
-      background-color: accordion-variables.$clr-accordion-header-active-background-color;
+      color: panel-variables.$clr-collapsible-panel-text-color-active;
+      background-color: panel-variables.$clr-collapsible-panel-header-active-background-color;
     }
 
     .#{$prefix}-panel-disabled > div > & {
-      background-color: accordion-variables.$clr-accordion-header-background-color;
+      background-color: panel-variables.$clr-collapsible-panel-header-background-color;
 
       &:hover,
       &:active {
-        background-color: accordion-variables.$clr-accordion-header-background-color;
+        background-color: panel-variables.$clr-collapsible-panel-header-background-color;
       }
     }
 
     .#{$prefix}-panel-disabled > .#{$prefix}-panel-open > & {
-      background-color: accordion-variables.$clr-accordion-header-disabled-background-color;
+      background-color: panel-variables.$clr-collapsible-panel-header-disabled-background-color;
 
       &:hover,
       &:active {
-        background-color: accordion-variables.$clr-accordion-header-disabled-background-color;
+        background-color: panel-variables.$clr-collapsible-panel-header-disabled-background-color;
       }
     }
   }
@@ -60,7 +60,7 @@
   .#{$prefix}-panel:last-child {
     .#{$prefix}-content,
     .#{$prefix}-header {
-      border-bottom: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
+      border-bottom: tokens.$cds-global-space-1 solid panel-variables.$clr-collapsible-panel-border-color;
     }
   }
 
@@ -77,7 +77,7 @@
     color: inherit;
     gap: density.$clr-base-gap-s;
 
-    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+    @media (min-width: panel-variables.$clr-collapsible-panel-responsive-breakpoint) {
       flex-flow: row;
     }
 
@@ -87,7 +87,7 @@
       .#{$prefix}-status,
       .#{$prefix}-title,
       .#{$prefix}-description {
-        color: accordion-variables.$clr-accordion-panel-disabled-color;
+        color: panel-variables.$clr-collapsible-panel-panel-disabled-color;
       }
     }
   }
@@ -104,7 +104,7 @@
 
   .#{$prefix}-header-has-description {
     .#{$prefix}-title {
-      min-width: accordion-variables.$clr-accordion-step-title-min-width;
+      min-width: panel-variables.$clr-collapsible-panel-step-title-min-width;
       max-width: mixins.baselinePx(264);
       width: 100%;
     }
@@ -114,14 +114,14 @@
     display: inline-block;
     max-width: mixins.baselinePx(650);
 
-    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+    @media (min-width: panel-variables.$clr-collapsible-panel-responsive-breakpoint) {
       margin-left: density.$clr-base-horizontal-offset-l;
     }
   }
 
   .#{$prefix}-content {
-    background: accordion-variables.$clr-accordion-content-background-color;
-    border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
+    background: panel-variables.$clr-collapsible-panel-content-background-color;
+    border: tokens.$cds-global-space-1 solid panel-variables.$clr-collapsible-panel-border-color;
     border-bottom: 0;
     overflow: hidden;
     display: none;
@@ -143,15 +143,15 @@
   // panel states
   .#{$prefix}-panel-open {
     > .#{$prefix}-header {
-      box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator;
+      box-shadow: panel-variables.$clr-collapsible-panel-header-left-current-indicator;
     }
 
     .#{$prefix}-panel-complete > .#{$prefix}-header {
-      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
+      box-shadow: inset tokens.$cds-global-space-5 0 0 panel-variables.$clr-collapsible-panel-border-left-color-complete;
     }
 
     .#{$prefix}-panel-error > .#{$prefix}-header {
-      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
+      box-shadow: inset tokens.$cds-global-space-5 0 0 panel-variables.$clr-collapsible-panel-border-left-color-error;
     }
 
     & > .#{$prefix}-content-region .#{$prefix}-content {
@@ -159,15 +159,15 @@
     }
 
     & > .#{$prefix}-header {
-      background: accordion-variables.$clr-accordion-header-open-background-color;
+      background: panel-variables.$clr-collapsible-panel-header-open-background-color;
 
       &:hover {
-        background-color: accordion-variables.$clr-accordion-header-open-hover-background-color;
+        background-color: panel-variables.$clr-collapsible-panel-header-open-hover-background-color;
       }
 
       &:active {
-        color: accordion-variables.$clr-accordion-text-color-active;
-        background-color: accordion-variables.$clr-accordion-header-open-active-background-color;
+        color: panel-variables.$clr-collapsible-panel-text-color-active;
+        background-color: panel-variables.$clr-collapsible-panel-header-open-active-background-color;
       }
 
       .#{$prefix}-angle {
@@ -180,7 +180,7 @@
   .#{$prefix}-panel-complete {
     & > .#{$prefix}-complete-icon {
       display: inline-block;
-      color: accordion-variables.$clr-accordion-complete-color;
+      color: panel-variables.$clr-collapsible-panel-complete-color;
     }
 
     & > .#{$prefix}-angle {
@@ -188,7 +188,7 @@
     }
 
     & > .#{$prefix}-header {
-      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
+      box-shadow: inset tokens.$cds-global-space-5 0 0 panel-variables.$clr-collapsible-panel-border-left-color-complete;
     }
 
     .ng-trigger.#{$prefix}-content {
@@ -198,12 +198,12 @@
 
   .#{$prefix}-panel-error {
     & > .#{$prefix}-header {
-      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
+      box-shadow: inset tokens.$cds-global-space-5 0 0 panel-variables.$clr-collapsible-panel-border-left-color-error;
     }
 
     & > .#{$prefix}-error-icon {
       display: inline-block;
-      color: accordion-variables.$clr-accordion-error-color;
+      color: panel-variables.$clr-collapsible-panel-error-color;
     }
   }
 

@@ -10,12 +10,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CollapsiblePanelService } from '@clr/angular/collapsible-panel';
 import { delay } from '@clr/angular/testing';
 
 import { ClrAccordion } from './accordion';
 import { ClrAccordionPanel } from './accordion-panel';
 import { ClrAccordionModule } from './accordion.module';
-import { AccordionService } from './providers/accordion.service';
 
 @Component({
   template: `
@@ -39,7 +39,7 @@ describe('ClrAccordion', () => {
   describe('TypeScript API', () => {
     let fixture: ComponentFixture<ClrAccordion>;
     let accordion: ClrAccordion;
-    let accordionService: AccordionService;
+    let panelService: CollapsiblePanelService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -50,13 +50,13 @@ describe('ClrAccordion', () => {
       fixture = TestBed.createComponent(ClrAccordion);
       fixture.detectChanges();
       accordion = fixture.componentInstance;
-      accordionService = fixture.debugElement.injector.get(AccordionService);
+      panelService = fixture.debugElement.injector.get(CollapsiblePanelService);
     });
 
     it('should set the accordion strategy for the accordion service', () => {
-      spyOn(accordionService, 'setStrategy');
+      spyOn(panelService, 'setStrategy');
       accordion.ngOnInit();
-      expect(accordionService.setStrategy).toHaveBeenCalled();
+      expect(panelService.setStrategy).toHaveBeenCalled();
     });
   });
 
@@ -91,7 +91,7 @@ describe('ClrAccordion', () => {
   describe('View', () => {
     let fixture: ComponentFixture<any>;
     let testComponent: TestComponent;
-    let accordionService: AccordionService;
+    let panelService: CollapsiblePanelService;
     let accordionInstance: ClrAccordion;
     let accordionPanels: DebugElement[];
 
@@ -105,7 +105,7 @@ describe('ClrAccordion', () => {
       fixture.detectChanges();
       testComponent = fixture.componentInstance;
       accordionInstance = fixture.debugElement.query(By.directive(ClrAccordion)).componentInstance;
-      accordionService = fixture.debugElement.query(By.directive(ClrAccordion)).injector.get(AccordionService);
+      panelService = fixture.debugElement.query(By.directive(ClrAccordion)).injector.get(CollapsiblePanelService);
       accordionPanels = fixture.debugElement.queryAll(By.directive(ClrAccordionPanel));
     });
 
@@ -144,11 +144,11 @@ describe('ClrAccordion', () => {
     });
 
     it('should reorder panels when panel content children has changed', async () => {
-      spyOn(accordionService, 'updatePanelOrder');
+      spyOn(panelService, 'updatePanelOrder');
       testComponent.showSecondStep = false;
       fixture.detectChanges();
       await delay();
-      expect(accordionService.updatePanelOrder).toHaveBeenCalled();
+      expect(panelService.updatePanelOrder).toHaveBeenCalled();
       expect(fixture.debugElement.queryAll(By.directive(ClrAccordionPanel)).length).toBe(2);
     });
   });

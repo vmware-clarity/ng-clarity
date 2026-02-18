@@ -5,33 +5,33 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AccordionStatus } from '../enums/accordion-status.enum';
-import { AccordionStrategy } from '../enums/accordion-strategy.enum';
+import { CollapsiblePanelStatus } from '../enums/collapsible-panel-status.enum';
+import { CollapsiblePanelStrategy } from '../enums/collapsible-panel-strategy.enum';
 
-let accordionCount = 0;
+let panelGroupCount = 0;
 
-export class AccordionPanelModel {
-  status = AccordionStatus.Inactive;
+export class CollapsiblePanelModel {
+  status = CollapsiblePanelStatus.Inactive;
   index: number = null;
   disabled = false;
   open = false;
-  templateId = `${this.id}-${this.accordionId}`;
+  templateId = `${this.id}-${this.groupId}`;
   constructor(
     public id: string,
-    public accordionId: number | string
+    public groupId: number | string
   ) {}
 }
 
-export class AccordionModel {
-  protected strategy = AccordionStrategy.Default;
-  protected accordionCount = accordionCount++;
-  protected _panels: { [id: string]: AccordionPanelModel } = {};
+export class CollapsiblePanelGroupModel {
+  protected strategy = CollapsiblePanelStrategy.Default;
+  protected panelGroupCount = panelGroupCount++;
+  protected _panels: { [id: string]: CollapsiblePanelModel } = {};
 
-  get panels(): AccordionPanelModel[] {
+  get panels(): CollapsiblePanelModel[] {
     return Object.keys(this._panels).map(id => this._panels[id]);
   }
 
-  setStrategy(strategy: AccordionStrategy) {
+  setStrategy(strategy: CollapsiblePanelStrategy) {
     this.strategy = strategy;
   }
 
@@ -41,14 +41,14 @@ export class AccordionModel {
   }
 
   addPanel(id: string, open = false) {
-    this._panels[id] = new AccordionPanelModel(id, this.accordionCount);
+    this._panels[id] = new CollapsiblePanelModel(id, this.panelGroupCount);
     this._panels[id].open = open;
   }
 
   togglePanel(panelId: string, open?: boolean) {
     const panelIsOpen = this._panels[panelId].open;
     const newOpenState = open !== undefined ? open : !panelIsOpen;
-    if (newOpenState && this.strategy === AccordionStrategy.Default) {
+    if (newOpenState && this.strategy === CollapsiblePanelStrategy.Default) {
       this.closeAllPanels();
     }
 

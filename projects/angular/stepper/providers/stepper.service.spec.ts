@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AccordionStatus } from '@clr/angular/accordion';
+import { CollapsiblePanelStatus } from '@clr/angular/collapsible-panel';
 import { take } from 'rxjs/operators';
 
 import { StepperService } from './stepper.service';
@@ -52,7 +52,7 @@ describe('StepperService', () => {
     stepperService
       .getPanelChanges(panel1Id)
       .pipe(take(1))
-      .subscribe(step => expect(step.status).toBe(AccordionStatus.Error));
+      .subscribe(step => expect(step.status).toBe(CollapsiblePanelStatus.Error));
   });
 
   it('should allow the default panel to be overridden', () => {

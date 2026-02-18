@@ -19,7 +19,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, FormGroupDirective, NgForm } from '@angular/forms';
-import { AccordionService } from '@clr/angular/accordion';
+import { CollapsiblePanelService } from '@clr/angular/collapsible-panel';
 import { Observable, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
@@ -32,7 +32,7 @@ import { ClrStepperPanel } from './stepper-panel';
   host: {
     '[class.clr-stepper-forms]': 'true',
   },
-  providers: [StepperService, { provide: AccordionService, useExisting: StepperService }],
+  providers: [StepperService, { provide: CollapsiblePanelService, useExisting: StepperService }],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })

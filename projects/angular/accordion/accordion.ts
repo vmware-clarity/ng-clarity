@@ -17,18 +17,17 @@ import {
   QueryList,
   SimpleChanges,
 } from '@angular/core';
+import { CollapsiblePanelService, CollapsiblePanelStrategy } from '@clr/angular/collapsible-panel';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 import { ClrAccordionPanel } from './accordion-panel';
-import { AccordionStrategy } from './enums/accordion-strategy.enum';
-import { AccordionService } from './providers/accordion.service';
 
 @Component({
   selector: 'clr-accordion',
   template: `<ng-content></ng-content>`,
   host: { '[class.clr-accordion]': 'true' },
-  providers: [AccordionService],
+  providers: [CollapsiblePanelService],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
@@ -37,7 +36,7 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
   @ContentChildren(ClrAccordionPanel) panels: QueryList<ClrAccordionPanel>;
   subscriptions: Subscription[] = [];
 
-  constructor(private accordionService: AccordionService) {}
+  constructor(private panelService: CollapsiblePanelService) {}
 
   ngOnInit() {
     this.setAccordionStrategy();
@@ -58,15 +57,15 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
   }
 
   private setAccordionStrategy() {
-    const strategy = this.multiPanel ? AccordionStrategy.Multi : AccordionStrategy.Default;
-    this.accordionService.setStrategy(strategy);
+    const strategy = this.multiPanel ? CollapsiblePanelStrategy.Multi : CollapsiblePanelStrategy.Default;
+    this.panelService.setStrategy(strategy);
   }
 
   private listenForDOMChanges() {
     return this.panels.changes
       .pipe(startWith(this.panels))
       .subscribe((panels: QueryList<ClrAccordionPanel>) =>
-        this.accordionService.updatePanelOrder(panels.toArray().map(p => p.id))
+        this.panelService.updatePanelOrder(panels.toArray().map(p => p.id))
       );
   }
 }
