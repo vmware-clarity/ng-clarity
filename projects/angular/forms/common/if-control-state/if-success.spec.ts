@@ -11,9 +11,9 @@ import { FormControl, FormsModule, Validators } from '@angular/forms';
 import { ClrInput, ClrInputContainer } from '@clr/angular/forms/input';
 import { ClrIcon } from '@clr/angular/icon';
 
-import { NgControlService } from '../providers/ng-control.service';
-import { ClrControlSuccess } from '../success';
 import { ClrIfSuccess } from './if-success';
+import { ClrControlSuccess } from '../control-subtexts/success';
+import { NgControlService } from '../providers/ng-control.service';
 
 const successMessage = 'SUCCESS_MESSAGE';
 

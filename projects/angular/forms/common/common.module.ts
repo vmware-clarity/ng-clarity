@@ -11,14 +11,15 @@ import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '@
 
 import { ClrControl } from './control';
 import { ClrControlContainer } from './control-container';
-import { ClrControlError } from './error';
+import { ClrControlError } from './control-subtexts/error';
+import { ClrControlHelper } from './control-subtexts/helper';
+import { ClrControlSubtextContainer } from './control-subtexts/subtext-container';
+import { ClrControlSuccess } from './control-subtexts/success';
 import { ClrForm } from './form';
-import { ClrControlHelper } from './helper';
 import { ClrIfError } from './if-control-state/if-error';
 import { ClrIfSuccess } from './if-control-state/if-success';
 import { ClrControlLabel } from './label';
 import { ClrLayout } from './layout';
-import { ClrControlSuccess } from './success';
 
 @NgModule({
   imports: [CommonModule, ClrIcon],
@@ -27,6 +28,7 @@ import { ClrControlSuccess } from './success';
     ClrControlError,
     ClrControlSuccess,
     ClrControlHelper,
+    ClrControlSubtextContainer,
     ClrIfError,
     ClrIfSuccess,
     ClrForm,
@@ -39,6 +41,7 @@ import { ClrControlSuccess } from './success';
     ClrControlError,
     ClrControlSuccess,
     ClrControlHelper,
+    ClrControlSubtextContainer,
     ClrIfError,
     ClrIfSuccess,
     ClrForm,

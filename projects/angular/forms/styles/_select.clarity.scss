@@ -94,11 +94,6 @@
     }
   }
 
-  .clr-error .clr-select-wrapper::after,
-  .clr-success .clr-select-wrapper::after {
-    right: calc(#{forms-variables.$clr-forms-icon-size} + #{density.$clr-base-horizontal-offset-s});
-  }
-
   .clr-multiselect-wrapper {
     display: flex;
 

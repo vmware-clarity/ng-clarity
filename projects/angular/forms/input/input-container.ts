@@ -27,22 +27,12 @@ import {
           <ng-content select="[clrInput]"></ng-content>
           <ng-content select="[clrInputSuffix]"></ng-content>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
-      @if (showHelper) {
-        <ng-content select="clr-control-helper"></ng-content>
-      }
-      @if (showInvalid) {
-        <ng-content select="clr-control-error"></ng-content>
-      }
-      @if (showValid) {
-        <ng-content select="clr-control-success"></ng-content>
-      }
+      <clr-control-subtext-container [showHelper]="showHelper" [showInvalid]="showInvalid" [showValid]="showValid">
+        <ng-content select="clr-control-helper" ngProjectAs="clr-control-helper"></ng-content>
+        <ng-content select="clr-control-error" ngProjectAs="clr-control-error"></ng-content>
+        <ng-content select="clr-control-success" ngProjectAs="clr-control-success"></ng-content>
+      </clr-control-subtext-container>
     </div>
   `,
   host: {
