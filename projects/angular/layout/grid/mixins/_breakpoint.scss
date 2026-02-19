@@ -20,20 +20,36 @@
     @error 'breakpoint `#{$name}` not found in `#{$breakpoints}`';
   }
 
-  @return if($n < list.length($breakpoint-names), list.nth($breakpoint-names, $n + 1), null);
+  @if $n < list.length($breakpoint-names) {
+    @return list.nth($breakpoint-names, $n + 1);
+  }
+
+  @return null;
 }
 @function clr-breakpoint-min($name, $breakpoints: variables.$clr-grid-breakpoints) {
   $min: map.get($breakpoints, $name);
 
-  @return if($min != 0, $min, null);
+  @if $min != 0 {
+    @return $min;
+  }
+
+  @return null;
 }
 @function clr-breakpoint-max($name, $breakpoints: variables.$clr-grid-breakpoints) {
   $next: clr-breakpoint-next($name, $breakpoints);
 
-  @return if($next, clr-breakpoint-min($next, $breakpoints) - 0.02, null);
+  @if $next {
+    @return clr-breakpoint-min($next, $breakpoints) - 0.02;
+  }
+
+  @return null;
 }
 @function clr-breakpoint-infix($name, $breakpoints: variables.$clr-grid-breakpoints) {
-  @return if(clr-breakpoint-min($name, $breakpoints) == null, '', '-#{$name}');
+  @if not clr-breakpoint-min($name, $breakpoints) {
+    @return '';
+  }
+
+  @return '-#{$name}';
 }
 
 // Media of at least the minimum breakpoint width. No query for the smallest breakpoint.

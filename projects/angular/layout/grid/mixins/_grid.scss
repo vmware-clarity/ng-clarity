@@ -31,5 +31,9 @@
 @mixin clr-make-col-offset($size, $columns: variables.$clr-grid-columns) {
   $num: math.div($size, $columns);
 
-  margin-left: if($num == 0, 0, math.percentage($num));
+  @if $num == 0 {
+    margin-left: 0;
+  } @else {
+    margin-left: math.percentage($num);
+  }
 }
