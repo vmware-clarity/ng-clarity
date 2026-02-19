@@ -12,7 +12,7 @@ export class SingleSelectComboboxModel<T> extends ComboboxModel<T> {
 
   containsItem(item: T): boolean {
     if (this.identityFn) {
-      return this.model !== null && this.identityFn(this.model) === this.identityFn(item);
+      return this.model !== null && this.model !== undefined && this.identityFn(this.model) === this.identityFn(item);
     }
     return this.model === item;
   }
