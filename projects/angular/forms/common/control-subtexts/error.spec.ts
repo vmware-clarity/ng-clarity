@@ -40,8 +40,8 @@ export default function (): void {
         expect(element.innerText).toContain('Test error');
       });
 
-      it('adds the .clr-subtext class to host', function () {
-        expect(element.classList.contains('clr-subtext')).toBeTrue();
+      it('adds the .clr-control-error class to host', function () {
+        expect(element.classList.contains('clr-control-error')).toBeTrue();
       });
 
       it('should add id to host', function () {

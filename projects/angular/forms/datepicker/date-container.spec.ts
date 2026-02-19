@@ -189,14 +189,14 @@ export default function () {
         container.control.control.updateValueAndValidity();
         context.detectChanges();
         expect(context.clarityElement.querySelector('clr-control-success')).toBeTruthy();
-        expect(context.clarityElement.querySelector('cds-icon[shape=check-circle]')).toBeTruthy();
+        expect(context.clarityElement.querySelector('cds-icon[shape=success-standard]')).toBeTruthy();
 
         /* invalid */
         setValid(false);
         container.control.control.updateValueAndValidity();
         context.detectChanges();
         expect(context.clarityElement.querySelector('clr-control-success')).toBeNull();
-        expect(context.clarityElement.querySelector('cds-icon[shape=check-circle]')).toBeNull();
+        expect(context.clarityElement.querySelector('cds-icon[shape=success-standard]')).toBeNull();
       });
       it('autocomplete on input is set to off', () => {
         const input = context.clarityElement.querySelector('input');
