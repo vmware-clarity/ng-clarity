@@ -24,8 +24,9 @@ import {
   template: `
     @if (!column.columnRenderer) {
       {{ item?.[column.field] }}
-    } @else {}
-    <ng-template #cellContainer></ng-template>
+    } @else {
+      <ng-template #cellContainer></ng-template>
+    }
   `,
 })
 export class MockDatagridCellContainerComponent implements OnInit {

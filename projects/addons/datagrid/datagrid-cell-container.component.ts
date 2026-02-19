@@ -24,8 +24,9 @@ import { ColumnDefinition, ColumnRenderer } from './shared/column/column-definit
   template: `
     @if (!column.columnRenderer) {
       <span [title]="item?.[column.field]">{{ item?.[column.field] }}</span>
-    } @else {}
-    <ng-template #cellContainer></ng-template>
+    } @else {
+      <ng-template #cellContainer></ng-template>
+    }
   `,
   styles: [':host { width: 100%; }'],
 })
