@@ -28,7 +28,7 @@ import { Component, Input } from '@angular/core';
   `,
   standalone: false,
   host: {
-    '[class.clr-control-subtext-container]': 'true',
+    '[class.clr-control-subtext-container]': 'showHelper || showInvalid || showValid',
   },
 })
 export class ClrControlSubtextContainer {
