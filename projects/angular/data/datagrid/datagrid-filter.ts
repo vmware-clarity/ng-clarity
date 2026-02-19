@@ -5,7 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, Optional, Output, ViewChild } from '@angular/core';
+import {
+  booleanAttribute,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Optional,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { ClrPopoverPosition, ClrPopoverService, ClrPopoverType } from '@clr/angular/popover/common';
 import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
@@ -96,13 +106,11 @@ export class ClrDatagridFilter<T = any>
     );
   }
 
-  @Input('clrDgFilterOpen')
+  @Input({ alias: 'clrDgFilterOpen', transform: booleanAttribute })
   get open() {
     return this.popoverService.open;
   }
   set open(open: boolean) {
-    open = !!open;
-
     if (this.popoverService.open !== open) {
       this.popoverService.open = open;
       this.openChange.emit(open);

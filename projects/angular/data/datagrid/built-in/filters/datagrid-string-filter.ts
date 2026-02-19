@@ -32,7 +32,7 @@ import { DatagridFilterRegistrar } from '../../utils/datagrid-filter-registrar';
   selector: 'clr-dg-string-filter',
   providers: [{ provide: CustomFilter, useExisting: DatagridStringFilter }],
   template: `
-    <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
+    <clr-dg-filter [clrDgFilter]="registered">
       <clr-input-container>
         <label>{{ labelValue }}</label>
         <input
@@ -62,11 +62,6 @@ export class DatagridStringFilter<T = any>
   @Input('clrFilterLabel') label: string;
 
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
-
-  /**
-   * Indicates if the filter dropdown is open
-   */
-  open = false;
 
   /**
    * We need the actual input element to automatically focus on it

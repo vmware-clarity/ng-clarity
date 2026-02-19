@@ -21,7 +21,7 @@ import { DatagridFilterRegistrar } from '../../utils/datagrid-filter-registrar';
   selector: 'clr-dg-numeric-filter',
   providers: [{ provide: CustomFilter, useExisting: DatagridNumericFilter }],
   template: `
-    <clr-dg-filter [clrDgFilter]="registered" [(clrDgFilterOpen)]="open">
+    <clr-dg-filter [clrDgFilter]="registered">
       <div class="datagrid-numeric-filter-form">
         <clr-number-input-container>
           <label class="clr-control-label">{{ fromLabelValue }}</label>
@@ -67,11 +67,6 @@ export class DatagridNumericFilter<T = any>
   @Input('clrFilterToLabel') toLabel: string;
 
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
-
-  /**
-   * Indicates if the filter dropdown is open
-   */
-  open = false;
 
   /**
    * We need the actual input element to automatically focus on it

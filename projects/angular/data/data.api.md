@@ -492,6 +492,8 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar_2<T, Clr
     // (undocumented)
     set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter_2<T, ClrDatagridFilterInterface<T>>);
     // (undocumented)
+    static ngAcceptInputType_open: unknown;
+    // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     get open(): boolean;
@@ -1209,7 +1211,6 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar_2<T,
     get minPlaceholderValue(): string;
     // (undocumented)
     ngOnDestroy(): void;
-    open: boolean;
     // (undocumented)
     toLabel: string;
     // (undocumented)
@@ -1273,7 +1274,6 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar_2<T, 
     ngOnChanges(): void;
     // (undocumented)
     ngOnDestroy(): void;
-    open: boolean;
     placeholder: string;
     // (undocumented)
     get placeholderValue(): string;

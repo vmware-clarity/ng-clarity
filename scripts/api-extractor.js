@@ -5,22 +5,63 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+/**
+ * API Extractor Runner
+ *
+ * Runs Microsoft's API Extractor against every public entry point of each
+ * library in this monorepo (@clr/angular and @clr/addons). It operates in
+ * two modes controlled by the --local flag:
+ *
+ *   npm run public-api:update   (--local)  — Regenerates .api.md report files
+ *                                            next to each entry point source.
+ *   npm run public-api:check    (no flag)  — CI guard; fails if any report is
+ *                                            out of date or extraction errors.
+ *
+ * Prerequisites:
+ *   - The libraries must be built first (dist/ must contain compiled output
+ *     including rolled-up .d.ts files under dist/<lib>/types/).
+ *   - A base configuration file must exist at api-extractor-base.json.
+ *
+ * High-level workflow:
+ *   1. Discover entry points — scan each library's source root for a root
+ *      entry file and secondary entry points (sub-directories with their own
+ *      entry files).
+ *   2. For each entry point, generate a temporary tsconfig and API Extractor
+ *      config, invoke the extractor, and evaluate the result.
+ *   3. Clean up all temporary files regardless of success or failure.
+ *
+ * To add a new library, append an entry to the LIBRARIES array below.
+ * To exclude additional sub-directories from secondary entry point discovery,
+ * add them to EXCLUDED_SUB_DIRS.
+ */
+
 const path = require('path');
 const fs = require('fs');
 const { Extractor, ExtractorConfig } = require('@microsoft/api-extractor');
 
-// --- Global Configuration ---
+// --- Configuration ---
 
+/** When true, reports are regenerated in place. When false, the script fails if reports are stale. */
 const IS_LOCAL_MODE = process.argv.includes('--local');
 const CWD = process.cwd();
 
+/** Temporary working directory for API Extractor output; cleaned up after each run. */
 const TEMP_GEN_FOLDER = path.join(CWD, '.api-temp');
 const BASE_CONFIG_PATH = path.join(CWD, 'api-extractor-base.json');
 
-// Directories within a library source root that are not secondary entry points.
+/** Directories within a library source root that are not secondary entry points. */
 const EXCLUDED_SUB_DIRS = new Set(['src', 'assets', 'styles', 'types', 'schematics', 'migrations']);
 
-// Library configurations
+/**
+ * Library configurations. Each entry describes one publishable package:
+ *   id         — Short identifier used in log output and task IDs.
+ *   pkgName    — npm package name, used for TypeScript path mappings.
+ *   distDir    — Root of the compiled library output.
+ *   typesDir   — Directory containing rolled-up .d.ts declaration files.
+ *   srcRoot    — Source root; scanned for root and secondary entry points.
+ *   tsconfig   — Filename of the production tsconfig within srcRoot.
+ *   reportName — Filename for the root entry point's API report.
+ */
 const LIBRARIES = [
   {
     id: 'angular',
@@ -42,8 +83,12 @@ const LIBRARIES = [
   },
 ];
 
-// --- Helpers ---
+// --- Helpers: Path Resolution & Task Discovery ---
 
+/**
+ * Builds a TypeScript path-mapping object that maps each library's package name
+ * to its dist types and output directories, enabling cross-library type resolution.
+ */
 function getDistPathMappings() {
   return LIBRARIES.reduce((paths, lib) => {
     paths[lib.pkgName] = [lib.typesDir, lib.distDir];
@@ -52,6 +97,10 @@ function getDistPathMappings() {
   }, {});
 }
 
+/**
+ * Searches a directory for a recognized entry file (index.ts, src/index.ts, or public-api.ts).
+ * Returns the absolute path of the first match, or null if none is found.
+ */
 function getEntryFile(dir) {
   const candidates = ['index.ts', 'src/index.ts', 'public-api.ts'];
   for (const file of candidates) {
@@ -63,7 +112,12 @@ function getEntryFile(dir) {
   return null;
 }
 
-function getDtsPath(libConfig, entryName) {
+/**
+ * Constructs the expected path to the rolled-up .d.ts file for a given entry point.
+ * For root entries the filename matches the package name; for secondary entries
+ * the entry name is appended as a suffix.
+ */
+function getTypeDeclarationPath(libConfig, entryName) {
   const cleanPkgName = libConfig.pkgName.replace('@', '').replace('/', '-');
   if (entryName === 'root') {
     return path.join(libConfig.typesDir, `${cleanPkgName}.d.ts`);
@@ -71,6 +125,17 @@ function getDtsPath(libConfig, entryName) {
   return path.join(libConfig.typesDir, `${cleanPkgName}-${entryName}.d.ts`);
 }
 
+/**
+ * Scans all configured libraries and discovers their root and secondary entry points.
+ * Returns an array of task objects, each describing a single entry point to process.
+ *
+ * Task object shape:
+ *   id            — Unique identifier, e.g. "angular/root" or "angular/button".
+ *   libConfig     — Reference to the parent LIBRARIES entry.
+ *   entryName     — "root" for the library root, or the sub-directory name.
+ *   isSubEntry    — Whether this is a secondary entry point.
+ *   distEntryFile — Absolute path to the expected rolled-up .d.ts file.
+ */
 function getTasks() {
   const tasks = [];
 
@@ -88,7 +153,7 @@ function getTasks() {
         libConfig: lib,
         entryName: 'root',
         isSubEntry: false,
-        distEntryFile: getDtsPath(lib, 'root'),
+        distEntryFile: getTypeDeclarationPath(lib, 'root'),
       });
     } else {
       console.warn(`⚠️  ${lib.id}: source root exists but no entry file found`);
@@ -110,7 +175,7 @@ function getTasks() {
           libConfig: lib,
           entryName: dirent.name,
           isSubEntry: true,
-          distEntryFile: getDtsPath(lib, dirent.name),
+          distEntryFile: getTypeDeclarationPath(lib, dirent.name),
         });
       }
     });
@@ -119,6 +184,10 @@ function getTasks() {
   return tasks;
 }
 
+/**
+ * Determines the API report filename for a task. Secondary entry points use
+ * their entry name; root entry points use the library-level report name.
+ */
 function getReportFilename(task) {
   if (task.isSubEntry) {
     return `${task.entryName}.api.md`;
@@ -126,8 +195,12 @@ function getReportFilename(task) {
   return task.libConfig.reportName;
 }
 
-// --- Temp File Helpers ---
+// --- Helpers: Temporary Config File Generation ---
 
+/**
+ * Writes a temporary tsconfig.json file that extends the library's production
+ * tsconfig and adds path mappings pointing to the dist output directories.
+ */
 function writeTempTsConfig(filePath, libConfig, distPaths) {
   const projectTsConfig = path.join(libConfig.srcRoot, libConfig.tsconfig);
 
@@ -151,6 +224,11 @@ function writeTempTsConfig(filePath, libConfig, distPaths) {
   );
 }
 
+/**
+ * Creates the per-task API Extractor configuration file by merging the base config
+ * with task-specific settings (entry point, compiler, and report output paths).
+ * Also ensures the report and temp generation directories exist.
+ */
 function writeExtractorConfig(filePath, baseConfig, task, tempTsConfigPath, reportDir, reportFileName, tempGenDir) {
   const config = {
     ...baseConfig,
@@ -172,6 +250,11 @@ function writeExtractorConfig(filePath, baseConfig, task, tempTsConfigPath, repo
   fs.writeFileSync(filePath, JSON.stringify(config, null, 2));
 }
 
+/**
+ * Interprets the API Extractor result. In local mode, copies the generated report
+ * to its final location. In CI/check mode, throws if the report has changed or
+ * the build failed.
+ */
 function evaluateResult(result, task, tempGenDir, reportDir, reportFileName) {
   if (IS_LOCAL_MODE) {
     if (result.succeeded) {
@@ -195,8 +278,11 @@ function evaluateResult(result, task, tempGenDir, reportDir, reportFileName) {
   }
 }
 
-// --- Core Processor ---
-
+/**
+ * Processes a single entry point task: generates temporary tsconfig and extractor
+ * config files, invokes API Extractor, evaluates the result, and cleans up
+ * temporary files. Returns true on success, false on failure.
+ */
 function processTask(task, baseConfig, distPaths) {
   const reportFileName = getReportFilename(task);
 
@@ -242,8 +328,11 @@ function processTask(task, baseConfig, distPaths) {
   return true;
 }
 
-// --- Main Execution ---
-
+/**
+ * Entry point. Loads the base API Extractor configuration, discovers all entry
+ * point tasks across configured libraries, processes each one sequentially,
+ * and exits with a non-zero code if any task failed.
+ */
 function main() {
   console.log('--------------------------------------------------');
   console.log(`API EXTRACTOR: ${IS_LOCAL_MODE ? 'UPDATE MODE' : 'CHECK MODE'}`);
@@ -254,6 +343,8 @@ function main() {
     process.exit(1);
   }
 
+  // The 'extends' field must be a relative path so API Extractor resolves it
+  // correctly from the per-task config files written to the project root.
   const baseConfig = {
     ...JSON.parse(fs.readFileSync(BASE_CONFIG_PATH, 'utf8')),
     extends: './api-extractor-base.json',
