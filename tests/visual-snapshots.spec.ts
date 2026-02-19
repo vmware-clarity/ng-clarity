@@ -51,10 +51,6 @@ for (const story of stories) {
 
     await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
-    await page.addStyleTag({
-      content: `*:focus, *:focus-visible { outline: none !important; box-shadow: none !important; }`,
-    });
-
     const fullPage = takeFullPageScreenshot(componentParsed, storyName);
     const screenshotTarget = fullPage ? page : page.locator('body');
 
