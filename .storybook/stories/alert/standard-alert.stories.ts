@@ -10,7 +10,7 @@ import { argsToTemplate, moduleMetadata, StoryContext, StoryObj } from '@storybo
 import { action } from 'storybook/actions';
 
 import { StandardAlertStorybookComponent } from './standard-alert.storybook.component';
-import { CommonModules, removeFocusOutline } from '../../helpers/common';
+import { CommonModules } from '../../helpers/common';
 
 export default {
   title: 'Alert/Standard Alerts',
@@ -157,6 +157,4 @@ export const MultipleSeparatedAlerts: StoryObj = {
 async function openDropdown({ canvasElement, userEvent }: StoryContext) {
   const dropdownTriggerButton = await canvasElement.querySelector<HTMLButtonElement>('button[clrDropdownTrigger]');
   await userEvent.click(dropdownTriggerButton);
-
-  await removeFocusOutline({ canvasElement });
 }

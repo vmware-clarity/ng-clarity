@@ -8,7 +8,6 @@
 import { ClrConditionalModule, ClrDatagridDetail, ClrDatagridModule } from '@clr/angular';
 import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
 
-import { removeFocusOutline } from '../../helpers/common';
 import { Element, elements } from '../../helpers/elements.data';
 
 export default {
@@ -271,6 +270,4 @@ export const HiddenDetailButton: StoryObj = {
 async function openDetail({ canvasElement, userEvent }: StoryContext) {
   const detailCaretButton = await canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button');
   await userEvent.click(detailCaretButton);
-
-  await removeFocusOutline({ canvasElement });
 }

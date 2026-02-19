@@ -9,8 +9,6 @@ import { ClrWizard, ClrWizardModule, commonStringsDefault } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
 
-import { removeFocusOutline } from '../../helpers/common';
-
 export default {
   title: 'Wizard/Wizard Long Titles',
   component: ClrWizard,
@@ -126,5 +124,4 @@ const WizardLongTitlesTemplate: StoryFn = args => ({
 
 export const WizardLongTitles: StoryObj = {
   render: WizardLongTitlesTemplate,
-  play: removeFocusOutline,
 };

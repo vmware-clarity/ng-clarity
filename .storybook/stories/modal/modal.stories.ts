@@ -9,7 +9,7 @@ import { ClrCheckboxModule, ClrModal, ClrModalModule, commonStringsDefault } fro
 import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
 
-import { CommonModules, removeFocusOutline } from '../../helpers/common';
+import { CommonModules } from '../../helpers/common';
 
 export default {
   title: 'Modal/Modal',
@@ -122,7 +122,6 @@ export const Modal: StoryObj = {
 
 export const OpenSmallModal: StoryObj = {
   render: ModalTemplate,
-  play: removeFocusOutline,
   args: {
     clrModalOpen: true,
     clrModalSize: 'sm',
@@ -134,7 +133,6 @@ export const OpenSmallModal: StoryObj = {
 
 export const OpenMediumModal: StoryObj = {
   render: ModalTemplate,
-  play: removeFocusOutline,
   args: {
     clrModalOpen: true,
     clrModalSize: 'md',
@@ -146,7 +144,6 @@ export const OpenMediumModal: StoryObj = {
 
 export const OpenLargeModal: StoryObj = {
   render: ModalTemplate,
-  play: removeFocusOutline,
   args: {
     clrModalOpen: true,
     clrModalSize: 'lg',
@@ -158,7 +155,6 @@ export const OpenLargeModal: StoryObj = {
 
 export const OpenExtraLargeModal: StoryObj = {
   render: ModalTemplate,
-  play: removeFocusOutline,
   args: {
     clrModalOpen: true,
     clrModalSize: 'xl',
@@ -170,7 +166,6 @@ export const OpenExtraLargeModal: StoryObj = {
 
 export const OpenFullScreenModal: StoryObj = {
   render: ModalTemplate,
-  play: removeFocusOutline,
   args: {
     clrModalOpen: true,
     clrModalSize: 'full-screen',

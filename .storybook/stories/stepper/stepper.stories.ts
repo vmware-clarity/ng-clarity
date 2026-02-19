@@ -10,7 +10,7 @@ import { ClrConditionalModule, ClrInputModule, ClrStepper, ClrStepperModule } fr
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
 
-import { CommonModules, removeFocusOutline } from '../../helpers/common';
+import { CommonModules } from '../../helpers/common';
 
 const formMappingKey = 'form-mapping-key';
 
@@ -114,7 +114,6 @@ export const StepperPanelStatusIndicators: StoryObj = {
     await userEvent.click(nextButton1);
     const nextButton2 = await canvasElement.querySelector<HTMLButtonElement>('#next-button-2');
     await userEvent.click(nextButton2);
-    await removeFocusOutline({ canvasElement });
   },
   argTypes: {
     // story helpers
