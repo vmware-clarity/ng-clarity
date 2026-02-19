@@ -27,6 +27,7 @@ export default {
     elements,
     showActionOverflow: false,
     modalOpen: false,
+    actionOverflowOpen: false,
   },
 };
 
@@ -62,7 +63,7 @@ const NestedDatagridTemplate: StoryFn = args => ({
 
               <clr-dg-row *clrDgItems="let element of elements; let index = index" [clrDgItem]="element">
                 @if (showActionOverflow) {
-                  <clr-dg-action-overflow>
+                  <clr-dg-action-overflow [clrDgActionOverflowOpen]="actionOverflowOpen && index === 0">
                     <button class="action-item">Edit</button>
                     <button class="action-item">Delete</button>
                   </clr-dg-action-overflow>
@@ -119,10 +120,6 @@ export const NestedDatagridWithOpenedActions: StoryObj = {
   args: {
     modalOpen: true,
     showActionOverflow: true,
-  },
-  play({ canvasElement }) {
-    setTimeout(() => {
-      (canvasElement.querySelector('button.datagrid-action-toggle') as HTMLElement).click();
-    }, 0);
+    actionOverflowOpen: true,
   },
 };

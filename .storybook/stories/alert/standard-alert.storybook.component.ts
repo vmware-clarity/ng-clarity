@@ -41,7 +41,7 @@ import { RenderComponentStorybook } from 'helpers/render-component';
                         Actions
                         <cds-icon shape="angle" direction="down"></cds-icon>
                       </button>
-                      <clr-dropdown-menu clrPosition="bottom-right">
+                      <clr-dropdown-menu *clrIfOpen="openContextMenu" clrPosition="bottom-right">
                         <button clrDropdownItem>Shutdown</button>
                         <button clrDropdownItem>Delete</button>
                         <button clrDropdownItem>Reboot</button>
@@ -77,5 +77,6 @@ export class StandardAlertStorybookComponent extends RenderComponentStorybook {
   @Input() showActionsButton = false;
   @Input() content = 'Hello World!';
   @Input() alertTypes = ALERT_TYPES;
+  @Input() openContextMenu = false;
   createArray = createArray;
 }

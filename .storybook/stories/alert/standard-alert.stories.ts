@@ -6,7 +6,7 @@
  */
 
 import { ClrAlert, ClrAlertModule } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryContext, StoryObj } from '@storybook/angular';
+import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
 
 import { StandardAlertStorybookComponent } from './standard-alert.storybook.component';
@@ -123,16 +123,15 @@ export const WithActions: StoryObj = {
 };
 
 export const WithOpenActionsDropdown: StoryObj = {
-  play: openDropdown,
   args: {
     alertCount: 1,
     showActions: true,
     alertTypes: ['info'],
+    openContextMenu: true,
   },
 };
 
 export const WithLongContentAndOpenActionsDropdown: StoryObj = {
-  play: openDropdown,
   args: {
     alertCount: 1,
     content: `
@@ -144,6 +143,7 @@ export const WithLongContentAndOpenActionsDropdown: StoryObj = {
     `,
     showActions: true,
     alertTypes: ['info'],
+    openContextMenu: true,
   },
 };
 
@@ -153,8 +153,3 @@ export const MultipleSeparatedAlerts: StoryObj = {
     alertTypes: ['info', 'info'],
   },
 };
-
-async function openDropdown({ canvasElement, userEvent }: StoryContext) {
-  const dropdownTriggerButton = await canvasElement.querySelector<HTMLButtonElement>('button[clrDropdownTrigger]');
-  await userEvent.click(dropdownTriggerButton);
-}
