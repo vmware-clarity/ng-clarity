@@ -80,6 +80,7 @@
   }
 
   .clr-control-subtext-container {
+    flex-basis: 100%;
     display: flex;
     flex-flow: row wrap;
     align-items: center;
@@ -186,6 +187,11 @@
       display: flex;
       flex-direction: row;
       margin-top: density.$clr-base-vertical-offset-l;
+    }
+
+    .clr-control-subtext-container {
+      flex-basis: auto;
+      margin-top: 0;
     }
 
     .clr-control-container {
