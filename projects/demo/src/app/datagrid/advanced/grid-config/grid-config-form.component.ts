@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SelectionType } from '@clr/addons/datagrid';
@@ -34,15 +33,7 @@ export interface GridConfigDemoOptions {
 
 @Component({
   selector: 'grid-confirm-form',
-  imports: [
-    ClrCheckboxModule,
-    ClrDatagridModule,
-    ClrInputModule,
-    ClrNumberInputModule,
-    ClrSelectModule,
-    CommonModule,
-    FormsModule,
-  ],
+  imports: [ClrCheckboxModule, ClrDatagridModule, ClrInputModule, ClrNumberInputModule, ClrSelectModule, FormsModule],
   standalone: true,
   templateUrl: 'grid-config-form.component.html',
 })

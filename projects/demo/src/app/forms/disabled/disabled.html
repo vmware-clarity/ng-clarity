@@ -1,9 +1,9 @@
 <!--
-~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
-~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-~ This software is released under MIT license.
-~ The full license information can be found in LICENSE in the root directory of this project.
--->
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
 
 <h2>Disabled</h2>
 
@@ -96,7 +96,9 @@
       <label>Datalist</label>
       <input clrDatalistInput [disabled]="disabled" name="datalist" [(ngModel)]="data.datalist" />
       <datalist>
-        <option *ngFor="let item of items" [value]="item"></option>
+        @for (item of items; track item) {
+        <option [value]="item"></option>
+        }
       </datalist>
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-datalist-container>

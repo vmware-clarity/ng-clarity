@@ -128,24 +128,28 @@ const NavRoutingTemplate: StoryFn = args => ({
           [clrVerticalNavCollapsed]="clrVerticalNavCollapsed"
           (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
         >
-          <clr-vertical-nav-group
-            *ngFor="let navLink of navLinks"
-            [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
-            (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
-          >
-            <cds-icon *ngIf="includeIcons" [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-            {{ navLink.text }}
-            <clr-vertical-nav-group-children>
-              <a
-                clrVerticalNavLink
-                *ngFor="let childNavLink of navLink.children; let index = index"
-                [ngClass]="{ active: createRoute(navLink.text, index) == activeRoute }"
-                (click)="handleClick($event, createRoute(navLink.text, index))"
-              >
-                {{ createRoute(navLink.text, index) }}
-              </a>
-            </clr-vertical-nav-group-children>
-          </clr-vertical-nav-group>
+          @for (navLink of navLinks; track navLink) {
+            <clr-vertical-nav-group
+              [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
+              (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
+            >
+              @if (includeIcons) {
+                <cds-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+              }
+              {{ navLink.text }}
+              <clr-vertical-nav-group-children>
+                @for (childNavLink of navLink.children; track childNavLink; let index = $index) {
+                  <a
+                    clrVerticalNavLink
+                    [ngClass]="{ active: createRoute(navLink.text, index) == activeRoute }"
+                    (click)="handleClick($event, createRoute(navLink.text, index))"
+                  >
+                    {{ createRoute(navLink.text, index) }}
+                  </a>
+                }
+              </clr-vertical-nav-group-children>
+            </clr-vertical-nav-group>
+          }
         </clr-vertical-nav>
       </div>
     </div>
@@ -155,36 +159,42 @@ const NavRoutingTemplate: StoryFn = args => ({
 
 const NavRoutingAllTemplate: StoryFn = args => ({
   template: `
-    <div *ngFor="let state of VERTICAL_NAV_STATES" style="margin-bottom: 30px">
-      <div class="main-container">
-        <div class="content-container">
-          <clr-vertical-nav
-            [clrVerticalNavCollapsible]="state?.clrVerticalNavCollapsible"
-            [clrVerticalNavCollapsed]="state?.clrVerticalNavCollapsed"
-            (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
-          >
-            <clr-vertical-nav-group
-              *ngFor="let navLink of navLinks"
-              [clrVerticalNavGroupExpanded]="state?.clrVerticalNavGroupExpanded"
-              (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
+    @for (state of VERTICAL_NAV_STATES; track state) {
+      <div style="margin-bottom: 30px">
+        <div class="main-container">
+          <div class="content-container">
+            <clr-vertical-nav
+              [clrVerticalNavCollapsible]="state?.clrVerticalNavCollapsible"
+              [clrVerticalNavCollapsed]="state?.clrVerticalNavCollapsed"
+              (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
             >
-              <cds-icon *ngIf="state?.includeIcons" [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-              {{ navLink.text }}
-              <clr-vertical-nav-group-children>
-                <a
-                  clrVerticalNavLink
-                  *ngFor="let childNavLink of navLink.children; let index = index"
-                  [ngClass]="{ active: createRoute(navLink.text, index) == activeRoute }"
-                  (click)="handleClick($event, createRoute(navLink.text, index))"
+              @for (navLink of navLinks; track navLink) {
+                <clr-vertical-nav-group
+                  [clrVerticalNavGroupExpanded]="state?.clrVerticalNavGroupExpanded"
+                  (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
                 >
-                  {{ createRoute(navLink.text, index) }}
-                </a>
-              </clr-vertical-nav-group-children>
-            </clr-vertical-nav-group>
-          </clr-vertical-nav>
+                  @if (state?.includeIcons) {
+                    <cds-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+                  }
+                  {{ navLink.text }}
+                  <clr-vertical-nav-group-children>
+                    @for (childNavLink of navLink.children; track childNavLink; let index = $index) {
+                      <a
+                        clrVerticalNavLink
+                        [ngClass]="{ active: createRoute(navLink.text, index) == activeRoute }"
+                        (click)="handleClick($event, createRoute(navLink.text, index))"
+                      >
+                        {{ createRoute(navLink.text, index) }}
+                      </a>
+                    }
+                  </clr-vertical-nav-group-children>
+                </clr-vertical-nav-group>
+              }
+            </clr-vertical-nav>
+          </div>
         </div>
       </div>
-    </div>
+    }
   `,
   props: args,
 });

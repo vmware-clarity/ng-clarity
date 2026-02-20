@@ -56,27 +56,8 @@ export default {
 const StackViewTemplate: StoryFn = args => ({
   template: `
     <clr-stack-view>
-      <clr-stack-block *ngFor="let _ of createArray(blockCount); let i = index" [clrSbExpanded]="!!openIndices[i]">
-        <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
-        <clr-stack-content>{{ content }}</clr-stack-content>
-        <clr-stack-block>
-          <clr-stack-label>{{ subLabel }} {{ i + 1 }}</clr-stack-label>
-          <clr-stack-content>{{ subContent }}</clr-stack-content>
-        </clr-stack-block>
-      </clr-stack-block>
-    </clr-stack-view>
-  `,
-  props: args,
-});
-
-const StackViewAllTemplate: StoryFn = args => ({
-  template: `
-    <div *ngFor="let state of STACK_VIEW_STATES" style="margin-top: 20px">
-      <clr-stack-view>
-        <clr-stack-block
-          *ngFor="let _ of createArray(blockCount); let i = index"
-          [clrSbExpanded]="!!state.openIndices[i]"
-        >
+      @for (_ of createArray(blockCount); track $index; let i = $index) {
+        <clr-stack-block [clrSbExpanded]="!!openIndices[i]">
           <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
           <clr-stack-content>{{ content }}</clr-stack-content>
           <clr-stack-block>
@@ -84,8 +65,30 @@ const StackViewAllTemplate: StoryFn = args => ({
             <clr-stack-content>{{ subContent }}</clr-stack-content>
           </clr-stack-block>
         </clr-stack-block>
-      </clr-stack-view>
-    </div>
+      }
+    </clr-stack-view>
+  `,
+  props: args,
+});
+
+const StackViewAllTemplate: StoryFn = args => ({
+  template: `
+    @for (state of STACK_VIEW_STATES; track state) {
+      <div style="margin-top: 20px">
+        <clr-stack-view>
+          @for (_ of createArray(blockCount); track $index; let i = $index) {
+            <clr-stack-block [clrSbExpanded]="!!state.openIndices[i]">
+              <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
+              <clr-stack-content>{{ content }}</clr-stack-content>
+              <clr-stack-block>
+                <clr-stack-label>{{ subLabel }} {{ i + 1 }}</clr-stack-label>
+                <clr-stack-content>{{ subContent }}</clr-stack-content>
+              </clr-stack-block>
+            </clr-stack-block>
+          }
+        </clr-stack-view>
+      </div>
+    }
   `,
   props: args,
 });

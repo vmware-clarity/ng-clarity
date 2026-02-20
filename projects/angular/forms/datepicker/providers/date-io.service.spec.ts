@@ -6,18 +6,18 @@
  */
 
 import { registerLocaleData } from '@angular/common';
-import localeAk from '@angular/common/locales/ak';
 import localeHr from '@angular/common/locales/hr';
-import localeKkj from '@angular/common/locales/kkj';
+import localeJa from '@angular/common/locales/ja';
+import localeNl from '@angular/common/locales/nl';
 import { assertEqualDates } from '@clr/angular/testing';
 
 import { DateIOService } from './date-io.service';
 import { LocaleHelperService } from './locale-helper.service';
 import { DayModel } from '../model/day.model';
 
-registerLocaleData(localeAk);
 registerLocaleData(localeHr);
-registerLocaleData(localeKkj);
+registerLocaleData(localeNl);
+registerLocaleData(localeJa);
 
 export default function () {
   describe('Date IO Service', () => {
@@ -30,10 +30,10 @@ export default function () {
         const dateIOServ: DateIOService = new DateIOService(localeHelperServ);
         expect(dateIOServ.cldrLocaleDateFormat).toBe('M/d/yy');
 
-        const localeHelperServ1: LocaleHelperService = new LocaleHelperService('ak');
+        const localeHelperServ1: LocaleHelperService = new LocaleHelperService('ja');
         const dateIOServ1: DateIOService = new DateIOService(localeHelperServ1);
 
-        expect(dateIOServ1.cldrLocaleDateFormat).toBe('yy/MM/dd');
+        expect(dateIOServ1.cldrLocaleDateFormat).toBe('y/MM/dd');
       });
 
       it('supports a method to convert a Date object to date string based on the locale', () => {
@@ -42,20 +42,20 @@ export default function () {
 
         expect(dateIOServ.toLocaleDisplayFormatString(new Date(2015, 1, 1))).toBe('02/01/2015');
 
-        const localeHelperServAK: LocaleHelperService = new LocaleHelperService('ak');
-        const dateIOServAK: DateIOService = new DateIOService(localeHelperServAK);
+        const localeHelperServJA: LocaleHelperService = new LocaleHelperService('ja');
+        const dateIOServJA: DateIOService = new DateIOService(localeHelperServJA);
 
-        expect(dateIOServAK.toLocaleDisplayFormatString(new Date(2015, 1, 1))).toBe('2015/02/01');
+        expect(dateIOServJA.toLocaleDisplayFormatString(new Date(2015, 1, 1))).toBe('2015/02/01');
 
         const localeHelperServHR: LocaleHelperService = new LocaleHelperService('hr');
         const dateIOServHR: DateIOService = new DateIOService(localeHelperServHR);
 
         expect(dateIOServHR.toLocaleDisplayFormatString(new Date(2015, 1, 1))).toBe('01. 02. 2015');
 
-        const localeHelperServKKJ: LocaleHelperService = new LocaleHelperService('kkj');
-        const dateIOServKKJ: DateIOService = new DateIOService(localeHelperServKKJ);
+        const localeHelperServNL: LocaleHelperService = new LocaleHelperService('nl');
+        const dateIOServNL: DateIOService = new DateIOService(localeHelperServNL);
 
-        expect(dateIOServKKJ.toLocaleDisplayFormatString(new Date(2016, 1, 15))).toBe('15/02 2016');
+        expect(dateIOServNL.toLocaleDisplayFormatString(new Date(2016, 1, 15))).toBe('15-02-2016');
       });
 
       it('processes an invalid date object as an empty string', () => {

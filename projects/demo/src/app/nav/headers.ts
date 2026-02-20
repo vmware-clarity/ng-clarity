@@ -15,7 +15,6 @@ import { Component } from '@angular/core';
     <ul>
       <li><a [routerLink]="['./header-types']">Types</a></li>
       <li><a [routerLink]="['./header-colors']">Colors</a></li>
-      <li><a [routerLink]="['./header-types-old']">Old Header Types - Not to be published on the website</a></li>
     </ul>
     <router-outlet></router-outlet>
   `,

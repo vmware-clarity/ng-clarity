@@ -8,7 +8,6 @@
 import { ClrConditionalModule, ClrDatagridDetail, ClrDatagridModule, SelectionType } from '@clr/angular';
 import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
 
-import { removeFocusOutline } from '../../helpers/common';
 import { Element, elements } from '../../helpers/elements.data';
 
 export default {
@@ -144,9 +143,11 @@ const DetailTemplate: StoryFn = args => {
             {{ element.electronegativity }}
             <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
           </clr-dg-cell>
-          <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
-            <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
-          </ng-container>
+          @if (expandable) {
+            <ng-container ngProjectAs="clr-dg-row-detail">
+              <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
+            </ng-container>
+          }
         </clr-dg-row>
 
         <clr-dg-detail
@@ -156,33 +157,38 @@ const DetailTemplate: StoryFn = args => {
           ${args.clrDetailAriaLabelledBy ? '[clrDetailAriaLabelledBy]="clrDetailAriaLabelledBy"' : ''}
         >
           <clr-dg-detail-header>{{ element.name }}</clr-dg-detail-header>
-          <clr-dg-detail-body [ngSwitch]="detailContentType">
-            <ng-container *ngSwitchCase="'json'">{{ element | json }}</ng-container>
+          <clr-dg-detail-body>
+            @switch (detailContentType) {
+              @case ('json') {
+                {{ element | json }}
+              }
+              @case ('datagrid') {
+                <clr-datagrid>
+                  <clr-dg-column>Key</clr-dg-column>
+                  <clr-dg-column>Value</clr-dg-column>
 
-            <clr-datagrid *ngSwitchCase="'datagrid'">
-              <clr-dg-column>Key</clr-dg-column>
-              <clr-dg-column>Value</clr-dg-column>
+                  <clr-dg-row>
+                    <clr-dg-cell>Name</clr-dg-cell>
+                    <clr-dg-cell>{{ element.name }}</clr-dg-cell>
+                  </clr-dg-row>
 
-              <clr-dg-row>
-                <clr-dg-cell>Name</clr-dg-cell>
-                <clr-dg-cell>{{ element.name }}</clr-dg-cell>
-              </clr-dg-row>
+                  <clr-dg-row>
+                    <clr-dg-cell>Symbol</clr-dg-cell>
+                    <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
+                  </clr-dg-row>
 
-              <clr-dg-row>
-                <clr-dg-cell>Symbol</clr-dg-cell>
-                <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
-              </clr-dg-row>
+                  <clr-dg-row>
+                    <clr-dg-cell>Number</clr-dg-cell>
+                    <clr-dg-cell>{{ element.number }}</clr-dg-cell>
+                  </clr-dg-row>
 
-              <clr-dg-row>
-                <clr-dg-cell>Number</clr-dg-cell>
-                <clr-dg-cell>{{ element.number }}</clr-dg-cell>
-              </clr-dg-row>
-
-              <clr-dg-row>
-                <clr-dg-cell>Electronegativity</clr-dg-cell>
-                <clr-dg-cell>{{ element.electronegativity }}</clr-dg-cell>
-              </clr-dg-row>
-            </clr-datagrid>
+                  <clr-dg-row>
+                    <clr-dg-cell>Electronegativity</clr-dg-cell>
+                    <clr-dg-cell>{{ element.electronegativity }}</clr-dg-cell>
+                  </clr-dg-row>
+                </clr-datagrid>
+              }
+            }
           </clr-dg-detail-body>
         </clr-dg-detail>
 
@@ -204,11 +210,7 @@ export const Detail: StoryObj = {
 
 export const OpenDetail: StoryObj = {
   render: DetailTemplate,
-  play({ canvasElement }: StoryContext) {
-    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
-
-    removeFocusOutline({ canvasElement });
-  },
+  play: openDetail,
   args: {
     detailContentType: 'datagrid',
     // The height is set larger than the height of the rows to regression test the detail pane border. (CDE-2188)
@@ -217,11 +219,7 @@ export const OpenDetail: StoryObj = {
 };
 export const OpenDetailWithRemovedMargin: StoryObj = {
   render: DetailTemplate,
-  play({ canvasElement }: StoryContext) {
-    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
-
-    removeFocusOutline({ canvasElement });
-  },
+  play: openDetail,
   args: {
     removeMargin: true,
     detailContentType: 'datagrid',
@@ -231,11 +229,7 @@ export const OpenDetailWithRemovedMargin: StoryObj = {
 };
 export const CompactOpenDetailWithRemovedMargin: StoryObj = {
   render: DetailTemplate,
-  play({ canvasElement }: StoryContext) {
-    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
-
-    removeFocusOutline({ canvasElement });
-  },
+  play: openDetail,
   args: {
     removeMargin: true,
     compact: true,
@@ -247,11 +241,7 @@ export const CompactOpenDetailWithRemovedMargin: StoryObj = {
 
 export const OpenLongContentDetail: StoryObj = {
   render: DetailTemplate,
-  play({ canvasElement }: StoryContext) {
-    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
-
-    removeFocusOutline({ canvasElement });
-  },
+  play: openDetail,
   args: {
     detailContentType: 'datagrid',
     showLongContent: true,
@@ -261,11 +251,7 @@ export const OpenLongContentDetail: StoryObj = {
 // Open uninterrupted content cell regression test for nested datagrid CDE-2208.
 export const OpenLongUninterruptedContentDetail: StoryObj = {
   render: DetailTemplate,
-  play({ canvasElement }: StoryContext) {
-    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
-
-    removeFocusOutline({ canvasElement });
-  },
+  play: openDetail,
   args: {
     detailContentType: 'datagrid',
     showLongUninterruptedContent: true,
@@ -274,11 +260,7 @@ export const OpenLongUninterruptedContentDetail: StoryObj = {
 
 export const DisabledDetailButton: StoryObj = {
   render: DetailTemplate,
-  play({ canvasElement }: StoryContext) {
-    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
-
-    removeFocusOutline({ canvasElement });
-  },
+  play: openDetail,
   args: {
     detailContentType: 'datagrid',
     disabledDetailIndex: 1,
@@ -287,13 +269,14 @@ export const DisabledDetailButton: StoryObj = {
 
 export const HiddenDetailButton: StoryObj = {
   render: DetailTemplate,
-  play({ canvasElement }: StoryContext) {
-    canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button').click();
-
-    removeFocusOutline({ canvasElement });
-  },
+  play: openDetail,
   args: {
     detailContentType: 'datagrid',
     hiddenDetailIndex: 1,
   },
 };
+
+async function openDetail({ canvasElement, userEvent }: StoryContext) {
+  const detailCaretButton = await canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button');
+  await userEvent.click(detailCaretButton);
+}

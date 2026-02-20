@@ -135,9 +135,11 @@ const ColumnFilterTemplate: StoryFn = args => ({
           {{ element.electronegativity }}
           <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
         </clr-dg-cell>
-        <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
-          <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
-        </ng-container>
+        @if (expandable) {
+          <ng-container ngProjectAs="clr-dg-row-detail">
+            <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
+          </ng-container>
+        }
       </clr-dg-row>
 
       <clr-dg-footer>
@@ -157,14 +159,16 @@ export const ColumnFilter: StoryObj = {
 
 export const ColumnNameFilterOpened = {
   render: ColumnFilterTemplate,
-  play({ canvasElement }) {
-    canvasElement.querySelector('clr-dg-string-filter .datagrid-filter-toggle').click();
+  play: async ({ canvasElement, userEvent }) => {
+    const stringFilterToggle = await canvasElement.querySelector('clr-dg-string-filter .datagrid-filter-toggle');
+    await userEvent.click(stringFilterToggle);
   },
 };
 
 export const ColumnNumberFilterOpened = {
   render: ColumnFilterTemplate,
-  play({ canvasElement }) {
-    canvasElement.querySelector('clr-dg-numeric-filter .datagrid-filter-toggle').click();
+  play: async ({ canvasElement, userEvent }) => {
+    const numericFilterToggle = await canvasElement.querySelector('clr-dg-numeric-filter .datagrid-filter-toggle');
+    await userEvent.click(numericFilterToggle);
   },
 };

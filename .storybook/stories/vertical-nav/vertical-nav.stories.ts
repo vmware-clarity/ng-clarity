@@ -70,16 +70,19 @@ const VerticalNavTemplate: StoryFn = args => ({
           [clrVerticalNavCollapsed]="clrVerticalNavCollapsed"
           (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
         >
-          <a
-            *ngFor="let navLink of navLinks; let index = index"
-            clrVerticalNavLink
-            [ngClass]="{ active: index == activeIndex }"
-            href="javascript:void(0)"
-            (click)="activeIndex = index"
-          >
-            <cds-icon *ngIf="includeIcons" [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-            {{ navLink.text }}
-          </a>
+          @for (navLink of navLinks; track navLink; let index = $index) {
+            <a
+              clrVerticalNavLink
+              [ngClass]="{ active: index == activeIndex }"
+              href="javascript:void(0)"
+              (click)="activeIndex = index"
+            >
+              @if (includeIcons) {
+                <cds-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+              }
+              {{ navLink.text }}
+            </a>
+          }
         </clr-vertical-nav>
       </div>
     </div>

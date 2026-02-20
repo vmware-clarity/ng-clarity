@@ -1,9 +1,9 @@
 <!--
-~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
-~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-~ This software is released under MIT license.
-~ The full license information can be found in LICENSE in the root directory of this project.
--->
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
 
 <h2>Virtual scroll empty rows</h2>
 
@@ -85,8 +85,8 @@
   <clr-dg-column [clrDgField]="'pokemon'"><ng-container *clrDgHideableColumn>Pokemon</ng-container></clr-dg-column>
   <clr-dg-column [clrDgField]="'color'"><ng-container *clrDgHideableColumn>Favorite color</ng-container></clr-dg-column>
 
+  @if (showVirtualScroller) {
   <ng-template
-    *ngIf="showVirtualScroller"
     clrVirtualScroll
     let-user
     let-index="index"
@@ -119,6 +119,7 @@
       </ng-container>
     </clr-dg-row>
   </ng-template>
+  }
 
   <!--  <clr-dg-detail *clrIfDetail="let detail">-->
   <!--    <clr-dg-detail-header> {{detail.name}} </clr-dg-detail-header>-->

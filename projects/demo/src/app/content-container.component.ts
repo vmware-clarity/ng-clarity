@@ -31,24 +31,28 @@ import { APP_ROUTES } from './app.routing';
     <clr-vertical-nav-group>
       <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
       Home
-      <ng-container *ngFor="let route of routes" ngProjectAs="[clrVerticalNavLink]">
-        <a clrVerticalNavLink *ngIf="route.path != ''"
-          [routerLink]="[route.path]"
-          [routerLinkActive]="['active']">
-          {{route.path}}
-        </a>
-      </ng-container>
+      @for (route of routes; track route) {
+        @if (route.path != '') {
+          <a clrVerticalNavLink ngProjectAs="[clrVerticalNavLink]"
+            [routerLink]="[route.path]"
+            [routerLinkActive]="['active']">
+            {{route.path}}
+          </a>
+        }
+      }
     </clr-vertical-nav-group>
     </clr-vertical-nav-->
 
     <!--clr-vertical-nav [clrVerticalNavCollapsible]="true" [clrVerticalNavCollapsed]="false" [clr-nav-level]="2">
-    <ng-container *ngFor="let route of routes">
-      <a clrVerticalNavLink *ngIf="route.path != ''"
-        [routerLink]="[route.path]"
-        [routerLinkActive]="['active']">
-        {{route.path}}
-      </a>
-    </ng-container>
+    @for (route of routes; track route) {
+      @if (route.path != '') {
+        <a clrVerticalNavLink
+          [routerLink]="[route.path]"
+          [routerLinkActive]="['active']">
+          {{route.path}}
+        </a>
+      }
+    }
     </clr-vertical-nav-->
   `,
   standalone: false,

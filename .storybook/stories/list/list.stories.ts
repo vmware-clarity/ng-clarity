@@ -26,14 +26,18 @@ const ListTemplate: StoryFn = args => ({
     <div>
       Unordered List
       <ul [ngClass]="{ list: !unstyled, 'list-unstyled': unstyled }">
-        <li *ngFor="let _ of createArray(itemCount); let i = index">Item {{ i + 1 }}</li>
+        @for (_ of createArray(itemCount); track $index; let i = $index) {
+          <li>Item {{ i + 1 }}</li>
+        }
       </ul>
     </div>
 
     <div style="margin-top: 20px">
       Ordered List
       <ol [ngClass]="{ list: !unstyled, 'list-unstyled': unstyled }">
-        <li *ngFor="let _ of createArray(itemCount); let i = index">Item {{ i + 1 }}</li>
+        @for (_ of createArray(itemCount); track $index; let i = $index) {
+          <li>Item {{ i + 1 }}</li>
+        }
       </ol>
     </div>
   `,

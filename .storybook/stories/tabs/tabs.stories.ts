@@ -49,12 +49,14 @@ export default {
 const tabsTemplate: StoryFn = args => ({
   template: `
     <clr-tabs [clrLayout]="clrLayout">
-      <clr-tab *ngFor="let _ of createArray(tabCount); let i = index">
-        <button clrTabLink>{{ title }} {{ i + 1 }}</button>
-        <clr-tab-content *clrIfActive="activeTab === i + 1">
-          <p>{{ content }} {{ i + 1 }}</p>
-        </clr-tab-content>
-      </clr-tab>
+      @for (_ of createArray(tabCount); track $index; let i = $index) {
+        <clr-tab>
+          <button clrTabLink>{{ title }} {{ i + 1 }}</button>
+          <clr-tab-content *clrIfActive="activeTab === i + 1">
+            <p>{{ content }} {{ i + 1 }}</p>
+          </clr-tab-content>
+        </clr-tab>
+      }
     </clr-tabs>
   `,
   props: { ...args },
@@ -73,9 +75,10 @@ export const VerticalTabs: StoryObj = {
 
 export const TabsResponsive: StoryObj = {
   render: tabsTemplate,
-  parameters: {
+  globals: {
     viewport: {
-      defaultViewport: 'large',
+      value: 'large',
+      isRotated: false,
     },
   },
 };

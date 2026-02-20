@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition, ExportProviderService, SelectionType } from '@clr/addons/datagrid';
 import { ClrDatagridStateInterface } from '@clr/angular';
@@ -14,7 +13,7 @@ import { GridConfigDemoOptions, GridConfigFormComponent } from '../grid-config/g
 import { FetchResult, Inventory, VmItem } from '../inventory/inventory';
 
 @Component({
-  imports: [AppfxDatagridModule, CommonModule, GridConfigFormComponent],
+  imports: [AppfxDatagridModule, GridConfigFormComponent],
   standalone: true,
   templateUrl: 'virtual-scroll-grid-demo.component.html',
   providers: [ExportProviderService, Inventory],

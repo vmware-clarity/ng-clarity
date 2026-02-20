@@ -76,7 +76,9 @@ const ReactiveFormTemplate: StoryFn = args => ({
         <label>Element</label>
         <input clrDatalistInput formControlName="element" required />
         <datalist>
-          <option *ngFor="let element of elements" [value]="element.symbol">{{ element.name }}</option>
+          @for (element of elements; track element) {
+            <option [value]="element.symbol">{{ element.name }}</option>
+          }
         </datalist>
         <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
         <clr-control-error *clrIfError="'required'">Element is required</clr-control-error>
@@ -89,13 +91,17 @@ const ReactiveFormTemplate: StoryFn = args => ({
         <clr-control-error *clrIfError="'required'">Password is required</clr-control-error>
         <clr-control-error *clrIfError="'minlength'">Must be at least 8 characters</clr-control-error>
         <clr-control-error *clrIfError="'pattern'; error as error">
-          <ng-container [ngSwitch]="error?.requiredPattern">
-            <ng-container *ngSwitchCase="patterns.alphaNumeric.toString()">
+          @switch (error?.requiredPattern) {
+            @case (patterns.alphaNumeric.toString()) {
               Must contain only letters and numbers
-            </ng-container>
-            <ng-container *ngSwitchCase="patterns.letters.toString()">Must contain at least one letter</ng-container>
-            <ng-container *ngSwitchCase="patterns.numbers.toString()">Must contain at least one number</ng-container>
-          </ng-container>
+            }
+            @case (patterns.letters.toString()) {
+              Must contain at least one letter
+            }
+            @case (patterns.numbers.toString()) {
+              Must contain at least one number
+            }
+          }
         </clr-control-error>
       </clr-password-container>
       <clr-textarea-container>

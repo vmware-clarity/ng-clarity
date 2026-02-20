@@ -32,7 +32,24 @@ const ProgressBarTemplate: StoryFn = args => ({
 const ProgressBarTemplateAll: StoryFn = args => ({
   template: `
     <h6>Progress Bar with Status</h6>
-    <div style="margin-top: 5px" *ngFor="let type of TYPES">
+    @for (type of TYPES; track type) {
+      <div style="margin-top: 5px">
+        <clr-progress-bar
+          [id]="id"
+          [clrMax]="clrMax"
+          [clrDisplayval]="clrDisplayval"
+          [clrValue]="clrValue"
+          [clrLabeled]="clrLabeled"
+          [clrFade]="clrFade"
+          [clrLoop]="clrLoop"
+          [clrColor]="type"
+          [clrFlash]="clrFlash"
+          [clrFlashDanger]="clrFlashDanger"
+          [clrCompact]="clrCompact"
+        ></clr-progress-bar>
+      </div>
+
+      <h6>Compact Progress Bar</h6>
       <clr-progress-bar
         [id]="id"
         [clrMax]="clrMax"
@@ -44,52 +61,37 @@ const ProgressBarTemplateAll: StoryFn = args => ({
         [clrColor]="type"
         [clrFlash]="clrFlash"
         [clrFlashDanger]="clrFlashDanger"
+        [clrCompact]="'true'"
+      ></clr-progress-bar>
+
+      <h6>Labelled Progress Bar</h6>
+      <clr-progress-bar
+        [id]="id"
+        [clrMax]="clrMax"
+        [clrDisplayval]="clrDisplayval"
+        [clrValue]="clrValue"
+        [clrLabeled]="'true'"
+        [clrLoop]="clrLoop"
+        [clrColor]="type"
+        [clrFlash]="clrFlash"
+        [clrFlashDanger]="clrFlashDanger"
         [clrCompact]="clrCompact"
       ></clr-progress-bar>
-    </div>
 
-    <h6>Compact Progress Bar</h6>
-    <clr-progress-bar
-      [id]="id"
-      [clrMax]="clrMax"
-      [clrDisplayval]="clrDisplayval"
-      [clrValue]="clrValue"
-      [clrLabeled]="clrLabeled"
-      [clrFade]="clrFade"
-      [clrLoop]="clrLoop"
-      [clrColor]="type"
-      [clrFlash]="clrFlash"
-      [clrFlashDanger]="clrFlashDanger"
-      [clrCompact]="'true'"
-    ></clr-progress-bar>
-
-    <h6>Labelled Progress Bar</h6>
-    <clr-progress-bar
-      [id]="id"
-      [clrMax]="clrMax"
-      [clrDisplayval]="clrDisplayval"
-      [clrValue]="clrValue"
-      [clrLabeled]="'true'"
-      [clrLoop]="clrLoop"
-      [clrColor]="type"
-      [clrFlash]="clrFlash"
-      [clrFlashDanger]="clrFlashDanger"
-      [clrCompact]="clrCompact"
-    ></clr-progress-bar>
-
-    <h6>Looped Progress Bar</h6>
-    <clr-progress-bar
-      [id]="id"
-      [clrMax]="clrMax"
-      [clrDisplayval]="clrDisplayval"
-      [clrValue]="clrValue"
-      [clrLabeled]="clrLabeled"
-      [clrLoop]="'true'"
-      [clrColor]="type"
-      [clrFlash]="clrFlash"
-      [clrFlashDanger]="clrFlashDanger"
-      [clrCompact]="clrCompact"
-    ></clr-progress-bar>
+      <h6>Looped Progress Bar</h6>
+      <clr-progress-bar
+        [id]="id"
+        [clrMax]="clrMax"
+        [clrDisplayval]="clrDisplayval"
+        [clrValue]="clrValue"
+        [clrLabeled]="clrLabeled"
+        [clrLoop]="'true'"
+        [clrColor]="type"
+        [clrFlash]="clrFlash"
+        [clrFlashDanger]="clrFlashDanger"
+        [clrCompact]="clrCompact"
+      ></clr-progress-bar>
+    }
   `,
   props: { ...args },
 });

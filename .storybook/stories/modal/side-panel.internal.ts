@@ -7,7 +7,7 @@
 
 import { ClrSidePanel, ClrSidePanelModule, commonStringsDefault } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { CommonModules, removeFocusOutline } from 'helpers/common';
+import { CommonModules } from 'helpers/common';
 import { fn } from 'storybook/test';
 
 export function render(story: StoryObj, template: StoryFn): StoryObj {
@@ -65,7 +65,6 @@ export const config = {
 export const SidePanel: StoryObj = {};
 
 export const SidePanelSmall: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'sm',
@@ -76,7 +75,6 @@ export const SidePanelSmall: StoryObj = {
 };
 
 export const SidePanelMedium: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -87,7 +85,6 @@ export const SidePanelMedium: StoryObj = {
 };
 
 export const SidePanelLarge: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'lg',
@@ -98,7 +95,6 @@ export const SidePanelLarge: StoryObj = {
 };
 
 export const SidePanelExtraLarge: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'xl',
@@ -109,7 +105,6 @@ export const SidePanelExtraLarge: StoryObj = {
 };
 
 export const SidePanelBottomSmall: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'sm',
@@ -121,7 +116,6 @@ export const SidePanelBottomSmall: StoryObj = {
 };
 
 export const SidePanelBottomMedium: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -133,7 +127,6 @@ export const SidePanelBottomMedium: StoryObj = {
 };
 
 export const SidePanelBottomLarge: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'lg',
@@ -145,7 +138,6 @@ export const SidePanelBottomLarge: StoryObj = {
 };
 
 export const SidePanelBottomExtraLarge: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'xl',
@@ -157,7 +149,6 @@ export const SidePanelBottomExtraLarge: StoryObj = {
 };
 
 export const SidePanelWithBackdrop: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -168,7 +159,6 @@ export const SidePanelWithBackdrop: StoryObj = {
 };
 
 export const SidePanelAlternateClose: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -184,7 +174,6 @@ export const SidePanelAlternateClose: StoryObj = {
 };
 
 export const SidePanelPinnable: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -195,7 +184,6 @@ export const SidePanelPinnable: StoryObj = {
 };
 
 export const SidePanelPinned: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -208,7 +196,6 @@ export const SidePanelPinned: StoryObj = {
 };
 
 export const SidePanelBottomPinnable: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -220,7 +207,6 @@ export const SidePanelBottomPinnable: StoryObj = {
 };
 
 export const SidePanelBottomPinned: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -234,7 +220,6 @@ export const SidePanelBottomPinned: StoryObj = {
 };
 
 export const SidePanelFullScreen: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'full-screen',
@@ -246,7 +231,6 @@ export const SidePanelFullScreen: StoryObj = {
 };
 
 export const SidePanelBottomFullScreen: StoryObj = {
-  play: removeFocusOutline,
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'full-screen',

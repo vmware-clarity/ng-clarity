@@ -16,27 +16,32 @@ import { createArray } from 'helpers/common';
   standalone: true,
   imports: [CommonModule, ClrButtonGroupModule, ClrLoadingModule, ClrIcon],
   template: `
-    <!-- Default Template -->
-    <div *ngIf="templateMode !== 'showcase'" style="text-align: center; margin-top: 20px;">
-      <ng-container
-        *ngTemplateOutlet="buttonGroupTemplate; context: { buttonType: buttonType, buttonStyle: buttonStyle }"
-      ></ng-container>
-    </div>
-
-    <!-- Showcase Template -->
-    <div *ngIf="templateMode === 'showcase'">
-      <div
-        *ngFor="let btnStyle of BUTTON_STYLES"
-        style="text-align: center"
-        [ngStyle]="{ 'margin-top': clrMenuPosition.includes('top') ? '200px' : '20px' }"
-      >
-        <div *ngFor="let btnType of BUTTON_TYPES" style="margin-top: 10px">
-          <ng-container
-            *ngTemplateOutlet="buttonGroupTemplate; context: { buttonType: btnType, buttonStyle: btnStyle }"
-          ></ng-container>
-        </div>
+    @if (templateMode !== 'showcase') {
+      <div style="text-align: center; margin-top: 20px;">
+        <ng-container
+          *ngTemplateOutlet="buttonGroupTemplate; context: { buttonType: buttonType, buttonStyle: buttonStyle }"
+        ></ng-container>
       </div>
-    </div>
+    }
+
+    @if (templateMode === 'showcase') {
+      <div>
+        @for (btnStyle of BUTTON_STYLES; track btnStyle) {
+          <div
+            style="text-align: center"
+            [ngStyle]="{ 'margin-top': clrMenuPosition.includes('top') ? '200px' : '20px' }"
+          >
+            @for (btnType of BUTTON_TYPES; track btnType) {
+              <div style="margin-top: 10px">
+                <ng-container
+                  *ngTemplateOutlet="buttonGroupTemplate; context: { buttonType: btnType, buttonStyle: btnStyle }"
+                ></ng-container>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
 
     <ng-template #buttonGroupTemplate let-buttonType="buttonType" let-buttonStyle="buttonStyle">
       <clr-button-group
@@ -44,18 +49,17 @@ import { createArray } from 'helpers/common';
         [clrMenuPosition]="clrMenuPosition"
         [clrToggleButtonAriaLabel]="clrToggleButtonAriaLabel"
       >
-        <clr-button
-          *ngFor="let _ of createArray(buttonCount); let i = index"
-          [clrInMenu]="false"
-          [clrLoading]="loading"
-          [disabled]="disabledButtonsPosition.includes(i + 1)"
-        >
-          <cds-icon shape="home"></cds-icon>
-          {{ content }} {{ i + 1 }}
-        </clr-button>
-        <clr-button *ngFor="let _ of createArray(inMenuButtonCount); let i = index" [clrInMenu]="true">
-          {{ content }} {{ buttonCount + i + 1 }} {{ i % 2 ? 'and a half' : '' }}
-        </clr-button>
+        @for (_ of createArray(buttonCount); track $index; let i = $index) {
+          <clr-button [clrInMenu]="false" [clrLoading]="loading" [disabled]="disabledButtonsPosition.includes(i + 1)">
+            <cds-icon shape="home"></cds-icon>
+            {{ content }} {{ i + 1 }}
+          </clr-button>
+        }
+        @for (_ of createArray(inMenuButtonCount); track $index; let i = $index) {
+          <clr-button [clrInMenu]="true">
+            {{ content }} {{ buttonCount + i + 1 }} {{ i % 2 ? 'and a half' : '' }}
+          </clr-button>
+        }
       </clr-button-group>
     </ng-template>
   `,

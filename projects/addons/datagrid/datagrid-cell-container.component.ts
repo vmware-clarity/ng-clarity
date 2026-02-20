@@ -22,9 +22,9 @@ import { ColumnDefinition, ColumnRenderer } from './shared/column/column-definit
   selector: 'appfx-dg-cell-container',
   standalone: false,
   template: `
-    <ng-template [ngIf]="!column.columnRenderer" [ngIfElse]="cellContainer">
+    @if (!column.columnRenderer) {
       <span [title]="item?.[column.field]">{{ item?.[column.field] }}</span>
-    </ng-template>
+    }
     <ng-template #cellContainer></ng-template>
   `,
   styles: [':host { width: 100%; }'],

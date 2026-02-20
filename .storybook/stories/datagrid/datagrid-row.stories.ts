@@ -64,17 +64,15 @@ const RowTemplate: StoryFn = args => ({
         <clr-dg-cell>{{ emptyRow && index === 0 ? '' : element.number }}</clr-dg-cell>
         <clr-dg-cell class="electronegativity-container">
           {{ emptyRow && index === 0 ? '' : element.electronegativity }}
-          <div
-            *ngIf="!emptyRow || index !== 0"
-            [style.width.%]="(element.electronegativity * 100) / 5"
-            class="electronegativity-bar"
-          >
-            &nbsp;
-          </div>
+          @if (!emptyRow || index !== 0) {
+            <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
+          }
         </clr-dg-cell>
-        <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
-          <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
-        </ng-container>
+        @if (expandable) {
+          <ng-container ngProjectAs="clr-dg-row-detail">
+            <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
+          </ng-container>
+        }
       </clr-dg-row>
 
       <clr-dg-footer>

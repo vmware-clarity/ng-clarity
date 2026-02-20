@@ -182,7 +182,9 @@ Finally, and this is harder to put in black-or-white terms, keep the API as simp
 
 ```html
 <clr-carousel #carousel [clrItems]="items">
-  <h1 *ngFor="let item of carousel.visible">{{item}}</h1>
+  @for (let item of carousel.visible) {
+  <h1>{{item}}</h1>
+  }
 </clr-carousel>
 ```
 

@@ -39,10 +39,12 @@ const RadioContainerTemplate: StoryFn = args => ({
   template: `
     <clr-radio-container [clrInline]="clrInline">
       <label>{{ label }}</label>
-      <clr-radio-wrapper *ngFor="let _ of createArray(optionCount); let i = index">
-        <input type="radio" clrRadio name="options" value="i + 1" />
-        <label>Option {{ i + 1 }}</label>
-      </clr-radio-wrapper>
+      @for (_ of createArray(optionCount); track $index; let i = $index) {
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="options" value="i + 1" />
+          <label>Option {{ i + 1 }}</label>
+        </clr-radio-wrapper>
+      }
     </clr-radio-container>
   `,
   props: { ...args },
