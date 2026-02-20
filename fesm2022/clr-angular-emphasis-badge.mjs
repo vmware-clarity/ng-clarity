@@ -32,10 +32,10 @@ class ClrBadge {
     get colorClass() {
         return this.color ? `badge-${this.color}` : '';
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrBadge, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrBadge, isStandalone: true, selector: "clr-badge", inputs: { color: ["clrColor", "color"], type: ["clrType", "type"] }, host: { properties: { "class.outlined": "isOutlined", "class": "colorClass" }, classAttribute: "badge" }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrBadge, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrBadge, isStandalone: true, selector: "clr-badge", inputs: { color: ["clrColor", "color"], type: ["clrType", "type"] }, host: { properties: { "class.outlined": "isOutlined", "class": "colorClass" }, classAttribute: "badge" }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrBadge, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrBadge, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-badge',

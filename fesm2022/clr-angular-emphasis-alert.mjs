@@ -98,10 +98,10 @@ class AlertIconAndTypesService {
         }
         return returnObj;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: AlertIconAndTypesService, deps: [{ token: i1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: AlertIconAndTypesService }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AlertIconAndTypesService, deps: [{ token: i1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AlertIconAndTypesService }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: AlertIconAndTypesService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AlertIconAndTypesService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: i1.ClrCommonStringsService }] });
 
@@ -192,10 +192,10 @@ class MultiAlertService {
             this.subscription.unsubscribe();
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: MultiAlertService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: MultiAlertService }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MultiAlertService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MultiAlertService }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: MultiAlertService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MultiAlertService, decorators: [{
             type: Injectable
         }] });
 
@@ -297,12 +297,12 @@ class ClrAlert {
         }
         this._closedChanged.emit(true);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAlert, deps: [{ token: AlertIconAndTypesService }, { token: i0.ChangeDetectorRef }, { token: MultiAlertService, optional: true }, { token: i1.ClrCommonStringsService }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrAlert, isStandalone: false, selector: "clr-alert", inputs: { isSmall: ["clrAlertSizeSmall", "isSmall"], closable: ["clrAlertClosable", "closable"], isAppLevel: ["clrAlertAppLevel", "isAppLevel"], clrCloseButtonAriaLabel: "clrCloseButtonAriaLabel", isLightweight: ["clrAlertLightweight", "isLightweight"], alertType: ["clrAlertType", "alertType"], alertIconShape: ["clrAlertIcon", "alertIconShape"], closed: ["clrAlertClosed", "closed"] }, outputs: { _closedChanged: "clrAlertClosedChange" }, providers: [AlertIconAndTypesService], ngImport: i0, template: "<!--\n~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n~ This software is released under MIT license.\n~ The full license information can be found in LICENSE in the root directory of this project.\n-->\n\n@if (!_closed) {\n<div\n  class=\"alert\"\n  [ngClass]=\"alertClass\"\n  [class.alert-sm]=\"isSmall\"\n  [class.alert-lightweight]=\"isLightweight\"\n  [class.alert-app-level]=\"isAppLevel\"\n>\n  <div class=\"alert-items\">\n    <ng-content></ng-content>\n  </div>\n  @if (closable) {\n  <button type=\"button\" class=\"close\" (click)=\"close()\" [attr.aria-label]=\"clrCloseButtonAriaLabel\">\n    <cds-icon shape=\"times\"></cds-icon>\n  </button>\n  }\n</div>\n}\n", dependencies: [{ kind: "directive", type: i4.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrAlert, deps: [{ token: AlertIconAndTypesService }, { token: i0.ChangeDetectorRef }, { token: MultiAlertService, optional: true }, { token: i1.ClrCommonStringsService }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrAlert, isStandalone: false, selector: "clr-alert", inputs: { isSmall: ["clrAlertSizeSmall", "isSmall"], closable: ["clrAlertClosable", "closable"], isAppLevel: ["clrAlertAppLevel", "isAppLevel"], clrCloseButtonAriaLabel: "clrCloseButtonAriaLabel", isLightweight: ["clrAlertLightweight", "isLightweight"], alertType: ["clrAlertType", "alertType"], alertIconShape: ["clrAlertIcon", "alertIconShape"], closed: ["clrAlertClosed", "closed"] }, outputs: { _closedChanged: "clrAlertClosedChange" }, providers: [AlertIconAndTypesService], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n@if (!_closed) {\n<div\n  class=\"alert\"\n  [ngClass]=\"alertClass\"\n  [class.alert-sm]=\"isSmall\"\n  [class.alert-lightweight]=\"isLightweight\"\n  [class.alert-app-level]=\"isAppLevel\"\n>\n  <div class=\"alert-items\">\n    <ng-content></ng-content>\n  </div>\n  @if (closable) {\n  <button type=\"button\" class=\"close\" (click)=\"close()\" [attr.aria-label]=\"clrCloseButtonAriaLabel\">\n    <cds-icon shape=\"times\"></cds-icon>\n  </button>\n  }\n</div>\n}\n", dependencies: [{ kind: "directive", type: i4.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAlert, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrAlert, decorators: [{
             type: Component,
-            args: [{ selector: 'clr-alert', providers: [AlertIconAndTypesService], standalone: false, template: "<!--\n~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n~ This software is released under MIT license.\n~ The full license information can be found in LICENSE in the root directory of this project.\n-->\n\n@if (!_closed) {\n<div\n  class=\"alert\"\n  [ngClass]=\"alertClass\"\n  [class.alert-sm]=\"isSmall\"\n  [class.alert-lightweight]=\"isLightweight\"\n  [class.alert-app-level]=\"isAppLevel\"\n>\n  <div class=\"alert-items\">\n    <ng-content></ng-content>\n  </div>\n  @if (closable) {\n  <button type=\"button\" class=\"close\" (click)=\"close()\" [attr.aria-label]=\"clrCloseButtonAriaLabel\">\n    <cds-icon shape=\"times\"></cds-icon>\n  </button>\n  }\n</div>\n}\n" }]
+            args: [{ selector: 'clr-alert', providers: [AlertIconAndTypesService], standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n@if (!_closed) {\n<div\n  class=\"alert\"\n  [ngClass]=\"alertClass\"\n  [class.alert-sm]=\"isSmall\"\n  [class.alert-lightweight]=\"isLightweight\"\n  [class.alert-app-level]=\"isAppLevel\"\n>\n  <div class=\"alert-items\">\n    <ng-content></ng-content>\n  </div>\n  @if (closable) {\n  <button type=\"button\" class=\"close\" (click)=\"close()\" [attr.aria-label]=\"clrCloseButtonAriaLabel\">\n    <cds-icon shape=\"times\"></cds-icon>\n  </button>\n  }\n</div>\n}\n" }]
         }], ctorParameters: () => [{ type: AlertIconAndTypesService }, { type: i0.ChangeDetectorRef }, { type: MultiAlertService, decorators: [{
                     type: Optional
                 }] }, { type: i1.ClrCommonStringsService }, { type: i0.Renderer2 }, { type: i0.ElementRef }], propDecorators: { isSmall: [{
@@ -343,8 +343,8 @@ class ClrAlertItem {
     constructor(iconService) {
         this.iconService = iconService;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAlertItem, deps: [{ token: AlertIconAndTypesService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrAlertItem, isStandalone: false, selector: "clr-alert-item", host: { classAttribute: "alert-item" }, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrAlertItem, deps: [{ token: AlertIconAndTypesService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrAlertItem, isStandalone: false, selector: "clr-alert-item", host: { classAttribute: "alert-item" }, ngImport: i0, template: `
     <div class="alert-icon-wrapper">
       @if (iconService.alertIconShape === 'loading') {
         <clr-spinner class="alert-spinner" clrInline></clr-spinner>
@@ -361,7 +361,7 @@ class ClrAlertItem {
     <ng-content></ng-content>
   `, isInline: true, dependencies: [{ kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: i3.ClrSpinner, selector: "clr-spinner", inputs: ["clrInline", "clrInverse", "clrSmall", "clrMedium"] }] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAlertItem, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrAlertItem, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-alert-item',
@@ -397,10 +397,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * This directive is used only of selectin alert text.
  */
 class ClrAlertText {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAlertText, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrAlertText, isStandalone: false, selector: ".alert-text", ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrAlertText, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrAlertText, isStandalone: false, selector: ".alert-text", ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAlertText, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrAlertText, decorators: [{
             type: Directive,
             args: [{
                     selector: '.alert-text',
@@ -470,12 +470,12 @@ class ClrAlertsPager {
     pageDown() {
         this.multiAlertService.previous();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAlertsPager, deps: [{ token: MultiAlertService }, { token: i1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrAlertsPager, isStandalone: false, selector: "clr-alerts-pager", inputs: { currentAlert: ["clrCurrentAlert", "currentAlert"], currentAlertIndex: ["clrCurrentAlertIndex", "currentAlertIndex"] }, outputs: { currentAlertChange: "clrCurrentAlertChange", currentAlertIndexChange: "clrCurrentAlertIndexChange" }, host: { properties: { "class.alerts-pager": "true" } }, ngImport: i0, template: "<!--\n~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n~ This software is released under MIT license.\n~ The full license information can be found in LICENSE in the root directory of this project.\n-->\n\n<div class=\"alerts-pager-control\">\n  <div class=\"alerts-page-down\">\n    <button class=\"alerts-pager-button\" type=\"button\" (click)=\"pageDown()\" [attr.aria-label]=\"previousAlertAriaLabel\">\n      <cds-icon shape=\"angle\" direction=\"left\" [attr.title]=\"commonStrings.keys.previous\"></cds-icon>\n    </button>\n  </div>\n  <div class=\"alerts-pager-text\">{{multiAlertService.current+1}} / {{multiAlertService.count}}</div>\n  <div class=\"alerts-page-up\">\n    <button class=\"alerts-pager-button\" type=\"button\" (click)=\"pageUp()\" [attr.aria-label]=\"nextAlertAriaLabel\">\n      <cds-icon shape=\"angle\" direction=\"right\" [attr.title]=\"commonStrings.keys.next\"></cds-icon>\n    </button>\n  </div>\n</div>\n", dependencies: [{ kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrAlertsPager, deps: [{ token: MultiAlertService }, { token: i1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrAlertsPager, isStandalone: false, selector: "clr-alerts-pager", inputs: { currentAlert: ["clrCurrentAlert", "currentAlert"], currentAlertIndex: ["clrCurrentAlertIndex", "currentAlertIndex"] }, outputs: { currentAlertChange: "clrCurrentAlertChange", currentAlertIndexChange: "clrCurrentAlertIndexChange" }, host: { properties: { "class.alerts-pager": "true" } }, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"alerts-pager-control\">\n  <div class=\"alerts-page-down\">\n    <button class=\"alerts-pager-button\" type=\"button\" (click)=\"pageDown()\" [attr.aria-label]=\"previousAlertAriaLabel\">\n      <cds-icon shape=\"angle\" direction=\"left\" [attr.title]=\"commonStrings.keys.previous\"></cds-icon>\n    </button>\n  </div>\n  <div class=\"alerts-pager-text\">{{multiAlertService.current+1}} / {{multiAlertService.count}}</div>\n  <div class=\"alerts-page-up\">\n    <button class=\"alerts-pager-button\" type=\"button\" (click)=\"pageUp()\" [attr.aria-label]=\"nextAlertAriaLabel\">\n      <cds-icon shape=\"angle\" direction=\"right\" [attr.title]=\"commonStrings.keys.next\"></cds-icon>\n    </button>\n  </div>\n</div>\n", dependencies: [{ kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAlertsPager, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrAlertsPager, decorators: [{
             type: Component,
-            args: [{ selector: 'clr-alerts-pager', host: { '[class.alerts-pager]': 'true' }, standalone: false, template: "<!--\n~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n~ This software is released under MIT license.\n~ The full license information can be found in LICENSE in the root directory of this project.\n-->\n\n<div class=\"alerts-pager-control\">\n  <div class=\"alerts-page-down\">\n    <button class=\"alerts-pager-button\" type=\"button\" (click)=\"pageDown()\" [attr.aria-label]=\"previousAlertAriaLabel\">\n      <cds-icon shape=\"angle\" direction=\"left\" [attr.title]=\"commonStrings.keys.previous\"></cds-icon>\n    </button>\n  </div>\n  <div class=\"alerts-pager-text\">{{multiAlertService.current+1}} / {{multiAlertService.count}}</div>\n  <div class=\"alerts-page-up\">\n    <button class=\"alerts-pager-button\" type=\"button\" (click)=\"pageUp()\" [attr.aria-label]=\"nextAlertAriaLabel\">\n      <cds-icon shape=\"angle\" direction=\"right\" [attr.title]=\"commonStrings.keys.next\"></cds-icon>\n    </button>\n  </div>\n</div>\n" }]
+            args: [{ selector: 'clr-alerts-pager', host: { '[class.alerts-pager]': 'true' }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"alerts-pager-control\">\n  <div class=\"alerts-page-down\">\n    <button class=\"alerts-pager-button\" type=\"button\" (click)=\"pageDown()\" [attr.aria-label]=\"previousAlertAriaLabel\">\n      <cds-icon shape=\"angle\" direction=\"left\" [attr.title]=\"commonStrings.keys.previous\"></cds-icon>\n    </button>\n  </div>\n  <div class=\"alerts-pager-text\">{{multiAlertService.current+1}} / {{multiAlertService.count}}</div>\n  <div class=\"alerts-page-up\">\n    <button class=\"alerts-pager-button\" type=\"button\" (click)=\"pageUp()\" [attr.aria-label]=\"nextAlertAriaLabel\">\n      <cds-icon shape=\"angle\" direction=\"right\" [attr.title]=\"commonStrings.keys.next\"></cds-icon>\n    </button>\n  </div>\n</div>\n" }]
         }], ctorParameters: () => [{ type: MultiAlertService }, { type: i1.ClrCommonStringsService }], propDecorators: { currentAlertChange: [{
                 type: Output,
                 args: ['clrCurrentAlertChange']
@@ -555,10 +555,10 @@ class ClrAlerts {
         this.subscriptions.forEach(sub => sub.unsubscribe());
         this.multiAlertService.destroy();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAlerts, deps: [{ token: MultiAlertService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrAlerts, isStandalone: false, selector: "clr-alerts", inputs: { _inputCurrentIndex: ["clrCurrentAlertIndex", "_inputCurrentIndex"], currentAlert: ["clrCurrentAlert", "currentAlert"] }, outputs: { currentAlertChange: "clrCurrentAlertChange", currentAlertIndexChange: "clrCurrentAlertIndexChange" }, host: { properties: { "class.alerts": "true", "class.alert-danger": "this.currentAlertType == 'danger'", "class.alert-info": "this.currentAlertType == 'info'", "class.alert-success": "this.currentAlertType == 'success'", "class.alert-warning": "this.currentAlertType == 'warning'", "class.alert-neutral": "this.currentAlertType == 'neutral'" } }, providers: [MultiAlertService], queries: [{ propertyName: "allAlerts", predicate: ClrAlert }], ngImport: i0, template: "<!--\n~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n~ This software is released under MIT license.\n~ The full license information can be found in LICENSE in the root directory of this project.\n-->\n<div class=\"alerts-wrapper\">\n  @if (multiAlertService.count > 1) {\n  <clr-alerts-pager [clrCurrentAlertIndex]=\"currentAlertIndex\"></clr-alerts-pager>\n  }\n  <ng-content select=\"clr-alert\"></ng-content>\n</div>\n", styles: [":host{display:block}\n"], dependencies: [{ kind: "component", type: ClrAlertsPager, selector: "clr-alerts-pager", inputs: ["clrCurrentAlert", "clrCurrentAlertIndex"], outputs: ["clrCurrentAlertChange", "clrCurrentAlertIndexChange"] }] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrAlerts, deps: [{ token: MultiAlertService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrAlerts, isStandalone: false, selector: "clr-alerts", inputs: { _inputCurrentIndex: ["clrCurrentAlertIndex", "_inputCurrentIndex"], currentAlert: ["clrCurrentAlert", "currentAlert"] }, outputs: { currentAlertChange: "clrCurrentAlertChange", currentAlertIndexChange: "clrCurrentAlertIndexChange" }, host: { properties: { "class.alerts": "true", "class.alert-danger": "this.currentAlertType == 'danger'", "class.alert-info": "this.currentAlertType == 'info'", "class.alert-success": "this.currentAlertType == 'success'", "class.alert-warning": "this.currentAlertType == 'warning'", "class.alert-neutral": "this.currentAlertType == 'neutral'" } }, providers: [MultiAlertService], queries: [{ propertyName: "allAlerts", predicate: ClrAlert }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div class=\"alerts-wrapper\">\n  @if (multiAlertService.count > 1) {\n  <clr-alerts-pager [clrCurrentAlertIndex]=\"currentAlertIndex\"></clr-alerts-pager>\n  }\n  <ng-content select=\"clr-alert\"></ng-content>\n</div>\n", styles: [":host{display:block}\n"], dependencies: [{ kind: "component", type: ClrAlertsPager, selector: "clr-alerts-pager", inputs: ["clrCurrentAlert", "clrCurrentAlertIndex"], outputs: ["clrCurrentAlertChange", "clrCurrentAlertIndexChange"] }] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAlerts, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrAlerts, decorators: [{
             type: Component,
             args: [{ selector: 'clr-alerts', providers: [MultiAlertService], host: {
                         '[class.alerts]': 'true',
@@ -567,7 +567,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
                         '[class.alert-success]': "this.currentAlertType == 'success'",
                         '[class.alert-warning]': "this.currentAlertType == 'warning'",
                         '[class.alert-neutral]': "this.currentAlertType == 'neutral'",
-                    }, standalone: false, template: "<!--\n~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n~ This software is released under MIT license.\n~ The full license information can be found in LICENSE in the root directory of this project.\n-->\n<div class=\"alerts-wrapper\">\n  @if (multiAlertService.count > 1) {\n  <clr-alerts-pager [clrCurrentAlertIndex]=\"currentAlertIndex\"></clr-alerts-pager>\n  }\n  <ng-content select=\"clr-alert\"></ng-content>\n</div>\n", styles: [":host{display:block}\n"] }]
+                    }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div class=\"alerts-wrapper\">\n  @if (multiAlertService.count > 1) {\n  <clr-alerts-pager [clrCurrentAlertIndex]=\"currentAlertIndex\"></clr-alerts-pager>\n  }\n  <ng-content select=\"clr-alert\"></ng-content>\n</div>\n", styles: [":host{display:block}\n"] }]
         }], ctorParameters: () => [{ type: MultiAlertService }], propDecorators: { currentAlertChange: [{
                 type: Output,
                 args: ['clrCurrentAlertChange']
@@ -596,11 +596,11 @@ class ClrAlertModule {
     constructor() {
         ClarityIcons.addIcons(errorStandardIcon, helpIcon, infoStandardIcon, noteIcon, successStandardIcon, warningStandardIcon, windowCloseIcon);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAlertModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.2.2", ngImport: i0, type: ClrAlertModule, declarations: [ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, ClrAlertText], imports: [CommonModule, ClrIcon, ClrDropdownModule, ClrSpinnerModule], exports: [ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, ClrAlertText] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAlertModule, imports: [CommonModule, ClrIcon, ClrDropdownModule, ClrSpinnerModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrAlertModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrAlertModule, declarations: [ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, ClrAlertText], imports: [CommonModule, ClrIcon, ClrDropdownModule, ClrSpinnerModule], exports: [ClrAlert, ClrAlertItem, ClrAlerts, ClrAlertsPager, ClrAlertText] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrAlertModule, imports: [CommonModule, ClrIcon, ClrDropdownModule, ClrSpinnerModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrAlertModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrAlertModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIcon, ClrDropdownModule, ClrSpinnerModule],

@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { InjectionToken, forwardRef, ContentChild, Inject, Component, Self, Optional, Attribute, Directive, Input, ContentChildren, NgModule } from '@angular/core';
+import { InjectionToken, ContentChild, forwardRef, Inject, Component, Self, Optional, Attribute, Directive, Input, ContentChildren, NgModule } from '@angular/core';
 import * as i1 from '@clr/angular/forms/common';
 import { ClrControlLabel, ControlIdService, WrappedFormControl, ClrAbstractContainer, NgControlService, ControlClassService, ContainerIdService, ClrCommonFormsModule } from '@clr/angular/forms/common';
 import * as i2 from 'rxjs';
@@ -38,8 +38,8 @@ class ClrCheckboxWrapper {
     ngOnDestroy() {
         this.subscriptions.forEach(sub => sub.unsubscribe());
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrCheckboxWrapper, deps: [{ token: IS_TOGGLE }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrCheckboxWrapper, isStandalone: false, selector: "clr-checkbox-wrapper,clr-toggle-wrapper", host: { properties: { "class.clr-checkbox-wrapper": "!toggle", "class.clr-checkbox-wrapper-disabled": "checkbox?.controlDisabled", "class.clr-toggle-wrapper": "toggle" } }, providers: [ControlIdService, IS_TOGGLE_PROVIDER], queries: [{ propertyName: "label", first: true, predicate: ClrControlLabel, descendants: true, static: true }, { propertyName: "checkbox", first: true, predicate: i0.forwardRef(() => ClrCheckbox), descendants: true, static: true }], ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxWrapper, deps: [{ token: IS_TOGGLE }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrCheckboxWrapper, isStandalone: false, selector: "clr-checkbox-wrapper,clr-toggle-wrapper", host: { properties: { "class.clr-checkbox-wrapper": "!toggle", "class.clr-checkbox-wrapper-disabled": "checkbox?.controlDisabled", "class.clr-toggle-wrapper": "toggle" } }, providers: [ControlIdService, IS_TOGGLE_PROVIDER], queries: [{ propertyName: "label", first: true, predicate: ClrControlLabel, descendants: true, static: true }, { propertyName: "checkbox", first: true, predicate: i0.forwardRef(() => ClrCheckbox), descendants: true, static: true }], ngImport: i0, template: `
     <ng-content select="[clrCheckbox],[clrToggle]"></ng-content>
     <ng-content select="label"></ng-content>
     @if (!label) {
@@ -47,7 +47,7 @@ class ClrCheckboxWrapper {
     }
   `, isInline: true, dependencies: [{ kind: "directive", type: i1.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrCheckboxWrapper, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxWrapper, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-checkbox-wrapper,clr-toggle-wrapper',
@@ -105,10 +105,10 @@ class ClrCheckbox extends WrappedFormControl {
             toggleService.next(true);
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrCheckbox, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: 'clrToggle', attribute: true }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.2.2", type: ClrCheckbox, isStandalone: false, selector: "[clrCheckbox],[clrToggle]", host: { properties: { "attr.role": "toggle !== null ? \"switch\" : null" } }, usesInheritance: true, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckbox, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: 'clrToggle', attribute: true }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrCheckbox, isStandalone: false, selector: "[clrCheckbox],[clrToggle]", host: { properties: { "attr.role": "toggle !== null ? \"switch\" : null" } }, usesInheritance: true, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrCheckbox, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckbox, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrCheckbox],[clrToggle]',
@@ -169,8 +169,8 @@ class ClrCheckboxContainer extends ClrAbstractContainer {
     setAriaRoles() {
         this.role = this.checkboxes?.length ? 'group' : null;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrCheckboxContainer, deps: [{ token: i1.LayoutService, optional: true }, { token: i1.ControlClassService }, { token: i1.NgControlService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrCheckboxContainer, isStandalone: false, selector: "clr-checkbox-container,clr-toggle-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "allCheckboxesDisabled", "class.clr-row": "addGrid()", "attr.role": "role" } }, providers: [NgControlService, ControlClassService, ContainerIdService], queries: [{ propertyName: "checkboxes", predicate: ClrCheckbox, descendants: true }], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxContainer, deps: [{ token: i1.LayoutService, optional: true }, { token: i1.ControlClassService }, { token: i1.NgControlService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrCheckboxContainer, isStandalone: false, selector: "clr-checkbox-container,clr-toggle-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "allCheckboxesDisabled", "class.clr-row": "addGrid()", "attr.role": "role" } }, providers: [NgControlService, ControlClassService, ContainerIdService], queries: [{ propertyName: "checkboxes", predicate: ClrCheckbox, descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -206,7 +206,7 @@ class ClrCheckboxContainer extends ClrAbstractContainer {
     </div>
   `, isInline: true, dependencies: [{ kind: "directive", type: i2$1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrCheckboxContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-checkbox-container,clr-toggle-container',
@@ -273,11 +273,11 @@ class ClrCheckboxModule {
     constructor() {
         ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrCheckboxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.2.2", ngImport: i0, type: ClrCheckboxModule, declarations: [ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper], imports: [CommonModule, ClrIcon, ClrCommonFormsModule, ClrHostWrappingModule], exports: [ClrCommonFormsModule, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrCheckboxModule, imports: [CommonModule, ClrIcon, ClrCommonFormsModule, ClrHostWrappingModule, ClrCommonFormsModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxModule, declarations: [ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper], imports: [CommonModule, ClrIcon, ClrCommonFormsModule, ClrHostWrappingModule], exports: [ClrCommonFormsModule, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxModule, imports: [CommonModule, ClrIcon, ClrCommonFormsModule, ClrHostWrappingModule, ClrCommonFormsModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrCheckboxModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIcon, ClrCommonFormsModule, ClrHostWrappingModule],

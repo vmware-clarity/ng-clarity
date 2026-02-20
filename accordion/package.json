@@ -1,3 +1,4 @@
 {
-  "module": "../fesm2022/clr-angular-accordion.mjs"
+  "module": "../fesm2022/clr-angular-accordion.mjs",
+  "typings": "../types/clr-angular-accordion.d.ts"
 }

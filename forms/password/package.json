@@ -1,3 +1,4 @@
 {
-  "module": "../../fesm2022/clr-angular-forms-password.mjs"
+  "module": "../../fesm2022/clr-angular-forms-password.mjs",
+  "typings": "../../types/clr-angular-forms-password.d.ts"
 }

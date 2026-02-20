@@ -1,3 +1,4 @@
 {
-  "module": "../fesm2022/clr-angular-emphasis.mjs"
+  "module": "../fesm2022/clr-angular-emphasis.mjs",
+  "typings": "../types/clr-angular-emphasis.d.ts"
 }

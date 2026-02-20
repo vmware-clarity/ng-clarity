@@ -1,3 +1,4 @@
 {
-  "module": "../../fesm2022/clr-angular-popover-dropdown.mjs"
+  "module": "../../fesm2022/clr-angular-popover-dropdown.mjs",
+  "typings": "../../types/clr-angular-popover-dropdown.d.ts"
 }

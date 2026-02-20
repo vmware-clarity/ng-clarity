@@ -78,10 +78,10 @@ class TimelineIconAttributeService {
     getIconStatus(step) {
         return this.attributeMap.get(step).iconStatus;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: TimelineIconAttributeService, deps: [{ token: i1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: TimelineIconAttributeService }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: TimelineIconAttributeService, deps: [{ token: i1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: TimelineIconAttributeService }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: TimelineIconAttributeService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: TimelineIconAttributeService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: i1.ClrCommonStringsService }] });
 
@@ -98,10 +98,10 @@ class ClrTimeline {
     get isVertical() {
         return this.layout === ClrTimelineLayout.VERTICAL;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrTimeline, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrTimeline, isStandalone: false, selector: "clr-timeline", inputs: { layout: ["clrLayout", "layout"] }, host: { properties: { "class.clr-timeline": "true", "attr.role": "\"list\"", "class.clr-timeline-vertical": "this.isVertical" } }, providers: [TimelineIconAttributeService], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTimeline, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrTimeline, isStandalone: false, selector: "clr-timeline", inputs: { layout: ["clrLayout", "layout"] }, host: { properties: { "class.clr-timeline": "true", "attr.role": "\"list\"", "class.clr-timeline-vertical": "this.isVertical" } }, providers: [TimelineIconAttributeService], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrTimeline, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTimeline, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-timeline',
@@ -135,10 +135,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * ClrTimlineStep template for the DOM structure.
  */
 class ClrTimelineStepTitle {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrTimelineStepTitle, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrTimelineStepTitle, isStandalone: false, selector: "clr-timeline-step-title", host: { properties: { "class.clr-timeline-step-title": "true", "attr.aria-hidden": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTimelineStepTitle, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrTimelineStepTitle, isStandalone: false, selector: "clr-timeline-step-title", host: { properties: { "class.clr-timeline-step-title": "true", "attr.aria-hidden": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrTimelineStepTitle, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTimelineStepTitle, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-timeline-step-title',
@@ -177,8 +177,8 @@ class ClrTimelineStep {
             this.stepTitleText = this.stepTitle.nativeElement.innerText;
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrTimelineStep, deps: [{ token: TimelineIconAttributeService }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrTimelineStep, isStandalone: false, selector: "clr-timeline-step", inputs: { state: ["clrState", "state"] }, host: { properties: { "class.clr-timeline-step": "true", "attr.role": "\"listitem\"" } }, queries: [{ propertyName: "stepTitle", first: true, predicate: ClrTimelineStepTitle, descendants: true, read: ElementRef }], ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTimelineStep, deps: [{ token: TimelineIconAttributeService }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrTimelineStep, isStandalone: false, selector: "clr-timeline-step", inputs: { state: ["clrState", "state"] }, host: { properties: { "class.clr-timeline-step": "true", "attr.role": "\"listitem\"" } }, queries: [{ propertyName: "stepTitle", first: true, predicate: ClrTimelineStepTitle, descendants: true, read: ElementRef }], ngImport: i0, template: `
     <ng-content select="clr-timeline-step-header"></ng-content>
     <span class="clr-sr-only">{{ stepTitleText }}</span>
     @if (!isProcessing) {
@@ -192,7 +192,7 @@ class ClrTimelineStep {
     </div>
   `, isInline: true, dependencies: [{ kind: "component", type: i2.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: i3.ClrSpinner, selector: "clr-spinner", inputs: ["clrInline", "clrInverse", "clrSmall", "clrMedium"] }] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrTimelineStep, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTimelineStep, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-timeline-step',
@@ -230,10 +230,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrTimelineStepDescription {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrTimelineStepDescription, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrTimelineStepDescription, isStandalone: false, selector: "clr-timeline-step-description", host: { properties: { "class.clr-timeline-step-description": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTimelineStepDescription, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrTimelineStepDescription, isStandalone: false, selector: "clr-timeline-step-description", host: { properties: { "class.clr-timeline-step-description": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrTimelineStepDescription, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTimelineStepDescription, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-timeline-step-description',
@@ -250,10 +250,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrTimelineStepHeader {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrTimelineStepHeader, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrTimelineStepHeader, isStandalone: false, selector: "clr-timeline-step-header", host: { properties: { "class.clr-timeline-step-header": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTimelineStepHeader, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrTimelineStepHeader, isStandalone: false, selector: "clr-timeline-step-header", host: { properties: { "class.clr-timeline-step-header": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrTimelineStepHeader, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTimelineStepHeader, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-timeline-step-header',
@@ -280,8 +280,8 @@ class ClrTimelineModule {
     constructor() {
         ClarityIcons.addIcons(circleIcon, dotCircleIcon, errorStandardIcon, successStandardIcon);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrTimelineModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.2.2", ngImport: i0, type: ClrTimelineModule, declarations: [ClrTimeline,
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTimelineModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrTimelineModule, declarations: [ClrTimeline,
             ClrTimelineStep,
             ClrTimelineStepDescription,
             ClrTimelineStepHeader,
@@ -290,9 +290,9 @@ class ClrTimelineModule {
             ClrTimelineStepDescription,
             ClrTimelineStepHeader,
             ClrTimelineStepTitle, ClrIcon, ClrSpinnerModule] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrTimelineModule, imports: [CommonModule, ClrIcon, ClrSpinnerModule, ClrSpinnerModule] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTimelineModule, imports: [CommonModule, ClrIcon, ClrSpinnerModule, ClrSpinnerModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrTimelineModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTimelineModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIcon, ClrSpinnerModule],

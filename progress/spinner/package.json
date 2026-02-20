@@ -1,3 +1,4 @@
 {
-  "module": "../../fesm2022/clr-angular-progress-spinner.mjs"
+  "module": "../../fesm2022/clr-angular-progress-spinner.mjs",
+  "typings": "../../types/clr-angular-progress-spinner.d.ts"
 }

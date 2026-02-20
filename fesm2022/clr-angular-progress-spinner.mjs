@@ -54,10 +54,10 @@ class ClrSpinner {
     set clrMedium(value) {
         this._medium = isBooleanAttributeSet(value);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrSpinner, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "20.2.2", type: ClrSpinner, isStandalone: false, selector: "clr-spinner", inputs: { clrInline: "clrInline", clrInverse: "clrInverse", clrSmall: "clrSmall", clrMedium: "clrMedium" }, host: { properties: { "attr.aria-busy": "true", "class.spinner": "this.spinnerClass", "class.spinner-inline": "this.inlineClass", "class.spinner-inverse": "this.inverseClass", "class.spinner-sm": "this.smallClass", "class.spinner-md": "this.mediumClass" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSpinner, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrSpinner, isStandalone: false, selector: "clr-spinner", inputs: { clrInline: "clrInline", clrInverse: "clrInverse", clrSmall: "clrSmall", clrMedium: "clrMedium" }, host: { properties: { "attr.aria-busy": "true", "class.spinner": "this.spinnerClass", "class.spinner-inline": "this.inlineClass", "class.spinner-inverse": "this.inverseClass", "class.spinner-sm": "this.smallClass", "class.spinner-md": "this.mediumClass" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrSpinner, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSpinner, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-spinner',
@@ -104,11 +104,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  */
 const CLR_SPINNER_DIRECTIVES = [ClrSpinner];
 class ClrSpinnerModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrSpinnerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.2.2", ngImport: i0, type: ClrSpinnerModule, declarations: [ClrSpinner], imports: [CommonModule], exports: [ClrSpinner] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrSpinnerModule, imports: [CommonModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSpinnerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrSpinnerModule, declarations: [ClrSpinner], imports: [CommonModule], exports: [ClrSpinner] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSpinnerModule, imports: [CommonModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrSpinnerModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSpinnerModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],

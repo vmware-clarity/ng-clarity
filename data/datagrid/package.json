@@ -1,3 +1,4 @@
 {
-  "module": "../../fesm2022/clr-angular-data-datagrid.mjs"
+  "module": "../../fesm2022/clr-angular-data-datagrid.mjs",
+  "typings": "../../types/clr-angular-data-datagrid.d.ts"
 }

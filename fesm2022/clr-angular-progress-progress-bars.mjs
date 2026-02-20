@@ -94,15 +94,15 @@ class ClrProgressBar {
     displayStringValue() {
         return this._labeled;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrProgressBar, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.2.2", type: ClrProgressBar, isStandalone: false, selector: "clr-progress-bar", inputs: { max: ["clrMax", "max"], displayval: ["clrDisplayval", "displayval"], color: ["clrColor", "color"], value: ["clrValue", "value"], id: "id", clrCompact: "clrCompact", clrLabeled: "clrLabeled", clrFade: "clrFade", clrLoop: "clrLoop", clrFlash: "clrFlash", clrFlashDanger: "clrFlashDanger" }, host: { properties: { "attr.id": "this.externalId", "class.progress": "this.progressClass", "class.compact": "this.compactClass", "class.labeled": "this.labeledClass", "class.progress-fade": "this.fadeClass", "class.loop": "this.loopClass", "class.warning": "this.warningClass", "class.success": "this.successClass", "class.danger": "this.dangerClass", "class.flash": "this.flashClass", "class.flash-danger": "this.flashDangerClass" } }, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrProgressBar, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrProgressBar, isStandalone: false, selector: "clr-progress-bar", inputs: { max: ["clrMax", "max"], displayval: ["clrDisplayval", "displayval"], color: ["clrColor", "color"], value: ["clrValue", "value"], id: "id", clrCompact: "clrCompact", clrLabeled: "clrLabeled", clrFade: "clrFade", clrLoop: "clrLoop", clrFlash: "clrFlash", clrFlashDanger: "clrFlashDanger" }, host: { properties: { "attr.id": "this.externalId", "class.progress": "this.progressClass", "class.compact": "this.compactClass", "class.labeled": "this.labeledClass", "class.progress-fade": "this.fadeClass", "class.loop": "this.loopClass", "class.warning": "this.warningClass", "class.success": "this.successClass", "class.danger": "this.dangerClass", "class.flash": "this.flashClass", "class.flash-danger": "this.flashDangerClass" } }, ngImport: i0, template: `
     <progress [id]="id" [attr.max]="max" [attr.value]="value" [attr.data-displayval]="displayValue"></progress>
     @if (displayStringValue()) {
       <span>{{ displayValue }}</span>
     }
   `, isInline: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrProgressBar, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrProgressBar, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-progress-bar',
@@ -189,11 +189,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImpor
  */
 const CLR_PROGRESS_BAR_DIRECTIVES = [ClrProgressBar];
 class ClrProgressBarModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrProgressBarModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.2.2", ngImport: i0, type: ClrProgressBarModule, declarations: [ClrProgressBar], imports: [CommonModule], exports: [ClrProgressBar] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrProgressBarModule, imports: [CommonModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrProgressBarModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrProgressBarModule, declarations: [ClrProgressBar], imports: [CommonModule], exports: [ClrProgressBar] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrProgressBarModule, imports: [CommonModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.2.2", ngImport: i0, type: ClrProgressBarModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrProgressBarModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],

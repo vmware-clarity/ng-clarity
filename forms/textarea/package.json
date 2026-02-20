@@ -1,3 +1,4 @@
 {
-  "module": "../../fesm2022/clr-angular-forms-textarea.mjs"
+  "module": "../../fesm2022/clr-angular-forms-textarea.mjs",
+  "typings": "../../types/clr-angular-forms-textarea.d.ts"
 }

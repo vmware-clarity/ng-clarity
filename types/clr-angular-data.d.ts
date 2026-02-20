@@ -826,7 +826,6 @@ declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     private subscriptions;
     private topIndex;
     private mutationChanges;
-    private viewRepeater;
     private cdkVirtualForInputs;
     private _totalItems;
     constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
@@ -1286,6 +1285,7 @@ declare class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrD
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, [null, null, null, { optional: true; }]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, { "open": { "alias": "clrDgFilterOpen"; "required": false; }; "customFilter": { "alias": "clrDgFilter"; "required": false; }; }, { "openChange": "clrDgFilterOpenChange"; }, never, ["*"], false, never>;
+    static ngAcceptInputType_open: unknown;
 }
 
 declare class ClrIfDetail implements OnInit, OnDestroy {
@@ -1476,7 +1476,7 @@ declare class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInte
     equals(other: ClrDatagridFilterInterface<T, any>): boolean;
 }
 
-declare class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements CustomFilter, AfterViewInit, OnChanges, OnDestroy {
+declare class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements CustomFilter, OnChanges, OnDestroy, AfterViewInit {
     private domAdapter;
     commonStrings: ClrCommonStringsService;
     private popoverService;
