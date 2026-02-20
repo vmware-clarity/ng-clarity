@@ -17,7 +17,7 @@ import { EventEmitter } from '@angular/core';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i8 from '@angular/common';
+import * as i9 from '@angular/common';
 import { NgForm } from '@angular/forms';
 import { NgModelGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -63,6 +63,22 @@ export enum ClrStepButtonType {
 }
 
 // @public (undocumented)
+export class ClrStepContent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepContent, "clr-step-content", never, {}, {}, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepContent, never>;
+}
+
+// @public (undocumented)
+export class ClrStepDescription {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepDescription, "clr-step-description", never, {}, {}, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepDescription, never>;
+}
+
+// @public (undocumented)
 export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
     constructor(formGroup: FormGroupDirective, ngForm: NgForm, stepperService: StepperService);
     // (undocumented)
@@ -93,29 +109,34 @@ export class ClrStepperModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStepperModule>;
-    // Warning: (ae-forgotten-export) The symbol "i9" needs to be exported by the entry point clr-angular-stepper.d.ts
-    // Warning: (ae-forgotten-export) The symbol "_clr_angular_accordion" needs to be exported by the entry point clr-angular-stepper.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i10" needs to be exported by the entry point clr-angular-stepper.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka], [typeof i8.CommonModule, typeof i9.ClrIcon, typeof _clr_angular_accordion.ClrAccordionModule], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka, typeof _clr_angular_accordion.ClrAccordionModule, typeof i9.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka], [typeof i9.CommonModule, typeof i10.ClrIcon], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka, typeof i10.ClrIcon]>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "ClrAccordionPanel" needs to be exported by the entry point clr-angular-stepper.d.ts
+// Warning: (ae-forgotten-export) The symbol "CollapsiblePanel" needs to be exported by the entry point clr-angular-stepper.d.ts
 //
 // @public (undocumented)
-export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
+export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     // Warning: (ae-forgotten-export) The symbol "IfExpandService" needs to be exported by the entry point clr-angular-stepper.d.ts
     constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
-    // Warning: (ae-forgotten-export) The symbol "AccordionStatus" needs to be exported by the entry point clr-angular-stepper.d.ts
-    //
-    // (undocumented)
-    readonly AccordionStatus: typeof AccordionStatus;
     // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService" needs to be exported by the entry point clr-angular-stepper.d.ts
     //
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
+    disabled: boolean;
+    // (undocumented)
     get formGroup(): _angular_forms.FormGroup<any>;
+    // (undocumented)
+    getContentId(id: string): string;
+    // (undocumented)
+    getHeaderId(id: string): string;
+    // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelModel" needs to be exported by the entry point clr-angular-stepper.d.ts
+    //
+    // (undocumented)
+    getPanelStateClasses(panel: CollapsiblePanelModel): string;
     // (undocumented)
     headerButton: ElementRef<HTMLButtonElement>;
     // (undocumented)
@@ -126,9 +147,29 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-step-title", "clr-step-description", "*"], false, never>;
+    get panelNumber(): number;
+    // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelStatus" needs to be exported by the entry point clr-angular-stepper.d.ts
+    //
+    // (undocumented)
+    readonly PanelStatus: typeof CollapsiblePanelStatus;
+    // (undocumented)
+    protected stepCompleteText(panelNumber: number): string;
+    // (undocumented)
+    stepDescription: QueryList<ClrStepDescription>;
+    // (undocumented)
+    protected stepErrorText(panelNumber: number): string;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, ["stepDescription"], ["clr-step-title", "clr-step-description", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
+}
+
+// @public (undocumented)
+export class ClrStepTitle {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepTitle, "clr-step-title", never, {}, {}, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepTitle, never>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "OompaLoompa" needs to be exported by the entry point clr-angular-stepper.d.ts
