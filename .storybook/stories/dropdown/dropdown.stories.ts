@@ -38,8 +38,12 @@ const DropdownTemplate: StoryFn = args => ({
     <div style="margin-bottom: 200px">
       <clr-dropdown [clrCloseMenuOnItemClick]="clrCloseMenuOnItemClick">
         <button [ngClass]="iconButton ? '' : 'btn ' + buttonType" clrDropdownTrigger>
-          <span *ngIf="!iconButton">Dropdown</span>
-          <cds-icon *ngIf="iconButton" shape="exclamation-circle" class="is-error" size="24"></cds-icon>
+          @if (!iconButton) {
+            <span>Dropdown</span>
+          }
+          @if (iconButton) {
+            <cds-icon shape="exclamation-circle" class="is-error" size="24"></cds-icon>
+          }
           <cds-icon shape="angle" direction="down"></cds-icon>
         </button>
         <clr-dropdown-menu *clrIfOpen="open">

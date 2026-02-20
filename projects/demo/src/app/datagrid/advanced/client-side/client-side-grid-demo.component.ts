@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import {
   AppfxDatagridModule,
@@ -19,7 +18,7 @@ import { GridConfigDemoOptions, GridConfigFormComponent } from '../grid-config/g
 import { Inventory, VmItem } from '../inventory/inventory';
 
 @Component({
-  imports: [AppfxDatagridModule, CommonModule, GridConfigFormComponent],
+  imports: [AppfxDatagridModule, GridConfigFormComponent],
   standalone: true,
   templateUrl: 'client-side-grid-demo.component.html',
   providers: [ExportProviderService, Inventory],

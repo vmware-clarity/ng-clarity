@@ -19,9 +19,9 @@ import {
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { delay, expectActiveElementNotToBe, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 
+import { ClrFormsModule } from '../forms.module';
 import { ClrDateContainer } from './date-container';
 import { ClrDateInput } from './date-single-input';
-import { ClrFormsModule } from '../forms.module';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -78,7 +78,7 @@ export default function () {
         controlClassService = context.fixture.debugElement.injector.get(ControlClassService);
         datepickerFocusService = context.fixture.debugElement.injector.get(DatepickerFocusService);
 
-        spyOn(datepickerFocusService, 'focusInput');
+        spyOn(datepickerFocusService, 'focusInput').and.callThrough();
       });
 
       // @TODO Figure out how to make these tests conform to the rest of the forms tests, which test these already
@@ -116,7 +116,6 @@ export default function () {
           expectActiveElementNotToBe(input);
           dateNavigationService.notifySelectedDayChanged(new DayModel(2019, 1, 1));
           context.detectChanges();
-          await context.fixture.whenStable();
           expectActiveElementToBe(input);
         });
 

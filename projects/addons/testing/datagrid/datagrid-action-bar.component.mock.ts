@@ -6,28 +6,30 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ActionDefinition } from '@clr/addons/datagrid';
 
 @Component({
   selector: 'appfx-datagrid-action-bar',
   standalone: false,
   template: `
-    <button
-      *ngFor="let action of actions"
-      (click)="onActionClick(action)"
-      [title]="action.tooltip"
-      [attr.data-test-id]="action.id"
-      [disabled]="!action.enabled"
-    >
-      {{ action.label }}
-    </button>
+    @for (action of actions; track action) {
+      <button
+        (click)="onActionClick(action)"
+        [title]="action.tooltip"
+        [attr.data-test-id]="action.id"
+        [disabled]="!action.enabled"
+      >
+        {{ action.label }}
+      </button>
+    }
   `,
 })
 export class MockDatagridActionBarComponent {
-  @Input() actions: unknown[];
+  @Input() actions: ActionDefinition[];
 
-  @Output() invokeAction: EventEmitter<unknown> = new EventEmitter();
+  @Output() invokeAction: EventEmitter<ActionDefinition> = new EventEmitter();
 
-  onActionClick(action: unknown): void {
+  onActionClick(action: ActionDefinition): void {
     this.invokeAction.emit(action);
   }
 }

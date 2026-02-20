@@ -71,7 +71,13 @@ export default function (): void {
 
     it('provides a toDateString method that returns the local date string', () => {
       const testString = dayModel1.toDateString();
-      expect(testString).toEqual('Monday, January 1, 2018');
+      const expected = new Date(2018, 0, 1).toLocaleDateString(undefined, {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      });
+      expect(testString).toEqual(expected);
     });
 
     it('provides a toComparisonString method to compare dates', () => {

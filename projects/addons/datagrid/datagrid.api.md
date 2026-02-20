@@ -129,26 +129,26 @@ export class AppfxDatagridModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<AppfxDatagridModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<AppfxDatagridModule>;
-    // Warning: (ae-forgotten-export) The symbol "DatagridActionBarDropdownRepositionDirective" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "DatagridCellContainerComponent" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "DatagridColumnToggleComponent" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "DatagridFilterContainerComponent" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "ExportDatagridComponent" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "IsRowSelectablePipe" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i19" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i21" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i22" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i23" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "DatagridColumnsOrderModule" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DatagridActionBarDropdownRepositionDirective" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DatagridCellContainerComponent" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DatagridColumnToggleComponent" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DatagridFilterContainerComponent" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ExportDatagridComponent" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "IsRowSelectablePipe" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i19" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i21" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i22" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i23" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DatagridColumnsOrderModule" needs to be exported by the entry point clr-addons-datagrid.d.ts
     //
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective, typeof DatagridActionBarDropdownRepositionDirective, typeof DatagridCellContainerComponent, typeof DatagridColumnToggleComponent, typeof DatagridFilterContainerComponent, typeof ExportDatagridComponent, typeof IsRowSelectablePipe], [typeof i14.AppfxA11yModule, typeof i15.AppfxDatagridFiltersModule, typeof i16.A11yModule, typeof i5_2.DragDropModule, typeof i18_2.OverlayModule, typeof i19.ClrCheckboxModule, typeof i3.ClrDatagridModule, typeof i21.ClrDropdownModule, typeof i22.ClrIcon, typeof i19.ClrInputModule, typeof i23.ClrLoadingModule, typeof i4.CommonModule, typeof DatagridColumnsOrderModule, typeof i26.FormsModule], [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective]>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "PersistDatagridSettingsService" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "PersistDatagridSettingsService" needs to be exported by the entry point clr-addons-datagrid.d.ts
 //
 // @public (undocumented)
 export const appfxDatagridPersistSettingsToken: InjectionToken<PersistDatagridSettingsService>;
@@ -159,7 +159,7 @@ export const appfxDatagridUserPreferencesToken: InjectionToken<DatagridUserPrefe
 // @public
 export const appfxPreselectableComponentToken: InjectionToken<PreselectableComponent>;
 
-// Warning: (ae-forgotten-export) The symbol "ClrDatagridStringFilterInterface" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "ClrDatagridStringFilterInterface" needs to be exported by the entry point clr-addons-datagrid.d.ts
 //
 // @public (undocumented)
 export class CaseInsensitiveContainsStringFilter implements ClrDatagridStringFilterInterface<any> {
@@ -179,7 +179,7 @@ export interface ClientSideExportConfig {
     // (undocumented)
     exportedFileName: string;
     sort?: boolean;
-    // Warning: (ae-forgotten-export) The symbol "SortFunction" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "SortFunction" needs to be exported by the entry point clr-addons-datagrid.d.ts
     sortFunction?: SortFunction;
     sortOrder?: ColumnSortOrder;
 }
@@ -189,7 +189,7 @@ export interface ColumnDefinition<T> {
     columnRenderer?: Type<ColumnRenderer<T>>;
     columnRendererConfig?: any;
     defaultFilterValue?: any;
-    // Warning: (ae-forgotten-export) The symbol "ClrDatagridSortOrder" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ClrDatagridSortOrder" needs to be exported by the entry point clr-addons-datagrid.d.ts
     defaultSortOrder?: ClrDatagridSortOrder;
     displayName: string;
     field: string;
@@ -197,21 +197,21 @@ export interface ColumnDefinition<T> {
     hidden?: boolean;
     hideable?: boolean;
     sortAndFilterByField?: string;
-    // Warning: (ae-forgotten-export) The symbol "ClrDatagridComparatorInterface" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ClrDatagridComparatorInterface" needs to be exported by the entry point clr-addons-datagrid.d.ts
     sortComparator?: ClrDatagridComparatorInterface<T> | string;
     stringFilter?: ClrDatagridStringFilterInterface<T>;
     uid?: string;
     width?: string;
 }
 
-// Warning: (ae-forgotten-export) The symbol "ClrDatagridFilterInterface" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "ClrDatagridFilterInterface" needs to be exported by the entry point clr-addons-datagrid.d.ts
 //
 // @public (undocumented)
 export interface ColumnFilter<T> extends ClrDatagridFilterInterface<T> {
     filterValue: any;
 }
 
-// Warning: (ae-forgotten-export) The symbol "ColumnState" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "ColumnState" needs to be exported by the entry point clr-addons-datagrid.d.ts
 //
 // @public (undocumented)
 export interface ColumnFilterChange extends ColumnState {
@@ -279,7 +279,7 @@ export class CsvHelperService {
 
 // @public (undocumented)
 export class DatagridActionBarComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "ElementResizeService" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ElementResizeService" needs to be exported by the entry point clr-addons-datagrid.d.ts
     constructor(cdr: ChangeDetectorRef, el: ElementRef<HTMLElement>, elementResizeService: ElementResizeService);
     // (undocumented)
     readonly actions$: rxjs.Observable<ActionDefinition<string>[]>;
@@ -320,19 +320,19 @@ export class DatagridActionBarComponent implements OnInit, OnChanges, AfterViewI
 
 // @public
 export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnChanges, PreselectableComponent {
-    // Warning: (ae-forgotten-export) The symbol "DragAndDropGroupService" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "ZoomLevelService" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DragAndDropGroupService" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ZoomLevelService" needs to be exported by the entry point clr-addons-datagrid.d.ts
     constructor(datagridStrings: DatagridStrings, uid: string, cdr: ChangeDetectorRef, exportProviderService: ExportProviderService, groupService: DragAndDropGroupService, zoomLevelService: ZoomLevelService);
     get actionBarActions(): ActionDefinition[];
     set actionBarActions(actions: ActionDefinition[] | null);
     actionClick: EventEmitter<ActionClickEvent<any>>;
-    // Warning: (ae-forgotten-export) The symbol "PropertyFilter" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "PropertyFilter" needs to be exported by the entry point clr-addons-datagrid.d.ts
     advancedFilterChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
     protected applyFlexLayout: boolean;
     // (undocumented)
     buildRowDetailContentId(index: number): string;
-    // Warning: (ae-forgotten-export) The symbol "ClrDatagridPagination" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ClrDatagridPagination" needs to be exported by the entry point clr-addons-datagrid.d.ts
     //
     // (undocumented)
     clrDatagridPagination: ClrDatagridPagination;
@@ -346,7 +346,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     columnSortOrderChange: EventEmitter<ColumnSortOrder>;
     // (undocumented)
     set datagridLabels(overriddenStrings: Partial<DatagridStrings>);
-    // Warning: (ae-forgotten-export) The symbol "ClrDatagridVirtualScrollRangeInterface" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ClrDatagridVirtualScrollRangeInterface" needs to be exported by the entry point clr-addons-datagrid.d.ts
     dataRange: ClrDatagridVirtualScrollRangeInterface<T>;
     // (undocumented)
     protected readonly defaultUnsetValue: string;
@@ -372,11 +372,11 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     // (undocumented)
     protected get enableToolBar(): boolean;
     exportDataEvent: EventEmitter<ExportStatus>;
-    // Warning: (ae-forgotten-export) The symbol "FilterablePropertyDefinition" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "FilterablePropertyDefinition" needs to be exported by the entry point clr-addons-datagrid.d.ts
     filterableProperties: FilterablePropertyDefinition[];
     // (undocumented)
     protected get filteredItemsCount(): number;
-    // Warning: (ae-forgotten-export) The symbol "FilterMode" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "FilterMode" needs to be exported by the entry point clr-addons-datagrid.d.ts
     filterMode?: FilterMode;
     get footerModel(): GridFooterModel;
     set footerModel(config: GridFooterModel);
@@ -450,7 +450,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     preserveExistingSelectionOnFilter: boolean;
     // (undocumented)
     protected refreshGrid(state: ClrDatagridStateInterface): void;
-    // Warning: (ae-forgotten-export) The symbol "ClrDatagridStateInterface" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ClrDatagridStateInterface" needs to be exported by the entry point clr-addons-datagrid.d.ts
     refreshGridData: EventEmitter<ClrDatagridStateInterface>;
     refreshVirtualGridData: EventEmitter<ClrDatagridStateInterface>;
     renderedRangeChange($event: ListRange): void;
@@ -495,7 +495,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     visibleColumns: ColumnDefinition<T>[];
     get wrapText(): boolean;
     set wrapText(value: boolean);
-    // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point clr-addons-datagrid.d.ts
     //
     // (undocumented)
     protected zoomLevel: ZoomLevel;
@@ -532,7 +532,7 @@ export class DatagridFeatureStates {
 
 // @public (undocumented)
 export class DatagridFilterComponent implements ClrDatagridFilterInterface<any>, OnInit, AfterViewInit {
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverService" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ClrPopoverService" needs to be exported by the entry point clr-addons-datagrid.d.ts
     constructor(dgStrings: DatagridStrings, popoverService: ClrPopoverService);
     // (undocumented)
     accepts(item: any): boolean;

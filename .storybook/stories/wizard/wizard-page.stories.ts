@@ -9,8 +9,6 @@ import { ClrWizardModule, ClrWizardPage } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
 
-import { removeFocusOutline } from '../../helpers/common';
-
 export default {
   title: 'Wizard/Wizard Page',
   component: ClrWizardPage,
@@ -122,18 +120,17 @@ const WizardPageTemplate: StoryFn = args => ({
 
 export const WizardPage: StoryObj = {
   render: WizardPageTemplate,
-  play: removeFocusOutline,
 };
 
 export const WizardPageStatusIndicators: StoryObj = {
   render: WizardPageTemplate,
-  play({ canvasElement }) {
-    removeFocusOutline({ canvasElement });
-
+  play: async ({ canvasElement, userEvent }) => {
     // navigate to the last page
-    const nextButtonElement = canvasElement.querySelector<HTMLButtonElement>('clr-wizard-button[type="next"] button');
-    nextButtonElement.click();
-    nextButtonElement.click();
+    const nextButtonElement = await canvasElement.querySelector<HTMLButtonElement>(
+      'clr-wizard-button[type="next"] button'
+    );
+    await userEvent.click(nextButtonElement);
+    await userEvent.click(nextButtonElement);
   },
   args: {
     clrWizardPageHasError: true,
@@ -142,16 +139,19 @@ export const WizardPageStatusIndicators: StoryObj = {
 
 export const WizardPageStatusIndicatorsWithCurrentStepError: StoryObj = {
   render: WizardPageTemplate,
-  play({ canvasElement }) {
-    removeFocusOutline({ canvasElement });
-
+  play: async ({ canvasElement, userEvent }) => {
     // navigate to the last page
-    const nextButtonElement = canvasElement.querySelector<HTMLButtonElement>('clr-wizard-button[type="next"] button');
-    nextButtonElement.click();
-    nextButtonElement.click();
+    const nextButtonElement = await canvasElement.querySelector<HTMLButtonElement>(
+      'clr-wizard-button[type="next"] button'
+    );
+    await userEvent.click(nextButtonElement);
+    await userEvent.click(nextButtonElement);
 
     // navigate back to the error step
-    canvasElement.querySelector<HTMLButtonElement>('clr-wizard-button[type="previous"] button').click();
+    const previousButtonElement = await canvasElement.querySelector<HTMLButtonElement>(
+      'clr-wizard-button[type="previous"] button'
+    );
+    await userEvent.click(previousButtonElement);
   },
   args: {
     clrWizardPageHasError: true,

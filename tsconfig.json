@@ -28,7 +28,8 @@
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "typeCheckHostBindings": false
   },
   "exclude": ["dist", "node_modules"]
 }

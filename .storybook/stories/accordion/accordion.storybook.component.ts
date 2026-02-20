@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ClrAccordionModule } from '@clr/angular';
 import { createArray } from 'helpers/common';
@@ -14,25 +13,30 @@ import { createArray } from 'helpers/common';
   selector: 'storybook-accordion',
   standalone: true,
   template: `
-    <section *ngIf="componentDescription" [innerHTML]="componentDescription"></section>
+    @if (componentDescription) {
+      <section [innerHTML]="componentDescription"></section>
+    }
     <clr-accordion [clrAccordionMultiPanel]="clrAccordionMultiPanel">
-      <clr-accordion-panel
-        *ngFor="let _ of createArray(panelCount); let i = index"
-        [clrAccordionPanelOpen]="!!openIndices[i]"
-        [clrAccordionPanelDisabled]="clrAccordionPanelDisabled"
-        [clrAccordionPanelHeadingEnabled]="clrAccordionPanelHeadingEnabled"
-        [clrAccordionPanelHeadingLevel]="clrAccordionPanelHeadingLevel"
-      >
-        <clr-accordion-title>
-          {{ title }} {{ i + 1 }}
-          {{ alignmentTest && ((panelCount > 1 && i === 2) || panelCount === 1) ? '(alignment test)' : '' }}
-        </clr-accordion-title>
-        <clr-accordion-description *ngIf="showDescriptions">Panel {{ i + 1 }} description.</clr-accordion-description>
-        <clr-accordion-content>{{ content }} {{ i + 1 }} </clr-accordion-content>
-      </clr-accordion-panel>
+      @for (_ of createArray(panelCount); track $index; let i = $index) {
+        <clr-accordion-panel
+          [clrAccordionPanelOpen]="!!openIndices[i]"
+          [clrAccordionPanelDisabled]="clrAccordionPanelDisabled"
+          [clrAccordionPanelHeadingEnabled]="clrAccordionPanelHeadingEnabled"
+          [clrAccordionPanelHeadingLevel]="clrAccordionPanelHeadingLevel"
+        >
+          <clr-accordion-title>
+            {{ title }} {{ i + 1 }}
+            {{ alignmentTest && ((panelCount > 1 && i === 2) || panelCount === 1) ? '(alignment test)' : '' }}
+          </clr-accordion-title>
+          @if (showDescriptions) {
+            <clr-accordion-description>Panel {{ i + 1 }} description.</clr-accordion-description>
+          }
+          <clr-accordion-content>{{ content }} {{ i + 1 }} </clr-accordion-content>
+        </clr-accordion-panel>
+      }
     </clr-accordion>
   `,
-  imports: [NgFor, NgIf, NgTemplateOutlet, ClrAccordionModule],
+  imports: [ClrAccordionModule],
 })
 export class AccordionStorybookComponent {
   @Input() componentDescription = null;

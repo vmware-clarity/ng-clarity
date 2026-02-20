@@ -143,10 +143,12 @@ const InPageWizardTemplate: StoryFn = args => ({
             <clr-wizard-button type="next">Next</clr-wizard-button>
             <clr-wizard-button type="finish">Finish</clr-wizard-button>
 
-            <clr-wizard-page *ngFor="let _ of createArray(pageCount); let i = index">
-              <ng-template clrPageTitle>Page {{ i + 1 }}</ng-template>
-              <p>Content for page {{ i + 1 }}.</p>
-            </clr-wizard-page>
+            @for (_ of createArray(pageCount); track $index; let i = $index) {
+              <clr-wizard-page>
+                <ng-template clrPageTitle>Page {{ i + 1 }}</ng-template>
+                <p>Content for page {{ i + 1 }}.</p>
+              </clr-wizard-page>
+            }
           </clr-wizard>
         </div>
       </div>

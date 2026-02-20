@@ -77,7 +77,7 @@ export default function (): void {
       });
 
       function testPosition(name: ClrPopoverPosition): void {
-        it('has a ' + name + ' signpost content position', function () {
+        it('has a ' + name + ' signpost content position', async function () {
           this.testComponent.position = name;
           this.detectChanges();
 
@@ -88,6 +88,7 @@ export default function (): void {
 
           // Test that content shows
           signpostToggle.click();
+          await this.fixture.whenStable();
           this.detectChanges();
 
           const signpostContent = document.body.querySelector('.clr-signpost-container');

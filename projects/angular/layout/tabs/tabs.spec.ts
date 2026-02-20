@@ -379,11 +379,11 @@ describe('Tabs', () => {
       expectFirstTabActive.call(this, TestComponent);
     });
 
-    it("doesn't ignore tabs with *ngIf", function () {
+    it("doesn't ignore tabs with @if", function () {
       expectFirstTabActive.call(this, NgIfFirstTest);
     });
 
-    it("doesn't prioritize tabs with *ngIf", function () {
+    it("doesn't prioritize tabs with @if", function () {
       expectFirstTabActive.call(this, NgIfSecondTest);
     });
   });

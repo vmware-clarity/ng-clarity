@@ -53,7 +53,7 @@ import { DatagridFilterRegistrar } from '../../utils/datagrid-filter-registrar';
 })
 export class DatagridStringFilter<T = any>
   extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>>
-  implements CustomFilter, AfterViewInit, OnChanges, OnDestroy
+  implements CustomFilter, OnChanges, OnDestroy, AfterViewInit
 {
   /**
    * Provide a way to pass external placeholder and aria-label to the filter input

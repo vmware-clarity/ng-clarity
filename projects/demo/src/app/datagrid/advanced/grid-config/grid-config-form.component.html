@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
 <form clrForm>
   <clr-number-input-container cds-layout="m-t:xs">
     <label>Number of items</label>
@@ -57,10 +63,12 @@
 
   <clr-toggle-container clrInline cds-layout="m-t:xs">
     <label>Footer model</label>
-    <clr-checkbox-wrapper *ngIf="options.enableExport !== undefined">
-      <input type="checkbox" clrToggle [(ngModel)]="options.enableExport" name="showExport" />
-      <label>Enable export</label>
-    </clr-checkbox-wrapper>
+    @if (options.enableExport !== undefined) {
+      <clr-checkbox-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="options.enableExport" name="showExport" />
+        <label>Enable export</label>
+      </clr-checkbox-wrapper>
+    }
 
     <clr-toggle-wrapper>
       <input type="checkbox" clrToggle [(ngModel)]="options.showColumnToggle" name="showColumnToggle" />

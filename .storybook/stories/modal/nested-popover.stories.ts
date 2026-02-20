@@ -56,7 +56,9 @@ const NestedPopoverTemplate: StoryFn = args => ({
             {{ selected }}
           </ng-container>
           <clr-options>
-            <clr-option *ngFor="let element of elements" [clrValue]="element.symbol">{{ element.name }}</clr-option>
+            @for (element of elements; track element) {
+              <clr-option [clrValue]="element.symbol">{{ element.name }}</clr-option>
+            }
           </clr-options>
         </clr-combobox>
         <br />

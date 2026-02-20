@@ -41,7 +41,11 @@ $tooltip-configs: (
 );
 
 @mixin generate-tooltip-styles($isCss: true) {
-  $prefix: if($isCss, 'tooltip-', '');
+  $prefix: '';
+
+  @if $isCss {
+    $prefix: 'tooltip-';
+  }
 
   @each $name, $args in $tooltip-configs {
     // Destructure arguments

@@ -43,21 +43,24 @@ export default function () {
       fixture.detectChanges();
 
       const expectedErrors = {
-        min: { min: '1/1/2022', actual: '12/31/2021' },
+        min: {
+          min: new Date(2022, 0, 1).toLocaleDateString(),
+          actual: new Date(2021, 11, 31).toLocaleDateString(),
+        },
       };
 
       expect(fixture.componentInstance.formControl.errors).toEqual(expectedErrors);
     });
 
     it('should allow a date equal to the min date', () => {
-      fixture.componentInstance.formControl.setValue('1/1/2022');
+      fixture.componentInstance.formControl.setValue('01/01/2022');
       fixture.detectChanges();
 
       expect(fixture.componentInstance.formControl.errors).toBeNull();
     });
 
     it('should allow a date between the min and max dates', () => {
-      fixture.componentInstance.formControl.setValue('6/1/2022');
+      fixture.componentInstance.formControl.setValue('06/01/2022');
       fixture.detectChanges();
 
       expect(fixture.componentInstance.formControl.errors).toBeNull();
@@ -71,14 +74,14 @@ export default function () {
     });
 
     it('should not allow a date greater than the max date', () => {
-      // Using the short syntax like below causes ExpressionChangedAfterItHasBeenCheckedError.
-      // Our datepicker automatically updates short syntax to the full one, with leading zeros,
-      // so testing with the latter is acceptable.
       fixture.componentInstance.formControl.setValue('01/01/2023');
       fixture.detectChanges();
 
       const expectedErrors = {
-        max: { max: '12/31/2022', actual: '1/1/2023' },
+        max: {
+          max: new Date(2022, 11, 31).toLocaleDateString(),
+          actual: new Date(2023, 0, 1).toLocaleDateString(),
+        },
       };
 
       expect(fixture.componentInstance.formControl.errors).toEqual(expectedErrors);

@@ -58,14 +58,18 @@ const StackViewTemplate: StoryFn = args => ({
       <clr-stack-block [clrSbExpandable]="true" (clrSbExpandedChange)="elementsBlockService.getBlocks()">
         <clr-stack-label>Elements</clr-stack-label>
 
-        <clr-stack-block *ngIf="elementsBlockService.loading">
-          <clr-spinner clrInline>Loading...</clr-spinner>
-        </clr-stack-block>
+        @if (elementsBlockService.loading) {
+          <clr-stack-block>
+            <clr-spinner clrInline>Loading...</clr-spinner>
+          </clr-stack-block>
+        }
 
-        <clr-stack-block *ngFor="let block of elementsBlockService.blocks | async">
-          <clr-stack-label>{{ block.label }}</clr-stack-label>
-          <clr-stack-content>{{ block.content }}</clr-stack-content>
-        </clr-stack-block>
+        @for (block of elementsBlockService.blocks | async; track block) {
+          <clr-stack-block>
+            <clr-stack-label>{{ block.label }}</clr-stack-label>
+            <clr-stack-content>{{ block.content }}</clr-stack-content>
+          </clr-stack-block>
+        }
       </clr-stack-block>
     </clr-stack-view>
   `,
