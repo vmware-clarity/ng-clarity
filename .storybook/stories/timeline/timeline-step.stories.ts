@@ -49,9 +49,15 @@ const TimelineStepTemplate: StoryFn = args => ({
   template: `
     <clr-timeline>
       <clr-timeline-step [clrState]="clrState">
-        <clr-timeline-step-header *ngIf="header">{{ header }}</clr-timeline-step-header>
-        <clr-timeline-step-title *ngIf="title">{{ title }}</clr-timeline-step-title>
-        <clr-timeline-step-description *ngIf="description">{{ description }}</clr-timeline-step-description>
+        @if (header) {
+          <clr-timeline-step-header>{{ header }}</clr-timeline-step-header>
+        }
+        @if (title) {
+          <clr-timeline-step-title>{{ title }}</clr-timeline-step-title>
+        }
+        @if (description) {
+          <clr-timeline-step-description>{{ description }}</clr-timeline-step-description>
+        }
       </clr-timeline-step>
     </clr-timeline>
   `,
@@ -60,15 +66,23 @@ const TimelineStepTemplate: StoryFn = args => ({
 
 const TimelineStepAllTemplate: StoryFn = args => ({
   template: `
-    <div *ngFor="let state of TIMELINE_STEP_STATE" style="margin-top: 20px">
-      <clr-timeline>
-        <clr-timeline-step [clrState]="state.clrState">
-          <clr-timeline-step-header *ngIf="header">{{ header }}</clr-timeline-step-header>
-          <clr-timeline-step-title *ngIf="title">{{ title }}</clr-timeline-step-title>
-          <clr-timeline-step-description *ngIf="description">{{ description }}</clr-timeline-step-description>
-        </clr-timeline-step>
-      </clr-timeline>
-    </div>
+    @for (state of TIMELINE_STEP_STATE; track state) {
+      <div style="margin-top: 20px">
+        <clr-timeline>
+          <clr-timeline-step [clrState]="state.clrState">
+            @if (header) {
+              <clr-timeline-step-header>{{ header }}</clr-timeline-step-header>
+            }
+            @if (title) {
+              <clr-timeline-step-title>{{ title }}</clr-timeline-step-title>
+            }
+            @if (description) {
+              <clr-timeline-step-description>{{ description }}</clr-timeline-step-description>
+            }
+          </clr-timeline-step>
+        </clr-timeline>
+      </div>
+    }
   `,
   props: args,
 });

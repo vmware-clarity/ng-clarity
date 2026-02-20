@@ -42,7 +42,7 @@ export class ClrFileSuccess {
 
 @Component({
   selector: 'clr-file-error',
-  // The host should have an `*ngIf` or `@if` that checks for the relevant error.
+  // The host should have an `@if` or `@if` that checks for the relevant error.
   template: `<ng-content></ng-content>`,
   host: {
     '[class.clr-subtext]': 'true',

@@ -1248,7 +1248,7 @@ export default function (): void {
       });
     });
 
-    describe('Multi selection with *ngFor', function () {
+    describe('Multi selection with @for', function () {
       let context: TestContext<ClrDatagrid, MultiSelectionNgForTest>;
 
       beforeEach(function () {

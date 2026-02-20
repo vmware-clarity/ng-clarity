@@ -11,7 +11,7 @@
 */
 
 const childProcess = require('child_process');
-const minimatch = require('minimatch');
+const { minimatch } = require('minimatch');
 const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
 

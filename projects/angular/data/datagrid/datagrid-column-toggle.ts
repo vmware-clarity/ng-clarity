@@ -41,6 +41,7 @@ import { ColumnsService } from './providers/columns.service';
       [attr.aria-label]="commonStrings.keys.showColumnsMenuDescription"
       [id]="popoverId"
       cdkTrapFocus
+      cdkTrapFocusAutoCapture
       *clrPopoverContent="
         openState;
         at: popoverPosition;

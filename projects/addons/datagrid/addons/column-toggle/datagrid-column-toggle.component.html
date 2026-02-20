@@ -1,8 +1,9 @@
 <!--
-     Copyright (c) 2020-2024 Broadcom. All Rights Reserved.
-     Broadcom Confidential. The term "Broadcom" refers to Broadcom Inc.
-     and/or its subsidiaries.
--->
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
 <button
   cdkOverlayOrigin
   #trigger="cdkOverlayOrigin"
@@ -53,18 +54,20 @@
       </button>
     </div>
     <ul class="switch-content list-unstyled" tabindex="-1">
-      <li *ngFor="let column of hideableColumns()">
-        <clr-checkbox-wrapper>
-          <input
-            type="checkbox"
-            clrCheckbox
-            [disabled]="hasOnlyOneVisibleColumn && !column.hidden"
-            [checked]="!column.hidden"
-            (change)="toggleColumnState(column, $event)"
-          />
-          <label>{{ column.displayName }}</label>
-        </clr-checkbox-wrapper>
-      </li>
+      @for (column of hideableColumns(); track column) {
+        <li>
+          <clr-checkbox-wrapper>
+            <input
+              type="checkbox"
+              clrCheckbox
+              [disabled]="hasOnlyOneVisibleColumn && !column.hidden"
+              [checked]="!column.hidden"
+              (change)="toggleColumnState(column, $event)"
+            />
+            <label>{{ column.displayName }}</label>
+          </clr-checkbox-wrapper>
+        </li>
+      }
     </ul>
     <div class="switch-footer">
       <button

@@ -22,7 +22,9 @@ import {
   selector: 'appfx-dg-cell-container',
   standalone: false,
   template: `
-    <ng-template [ngIf]="!column.columnRenderer" [ngIfElse]="cellContainer">{{ item?.[column.field] }}</ng-template>
+    @if (!column.columnRenderer) {
+      {{ item?.[column.field] }}
+    }
     <ng-template #cellContainer></ng-template>
   `,
 })
