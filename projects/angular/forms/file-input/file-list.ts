@@ -43,19 +43,15 @@ import {
                 <cds-icon shape="times"></cds-icon>
               </button>
             </span>
-            <cds-icon
-              class="clr-validate-icon"
-              [shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
-              [status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
-              aria-hidden="true"
-            ></cds-icon>
           </div>
           @if (fileMessagesTemplate) {
-            <ng-container
-              [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
-              [ngTemplateOutletContext]="fileMessagesTemplateContext"
-              [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
-            ></ng-container>
+            <div class="clr-control-subtext-container">
+              <ng-container
+                [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
+                [ngTemplateOutletContext]="fileMessagesTemplateContext"
+                [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
+              ></ng-container>
+            </div>
           }
         </div>
       }
