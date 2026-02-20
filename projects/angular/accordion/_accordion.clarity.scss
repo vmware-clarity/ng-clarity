@@ -6,9 +6,7 @@
  */
 
 @use 'sass:meta';
-@use '../styles/a11y';
 @use '../styles/mixins';
-@use '../styles/core/tokens/variables.tokens' as tokens;
 @use 'variables.accordion' as accordion-variables;
 @use '../styles/variables/variables.density' as density;
 @use '../collapsible-panel/collapsible-panel';
@@ -23,33 +21,6 @@
   @include collapsible-panel.collapsible-panel('clr-accordion');
 
   .clr-accordion {
-    .clr-accordion-header {
-      box-shadow: none;
-    }
-
-    .clr-accordion-panel .clr-accordion-header {
-      border-radius: accordion-variables.$clr-accordion-border-radius;
-
-      & + .clr-accordion-content-region > .clr-accordion-content {
-        border-bottom-left-radius: accordion-variables.$clr-accordion-border-radius;
-        border-bottom-right-radius: accordion-variables.$clr-accordion-border-radius;
-      }
-    }
-
-    .clr-accordion-panel + .clr-accordion-panel > div[class*='clr-accordion-panel-'] > .clr-accordion-header {
-      border-top-left-radius: unset;
-      border-top-right-radius: unset;
-    }
-
-    .clr-accordion-panel:not(:last-child) > div[class*='clr-accordion-panel-'] > .clr-accordion-header {
-      &,
-      & + .clr-accordion-content-region > .clr-accordion-content {
-        border-bottom: none;
-        border-bottom-left-radius: unset;
-        border-bottom-right-radius: unset;
-      }
-    }
-
     .clr-accordion-header-button {
       align-items: center;
       padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
@@ -84,12 +55,5 @@
         @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       }
     }
-  }
-
-  // override the border bottom style when last panel is open
-  .clr-accordion-panel-open > .clr-accordion-header {
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-    border-bottom: 0 !important;
   }
 }

@@ -10,14 +10,13 @@
 @use 'variables.collapsible-panel' as panel-variables;
 @use '../styles/variables/variables.density' as density;
 
-@mixin collapsible-panel($prefix) {
+@mixin collapsible-panel($prefix, $grouped: true) {
   .#{$prefix}-panel {
     display: block;
   }
 
   .#{$prefix}-header {
     color: panel-variables.$clr-collapsible-panel-text-color;
-    box-shadow: panel-variables.$clr-collapsible-panel-header-left-indicator;
     background: panel-variables.$clr-collapsible-panel-header-background-color;
     transition: all 200ms ease-in-out;
     border: tokens.$cds-global-space-1 solid panel-variables.$clr-collapsible-panel-border-color;
@@ -140,20 +139,7 @@
     transform: rotate(90deg);
   }
 
-  // panel states
   .#{$prefix}-panel-open {
-    > .#{$prefix}-header {
-      box-shadow: panel-variables.$clr-collapsible-panel-header-left-current-indicator;
-    }
-
-    .#{$prefix}-panel-complete > .#{$prefix}-header {
-      box-shadow: inset tokens.$cds-global-space-5 0 0 panel-variables.$clr-collapsible-panel-border-left-color-complete;
-    }
-
-    .#{$prefix}-panel-error > .#{$prefix}-header {
-      box-shadow: inset tokens.$cds-global-space-5 0 0 panel-variables.$clr-collapsible-panel-border-left-color-error;
-    }
-
     & > .#{$prefix}-content-region .#{$prefix}-content {
       display: block;
     }
@@ -177,38 +163,34 @@
     }
   }
 
-  .#{$prefix}-panel-complete {
-    & > .#{$prefix}-complete-icon {
-      display: inline-block;
-      color: panel-variables.$clr-collapsible-panel-complete-color;
+  @if $grouped {
+    .#{$prefix}-panel .#{$prefix}-header {
+      border-radius: panel-variables.$clr-collapsible-panel-border-radius;
+
+      & + .#{$prefix}-content-region > .#{$prefix}-content {
+        border-bottom-left-radius: panel-variables.$clr-collapsible-panel-border-radius;
+        border-bottom-right-radius: panel-variables.$clr-collapsible-panel-border-radius;
+      }
     }
 
-    & > .#{$prefix}-angle {
-      visibility: visible;
+    .#{$prefix}-panel + .#{$prefix}-panel > div[class*='#{$prefix}-panel-'] > .#{$prefix}-header {
+      border-top-left-radius: unset;
+      border-top-right-radius: unset;
     }
 
-    & > .#{$prefix}-header {
-      box-shadow: inset tokens.$cds-global-space-5 0 0 panel-variables.$clr-collapsible-panel-border-left-color-complete;
+    .#{$prefix}-panel:not(:last-child) > div[class*='#{$prefix}-panel-'] > .#{$prefix}-header {
+      &,
+      & + .#{$prefix}-content-region > .#{$prefix}-content {
+        border-bottom: none;
+        border-bottom-left-radius: unset;
+        border-bottom-right-radius: unset;
+      }
     }
 
-    .ng-trigger.#{$prefix}-content {
-      display: block;
+    .#{$prefix}-panel-open > .#{$prefix}-header {
+      border-bottom-left-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+      border-bottom: 0 !important;
     }
-  }
-
-  .#{$prefix}-panel-error {
-    & > .#{$prefix}-header {
-      box-shadow: inset tokens.$cds-global-space-5 0 0 panel-variables.$clr-collapsible-panel-border-left-color-error;
-    }
-
-    & > .#{$prefix}-error-icon {
-      display: inline-block;
-      color: panel-variables.$clr-collapsible-panel-error-color;
-    }
-  }
-
-  .#{$prefix}-panel-error .#{$prefix}-number,
-  .#{$prefix}-panel-complete .#{$prefix}-number {
-    @include mixins.screen-reader-only();
   }
 }

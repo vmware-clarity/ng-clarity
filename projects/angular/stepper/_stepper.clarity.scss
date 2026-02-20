@@ -8,13 +8,67 @@
 @use 'sass:meta';
 @use '../styles/a11y';
 @use '../styles/mixins';
+@use '../styles/core/tokens/variables.tokens' as tokens;
 @use '../collapsible-panel/variables.collapsible-panel' as panel-variables;
 @use '../collapsible-panel/collapsible-panel';
 @use '../styles/variables/variables.density' as density;
 
 @include meta.load-css('../collapsible-panel/properties.collapsible-panel');
 @include mixins.exports('stepper.clarity') {
-  @include collapsible-panel.collapsible-panel('clr-stepper');
+  @include collapsible-panel.collapsible-panel('clr-stepper', $grouped: false);
+
+  .clr-stepper-header {
+    box-shadow: panel-variables.$clr-collapsible-panel-header-left-indicator;
+  }
+
+  .clr-stepper-panel-open > .clr-stepper-header {
+    box-shadow: panel-variables.$clr-collapsible-panel-header-left-current-indicator;
+  }
+
+  .clr-stepper-panel-open {
+    .clr-stepper-panel-complete > .clr-stepper-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 panel-variables.$clr-collapsible-panel-border-left-color-complete;
+    }
+
+    .clr-stepper-panel-error > .clr-stepper-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 panel-variables.$clr-collapsible-panel-border-left-color-error;
+    }
+  }
+
+  .clr-stepper-panel-complete {
+    & > .clr-stepper-complete-icon {
+      display: inline-block;
+      color: panel-variables.$clr-collapsible-panel-complete-color;
+    }
+
+    & > .clr-stepper-angle {
+      visibility: visible;
+    }
+
+    & > .clr-stepper-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 panel-variables.$clr-collapsible-panel-border-left-color-complete;
+    }
+
+    .ng-trigger.clr-stepper-content {
+      display: block;
+    }
+  }
+
+  .clr-stepper-panel-error {
+    & > .clr-stepper-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 panel-variables.$clr-collapsible-panel-border-left-color-error;
+    }
+
+    & > .clr-stepper-error-icon {
+      display: inline-block;
+      color: panel-variables.$clr-collapsible-panel-error-color;
+    }
+  }
+
+  .clr-stepper-panel-error .clr-stepper-number,
+  .clr-stepper-panel-complete .clr-stepper-number {
+    @include mixins.screen-reader-only();
+  }
 
   .clr-stepper-forms {
     .clr-stepper-header > .clr-stepper-header-button {

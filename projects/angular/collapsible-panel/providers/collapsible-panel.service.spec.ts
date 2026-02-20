@@ -68,4 +68,27 @@ describe('CollapsiblePanelService', () => {
       .pipe(take(1))
       .subscribe(panel => expect(panel.open).toBe(true));
   });
+
+  it('should return undefined from getPanelChanges for an unregistered panel id', () => {
+    panelService
+      .getPanelChanges('nonexistent')
+      .pipe(take(1))
+      .subscribe(panel => expect(panel).toBeUndefined());
+  });
+
+  it('should not throw when toggling a panel that has not been added', () => {
+    expect(() => panelService.togglePanel('nonexistent')).not.toThrow();
+  });
+
+  it('should not throw when disabling a panel that has not been added', () => {
+    expect(() => panelService.disablePanel('nonexistent', true)).not.toThrow();
+  });
+
+  it('should still emit for existing panels after toggling a nonexistent panel', () => {
+    panelService.togglePanel('nonexistent');
+    panelService
+      .getPanelChanges(panel1Id)
+      .pipe(take(1))
+      .subscribe(panel => expect(panel.open).toBe(false));
+  });
 });

@@ -88,4 +88,23 @@ describe('CollapsiblePanelGroupModel', () => {
     expect(panelGroup.panels[1].open).toBe(true);
     expect(panelGroup.panels[2].open).toBe(false);
   });
+
+  it('should not throw when toggling a panel that does not exist', () => {
+    expect(() => panelGroup.togglePanel('nonexistent')).not.toThrow();
+  });
+
+  it('should not throw when disabling a panel that does not exist', () => {
+    expect(() => panelGroup.disablePanel('nonexistent', true)).not.toThrow();
+  });
+
+  it('should not throw when updatePanelOrder contains an unregistered id', () => {
+    expect(() => panelGroup.updatePanelOrder(['nonexistent', panel1Id])).not.toThrow();
+    expect(panelGroup.panels.find(p => p.id === panel1Id).index).toBe(1);
+  });
+
+  it('should preserve existing panels when updatePanelOrder skips unknown ids', () => {
+    panelGroup.togglePanel(panel1Id, true);
+    panelGroup.updatePanelOrder(['nonexistent', panel1Id, panel2Id]);
+    expect(panelGroup.panels.find(p => p.id === panel1Id).open).toBe(true);
+  });
 });

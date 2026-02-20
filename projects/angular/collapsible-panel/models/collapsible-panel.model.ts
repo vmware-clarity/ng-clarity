@@ -36,7 +36,11 @@ export class CollapsiblePanelGroupModel {
   }
 
   updatePanelOrder(ids: string[]) {
-    ids.forEach((id, index) => (this._panels[id].index = index));
+    ids.forEach((id, index) => {
+      if (this._panels[id]) {
+        this._panels[id].index = index;
+      }
+    });
     this.removeOldPanels(ids);
   }
 
@@ -46,6 +50,10 @@ export class CollapsiblePanelGroupModel {
   }
 
   togglePanel(panelId: string, open?: boolean) {
+    if (!this._panels[panelId]) {
+      return;
+    }
+
     const panelIsOpen = this._panels[panelId].open;
     const newOpenState = open !== undefined ? open : !panelIsOpen;
     if (newOpenState && this.strategy === CollapsiblePanelStrategy.Default) {
@@ -56,6 +64,10 @@ export class CollapsiblePanelGroupModel {
   }
 
   disablePanel(panelId: string, disabled: boolean) {
+    if (!this._panels[panelId]) {
+      return;
+    }
+
     this._panels[panelId].disabled = disabled;
   }
 

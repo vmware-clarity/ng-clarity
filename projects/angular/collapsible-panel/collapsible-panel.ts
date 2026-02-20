@@ -8,7 +8,7 @@
 import { ChangeDetectorRef, Directive, EventEmitter, OnInit } from '@angular/core';
 import { IfExpandService, uniqueIdFactory } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 
 import { CollapsiblePanelModel } from './models/collapsible-panel.model';
 import { CollapsiblePanelService } from './providers/collapsible-panel.service';
@@ -39,10 +39,12 @@ export abstract class CollapsiblePanel implements OnInit {
   abstract get disabled(): boolean;
 
   ngOnInit() {
-    this.panel = this.panelService.getPanelChanges(this.id).pipe(tap(panel => this.emitPanelChange(panel)));
     this.panelService.addPanel(this.id, this.panelOpen);
-    this.panelService.togglePanel(this.id, this.panelOpen);
     this.panelService.disablePanel(this.id, this.disabled);
+    this.panel = this.panelService.getPanelChanges(this.id).pipe(
+      filter(panel => !!panel),
+      tap(panel => this.emitPanelChange(panel))
+    );
   }
 
   togglePanel() {
