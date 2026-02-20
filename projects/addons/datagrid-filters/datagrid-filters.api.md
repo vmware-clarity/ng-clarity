@@ -72,16 +72,16 @@ class AppfxDatagridFiltersModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<AppfxDatagridFiltersModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<AppfxDatagridFiltersModule>;
-    // Warning: (ae-forgotten-export) The symbol "DateTimeFilterComponent" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "DismissableDirective" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "EnumFilterComponent" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "FilterPopoverRepositionDirective" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "GeneralFilterComponent" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "ManageFilterComponent" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "SkipFiltersPipe" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i12" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i13_2" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DateTimeFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DismissableDirective" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "EnumFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "FilterPopoverRepositionDirective" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "GeneralFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ManageFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "SkipFiltersPipe" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i12" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i13_2" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     //
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof DismissableDirective, typeof EnumFilterComponent, typeof FilterFormComponent, typeof FilterPopoverRepositionDirective, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof SkipFiltersPipe], [typeof i11.ClrCheckboxModule, typeof i12.ClrIcon, typeof i11.ClrInputModule, typeof i11.ClrRadioModule, typeof i11.ClrSelectModule, typeof i13_2.ClrSignpostModule, typeof i14.CommonModule, typeof i15.FormsModule, typeof i15.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
@@ -184,7 +184,7 @@ export class CompositeFiltersComponent implements OnInit {
     signPostOpened: boolean;
     // (undocumented)
     stringProperty: StringPropertyDefinition;
-    // Warning: (ae-forgotten-export) The symbol "PropertyType" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "PropertyType" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     //
     // (undocumented)
     readonly stringPropertyType: PropertyType;
@@ -264,7 +264,7 @@ export class DatagridFiltersStrings {
     getConjoinerDisplayName(conjoiner: LogicalOperator): string;
     // (undocumented)
     getOperatorDisplayName(operator: ComparisonOperator): string;
-    // Warning: (ae-forgotten-export) The symbol "TimeSpan" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "TimeSpan" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     //
     // (undocumented)
     getTimeSpanDisplayName(timeSpan: TimeSpan): string;

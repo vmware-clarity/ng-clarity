@@ -42,14 +42,16 @@ const TableTemplate: StoryFn = args => ({
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let element of elements; let i = index">
-          <tr *ngIf="i < rowCount">
-            <td [ngClass]="{ left: leftAligned }">{{ element.name }}</td>
-            <td [ngClass]="{ left: leftAligned }">{{ element.symbol }}</td>
-            <td [ngClass]="{ left: leftAligned }">{{ element.number }}</td>
-            <td [ngClass]="{ left: leftAligned }">{{ element.electronegativity }}</td>
-          </tr>
-        </ng-container>
+        @for (element of elements; track element; let i = $index) {
+          @if (i < rowCount) {
+            <tr>
+              <td [ngClass]="{ left: leftAligned }">{{ element.name }}</td>
+              <td [ngClass]="{ left: leftAligned }">{{ element.symbol }}</td>
+              <td [ngClass]="{ left: leftAligned }">{{ element.number }}</td>
+              <td [ngClass]="{ left: leftAligned }">{{ element.electronegativity }}</td>
+            </tr>
+          }
+        }
       </tbody>
     </table>
   `,

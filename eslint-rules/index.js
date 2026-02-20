@@ -6,6 +6,7 @@
  */
 
 const noParameterPropertyThisInConstructorRule = require('./no-parameter-property-this-in-constructor');
+const htmlLicenseHeaderRule = require('./html-license-header');
 
 const projectName = 'ng-clarity-eslint-rules';
 
@@ -17,6 +18,7 @@ const configs = {
 
 const rules = {
   'no-parameter-property-this-in-constructor': noParameterPropertyThisInConstructorRule,
+  'html-license-header': htmlLicenseHeaderRule,
 };
 
 module.exports = { configs, rules };

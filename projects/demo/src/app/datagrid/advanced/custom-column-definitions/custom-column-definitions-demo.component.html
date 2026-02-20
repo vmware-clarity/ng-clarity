@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
 <form clrForm>
   <clr-input-container cds-layout="m-t:xs">
     <label>Display name</label>
@@ -44,10 +50,12 @@
     </clr-checkbox-wrapper>
   </clr-toggle-container>
 
-  <clr-input-container cds-layout="m-t:xs" *ngIf="stringFilterEnabled">
-    <label>Default filter value</label>
-    <input clrInput type="text" name="defaultFilter" [(ngModel)]="columnConfig.defaultFilterValue" />
-  </clr-input-container>
+  @if (stringFilterEnabled) {
+    <clr-input-container cds-layout="m-t:xs">
+      <label>Default filter value</label>
+      <input clrInput type="text" name="defaultFilter" [(ngModel)]="columnConfig.defaultFilterValue" />
+    </clr-input-container>
+  }
 </form>
 
 <button class="btn btn-primary" (click)="addNewColumn()">Add new column</button>

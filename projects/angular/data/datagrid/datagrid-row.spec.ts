@@ -186,7 +186,7 @@ export default function (): void {
       });
     });
 
-    describe('Conditional Selection with *ngFor', () => {
+    describe('Conditional Selection with @for', () => {
       let fixture: ComponentFixture<NgForDatagridWithTrackBy>;
       let nativeElement: HTMLElement;
 

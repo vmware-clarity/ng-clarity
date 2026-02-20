@@ -48,7 +48,7 @@ import { ViewManagerService } from './providers/view-manager.service';
             <span class="date-range-separator">-</span>
             <ng-content select="[clrEndDate]"></ng-content>
           }
-          <!-- no *ngIf for the singe-date input because it breaks the "auto-wrapped" date picker -->
+          <!-- no @if for the singe-date input because it breaks the "auto-wrapped" date picker -->
           <ng-content select="[clrDate]"></ng-content>
           @if (isEnabled) {
             <button

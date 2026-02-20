@@ -58,30 +58,34 @@ const DropdownMenuTemplate: StoryFn = args => ({
         </button>
         <clr-dropdown-menu [clrPosition]="clrPosition" *clrIfOpen="true">
           <label class="dropdown-header" aria-hidden="true">{{ menuHeader }}</label>
-          <clr-dropdown *ngFor="let _ of createArray(menuCount); let menuIndex = index">
-            <button clrDropdownTrigger>
-              <cds-icon *ngIf="showIcon" shape="user"></cds-icon>
-              <div [attr.cds-text]="truncateMenuItemText ? 'truncate' : undefined">
-                {{ menuItemText }} {{ menuIndex + 1 }}
-              </div>
-            </button>
-            <clr-dropdown-menu>
-              <label class="dropdown-header" aria-hidden="true">
+          @for (_ of createArray(menuCount); track $index; let menuIndex = $index) {
+            <clr-dropdown>
+              <button clrDropdownTrigger>
+                @if (showIcon) {
+                  <cds-icon shape="user"></cds-icon>
+                }
                 <div [attr.cds-text]="truncateMenuItemText ? 'truncate' : undefined">
                   {{ menuItemText }} {{ menuIndex + 1 }}
                 </div>
-                Actions
-              </label>
-              <div
-                *ngFor="let _ of createArray(actionCount); let actionIndex = index"
-                [attr.aria-label]="'Action' + (actionIndex + 1)"
-                clrDropdownItem
-              >
-                <cds-icon *ngIf="showIcon" shape="user"></cds-icon>
-                Action {{ menuIndex * actionCount + actionIndex + 1 }}
-              </div>
-            </clr-dropdown-menu>
-          </clr-dropdown>
+              </button>
+              <clr-dropdown-menu>
+                <label class="dropdown-header" aria-hidden="true">
+                  <div [attr.cds-text]="truncateMenuItemText ? 'truncate' : undefined">
+                    {{ menuItemText }} {{ menuIndex + 1 }}
+                  </div>
+                  Actions
+                </label>
+                @for (_ of createArray(actionCount); track $index; let actionIndex = $index) {
+                  <div [attr.aria-label]="'Action' + (actionIndex + 1)" clrDropdownItem>
+                    @if (showIcon) {
+                      <cds-icon shape="user"></cds-icon>
+                    }
+                    Action {{ menuIndex * actionCount + actionIndex + 1 }}
+                  </div>
+                }
+              </clr-dropdown-menu>
+            </clr-dropdown>
+          }
         </clr-dropdown-menu>
       </clr-dropdown>
     </div>
@@ -91,32 +95,36 @@ const DropdownMenuTemplate: StoryFn = args => ({
 
 const DropdownMenuAllTemplate: StoryFn = args => ({
   template: `
-    <div *ngFor="let position of CLR_MENU_POSITIONS" style="display: inline-block">
-      <div style="margin: 100px 65px">
-        <clr-dropdown [clrCloseMenuOnItemClick]="false">
-          <button class="btn btn-outline-primary" clrDropdownTrigger>
-            {{ position }}
-            <cds-icon shape="angle" direction="down"></cds-icon>
-          </button>
-          <clr-dropdown-menu [clrPosition]="position" *clrIfOpen="true">
-            <label class="dropdown-header" aria-hidden="true">{{ menuHeader }}</label>
-            <clr-dropdown *ngFor="let _ of createArray(menuCount); let menuIndex = index">
-              <button clrDropdownTrigger>{{ menuItemText }} {{ menuIndex + 1 }}</button>
-              <clr-dropdown-menu>
-                <label class="dropdown-header" aria-hidden="true">{{ menuItemText }} {{ menuIndex + 1 }} Actions</label>
-                <div
-                  *ngFor="let _ of createArray(actionCount); let actionIndex = index"
-                  [attr.aria-label]="'Action' + (actionIndex + 1)"
-                  clrDropdownItem
-                >
-                  Action {{ menuIndex * actionCount + actionIndex + 1 }}
-                </div>
-              </clr-dropdown-menu>
-            </clr-dropdown>
-          </clr-dropdown-menu>
-        </clr-dropdown>
+    @for (position of CLR_MENU_POSITIONS; track position) {
+      <div style="display: inline-block">
+        <div style="margin: 100px 65px">
+          <clr-dropdown [clrCloseMenuOnItemClick]="false">
+            <button class="btn btn-outline-primary" clrDropdownTrigger>
+              {{ position }}
+              <cds-icon shape="angle" direction="down"></cds-icon>
+            </button>
+            <clr-dropdown-menu [clrPosition]="position" *clrIfOpen="true">
+              <label class="dropdown-header" aria-hidden="true">{{ menuHeader }}</label>
+              @for (_ of createArray(menuCount); track $index; let menuIndex = $index) {
+                <clr-dropdown>
+                  <button clrDropdownTrigger>{{ menuItemText }} {{ menuIndex + 1 }}</button>
+                  <clr-dropdown-menu>
+                    <label class="dropdown-header" aria-hidden="true">
+                      {{ menuItemText }} {{ menuIndex + 1 }} Actions
+                    </label>
+                    @for (_ of createArray(actionCount); track $index; let actionIndex = $index) {
+                      <div [attr.aria-label]="'Action' + (actionIndex + 1)" clrDropdownItem>
+                        Action {{ menuIndex * actionCount + actionIndex + 1 }}
+                      </div>
+                    }
+                  </clr-dropdown-menu>
+                </clr-dropdown>
+              }
+            </clr-dropdown-menu>
+          </clr-dropdown>
+        </div>
       </div>
-    </div>
+    }
   `,
   props: args,
 });
