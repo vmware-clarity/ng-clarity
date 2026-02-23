@@ -52,7 +52,7 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
   }
 
   getPanelStateClasses(panel: CollapsiblePanelModel) {
-    return panel.open ? 'clr-accordion-panel-open' : '';
+    return panel.open ? 'clr-accordion-panel-open' : 'clr-accordion-panel-closed';
   }
 
   getContentId(id: string) {

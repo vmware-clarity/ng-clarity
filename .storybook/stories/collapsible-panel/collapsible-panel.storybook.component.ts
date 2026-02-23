@@ -120,7 +120,7 @@ export class StorybookPanel extends CollapsiblePanel implements OnChanges {
   }
 
   getPanelStateClasses(panel: CollapsiblePanelModel) {
-    return panel.open ? 'clr-panel-panel-open' : '';
+    return panel.open ? 'clr-storybook-panel-open' : 'clr-storybook-panel-closed';
   }
 
   getContentId(id: string) {
