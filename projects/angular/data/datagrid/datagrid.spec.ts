@@ -1013,6 +1013,9 @@ export default function (): void {
         });
 
         it('it does not emit a change event when setting selection to undefined/null if already undefined/null', async function () {
+          context.detectChanges();
+          await delay();
+
           let singleSelectedChangeCount = 0;
           const sub = context.clarityDirective.selectedChanged.subscribe(() => singleSelectedChangeCount++);
 

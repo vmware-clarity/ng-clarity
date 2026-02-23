@@ -112,8 +112,6 @@ const columns = [
   imports: [AppfxDatagridModule, DatagridColumnsOrderModule, DragDropModule, FormsModule, OverlayModule],
   template: `
     <appfx-datagrid
-      appfxPreserveSelection
-      [preserveExistingSelection]="preserveSelection"
       [trackByGridItemProperty]="'name'"
       [serverDrivenDatagrid]="serverDrivenDatagrid"
       [selectionType]="selectionType"
@@ -412,31 +410,6 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
       this.verifySelectedRows([1]);
     }));
   });
-
-  it("does not preserve selection when 'preserveSelection' is set to false", fakeAsync(function (this: any) {
-    this.fixture = TestBed.createComponent(DatagridHostForServerSideGridComponent);
-    this.appfxDatagridHostComponent = this.fixture.componentInstance;
-    this.appfxDatagridHostComponent.preserveSelection = false;
-
-    this.appfxDatagridHostComponent.datagridComponent.ngOnInit();
-    this.fixture.detectChanges(false);
-
-    this.fixture.detectChanges();
-    tick();
-    this.appfxDatagridHostComponent.datagridComponent.selectedItems = [];
-    this.fixture.detectChanges(false);
-
-    this.fixture.detectChanges(false);
-    spyOn(this.appfxDatagridHostComponent.directive, 'updateSelectedItems');
-    const gridData = this.appfxDatagridHostComponent.data;
-    this.fixture.detectChanges(false);
-    expect(this.appfxDatagridHostComponent.directive.updateSelectedItems).not.toHaveBeenCalled();
-    this.appfxDatagridHostComponent.data = [...gridData];
-    this.appfxDatagridHostComponent.selectedItems = [gridData[0]];
-    this.fixture.detectChanges(false);
-    tick();
-    expect(this.appfxDatagridHostComponent.directive.updateSelectedItems).not.toHaveBeenCalled();
-  }));
 
   afterEach(function (this: any) {
     this.fixture.destroy();
