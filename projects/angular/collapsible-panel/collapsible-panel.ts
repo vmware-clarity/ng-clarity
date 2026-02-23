@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Directive, EventEmitter, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Directive, EventEmitter, OnInit, SimpleChanges } from '@angular/core';
 import { IfExpandService, uniqueIdFactory } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
@@ -54,6 +54,16 @@ export abstract class CollapsiblePanel implements OnInit {
   collapsePanelOnAnimationDone(panel: CollapsiblePanelModel) {
     if (!panel.open) {
       this.ifExpandService.expanded = false;
+    }
+  }
+
+  protected handlePanelInputChanges(changes: SimpleChanges) {
+    if (this.panel && changes.panelOpen && changes.panelOpen.currentValue !== changes.panelOpen.previousValue) {
+      this.panelService.togglePanel(this.id, changes.panelOpen.currentValue);
+    }
+
+    if (this.panel && changes.disabled && changes.disabled.currentValue !== changes.disabled.previousValue) {
+      this.panelService.disablePanel(this.id, changes.disabled.currentValue);
     }
   }
 

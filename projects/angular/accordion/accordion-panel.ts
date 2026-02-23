@@ -13,7 +13,6 @@ import {
   HostBinding,
   Input,
   OnChanges,
-  OnInit,
   Output,
   QueryList,
   SimpleChanges,
@@ -36,7 +35,7 @@ import { ClrAccordionDescription } from './accordion-description';
   providers: [IfExpandService],
   standalone: false,
 })
-export class ClrAccordionPanel extends CollapsiblePanel implements OnInit, OnChanges {
+export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
   @Input('clrAccordionPanelDisabled') @HostBinding('class.clr-accordion-panel-disabled') disabled = false;
   @Input('clrAccordionPanelOpen') override panelOpen = false;
   @Output('clrAccordionPanelOpenChange') override panelOpenChange = new EventEmitter<boolean>();
@@ -48,26 +47,16 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnInit, OnCha
 
   @ContentChildren(ClrAccordionDescription) accordionDescription: QueryList<ClrAccordionDescription>;
 
-  override ngOnInit() {
-    super.ngOnInit();
-  }
-
   ngOnChanges(changes: SimpleChanges) {
-    if (this.panel && changes.panelOpen && changes.panelOpen.currentValue !== changes.panelOpen.previousValue) {
-      this.panelService.togglePanel(this.id, changes.panelOpen.currentValue);
-    }
-
-    if (this.panel && changes.disabled && changes.disabled.currentValue !== changes.disabled.previousValue) {
-      this.panelService.disablePanel(this.id, changes.disabled.currentValue);
-    }
+    this.handlePanelInputChanges(changes);
   }
 
   getPanelStateClasses(panel: CollapsiblePanelModel) {
-    return `clr-accordion-panel-${panel.status} ${panel.open ? 'clr-accordion-panel-open' : ''}`;
+    return panel.open ? 'clr-accordion-panel-open' : '';
   }
 
   getContentId(id: string) {
-    return `clr-accordion-content-${id}'`;
+    return `clr-accordion-content-${id}`;
   }
 
   getHeaderId(id: string) {

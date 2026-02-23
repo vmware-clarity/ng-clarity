@@ -5,10 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CollapsiblePanelStatus } from '@clr/angular/collapsible-panel';
 import { take } from 'rxjs/operators';
 
 import { StepperService } from './stepper.service';
+import { StepperPanelStatus } from '../enums/stepper-panel-status.enum';
+import { StepperPanelModel } from '../models/stepper-panel.model';
 
 describe('StepperService', () => {
   let stepperService: StepperService;
@@ -52,7 +53,7 @@ describe('StepperService', () => {
     stepperService
       .getPanelChanges(panel1Id)
       .pipe(take(1))
-      .subscribe(step => expect(step.status).toBe(CollapsiblePanelStatus.Error));
+      .subscribe(step => expect((step as StepperPanelModel).status).toBe(StepperPanelStatus.Error));
   });
 
   it('should allow the default panel to be overridden', () => {

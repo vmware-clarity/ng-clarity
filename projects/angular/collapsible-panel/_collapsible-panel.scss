@@ -103,7 +103,7 @@
 
   .#{$prefix}-header-has-description {
     .#{$prefix}-title {
-      min-width: panel-variables.$clr-collapsible-panel-step-title-min-width;
+      min-width: panel-variables.$clr-collapsible-panel-title-min-width;
       max-width: mixins.baselinePx(264);
       width: 100%;
     }

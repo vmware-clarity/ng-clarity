@@ -21,16 +21,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
-import {
-  CollapsiblePanel,
-  collapsiblePanelAnimation,
-  CollapsiblePanelModel,
-  CollapsiblePanelStatus,
-} from '@clr/angular/collapsible-panel';
+import { CollapsiblePanel, collapsiblePanelAnimation, CollapsiblePanelModel } from '@clr/angular/collapsible-panel';
 import { ClrCommonStringsService, IfExpandService, triggerAllFormControlValidation } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, skipUntil, tap } from 'rxjs/operators';
 
+import { StepperPanelStatus } from './enums/stepper-panel-status.enum';
+import { StepperPanelModel } from './models/stepper-panel.model';
 import { StepperService } from './providers/stepper.service';
 import { ClrStepDescription } from './step-description';
 
@@ -47,7 +44,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   @ViewChild('headerButton') headerButton: ElementRef<HTMLButtonElement>;
   @ContentChildren(ClrStepDescription) stepDescription: QueryList<ClrStepDescription>;
   @HostBinding('class.clr-stepper-panel-disabled') disabled = false;
-  readonly PanelStatus = CollapsiblePanelStatus;
+  readonly PanelStatus = StepperPanelStatus;
 
   private subscriptions: Subscription[] = [];
 
@@ -78,12 +75,16 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     return this.formGroupName ? this.formGroupName.control : this.ngModelGroup.control;
   }
 
+  getPanelStatus(panel: CollapsiblePanelModel): StepperPanelStatus {
+    return (panel as StepperPanelModel).status;
+  }
+
   getPanelStateClasses(panel: CollapsiblePanelModel) {
-    return `clr-stepper-panel-${panel.status} ${panel.open ? 'clr-stepper-panel-open' : ''}`;
+    return `clr-stepper-panel-${this.getPanelStatus(panel)} ${panel.open ? 'clr-stepper-panel-open' : ''}`;
   }
 
   getContentId(id: string) {
-    return `clr-stepper-content-${id}'`;
+    return `clr-stepper-content-${id}`;
   }
 
   getHeaderId(id: string) {
@@ -138,7 +139,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   }
 
   private triggerAllFormControlValidationIfError(panel: CollapsiblePanelModel) {
-    if (panel.status === CollapsiblePanelStatus.Error) {
+    if ((panel as StepperPanelModel).status === StepperPanelStatus.Error) {
       triggerAllFormControlValidation(this.formGroup);
     }
   }

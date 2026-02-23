@@ -10,9 +10,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { CollapsiblePanelModel, CollapsiblePanelStatus } from '@clr/angular/collapsible-panel';
 import { BehaviorSubject, Subject } from 'rxjs';
 
+import { StepperPanelStatus } from './enums/stepper-panel-status.enum';
+import { StepperPanelModel } from './models/stepper-panel.model';
 import { StepperService } from './providers/stepper.service';
 import { ClrStepper } from './stepper';
 import { ClrStepperPanel } from './stepper-panel';
@@ -45,7 +46,7 @@ class TemplateFormsTestComponent {
 
 @Injectable()
 class MockStepperService extends StepperService {
-  step = new BehaviorSubject(new CollapsiblePanelModel('groupName', 0));
+  step = new BehaviorSubject(new StepperPanelModel('groupName', 0));
   activeStep = new Subject<string>();
 
   getPanelChanges() {
@@ -83,16 +84,16 @@ describe('ClrStep Reactive Forms', () => {
     });
 
     it('should show appropriate screen reader only status in button based on form state', () => {
-      const mockStep = new CollapsiblePanelModel('groupName', 0);
+      const mockStep = new StepperPanelModel('groupName', 0);
       const stepperService = fixture.debugElement.query(By.directive(ClrStepperPanel)).injector.get(StepperService);
-      mockStep.status = CollapsiblePanelStatus.Error;
+      mockStep.status = StepperPanelStatus.Error;
       (stepperService as MockStepperService).step.next(mockStep);
       fixture.detectChanges();
 
       const statusMessage = fixture.nativeElement.querySelector('.clr-stepper-header .clr-sr-only');
       expect(statusMessage.innerText.trim()).toBe('Error in step 1');
 
-      mockStep.status = CollapsiblePanelStatus.Complete;
+      mockStep.status = StepperPanelStatus.Complete;
       (stepperService as MockStepperService).step.next(mockStep);
       fixture.detectChanges();
 
@@ -100,10 +101,10 @@ describe('ClrStep Reactive Forms', () => {
     });
 
     it('should add aria-disabled attribute to the header button based on the appropriate step state', () => {
-      const mockStep = new CollapsiblePanelModel('groupName', 0);
+      const mockStep = new StepperPanelModel('groupName', 0);
       const stepperService = fixture.debugElement.query(By.directive(ClrStepperPanel)).injector.get(StepperService);
 
-      mockStep.status = CollapsiblePanelStatus.Error;
+      mockStep.status = StepperPanelStatus.Error;
       mockStep.disabled = true;
       (stepperService as MockStepperService).step.next(mockStep);
       fixture.detectChanges();

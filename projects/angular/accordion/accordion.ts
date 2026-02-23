@@ -34,7 +34,7 @@ import { ClrAccordionPanel } from './accordion-panel';
 export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input('clrAccordionMultiPanel') multiPanel: boolean | string = false;
   @ContentChildren(ClrAccordionPanel) panels: QueryList<ClrAccordionPanel>;
-  subscriptions: Subscription[] = [];
+  private subscriptions: Subscription[] = [];
 
   constructor(private panelService: CollapsiblePanelService) {}
 

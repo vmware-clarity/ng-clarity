@@ -5,13 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CollapsiblePanelStatus } from '../enums/collapsible-panel-status.enum';
 import { CollapsiblePanelStrategy } from '../enums/collapsible-panel-strategy.enum';
 
 let panelGroupCount = 0;
 
 export class CollapsiblePanelModel {
-  status = CollapsiblePanelStatus.Inactive;
   index: number = null;
   disabled = false;
   open = false;

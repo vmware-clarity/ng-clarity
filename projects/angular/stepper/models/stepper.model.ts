@@ -5,11 +5,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CollapsiblePanelGroupModel, CollapsiblePanelStatus } from '@clr/angular/collapsible-panel';
+import { CollapsiblePanelGroupModel } from '@clr/angular/collapsible-panel';
+
+import { StepperPanelModel } from './stepper-panel.model';
+import { StepperPanelStatus } from '../enums/stepper-panel-status.enum';
 
 export class StepperModel extends CollapsiblePanelGroupModel {
+  protected override _panels: { [id: string]: StepperPanelModel } = {};
+
   private stepperModelInitialize = false;
   private initialPanel: string;
+
+  override get panels(): StepperPanelModel[] {
+    return Object.keys(this._panels).map(id => this._panels[id]);
+  }
 
   get allPanelsCompleted(): boolean {
     return this.panels.length && this.getNumberOfIncompletePanels() === 0 && this.getNumberOfOpenPanels() === 0;
@@ -20,8 +29,10 @@ export class StepperModel extends CollapsiblePanelGroupModel {
   }
 
   override addPanel(id: string, open = false) {
-    super.addPanel(id, open);
-    this._panels[id].disabled = true;
+    const panel = new StepperPanelModel(id, this.panelGroupCount);
+    panel.open = open;
+    panel.disabled = true;
+    this._panels[id] = panel;
   }
 
   override updatePanelOrder(ids: string[]) {
@@ -32,7 +43,7 @@ export class StepperModel extends CollapsiblePanelGroupModel {
   }
 
   override togglePanel(panelId: string) {
-    if (this._panels[panelId].status === CollapsiblePanelStatus.Complete) {
+    if (this._panels[panelId]?.status === StepperPanelStatus.Complete) {
       this._panels[panelId].open = !this._panels[panelId].open;
     }
   }
@@ -66,11 +77,11 @@ export class StepperModel extends CollapsiblePanelGroupModel {
   }
 
   setPanelValid(panelId: string) {
-    this._panels[panelId].status = CollapsiblePanelStatus.Complete;
+    this._panels[panelId].status = StepperPanelStatus.Complete;
   }
 
   setPanelInvalid(panelId: string) {
-    this._panels[panelId].status = CollapsiblePanelStatus.Error;
+    this._panels[panelId].status = StepperPanelStatus.Error;
   }
 
   setPanelsWithErrors(ids: string[]) {
@@ -96,7 +107,7 @@ export class StepperModel extends CollapsiblePanelGroupModel {
   }
 
   private resetPanel(panelId: string) {
-    this._panels[panelId].status = CollapsiblePanelStatus.Inactive;
+    this._panels[panelId].status = StepperPanelStatus.Inactive;
     this._panels[panelId].open = false;
     this._panels[panelId].disabled = true;
   }
@@ -116,7 +127,7 @@ export class StepperModel extends CollapsiblePanelGroupModel {
   }
 
   private completePanel(panelId: string) {
-    this._panels[panelId].status = CollapsiblePanelStatus.Complete;
+    this._panels[panelId].status = StepperPanelStatus.Complete;
     this._panels[panelId].disabled = false;
     this._panels[panelId].open = false;
   }
@@ -146,7 +157,7 @@ export class StepperModel extends CollapsiblePanelGroupModel {
   private setPanelError(panelId: string) {
     this.resetAllFuturePanels(panelId);
     this._panels[panelId].open = true;
-    this._panels[panelId].status = CollapsiblePanelStatus.Error;
+    this._panels[panelId].status = StepperPanelStatus.Error;
   }
 
   private getFirstPanel() {
@@ -154,7 +165,10 @@ export class StepperModel extends CollapsiblePanelGroupModel {
   }
 
   private getNumberOfIncompletePanels() {
-    return this.panels.reduce((prev, next) => (next.status !== CollapsiblePanelStatus.Complete ? prev + 1 : prev), 0);
+    return this.panels.reduce(
+      (prev, next) => ((next as StepperPanelModel).status !== StepperPanelStatus.Complete ? prev + 1 : prev),
+      0
+    );
   }
 
   private getNumberOfOpenPanels() {

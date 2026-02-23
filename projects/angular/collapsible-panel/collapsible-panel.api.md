@@ -11,6 +11,7 @@ import { EventEmitter } from '@angular/core';
 import * as i0 from '@angular/core';
 import { Observable } from 'rxjs';
 import { OnInit } from '@angular/core';
+import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 
 // @public (undocumented)
@@ -28,6 +29,8 @@ export abstract class CollapsiblePanel implements OnInit {
     abstract getHeaderId(id: string): string;
     // (undocumented)
     abstract getPanelStateClasses(panel: CollapsiblePanelModel): string;
+    // (undocumented)
+    protected handlePanelInputChanges(changes: SimpleChanges): void;
     // (undocumented)
     get id(): string;
     set id(value: string);
@@ -99,8 +102,6 @@ export class CollapsiblePanelModel {
     // (undocumented)
     open: boolean;
     // (undocumented)
-    status: CollapsiblePanelStatus;
-    // (undocumented)
     templateId: string;
 }
 
@@ -128,16 +129,6 @@ export class CollapsiblePanelService {
     static ɵfac: i0.ɵɵFactoryDeclaration<CollapsiblePanelService, never>;
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<CollapsiblePanelService>;
-}
-
-// @public (undocumented)
-export enum CollapsiblePanelStatus {
-    // (undocumented)
-    Complete = "complete",
-    // (undocumented)
-    Error = "error",
-    // (undocumented)
-    Inactive = "inactive"
 }
 
 // @public (undocumented)

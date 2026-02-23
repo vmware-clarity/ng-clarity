@@ -34,19 +34,12 @@
       --clr-accordion-header-open-hover-background-color: var(
         --clr-collapsible-panel-header-open-hover-background-color
       );
-      --clr-accordion-error-color: var(--clr-collapsible-panel-error-color);
-      --clr-accordion-complete-color: var(--clr-collapsible-panel-complete-color);
       --clr-accordion-border-color: var(--clr-collapsible-panel-border-color);
-      --clr-accordion-border-left-color-complete: var(--clr-collapsible-panel-border-left-color-complete);
-      --clr-accordion-border-left-color-error: var(--clr-collapsible-panel-border-left-color-error);
-      --clr-accordion-header-left-indicator: var(--clr-collapsible-panel-header-left-indicator);
-      --clr-accordion-header-left-current-indicator: var(--clr-collapsible-panel-header-left-current-indicator);
     }
 
     &,
     [clr-density] {
       --clr-accordion-border-radius: var(--clr-collapsible-panel-border-radius);
-      --clr-accordion-step-title-min-width: var(--clr-collapsible-panel-step-title-min-width);
       --clr-accordion-content-font-size: var(--clr-collapsible-panel-content-font-size);
     }
   }

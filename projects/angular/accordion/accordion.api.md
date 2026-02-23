@@ -23,7 +23,6 @@ import { QueryList } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Subscription } from 'rxjs';
 import { Type } from '@angular/core';
 
 // @public (undocumented)
@@ -42,8 +41,6 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
     ngOnInit(): void;
     // (undocumented)
     panels: QueryList<ClrAccordionPanel>;
-    // (undocumented)
-    subscriptions: Subscription[];
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordion, "clr-accordion", never, { "multiPanel": { "alias": "clrAccordionMultiPanel"; "required": false; }; }, {}, ["panels"], ["*"], false, never>;
     // (undocumented)
@@ -82,7 +79,7 @@ export class ClrAccordionModule {
 // Warning: (ae-forgotten-export) The symbol "CollapsiblePanel" needs to be exported by the entry point clr-angular-accordion.d.ts
 //
 // @public (undocumented)
-export class ClrAccordionPanel extends CollapsiblePanel implements OnInit, OnChanges {
+export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
     // (undocumented)
     accordionDescription: QueryList<ClrAccordionDescription>;
     // (undocumented)
@@ -96,11 +93,9 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnInit, OnCha
     // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelModel" needs to be exported by the entry point clr-angular-accordion.d.ts
     //
     // (undocumented)
-    getPanelStateClasses(panel: CollapsiblePanelModel): string;
+    getPanelStateClasses(panel: CollapsiblePanelModel): "" | "clr-accordion-panel-open";
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
-    // (undocumented)
-    ngOnInit(): void;
     // (undocumented)
     panelOpen: boolean;
     // (undocumented)

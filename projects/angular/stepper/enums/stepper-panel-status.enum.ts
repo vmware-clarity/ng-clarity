@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export enum CollapsiblePanelStatus {
+export enum StepperPanelStatus {
   Inactive = 'inactive',
   Error = 'error',
   Complete = 'complete',

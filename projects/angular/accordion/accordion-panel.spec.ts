@@ -269,17 +269,15 @@ describe('ClrAccordionPanel', () => {
     });
 
     it('should get the appropriate panel class based on current panel state', () => {
-      const panelGroup = panelElement.querySelector('[class*=clr-accordion-panel]');
+      const stateDiv = panelElement.querySelector('.clr-accordion-header').parentElement;
       const headerButton = panelElement.querySelector('button');
 
-      expect(panelGroup.classList.contains('clr-accordion-panel-inactive')).toBe(true);
-      expect(panelGroup.classList.contains('clr-accordion-panel-open')).toBe(false);
+      expect(stateDiv.classList.contains('clr-accordion-panel-open')).toBe(false);
 
       headerButton.click();
       fixture.detectChanges();
 
-      expect(panelGroup.classList.contains('clr-accordion-panel-inactive')).toBe(true);
-      expect(panelGroup.classList.contains('clr-accordion-panel-open')).toBe(true);
+      expect(stateDiv.classList.contains('clr-accordion-panel-open')).toBe(true);
     });
 
     it('should not have the [role]="group" attribute', () => {

@@ -32,13 +32,6 @@ $clr-collapsible-panel-header-open-hover-background-color: var(
   --clr-collapsible-panel-header-open-hover-background-color
 ) !default;
 
-$clr-collapsible-panel-error-color: var(--clr-collapsible-panel-error-color) !default;
-$clr-collapsible-panel-complete-color: var(--clr-collapsible-panel-complete-color) !default;
-$clr-collapsible-panel-header-left-indicator: var(--clr-collapsible-panel-header-left-indicator) !default;
-$clr-collapsible-panel-header-left-current-indicator: var(
-  --clr-collapsible-panel-header-left-current-indicator
-) !default;
-
 $clr-collapsible-panel-content-color: var(--clr-collapsible-panel-content-color) !default;
 $clr-collapsible-panel-content-font-size: var(--clr-collapsible-panel-content-font-size) !default;
 
@@ -46,7 +39,4 @@ $clr-collapsible-panel-responsive-breakpoint: map.get(variables.$clr-grid-breakp
 
 $clr-collapsible-panel-border-color: var(--clr-collapsible-panel-border-color) !default;
 $clr-collapsible-panel-border-radius: var(--clr-collapsible-panel-border-radius) !default;
-$clr-collapsible-panel-border-left-color-complete: var(--clr-collapsible-panel-border-left-color-complete) !default;
-$clr-collapsible-panel-border-left-color-error: var(--clr-collapsible-panel-border-left-color-error) !default;
-
-$clr-collapsible-panel-step-title-min-width: var(--clr-collapsible-panel-step-title-min-width) !default;
+$clr-collapsible-panel-title-min-width: var(--clr-collapsible-panel-title-min-width) !default;

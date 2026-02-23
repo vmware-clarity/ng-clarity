@@ -963,8 +963,6 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
     // (undocumented)
     panels: QueryList<ClrAccordionPanel>;
     // (undocumented)
-    subscriptions: Subscription[];
-    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordion, "clr-accordion", never, { "multiPanel": { "alias": "clrAccordionMultiPanel"; "required": false; }; }, {}, ["panels"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordion, never>;
@@ -1000,7 +998,7 @@ export class ClrAccordionModule {
 // Warning: (ae-forgotten-export) The symbol "CollapsiblePanel_2" needs to be exported by the entry point clr-angular.d.ts
 //
 // @public (undocumented)
-export class ClrAccordionPanel extends CollapsiblePanel_2 implements OnInit, OnChanges {
+export class ClrAccordionPanel extends CollapsiblePanel_2 implements OnChanges {
     // (undocumented)
     accordionDescription: QueryList<ClrAccordionDescription>;
     // (undocumented)
@@ -1014,11 +1012,9 @@ export class ClrAccordionPanel extends CollapsiblePanel_2 implements OnInit, OnC
     // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelModel_2" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    getPanelStateClasses(panel: CollapsiblePanelModel_2): string;
+    getPanelStateClasses(panel: CollapsiblePanelModel_2): "" | "clr-accordion-panel-open";
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
-    // (undocumented)
-    ngOnInit(): void;
     // (undocumented)
     panelOpen: boolean;
     // (undocumented)
@@ -5272,8 +5268,6 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
     // (undocumented)
     panels: QueryList<ClrStepperPanel>;
     // (undocumented)
-    subscriptions: Subscription[];
-    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepper, "form[clrStepper]", never, { "initialPanel": { "alias": "clrInitialStep"; "required": false; }; }, {}, ["panels"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepper, [{ optional: true; }, { optional: true; }, null]>;
@@ -5306,6 +5300,8 @@ export class ClrStepperPanel extends CollapsiblePanel_2 implements OnInit {
     // (undocumented)
     getPanelStateClasses(panel: CollapsiblePanelModel_2): string;
     // (undocumented)
+    getPanelStatus(panel: CollapsiblePanelModel_2): StepperPanelStatus;
+    // (undocumented)
     headerButton: ElementRef<HTMLButtonElement>;
     // (undocumented)
     get id(): string;
@@ -5316,10 +5312,8 @@ export class ClrStepperPanel extends CollapsiblePanel_2 implements OnInit {
     ngOnInit(): void;
     // (undocumented)
     get panelNumber(): number;
-    // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelStatus_2" needs to be exported by the entry point clr-angular.d.ts
-    //
     // (undocumented)
-    readonly PanelStatus: typeof CollapsiblePanelStatus_2;
+    readonly PanelStatus: typeof StepperPanelStatus;
     // (undocumented)
     protected stepCompleteText(panelNumber: number): string;
     // (undocumented)
@@ -6383,6 +6377,8 @@ export abstract class CollapsiblePanel implements OnInit {
     // (undocumented)
     abstract getPanelStateClasses(panel: CollapsiblePanelModel): string;
     // (undocumented)
+    protected handlePanelInputChanges(changes: SimpleChanges): void;
+    // (undocumented)
     get id(): string;
     set id(value: string);
     // (undocumented)
@@ -6451,8 +6447,6 @@ export class CollapsiblePanelModel {
     // (undocumented)
     open: boolean;
     // (undocumented)
-    status: CollapsiblePanelStatus;
-    // (undocumented)
     templateId: string;
 }
 
@@ -6480,16 +6474,6 @@ export class CollapsiblePanelService {
     static ɵfac: i0.ɵɵFactoryDeclaration<CollapsiblePanelService, never>;
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<CollapsiblePanelService>;
-}
-
-// @public (undocumented)
-export enum CollapsiblePanelStatus {
-    // (undocumented)
-    Complete = "complete",
-    // (undocumented)
-    Error = "error",
-    // (undocumented)
-    Inactive = "inactive"
 }
 
 // @public (undocumented)
@@ -8836,6 +8820,22 @@ export const stepForwardIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const stepForwardIconName = "step-forward";
+
+// @public (undocumented)
+export class StepperPanelModel extends CollapsiblePanelModel_2 {
+    // (undocumented)
+    status: StepperPanelStatus;
+}
+
+// @public (undocumented)
+export enum StepperPanelStatus {
+    // (undocumented)
+    Complete = "complete",
+    // (undocumented)
+    Error = "error",
+    // (undocumented)
+    Inactive = "inactive"
+}
 
 // @public (undocumented)
 export const stopIcon: IconShapeTuple;

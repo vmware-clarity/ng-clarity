@@ -5,8 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './collapsible-panel';
-export * from './enums/collapsible-panel-strategy.enum';
-export * from './models/collapsible-panel.model';
-export * from './providers/collapsible-panel.service';
-export * from './utils/animation';
+import { CollapsiblePanelModel } from '@clr/angular/collapsible-panel';
+
+import { StepperPanelStatus } from '../enums/stepper-panel-status.enum';
+
+export class StepperPanelModel extends CollapsiblePanelModel {
+  status = StepperPanelStatus.Inactive;
+}

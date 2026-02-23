@@ -14,7 +14,7 @@
     &,
     [clr-density] {
       --clr-collapsible-panel-border-radius: #{density.$clr-base-border-radius-s};
-      --clr-collapsible-panel-step-title-min-width: #{density.$clr-base-layout-space-4xl};
+      --clr-collapsible-panel-title-min-width: #{density.$clr-base-layout-space-4xl};
       --clr-collapsible-panel-content-font-size: #{density.$clr-base-typography-font-size-inline};
     }
 
@@ -38,15 +38,7 @@
       --clr-collapsible-panel-header-open-hover-background-color: var(
         --cds-alias-object-interaction-background-selected-hover
       );
-      --clr-collapsible-panel-error-color: #{tokens.$cds-alias-status-danger};
-      --clr-collapsible-panel-complete-color: #{tokens.$cds-alias-status-success};
       --clr-collapsible-panel-border-color: #{tokens.$cds-alias-object-border-color};
-      --clr-collapsible-panel-border-left-color-complete: #{tokens.$cds-alias-status-success};
-      --clr-collapsible-panel-border-left-color-error: #{tokens.$cds-alias-status-danger};
-      --clr-collapsible-panel-header-left-indicator: inset #{tokens.$cds-global-space-5} 0 0
-        #{tokens.$cds-alias-status-neutral-tint};
-      --clr-collapsible-panel-header-left-current-indicator: inset #{tokens.$cds-global-space-5} 0 0
-        #{tokens.$cds-alias-object-interaction-background-highlight};
     }
   }
 }

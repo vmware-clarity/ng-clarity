@@ -95,7 +95,7 @@ export class StorybookPanelDescription {}
   animations: collapsiblePanelExpandAnimation,
   providers: [IfExpandService],
 })
-export class StorybookPanel extends CollapsiblePanel implements OnInit, OnChanges {
+export class StorybookPanel extends CollapsiblePanel implements OnChanges {
   @Input() panelDisabled = false;
   @Input() override panelOpen = false;
   @Output() override panelOpenChange = new EventEmitter<boolean>();
@@ -108,9 +108,8 @@ export class StorybookPanel extends CollapsiblePanel implements OnInit, OnChange
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.panel && changes.panelOpen && changes.panelOpen.currentValue !== changes.panelOpen.previousValue) {
-      this.panelService.togglePanel(this.id, changes.panelOpen.currentValue);
-    }
+    this.handlePanelInputChanges(changes);
+
     if (
       this.panel &&
       changes.panelDisabled &&
@@ -121,7 +120,7 @@ export class StorybookPanel extends CollapsiblePanel implements OnInit, OnChange
   }
 
   getPanelStateClasses(panel: CollapsiblePanelModel) {
-    return `clr-panel-panel-${panel.status} ${panel.open ? 'clr-panel-panel-open' : ''}`;
+    return panel.open ? 'clr-panel-panel-open' : '';
   }
 
   getContentId(id: string) {
@@ -165,6 +164,7 @@ export class StorybookPanelGroup implements OnInit, OnChanges, AfterViewInit, On
 
   @ViewChildren(StorybookPanel) panels: QueryList<StorybookPanel>;
 
+  // Storybook-only: creates a throwaway array to drive @for; do not use in production components.
   createArray = createArray;
   subscriptions: Subscription[] = [];
 

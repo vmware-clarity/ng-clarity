@@ -60,23 +60,6 @@ $clr-accordion-header-open-hover-background-color: var(
   #{panel-variables.$clr-collapsible-panel-header-open-hover-background-color}
 ) !default;
 
-$clr-accordion-error-color: var(
-  --clr-accordion-error-color,
-  #{panel-variables.$clr-collapsible-panel-error-color}
-) !default;
-$clr-accordion-complete-color: var(
-  --clr-accordion-complete-color,
-  #{panel-variables.$clr-collapsible-panel-complete-color}
-) !default;
-$clr-accordion-header-left-indicator: var(
-  --clr-accordion-header-left-indicator,
-  #{panel-variables.$clr-collapsible-panel-header-left-indicator}
-) !default;
-$clr-accordion-header-left-current-indicator: var(
-  --clr-accordion-header-left-current-indicator,
-  #{panel-variables.$clr-collapsible-panel-header-left-current-indicator}
-) !default;
-
 $clr-accordion-content-color: var(
   --clr-accordion-content-color,
   #{panel-variables.$clr-collapsible-panel-content-color}
@@ -97,17 +80,4 @@ $clr-accordion-border-color: var(
 $clr-accordion-border-radius: var(
   --clr-accordion-border-radius,
   #{panel-variables.$clr-collapsible-panel-border-radius}
-) !default;
-$clr-accordion-border-left-color-complete: var(
-  --clr-accordion-border-left-color-complete,
-  #{panel-variables.$clr-collapsible-panel-border-left-color-complete}
-) !default;
-$clr-accordion-border-left-color-error: var(
-  --clr-accordion-border-left-color-error,
-  #{panel-variables.$clr-collapsible-panel-border-left-color-error}
-) !default;
-
-$clr-accordion-step-title-min-width: var(
-  --clr-accordion-step-title-min-width,
-  #{panel-variables.$clr-collapsible-panel-step-title-min-width}
 ) !default;

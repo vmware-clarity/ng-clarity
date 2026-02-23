@@ -5,6 +5,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+/**
+ * BREAKING CHANGE (v17):
+ * The following symbols were removed from this entry point. They have been
+ * replaced by their `CollapsiblePanel*` equivalents in `@clr/angular/collapsible-panel`:
+ *
+ *   AccordionService        -> CollapsiblePanelService
+ *   AccordionStatus         -> StepperPanelStatus   (moved to `@clr/angular/stepper`)
+ *   AccordionStrategy       -> CollapsiblePanelStrategy
+ *   AccordionPanelModel     -> CollapsiblePanelModel
+ *   AccordionModel          -> CollapsiblePanelGroupModel
+ *   panelAnimation          -> collapsiblePanelExpandAnimation / collapsiblePanelAnimation
+ */
+
 export * from './accordion';
 export * from './accordion-panel';
 export * from './accordion-title';

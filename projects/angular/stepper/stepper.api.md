@@ -7,7 +7,6 @@
 import { AfterContentChecked } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
-import * as _angular_animations from '@angular/animations';
 import * as _angular_forms from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
@@ -29,7 +28,6 @@ import { QueryList } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Subscription } from 'rxjs';
 import { Type } from '@angular/core';
 
 // @public (undocumented)
@@ -96,8 +94,6 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
     // (undocumented)
     panels: QueryList<ClrStepperPanel>;
     // (undocumented)
-    subscriptions: Subscription[];
-    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepper, "form[clrStepper]", never, { "initialPanel": { "alias": "clrInitialStep"; "required": false; }; }, {}, ["panels"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepper, [{ optional: true; }, { optional: true; }, null]>;
@@ -133,10 +129,12 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     getContentId(id: string): string;
     // (undocumented)
     getHeaderId(id: string): string;
+    // (undocumented)
+    getPanelStateClasses(panel: CollapsiblePanelModel): string;
     // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelModel" needs to be exported by the entry point clr-angular-stepper.d.ts
     //
     // (undocumented)
-    getPanelStateClasses(panel: CollapsiblePanelModel): string;
+    getPanelStatus(panel: CollapsiblePanelModel): StepperPanelStatus;
     // (undocumented)
     headerButton: ElementRef<HTMLButtonElement>;
     // (undocumented)
@@ -148,10 +146,8 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     ngOnInit(): void;
     // (undocumented)
     get panelNumber(): number;
-    // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelStatus" needs to be exported by the entry point clr-angular-stepper.d.ts
-    //
     // (undocumented)
-    readonly PanelStatus: typeof CollapsiblePanelStatus;
+    readonly PanelStatus: typeof StepperPanelStatus;
     // (undocumented)
     protected stepCompleteText(panelNumber: number): string;
     // (undocumented)
@@ -170,6 +166,22 @@ export class ClrStepTitle {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepTitle, "clr-step-title", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepTitle, never>;
+}
+
+// @public (undocumented)
+export class StepperPanelModel extends CollapsiblePanelModel {
+    // (undocumented)
+    status: StepperPanelStatus;
+}
+
+// @public (undocumented)
+export enum StepperPanelStatus {
+    // (undocumented)
+    Complete = "complete",
+    // (undocumented)
+    Error = "error",
+    // (undocumented)
+    Inactive = "inactive"
 }
 
 // Warning: (ae-forgotten-export) The symbol "OompaLoompa" needs to be exported by the entry point clr-angular-stepper.d.ts

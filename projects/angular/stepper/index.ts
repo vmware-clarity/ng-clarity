@@ -12,6 +12,8 @@ export * from './step-button';
 export * from './step-title';
 export * from './step-description';
 export * from './step-content';
+export * from './enums/stepper-panel-status.enum';
+export * from './models/stepper-panel.model';
 
 export { StepperWillyWonka as ÇlrStepperWillyWonka } from './chocolate/stepper-willy-wonka';
 export { StepperOompaLoompa as ÇlrStepperOompaLoompa } from './chocolate/stepper-oompa-loompa';
