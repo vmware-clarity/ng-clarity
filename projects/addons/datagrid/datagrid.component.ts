@@ -63,12 +63,6 @@ import { ActionBarLayout, ActionDefinition } from './shared/action/action-defini
 import { ActionClickEvent, SingleRowActionOpen } from './shared/action/actions-event-types';
 import { ColumnDefinition } from './shared/column/column-definitions';
 
-// const resources = {
-//   selection: {
-//     singleDefaultEntity: {},
-//   },
-// };
-
 /**
  * The GridLayoutModel interface defines configurable options for customizing
  * the visual appearance and behavior of the datagrid layout.
@@ -608,10 +602,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     this.#selectedItems = Array.isArray(items) ? items.filter((item: T) => item !== undefined) : [];
 
     this.cdr.detectChanges();
-
-    if (this.clrDatagrid && items) {
-      // this.selectGridItems(this.#selectedItems, false);
-    }
   }
 
   /**
@@ -729,8 +719,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
   ngAfterViewInit() {
     this.#areRowsDisabled = !!this.gridLayoutModel.disabled;
-
-    // identity func
   }
 
   ngOnDestroy() {
@@ -854,7 +842,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
 
   setSelectedItems(items: T[]) {
-    // this.selectGridItems(items, false);
     this.selectedItemsChange.emit(items);
   }
 
@@ -926,7 +913,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
   protected onDeselectAllClick(): void {
     this.#selectedItems = [];
-    // this.selectGridItems(this.#selectedItems, false);
     this.selectedItemsChange.emit(this.#selectedItems);
   }
 
@@ -1198,50 +1184,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     }
   }
 
-  // private isNotObjectOrEmptyObject(obj: unknown): boolean {
-  //   return !obj || (Object.keys(obj).length === 0 && obj.constructor === Object);
-  // }
-
-  // private selectGridItems(items: T[], isGridSelectionTypeChanged: boolean) {
-  //   if (this.#selectionType === SelectionType.Single) {
-  //
-  //
-  //     if (items.length > 1) {
-  //       items = items.slice(0, 1);
-  //     }
-  //     //We need to init single selection mode so when selected item is not
-  //     //provided we set empty object
-  //     this.clrDatagrid.selected = items;
-  //   }
-  //
-  //
-  //   else if (this.#selectionType === SelectionType.Multi) {
-  //
-  //
-  //     if (!Array.isArray(this.clrDatagrid.selection.current) && isGridSelectionTypeChanged) {
-  //       // do not desire to influence the selectionType in this cycle as it will affect the DOM and have side effects
-  //       // assign Clarity current selection and do own CD to be safe
-  //       this.clrDatagrid.selection.current = items;
-  //       this.cdr.detectChanges();
-  //       return;
-  //     }
-  //
-  //
-  //
-  //
-  //     // two acceptable checks before directly assigning the items to the Clarity datagrid
-  //     // 1. when current selection array is undefined and a assignment would result in a non-empty list
-  //     // 2. the current selection has already been set with with a list
-  //     if (
-  //       (!Array.isArray(this.clrDatagrid.selection.current) && items.length) ||
-  //       Array.isArray(this.clrDatagrid.selection.current)
-  //     ) {
-  //       this.clrDatagrid.selected = items;
-  //       this.cdr.detectChanges();
-  //     }
-  //   }
-  // }
-
   private updateSelectedItems(item: T) {
     if (this.#selectionType === SelectionType.Single) {
       this.#selectedItems = [item];
@@ -1249,7 +1191,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
       this.#selectedItems.push(item);
     }
 
-    // this.selectGridItems(this.#selectedItems, false);
     this.selectedItemsChange.emit(this.#selectedItems);
   }
 
@@ -1281,7 +1222,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   private interpolateMessage(message: string, parameters: unknown[]): string {
     return message.replace(this.#interpolationExpression, (match: string, index: number) => {
       if (index >= parameters.length) {
-        // There are less parameters than there are placeholders,
+        // There are fewer parameters than there are placeholders,
         // return the placeholder value.
         return match;
       }

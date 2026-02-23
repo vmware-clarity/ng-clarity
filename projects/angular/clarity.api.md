@@ -8631,6 +8631,8 @@ class Selection_2<T = any> {
     // @deprecated (undocumented)
     rowSelectionMode: boolean;
     // (undocumented)
+    get selectable(): boolean;
+    // (undocumented)
     get selectionType(): SelectionType;
     set selectionType(value: SelectionType);
     setSelected(item: T, selected: boolean): void;

@@ -228,10 +228,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       return;
     }
 
-    // TODO: it make no sense!!! SINGLE emits changes, MULTI doesn't
-    const emitChanges = this.selection.selectionType === SelectionType.Single;
-
-    this.selection.updateCurrent(value, emitChanges);
+    this.selection.updateCurrent(value, true);
   }
 
   @Input()
@@ -351,10 +348,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       this.stickyHeaders.changes.subscribe(() => this.resize()),
       this.stateProvider.change.subscribe(state => this.refresh.emit(state)),
       this.selection.change.subscribe(s => {
-        if (
-          this.selection.selectionType === SelectionType.Single ||
-          this.selection.selectionType === SelectionType.Multi
-        ) {
+        if (this.selection.selectable) {
           this.selectedChanged.emit(s);
         }
       }),

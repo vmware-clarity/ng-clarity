@@ -70,7 +70,7 @@ export class Selection<T = any> {
 
     this.subscriptions.push(
       filters.change.subscribe(() => {
-        if (!this._selectable || this.preserveSelection) {
+        if (!this.selectable || this.preserveSelection) {
           return;
         }
         this.clearSelection();
@@ -183,7 +183,7 @@ export class Selection<T = any> {
       return;
     }
 
-    this._selectionType = value ? value : SelectionType.None;
+    this._selectionType = value ?? SelectionType.None;
 
     // TODO: do we really need to remove the selection data
     if (this._selectionType === SelectionType.None) {
@@ -219,7 +219,7 @@ export class Selection<T = any> {
     return this._change.asObservable();
   }
 
-  private get _selectable(): boolean {
+  get selectable(): boolean {
     return this._selectionType !== SelectionType.None;
   }
 
