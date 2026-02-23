@@ -8,6 +8,10 @@
 @use 'sass:meta';
 @use '../styles/mixins';
 
+// The base collapsible-panel properties are loaded first. Accordion properties
+// alias them so consumers can override per-component via --clr-accordion-* or
+// globally via --clr-collapsible-panel-*. The base mixin styles resolve
+// --clr-collapsible-panel-* directly; accordion-only styles use --clr-accordion-*.
 @include meta.load-css('../collapsible-panel/properties.collapsible-panel');
 @include mixins.exports('accordion.properties') {
   @include mixins.root-or-host() {

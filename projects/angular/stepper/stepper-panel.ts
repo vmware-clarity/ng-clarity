@@ -43,7 +43,7 @@ import { ClrStepDescription } from './step-description';
 export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   @ViewChild('headerButton') headerButton: ElementRef<HTMLButtonElement>;
   @ContentChildren(ClrStepDescription) stepDescription: QueryList<ClrStepDescription>;
-  @HostBinding('class.clr-stepper-panel-disabled') disabled = false;
+  @HostBinding('class.clr-stepper-panel-disabled') disabled = true;
   readonly PanelStatus = StepperPanelStatus;
 
   private subscriptions: Subscription[] = [];
@@ -94,7 +94,6 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   override ngOnInit(): void {
     super.ngOnInit();
     this.panel = this.panel.pipe(tap(panel => this.triggerAllFormControlValidationIfError(panel)));
-    this.stepperService.disablePanel(this.id, true);
     this.listenToFocusChanges();
 
     if (this.formGroup) {

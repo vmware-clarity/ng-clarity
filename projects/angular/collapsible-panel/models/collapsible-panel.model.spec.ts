@@ -27,9 +27,9 @@ describe('CollapsiblePanelGroupModel', () => {
   });
 
   it('should disable or enable a panel', () => {
-    expect(panelGroup.panels[panel1Id].disabled).toBe(false);
+    expect(panelGroup.panels.find(p => p.id === panel1Id).disabled).toBe(false);
     panelGroup.disablePanel(panel1Id, true);
-    expect(panelGroup.panels[panel1Id].disabled).toBe(true);
+    expect(panelGroup.panels.find(p => p.id === panel1Id).disabled).toBe(true);
   });
 
   it('should remove panels from collection when re-synced with ContentChildren', () => {

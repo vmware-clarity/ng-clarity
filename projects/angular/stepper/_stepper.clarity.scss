@@ -33,6 +33,8 @@
     box-shadow: stepper-variables.$clr-stepper-header-left-error-indicator;
   }
 
+  // Higher specificity overrides so complete/error shadows win over the
+  // .clr-stepper-panel-open shadow when both states coexist on a panel.
   .clr-stepper-panel-open {
     .clr-stepper-panel-complete > .clr-stepper-header {
       box-shadow: stepper-variables.$clr-stepper-header-left-complete-indicator;
