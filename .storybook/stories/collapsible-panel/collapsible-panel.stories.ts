@@ -21,7 +21,6 @@ export default {
     panelCount: { control: { type: 'number', min: 1, max: 10 } },
     multiPanel: { control: 'boolean' },
     panelDisabled: { control: 'boolean' },
-    showDescriptions: { control: 'boolean' },
     title: { control: 'text' },
     content: { control: 'text' },
     openIndices: { control: { disable: true }, table: { disable: true } },
@@ -30,7 +29,6 @@ export default {
     panelCount: 3,
     multiPanel: false,
     panelDisabled: false,
-    showDescriptions: false,
     title: 'Panel',
     content: 'Content for panel',
     openIndices: [],
@@ -44,7 +42,6 @@ export default {
         [panelDisabled]="panelDisabled"
         [title]="title"
         [content]="content"
-        [showDescriptions]="showDescriptions"
         [openIndices]="openIndices"
       ></storybook-panel-group>
     `,
@@ -54,48 +51,25 @@ export default {
 export const DefaultCollapsed: StoryObj = {};
 
 export const SinglePanelExpanded: StoryObj = {
-  args: {
-    openIndices: [true],
-  },
+  args: { openIndices: [true] },
 };
 
 export const AllPanelsDisabled: StoryObj = {
-  args: {
-    panelDisabled: true,
-  },
+  args: { panelDisabled: true },
 };
 
 export const ExpandedAndDisabled: StoryObj = {
-  args: {
-    openIndices: [true],
-    panelDisabled: true,
-  },
+  args: { openIndices: [true], panelDisabled: true },
 };
 
 export const MultiPanelMode: StoryObj = {
-  args: {
-    multiPanel: true,
-    openIndices: [true, false, true],
-  },
-};
-
-export const WithDescriptions: StoryObj = {
-  args: {
-    showDescriptions: true,
-    openIndices: [true],
-  },
+  args: { multiPanel: true, openIndices: [true, false, true] },
 };
 
 export const SinglePanel: StoryObj = {
-  args: {
-    panelCount: 1,
-    openIndices: [true],
-  },
+  args: { panelCount: 1, openIndices: [true] },
 };
 
 export const ManyPanels: StoryObj = {
-  args: {
-    panelCount: 8,
-    openIndices: [false, false, true],
-  },
+  args: { panelCount: 8, openIndices: [false, false, true] },
 };

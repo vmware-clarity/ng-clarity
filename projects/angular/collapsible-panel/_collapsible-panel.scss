@@ -10,22 +10,21 @@
 @use 'variables.collapsible-panel' as panel-variables;
 @use '../styles/variables/variables.density' as density;
 
-@mixin collapsible-panel($prefix, $grouped: true) {
+@mixin collapsible-panel($prefix) {
   .#{$prefix}-panel {
     display: block;
   }
 
   .#{$prefix}-header {
-    color: panel-variables.$clr-collapsible-panel-text-color;
-    background: panel-variables.$clr-collapsible-panel-header-background-color;
-    transition: all 200ms ease-in-out;
+    width: 100%;
     border: tokens.$cds-global-space-1 solid panel-variables.$clr-collapsible-panel-border-color;
     border-bottom-width: 0;
-    width: 100%;
+    background: panel-variables.$clr-collapsible-panel-header-background-color;
+    color: panel-variables.$clr-collapsible-panel-text-color;
+    text-align: left;
+    transition: background-color 200ms ease-in-out;
 
     @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
-
-    text-align: left;
 
     &:hover {
       color: panel-variables.$clr-collapsible-panel-text-color-hover;
@@ -57,8 +56,8 @@
   }
 
   .#{$prefix}-panel:last-child {
-    .#{$prefix}-content,
-    .#{$prefix}-header {
+    .#{$prefix}-header,
+    .#{$prefix}-content {
       border-bottom: tokens.$cds-global-space-1 solid panel-variables.$clr-collapsible-panel-border-color;
     }
   }
@@ -71,9 +70,9 @@
     border: 0;
     padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
     background: transparent;
+    color: inherit;
     text-align: left;
     cursor: pointer;
-    color: inherit;
     gap: density.$clr-base-gap-s;
 
     @media (min-width: panel-variables.$clr-collapsible-panel-responsive-breakpoint) {
@@ -92,8 +91,8 @@
   }
 
   .#{$prefix}-status {
-    width: density.$clr-base-layout-space-xl;
     display: inline-flex;
+    width: density.$clr-base-layout-space-xl;
     vertical-align: top;
   }
 
@@ -119,11 +118,11 @@
   }
 
   .#{$prefix}-content {
-    background: panel-variables.$clr-collapsible-panel-content-background-color;
+    display: none;
+    overflow: hidden;
     border: tokens.$cds-global-space-1 solid panel-variables.$clr-collapsible-panel-border-color;
     border-bottom: 0;
-    overflow: hidden;
-    display: none;
+    background: panel-variables.$clr-collapsible-panel-content-background-color;
 
     .clr-form {
       padding: 0;
@@ -145,6 +144,7 @@
     }
 
     & > .#{$prefix}-header {
+      border-bottom: 0 !important;
       background: panel-variables.$clr-collapsible-panel-header-open-background-color;
 
       &:hover {
@@ -163,34 +163,10 @@
     }
   }
 
-  @if $grouped {
-    .#{$prefix}-panel .#{$prefix}-header {
-      border-radius: panel-variables.$clr-collapsible-panel-border-radius;
-
-      & + .#{$prefix}-content-region > .#{$prefix}-content {
-        border-bottom-left-radius: panel-variables.$clr-collapsible-panel-border-radius;
-        border-bottom-right-radius: panel-variables.$clr-collapsible-panel-border-radius;
-      }
-    }
-
-    .#{$prefix}-panel + .#{$prefix}-panel > div[class*='#{$prefix}-panel-'] > .#{$prefix}-header {
-      border-top-left-radius: unset;
-      border-top-right-radius: unset;
-    }
-
-    .#{$prefix}-panel:not(:last-child) > div[class*='#{$prefix}-panel-'] > .#{$prefix}-header {
-      &,
-      & + .#{$prefix}-content-region > .#{$prefix}-content {
-        border-bottom: none;
-        border-bottom-left-radius: unset;
-        border-bottom-right-radius: unset;
-      }
-    }
-
-    .#{$prefix}-panel-open > .#{$prefix}-header {
-      border-bottom-left-radius: 0 !important;
-      border-bottom-right-radius: 0 !important;
-      border-bottom: 0 !important;
+  .#{$prefix}-panel:not(:last-child) > div[class*='#{$prefix}-panel-'] > .#{$prefix}-header {
+    &,
+    & + .#{$prefix}-content-region > .#{$prefix}-content {
+      border-bottom: none;
     }
   }
 }

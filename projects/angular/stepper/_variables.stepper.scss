@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-$clr-stepper-error-color: var(--clr-collapsible-panel-error-color) !default;
-$clr-stepper-complete-color: var(--clr-collapsible-panel-complete-color) !default;
-$clr-stepper-header-left-indicator: var(--clr-collapsible-panel-header-left-indicator) !default;
-$clr-stepper-header-left-current-indicator: var(--clr-collapsible-panel-header-left-current-indicator) !default;
-$clr-stepper-border-left-color-complete: var(--clr-collapsible-panel-border-left-color-complete) !default;
-$clr-stepper-border-left-color-error: var(--clr-collapsible-panel-border-left-color-error) !default;
+$clr-stepper-error-color: var(--clr-stepper-error-color) !default;
+$clr-stepper-complete-color: var(--clr-stepper-complete-color) !default;
+$clr-stepper-header-left-indicator: var(--clr-stepper-header-left-indicator) !default;
+$clr-stepper-header-left-current-indicator: var(--clr-stepper-header-left-current-indicator) !default;
+$clr-stepper-header-left-complete-indicator: var(--clr-stepper-header-left-complete-indicator) !default;
+$clr-stepper-header-left-error-indicator: var(--clr-stepper-header-left-error-indicator) !default;

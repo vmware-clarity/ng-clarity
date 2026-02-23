@@ -8,4 +8,4 @@
 @use '../../../projects/angular/collapsible-panel/collapsible-panel' as cp;
 @use '../../../projects/angular/collapsible-panel/properties.collapsible-panel';
 
-@include cp.collapsible-panel('clr-panel');
+@include cp.collapsible-panel('clr-collapsible');
