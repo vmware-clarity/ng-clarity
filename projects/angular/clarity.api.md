@@ -5206,8 +5206,7 @@ export class ClrStartDateInputValidator implements Validator {
 
 // @public (undocumented)
 export class ClrStepButton implements OnInit {
-    // Warning: (ae-forgotten-export) The symbol "StepperService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(clrStep: ClrStepperPanel, stepperService: StepperService_2);
+    constructor(clrStep: ClrStepperPanel, stepperService: StepperService);
     // (undocumented)
     navigateToNextPanel(): void;
     // (undocumented)
@@ -5252,7 +5251,7 @@ export class ClrStepDescription {
 
 // @public (undocumented)
 export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-    constructor(formGroup: FormGroupDirective, ngForm: NgForm, stepperService: StepperService_2);
+    constructor(formGroup: FormGroupDirective, ngForm: NgForm, stepperService: StepperService);
     // (undocumented)
     form: FormGroupDirective | NgForm;
     // (undocumented)
@@ -5286,7 +5285,7 @@ export class ClrStepperModule {
 // @public (undocumented)
 export class ClrStepperPanel extends CollapsiblePanel_2 implements OnInit {
     // Warning: (ae-forgotten-export) The symbol "IfExpandService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(platformId: any, commonStrings: ClrCommonStringsService_2, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService_2, ifExpandService: IfExpandService_2, cdr: ChangeDetectorRef);
+    constructor(platformId: any, commonStrings: ClrCommonStringsService_2, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService_2, cdr: ChangeDetectorRef);
     // (undocumented)
     commonStrings: ClrCommonStringsService_2;
     // (undocumented)
@@ -8835,6 +8834,37 @@ export enum StepperPanelStatus {
     Error = "error",
     // (undocumented)
     Inactive = "inactive"
+}
+
+// @public (undocumented)
+export class StepperService extends CollapsiblePanelService_2 {
+    constructor();
+    // (undocumented)
+    readonly activeStep: Observable<string>;
+    // (undocumented)
+    navigateToNextPanel(currentPanelId: string, currentPanelValid?: boolean): void;
+    // (undocumented)
+    navigateToPreviousPanel(currentPanelId: string): void;
+    // (undocumented)
+    overrideInitialPanel(panelId: string): void;
+    // Warning: (ae-forgotten-export) The symbol "StepperModel_2" needs to be exported by the entry point clr-angular.d.ts
+    //
+    // (undocumented)
+    protected panelGroup: StepperModel_2;
+    // (undocumented)
+    readonly panelsCompleted: Observable<boolean>;
+    // (undocumented)
+    resetPanels(): void;
+    // (undocumented)
+    setPanelInvalid(panelId: string): void;
+    // (undocumented)
+    setPanelsWithErrors(ids: string[]): void;
+    // (undocumented)
+    setPanelValid(panelId: string): void;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<StepperService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<StepperService>;
 }
 
 // @public (undocumented)

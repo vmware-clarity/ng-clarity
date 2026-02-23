@@ -32,7 +32,6 @@ import { Type } from '@angular/core';
 
 // @public (undocumented)
 export class ClrStepButton implements OnInit {
-    // Warning: (ae-forgotten-export) The symbol "StepperService" needs to be exported by the entry point clr-angular-stepper.d.ts
     constructor(clrStep: ClrStepperPanel, stepperService: StepperService);
     // (undocumented)
     navigateToNextPanel(): void;
@@ -182,6 +181,39 @@ export enum StepperPanelStatus {
     Error = "error",
     // (undocumented)
     Inactive = "inactive"
+}
+
+// Warning: (ae-forgotten-export) The symbol "CollapsiblePanelService" needs to be exported by the entry point clr-angular-stepper.d.ts
+//
+// @public (undocumented)
+export class StepperService extends CollapsiblePanelService {
+    constructor();
+    // (undocumented)
+    readonly activeStep: Observable<string>;
+    // (undocumented)
+    navigateToNextPanel(currentPanelId: string, currentPanelValid?: boolean): void;
+    // (undocumented)
+    navigateToPreviousPanel(currentPanelId: string): void;
+    // (undocumented)
+    overrideInitialPanel(panelId: string): void;
+    // Warning: (ae-forgotten-export) The symbol "StepperModel" needs to be exported by the entry point clr-angular-stepper.d.ts
+    //
+    // (undocumented)
+    protected panelGroup: StepperModel;
+    // (undocumented)
+    readonly panelsCompleted: Observable<boolean>;
+    // (undocumented)
+    resetPanels(): void;
+    // (undocumented)
+    setPanelInvalid(panelId: string): void;
+    // (undocumented)
+    setPanelsWithErrors(ids: string[]): void;
+    // (undocumented)
+    setPanelValid(panelId: string): void;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<StepperService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<StepperService>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "OompaLoompa" needs to be exported by the entry point clr-angular-stepper.d.ts
