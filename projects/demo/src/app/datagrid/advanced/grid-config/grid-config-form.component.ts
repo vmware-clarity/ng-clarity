@@ -7,13 +7,13 @@
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SelectionType } from '@clr/addons/datagrid';
 import {
   ClrCheckboxModule,
   ClrDatagridModule,
   ClrInputModule,
   ClrNumberInputModule,
   ClrSelectModule,
+  SelectionType,
 } from '@clr/angular';
 
 export interface GridConfigDemoOptions {

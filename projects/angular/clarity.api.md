@@ -8649,11 +8649,8 @@ export { Selection_2 as Selection }
 
 // @public (undocumented)
 export enum SelectionType {
-    // (undocumented)
     Multi = 2,
-    // (undocumented)
     None = 0,
-    // (undocumented)
     Single = 1
 }
 

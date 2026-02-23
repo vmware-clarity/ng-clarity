@@ -185,7 +185,6 @@ export class Selection<T = any> {
 
     this._selectionType = value ?? SelectionType.None;
 
-    // TODO: do we really need to remove the selection data
     if (this._selectionType === SelectionType.None) {
       this.current = null;
     } else if (!this._current) {
@@ -209,7 +208,11 @@ export class Selection<T = any> {
       return;
     }
 
-    this._current[0] = value;
+    if (!this._current) {
+      this._current = [value];
+    } else {
+      this._current[0] = value;
+    }
 
     this.current = this._current;
   }

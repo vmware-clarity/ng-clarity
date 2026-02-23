@@ -34,6 +34,7 @@ import {
   ClrDatagridStateInterface,
   ClrDatagridStringFilterInterface,
   ClrDatagridVirtualScrollRangeInterface,
+  SelectionType,
 } from '@clr/angular/data/datagrid';
 import { ClrCheckboxModule, ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
@@ -47,7 +48,6 @@ import { DatagridComponent } from './datagrid.component';
 import { AppfxDatagridModule } from './datagrid.module';
 import { DatagridStrings } from './i18n/datagrid-strings.service';
 import { ColumnSortOrder } from './interfaces/column-state';
-import { SelectionType } from './interfaces/selection-type';
 import { ColumnDefinition, ColumnRenderer } from './shared/column/column-definitions';
 
 interface DatagridSpecContext {

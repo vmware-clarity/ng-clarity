@@ -20,6 +20,7 @@ import {
   MockIsRowSelectablePipe,
   ZoomLevelServiceMock,
 } from '@clr/addons/testing';
+import { SelectionType } from '@clr/angular/data/datagrid';
 
 import { DatagridColumnsOrderModule } from '../addons/column-ordering/datagrid-columns-order.module';
 import { ExportProviderService } from '../addons/export/export-provider.service';
@@ -27,7 +28,6 @@ import { DatagridComponent } from '../datagrid.component';
 import { AppfxDatagridModule } from '../datagrid.module';
 import { DatagridPreserveSelectionDirective } from './datagrid-preserve-selection.directive';
 import { DatagridStrings } from '../i18n/datagrid-strings.service';
-import { SelectionType } from '../interfaces/selection-type';
 import { ColumnDefinition } from '../shared/column/column-definitions';
 
 enum PowerState {

@@ -11,8 +11,8 @@ import {
   ClientSideExportConfig,
   ColumnDefinition,
   ExportProviderService,
-  SelectionType,
 } from '@clr/addons/datagrid';
+import { SelectionType } from '@clr/angular/data/datagrid';
 
 import { GridConfigDemoOptions, GridConfigFormComponent } from '../grid-config/grid-config-form.component';
 import { Inventory, VmItem } from '../inventory/inventory';

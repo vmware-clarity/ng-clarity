@@ -40,7 +40,6 @@ export {
 } from './interfaces/column-state';
 export { ContextMenuEvent } from './interfaces/context-menu-event';
 export { DatagridDragConfig } from './interfaces/datagrid-drag-config';
-export { SelectionType } from './interfaces/selection-type';
 export { appfxDatagridErrorNotifiableToken, ErrorNotifiable } from './interfaces/tokens';
 export {
   appfxPreselectableComponentToken,

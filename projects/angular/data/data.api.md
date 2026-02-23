@@ -1334,11 +1334,8 @@ export { Selection_2 as Selection }
 
 // @public (undocumented)
 export enum SelectionType {
-    // (undocumented)
     Multi = 2,
-    // (undocumented)
     None = 0,
-    // (undocumented)
     Single = 1
 }
 
@@ -1616,7 +1613,7 @@ export class ÇlrWrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data.d.ts:1079:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data.d.ts:1088:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 

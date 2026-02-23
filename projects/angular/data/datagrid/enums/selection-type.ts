@@ -6,7 +6,18 @@
  */
 
 export enum SelectionType {
-  None,
-  Single,
-  Multi,
+  /**
+   * User cannot select any row in the Datagrid
+   */
+  None = 0,
+
+  /**
+   * User can select only one row at a time in the Datagrid.
+   */
+  Single = 1,
+
+  /**
+   * User can select any number of rows in the Datagrid.
+   */
+  Multi = 2,
 }

@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AppfxDatagridModule, ColumnDefinition, SelectionType } from '@clr/addons/datagrid';
+import { AppfxDatagridModule, ColumnDefinition } from '@clr/addons/datagrid';
 import {
   ComparisonOperator,
   EnumPropertyDefinition,
@@ -16,7 +16,7 @@ import {
   PropertyFilter,
   StringPropertyDefinition,
 } from '@clr/addons/datagrid-filters';
-import { ClrSelectModule } from '@clr/angular';
+import { ClrSelectModule, SelectionType } from '@clr/angular';
 
 import { Inventory, VmItem } from '../inventory/inventory';
 
