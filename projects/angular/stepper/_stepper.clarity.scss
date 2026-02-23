@@ -71,6 +71,9 @@
   }
 
   .clr-stepper-forms {
+    display: block;
+    margin-bottom: density.$clr-base-vertical-offset-xl;
+
     .clr-stepper-header > .clr-stepper-header-button {
       align-items: center;
       gap: density.$clr-base-gap-l;
