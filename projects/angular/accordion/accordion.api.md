@@ -93,7 +93,7 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
     // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelModel" needs to be exported by the entry point clr-angular-accordion.d.ts
     //
     // (undocumented)
-    getPanelStateClasses(panel: CollapsiblePanelModel): "" | "clr-accordion-panel-open";
+    getPanelStateClasses(panel: CollapsiblePanelModel): "clr-accordion-panel-open" | "clr-accordion-panel-closed";
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
