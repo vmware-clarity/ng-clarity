@@ -7,15 +7,34 @@ description: Perform a strict code review of the current branch against a base b
 
 ## Inputs
 
-Before starting, gather these inputs using AskQuestion. Use values from the user's message first; only ask for what's missing.
+Before starting, gather these inputs using `AskQuestion`. Use values from the user's message first; only ask for what's missing. **Batch all missing inputs into a single `AskQuestion` call** to avoid multiple turns.
 
-| Input            | Question                                             | Options                                                                                                                                                                        |
-| ---------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Base branch**  | What is the base branch to compare against?          | `next`, `main`, Other (specify in chat)                                                                                                                                        |
-| **PR context**   | Brief description of what this PR does and its goal? | Free text (specify in chat)                                                                                                                                                    |
-| **Review focus** | Any specific areas you want extra attention on?      | Architecture / separation of concerns, Public API / breaking changes, Test coverage, Code quality / DRY, Performance / change detection, No specific focus — review everything |
+| Input            | Question                                        | Options                                                                                                                                                                        |
+| ---------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **PR link**      | Is there an open pull request for this branch?  | "Yes — I'll provide the link/number", "No — review the branch as-is"                                                                                                           |
+| **Base branch**  | What is the base branch to compare against?     | `next`, `main`, Other (specify in chat). **Skip if PR link provided** — extract from PR metadata.                                                                              |
+| **Review focus** | Any specific areas you want extra attention on? | Architecture / separation of concerns, Public API / breaking changes, Test coverage, Code quality / DRY, Performance / change detection, No specific focus — review everything |
 
-The PR context helps the reviewer understand intent — without it, the review can only judge the code, not whether it achieves its goal.
+**If a PR link is provided:**
+
+- **Check `gh` CLI availability first**: run `gh auth status`. If not authenticated, use `WebFetch` to load the PR page (`https://github.com/<owner>/<repo>/pull/<number>`) and extract metadata, description, and comments from the rendered page.
+- If `gh` is available, fetch PR metadata: `gh pr view <number> --json body,title,baseRefName,headRefName`.
+- Use the PR **description as the review context** (what the PR does, its goal, breaking changes, migration notes). This replaces asking for "PR context" separately.
+- Use `baseRefName` as the base branch (skip asking).
+- **Fetch existing review comments** to avoid duplicating feedback:
+  ```bash
+  gh api repos/<owner>/<repo>/pulls/<number>/comments --paginate
+  gh api repos/<owner>/<repo>/pulls/<number>/reviews --paginate
+  ```
+  Build a list of unresolved comments (group threads by `in_reply_to_id`, exclude bots). Before outputting any review finding, check if an existing comment already raises the same point on the same file/area. If it does:
+  - **If you agree** with the existing comment: skip it from your review output (don't repeat it). Optionally note it under a "Previously Raised" summary so the user knows you validated it.
+  - **If you disagree** or have a different take: include it in your review with a note referencing the existing comment and explaining why your assessment differs.
+  - **If the comment was already addressed** in the current code: note it as resolved in the "Previously Raised" summary.
+
+**If no PR link:**
+
+- Ask for a brief PR context description via `AskQuestion`: "Brief description of what this branch does and its goal?"
+- The PR context helps the reviewer understand intent — without it, the review can only judge the code, not whether it achieves its goal.
 
 ## Workflow
 
@@ -66,6 +85,12 @@ The PR context helps the reviewer understand intent — without it, the review c
 
    ## Questions
    Anything ambiguous that needs clarification from the author.
+
+   ## Previously Raised (from PR comments)
+   (Only if a PR link was provided and existing comments were fetched)
+   - Validated: comments where you agree and the issue is still present (already covered by reviewers, not repeated above).
+   - Already addressed: comments where the current code already reflects the fix.
+   - Disagree: comments where your assessment differs (included in the review above with explanation).
    ```
 
 5. **After the review**

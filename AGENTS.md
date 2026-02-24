@@ -149,7 +149,7 @@ Follows [Conventional Commits](https://www.conventionalcommits.org/):
 Signed-off-by: Name <email>
 ```
 
-- **Types**: `feat`, `fix`, `chore`.
+- **Types**: `feat` (minor release), `fix` (patch release), `chore` (no release). Other valid types: `docs`, `refactor`, `test`, `ci`, `build`, `perf` — these do not trigger releases unless they contain a `BREAKING CHANGE` block.
 - **Scopes**: match component names — `accordion`, `stepper`, `datagrid`, `modal`, `wizard`, `dropdown`, `form`, `tabs`, etc. Full list in `docs/CONTRIBUTING_DEVELOPMENT.md`.
 - Semantic-release (`.releaserc.base.js`) parses `BREAKING CHANGE` / `BREAKING CHANGES` in commit body to trigger major releases.
 

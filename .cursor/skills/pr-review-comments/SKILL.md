@@ -28,7 +28,9 @@ Use a free-text question if `AskQuestion` doesn't support it; otherwise list rec
 
 ### Step 2: Fetch PR data
 
-Run these commands in parallel to gather context:
+**Check `gh` CLI availability first**: run `gh auth status`. If not authenticated, use `WebFetch` to load the PR page (`https://github.com/<owner>/<repo>/pull/<number>`) and extract metadata, comments, and reviews from the rendered page.
+
+If `gh` is available, run these commands in parallel to gather context:
 
 ```bash
 # Get PR metadata
@@ -132,5 +134,4 @@ After processing all comments, output a final summary:
 - Never auto-apply fixes without asking the user first (use `AskQuestion` to confirm).
 - When a comment references code that no longer exists (file deleted, lines removed), note it as "no longer applicable".
 - Group related comments on the same file/area together when presenting, to avoid redundant file reads.
-- If the PR is from a fork or the `gh` CLI is not authenticated, inform the user and suggest alternatives.
 - Run `npm run lint:changed:fix` after applying any code changes.
