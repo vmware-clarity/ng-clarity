@@ -21,9 +21,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
-import { CollapsiblePanel, collapsiblePanelAnimation, CollapsiblePanelModel } from '@clr/angular/collapsible-panel';
+import { CollapsiblePanel, collapsiblePanelAnimation } from '@clr/angular/collapsible-panel';
 import { ClrCommonStringsService, IfExpandService, triggerAllFormControlValidation } from '@clr/angular/utils';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, skipUntil, tap } from 'rxjs/operators';
 
 import { StepperPanelStatus } from './enums/stepper-panel-status.enum';
@@ -45,6 +45,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   @ContentChildren(ClrStepDescription) stepDescription: QueryList<ClrStepDescription>;
   @HostBinding('class.clr-stepper-panel-disabled') disabled = false;
   readonly PanelStatus = StepperPanelStatus;
+  override panel: Observable<StepperPanelModel>;
 
   private subscriptions: Subscription[] = [];
 
@@ -75,11 +76,11 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     return this.formGroupName ? this.formGroupName.control : this.ngModelGroup.control;
   }
 
-  getPanelStatus(panel: CollapsiblePanelModel): StepperPanelStatus {
-    return (panel as StepperPanelModel).status;
+  getPanelStatus(panel: StepperPanelModel): StepperPanelStatus {
+    return panel.status;
   }
 
-  getPanelStateClasses(panel: CollapsiblePanelModel) {
+  getPanelStateClasses(panel: StepperPanelModel) {
     return `clr-stepper-panel-${this.getPanelStatus(panel)} ${panel.open ? 'clr-stepper-panel-open' : ''}`;
   }
 
@@ -97,7 +98,9 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     this.stepperService.disablePanel(this.id, true);
     this.listenToFocusChanges();
 
+    // not all stepper panels are guaranteed to have a form (i.e. empty template-driven)
     if (this.formGroup) {
+      // set panel status on form status change only after the form becomes invalid
       const invalidStatusTrigger = this.formGroup.statusChanges.pipe(filter(status => status === 'INVALID'));
 
       this.subscriptions.push(
@@ -138,8 +141,8 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     );
   }
 
-  private triggerAllFormControlValidationIfError(panel: CollapsiblePanelModel) {
-    if ((panel as StepperPanelModel).status === StepperPanelStatus.Error) {
+  private triggerAllFormControlValidationIfError(panel: StepperPanelModel) {
+    if (panel.status === StepperPanelStatus.Error) {
       triggerAllFormControlValidation(this.formGroup);
     }
   }

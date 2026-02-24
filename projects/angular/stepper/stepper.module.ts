@@ -7,7 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ClrIcon } from '@clr/angular/icon';
+import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '@clr/angular/icon';
 
 import { StepperOompaLoompa } from './chocolate/stepper-oompa-loompa';
 import { StepperWillyWonka } from './chocolate/stepper-willy-wonka';
@@ -34,4 +34,8 @@ const declarations = [
   declarations: [...declarations],
   exports: [...declarations, ClrIcon],
 })
-export class ClrStepperModule {}
+export class ClrStepperModule {
+  constructor() {
+    ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+  }
+}

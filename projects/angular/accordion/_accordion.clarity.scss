@@ -9,7 +9,7 @@
 @use '../styles/mixins';
 @use 'variables.accordion' as accordion-variables;
 @use '../styles/variables/variables.density' as density;
-@use '../collapsible-panel/collapsible-panel';
+@use '../collapsible-panel/mixins.collapsible-panel' as collapsible-panel;
 
 @include meta.load-css('properties.accordion');
 @include mixins.exports('accordion.clarity') {

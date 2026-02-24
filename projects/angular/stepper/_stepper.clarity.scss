@@ -8,7 +8,7 @@
 @use 'sass:meta';
 @use '../styles/mixins';
 @use '../collapsible-panel/variables.collapsible-panel' as panel-variables;
-@use '../collapsible-panel/collapsible-panel';
+@use '../collapsible-panel/mixins.collapsible-panel' as collapsible-panel;
 @use '../styles/variables/variables.density' as density;
 @use 'variables.stepper' as stepper-variables;
 
