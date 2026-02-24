@@ -1,0 +1,13 @@
+---
+description: Datagrid component patterns, selection architecture, and conventions
+globs: projects/angular/data/datagrid/**,projects/addons/datagrid/**,.storybook/stories/datagrid/**
+---
+
+# Datagrid
+
+## Selection Architecture
+
+- `SelectionType` enum uses string values: `'none'`, `'single'`, `'multi'` — enables plain attribute binding in templates (`clrDgSelectionType="multi"` instead of `[clrDgSelectionType]="2"`).
+- Two-way binding pattern: `@Input('clrDgSelected')` + `@Output('clrDgSelectedChange')`. The input setter must call `updateCurrent(value, false)` — **never `emit: true`** — to prevent feedback loops where the output fires back to the parent on every input write.
+- Emission flow: `updateCurrent(value, emit)` → `valueCollector.next()` → `debounceTime(0)` → `emitChange()` → `_change.next()` → datagrid subscribes → `selectedChanged.emit()`. Only internal actions (row clicks, `toggleAll`, `currentSingle` setter) should trigger this chain.
+- Addons `DatagridComponent` uses `ChangeDetectionStrategy.OnPush` — always call `cdr.markForCheck()` after programmatic state mutations.

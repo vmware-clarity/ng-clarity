@@ -14,7 +14,8 @@
 - Revert test-only side effects (e.g., auto-fixed files during lint testing) so only infrastructure changes remain.
 - When creating plans, ask clarifying scope questions (e.g., full replacement vs. dual mode) before proceeding.
 - Do not make changes outside the scope of the current PR/task unless explicitly asked. Flag out-of-scope issues for separate work.
-- When user asks for a PR description, generate a temporary `PR_DESCRIPTION.md` at the repo root following the template in `.github/pull_request_template.md`.
+- When user asks for a PR description, print it as a copyable markdown block following the template in `.github/pull_request_template.md`. Do not create a file.
+- After completing a task, review AGENTS.md and relevant `.cursor/rules/*.mdc` files, and update them with any meaningful, broadly useful learnings discovered during the work (new patterns, gotchas, conventions). Component-specific learnings go in the matching `.mdc` file; project-wide learnings go in AGENTS.md. Skip trivial or one-off details that wouldn't benefit future sessions.
 
 ## Project Overview
 
@@ -37,23 +38,40 @@ This is **ng-clarity** — the [Clarity Design System](https://angular.clarity.d
 
 ## Key Commands
 
-| Task                     | Command                                                    |
-| ------------------------ | ---------------------------------------------------------- |
-| Full CI build            | `npm run build:ci`                                         |
-| Build Angular library    | `npm run _build:angular` (or `npx ng build clr-angular`)   |
-| Build demo app           | `npm run _build:demo`                                      |
-| Run all tests            | `npm run test`                                             |
-| Run Angular tests only   | `npm run _test:angular`                                    |
-| Filter unit tests        | `npx ng test clr-angular --include="**/path/**/*.spec.ts"` |
-| Watch tests              | `npm run test:watch`                                       |
-| Storybook dev server     | `npm start`                                                |
-| Demo app dev server      | `npm run start:demo`                                       |
-| Full lint                | `npm run lint`                                             |
-| Lint changed files only  | `npm run lint:changed`                                     |
-| Auto-fix lint            | `npm run lint:fix` or `npm run lint:changed:fix`           |
-| Check public API         | `npm run public-api:check`                                 |
-| Update public API golden | `npm run public-api:update`                                |
-| Clean build artifacts    | `npm run clean`                                            |
+| Task                     | Command                                                  |
+| ------------------------ | -------------------------------------------------------- |
+| Full CI build            | `npm run build:ci`                                       |
+| Build Angular library    | `npm run _build:angular` (or `npx ng build clr-angular`) |
+| Build demo app           | `npm run _build:demo`                                    |
+| Run all tests            | `npm run test`                                           |
+| Run Angular tests only   | `npm run _test:angular`                                  |
+| Run Addons tests only    | `npm run _test:addons`                                   |
+| Filter unit tests        | Use `fit()` / `fdescribe()` in spec files (see below)    |
+| Watch tests              | `npm run test:watch`                                     |
+| Storybook dev server     | `npm start`                                              |
+| Demo app dev server      | `npm run start:demo`                                     |
+| Full lint                | `npm run lint`                                           |
+| Lint changed files only  | `npm run lint:changed`                                   |
+| Auto-fix lint            | `npm run lint:fix` or `npm run lint:changed:fix`         |
+| Check public API         | `npm run public-api:check`                               |
+| Update public API golden | `npm run public-api:update`                              |
+| Clean build artifacts    | `npm run clean`                                          |
+
+### Focusing / Filtering Unit Tests
+
+The `--include` flag does **not** work with the current `@angular/build:karma` builder. To run a subset of tests:
+
+1. Change `it()` to `fit()` or `describe()` to `fdescribe()` in the spec file(s) you want to focus.
+2. Run the normal test command: `npm run _test:angular` (or `_test:addons`).
+3. **Always revert `fit`/`fdescribe` back to `it`/`describe` before committing.**
+
+Do **not** modify `karma.conf.js` to add Jasmine `filter` — use `fit`/`fdescribe` instead.
+
+## Shell Environment Notes
+
+- `rg` (ripgrep) is **not** available in the shell on this machine. Use the IDE Grep tool or the `grep` command instead.
+- For shell-based grep: `grep -rn "pattern" path/` or `grep -C 3 "pattern" file`.
+- For git-based searches across branches: `git show branch:path/to/file | grep -n "pattern"`.
 
 ## Angular Library Structure
 
@@ -76,17 +94,6 @@ component-name/
 ├── enums/                          # Enums (if multiple)
 └── chocolate/                      # Willy Wonka / Oompa Loompa cross-component pattern
 ```
-
-### SCSS Conventions
-
-- Styles mixin file: `_component.clarity.scss` — always wrapped in `@include mixins.exports('component.clarity') { ... }`.
-- Properties file: `_properties.component.scss` — defines CSS custom properties using design tokens, wrapped in `@include mixins.exports('component.properties')`.
-- Variables file: `_variables.component.scss` — maps SCSS `$clr-*` variables to `var(--clr-*, fallback)` with `!default`.
-- Use `@if`/`@else` control flow blocks, not the Sass `if()` function (IDE language servers don't support the modern `if(sass(...))` syntax).
-- Only use `rem` and `%` sizes; the only exception is `1px` borders.
-- Do not hardcode colors — use SCSS variables from the token system.
-- Keep CSS selectors flat — try not to exceed 2 levels (`.parent .child`).
-- Style components via CSS class names, not element tag selectors. Use `host: { '[class.clr-component]': 'true' }` and target `.clr-component` in SCSS.
 
 ### TypeScript Conventions
 
@@ -124,22 +131,6 @@ Every new file must include the Broadcom copyright header. Two formats:
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 ```
-
-## Storybook
-
-- Stories live in `.storybook/stories/<component>/`.
-- Story format: CSF 3.0 (`StoryObj` / `StoryFn`).
-- Shared helpers in `.storybook/helpers/common.ts` (`CommonModules`, `createArray`).
-- Theme helper in `.storybook/helpers/theme.helper.ts`.
-- Storybook globals (`theme`, `density`) are read from query params by the preview decorator.
-
-## Visual Regression Testing (VRT)
-
-- Playwright config: `playwright.config.ts`.
-- Test spec: `tests/visual-snapshots.spec.ts`.
-- Screenshots stored in `tests/snapshots/{browser}/{component}/{story-name}-{theme}-{density}.png`.
-- CI matrix: `browser` (chromium/firefox) × `theme` (light/dark) × `density` (default/compact).
-- Environment variables: `CLARITY_VRT_BROWSER`, `CLARITY_VRT_THEME`, `CLARITY_VRT_DENSITY`.
 
 ## Public API Management
 
@@ -186,10 +177,9 @@ PRs automatically trigger the `build` workflow which verifies: lint → build �
 
 ## Architecture Patterns
 
-- **Chocolate Factory (Willy Wonka / Oompa Loompa)**: Cross-component change detection pattern used by accordion, stepper, and others. A `WillyWonka` directive on the parent emits changes; `OompaLoompa` directives on children trigger `ChangeDetectorRef.markForCheck()`.
-- **CollapsiblePanel base**: `CollapsiblePanel` (abstract directive in `projects/angular/collapsible-panel/`) is the shared agnostic base for both `ClrAccordionPanel` and `ClrStepperPanel`. Stepper-specific logic (status tracking, box-shadows) lives only in the stepper module.
-- **IfExpandService**: Used for lazy content rendering in accordion/stepper panels. The `*clrIfExpanded` directive structurally adds/removes DOM — component state inside it is destroyed on collapse.
 - **Secondary entry points**: Each module in `projects/angular/` is a separate secondary entry point (e.g., `@clr/angular/accordion`, `@clr/angular/stepper`, `@clr/angular/collapsible-panel`, `@clr/angular/utils`).
+
+> Component-specific architecture details (accordion/stepper, datagrid, etc.) live in `.cursor/rules/*.mdc` files scoped to their directories.
 
 ## Workspace Quirks
 
