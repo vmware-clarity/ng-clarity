@@ -219,16 +219,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   @Input('clrDgSelected')
   set selected(value: T[]) {
-    // in SINGLE SELECTION mode if the value is the same as currently selected do nothing
-    if (
-      this.selection.selectionType === SelectionType.Single &&
-      // if value is NULL compare it directly to current single if NOT take first index of the array
-      ((value && value[0] === this.selection.currentSingle) || value === this.selection.currentSingle)
-    ) {
+    if (value === this.selection.current) {
       return;
     }
 
-    this.selection.updateCurrent(value, true);
+    this.selection.updateCurrent(value, false);
   }
 
   @Input()

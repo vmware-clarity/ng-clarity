@@ -998,7 +998,7 @@ export default function (): void {
           sub.unsubscribe();
         });
 
-        it('it emits a change event when changing the selection', async function () {
+        it('it does not emits a change event when changing the selection through input', async function () {
           let singleSelectedChangeCount = 0;
           const sub = context.clarityDirective.selectedChanged.subscribe(() => singleSelectedChangeCount++);
 
@@ -1007,7 +1007,7 @@ export default function (): void {
           await delay();
 
           expect(selection.currentSingle).toEqual(1);
-          expect(singleSelectedChangeCount).toEqual(1);
+          expect(singleSelectedChangeCount).toEqual(0);
 
           sub.unsubscribe();
         });
@@ -1041,7 +1041,7 @@ export default function (): void {
           await delay();
 
           expect(selection.currentSingle).toEqual(1);
-          expect(singleSelectedChangeCount).toEqual(1);
+          expect(singleSelectedChangeCount).toEqual(0);
 
           // re-assigning to the same value should not increase the singleSelectedChangeCount
           context.testComponent.selected = [1];
@@ -1049,7 +1049,7 @@ export default function (): void {
           await delay();
 
           expect(selection.currentSingle).toEqual(1);
-          expect(singleSelectedChangeCount).toEqual(1);
+          expect(singleSelectedChangeCount).toEqual(0);
 
           sub.unsubscribe();
         });
@@ -1062,26 +1062,6 @@ export default function (): void {
           selection.currentSingle = 2;
           context.detectChanges();
           expect(context.testComponent.selected[0]).toEqual(2);
-        });
-
-        it('does not create a feedback loop with two-way binding', async function () {
-          let emitCount = 0;
-          const sub = context.clarityDirective.selectedChanged.subscribe(() => emitCount++);
-
-          context.testComponent.selected = [1];
-          context.detectChanges();
-          await delay();
-
-          expect(emitCount).toEqual(1);
-
-          // Simulate what two-way binding does: parent sets the value it just received back.
-          // This must NOT trigger another emission, or it creates an infinite loop.
-          context.testComponent.selected = [1];
-          context.detectChanges();
-          await delay();
-
-          expect(emitCount).toEqual(1);
-          sub.unsubscribe();
         });
       });
 
@@ -1136,27 +1116,6 @@ export default function (): void {
       beforeEach(function () {
         context = this.create(ClrDatagrid, MultiSelectionSimpleTest, [Selection]);
         selection = context.getClarityProvider(Selection) as Selection<number>;
-      });
-
-      it('does not create a feedback loop with two-way binding', async function () {
-        let emitCount = 0;
-        const sub = context.clarityDirective.selectedChanged.subscribe(() => emitCount++);
-
-        const items = [1, 2, 3];
-        context.testComponent.selected = items;
-        context.detectChanges();
-        await delay();
-
-        expect(emitCount).toEqual(1);
-
-        // Simulate what two-way binding does: parent sets the value it just received back.
-        // This must NOT trigger another emission, or it creates an infinite loop.
-        context.testComponent.selected = items;
-        context.detectChanges();
-        await delay();
-
-        expect(emitCount).toEqual(1);
-        sub.unsubscribe();
       });
 
       describe('Select all', function () {

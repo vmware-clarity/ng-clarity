@@ -28,6 +28,7 @@
   [dgColumnsOrderColumns]="columns"
   [dgColumnsVirtualScrolling]="virtualScrolling"
   (dgColumnsOrderChange)="onColumnOrderChange($event)"
+  (clrDgSelectedChange)="onSelectedItemsChange($event)"
 >
   @if (enableToolBar) {
     <clr-dg-action-bar>

@@ -36,7 +36,6 @@ import {
   ClrDatagridSortOrder,
   ClrDatagridStateInterface,
   ClrDatagridVirtualScrollRangeInterface,
-  Selection,
   SelectionType,
 } from '@clr/angular/data/datagrid';
 import { Subject, Subscription } from 'rxjs';
@@ -841,10 +840,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     this.selectedItemsChange.emit(selected);
   }
 
-  setSelectedItems(items: T[]) {
-    this.selectedItemsChange.emit(items);
-  }
-
   /**
    * Return DataGrid footer label.
    * - Return "datagridLabels.footer" property, if defined.
@@ -927,7 +922,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
         }
       });
       this.#selectedItems = newSelection;
-      this.setSelectedItems(this.#selectedItems);
+
+      this.selectedItemsChange.emit(newSelection);
     } else {
       // Deselect all
       this.onDeselectAllClick();
@@ -1139,14 +1135,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     }
   }
 
-  private preserveSelectionWhenThereIsFilterDefine() {
-    const selection: Selection = this.clrDatagrid.selection;
-    const filterSub: Subscription = (selection as any)['_filtersSub'];
-    if (filterSub) {
-      filterSub.unsubscribe();
-    }
-  }
-
   private initActionTypes(): void {
     if (this.singleRowActions) {
       this.enableSingleRowActions = true;
@@ -1159,28 +1147,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
       this.clrDatagrid.identityFn = this.trackByGridItemFn;
     }
 
-    this.subscribeToSelectionChange();
-
     if (this.preSelectFirstItem && this.gridItems && this.gridItems.length > 0) {
       // TODO: Find better solution, This will not work if we
       // have some default sorting
       this.#selectedItems = [this.gridItems[0]];
-    }
-
-    if (this.#selectionType === SelectionType.Multi) {
-      // Remove the hack below when Clarity grid manages to preserve selection
-      // when filter is define.
-      // See issue: https://github.com/vmware/clarity/issues/484
-      // Currently the single selection works without this hack
-      this.preserveSelectionWhenThereIsFilterDefine();
-    }
-  }
-
-  private subscribeToSelectionChange(): void {
-    if (this.#selectionType !== SelectionType.None && this.clrDatagrid.selectedChanged) {
-      this.#gridSelectionChangedSub = this.clrDatagrid.selectedChanged
-        .pipe(takeUntil(this.#unsubscribeSubject))
-        .subscribe((selected: T[]) => this.onSelectedItemsChange(selected));
     }
   }
 

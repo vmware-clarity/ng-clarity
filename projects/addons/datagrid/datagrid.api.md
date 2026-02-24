@@ -477,8 +477,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     get selectionType(): SelectionType;
     set selectionType(type: SelectionType);
     serverDrivenDatagrid: boolean;
-    // (undocumented)
-    setSelectedItems(items: T[]): void;
     showCustomPagination: boolean;
     // (undocumented)
     protected get showDeselectAll(): boolean;
