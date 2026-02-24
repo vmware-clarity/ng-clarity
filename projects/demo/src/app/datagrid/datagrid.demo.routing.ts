@@ -41,6 +41,7 @@ import { DatagridPreserveSelectionDemo } from './preserve-selection/preserve-sel
 import { DatagridResponsiveFooterDemo } from './responsive-footer/responsive-footer';
 import { DatagridScrollingDemo } from './scrolling/scrolling';
 import { DatagridSelectionDemo } from './selection/selection';
+import { DatagridSelectionFeedbackLoopDemo } from './selection-feedback-loop/selection-feedback-loop';
 import { DatagridSelectionRowModeDemo } from './selection-row-mode/selection-row-mode';
 import { DatagridSelectionSingleDemo } from './selection-single/selection-single';
 import { DatagridServerDrivenDemo } from './server-driven/server-driven';
@@ -75,6 +76,7 @@ const ROUTES: Routes = [
       { path: 'selection-single', component: DatagridSelectionSingleDemo },
       { path: 'selection-row-mode', component: DatagridSelectionRowModeDemo },
       { path: 'preserve-selection', component: DatagridPreserveSelectionDemo },
+      { path: 'selection-feedback-loop', component: DatagridSelectionFeedbackLoopDemo },
       { path: 'server-driven', component: DatagridServerDrivenDemo },
       { path: 'placeholder', component: DatagridPlaceholderDemo },
       { path: 'virtual-scroll-empty-rows', component: DatagridVirtualScrollEmptyRowsDemo },
