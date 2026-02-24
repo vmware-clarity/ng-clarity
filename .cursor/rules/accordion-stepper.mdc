@@ -1,6 +1,6 @@
 ---
 description: Accordion, stepper, and collapsible-panel component patterns
-globs: projects/angular/accordion/**,projects/angular/stepper/**,projects/angular/collapsible-panel/**,.storybook/stories/accordion/**,.storybook/stories/stepper/**
+globs: projects/angular/accordion/**,projects/angular/stepper/**,projects/angular/collapsible-panel/**,.storybook/stories/accordion/**,.storybook/stories/stepper/**,projects/demo/src/app/accordion/**,projects/demo/src/app/stepper/**
 ---
 
 # Accordion / Stepper / CollapsiblePanel

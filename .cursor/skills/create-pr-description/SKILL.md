@@ -1,6 +1,6 @@
 ---
 name: create-pr-description
-description: Generate a PR description following the project template. Use when the user asks for a PR description, PR summary, or to create PR_DESCRIPTION.md.
+description: Generate a PR description following the project template. Use when the user asks for a PR description or PR summary.
 ---
 
 # Create PR Description
@@ -40,8 +40,8 @@ Run `git branch --show-current` to get the current branch name for Jira extracti
    ```markdown
    ## PR Checklist
 
-   - [x/] Tests for the changes have been added (for bug fixes / features)
-   - [x/] Docs have been added / updated (for bug fixes / features)
+   - [ ] Tests for the changes have been added (for bug fixes / features)
+   - [ ] Docs have been added / updated (for bug fixes / features)
    - [ ] If applicable, have a visual design approval
 
    ## PR Type

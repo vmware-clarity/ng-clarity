@@ -1,6 +1,6 @@
 ---
 description: Datagrid component patterns, selection architecture, and conventions
-globs: projects/angular/data/datagrid/**,projects/addons/datagrid/**,.storybook/stories/datagrid/**
+globs: projects/angular/data/datagrid/**,projects/addons/datagrid/**,.storybook/stories/datagrid/**,projects/demo/src/app/datagrid/**
 ---
 
 # Datagrid

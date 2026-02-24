@@ -67,12 +67,6 @@ The `--include` flag does **not** work with the current `@angular/build:karma` b
 
 Do **not** modify `karma.conf.js` to add Jasmine `filter` — use `fit`/`fdescribe` instead.
 
-## Shell Environment Notes
-
-- `rg` (ripgrep) is **not** available in the shell on this machine. Use the IDE Grep tool or the `grep` command instead.
-- For shell-based grep: `grep -rn "pattern" path/` or `grep -C 3 "pattern" file`.
-- For git-based searches across branches: `git show branch:path/to/file | grep -n "pattern"`.
-
 ## Angular Library Structure
 
 Each component module in `projects/angular/` follows this file layout:
