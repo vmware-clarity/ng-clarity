@@ -1,0 +1,114 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Selection Feedback Loop Test</h2>
+
+<p>
+  This page tests that <code>[(clrDgSelected)]</code> two-way binding does <strong>not</strong> create a feedback loop.
+  When you select a row, the <code>(clrDgSelectedChange)</code> output should fire <strong>exactly once</strong>. If the
+  emit count climbs rapidly or continuously, there is a feedback loop bug.
+</p>
+
+<h3>Multi Selection</h3>
+
+<div class="card">
+  <div class="card-block">
+    <div class="card-text">
+      <strong
+        >Emit count: <span [style.color]="multiEmitCount > 10 ? 'red' : 'inherit'">{{ multiEmitCount }}</span></strong
+      >
+      @if (multiEmitCount > 10) {
+      <span class="label label-danger">FEEDBACK LOOP DETECTED</span>
+      }
+      <br />
+      <strong>Selected:</strong> {{ multiSelected.length }} item(s)
+      <br />
+      <button class="btn btn-sm btn-outline" type="button" (click)="resetMulti()">Reset</button>
+    </div>
+  </div>
+</div>
+
+<clr-datagrid
+  [(clrDgSelected)]="multiSelected"
+  [clrDgSelectionType]="2"
+  (clrDgSelectedChange)="onMultiSelectedChange($event)"
+>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<div class="card">
+  <div class="card-header">Multi Selection Event Log</div>
+  <div class="card-block">
+    <div class="card-text">
+      @if (multiLog.length === 0) {
+      <em>No events yet. Click a checkbox to select a row.</em>
+      } @for (entry of multiLog; track $index) {
+      <div>{{ entry }}</div>
+      }
+    </div>
+  </div>
+</div>
+
+<h3>Single Selection</h3>
+
+<div class="card">
+  <div class="card-block">
+    <div class="card-text">
+      <strong
+        >Emit count: <span [style.color]="singleEmitCount > 10 ? 'red' : 'inherit'">{{ singleEmitCount }}</span></strong
+      >
+      @if (singleEmitCount > 10) {
+      <span class="label label-danger">FEEDBACK LOOP DETECTED</span>
+      }
+      <br />
+      <strong>Selected:</strong> {{ singleSelected?.length ?? 0 }} item(s)
+      <br />
+      <button class="btn btn-sm btn-outline" type="button" (click)="resetSingle()">Reset</button>
+    </div>
+  </div>
+</div>
+
+<clr-datagrid
+  [(clrDgSelected)]="singleSelected"
+  [clrDgSelectionType]="1"
+  (clrDgSelectedChange)="onSingleSelectedChange($event)"
+>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<div class="card">
+  <div class="card-header">Single Selection Event Log</div>
+  <div class="card-block">
+    <div class="card-text">
+      @if (singleLog.length === 0) {
+      <em>No events yet. Click a radio button to select a row.</em>
+      } @for (entry of singleLog; track $index) {
+      <div>{{ entry }}</div>
+      }
+    </div>
+  </div>
+</div>

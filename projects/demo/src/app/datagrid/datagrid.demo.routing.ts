@@ -41,6 +41,7 @@ import { DatagridPreserveSelectionDemo } from './preserve-selection/preserve-sel
 import { DatagridResponsiveFooterDemo } from './responsive-footer/responsive-footer';
 import { DatagridScrollingDemo } from './scrolling/scrolling';
 import { DatagridSelectionDemo } from './selection/selection';
+import { DatagridSelectionFeedbackLoopDemo } from './selection-feedback-loop/selection-feedback-loop';
 import { DatagridSelectionRowModeDemo } from './selection-row-mode/selection-row-mode';
 import { DatagridSelectionSingleDemo } from './selection-single/selection-single';
 import { DatagridServerDrivenDemo } from './server-driven/server-driven';
@@ -72,6 +73,7 @@ const ROUTES: Routes = [
       { path: 'pagination-conditional', component: DatagridConditionalPaginationDemo },
       { path: 'performance', component: DatagridPerformanceDemo },
       { path: 'selection', component: DatagridSelectionDemo },
+      { path: 'selection-feedback-loop', component: DatagridSelectionFeedbackLoopDemo },
       { path: 'selection-single', component: DatagridSelectionSingleDemo },
       { path: 'selection-row-mode', component: DatagridSelectionRowModeDemo },
       { path: 'preserve-selection', component: DatagridPreserveSelectionDemo },

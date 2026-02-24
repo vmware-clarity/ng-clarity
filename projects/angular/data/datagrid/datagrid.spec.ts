@@ -1063,6 +1063,26 @@ export default function (): void {
           context.detectChanges();
           expect(context.testComponent.selected[0]).toEqual(2);
         });
+
+        it('does not create a feedback loop with two-way binding', async function () {
+          let emitCount = 0;
+          const sub = context.clarityDirective.selectedChanged.subscribe(() => emitCount++);
+
+          context.testComponent.selected = [1];
+          context.detectChanges();
+          await delay();
+
+          expect(emitCount).toEqual(1);
+
+          // Simulate what two-way binding does: parent sets the value it just received back.
+          // This must NOT trigger another emission, or it creates an infinite loop.
+          context.testComponent.selected = [1];
+          context.detectChanges();
+          await delay();
+
+          expect(emitCount).toEqual(1);
+          sub.unsubscribe();
+        });
       });
 
       describe('View', function () {
@@ -1116,6 +1136,27 @@ export default function (): void {
       beforeEach(function () {
         context = this.create(ClrDatagrid, MultiSelectionSimpleTest, [Selection]);
         selection = context.getClarityProvider(Selection) as Selection<number>;
+      });
+
+      it('does not create a feedback loop with two-way binding', async function () {
+        let emitCount = 0;
+        const sub = context.clarityDirective.selectedChanged.subscribe(() => emitCount++);
+
+        const items = [1, 2, 3];
+        context.testComponent.selected = items;
+        context.detectChanges();
+        await delay();
+
+        expect(emitCount).toEqual(1);
+
+        // Simulate what two-way binding does: parent sets the value it just received back.
+        // This must NOT trigger another emission, or it creates an infinite loop.
+        context.testComponent.selected = items;
+        context.detectChanges();
+        await delay();
+
+        expect(emitCount).toEqual(1);
+        sub.unsubscribe();
       });
 
       describe('Select all', function () {

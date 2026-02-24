@@ -39,6 +39,7 @@ import { DatagridPreserveSelectionDemo } from './preserve-selection/preserve-sel
 import { DatagridResponsiveFooterDemo } from './responsive-footer/responsive-footer';
 import { DatagridScrollingDemo } from './scrolling/scrolling';
 import { DatagridSelectionDemo } from './selection/selection';
+import { DatagridSelectionFeedbackLoopDemo } from './selection-feedback-loop/selection-feedback-loop';
 import { DatagridSelectionRowModeDemo } from './selection-row-mode/selection-row-mode';
 import { DatagridSelectionSingleDemo } from './selection-single/selection-single';
 import { DatagridServerDrivenDemo } from './server-driven/server-driven';
@@ -69,6 +70,7 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
     DatagridPaginationScrollingDemo,
     DatagridConditionalPaginationDemo,
     DatagridSelectionDemo,
+    DatagridSelectionFeedbackLoopDemo,
     DatagridSelectionSingleDemo,
     DatagridSelectionRowModeDemo,
     DatagridPreserveSelectionDemo,
@@ -108,6 +110,7 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
     DatagridPaginationScrollingDemo,
     DatagridConditionalPaginationDemo,
     DatagridSelectionDemo,
+    DatagridSelectionFeedbackLoopDemo,
     DatagridSelectionSingleDemo,
     DatagridSelectionRowModeDemo,
     DatagridPreserveSelectionDemo,
