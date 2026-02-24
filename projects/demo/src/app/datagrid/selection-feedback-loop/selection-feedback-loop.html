@@ -18,12 +18,7 @@
 <div class="card">
   <div class="card-block">
     <div class="card-text">
-      <strong
-        >Emit count: <span [style.color]="multiEmitCount > 10 ? 'red' : 'inherit'">{{ multiEmitCount }}</span></strong
-      >
-      @if (multiEmitCount > 10) {
-      <span class="label label-danger">FEEDBACK LOOP DETECTED</span>
-      }
+      <strong>Emit count: {{ multiEmitCount }}</strong>
       <br />
       <strong>Selected:</strong> {{ multiSelected.length }} item(s)
       <br />
@@ -68,14 +63,9 @@
 <div class="card">
   <div class="card-block">
     <div class="card-text">
-      <strong
-        >Emit count: <span [style.color]="singleEmitCount > 10 ? 'red' : 'inherit'">{{ singleEmitCount }}</span></strong
-      >
-      @if (singleEmitCount > 10) {
-      <span class="label label-danger">FEEDBACK LOOP DETECTED</span>
-      }
+      <strong>Emit count: {{ singleEmitCount }}</strong>
       <br />
-      <strong>Selected:</strong> {{ singleSelected?.length ?? 0 }} item(s)
+      <strong>Selected:</strong> {{ singleSelected?.[0]?.name || '(none)' }}
       <br />
       <button class="btn btn-sm btn-outline" type="button" (click)="resetSingle()">Reset</button>
     </div>
@@ -107,6 +97,318 @@
       @if (singleLog.length === 0) {
       <em>No events yet. Click a radio button to select a row.</em>
       } @for (entry of singleLog; track $index) {
+      <div>{{ entry }}</div>
+      }
+    </div>
+  </div>
+</div>
+
+<h3>Manual Multi Re-assignment (Button-driven)</h3>
+
+<p>
+  This section tests programmatic re-assignment of <code>[(clrDgSelected)]</code> via buttons. Clicking a button
+  replaces the entire selection array. Each re-assignment should emit <strong>exactly once</strong>.
+</p>
+
+<div class="card">
+  <div class="card-block">
+    <div class="card-text">
+      <strong>Emit count: {{ manualMultiEmitCount }}</strong>
+      <br />
+      <strong>Selected:</strong> {{ manualMultiSelected.length }} item(s)
+      <br />
+      <button class="btn btn-sm btn-primary" type="button" (click)="selectFirst3()">Select first 3</button>
+      <button class="btn btn-sm btn-primary" type="button" (click)="selectLast3()">Select last 3</button>
+      <button class="btn btn-sm btn-primary" type="button" (click)="selectAll()">Select all</button>
+      <button class="btn btn-sm btn-warning" type="button" (click)="clearManualSelection()">Clear selection</button>
+      <button class="btn btn-sm btn-outline" type="button" (click)="resetManualMulti()">Reset</button>
+    </div>
+  </div>
+</div>
+
+<clr-datagrid
+  [(clrDgSelected)]="manualMultiSelected"
+  [clrDgSelectionType]="2"
+  (clrDgSelectedChange)="onManualMultiSelectedChange($event)"
+>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<div class="card">
+  <div class="card-header">Manual Multi Re-assignment Event Log</div>
+  <div class="card-block">
+    <div class="card-text">
+      @if (manualMultiLog.length === 0) {
+      <em>No events yet. Click a button above to programmatically set selection.</em>
+      } @for (entry of manualMultiLog; track $index) {
+      <div>{{ entry }}</div>
+      }
+    </div>
+  </div>
+</div>
+
+<h3>Manual Single Re-assignment (Button-driven)</h3>
+
+<p>
+  This section tests programmatic re-assignment of <code>[(clrDgSelected)]</code> with
+  <code>[clrDgSelectionType]="1"</code> via buttons. Clicking a button replaces the selected item. Each re-assignment
+  should emit <strong>exactly once</strong>.
+</p>
+
+<div class="card">
+  <div class="card-block">
+    <div class="card-text">
+      <strong>Emit count: {{ manualSingleEmitCount }}</strong>
+      <br />
+      <strong>Selected:</strong> {{ manualSingleSelected?.[0]?.name || '(none)' }}
+      <br />
+      <button class="btn btn-sm btn-primary" type="button" (click)="selectSingleFirst()">Select first</button>
+      <button class="btn btn-sm btn-primary" type="button" (click)="selectSingleMiddle()">Select middle</button>
+      <button class="btn btn-sm btn-primary" type="button" (click)="selectSingleLast()">Select last</button>
+      <button class="btn btn-sm btn-warning" type="button" (click)="clearManualSingleSelection()">
+        Clear selection
+      </button>
+      <button class="btn btn-sm btn-outline" type="button" (click)="resetManualSingle()">Reset</button>
+    </div>
+  </div>
+</div>
+
+<clr-datagrid
+  [(clrDgSelected)]="manualSingleSelected"
+  [clrDgSelectionType]="1"
+  (clrDgSelectedChange)="onManualSingleSelectedChange($event)"
+>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<div class="card">
+  <div class="card-header">Manual Single Re-assignment Event Log</div>
+  <div class="card-block">
+    <div class="card-text">
+      @if (manualSingleLog.length === 0) {
+      <em>No events yet. Click a button above to programmatically set selection.</em>
+      } @for (entry of manualSingleLog; track $index) {
+      <div>{{ entry }}</div>
+      }
+    </div>
+  </div>
+</div>
+
+<hr />
+<h2>One-Way Binding Tests</h2>
+
+<p>
+  These sections use one-way <code>[clrDgSelected]</code> input binding with a separate
+  <code>(clrDgSelectedChange)</code> output handler that manually reassigns the variable. This tests the same feedback
+  loop scenario but without Angular's two-way binding sugar.
+</p>
+
+<h3>One-Way Multi Selection</h3>
+
+<div class="card">
+  <div class="card-block">
+    <div class="card-text">
+      <strong>Emit count: {{ oneWayMultiEmitCount }}</strong>
+      <br />
+      <strong>Selected:</strong> {{ oneWayMultiSelected.length }} item(s)
+      <br />
+      <button class="btn btn-sm btn-outline" type="button" (click)="resetOneWayMulti()">Reset</button>
+    </div>
+  </div>
+</div>
+
+<clr-datagrid
+  [clrDgSelected]="oneWayMultiSelected"
+  [clrDgSelectionType]="2"
+  (clrDgSelectedChange)="onOneWayMultiSelectedChange($event)"
+>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<div class="card">
+  <div class="card-header">One-Way Multi Selection Event Log</div>
+  <div class="card-block">
+    <div class="card-text">
+      @if (oneWayMultiLog.length === 0) {
+      <em>No events yet. Click a checkbox to select a row.</em>
+      } @for (entry of oneWayMultiLog; track $index) {
+      <div>{{ entry }}</div>
+      }
+    </div>
+  </div>
+</div>
+
+<h3>One-Way Single Selection</h3>
+
+<div class="card">
+  <div class="card-block">
+    <div class="card-text">
+      <strong>Emit count: {{ oneWaySingleEmitCount }}</strong>
+      <br />
+      <strong>Selected:</strong> {{ oneWaySingleSelected?.[0]?.name || '(none)' }}
+      <br />
+      <button class="btn btn-sm btn-outline" type="button" (click)="resetOneWaySingle()">Reset</button>
+    </div>
+  </div>
+</div>
+
+<clr-datagrid
+  [clrDgSelected]="oneWaySingleSelected"
+  [clrDgSelectionType]="1"
+  (clrDgSelectedChange)="onOneWaySingleSelectedChange($event)"
+>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<div class="card">
+  <div class="card-header">One-Way Single Selection Event Log</div>
+  <div class="card-block">
+    <div class="card-text">
+      @if (oneWaySingleLog.length === 0) {
+      <em>No events yet. Click a radio button to select a row.</em>
+      } @for (entry of oneWaySingleLog; track $index) {
+      <div>{{ entry }}</div>
+      }
+    </div>
+  </div>
+</div>
+
+<h3>One-Way Manual Multi Re-assignment (Button-driven)</h3>
+
+<p>One-way <code>[clrDgSelected]</code> with <code>[clrDgSelectionType]="2"</code> and button-driven re-assignment.</p>
+
+<div class="card">
+  <div class="card-block">
+    <div class="card-text">
+      <strong>Emit count: {{ oneWayManualMultiEmitCount }}</strong>
+      <br />
+      <strong>Selected:</strong> {{ oneWayManualMultiSelected.length }} item(s)
+      <br />
+      <button class="btn btn-sm btn-primary" type="button" (click)="owSelectFirst3()">Select first 3</button>
+      <button class="btn btn-sm btn-primary" type="button" (click)="owSelectLast3()">Select last 3</button>
+      <button class="btn btn-sm btn-primary" type="button" (click)="owSelectAll()">Select all</button>
+      <button class="btn btn-sm btn-warning" type="button" (click)="owClearMulti()">Clear selection</button>
+      <button class="btn btn-sm btn-outline" type="button" (click)="resetOneWayManualMulti()">Reset</button>
+    </div>
+  </div>
+</div>
+
+<clr-datagrid
+  [clrDgSelected]="oneWayManualMultiSelected"
+  [clrDgSelectionType]="2"
+  (clrDgSelectedChange)="onOneWayManualMultiSelectedChange($event)"
+>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<div class="card">
+  <div class="card-header">One-Way Manual Multi Re-assignment Event Log</div>
+  <div class="card-block">
+    <div class="card-text">
+      @if (oneWayManualMultiLog.length === 0) {
+      <em>No events yet. Click a button above to programmatically set selection.</em>
+      } @for (entry of oneWayManualMultiLog; track $index) {
+      <div>{{ entry }}</div>
+      }
+    </div>
+  </div>
+</div>
+
+<h3>One-Way Manual Single Re-assignment (Button-driven)</h3>
+
+<p>One-way <code>[clrDgSelected]</code> with <code>[clrDgSelectionType]="1"</code> and button-driven re-assignment.</p>
+
+<div class="card">
+  <div class="card-block">
+    <div class="card-text">
+      <strong>Emit count: {{ oneWayManualSingleEmitCount }}</strong>
+      <br />
+      <strong>Selected:</strong> {{ oneWayManualSingleSelected?.[0]?.name || '(none)' }}
+      <br />
+      <button class="btn btn-sm btn-primary" type="button" (click)="owSelectSingleFirst()">Select first</button>
+      <button class="btn btn-sm btn-primary" type="button" (click)="owSelectSingleMiddle()">Select middle</button>
+      <button class="btn btn-sm btn-primary" type="button" (click)="owSelectSingleLast()">Select last</button>
+      <button class="btn btn-sm btn-warning" type="button" (click)="owClearSingle()">Clear selection</button>
+      <button class="btn btn-sm btn-outline" type="button" (click)="resetOneWayManualSingle()">Reset</button>
+    </div>
+  </div>
+</div>
+
+<clr-datagrid
+  [clrDgSelected]="oneWayManualSingleSelected"
+  [clrDgSelectionType]="1"
+  (clrDgSelectedChange)="onOneWayManualSingleSelectedChange($event)"
+>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<div class="card">
+  <div class="card-header">One-Way Manual Single Re-assignment Event Log</div>
+  <div class="card-block">
+    <div class="card-text">
+      @if (oneWayManualSingleLog.length === 0) {
+      <em>No events yet. Click a button above to programmatically set selection.</em>
+      } @for (entry of oneWayManualSingleLog; track $index) {
       <div>{{ entry }}</div>
       }
     </div>

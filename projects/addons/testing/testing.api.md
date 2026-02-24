@@ -318,8 +318,6 @@ export class MockAppfxDatagridComponent {
     // (undocumented)
     serverDrivenDatagrid: boolean;
     // (undocumented)
-    setSelectedItems(): void;
-    // (undocumented)
     showFooter: boolean;
     // (undocumented)
     singleRowActions: any[];

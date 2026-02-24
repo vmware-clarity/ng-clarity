@@ -77,6 +77,7 @@ const ROUTES: Routes = [
       { path: 'selection-single', component: DatagridSelectionSingleDemo },
       { path: 'selection-row-mode', component: DatagridSelectionRowModeDemo },
       { path: 'preserve-selection', component: DatagridPreserveSelectionDemo },
+      { path: 'selection-feedback-loop', component: DatagridSelectionFeedbackLoopDemo },
       { path: 'server-driven', component: DatagridServerDrivenDemo },
       { path: 'placeholder', component: DatagridPlaceholderDemo },
       { path: 'virtual-scroll-empty-rows', component: DatagridVirtualScrollEmptyRowsDemo },
