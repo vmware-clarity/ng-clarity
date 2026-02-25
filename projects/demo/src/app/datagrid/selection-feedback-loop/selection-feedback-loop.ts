@@ -10,6 +10,44 @@ import { Component } from '@angular/core';
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
 
+interface SelectionButton {
+  label: string;
+  cssClass: string;
+}
+
+interface SelectionScenario {
+  title: string;
+  sectionHeading?: string;
+  description?: string;
+  selectionType: 'single' | 'multi';
+  twoWay: boolean;
+  selected: User[];
+  emitCount: number;
+  log: string[];
+  buttons?: SelectionButton[];
+  initWithNull?: boolean;
+}
+
+const MULTI_BUTTONS: SelectionButton[] = [
+  { label: 'Select first 3', cssClass: 'btn-primary' },
+  { label: 'Select last 3', cssClass: 'btn-primary' },
+  { label: 'Select all', cssClass: 'btn-primary' },
+  { label: 'Clear selection', cssClass: 'btn-warning' },
+];
+
+const SINGLE_BUTTONS: SelectionButton[] = [
+  { label: 'Select first', cssClass: 'btn-primary' },
+  { label: 'Select middle', cssClass: 'btn-primary' },
+  { label: 'Select last', cssClass: 'btn-primary' },
+  { label: 'Clear selection', cssClass: 'btn-warning' },
+];
+
+const NULL_BUTTONS: SelectionButton[] = [
+  { label: 'Set to null', cssClass: 'btn-primary' },
+  { label: 'Set to undefined', cssClass: 'btn-primary' },
+  { label: 'Set to []', cssClass: 'btn-primary' },
+];
+
 @Component({
   selector: 'clr-datagrid-selection-feedback-loop-demo',
   providers: [Inventory],
@@ -19,225 +57,194 @@ import { User } from '../inventory/user';
 })
 export class DatagridSelectionFeedbackLoopDemo {
   users: User[];
-  multiSelected: User[] = [];
-  singleSelected: User[] = [];
-
-  multiEmitCount = 0;
-  singleEmitCount = 0;
-  multiLog: string[] = [];
-  singleLog: string[] = [];
-  manualMultiSelected: User[] = [];
-  manualMultiEmitCount = 0;
-  manualMultiLog: string[] = [];
-  manualSingleSelected: User[] = [];
-  manualSingleEmitCount = 0;
-  manualSingleLog: string[] = [];
-  oneWayMultiSelected: User[] = [];
-  oneWayMultiEmitCount = 0;
-  oneWayMultiLog: string[] = [];
-  oneWaySingleSelected: User[] = [];
-  oneWaySingleEmitCount = 0;
-  oneWaySingleLog: string[] = [];
-  oneWayManualMultiSelected: User[] = [];
-  oneWayManualMultiEmitCount = 0;
-  oneWayManualMultiLog: string[] = [];
-  oneWayManualSingleSelected: User[] = [];
-  oneWayManualSingleEmitCount = 0;
-  oneWayManualSingleLog: string[] = [];
+  scenarios: SelectionScenario[];
 
   constructor(inventory: Inventory) {
     inventory.size = 10;
     inventory.reset();
     this.users = inventory.all;
+    this.scenarios = this.buildScenarios();
   }
 
-  onMultiSelectedChange(selected: User[]) {
-    this.multiEmitCount++;
-    this.multiLog.unshift(
-      `#${this.multiEmitCount}: emitted ${selected.length} item(s) — ${selected.map(u => u.name).join(', ') || '(none)'}`
-    );
-    if (this.multiLog.length > 20) {
-      this.multiLog.length = 20;
+  onChange(scenario: SelectionScenario, selected: User[]) {
+    scenario.selected = selected;
+    scenario.emitCount++;
+
+    const summary =
+      scenario.selectionType === 'single'
+        ? `#${scenario.emitCount}: emitted — ${selected?.[0]?.name || '(none)'}`
+        : `#${scenario.emitCount}: emitted ${selected.length} item(s) — ${selected.map(u => u.name).join(', ') || '(none)'}`;
+
+    scenario.log.unshift(summary);
+    if (scenario.log.length > 20) {
+      scenario.log.length = 20;
     }
   }
 
-  onSingleSelectedChange(selected: User[]) {
-    this.singleEmitCount++;
-    this.singleLog.unshift(`#${this.singleEmitCount}: emitted — ${selected?.[0]?.name || '(none)'}`);
-    if (this.singleLog.length > 20) {
-      this.singleLog.length = 20;
+  reset(scenario: SelectionScenario) {
+    scenario.selected = scenario.initWithNull ? null : [];
+    scenario.emitCount = 0;
+    scenario.log = [];
+  }
+
+  onButtonClick(scenario: SelectionScenario, button: SelectionButton) {
+    switch (button.label) {
+      case 'Select first 3':
+        scenario.selected = this.users.slice(0, 3);
+        break;
+      case 'Select last 3':
+        scenario.selected = this.users.slice(-3);
+        break;
+      case 'Select all':
+        scenario.selected = [...this.users];
+        break;
+      case 'Clear selection':
+        scenario.selected = [];
+        break;
+      case 'Select first':
+        scenario.selected = [this.users[0]];
+        break;
+      case 'Select middle':
+        scenario.selected = [this.users[Math.floor(this.users.length / 2)]];
+        break;
+      case 'Select last':
+        scenario.selected = [this.users[this.users.length - 1]];
+        break;
+      case 'Set to null':
+        scenario.selected = null;
+        break;
+      case 'Set to undefined':
+        scenario.selected = undefined;
+        break;
+      case 'Set to []':
+        scenario.selected = [];
+        break;
     }
   }
 
-  resetMulti() {
-    this.multiSelected = [];
-    this.multiEmitCount = 0;
-    this.multiLog = [];
-  }
-
-  resetSingle() {
-    this.singleSelected = [];
-    this.singleEmitCount = 0;
-    this.singleLog = [];
-  }
-
-  onManualMultiSelectedChange(selected: User[]) {
-    this.manualMultiEmitCount++;
-    this.manualMultiLog.unshift(
-      `#${this.manualMultiEmitCount}: emitted ${selected.length} item(s) — ${selected.map(u => u.name).join(', ') || '(none)'}`
-    );
-    if (this.manualMultiLog.length > 20) {
-      this.manualMultiLog.length = 20;
+  selectedDisplay(scenario: SelectionScenario): string {
+    if (scenario.selectionType === 'single') {
+      return scenario.selected?.[0]?.name || '(none)';
     }
+    return `${scenario.selected?.length ?? 0} item(s)`;
   }
 
-  selectFirst3() {
-    this.manualMultiSelected = this.users.slice(0, 3);
-  }
-
-  selectLast3() {
-    this.manualMultiSelected = this.users.slice(-3);
-  }
-
-  selectAll() {
-    this.manualMultiSelected = [...this.users];
-  }
-
-  clearManualSelection() {
-    this.manualMultiSelected = [];
-  }
-
-  resetManualMulti() {
-    this.manualMultiSelected = [];
-    this.manualMultiEmitCount = 0;
-    this.manualMultiLog = [];
-  }
-
-  onManualSingleSelectedChange(selected: User[]) {
-    this.manualSingleEmitCount++;
-    this.manualSingleLog.unshift(`#${this.manualSingleEmitCount}: emitted — ${selected?.[0]?.name || '(none)'}`);
-    if (this.manualSingleLog.length > 20) {
-      this.manualSingleLog.length = 20;
+  boundValueType(scenario: SelectionScenario): string {
+    if (scenario.selected === null) {
+      return 'null';
     }
-  }
-
-  selectSingleFirst() {
-    this.manualSingleSelected = [this.users[0]];
-  }
-
-  selectSingleLast() {
-    this.manualSingleSelected = [this.users[this.users.length - 1]];
-  }
-
-  selectSingleMiddle() {
-    this.manualSingleSelected = [this.users[Math.floor(this.users.length / 2)]];
-  }
-
-  clearManualSingleSelection() {
-    this.manualSingleSelected = [];
-  }
-
-  resetManualSingle() {
-    this.manualSingleSelected = [];
-    this.manualSingleEmitCount = 0;
-    this.manualSingleLog = [];
-  }
-
-  onOneWayMultiSelectedChange(selected: User[]) {
-    this.oneWayMultiSelected = selected;
-    this.oneWayMultiEmitCount++;
-    this.oneWayMultiLog.unshift(
-      `#${this.oneWayMultiEmitCount}: emitted ${selected.length} item(s) — ${selected.map(u => u.name).join(', ') || '(none)'}`
-    );
-    if (this.oneWayMultiLog.length > 20) {
-      this.oneWayMultiLog.length = 20;
+    if (scenario.selected === undefined) {
+      return 'undefined';
     }
+    return `Array(${scenario.selected.length})`;
   }
 
-  resetOneWayMulti() {
-    this.oneWayMultiSelected = [];
-    this.oneWayMultiEmitCount = 0;
-    this.oneWayMultiLog = [];
-  }
+  private buildScenarios(): SelectionScenario[] {
+    return [
+      {
+        title: 'Multi Selection',
+        selectionType: 'multi',
+        twoWay: true,
+        selected: [],
+        emitCount: 0,
+        log: [],
+      },
+      {
+        title: 'Single Selection',
+        selectionType: 'single',
+        twoWay: true,
+        selected: [],
+        emitCount: 0,
+        log: [],
+      },
+      {
+        title: 'Manual Multi Re-assignment (Button-driven)',
+        description:
+          'Tests programmatic re-assignment of [(clrDgSelected)] via buttons. Each re-assignment should emit exactly once.',
+        selectionType: 'multi',
+        twoWay: true,
+        selected: [],
+        emitCount: 0,
+        log: [],
+        buttons: MULTI_BUTTONS,
+      },
+      {
+        title: 'Manual Single Re-assignment (Button-driven)',
+        description:
+          'Tests programmatic re-assignment of [(clrDgSelected)] with single selection via buttons. Each re-assignment should emit exactly once.',
+        selectionType: 'single',
+        twoWay: true,
+        selected: [],
+        emitCount: 0,
+        log: [],
+        buttons: SINGLE_BUTTONS,
+      },
 
-  onOneWaySingleSelectedChange(selected: User[]) {
-    this.oneWaySingleSelected = selected;
-    this.oneWaySingleEmitCount++;
-    this.oneWaySingleLog.unshift(`#${this.oneWaySingleEmitCount}: emitted — ${selected?.[0]?.name || '(none)'}`);
-    if (this.oneWaySingleLog.length > 20) {
-      this.oneWaySingleLog.length = 20;
-    }
-  }
+      {
+        sectionHeading: 'One-Way Binding Tests',
+        title: 'One-Way Multi Selection',
+        description:
+          'Uses one-way [clrDgSelected] input with a separate (clrDgSelectedChange) output that manually reassigns the variable.',
+        selectionType: 'multi',
+        twoWay: false,
+        selected: [],
+        emitCount: 0,
+        log: [],
+      },
+      {
+        title: 'One-Way Single Selection',
+        selectionType: 'single',
+        twoWay: false,
+        selected: [],
+        emitCount: 0,
+        log: [],
+      },
+      {
+        title: 'One-Way Manual Multi Re-assignment (Button-driven)',
+        description: 'One-way [clrDgSelected] with multi selection and button-driven re-assignment.',
+        selectionType: 'multi',
+        twoWay: false,
+        selected: [],
+        emitCount: 0,
+        log: [],
+        buttons: MULTI_BUTTONS,
+      },
+      {
+        title: 'One-Way Manual Single Re-assignment (Button-driven)',
+        description: 'One-way [clrDgSelected] with single selection and button-driven re-assignment.',
+        selectionType: 'single',
+        twoWay: false,
+        selected: [],
+        emitCount: 0,
+        log: [],
+        buttons: SINGLE_BUTTONS,
+      },
 
-  resetOneWaySingle() {
-    this.oneWaySingleSelected = [];
-    this.oneWaySingleEmitCount = 0;
-    this.oneWaySingleLog = [];
-  }
-
-  onOneWayManualMultiSelectedChange(selected: User[]) {
-    this.oneWayManualMultiSelected = selected;
-    this.oneWayManualMultiEmitCount++;
-    this.oneWayManualMultiLog.unshift(
-      `#${this.oneWayManualMultiEmitCount}: emitted ${selected.length} item(s) — ${selected.map(u => u.name).join(', ') || '(none)'}`
-    );
-    if (this.oneWayManualMultiLog.length > 20) {
-      this.oneWayManualMultiLog.length = 20;
-    }
-  }
-
-  owSelectFirst3() {
-    this.oneWayManualMultiSelected = this.users.slice(0, 3);
-  }
-
-  owSelectLast3() {
-    this.oneWayManualMultiSelected = this.users.slice(-3);
-  }
-
-  owSelectAll() {
-    this.oneWayManualMultiSelected = [...this.users];
-  }
-
-  owClearMulti() {
-    this.oneWayManualMultiSelected = [];
-  }
-
-  resetOneWayManualMulti() {
-    this.oneWayManualMultiSelected = [];
-    this.oneWayManualMultiEmitCount = 0;
-    this.oneWayManualMultiLog = [];
-  }
-
-  onOneWayManualSingleSelectedChange(selected: User[]) {
-    this.oneWayManualSingleSelected = selected;
-    this.oneWayManualSingleEmitCount++;
-    this.oneWayManualSingleLog.unshift(
-      `#${this.oneWayManualSingleEmitCount}: emitted — ${selected?.[0]?.name || '(none)'}`
-    );
-    if (this.oneWayManualSingleLog.length > 20) {
-      this.oneWayManualSingleLog.length = 20;
-    }
-  }
-
-  owSelectSingleFirst() {
-    this.oneWayManualSingleSelected = [this.users[0]];
-  }
-
-  owSelectSingleLast() {
-    this.oneWayManualSingleSelected = [this.users[this.users.length - 1]];
-  }
-
-  owSelectSingleMiddle() {
-    this.oneWayManualSingleSelected = [this.users[Math.floor(this.users.length / 2)]];
-  }
-
-  owClearSingle() {
-    this.oneWayManualSingleSelected = [];
-  }
-
-  resetOneWayManualSingle() {
-    this.oneWayManualSingleSelected = [];
-    this.oneWayManualSingleEmitCount = 0;
-    this.oneWayManualSingleLog = [];
+      {
+        sectionHeading: 'Null/Undefined Input Tests',
+        title: 'Null-Init Single Selection',
+        description:
+          'Tests what happens when clrDgSelected is initialized with null or set to null/undefined at runtime.',
+        selectionType: 'single',
+        twoWay: true,
+        selected: null,
+        emitCount: 0,
+        log: [],
+        initWithNull: true,
+        buttons: NULL_BUTTONS,
+      },
+      {
+        title: 'Null-Init Multi Selection',
+        description:
+          'Tests what happens when clrDgSelected is initialized with null or set to null/undefined at runtime.',
+        selectionType: 'multi',
+        twoWay: true,
+        selected: null,
+        emitCount: 0,
+        log: [],
+        initWithNull: true,
+        buttons: NULL_BUTTONS,
+      },
+    ];
   }
 }

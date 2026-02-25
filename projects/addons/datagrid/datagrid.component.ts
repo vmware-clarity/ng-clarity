@@ -487,7 +487,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    */
   #hasAdvancedFilters = false;
   #wrapCellText = true;
-  #gridSelectionChangedSub: Subscription;
 
   constructor(
     datagridStrings: DatagridStrings,
@@ -584,9 +583,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     if (type !== undefined) {
       this.#selectionType = selectionTypeAttribute(type);
 
-      // likely that the embedded Clarity grid doesn't yet exist, will manually set the `selectionType` later
-      if (this.clrDatagrid && this.#gridSelectionChangedSub) {
-        this.#gridSelectionChangedSub.unsubscribe();
+      if (this.clrDatagrid) {
         this.initGridSelection();
       }
     }
