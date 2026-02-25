@@ -5,7 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+/**
+ * Controls how many panels can be open simultaneously within a panel group.
+ */
 export enum CollapsiblePanelStrategy {
+  /** Only one panel can be open at a time. Opening a panel closes any previously open panel. */
   Default = 'default',
+  /** Multiple panels can be open simultaneously. */
   Multi = 'multi',
 }
