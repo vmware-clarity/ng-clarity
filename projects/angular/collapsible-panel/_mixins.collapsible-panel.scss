@@ -34,12 +34,12 @@
 
   .#{$prefix}-header {
     width: 100%;
-    border: tokens.$cds-global-space-1 solid $border-color;
+    border: tokens.$cds-alias-object-border-width-100 solid $border-color;
     border-bottom-width: 0;
     background: $header-background-color;
     color: $text-color;
     text-align: left;
-    transition: background-color 200ms ease-in-out;
+    transition: background-color tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out;
 
     @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
 
@@ -151,7 +151,7 @@
   }
 
   .#{$prefix}-angle {
-    transition: all 200ms ease-in-out;
+    transition: all tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out;
     transform: rotate(90deg);
   }
 

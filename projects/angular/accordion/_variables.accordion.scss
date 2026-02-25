@@ -81,3 +81,21 @@ $clr-accordion-border-radius: var(
   --clr-accordion-border-radius,
   #{panel-variables.$clr-collapsible-panel-border-radius}
 ) !default;
+
+$clr-accordion-theme: (
+  text-color: $clr-accordion-text-color,
+  text-color-hover: $clr-accordion-text-color-hover,
+  text-color-active: $clr-accordion-text-color-active,
+  panel-disabled-color: $clr-accordion-panel-disabled-color,
+  content-background-color: $clr-accordion-content-background-color,
+  header-background-color: $clr-accordion-header-background-color,
+  header-disabled-background-color: $clr-accordion-header-disabled-background-color,
+  header-hover-background-color: $clr-accordion-header-hover-background-color,
+  header-active-background-color: $clr-accordion-header-active-background-color,
+  header-open-background-color: $clr-accordion-header-open-background-color,
+  header-open-active-background-color: $clr-accordion-header-open-active-background-color,
+  header-open-hover-background-color: $clr-accordion-header-open-hover-background-color,
+  border-color: $clr-accordion-border-color,
+  content-color: $clr-accordion-content-color,
+  responsive-breakpoint: $clr-accordion-responsive-breakpoint,
+);
