@@ -29,7 +29,7 @@
 
 <clr-datagrid
   [(clrDgSelected)]="multiSelected"
-  [clrDgSelectionType]="2"
+  clrDgSelectionType="multi"
   (clrDgSelectedChange)="onMultiSelectedChange($event)"
 >
   <clr-dg-column>User ID</clr-dg-column>
@@ -74,7 +74,7 @@
 
 <clr-datagrid
   [(clrDgSelected)]="singleSelected"
-  [clrDgSelectionType]="1"
+  clrDgSelectionType="single"
   (clrDgSelectedChange)="onSingleSelectedChange($event)"
 >
   <clr-dg-column>User ID</clr-dg-column>
@@ -128,7 +128,7 @@
 
 <clr-datagrid
   [(clrDgSelected)]="manualMultiSelected"
-  [clrDgSelectionType]="2"
+  clrDgSelectionType="multi"
   (clrDgSelectedChange)="onManualMultiSelectedChange($event)"
 >
   <clr-dg-column>User ID</clr-dg-column>
@@ -161,7 +161,7 @@
 
 <p>
   This section tests programmatic re-assignment of <code>[(clrDgSelected)]</code> with
-  <code>[clrDgSelectionType]="1"</code> via buttons. Clicking a button replaces the selected item. Each re-assignment
+  <code>clrDgSelectionType="single"</code> via buttons. Clicking a button replaces the selected item. Each re-assignment
   should emit <strong>exactly once</strong>.
 </p>
 
@@ -185,7 +185,7 @@
 
 <clr-datagrid
   [(clrDgSelected)]="manualSingleSelected"
-  [clrDgSelectionType]="1"
+  clrDgSelectionType="single"
   (clrDgSelectedChange)="onManualSingleSelectedChange($event)"
 >
   <clr-dg-column>User ID</clr-dg-column>
@@ -239,7 +239,7 @@
 
 <clr-datagrid
   [clrDgSelected]="oneWayMultiSelected"
-  [clrDgSelectionType]="2"
+  clrDgSelectionType="multi"
   (clrDgSelectedChange)="onOneWayMultiSelectedChange($event)"
 >
   <clr-dg-column>User ID</clr-dg-column>
@@ -284,7 +284,7 @@
 
 <clr-datagrid
   [clrDgSelected]="oneWaySingleSelected"
-  [clrDgSelectionType]="1"
+  clrDgSelectionType="single"
   (clrDgSelectedChange)="onOneWaySingleSelectedChange($event)"
 >
   <clr-dg-column>User ID</clr-dg-column>
@@ -315,7 +315,9 @@
 
 <h3>One-Way Manual Multi Re-assignment (Button-driven)</h3>
 
-<p>One-way <code>[clrDgSelected]</code> with <code>[clrDgSelectionType]="2"</code> and button-driven re-assignment.</p>
+<p>
+  One-way <code>[clrDgSelected]</code> with <code>clrDgSelectionType="multi"</code> and button-driven re-assignment.
+</p>
 
 <div class="card">
   <div class="card-block">
@@ -335,7 +337,7 @@
 
 <clr-datagrid
   [clrDgSelected]="oneWayManualMultiSelected"
-  [clrDgSelectionType]="2"
+  clrDgSelectionType="multi"
   (clrDgSelectedChange)="onOneWayManualMultiSelectedChange($event)"
 >
   <clr-dg-column>User ID</clr-dg-column>
@@ -366,7 +368,9 @@
 
 <h3>One-Way Manual Single Re-assignment (Button-driven)</h3>
 
-<p>One-way <code>[clrDgSelected]</code> with <code>[clrDgSelectionType]="1"</code> and button-driven re-assignment.</p>
+<p>
+  One-way <code>[clrDgSelected]</code> with <code>clrDgSelectionType="single"</code> and button-driven re-assignment.
+</p>
 
 <div class="card">
   <div class="card-block">
@@ -386,7 +390,7 @@
 
 <clr-datagrid
   [clrDgSelected]="oneWayManualSingleSelected"
-  [clrDgSelectionType]="1"
+  clrDgSelectionType="single"
   (clrDgSelectedChange)="onOneWayManualSingleSelectedChange($event)"
 >
   <clr-dg-column>User ID</clr-dg-column>

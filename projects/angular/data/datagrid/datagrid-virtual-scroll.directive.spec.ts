@@ -36,7 +36,7 @@ export interface Cells {
     @if ({ rows: rows | async }; as data) {
       <clr-datagrid
         [(clrDgSelected)]="selectedRows"
-        [clrDgSelectionType]="2"
+        clrDgSelectionType="multi"
         style="height: 32rem"
         class="datagrid-compact"
       >

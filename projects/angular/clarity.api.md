@@ -2104,6 +2104,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     loadingMoreItems: boolean;
     // (undocumented)
+    static ngAcceptInputType_selectionType: SelectionType | string;
+    // (undocumented)
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
     // (undocumented)
@@ -8649,10 +8651,13 @@ export { Selection_2 as Selection }
 
 // @public (undocumented)
 export enum SelectionType {
-    Multi = 2,
-    None = 0,
-    Single = 1
+    Multi = "multi",
+    None = "none",
+    Single = "single"
 }
+
+// @public (undocumented)
+export function selectionTypeAttribute(value: SelectionType | string): SelectionType;
 
 // @public (undocumented)
 export const shareIcon: IconShapeTuple;

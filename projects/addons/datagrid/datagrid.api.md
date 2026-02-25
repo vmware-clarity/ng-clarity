@@ -475,7 +475,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     protected get selectedItemsCount(): number;
     // Warning: (ae-forgotten-export) The symbol "SelectionType" needs to be exported by the entry point clr-addons-datagrid.d.ts
     get selectionType(): SelectionType;
-    set selectionType(type: SelectionType);
+    set selectionType(type: SelectionType | string);
     serverDrivenDatagrid: boolean;
     showCustomPagination: boolean;
     // (undocumented)

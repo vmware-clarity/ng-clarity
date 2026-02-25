@@ -38,7 +38,7 @@ import { ClrDatagridPlaceholder } from './datagrid-placeholder';
 import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
-import { SelectionType } from './enums/selection-type';
+import { SelectionType, selectionTypeAttribute } from './enums/selection-type';
 import { ClrDatagridStateInterface } from './interfaces/state.interface';
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
@@ -206,7 +206,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /**
    * Array of all selected items
    */
-  @Input('clrDgSelectionType')
+  @Input({ alias: 'clrDgSelectionType', transform: selectionTypeAttribute })
   get selectionType(): SelectionType {
     return this.selection.selectionType;
   }

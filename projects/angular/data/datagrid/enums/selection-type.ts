@@ -9,15 +9,24 @@ export enum SelectionType {
   /**
    * User cannot select any row in the Datagrid
    */
-  None = 0,
+  None = 'none',
 
   /**
    * User can select only one row at a time in the Datagrid.
    */
-  Single = 1,
+  Single = 'single',
 
   /**
    * User can select any number of rows in the Datagrid.
    */
-  Multi = 2,
+  Multi = 'multi',
+}
+
+const SELECTION_TYPE_VALUES = new Set<string>(Object.values(SelectionType));
+
+export function selectionTypeAttribute(value: SelectionType | string): SelectionType {
+  if (SELECTION_TYPE_VALUES.has(value as string)) {
+    return value as SelectionType;
+  }
+  throw new Error(`Invalid SelectionType: "${value}". Expected one of: ${[...SELECTION_TYPE_VALUES].join(', ')}`);
 }

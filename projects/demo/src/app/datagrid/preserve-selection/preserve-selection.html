@@ -41,7 +41,7 @@
 
 <clr-datagrid
   [(clrDgSelected)]="clientNoTrackBySelected"
-  [clrDgSelectionType]="2"
+  clrDgSelectionType="multi"
   [clrDgPreserveSelection]="preserveFilteringNoTrackBy"
 >
   <clr-dg-column>User ID</clr-dg-column>
@@ -94,7 +94,7 @@
 
 <clr-datagrid
   [(clrDgSelected)]="clientTrackByIndexSelected"
-  [clrDgSelectionType]="2"
+  clrDgSelectionType="multi"
   [clrDgPreserveSelection]="preserveFilteringTrackByIndex"
 >
   <clr-dg-column>User ID</clr-dg-column>
@@ -145,7 +145,7 @@
 
 <clr-datagrid
   [(clrDgSelected)]="clientTrackByIdSelected"
-  [clrDgSelectionType]="2"
+  clrDgSelectionType="multi"
   [clrDgPreserveSelection]="preserveFilteringTrackByIdUsers"
 >
   <clr-dg-column>User ID</clr-dg-column>
@@ -196,7 +196,7 @@
 
 <clr-datagrid
   [(clrDgSelected)]="serverTrackByIdSelected"
-  [clrDgSelectionType]="2"
+  clrDgSelectionType="multi"
   (clrDgRefresh)="refresh($event)"
   [clrDgLoading]="loading"
   [clrDgPreserveSelection]="preserveFilteringServerTrackBy"
@@ -233,7 +233,7 @@
   lost.
 </p>
 
-<clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="2">
+<clr-datagrid [(clrDgSelected)]="selected" clrDgSelectionType="multi">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'" [(clrFilterValue)]="nameFilter">Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>

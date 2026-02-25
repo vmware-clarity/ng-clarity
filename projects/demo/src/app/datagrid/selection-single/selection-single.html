@@ -44,7 +44,7 @@
   </div>
 </div>
 
-<clr-datagrid [(clrDgSelected)]="singleSelected" [clrDgSelectionType]="1" [clrDgItemsIdentityFn]="idendityFn">
+<clr-datagrid [(clrDgSelected)]="singleSelected" clrDgSelectionType="single" [clrDgItemsIdentityFn]="idendityFn">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -84,7 +84,7 @@
 
 <clr-datagrid
   [(clrDgSelected)]="trackByIndexSingleSelected"
-  [clrDgSelectionType]="1"
+  clrDgSelectionType="single"
   [clrDgItemsIdentityFn]="idendityFn"
 >
   <clr-dg-column>User ID</clr-dg-column>
@@ -124,7 +124,11 @@
   </div>
 </div>
 
-<clr-datagrid [(clrDgSelected)]="trackByIdSingleSelected" [clrDgSelectionType]="1" [clrDgItemsIdentityFn]="idendityFn">
+<clr-datagrid
+  [(clrDgSelected)]="trackByIdSingleSelected"
+  clrDgSelectionType="single"
+  [clrDgItemsIdentityFn]="idendityFn"
+>
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -165,7 +169,7 @@
 <clr-datagrid
   (clrDgRefresh)="refresh($event)"
   [(clrDgSelected)]="trackByIdServerSingleSelected"
-  [clrDgSelectionType]="1"
+  clrDgSelectionType="single"
   [clrDgLoading]="loading"
   [clrDgItemsIdentityFn]="idendityFn"
 >

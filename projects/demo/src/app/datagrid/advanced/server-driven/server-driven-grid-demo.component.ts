@@ -19,6 +19,7 @@ import { FetchResult, Inventory, VmItem } from '../inventory/inventory';
   providers: [ExportProviderService, Inventory],
 })
 export class ServerDrivenGridDemoComponent {
+  SelectionType = SelectionType;
   protected options: GridConfigDemoOptions = {
     totalItems: 50,
     selectionType: SelectionType.Multi,

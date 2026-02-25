@@ -13,7 +13,7 @@
   {{ canItBeSelected ? 'Lock' : 'UnLock' }} Table
 </button>
 
-<clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="1">
+<clr-datagrid [(clrDgSelected)]="selected" clrDgSelectionType="single">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -31,7 +31,7 @@
   <clr-dg-footer>{{users.length}} users</clr-dg-footer>
 </clr-datagrid>
 
-<clr-datagrid [(clrDgSelected)]="selectedRows" [clrDgSelectionType]="2">
+<clr-datagrid [(clrDgSelected)]="selectedRows" clrDgSelectionType="multi">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -54,7 +54,7 @@
 <button class="btn btn-primary" (click)="singleSelectionLockRows()">Lock Rows</button>
 <button class="btn btn-primary" (click)="singleSelectionUnlockRows()">Unlock Rows</button>
 
-<clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="1">
+<clr-datagrid [(clrDgSelected)]="selected" clrDgSelectionType="single">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -77,7 +77,7 @@
 <button class="btn btn-primary" (click)="multiSelectionLockRows()">Lock Rows</button>
 <button class="btn btn-primary" (click)="multiSelectionUnlockRows()">Unlock Rows</button>
 
-<clr-datagrid [(clrDgSelected)]="selectedRows" [clrDgSelectionType]="2">
+<clr-datagrid [(clrDgSelected)]="selectedRows" clrDgSelectionType="multi">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -100,7 +100,7 @@
 <button class="btn btn-primary" (click)="pagedMultiSelectionLockRows()">Lock Rows</button>
 <button class="btn btn-primary" (click)="pagedMultiSelectionUnlockRows()">Unlock Rows</button>
 
-<clr-datagrid [(clrDgSelected)]="selectedRows" [clrDgSelectionType]="2">
+<clr-datagrid [(clrDgSelected)]="selectedRows" clrDgSelectionType="multi">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>

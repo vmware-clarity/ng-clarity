@@ -19,6 +19,7 @@ import { FetchResult, Inventory, VmItem } from '../inventory/inventory';
   providers: [ExportProviderService, Inventory],
 })
 export class VirtualScrollGridDemoComponent {
+  SelectionType = SelectionType;
   protected options: GridConfigDemoOptions = {
     totalItems: 10000,
     selectionType: SelectionType.Multi,
