@@ -7,7 +7,8 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppfxDatagridModule } from '@clr/addons/datagrid';
 import { ClarityModule } from '@clr/angular';
 
 import { UtilsDemoModule } from '../_utils/utils.module';
@@ -39,8 +40,8 @@ import { DatagridPreserveSelectionDemo } from './preserve-selection/preserve-sel
 import { DatagridResponsiveFooterDemo } from './responsive-footer/responsive-footer';
 import { DatagridScrollingDemo } from './scrolling/scrolling';
 import { DatagridSelectionDemo } from './selection/selection';
-import { DatagridSelectionFeedbackLoopDemo } from './selection-feedback-loop/selection-feedback-loop';
 import { DatagridSelectionRowModeDemo } from './selection-row-mode/selection-row-mode';
+import { DatagridSelectionSandboxDemo } from './selection-sandbox/selection-sandbox';
 import { DatagridSelectionSingleDemo } from './selection-single/selection-single';
 import { DatagridServerDrivenDemo } from './server-driven/server-driven';
 import { DatagridSmartIteratorDemo } from './smart-iterator/smart-iterator';
@@ -53,7 +54,15 @@ import { DatagridVirtualScrollEmptyRowsDemo } from './virtual-scroll-empty-rows/
 import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-side/virtual-scroll-server-side';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ClarityModule, ROUTING, UtilsDemoModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ClarityModule,
+    AppfxDatagridModule,
+    ROUTING,
+    UtilsDemoModule,
+  ],
   declarations: [
     DatagridDemo,
     DatagridBasicStructureDemo,
@@ -70,11 +79,10 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
     DatagridPaginationScrollingDemo,
     DatagridConditionalPaginationDemo,
     DatagridSelectionDemo,
-    DatagridSelectionFeedbackLoopDemo,
+    DatagridSelectionSandboxDemo,
     DatagridSelectionSingleDemo,
     DatagridSelectionRowModeDemo,
     DatagridPreserveSelectionDemo,
-    DatagridSelectionFeedbackLoopDemo,
     DatagridServerDrivenDemo,
     DatagridSmartIteratorDemo,
     DatagridSortingDemo,
@@ -111,11 +119,10 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
     DatagridPaginationScrollingDemo,
     DatagridConditionalPaginationDemo,
     DatagridSelectionDemo,
-    DatagridSelectionFeedbackLoopDemo,
+    DatagridSelectionSandboxDemo,
     DatagridSelectionSingleDemo,
     DatagridSelectionRowModeDemo,
     DatagridPreserveSelectionDemo,
-    DatagridSelectionFeedbackLoopDemo,
     DatagridVirtualScrollClientSideDemo,
     DatagridVirtualScrollEmptyRowsDemo,
     DatagridVirtualScrollServerSideDemo,
