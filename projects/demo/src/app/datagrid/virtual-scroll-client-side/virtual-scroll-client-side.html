@@ -43,7 +43,7 @@
 <clr-datagrid
   #dynamicRowsDatagrid
   [(clrDgSelected)]="selectedRows"
-  [clrDgSelectionType]="selectionType"
+  [clrDgSelectionType]="'multi'"
   [clrDgItemsIdentityFn]="identifyRowByIndex"
   [clrDgCustomSelectAllEnabled]="true"
   (clrDgCustomSelectAll)="toggleSelectAllRows($event)"
@@ -132,7 +132,7 @@
 <clr-datagrid
   #usersDatagrid
   [(clrDgSelected)]="selectedUsers"
-  [clrDgSelectionType]="2"
+  [clrDgSelectionType]="'multi'"
   [clrDgItemsIdentityFn]="identifyUserById"
   class="datagrid-compact"
   style="height: 30rem"

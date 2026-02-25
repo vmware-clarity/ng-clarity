@@ -37,6 +37,7 @@ import {
   ClrDatagridStateInterface,
   ClrDatagridVirtualScrollRangeInterface,
   SelectionType,
+  selectionTypeAttribute,
 } from '@clr/angular/data/datagrid';
 import { Subject, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -578,10 +579,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     return this.#selectionType;
   }
 
-  set selectionType(type: SelectionType) {
+  set selectionType(type: SelectionType | string) {
     // guard against malformed component bindings to unset variables
     if (type !== undefined) {
-      this.#selectionType = type;
+      this.#selectionType = selectionTypeAttribute(type);
 
       // likely that the embedded Clarity grid doesn't yet exist, will manually set the `selectionType` later
       if (this.clrDatagrid && this.#gridSelectionChangedSub) {

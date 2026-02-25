@@ -119,7 +119,7 @@
 
 <h3>Single selection</h3>
 <div id="datagrid-compact-single-selection">
-  <clr-datagrid [(clrDgSelected)]="singleSelected" [clrDgSelectionType]="1" class="datagrid-compact">
+  <clr-datagrid [(clrDgSelected)]="singleSelected" [clrDgSelectionType]="'single'" class="datagrid-compact">
     <clr-dg-column>User ID</clr-dg-column>
     <clr-dg-column>Name</clr-dg-column>
     <clr-dg-column>Creation date</clr-dg-column>
@@ -140,7 +140,7 @@
 
 <h3>Multi selection</h3>
 <div id="datagrid-compact-multi-selection">
-  <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="2" class="datagrid-compact">
+  <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'" class="datagrid-compact">
     <clr-dg-column>User ID</clr-dg-column>
     <clr-dg-column>Name</clr-dg-column>
     <clr-dg-column>Creation date</clr-dg-column>
@@ -298,7 +298,7 @@
   <clr-datagrid
     [style.height.px]="fixedHeight ? 458 : null"
     [(clrDgSelected)]="selected2"
-    [clrDgSelectionType]="2"
+    [clrDgSelectionType]="'multi'"
     class="datagrid-compact"
   >
     <clr-dg-column>User ID</clr-dg-column>
@@ -344,7 +344,7 @@
 
 <h3>Hide-show columns</h3>
 <div id="datagrid-compact-hide-show-columns">
-  <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="2" class="datagrid-compact">
+  <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'" class="datagrid-compact">
     @if (showId) {
     <clr-dg-column>
       <ng-container *clrDgHideableColumn>User ID</ng-container>

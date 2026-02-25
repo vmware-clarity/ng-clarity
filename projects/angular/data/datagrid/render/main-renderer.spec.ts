@@ -379,7 +379,7 @@ export default function (): void {
       </clr-datagrid>
     </ng-template>
     <ng-template #single>
-      <clr-datagrid #datagridSingleSelect [(clrDgSelected)]="selected" [clrDgSelectionType]="1">
+      <clr-datagrid #datagridSingleSelect [(clrDgSelected)]="selected" [clrDgSelectionType]="'single'">
         <clr-dg-column>Column</clr-dg-column>
         <clr-dg-column>Column</clr-dg-column>
         <clr-dg-row>
@@ -389,7 +389,7 @@ export default function (): void {
       </clr-datagrid>
     </ng-template>
     <ng-template #multi>
-      <clr-datagrid #datagridMultiSelect [(clrDgSelected)]="selected" [clrDgSelectionType]="2">
+      <clr-datagrid #datagridMultiSelect [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
         <clr-dg-column>Column</clr-dg-column>
         <clr-dg-column>Column</clr-dg-column>
         <clr-dg-row>

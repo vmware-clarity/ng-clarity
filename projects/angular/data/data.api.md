@@ -148,6 +148,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     loadingMoreItems: boolean;
     // (undocumented)
+    static ngAcceptInputType_selectionType: SelectionType | string;
+    // (undocumented)
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
     // (undocumented)
@@ -1333,10 +1335,13 @@ export { Selection_2 as Selection }
 
 // @public (undocumented)
 export enum SelectionType {
-    Multi = 2,
-    None = 0,
-    Single = 1
+    Multi = "multi",
+    None = "none",
+    Single = "single"
 }
+
+// @public (undocumented)
+export function selectionTypeAttribute(value: SelectionType | string): SelectionType;
 
 // Warning: (ae-forgotten-export) The symbol "OompaLoompa" needs to be exported by the entry point clr-angular-data.d.ts
 //
@@ -1612,7 +1617,7 @@ export class ÇlrWrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data.d.ts:1092:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data.d.ts:1094:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 

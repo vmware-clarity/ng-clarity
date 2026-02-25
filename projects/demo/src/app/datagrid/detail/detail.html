@@ -9,7 +9,7 @@
 
 <h3>Simple API</h3>
 
-<clr-datagrid id="simple" [(clrDgSelected)]="selection" [clrDgSelectionType]="2">
+<clr-datagrid id="simple" [(clrDgSelected)]="selection" [clrDgSelectionType]="'multi'">
   <clr-dg-action-bar>
     <div class="btn-group" role="group" aria-label="Available Actions">
       <button type="button" class="btn btn-sm btn-secondary">Add to group</button>
@@ -73,7 +73,7 @@
 
 <h3>Change Event</h3>
 
-<clr-datagrid id="change-event" [(clrDgSelected)]="singleSelection" [clrDgSelectionType]="1">
+<clr-datagrid id="change-event" [(clrDgSelected)]="singleSelection" [clrDgSelectionType]="'single'">
   <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'"><ng-container *clrDgHideableColumn>Name</ng-container></clr-dg-column>
   <clr-dg-column [clrDgField]="'creation'">
@@ -236,7 +236,7 @@
 
 <h3>Fixed Height</h3>
 
-<clr-datagrid id="simple" [(clrDgSelected)]="selection" [clrDgSelectionType]="2" style="height: 500px">
+<clr-datagrid id="simple" [(clrDgSelected)]="selection" [clrDgSelectionType]="'multi'" style="height: 500px">
   <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'"><ng-container *clrDgHideableColumn>Name</ng-container></clr-dg-column>
   <clr-dg-column [clrDgField]="'creation'">

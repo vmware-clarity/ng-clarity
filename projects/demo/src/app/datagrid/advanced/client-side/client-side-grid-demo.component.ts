@@ -28,6 +28,7 @@ export class ClientSideDatagridDemoComponent {
   allVms: VmItem[];
   selectedVms: VmItem[] = [];
   filteredVms: VmItem[];
+  SelectionType = SelectionType;
 
   protected options: GridConfigDemoOptions = {
     totalItems: 100,

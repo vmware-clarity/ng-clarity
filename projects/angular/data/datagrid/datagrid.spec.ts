@@ -65,7 +65,7 @@ class FullTest {
   disableFocus = false;
   loading = false;
   selected: number[];
-  selectionType = 0;
+  selectionType: SelectionType = SelectionType.None;
 
   nbRefreshed = 0;
   latestState: ClrDatagridStateInterface;
@@ -129,7 +129,7 @@ class OnPushTest {
 @Component({
   selector: 'multi-select-test',
   template: `
-    <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="2">
+    <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
       <clr-dg-column>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
 
@@ -152,7 +152,7 @@ class MultiSelectionTest {
     <clr-datagrid
       [clrDgCustomSelectAllEnabled]="clrDgCustomSelectAllEnabled"
       [(clrDgSelected)]="selected"
-      [clrDgSelectionType]="2"
+      [clrDgSelectionType]="'multi'"
       (clrDgCustomSelectAll)="clrDgCustomSelectAllEventSpy($event)"
     >
       <clr-dg-column>First</clr-dg-column>
@@ -176,7 +176,7 @@ class MultiSelectionSimpleTest {
 
 @Component({
   template: `
-    <clr-datagrid [clrDgItemsIdentityFn]="dgTrackByFn" [(clrDgSelected)]="selected" [clrDgSelectionType]="2">
+    <clr-datagrid [clrDgItemsIdentityFn]="dgTrackByFn" [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
       <clr-dg-column>Value</clr-dg-column>
 
       <clr-dg-row *clrDgItems="let item of items; trackBy: ngForTrackByFn" [clrDgItem]="item">
@@ -198,7 +198,7 @@ class MultiSelectionNgForTest {
   template: `
     <clr-datagrid
       [(clrDgSelected)]="selected"
-      [clrDgSelectionType]="1"
+      [clrDgSelectionType]="'single'"
       clrDgSingleSelectionAriaLabel="Select row from Datagrid"
     >
       <clr-dg-column>First</clr-dg-column>
@@ -216,6 +216,7 @@ class MultiSelectionNgForTest {
 })
 class SingleSelectionTest {
   items = [1, 2, 3];
+
   selected: number[] = null;
 }
 
@@ -639,7 +640,7 @@ export default function (): void {
 
       it('offers two-way binding on the currently selected items', async function () {
         const selection = context.getClarityProvider(Selection);
-        context.testComponent.selectionType = 2;
+        context.testComponent.selectionType = SelectionType.Multi;
         context.detectChanges();
         await delay();
         context.testComponent.selected = [2];
@@ -655,7 +656,7 @@ export default function (): void {
       });
       it('allows to set pre-selected items when initializing the full list of items', function () {
         const selection = context.getClarityProvider(Selection);
-        context.testComponent.selectionType = 2;
+        context.testComponent.selectionType = SelectionType.Multi;
         context.detectChanges();
         context.testComponent.items = [4, 5, 6];
         context.testComponent.selected = [5];
