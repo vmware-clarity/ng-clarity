@@ -94,7 +94,7 @@ export class Selection<T = any> {
             updatedItems.forEach(item => {
               const ref = _items.identifyBy(item);
               // If one of the updated items is the previously selectedSingle, set it as the new one
-              if (this.currentSelectionRefs.indexOf(ref) >= 0) {
+              if (this.currentSelectionRefs[0] === ref) {
                 newSingle = item;
                 selectionUpdated = true;
               }
