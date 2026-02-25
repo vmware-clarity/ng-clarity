@@ -177,7 +177,7 @@ export class Selection<T = any> {
 
     this._selectionType = value ?? SelectionType.None;
 
-    if (!this._current) {
+    if (!this._current && value !== SelectionType.None) {
       this._current = [];
     }
   }
