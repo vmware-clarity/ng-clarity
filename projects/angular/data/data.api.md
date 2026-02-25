@@ -1302,7 +1302,6 @@ class Selection_2<T = any> {
     set current(value: T[]);
     // (undocumented)
     get currentSingle(): T;
-    set currentSingle(value: T);
     destroy(): void;
     // (undocumented)
     id: string;
@@ -1613,7 +1612,7 @@ export class ÇlrWrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data.d.ts:1088:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data.d.ts:1092:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 

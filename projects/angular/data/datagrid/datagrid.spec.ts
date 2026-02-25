@@ -1022,7 +1022,7 @@ export default function (): void {
           expect(selection.currentSingle).toBeUndefined();
           expect(singleSelectedChangeCount).toEqual(0);
 
-          context.testComponent.selected = null;
+          context.testComponent.selected = [undefined];
           context.detectChanges();
           await delay();
 
@@ -1032,7 +1032,7 @@ export default function (): void {
           sub.unsubscribe();
         });
 
-        it('it does not emit a change event when selecting the same value', async function () {
+        it('it does emit a change event when selecting the same value', async function () {
           let singleSelectedChangeCount = 0;
           const sub = context.clarityDirective.selectedChanged.subscribe(() => singleSelectedChangeCount++);
 
@@ -1049,18 +1049,20 @@ export default function (): void {
           await delay();
 
           expect(selection.currentSingle).toEqual(1);
-          expect(singleSelectedChangeCount).toEqual(0);
+          expect(singleSelectedChangeCount).toEqual(1);
 
           sub.unsubscribe();
         });
 
-        it('offers two way binding on the currentSingle value', function () {
+        it('offers two way binding on the currentSingle value', async function () {
           expect(selection.currentSingle).toBeUndefined();
           context.testComponent.selected = [1];
           context.detectChanges();
+          await delay();
           expect(selection.currentSingle).toEqual(1);
-          selection.currentSingle = 2;
+          selection.current = [2];
           context.detectChanges();
+          await delay();
           expect(context.testComponent.selected[0]).toEqual(2);
         });
       });
@@ -1079,7 +1081,7 @@ export default function (): void {
         it('sets the proper selected class', function () {
           const row = context.clarityElement.querySelectorAll('.datagrid-row')[1];
           expect(row.classList.contains('datagrid-selected')).toBeFalsy();
-          selection.currentSingle = 1;
+          selection.current = [1];
           context.detectChanges();
           expect(row.classList.contains('datagrid-selected')).toBeTruthy();
         });

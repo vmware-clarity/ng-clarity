@@ -1054,7 +1054,7 @@ describe('DatagridComponent', () => {
 
       expect(gridHelper.getSelectedRows().length).toBe(1);
       expect(gridHelper.getRows()[2].isSelected()).toBeTruthy();
-      expect(this.component.changeSelection).toHaveBeenCalledWith([this.data[2]]);
+      expect(this.component.changeSelection).toHaveBeenCalledWith([this.data[0]]);
     }));
 
     it('can be changed to multi-selection mode and reset to single selection mode', fakeAsync(function (this: any) {

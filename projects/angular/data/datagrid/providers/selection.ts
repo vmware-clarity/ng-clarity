@@ -103,16 +103,8 @@ export class Selection<T = any> {
               }
             });
 
-            // If we're using smart datagrids, we expect all items to be present in the updatedItems array.
-            // Therefore, we should delete the currentSingle if it used to be defined but doesn't exist anymore.
-            // No explicit "delete" is required, since newSingle would be undefined at this point.
-            // Marking it as selectionUpdated here will set currentSingle to undefined below in the setTimeout.
-            if (_items.smart && !newSingle) {
-              selectionUpdated = true;
-            }
-
             if (selectionUpdated) {
-              this.currentSingle = newSingle;
+              this.current = [newSingle];
             }
             break;
           }
@@ -185,9 +177,7 @@ export class Selection<T = any> {
 
     this._selectionType = value ?? SelectionType.None;
 
-    if (this._selectionType === SelectionType.None) {
-      this.current = undefined;
-    } else if (!this._current) {
+    if (!this._current) {
       this._current = [];
     }
   }
@@ -202,19 +192,6 @@ export class Selection<T = any> {
 
   get currentSingle(): T {
     return this._current?.length ? this._current[0] : undefined;
-  }
-  set currentSingle(value: T) {
-    if (this._current && value === this._current[0]) {
-      return;
-    }
-
-    if (!this._current) {
-      this._current = [value];
-    } else {
-      this._current[0] = value;
-    }
-
-    this.current = this._current;
   }
 
   // We do not want to expose the Subject itself, but the Observable which is read-only
@@ -288,7 +265,7 @@ export class Selection<T = any> {
         break;
       case SelectionType.Single:
         if (selected) {
-          this.currentSingle = item;
+          this.current = [item];
         }
         // in single selection, set currentSingle method should be used
         break;

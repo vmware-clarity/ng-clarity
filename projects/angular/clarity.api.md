@@ -8617,7 +8617,6 @@ class Selection_2<T = any> {
     set current(value: T[]);
     // (undocumented)
     get currentSingle(): T;
-    set currentSingle(value: T);
     destroy(): void;
     // (undocumented)
     id: string;

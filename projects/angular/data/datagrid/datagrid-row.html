@@ -55,7 +55,8 @@
             [id]="radioId"
             [name]="selection.id + '-radio'"
             [value]="item"
-            [(ngModel)]="selection.currentSingle"
+            [ngModel]="selection.currentSingle"
+            (ngModelChange)="selection.current = [$event]"
             [disabled]="clrDgSelectable ? null : true"
             [attr.aria-disabled]="clrDgSelectable ? null : true"
           />

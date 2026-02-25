@@ -204,7 +204,12 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   /**
-   * Array of all selected items
+   * Selection type
+   * - `None`: No rows are selectable.
+   * - `Single`: Only one row can be selected at a time.
+   * - `Multi`: Multiple rows can be selected.
+   *
+   * Defaults to `None`.
    */
   @Input('clrDgSelectionType')
   get selectionType(): SelectionType {

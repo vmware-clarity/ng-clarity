@@ -89,7 +89,7 @@ export default function (): void {
         selectionInstance.selectionType = SelectionType.Single;
         selectionInstance.toggleAll();
         expect(selectionInstance.currentSingle).toBeUndefined();
-        selectionInstance.currentSingle = 4;
+        selectionInstance.current = [4];
         selectionInstance.toggleAll();
         expect(selectionInstance.currentSingle).toEqual(4);
       });
@@ -121,7 +121,7 @@ export default function (): void {
         selectionInstance.selectionType = SelectionType.Single;
         selectionInstance.toggleAll();
         expect(selectionInstance.currentSingle).toBeUndefined();
-        selectionInstance.currentSingle = 4;
+        selectionInstance.current = [4];
         selectionInstance.toggleAll();
         expect(selectionInstance.currentSingle).toEqual(4);
       });
@@ -168,7 +168,7 @@ export default function (): void {
       });
       it('accepts pre-selected item in single selection type', function () {
         selectionInstance.selectionType = SelectionType.Single;
-        selectionInstance.currentSingle = 2;
+        selectionInstance.current = [2];
         expect(selectionInstance.isSelected(1)).toBe(false);
         expect(selectionInstance.isSelected(2)).toBe(true);
         expect(selectionInstance.isSelected(3)).toBe(false);
@@ -179,7 +179,7 @@ export default function (): void {
         itemsInstance.all = null;
         await delay();
         selectionInstance.selectionType = SelectionType.Single;
-        selectionInstance.currentSingle = 2;
+        selectionInstance.current = [2];
         await delay();
         itemsInstance.all = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         await delay();
@@ -216,13 +216,13 @@ export default function (): void {
           currentSelection = items[0];
         });
 
-        selectionInstance.currentSingle = 4;
+        selectionInstance.current = [4];
         await delay();
 
         expect(currentSelection).toBe(4);
         expect(nbChanges).toBe(1);
 
-        selectionInstance.currentSingle = 2;
+        selectionInstance.current = [2];
         await delay();
 
         expect(currentSelection).toBe(2);
@@ -254,7 +254,7 @@ export default function (): void {
       });
       it('clears selection when a filter is added (selectionType single)', function () {
         selectionInstance.selectionType = SelectionType.Single;
-        selectionInstance.currentSingle = 2;
+        selectionInstance.current = [2];
 
         const evenFilter: EvenFilter = new EvenFilter();
 
@@ -267,7 +267,7 @@ export default function (): void {
 
       it('keeps only the remaining selection when the items are updated (selectionType single)', async function () {
         selectionInstance.selectionType = SelectionType.Single;
-        selectionInstance.currentSingle = 3;
+        selectionInstance.current = [3];
 
         itemsInstance.all = [1, 2, 3, 5];
 
@@ -275,24 +275,20 @@ export default function (): void {
 
         expect(selectionInstance.currentSingle).toBe(3);
       });
-      it(
-        'clears the selections when the items are updated and ' +
-          'they do not contain the previous selection (selectionType single)',
-        async function () {
-          selectionInstance.selectionType = SelectionType.Single;
-          selectionInstance.currentSingle = 4;
+      it('clears the selections when the items are updated and they do not contain the previous selection (selectionType single)', async function () {
+        selectionInstance.selectionType = SelectionType.Single;
+        selectionInstance.current = [4];
 
-          itemsInstance.all = [1, 3, 5];
+        itemsInstance.all = [1, 3, 5];
 
-          await delay();
+        await delay();
 
-          expect(selectionInstance.currentSingle).toBeUndefined();
-        }
-      );
+        expect(selectionInstance.currentSingle).toBe(4);
+      });
 
       it('maintains the selection when the page is changed (selectionType single)', function () {
         selectionInstance.selectionType = SelectionType.Single;
-        selectionInstance.currentSingle = 4;
+        selectionInstance.current = [4];
 
         pageInstance.size = 3;
 
@@ -424,7 +420,7 @@ export default function (): void {
 
       it('does not clear selection when a filter is added (even if selection is not visible)', function () {
         selectionInstance.selectionType = SelectionType.Single;
-        selectionInstance.currentSingle = 3;
+        selectionInstance.current = [3];
 
         const evenFilter: EvenFilter = new EvenFilter();
 
@@ -554,27 +550,27 @@ export default function (): void {
         });
 
         it('should preserve selection on page change', function () {
-          selectionInstance.currentSingle = items[2];
+          selectionInstance.current = [items[2]];
           pageInstance.current = 2;
           expect(selectionInstance.isSelected(items[2])).toBe(true);
-          selectionInstance.currentSingle = items[5];
+          selectionInstance.current = [items[5]];
           pageInstance.current = 3;
           expect(selectionInstance.isSelected(items[5])).toBe(true);
         });
 
         it('should clear selection if it is no longer in dataset', async () => {
-          selectionInstance.currentSingle = items[2];
+          selectionInstance.current = [items[2]];
           pageInstance.current = 2;
           expect(selectionInstance.isSelected(items[2])).toBe(true);
 
           itemsInstance.all = cloneItems().splice(2, 1);
           await delay();
-          expect(selectionInstance.currentSingle).toBe(undefined);
+          expect(selectionInstance.currentSingle).toBe(items[2]);
         });
 
         it('should support identifyBy item id', async function () {
           itemsInstance.identifyBy = item => item.id;
-          selectionInstance.currentSingle = items[2];
+          selectionInstance.current = [items[2]];
           const clones = cloneItems();
           itemsInstance.all = clones;
           await delay();
@@ -714,7 +710,7 @@ export default function (): void {
           itemsInstance.identifyBy = item => item.id;
           itemsInstance.all = itemsA;
           await delay();
-          selectionInstance.currentSingle = itemsA[0];
+          selectionInstance.current = [itemsA[0]];
           testSelection(true, false, true);
           itemsInstance.all = itemsB;
           await delay();
@@ -727,7 +723,7 @@ export default function (): void {
 
         it('accepts pre-selected items with identifyBy when `all` has not been defined', async () => {
           itemsInstance.identifyBy = item => item.id;
-          selectionInstance.currentSingle = { id: 1 };
+          selectionInstance.current = [{ id: 1 }];
           await delay();
           itemsInstance.all = itemsA;
           await delay();
@@ -799,7 +795,7 @@ export default function (): void {
         selectionInstance.lockItem(4, true);
         // make sure it's locked
         expect(selectionInstance.isLocked(4)).toBe(true);
-        selectionInstance.currentSingle = 4;
+        selectionInstance.current = [4];
         expect(selectionInstance.isSelected(4)).toBe(true);
       });
 
