@@ -342,9 +342,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this._subscriptions.push(
       this.stickyHeaders.changes.subscribe(() => this.resize()),
       this.stateProvider.change.subscribe(state => this.refresh.emit(state)),
-      this.selection.change.subscribe(s => {
+      this.selection.change.subscribe(selection => {
         if (this.selection.selectable) {
-          this.selectedChanged.emit(s);
+          this.selectedChanged.emit(selection);
         }
       }),
       // Reinitialize arrow key navigation on page changes

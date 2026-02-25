@@ -186,7 +186,7 @@ export class Selection<T = any> {
     this._selectionType = value ?? SelectionType.None;
 
     if (this._selectionType === SelectionType.None) {
-      this.current = null;
+      this.current = undefined;
     } else if (!this._current) {
       this._current = [];
     }
@@ -201,7 +201,7 @@ export class Selection<T = any> {
   }
 
   get currentSingle(): T {
-    return this._current?.length ? this._current[0] : null;
+    return this._current?.length ? this._current[0] : undefined;
   }
   set currentSingle(value: T) {
     if (this._current && value === this._current[0]) {
@@ -266,11 +266,11 @@ export class Selection<T = any> {
    * Checks if an item is currently selected
    */
   isSelected(item: T): boolean {
-    const ref = this._items.identifyBy(item);
-    if (this._selectionType === SelectionType.Multi) {
-      return this.currentSelectionRefs.indexOf(ref) >= 0;
-    } else if (this._selectionType === SelectionType.Single) {
-      return this.currentSelectionRefs.indexOf(ref) === 0;
+    const refIndex = this.currentSelectionRefs.indexOf(this._items.identifyBy(item));
+    if (this._selectionType === SelectionType.Single) {
+      return refIndex === 0;
+    } else if (this._selectionType === SelectionType.Multi) {
+      return refIndex >= 0;
     }
 
     return false;

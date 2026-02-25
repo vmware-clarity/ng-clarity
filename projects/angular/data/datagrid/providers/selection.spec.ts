@@ -88,7 +88,7 @@ export default function (): void {
       it("can't select/deselect all items at once in other single selection type", function () {
         selectionInstance.selectionType = SelectionType.Single;
         selectionInstance.toggleAll();
-        expect(selectionInstance.currentSingle).toBe(null);
+        expect(selectionInstance.currentSingle).toBeUndefined();
         selectionInstance.currentSingle = 4;
         selectionInstance.toggleAll();
         expect(selectionInstance.currentSingle).toEqual(4);
@@ -120,7 +120,7 @@ export default function (): void {
       it("can't select/deselect all items at once in other single selection type", function () {
         selectionInstance.selectionType = SelectionType.Single;
         selectionInstance.toggleAll();
-        expect(selectionInstance.currentSingle).toBe(null);
+        expect(selectionInstance.currentSingle).toBeUndefined();
         selectionInstance.currentSingle = 4;
         selectionInstance.toggleAll();
         expect(selectionInstance.currentSingle).toEqual(4);
@@ -262,7 +262,7 @@ export default function (): void {
 
         evenFilter.toggle();
 
-        expect(selectionInstance.currentSingle).toBe(null);
+        expect(selectionInstance.currentSingle).toBeUndefined();
       });
 
       it('keeps only the remaining selection when the items are updated (selectionType single)', async function () {

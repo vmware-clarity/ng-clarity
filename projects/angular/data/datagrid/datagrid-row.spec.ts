@@ -279,7 +279,7 @@ export default function (): void {
         context.testComponent.item = { id: 1 };
         context.detectChanges();
         const radio = context.clarityElement.querySelector("input[type='radio']");
-        expect(selectionProvider.currentSingle).toBe(null);
+        expect(selectionProvider.currentSingle).toBeUndefined();
         radio.click();
         context.detectChanges();
         expect(selectionProvider.currentSingle).toEqual(context.testComponent.item);
@@ -326,7 +326,7 @@ export default function (): void {
         expect(row.classList.contains('datagrid-row-clickable')).toBeFalse();
         row.children[0].click();
         context.detectChanges();
-        expect(selectionProvider.currentSingle).toBe(null);
+        expect(selectionProvider.currentSingle).toBeUndefined();
 
         // Enabling the rowSelectionMode
         selectionProvider.rowSelectionMode = true;

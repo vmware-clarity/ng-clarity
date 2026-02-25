@@ -979,11 +979,11 @@ export default function (): void {
 
       describe('Template API', function () {
         it('sets the currentSingle binding', function () {
-          expect(selection.currentSingle).toBe(null);
+          expect(selection.currentSingle).toBeUndefined();
           context.testComponent.selected = [1];
           context.detectChanges();
           expect(selection.currentSingle).toEqual(1);
-          context.testComponent.selected = null;
+          context.testComponent.selected = [null];
           context.detectChanges();
           expect(selection.currentSingle).toBeNull();
         });
@@ -992,7 +992,7 @@ export default function (): void {
           let singleSelectedChangeCount = 0;
           const sub = context.clarityDirective.selectedChanged.subscribe(() => singleSelectedChangeCount++);
 
-          expect(selection.currentSingle).toBe(null);
+          expect(selection.currentSingle).toBeUndefined();
           expect(singleSelectedChangeCount).toEqual(0);
 
           sub.unsubscribe();
@@ -1019,14 +1019,14 @@ export default function (): void {
           let singleSelectedChangeCount = 0;
           const sub = context.clarityDirective.selectedChanged.subscribe(() => singleSelectedChangeCount++);
 
-          expect(selection.currentSingle).toBe(null);
+          expect(selection.currentSingle).toBeUndefined();
           expect(singleSelectedChangeCount).toEqual(0);
 
           context.testComponent.selected = null;
           context.detectChanges();
           await delay();
 
-          expect(selection.currentSingle).toBe(null);
+          expect(selection.currentSingle).toBeUndefined();
           expect(singleSelectedChangeCount).toEqual(0);
 
           sub.unsubscribe();
@@ -1055,7 +1055,7 @@ export default function (): void {
         });
 
         it('offers two way binding on the currentSingle value', function () {
-          expect(selection.currentSingle).toBe(null);
+          expect(selection.currentSingle).toBeUndefined();
           context.testComponent.selected = [1];
           context.detectChanges();
           expect(selection.currentSingle).toEqual(1);
