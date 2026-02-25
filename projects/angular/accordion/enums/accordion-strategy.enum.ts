@@ -6,9 +6,9 @@
  */
 
 /**
- * Controls how many panels can be open simultaneously within a panel group.
+ * Controls how many panels can be open simultaneously within an accordion.
  */
-export enum CollapsiblePanelStrategy {
+export enum AccordionStrategy {
   /** Only one panel can be open at a time. Opening a panel closes any previously open panel. */
   Default = 'default',
   /** Multiple panels can be open simultaneously. */

@@ -6,7 +6,6 @@
  */
 
 import { CollapsiblePanelGroupModel } from './collapsible-panel.model';
-import { CollapsiblePanelStrategy } from '../enums/collapsible-panel-strategy.enum';
 
 describe('CollapsiblePanelGroupModel', () => {
   let panelGroup: CollapsiblePanelGroupModel;
@@ -38,55 +37,39 @@ describe('CollapsiblePanelGroupModel', () => {
     expect(panelGroup.panels.length).toBe(2);
   });
 
-  it('should close all other panels when opening a new panel', () => {
+  it('should toggle a panel open and closed', () => {
     expect(panelGroup.panels[0].open).toBe(false);
-    expect(panelGroup.panels[1].open).toBe(false);
-    expect(panelGroup.panels[2].open).toBe(false);
 
     panelGroup.togglePanel(panel1Id);
-
     expect(panelGroup.panels[0].open).toBe(true);
-    expect(panelGroup.panels[1].open).toBe(false);
-    expect(panelGroup.panels[2].open).toBe(false);
 
+    panelGroup.togglePanel(panel1Id);
+    expect(panelGroup.panels[0].open).toBe(false);
+  });
+
+  it('should allow multiple panels to be open simultaneously', () => {
+    panelGroup.togglePanel(panel1Id);
     panelGroup.togglePanel(panel2Id);
 
-    expect(panelGroup.panels[0].open).toBe(false);
+    expect(panelGroup.panels[0].open).toBe(true);
     expect(panelGroup.panels[1].open).toBe(true);
     expect(panelGroup.panels[2].open).toBe(false);
   });
 
-  it('should not close all panels when closing an already closed panel', () => {
-    expect(panelGroup.panels[0].open).toBe(false);
-    expect(panelGroup.panels[1].open).toBe(false);
-    expect(panelGroup.panels[2].open).toBe(false);
-
-    panelGroup.togglePanel(panel1Id);
-
+  it('should set panel open state explicitly via open parameter', () => {
+    panelGroup.togglePanel(panel1Id, true);
     expect(panelGroup.panels[0].open).toBe(true);
-    expect(panelGroup.panels[1].open).toBe(false);
-    expect(panelGroup.panels[2].open).toBe(false);
 
+    panelGroup.togglePanel(panel1Id, false);
+    expect(panelGroup.panels[0].open).toBe(false);
+  });
+
+  it('should not change other panels when closing an already closed panel', () => {
+    panelGroup.togglePanel(panel1Id, true);
     panelGroup.togglePanel(panel2Id, false);
 
     expect(panelGroup.panels[0].open).toBe(true);
     expect(panelGroup.panels[1].open).toBe(false);
-    expect(panelGroup.panels[2].open).toBe(false);
-  });
-
-  it('should allow multiple panels open if in multi panel mode', () => {
-    panelGroup.setStrategy(CollapsiblePanelStrategy.Multi);
-
-    expect(panelGroup.panels[0].open).toBe(false);
-    expect(panelGroup.panels[1].open).toBe(false);
-    expect(panelGroup.panels[2].open).toBe(false);
-
-    panelGroup.togglePanel(panel1Id);
-    panelGroup.togglePanel(panel2Id);
-
-    expect(panelGroup.panels[0].open).toBe(true);
-    expect(panelGroup.panels[1].open).toBe(true);
-    expect(panelGroup.panels[2].open).toBe(false);
   });
 
   it('should not throw when toggling a panel that does not exist', () => {

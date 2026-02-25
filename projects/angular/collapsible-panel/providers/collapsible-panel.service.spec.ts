@@ -8,7 +8,6 @@
 import { take } from 'rxjs/operators';
 
 import { CollapsiblePanelService } from './collapsible-panel.service';
-import { CollapsiblePanelStrategy } from '../enums/collapsible-panel-strategy.enum';
 
 describe('CollapsiblePanelService', () => {
   let panelService: CollapsiblePanelService;
@@ -29,12 +28,12 @@ describe('CollapsiblePanelService', () => {
       .subscribe(panel => expect(panel.id).toBe(panel1Id));
   });
 
-  it('should update of panel changes when toggling to new panel', () => {
-    panelService.togglePanel(panel2Id);
+  it('should toggle a panel open', () => {
+    panelService.togglePanel(panel1Id);
     panelService
       .getPanelChanges(panel1Id)
       .pipe(take(1))
-      .subscribe(panel => expect(panel.open).toBe(false));
+      .subscribe(panel => expect(panel.open).toBe(true));
   });
 
   it('should update panel disabled state', () => {
@@ -51,22 +50,6 @@ describe('CollapsiblePanelService', () => {
       .getPanelChanges(panel1Id)
       .pipe(take(1))
       .subscribe(panel => expect(panel.index).toBe(1));
-  });
-
-  it('should allow component to set the active panel strategy', () => {
-    panelService.setStrategy(CollapsiblePanelStrategy.Multi);
-    panelService.togglePanel(panel1Id);
-    panelService.togglePanel(panel2Id);
-
-    panelService
-      .getPanelChanges(panel1Id)
-      .pipe(take(1))
-      .subscribe(panel => expect(panel.open).toBe(true));
-
-    panelService
-      .getPanelChanges(panel2Id)
-      .pipe(take(1))
-      .subscribe(panel => expect(panel.open).toBe(true));
   });
 
   it('should return undefined from getPanelChanges for an unregistered panel id', () => {

@@ -9,7 +9,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { CollapsiblePanelStrategy } from '../enums/collapsible-panel-strategy.enum';
 import { CollapsiblePanelGroupModel, CollapsiblePanelModel } from '../models/collapsible-panel.model';
 
 @Injectable()
@@ -19,10 +18,6 @@ export class CollapsiblePanelService {
 
   getPanelChanges(panelId: string): Observable<CollapsiblePanelModel> {
     return this._panelsChanges.pipe(map(panels => panels.find(s => s.id === panelId)));
-  }
-
-  setStrategy(strategy: CollapsiblePanelStrategy) {
-    this.panelGroup.setStrategy(strategy);
   }
 
   addPanel(panelId: string, open = false) {

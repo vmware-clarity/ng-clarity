@@ -19,7 +19,6 @@ export default {
   ],
   argTypes: {
     panelCount: { control: { type: 'number', min: 1, max: 10 } },
-    multiPanel: { control: 'boolean' },
     panelDisabled: { control: 'boolean' },
     title: { control: 'text' },
     content: { control: 'text' },
@@ -27,7 +26,6 @@ export default {
   },
   args: {
     panelCount: 3,
-    multiPanel: false,
     panelDisabled: false,
     title: 'Panel',
     content: 'Content for panel',
@@ -37,7 +35,6 @@ export default {
     props: args,
     template: `
       <storybook-panel-group
-        [multiPanel]="multiPanel"
         [panelCount]="panelCount"
         [panelDisabled]="panelDisabled"
         [title]="title"
@@ -62,8 +59,8 @@ export const ExpandedAndDisabled: StoryObj = {
   args: { openIndices: [true], panelDisabled: true },
 };
 
-export const MultiPanelMode: StoryObj = {
-  args: { multiPanel: true, openIndices: [true, false, true] },
+export const MultiplePanelsExpanded: StoryObj = {
+  args: { openIndices: [true, false, true] },
 };
 
 export const SinglePanel: StoryObj = {

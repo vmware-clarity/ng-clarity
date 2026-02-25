@@ -25,10 +25,39 @@ import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Type } from '@angular/core';
 
+// Warning: (ae-forgotten-export) The symbol "CollapsiblePanelGroupModel" needs to be exported by the entry point clr-angular-accordion.d.ts
+//
+// @public (undocumented)
+export class AccordionModel extends CollapsiblePanelGroupModel {
+    // (undocumented)
+    setStrategy(strategy: AccordionStrategy): void;
+    // (undocumented)
+    togglePanel(panelId: string, open?: boolean): void;
+}
+
+// Warning: (ae-forgotten-export) The symbol "CollapsiblePanelService" needs to be exported by the entry point clr-angular-accordion.d.ts
+//
+// @public (undocumented)
+export class AccordionService extends CollapsiblePanelService {
+    // (undocumented)
+    protected panelGroup: AccordionModel;
+    // (undocumented)
+    setStrategy(strategy: AccordionStrategy): void;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<AccordionService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<AccordionService>;
+}
+
+// @public
+export enum AccordionStrategy {
+    Default = "default",
+    Multi = "multi"
+}
+
 // @public (undocumented)
 export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelService" needs to be exported by the entry point clr-angular-accordion.d.ts
-    constructor(panelService: CollapsiblePanelService);
+    constructor(accordionService: AccordionService);
     // (undocumented)
     multiPanel: boolean | string;
     // (undocumented)

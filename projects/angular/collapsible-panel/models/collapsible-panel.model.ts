@@ -5,8 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CollapsiblePanelStrategy } from '../enums/collapsible-panel-strategy.enum';
-
 let panelGroupCount = 0;
 
 export class CollapsiblePanelModel {
@@ -21,16 +19,11 @@ export class CollapsiblePanelModel {
 }
 
 export class CollapsiblePanelGroupModel {
-  protected strategy = CollapsiblePanelStrategy.Default;
   protected panelGroupCount = panelGroupCount++;
   protected _panels: { [id: string]: CollapsiblePanelModel } = {};
 
   get panels(): CollapsiblePanelModel[] {
     return Object.keys(this._panels).map(id => this._panels[id]);
-  }
-
-  setStrategy(strategy: CollapsiblePanelStrategy) {
-    this.strategy = strategy;
   }
 
   updatePanelOrder(ids: string[]) {
@@ -53,12 +46,7 @@ export class CollapsiblePanelGroupModel {
     }
 
     const panelIsOpen = this._panels[panelId].open;
-    const newOpenState = open !== undefined ? open : !panelIsOpen;
-    if (newOpenState && this.strategy === CollapsiblePanelStrategy.Default) {
-      this.closeAllPanels();
-    }
-
-    this._panels[panelId].open = newOpenState;
+    this._panels[panelId].open = open !== undefined ? open : !panelIsOpen;
   }
 
   disablePanel(panelId: string, disabled: boolean) {
@@ -67,10 +55,6 @@ export class CollapsiblePanelGroupModel {
     }
 
     this._panels[panelId].disabled = disabled;
-  }
-
-  private closeAllPanels() {
-    this.panels.forEach(panel => (this._panels[panel.id].open = false));
   }
 
   private removeOldPanels(ids: string[]) {

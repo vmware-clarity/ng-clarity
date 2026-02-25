@@ -79,10 +79,6 @@ export class CollapsiblePanelGroupModel {
         [id: string]: CollapsiblePanelModel;
     };
     // (undocumented)
-    setStrategy(strategy: CollapsiblePanelStrategy): void;
-    // (undocumented)
-    protected strategy: CollapsiblePanelStrategy;
-    // (undocumented)
     togglePanel(panelId: string, open?: boolean): void;
     // (undocumented)
     updatePanelOrder(ids: string[]): void;
@@ -120,8 +116,6 @@ export class CollapsiblePanelService {
     // (undocumented)
     protected readonly _panelsChanges: BehaviorSubject<CollapsiblePanelModel[]>;
     // (undocumented)
-    setStrategy(strategy: CollapsiblePanelStrategy): void;
-    // (undocumented)
     togglePanel(panelId: string, open?: boolean): void;
     // (undocumented)
     updatePanelOrder(ids: string[]): void;
@@ -129,14 +123,6 @@ export class CollapsiblePanelService {
     static ɵfac: i0.ɵɵFactoryDeclaration<CollapsiblePanelService, never>;
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<CollapsiblePanelService>;
-}
-
-// @public (undocumented)
-export enum CollapsiblePanelStrategy {
-    // (undocumented)
-    Default = "default",
-    // (undocumented)
-    Multi = "multi"
 }
 
 // @public (undocumented)

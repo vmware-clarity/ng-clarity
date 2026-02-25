@@ -14,7 +14,6 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   Output,
   QueryList,
   SimpleChanges,
@@ -26,7 +25,6 @@ import {
   collapsiblePanelExpandAnimation,
   CollapsiblePanelModel,
   CollapsiblePanelService,
-  CollapsiblePanelStrategy,
 } from '@clr/angular/collapsible-panel';
 import { ClrIcon } from '@clr/angular/icon';
 import { IfExpandService } from '@clr/angular/utils';
@@ -132,8 +130,7 @@ export class StorybookPanel extends CollapsiblePanel implements OnChanges {
   styleUrls: ['./collapsible-panel.storybook.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class StorybookPanelGroup implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-  @Input() multiPanel: boolean | string = false;
+export class StorybookPanelGroup implements AfterViewInit, OnDestroy {
   @Input() panelCount = 3;
   @Input() panelDisabled = false;
   @Input() title = 'Panel';
@@ -147,16 +144,6 @@ export class StorybookPanelGroup implements OnInit, OnChanges, AfterViewInit, On
 
   constructor(private panelService: CollapsiblePanelService) {}
 
-  ngOnInit() {
-    this.setStrategy();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.multiPanel && changes.multiPanel.currentValue !== changes.multiPanel.previousValue) {
-      this.setStrategy();
-    }
-  }
-
   ngAfterViewInit() {
     this.subscriptions.push(
       this.panels.changes.pipe(startWith(this.panels)).subscribe((panels: QueryList<StorybookPanel>) => {
@@ -167,10 +154,5 @@ export class StorybookPanelGroup implements OnInit, OnChanges, AfterViewInit, On
 
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe());
-  }
-
-  private setStrategy() {
-    const strategy = this.multiPanel ? CollapsiblePanelStrategy.Multi : CollapsiblePanelStrategy.Default;
-    this.panelService.setStrategy(strategy);
   }
 }

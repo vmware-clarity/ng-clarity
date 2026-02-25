@@ -17,17 +17,19 @@ import {
   QueryList,
   SimpleChanges,
 } from '@angular/core';
-import { CollapsiblePanelService, CollapsiblePanelStrategy } from '@clr/angular/collapsible-panel';
+import { CollapsiblePanelService } from '@clr/angular/collapsible-panel';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 import { ClrAccordionPanel } from './accordion-panel';
+import { AccordionStrategy } from './enums/accordion-strategy.enum';
+import { AccordionService } from './providers/accordion.service';
 
 @Component({
   selector: 'clr-accordion',
   template: `<ng-content></ng-content>`,
   host: { '[class.clr-accordion]': 'true' },
-  providers: [CollapsiblePanelService],
+  providers: [AccordionService, { provide: CollapsiblePanelService, useExisting: AccordionService }],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
@@ -36,7 +38,7 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
   @ContentChildren(ClrAccordionPanel) panels: QueryList<ClrAccordionPanel>;
   private subscriptions: Subscription[] = [];
 
-  constructor(private panelService: CollapsiblePanelService) {}
+  constructor(private accordionService: AccordionService) {}
 
   ngOnInit() {
     this.setAccordionStrategy();
@@ -57,15 +59,15 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
   }
 
   private setAccordionStrategy() {
-    const strategy = this.multiPanel ? CollapsiblePanelStrategy.Multi : CollapsiblePanelStrategy.Default;
-    this.panelService.setStrategy(strategy);
+    const strategy = this.multiPanel ? AccordionStrategy.Multi : AccordionStrategy.Default;
+    this.accordionService.setStrategy(strategy);
   }
 
   private listenForDOMChanges() {
     return this.panels.changes
       .pipe(startWith(this.panels))
       .subscribe((panels: QueryList<ClrAccordionPanel>) =>
-        this.panelService.updatePanelOrder(panels.toArray().map(p => p.id))
+        this.accordionService.updatePanelOrder(panels.toArray().map(p => p.id))
       );
   }
 }

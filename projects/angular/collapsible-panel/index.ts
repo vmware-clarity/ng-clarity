@@ -6,7 +6,6 @@
  */
 
 export * from './collapsible-panel';
-export * from './enums/collapsible-panel-strategy.enum';
 export * from './models/collapsible-panel.model';
 export * from './providers/collapsible-panel.service';
 export * from './utils/animation';

@@ -108,6 +108,36 @@ export const accessibility2Icon: IconShapeTuple;
 // @public (undocumented)
 export const accessibility2IconName = "accessibility-2";
 
+// Warning: (ae-forgotten-export) The symbol "CollapsiblePanelGroupModel_2" needs to be exported by the entry point clr-angular.d.ts
+//
+// @public (undocumented)
+export class AccordionModel extends CollapsiblePanelGroupModel_2 {
+    // (undocumented)
+    setStrategy(strategy: AccordionStrategy): void;
+    // (undocumented)
+    togglePanel(panelId: string, open?: boolean): void;
+}
+
+// Warning: (ae-forgotten-export) The symbol "CollapsiblePanelService_2" needs to be exported by the entry point clr-angular.d.ts
+//
+// @public (undocumented)
+export class AccordionService extends CollapsiblePanelService_2 {
+    // (undocumented)
+    protected panelGroup: AccordionModel;
+    // (undocumented)
+    setStrategy(strategy: AccordionStrategy): void;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<AccordionService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<AccordionService>;
+}
+
+// @public
+export enum AccordionStrategy {
+    Default = "default",
+    Multi = "multi"
+}
+
 // @public (undocumented)
 export const addTextIcon: IconShapeTuple;
 
@@ -948,8 +978,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
 
 // @public (undocumented)
 export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(panelService: CollapsiblePanelService_2);
+    constructor(accordionService: AccordionService);
     // (undocumented)
     multiPanel: boolean | string;
     // (undocumented)
@@ -6426,10 +6455,6 @@ export class CollapsiblePanelGroupModel {
         [id: string]: CollapsiblePanelModel;
     };
     // (undocumented)
-    setStrategy(strategy: CollapsiblePanelStrategy): void;
-    // (undocumented)
-    protected strategy: CollapsiblePanelStrategy;
-    // (undocumented)
     togglePanel(panelId: string, open?: boolean): void;
     // (undocumented)
     updatePanelOrder(ids: string[]): void;
@@ -6467,8 +6492,6 @@ export class CollapsiblePanelService {
     // (undocumented)
     protected readonly _panelsChanges: BehaviorSubject<CollapsiblePanelModel[]>;
     // (undocumented)
-    setStrategy(strategy: CollapsiblePanelStrategy): void;
-    // (undocumented)
     togglePanel(panelId: string, open?: boolean): void;
     // (undocumented)
     updatePanelOrder(ids: string[]): void;
@@ -6476,14 +6499,6 @@ export class CollapsiblePanelService {
     static ɵfac: i0.ɵɵFactoryDeclaration<CollapsiblePanelService, never>;
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<CollapsiblePanelService>;
-}
-
-// @public (undocumented)
-export enum CollapsiblePanelStrategy {
-    // (undocumented)
-    Default = "default",
-    // (undocumented)
-    Multi = "multi"
 }
 
 // @public (undocumented)
