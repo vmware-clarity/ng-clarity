@@ -165,10 +165,7 @@ export class StepperModel extends CollapsiblePanelGroupModel {
   }
 
   private getNumberOfIncompletePanels() {
-    return this.panels.reduce(
-      (prev, next) => ((next as StepperPanelModel).status !== StepperPanelStatus.Complete ? prev + 1 : prev),
-      0
-    );
+    return this.panels.reduce((prev, next) => (next.status !== StepperPanelStatus.Complete ? prev + 1 : prev), 0);
   }
 
   private getNumberOfOpenPanels() {

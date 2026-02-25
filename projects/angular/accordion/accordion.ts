@@ -45,7 +45,11 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.multiPanel.currentValue !== changes.multiPanel.previousValue) {
+    if (
+      changes.multiPanel &&
+      !changes.multiPanel.firstChange &&
+      changes.multiPanel.currentValue !== changes.multiPanel.previousValue
+    ) {
       this.setAccordionStrategy();
     }
   }

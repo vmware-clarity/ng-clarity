@@ -59,7 +59,11 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.initialPanel.currentValue !== changes.initialPanel.previousValue) {
+    if (
+      changes.initialPanel &&
+      !changes.initialPanel.firstChange &&
+      changes.initialPanel.currentValue !== changes.initialPanel.previousValue
+    ) {
       this.stepperService.overrideInitialPanel(this.initialPanel);
     }
   }
