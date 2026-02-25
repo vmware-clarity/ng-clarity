@@ -63,7 +63,7 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
   }
 
   private setAccordionStrategy() {
-    const strategy = this.multiPanel ? AccordionStrategy.Multi : AccordionStrategy.Default;
+    const strategy = this.multiPanel ? AccordionStrategy.Multi : AccordionStrategy.Single;
     this.accordionService.setStrategy(strategy);
   }
 

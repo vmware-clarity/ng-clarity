@@ -134,8 +134,8 @@ export class AccordionService extends CollapsiblePanelService_2 {
 
 // @public
 export enum AccordionStrategy {
-    Default = "default",
-    Multi = "multi"
+    Multi = "multi",
+    Single = "single"
 }
 
 // @public (undocumented)

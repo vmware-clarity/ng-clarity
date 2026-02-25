@@ -10,7 +10,7 @@
  */
 export enum AccordionStrategy {
   /** Only one panel can be open at a time. Opening a panel closes any previously open panel. */
-  Default = 'default',
+  Single = 'single',
   /** Multiple panels can be open simultaneously. */
   Multi = 'multi',
 }

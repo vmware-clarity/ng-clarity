@@ -10,7 +10,7 @@ import { CollapsiblePanelGroupModel } from '@clr/angular/collapsible-panel';
 import { AccordionStrategy } from '../enums/accordion-strategy.enum';
 
 export class AccordionModel extends CollapsiblePanelGroupModel {
-  private strategy = AccordionStrategy.Default;
+  private strategy = AccordionStrategy.Single;
 
   setStrategy(strategy: AccordionStrategy) {
     this.strategy = strategy;
@@ -23,7 +23,7 @@ export class AccordionModel extends CollapsiblePanelGroupModel {
 
     const panelIsOpen = this._panels[panelId].open;
     const newOpenState = open !== undefined ? open : !panelIsOpen;
-    if (newOpenState && this.strategy === AccordionStrategy.Default) {
+    if (newOpenState && this.strategy === AccordionStrategy.Single) {
       this.closeAllPanels();
     }
 
