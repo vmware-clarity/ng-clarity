@@ -56,3 +56,6 @@ Thumbs.db
 
 #Storybook
 debug-storybook.log
+
+# Generated PR description
+PR_DESCRIPTION.md

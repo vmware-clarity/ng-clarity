@@ -14,8 +14,11 @@
 - Revert test-only side effects (e.g., auto-fixed files during lint testing) so only infrastructure changes remain.
 - When creating plans, ask clarifying scope questions (e.g., full replacement vs. dual mode) before proceeding.
 - Do not make changes outside the scope of the current PR/task unless explicitly asked. Flag out-of-scope issues for separate work.
-- When user asks for a PR description, print it as a copyable markdown block following the template in `.github/pull_request_template.md`. Do not create a file.
-- After completing a task, review AGENTS.md and relevant `.cursor/rules/*.mdc` files, and update them with any meaningful, broadly useful learnings discovered during the work (new patterns, gotchas, conventions). Component-specific learnings go in the matching `.mdc` file; project-wide learnings go in AGENTS.md. Skip trivial or one-off details that wouldn't benefit future sessions.
+- When user asks for a PR description, generate a temporary `PR_DESCRIPTION.md` at the repo root following the template in `.github/pull_request_template.md`.
+- Always use Clarity components, styles, and utilities (e.g., `clr-select`, `clr-toggle`, `clr-radio`, card classes, grid layout) instead of plain HTML/CSS equivalents when creating demo pages, stories, mockups, or composing complex components.
+- Use the narrowest-scoped query decorator for the situation — e.g., `@ViewChild` when exactly one instance is expected, `@ViewChildren` only when the count is dynamic or multiple.
+- Prefer configurable toggles/controls over separate predefined scenarios when options are orthogonal. If a behavior can be toggled independently, make it a checkbox/toggle — don't duplicate scenarios for each combination.
+- After completing a task, review AGENTS.md and relevant `.cursor/rules/*.mdc` files, and propose updates for any meaningful learnings discovered during the work using the AskQuestion tool to get user approval before making changes. Component-specific learnings go in the matching `.mdc` file; project-wide learnings go in AGENTS.md. Skip trivial or one-off details that wouldn't benefit future sessions.
 
 ## Project Overview
 
