@@ -5274,6 +5274,7 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrStepperModule {
+    constructor();
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperModule, never>;
     // (undocumented)
@@ -5297,9 +5298,9 @@ export class ClrStepperPanel extends CollapsiblePanel_2 implements OnInit {
     // (undocumented)
     getHeaderId(id: string): string;
     // (undocumented)
-    getPanelStateClasses(panel: CollapsiblePanelModel_2): string;
+    getPanelStateClasses(panel: StepperPanelModel): string;
     // (undocumented)
-    getPanelStatus(panel: CollapsiblePanelModel_2): StepperPanelStatus;
+    getPanelStatus(panel: StepperPanelModel): StepperPanelStatus;
     // (undocumented)
     headerButton: ElementRef<HTMLButtonElement>;
     // (undocumented)
@@ -5309,6 +5310,8 @@ export class ClrStepperPanel extends CollapsiblePanel_2 implements OnInit {
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
+    // (undocumented)
+    panel: Observable<StepperPanelModel>;
     // (undocumented)
     get panelNumber(): number;
     // (undocumented)

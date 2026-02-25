@@ -100,6 +100,7 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrStepperModule {
+    constructor();
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperModule, never>;
     // (undocumented)
@@ -129,11 +130,9 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     // (undocumented)
     getHeaderId(id: string): string;
     // (undocumented)
-    getPanelStateClasses(panel: CollapsiblePanelModel): string;
-    // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelModel" needs to be exported by the entry point clr-angular-stepper.d.ts
-    //
+    getPanelStateClasses(panel: StepperPanelModel): string;
     // (undocumented)
-    getPanelStatus(panel: CollapsiblePanelModel): StepperPanelStatus;
+    getPanelStatus(panel: StepperPanelModel): StepperPanelStatus;
     // (undocumented)
     headerButton: ElementRef<HTMLButtonElement>;
     // (undocumented)
@@ -143,6 +142,8 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
+    // (undocumented)
+    panel: Observable<StepperPanelModel>;
     // (undocumented)
     get panelNumber(): number;
     // (undocumented)
@@ -167,6 +168,8 @@ export class ClrStepTitle {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepTitle, never>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "CollapsiblePanelModel" needs to be exported by the entry point clr-angular-stepper.d.ts
+//
 // @public (undocumented)
 export class StepperPanelModel extends CollapsiblePanelModel {
     // (undocumented)

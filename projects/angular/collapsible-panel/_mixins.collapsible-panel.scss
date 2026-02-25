@@ -10,69 +10,64 @@
 @use 'variables.collapsible-panel' as panel-variables;
 @use '../styles/variables/variables.density' as density;
 
-@mixin collapsible-panel($prefix) {
+@mixin collapsible-panel(
+  $prefix,
+  $text-color: panel-variables.$clr-collapsible-panel-text-color,
+  $text-color-hover: panel-variables.$clr-collapsible-panel-text-color-hover,
+  $text-color-active: panel-variables.$clr-collapsible-panel-text-color-active,
+  $panel-disabled-color: panel-variables.$clr-collapsible-panel-panel-disabled-color,
+  $content-background-color: panel-variables.$clr-collapsible-panel-content-background-color,
+  $header-background-color: panel-variables.$clr-collapsible-panel-header-background-color,
+  $header-disabled-background-color: panel-variables.$clr-collapsible-panel-header-disabled-background-color,
+  $header-hover-background-color: panel-variables.$clr-collapsible-panel-header-hover-background-color,
+  $header-active-background-color: panel-variables.$clr-collapsible-panel-header-active-background-color,
+  $header-open-background-color: panel-variables.$clr-collapsible-panel-header-open-background-color,
+  $header-open-active-background-color: panel-variables.$clr-collapsible-panel-header-open-active-background-color,
+  $header-open-hover-background-color: panel-variables.$clr-collapsible-panel-header-open-hover-background-color,
+  $border-color: panel-variables.$clr-collapsible-panel-border-color,
+  $content-color: panel-variables.$clr-collapsible-panel-content-color,
+  $responsive-breakpoint: panel-variables.$clr-collapsible-panel-responsive-breakpoint
+) {
   .#{$prefix}-panel {
     display: block;
   }
 
   .#{$prefix}-header {
     width: 100%;
-    border: tokens.$cds-global-space-1 solid
-      var(--#{$prefix}-border-color, #{panel-variables.$clr-collapsible-panel-border-color});
+    border: tokens.$cds-global-space-1 solid $border-color;
     border-bottom-width: 0;
-    background: var(
-      --#{$prefix}-header-background-color,
-      #{panel-variables.$clr-collapsible-panel-header-background-color}
-    );
-    color: var(--#{$prefix}-text-color, #{panel-variables.$clr-collapsible-panel-text-color});
+    background: $header-background-color;
+    color: $text-color;
     text-align: left;
     transition: background-color 200ms ease-in-out;
 
     @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
 
     &:hover {
-      color: var(--#{$prefix}-text-color-hover, #{panel-variables.$clr-collapsible-panel-text-color-hover});
-      background-color: var(
-        --#{$prefix}-header-hover-background-color,
-        #{panel-variables.$clr-collapsible-panel-header-hover-background-color}
-      );
+      color: $text-color-hover;
+      background-color: $header-hover-background-color;
     }
 
     &:active {
-      color: var(--#{$prefix}-text-color-active, #{panel-variables.$clr-collapsible-panel-text-color-active});
-      background-color: var(
-        --#{$prefix}-header-active-background-color,
-        #{panel-variables.$clr-collapsible-panel-header-active-background-color}
-      );
+      color: $text-color-active;
+      background-color: $header-active-background-color;
     }
 
     .#{$prefix}-panel-disabled > div > & {
-      background-color: var(
-        --#{$prefix}-header-background-color,
-        #{panel-variables.$clr-collapsible-panel-header-background-color}
-      );
+      background-color: $header-background-color;
 
       &:hover,
       &:active {
-        background-color: var(
-          --#{$prefix}-header-background-color,
-          #{panel-variables.$clr-collapsible-panel-header-background-color}
-        );
+        background-color: $header-background-color;
       }
     }
 
     .#{$prefix}-panel-disabled > .#{$prefix}-panel-open > & {
-      background-color: var(
-        --#{$prefix}-header-disabled-background-color,
-        #{panel-variables.$clr-collapsible-panel-header-disabled-background-color}
-      );
+      background-color: $header-disabled-background-color;
 
       &:hover,
       &:active {
-        background-color: var(
-          --#{$prefix}-header-disabled-background-color,
-          #{panel-variables.$clr-collapsible-panel-header-disabled-background-color}
-        );
+        background-color: $header-disabled-background-color;
       }
     }
   }
@@ -80,8 +75,7 @@
   .#{$prefix}-panel:last-child {
     .#{$prefix}-header,
     .#{$prefix}-content {
-      border-bottom: tokens.$cds-global-space-1 solid
-        var(--#{$prefix}-border-color, #{panel-variables.$clr-collapsible-panel-border-color});
+      border-bottom: tokens.$cds-global-space-1 solid $border-color;
     }
   }
 
@@ -98,7 +92,7 @@
     cursor: pointer;
     gap: density.$clr-base-gap-s;
 
-    @media (min-width: panel-variables.$clr-collapsible-panel-responsive-breakpoint) {
+    @media (min-width: $responsive-breakpoint) {
       flex-flow: row;
     }
 
@@ -108,7 +102,7 @@
       .#{$prefix}-status,
       .#{$prefix}-title,
       .#{$prefix}-description {
-        color: var(--#{$prefix}-panel-disabled-color, #{panel-variables.$clr-collapsible-panel-panel-disabled-color});
+        color: $panel-disabled-color;
       }
     }
   }
@@ -135,7 +129,7 @@
     display: inline-block;
     max-width: mixins.baselinePx(650);
 
-    @media (min-width: panel-variables.$clr-collapsible-panel-responsive-breakpoint) {
+    @media (min-width: $responsive-breakpoint) {
       margin-left: density.$clr-base-horizontal-offset-l;
     }
   }
@@ -143,13 +137,9 @@
   .#{$prefix}-content {
     display: none;
     overflow: hidden;
-    border: tokens.$cds-global-space-1 solid
-      var(--#{$prefix}-border-color, #{panel-variables.$clr-collapsible-panel-border-color});
+    border: tokens.$cds-global-space-1 solid $border-color;
     border-bottom: 0;
-    background: var(
-      --#{$prefix}-content-background-color,
-      #{panel-variables.$clr-collapsible-panel-content-background-color}
-    );
+    background: $content-background-color;
 
     .clr-form {
       padding: 0;
@@ -172,24 +162,15 @@
 
     & > .#{$prefix}-header {
       border-bottom: 0 !important;
-      background: var(
-        --#{$prefix}-header-open-background-color,
-        #{panel-variables.$clr-collapsible-panel-header-open-background-color}
-      );
+      background: $header-open-background-color;
 
       &:hover {
-        background-color: var(
-          --#{$prefix}-header-open-hover-background-color,
-          #{panel-variables.$clr-collapsible-panel-header-open-hover-background-color}
-        );
+        background-color: $header-open-hover-background-color;
       }
 
       &:active {
-        color: var(--#{$prefix}-text-color-active, #{panel-variables.$clr-collapsible-panel-text-color-active});
-        background-color: var(
-          --#{$prefix}-header-open-active-background-color,
-          #{panel-variables.$clr-collapsible-panel-header-open-active-background-color}
-        );
+        color: $text-color-active;
+        background-color: $header-open-active-background-color;
       }
 
       .#{$prefix}-angle {

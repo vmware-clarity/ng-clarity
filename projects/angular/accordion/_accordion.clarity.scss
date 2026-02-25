@@ -13,7 +13,24 @@
 
 @include meta.load-css('properties.accordion');
 @include mixins.exports('accordion.clarity') {
-  @include collapsible-panel.collapsible-panel('clr-accordion');
+  @include collapsible-panel.collapsible-panel(
+    'clr-accordion',
+    $text-color: accordion-variables.$clr-accordion-text-color,
+    $text-color-hover: accordion-variables.$clr-accordion-text-color-hover,
+    $text-color-active: accordion-variables.$clr-accordion-text-color-active,
+    $panel-disabled-color: accordion-variables.$clr-accordion-panel-disabled-color,
+    $content-background-color: accordion-variables.$clr-accordion-content-background-color,
+    $header-background-color: accordion-variables.$clr-accordion-header-background-color,
+    $header-disabled-background-color: accordion-variables.$clr-accordion-header-disabled-background-color,
+    $header-hover-background-color: accordion-variables.$clr-accordion-header-hover-background-color,
+    $header-active-background-color: accordion-variables.$clr-accordion-header-active-background-color,
+    $header-open-background-color: accordion-variables.$clr-accordion-header-open-background-color,
+    $header-open-active-background-color: accordion-variables.$clr-accordion-header-open-active-background-color,
+    $header-open-hover-background-color: accordion-variables.$clr-accordion-header-open-hover-background-color,
+    $border-color: accordion-variables.$clr-accordion-border-color,
+    $content-color: accordion-variables.$clr-accordion-content-color,
+    $responsive-breakpoint: accordion-variables.$clr-accordion-responsive-breakpoint
+  );
 
   .clr-accordion {
     display: block;
