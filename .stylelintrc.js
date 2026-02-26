@@ -16,8 +16,6 @@ module.exports = {
     'no-invalid-position-at-import-rule': null,
     'plugin/license-header': [true, { license: './.license-header.js' }],
     'scss/at-extend-no-missing-placeholder': null,
-    'scss/at-import-no-partial-leading-underscore': null,
-    'scss/at-import-partial-extension': null,
     'scss/comment-no-empty': null,
     'scss/no-global-function-names': null,
     'scss/operator-no-newline-after': null,

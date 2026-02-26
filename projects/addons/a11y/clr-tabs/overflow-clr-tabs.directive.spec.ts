@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
 import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -17,7 +16,7 @@ import { resources } from './overflow-clr-tabs.directive';
 import { ElementResizeService } from '../resize/element-resize.service';
 
 @Component({
-  imports: [AppfxA11yModule, ClrTabsModule, CommonModule],
+  imports: [AppfxA11yModule, ClrTabsModule],
   template: `
     <div [style.width]="width + 'px'">
       <clr-tabs appfxOverflowTabs>
@@ -36,10 +35,12 @@ import { ElementResizeService } from '../resize/element-resize.service';
           <clr-tab-content></clr-tab-content>
         </clr-tab>
 
-        <clr-tab *ngIf="tab4Visible">
-          <button clrTabLink [clrTabLinkInOverflow]="false" style="width: 50px">Tab 4</button>
-          <clr-tab-content></clr-tab-content>
-        </clr-tab>
+        @if (tab4Visible) {
+          <clr-tab>
+            <button clrTabLink [clrTabLinkInOverflow]="false" style="width: 50px">Tab 4</button>
+            <clr-tab-content></clr-tab-content>
+          </clr-tab>
+        }
       </clr-tabs>
     </div>
   `,

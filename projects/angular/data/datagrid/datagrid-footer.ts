@@ -16,7 +16,7 @@ import { Selection } from './providers/selection';
 @Component({
   selector: 'clr-dg-footer',
   template: `
-    @if (selection.selectionType === SELECTION_TYPE.Multi && selection.current.length > 0) {
+    @if (selection.selectionType === SELECTION_TYPE.Multi && selection.current?.length > 0) {
       <div class="clr-form-control-disabled">
         <clr-checkbox-wrapper class="datagrid-footer-select">
           <input clrCheckbox type="checkbox" checked="checked" disabled />

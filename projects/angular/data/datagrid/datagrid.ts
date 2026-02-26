@@ -38,7 +38,7 @@ import { ClrDatagridPlaceholder } from './datagrid-placeholder';
 import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
-import { SelectionType } from './enums/selection-type';
+import { SelectionType, selectionTypeAttribute } from './enums/selection-type';
 import { ClrDatagridStateInterface } from './interfaces/state.interface';
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
@@ -94,7 +94,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @Input() clrDgDisablePageFocus = false;
 
   @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<T[]>(false);
-  @Output('clrDgSingleSelectedChange') singleSelectedChanged = new EventEmitter<T>(false);
 
   /**
    * Output emitted whenever the data needs to be refreshed, based on user action or external ones
@@ -205,32 +204,33 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   /**
-   * Array of all selected items
+   * Selection type
+   * - `None`: No rows are selectable.
+   * - `Single`: Only one row can be selected at a time.
+   * - `Multi`: Multiple rows can be selected.
+   *
+   * Defaults to `None`.
    */
-  @Input('clrDgSelected')
-  set selected(value: T[] | undefined) {
-    if (value) {
-      this.selection.selectionType = SelectionType.Multi;
-    } else {
-      this.selection.selectionType = SelectionType.None;
-    }
-    this.selection.updateCurrent(value, false);
+  @Input({ alias: 'clrDgSelectionType', transform: selectionTypeAttribute })
+  get selectionType(): SelectionType {
+    return this.selection.selectionType;
+  }
+  set selectionType(value: SelectionType) {
+    this.selection.selectionType = value;
   }
 
   /**
-   * Selected item in single-select mode
+   * Array of all selected items
    */
-  @Input('clrDgSingleSelected')
-  set singleSelected(value: T) {
-    this.selection.selectionType = SelectionType.Single;
-    // the clrDgSingleSelected is updated in one of two cases:
-    // 1. an explicit value is passed
-    // 2. is being set to null or undefined, where previously it had a value
-    if (value) {
-      this.selection.currentSingle = value;
-    } else if (this.selection.currentSingle) {
-      this.selection.currentSingle = null;
+  @Input('clrDgSelected')
+  set selected(value: T[]) {
+    value = value || [];
+
+    if (value === this.selection.current) {
+      return;
     }
+
+    this.selection.updateCurrent(value, false);
   }
 
   @Input()
@@ -349,11 +349,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this._subscriptions.push(
       this.stickyHeaders.changes.subscribe(() => this.resize()),
       this.stateProvider.change.subscribe(state => this.refresh.emit(state)),
-      this.selection.change.subscribe(s => {
-        if (this.selection.selectionType === SelectionType.Single) {
-          this.singleSelectedChanged.emit(s as T);
-        } else if (this.selection.selectionType === SelectionType.Multi) {
-          this.selectedChanged.emit(s as T[]);
+      this.selection.change.subscribe(selection => {
+        if (this.selection.selectable) {
+          this.selectedChanged.emit(selection);
         }
       }),
       // Reinitialize arrow key navigation on page changes

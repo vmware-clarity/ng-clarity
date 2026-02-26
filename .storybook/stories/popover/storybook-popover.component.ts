@@ -24,6 +24,7 @@ import {
       [id]="popoverId"
       role="dialog"
       cdkTrapFocus
+      cdkTrapFocusAutoCapture
       *clrPopoverContent="
         open;
         at: contentPosition;

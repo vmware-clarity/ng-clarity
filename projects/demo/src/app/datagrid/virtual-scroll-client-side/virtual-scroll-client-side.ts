@@ -28,6 +28,7 @@ class ChangeDetectionPerfRecord {
   standalone: false,
 })
 export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChecked {
+  selectionType = 2;
   range: ListRange;
   userRange: ListRange;
   totalRows = 10000;
@@ -67,7 +68,8 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
     };
   }
 
-  trackItemById: ClrDatagridItemsIdentityFunction<User> = item => item?.id;
+  identifyUserById: ClrDatagridItemsIdentityFunction<User> = item => item?.id;
+  identifyRowByIndex: ClrDatagridItemsIdentityFunction<Row> = item => item?.index;
 
   ngAfterViewChecked(): void {
     this.cdr.detectChanges();

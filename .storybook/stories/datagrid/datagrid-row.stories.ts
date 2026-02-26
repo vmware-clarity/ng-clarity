@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrConditionalModule, ClrDatagridModule, ClrDatagridRow } from '@clr/angular';
+import { ClrConditionalModule, ClrDatagridModule, ClrDatagridRow, SelectionType } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
 
@@ -28,8 +28,8 @@ const RowTemplate: StoryFn = args => ({
     </style>
     <clr-datagrid
       ${args.height ? '[style.height.px]="height"' : ''}
-      ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
-      ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
+      [clrDgSelected]="[]"
+      [clrDgSelectionType]="clrDgSelectionType"
       ${args.rowSelectable ? '[clrDgRowSelection]="true"' : ''}
       [ngClass]="{ 'datagrid-compact': compact }"
     >
@@ -64,17 +64,15 @@ const RowTemplate: StoryFn = args => ({
         <clr-dg-cell>{{ emptyRow && index === 0 ? '' : element.number }}</clr-dg-cell>
         <clr-dg-cell class="electronegativity-container">
           {{ emptyRow && index === 0 ? '' : element.electronegativity }}
-          <div
-            *ngIf="!emptyRow || index !== 0"
-            [style.width.%]="(element.electronegativity * 100) / 5"
-            class="electronegativity-bar"
-          >
-            &nbsp;
-          </div>
+          @if (!emptyRow || index !== 0) {
+            <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
+          }
         </clr-dg-cell>
-        <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
-          <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
-        </ng-container>
+        @if (expandable) {
+          <ng-container ngProjectAs="clr-dg-row-detail">
+            <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
+          </ng-container>
+        }
       </clr-dg-row>
 
       <clr-dg-footer>
@@ -98,6 +96,15 @@ export default {
   argTypes: {
     // inputs
     clrDgItem: { control: { disable: true } },
+    clrDgSelected: { control: { disable: true } },
+    clrDgSelectionType: {
+      control: { type: 'select' },
+      options: {
+        None: SelectionType.None,
+        Single: SelectionType.Single,
+        Multi: SelectionType.Multi,
+      },
+    },
     // outputs
     clrDgExpandedChange: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
@@ -109,6 +116,7 @@ export default {
   },
   args: {
     // inputs
+    clrDgSelectionType: SelectionType.None,
     clrDgDetailCloseLabel: '',
     clrDgDetailOpenLabel: '',
     clrDgExpanded: false,
@@ -121,9 +129,7 @@ export default {
     // story helpers
     elements,
     highlight: true,
-    singleSelectable: false,
     rowSelectable: false,
-    multiSelectable: false,
     expandable: false,
     compact: false,
     hidableColumns: false,
@@ -139,14 +145,14 @@ export const Row: StoryObj = {
 export const singleSelection: StoryObj = {
   render: RowTemplate,
   args: {
-    singleSelectable: true,
+    clrDgSelectionType: SelectionType.Single,
   },
 };
 
 export const multiSelection: StoryObj = {
   render: RowTemplate,
   args: {
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
   },
 };
 

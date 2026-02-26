@@ -1,9 +1,9 @@
 <!--
-~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
-~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-~ This software is released under MIT license.
-~ The full license information can be found in LICENSE in the root directory of this project.
--->
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
 
 <h2>Selection (Single)</h2>
 
@@ -14,7 +14,7 @@
 <ul>
   <li>
     For single select, instead of
-    <code class="clr-code">[(clrDgSelected)]</code>, add a <code class="clr-code">[(clrDgSingleSelected)]</code> two-way
+    <code class="clr-code">[(clrDgSelected)]</code>, add a <code class="clr-code">[clrDgSelectionType]</code> two-way
     binding on the datagrid itself, to have access to the currently selected item. Note that by setting this value
     yourself, you can dynamically select an element if you need to.
   </li>
@@ -27,7 +27,7 @@
 
 <p>
   User should be able to dynamically change selection trough datagrid input
-  <code class="clr-code">[(clrDgSingleSelected)]</code>.
+  <code class="clr-code">[(clrDgSelected)]</code>.
   <button class="btn" (click)="selectItems()">Select items</button>
 </p>
 
@@ -38,13 +38,13 @@
     Selected user: @if (!singleSelected) {
     <em>No user selected.</em>
     } @if (singleSelected) {
-    <span class="username">{{singleSelected.name}}</span>
+    <span class="username">{{singleSelected[0]?.name}}</span>
     <div class="username">Value: {{singleSelected | json }}</div>
     }
   </div>
 </div>
 
-<clr-datagrid [(clrDgSingleSelected)]="singleSelected" [clrDgItemsIdentityFn]="idendityFn">
+<clr-datagrid [(clrDgSelected)]="singleSelected" [clrDgSelectionType]="'single'" [clrDgItemsIdentityFn]="idendityFn">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -76,13 +76,17 @@
     Selected user: @if (!trackByIndexSingleSelected) {
     <em>No user selected.</em>
     } @if (trackByIndexSingleSelected) {
-    <span class="username">{{trackByIndexSingleSelected.name}}</span>
+    <span class="username">{{trackByIndexSingleSelected[0]?.name}}</span>
     <div class="username">Value: {{trackByIndexSingleSelected | json }}</div>
     }
   </div>
 </div>
 
-<clr-datagrid [(clrDgSingleSelected)]="trackByIndexSingleSelected" [clrDgItemsIdentityFn]="idendityFn">
+<clr-datagrid
+  [(clrDgSelected)]="trackByIndexSingleSelected"
+  [clrDgSelectionType]="'single'"
+  [clrDgItemsIdentityFn]="idendityFn"
+>
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -114,13 +118,17 @@
     Selected user: @if (!trackByIdSingleSelected) {
     <em>No user selected.</em>
     } @if (trackByIdSingleSelected) {
-    <span class="username">{{trackByIdSingleSelected.name}}</span>
+    <span class="username">{{trackByIdSingleSelected[0]?.name}}</span>
     <div class="username">Value: {{trackByIdSingleSelected | json }}</div>
     }
   </div>
 </div>
 
-<clr-datagrid [(clrDgSingleSelected)]="trackByIdSingleSelected" [clrDgItemsIdentityFn]="idendityFn">
+<clr-datagrid
+  [(clrDgSelected)]="trackByIdSingleSelected"
+  [clrDgSelectionType]="'single'"
+  [clrDgItemsIdentityFn]="idendityFn"
+>
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -152,7 +160,7 @@
     Selected user: @if (!trackByIdServerSingleSelected) {
     <em>No user selected.</em>
     } @if (trackByIdServerSingleSelected) {
-    <span class="username">{{trackByIdServerSingleSelected.id}}</span>
+    <span class="username">{{trackByIdServerSingleSelected[0].id}}</span>
     <div class="username">Value: {{trackByIdServerSingleSelected | json }}</div>
     }
   </div>
@@ -160,7 +168,8 @@
 
 <clr-datagrid
   (clrDgRefresh)="refresh($event)"
-  [(clrDgSingleSelected)]="trackByIdServerSingleSelected"
+  [(clrDgSelected)]="trackByIdServerSingleSelected"
+  [clrDgSelectionType]="'single'"
   [clrDgLoading]="loading"
   [clrDgItemsIdentityFn]="idendityFn"
 >

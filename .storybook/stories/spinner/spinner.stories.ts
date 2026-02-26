@@ -46,7 +46,9 @@ const SpinnerTemplate: StoryFn = args => ({
       <clr-spinner [clrInverse]="clrInverse" [clrSmall]="clrSmall" [clrMedium]="clrMedium" [clrInline]="clrInline">
         {{ text }}
       </clr-spinner>
-      <br *ngIf="!clrInline" />
+      @if (!clrInline) {
+        <br />
+      }
       {{ text }}
     </div>
   `,

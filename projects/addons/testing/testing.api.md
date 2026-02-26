@@ -142,7 +142,7 @@ export class GridHelper {
     getFooter(): GridFooterTestHelper;
     // (undocumented)
     getGridElement(): HTMLElement;
-    // Warning: (ae-forgotten-export) The symbol "ClrDatagrid" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ClrDatagrid" needs to be exported by the entry point clr-addons-testing.d.ts
     //
     // (undocumented)
     getGridInternalInstance(): ClrDatagrid;
@@ -253,7 +253,7 @@ export class MockAppfxDatagridComponent {
     columns: any;
     // (undocumented)
     datagridLabels: any;
-    // Warning: (ae-forgotten-export) The symbol "ClrDatagridVirtualScrollRangeInterface" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ClrDatagridVirtualScrollRangeInterface" needs to be exported by the entry point clr-addons-testing.d.ts
     //
     // (undocumented)
     dataRange: ClrDatagridVirtualScrollRangeInterface<any>;
@@ -318,8 +318,6 @@ export class MockAppfxDatagridComponent {
     // (undocumented)
     serverDrivenDatagrid: boolean;
     // (undocumented)
-    setSelectedItems(): void;
-    // (undocumented)
     showFooter: boolean;
     // (undocumented)
     singleRowActions: any[];
@@ -341,12 +339,14 @@ export class MockAppfxDatagridComponent {
 
 // @public (undocumented)
 export class MockDatagridActionBarComponent {
+    // Warning: (ae-forgotten-export) The symbol "ActionDefinition" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
     // (undocumented)
-    actions: unknown[];
+    actions: ActionDefinition[];
     // (undocumented)
-    invokeAction: EventEmitter<unknown>;
+    invokeAction: EventEmitter<ActionDefinition>;
     // (undocumented)
-    onActionClick(action: unknown): void;
+    onActionClick(action: ActionDefinition): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridActionBarComponent, "appfx-datagrid-action-bar", never, { "actions": { "alias": "actions"; "required": false; }; }, { "invokeAction": "invokeAction"; }, never, never, false, never>;
     // (undocumented)
@@ -386,15 +386,15 @@ export class MockDatagridColumnToggleComponent {
 
 // @public (undocumented)
 export class MockDatagridFiltersComponent {
-    // Warning: (ae-forgotten-export) The symbol "FilterablePropertyDefinition" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "FilterablePropertyDefinition" needs to be exported by the entry point clr-addons-testing.d.ts
     //
     // (undocumented)
     filterableProperties: FilterablePropertyDefinition[];
-    // Warning: (ae-forgotten-export) The symbol "FilterMode" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "FilterMode" needs to be exported by the entry point clr-addons-testing.d.ts
     //
     // (undocumented)
     filterMode: FilterMode;
-    // Warning: (ae-forgotten-export) The symbol "PropertyFilter" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "PropertyFilter" needs to be exported by the entry point clr-addons-testing.d.ts
     //
     // (undocumented)
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
@@ -476,7 +476,7 @@ export class MockStandaloneDatagridComponent extends MockAppfxDatagridComponent 
 export class ZoomLevelServiceMock {
     // (undocumented)
     onChange: rxjs.Observable<ZoomLevel>;
-    // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point clr-addons-testing.d.ts
     //
     // (undocumented)
     resizeSubject: ReplaySubject<ZoomLevel>;

@@ -5,7 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+/**
+ * Controls how many panels can be open simultaneously within an accordion.
+ */
 export enum AccordionStrategy {
-  Default = 'default', // only one panel at a time
-  Multi = 'multi', // can have multiple panels open at a time
+  /** Only one panel can be open at a time. Opening a panel closes any previously open panel. */
+  Single = 'single',
+  /** Multiple panels can be open simultaneously. */
+  Multi = 'multi',
 }

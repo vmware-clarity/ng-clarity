@@ -20,6 +20,7 @@ const jasminePlugin = require('eslint-plugin-jasmine');
 const unusedImports = require('eslint-plugin-unused-imports');
 const decoratorPosition = require('eslint-plugin-decorator-position');
 const licenseHeader = require('eslint-plugin-license-header');
+const htmlParser = require('@html-eslint/parser');
 // Your custom rules plugin (kept as-is)
 const ngClarityRules = require('eslint-plugin-ng-clarity-eslint-rules');
 
@@ -152,10 +153,26 @@ module.exports = [
     },
   },
 
+  // HTML files (license header validation)
+  {
+    files: ['**/*.html'],
+    languageOptions: {
+      parser: htmlParser,
+    },
+    plugins: {
+      'ng-clarity-eslint-rules': ngClarityRules,
+    },
+    rules: {
+      'license-header/header': 'off',
+      'ng-clarity-eslint-rules/html-license-header': ['error', './.license-header.html'],
+    },
+  },
+
   globalIgnores([
     '!**/.*',
     '.angular',
     '**/node_modules',
+    'coverage',
     'dist',
     '/projects/**/*.api.md',
     '.storybook/preview.js',

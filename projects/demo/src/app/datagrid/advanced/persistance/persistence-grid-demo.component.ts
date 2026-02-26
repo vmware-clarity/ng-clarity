@@ -5,21 +5,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition } from '@clr/addons/datagrid';
-import { ClrAlertModule } from '@clr/angular';
+import { ClrAlertModule, SelectionType } from '@clr/angular';
 
 import { Inventory, VmItem } from '../inventory/inventory';
 
 @Component({
   selector: 'persistence-grid-demo',
-  imports: [AppfxDatagridModule, ClrAlertModule, CommonModule],
+  imports: [AppfxDatagridModule, ClrAlertModule],
   standalone: true,
   templateUrl: 'persistence-grid-demo.component.html',
   providers: [Inventory],
 })
 export class PersistenceGridDemoComponent {
+  SelectionType = SelectionType;
   protected readonly allItems: VmItem[];
   protected readonly columns: ColumnDefinition<VmItem>[] = [
     {

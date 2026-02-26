@@ -17,6 +17,7 @@ import {
   QueryList,
   SimpleChanges,
 } from '@angular/core';
+import { CollapsiblePanelService } from '@clr/angular/collapsible-panel';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
@@ -28,14 +29,14 @@ import { AccordionService } from './providers/accordion.service';
   selector: 'clr-accordion',
   template: `<ng-content></ng-content>`,
   host: { '[class.clr-accordion]': 'true' },
-  providers: [AccordionService],
+  providers: [AccordionService, { provide: CollapsiblePanelService, useExisting: AccordionService }],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
 export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input('clrAccordionMultiPanel') multiPanel: boolean | string = false;
   @ContentChildren(ClrAccordionPanel) panels: QueryList<ClrAccordionPanel>;
-  subscriptions: Subscription[] = [];
+  private subscriptions: Subscription[] = [];
 
   constructor(private accordionService: AccordionService) {}
 
@@ -44,7 +45,11 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.multiPanel.currentValue !== changes.multiPanel.previousValue) {
+    if (
+      changes.multiPanel &&
+      !changes.multiPanel.firstChange &&
+      changes.multiPanel.currentValue !== changes.multiPanel.previousValue
+    ) {
       this.setAccordionStrategy();
     }
   }
@@ -58,7 +63,7 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
   }
 
   private setAccordionStrategy() {
-    const strategy = this.multiPanel ? AccordionStrategy.Multi : AccordionStrategy.Default;
+    const strategy = this.multiPanel ? AccordionStrategy.Multi : AccordionStrategy.Single;
     this.accordionService.setStrategy(strategy);
   }
 

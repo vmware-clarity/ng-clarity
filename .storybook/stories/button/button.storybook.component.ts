@@ -18,30 +18,30 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
   standalone: true,
   imports: [CommonModule, ClrIcon, ClrLoadingButtonModule, ClrLoadingModule],
   template: `
-    <ng-container [ngSwitch]="templateMode">
-      <!-- Default Button Template -->
-      <ng-container *ngSwitchCase="'default'">
+    @switch (templateMode) {
+      @case ('default') {
         <button class="btn" [ngClass]="getButtonClass({ buttonType, buttonStyle, btnSmallSize })" [disabled]="disabled">
-          <cds-icon *ngIf="iconShape" [shape]="iconShape"></cds-icon>
+          @if (iconShape) {
+            <cds-icon [shape]="iconShape"></cds-icon>
+          }
           {{ content }}
           <ng-container #renderContainer></ng-container>
         </button>
-      </ng-container>
-
-      <!-- Link Button Template -->
-      <ng-container *ngSwitchCase="'link'">
+      }
+      @case ('link') {
         <a
           href="javascript://"
           class="btn"
           [ngClass]="getButtonClass({ buttonType, buttonStyle, btnSmallSize })"
           [disabled]="disabled"
         >
-          <cds-icon *ngIf="iconShape" [shape]="iconShape"></cds-icon>
+          @if (iconShape) {
+            <cds-icon [shape]="iconShape"></cds-icon>
+          }
           {{ content }}
         </a>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'loading'">
+      }
+      @case ('loading') {
         <h6>{{ stateName }}</h6>
         <button [clrLoading]="validateState" class="btn btn-sm btn-primary">
           <cds-icon shape="home"></cds-icon>
@@ -52,31 +52,37 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
           <cds-icon shape="home"></cds-icon>
           Submit
         </button>
-      </ng-container>
-
-      <!-- Showcase Template -->
-      <ng-container *ngSwitchCase="'showcase'">
+      }
+      @case ('showcase') {
         <h6>Default Button</h6>
         <button class="btn">Default</button>
 
         <h6>Primary Buttons</h6>
-        <button *ngFor="let type of BUTTON_TYPES" [class]="'btn btn-' + type">
-          <cds-icon shape="user"></cds-icon>
-          {{ type }}
-        </button>
+        @for (type of BUTTON_TYPES; track type) {
+          <button [class]="'btn btn-' + type">
+            <cds-icon shape="user"></cds-icon>
+            {{ type }}
+          </button>
+        }
 
         <h6>Old Outline Buttons</h6>
-        <button *ngFor="let type of BUTTON_TYPES" [class]="'btn btn-' + type + '-outline'">
-          {{ type }}
-          <cds-icon shape="home"></cds-icon>
-        </button>
+        @for (type of BUTTON_TYPES; track type) {
+          <button [class]="'btn btn-' + type + '-outline'">
+            {{ type }}
+            <cds-icon shape="home"></cds-icon>
+          </button>
+        }
 
         <h6>New Outline Buttons</h6>
-        <button *ngFor="let type of BUTTON_TYPES" [class]="'btn btn-outline-' + type">{{ type }}</button>
+        @for (type of BUTTON_TYPES; track type) {
+          <button [class]="'btn btn-outline-' + type">{{ type }}</button>
+        }
 
         <h6>Link Buttons</h6>
         <button class="btn btn-link">Default</button>
-        <button *ngFor="let type of BUTTON_TYPES" [class]="'btn btn-link-' + type">{{ type }}</button>
+        @for (type of BUTTON_TYPES; track type) {
+          <button [class]="'btn btn-link-' + type">{{ type }}</button>
+        }
 
         <h6>Inverse Buttons</h6>
         <div style="background: #313131; padding: 24px">
@@ -91,37 +97,46 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
         </button>
 
         <h6>Small Primary Buttons</h6>
-        <button *ngFor="let type of BUTTON_TYPES" [class]="'btn btn-sm btn-' + type">{{ type }}</button>
+        @for (type of BUTTON_TYPES; track type) {
+          <button [class]="'btn btn-sm btn-' + type">{{ type }}</button>
+        }
 
         <h6>Small Outline Buttons</h6>
-        <button *ngFor="let type of BUTTON_TYPES" [class]="'btn btn-sm btn-' + type + '-outline'">
-          <cds-icon shape="user"></cds-icon>
-          {{ type }}
-          <cds-icon shape="home"></cds-icon>
-        </button>
+        @for (type of BUTTON_TYPES; track type) {
+          <button [class]="'btn btn-sm btn-' + type + '-outline'">
+            <cds-icon shape="user"></cds-icon>
+            {{ type }}
+            <cds-icon shape="home"></cds-icon>
+          </button>
+        }
 
-        <!-- Links -->
         <h6>Default Link</h6>
         <a href="javascript://" class="btn">Default</a>
 
         <h6>Primary Links</h6>
-        <a *ngFor="let type of BUTTON_TYPES" href="javascript://" [class]="'btn btn-' + type">{{ type }}</a>
+        @for (type of BUTTON_TYPES; track type) {
+          <a href="javascript://" [class]="'btn btn-' + type">{{ type }}</a>
+        }
 
         <h6>Old Outline Links</h6>
-        <a *ngFor="let type of BUTTON_TYPES" href="javascript://" [class]="'btn btn-' + type + '-outline'">{{
-          type
-        }}</a>
+        @for (type of BUTTON_TYPES; track type) {
+          <a href="javascript://" [class]="'btn btn-' + type + '-outline'">{{ type }}</a>
+        }
 
         <h6>New Outline Links</h6>
-        <a *ngFor="let type of BUTTON_TYPES" href="javascript://" [class]="'btn btn-outline-' + type">
-          <cds-icon shape="user"></cds-icon>
-          {{ type }}
-          <cds-icon shape="home"></cds-icon>
-        </a>
+        @for (type of BUTTON_TYPES; track type) {
+          <a href="javascript://" [class]="'btn btn-outline-' + type">
+            <cds-icon shape="user"></cds-icon>
+            {{ type }}
+            <cds-icon shape="home"></cds-icon>
+          </a>
+        }
 
         <h6>Flat Links</h6>
         <a href="javascript://" class="btn btn-link">Default</a>
-        <a *ngFor="let type of BUTTON_TYPES" href="javascript://" [class]="'btn btn-link-' + type">{{ type }}</a>
+        @for (type of BUTTON_TYPES; track type) {
+          <a href="javascript://" [class]="'btn btn-link-' + type">{{ type }}</a>
+        }
         <a href="javascript://" class="btn btn-link btn-sm">
           <cds-icon shape="user"></cds-icon>
           Link
@@ -130,7 +145,9 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
 
         <h6>Flat Buttons</h6>
         <button class="btn btn-link">Default</button>
-        <button *ngFor="let type of BUTTON_TYPES" [class]="'btn btn-link-' + type">{{ type }}</button>
+        @for (type of BUTTON_TYPES; track type) {
+          <button [class]="'btn btn-link-' + type">{{ type }}</button>
+        }
         <button class="btn btn-link btn-sm">
           <cds-icon shape="user"></cds-icon>
           Flat
@@ -144,8 +161,8 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
 
         <h6>Block Links</h6>
         <a href="javascript://" class="btn btn-block">Block</a>
-      </ng-container>
-    </ng-container>
+      }
+    }
   `,
 })
 export class ButtonStorybookComponent extends RenderComponentStorybook {

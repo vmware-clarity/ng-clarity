@@ -1,9 +1,9 @@
 <!--
-~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
-~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-~ This software is released under MIT license.
-~ The full license information can be found in LICENSE in the root directory of this project.
--->
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
 
 <h2>Dense Datagrid</h2>
 
@@ -68,6 +68,7 @@
   [class.datagrid-compact]="compact"
   [class.datagrid-overflow-ellipsis]="overflowEllipsis"
   [(clrDgSelected)]="selected"
+  [clrDgSelectionType]="selected ? 'multi' : 'none'"
 >
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
@@ -77,7 +78,7 @@
   <clr-dg-column>Long Text Dynamic Width</clr-dg-column>
   <clr-dg-column [style.width.px]="400">Long Text Static Width 400px</clr-dg-column>
   @for (user of users; track user; let i = $index) {
-  <clr-dg-row>
+  <clr-dg-row [clrDgItem]="user">
     @if (actions) {
     <clr-dg-action-overflow>
       <button class="action-item">Edit</button>

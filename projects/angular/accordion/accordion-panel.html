@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
 @if (panel | async; as panel) {
 <div [ngClass]="getPanelStateClasses(panel)">
   <div
@@ -9,9 +15,9 @@
       type="button"
       class="clr-accordion-header-button"
       (click)="togglePanel()"
-      [id]="getAccordionHeaderId(panel.templateId)"
+      [id]="getHeaderId(panel.templateId)"
       [disabled]="panel.disabled"
-      [attr.aria-controls]="!panel.disabled && panel.open ? getAccordionContentId(panel.templateId) : null"
+      [attr.aria-controls]="!panel.disabled && panel.open ? getContentId(panel.templateId) : null"
       [attr.aria-expanded]="panel.open"
       [class.clr-accordion-header-has-description]="(accordionDescription.changes | async)?.length || accordionDescription.length"
       #headerButton
@@ -19,17 +25,17 @@
       <span class="clr-accordion-status">
         <cds-icon shape="angle" direction="right" class="clr-accordion-angle"></cds-icon>
       </span>
-      <ng-content select="clr-accordion-title, clr-step-title"></ng-content>
-      <ng-content select="clr-accordion-description, clr-step-description"></ng-content>
+      <ng-content select="clr-accordion-title"></ng-content>
+      <ng-content select="clr-accordion-description"></ng-content>
     </button>
   </div>
   <div
     @skipInitialRender
     role="region"
     class="clr-accordion-content-region"
-    [id]="getAccordionContentId(panel.templateId)"
+    [id]="getContentId(panel.templateId)"
     [attr.aria-hidden]="!panel.open"
-    [attr.aria-labelledby]="getAccordionHeaderId(panel.templateId)"
+    [attr.aria-labelledby]="getHeaderId(panel.templateId)"
   >
     @if (panel.open) {
     <div @toggle (@toggle.done)="collapsePanelOnAnimationDone(panel)" class="clr-accordion-content">

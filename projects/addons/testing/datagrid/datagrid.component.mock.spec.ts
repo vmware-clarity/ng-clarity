@@ -24,6 +24,5 @@ describe('MockAppfxDatagridComponent', () => {
 
   it('should have defined empty functions for mocking purpose', () => {
     expect(component.onModelChange()).toBeUndefined();
-    expect(component.setSelectedItems()).toBeUndefined();
   });
 });
