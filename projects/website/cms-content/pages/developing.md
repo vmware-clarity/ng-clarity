@@ -169,8 +169,9 @@ on GitHub.
 
 Feel free to file feature requests or report any issues on our Clarity
 [GitHub Issues](https://github.com/vmware-clarity/ng-clarity/issues/new/choose) site.
-
-If you are a VMware internal user, you can go to the Clarity Jira site to see instructions about how to submit requests and report issues internally. When submitting issues, provide a minimal app that demonstrates the issue by forking one of the Clarity Stackblitz projects. Since it depends on your issue, starting with the correct Clarity version and theme will help us deliver support. The Jira site also includes a link to the Stackblitz templates.
+When submitting issues, provide a minimal app that demonstrates the issue by forking one of the
+Clarity Stackblitz projects. Since it depends on your issue, starting with the correct Clarity
+version and theme will help us deliver support.
 
 ## Attributions
 

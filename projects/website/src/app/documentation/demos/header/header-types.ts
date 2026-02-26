@@ -104,7 +104,7 @@ const EXAMPLE = `
     <div class="header-actions">
       <clr-dropdown>
         <button class="nav-text" clrDropdownTrigger aria-label="open user profile">
-          john.doe&#64;vmware.com
+          john.doe&#64;example.com
           <clr-icon shape="angle" direction="down"></clr-icon>
         </button>
         <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">

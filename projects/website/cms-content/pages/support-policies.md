@@ -155,5 +155,5 @@ Windows and macOS platforms.
 - VoiceOver + Safari (Apple)
 
 To hold Clarity to a high standard for accessibility, we have an accessibility team that reviews any
-accessibility issues and verifies resolutions. For accessibility support, reach out to the
-[VMware Accessibility](https://www.vmware.com/help/accessibility.html) team.
+accessibility issues and verifies resolutions. For accessibility support, reach out via
+[GitHub Issues](https://github.com/vmware-clarity/ng-clarity/issues/new/choose).
