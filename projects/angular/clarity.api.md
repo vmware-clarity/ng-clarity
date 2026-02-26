@@ -5226,6 +5226,9 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     set stopNavigation(value: boolean);
     get stopNext(): boolean;
     set stopNext(value: boolean);
+    // (undocumented)
+    get title(): ElementRef<HTMLElement>;
+    set title(title: ElementRef<HTMLElement>);
     toggle(open: boolean): void;
     wizardFinished: EventEmitter<any>;
     // (undocumented)
@@ -6160,3 +6163,4 @@ export class ÇlrWrappedRow implements AfterViewInit, OnDestroy {
 // (No @packageDocumentation comment for this package)
 
 ```
+
