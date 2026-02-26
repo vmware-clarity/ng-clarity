@@ -83,17 +83,13 @@ async function crawlPages() {
   }
 
   async function hashPageContent(page) {
-    // Remove the footer because it is on all pages.
-    // If it is changed, we don't want the `lastmod` date of all pages to be updated.
     await page.evaluate(() => {
-      document.querySelector('app-site-footer').remove();
+      document.querySelector('app-site-footer')?.remove();
     });
 
-    // Get the text content of the page content area.
-    // Using the content area excludes the header and site nav for the same reason the footer is excluded.
-    const content = await page.$eval('.content-area', body => body.textContent);
+    const contentArea = await page.$('.content-area');
+    const content = contentArea ? await contentArea.textContent() : await page.content();
 
-    // Return the sha256 hash as hex.
     return crypto.createHash('sha256').update(content.trim()).digest('hex');
   }
 }
@@ -103,14 +99,34 @@ async function generateSitemap(pages) {
 
   const today = new Date().toISOString().split('T')[0];
 
-  const currentSitemapXml = await (await fetch('https://clarity.design/sitemap.xml')).text();
-  const currentSitemapJson = xmlJs.xml2json(currentSitemapXml, { compact: true });
-  const currentSitemap = JSON.parse(currentSitemapJson).urlset.url.map(url => ({
-    loc: url.loc._text,
-    lastmod: url.lastmod._text,
-  }));
+  let currentSitemap = [];
+  let currentPages = [];
 
-  const currentPages = await (await fetch(`https://clarity.design/pages.json`)).json();
+  try {
+    const sitemapRes = await fetch('https://clarity.design/sitemap.xml');
+    if (sitemapRes.ok) {
+      const currentSitemapXml = await sitemapRes.text();
+      const currentSitemapJson = xmlJs.xml2json(currentSitemapXml, { compact: true });
+      const parsed = JSON.parse(currentSitemapJson);
+      const urls = parsed?.urlset?.url;
+      if (Array.isArray(urls)) {
+        currentSitemap = urls.map(url => ({
+          loc: url.loc._text,
+          lastmod: url.lastmod._text,
+        }));
+      }
+    }
+
+    const pagesRes = await fetch('https://clarity.design/pages.json');
+    if (pagesRes.ok) {
+      currentPages = await pagesRes.json();
+      if (!Array.isArray(currentPages)) {
+        currentPages = [];
+      }
+    }
+  } catch (err) {
+    console.warn('Could not fetch current sitemap/pages from clarity.design — treating all pages as new:', err.message);
+  }
 
   const sitemapRoot = xmlbuilder.create('urlset', { version: '1.0', encoding: 'UTF-8' });
   sitemapRoot.att('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
@@ -123,14 +139,9 @@ async function generateSitemap(pages) {
     const urlElement = sitemapRoot.ele('url');
     urlElement.ele('loc', absoluteUrl);
 
-    if (!currentPage) {
-      // page is new
-      urlElement.ele('lastmod', today);
-    } else if (page.contentHash !== currentPage.contentHash) {
-      // page is modified
+    if (!currentPage || page.contentHash !== currentPage.contentHash || !currentSitemapEntry) {
       urlElement.ele('lastmod', today);
     } else {
-      // page is unmodified
       urlElement.ele('lastmod', currentSitemapEntry.lastmod);
     }
   }
@@ -144,7 +155,7 @@ function startServer(port) {
 
     app.use(express.static(DIST_WEBSITE));
 
-    app.get('/*', (req, res) => res.sendFile(path.join(DIST_WEBSITE, 'index.html')));
+    app.get('/{*splat}', (req, res) => res.sendFile(path.join(DIST_WEBSITE, 'index.html')));
 
     const server = http.createServer(app);
 
