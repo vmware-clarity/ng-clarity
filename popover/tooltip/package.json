@@ -1,0 +1,4 @@
+{
+  "module": "../../fesm2022/clr-angular-popover-tooltip.mjs",
+  "typings": "../../types/clr-angular-popover-tooltip.d.ts"
+}
