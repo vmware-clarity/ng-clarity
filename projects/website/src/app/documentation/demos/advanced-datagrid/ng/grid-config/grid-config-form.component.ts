@@ -7,7 +7,6 @@
 
 import { Component, Input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SelectionType } from '@clr/addons/datagrid';
 import {
   ClrCheckboxModule,
   ClrDatagridModule,
@@ -15,6 +14,7 @@ import {
   ClrNumberInputModule,
   ClrSelectModule,
 } from '@clr/angular';
+import { SelectionType, selectionTypeAttribute } from '@clr/angular/data/datagrid';
 
 export interface GridConfigDemoOptions {
   totalItems: number;
@@ -44,8 +44,8 @@ export class GridConfigFormComponent {
 
   protected SelectionType = SelectionType;
 
-  protected onSelectionTypeChange(selectionType: string) {
-    this.options.selectionType = this.parseSelectionType(selectionType);
+  protected onSelectionTypeChange(selectionType: SelectionType | string) {
+    this.options.selectionType = selectionTypeAttribute(selectionType);
     this.optionsChange.emit(this.options);
   }
 
@@ -57,18 +57,5 @@ export class GridConfigFormComponent {
   protected onPageSizeOptionsChange(pageSizeOptions: string) {
     this.options.pageSizeOptions = pageSizeOptions.split(',').map(Number);
     this.optionsChange.emit(this.options);
-  }
-
-  private parseSelectionType(num: string): SelectionType {
-    switch (num) {
-      case '0':
-        return SelectionType.None;
-      case '1':
-        return SelectionType.Single;
-      case '2':
-        return SelectionType.Multi;
-      default:
-        throw new Error(`Invalid selection for type: ${num}`);
-    }
   }
 }

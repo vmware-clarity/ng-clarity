@@ -41,8 +41,8 @@ export class DatagridSelectionSingleDemo {
   examples = EXAMPLES;
 
   users: User[];
-  singleSelected: User | undefined;
-  rowSelected: User | undefined;
+  singleSelected: User[] = [];
+  rowSelected: User[] = [];
   lockedUsers: User[] = [];
 
   constructor(inventory: Inventory) {

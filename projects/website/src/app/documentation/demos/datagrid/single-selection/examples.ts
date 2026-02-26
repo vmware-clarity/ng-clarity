@@ -9,12 +9,16 @@ const main = `
 <div class="card card-block">
   <p class="card-text">
     Selected user:
-    <em *ngIf="!selected">No user selected.</em>
-    <span class="username" *ngIf="selected">{{ selected.name }}</span>
+    <em *ngIf="selected.length === 0">No user selected.</em>
+    <span class="username" *ngIf="selected.length > 0">{{ selected[0].name }}</span>
   </p>
 </div>
 
-<clr-datagrid [(clrDgSingleSelected)]="selected" [clrDgItemsIdentityFn]="trackUserItemById">
+<clr-datagrid
+  [(clrDgSelected)]="selected"
+  clrDgSelectionType="single"
+  [clrDgItemsIdentityFn]="trackUserItemById"
+>
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -34,20 +38,15 @@ const main = `
 `;
 
 const singleRow = `
-<clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item" [(clrDgSingleSelected)]="item.selected">
+<clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
   <!-- ... -->
 </clr-dg-row>
 `;
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 
 const rowSelection = `
 <clr-datagrid
-  [(clrDgSingleSelected)]="selected"
+  [(clrDgSelected)]="selected"
+  clrDgSelectionType="single"
   [clrDgRowSelection]="true"
   [clrDgItemsIdentityFn]="trackUserItemById"
 >
@@ -70,7 +69,11 @@ const rowSelection = `
 `;
 
 const selectionChangeEvent = `
-<clr-datagrid [clrDgSingleSelected]="selected" (clrDgSingleSelectedChange)="selectionChanged($event)">
+<clr-datagrid
+  [clrDgSelected]="selected"
+  clrDgSelectionType="single"
+  (clrDgSelectedChange)="selectionChanged($event)"
+>
   <!-- ... -->
 </clr-datagrid>
 `;
@@ -98,7 +101,7 @@ import { User } from './inventory/user';
 })
 export class ExampleComponent {
   users: User[];
-  selected!: User;
+  selected: User[] = [];
 
   constructor(inventory: Inventory) {
     inventory.size = 10;
@@ -117,21 +120,17 @@ const fullHtml = `
 <button class="btn btn-primary" (click)="unlockRows()">Unlock Rows</button>
 
 <clr-datagrid
-  [(clrDgSingleSelected)]="selected"
+  [(clrDgSelected)]="selected"
+  clrDgSelectionType="single"
   [clrDgItemsIdentityFn]="trackUserItemById"
-  (clrDgSingleSelectedChange)="selectionChanged($event)"
+  (clrDgSelectedChange)="selectionChanged($event)"
 >
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
   <clr-dg-column>Favorite color</clr-dg-column>
 
-  <clr-dg-row
-    *clrDgItems="let user of lockedUsers"
-    [(clrDgSelected)]="user.selected"
-    [clrDgSelectable]="!user.locked"
-    [clrDgItem]="user"
-  >
+  <clr-dg-row *clrDgItems="let user of lockedUsers" [clrDgSelectable]="!user.locked" [clrDgItem]="user">
     <clr-dg-cell>{{ user.id }}</clr-dg-cell>
     <clr-dg-cell>{{ user.name }}</clr-dg-cell>
     <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
@@ -146,8 +145,8 @@ const fullHtml = `
 <div class="card card-block">
   <p class="card-text">
     Selected user:
-    <em *ngIf="!selected">No user selected.</em>
-    <span class="username" *ngIf="selected">{{ selected.name }}</span>
+    <em *ngIf="selected.length === 0">No user selected.</em>
+    <span class="username" *ngIf="selected.length > 0">{{ selected[0].name }}</span>
   </p>
 </div>
 
@@ -165,6 +164,7 @@ const fullHtml = `
 const fullTS = `
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { ClrDatagridModule } from '@clr/angular';
 import { Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
 
@@ -178,7 +178,7 @@ import { User } from './inventory/user';
 })
 export class ExampleComponent {
   users: User[];
-  selected!: User;
+  selected: User[] = [];
   lockedUsers: User[] = [];
 
   constructor(inventory: Inventory) {
@@ -189,9 +189,8 @@ export class ExampleComponent {
     this.lockedUsers = [...inventory.all];
   }
 
-  selectionChanged($event: User | undefined) {
-    // emit change
-    // $event is equal to this.selected property
+  selectionChanged($event: User[]) {
+    // $event is the selected array
   }
 
   unlockRows() {

@@ -6,7 +6,8 @@
  */
 
 import { Component } from '@angular/core';
-import { AppfxDatagridModule, ColumnDefinition, SelectionType } from '@clr/addons/datagrid';
+import { AppfxDatagridModule, ColumnDefinition } from '@clr/addons/datagrid';
+import { SelectionType } from '@clr/angular/data/datagrid';
 
 import { Inventory, VmItem } from './inventory/inventory';
 

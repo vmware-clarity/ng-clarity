@@ -6,8 +6,9 @@
  */
 
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { AppfxDatagridModule, ColumnDefinition, ExportProviderService, SelectionType } from '@clr/addons/datagrid';
+import { AppfxDatagridModule, ColumnDefinition, ExportProviderService } from '@clr/addons/datagrid';
 import { ClrDatagridStateInterface } from '@clr/angular';
+import { SelectionType } from '@clr/angular/data/datagrid';
 
 import { GridConfigDemoOptions, GridConfigFormComponent } from './grid-config/grid-config-form.component';
 import { FetchResult, Inventory, VmItem } from './inventory/inventory';

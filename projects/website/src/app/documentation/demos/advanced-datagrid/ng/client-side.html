@@ -9,7 +9,7 @@
 <button class="btn btn-primary" (click)="reset()">Render</button>
 <button class="btn btn-primary" (click)="refresh()">Refresh data</button>
 
-@if (options.selectionType !== 0) {
+@if (options.selectionType !== 'none') {
 <div class="card card-block">
   <p class="card-text">
     Selected VMs: @if (selectedVms?.length == 0) {

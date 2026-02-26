@@ -123,13 +123,13 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           name: '[(clrDgSelected)]',
           type: 'T[]',
           defaultValue: '[]',
-          description: 'An array of all selected items',
+          description: 'An array of all selected items. For single selection, wrap the item in an array.',
         },
         {
-          name: '[(clrDgSingleSelected)]',
-          type: 'T',
-          defaultValue: 'undefined',
-          description: 'Selected item in single-select mode.',
+          name: 'clrDgSelectionType',
+          type: "'none' | 'single' | 'multi'",
+          defaultValue: 'none',
+          description: 'Explicitly sets the selection mode of the datagrid.',
         },
         {
           name: '[clrDgSingleSelectionAriaLabel]',
