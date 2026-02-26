@@ -15,10 +15,9 @@
     "@angular/platform-browser": "PLACEHOLDER",
     "@angular/platform-browser-dynamic": "PLACEHOLDER",
     "@angular/router": "PLACEHOLDER",
-    "@cds/core": "PLACEHOLDER",
-    "@clr/angular": "PLACEHOLDER",
-    "@clr/ui": "PLACEHOLDER",
-    "@clr/addons": "PLACEHOLDER",
+    "@clr/angular": "^18.0.0-beta.1",
+    "@clr/ui": "^18.0.0-beta.1",
+    "@clr/addons": "^18.0.0-beta.1",
     "rxjs": "PLACEHOLDER",
     "tslib": "PLACEHOLDER",
     "zone.js": "PLACEHOLDER"
