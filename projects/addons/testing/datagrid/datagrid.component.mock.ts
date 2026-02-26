@@ -60,7 +60,6 @@ export class MockAppfxDatagridComponent {
   clrDatagridPagination: any;
 
   onModelChange(): void {}
-  setSelectedItems(): void {}
 }
 
 @Component({

@@ -17,9 +17,8 @@ import {
   Output,
   TrackByFunction,
 } from '@angular/core';
+import { SelectionType } from '@clr/angular/data/datagrid';
 import { Subscription } from 'rxjs';
-
-import { SelectionType } from '../interfaces/selection-type';
 
 export interface PreselectableComponent {
   trackByGridItemProperty: string;

@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-  '*.{js,json,ts}': 'eslint',
+  '*.{js,json,ts,html}': 'eslint',
   '*.{css,scss,sass}': 'stylelint',
   '*': 'prettier -l --ignore-unknown',
 };

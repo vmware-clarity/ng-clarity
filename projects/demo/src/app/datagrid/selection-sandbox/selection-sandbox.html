@@ -1,0 +1,177 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Selection Sandbox</h2>
+
+<p>
+  Interactive sandbox for testing datagrid selection behavior. Configure binding mode, selection type, and
+  initialization options using the controls below. The status panel shows emit counts, component state, and the
+  datagrid's internal selection to help verify correct behavior — for example, ensuring change events fire
+  <strong>exactly once</strong> per user action and that no feedback loops occur.
+</p>
+
+<form clrForm clrLayout="horizontal" [formGroup]="configForm">
+  <clr-radio-container clrInline>
+    <label>Component</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio formControlName="useAppfx" [value]="false" />
+      <label>clr-datagrid</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio formControlName="useAppfx" [value]="true" />
+      <label>appfx-datagrid</label>
+    </clr-radio-wrapper>
+  </clr-radio-container>
+
+  <clr-combobox-container>
+    <label>Selection type</label>
+    <clr-combobox formControlName="selectionType">
+      <clr-options>
+        <clr-option clrValue="none">None</clr-option>
+        <clr-option clrValue="single">Single</clr-option>
+        <clr-option clrValue="multi">Multi</clr-option>
+      </clr-options>
+    </clr-combobox>
+  </clr-combobox-container>
+
+  <clr-toggle-container>
+    <label>Two-way binding</label>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle formControlName="twoWayBinding" />
+    </clr-toggle-wrapper>
+    <clr-control-helper>Write emitted selection back to the component variable on change</clr-control-helper>
+  </clr-toggle-container>
+
+  <clr-toggle-container>
+    <label>Manual re-assignment buttons</label>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle formControlName="showManualButtons" />
+    </clr-toggle-wrapper>
+    <clr-control-helper>Show buttons that programmatically set the selection variable</clr-control-helper>
+  </clr-toggle-container>
+
+  <clr-toggle-container>
+    <label>No selected binding</label>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle formControlName="noSelectedBinding" />
+    </clr-toggle-wrapper>
+    <clr-control-helper
+      >Only set clrDgSelectionType — no [clrDgSelected] input. Datagrid manages selection
+      internally.</clr-control-helper
+    >
+  </clr-toggle-container>
+
+  <clr-toggle-container>
+    <label>Initialize with null</label>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle formControlName="initWithNull" />
+    </clr-toggle-wrapper>
+    <clr-control-helper>Destroys and recreates the datagrid with clrDgSelected initialized to null</clr-control-helper>
+  </clr-toggle-container>
+</form>
+
+<div class="card">
+  <div class="card-block">
+    <div class="card-text">
+      <strong>Emit count: {{ emitCount }}</strong>
+      <br />
+      <strong>Selected:</strong> {{ selectedDisplay() }}
+      <br />
+      @if (!configForm.value.noSelectedBinding) {
+      <strong>Component variable:</strong> <code>{{ selected | json }}</code>
+      <br />
+      }
+      <strong>Datagrid internal:</strong> <code>{{ datagridSelection() | json }}</code>
+      <br />
+      @if (configForm.value.initWithNull) {
+      <strong>Bound value type:</strong> {{ boundValueType() }}
+      <br />
+      } @for (button of activeButtons; track button.label) {
+      <button class="btn btn-sm {{ button.cssClass }}" type="button" (click)="onButtonClick(button)">
+        {{ button.label }}
+      </button>
+      } @if (!configForm.value.noSelectedBinding) {
+      <button class="btn btn-sm btn-outline" type="button" (click)="reset()">Reset</button>
+      }
+    </div>
+  </div>
+</div>
+
+<div style="min-height: 480px">
+  @if (datagridVisible) { @if (!configForm.value.useAppfx) { @if (configForm.value.noSelectedBinding) {
+  <clr-datagrid
+    style="height: 480px"
+    [clrDgSelectionType]="configForm.value.selectionType"
+    (clrDgSelectedChange)="onChange($event)"
+  >
+    <clr-dg-column>User ID</clr-dg-column>
+    <clr-dg-column>Name</clr-dg-column>
+    <clr-dg-column>Creation date</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+  </clr-datagrid>
+  } @else {
+  <clr-datagrid
+    style="height: 480px"
+    [clrDgSelected]="selected"
+    [clrDgSelectionType]="configForm.value.selectionType"
+    (clrDgSelectedChange)="onChange($event)"
+  >
+    <clr-dg-column>User ID</clr-dg-column>
+    <clr-dg-column>Name</clr-dg-column>
+    <clr-dg-column>Creation date</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+  </clr-datagrid>
+  } } @else { @if (configForm.value.noSelectedBinding) {
+  <appfx-datagrid
+    style="height: 480px"
+    [columns]="userColumns"
+    [gridItems]="users"
+    [selectionType]="configForm.value.selectionType"
+    (selectedItemsChange)="onChange($event)"
+  ></appfx-datagrid>
+  } @else {
+  <appfx-datagrid
+    style="height: 480px"
+    [columns]="userColumns"
+    [gridItems]="users"
+    [selectionType]="configForm.value.selectionType"
+    [selectedItems]="selected"
+    (selectedItemsChange)="onChange($event)"
+  ></appfx-datagrid>
+  } } } @else {
+  <div style="height: 480px; display: flex; align-items: center; justify-content: center">
+    <clr-spinner>Recreating datagrid...</clr-spinner>
+  </div>
+  }
+</div>
+
+<div class="card">
+  <div class="card-header">Event Log</div>
+  <div class="card-block">
+    <div class="card-text">
+      @if (log.length === 0) {
+      <em>No events yet.</em>
+      } @for (entry of log; track $index) {
+      <div>{{ entry }}</div>
+      }
+    </div>
+  </div>
+</div>

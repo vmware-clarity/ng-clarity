@@ -16,7 +16,7 @@ import { DetailService } from './providers/detail.service';
   host: {
     '[class.datagrid-detail-pane]': 'true',
   },
-  // We put the *ngIf on the cdkTrapFocus so it doesn't always exist on the page
+  // We put the @if on the cdkTrapFocus so it doesn't always exist on the page
   // have to test for presence of header for aria-describedby because it was causing unit tests to crash
   template: `
     @if (detailService.isOpen) {

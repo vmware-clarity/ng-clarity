@@ -1,9 +1,9 @@
 <!--
-~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
-~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-~ This software is released under MIT license.
-~ The full license information can be found in LICENSE in the root directory of this project.
--->
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
 
 <h2>Preserving Selection while Filtering</h2>
 
@@ -39,7 +39,11 @@
   </p>
 </div>
 
-<clr-datagrid [(clrDgSelected)]="clientNoTrackBySelected" [clrDgPreserveSelection]="preserveFilteringNoTrackBy">
+<clr-datagrid
+  [(clrDgSelected)]="clientNoTrackBySelected"
+  [clrDgSelectionType]="'multi'"
+  [clrDgPreserveSelection]="preserveFilteringNoTrackBy"
+>
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'" [(clrFilterValue)]="nameFilterNoTrackBy">Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -88,7 +92,11 @@
   </p>
 </div>
 
-<clr-datagrid [(clrDgSelected)]="clientTrackByIndexSelected" [clrDgPreserveSelection]="preserveFilteringTrackByIndex">
+<clr-datagrid
+  [(clrDgSelected)]="clientTrackByIndexSelected"
+  [clrDgSelectionType]="'multi'"
+  [clrDgPreserveSelection]="preserveFilteringTrackByIndex"
+>
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'" [(clrFilterValue)]="nameFilterTrackByIndex">Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -135,7 +143,11 @@
   </p>
 </div>
 
-<clr-datagrid [(clrDgSelected)]="clientTrackByIdSelected" [clrDgPreserveSelection]="preserveFilteringTrackByIdUsers">
+<clr-datagrid
+  [(clrDgSelected)]="clientTrackByIdSelected"
+  [clrDgSelectionType]="'multi'"
+  [clrDgPreserveSelection]="preserveFilteringTrackByIdUsers"
+>
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'" [(clrFilterValue)]="nameFilterTrackById">Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -184,6 +196,7 @@
 
 <clr-datagrid
   [(clrDgSelected)]="serverTrackByIdSelected"
+  [clrDgSelectionType]="'multi'"
   (clrDgRefresh)="refresh($event)"
   [clrDgLoading]="loading"
   [clrDgPreserveSelection]="preserveFilteringServerTrackBy"
@@ -220,7 +233,7 @@
   lost.
 </p>
 
-<clr-datagrid [(clrDgSelected)]="selected">
+<clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'" [(clrFilterValue)]="nameFilter">Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>

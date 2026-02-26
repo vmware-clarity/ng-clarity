@@ -21,7 +21,7 @@ export class DatagridConditionalSelectionsDemo {
   canItBeSelected = true;
   users: User[];
   usersMulti: User[] = [];
-  selected: User;
+  selected: User[] = [];
   selectedRows: User[] = [];
   pagedUsers: User[] = [];
 

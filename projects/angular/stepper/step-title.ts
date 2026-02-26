@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-header-demo-types-old',
-  templateUrl: './header-types-old.demo.html',
-  styleUrls: ['./headers.demo.scss'],
+  selector: 'clr-step-title',
+  template: `<ng-content></ng-content>`,
+  host: { '[class.clr-stepper-title]': 'true' },
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class HeaderTypesOldDemo {}
+export class ClrStepTitle {}

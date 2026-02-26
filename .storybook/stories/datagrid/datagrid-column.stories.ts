@@ -11,6 +11,7 @@ import {
   ClrDatagridModule,
   ClrDatagridSortOrder,
   commonStringsDefault,
+  SelectionType,
 } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
@@ -28,6 +29,15 @@ export default {
   argTypes: {
     // inputs
     clrDgField: { control: { disable: true } },
+    clrDgSelected: { control: { disable: true } },
+    clrDgSelectionType: {
+      control: { type: 'select' },
+      options: {
+        None: SelectionType.None,
+        Single: SelectionType.Single,
+        Multi: SelectionType.Multi,
+      },
+    },
     clrDgSortBy: { type: 'string' },
     clrDgSortOrder: {
       control: { type: 'radio' },
@@ -45,6 +55,7 @@ export default {
   },
   args: {
     // inputs
+    clrDgSelectionType: SelectionType.None,
     clrDgColType: 'string',
     clrFilterNumberMaxPlaceholder: commonStringsDefault.maxValue,
     clrFilterNumberMinPlaceholder: commonStringsDefault.minValue,
@@ -58,8 +69,6 @@ export default {
     // story helpers
     elements,
     highlight: true,
-    singleSelectable: false,
-    multiSelectable: false,
     expandable: false,
     compact: false,
     hidableColumns: false,
@@ -86,8 +95,8 @@ const ColumnFilterTemplate: StoryFn = args => ({
     </style>
     <clr-datagrid
       ${args.height ? '[style.height.px]="height"' : ''}
-      ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
-      ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
+      [clrDgSelected]="[]"
+      [clrDgSelectionType]="clrDgSelectionType"
       [ngClass]="{ 'datagrid-compact': compact }"
     >
       <clr-dg-column
@@ -126,9 +135,11 @@ const ColumnFilterTemplate: StoryFn = args => ({
           {{ element.electronegativity }}
           <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
         </clr-dg-cell>
-        <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
-          <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
-        </ng-container>
+        @if (expandable) {
+          <ng-container ngProjectAs="clr-dg-row-detail">
+            <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
+          </ng-container>
+        }
       </clr-dg-row>
 
       <clr-dg-footer>
@@ -148,14 +159,16 @@ export const ColumnFilter: StoryObj = {
 
 export const ColumnNameFilterOpened = {
   render: ColumnFilterTemplate,
-  play({ canvasElement }) {
-    canvasElement.querySelector('clr-dg-string-filter .datagrid-filter-toggle').click();
+  play: async ({ canvasElement, userEvent }) => {
+    const stringFilterToggle = await canvasElement.querySelector('clr-dg-string-filter .datagrid-filter-toggle');
+    await userEvent.click(stringFilterToggle);
   },
 };
 
 export const ColumnNumberFilterOpened = {
   render: ColumnFilterTemplate,
-  play({ canvasElement }) {
-    canvasElement.querySelector('clr-dg-numeric-filter .datagrid-filter-toggle').click();
+  play: async ({ canvasElement, userEvent }) => {
+    const numericFilterToggle = await canvasElement.querySelector('clr-dg-numeric-filter .datagrid-filter-toggle');
+    await userEvent.click(numericFilterToggle);
   },
 };

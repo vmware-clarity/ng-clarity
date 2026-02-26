@@ -56,27 +56,6 @@
   &.header-3 {
     background-color: header-variables.$clr-header-3-bg-color;
   }
-
-  &.header-4 {
-    background-color: header-variables.$clr-header-4-bg-color;
-  }
-
-  &.header-5 {
-    background-color: header-variables.$clr-header-5-bg-color;
-  }
-
-  &.header-6 {
-    background-color: header-variables.$clr-header-6-bg-color;
-  }
-
-  &.header-7 {
-    background-color: header-variables.$clr-header-7-bg-color;
-  }
-
-  // dark theme only header added by external team to workaround lack of header-7 in dark theme
-  &.header-8 {
-    background-color: header-variables.$clr-header-8-bg-color;
-  }
 }
 @mixin header-branding() {
   .branding {

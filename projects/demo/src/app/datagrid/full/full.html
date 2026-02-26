@@ -1,9 +1,9 @@
 <!--
-~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
-~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-~ This software is released under MIT license.
-~ The full license information can be found in LICENSE in the root directory of this project.
--->
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
 
 <h2>Full Datagrid demo</h2>
 
@@ -83,7 +83,7 @@
     </p>
   </div>
   } @if (!isServerDriven) {
-  <clr-datagrid [(clrDgSelected)]="selected" [clrDgItemsIdentityFn]="identityFn">
+  <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'" [clrDgItemsIdentityFn]="identityFn">
     <clr-dg-column>
       <ng-container *clrDgHideableColumn>User ID</ng-container>
     </clr-dg-column>
@@ -143,6 +143,7 @@
   } @if (isServerDriven) {
   <clr-datagrid
     [(clrDgSelected)]="selected"
+    [clrDgSelectionType]="'multi'"
     [clrDgItemsIdentityFn]="identityFn"
     (clrDgRefresh)="refresh($event)"
     [clrDgLoading]="loading"

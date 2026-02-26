@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ClrAlertModule, ClrDropdownModule, ClrIcon } from '@clr/angular';
 import { createArray } from 'helpers/common';
@@ -15,11 +15,28 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
 @Component({
   selector: 'storybook-app-level-alert',
   template: `
-    <ng-container *ngIf="paginated; then paginatedTemplate; else defaultTemplate"></ng-container>
-    <ng-template #paginatedTemplate>
+    @if (paginated) {
       <clr-alerts>
+        @for (alert of alertTypes; track alert) {
+          <clr-alert
+            [clrAlertAppLevel]="true"
+            [clrAlertClosable]="clrAlertClosable"
+            [clrAlertIcon]="clrAlertIcon"
+            [clrAlertType]="alert"
+            [clrCloseButtonAriaLabel]="clrCloseButtonAriaLabel"
+            (clrAlertClosedChange)="clrAlertClosedChange.emit($event)"
+          >
+            @for (_ of createArray(paginated ? 1 : alertCount); track $index; let i = $index) {
+              <clr-alert-item>
+                <ng-container *ngTemplateOutlet="alertItemContent; context: { index: i }"></ng-container>
+              </clr-alert-item>
+            }
+          </clr-alert>
+        }
+      </clr-alerts>
+    } @else {
+      @for (alert of alertTypes; track alert) {
         <clr-alert
-          *ngFor="let alert of alertTypes"
           [clrAlertAppLevel]="true"
           [clrAlertClosable]="clrAlertClosable"
           [clrAlertIcon]="clrAlertIcon"
@@ -27,55 +44,46 @@ import { RenderComponentStorybook } from '../../helpers/render-component';
           [clrCloseButtonAriaLabel]="clrCloseButtonAriaLabel"
           (clrAlertClosedChange)="clrAlertClosedChange.emit($event)"
         >
-          <clr-alert-item *ngFor="let _ of createArray(paginated ? 1 : alertCount); let i = index">
-            <ng-container *ngTemplateOutlet="alertItemContent; context: { index: i }"></ng-container>
-          </clr-alert-item>
+          @for (_ of createArray(paginated ? 1 : alertCount); track $index; let i = $index) {
+            <clr-alert-item>
+              <ng-container *ngTemplateOutlet="alertItemContent; context: { index: i }"></ng-container>
+            </clr-alert-item>
+          }
         </clr-alert>
-      </clr-alerts>
-    </ng-template>
-    <ng-template #defaultTemplate>
-      <clr-alert
-        *ngFor="let alert of alertTypes"
-        [clrAlertAppLevel]="true"
-        [clrAlertClosable]="clrAlertClosable"
-        [clrAlertIcon]="clrAlertIcon"
-        [clrAlertType]="alert"
-        [clrCloseButtonAriaLabel]="clrCloseButtonAriaLabel"
-        (clrAlertClosedChange)="clrAlertClosedChange.emit($event)"
-      >
-        <clr-alert-item *ngFor="let _ of createArray(paginated ? 1 : alertCount); let i = index">
-          <ng-container *ngTemplateOutlet="alertItemContent; context: { index: i }"></ng-container>
-        </clr-alert-item>
-      </clr-alert>
-    </ng-template>
+      }
+    }
     <ng-template #alertItemContent let-index="index">
       <span class="alert-text">
         {{ content }} {{ index + 1 }}
         <ng-container #renderContainer></ng-container>
-        <a *ngIf="showAction" href="javascript://">
-          <cds-icon shape="user"></cds-icon>
-          Reset to green
-        </a>
+        @if (showAction) {
+          <a href="javascript://">
+            <cds-icon shape="user"></cds-icon>
+            Reset to green
+          </a>
+        }
       </span>
-      <div *ngIf="showActions" class="alert-actions">
-        <button class="btn alert-action">Fix</button>
-        <button class="btn alert-action">Ignore</button>
-        <clr-dropdown>
-          <button clrDropdownTrigger>
-            Actions
-            <cds-icon shape="angle" direction="down"></cds-icon>
-          </button>
-          <clr-dropdown-menu clrPosition="bottom-right">
-            <button clrDropdownItem>Shutdown</button>
-            <button clrDropdownItem>Delete</button>
-            <button clrDropdownItem>Reboot</button>
-          </clr-dropdown-menu>
-        </clr-dropdown>
-      </div>
+      @if (showActions) {
+        <div class="alert-actions">
+          <button class="btn alert-action">Fix</button>
+          <button class="btn alert-action">Ignore</button>
+          <clr-dropdown>
+            <button clrDropdownTrigger>
+              Actions
+              <cds-icon shape="angle" direction="down"></cds-icon>
+            </button>
+            <clr-dropdown-menu clrPosition="bottom-right">
+              <button clrDropdownItem>Shutdown</button>
+              <button clrDropdownItem>Delete</button>
+              <button clrDropdownItem>Reboot</button>
+            </clr-dropdown-menu>
+          </clr-dropdown>
+        </div>
+      }
     </ng-template>
   `,
   standalone: true,
-  imports: [ClrAlertModule, ClrIcon, NgFor, NgIf, NgTemplateOutlet, ClrDropdownModule],
+  imports: [ClrAlertModule, ClrIcon, NgTemplateOutlet, ClrDropdownModule],
 })
 export class AppLevelAlertStorybookComponent extends RenderComponentStorybook {
   // Story inputs matching the original story args

@@ -186,7 +186,7 @@ export default function (): void {
       });
     });
 
-    describe('Conditional Selection with *ngFor', () => {
+    describe('Conditional Selection with @for', () => {
       let fixture: ComponentFixture<NgForDatagridWithTrackBy>;
       let nativeElement: HTMLElement;
 
@@ -695,7 +695,7 @@ class ExpandTest {
 
 @Component({
   template: `
-    <clr-datagrid [clrDgSelected]="[]" [clrDgItemsIdentityFn]="trackBy">
+    <clr-datagrid [clrDgSelected]="[]" [clrDgSelectionType]="'multi'" [clrDgItemsIdentityFn]="trackBy">
       @for (item of items; track item.id) {
         <clr-dg-row [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable"></clr-dg-row>
       }

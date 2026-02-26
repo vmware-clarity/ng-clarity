@@ -34,7 +34,9 @@ const DropdownStaticTemplate: StoryFn = args => ({
         <div class="dropdown-menu" role="menu">
           <label class="dropdown-header" aria-hidden="true">Dropdown header</label>
           <div aria-label="Dropdown header Action" class="dropdown-item active" role="menuitem">
-            <cds-icon *ngIf="showIcon" shape="user"></cds-icon>
+            @if (showIcon) {
+              <cds-icon shape="user"></cds-icon>
+            }
             <span>Action</span>
           </div>
           <div
@@ -43,7 +45,9 @@ const DropdownStaticTemplate: StoryFn = args => ({
             role="menuitem"
             aria-disabled="true"
           >
-            <cds-icon *ngIf="showIcon" shape="user"></cds-icon>
+            @if (showIcon) {
+              <cds-icon shape="user"></cds-icon>
+            }
             <span>Disabled Link</span>
           </div>
           <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
@@ -54,17 +58,23 @@ const DropdownStaticTemplate: StoryFn = args => ({
             </button>
             <div class="dropdown-menu" role="menu">
               <button class="dropdown-item" role="menuitem">
-                <cds-icon *ngIf="showIcon" shape="user"></cds-icon>
+                @if (showIcon) {
+                  <cds-icon shape="user"></cds-icon>
+                }
                 <span>Foo.</span>
               </button>
               <div class="dropdown open right-top">
                 <button class="dropdown-item active expandable" role="menuitem" aria-expanded="true" aria-haspopup="menu">
-                  <cds-icon *ngIf="showIcon" shape="user"></cds-icon>
+                  @if (showIcon) {
+                    <cds-icon shape="user"></cds-icon>
+                  }
                   <span>Bar</span>
                 </button>
                 <div class="dropdown-menu" role="menu">
                   <div class="dropdown-item" role="menuitem">
-                    <cds-icon *ngIf="showIcon" shape="user"></cds-icon>
+                    @if (showIcon) {
+                      <cds-icon shape="user"></cds-icon>
+                    }
                     <span>Baz</span>
                   </div>
                 </div>

@@ -204,22 +204,25 @@ class TestDirective {
 
 @Component({
   selector: 'clr-datagrid-host-component',
-  imports: [ClrDatagridModule, CommonModule, DatagridColumnsOrderModule, DragDropModule, TestDirective],
+  imports: [ClrDatagridModule, DatagridColumnsOrderModule, DragDropModule, TestDirective],
   template: `
     <clr-datagrid cdkDropList appfxDgColumnsOrder [dgColumnsOrderColumns]="columns" testDirectives>
-      <clr-dg-column
-        *ngFor="let column of columns; trackBy: trackByColumnId; let index = index"
-        cdkDrag
-        [cdkDragLockAxis]="'x'"
-        [cdkDragData]="column"
-        appfxColumnOrder
-        [columnData]="column"
-        [columnIndex]="index"
-      >
-        <span>{{ column.displayName }} </span>
-      </clr-dg-column>
+      @for (column of columns; track trackByColumnId(index, column); let index = $index) {
+        <clr-dg-column
+          cdkDrag
+          [cdkDragLockAxis]="'x'"
+          [cdkDragData]="column"
+          appfxColumnOrder
+          [columnData]="column"
+          [columnIndex]="index"
+        >
+          <span>{{ column.displayName }} </span>
+        </clr-dg-column>
+      }
       <clr-dg-row *clrDgItems="let item of data" [clrDgItem]="data">
-        <clr-dg-cell *ngFor="let column of columns">{{ data[column.field] }}</clr-dg-cell>
+        @for (column of columns; track column) {
+          <clr-dg-cell>{{ data[column.field] }}</clr-dg-cell>
+        }
       </clr-dg-row>
     </clr-datagrid>
   `,

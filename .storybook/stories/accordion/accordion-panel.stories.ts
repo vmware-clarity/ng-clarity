@@ -25,8 +25,6 @@ export default {
     // methods
     togglePanel: { control: { disable: true } },
     collapsePanelOnAnimationDone: { control: { disable: true }, table: { disable: true } },
-    getAccordionContentId: { control: { disable: true }, table: { disable: true } },
-    getAccordionHeaderId: { control: { disable: true }, table: { disable: true } },
     getPanelStateClasses: { control: { disable: true }, table: { disable: true } },
   },
   args: {

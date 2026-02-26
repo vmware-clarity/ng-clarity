@@ -10,7 +10,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { HeaderColorsDemo } from './header-colors';
 import { HeaderTypesDemo } from './header-types';
-import { HeaderTypesOldDemo } from './header-types-old';
 import { HeadersDemo } from './headers';
 import { NavDemo } from './nav.demo';
 import { NavsDemo } from './navs';
@@ -29,7 +28,6 @@ const ROUTES: Routes = [
           { path: '', redirectTo: 'header-types', pathMatch: 'full' },
           { path: 'header-types', component: HeaderTypesDemo },
           { path: 'header-colors', component: HeaderColorsDemo },
-          { path: 'header-types-old', component: HeaderTypesOldDemo },
         ],
       },
       { path: 'nav-tabs', component: NavsDemo },

@@ -11,6 +11,7 @@ import {
   ClrDatagridModule,
   ClrDropdownModule,
   commonStringsDefault,
+  SelectionType,
 } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
@@ -28,12 +29,18 @@ export default {
   argTypes: {
     // inputs
     clrDgSelected: { control: { disable: true } },
+    clrDgSelectionType: {
+      control: { type: 'select' },
+      options: {
+        None: SelectionType.None,
+        Single: SelectionType.Single,
+        Multi: SelectionType.Multi,
+      },
+    },
     detailsOpened: { control: { disable: true }, table: { disable: true } },
-    clrDgSingleSelected: { control: { disable: true } },
     // outputs
     clrDgRefresh: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
-    clrDgSingleSelectedChange: { control: { disable: true } },
     clrRenderRangeChange: { control: { disable: true } },
     clrDgActionOverflowOpenChange: { control: { disable: true } },
     // methods
@@ -61,7 +68,6 @@ export default {
     // outputs
     clrDgRefresh: action('clrDgRefresh'),
     clrDgSelectedChange: action('clrDgSelectedChange'),
-    clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
     clrRenderRangeChange: action('clrRenderRangeChange'),
     clrDgActionOverflowOpenChange: action('clrDgActionOverflowOpenChange'),
     clrDgCustomSelectAll(this: { selectedRows: number[] }, selectAllChecked: boolean) {
@@ -70,9 +76,8 @@ export default {
     },
     // story helpers
     behaviorElements,
+    clrDgSelectionType: SelectionType.None,
     scrollToIndexBehavior: 'smooth',
-    singleSelectable: false,
-    multiSelectable: false,
     actionOverflow: false,
     compact: false,
     hidableColumns: false,
@@ -80,6 +85,7 @@ export default {
     showFooterNavButtons: false,
     height: 480,
     selectedRows: [],
+    selectedRowsArray: [],
     setExpanded,
   },
 };
@@ -105,122 +111,128 @@ const DatagridDetailsTemplate: StoryFn = args => ({
         padding: 0;
       }
     </style>
-    <clr-datagrid
-      #datagrid
-      *ngIf="{ elements: behaviorElements | async }; let data"
-      ${args.height ? '[style.height.px]="height"' : ''}
-      ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
-      ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
-      [ngClass]="{ 'datagrid-compact': compact }"
-      [clrDetailExpandableAriaLabel]="clrDetailExpandableAriaLabel"
-      [clrDgDisablePageFocus]="clrDgDisablePageFocus"
-      [clrDgLoading]="clrDgLoading"
-      [clrDgPreserveSelection]="clrDgPreserveSelection"
-      [clrDgRowSelection]="clrDgRowSelection"
-      [clrDgCustomSelectAllEnabled]="clrDgCustomSelectAllEnabled"
-      [clrDgSingleActionableAriaLabel]="clrDgSingleActionableAriaLabel"
-      [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
-      (clrDgRefresh)="clrDgRefresh($event)"
-      (clrDgSelectedChange)="clrDgSelectedChange($event)"
-      (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
-      (clrDgCustomSelectAll)="clrDgCustomSelectAll($event)"
-      [clrLoadingMoreItems]="clrLoadingMoreItems"
-    >
-      <clr-dg-column [style.width.px]="250">
-        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
-      </clr-dg-column>
-      <clr-dg-column [style.width.px]="250">
-        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Symbol</ng-container>
-      </clr-dg-column>
-      <clr-dg-column [style.width.px]="250">
-        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
-      </clr-dg-column>
-      <clr-dg-column>
-        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
-      </clr-dg-column>
-
-      <ng-template
-        *ngIf="data.elements"
-        clrVirtualScroll
-        let-element
-        let-index="index"
-        [clrVirtualRowsOf]="detailsOpened ? data.elements.slice(0, 10) : data.elements"
-        [clrVirtualRowsTemplateCacheSize]="400"
-        (renderedRangeChange)="clrRenderRangeChange($event)"
+    @if ({ elements: behaviorElements | async }; as data) {
+      <clr-datagrid
+        #datagrid
+        ${args.height ? '[style.height.px]="height"' : ''}
+        [(clrDgSelected)]="selectedRowsArray"
+        [clrDgSelectionType]="clrDgSelectionType"
+        [ngClass]="{ 'datagrid-compact': compact }"
+        [clrDetailExpandableAriaLabel]="clrDetailExpandableAriaLabel"
+        [clrDgDisablePageFocus]="clrDgDisablePageFocus"
+        [clrDgLoading]="clrDgLoading"
+        [clrDgPreserveSelection]="clrDgPreserveSelection"
+        [clrDgRowSelection]="clrDgRowSelection"
+        [clrDgCustomSelectAllEnabled]="clrDgCustomSelectAllEnabled"
+        [clrDgSingleActionableAriaLabel]="clrDgSingleActionableAriaLabel"
+        [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
+        (clrDgRefresh)="clrDgRefresh($event)"
+        (clrDgSelectedChange)="clrDgSelectedChange($event)"
+        (clrDgCustomSelectAll)="clrDgCustomSelectAll($event)"
+        [clrLoadingMoreItems]="clrLoadingMoreItems"
       >
-        <clr-dg-row
-          [clrDgItem]="element"
-          [clrDgSelected]="selectedRows.includes(index)"
-          [clrDgSkeletonLoading]="clrDgSkeletonLoading && index === 0"
-        >
-          <clr-dg-action-overflow
-            *ngIf="actionOverflow"
-            [clrDgActionOverflowOpen]="clrDgActionOverflowOpen && index === 0"
-            [clrDgActionOverflowButtonLabel]="clrDgActionOverflowButtonLabel"
-            (clrDgActionOverflowOpenChange)="index === 0 && clrDgActionOverflowOpenChange($event)"
-          >
-            <button class="action-item">Edit</button>
-            <button class="action-item">Delete</button>
-          </clr-dg-action-overflow>
-          <clr-dg-cell>{{ element.name }}</clr-dg-cell>
-          <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
-          <clr-dg-cell>{{ element.number }}</clr-dg-cell>
-          <clr-dg-cell class="electronegativity-container">
-            {{ element.electronegativity }}
-            <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
-          </clr-dg-cell>
-        </clr-dg-row>
-      </ng-template>
-      <clr-dg-detail [ngClass]="{ highlight }" *clrIfDetail="let detail">
-        <clr-dg-detail-header>{{ detail.name }}</clr-dg-detail-header>
-        <clr-dg-detail-body [ngSwitch]="detailContentType">
-          <pre>{{ detail | json }}</pre>
-        </clr-dg-detail-body>
-      </clr-dg-detail>
+        <clr-dg-column [style.width.px]="250">
+          <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
+        </clr-dg-column>
+        <clr-dg-column [style.width.px]="250">
+          <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Symbol</ng-container>
+        </clr-dg-column>
+        <clr-dg-column [style.width.px]="250">
+          <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
+        </clr-dg-column>
+        <clr-dg-column>
+          <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
+        </clr-dg-column>
 
-      <clr-dg-footer>
-        {{ data.elements?.length }}
-        <div *ngIf="showFooterNavButtons" class="footer-nav-buttons">
-          <clr-dropdown>
-            <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
-              Jump to
-              <cds-icon shape="angle" direction="down"></cds-icon>
-            </button>
-            <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
-              <div (click)="datagrid.virtualScroll.scrollToIndex(20, scrollToIndexBehavior)" clrDropdownItem>20</div>
-              <div (click)="datagrid.virtualScroll.scrollToIndex(60, scrollToIndexBehavior)" clrDropdownItem>60</div>
-              <div (click)="datagrid.virtualScroll.scrollToIndex(80, scrollToIndexBehavior)" clrDropdownItem>80</div>
-              <div (click)="datagrid.virtualScroll.scrollToIndex(100, scrollToIndexBehavior)" clrDropdownItem>100</div>
-            </clr-dropdown-menu>
-          </clr-dropdown>
+        @if (data.elements) {
+          <ng-template
+            clrVirtualScroll
+            let-element
+            let-index="index"
+            [clrVirtualRowsOf]="detailsOpened ? data.elements.slice(0, 10) : data.elements"
+            [clrVirtualRowsTemplateCacheSize]="400"
+            (renderedRangeChange)="clrRenderRangeChange($event)"
+          >
+            <clr-dg-row
+              [clrDgItem]="element"
+              [clrDgSelected]="selectedRows.includes(index)"
+              [clrDgSkeletonLoading]="clrDgSkeletonLoading && index === 0"
+            >
+              @if (actionOverflow) {
+                <clr-dg-action-overflow
+                  [clrDgActionOverflowOpen]="clrDgActionOverflowOpen && index === 0"
+                  [clrDgActionOverflowButtonLabel]="clrDgActionOverflowButtonLabel"
+                  (clrDgActionOverflowOpenChange)="index === 0 && clrDgActionOverflowOpenChange($event)"
+                >
+                  <button class="action-item">Edit</button>
+                  <button class="action-item">Delete</button>
+                </clr-dg-action-overflow>
+              }
+              <clr-dg-cell>{{ element.name }}</clr-dg-cell>
+              <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
+              <clr-dg-cell>{{ element.number }}</clr-dg-cell>
+              <clr-dg-cell class="electronegativity-container">
+                {{ element.electronegativity }}
+                <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
+              </clr-dg-cell>
+            </clr-dg-row>
+          </ng-template>
+        }
+        <clr-dg-detail [ngClass]="{ highlight }" *clrIfDetail="let detail">
+          <clr-dg-detail-header>{{ detail.name }}</clr-dg-detail-header>
+          <clr-dg-detail-body>
+            <pre>{{ detail | json }}</pre>
+          </clr-dg-detail-body>
+        </clr-dg-detail>
 
-          <button
-            class="btn btn-sm btn-link-neutral footer-button"
-            (click)="datagrid.virtualScroll.scrollToIndex(0, scrollToIndexBehavior)"
-          >
-            <cds-icon shape="step-forward-2" direction="left"></cds-icon>
-          </button>
-          <button
-            class="btn btn-sm btn-link-neutral footer-button"
-            (click)="datagrid.virtualScroll.scrollUp(scrollOffset, scrollToIndexBehavior)"
-          >
-            <cds-icon shape="angle" direction="up"></cds-icon>
-          </button>
-          <button
-            class="btn btn-sm btn-link-neutral footer-button"
-            (click)="datagrid.virtualScroll.scrollDown(scrollOffset, scrollToIndexBehavior)"
-          >
-            <cds-icon shape="angle" direction="down"></cds-icon>
-          </button>
-          <button
-            class="btn btn-sm btn-link-neutral footer-button"
-            (click)="datagrid.virtualScroll.scrollToIndex(data.elements?.length, scrollToIndexBehavior)"
-          >
-            <cds-icon shape="step-forward-2" direction="right"></cds-icon>
-          </button>
-        </div>
-      </clr-dg-footer>
-    </clr-datagrid>
+        <clr-dg-footer>
+          {{ data.elements?.length }}
+          @if (showFooterNavButtons) {
+            <div class="footer-nav-buttons">
+              <clr-dropdown>
+                <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
+                  Jump to
+                  <cds-icon shape="angle" direction="down"></cds-icon>
+                </button>
+                <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
+                  <div (click)="datagrid.virtualScroll.scrollToIndex(20, scrollToIndexBehavior)" clrDropdownItem>20</div>
+                  <div (click)="datagrid.virtualScroll.scrollToIndex(60, scrollToIndexBehavior)" clrDropdownItem>60</div>
+                  <div (click)="datagrid.virtualScroll.scrollToIndex(80, scrollToIndexBehavior)" clrDropdownItem>80</div>
+                  <div (click)="datagrid.virtualScroll.scrollToIndex(100, scrollToIndexBehavior)" clrDropdownItem>
+                    100
+                  </div>
+                </clr-dropdown-menu>
+              </clr-dropdown>
+
+              <button
+                class="btn btn-sm btn-link-neutral footer-button"
+                (click)="datagrid.virtualScroll.scrollToIndex(0, scrollToIndexBehavior)"
+              >
+                <cds-icon shape="step-forward-2" direction="left"></cds-icon>
+              </button>
+              <button
+                class="btn btn-sm btn-link-neutral footer-button"
+                (click)="datagrid.virtualScroll.scrollUp(scrollOffset, scrollToIndexBehavior)"
+              >
+                <cds-icon shape="angle" direction="up"></cds-icon>
+              </button>
+              <button
+                class="btn btn-sm btn-link-neutral footer-button"
+                (click)="datagrid.virtualScroll.scrollDown(scrollOffset, scrollToIndexBehavior)"
+              >
+                <cds-icon shape="angle" direction="down"></cds-icon>
+              </button>
+              <button
+                class="btn btn-sm btn-link-neutral footer-button"
+                (click)="datagrid.virtualScroll.scrollToIndex(data.elements?.length, scrollToIndexBehavior)"
+              >
+                <cds-icon shape="step-forward-2" direction="right"></cds-icon>
+              </button>
+            </div>
+          }
+        </clr-dg-footer>
+      </clr-datagrid>
+    }
     {{ details }}
   `,
   props: { ...args },
@@ -256,7 +268,7 @@ export const Full: StoryObj = {
   args: {
     actionOverflow: true,
     hidableColumns: true,
-    singleSelectable: true,
+    clrDgSelectionType: SelectionType.Single,
   },
 };
 
@@ -266,7 +278,7 @@ export const FullCompact: StoryObj = {
     actionOverflow: true,
     compact: true,
     hidableColumns: true,
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
   },
 };
 
@@ -284,7 +296,7 @@ export const FullCompactWithButtonNavigationPattern: StoryObj = {
     actionOverflow: true,
     compact: true,
     hidableColumns: true,
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
     showFooterNavButtons: true,
   },
 };

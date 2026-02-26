@@ -11,6 +11,7 @@ import {
   ClrDatagridModule,
   ClrDropdownModule,
   commonStringsDefault,
+  SelectionType,
 } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
@@ -28,11 +29,17 @@ export default {
   argTypes: {
     // inputs
     clrDgSelected: { control: { disable: true } },
-    clrDgSingleSelected: { control: { disable: true } },
+    clrDgSelectionType: {
+      control: { type: 'select' },
+      options: {
+        None: SelectionType.None,
+        Single: SelectionType.Single,
+        Multi: SelectionType.Multi,
+      },
+    },
     // outputs
     clrDgRefresh: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
-    clrDgSingleSelectedChange: { control: { disable: true } },
     // methods
     dataChanged: { control: { disable: true } },
     resize: { control: { disable: true } },
@@ -56,11 +63,9 @@ export default {
       this.selectedRows = selectAllChecked ? elements.map((element, i) => i).filter(i => i % 2) : [];
     },
     clrDgItemsIdentityFn: item => item.id,
-    clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
     // story helpers
     elements,
-    singleSelectable: false,
-    multiSelectable: false,
+    clrDgSelectionType: SelectionType.None,
     expandable: false,
     compact: false,
     overflowEllipsis: false,
@@ -68,7 +73,6 @@ export default {
     showActions: false,
     height: 0,
     selectedRows: [],
-    selectedRow: null,
   },
 };
 
@@ -86,8 +90,8 @@ const DatagridTemplate: StoryFn = args => ({
     </style>
     <clr-datagrid
       ${args.height ? '[style.height.px]="height"' : ''}
-      ${args.multiSelectable ? '[(clrDgSelected)]="selectedRows"' : ''}
-      ${args.singleSelectable ? '[clrDgSingleSelected]="selectedRow"' : ''}
+      [(clrDgSelected)]="selectedRows"
+      [clrDgSelectionType]="clrDgSelectionType"
       [ngClass]="{ 'datagrid-compact': compact, 'datagrid-overflow-ellipsis': overflowEllipsis }"
       [clrDgItemsIdentityFn]="clrDgItemsIdentityFn"
       [clrDetailExpandableAriaLabel]="clrDetailExpandableAriaLabel"
@@ -100,57 +104,58 @@ const DatagridTemplate: StoryFn = args => ({
       [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
       (clrDgRefresh)="clrDgRefresh($event)"
       (clrDgSelectedChange)="clrDgSelectedChange($event)"
-      (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
       (clrDgCustomSelectAll)="clrDgCustomSelectAll($event)"
     >
-      <clr-dg-action-bar *ngIf="showActions">
-        <div class="btn-group" role="group" aria-label="Available Actions">
-          <clr-dropdown>
-            <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
-              Per Page
-              <cds-icon shape="angle" direction="down"></cds-icon>
-            </button>
-            <clr-dropdown-menu *clrIfOpen>
-              <button type="button" clrDropdownItem>10</button>
-              <button type="button" clrDropdownItem>20</button>
-              <button type="button" clrDropdownItem>50</button>
-              <button type="button" clrDropdownItem>100</button>
-            </clr-dropdown-menu>
-          </clr-dropdown>
-          <button type="button" class="btn btn-sm btn-secondary">Delete</button>
-          <button type="button" class="btn btn-sm btn-secondary">Edit</button>
-        </div>
-        <div class="btn-group" role="group" aria-label="Available Actions">
-          <button type="button" class="btn btn-sm btn-secondary">Add to group</button>
-          <clr-dropdown>
-            <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
-              Per Page
-              <cds-icon shape="angle" direction="down"></cds-icon>
-            </button>
-            <clr-dropdown-menu *clrIfOpen>
-              <button type="button" clrDropdownItem>10</button>
-              <button type="button" clrDropdownItem>20</button>
-              <button type="button" clrDropdownItem>50</button>
-              <button type="button" clrDropdownItem>100</button>
-            </clr-dropdown-menu>
-          </clr-dropdown>
-          <button type="button" class="btn btn-sm btn-secondary">Delete</button>
-        </div>
-        <div class="btn-group" role="group" aria-label="Available Actions">
-          <clr-dropdown>
-            <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
-              Per Page
-              <cds-icon shape="angle" direction="down"></cds-icon>
-            </button>
-            <clr-dropdown-menu *clrIfOpen>
-              <button type="button" clrDropdownItem>10</button>
-              <button type="button" clrDropdownItem>20</button>
-              <button type="button" clrDropdownItem>50</button>
-              <button type="button" clrDropdownItem>100</button>
-            </clr-dropdown-menu>
-          </clr-dropdown>
-        </div>
-      </clr-dg-action-bar>
+      @if (showActions) {
+        <clr-dg-action-bar>
+          <div class="btn-group" role="group" aria-label="Available Actions">
+            <clr-dropdown>
+              <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
+                Per Page
+                <cds-icon shape="angle" direction="down"></cds-icon>
+              </button>
+              <clr-dropdown-menu *clrIfOpen>
+                <button type="button" clrDropdownItem>10</button>
+                <button type="button" clrDropdownItem>20</button>
+                <button type="button" clrDropdownItem>50</button>
+                <button type="button" clrDropdownItem>100</button>
+              </clr-dropdown-menu>
+            </clr-dropdown>
+            <button type="button" class="btn btn-sm btn-secondary">Delete</button>
+            <button type="button" class="btn btn-sm btn-secondary">Edit</button>
+          </div>
+          <div class="btn-group" role="group" aria-label="Available Actions">
+            <button type="button" class="btn btn-sm btn-secondary">Add to group</button>
+            <clr-dropdown>
+              <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
+                Per Page
+                <cds-icon shape="angle" direction="down"></cds-icon>
+              </button>
+              <clr-dropdown-menu *clrIfOpen>
+                <button type="button" clrDropdownItem>10</button>
+                <button type="button" clrDropdownItem>20</button>
+                <button type="button" clrDropdownItem>50</button>
+                <button type="button" clrDropdownItem>100</button>
+              </clr-dropdown-menu>
+            </clr-dropdown>
+            <button type="button" class="btn btn-sm btn-secondary">Delete</button>
+          </div>
+          <div class="btn-group" role="group" aria-label="Available Actions">
+            <clr-dropdown>
+              <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
+                Per Page
+                <cds-icon shape="angle" direction="down"></cds-icon>
+              </button>
+              <clr-dropdown-menu *clrIfOpen>
+                <button type="button" clrDropdownItem>10</button>
+                <button type="button" clrDropdownItem>20</button>
+                <button type="button" clrDropdownItem>50</button>
+                <button type="button" clrDropdownItem>100</button>
+              </clr-dropdown-menu>
+            </clr-dropdown>
+          </div>
+        </clr-dg-action-bar>
+      }
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
       </clr-dg-column>
@@ -160,9 +165,11 @@ const DatagridTemplate: StoryFn = args => ({
       <clr-dg-column [style.width.px]="250">
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
       </clr-dg-column>
-      <clr-dg-column [style.width.px]="250" *ngIf="overflowEllipsis">
-        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Long text width 250px</ng-container>
-      </clr-dg-column>
+      @if (overflowEllipsis) {
+        <clr-dg-column [style.width.px]="250">
+          <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Long text width 250px</ng-container>
+        </clr-dg-column>
+      }
       <clr-dg-column>
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
       </clr-dg-column>
@@ -171,19 +178,23 @@ const DatagridTemplate: StoryFn = args => ({
         <clr-dg-cell>{{ element.name }}</clr-dg-cell>
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
         <clr-dg-cell>{{ element.number }}</clr-dg-cell>
-        <clr-dg-cell *ngIf="overflowEllipsis">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
-          Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed
-          arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh lacus, in
-          eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum
-        </clr-dg-cell>
+        @if (overflowEllipsis) {
+          <clr-dg-cell>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+            Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
+            sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh lacus,
+            in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum
+          </clr-dg-cell>
+        }
         <clr-dg-cell class="electronegativity-container">
           {{ element.electronegativity }}
           <div [style.width.%]="(element.electronegativity * 100) / 5" class="electronegativity-bar">&nbsp;</div>
         </clr-dg-cell>
-        <ng-container *ngIf="expandable" ngProjectAs="clr-dg-row-detail">
-          <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
-        </ng-container>
+        @if (expandable) {
+          <ng-container ngProjectAs="clr-dg-row-detail">
+            <clr-dg-row-detail *clrIfExpanded>{{ element | json }}</clr-dg-row-detail>
+          </ng-container>
+        }
       </clr-dg-row>
 
       <clr-dg-footer>
@@ -204,27 +215,27 @@ export const Datagrid: StoryObj = {
 export const SingleSelect: StoryObj = {
   render: DatagridTemplate,
   args: {
-    singleSelectable: true,
+    clrDgSelectionType: SelectionType.Single,
   },
 };
 
 export const SingleSelectWithSelection: StoryObj = {
   render: DatagridTemplate,
   args: {
-    singleSelectable: true,
-    selectedRow: { ...elements[1] },
+    clrDgSelectionType: SelectionType.Single,
+    selectedRows: [{ ...elements[1] }],
   },
 };
 export const MultiSelect: StoryObj = {
   render: DatagridTemplate,
   args: {
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
   },
 };
 export const MultiSelectWithSelection: StoryObj = {
   render: DatagridTemplate,
   args: {
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
     selectedRows: [{ ...elements[1] }, { ...elements[2] }],
   },
 };
@@ -246,7 +257,7 @@ export const CompactSingleSelect: StoryObj = {
   render: DatagridTemplate,
   args: {
     compact: true,
-    singleSelectable: true,
+    clrDgSelectionType: SelectionType.Single,
   },
 };
 
@@ -254,22 +265,22 @@ export const CompactSingleSelectWithSelection: StoryObj = {
   render: DatagridTemplate,
   args: {
     compact: true,
-    singleSelectable: true,
-    selectedRow: { ...elements[1] },
+    clrDgSelectionType: SelectionType.Single,
+    selectedRows: [{ ...elements[1] }],
   },
 };
 export const CompactMultiSelect: StoryObj = {
   render: DatagridTemplate,
   args: {
     compact: true,
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
   },
 };
 export const CompactMultiSelectWithSelection: StoryObj = {
   render: DatagridTemplate,
   args: {
     compact: true,
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
     selectedRows: [{ ...elements[1] }, { ...elements[2] }],
   },
 };

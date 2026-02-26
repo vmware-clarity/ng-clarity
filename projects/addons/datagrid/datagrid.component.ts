@@ -36,7 +36,8 @@ import {
   ClrDatagridSortOrder,
   ClrDatagridStateInterface,
   ClrDatagridVirtualScrollRangeInterface,
-  Selection,
+  SelectionType,
+  selectionTypeAttribute,
 } from '@clr/angular/data/datagrid';
 import { Subject, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -54,7 +55,6 @@ import {
 } from './interfaces/column-state';
 import { ContextMenuEvent } from './interfaces/context-menu-event';
 import { DatagridDragConfig } from './interfaces/datagrid-drag-config';
-import { SelectionType } from './interfaces/selection-type';
 import {
   appfxPreselectableComponentToken,
   PreselectableComponent,
@@ -62,12 +62,6 @@ import {
 import { ActionBarLayout, ActionDefinition } from './shared/action/action-definition';
 import { ActionClickEvent, SingleRowActionOpen } from './shared/action/actions-event-types';
 import { ColumnDefinition } from './shared/column/column-definitions';
-
-const resources = {
-  selection: {
-    singleDefaultEntity: {},
-  },
-};
 
 /**
  * The GridLayoutModel interface defines configurable options for customizing
@@ -493,7 +487,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    */
   #hasAdvancedFilters = false;
   #wrapCellText = true;
-  #gridSelectionChangedSub: Subscription;
 
   constructor(
     datagridStrings: DatagridStrings,
@@ -585,15 +578,13 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     return this.#selectionType;
   }
 
-  set selectionType(type: SelectionType) {
+  set selectionType(type: SelectionType | string) {
     // guard against malformed component bindings to unset variables
     if (type !== undefined) {
-      this.#selectionType = type;
+      this.#selectionType = selectionTypeAttribute(type);
 
-      // likely that the embedded Clarity grid doesn't yet exist, will manually set the `selectionType` later
-      if (this.clrDatagrid && this.#gridSelectionChangedSub) {
-        this.#gridSelectionChangedSub.unsubscribe();
-        this.initGridSelection(type);
+      if (this.clrDatagrid) {
+        this.initGridSelection();
       }
     }
   }
@@ -604,13 +595,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   get selectedItems(): T[] {
     return this.#selectedItems;
   }
-
   set selectedItems(items: T[]) {
     this.#selectedItems = Array.isArray(items) ? items.filter((item: T) => item !== undefined) : [];
 
-    if (this.clrDatagrid && items) {
-      this.selectGridItems(this.#selectedItems, false);
-    }
+    this.cdr.detectChanges();
   }
 
   /**
@@ -850,11 +838,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     this.selectedItemsChange.emit(selected);
   }
 
-  setSelectedItems(items: T[]) {
-    this.selectGridItems(items, false);
-    this.selectedItemsChange.emit(items);
-  }
-
   /**
    * Return DataGrid footer label.
    * - Return "datagridLabels.footer" property, if defined.
@@ -923,7 +906,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
   protected onDeselectAllClick(): void {
     this.#selectedItems = [];
-    this.selectGridItems(this.#selectedItems, false);
     this.selectedItemsChange.emit(this.#selectedItems);
   }
 
@@ -938,7 +920,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
         }
       });
       this.#selectedItems = newSelection;
-      this.setSelectedItems(this.#selectedItems);
+
+      this.selectedItemsChange.emit(newSelection);
     } else {
       // Deselect all
       this.onDeselectAllClick();
@@ -1150,14 +1133,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     }
   }
 
-  private preserveSelectionWhenThereIsFilterDefine() {
-    const selection: Selection = this.clrDatagrid.selection;
-    const filterSub: Subscription = (selection as any)['_filtersSub'];
-    if (filterSub) {
-      filterSub.unsubscribe();
-    }
-  }
-
   private initActionTypes(): void {
     if (this.singleRowActions) {
       this.enableSingleRowActions = true;
@@ -1165,109 +1140,15 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     }
   }
 
-  private initGridSelection(changedGridSelectionType?: SelectionType): void {
+  private initGridSelection(): void {
     if (this.clrDatagrid) {
       this.clrDatagrid.identityFn = this.trackByGridItemFn;
-    }
-
-    type ClrSelectionType = typeof this.clrDatagrid.selection.selectionType;
-    // Change detection is sensitive to `ClrDatagrid`. The view will update with `this.selectGridItems(this._selectedItems, true);`
-
-    // 1. `selectionType` setter assigned selection via input binding
-    if (changedGridSelectionType) {
-      this.clrDatagrid.selection.selectionType = changedGridSelectionType as unknown as ClrSelectionType;
-    }
-    // 2. Alternate case supported when initially changing the default `selectionType` and when the nested datagrid component is ready
-    // was pre-initialized with an empty array set
-    else if (
-      !this.clrDatagrid.selection.selectionType &&
-      Array.isArray(this.gridItems) &&
-      this.gridItems.length === 0
-    ) {
-      this.clrDatagrid.selection.selectionType = this.#selectionType as unknown as ClrSelectionType; // cast to Clarity enum
     }
 
     if (this.preSelectFirstItem && this.gridItems && this.gridItems.length > 0) {
       // TODO: Find better solution, This will not work if we
       // have some default sorting
       this.#selectedItems = [this.gridItems[0]];
-    }
-
-    if (this.#selectionType === SelectionType.Multi) {
-      // Remove the hack below when Clarity grid manages to preserve selection
-      // when filter is define.
-      // See issue: https://github.com/vmware/clarity/issues/484
-      // Currently the single selection works without this hack
-      this.preserveSelectionWhenThereIsFilterDefine();
-    }
-
-    if (this.#selectionType !== SelectionType.None) {
-      this.clrDatagrid.selection.selectionType = this.#selectionType as unknown as ClrSelectionType; // cast to Clarity enum
-
-      this.selectGridItems(this.#selectedItems, true);
-      this.subscribeToSelectionChange();
-    } else {
-      // Set selection of the grid to none.
-      // Hacky but if once the selection type is set to single or multi there is no
-      // other way the grid selection to be set to NONE
-      // Remove this when the https://github.com/vmware/clarity/issues/1720
-      // is fixed.
-      this.clrDatagrid.selected = null as unknown as undefined;
-    }
-  }
-
-  private subscribeToSelectionChange(): void {
-    //Skip first selected item as it is the one used during initial initialization
-    if (this.#selectionType === SelectionType.Single && this.clrDatagrid.singleSelectedChanged) {
-      this.#gridSelectionChangedSub = this.clrDatagrid.singleSelectedChanged
-        .pipe(takeUntil(this.#unsubscribeSubject))
-        // if no item is selected, an empty object is returned
-        .subscribe((selected: T) =>
-          this.onSelectedItemsChange(this.isNotObjectOrEmptyObject(selected) ? [] : [selected])
-        );
-    } else if (this.#selectionType === SelectionType.Multi && this.clrDatagrid.selectedChanged) {
-      this.#gridSelectionChangedSub = this.clrDatagrid.selectedChanged
-        .pipe(takeUntil(this.#unsubscribeSubject))
-        .subscribe((selected: T[]) => this.onSelectedItemsChange(selected));
-    }
-  }
-
-  private isNotObjectOrEmptyObject(obj: unknown): boolean {
-    return !obj || (Object.keys(obj).length === 0 && obj.constructor === Object);
-  }
-
-  private selectGridItems(items: T[], isGridSelectionTypeChanged: boolean) {
-    if (this.#selectionType === SelectionType.Single) {
-      if (items.length > 1) {
-        items = items.slice(0, 1);
-      }
-      //We need to init single selection mode so when selected item is not
-      //provided we set empty object
-      this.clrDatagrid.singleSelected = items.length === 0 ? resources.selection.singleDefaultEntity : items[0];
-    } else if (this.#selectionType === SelectionType.Multi) {
-      this.clrDatagrid.singleSelected = undefined;
-      // special flow with conditionals that correctly deal with the nested Clarity datagrid
-      // and only change the Clarity datagrid's current selection when it is safe from the `ExpressionChangedAfterIsHasBeenCheckedError`
-      // and would not result in extra property assignments outside of the normal change detection cycles
-
-      if (!Array.isArray(this.clrDatagrid.selection.current) && isGridSelectionTypeChanged) {
-        // do not desire to influence the selectionType in this cycle as it will affect the DOM and have side effects
-        // assign Clarity current selection and do own CD to be safe
-        this.clrDatagrid.selection.current = items;
-        this.cdr.detectChanges();
-        return;
-      }
-
-      // two acceptable checks before directly assigning the items to the Clarity datagrid
-      // 1. when current selection array is undefined and a assignment would result in a non-empty list
-      // 2. the current selection has already been set with with a list
-      if (
-        (!Array.isArray(this.clrDatagrid.selection.current) && items.length) ||
-        Array.isArray(this.clrDatagrid.selection.current)
-      ) {
-        this.clrDatagrid.selected = items;
-        this.cdr.detectChanges();
-      }
     }
   }
 
@@ -1278,7 +1159,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
       this.#selectedItems.push(item);
     }
 
-    this.selectGridItems(this.#selectedItems, false);
     this.selectedItemsChange.emit(this.#selectedItems);
   }
 
@@ -1310,7 +1190,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   private interpolateMessage(message: string, parameters: unknown[]): string {
     return message.replace(this.#interpolationExpression, (match: string, index: number) => {
       if (index >= parameters.length) {
-        // There are less parameters than there are placeholders,
+        // There are fewer parameters than there are placeholders,
         // return the placeholder value.
         return match;
       }

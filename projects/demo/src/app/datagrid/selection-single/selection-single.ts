@@ -20,16 +20,16 @@ import { User } from '../inventory/user';
 })
 export class DatagridSelectionSingleDemo {
   users: User[];
-  singleSelected: User;
+  singleSelected: User[];
 
   trackByIndexUsers: User[];
-  trackByIndexSingleSelected: User;
+  trackByIndexSingleSelected: User[];
 
   trackByIdUsers: User[];
-  trackByIdSingleSelected: User;
+  trackByIdSingleSelected: User[];
 
   trackByIdServerUsers: User[];
-  trackByIdServerSingleSelected: User;
+  trackByIdServerSingleSelected: User[];
 
   loading = true;
   total = 0;
@@ -69,9 +69,9 @@ export class DatagridSelectionSingleDemo {
 
   selectItems() {
     const selectedUser = { ...this.users[1] };
-    this.singleSelected = selectedUser;
-    this.trackByIndexSingleSelected = selectedUser;
-    this.trackByIdSingleSelected = selectedUser;
-    this.trackByIdServerSingleSelected = selectedUser;
+    this.singleSelected = [selectedUser];
+    this.trackByIndexSingleSelected = [selectedUser];
+    this.trackByIdSingleSelected = [selectedUser];
+    this.trackByIdServerSingleSelected = [selectedUser];
   }
 }

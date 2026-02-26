@@ -1,9 +1,9 @@
 <!--
-~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
-~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-~ This software is released under MIT license.
-~ The full license information can be found in LICENSE in the root directory of this project.
--->
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
 
 <h2>Expandable rows</h2>
 
@@ -50,7 +50,7 @@
   </clr-checkbox-container>
 </form>
 
-<clr-datagrid [style.height.px]="fixedHeight ? 458 : null" [(clrDgSelected)]="selected">
+<clr-datagrid [style.height.px]="fixedHeight ? 458 : null" [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
   <clr-dg-column [clrDgField]="'creation'">
@@ -101,7 +101,7 @@
 
 <h3>Use Expand Wrapper Component</h3>
 
-<clr-datagrid [style.height.px]="fixedHeight ? 458 : null" [(clrDgSelected)]="selected">
+<clr-datagrid [style.height.px]="fixedHeight ? 458 : null" [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
   <clr-dg-column [clrDgField]="'creation'">

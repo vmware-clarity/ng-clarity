@@ -5,21 +5,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import {
   AppfxDatagridModule,
   ClientSideExportConfig,
   ColumnDefinition,
   ExportProviderService,
-  SelectionType,
 } from '@clr/addons/datagrid';
+import { SelectionType } from '@clr/angular/data/datagrid';
 
 import { GridConfigDemoOptions, GridConfigFormComponent } from '../grid-config/grid-config-form.component';
 import { Inventory, VmItem } from '../inventory/inventory';
 
 @Component({
-  imports: [AppfxDatagridModule, CommonModule, GridConfigFormComponent],
+  imports: [AppfxDatagridModule, GridConfigFormComponent],
   standalone: true,
   templateUrl: 'client-side-grid-demo.component.html',
   providers: [ExportProviderService, Inventory],
@@ -29,6 +28,7 @@ export class ClientSideDatagridDemoComponent {
   allVms: VmItem[];
   selectedVms: VmItem[] = [];
   filteredVms: VmItem[];
+  SelectionType = SelectionType;
 
   protected options: GridConfigDemoOptions = {
     totalItems: 100,

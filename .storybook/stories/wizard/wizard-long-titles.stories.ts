@@ -9,8 +9,6 @@ import { ClrWizard, ClrWizardModule, commonStringsDefault } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
 
-import { removeFocusOutline } from '../../helpers/common';
-
 export default {
   title: 'Wizard/Wizard Long Titles',
   component: ClrWizard,
@@ -110,13 +108,15 @@ const WizardLongTitlesTemplate: StoryFn = args => ({
       <clr-wizard-button type="next">Next</clr-wizard-button>
       <clr-wizard-button type="finish">Finish</clr-wizard-button>
 
-      <clr-wizard-page *ngFor="let _ of createArray(pageCount); let i = index">
-        <ng-template clrPageTitle>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua Page {{ i + 1 }}
-        </ng-template>
-        <p>Content for page {{ i + 1 }}.</p>
-      </clr-wizard-page>
+      @for (_ of createArray(pageCount); track $index; let i = $index) {
+        <clr-wizard-page>
+          <ng-template clrPageTitle>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua Page {{ i + 1 }}
+          </ng-template>
+          <p>Content for page {{ i + 1 }}.</p>
+        </clr-wizard-page>
+      }
     </clr-wizard>
   `,
   props: { ...args },
@@ -124,5 +124,4 @@ const WizardLongTitlesTemplate: StoryFn = args => ({
 
 export const WizardLongTitles: StoryObj = {
   render: WizardLongTitlesTemplate,
-  play: removeFocusOutline,
 };

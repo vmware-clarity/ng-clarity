@@ -55,9 +55,11 @@ const LazyLoadedTreeTemplate: StoryFn = args => ({
       <clr-tree-node [clrLoading]="fileService.loading">
         Files
         <ng-template clrIfExpanded (clrIfExpandedChange)="$event ? fileService.getFilenames() : null">
-          <clr-tree-node *ngFor="let filename of fileService.filenames | async">
-            {{ filename }}
-          </clr-tree-node>
+          @for (filename of fileService.filenames | async; track filename) {
+            <clr-tree-node>
+              {{ filename }}
+            </clr-tree-node>
+          }
         </ng-template>
       </clr-tree-node>
     </clr-tree>

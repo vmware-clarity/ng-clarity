@@ -11,7 +11,6 @@ import { ClarityModule } from '@clr/angular';
 
 import { HeaderColorsDemo } from './header-colors';
 import { HeaderTypesDemo } from './header-types';
-import { HeaderTypesOldDemo } from './header-types-old';
 import { HeadersDemo } from './headers';
 import { NavDemo } from './nav.demo';
 import { ROUTING } from './nav.demo.routing';
@@ -20,7 +19,7 @@ import { SubNavDemo } from './sub-nav';
 
 @NgModule({
   imports: [CommonModule, ClarityModule, ROUTING],
-  declarations: [NavDemo, HeadersDemo, NavsDemo, HeaderColorsDemo, HeaderTypesDemo, SubNavDemo, HeaderTypesOldDemo],
+  declarations: [NavDemo, HeadersDemo, NavsDemo, HeaderColorsDemo, HeaderTypesDemo, SubNavDemo],
   exports: [NavDemo, HeadersDemo, NavsDemo, HeaderColorsDemo, HeaderTypesDemo, SubNavDemo],
 })
 export class NavDemoModule {}

@@ -1,9 +1,9 @@
 <!--
-~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
-~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
-~ This software is released under MIT license.
-~ The full license information can be found in LICENSE in the root directory of this project.
--->
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
 
 <div class="clr-example">
   <h4>Zero Rows</h4>
@@ -57,7 +57,7 @@
   <h4>One Row</h4>
   <p>Datagrid body height should be atleast 72px.</p>
   <button class="btn btn-outline-primary" (click)="toggle()">Toggle Spinner</button>
-  <clr-datagrid [clrDgLoading]="loading" [(clrDgSingleSelected)]="selectedUser">
+  <clr-datagrid [clrDgLoading]="loading" [(clrDgSelected)]="selectedUsers" [clrDgSelectionType]="'single'">
     <clr-dg-action-bar>
       <clr-dropdown class="btn-group-overflow">
         <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
