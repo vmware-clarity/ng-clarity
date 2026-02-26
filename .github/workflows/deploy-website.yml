@@ -1,0 +1,42 @@
+name: Deploy Website
+on:
+  push:
+    branches:
+      - next
+      - beta
+concurrency:
+  group: deploy-website-${{github.ref_name}}
+  cancel-in-progress: true
+jobs:
+  deploy-website:
+    name: Deploy Website
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts
+      - name: Build Angular
+        run: npm run _build:angular
+      - name: Build Addons
+        run: npm run _build:addons
+      - name: Build UI
+        run: npm run _build:ui
+      - name: Build Website
+        run: npm run _build:website
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: Generate Sitemap
+        run: node ./projects/website/scripts/generate-sitemap.js
+      - name: Configure CMS
+        run: node ./projects/website/scripts/configure-cms-for-github.js --repo $GITHUB_REPOSITORY --branch $GITHUB_REF_NAME
+      - name: Deploy Website
+        timeout-minutes: 5
+        env:
+          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
+        run: npx netlify-cli@23.6.0 deploy --no-build --dir dist/website --site ${{secrets.NETLIFY_WEBSITE_SITE_NAME}} --alias ${{github.ref_name}}
