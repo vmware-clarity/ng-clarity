@@ -10,12 +10,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CollapsiblePanelModel, CollapsiblePanelService } from '@clr/angular/collapsible-panel';
 import { HeadingLevel, IfExpandService } from '@clr/angular/utils';
 
 import { ClrAccordionPanel } from './accordion-panel';
 import { ClrAccordionModule } from './accordion.module';
-import { AccordionPanelModel } from './models/accordion.model';
-import { AccordionService } from './providers/accordion.service';
 
 @Component({
   template: `
@@ -88,35 +87,35 @@ describe('ClrAccordionPanel', () => {
   describe('TypeScript API', () => {
     let fixture: ComponentFixture<ClrAccordionPanel>;
     let accordionPanel: ClrAccordionPanel;
-    let accordionService: AccordionService;
+    let panelService: CollapsiblePanelService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [AccordionService, IfExpandService],
+        providers: [CollapsiblePanelService, IfExpandService],
         imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
       });
 
       fixture = TestBed.createComponent(ClrAccordionPanel);
       fixture.detectChanges();
       accordionPanel = fixture.componentInstance;
-      accordionService = fixture.debugElement.injector.get(AccordionService);
+      panelService = fixture.debugElement.injector.get(CollapsiblePanelService);
     });
 
     it('should add panel to service', () => {
-      spyOn(accordionService, 'addPanel');
+      spyOn(panelService, 'addPanel');
       accordionPanel.ngOnInit();
-      expect(accordionService.addPanel).toHaveBeenCalled();
+      expect(panelService.addPanel).toHaveBeenCalled();
     });
 
     it('should toggle panel', () => {
-      spyOn(accordionService, 'togglePanel');
+      spyOn(panelService, 'togglePanel');
       accordionPanel.togglePanel();
-      expect(accordionService.togglePanel).toHaveBeenCalled();
+      expect(panelService.togglePanel).toHaveBeenCalled();
     });
 
     it('should collapse panel when animation done is triggered', () => {
       const ifExpandService = fixture.debugElement.injector.get(IfExpandService);
-      const panelModel = new AccordionPanelModel('0', '0');
+      const panelModel = new CollapsiblePanelModel('0', '0');
       panelModel.open = true;
       ifExpandService.expanded = true;
 
@@ -273,13 +272,13 @@ describe('ClrAccordionPanel', () => {
       const panelGroup = panelElement.querySelector('[class*=clr-accordion-panel]');
       const headerButton = panelElement.querySelector('button');
 
-      expect(panelGroup.classList.contains('clr-accordion-panel-inactive')).toBe(true);
+      expect(panelGroup.classList.contains('clr-accordion-panel-closed')).toBe(true);
       expect(panelGroup.classList.contains('clr-accordion-panel-open')).toBe(false);
 
       headerButton.click();
       fixture.detectChanges();
 
-      expect(panelGroup.classList.contains('clr-accordion-panel-inactive')).toBe(true);
+      expect(panelGroup.classList.contains('clr-accordion-panel-closed')).toBe(false);
       expect(panelGroup.classList.contains('clr-accordion-panel-open')).toBe(true);
     });
 

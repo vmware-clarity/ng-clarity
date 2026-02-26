@@ -24,6 +24,8 @@ export class StepperDemo {
   form: FormGroup = this.getReactiveForm();
   templateForm: any = this.getTemplateForm();
   partiallyCompletedForm: FormGroup = this.getReactiveForm();
+  nestedStepperForm: FormGroup = this.getNestedStepperForm();
+  nestedInnerForm: FormGroup = this.nestedStepperForm.get('outer1.inner') as FormGroup;
 
   stepsExpandedState = {
     name: false,
@@ -61,6 +63,28 @@ export class StepperDemo {
       this.initialStep = 'contact';
       this.loading = false;
     }, 400);
+  }
+
+  private getNestedStepperForm() {
+    return new FormGroup({
+      outer1: new FormGroup({
+        value: new FormControl(''),
+        inner: new FormGroup({
+          inner1: new FormGroup({
+            detail: new FormControl(''),
+          }),
+          inner2: new FormGroup({
+            detail: new FormControl(''),
+          }),
+        }),
+      }),
+      outer2: new FormGroup({
+        value: new FormControl(''),
+      }),
+      outer3: new FormGroup({
+        summary: new FormControl(''),
+      }),
+    });
   }
 
   private getReactiveForm() {

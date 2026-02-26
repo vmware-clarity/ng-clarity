@@ -10,9 +10,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { AccordionPanelModel, AccordionStatus } from '@clr/angular/accordion';
 import { BehaviorSubject, Subject } from 'rxjs';
 
+import { StepperPanelStatus } from './enums/stepper-panel-status.enum';
+import { StepperPanelModel } from './models/stepper-panel.model';
 import { StepperService } from './providers/stepper.service';
 import { ClrStepper } from './stepper';
 import { ClrStepperPanel } from './stepper-panel';
@@ -45,7 +46,7 @@ class TemplateFormsTestComponent {
 
 @Injectable()
 class MockStepperService extends StepperService {
-  step = new BehaviorSubject(new AccordionPanelModel('groupName', 0));
+  step = new BehaviorSubject(new StepperPanelModel('groupName', 0));
   activeStep = new Subject<string>();
 
   getPanelChanges() {
@@ -77,22 +78,22 @@ describe('ClrStep Reactive Forms', () => {
       expect(fixture.componentInstance.step.id).toBe('groupName');
     });
 
-    it('adds a .clr-accordion-panel class on the host element', () => {
+    it('adds a .clr-stepper-panel class on the host element', () => {
       const stepperPanelElement = fixture.debugElement.query(By.directive(ClrStepperPanel)).nativeElement;
-      expect(stepperPanelElement.classList.contains('clr-accordion-panel')).toBe(true);
+      expect(stepperPanelElement.classList.contains('clr-stepper-panel')).toBe(true);
     });
 
     it('should show appropriate screen reader only status in button based on form state', () => {
-      const mockStep = new AccordionPanelModel('groupName', 0);
+      const mockStep = new StepperPanelModel('groupName', 0);
       const stepperService = fixture.debugElement.query(By.directive(ClrStepperPanel)).injector.get(StepperService);
-      mockStep.status = AccordionStatus.Error;
+      mockStep.status = StepperPanelStatus.Error;
       (stepperService as MockStepperService).step.next(mockStep);
       fixture.detectChanges();
 
-      const statusMessage = fixture.nativeElement.querySelector('.clr-accordion-header .clr-sr-only');
+      const statusMessage = fixture.nativeElement.querySelector('.clr-stepper-header .clr-sr-only');
       expect(statusMessage.innerText.trim()).toBe('Error in step 1');
 
-      mockStep.status = AccordionStatus.Complete;
+      mockStep.status = StepperPanelStatus.Complete;
       (stepperService as MockStepperService).step.next(mockStep);
       fixture.detectChanges();
 
@@ -100,23 +101,23 @@ describe('ClrStep Reactive Forms', () => {
     });
 
     it('should add aria-disabled attribute to the header button based on the appropriate step state', () => {
-      const mockStep = new AccordionPanelModel('groupName', 0);
+      const mockStep = new StepperPanelModel('groupName', 0);
       const stepperService = fixture.debugElement.query(By.directive(ClrStepperPanel)).injector.get(StepperService);
 
-      mockStep.status = AccordionStatus.Error;
+      mockStep.status = StepperPanelStatus.Error;
       mockStep.disabled = true;
       (stepperService as MockStepperService).step.next(mockStep);
       fixture.detectChanges();
       // use 'aria-disabled' instead of 'disabled' so screen reader users can be auto focused to next step and have title be readable
-      expect(fixture.nativeElement.querySelector('.clr-accordion-header-button').getAttribute('aria-disabled')).toBe(
+      expect(fixture.nativeElement.querySelector('.clr-stepper-header-button').getAttribute('aria-disabled')).toBe(
         'true'
       );
-      expect(fixture.nativeElement.querySelector('.clr-accordion-header-button').getAttribute('disabled')).toBe(null);
+      expect(fixture.nativeElement.querySelector('.clr-stepper-header-button').getAttribute('disabled')).toBe(null);
     });
 
     it('should auto focus the step heading button when previous step next button was clicked', async () => {
       const stepperService = fixture.debugElement.query(By.directive(ClrStepperPanel)).injector.get(StepperService);
-      const input = fixture.nativeElement.querySelector('.clr-accordion-header-button');
+      const input = fixture.nativeElement.querySelector('.clr-stepper-header-button');
 
       spyOn(input, 'focus');
       expect(input.focus).not.toHaveBeenCalled();

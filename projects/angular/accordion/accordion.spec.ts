@@ -143,6 +143,27 @@ describe('ClrAccordion', () => {
       expect(fixture.nativeElement.textContent.trim()).not.toContain('panel 3');
     });
 
+    it('should only call setStrategy once during initial render (from ngOnInit, not ngOnChanges)', () => {
+      const localFixture = TestBed.createComponent(TestComponent);
+      const localAccordionService = localFixture.debugElement
+        .query(By.directive(ClrAccordion))
+        .injector.get(AccordionService);
+      spyOn(localAccordionService, 'setStrategy');
+
+      localFixture.detectChanges();
+
+      expect(localAccordionService.setStrategy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call setStrategy again when multiPanel input changes after initial render', () => {
+      spyOn(accordionService, 'setStrategy');
+
+      testComponent.multi = true;
+      fixture.detectChanges();
+
+      expect(accordionService.setStrategy).toHaveBeenCalledTimes(1);
+    });
+
     it('should reorder panels when panel content children has changed', async () => {
       spyOn(accordionService, 'updatePanelOrder');
       testComponent.showSecondStep = false;

@@ -99,6 +99,27 @@ describe('ClrStepper', () => {
       expect(stepperService.overrideInitialPanel).toHaveBeenCalled();
     });
 
+    it('should not call overrideInitialPanel during initial render', () => {
+      const localFixture = TestBed.createComponent(ReactiveFormsTestComponent);
+      const localStepperService = localFixture.debugElement
+        .query(By.directive(ClrStepper))
+        .injector.get(StepperService);
+      spyOn(localStepperService, 'overrideInitialPanel');
+
+      localFixture.detectChanges();
+
+      expect(localStepperService.overrideInitialPanel).not.toHaveBeenCalled();
+    });
+
+    it('should call overrideInitialPanel when initialStep input changes after initial render', () => {
+      spyOn(stepperService, 'overrideInitialPanel');
+
+      testComponent.initialStep = 'group';
+      fixture.detectChanges();
+
+      expect(stepperService.overrideInitialPanel).toHaveBeenCalledWith('group');
+    });
+
     it('should reset if a previously completed panel is revisited and put into an invalid state', () => {
       // all setup...
       spyOn(stepperService, 'setPanelInvalid');
@@ -186,9 +207,9 @@ describe('ClrStepper', () => {
       stepperService = fixture.debugElement.query(By.directive(ClrStepper)).injector.get(StepperService);
     });
 
-    it('adds a .clr-accordion and .clr-stepper-form class on the host element', () => {
+    it('adds a .clr-stepper-forms class on the host element', () => {
       const stepperElement = fixture.debugElement.query(By.directive(ClrStepper)).nativeElement;
-      expect(stepperElement.classList.contains('clr-accordion')).toBe(true);
+      expect(stepperElement.classList.contains('clr-accordion')).toBe(false);
       expect(stepperElement.classList.contains('clr-stepper-forms')).toBe(true);
     });
 

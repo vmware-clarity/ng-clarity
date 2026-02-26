@@ -1,0 +1,72 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { moduleMetadata, StoryObj } from '@storybook/angular';
+
+import { StorybookPanelGroup } from './collapsible-panel.storybook.component';
+import { CommonModules } from '../../helpers/common';
+
+export default {
+  title: 'Collapsible Panel/Collapsible Panel',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, StorybookPanelGroup],
+    }),
+  ],
+  argTypes: {
+    panelCount: { control: { type: 'number', min: 1, max: 10 } },
+    panelDisabled: { control: 'boolean' },
+    title: { control: 'text' },
+    content: { control: 'text' },
+    openIndices: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    panelCount: 3,
+    panelDisabled: false,
+    title: 'Panel',
+    content: 'Content for panel',
+    openIndices: [],
+  },
+  render: (args: StorybookPanelGroup) => ({
+    props: args,
+    template: `
+      <storybook-panel-group
+        [panelCount]="panelCount"
+        [panelDisabled]="panelDisabled"
+        [title]="title"
+        [content]="content"
+        [openIndices]="openIndices"
+      ></storybook-panel-group>
+    `,
+  }),
+};
+
+export const DefaultCollapsed: StoryObj = {};
+
+export const SinglePanelExpanded: StoryObj = {
+  args: { openIndices: [true] },
+};
+
+export const AllPanelsDisabled: StoryObj = {
+  args: { panelDisabled: true },
+};
+
+export const ExpandedAndDisabled: StoryObj = {
+  args: { openIndices: [true], panelDisabled: true },
+};
+
+export const MultiplePanelsExpanded: StoryObj = {
+  args: { openIndices: [true, false, true] },
+};
+
+export const SinglePanel: StoryObj = {
+  args: { panelCount: 1, openIndices: [true] },
+};
+
+export const ManyPanels: StoryObj = {
+  args: { panelCount: 8, openIndices: [false, false, true] },
+};

@@ -7,20 +7,35 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ClrAccordionModule } from '@clr/angular/accordion';
-import { ClrIcon } from '@clr/angular/icon';
+import { angleIcon, checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '@clr/angular/icon';
 
 import { StepperOompaLoompa } from './chocolate/stepper-oompa-loompa';
 import { StepperWillyWonka } from './chocolate/stepper-willy-wonka';
 import { ClrStepButton } from './step-button';
+import { ClrStepContent } from './step-content';
+import { ClrStepDescription } from './step-description';
+import { ClrStepTitle } from './step-title';
 import { ClrStepper } from './stepper';
 import { ClrStepperPanel } from './stepper-panel';
 
-const declarations = [ClrStepper, ClrStepButton, ClrStepperPanel, StepperOompaLoompa, StepperWillyWonka];
+const declarations = [
+  ClrStepper,
+  ClrStepButton,
+  ClrStepTitle,
+  ClrStepDescription,
+  ClrStepContent,
+  ClrStepperPanel,
+  StepperOompaLoompa,
+  StepperWillyWonka,
+];
 
 @NgModule({
-  imports: [CommonModule, ClrIcon, ClrAccordionModule],
+  imports: [CommonModule, ClrIcon],
   declarations: [...declarations],
-  exports: [...declarations, ClrAccordionModule, ClrIcon],
+  exports: [...declarations, ClrIcon],
 })
-export class ClrStepperModule {}
+export class ClrStepperModule {
+  constructor() {
+    ClarityIcons.addIcons(angleIcon, exclamationCircleIcon, checkCircleIcon);
+  }
+}
