@@ -1,0 +1,38 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<clr-tree>
+  <clr-tree-node [clrExpanded]="true">
+    <clr-icon [shape]="'folder-open'"></clr-icon>
+    Desktop
+    <clr-tree-node [clrExpanded]="false" [clrLoading]="loading">
+      <clr-icon [shape]="'folder-open'"></clr-icon>
+      Applications
+      <ng-template clrIfExpanded (clrIfExpandedChange)="$event ? fetchApps() : null">
+        @for (app of apps$ | async; track app) {
+        <clr-tree-node> <clr-icon [shape]="'file'"></clr-icon>{{ app }} </clr-tree-node>
+        }
+      </ng-template>
+    </clr-tree-node>
+    <clr-tree-node [clrExpanded]="true">
+      <clr-icon [shape]="'folder-open'"></clr-icon>
+      Files
+      <clr-tree-node>
+        <clr-icon [shape]="'file'"></clr-icon>
+        Cover-Letter.dox
+      </clr-tree-node>
+      <clr-tree-node>
+        <clr-icon [shape]="'file'"></clr-icon>
+        notes.txt
+      </clr-tree-node>
+      <clr-tree-node>
+        <clr-icon [shape]="'file'"></clr-icon>
+        Resume.doc
+      </clr-tree-node>
+    </clr-tree-node>
+  </clr-tree-node>
+</clr-tree>

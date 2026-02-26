@@ -1,0 +1,44 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'variables.tokens' as tokens;
+
+.color-palette-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100px;
+  height: 44px;
+  padding: 10px;
+  background-color: var(--color);
+  border-radius: tokens.$cds-alias-object-border-radius-100;
+  border: none;
+  font-size: 12px;
+  margin-top: 8px;
+  cursor: pointer;
+
+  &--bordered {
+    border: 1px solid tokens.$cds-alias-object-border-color;
+  }
+
+  &--copied {
+    justify-content: center;
+
+    --color: #{tokens.$cds-alias-object-container-background} !important;
+  }
+
+  &:not(#{&}--copied) {
+    &:hover {
+      background: url('/assets/images/copy-icon.svg') center no-repeat;
+      border: 1px solid tokens.$cds-alias-object-border-color;
+    }
+  }
+}
+
+.uppercase {
+  text-transform: uppercase;
+}

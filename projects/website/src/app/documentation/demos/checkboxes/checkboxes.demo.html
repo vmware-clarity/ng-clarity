@@ -1,0 +1,730 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">A checkbox is a form element that allows users to select an item.</p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">Use a checkbox:</p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>For providing multiple selectable choices</li>
+      <li>For binary choices</li>
+    </ul>
+
+    <p cds-text="body" class="clr-mt-24px">
+      In a list that presents multiple selections, selecting any given checkbox does not affect other checkboxes and
+      their status.<br />
+      The best practice is to use seven or fewer checkboxes in a list. Keep the label of a checkbox to a single line.
+    </p>
+
+    <p cds-text="body" class="clr-mt-24px">
+      You can also use a checkbox for binary choices. For example, you can add a checkbox at the end of terms of service
+      that indicates whether the user has read and accepted those terms.
+    </p>
+
+    <div class="clrweb-DoxVersusBox clr-mt-24px">
+      <div class="clrweb-DoxVersusBox-items clrweb-DoxVersusBox-vsContent">
+        <div class="clrweb-DoxVersusBox-itemWrapper align-box-items clr-col-12 clr-col-sm-6">
+          <div class="clrweb-DoxVersusBox-item">
+            <clr-checkbox-container>
+              <clr-checkbox-wrapper>
+                <input type="checkbox" clrCheckbox checked />
+                <label>Remember me</label>
+              </clr-checkbox-wrapper>
+            </clr-checkbox-container>
+            <div class="vsbox-content" cds-text="secondary">
+              <span>Use a checkbox for:</span>
+              <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+                <li>For binary choices</li>
+                <li>For selecting multiple choices</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="clrweb-DoxVersusBox-vsWrapper clr-col-12">
+          <app-themed-image
+            [lightSrc]="'/assets/images/versus-icon-light.svg'"
+            [darkSrc]="'/assets/images/versus-icon-dark.svg'"
+            [imageAlt]="'versus'"
+            [imageStyle]="'margin: 0 auto;width: 72px;'"
+          ></app-themed-image>
+        </div>
+
+        <div class="clrweb-DoxVersusBox-itemWrapper align-box-items clr-col-12 clr-col-sm-6">
+          <div class="clrweb-DoxVersusBox-item">
+            <clr-checkbox-container>
+              <clr-checkbox-wrapper>
+                <input type="checkbox" clrToggle checked />
+                <label>Toggle</label>
+              </clr-checkbox-wrapper>
+            </clr-checkbox-container>
+            <div class="vsbox-content" cds-text="secondary">
+              <span>
+                Use a <a routerLink="/documentation/toggle-switch">toggle</a> for On / Off choices but not for multiple
+                choices
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="clr-mt-32px" cds-text="body">See more usage guidelines in our patterns:</p>
+    <app-link-cards [linkColWidth]="4" [links]="patternLinks"></app-link-cards>
+
+    <h2 id="states" class="clr-mt-48px" cds-text="title">States</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Checkboxes can have several states. These states give the user additional information or prevent user interaction.
+    </p>
+
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-6">
+        <div class="component-box-container">
+          <clr-checkbox-container>
+            <label>Notifications</label>
+            <clr-checkbox-wrapper>
+              <input type="checkbox" clrCheckbox value="new-email-enabled" name="new-email-enabled" />
+              <label>New email</label>
+            </clr-checkbox-wrapper>
+            <clr-checkbox-wrapper>
+              <input
+                type="checkbox"
+                clrCheckbox
+                value="meeting-reminder-enabled"
+                name="meeting-reminder-enabled"
+                checked
+              />
+              <label>Meeting reminder</label>
+            </clr-checkbox-wrapper>
+          </clr-checkbox-container>
+        </div>
+      </div>
+      <div class="clr-col-6">
+        <h3 cds-text="section" id="enabled">Enabled</h3>
+        <p cds-text="body" class="clr-mt-16px">
+          Use to show that the checkbox is interactive and can be selected by the user or system.
+        </p>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-6">
+        <div class="component-box-container">
+          <clr-checkbox-container class="clr-mt-0px">
+            <label>Notifications</label>
+            <clr-checkbox-wrapper>
+              <input
+                type="checkbox"
+                clrCheckbox
+                value="new-email-disabled"
+                name="new-email-disabled"
+                [(ngModel)]="disabledCheckbox.newEmail"
+                disabled
+              />
+              <label>New email</label>
+            </clr-checkbox-wrapper>
+            <clr-checkbox-wrapper>
+              <input
+                type="checkbox"
+                clrCheckbox
+                value="meeting-reminder-disabled"
+                name="meeting-reminder-disabled"
+                [(ngModel)]="disabledCheckbox.meetingReminder"
+                disabled
+              />
+              <label>Meeting reminder</label>
+            </clr-checkbox-wrapper>
+          </clr-checkbox-container>
+        </div>
+      </div>
+      <div class="clr-col-6">
+        <h3 cds-text="section" id="disabled">Disabled</h3>
+        <p cds-text="body" class="clr-mt-16px">
+          Use when the checkbox is not interactive. For example, a checkbox might be disabled if a user does not have
+          permission to change specific settings.
+        </p>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-6">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/checkboxes/light-theme/checkbox-indeterminate.svg'"
+          [darkSrc]="'/assets/images/documentation/checkboxes/dark-theme/checkbox-indeterminate.svg'"
+          [imageAlt]="'Parent and child checkboxes with indeterminate state'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-6">
+        <h3 cds-text="section" id="indeterminate">Indeterminate</h3>
+        <p cds-text="body" class="clr-mt-16px">
+          Use in a checkbox tree, showing the parent checkbox item has a mix of selected and unselected children. The
+          indeterminate state is programmatically set by the application for specific conditions.
+        </p>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-6">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/checkboxes/light-theme/checkbox-error.svg'"
+          [darkSrc]="'/assets/images/documentation/checkboxes/dark-theme/checkbox-error.svg'"
+          [imageAlt]="'checkbox with red error icon and error message'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-6">
+        <h3 cds-text="section" id="error">Error</h3>
+        <p cds-text="body" class="clr-mt-16px">
+          Use to communicate a user or system error. This validation can happen when the user moves away from the
+          checkbox choice or choices without making a required selection. For example, you can present the user with an
+          error message to remind users that they did not select the agreement checkbox before they clicked the submit
+          button.
+        </p>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-6">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/checkboxes/light-theme/checkbox-success.svg'"
+          [darkSrc]="'/assets/images/documentation/checkboxes/dark-theme/checkbox-success.svg'"
+          [imageAlt]="'multiple checkboxes with green success icon and success message'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-6">
+        <h3 cds-text="section" id="success">Success</h3>
+        <p cds-text="body" class="clr-mt-16px">
+          Use to let users know that any new checkbox selections have been successfully implemented.
+        </p>
+      </div>
+    </div>
+
+    <h2 id="layouts" class="clr-mt-48px" cds-text="title">Layouts</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      You can use checkboxes in vertical, vertical inline, horizontal, horizontal inline, and compact layouts. See more
+      layout guidelines on the
+      <a routerLink="/documentation/forms">forms page</a>
+    </p>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="vertical">Vertical</h3>
+    <form clrForm clrLayout="vertical">
+      <div class="clr-row">
+        <div class="clr-ml-32px clr-mt-24px clr-col-8 remove-component-margin">
+          <clr-checkbox-container>
+            <label class="checkbox-states-label">Label</label>
+            <clr-checkbox-wrapper>
+              <label>Checkbox 1</label>
+              <input type="checkbox" clrCheckbox value="verticalCheckox1" name="vertical.one" checked />
+            </clr-checkbox-wrapper>
+            <clr-checkbox-wrapper>
+              <label>Checkbox 2</label>
+              <input type="checkbox" clrCheckbox value="verticalCheckox2" name="vertical.two" checked />
+            </clr-checkbox-wrapper>
+            <clr-control-helper>Helper message</clr-control-helper>
+          </clr-checkbox-container>
+        </div>
+      </div>
+    </form>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="vertical-inline">Vertical Inline</h3>
+    <form clrForm clrLayout="vertical">
+      <div class="clr-row">
+        <div class="clr-ml-32px clr-mt-24px clr-col-8 remove-component-margin">
+          <clr-checkbox-container clrInline>
+            <label class="checkbox-states-label">Label</label>
+            <clr-checkbox-wrapper>
+              <label>Checkbox 1</label>
+              <input type="checkbox" clrCheckbox value="verticalInlineCheckox1" name="vertical.inline.one" checked />
+            </clr-checkbox-wrapper>
+            <clr-checkbox-wrapper>
+              <label>Checkbox 2</label>
+              <input type="checkbox" clrCheckbox value="verticalInlineCheckox2" name="vertical.inline.two" checked />
+            </clr-checkbox-wrapper>
+            <clr-checkbox-wrapper>
+              <label>Checkbox 3</label>
+              <input type="checkbox" clrCheckbox value="verticalInlineCheckox3" name="vertical.inline.three" checked />
+            </clr-checkbox-wrapper>
+            <clr-control-helper>Helper message</clr-control-helper>
+          </clr-checkbox-container>
+        </div>
+      </div>
+    </form>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="horizontal">Horizontal</h3>
+    <form clrForm clrLayout="horizontal">
+      <div class="clr-row">
+        <div class="clr-ml-32px clr-mt-24px clr-col-8 remove-component-margin">
+          <clr-checkbox-container>
+            <label>Label</label>
+            <clr-checkbox-wrapper>
+              <label>Checkbox 1</label>
+              <input type="checkbox" clrCheckbox value="horizontalCheckbox1" name="horizontal.one" checked />
+            </clr-checkbox-wrapper>
+            <clr-checkbox-wrapper>
+              <label>Checkbox 2</label>
+              <input type="checkbox" clrCheckbox value="horizontalCheckbox1" name="horizontal.two" checked />
+            </clr-checkbox-wrapper>
+            <clr-checkbox-wrapper>
+              <label>Checkbox 3</label>
+              <input type="checkbox" clrCheckbox value="horizontalCheckbox2" name="horizontal.three" checked />
+            </clr-checkbox-wrapper>
+            <clr-control-helper>Helper message</clr-control-helper>
+          </clr-checkbox-container>
+        </div>
+      </div>
+    </form>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="horizontal-inline">Horizontal Inline</h3>
+    <form clrForm clrLayout="horizontal">
+      <div class="clr-row">
+        <div class="clr-ml-32px clr-mt-24px clr-col-8 remove-component-margin">
+          <clr-checkbox-container clrInline>
+            <label>Label</label>
+            <clr-checkbox-wrapper>
+              <label>Checkbox 1</label>
+              <input
+                type="checkbox"
+                clrCheckbox
+                value="horizontalInlineCheckbox1"
+                name="horizontal.inline.one"
+                checked
+              />
+            </clr-checkbox-wrapper>
+            <clr-checkbox-wrapper>
+              <label>Checkbox 2</label>
+              <input
+                type="checkbox"
+                clrCheckbox
+                value="horizontalInlineCheckbox2"
+                name="horizontal.inline.two"
+                checked
+              />
+            </clr-checkbox-wrapper>
+            <clr-checkbox-wrapper>
+              <label>Checkbox 3</label>
+              <input
+                type="checkbox"
+                clrCheckbox
+                value="horizontalInlineCheckbox3"
+                name="horizontal.inline.three"
+                checked
+              />
+            </clr-checkbox-wrapper>
+            <clr-control-helper>Helper message</clr-control-helper>
+          </clr-checkbox-container>
+        </div>
+      </div>
+    </form>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="compact">Compact</h3>
+    <form clrForm clrLayout="compact">
+      <div class="clr-row">
+        <div class="clr-ml-32px clr-mt-24px clr-col-8 remove-component-margin">
+          <clr-checkbox-container>
+            <label>Label</label>
+            <clr-checkbox-wrapper>
+              <label>Checkbox 1</label>
+              <input type="checkbox" clrCheckbox value="compactCheckbox1" name="compact.one" checked />
+            </clr-checkbox-wrapper>
+            <clr-checkbox-wrapper>
+              <label>Checkbox 2</label>
+              <input type="checkbox" clrCheckbox value="compactCheckbox2" name="compact.two" checked />
+            </clr-checkbox-wrapper>
+            <clr-checkbox-wrapper>
+              <label>Checkbox 3</label>
+              <input type="checkbox" clrCheckbox value="compactCheckbox3" name="compact.three" checked />
+            </clr-checkbox-wrapper>
+            <clr-control-helper>Helper message</clr-control-helper>
+          </clr-checkbox-container>
+        </div>
+      </div>
+    </form>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="angular-demo" cds-text="title" cds-layout="m-t:xl">Angular Checkbox Component</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      If you are using Angular, the recommended approach is to always use the ClrCheckbox directive on your checkbox
+      buttons to help manage the form control. By using <code cds-text="code">ClrCheckbox</code>, you'll automatically
+      be able to leverage built in validation, helper text, and layout features in forms.
+    </p>
+    <h3 data-toc-item id="angular-basic" cds-text="section" cds-layout="m-t:lg">Basic Checkbox</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      It is possible to create a checkbox button without a label. However the checkbox will not take advantage of the
+      accessibility built into Clarity Forms. An example of the basic checkbox adds
+      <code cds-text="code">ClrCheckbox</code> to an input with the type="checkbox". This will wire up the checkbox
+      directive for use with the form.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      <input type="checkbox" clrCheckbox />
+    </p>
+    <app-stackblitz-example name="checkbox ng basic" [componentTemplate]="ngBasic.default"></app-stackblitz-example>
+
+    <h3 data-toc-item id="angular-label" cds-text="section" cds-layout="m-t:lg">Labels</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      <strong>Labels are required to make Clarity form controls accessible.</strong>
+    </p>
+
+    <p class="clr-mt-16px" cds-text="body">
+      To enable the accessibility behaviors, you'll need to wrap your checkboxes with the
+      <code class="clr-code">ClrCheckboxWrapper</code> component when you include a label. This manages the label and
+      display of the checkbox button for you.
+    </p>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Checkboxes without a label will not be accessible. So, while it it is possible to create a checkbox by just adding
+      <code class="clr-code">clrCheckbox</code> it is not recommended. Notice, it is necessary to add
+      <code class="clr-code">type="checkbox"</code>. The basic checkbox control needs to be nested inside both the
+      <code class="clr-code">clr-checkbox-container</code> and the <code class="clr-code">clr-checkbox-wrapper</code> to
+      enable all of the styles and accessibility behaviors.
+    </p>
+
+    <clr-checkbox-container>
+      <clr-checkbox-wrapper>
+        <input type="checkbox" clrCheckbox value="option1" name="options1" [(ngModel)]="options.option1" />
+        <label>Option 1</label>
+      </clr-checkbox-wrapper>
+      <clr-checkbox-wrapper>
+        <input type="checkbox" clrCheckbox value="option2" name="options2" [(ngModel)]="options.option2" />
+        <label>Option 2</label>
+      </clr-checkbox-wrapper>
+    </clr-checkbox-container>
+    <app-stackblitz-example
+      name="checkbox ng label"
+      [componentTemplate]="ngLabel.default"
+      [componentClass]="angularTs"
+      [showComponentClass]="false"
+    ></app-stackblitz-example>
+
+    <h3 data-toc-item id="checkbox-helper" cds-text="section" cds-layout="m-t:lg">Helper and error messages</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      The basic checkbox control needs to be nested inside both the clr-checkbox-container and the clr-checkbox-wrapper
+      to enable all of the styles and accessibility behaviors.
+    </p>
+    <div>
+      <clr-checkbox-container>
+        <label>Full checkbox</label>
+        <clr-checkbox-wrapper>
+          <input type="checkbox" clrCheckbox value="option1" required name="options1" [(ngModel)]="options.option1" />
+          <label>Option 1</label>
+        </clr-checkbox-wrapper>
+        <clr-checkbox-wrapper>
+          <input type="checkbox" clrCheckbox value="option2" required name="options2" [(ngModel)]="options.option2" />
+          <label>Option 2</label>
+        </clr-checkbox-wrapper>
+        <clr-control-helper>Helper text</clr-control-helper>
+        <clr-control-error>This field is required!</clr-control-error>
+      </clr-checkbox-container>
+    </div>
+    <app-stackblitz-example
+      name="checkbox ng helpers"
+      [componentTemplate]="ngHelpers.default"
+      [componentClass]="angularTs"
+      [showComponentClass]="false"
+    ></app-stackblitz-example>
+
+    <h3 data-toc-item id="checkbox-inline" cds-text="section" cds-layout="m-t:lg">Inline checkboxes</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Checkbox buttons can be placed inline by default by adding the <code class="clr-code">clrInline</code> directive
+      to your checkbox container elements. The checkbox buttons will wrap if there is not enough space.
+    </p>
+    <div>
+      <clr-checkbox-container clrInline>
+        <label>Inline checkbox example</label>
+        <clr-checkbox-wrapper>
+          <input type="checkbox" clrCheckbox value="option1" name="options1" [(ngModel)]="options.option1" />
+          <label>Option 1</label>
+        </clr-checkbox-wrapper>
+        <clr-checkbox-wrapper>
+          <input type="checkbox" clrCheckbox value="option2" name="options2" [(ngModel)]="options.option2" />
+          <label>Option 2</label>
+        </clr-checkbox-wrapper>
+      </clr-checkbox-container>
+    </div>
+
+    <app-stackblitz-example
+      name="checkbox ng inline"
+      [componentTemplate]="ngInline.default"
+      [componentClass]="angularTs"
+      [showComponentClass]="false"
+    ></app-stackblitz-example>
+
+    <h3 data-toc-item id="checkbox-disabled" cds-text="section" cds-layout="m-t:lg">Disabled checkboxes</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      A checkbox can be disabled by simply putting the <code class="clr-code">disabled</code> attribute on the checkbox
+      input
+    </p>
+    <clr-checkbox-container>
+      <label>Disabled checkbox example</label>
+      <clr-checkbox-wrapper>
+        <input type="checkbox" clrCheckbox name="options1" value="option1" [(ngModel)]="options.option1" disabled />
+        <label>Option 1</label>
+      </clr-checkbox-wrapper>
+      <clr-checkbox-wrapper>
+        <input type="checkbox" clrCheckbox name="options2" value="option2" [(ngModel)]="options.option2" disabled />
+        <label>Option 2</label>
+      </clr-checkbox-wrapper>
+      <clr-control-helper>Helper text</clr-control-helper>
+    </clr-checkbox-container>
+    <app-stackblitz-example
+      name="checkbox ng disabled"
+      [componentTemplate]="ngDisabled.default"
+      [componentClass]="angularTs"
+      [showComponentClass]="false"
+    ></app-stackblitz-example>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="indeterminate-checkbox">Indeterminate checkboxes</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      In cases where you want to display a checkbox as indeterminate, meaning it is neither selected or unselected. This
+      can happen in cases where your checkboxes have a hierarchy (such as we have in our Tree View), and a child is
+      selected but not the parent. You can control the indeterminate state by binding a boolean value like
+      <code class="clr-code">[indeterminate]="true"</code>.
+    </p>
+
+    <clr-checkbox-container>
+      <label>Indeterminate checkbox example</label>
+      <clr-checkbox-wrapper>
+        <input
+          type="checkbox"
+          clrCheckbox
+          name="test6"
+          value="option1"
+          (change)="indeterminateState = false"
+          [indeterminate]="indeterminateState"
+        />
+        <label>Option 1</label>
+      </clr-checkbox-wrapper>
+      <clr-control-helper>Helper text</clr-control-helper>
+    </clr-checkbox-container>
+
+    <button class="btn btn-sm" (click)="resetIndeterminateState()">Reset indeterminate state</button>
+
+    <app-stackblitz-example
+      name="checkbox ng indeterminate"
+      [componentTemplate]="ngIndeterminate.default"
+      [componentClass]="indeterminateTs"
+      [showComponentClass]="false"
+    ></app-stackblitz-example>
+
+    <h2 id="css-classes" class="clr-mt-48px" cds-text="title">CSS Checkbox Component</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Checkbox buttons can be used without Angular, but without some of the automatic interactivity. If you intend to
+      create your own components, here are the basic features you'll need to build out.
+    </p>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="basic-checkbox">Basic checkbox</h3>
+    <div class="clr-form-control">
+      <div class="clr-control-container">
+        <div class="clr-checkbox-wrapper">
+          <input clrCheckbox name="test2" type="checkbox" value="option1" id="clr-form-control-1" />
+          <label class="clr-control-label" for="clr-form-control-1">My Choice</label>
+        </div>
+      </div>
+    </div>
+    <app-stackblitz-example name="checkbox ui basic" [componentTemplate]="uiBasic.default"></app-stackblitz-example>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="full-input">Full input display</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Each form control has a <code class="clr-code">.clr-form-control</code> wrapper, as well as a specific DOM
+      structure necessary to layout the form control as desired. This works with all layout options as well without
+      needing to change the DOM structure in any way.
+    </p>
+
+    <div class="clr-form-control">
+      <label class="clr-control-label">Full checkbox</label>
+      <div class="clr-control-container">
+        <div class="clr-checkbox-wrapper">
+          <input type="checkbox" id="vertical-checkbox1" name="checkbox-full-1" value="option1" class="clr-checkbox" />
+          <label for="vertical-checkbox1" class="clr-control-label">option 1</label>
+        </div>
+        <div class="clr-checkbox-wrapper">
+          <input type="checkbox" id="vertical-checkbox2" name="checkbox-full-2" value="option2" class="clr-checkbox" />
+          <label for="vertical-checkbox2" class="clr-control-label">option 2</label>
+        </div>
+        <div class="clr-checkbox-wrapper">
+          <input type="checkbox" id="vertical-checkbox3" name="checkbox-full-3" value="option3" class="clr-checkbox" />
+          <label for="vertical-checkbox3" class="clr-control-label">option 3</label>
+        </div>
+        <div class="clr-subtext-wrapper">
+          <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+          <span class="clr-subtext">Helper Text</span>
+        </div>
+      </div>
+    </div>
+
+    <app-stackblitz-example name="checkbox ui full" [componentTemplate]="uiFull.default"></app-stackblitz-example>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="error-state">Error state</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      To signify an error state, you need to add the <code class="clr-code">.clr-error</code> class to the
+      <code class="clr-code">.clr-control-container</code> element. This will show the
+      <code class="clr-code">.clr-validate-icon</code> and turn the <code class="clr-code">.clr-subtext</code> message
+      to red. If you have helper text that needs to change to error content, you'll have to handle the hiding and
+      showing of that content inside of the <code class="clr-code">.clr-subtext</code> element.
+    </p>
+
+    <div class="clr-form-control">
+      <label class="clr-control-label">Basic checkbox</label>
+      <div class="clr-control-container clr-error">
+        <div class="clr-checkbox-wrapper">
+          <input type="checkbox" id="error-checkbox1" name="checkbox-error-1" value="option1" class="clr-checkbox" />
+          <label for="error-checkbox1" class="clr-control-label">option 1</label>
+        </div>
+        <div class="clr-checkbox-wrapper">
+          <input type="checkbox" id="error-checkbox2" name="checkbox-error-2" value="option2" class="clr-checkbox" />
+          <label for="error-checkbox2" class="clr-control-label">option 2</label>
+        </div>
+        <div class="clr-checkbox-wrapper">
+          <input type="checkbox" id="error-checkbox3" name="checkbox-error-3" value="option3" class="clr-checkbox" />
+          <label for="error-checkbox3" class="clr-control-label">option 3</label>
+        </div>
+        <div class="clr-subtext-wrapper">
+          <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+          <span class="clr-subtext">Error message</span>
+        </div>
+      </div>
+    </div>
+
+    <app-stackblitz-example name="checkbox ui error" [componentTemplate]="uiError.default"></app-stackblitz-example>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="inline-checkbox">Inline checkbox</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Checkbox buttons can be placed inline by default by adding the
+      <code class="clr-code">clr-control-inline</code> directive to your checkbox container. The checkbox buttons will
+      wrap if there is not enough space.
+    </p>
+
+    <p class="clr-mt-16px" cds-text="body">
+      The subtext content, the icon and subtext messages, also must be wrapped in a
+      <code class="clr-code">clr-subtext-wrapper</code> element so it can properly layout in all layout variations. If
+      you omit this, the validation icon and text may appear in the wrong place.
+    </p>
+    <div class="clr-form-control">
+      <label class="clr-control-label">Inline checkbox example</label>
+      <div class="clr-control-container clr-control-inline">
+        <div class="clr-checkbox-wrapper">
+          <input type="checkbox" id="inline-checkbox1" name="checkbox-inline-1" value="option1" class="clr-checkbox" />
+          <label for="inline-checkbox1" class="clr-control-label">option 1</label>
+        </div>
+        <div class="clr-checkbox-wrapper">
+          <input type="checkbox" id="inline-checkbox2" name="checkbox-inline-2" value="option2" class="clr-checkbox" />
+          <label for="inline-checkbox2" class="clr-control-label">option 2</label>
+        </div>
+        <div class="clr-checkbox-wrapper">
+          <input type="checkbox" id="inline-checkbox3" name="checkbox-inline-3" value="option3" class="clr-checkbox" />
+          <label for="inline-checkbox3" class="clr-control-label">option 3</label>
+        </div>
+        <div class="clr-subtext-wrapper">
+          <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+          <span class="clr-subtext">Helper Text</span>
+        </div>
+      </div>
+    </div>
+
+    <app-stackblitz-example name="checkbox ui inline" [componentTemplate]="uiInline.default"></app-stackblitz-example>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="disabled-checkbox-css">Disabled checkbox</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      In order to disable buttons, you'll add the <code class="clr-code">disabled</code> attribute on the checkbox and
+      putting the <code class="clr-code">clr-form-control-disabled</code> class onto the form control wrapper. This
+      helps setup the correct styling for the labels and other aspects of the form control when it is disabled.
+    </p>
+    <div class="clr-form-control clr-form-control-disabled">
+      <label class="clr-control-label">Disabled checkbox example</label>
+      <div class="clr-control-container">
+        <div class="clr-checkbox-wrapper">
+          <input
+            type="checkbox"
+            id="checkbox10"
+            name="checkbox-disabled-1"
+            value="option1"
+            class="clr-checkbox"
+            disabled
+          />
+          <label for="checkbox10" class="clr-control-label">option 1</label>
+        </div>
+        <div class="clr-checkbox-wrapper">
+          <input
+            type="checkbox"
+            id="checkbox11"
+            name="checkbox-disabled-2"
+            value="option2"
+            class="clr-checkbox"
+            disabled
+          />
+          <label for="checkbox11" class="clr-control-label">option 2</label>
+        </div>
+        <div class="clr-checkbox-wrapper">
+          <input
+            type="checkbox"
+            id="checkbox12"
+            name="checkbox-disabled-3"
+            value="option3"
+            class="clr-checkbox"
+            disabled
+          />
+          <label for="checkbox12" class="clr-control-label">option 3</label>
+        </div>
+        <div class="clr-subtext-wrapper">
+          <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+          <span class="clr-subtext">Helper text</span>
+        </div>
+      </div>
+    </div>
+
+    <app-stackblitz-example
+      name="checkbox ui disabled"
+      [componentTemplate]="uiDisabled.default"
+    ></app-stackblitz-example>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <app-style-docs styleDocsKey="Checkbox"></app-style-docs>
+  </app-doc-tab>
+
+  <app-doc-tab tab="accessibility">
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      The checkbox component includes a native checkbox form element (with all native limitations), a label, helper
+      text, and status messaging.
+    </p>
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      Avoid nesting components within helper text or error messages, as this can cause overloading. Consult your design
+      team for guidance.
+    </p>
+    <h2 id="angular-checkbox" cds-text="title" cds-layout="m-t:xl">Angular Checkbox Component</h2>
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      The checkbox label can include text and non-clickable components.
+    </p>
+    <h2 id="css-checkbox" cds-text="title" cds-layout="m-t:xl">CSS Checkbox Component</h2>
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      Clarity offers styling classes for the native checkbox element.
+    </p>
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      If you plan to enhance or modify the code structure, consider conducting an accessibility assessment.
+    </p>
+    <app-nesting-table
+      componentName="Checkbox"
+      subComponentName="label"
+      [canNestComponents]="canNestComponents"
+      [cannotNestComponents]="cannotNestComponents"
+      [conditionalNesting]="conditionalNesting"
+    >
+    </app-nesting-table>
+  </app-doc-tab>
+</app-doc-tabs>

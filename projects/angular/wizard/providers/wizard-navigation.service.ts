@@ -452,8 +452,10 @@ export class WizardNavigationService implements OnDestroy {
     if (isFinish) {
       currentPage.finishButtonClicked.emit(currentPage);
     } else if (isDanger) {
+      // TODO: The 'emit' function requires a mandatory ClrWizardPage argument
       currentPage.dangerButtonClicked.emit();
     } else if (isNext) {
+      // TODO: The 'emit' function requires a mandatory ClrWizardPage argument
       currentPage.nextButtonClicked.emit();
     }
 

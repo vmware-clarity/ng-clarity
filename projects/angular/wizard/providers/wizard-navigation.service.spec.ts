@@ -43,6 +43,7 @@ export default function (): void {
       spyOn(wizard.wizardFinished, 'emit');
 
       wizardNavigationService.wizardFinished.subscribe(function () {
+        // TODO: The 'emit' function requires a mandatory any argument
         wizard.wizardFinished.emit();
       });
 
@@ -110,6 +111,7 @@ export default function (): void {
       spyOn(context.clarityDirective.wizardFinished, 'emit');
 
       wizardNavigationService.wizardFinished.subscribe(function () {
+        // TODO: The 'emit' function requires a mandatory any argument
         context.clarityDirective.wizardFinished.emit();
       });
 

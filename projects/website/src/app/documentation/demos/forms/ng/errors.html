@@ -1,0 +1,15 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<form clrForm>
+  <clr-input-container>
+    <label>Field 1 label</label>
+    <input clrInput type="text" [(ngModel)]="model" name="example" required minlength="5" />
+    <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+    <clr-control-error *clrIfError="'required'">Error message about being required</clr-control-error>
+    <clr-control-error *clrIfError="'minlength'">Error message about requiring 5 characters</clr-control-error>
+  </clr-input-container>
+</form>

@@ -1,0 +1,21 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+@if (links) {
+  <div class="clr-row">
+    @for (link of links; track link) {
+      <div class="clr-col-xl-{{ linkColWidth() }} clr-col-lg-4 clr-col-md-4">
+        <a [routerLink]="link.routerLink" class="card clickable card-link">
+          <div class="hexagon" [class]="link.hexagonColor">
+            <clr-icon class="hexagon-icon" size="md" [shape]="link.iconShape"></clr-icon>
+          </div>
+          <div class="card-text">{{ link.text }}</div>
+          <clr-icon class="arrow-icon" shape="arrow" style="transform: rotate(45deg)"></clr-icon>
+        </a>
+      </div>
+    }
+  </div>
+}

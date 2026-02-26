@@ -1,0 +1,33 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example">
+  <clr-tabs>
+    <clr-tabs-actions position="left">
+      <div class="btn btn-icon btn-link" (click)="addNewTab()" clrTabAction>
+        <clr-icon shape="plus"></clr-icon>
+      </div>
+    </clr-tabs-actions>
+    @for (tab of tabs; track tab; let i = $index) {
+    <clr-tab>
+      <button clrTabLink>{{ tab.title }}</button>
+      <clr-tab-content>
+        <p>{{ tab.content }}</p>
+        <button class="btn btn-icon btn-link" (click)="removeTab(i)">
+          <clr-icon shape="trash"></clr-icon>
+          Remove tab
+        </button>
+      </clr-tab-content>
+    </clr-tab>
+    }
+  </clr-tabs>
+</div>
+<app-stackblitz-example
+  name="tabs angular responsive example"
+  [componentTemplate]="example"
+  [componentClass]="exampleTs"
+></app-stackblitz-example>

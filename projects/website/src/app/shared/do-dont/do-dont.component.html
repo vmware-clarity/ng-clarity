@@ -1,0 +1,36 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<ng-content></ng-content>
+<div
+  [ngClass]="{
+    bar: true,
+    'bar-do': type() === 'do',
+    'bar-dont': type() === 'dont',
+    'bar-warn': type() === 'warn',
+    'clr-mt-24px bar-card': isCard() === true,
+  }"
+></div>
+<div class="clr-row clr-mt-8px">
+  <div class="clr-col-1">
+    <clr-icon
+      [ngClass]="'icon-' + type()"
+      attr.shape="{{ type() === 'do' ? 'check' : type() == 'dont' ? 'times' : 'warning-standard' }}"
+      size="md"
+    ></clr-icon>
+  </div>
+  <div class="clr-col-10" cds-text="secondary bold" [ngClass]="'text-' + type()">
+    {{ typeDisplayText[type()] }}
+  </div>
+</div>
+<div class="clr-mt-8px" cds-text="secondary">
+  @if (heading && headingLevel) {
+    <div cds-text="medium" cds-layout="m-b:xxs" role="heading" [attr.aria-level]="headingLevel">
+      {{ heading }}
+    </div>
+  }
+  {{ caption() }}
+</div>

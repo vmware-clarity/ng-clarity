@@ -1,0 +1,162 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'variables.tokens' as tokens;
+
+//Styles for Clarity Demos
+.clr-example {
+  margin-top: tokens.$cds-global-space-9;
+
+  .main-container {
+    height: auto;
+    padding-top: 0;
+    background: tokens.$cds-alias-object-app-background;
+
+    .content-area {
+      overflow-y: hidden;
+    }
+
+    header.header {
+      .branding {
+        position: static;
+        z-index: 1;
+      }
+    }
+  }
+
+  &.squeeze {
+    padding: tokens.$cds-global-space-12;
+  }
+}
+
+.modal.static {
+  position: relative;
+}
+
+.modal:not(.modal-full-screen).static {
+  padding: #{tokens.$cds-global-space-14};
+}
+
+.modal-backdrop.static {
+  position: absolute;
+  inset: 0;
+}
+
+.modal-icon {
+  float: left;
+  color: tokens.$cds-alias-status-success;
+  font-size: #{tokens.$cds-global-space-14};
+  margin-right: tokens.$cds-global-layout-space-sm;
+}
+
+.backdrop-example-container {
+  position: relative;
+  padding: tokens.$cds-global-space-9;
+}
+
+.backdrop-example-container.full-screen {
+  padding: 0;
+  height: 400px;
+}
+
+.bump-down {
+  margin-top: tokens.$cds-global-space-9 !important;
+}
+
+//Overriding PrismJS styles. This is in code.scss and not in code.clarity.scss because
+//we don't want to override the background in case someone chooses to use
+//another PrismJS theme.
+:not(pre) > code[class*='language-'],
+pre[class*='language-'],
+pre {
+  padding: tokens.$cds-global-layout-space-sm;
+}
+
+:root {
+  --cdsweb-code-base1: #{tokens.$cds-global-color-construction-600};
+  --cdsweb-code-base01: #{tokens.$cds-global-color-construction-700};
+  --cdsweb-code-blue: #{tokens.$cds-global-color-blue-700};
+  --cdsweb-code-cyan: #{tokens.$cds-global-color-jade-700};
+  --cdsweb-code-green: #{tokens.$cds-global-color-lime-800};
+  --cdsweb-code-yellow: #{tokens.$cds-global-color-yellow-800};
+  --cdsweb-code-orange: #{tokens.$cds-global-color-ochre-800};
+}
+
+[cds-theme~='dark'] {
+  --cdsweb-code-base1: #{tokens.$cds-global-color-construction-300};
+  --cdsweb-code-base01: #{tokens.$cds-global-color-construction-200};
+  --cdsweb-code-blue: #{tokens.$cds-global-color-blue-500};
+  --cdsweb-code-cyan: #{tokens.$cds-global-color-jade-500};
+  --cdsweb-code-green: #{tokens.$cds-global-color-lime-600};
+  --cdsweb-code-yellow: #{tokens.$cds-global-color-yellow-600};
+  --cdsweb-code-orange: #{tokens.$cds-global-color-tangerine-400};
+}
+
+pre {
+  background: tokens.$cds-alias-object-container-background;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--cdsweb-code-base1);
+}
+
+.token.punctuation {
+  color: var(--cdsweb-code-base01);
+}
+
+.token.namespace {
+  opacity: 0.7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: var(--cdsweb-code-blue);
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.url,
+.token.inserted {
+  color: var(--cdsweb-code-cyan);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: var(--cdsweb-code-green);
+}
+
+.token.function,
+.token.class-name {
+  color: var(--cdsweb-code-yellow);
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: var(--cdsweb-code-orange);
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}

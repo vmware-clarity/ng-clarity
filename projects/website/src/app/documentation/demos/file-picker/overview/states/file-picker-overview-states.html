@@ -1,0 +1,78 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h2 id="states" cds-text="title" cds-layout="m-t:xxl">States</h2>
+
+<form class="no-padding" clrForm clrLayout="vertical" [formGroup]="form">
+  <h3 cds-text="section" cds-layout="m-t:lg">Enabled</h3>
+  <p class="clr-mt-16px" cds-text="body">Use when the File Picker component is interactive and ready for input.</p>
+  <div cds-layout="m-t:md">
+    <clr-file-input-container>
+      <label>Label</label>
+      <input type="file" clrFileInput formControlName="enabled" required />
+      <clr-control-helper>Helper message</clr-control-helper>
+      <clr-control-success>Success message</clr-control-success>
+      <clr-control-error>Error message</clr-control-error>
+    </clr-file-input-container>
+  </div>
+
+  <h3 cds-text="section" cds-layout="m-t:lg">Active</h3>
+  <p class="clr-mt-16px" cds-text="body">
+    Use when selected by a user with an input method, such as mouse or keyboard.
+  </p>
+  <div cds-layout="m-t:md">
+    <clr-file-input-container>
+      <label>Label</label>
+      <input type="file" clrFileInput formControlName="active" required />
+      <clr-control-helper>Helper message</clr-control-helper>
+      <clr-control-success>Success message</clr-control-success>
+      <clr-control-error>Error message</clr-control-error>
+    </clr-file-input-container>
+  </div>
+
+  <h3 cds-text="section" cds-layout="m-t:lg">Disabled</h3>
+  <p class="clr-mt-16px" cds-text="body">
+    Use when not interactive. For example, when a user does not have permissions to upload a file.
+  </p>
+  <div cds-layout="m-t:md">
+    <clr-file-input-container>
+      <label>Label</label>
+      <input type="file" clrFileInput formControlName="disabled" required [attr.disabled]="true" />
+      <clr-control-helper>Helper message</clr-control-helper>
+      <clr-control-success>Success message</clr-control-success>
+      <clr-control-error>Error message</clr-control-error>
+    </clr-file-input-container>
+  </div>
+
+  <h3 cds-text="section" cds-layout="m-t:lg">Error</h3>
+  <p class="clr-mt-16px" cds-text="body">
+    Use to communicate a user or system error. This validation can happen when the user moves away from the input or
+    after attempting to submit a form.
+  </p>
+  <div cds-layout="m-t:md">
+    <clr-file-input-container>
+      <label>Label</label>
+      <input #errorStateFileInput type="file" clrFileInput formControlName="error" required />
+      <clr-control-helper>Helper message</clr-control-helper>
+      <clr-control-success>Success message</clr-control-success>
+      <clr-control-error>Error message</clr-control-error>
+    </clr-file-input-container>
+  </div>
+
+  <h3 cds-text="section" cds-layout="m-t:lg">Success</h3>
+  <p class="clr-mt-16px" cds-text="body">
+    Use to provide real-time feedback immediately after a user's input. For example, after selecting a file.
+  </p>
+  <div cds-layout="m-t:md">
+    <clr-file-input-container>
+      <label>Label</label>
+      <input #successStateFileInput type="file" clrFileInput formControlName="success" required />
+      <clr-control-helper>Helper message</clr-control-helper>
+      <clr-control-success>Success message</clr-control-success>
+      <clr-control-error>Error message</clr-control-error>
+    </clr-file-input-container>
+  </div>
+</form>

@@ -1,0 +1,46 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="progbar-examples">
+  <p class="clr-mt-24px" cds-text="body">
+    Clarity also has a component <code cds-text="code">clrProgressBar</code>. That will add accessibility support for
+    screen readers.
+  </p>
+
+  <h3 data-toc-item id="examples-demo" class="clr-mt-32px" cds-text="section">Examples</h3>
+
+  <div class="clr-mt-32px">
+    <clr-progress-bar id="example" clrValue="40" clrMax="50"></clr-progress-bar>
+    <app-stackblitz-example name="progress bar medium" [componentTemplate]="example"></app-stackblitz-example>
+
+    <br />
+
+    <app-animated-example [label]="'looping progress bar'" [fullWidthContent]="true">
+      <clr-progress-bar id="example3" clrValue="75" clrLoop></clr-progress-bar>
+    </app-animated-example>
+    <app-stackblitz-example name="progress bar medium loop" [componentTemplate]="example3"></app-stackblitz-example>
+
+    <br />
+
+    <clr-progress-bar id="example1" clrValue="65" clrColor="success" clrLabeled></clr-progress-bar>
+    <app-stackblitz-example name="progress bar medium success" [componentTemplate]="example1"></app-stackblitz-example>
+
+    <br />
+
+    <clr-progress-bar id="example4" clrValue="65" clrLabeled clrDisplayval="65$"></clr-progress-bar>
+    <app-stackblitz-example name="progress bar medium labeled" [componentTemplate]="example4"></app-stackblitz-example>
+
+    <br />
+
+    <div class="progress-block">
+      <label for="demoProgressBar">Text on the left</label>
+      <clr-progress-bar id="demoProgressBar" clrValue="85"></clr-progress-bar>
+      <span>Text on the right</span>
+    </div>
+    <app-stackblitz-example name="progress bar block" [componentTemplate]="example2"></app-stackblitz-example>
+  </div>
+</div>

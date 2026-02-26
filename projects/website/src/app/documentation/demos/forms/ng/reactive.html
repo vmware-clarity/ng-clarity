@@ -1,0 +1,14 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<form clrForm [formGroup]="exampleForm">
+  <clr-input-container>
+    <label>Field 1 label</label>
+    <input clrInput type="text" formControlName="sample" />
+    <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+    <clr-control-error>Error message that appears after focus is lost and control is invalid</clr-control-error>
+  </clr-input-container>
+</form>

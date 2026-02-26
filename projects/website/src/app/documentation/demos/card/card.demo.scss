@@ -1,0 +1,15 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+.clr-example {
+  & > .card {
+    max-width: calc(10 * var(--cds-global-space-12)); // 480px;
+  }
+
+  &.nomargin {
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,100 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'variables.tokens' as tokens;
+@use '../../../styles/variables' as variables;
+@use 'mixins';
+
+$contentTopMargin: calc(2 * tokens.$cds-global-space-15);
+
+.table-of-contents {
+  position: fixed;
+  top: $contentTopMargin;
+  left: calc(#{tokens.$cds-global-space-13} + #{mixins.baselinePx(1152)});
+  border-left: 1px solid tokens.$cds-alias-object-border-color;
+
+  .scroll-to-top {
+    display: none;
+    position: absolute;
+    color: tokens.$cds-alias-typography-color-100;
+    justify-content: center;
+    align-items: center;
+    width: tokens.$cds-global-space-12;
+    height: tokens.$cds-global-space-12;
+    bottom: tokens.$cds-global-space-9;
+    right: tokens.$cds-global-space-9;
+    border-width: 0;
+    border-radius: tokens.$cds-alias-object-border-radius-300;
+    background-color: tokens.$cds-alias-object-interaction-color;
+    box-shadow: tokens.$cds-alias-object-shadow-100;
+    z-index: 100000;
+
+    clr-icon {
+      width: tokens.$cds-global-space-9;
+      height: tokens.$cds-global-space-9;
+    }
+  }
+}
+
+@media (max-width: variables.$table-of-contents-breakpoint) {
+  .table-of-contents {
+    position: initial;
+    margin-top: tokens.$cds-global-space-10;
+
+    .scroll-to-top {
+      display: flex;
+    }
+  }
+}
+
+.title {
+  display: inline-block;
+  color: tokens.$cds-alias-typography-color-400;
+  font-size: tokens.$cds-alias-typography-secondary-font-size;
+  font-weight: tokens.$cds-alias-typography-font-weight-semibold;
+  line-height: tokens.$cds-alias-typography-secondary-line-height;
+  letter-spacing: tokens.$cds-alias-typography-secondary-letter-spacing;
+  padding-left: tokens.$cds-global-space-7;
+  text-transform: uppercase;
+}
+
+.toc-list {
+  overflow-y: auto;
+  $contentHeadingHeight: tokens.$cds-global-space-9;
+
+  margin-top: tokens.$cds-global-space-3;
+  max-height: calc(100vh - $contentTopMargin - $contentHeadingHeight);
+
+  li {
+    $activeBorderWidth: tokens.$cds-alias-object-border-width-300;
+
+    a {
+      display: block;
+      color: tokens.$cds-alias-object-interaction-color;
+      font-weight: tokens.$cds-alias-typography-font-weight-regular;
+      border-left: $activeBorderWidth solid transparent;
+      padding: tokens.$cds-global-space-3 tokens.$cds-global-space-7;
+      padding-left: calc(tokens.$cds-global-space-7 - $activeBorderWidth);
+      transition: border-left-color 200ms ease-in;
+      text-decoration: none;
+
+      &.active {
+        color: tokens.$cds-alias-object-interaction-color-active;
+        border-left-color: tokens.$cds-alias-object-interaction-background-highlight;
+      }
+
+      &:hover {
+        color: tokens.$cds-alias-object-interaction-color-hover;
+        background-color: tokens.$cds-alias-object-interaction-background-hover;
+      }
+    }
+
+    ul > li > a {
+      padding-left: calc(tokens.$cds-global-space-11 - $activeBorderWidth);
+    }
+  }
+}

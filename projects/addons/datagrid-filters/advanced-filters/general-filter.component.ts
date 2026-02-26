@@ -203,6 +203,7 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   }
 
   onCancelButtonClick(): void {
+    // TODO: The 'emit' function requires a mandatory PropertyFilter argument
     this.filterCriteriaChange.emit();
   }
 

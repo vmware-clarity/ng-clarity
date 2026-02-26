@@ -1,0 +1,150 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      Clarity provides space tokens, making it easier to create rhythmic and consistent designs throughout your product.
+      Included are two types of space tokens: layout space for page layout and component space for use within
+      components.
+    </p>
+
+    <h2 id="layout-space" class="clr-mt-48px" cds-text="title">Layout Space</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Layout space is the smaller set in T-shirt sizes e.g. XXS and is based on a 4px proportional system. This set is
+      very useful for designing screens with space between components that define a consistent vertical rhythm. Since
+      margin and padding attributes are absent from Clarity components, you can create designs using a bricks
+      (components) and mortar (space) metaphor. By specifying the use of space in this way, combined with our Layout
+      Utilities, the code and design have a 1:1 correspondence - no surprises and easy to finesse.
+    </p>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-6">
+        <table class="spacing-table">
+          @for (token of layoutSpaceTokens; track token) {
+          <tr>
+            <td class="spacing-table__token-name-cell">{{ token.name }}</td>
+            <td class="spacing-table__example-cell">
+              <div
+                class="spacing-table__example-square spacing-table__example-square--blue"
+                style="--size: var({{ token.name }})"
+              ></div>
+              <span class="clr-pink-text-color">{{ token.pxValue / 20 }} rem ({{ token.pxValue }}px)</span>
+            </td>
+          </tr>
+          }
+        </table>
+        <div class="clr-pink-text-color" cds-text="secondary" cds-layout="m-t:sm">
+          Pixel values based on 1 rem = 20px
+        </div>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <div cds-layout="m-t:md">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/spacing/light-theme/layout-space-example.svg'"
+            [darkSrc]="'/assets/images/documentation/spacing/dark-theme/layout-space-example.svg'"
+            [imageAlt]="'space tokens used vertically and horizontally in a screen layout'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+        <p cds-layout="m-t:md" cds-text="secondary">
+          Space tokens used vertically and horizontally in a screen layout.
+        </p>
+      </div>
+    </div>
+
+    <h2 id="component-space" class="clr-mt-48px" cds-text="title">Component Space</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Component space consists of finer increments of adjustment necessary for spacing within components. As with layout
+      space, pixel sizes are provided to assist in understanding them in a 100% magnification view, but under the hood
+      they refer to scalable values allowing for magnification and responsive design. In most cases designers will be
+      using only layout spacing. Component space should be used primarily for designing components. Keep this in mind if
+      you need something Clarity does not provide. Using the Space tokens to build such a component will make it behave
+      as expected with regard to theming.
+    </p>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-6">
+        <table class="spacing-table">
+          @for (token of componentSpaceTokens; track token) {
+          <tr>
+            <td class="spacing-table__token-name-cell">{{ token.name }}</td>
+            <td class="spacing-table__example-cell">
+              <div
+                class="spacing-table__example-square spacing-table__example-square--pink"
+                style="--size: var({{ token.name }})"
+              ></div>
+              <span class="clr-pink-text-color">{{ token.pxValue / 20 }} rem ({{ token.pxValue }}px)</span>
+            </td>
+          </tr>
+          }
+        </table>
+        <div class="clr-pink-text-color" cds-text="secondary" cds-layout="m-t:sm">
+          Pixel values based on 1 rem = 20px
+        </div>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <div cds-layout="m-t:md">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/spacing/light-theme/component-space-example.svg'"
+            [darkSrc]="'/assets/images/documentation/spacing/dark-theme/component-space-example.svg'"
+            [imageAlt]="'space tokens used vertically and horizontally within button and card components'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+        <p cds-layout="m-t:md" cds-text="secondary">
+          Space tokens used vertically and horizontally within button and card components.
+        </p>
+      </div>
+    </div>
+
+    <h2 id="layout-utilities" class="clr-mt-48px" cds-text="title">Layout Utilities</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      By using Space tokens, you can achieve flexibility and dynamic behavior in your screen designs. For example, lets
+      say we have a group of elements arranged vertically and we wish to fine tune the visual rhythm and create an
+      effective information hierarchy. In this example we’ve decided that we want XXL between the top of the page and
+      the group of buttons, MD between the buttons and the horizontal rule, XS between the rule and the title, and LG
+      between the title and the body copy. We specify each using the T-shirt size scale. The layout space tokens will be
+      used to group and arrange the components. In this case layout will specify vertical and left alignment. We also
+      have specified that the button group is left aligned and uses a MD space between each button.
+    </p>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-6">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/spacing/light-theme/layout-utilities.svg'"
+          [darkSrc]="'/assets/images/documentation/spacing/dark-theme/layout-utilities.svg'"
+          [imageAlt]="
+            'Page layout highlighted with the space tokens used to organize the content. Details provided below'
+          "
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+    </div>
+
+    <ol cds-layout="m-t:md">
+      <li>XXL top and side margins.</li>
+      <li>Horizontal group. Left-aligned with MD space between elements.</li>
+      <li>Vertical group. Top-aligned with varying space between elements.</li>
+    </ol>
+
+    <p class="clr-mt-24px" cds-text="body">
+      This is a very simple example. The utilities have numerous options for specifying not only the alignment and gap
+      attributes of a group, but also how a component scales, wraps, stretches, responds (or doesn’t) within its
+      container. Refer to the
+      <a href="https://storybook.core.clarity.design/?path=/story/stories-layout--horizontal-layout" target="_blank">
+        layout
+      </a>
+      and
+      <a href=" https://storybook.core.clarity.design/?path=/story/layout-spacing--page" target="_blank">spacing</a>
+      Storybook pages to view the full list of options.
+    </p>
+  </app-doc-tab>
+</app-doc-tabs>

@@ -1,0 +1,29 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'variables.tokens' as tokens;
+
+.item-align-center {
+  margin: 0 auto;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.dox-container {
+  align-items: flex-start;
+  margin-top: tokens.$cds-global-space-9;
+}
+
+.dox-icon {
+  background: inherit;
+}
+
+.why-no-success-app-level-alert-box {
+  padding: 0 0 0 tokens.$cds-global-layout-space-md;
+}

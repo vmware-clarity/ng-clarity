@@ -1,0 +1,333 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary" id="modalsComponentSummary">
+      Modals inform users about a task and can contain information that requires immediate attention.
+    </p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Use a modal when required to interrupt the user to address a specific critical task that needs immediate
+      resolution.
+    </p>
+
+    <div class="clr-mt-24px">When to use a modal:</div>
+    <ul cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>To grab a user’s attention for <b cds-text="medium">an important message.</b></li>
+      <li>To show <b cds-text="medium">additional information</b> without losing the context of the parent page.</li>
+      <li>To break down <b cds-text="medium">a complex workflow</b> into a series of less complicated steps.</li>
+    </ul>
+
+    <div class="clr-mt-24px">When not to use a modal:</div>
+    <ul cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>For <b cds-text="medium">non-essential information</b> that is not related to the current workflow.</li>
+      <li>
+        For complex workflows that require additional information
+        <b cds-text="medium">not contained within the modal.</b>
+      </li>
+      <li><b cds-text="medium">Avoid modal over modal.</b> Context becomes confusing when modals are stacked.</li>
+    </ul>
+    <p class="clr-mt-32px" cds-text="body">See more usage guidelines in our patterns:</p>
+    <app-link-cards [linkColWidth]="4" [links]="patternLinks"></app-link-cards>
+
+    <h2 id="sizes" class="clr-mt-48px" cds-text="title">Sizes</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      There are multiple sizes for modals. The default size is medium, however other sizes are available. Select the
+      size best suited for the content and screen size displaying the modal. Remember to test responsiveness.
+    </p>
+    <clr-modal-size-design-demo></clr-modal-size-design-demo>
+
+    <h2 id="behavior" class="clr-mt-48px" cds-text="title">Behavior</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Consider using modals for the following scenarios: alerting the user, confirmation dialog boxes, and task-oriented
+      workflows.
+    </p>
+    <div class="clr-mt-16px">
+      <div class="clr-row">
+        <div class="clr-col-6">
+          <app-do-dont type="do">
+            <app-themed-image
+              [lightSrc]="'/assets/images/documentation/modals/light-theme/modal_do.svg'"
+              [darkSrc]="'/assets/images/documentation/modals/dark-theme/modal_do.svg'"
+              [imageAlt]="'Dismissing modals'"
+              [imageStyle]="'max-width: 100%'"
+            >
+            </app-themed-image>
+          </app-do-dont>
+
+          <h3 data-toc-item id="dismissing-modals" class="clr-mt-8px" cds-text="subsection">Dismissing Modals</h3>
+          <p class="clr-mt-16px" cds-text="body">
+            A user needs to actively dismiss a modal. A modal should not disappear on its own. Taking any of the actions
+            to either cancel or proceed should eventually dismiss the modal.
+          </p>
+          <p class="clr-mt-24px" cds-text="body">
+            There are multiple ways to dismiss a modal but a user needs to intentionally make that choice.
+          </p>
+          <p class="clr-mt-24px" cds-text="body">
+            Clarity modals are not dismissed when clicking on the background overlay. This prevents losing information
+            or data. An option to override this is available.
+          </p>
+        </div>
+        <div class="clr-col-6">
+          <app-do-dont type="dont">
+            <app-themed-image
+              [lightSrc]="'/assets/images/documentation/modals/light-theme/modal_do_not.svg'"
+              [darkSrc]="'/assets/images/documentation/modals/dark-theme/modal_do_not.svg'"
+              [imageAlt]="'Don`t stack modals on top of each other'"
+              [imageStyle]="'max-width: 100%'"
+            >
+            </app-themed-image>
+          </app-do-dont>
+
+          <h3 id="stacking-modals" class="clr-mt-8px" cds-text="subsection">Stacking modals</h3>
+          <p class="clr-mt-16px" cds-text="body">
+            Modals should not launch other modals. Stacking modals makes it hard to dismiss them and confuses the user
+            on their levels of importance.
+          </p>
+          <p class="clr-mt-24px" cds-text="body">Before you decide to stack modals, do the following actions:</p>
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>Seek alternatives to the second modal such as inline expansion within the first one.</li>
+            <li>
+              Seek alternatives to the use of modals in that scenario and explore alternatives such as inline task
+              completion.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="accessibility-and-managing-focus" class="clr-mt-32px" cds-text="title">Accessibility and managing focus</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      As demonstrated in the examples above, the VMware Accessibility team recommends forcing focus to the title of a
+      modal when it is first opened. <br />
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      Note that the <code cds-text="code">clr-modal</code> component automatically focuses the modal title.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="angular-component" class="clr-mt-48px" cds-text="title">Angular Modal Component</h2>
+
+    <clr-modal-angular-show-demo></clr-modal-angular-show-demo>
+
+    <h3 data-toc-item id="clrmodalsize" class="clr-mt-24px" cds-text="section">Sizes</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      The Angular component offers the same optional sizes as the static styles through the
+      <code cds-text="code">clrModalSize</code> input. The default, empty size is medium.
+    </p>
+
+    <clr-modal-angular-size-demo></clr-modal-angular-size-demo>
+
+    <h3 data-toc-item id="clrmodalclosable" class="clr-mt-24px" cds-text="section">Closable</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      If you don’t want your modal to be closable by clicking on the top-right “x” or on the mask, you can do so with
+      the <code cds-text="code">clrModalClosable</code> input. The default value is <code cds-text="code">true</code>.
+      You can still close the modal if one of <em>your</em> components modifies the value bound to
+      <code cds-text="code">clrModalOpen</code>.
+    </p>
+
+    <clr-modal-angular-not-closable-demo></clr-modal-angular-not-closable-demo>
+
+    <h3 data-toc-item id="clrmodalaltclose" class="clr-mt-24px" cds-text="section">Alternate Close</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      If you want to intercept the modal close event, use <code cds-text="code">clrModalPreventClose</code> and
+      <code cds-text="code">clrModalAlternateClose</code>. This can be used to request confirmation on close.
+    </p>
+    <clr-modal-angular-alt-close-demo></clr-modal-angular-alt-close-demo>
+
+    <h3 data-toc-item id="clrmodalstaticbackdrop" class="clr-mt-24px" cds-text="section">Static Backdrop</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      If you want the modal to be closable with a click on the backdrop, use the
+      <code cds-text="code">clrModalStaticBackdrop</code>. If <code cds-text="code">false</code>, clicks on the
+      background will close the modal. The default value is <code cds-text="code">true</code>.
+    </p>
+
+    <clr-modal-angular-static-backdrop-demo></clr-modal-angular-static-backdrop-demo>
+
+    <h4 data-toc-item id="api-reference" class="clr-mt-32px" cds-text="subsection">API Reference</h4>
+
+    <table class="table" cds-text="body">
+      <thead>
+        <tr>
+          <th class="left">Method</th>
+          <th class="hidden-xs-down">Arguments</th>
+          <th class="hidden-xs-down">Return Value</th>
+          <th class="left">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">open()</td>
+          <td class="hidden-xs-down">N/A</td>
+          <td class="hidden-xs-down">N/A</td>
+          <td class="left">Manually opens the modal.</td>
+        </tr>
+        <tr>
+          <td class="left">close()</td>
+          <td class="hidden-xs-down">N/A</td>
+          <td class="hidden-xs-down">N/A</td>
+          <td class="left">
+            Manually closes the modal if <code cds-text="code">clrModalClosable</code> is not set to
+            <code cds-text="code">false</code>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="modal-css" class="clr-mt-32px" cds-text="title">CSS Modal Component</h2>
+
+    <p class="clr-mt-16px" cds-text="body">A static example of a modal with header, body and footer:</p>
+
+    <clr-alert cds-layout="display:block m-t:lg" clrAlertType="warning" [clrAlertClosable]="false">
+      <clr-alert-item>
+        <span class="alert-text">
+          IE fix: When the modal dialog is open, extend the
+          <code cds-text="code">.no-scrolling</code> class on the <code cds-text="code">body</code> tag so that the
+          content behind the backdrop does not scroll. Remove the class when the modal dialog is closed.
+        </span>
+      </clr-alert-item>
+    </clr-alert>
+
+    <clr-alert cds-layout="display:block m-t:lg" clrAlertType="warning" [clrAlertClosable]="false">
+      <clr-alert-item>
+        <span class="alert-text">
+          In the examples below <code cds-text="code">aria-hidden</code> is there to point where you have to place it.
+          But its value has to be changed depending on the state the modal is. This is already done when you use our
+          Angular component.
+        </span>
+      </clr-alert-item>
+    </clr-alert>
+
+    <clr-modal-static-demo></clr-modal-static-demo>
+
+    <h3 data-toc-item id="sizes-css" class="clr-mt-32px" cds-text="section">Sizes</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      In addition to the default size (medium), Clarity modals come in four other sizes: small, large, extra-large, and
+      full-screen. To use a different size, add the size class shown in the appropriate example below.
+    </p>
+
+    <clr-modal-sizes-demo></clr-modal-sizes-demo>
+
+    <h3 data-toc-item id="modal-backdrop" class="clr-mt-32px" cds-text="section">Modal Backdrop</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Here is an example of a backdrop to use behind your modal, when you display it over a page:
+    </p>
+
+    <clr-modal-backdrop-demo></clr-modal-backdrop-demo>
+
+    <h3 data-toc-item id="animation" class="clr-mt-32px" cds-text="section">Animation</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Modals and backdrops support fading animations. Clarity recommends using
+      <code cds-text="code">fadeDown</code> on the <code cds-text="code">modal-dialog</code> and
+      <code cds-text="code">fade</code> on the <code cds-text="code">modal-backdrop</code>. These animations hide the
+      modal and backdrop by default. Adding or removing the <code cds-text="code">in</code> class animates the modal or
+      backdrop in or out, respectively.
+    </p>
+
+    <clr-modal-animation-demo></clr-modal-animation-demo>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 id="angular-component" class="clr-mt-48px" cds-text="title">Angular Component</h2>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="hidden-xs-down">Values</th>
+          <th class="hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[(clrModalOpen)]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">Two-way binding on the state of the modal: opened or closed.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrModalSize]</b>
+            <div class="hidden-sm-up">Values:<br />"sm", "md", "lg", "xl"</div>
+            <div class="hidden-sm-up">Default: "md"</div>
+          </td>
+          <td class="hidden-xs-down">"sm", "md", "lg", "xl"</td>
+          <td class="hidden-xs-down">"md"</td>
+          <td class="left">Sets the size of the modal. Default is medium size.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrModalClosable]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+            <div class="hidden-sm-up">Default: true</div>
+          </td>
+          <td class="hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">true</td>
+          <td class="left">
+            If false, the modal will not be closable by clicking on the mask or on the top-right "x".
+          </td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrModalCloseButtonAriaLabel]</b>
+            <div class="hidden-sm-up">Type: String</div>
+            <div class="hidden-sm-up">Default: "Close"</div>
+          </td>
+          <td class="hidden-xs-down"></td>
+          <td class="hidden-xs-down">"Close"</td>
+          <td class="left">Sets the <code>aria-label</code> of the modal's close button (top-right "x").</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrModalStaticBackdrop]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+            <div class="hidden-sm-up">Default: true</div>
+          </td>
+          <td class="hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">true</td>
+          <td class="left">If true, the modal will not close when the user clicks outside of the modal.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrModalPreventClose]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+          </td>
+          <td class="hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">
+            If true, the modal will not be closed by clicking on backdrop, close button or by the close() method. It
+            will emit (clrModalAlternateClose) instead.
+          </td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">(clrModalAlternateClose)</b>
+          </td>
+          <td class="hidden-xs-down"></td>
+          <td class="hidden-xs-down"></td>
+          <td class="left">Emits when clrModalPreventClose is true and closing the modal was attempted.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-style-docs styleDocsKey="Modal"></app-style-docs>
+  </app-doc-tab>
+</app-doc-tabs>

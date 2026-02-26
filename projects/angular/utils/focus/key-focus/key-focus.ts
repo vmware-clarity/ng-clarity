@@ -130,7 +130,7 @@ export class ClrKeyFocus {
 
   focusCurrent() {
     this.currentItem.focus();
-    this.focusChange.next(this._current);
+    this.focusChange.emit(this._current);
   }
 
   moveTo(position: number) {
@@ -163,6 +163,7 @@ export class ClrKeyFocus {
 
       if (this.focusOnLoad) {
         this.currentItem.focus();
+        // TODO: The 'emit' function requires a mandatory number argument
         this.focusChange.emit();
       }
     }

@@ -1,0 +1,39 @@
+<svg width="176" height="114" viewBox="0 0 176 114" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="175" height="113" fill="white"/>
+<rect x="0.5" y="0.5" width="175" height="113" stroke="#ACB8BE"/>
+<rect x="1" y="1" width="174" height="9" fill="black"/>
+<rect opacity="0.5" x="169" y="3" width="4" height="4" fill="white"/>
+<rect opacity="0.5" x="148" y="3" width="18.2215" height="1" fill="white"/>
+<rect opacity="0.5" x="148" y="6" width="18.2215" height="1" fill="white"/>
+<rect opacity="0.5" x="11.0566" y="4.96924" width="18.2215" height="1" fill="white"/>
+<circle opacity="0.5" cx="143.101" cy="4.98096" r="2.5" fill="white"/>
+<rect opacity="0.3" x="3.05273" y="3.03955" width="5" height="5" rx="0.65077" fill="white"/>
+<g opacity="0.8">
+<mask id="path-9-inside-1_11274_8527" fill="white">
+<path d="M1 1H175V113H1V1Z"/>
+</mask>
+<path d="M1 1H175V113H1V1Z" fill="black"/>
+<path d="M175 113V113.3H175.3V113H175ZM1 113H0.7V113.3H1V113ZM174.7 1V113H175.3V1H174.7ZM175 112.7H1V113.3H175V112.7ZM1.3 113V1H0.7V113H1.3Z" fill="#ACB8BE" mask="url(#path-9-inside-1_11274_8527)"/>
+</g>
+<g filter="url(#filter0_d_11274_8527)">
+<rect x="50" y="36" width="77" height="37" rx="1" fill="white"/>
+<rect x="56" y="42" width="25" height="1" fill="#ACB9BE"/>
+<rect opacity="0.5" x="56" y="47" width="54" height="1" fill="#ACB9BE"/>
+<rect opacity="0.5" x="56" y="52" width="51" height="1" fill="#ACB9BE"/>
+<rect opacity="0.5" x="56" y="57" width="52" height="1" fill="#ACB9BE"/>
+<rect opacity="0.5" x="56" y="62" width="38" height="1" fill="#ACB9BE"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M120.078 39.4518C119.974 39.3484 119.974 39.1809 120.078 39.0775C120.181 38.9742 120.348 38.9742 120.452 39.0775L121.643 40.2686L122.834 39.0775C122.937 38.9742 123.105 38.9742 123.208 39.0775C123.311 39.1809 123.311 39.3484 123.208 39.4518L122.017 40.6428L123.098 41.724C123.202 41.8273 123.202 41.9949 123.098 42.0983C122.995 42.2016 122.827 42.2016 122.724 42.0983L121.643 41.0171L120.562 42.0983C120.458 42.2016 120.291 42.2016 120.187 42.0983C120.084 41.9949 120.084 41.8273 120.187 41.724L121.269 40.6428L120.078 39.4518Z" fill="#4F6169"/>
+</g>
+<defs>
+<filter id="filter0_d_11274_8527" x="49" y="36" width="79" height="39" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="0.5"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_11274_8527"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_11274_8527" result="shape"/>
+</filter>
+</defs>
+</svg>

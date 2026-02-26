@@ -1,0 +1,42 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2 class="clr-mt-48px" cds-text="title">Basic structure</h2>
+
+<p class="clr-mt-16px clr-mb-16px" cds-text="body">
+  To use our Datagrid, you do not need to pass an array of data or a JSON configuration to a single element. Instead, we
+  leverage a pure declarative API, just like any other Angular component. You write your HTML just as you would for a
+  basic table, with a
+  <code cds-text="code">*ngFor</code> (or <code cds-text="code">*clrDgItems</code>, see Smart iterator) on the rows to
+  iterate over your data.
+</p>
+
+<clr-datagrid>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>Favorite color</clr-dg-column>
+
+  @for (user of users; track user) {
+  <clr-dg-row>
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.color }}</clr-dg-cell>
+  </clr-dg-row>
+  }
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Basic Structure"
+  [componentTemplate]="exampleHtml"
+  [componentClass]="commonFiles.exampleTs"
+  [showComponentClass]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>

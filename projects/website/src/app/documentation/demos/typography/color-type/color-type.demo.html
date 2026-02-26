@@ -1,0 +1,20 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div class="clr-row">
+  <div class="clr-col-6 clr-col-md-3 clr-mt-24px">
+    <h3 cds-text="subsection">Basic Type</h3>
+    @for (item of colorType.basicType; track item) {
+    <app-color-example-item [text]="item.text" [token]="item.color"></app-color-example-item>
+    }
+  </div>
+  <div class="clr-col-6 clr-col-md-3 clr-mt-24px">
+    <h3 cds-text="subsection">Links</h3>
+    @for (item of colorType.links; track item) {
+    <app-color-example-item [text]="item.text" [token]="item.color"></app-color-example-item>
+    }
+  </div>
+</div>

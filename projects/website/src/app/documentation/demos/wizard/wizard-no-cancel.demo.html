@@ -1,0 +1,39 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<button class="btn btn-primary" (click)="wizard.open()">Wizard That You Must Finish</button>
+
+<clr-wizard
+  #wizard
+  [(clrWizardOpen)]="open"
+  [clrWizardClosable]="false"
+  [clrWizardSize]="'md'"
+  (clrWizardOnFinish)="reset()"
+>
+  <clr-wizard-title>Wizard that you can't close</clr-wizard-title>
+
+  @for (page of pageArray; track page) {
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Page {{ page }}</ng-template>
+    <!-- mandatory -->
+    <p>Page {{ page }} of {{ pageArray.length }}</p>
+    <ng-template clrPageButtons>
+      <clr-wizard-button type="previous">Back</clr-wizard-button>
+      <clr-wizard-button type="next">Next</clr-wizard-button>
+      @if (page === '3') {
+      <clr-wizard-button type="finish">YAY</clr-wizard-button>
+      }
+    </ng-template>
+  </clr-wizard-page>
+  }
+</clr-wizard>
+
+<app-stackblitz-example
+  name="Wizard No Cancel"
+  [componentTemplate]="html"
+  [componentClass]="code"
+></app-stackblitz-example>

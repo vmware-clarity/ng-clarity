@@ -1,0 +1,220 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary" id="range_header">
+      The range input component consists of a slider that can be moved to represent some value between the minimum and
+      maximum values. It allows the user to select a value when the precise value chosen is not considered necessary.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="usage">Usage</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Use the range component when it is acceptable to have an imprecise input control and the exact value is not
+      important. Range controls work well when users are more concerned with estimated percent distance between the
+      minimum and the maximum values.
+    </p>
+    <p class="clr-mt-32px" cds-text="body">See more usage guidelines in our patterns:</p>
+    <app-link-cards [linkColWidth]="4" [links]="patternLinks"></app-link-cards>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="states">States</h2>
+    <h3 class="clr-mt-24px" cds-text="section" id="enabled">Enabled</h3>
+    <p class="clr-mt-16px" cds-text="body">Use when interactive and ready for input.</p>
+    <div class="clr-mt-24px clr-mb-24px clr-ml-32px">
+      <clr-range-container [clrRangeHasProgress]="true">
+        <label>Volume</label>
+        <input type="range" clrRange [(ngModel)]="value" />
+      </clr-range-container>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="disabled">Disabled</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Use when not interactive. For example, when a user does not have permissions to edit the range.
+    </p>
+    <div class="clr-mt-24px clr-mb-24px clr-ml-32px">
+      <clr-range-container [clrRangeHasProgress]="true">
+        <label>Volume</label>
+        <input type="range" clrRange disabled />
+      </clr-range-container>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="error">Error</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Use to communicate a user or system error. This validation can happen when the user moves away from the input or
+      after attempting to submit a form.
+    </p>
+    <div class="clr-mt-24px clr-mb-24px clr-ml-32px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/range/light-theme/range-error.svg'"
+        [darkSrc]="'/assets/images/documentation/range/dark-theme/range-error.svg'"
+        [imageAlt]="'range with red error icon and error message'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="success">Success</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Use to provide real-time feedback immediately after a user’s input. For example, the input was acknowledged by the
+      application.
+    </p>
+    <div class="clr-mt-24px clr-mb-24px clr-ml-32px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/range/light-theme/range-success.svg'"
+        [darkSrc]="'/assets/images/documentation/range/dark-theme/range-success.svg'"
+        [imageAlt]="'range with green success icon and success message'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="layouts">Layouts</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Range inputs are available in vertical, horizontal, and compact layouts. See more layout guidelines on the
+      <a routerLink="/documentation/forms">forms page</a>.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="vertical">Vertical</h3>
+    <form clrForm clrLayout="vertical">
+      <div class="clr-row">
+        <div class="clr-col-12 clr-mt-24px clr-mb-24px clr-ml-32px clr-component-no-top-margin">
+          <clr-range-container [clrRangeHasProgress]="true">
+            <label>Volume</label>
+            <input type="range" clrRange [(ngModel)]="exampleValue1" />
+          </clr-range-container>
+          <clr-control-helper>message text</clr-control-helper>
+        </div>
+      </div>
+    </form>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="horizontal">Horizontal</h3>
+    <form clrForm clrLayout="horizontal">
+      <div class="clr-row">
+        <div class="clr-col-6 clr-mt-24px clr-mb-24px clr-ml-32px clr-component-no-top-margin">
+          <clr-range-container [clrRangeHasProgress]="true">
+            <label>Volume</label>
+            <input type="range" clrRange [(ngModel)]="exampleValue2" />
+            <clr-control-helper>message text</clr-control-helper>
+          </clr-range-container>
+        </div>
+      </div>
+    </form>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="compact">Compact</h3>
+    <form clrForm clrLayout="compact">
+      <div class="clr-row">
+        <div class="clr-col-6 clr-mt-24px clr-mb-24px clr-ml-32px clr-component-no-top-margin">
+          <clr-range-container [clrRangeHasProgress]="true">
+            <label>Volume</label>
+            <input type="range" clrRange [(ngModel)]="exampleValue3" />
+            <clr-control-helper>message text</clr-control-helper>
+          </clr-range-container>
+        </div>
+      </div>
+    </form>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" class="clr-mt-48px" cds-text="title">Code &amp; Examples</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      The Range input uses standard HTML5 attributes and can be used with Clarity forms.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      Progress can be shown as a value of the percentage of the range with the
+      <code cds-text="code">clrRangeHasProgress</code> input.
+    </p>
+
+    <clr-range-basic-demo *appIfTabActive></clr-range-basic-demo>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 id="angular-component">Angular Component</h2>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Attribute</th>
+          <th class="left clr-hidden-xs-down">Value / Type</th>
+          <th class="left clr-hidden-xs-down">Default</th>
+          <th class="left">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">min</b>
+            <div class="clr-hidden-sm-up">Type: string that converts to a floating point number</div>
+            <div class="clr-hidden-sm-up">Default: 0</div>
+          </td>
+          <td class="left clr-hidden-xs-down">Type: string that converts to a floating point number</td>
+          <td class="left clr-hidden-xs-down">0</td>
+          <td class="left">Sets the minimum value of the range.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">max</b>
+            <div class="clr-hidden-sm-up">Type: number</div>
+            <div class="clr-hidden-sm-up">Default: 100</div>
+          </td>
+          <td class="left clr-hidden-xs-down">Type: number</td>
+          <td class="left clr-hidden-xs-down">100</td>
+          <td class="left">Sets the minimum value of the range.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">step</b>
+            <div class="clr-hidden-sm-up">Type: number</div>
+            <div class="clr-hidden-sm-up">Default: 100</div>
+          </td>
+          <td class="left clr-hidden-xs-down">Type: number</td>
+          <td class="left clr-hidden-xs-down">1</td>
+          <td class="left">Specifies the granularity that the value must adhere to.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">value</b>
+            <div class="clr-hidden-sm-up">Type: number</div>
+            <div class="clr-hidden-sm-up">Default: the value of the min attribute</div>
+          </td>
+          <td class="left clr-hidden-xs-down">Type: number</td>
+          <td class="left clr-hidden-xs-down">Default: the value of the min attribute</td>
+          <td class="left">The string representation of the selected number.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrRangeHasProgress]</b>
+            <div class="clr-hidden-sm-up">Type: boolean</div>
+            <div class="clr-hidden-sm-up">Default: false</div>
+          </td>
+          <td class="left clr-hidden-xs-down">Type: boolean</td>
+          <td class="left clr-hidden-xs-down">Default: false</td>
+          <td class="left">When true, shows the percentage of the range below the current value as a colored line.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-style-docs styleDocsKey="Range"></app-style-docs>
+  </app-doc-tab>
+
+  <app-doc-tab tab="accessibility">
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      The Range Input component includes a native input type range form element (with all native limitations), a label,
+      helper text, and status messaging.
+    </p>
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      Avoid nesting components within helper text or error messages, as this can cause overloading. Consult your design
+      team for guidance.
+    </p>
+    <app-nesting-table
+      componentName="Range Input"
+      subComponentName="label"
+      [canNestComponents]="canNestComponents"
+      [cannotNestComponents]="cannotNestComponents"
+      [conditionalNesting]="conditionalNesting"
+    >
+    </app-nesting-table>
+  </app-doc-tab>
+</app-doc-tabs>

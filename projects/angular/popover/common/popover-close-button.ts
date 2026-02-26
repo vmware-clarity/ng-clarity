@@ -29,7 +29,7 @@ export class ClrPopoverCloseButton implements OnDestroy, AfterViewInit {
   ) {
     this.subscriptions.push(
       popoverService.openChange.pipe(filter(value => !value)).subscribe(() => {
-        this.closeChange.next();
+        this.closeChange.emit();
       })
     );
   }

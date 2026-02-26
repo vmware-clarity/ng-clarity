@@ -1,0 +1,1484 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      AppFx Datagrid is a data-bound list control that displays items from an array-based source in the form of columns
+      and rows. The datagrid control allows users to select, sort, and filter to quickly find or report on their
+      business needs. Dataset sizes can scale upward without impacting the UI performance.
+    </p>
+
+    <h2 id="key-benefits" class="clr-mt-48px" cds-text="title">Key Benefits</h2>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        <strong cds-text="medium">Reduced Markup:</strong> Requires less markup compared to vanilla clr-datagrid,
+        simplifying the development process.
+      </li>
+      <li><strong cds-text="medium">Consistent UX:</strong> Provides a common look and feel across grids.</li>
+      <li>
+        <strong cds-text="medium">Centralized Concerns:</strong> Handles filtering, sorting, pagination, row actions,
+        A11y, L10n, and zoom support centrally.
+      </li>
+      <li>
+        <strong cds-text="medium">Advanced Features:</strong> Includes advanced filters, export, and selection
+        persistence.
+      </li>
+      <li>
+        <strong cds-text="medium">Easier Migration:</strong> Simplifies migration for applications built on Clarity.
+      </li>
+    </ul>
+
+    <h2 id="advanced-features" class="clr-mt-48px" cds-text="title">Advanced Features</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      The component is built on top of the <code cds-text="code">clr-datagrid</code> component from Clarity and provides
+      additional advanced features.
+    </p>
+
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-12">
+        <h3 class="clr-mb-16px" cds-text="section disable-lhe" id="column-reordering">Column Reordering</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          The datagrid supports column reordering out of the box using the Angular CDK.
+        </p>
+      </div>
+      <div class="clr-col-12 clr-mt-24px">
+        <app-themed-image
+          [lightSrc]="'assets/images/documentation/advanced-datagrid/column-reorder.gif'"
+          [darkSrc]="'assets/images/documentation/advanced-datagrid/column-reorder.gif'"
+          [imageAlt]="'Column reorder example'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-48px">
+      <div class="clr-col-12">
+        <h3 class="clr-mb-16px" cds-text="section disable-lhe" id="row-drag-drop">Row Drag-and-drop</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          Row drag-and-drop functionality can be enabled supporting multiple items.
+        </p>
+      </div>
+      <div class="clr-col-12 clr-mt-24px">
+        <app-themed-image
+          [lightSrc]="'assets/images/documentation/advanced-datagrid/drag-and-drop.gif'"
+          [darkSrc]="'assets/images/documentation/advanced-datagrid/drag-and-drop.gif'"
+          [imageAlt]="'Drag and drop example'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-48px">
+      <div class="clr-col-12">
+        <h3 class="clr-mb-16px" cds-text="section disable-lhe" id="action-bar">Action Bar</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          The datagrid has a customizable responsive action bar component:
+          <code cds-text="code">appfx-datagrid-action-bar</code>.
+        </p>
+      </div>
+      <div class="clr-col-12 clr-mt-24px">
+        <app-themed-image
+          [lightSrc]="'assets/images/documentation/advanced-datagrid/action-bar.png'"
+          [darkSrc]="'assets/images/documentation/advanced-datagrid/action-bar.png'"
+          [imageAlt]="'Action bar example'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-48px">
+      <div class="clr-col-12">
+        <h3 class="clr-mb-16px" cds-text="section disable-lhe" id="datagrid-filters">Datagrid Filters</h3>
+        <p cds-text="body">
+          AppFx Datagrid Filters component provides an enhanced user experience for datagrid filtering. It is expected
+          to be hosted in the datagrid action bar and supports three modes: quick, advanced, and advanced only.
+        </p>
+
+        <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+        <p class="clr-mt-16px" cds-text="body">
+          Advanced modes allow users to build and manage complex filtering queries, while Quick mode is suitable for
+          fast, text-based filtering.
+        </p>
+
+        <div class="clr-row clr-mt-32px">
+          <div class="clr-col-12">
+            <h3 class="clr-mb-16px" cds-text="section disable-lhe" id="advanced-filter">Advanced Filter</h3>
+          </div>
+          <div class="clr-col-12 clr-mt-24px">
+            <app-themed-image
+              [lightSrc]="'assets/images/documentation/advanced-datagrid/datagrid-advanced-filter-overview.png'"
+              [darkSrc]="'assets/images/documentation/advanced-datagrid/datagrid-advanced-filter-overview.png'"
+              [imageAlt]="'Datagrid Filters advanced example'"
+              [imageStyle]="'max-width: 100%'"
+            ></app-themed-image>
+          </div>
+        </div>
+
+        <div class="clr-row clr-mt-48px">
+          <div class="clr-col-12">
+            <h3 class="clr-mb-16px" cds-text="section disable-lhe" id="quick-filter">Quick Filter</h3>
+          </div>
+          <div class="clr-col-12 clr-mt-24px">
+            <app-themed-image
+              [lightSrc]="'assets/images/documentation/advanced-datagrid/datagrid-quick-filter-overview.png'"
+              [darkSrc]="'assets/images/documentation/advanced-datagrid/datagrid-quick-filter-overview.png'"
+              [imageAlt]="'Datagrid Filters quick example'"
+              [imageStyle]="'max-width: 100%'"
+            ></app-themed-image>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-48px" cds-text="section" id="additional-features">Additional Features</h3>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        <strong cds-text="medium">Settings Persistence:</strong> Uses
+        <code cds-text="code">appfxDatagridPersistSettingsToken</code>
+        for persisting settings like column widths and page size.
+      </li>
+      <li><strong cds-text="medium">Export:</strong> Provides capabilities to extract data.</li>
+      <li>
+        <strong cds-text="medium">Virtual Scrolling:</strong> Efficiently handles large datasets. <br /><em
+          >Limitations: Fixed row height required, cell text truncated, expandable rows not supported.</em
+        >
+      </li>
+    </ul>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
+
+    <h3 data-toc-item id="basic-usage" cds-text="section" class="clr-mt-32px">Basic Usage</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      The basic implementation requires defining columns and providing grid items.
+    </p>
+    <div class="clr-mt-24px">
+      <app-code-snippet
+        name="basic-datagrid"
+        [code]="basicDatagridExample"
+        language="typescript"
+        [copy]="true"
+      ></app-code-snippet>
+    </div>
+
+    <h3 data-toc-item id="filters-example" cds-text="section" class="clr-mt-32px">Filters</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      The following example demonstrates how to configure the component with various property definitions such as
+      String, Numeric, Enum, and DateTime.
+    </p>
+    <div class="clr-mt-24px">
+      <app-code-snippet
+        name="datagrid-filters-demo"
+        [code]="datagridFiltersExample"
+        language="typescript"
+        [copy]="true"
+      ></app-code-snippet>
+    </div>
+
+    <!-- Client Side -->
+    <div class="demo-section">
+      <h3 data-toc-item id="client-side" cds-text="section" class="clr-mt-32px">Client Side</h3>
+      <p cds-text="body" class="clr-mt-16px">
+        The Client Side Datagrid example demonstrates how to implement a datagrid where all data is loaded into the
+        client application at once. In this mode, the datagrid component handles pagination internally, while filtering
+        and sorting can be managed via simple event bindings on the client.
+      </p>
+      <h2 class="clr-mt-48px" cds-text="subsection">Key Features</h2>
+      <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+        <li>
+          <strong cds-text="medium">Client-Side Data Binding:</strong> The full dataset is passed directly to the
+          <code cds-text="code">[gridItems]</code> input. The grid automatically manages page slicing[cite: 1313].
+        </li>
+        <li>
+          <strong cds-text="medium">Configuration Models:</strong> Layout and footer visuals are controlled via
+          structured input objects (<code cds-text="code">layoutModel</code>, <code cds-text="code">footerModel</code>)
+          rather than multiple individual flags.
+        </li>
+        <li>
+          <strong cds-text="medium">Client-Side Export:</strong> The
+          <code cds-text="code">clientSideExportConfig</code>
+          enables the built-in CSV export functionality for the loaded data.
+        </li>
+        <li>
+          <strong cds-text="medium">Custom Filtering:</strong> The <code cds-text="code">(searchTermChange)</code> event
+          allows you to implement custom filtering logic in your component to update the displayed items.
+        </li>
+      </ul>
+      <h2 class="clr-mt-48px" cds-text="subsection">Usage Configuration</h2>
+      <p class="clr-mt-16px" cds-text="body">
+        To configure a client-side grid, ensure <code cds-text="code">serverDrivenDatagrid</code> is set to
+        <code cds-text="code">false</code> (this is the default behavior). You can then utilize the
+        <code cds-text="code">GridLayoutModel</code> and <code cds-text="code">GridFooterModel</code> interfaces to
+        customize the grid's appearance.
+      </p>
+      <clr-accordion cds-layout="m-t:md">
+        <clr-accordion-panel>
+          <clr-accordion-title>Example</clr-accordion-title>
+          <clr-accordion-content *clrIfExpanded>
+            <div class="clr-mt-16px">
+              <app-client-side-advanced-grid-demo></app-client-side-advanced-grid-demo>
+            </div>
+            <app-stackblitz-example
+              name="client-side-demo"
+              [componentTemplate]="clientSideHtml"
+              [componentClass]="clientSideTs"
+              [additionalFiles]="additionalFiles"
+            ></app-stackblitz-example>
+          </clr-accordion-content>
+        </clr-accordion-panel>
+      </clr-accordion>
+    </div>
+
+    <!-- Server Driven -->
+    <div class="demo-section">
+      <h3 data-toc-item id="server-driven" cds-text="section" class="clr-mt-32px">Server Driven</h3>
+      <p cds-text="body" class="clr-mt-16px">
+        The Server Driven Datagrid example demonstrates how to handle large datasets where pagination, filtering, and
+        sorting are performed on the server. In this mode, the component acts as a view, emitting events when the user
+        interacts with the grid (e.g., changing the page), which the application must handle to fetch the correct slice
+        of data.
+      </p>
+
+      <h2 class="clr-mt-48px" cds-text="subsection">Core Concepts</h2>
+      <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+        <li>
+          <strong cds-text="medium">Server-Driven Mode:</strong> Enabled by setting
+          <code cds-text="code">[serverDrivenDatagrid]="true"</code>. This tells the grid not to slice the provided
+          array but to display it as-is, assuming it represents the current page.
+        </li>
+        <li>
+          <strong cds-text="medium">Data Fetching:</strong> The <code cds-text="code">(refreshGridData)</code> output
+          emits a <code cds-text="code">ClrDatagridStateInterface</code> object whenever the grid state changes (page,
+          sort, filter). You must subscribe to this event to fetch the corresponding data from your backend.
+        </li>
+        <li>
+          <strong cds-text="medium">Total Items:</strong> You must provide the <code cds-text="code">[totalItems]</code>
+          input so the paginator can calculate the total number of pages.
+        </li>
+        <li>
+          <strong cds-text="medium">Loading State:</strong> Bind the <code cds-text="code">[loading]</code> input to
+          show a spinner while data is being fetched.
+        </li>
+        <li>
+          <strong cds-text="medium">Preserving Selection:</strong> When data is replaced (e.g., on page change),
+          selection is normally lost. By using the <code cds-text="code">appfxPreserveSelection</code> directive (or
+          similar) and defining <code cds-text="code">[trackByGridItemProperty]</code>, the grid can retain selections
+          across data refreshes.
+        </li>
+      </ul>
+      <clr-accordion cds-layout="m-t:md">
+        <clr-accordion-panel>
+          <clr-accordion-title>Example</clr-accordion-title>
+          <clr-accordion-content *clrIfExpanded>
+            <div class="clr-mt-16px">
+              <app-server-driven-advanced-grid-demo></app-server-driven-advanced-grid-demo>
+            </div>
+            <app-stackblitz-example
+              name="server-driven-demo"
+              [componentTemplate]="serverDrivenHtml"
+              [componentClass]="serverDrivenTs"
+              [additionalFiles]="additionalFiles"
+            ></app-stackblitz-example>
+          </clr-accordion-content>
+        </clr-accordion-panel>
+      </clr-accordion>
+    </div>
+
+    <!-- Virtual Scroll -->
+    <div class="demo-section">
+      <h3 data-toc-item id="virtual-scroll" cds-text="section" class="clr-mt-32px">Virtual Scroll</h3>
+      <p cds-text="body" class="clr-mt-16px">
+        The Virtual Scroll Datagrid example demonstrates how to efficiently render large datasets by only creating DOM
+        elements for the rows currently visible in the viewport. This example combines virtual scrolling with
+        server-driven data fetching.
+      </p>
+
+      <h2 class="clr-mt-48px" cds-text="subsection">Core Concepts</h2>
+      <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+        <li>
+          <strong cds-text="medium">Virtual Scrolling Mode:</strong> Enabled by setting
+          <code cds-text="code">[virtualScrolling]="true"</code>. This requires the grid to also be server-driven (<code
+            cds-text="code"
+            >[serverDrivenDatagrid]="true"</code
+          >).
+        </li>
+        <li>
+          <strong cds-text="medium">Data Range Binding:</strong> Unlike standard grids, virtual grids use the
+          <code cds-text="code">[dataRange]</code> input instead of <code cds-text="code">[gridItems]</code>. This
+          object contains the current slice of data, the total count, and the skip index.
+        </li>
+        <li>
+          <strong cds-text="medium">Data Fetching:</strong> The <code cds-text="code">(refreshVirtualGridData)</code>
+          output is emitted when the user scrolls to a new position that requires data fetching. It provides the new
+          page range (start/end or skip/size).
+        </li>
+        <li>
+          <strong cds-text="medium">Layout Requirements:</strong> Virtual scrolling works best with a fixed height
+          container. Set <code cds-text="code">stretchToParentHeight: true</code> in the layout model to ensure the grid
+          fills its container.
+        </li>
+      </ul>
+      <clr-accordion cds-layout="m-t:md">
+        <clr-accordion-panel>
+          <clr-accordion-title>Example</clr-accordion-title>
+          <clr-accordion-content *clrIfExpanded>
+            <div class="clr-mt-16px">
+              <app-virtual-scroll-advanced-grid-demo></app-virtual-scroll-advanced-grid-demo>
+            </div>
+            <app-stackblitz-example
+              name="virtual-scroll-demo"
+              [componentTemplate]="virtualScrollHtml"
+              [componentClass]="virtualScrollTs"
+              [additionalFiles]="additionalFiles"
+            ></app-stackblitz-example>
+          </clr-accordion-content>
+        </clr-accordion-panel>
+      </clr-accordion>
+    </div>
+
+    <!-- Custom Column Definitions -->
+    <div class="demo-section">
+      <h3 data-toc-item id="column-definitions" cds-text="section" class="clr-mt-32px">Column Definitions</h3>
+      <p cds-text="body" class="clr-mt-16px">
+        The Dynamic Column Definitions example demonstrates how to programmatically add and configure columns in the
+        datagrid at runtime. This is useful for scenarios where the grid structure depends on user input or external
+        data sources.
+      </p>
+
+      <h2 class="clr-mt-48px" cds-text="subsection">Key Features</h2>
+      <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+        <li>
+          <strong cds-text="medium">Dynamic Column Creation:</strong> Columns can be added to the
+          <code cds-text="code">[columns]</code> input array at any time. The grid automatically updates to reflect the
+          new structure.
+        </li>
+        <li>
+          <strong cds-text="medium">Runtime Configuration:</strong> You can configure properties like
+          <code cds-text="code">displayName</code>, <code cds-text="code">width</code>,
+          <code cds-text="code">hidden</code>, and <code cds-text="code">hideable</code> dynamically before adding a
+          column.
+        </li>
+        <li>
+          <strong cds-text="medium">Conditional Features:</strong> Sorting (<code cds-text="code">sortComparator</code>)
+          and filtering (<code cds-text="code">stringFilter</code>) can be conditionally enabled for each new column.
+        </li>
+        <li>
+          <strong cds-text="medium">Data Binding Updates:</strong> When adding a new column that requires new data
+          fields, you must also update the <code cds-text="code">gridItems</code> array to include the corresponding
+          property values for each row.
+        </li>
+      </ul>
+
+      <clr-accordion cds-layout="m-t:md">
+        <clr-accordion-panel>
+          <clr-accordion-title>Example</clr-accordion-title>
+          <clr-accordion-content *clrIfExpanded>
+            <div class="clr-mt-16px">
+              <app-custom-column-advanced-grid-demo></app-custom-column-advanced-grid-demo>
+            </div>
+            <app-stackblitz-example
+              name="custom-column-definitions-demo"
+              [componentTemplate]="customColumnDefinitionsHtml"
+              [componentClass]="customColumnDefinitionsTs"
+              [additionalFiles]="additionalFiles"
+            ></app-stackblitz-example>
+          </clr-accordion-content>
+        </clr-accordion-panel>
+      </clr-accordion>
+    </div>
+
+    <!-- Detail Pane -->
+    <div class="demo-section">
+      <h3 data-toc-item id="detail-pane" cds-text="section" class="clr-mt-32px">Detail Pane</h3>
+      <p cds-text="body" class="clr-mt-16px">
+        The Detail Pane provides a dedicated space within the datagrid to display additional information or actions
+        related to a specific row. This is useful for master-detail patterns where you want to keep the user in the same
+        context.
+      </p>
+
+      <h2 class="clr-mt-48px" cds-text="subsection">Key Features</h2>
+      <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+        <li>
+          <strong cds-text="medium">Template Injection:</strong> Content for the detail pane is defined using standard
+          Angular <code cds-text="code">&lt;ng-template&gt;</code> elements and passed to the grid via the
+          <code cds-text="code">[detailHeader]</code> and <code cds-text="code">[detailBody]</code> inputs.
+        </li>
+        <li>
+          <strong cds-text="medium">Row Context:</strong> The templates receive the row data context (accessed via
+          <code cds-text="code">let-context</code>), allowing you to display dynamic data specific to the active row.
+        </li>
+        <li>
+          <strong cds-text="medium">State Control:</strong> The visibility of the detail pane is controlled by the
+          <code cds-text="code">detailState</code> input, which holds the data item of the currently expanded row (or
+          null if closed).
+        </li>
+      </ul>
+      <clr-accordion cds-layout="m-t:md">
+        <clr-accordion-panel>
+          <clr-accordion-title>Example</clr-accordion-title>
+          <clr-accordion-content *clrIfExpanded>
+            <div class="clr-mt-16px">
+              <app-detail-pane-advanced-grid-demo></app-detail-pane-advanced-grid-demo>
+            </div>
+            <app-stackblitz-example
+              name="detail-pane-demo"
+              [componentTemplate]="detailPaneHtml"
+              [componentClass]="detailPaneTs"
+              [additionalFiles]="additionalFiles"
+            ></app-stackblitz-example>
+          </clr-accordion-content>
+        </clr-accordion-panel>
+      </clr-accordion>
+    </div>
+
+    <!-- Drag Drop -->
+    <div class="demo-section">
+      <h3 data-toc-item id="drag-and-drop" cds-text="section" class="clr-mt-32px">Row Drag-Drop</h3>
+      <p cds-text="body" class="clr-mt-16px">
+        The Drag and Drop example demonstrates how to enable dragging rows from the AppFx Datagrid into an external
+        container. This functionality leverages the Angular CDK Drag and Drop primitives and coordinates them using a
+        shared grouping service.
+      </p>
+
+      <h2 class="clr-mt-48px" cds-text="subsection">Key Features</h2>
+      <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+        <li>
+          <strong cds-text="medium">Datagrid Configuration:</strong> The <code cds-text="code">[dragConfig]</code> input
+          enables drag support on the grid. It specifies which data field to display in the drag ghost element.
+        </li>
+        <li>
+          <strong cds-text="medium">Group Coordination:</strong> The
+          <code cds-text="code">DragAndDropGroupService</code> is used to link the datagrid's internal drag source with
+          external <code cds-text="code">cdkDropList</code>
+          containers by registering them to the same unique group string.
+        </li>
+        <li>
+          <strong cds-text="medium">Multi-Selection Drag:</strong> The component supports dragging multiple selected
+          rows simultaneously.
+        </li>
+      </ul>
+      <clr-accordion cds-layout="m-t:md">
+        <clr-accordion-panel>
+          <clr-accordion-title>Example</clr-accordion-title>
+          <clr-accordion-content *clrIfExpanded>
+            <div class="clr-mt-16px">
+              <app-drag-drop-advanced-grid-demo></app-drag-drop-advanced-grid-demo>
+            </div>
+            <app-stackblitz-example
+              name="drag-drop-demo"
+              [componentTemplate]="dragDropHtml"
+              [componentClass]="dragDropTs"
+              [additionalFiles]="additionalFiles"
+            ></app-stackblitz-example>
+          </clr-accordion-content>
+        </clr-accordion-panel>
+      </clr-accordion>
+    </div>
+
+    <!-- Filters -->
+    <div class="demo-section">
+      <h3 data-toc-item id="filters-implementation" cds-text="section" class="clr-mt-32px">Filters</h3>
+      <p cds-text="body" class="clr-mt-16px">
+        The Filters example demonstrates how to integrate both Quick and Advanced filtering modes into the AppFx
+        Datagrid. It shows how to define filterable properties, switch between filter modes, and handle filter change
+        events to update the displayed data.
+      </p>
+
+      <h2 class="clr-mt-48px" cds-text="subsection">Key Features</h2>
+      <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+        <li>
+          <strong cds-text="medium">Filter Modes:</strong> Supports switching between
+          <code cds-text="code">Quick</code> (search bar), <code cds-text="code">Advanced</code> (composite filters),
+          and <code cds-text="code">AdvancedOnly</code> modes using the <code cds-text="code">[filterMode]</code> input.
+        </li>
+        <li>
+          <strong cds-text="medium">Filterable Properties:</strong> Defines which columns are available for advanced
+          filtering using <code cds-text="code">FilterablePropertyDefinition</code> objects (e.g., String, Enum).
+        </li>
+        <li>
+          <strong cds-text="medium">Event Handling:</strong> Listens to
+          <code cds-text="code">(searchTermChange)</code> for quick search updates and
+          <code cds-text="code">(advancedFilterChange)</code> for complex query updates.
+        </li>
+        <li>
+          <strong cds-text="medium">Custom Logic:</strong> Demonstrates how to manually filter the dataset based on the
+          emitted criteria and operators (Equals, Contains, etc.).
+        </li>
+      </ul>
+      <clr-accordion cds-layout="m-t:md">
+        <clr-accordion-panel>
+          <clr-accordion-title>Example</clr-accordion-title>
+          <clr-accordion-content *clrIfExpanded>
+            <div class="clr-mt-16px">
+              <app-filters-advanced-grid-demo></app-filters-advanced-grid-demo>
+            </div>
+            <app-stackblitz-example
+              name="filters-demo"
+              [componentTemplate]="filtersHtml"
+              [componentClass]="filtersTs"
+              [additionalFiles]="additionalFiles"
+            ></app-stackblitz-example>
+          </clr-accordion-content>
+        </clr-accordion-panel>
+      </clr-accordion>
+    </div>
+
+    <!-- Persistence -->
+    <div class="demo-section">
+      <h3 data-toc-item id="persistance" cds-text="section" class="clr-mt-32px">Persistance</h3>
+      <p cds-text="body" class="clr-mt-16px">
+        The Persistence feature allows the datagrid to save its state (column visibility, width, order, sorting, and
+        page size) to a storage mechanism (e.g., local storage). This ensures that the user's preferences are retained
+        across sessions or page reloads.
+      </p>
+
+      <h2 class="clr-mt-48px" cds-text="subsection">Key Features</h2>
+      <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg m-b:lg">
+        <li>
+          <strong cds-text="medium">State Preservation:</strong> Automatically saves and restores column configuration
+          (width, visibility, order), sort order, and page size.
+        </li>
+        <li>
+          <strong cds-text="medium">Unique Identification:</strong> Uses a unique key passed to the
+          <code cds-text="code">[appfxPersistDatagridSettings]</code> directive to distinguish settings between
+          different grids.
+        </li>
+        <li>
+          <strong cds-text="medium">Pluggable Storage:</strong> The storage mechanism is agnostic and must be provided
+          via the <code cds-text="code">appfxDatagridPersistSettingsToken</code>. This allows you to implement any
+          storage strategy (Local Storage, Session Storage, Backend API, etc.).
+        </li>
+      </ul>
+
+      <clr-alert [clrAlertClosable]="false" clrAlertType="info">
+        <clr-alert-item>
+          <span class="alert-text">
+            To enable persistence, you must provide a service implementing
+            <code cds-text="code">PersistDatagridSettingsService</code> via the
+            <code cds-text="code">appfxDatagridPersistSettingsToken</code> in your module or component providers.
+          </span>
+        </clr-alert-item>
+      </clr-alert>
+
+      <clr-accordion cds-layout="m-t:md">
+        <clr-accordion-panel>
+          <clr-accordion-title>Example</clr-accordion-title>
+          <clr-accordion-content *clrIfExpanded>
+            <div class="clr-mt-16px">
+              <app-persistance-advanced-grid-demo></app-persistance-advanced-grid-demo>
+            </div>
+            <app-stackblitz-example
+              name="persistance-demo"
+              [componentTemplate]="persistanceHtml"
+              [componentClass]="persistanceTs"
+              [additionalFiles]="additionalFiles"
+            ></app-stackblitz-example>
+          </clr-accordion-content>
+        </clr-accordion-panel>
+      </clr-accordion>
+    </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 id="api-reference" cds-text="title" class="clr-mt-48px">API Reference</h2>
+
+    <h3 data-toc-item id="inputs-outputs" cds-text="section" class="clr-mt-32px">appfx-datagrid</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Template <code cds-text="code">&lt;T&gt;</code> - The type of the data being displayed.
+    </p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Data Type</th>
+          <th>Description</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">gridItems</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">T[]</code></td>
+          <td>The data source for the datagrid.</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">columns</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">ColumnDefinition&lt;T&gt;[]</code></td>
+          <td>Array of column definitions configuring appearance and behavior.</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">layoutModel</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">GridLayoutModel</code></td>
+          <td>Configurable options for layout customization.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">footerModel</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">GridFooterModel</code></td>
+          <td>Configurable options for footer customization.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">pageSize</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">number</code></td>
+          <td>Items displayed per page. Defaults to all if unspecified.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">pageSizeOptions</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">number[]</code></td>
+          <td>Selectable page size options available in the footer.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">serverDrivenDatagrid</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>Enables server-driven mode (pagination/filtering). Defaults to <code cds-text="code">false</code>.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">virtualScrolling</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>Controls virtual scrolling. Defaults to <code cds-text="code">false</code>.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">loading</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>Displays loading indicator. Defaults to <code cds-text="code">false</code>.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">rowSelectionMode</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>Enables row selection on click. Defaults to <code cds-text="code">true</code>.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">preSelectFirstItem</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>
+            Automatically selects the first item upon initialization. Defaults to <code cds-text="code">false</code>.
+          </td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">filterMode</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">FilterMode</code></td>
+          <td>Specifies the type of global filter to enable.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">singleRowActions</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">ActionDefinition[]</code></td>
+          <td>Definitions for single row actions.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">actionBarActions</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">ActionDefinition[]</code></td>
+          <td>Definitions for action bar actions.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">totalItems</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">number</code></td>
+          <td>Total item count, required for server-driven grids.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">selectedItems</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">T[]</code></td>
+          <td>Array of items to be pre-selected.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">selectionType</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">SelectionType</code></td>
+          <td>Specifies selection behavior. Defaults to <code cds-text="code">SelectionType.Single</code>.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">isRowLocked</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">Function</code></td>
+          <td>Function to determine if a row is locked/disabled.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">dragConfig</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">DatagridDragConfig</code></td>
+          <td>Configuration for drag-and-drop.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">rowDetailContent</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">TemplateRef&lt;unknown&gt;</code></td>
+          <td>Template for expanded row content.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">detailHeader</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">TemplateRef&lt;unknown&gt;</code></td>
+          <td>Template for header of expanded row.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">detailBody</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">TemplateRef&lt;unknown&gt;</code></td>
+          <td>Template for body of expanded row.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">dataRange</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">ClrDatagridVirtualScrollRangeInterface&lt;T&gt;</code></td>
+          <td>Input for virtual scrolling data range.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">gridItemsChange</code></td>
+          <td>Output</td>
+          <td><code cds-text="code">EventEmitter&lt;T[]&gt;</code></td>
+          <td>Emits updated items when data changes.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">selectedItemsChange</code></td>
+          <td>Output</td>
+          <td><code cds-text="code">EventEmitter&lt;T[]&gt;</code></td>
+          <td>Emits updated selection when changed.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">columnDefsChange</code></td>
+          <td>Output</td>
+          <td><code cds-text="code">EventEmitter&lt;T[]&gt;</code></td>
+          <td>Emits updated columns when definitions change.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">pageSizeChange</code></td>
+          <td>Output</td>
+          <td><code cds-text="code">EventEmitter&lt;number&gt;</code></td>
+          <td>Emits updated page size.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">actionClick</code></td>
+          <td>Output</td>
+          <td><code cds-text="code">EventEmitter&lt;ActionClickEvent&gt;</code></td>
+          <td>Triggered when an action is clicked.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">rowActionMenuOpenChange</code></td>
+          <td>Output</td>
+          <td><code cds-text="code">EventEmitter&lt;SingleRowActionOpen&gt;</code></td>
+          <td>Triggered when row action menu state changes.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">openContextMenu</code></td>
+          <td>Output</td>
+          <td><code cds-text="code">EventEmitter&lt;ContextMenuEvent&gt;</code></td>
+          <td>Triggered on right-click.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">searchTermChange</code></td>
+          <td>Output</td>
+          <td><code cds-text="code">EventEmitter&lt;string&gt;</code></td>
+          <td>Emits on quick filter change.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">advancedFilterChange</code></td>
+          <td>Output</td>
+          <td><code cds-text="code">EventEmitter&lt;PropertyFilter[]&gt;</code></td>
+          <td>Emits on advanced filter change.</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="column-definition" cds-text="section" class="clr-mt-32px">ColumnDefinition</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Syntax</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">uid</code></td>
+          <td><code cds-text="code">string</code></td>
+          <td>Unique identifier for persistence.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">displayName</code></td>
+          <td><code cds-text="code">string</code></td>
+          <td>Column header text.</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">field</code></td>
+          <td><code cds-text="code">string</code></td>
+          <td>Property name in data source.</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">hideable</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>If column can be hidden. Defaults to <code cds-text="code">true</code>.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">hidden</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>If column is hidden by default. Defaults to <code cds-text="code">false</code>.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">stringFilter</code></td>
+          <td><code cds-text="code">ClrDatagridStringFilterInterface&lt;T&gt;</code></td>
+          <td>String filter definition.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">filter</code></td>
+          <td><code cds-text="code">Type&lt;ColumnFilter&lt;T&gt;&gt;</code></td>
+          <td>Custom filter component.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">defaultFilterValue</code></td>
+          <td><code cds-text="code">any</code></td>
+          <td>Default value for filter.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">columnRenderer</code></td>
+          <td><code cds-text="code">Type&lt;ColumnRenderer&lt;T&gt;&gt;</code></td>
+          <td>Custom component to render cell data.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">columnRendererConfig</code></td>
+          <td><code cds-text="code">any</code></td>
+          <td>Configuration for column renderer.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">sortComparator</code></td>
+          <td><code cds-text="code">ClrDatagridComparatorInterface&lt;T&gt; | string</code></td>
+          <td>Comparator for sorting.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">defaultSortOrder</code></td>
+          <td><code cds-text="code">ClrDatagridSortOrder</code></td>
+          <td>Default sort order.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">width</code></td>
+          <td><code cds-text="code">string</code></td>
+          <td>Column width (e.g., '100px').</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">sortAndFilterByField</code></td>
+          <td><code cds-text="code">string</code></td>
+          <td>Field to filter/sort by.</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="grid-layout-model" cds-text="section" class="clr-mt-32px">GridLayoutModel</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Syntax</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">compact</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>Enables compact mode. Defaults to <code cds-text="code">true</code>.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">disabled</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>Disables interaction. Defaults to <code cds-text="code">false</code>.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">stretchToParentHeight</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>Stretches grid to 100% parent height.</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="grid-footer-model" cds-text="section" class="clr-mt-32px">GridFooterModel</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Syntax</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">showFooter</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>Visibility of footer. Defaults to <code cds-text="code">true</code>.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">hideColumnToggle</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>Visibility of column toggle. Defaults to <code cds-text="code">false</code>.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">enableCustomExport</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>Shows export button and emits export event.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">clientSideExportConfig</code></td>
+          <td><code cds-text="code">ClientSideExportConfig</code></td>
+          <td>Configuration for client-side export.</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="client-side-export-config" cds-text="section" class="clr-mt-32px">ClientSideExportConfig</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Syntax</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">exportedFileName</code></td>
+          <td><code cds-text="code">string</code></td>
+          <td>Filename for CSV export.</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">columnDefinitions</code></td>
+          <td><code cds-text="code">ExportColumnDefinition</code></td>
+          <td>Column structure for export.</td>
+          <td>Yes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="datagrid-drag-config" cds-text="section" class="clr-mt-32px">DatagridDragConfig</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Syntax</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">fieldName</code></td>
+          <td><code cds-text="code">string</code></td>
+          <td>Field used for the ghost element display while dragging.</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">dragGroup</code></td>
+          <td><code cds-text="code">ColumnDefinition&lt;T&gt;</code></td>
+          <td>Optional grouping for draggable elements.</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="column-renderer" cds-text="section" class="clr-mt-32px">ColumnRenderer</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      A <code cds-text="code">ColumnRenderer</code> is a custom component responsible for rendering data within a
+      specific column.
+    </p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Syntax</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">item</code></td>
+          <td><code cds-text="code">T</code></td>
+          <td>The data item representing the row.</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">column</code></td>
+          <td><code cds-text="code">ColumnDefinition&lt;T&gt;</code></td>
+          <td>The definition of the column being rendered.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">onChange</code></td>
+          <td><code cds-text="code">Method</code></td>
+          <td>Lifecycle method called when properties change.</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 cds-text="subsection" class="clr-mt-24px">Example Custom Renderer</h4>
+    <pre><code class="language-typescript">
+&#64;Component({{ '{' }}
+    selector: 'demo-text-renderer',
+    template: `
+        &lt;cds-icon shape="exclamation-circle" class="is-error" size="24"&gt;&lt;/cds-icon&gt;
+        &lt;span&gt;{{ '{' }}{{ '{' }} displayText {{ '}' }}{{ '}' }} cell custom HTML&lt;/span&gt;
+    `,
+{{ '}' }})
+class DemoTextRendererComponent implements ColumnRenderer&lt;unknown&gt;, OnInit {{ '{' }}
+    protected displayText: string;
+    public item: unknown;
+    public column: ColumnDefinition&lt;unknown&gt;;
+
+    public ngOnInit(): void {{ '{' }}
+        this.updateData();
+    {{ '}' }}
+
+    public onChange(item: unknown, column: ColumnDefinition&lt;unknown&gt;): void {{ '{' }}
+        this.item = item;
+        this.column = column;
+        this.updateData();
+    {{ '}' }}
+
+    private updateData(): void {{ '{' }}
+        this.displayText = this.item[this.column.field];
+    {{ '}' }}
+{{ '}' }}
+    </code></pre>
+
+    <h3 data-toc-item id="action-definition" cds-text="section" class="clr-mt-32px">ActionDefinition</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Syntax</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">id</code></td>
+          <td><code cds-text="code">string</code></td>
+          <td>Unique identifier.</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">label</code></td>
+          <td><code cds-text="code">T</code></td>
+          <td>Display label.</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">ariaLabel</code></td>
+          <td><code cds-text="code">string</code></td>
+          <td>Accessibility label.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">enabled</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>Enabled state.</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">tooltip</code></td>
+          <td><code cds-text="code">T</code></td>
+          <td>Tooltip text.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">class</code></td>
+          <td><code cds-text="code">string</code></td>
+          <td>CSS Class. Defaults to flatCompact.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">isVisible</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>Visibility above grid.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">children</code></td>
+          <td><code cds-text="code">ActionDefinition[]</code></td>
+          <td>Child actions (dropdown).</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="action-click-event" cds-text="section" class="clr-mt-32px">ActionClickEvent</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Syntax</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">action</code></td>
+          <td><code cds-text="code">ActionDefinition</code></td>
+          <td>The clicked action.</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">context</code></td>
+          <td><code cds-text="code">T</code></td>
+          <td>Context (selected items or row item).</td>
+          <td>Yes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="single-row-action-open" cds-text="section" class="clr-mt-32px">SingleRowActionOpen</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Syntax</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">open</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>Menu open state.</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">actions</code></td>
+          <td><code cds-text="code">ActionDefinition</code></td>
+          <td>Available actions.</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">context</code></td>
+          <td><code cds-text="code">T</code></td>
+          <td>Associated row item.</td>
+          <td>Yes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="api-reference" cds-text="title" class="clr-mt-48px">Filters</h2>
+
+    <h3 data-toc-item id="component-inputs" cds-text="section" class="clr-mt-32px">appfx-datagrid-filters</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Data Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">filterMode</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">FilterMode</code></td>
+          <td>
+            Enum parameter with three options:
+            <ul class="list-unstyled">
+              <li><code cds-text="code">FilterMode.Quick</code> - only quick filter is activated.</li>
+              <li><code cds-text="code">FilterMode.Advanced</code> - both quick and advanced filters are activated.</li>
+              <li><code cds-text="code">FilterMode.AdvancedOnly</code> - Only advanced filter is activated.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">filterableProperties</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">FilterablePropertyDefinition[]</code></td>
+          <td>
+            Array of properties used for advanced filtering. Supported types:
+            <code cds-text="code">StringPropertyDefinition</code>,
+            <code cds-text="code">NumericPropertyDefinition</code>, <code cds-text="code">EnumPropertyDefinition</code>,
+            <code cds-text="code">DateTimePropertyDefinition</code>.
+          </td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">searchTermChange</code></td>
+          <td>Output</td>
+          <td><code cds-text="code">EventEmitter&lt;string&gt;</code></td>
+          <td>
+            Emits when the quick filter changes. Triggered on `Enter` key press and/or automatically on every 2 sec when
+            typing.
+          </td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">propertyFiltersChange</code></td>
+          <td>Output</td>
+          <td><code cds-text="code">EventEmitter&lt;PropertyFilter[]&gt;</code></td>
+          <td>Emits when the advanced filter changes.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="filterable-property-definition" cds-text="section" class="clr-mt-32px">
+      FilterablePropertyDefinition
+    </h3>
+    <p cds-text="body" class="clr-mt-16px">Base abstract class for filterable properties.</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">displayName</code></td>
+          <td><code cds-text="code">string</code></td>
+          <td>Name as shown to users.</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">property</code></td>
+          <td><code cds-text="code">string</code></td>
+          <td>Actual name of the property that is used for filtering.</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">supportedOperators</code></td>
+          <td><code cds-text="code">ComparisonOperator[]</code></td>
+          <td>Optional. List of comparison operators. overrides defaults.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="string-property-definition" cds-text="section" class="clr-mt-32px">
+      StringPropertyDefinition
+    </h3>
+    <p cds-text="body" class="clr-mt-16px">Extends <code cds-text="code">FilterablePropertyDefinition</code>.</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">singleCondition</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>
+            Optional. Indicates that the property can be used with single condition only. Default:
+            <code cds-text="code">false</code>.
+          </td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">logicalOperator</code></td>
+          <td><code cds-text="code">LogicalOperator</code></td>
+          <td>
+            Optional. Restricts to only AND or OR. Default: <code cds-text="code">undefined</code> (supports both).
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p cds-text="body" class="clr-mt-16px">
+      <strong>Default operators:</strong> Equals, DoesNotEqual, Contains, DoesNotContain, StartsWith, EndsWith, IsEmpty.
+    </p>
+
+    <h3 data-toc-item id="enum-property-definition" cds-text="section" class="clr-mt-32px">EnumPropertyDefinition</h3>
+    <p cds-text="body" class="clr-mt-16px">Extends <code cds-text="code">FilterablePropertyDefinition</code>.</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">values</code></td>
+          <td><code cds-text="code">Map&lt;string, string&gt;</code></td>
+          <td>Enumeration key/value data to be used in the filter selection.</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">singleSelect</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>Optional. Indicates single select filtering. Default: <code cds-text="code">false</code>.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="numeric-property-definition" cds-text="section" class="clr-mt-32px">
+      NumericPropertyDefinition
+    </h3>
+    <p cds-text="body" class="clr-mt-16px">Extends <code cds-text="code">FilterablePropertyDefinition</code>.</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">singleCondition</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>
+            Optional. Indicates that the property can be used with single condition only. Default:
+            <code cds-text="code">false</code>.
+          </td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">logicalOperator</code></td>
+          <td><code cds-text="code">LogicalOperator</code></td>
+          <td>
+            Optional. Restricts to only AND or OR. Default: <code cds-text="code">undefined</code> (supports both).
+          </td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">unit</code></td>
+          <td><code cds-text="code">Unit</code></td>
+          <td>Default unit of the property metric. Optional.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p cds-text="body" class="clr-mt-16px">
+      <strong>Default operators:</strong> Equals, DoesNotEqual, LessThan, LessThanOrEqualTo, GreaterThan,
+      GreaterThanOrEqualTo, IsEmpty.
+    </p>
+
+    <h3 data-toc-item id="datetime-property-definition" cds-text="section" class="clr-mt-32px">
+      DateTimePropertyDefinition
+    </h3>
+    <p cds-text="body" class="clr-mt-16px">Extends <code cds-text="code">FilterablePropertyDefinition</code>.</p>
+    <p cds-text="body" class="clr-mt-16px">
+      <strong>Default operators:</strong> Equals, Before, BeforeOrEqualTo, After, AfterOrEqualTo, CustomRange, IsEmpty,
+      LastDay, LastWeek, LastMonth, LastYear, TimeSpan.
+    </p>
+
+    <h3 data-toc-item id="property-filter" cds-text="section" class="clr-mt-32px">PropertyFilter</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">criteria</code></td>
+          <td><code cds-text="code">PropertyPredicate[]</code></td>
+          <td>Filter criteria.</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">operator</code></td>
+          <td><code cds-text="code">LogicalOperator</code></td>
+          <td>Logical operator. Supported values are AND/OR.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="property-predicate" cds-text="section" class="clr-mt-32px">PropertyPredicate</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">filterableProperty</code></td>
+          <td><code cds-text="code">FilterablePropertyDefinition</code></td>
+          <td>Property that is used for filtering.</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">operator</code></td>
+          <td><code cds-text="code">ComparisonOperator</code></td>
+          <td>Filtering operator.</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">value</code></td>
+          <td><code cds-text="code">any</code></td>
+          <td>Filter value.</td>
+        </tr>
+      </tbody>
+    </table>
+  </app-doc-tab>
+</app-doc-tabs>

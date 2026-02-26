@@ -1,0 +1,313 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      A combobox is a complex element that uses a text input box and a drop-down list. The user can enter text into the
+      input to filter the set of predefined options in the drop-down.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="usage">Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Use a combobox when you need to have a list of options that has search and filtering capabilities. This is a
+      common pattern in web UI and is similar to the native datalist. In contrast to the datalist, a combobox supports
+      making multiple selections and providing a richer UI for each option in the list, including images and styling.
+      Adding free text input that is not part of the predefined list is not supported in the combobox. Do not confuse a
+      combobox element with the datalist or select controls.
+      <a routerLink="/documentation/datalist">Datalist</a> elements are good for simple values to search quickly. A
+      <a routerLink="/documentation/select">select</a> input is useful when you want to use the browser’s native select
+      control because you don’t need more complex searching and filtering capabilities.
+    </p>
+    <p class="clr-mt-32px" cds-text="body">See more usage guidelines in our patterns:</p>
+    <app-link-cards [linkColWidth]="4" [links]="patternLinks"></app-link-cards>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="types">Types</h2>
+    <div class="clr-row">
+      <div class="clr-col-md-6 clr-col-12 clr-mt-32px">
+        <h3 cds-text="section disable-lhe" id="single-selection-combobox">Single-selection combobox</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          This type of combobox is dynamic and generated from an array of data. You supply a template that determines
+          how options are displayed in the list. When an option is selected, its display name is added to the text input
+          box.
+        </p>
+      </div>
+      <div class="clr-col-md-6 clr-col-12 clr-mt-32px">
+        <div class="clrweb-DoxMedia clr-mt-0px">
+          <div class="clrweb-DoxMedia-block">
+            <app-themed-image
+              [lightSrc]="'/assets/images/documentation/combobox/light-theme/combobox-single-selection.svg'"
+              [darkSrc]="'/assets/images/documentation/combobox/dark-theme/combobox-single-selection.svg'"
+              [imageAlt]="'Single selection Combobox'"
+              [imageStyle]="'max-width: 100%'"
+            ></app-themed-image>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="clr-row">
+      <div class="clr-col-md-6 clr-col-12 clr-mt-32px">
+        <h3 cds-text="section disable-lhe" id="multiple-selection-combobox">Multiple-selection combobox</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          The multiple-selection combobox is similar to the single-select one, as it is data driven and allows you to
+          determine how options are displayed in the list. After the user selects an option, a pill is created that
+          corresponds to the selected item. The user can then select other options from the drop-down list to add more
+          pills to the pills list.
+        </p>
+      </div>
+      <div class="clr-col-md-6 clr-col-12 clr-mt-32px">
+        <div class="clrweb-DoxMedia clr-mt-0px">
+          <div class="clrweb-DoxMedia-block">
+            <app-themed-image
+              [lightSrc]="'/assets/images/documentation/combobox/light-theme/combobox-multi-selection.svg'"
+              [darkSrc]="'/assets/images/documentation/combobox/dark-theme/combobox-multi-selection.svg'"
+              [imageAlt]="'Multi selection Combobox'"
+              [imageStyle]="'max-width: 100%'"
+            ></app-themed-image>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="clr-row">
+      <div class="clr-col-md-6 clr-col-12 clr-mt-32px">
+        <h3 cds-text="section disable-lhe" id="asynchronous-combobox">Asynchronous combobox</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          The asynchronous combobox allows for lazy loading of the pre-selected options. There is a "loading" spinner
+          and a message that is displayed before the loading is complete.
+        </p>
+      </div>
+      <div class="clr-col-md-6 clr-col-12 clr-mt-32px">
+        <div class="clrweb-DoxMedia clr-mt-0px">
+          <div class="clrweb-DoxMedia-block">
+            <app-themed-image
+              [lightSrc]="'/assets/images/documentation/combobox/light-theme/combobox-async.svg'"
+              [darkSrc]="'/assets/images/documentation/combobox/dark-theme/combobox-async.svg'"
+              [imageAlt]="'Asynchronous Combobox'"
+              [imageStyle]="'max-width: 100%'"
+            ></app-themed-image>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-32px" cds-text="title" id="anatomy">Anatomy</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      As a form element, the combobox has a label, which can be vertically or horizontally aligned to it. It also has a
+      condensed mode that occupies less space. It has helper text and an area for error or success messages.
+      <br />
+      The component itself includes a text input for the user to enter search text and a drop-down list that includes
+      predefined options. You can choose how options are styled.
+      <br />
+      The multiple-selection version of the combobox also includes pills that are situated before the text input. These
+      pills all feature a delete button and can be styled similar to the options.
+    </p>
+    <div class="clr-row clr-mt-32px clr-col-10">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/combobox/light-theme/combobox-anatomy.svg'"
+        [darkSrc]="'/assets/images/documentation/combobox/dark-theme/combobox-anatomy.svg'"
+        [imageAlt]="'Anatomy of the Combobox'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="behavior">Behavior</h2>
+    <h3 class="clr-mt-32px" cds-text="section" id="filtering-the-options-list">Filtering the options list</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Typing in the input text box filters the drop-down list of predefined options.
+    </p>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="interacting-with-the-current-selection">
+      Interacting with the current selection
+    </h3>
+    <p class="clr-mt-16px" cds-text="body">
+      For all combobox types that allow only a single selection, the current selection is pre-filled in the text input
+      box. Once a selection is made, the user cannot change it by using the input text box. Instead, a new option must
+      be selected from the drop-down list. Selections can only be changed, not deleted.
+      <br />
+      For multiple-selection comboboxes, the current selection is displayed as a list of pills before the input box. New
+      pills can be added from the drop-down list. Pills can be deleted by clicking the "X" icon on each pill. Also,
+      pressing Backspace key in an empty input box will select the last pill in the list.
+    </p>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="opening-the-drop-down-list">Opening the drop-down list</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      To display the predefined options in the drop-down list, the user can either:
+    </p>
+    <ul cds-text="body" cds-layout="m-t:md m-l:lg" class="list">
+      <li>Click the down-caret icon at the end of the input text box.</li>
+      <li>Type into the input text box.</li>
+    </ul>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="interacting-with-the-options">Interacting with the options</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Options from the drop-down list can be selected using a mouse or by using the keyboard arrow keys and then
+      pressing Enter. Selected options are highlighted in the list and shown in the input text box.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
+
+    <h3 id="single-selection" data-toc-item cds-text="section" class="clr-mt-32px">Single Selection</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      A single selection combobox uses the <code cds-text="code">*clrOptionItems</code> smart iterator to manage its
+      inventory of pre-selected options. It is similar to <code cds-text="code">*ngFor</code> as syntax. The optional
+      <code cds-text="code">field:'name'</code> designates which field of the underlying data object should be used as
+      display name. The html nested inside the <code cds-text="code">clr-option</code> node will be used as template for
+      the option design. It can include images, text, html code.
+    </p>
+
+    <clr-combobox-single-demo></clr-combobox-single-demo>
+
+    <h3 data-toc-item id="miltiple-selection" cds-text="section" class="clr-mt-32px">Multi Selection</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The multi selection mode is triggered with a <code cds-text="code">clrMulti="true"</code> attribute on the
+      Combobox component. In regard to option management, the multi select combobox works the same as the single select
+      one. It uses <code cds-text="code">*clrOptionItems</code> smart iterator and a template inside each option node
+      for option styling. Pill styling is defined inside ng-container with
+      <code cds-text="code">*clrOptionSelected</code> structural directive, as seen in the example.
+    </p>
+
+    <clr-combobox-multi-demo></clr-combobox-multi-demo>
+
+    <h3 data-toc-item id="async-combobox" cds-text="section" class="clr-mt-32px">Asynchronous Selection</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Using the combobox asynchronously requires to manually bind several event handlers on the Combobox component.
+      <code cds-text="code">(clrInputChange)="fetchStates($event)"</code> and
+      <code cds-text="code">(clrOpenChange)="$event ? fetchStates() : null"</code> need to be bound to your method that
+      fetches the backend data ("fetchStates()" in this example). Then
+      <code cds-text="code">[clrLoading]="loading"</code>, which triggers the display of the "loading" indicator, should
+      be bound to a property that is active while your data fetching called is in progress.
+    </p>
+
+    <clr-combobox-async-demo></clr-combobox-async-demo>
+
+    <h3 data-toc-item id="grouped-combobox" cds-text="section" class="clr-mt-32px">Grouping options</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Combobox allows options to be grouped together in categories. To enable this you need to put
+      <code cds-text="code">clr-option</code> under <code cds-text="code">clr-option-group</code> tag and set the group
+      label trough <code cds-text="code">[clrOptionGroupLabel]="name"</code> input.
+    </p>
+
+    <clr-combobox-grouping-demo></clr-combobox-grouping-demo>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 cds-text="title" cds-layout="m-t:lg">Angular Components</h2>
+
+    <h3 cds-text="section" cds-layout="m-t:lg"><code cds-text="code">&lt;clr-combobox&gt;</code> component</h3>
+    <table class="table" cds-text="body" cds-layout="m-t:md">
+      <thead>
+        <tr>
+          <th class="left">Input / Output</th>
+          <th class="left clr-hidden-xs-down">Type</th>
+          <th class="left clr-hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            [placeholder]
+            <div class="clr-hidden-sm-up">Type: string</div>
+            <div class="clr-hidden-sm-up">Default: empty string</div>
+          </td>
+          <td class="left clr-hidden-xs-down">string</td>
+          <td class="left clr-hidden-xs-down">empty string</td>
+          <td class="left">placeholder text for the combobox input element</td>
+        </tr>
+        <tr>
+          <td class="left">
+            [clrMulti]
+            <div class="clr-hidden-sm-up">Type: boolean</div>
+            <div class="clr-hidden-sm-up">Default: false</div>
+          </td>
+          <td class="left clr-hidden-xs-down">boolean</td>
+          <td class="left clr-hidden-xs-down">false</td>
+          <td class="left">whether not this is a mutli-select combobox</td>
+        </tr>
+        <tr>
+          <td class="left">
+            (clrInputChange)
+            <div class="clr-hidden-sm-up">Type: string</div>
+            <div class="clr-hidden-sm-up">Default: N/A</div>
+          </td>
+          <td class="left clr-hidden-xs-down">string</td>
+          <td class="left clr-hidden-xs-down">N/A</td>
+          <td class="left">emits when the input value is changed</td>
+        </tr>
+        <tr>
+          <td class="left">
+            (clrOpenChange)
+            <div class="clr-hidden-sm-up">Type: boolean</div>
+            <div class="clr-hidden-sm-up">Default: N/A</div>
+          </td>
+          <td class="left clr-hidden-xs-down">boolean</td>
+          <td class="left clr-hidden-xs-down">N/A</td>
+          <td class="left">emits when the combobox popover is opened or closed</td>
+        </tr>
+        <tr>
+          <td class="left">
+            (clrSelectionChange)
+            <div class="clr-hidden-sm-up">Type: ComboboxModel&lt;T&gt;</div>
+            <div class="clr-hidden-sm-up">Default: N/A</div>
+          </td>
+          <td class="left clr-hidden-xs-down">ComboboxModel&lt;T&gt;</td>
+          <td class="left clr-hidden-xs-down">N/A</td>
+          <td class="left">emits when the combobox selection is changed</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 cds-text="section" cds-layout="m-t:lg"><code cds-text="code">&lt;clr-option&gt;</code> component</h3>
+    <table class="table" cds-text="body" cds-layout="m-t:md">
+      <thead>
+        <tr>
+          <th class="left">Input / Output</th>
+          <th class="left clr-hidden-xs-down">Type</th>
+          <th class="left clr-hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            [clrValue]
+            <div class="clr-hidden-sm-up">Type: T</div>
+            <div class="clr-hidden-sm-up">Default: undefined</div>
+          </td>
+          <td class="left clr-hidden-xs-down">T</td>
+          <td class="left clr-hidden-xs-down">undefined</td>
+          <td class="left">value of the combobox option</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-style-docs styleDocsKey="Combobox"></app-style-docs>
+  </app-doc-tab>
+
+  <app-doc-tab tab="accessibility">
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      The Combobox component contains label, option, helper text, and error.
+    </p>
+
+    <app-nesting-table
+      componentName="Combobox"
+      subComponentName="elements"
+      [canNestComponents]="canNestComponents"
+      [cannotNestComponents]="cannotNestComponents"
+      [conditionalNesting]="conditionalNesting"
+    >
+    </app-nesting-table>
+  </app-doc-tab>
+</app-doc-tabs>

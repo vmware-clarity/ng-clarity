@@ -1,0 +1,13 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'variables.tokens' as tokens;
+@use 'mixins';
+
+$clrweb-content-maxwidth: mixins.baselinePx(900);
+$table-of-contents-breakpoint: tokens.$cds-global-layout-width-xl-static;
+$dox-content-wrapper-padding-top: tokens.$cds-global-space-4;
