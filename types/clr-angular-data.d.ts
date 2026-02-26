@@ -493,10 +493,20 @@ declare class DatagridIfExpandService extends IfExpandService {
 }
 
 declare enum SelectionType {
-    None = 0,
-    Single = 1,
-    Multi = 2
+    /**
+     * User cannot select any row in the Datagrid
+     */
+    None = "none",
+    /**
+     * User can select only one row at a time in the Datagrid.
+     */
+    Single = "single",
+    /**
+     * User can select any number of rows in the Datagrid.
+     */
+    Multi = "multi"
 }
+declare function selectionTypeAttribute(value: SelectionType | string): SelectionType;
 
 declare enum DatagridDisplayMode {
     DISPLAY = 0,
@@ -581,10 +591,6 @@ declare class Selection<T = any> {
      */
     private _current;
     /**
-     * The current selection in single selection type
-     */
-    private _currentSingle;
-    /**
      * The Observable that lets other classes subscribe to selection changes
      */
     private _change;
@@ -603,11 +609,9 @@ declare class Selection<T = any> {
     get current(): T[];
     set current(value: T[]);
     get currentSingle(): T;
-    set currentSingle(value: T);
-    get change(): Observable<T[] | T>;
-    private get _selectable();
+    get change(): Observable<T[]>;
+    get selectable(): boolean;
     private get currentSelectionRefs();
-    private get currentSingleSelectionRef();
     checkForChanges(): void;
     clearSelection(): void;
     /**
@@ -948,7 +952,6 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
     clrDetailExpandableAriaLabel: string;
     clrDgDisablePageFocus: boolean;
     selectedChanged: EventEmitter<T[]>;
-    singleSelectedChanged: EventEmitter<T>;
     /**
      * Output emitted whenever the data needs to be refreshed, based on user action or external ones
      */
@@ -1011,13 +1014,19 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
     get loading(): boolean;
     set loading(value: boolean);
     /**
+     * Selection type
+     * - `None`: No rows are selectable.
+     * - `Single`: Only one row can be selected at a time.
+     * - `Multi`: Multiple rows can be selected.
+     *
+     * Defaults to `None`.
+     */
+    get selectionType(): SelectionType;
+    set selectionType(value: SelectionType);
+    /**
      * Array of all selected items
      */
-    set selected(value: T[] | undefined);
-    /**
-     * Selected item in single-select mode
-     */
-    set singleSelected(value: T);
+    set selected(value: T[]);
     set clrDgPreserveSelection(state: boolean);
     /**
      * @deprecated since 2.0, remove in 3.0
@@ -1053,7 +1062,8 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
     private toggleVirtualScrollSubscriptions;
     private handleResizeChanges;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagrid<any>, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": { "alias": "clrLoadingMoreItems"; "required": false; }; "clrDgSingleSelectionAriaLabel": { "alias": "clrDgSingleSelectionAriaLabel"; "required": false; }; "clrDgSingleActionableAriaLabel": { "alias": "clrDgSingleActionableAriaLabel"; "required": false; }; "clrDetailExpandableAriaLabel": { "alias": "clrDetailExpandableAriaLabel"; "required": false; }; "clrDgDisablePageFocus": { "alias": "clrDgDisablePageFocus"; "required": false; }; "customSelectAllEnabled": { "alias": "clrDgCustomSelectAllEnabled"; "required": false; }; "loading": { "alias": "clrDgLoading"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "singleSelected": { "alias": "clrDgSingleSelected"; "required": false; }; "clrDgPreserveSelection": { "alias": "clrDgPreserveSelection"; "required": false; }; "rowSelectionMode": { "alias": "clrDgRowSelection"; "required": false; }; "identityFn": { "alias": "clrDgItemsIdentityFn"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": { "alias": "clrLoadingMoreItems"; "required": false; }; "clrDgSingleSelectionAriaLabel": { "alias": "clrDgSingleSelectionAriaLabel"; "required": false; }; "clrDgSingleActionableAriaLabel": { "alias": "clrDgSingleActionableAriaLabel"; "required": false; }; "clrDetailExpandableAriaLabel": { "alias": "clrDetailExpandableAriaLabel"; "required": false; }; "clrDgDisablePageFocus": { "alias": "clrDgDisablePageFocus"; "required": false; }; "customSelectAllEnabled": { "alias": "clrDgCustomSelectAllEnabled"; "required": false; }; "loading": { "alias": "clrDgLoading"; "required": false; }; "selectionType": { "alias": "clrDgSelectionType"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "clrDgPreserveSelection": { "alias": "clrDgPreserveSelection"; "required": false; }; "rowSelectionMode": { "alias": "clrDgRowSelection"; "required": false; }; "identityFn": { "alias": "clrDgItemsIdentityFn"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
+    static ngAcceptInputType_selectionType: SelectionType | string;
 }
 
 declare class ClrDatagridActionBar {
@@ -2133,5 +2143,5 @@ declare class ClrStackViewModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStackViewModule>;
 }
 
-export { CLR_DATAGRID_DIRECTIVES, CLR_STACK_VIEW_DIRECTIVES, CLR_TREE_VIEW_DIRECTIVES, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSortOrder, ClrIfDetail, ClrRecursiveForOf, ClrSelectedState, ClrStackBlock, ClrStackContentInput, ClrStackHeader, ClrStackView, ClrStackViewCustomTags, ClrStackViewLabel, ClrStackViewModule, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridStringFilter, Selection, ActionableOompaLoompa as ÇlrActionableOompaLoompa, DatagridCellRenderer as ÇlrDatagridCellRenderer, DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer, DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer, DatagridMainRenderer as ÇlrDatagridMainRenderer, DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer, DatagridRowRenderer as ÇlrDatagridRowRenderer, ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor, ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective, DatagridWillyWonka as ÇlrDatagridWillyWonka, ExpandableOompaLoompa as ÇlrExpandableOompaLoompa, WrappedCell as ÇlrWrappedCell, WrappedColumn as ÇlrWrappedColumn, WrappedRow as ÇlrWrappedRow };
+export { CLR_DATAGRID_DIRECTIVES, CLR_STACK_VIEW_DIRECTIVES, CLR_TREE_VIEW_DIRECTIVES, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSortOrder, ClrIfDetail, ClrRecursiveForOf, ClrSelectedState, ClrStackBlock, ClrStackContentInput, ClrStackHeader, ClrStackView, ClrStackViewCustomTags, ClrStackViewLabel, ClrStackViewModule, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridStringFilter, Selection, SelectionType, selectionTypeAttribute, ActionableOompaLoompa as ÇlrActionableOompaLoompa, DatagridCellRenderer as ÇlrDatagridCellRenderer, DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer, DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer, DatagridMainRenderer as ÇlrDatagridMainRenderer, DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer, DatagridRowRenderer as ÇlrDatagridRowRenderer, ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor, ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective, DatagridWillyWonka as ÇlrDatagridWillyWonka, ExpandableOompaLoompa as ÇlrExpandableOompaLoompa, WrappedCell as ÇlrWrappedCell, WrappedColumn as ÇlrWrappedColumn, WrappedRow as ÇlrWrappedRow };
 export type { ClrDatagridComparatorInterface, ClrDatagridFilterInterface, ClrDatagridItemsIdentityFunction, ClrDatagridNumericFilterInterface, ClrDatagridStateInterface, ClrDatagridStringFilterInterface, ClrDatagridVirtualScrollRangeInterface, ClrRecursiveForOfContext };
