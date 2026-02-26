@@ -321,7 +321,7 @@
         <input type="date" autocomplete="off" clrEndDate name="endDate" />
       </clr-date-range-container>
 
-      <clr-datagrid [(clrDgSelected)]="selected">
+      <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
         <clr-dg-column>
           <ng-container *clrDgHideableColumn>Name</ng-container>
         </clr-dg-column>

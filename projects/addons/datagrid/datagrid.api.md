@@ -473,11 +473,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     selectedItemsChange: EventEmitter<T[]>;
     // (undocumented)
     protected get selectedItemsCount(): number;
+    // Warning: (ae-forgotten-export) The symbol "SelectionType" needs to be exported by the entry point clr-addons-datagrid.d.ts
     get selectionType(): SelectionType;
-    set selectionType(type: SelectionType);
+    set selectionType(type: SelectionType | string);
     serverDrivenDatagrid: boolean;
-    // (undocumented)
-    setSelectedItems(items: T[]): void;
     showCustomPagination: boolean;
     // (undocumented)
     protected get showDeselectAll(): boolean;
@@ -764,13 +763,6 @@ export interface PreselectableComponent {
     trackByFunction: TrackByFunction<any>;
     // (undocumented)
     trackByGridItemProperty: string;
-}
-
-// @public
-export enum SelectionType {
-    Multi = 2,
-    None = 0,
-    Single = 1
 }
 
 // @public (undocumented)

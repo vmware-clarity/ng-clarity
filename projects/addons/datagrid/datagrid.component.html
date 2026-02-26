@@ -8,6 +8,9 @@
   zoomLevelIndicator
   [clrDgDisablePageFocus]="true"
   [clrDgPreserveSelection]="preserveExistingSelectionOnFilter"
+  [clrDgSelectionType]="selectionType"
+  [clrDgSelected]="selectedItems"
+  [clrDgItemsIdentityFn]="trackByGridItemFn"
   (clrDgRefresh)="refreshGrid($event)"
   [clrDgLoading]="loading"
   [clrDgRowSelection]="rowSelectionMode"
@@ -25,6 +28,7 @@
   [dgColumnsOrderColumns]="columns"
   [dgColumnsVirtualScrolling]="virtualScrolling"
   (dgColumnsOrderChange)="onColumnOrderChange($event)"
+  (clrDgSelectedChange)="onSelectedItemsChange($event)"
 >
   @if (enableToolBar) {
     <clr-dg-action-bar>

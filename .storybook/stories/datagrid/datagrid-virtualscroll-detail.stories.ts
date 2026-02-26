@@ -11,6 +11,7 @@ import {
   ClrDatagridModule,
   ClrDropdownModule,
   commonStringsDefault,
+  SelectionType,
 } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
@@ -28,12 +29,18 @@ export default {
   argTypes: {
     // inputs
     clrDgSelected: { control: { disable: true } },
+    clrDgSelectionType: {
+      control: { type: 'select' },
+      options: {
+        None: SelectionType.None,
+        Single: SelectionType.Single,
+        Multi: SelectionType.Multi,
+      },
+    },
     detailsOpened: { control: { disable: true }, table: { disable: true } },
-    clrDgSingleSelected: { control: { disable: true } },
     // outputs
     clrDgRefresh: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
-    clrDgSingleSelectedChange: { control: { disable: true } },
     clrRenderRangeChange: { control: { disable: true } },
     clrDgActionOverflowOpenChange: { control: { disable: true } },
     // methods
@@ -61,7 +68,6 @@ export default {
     // outputs
     clrDgRefresh: action('clrDgRefresh'),
     clrDgSelectedChange: action('clrDgSelectedChange'),
-    clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
     clrRenderRangeChange: action('clrRenderRangeChange'),
     clrDgActionOverflowOpenChange: action('clrDgActionOverflowOpenChange'),
     clrDgCustomSelectAll(this: { selectedRows: number[] }, selectAllChecked: boolean) {
@@ -70,9 +76,8 @@ export default {
     },
     // story helpers
     behaviorElements,
+    clrDgSelectionType: SelectionType.None,
     scrollToIndexBehavior: 'smooth',
-    singleSelectable: false,
-    multiSelectable: false,
     actionOverflow: false,
     compact: false,
     hidableColumns: false,
@@ -80,6 +85,7 @@ export default {
     showFooterNavButtons: false,
     height: 480,
     selectedRows: [],
+    selectedRowsArray: [],
     setExpanded,
   },
 };
@@ -109,8 +115,8 @@ const DatagridDetailsTemplate: StoryFn = args => ({
       <clr-datagrid
         #datagrid
         ${args.height ? '[style.height.px]="height"' : ''}
-        ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
-        ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
+        [(clrDgSelected)]="selectedRowsArray"
+        [clrDgSelectionType]="clrDgSelectionType"
         [ngClass]="{ 'datagrid-compact': compact }"
         [clrDetailExpandableAriaLabel]="clrDetailExpandableAriaLabel"
         [clrDgDisablePageFocus]="clrDgDisablePageFocus"
@@ -122,7 +128,6 @@ const DatagridDetailsTemplate: StoryFn = args => ({
         [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
         (clrDgRefresh)="clrDgRefresh($event)"
         (clrDgSelectedChange)="clrDgSelectedChange($event)"
-        (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
         (clrDgCustomSelectAll)="clrDgCustomSelectAll($event)"
         [clrLoadingMoreItems]="clrLoadingMoreItems"
       >
@@ -263,7 +268,7 @@ export const Full: StoryObj = {
   args: {
     actionOverflow: true,
     hidableColumns: true,
-    singleSelectable: true,
+    clrDgSelectionType: SelectionType.Single,
   },
 };
 
@@ -273,7 +278,7 @@ export const FullCompact: StoryObj = {
     actionOverflow: true,
     compact: true,
     hidableColumns: true,
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
   },
 };
 
@@ -291,7 +296,7 @@ export const FullCompactWithButtonNavigationPattern: StoryObj = {
     actionOverflow: true,
     compact: true,
     hidableColumns: true,
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
     showFooterNavButtons: true,
   },
 };

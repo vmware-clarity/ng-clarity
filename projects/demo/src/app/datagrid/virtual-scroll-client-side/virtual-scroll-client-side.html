@@ -34,12 +34,17 @@
   <div>Rows: {{totalRows}}, Cols: {{totalCols}}</div>
 </div>
 
+<button class="btn" (click)="selectionType = selectionType === 1 ? 2 : 1">
+  Toggle Selection {{selectionType === 1 ? 'Single' : 'Multi'}}
+</button>
+
 <h3>Dynamic cols and rows</h3>
 @if ({ rows: rows | async }; as data) {
 <clr-datagrid
   #dynamicRowsDatagrid
   [(clrDgSelected)]="selectedRows"
-  [clrDgItemsIdentityFn]="trackItemById"
+  [clrDgSelectionType]="'multi'"
+  [clrDgItemsIdentityFn]="identifyRowByIndex"
   [clrDgCustomSelectAllEnabled]="true"
   (clrDgCustomSelectAll)="toggleSelectAllRows($event)"
   style="height: 32rem"
@@ -127,7 +132,8 @@
 <clr-datagrid
   #usersDatagrid
   [(clrDgSelected)]="selectedUsers"
-  [clrDgItemsIdentityFn]="trackItemById"
+  [clrDgSelectionType]="'multi'"
+  [clrDgItemsIdentityFn]="identifyUserById"
   class="datagrid-compact"
   style="height: 30rem"
 >
