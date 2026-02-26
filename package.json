@@ -40,6 +40,10 @@
       "types": "./types/clr-angular-button.d.ts",
       "default": "./fesm2022/clr-angular-button.mjs"
     },
+    "./collapsible-panel": {
+      "types": "./types/clr-angular-collapsible-panel.d.ts",
+      "default": "./fesm2022/clr-angular-collapsible-panel.mjs"
+    },
     "./data": {
       "types": "./types/clr-angular-data.d.ts",
       "default": "./fesm2022/clr-angular-data.mjs"
@@ -221,5 +225,5 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "version": "0.0.0-preview.a0027c0"
+  "version": "0.0.0-preview.c9f56aa"
 }

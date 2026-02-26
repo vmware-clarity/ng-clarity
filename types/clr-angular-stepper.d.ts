@@ -1,17 +1,30 @@
 import * as _angular_forms from '@angular/forms';
 import { FormGroupName, NgModelGroup, FormGroupDirective, NgForm } from '@angular/forms';
 import * as i0 from '@angular/core';
-import { OnInit, ElementRef, ChangeDetectorRef, OnChanges, AfterViewInit, OnDestroy, QueryList, SimpleChanges } from '@angular/core';
-import * as _clr_angular_accordion from '@clr/angular/accordion';
-import { AccordionModel, AccordionService, ClrAccordionPanel, AccordionStatus } from '@clr/angular/accordion';
+import { OnInit, ElementRef, QueryList, ChangeDetectorRef, OnChanges, AfterViewInit, OnDestroy, SimpleChanges } from '@angular/core';
+import { CollapsiblePanelModel, CollapsiblePanelGroupModel, CollapsiblePanelService, CollapsiblePanel } from '@clr/angular/collapsible-panel';
 import { ClrCommonStringsService, IfExpandService, WillyWonka, OompaLoompa } from '@clr/angular/utils';
-import { Observable, Subscription } from 'rxjs';
-import * as i6 from '@angular/common';
-import * as i7 from '@clr/angular/icon';
+import { Observable } from 'rxjs';
+import * as i9 from '@angular/common';
+import * as i10 from '@clr/angular/icon';
 
-declare class StepperModel extends AccordionModel {
+declare enum StepperPanelStatus {
+    Inactive = "inactive",
+    Error = "error",
+    Complete = "complete"
+}
+
+declare class StepperPanelModel extends CollapsiblePanelModel {
+    status: StepperPanelStatus;
+}
+
+declare class StepperModel extends CollapsiblePanelGroupModel {
+    protected _panels: {
+        [id: string]: StepperPanelModel;
+    };
     private stepperModelInitialize;
     private initialPanel;
+    get panels(): StepperPanelModel[];
     get allPanelsCompleted(): boolean;
     get shouldOpenFirstPanel(): boolean;
     addPanel(id: string, open?: boolean): void;
@@ -24,8 +37,8 @@ declare class StepperModel extends AccordionModel {
     setPanelInvalid(panelId: string): void;
     setPanelsWithErrors(ids: string[]): void;
     resetPanels(): void;
-    getNextPanel(currentPanelId: string): _clr_angular_accordion.AccordionPanelModel;
-    getPreviousPanel(currentPanelId: string): _clr_angular_accordion.AccordionPanelModel;
+    getNextPanel(currentPanelId: string): StepperPanelModel;
+    getPreviousPanel(currentPanelId: string): StepperPanelModel;
     private resetAllFuturePanels;
     private resetPanel;
     private openFirstPanel;
@@ -38,10 +51,10 @@ declare class StepperModel extends AccordionModel {
     private getNumberOfOpenPanels;
 }
 
-declare class StepperService extends AccordionService {
+declare class StepperService extends CollapsiblePanelService {
     readonly activeStep: Observable<string>;
     readonly panelsCompleted: Observable<boolean>;
-    protected accordion: StepperModel;
+    protected panelGroup: StepperModel;
     private _activeStepChanges;
     constructor();
     resetPanels(): void;
@@ -58,25 +71,40 @@ declare class StepperService extends AccordionService {
     static ɵprov: i0.ɵɵInjectableDeclaration<StepperService>;
 }
 
-declare class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
+declare class ClrStepDescription {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepDescription, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepDescription, "clr-step-description", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     private platformId;
     commonStrings: ClrCommonStringsService;
     private formGroupName;
     private ngModelGroup;
     private stepperService;
     headerButton: ElementRef<HTMLButtonElement>;
-    readonly AccordionStatus: typeof AccordionStatus;
+    stepDescription: QueryList<ClrStepDescription>;
+    disabled: boolean;
+    readonly PanelStatus: typeof StepperPanelStatus;
+    panel: Observable<StepperPanelModel>;
     private subscriptions;
     constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     get id(): string;
     set id(_value: string);
+    get panelNumber(): number;
     get formGroup(): _angular_forms.FormGroup<any>;
+    getPanelStatus(panel: StepperPanelModel): StepperPanelStatus;
+    getPanelStateClasses(panel: StepperPanelModel): string;
+    getContentId(id: string): string;
+    getHeaderId(id: string): string;
     ngOnInit(): void;
     ngOnDestroy(): void;
+    protected stepCompleteText(panelNumber: number): string;
+    protected stepErrorText(panelNumber: number): string;
     private listenToFocusChanges;
     private triggerAllFormControlValidationIfError;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-step-title", "clr-step-description", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, ["stepDescription"], ["clr-step-title", "clr-step-description", "*"], false, never>;
 }
 
 declare class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
@@ -85,8 +113,8 @@ declare class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy 
     private stepperService;
     initialPanel: string;
     panels: QueryList<ClrStepperPanel>;
-    subscriptions: Subscription[];
     form: FormGroupDirective | NgForm;
+    private subscriptions;
     constructor(formGroup: FormGroupDirective, ngForm: NgForm, stepperService: StepperService);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
@@ -118,6 +146,16 @@ declare class ClrStepButton implements OnInit {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStepButton, "[clrStepButton]", never, { "type": { "alias": "clrStepButton"; "required": false; }; }, {}, never, never, false, never>;
 }
 
+declare class ClrStepTitle {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepTitle, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepTitle, "clr-step-title", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class ClrStepContent {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepContent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepContent, "clr-step-content", never, {}, {}, never, ["*"], false, never>;
+}
+
 declare class StepperWillyWonka extends WillyWonka {
     static ɵfac: i0.ɵɵFactoryDeclaration<StepperWillyWonka, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<StepperWillyWonka, "form[clrStepper]", never, {}, {}, never, never, false, never>;
@@ -132,9 +170,10 @@ declare class StepperOompaLoompa extends OompaLoompa {
 }
 
 declare class ClrStepperModule {
+    constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepperPanel, typeof StepperOompaLoompa, typeof StepperWillyWonka], [typeof i6.CommonModule, typeof i7.ClrIcon, typeof _clr_angular_accordion.ClrAccordionModule], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepperPanel, typeof StepperOompaLoompa, typeof StepperWillyWonka, typeof _clr_angular_accordion.ClrAccordionModule, typeof i7.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof StepperOompaLoompa, typeof StepperWillyWonka], [typeof i9.CommonModule, typeof i10.ClrIcon], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof StepperOompaLoompa, typeof StepperWillyWonka, typeof i10.ClrIcon]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStepperModule>;
 }
 
-export { ClrStepButton, ClrStepButtonType, ClrStepper, ClrStepperModule, ClrStepperPanel, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka };
+export { ClrStepButton, ClrStepButtonType, ClrStepContent, ClrStepDescription, ClrStepTitle, ClrStepper, ClrStepperModule, ClrStepperPanel, StepperPanelModel, StepperPanelStatus, StepperService, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka };

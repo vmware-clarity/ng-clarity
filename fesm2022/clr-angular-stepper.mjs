@@ -1,15 +1,15 @@
 import * as i4 from '@angular/common';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import * as i0 from '@angular/core';
-import { Injectable, PLATFORM_ID, ViewChild, Inject, Optional, ChangeDetectionStrategy, Component, ContentChildren, Input, Directive, HostListener, HostBinding, NgModule } from '@angular/core';
-import { AccordionModel, AccordionStatus, AccordionService, ClrAccordionPanel, stepAnimation, ClrAccordionModule } from '@clr/angular/accordion';
+import { ChangeDetectionStrategy, Component, Injectable, PLATFORM_ID, HostBinding, ContentChildren, ViewChild, Inject, Optional, Input, Directive, HostListener, NgModule } from '@angular/core';
+import { CollapsiblePanelModel, CollapsiblePanelGroupModel, CollapsiblePanelService, CollapsiblePanel, collapsiblePanelAnimation } from '@clr/angular/collapsible-panel';
 import * as i1 from '@clr/angular/utils';
 import { triggerAllFormControlValidation, IfExpandService, WillyWonka, OompaLoompa } from '@clr/angular/utils';
 import { map, distinctUntilChanged, tap, filter, skipUntil, startWith } from 'rxjs/operators';
 import * as i2 from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import * as i5 from '@clr/angular/icon';
-import { ClrIcon } from '@clr/angular/icon';
+import { ClarityIcons, angleIcon, exclamationCircleIcon, checkCircleIcon, ClrIcon } from '@clr/angular/icon';
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -17,10 +17,61 @@ import { ClrIcon } from '@clr/angular/icon';
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class StepperModel extends AccordionModel {
+var StepperPanelStatus;
+(function (StepperPanelStatus) {
+    StepperPanelStatus["Inactive"] = "inactive";
+    StepperPanelStatus["Error"] = "error";
+    StepperPanelStatus["Complete"] = "complete";
+})(StepperPanelStatus || (StepperPanelStatus = {}));
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrStepDescription {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepDescription, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrStepDescription, isStandalone: false, selector: "clr-step-description", host: { properties: { "class.clr-stepper-description": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepDescription, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'clr-step-description',
+                    template: `<ng-content></ng-content>`,
+                    host: { '[class.clr-stepper-description]': 'true' },
+                    changeDetection: ChangeDetectionStrategy.OnPush,
+                    standalone: false,
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class StepperPanelModel extends CollapsiblePanelModel {
     constructor() {
         super(...arguments);
+        this.status = StepperPanelStatus.Inactive;
+    }
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class StepperModel extends CollapsiblePanelGroupModel {
+    constructor() {
+        super(...arguments);
+        this._panels = {};
         this.stepperModelInitialize = false;
+    }
+    get panels() {
+        return Object.keys(this._panels).map(id => this._panels[id]);
     }
     get allPanelsCompleted() {
         return this.panels.length && this.getNumberOfIncompletePanels() === 0 && this.getNumberOfOpenPanels() === 0;
@@ -29,8 +80,10 @@ class StepperModel extends AccordionModel {
         return !this.initialPanel || (this._panels && Object.keys(this._panels).length && !this._panels[this.initialPanel]);
     }
     addPanel(id, open = false) {
-        super.addPanel(id, open);
-        this._panels[id].disabled = true;
+        const panel = new StepperPanelModel(id, this.panelGroupCount);
+        panel.open = open;
+        panel.disabled = true;
+        this._panels[id] = panel;
     }
     updatePanelOrder(ids) {
         super.updatePanelOrder(ids);
@@ -39,7 +92,7 @@ class StepperModel extends AccordionModel {
         }
     }
     togglePanel(panelId) {
-        if (this._panels[panelId].status === AccordionStatus.Complete) {
+        if (this._panels[panelId]?.status === StepperPanelStatus.Complete) {
             this._panels[panelId].open = !this._panels[panelId].open;
         }
     }
@@ -72,16 +125,15 @@ class StepperModel extends AccordionModel {
         });
     }
     setPanelValid(panelId) {
-        this._panels[panelId].status = AccordionStatus.Complete;
+        this._panels[panelId].status = StepperPanelStatus.Complete;
     }
     setPanelInvalid(panelId) {
-        this._panels[panelId].status = AccordionStatus.Error;
+        this._panels[panelId].status = StepperPanelStatus.Error;
     }
     setPanelsWithErrors(ids) {
         ids.forEach(id => this.setPanelError(id));
     }
     resetPanels() {
-        /* return stepper to initialize state */
         this.stepperModelInitialize = false;
         this.panels.forEach(p => this.resetPanel(p.id));
         this.openFirstPanel();
@@ -96,7 +148,7 @@ class StepperModel extends AccordionModel {
         this.panels.filter(panel => panel.index >= this._panels[panelId].index).forEach(panel => this.resetPanel(panel.id));
     }
     resetPanel(panelId) {
-        this._panels[panelId].status = AccordionStatus.Inactive;
+        this._panels[panelId].status = StepperPanelStatus.Inactive;
         this._panels[panelId].open = false;
         this._panels[panelId].disabled = true;
     }
@@ -105,11 +157,6 @@ class StepperModel extends AccordionModel {
             return;
         }
         const firstPanel = this.getFirstPanel();
-        /**
-         * You need to call updatePanelOrder first to get the correct order,
-         * else the list of panels will not have `index` set and we won't know
-         * how to find the first panel.
-         */
         if (!firstPanel) {
             return;
         }
@@ -118,7 +165,7 @@ class StepperModel extends AccordionModel {
         this.stepperModelInitialize = true;
     }
     completePanel(panelId) {
-        this._panels[panelId].status = AccordionStatus.Complete;
+        this._panels[panelId].status = StepperPanelStatus.Complete;
         this._panels[panelId].disabled = false;
         this._panels[panelId].open = false;
     }
@@ -142,13 +189,13 @@ class StepperModel extends AccordionModel {
     setPanelError(panelId) {
         this.resetAllFuturePanels(panelId);
         this._panels[panelId].open = true;
-        this._panels[panelId].status = AccordionStatus.Error;
+        this._panels[panelId].status = StepperPanelStatus.Error;
     }
     getFirstPanel() {
         return this.panels.find(panel => panel.index === 0);
     }
     getNumberOfIncompletePanels() {
-        return this.panels.reduce((prev, next) => (next.status !== AccordionStatus.Complete ? prev + 1 : prev), 0);
+        return this.panels.reduce((prev, next) => (next.status !== StepperPanelStatus.Complete ? prev + 1 : prev), 0);
     }
     getNumberOfOpenPanels() {
         return this.panels.reduce((prev, next) => (next.open !== false ? prev + 1 : prev), 0);
@@ -161,46 +208,46 @@ class StepperModel extends AccordionModel {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class StepperService extends AccordionService {
+class StepperService extends CollapsiblePanelService {
     constructor() {
         super();
         this.panelsCompleted = this.getAllCompletedPanelChanges();
-        this.accordion = new StepperModel();
+        this.panelGroup = new StepperModel();
         this._activeStepChanges = new Subject();
         this.activeStep = this._activeStepChanges.asObservable();
     }
     resetPanels() {
-        this.accordion.resetPanels();
+        this.panelGroup.resetPanels();
         this.emitUpdatedPanels();
     }
     setPanelValid(panelId) {
-        this.accordion.setPanelValid(panelId);
+        this.panelGroup.setPanelValid(panelId);
         this.emitUpdatedPanels();
     }
     setPanelInvalid(panelId) {
-        this.accordion.setPanelInvalid(panelId);
+        this.panelGroup.setPanelInvalid(panelId);
         this.emitUpdatedPanels();
     }
     setPanelsWithErrors(ids) {
-        this.accordion.setPanelsWithErrors(ids);
+        this.panelGroup.setPanelsWithErrors(ids);
         this.emitUpdatedPanels();
     }
     navigateToPreviousPanel(currentPanelId) {
-        this.accordion.navigateToPreviousPanel(currentPanelId);
+        this.panelGroup.navigateToPreviousPanel(currentPanelId);
         this.updatePreviousStep(currentPanelId);
         this.emitUpdatedPanels();
     }
     navigateToNextPanel(currentPanelId, currentPanelValid = true) {
-        this.accordion.navigateToNextPanel(currentPanelId, currentPanelValid);
+        this.panelGroup.navigateToNextPanel(currentPanelId, currentPanelValid);
         this.updateNextStep(currentPanelId, currentPanelValid);
         this.emitUpdatedPanels();
     }
     overrideInitialPanel(panelId) {
-        this.accordion.overrideInitialPanel(panelId);
+        this.panelGroup.overrideInitialPanel(panelId);
         this.emitUpdatedPanels();
     }
     updateNextStep(currentPanelId, currentPanelValid) {
-        const nextPanel = this.accordion.getNextPanel(currentPanelId);
+        const nextPanel = this.panelGroup.getNextPanel(currentPanelId);
         if (currentPanelValid && nextPanel) {
             this._activeStepChanges.next(nextPanel.id);
         }
@@ -209,13 +256,13 @@ class StepperService extends AccordionService {
         }
     }
     updatePreviousStep(currentPanelId) {
-        const prevPanel = this.accordion.getPreviousPanel(currentPanelId);
+        const prevPanel = this.panelGroup.getPreviousPanel(currentPanelId);
         if (prevPanel) {
             this._activeStepChanges.next(prevPanel.id);
         }
     }
     getAllCompletedPanelChanges() {
-        return this._panelsChanges.pipe(map(() => this.accordion.allPanelsCompleted), distinctUntilChanged());
+        return this._panelsChanges.pipe(map(() => this.panelGroup.allPanelsCompleted), distinctUntilChanged());
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: StepperService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
     static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: StepperService }); }
@@ -230,15 +277,16 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class ClrStepperPanel extends ClrAccordionPanel {
+class ClrStepperPanel extends CollapsiblePanel {
     constructor(platformId, commonStrings, formGroupName, ngModelGroup, stepperService, ifExpandService, cdr) {
-        super(null, commonStrings, stepperService, ifExpandService, cdr);
+        super(stepperService, ifExpandService, cdr);
         this.platformId = platformId;
         this.commonStrings = commonStrings;
         this.formGroupName = formGroupName;
         this.ngModelGroup = ngModelGroup;
         this.stepperService = stepperService;
-        this.AccordionStatus = AccordionStatus;
+        this.disabled = false;
+        this.PanelStatus = StepperPanelStatus;
         this.subscriptions = [];
     }
     get id() {
@@ -247,8 +295,23 @@ class ClrStepperPanel extends ClrAccordionPanel {
     set id(_value) {
         // overriding parent id required empty setter
     }
+    get panelNumber() {
+        return this._panelIndex + 1;
+    }
     get formGroup() {
         return this.formGroupName ? this.formGroupName.control : this.ngModelGroup.control;
+    }
+    getPanelStatus(panel) {
+        return panel.status;
+    }
+    getPanelStateClasses(panel) {
+        return `clr-stepper-panel-${this.getPanelStatus(panel)} ${panel.open ? 'clr-stepper-panel-open' : ''}`;
+    }
+    getContentId(id) {
+        return `clr-stepper-content-${id}`;
+    }
+    getHeaderId(id) {
+        return `clr-stepper-header-${id}`;
     }
     ngOnInit() {
         super.ngOnInit();
@@ -275,6 +338,12 @@ class ClrStepperPanel extends ClrAccordionPanel {
     ngOnDestroy() {
         this.subscriptions.forEach(s => s.unsubscribe());
     }
+    stepCompleteText(panelNumber) {
+        return this.commonStrings.parse(this.commonStrings.keys.stepComplete, { STEP: panelNumber.toString() });
+    }
+    stepErrorText(panelNumber) {
+        return this.commonStrings.parse(this.commonStrings.keys.stepError, { STEP: panelNumber.toString() });
+    }
     listenToFocusChanges() {
         this.subscriptions.push(this.stepperService.activeStep
             .pipe(filter(panelId => isPlatformBrowser(this.platformId) && panelId === this.id))
@@ -283,16 +352,16 @@ class ClrStepperPanel extends ClrAccordionPanel {
         }));
     }
     triggerAllFormControlValidationIfError(panel) {
-        if (panel.status === AccordionStatus.Error) {
+        if (panel.status === StepperPanelStatus.Error) {
             triggerAllFormControlValidation(this.formGroup);
         }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepperPanel, deps: [{ token: PLATFORM_ID }, { token: i1.ClrCommonStringsService }, { token: i2.FormGroupName, optional: true }, { token: i2.NgModelGroup, optional: true }, { token: StepperService }, { token: i1.IfExpandService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrStepperPanel, isStandalone: false, selector: "clr-stepper-panel", host: { properties: { "class.clr-stepper-panel": "true" } }, providers: [IfExpandService], viewQueries: [{ propertyName: "headerButton", first: true, predicate: ["headerButton"], descendants: true }], usesInheritance: true, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n@if (panel | async; as panel) {\n<div [ngClass]=\"getPanelStateClasses(panel)\">\n  <div class=\"clr-accordion-header clr-stepper-header\">\n    <button\n      type=\"button\"\n      class=\"clr-accordion-header-button\"\n      (click)=\"togglePanel()\"\n      [id]=\"getAccordionHeaderId(panel.templateId)\"\n      [attr.aria-disabled]=\"panel.disabled\"\n      [attr.aria-controls]=\"getAccordionContentId(panel.templateId)\"\n      [attr.aria-expanded]=\"panel.open\"\n      [class.clr-accordion-header-has-description]=\"(accordionDescription.changes | async)?.length || accordionDescription.length\"\n      #headerButton\n    >\n      <span class=\"clr-step-status\">\n        <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-accordion-angle clr-step-angle\"></cds-icon>\n        <span class=\"clr-step-status-icon\">\n          @if (panel.status === AccordionStatus.Error) {\n          <cds-icon status=\"danger\" shape=\"exclamation-circle\" class=\"clr-step-error-icon\"></cds-icon>\n          } @if (panel.status === AccordionStatus.Complete) {\n          <cds-icon status=\"success\" shape=\"check-circle\" class=\"clr-step-complete-icon\"></cds-icon>\n          }\n        </span>\n      </span>\n      <span class=\"clr-step-title-wrapper\">\n        <span class=\"clr-step-number\">{{panelNumber}}.</span>\n        <ng-content select=\"clr-step-title\"></ng-content>\n      </span>\n      <ng-content select=\"clr-step-description\"></ng-content>\n    </button>\n    <div class=\"clr-sr-only\" role=\"status\">\n      @if (panel.status === AccordionStatus.Error) { {{ stepErrorText(panelNumber)}} } @if (panel.status ===\n      AccordionStatus.Complete) { {{ stepCompleteText(panelNumber)}} }\n    </div>\n  </div>\n  <div\n    @skipInitialRender\n    role=\"region\"\n    class=\"clr-accordion-content-region\"\n    [id]=\"getAccordionContentId(panel.templateId)\"\n    [attr.aria-hidden]=\"!panel.open\"\n    [attr.aria-labelledby]=\"getAccordionHeaderId(panel.templateId)\"\n  >\n    @if (panel.open) {\n    <div @toggle (@toggle.done)=\"collapsePanelOnAnimationDone(panel)\" class=\"clr-accordion-content\">\n      <div class=\"clr-accordion-inner-content\">\n        <ng-content></ng-content>\n      </div>\n    </div>\n    }\n  </div>\n</div>\n}\n", dependencies: [{ kind: "directive", type: i4.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "pipe", type: i4.AsyncPipe, name: "async" }], animations: stepAnimation, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrStepperPanel, isStandalone: false, selector: "clr-stepper-panel", host: { properties: { "class.clr-stepper-panel": "true", "class.clr-stepper-panel-disabled": "this.disabled" } }, providers: [IfExpandService], queries: [{ propertyName: "stepDescription", predicate: ClrStepDescription }], viewQueries: [{ propertyName: "headerButton", first: true, predicate: ["headerButton"], descendants: true }], usesInheritance: true, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n@if (panel | async; as panel) {\n<div [ngClass]=\"getPanelStateClasses(panel)\">\n  <div class=\"clr-stepper-header\">\n    <button\n      type=\"button\"\n      class=\"clr-stepper-header-button\"\n      (click)=\"togglePanel()\"\n      [id]=\"getHeaderId(panel.templateId)\"\n      [attr.aria-disabled]=\"panel.disabled\"\n      [attr.aria-controls]=\"getContentId(panel.templateId)\"\n      [attr.aria-expanded]=\"panel.open\"\n      [class.clr-stepper-header-has-description]=\"(stepDescription.changes | async)?.length || stepDescription.length\"\n      #headerButton\n    >\n      <span class=\"clr-step-status\">\n        <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-stepper-angle clr-step-angle\"></cds-icon>\n        <span class=\"clr-step-status-icon\">\n          @if (getPanelStatus(panel) === PanelStatus.Error) {\n          <cds-icon status=\"danger\" shape=\"exclamation-circle\" class=\"clr-step-error-icon\"></cds-icon>\n          } @if (getPanelStatus(panel) === PanelStatus.Complete) {\n          <cds-icon status=\"success\" shape=\"check-circle\" class=\"clr-step-complete-icon\"></cds-icon>\n          }\n        </span>\n      </span>\n      <span class=\"clr-step-title-wrapper\">\n        <span class=\"clr-step-number\">{{panelNumber}}.</span>\n        <ng-content select=\"clr-step-title\"></ng-content>\n      </span>\n      <ng-content select=\"clr-step-description\"></ng-content>\n    </button>\n    <div class=\"clr-sr-only\" role=\"status\">\n      @if (getPanelStatus(panel) === PanelStatus.Error) { {{ stepErrorText(panelNumber)}} } @if (getPanelStatus(panel)\n      === PanelStatus.Complete) { {{ stepCompleteText(panelNumber)}} }\n    </div>\n  </div>\n  <div\n    @skipInitialRender\n    role=\"region\"\n    class=\"clr-stepper-content-region\"\n    [id]=\"getContentId(panel.templateId)\"\n    [attr.aria-hidden]=\"!panel.open\"\n    [attr.aria-labelledby]=\"getHeaderId(panel.templateId)\"\n  >\n    @if (panel.open) {\n    <div @toggle (@toggle.done)=\"collapsePanelOnAnimationDone(panel)\" class=\"clr-stepper-content\">\n      <div class=\"clr-stepper-inner-content\">\n        <ng-content></ng-content>\n      </div>\n    </div>\n    }\n  </div>\n</div>\n}\n", dependencies: [{ kind: "directive", type: i4.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "pipe", type: i4.AsyncPipe, name: "async" }], animations: collapsiblePanelAnimation, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepperPanel, decorators: [{
             type: Component,
-            args: [{ selector: 'clr-stepper-panel', host: { '[class.clr-stepper-panel]': 'true' }, changeDetection: ChangeDetectionStrategy.OnPush, animations: stepAnimation, providers: [IfExpandService], standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n@if (panel | async; as panel) {\n<div [ngClass]=\"getPanelStateClasses(panel)\">\n  <div class=\"clr-accordion-header clr-stepper-header\">\n    <button\n      type=\"button\"\n      class=\"clr-accordion-header-button\"\n      (click)=\"togglePanel()\"\n      [id]=\"getAccordionHeaderId(panel.templateId)\"\n      [attr.aria-disabled]=\"panel.disabled\"\n      [attr.aria-controls]=\"getAccordionContentId(panel.templateId)\"\n      [attr.aria-expanded]=\"panel.open\"\n      [class.clr-accordion-header-has-description]=\"(accordionDescription.changes | async)?.length || accordionDescription.length\"\n      #headerButton\n    >\n      <span class=\"clr-step-status\">\n        <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-accordion-angle clr-step-angle\"></cds-icon>\n        <span class=\"clr-step-status-icon\">\n          @if (panel.status === AccordionStatus.Error) {\n          <cds-icon status=\"danger\" shape=\"exclamation-circle\" class=\"clr-step-error-icon\"></cds-icon>\n          } @if (panel.status === AccordionStatus.Complete) {\n          <cds-icon status=\"success\" shape=\"check-circle\" class=\"clr-step-complete-icon\"></cds-icon>\n          }\n        </span>\n      </span>\n      <span class=\"clr-step-title-wrapper\">\n        <span class=\"clr-step-number\">{{panelNumber}}.</span>\n        <ng-content select=\"clr-step-title\"></ng-content>\n      </span>\n      <ng-content select=\"clr-step-description\"></ng-content>\n    </button>\n    <div class=\"clr-sr-only\" role=\"status\">\n      @if (panel.status === AccordionStatus.Error) { {{ stepErrorText(panelNumber)}} } @if (panel.status ===\n      AccordionStatus.Complete) { {{ stepCompleteText(panelNumber)}} }\n    </div>\n  </div>\n  <div\n    @skipInitialRender\n    role=\"region\"\n    class=\"clr-accordion-content-region\"\n    [id]=\"getAccordionContentId(panel.templateId)\"\n    [attr.aria-hidden]=\"!panel.open\"\n    [attr.aria-labelledby]=\"getAccordionHeaderId(panel.templateId)\"\n  >\n    @if (panel.open) {\n    <div @toggle (@toggle.done)=\"collapsePanelOnAnimationDone(panel)\" class=\"clr-accordion-content\">\n      <div class=\"clr-accordion-inner-content\">\n        <ng-content></ng-content>\n      </div>\n    </div>\n    }\n  </div>\n</div>\n}\n" }]
+            args: [{ selector: 'clr-stepper-panel', host: { '[class.clr-stepper-panel]': 'true' }, changeDetection: ChangeDetectionStrategy.OnPush, animations: collapsiblePanelAnimation, providers: [IfExpandService], standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n@if (panel | async; as panel) {\n<div [ngClass]=\"getPanelStateClasses(panel)\">\n  <div class=\"clr-stepper-header\">\n    <button\n      type=\"button\"\n      class=\"clr-stepper-header-button\"\n      (click)=\"togglePanel()\"\n      [id]=\"getHeaderId(panel.templateId)\"\n      [attr.aria-disabled]=\"panel.disabled\"\n      [attr.aria-controls]=\"getContentId(panel.templateId)\"\n      [attr.aria-expanded]=\"panel.open\"\n      [class.clr-stepper-header-has-description]=\"(stepDescription.changes | async)?.length || stepDescription.length\"\n      #headerButton\n    >\n      <span class=\"clr-step-status\">\n        <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-stepper-angle clr-step-angle\"></cds-icon>\n        <span class=\"clr-step-status-icon\">\n          @if (getPanelStatus(panel) === PanelStatus.Error) {\n          <cds-icon status=\"danger\" shape=\"exclamation-circle\" class=\"clr-step-error-icon\"></cds-icon>\n          } @if (getPanelStatus(panel) === PanelStatus.Complete) {\n          <cds-icon status=\"success\" shape=\"check-circle\" class=\"clr-step-complete-icon\"></cds-icon>\n          }\n        </span>\n      </span>\n      <span class=\"clr-step-title-wrapper\">\n        <span class=\"clr-step-number\">{{panelNumber}}.</span>\n        <ng-content select=\"clr-step-title\"></ng-content>\n      </span>\n      <ng-content select=\"clr-step-description\"></ng-content>\n    </button>\n    <div class=\"clr-sr-only\" role=\"status\">\n      @if (getPanelStatus(panel) === PanelStatus.Error) { {{ stepErrorText(panelNumber)}} } @if (getPanelStatus(panel)\n      === PanelStatus.Complete) { {{ stepCompleteText(panelNumber)}} }\n    </div>\n  </div>\n  <div\n    @skipInitialRender\n    role=\"region\"\n    class=\"clr-stepper-content-region\"\n    [id]=\"getContentId(panel.templateId)\"\n    [attr.aria-hidden]=\"!panel.open\"\n    [attr.aria-labelledby]=\"getHeaderId(panel.templateId)\"\n  >\n    @if (panel.open) {\n    <div @toggle (@toggle.done)=\"collapsePanelOnAnimationDone(panel)\" class=\"clr-stepper-content\">\n      <div class=\"clr-stepper-inner-content\">\n        <ng-content></ng-content>\n      </div>\n    </div>\n    }\n  </div>\n</div>\n}\n" }]
         }], ctorParameters: () => [{ type: undefined, decorators: [{
                     type: Inject,
                     args: [PLATFORM_ID]
@@ -303,6 +372,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                 }] }, { type: StepperService }, { type: i1.IfExpandService }, { type: i0.ChangeDetectorRef }], propDecorators: { headerButton: [{
                 type: ViewChild,
                 args: ['headerButton']
+            }], stepDescription: [{
+                type: ContentChildren,
+                args: [ClrStepDescription]
+            }], disabled: [{
+                type: HostBinding,
+                args: ['class.clr-stepper-panel-disabled']
             }] } });
 
 /*
@@ -327,7 +402,9 @@ class ClrStepper {
         this.subscriptions.push(this.listenForFormResetChanges());
     }
     ngOnChanges(changes) {
-        if (changes.initialPanel.currentValue !== changes.initialPanel.previousValue) {
+        if (changes.initialPanel &&
+            !changes.initialPanel.firstChange &&
+            changes.initialPanel.currentValue !== changes.initialPanel.previousValue) {
             this.stepperService.overrideInitialPanel(this.initialPanel);
         }
     }
@@ -363,7 +440,7 @@ class ClrStepper {
         });
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepper, deps: [{ token: i2.FormGroupDirective, optional: true }, { token: i2.NgForm, optional: true }, { token: StepperService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrStepper, isStandalone: false, selector: "form[clrStepper]", inputs: { initialPanel: ["clrInitialStep", "initialPanel"] }, host: { properties: { "class.clr-accordion": "true", "class.clr-stepper-forms": "true" } }, providers: [StepperService, { provide: AccordionService, useExisting: StepperService }], queries: [{ propertyName: "panels", predicate: ClrStepperPanel, descendants: true }], usesOnChanges: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrStepper, isStandalone: false, selector: "form[clrStepper]", inputs: { initialPanel: ["clrInitialStep", "initialPanel"] }, host: { properties: { "class.clr-stepper-forms": "true" } }, providers: [StepperService, { provide: CollapsiblePanelService, useExisting: StepperService }], queries: [{ propertyName: "panels", predicate: ClrStepperPanel }], usesOnChanges: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepper, decorators: [{
             type: Component,
@@ -371,10 +448,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     selector: 'form[clrStepper]',
                     template: `<ng-content></ng-content>`,
                     host: {
-                        '[class.clr-accordion]': 'true',
                         '[class.clr-stepper-forms]': 'true',
                     },
-                    providers: [StepperService, { provide: AccordionService, useExisting: StepperService }],
+                    providers: [StepperService, { provide: CollapsiblePanelService, useExisting: StepperService }],
                     changeDetection: ChangeDetectionStrategy.OnPush,
                     standalone: false,
                 }]
@@ -387,7 +463,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                 args: ['clrInitialStep']
             }], panels: [{
                 type: ContentChildren,
-                args: [ClrStepperPanel, { descendants: true }]
+                args: [ClrStepperPanel]
             }] } });
 function fromControlReset(control) {
     return new Observable(observer => {
@@ -515,20 +591,87 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-const declarations = [ClrStepper, ClrStepButton, ClrStepperPanel, StepperOompaLoompa, StepperWillyWonka];
+class ClrStepContent {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepContent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrStepContent, isStandalone: false, selector: "clr-step-content", ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepContent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'clr-step-content',
+                    template: `<ng-content></ng-content>`,
+                    changeDetection: ChangeDetectionStrategy.OnPush,
+                    standalone: false,
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrStepTitle {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepTitle, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrStepTitle, isStandalone: false, selector: "clr-step-title", host: { properties: { "class.clr-stepper-title": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepTitle, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'clr-step-title',
+                    template: `<ng-content></ng-content>`,
+                    host: { '[class.clr-stepper-title]': 'true' },
+                    changeDetection: ChangeDetectionStrategy.OnPush,
+                    standalone: false,
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+const declarations = [
+    ClrStepper,
+    ClrStepButton,
+    ClrStepTitle,
+    ClrStepDescription,
+    ClrStepContent,
+    ClrStepperPanel,
+    StepperOompaLoompa,
+    StepperWillyWonka,
+];
 class ClrStepperModule {
+    constructor() {
+        ClarityIcons.addIcons(angleIcon, exclamationCircleIcon, checkCircleIcon);
+    }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepperModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrStepperModule, declarations: [ClrStepper, ClrStepButton, ClrStepperPanel, StepperOompaLoompa, StepperWillyWonka], imports: [CommonModule, ClrIcon, ClrAccordionModule], exports: [ClrStepper, ClrStepButton, ClrStepperPanel, StepperOompaLoompa, StepperWillyWonka, ClrAccordionModule, ClrIcon] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepperModule, imports: [CommonModule, ClrIcon, ClrAccordionModule, ClrAccordionModule] }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrStepperModule, declarations: [ClrStepper,
+            ClrStepButton,
+            ClrStepTitle,
+            ClrStepDescription,
+            ClrStepContent,
+            ClrStepperPanel,
+            StepperOompaLoompa,
+            StepperWillyWonka], imports: [CommonModule, ClrIcon], exports: [ClrStepper,
+            ClrStepButton,
+            ClrStepTitle,
+            ClrStepDescription,
+            ClrStepContent,
+            ClrStepperPanel,
+            StepperOompaLoompa,
+            StepperWillyWonka, ClrIcon] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepperModule, imports: [CommonModule, ClrIcon] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepperModule, decorators: [{
             type: NgModule,
             args: [{
-                    imports: [CommonModule, ClrIcon, ClrAccordionModule],
+                    imports: [CommonModule, ClrIcon],
                     declarations: [...declarations],
-                    exports: [...declarations, ClrAccordionModule, ClrIcon],
+                    exports: [...declarations, ClrIcon],
                 }]
-        }] });
+        }], ctorParameters: () => [] });
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -541,5 +684,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { ClrStepButton, ClrStepButtonType, ClrStepper, ClrStepperModule, ClrStepperPanel, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka };
+export { ClrStepButton, ClrStepButtonType, ClrStepContent, ClrStepDescription, ClrStepTitle, ClrStepper, ClrStepperModule, ClrStepperPanel, StepperPanelModel, StepperPanelStatus, StepperService, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka };
 //# sourceMappingURL=clr-angular-stepper.mjs.map
