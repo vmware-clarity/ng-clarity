@@ -1,0 +1,48 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'variables.vertical-nav' as vertical-nav-variables;
+@use '../tabs/mixins.tabs' as tabs-mixins;
+
+@mixin vertical-nav-divider($position: 'border-top') {
+  #{$position}: vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-width solid
+    vertical-nav-variables.$clr-vertical-nav-trigger-divider-border-color;
+}
+@mixin vertical-nav-link-colors() {
+  color: vertical-nav-variables.$clr-vertical-nav-item-color;
+
+  &.active {
+    color: vertical-nav-variables.$clr-vertical-nav-item-active-color;
+    background-color: vertical-nav-variables.$clr-vertical-nav-selected-bg-color;
+    position: relative;
+
+    @include tabs-mixins.nav-link-border-appearance('left');
+
+    .nav-icon {
+      fill: vertical-nav-variables.$clr-vertical-nav-icon-active-color;
+    }
+
+    &:hover {
+      background-color: vertical-nav-variables.$clr-vertical-nav-selected-hover-bg-color;
+    }
+
+    &:active {
+      background-color: vertical-nav-variables.$clr-vertical-nav-selected-active-bg-color;
+    }
+  }
+
+  &:hover {
+    color: vertical-nav-variables.$clr-vertical-nav-item-active-color;
+    background-color: vertical-nav-variables.$clr-vertical-nav-hover-bg-color;
+    text-decoration: none;
+  }
+
+  &:active {
+    color: vertical-nav-variables.$clr-vertical-nav-active-color;
+    background-color: vertical-nav-variables.$clr-vertical-nav-active-bg-color;
+  }
+}
