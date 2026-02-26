@@ -9,83 +9,59 @@ import { AccordionModel } from './accordion.model';
 import { AccordionStrategy } from '../enums/accordion-strategy.enum';
 
 describe('AccordionModel', () => {
-  let accordion: AccordionModel;
+  let accordionModel: AccordionModel;
   const panel1Id = '0';
   const panel2Id = '1';
   const panel3Id = '2';
 
   beforeEach(() => {
-    accordion = new AccordionModel();
-    accordion.addPanel(panel1Id);
-    accordion.addPanel(panel2Id);
-    accordion.addPanel(panel3Id);
-    accordion.updatePanelOrder([panel1Id, panel2Id, panel3Id]);
+    accordionModel = new AccordionModel();
+    accordionModel.addPanel(panel1Id);
+    accordionModel.addPanel(panel2Id);
+    accordionModel.addPanel(panel3Id);
+    accordionModel.updatePanelOrder([panel1Id, panel2Id, panel3Id]);
   });
 
-  it('should add new AccordionPanelModel instances', () => {
-    expect(accordion.panels.length).toBe(3);
-  });
+  it('should close all other panels when opening a new panel in default strategy', () => {
+    expect(accordionModel.panels[0].open).toBe(false);
+    expect(accordionModel.panels[1].open).toBe(false);
+    expect(accordionModel.panels[2].open).toBe(false);
 
-  it('should disable or enable a panel', () => {
-    expect(accordion.panels[panel1Id].disabled).toBe(false);
-    accordion.disablePanel(panel1Id, true);
-    expect(accordion.panels[panel1Id].disabled).toBe(true);
-  });
+    accordionModel.togglePanel(panel1Id);
 
-  it('should remove panels from collection when re-synced with ContentChildren', () => {
-    expect(accordion.panels.length).toBe(3);
-    accordion.updatePanelOrder([panel1Id, panel3Id]);
-    expect(accordion.panels.length).toBe(2);
-  });
+    expect(accordionModel.panels[0].open).toBe(true);
+    expect(accordionModel.panels[1].open).toBe(false);
+    expect(accordionModel.panels[2].open).toBe(false);
 
-  it('should close all other panels when opening a new panel', () => {
-    expect(accordion.panels[0].open).toBe(false);
-    expect(accordion.panels[1].open).toBe(false);
-    expect(accordion.panels[2].open).toBe(false);
+    accordionModel.togglePanel(panel2Id);
 
-    accordion.togglePanel(panel1Id);
-
-    expect(accordion.panels[0].open).toBe(true);
-    expect(accordion.panels[1].open).toBe(false);
-    expect(accordion.panels[2].open).toBe(false);
-
-    accordion.togglePanel(panel2Id);
-
-    expect(accordion.panels[0].open).toBe(false);
-    expect(accordion.panels[1].open).toBe(true);
-    expect(accordion.panels[2].open).toBe(false);
+    expect(accordionModel.panels[0].open).toBe(false);
+    expect(accordionModel.panels[1].open).toBe(true);
+    expect(accordionModel.panels[2].open).toBe(false);
   });
 
   it('should not close all panels when closing an already closed panel', () => {
-    expect(accordion.panels[0].open).toBe(false);
-    expect(accordion.panels[1].open).toBe(false);
-    expect(accordion.panels[2].open).toBe(false);
+    accordionModel.togglePanel(panel1Id);
 
-    accordion.togglePanel(panel1Id);
+    expect(accordionModel.panels[0].open).toBe(true);
+    expect(accordionModel.panels[1].open).toBe(false);
+    expect(accordionModel.panels[2].open).toBe(false);
 
-    expect(accordion.panels[0].open).toBe(true);
-    expect(accordion.panels[1].open).toBe(false);
-    expect(accordion.panels[2].open).toBe(false);
+    accordionModel.togglePanel(panel2Id, false);
 
-    accordion.togglePanel(panel2Id, false);
-
-    expect(accordion.panels[0].open).toBe(true);
-    expect(accordion.panels[1].open).toBe(false);
-    expect(accordion.panels[2].open).toBe(false);
+    expect(accordionModel.panels[0].open).toBe(true);
+    expect(accordionModel.panels[1].open).toBe(false);
+    expect(accordionModel.panels[2].open).toBe(false);
   });
 
   it('should allow multiple panels open if in multi panel mode', () => {
-    accordion.setStrategy(AccordionStrategy.Multi);
+    accordionModel.setStrategy(AccordionStrategy.Multi);
 
-    expect(accordion.panels[0].open).toBe(false);
-    expect(accordion.panels[1].open).toBe(false);
-    expect(accordion.panels[2].open).toBe(false);
+    accordionModel.togglePanel(panel1Id);
+    accordionModel.togglePanel(panel2Id);
 
-    accordion.togglePanel(panel1Id);
-    accordion.togglePanel(panel2Id);
-
-    expect(accordion.panels[0].open).toBe(true);
-    expect(accordion.panels[1].open).toBe(true);
-    expect(accordion.panels[2].open).toBe(false);
+    expect(accordionModel.panels[0].open).toBe(true);
+    expect(accordionModel.panels[1].open).toBe(true);
+    expect(accordionModel.panels[2].open).toBe(false);
   });
 });

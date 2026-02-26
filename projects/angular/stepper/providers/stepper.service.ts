@@ -6,18 +6,18 @@
  */
 
 import { Injectable } from '@angular/core';
-import { AccordionService } from '@clr/angular/accordion';
+import { CollapsiblePanelService } from '@clr/angular/collapsible-panel';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { StepperModel } from '../models/stepper.model';
 
 @Injectable()
-export class StepperService extends AccordionService {
+export class StepperService extends CollapsiblePanelService {
   readonly activeStep: Observable<string>;
   readonly panelsCompleted = this.getAllCompletedPanelChanges();
 
-  protected override accordion = new StepperModel();
+  protected override panelGroup = new StepperModel();
 
   private _activeStepChanges = new Subject<string>();
 
@@ -28,44 +28,44 @@ export class StepperService extends AccordionService {
   }
 
   resetPanels() {
-    this.accordion.resetPanels();
+    this.panelGroup.resetPanels();
     this.emitUpdatedPanels();
   }
 
   setPanelValid(panelId: string) {
-    this.accordion.setPanelValid(panelId);
+    this.panelGroup.setPanelValid(panelId);
     this.emitUpdatedPanels();
   }
 
   setPanelInvalid(panelId: string) {
-    this.accordion.setPanelInvalid(panelId);
+    this.panelGroup.setPanelInvalid(panelId);
     this.emitUpdatedPanels();
   }
 
   setPanelsWithErrors(ids: string[]) {
-    this.accordion.setPanelsWithErrors(ids);
+    this.panelGroup.setPanelsWithErrors(ids);
     this.emitUpdatedPanels();
   }
 
   navigateToPreviousPanel(currentPanelId: string) {
-    this.accordion.navigateToPreviousPanel(currentPanelId);
+    this.panelGroup.navigateToPreviousPanel(currentPanelId);
     this.updatePreviousStep(currentPanelId);
     this.emitUpdatedPanels();
   }
 
   navigateToNextPanel(currentPanelId: string, currentPanelValid = true) {
-    this.accordion.navigateToNextPanel(currentPanelId, currentPanelValid);
+    this.panelGroup.navigateToNextPanel(currentPanelId, currentPanelValid);
     this.updateNextStep(currentPanelId, currentPanelValid);
     this.emitUpdatedPanels();
   }
 
   overrideInitialPanel(panelId: string) {
-    this.accordion.overrideInitialPanel(panelId);
+    this.panelGroup.overrideInitialPanel(panelId);
     this.emitUpdatedPanels();
   }
 
   private updateNextStep(currentPanelId: string, currentPanelValid: boolean) {
-    const nextPanel = this.accordion.getNextPanel(currentPanelId);
+    const nextPanel = this.panelGroup.getNextPanel(currentPanelId);
 
     if (currentPanelValid && nextPanel) {
       this._activeStepChanges.next(nextPanel.id);
@@ -75,7 +75,7 @@ export class StepperService extends AccordionService {
   }
 
   private updatePreviousStep(currentPanelId: string) {
-    const prevPanel = this.accordion.getPreviousPanel(currentPanelId);
+    const prevPanel = this.panelGroup.getPreviousPanel(currentPanelId);
 
     if (prevPanel) {
       this._activeStepChanges.next(prevPanel.id);
@@ -84,7 +84,7 @@ export class StepperService extends AccordionService {
 
   private getAllCompletedPanelChanges(): Observable<boolean> {
     return this._panelsChanges.pipe(
-      map(() => this.accordion.allPanelsCompleted),
+      map(() => this.panelGroup.allPanelsCompleted),
       distinctUntilChanged()
     );
   }
