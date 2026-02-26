@@ -1203,6 +1203,7 @@ declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     wizardId: string;
     protected wizardTitle: ClrWizardTitle;
     private readonly bodyElementRef;
+    private _title;
     private _forceForward;
     private _stopNext;
     private _stopCancel;
@@ -1212,6 +1213,8 @@ declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     private subscriptions;
     private readonly modal;
     constructor(platformId: any, commonStrings: ClrCommonStringsService, navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService, headerActionService: HeaderActionService, elementRef: ElementRef<HTMLElement>, differs: IterableDiffers);
+    get title(): ElementRef<HTMLElement>;
+    set title(title: ElementRef<HTMLElement>);
     /**
      * Resets page completed states when navigating backwards.
      * Set using `[clrWizardForceForwardNavigation]` input.
