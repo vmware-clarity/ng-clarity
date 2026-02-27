@@ -20,7 +20,9 @@ const EXAMPLE = `
   <clr-dg-column>Favorite color</clr-dg-column>
 
   <clr-dg-placeholder>We couldn't find any users!</clr-dg-placeholder>
-  <clr-dg-row *ngFor="let user of users"></clr-dg-row>
+  @for (user of users; track user.id) {
+    <clr-dg-row></clr-dg-row>
+  }
 
   <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
 </clr-datagrid>

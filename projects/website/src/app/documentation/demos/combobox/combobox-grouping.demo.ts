@@ -22,13 +22,13 @@ const basicHTML = `
   <label>My State</label>
   <clr-combobox [(ngModel)]="selection" name="myState">
     <clr-options>
-      <ng-container *ngFor="let group of groupedStates">
+      @for (group of groupedStates; track group.name) {
         <clr-option-group [clrOptionGroupLabel]="group.name">
           <clr-option *clrOptionItems="let state of group.states; field: 'name'" [clrValue]="state">
             {{ state.name }}
           </clr-option>
         </clr-option-group>
-      </ng-container>
+      }
     </clr-options>
   </clr-combobox>
   <clr-control-helper>Which state do you live in?</clr-control-helper>
@@ -39,7 +39,6 @@ const basicHTML = `
 const basicComponent = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgFor } from '@angular/common';
 
 import { groupedStates, GroupedStates } from './states';
 
@@ -47,7 +46,7 @@ import { groupedStates, GroupedStates } from './states';
   selector: 'app-example',
   templateUrl: './example.component.html',
 
-  imports: [FormsModule, ClrIcon, ClrFormsModule, ClrComboboxModule, NgFor],
+  imports: [FormsModule, ClrIcon, ClrFormsModule, ClrComboboxModule],
 })
 export class ExampleComponent {
   groupedStates = groupedStates;

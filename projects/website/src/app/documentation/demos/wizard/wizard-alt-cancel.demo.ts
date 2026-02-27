@@ -11,7 +11,6 @@ import { ClrModalModule, ClrWizard, ClrWizardModule } from '@clr/angular';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const code = `
-import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 
 @Component({
@@ -19,7 +18,7 @@ import { Component, ViewChild } from '@angular/core';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, ClrWizardModule, ClrModalModule],
+  imports: [ClrWizardModule, ClrModalModule],
 })
 export class ExampleComponent {
   @ViewChild('wizard', { static: true }) wizard: ClrWizard | undefined;
@@ -69,12 +68,15 @@ const html = `
     [clrWizardPagePreventDefaultCancel]="true"
   >
     <ng-template clrPageTitle>Page level alt-cancel</ng-template>
-    <p *ngIf="!showCancelConfirm">Content for step 2</p>
-    <p *ngIf="showCancelConfirm">
-      <button type="submit" class="btn btn-danger" (click)="doPageCancel()">
-        Click here if you are sure
-      </button>
-    </p>
+    @if (!showCancelConfirm) {
+      <p>Content for step 2</p>
+    } @else {
+      <p>
+        <button type="submit" class="btn btn-danger" (click)="doPageCancel()">
+          Click here if you are sure
+        </button>
+      </p>
+    }
   </clr-wizard-page>
 </clr-wizard>
 

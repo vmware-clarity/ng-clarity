@@ -29,14 +29,9 @@ const MAIN_EXAMPLE = `
     <div class="btn-group">
       <button type="button" class="btn btn-sm btn-secondary" (click)="onAdd()">Add to group</button>
       <button type="button" class="btn btn-sm btn-secondary" (click)="onDelete()">Delete</button>
-      <button
-        type="button"
-        class="btn btn-sm btn-secondary"
-        (click)="onEdit()"
-        *ngIf="selected.length == 1"
-      >
-        Edit
-      </button>
+      @if (selected.length === 1) {
+        <button type="button" class="btn btn-sm btn-secondary" (click)="onEdit()">Edit</button>
+      }
     </div>
     <div class="btn-group">
       <clr-dropdown>
@@ -79,42 +74,57 @@ const MAIN_EXAMPLE = `
 <div class="card card-block">
   <p class="card-text">
     Selected users:
-    <em *ngIf="selected.length == 0">No user selected.</em>
-    <span *ngFor="let user of selected; last as isLast">{{ user.name }}{{ isLast ? '.' : ', ' }}</span>
+    @if (selected.length === 0) {
+      <em>No user selected.</em>
+    }
+    @for (user of selected; track user.id; let isLast = $last) {
+      <span>{{ user.name }}{{ isLast ? '.' : ', ' }}</span>
+    }
   </p>
 
   <p class="card-text">
     Users to be added to group:
-    <em *ngIf="toAdd.length == 0">No user selected.</em>
-    <span *ngFor="let user of toAdd; last as isLast">{{ user.name }}{{ isLast ? '.' : ', ' }}</span>
+    @if (toAdd.length === 0) {
+      <em>No user selected.</em>
+    }
+    @for (user of toAdd; track user.id; let isLast = $last) {
+      <span>{{ user.name }}{{ isLast ? '.' : ', ' }}</span>
+    }
   </p>
 
   <p class="card-text">
     User to be edited:
-    <em *ngIf="!toEdit">No user selected.</em>
-    <span class="username" *ngIf="toEdit">{{ toEdit.name }}</span>
+    @if (!toEdit) {
+      <em>No user selected.</em>
+    } @else {
+      <span class="username">{{ toEdit.name }}</span>
+    }
   </p>
 
   <p class="card-text">
     Users to be deleted:
-    <em *ngIf="toDelete.length == 0">No user selected.</em>
-    <span class="username" *ngFor="let user of toDelete; last as isLast">
-      {{ user.name }}{{ isLast ? '.' : ', ' }}
-    </span>
+    @if (toDelete.length === 0) {
+      <em>No user selected.</em>
+    }
+    @for (user of toDelete; track user.id; let isLast = $last) {
+      <span class="username">{{ user.name }}{{ isLast ? '.' : ', ' }}</span>
+    }
   </p>
 
   <p class="card-text">
     Users to be exported:
-    <em *ngIf="toExport.length == 0">No user selected.</em>
-    <span class="username" *ngFor="let user of toExport; last as isLast">
-      {{ user.name }}{{ isLast ? '.' : ', ' }}
-    </span>
+    @if (toExport.length === 0) {
+      <em>No user selected.</em>
+    }
+    @for (user of toExport; track user.id; let isLast = $last) {
+      <span class="username">{{ user.name }}{{ isLast ? '.' : ', ' }}</span>
+    }
   </p>
 </div>
 `;
 
 const MAIN_EXAMPLE_TS = `
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
@@ -125,7 +135,7 @@ import { User } from './inventory/user';
   styleUrl: './example.component.scss',
 
   providers: [Inventory],
-  imports: [CommonModule, ClrDatagridModule, ClrDropdownModule],
+  imports: [DatePipe, ClrDatagridModule, ClrDropdownModule],
 })
 export class ExampleComponent {
   users: User[];

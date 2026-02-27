@@ -68,9 +68,9 @@ function getVersionFromEnv() {
   try {
     const envFile = fs.readFileSync(path.join(__dirname, '..', 'src', 'environments', 'environment.prod.ts'), 'utf8');
     const match = envFile.match(/version:\s*'(\d+)'/);
-    return match ? match[1] : '21';
+    return match ? match[1] : '18';
   } catch {
-    return '21';
+    return '18';
   }
 }
 

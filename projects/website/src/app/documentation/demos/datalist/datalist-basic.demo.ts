@@ -16,14 +16,15 @@ const basicHTML = `
   <clr-datalist-container>
     <input clrDatalistInput [(ngModel)]="value" placeholder="No label" name="Option" />
     <datalist>
-      <option *ngFor="let item of items" [value]="item"></option>
+      @for (item of items; track item) {
+        <option [value]="item"></option>
+      }
     </datalist>
   </clr-datalist-container>
 </form>
 `;
 
 const basicTS = `
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -32,7 +33,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, FormsModule, ClrFormsModule],
+  imports: [FormsModule, ClrFormsModule],
 })
 export class ExampleComponent {
   items: string[] = ['Item1', 'Item2', 'Item3'];

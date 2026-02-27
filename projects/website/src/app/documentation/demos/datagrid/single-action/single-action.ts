@@ -18,14 +18,22 @@ const MAIN_EXAMPLE = `
 <div class="card card-block">
   <p class="card-text username-list">
     User to be edited:
-    <em *ngIf="!toEdit">No user selected.</em>
-    <span class="username" *ngIf="toEdit">{{ toEdit.name }}</span>
+    @if (!toEdit) {
+      <em>No user selected.</em>
+    }
+    @if (toEdit) {
+      <span class="username">{{ toEdit.name }}</span>
+    }
   </p>
 
   <p class="card-text username-list">
     User to be deleted:
-    <em *ngIf="!toDelete">No user selected.</em>
-    <span class="username" *ngIf="toDelete">{{ toDelete.name }}</span>
+    @if (!toDelete) {
+      <em>No user selected.</em>
+    }
+    @if (toDelete) {
+      <span class="username">{{ toDelete.name }}</span>
+    }
   </p>
 </div>
 
@@ -53,7 +61,7 @@ const MAIN_EXAMPLE = `
 `;
 
 const MAIN_EXAMPLE_TS = `
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
@@ -64,7 +72,7 @@ import { User } from './inventory/user';
   styleUrl: './example.component.scss',
 
   providers: [Inventory],
-  imports: [CommonModule, ClrDatagridModule],
+  imports: [DatePipe, ClrDatagridModule],
 })
 export class ExampleComponent {
   users: User[];

@@ -30,14 +30,18 @@ const EXAMPLE = `
     <clr-stack-label>Label 1</clr-stack-label>
     <clr-stack-content>Content 1</clr-stack-content>
 
-    <clr-stack-block *ngIf="children.length == 0" [clrStackViewLevel]="2">
-      <clr-spinner clrAssertive clrInline>Loading...</clr-spinner>
-    </clr-stack-block>
+    @if (children.length === 0) {
+      <clr-stack-block [clrStackViewLevel]="2">
+        <clr-spinner clrAssertive clrInline>Loading...</clr-spinner>
+      </clr-stack-block>
+    }
 
-    <clr-stack-block *ngFor="let child of children; let i = index" [clrStackViewLevel]="2">
-      <clr-stack-label>{{ child.title }}</clr-stack-label>
-      <clr-stack-content>{{ child.content }}</clr-stack-content>
-    </clr-stack-block>
+    @for (child of children; track $index) {
+      <clr-stack-block [clrStackViewLevel]="2">
+        <clr-stack-label>{{ child.title }}</clr-stack-label>
+        <clr-stack-content>{{ child.content }}</clr-stack-content>
+      </clr-stack-block>
+    }
   </clr-stack-block>
 
   <clr-stack-block [clrStackViewLevel]="1">
@@ -50,14 +54,13 @@ const EXAMPLE = `
 const CODE = `
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-example',
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, FormsModule, ClrStackViewModule, ClrModalModule, ClrSpinnerModule],
+  imports: [FormsModule, ClrStackViewModule, ClrModalModule, ClrSpinnerModule],
 })
 export class ExampleComponent {
   @ViewChild('lazyBlock', { static: true }) lazyBlock!: ClrStackBlock;

@@ -34,9 +34,15 @@ const COMPONENT_TEMPLATE = `
       <ng-template clr-file-messages let-file let-errors="errors">
         <clr-file-info>Info text for {{ file.name }}</clr-file-info>
         <clr-file-success>Success message for {{ file.name }}</clr-file-success>
-        <clr-file-error *ngIf="errors.accept">File type not accepted</clr-file-error>
-        <clr-file-error *ngIf="errors.minFileSize">File size too small</clr-file-error>
-        <clr-file-error *ngIf="errors.maxFileSize">File size too large</clr-file-error>
+        @if (errors.accept) {
+          <clr-file-error>File type not accepted</clr-file-error>
+        }
+        @if (errors.minFileSize) {
+          <clr-file-error>File size too small</clr-file-error>
+        }
+        @if (errors.maxFileSize) {
+          <clr-file-error>File size too large</clr-file-error>
+        }
       </ng-template>
     </clr-file-list>
   </clr-file-input-container>
@@ -44,7 +50,6 @@ const COMPONENT_TEMPLATE = `
 `;
 
 const COMPONENT_CLASS = `
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
@@ -53,7 +58,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, ReactiveFormsModule, ClrFileInputModule],
+  imports: [ReactiveFormsModule, ClrFileInputModule],
 })
 export class ExampleComponent {
   protected readonly form = new FormGroup({

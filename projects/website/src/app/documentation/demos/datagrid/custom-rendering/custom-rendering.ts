@@ -21,14 +21,16 @@ const EXAMPLE_HTML = `
   <clr-dg-column>Creation date</clr-dg-column>
   <clr-dg-column>Favorite color</clr-dg-column>
 
-  <clr-dg-row *ngFor="let user of users">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-  </clr-dg-row>
+  @for (user of users; track user.id) {
+    <clr-dg-row>
+      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+      <clr-dg-cell>
+        <span class="color-square" [style.backgroundColor]="user.color"></span>
+      </clr-dg-cell>
+    </clr-dg-row>
+  }
 
   <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
 </clr-datagrid>

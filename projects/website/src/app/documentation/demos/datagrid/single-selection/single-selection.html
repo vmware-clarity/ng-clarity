@@ -14,7 +14,7 @@
 <ul>
   <li>
     For single select, use <code cds-text="code">[(clrDgSelected)]</code> together with
-    <code cds-text="code">clrDgSelectionType="single"</code> on the datagrid itself. The selected value is always a
+    <code cds-text="code">[clrDgSelectionType]="'single'"</code> on the datagrid itself. The selected value is always a
     <code cds-text="code">T[]</code> array; for single selection, use <code cds-text="code">$event[0]</code> to access
     the selected item.
   </li>
@@ -35,7 +35,7 @@
   </p>
 </div>
 
-<clr-datagrid [(clrDgSelected)]="singleSelected" clrDgSelectionType="single">
+<clr-datagrid [(clrDgSelected)]="singleSelected" [clrDgSelectionType]="'single'">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -101,7 +101,7 @@
   </p>
 </div>
 
-<clr-datagrid [(clrDgSelected)]="rowSelected" clrDgSelectionType="single" [clrDgRowSelection]="true">
+<clr-datagrid [(clrDgSelected)]="rowSelected" [clrDgSelectionType]="'single'" [clrDgRowSelection]="true">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -146,7 +146,7 @@
 <button class="btn btn-primary" (click)="lockRows()">Lock Rows</button>
 <button class="btn btn-primary" (click)="unlockRows()">Unlock Rows</button>
 
-<clr-datagrid [(clrDgSelected)]="rowSelected" clrDgSelectionType="single">
+<clr-datagrid [(clrDgSelected)]="rowSelected" [clrDgSelectionType]="'single'">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>

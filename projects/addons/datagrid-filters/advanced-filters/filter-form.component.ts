@@ -39,12 +39,10 @@ export class FilterFormComponent {
   constructor(public filterStrings: DatagridFiltersStrings) {}
 
   onApplyButtonClick(): void {
-    // TODO: The 'emit' function requires a mandatory void argument
     this.apply.emit();
   }
 
   onCancelButtonClick(): void {
-    // TODO: The 'emit' function requires a mandatory void argument
     this.cancel.emit();
   }
 }

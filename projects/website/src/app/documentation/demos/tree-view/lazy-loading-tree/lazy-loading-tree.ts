@@ -26,7 +26,9 @@ const EXAMPLE_HTML = `
     <clr-icon shape="building"></clr-icon>
     Office Locations
     <ng-template clrIfExpanded (clrIfExpandedChange)="$event ? fetchLocations() : null">
-      <clr-tree-node *ngFor="let location of locations$ | async">{{ location }}</clr-tree-node>
+      @for (location of locations$ | async; track location) {
+        <clr-tree-node>{{ location }}</clr-tree-node>
+      }
     </ng-template>
   </clr-tree-node>
 </clr-tree>

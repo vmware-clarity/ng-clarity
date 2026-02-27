@@ -24,7 +24,9 @@ const html = `
 <clr-select-container>
   <label>Select a position:</label>
   <select clrSelect name="position" [(ngModel)]="position">
-    <option *ngFor="let position of positions" [ngValue]="position">{{ position }}</option>
+    @for (position of positions; track position) {
+      <option [ngValue]="position">{{ position }}</option>
+    }
   </select>
 </clr-select-container>
 <clr-signpost>
@@ -38,7 +40,6 @@ const html = `
 `;
 
 const code = `
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -47,7 +48,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, ClrSignpostModule, ClrSelectModule, FormsModule],
+  imports: [ClrSignpostModule, ClrSelectModule, FormsModule],
 })
 export class ExampleComponent {
   positions: string[] = [

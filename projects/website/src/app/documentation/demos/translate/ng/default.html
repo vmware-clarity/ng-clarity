@@ -7,7 +7,9 @@
 <clr-select-container>
   <label>Locale</label>
   <select clrSelect name="locales" [(ngModel)]="translateService.locale">
-    <option *ngFor="let locale of locales" [value]="locale[1]">{{ locale[0] }}</option>
+    @for (locale of locales; track locale[1]) {
+    <option [value]="locale[1]">{{ locale[0] }}</option>
+    }
   </select>
 </clr-select-container>
 

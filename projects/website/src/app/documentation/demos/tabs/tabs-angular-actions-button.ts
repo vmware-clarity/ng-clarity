@@ -26,21 +26,22 @@ const EXAMPLE = `
       <clr-icon shape="plus"></clr-icon>
     </div>
   </clr-tabs-actions>
-  <clr-tab *ngFor="let tab of tabs; let i = index">
-    <button clrTabLink>{{ tab.title }}</button>
-    <clr-tab-content>
-      <p>{{ tab.content }}</p>
-      <button class="btn btn-icon btn-link" (click)="removeTab(i)">
-        <clr-icon shape="trash"></clr-icon>
-        Remove tab
-      </button>
-    </clr-tab-content>
-  </clr-tab>
+  @for (tab of tabs; track $index; let i = $index) {
+    <clr-tab>
+      <button clrTabLink>{{ tab.title }}</button>
+      <clr-tab-content>
+        <p>{{ tab.content }}</p>
+        <button class="btn btn-icon btn-link" (click)="removeTab(i)">
+          <clr-icon shape="trash"></clr-icon>
+          Remove tab
+        </button>
+      </clr-tab-content>
+    </clr-tab>
+  }
 </clr-tabs>
 `;
 
 const EXAMPLE_TS = `
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
@@ -48,7 +49,7 @@ import { Component } from '@angular/core';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, ClarityModule],
+  imports: [ClarityModule],
 })
 export class ExampleComponent {
   layout = 'vertical';

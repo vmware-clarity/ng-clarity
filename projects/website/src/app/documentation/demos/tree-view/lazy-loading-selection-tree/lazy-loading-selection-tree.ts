@@ -16,17 +16,19 @@ import { StackblitzExampleComponent } from '../../../../shared/stackblitz-exampl
 
 const EXAMPLE_HTML = `
 <clr-tree [clrLazy]="true">
-  <clr-tree-node *ngFor="let group of groceries$ | async" [(clrSelected)]="group.selected">
-    {{ group.name }}
-    <ng-template clrIfExpanded>
-      <my-grocery-items [group]="group"></my-grocery-items>
-    </ng-template>
-  </clr-tree-node>
+  @for (group of groceries$ | async; track group.name) {
+    <clr-tree-node [(clrSelected)]="group.selected">
+      {{ group.name }}
+      <ng-template clrIfExpanded>
+        <my-grocery-items [group]="group"></my-grocery-items>
+      </ng-template>
+    </clr-tree-node>
+  }
 </clr-tree>
 `;
 
 const EXAMPLE_TS = `
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -38,7 +40,7 @@ import { GROCERY_SERVICE, Group } from './grocery-models';
   templateUrl: './example.component.html',
 
   imports: [
-    CommonModule,
+    AsyncPipe,
     ClrConditionalModule,
     ClrLoadingModule,
     ClrTreeViewModule,

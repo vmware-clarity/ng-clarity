@@ -11,7 +11,6 @@ import { ClrWizard, ClrWizardModule } from '@clr/angular';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const code = `
-import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 
 @Component({
@@ -19,7 +18,7 @@ import { Component, ViewChild } from '@angular/core';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, ClrWizardModule],
+  imports: [ClrWizardModule],
 })
 export class ExampleComponent {
   @ViewChild('wizard') wizard: ClrWizard | undefined;
@@ -86,17 +85,19 @@ const html = `
     <ng-template clrPageTitle>Page 4 with custom finish</ng-template>
     <ng-template clrPageNavTitle>Custom buttons</ng-template>
 
-    <p *ngIf="!showWarning">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae minima inventore quia, officiis rem
-      id explicabo incidunt, illum deleniti qui doloremque voluptatem, saepe tenetur quas! Quaerat
-      explicabo expedita placeat vero.
-    </p>
-
-    <p *ngIf="showWarning">
-      <button type="submit" class="btn btn-danger" (click)="handleDangerClick()">
-        Click here if you are sure
-      </button>
-    </p>
+    @if (!showWarning) {
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae minima inventore quia, officiis
+        rem id explicabo incidunt, illum deleniti qui doloremque voluptatem, saepe tenetur quas! Quaerat
+        explicabo expedita placeat vero.
+      </p>
+    } @else {
+      <p>
+        <button type="submit" class="btn btn-danger" (click)="handleDangerClick()">
+          Click here if you are sure
+        </button>
+      </p>
+    }
 
     <ng-template clrPageButtons>
       <clr-wizard-button [type]="'cancel'">Page Override</clr-wizard-button>

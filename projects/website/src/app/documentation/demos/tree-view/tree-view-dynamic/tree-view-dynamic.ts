@@ -14,25 +14,28 @@ import { StackblitzExampleComponent } from '../../../../shared/stackblitz-exampl
 
 const EXAMPLE_HTML = `
 <clr-tree>
-  <clr-tree-node *ngFor="let directory of rootDirectory" [(clrExpanded)]="directory.expanded">
-    <clr-icon [shape]="directory.icon"></clr-icon>
-    {{ directory.name }}
-    <clr-tree-node *ngFor="let file of directory.files">
-      <button
-        (click)="openFile(directory.name, file.name)"
-        class="clr-treenode-link"
-        [class.active]="file.active"
-      >
-        <clr-icon [shape]="file.icon"></clr-icon>
-        {{ file.name }}
-      </button>
+  @for (directory of rootDirectory; track directory.name) {
+    <clr-tree-node [(clrExpanded)]="directory.expanded">
+      <clr-icon [shape]="directory.icon"></clr-icon>
+      {{ directory.name }}
+      @for (file of directory.files; track file.name) {
+        <clr-tree-node>
+          <button
+            (click)="openFile(directory.name, file.name)"
+            class="clr-treenode-link"
+            [class.active]="file.active"
+          >
+            <clr-icon [shape]="file.icon"></clr-icon>
+            {{ file.name }}
+          </button>
+        </clr-tree-node>
+      }
     </clr-tree-node>
-  </clr-tree-node>
+  }
 </clr-tree>
 `;
 
 const EXAMPLE_TS = `
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { organization } from './organization';
 
@@ -41,7 +44,7 @@ import { organization } from './organization';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, ClrTreeViewModule, ClrIcon],
+  imports: [ClrTreeViewModule, ClrIcon],
 })
 export class ExampleComponent {
   rootDirectory = organization;

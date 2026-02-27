@@ -7,9 +7,11 @@
 <h3>Tabs Overflow Directive</h3>
 <div>
   <clr-tabs appfxOverflowTabs>
-    <clr-tab *ngFor="let tab of [].constructor(10); index as i">
-      <button clrTabLink>Clarity Tab {{ i + 1 }}</button>
-      <clr-tab-content>Tab {{ i + 1 }} content</clr-tab-content>
+    @for (tab of [].constructor(10); track $index) {
+    <clr-tab>
+      <button clrTabLink>Clarity Tab {{ $index + 1 }}</button>
+      <clr-tab-content>Tab {{ $index + 1 }} content</clr-tab-content>
     </clr-tab>
+    }
   </clr-tabs>
 </div>

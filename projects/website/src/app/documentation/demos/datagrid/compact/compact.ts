@@ -32,14 +32,16 @@ const COMPACT_EXAMPLE = `
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Pokemon</clr-dg-column>
-  <clr-dg-row *ngFor="let user of users; let i = index">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>
-      <clr-icon shape="user"></clr-icon>
-      {{ user.name }}
-    </clr-dg-cell>
-    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-  </clr-dg-row>
+  @for (user of users; track user.id) {
+    <clr-dg-row>
+      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+      <clr-dg-cell>
+        <clr-icon shape="user"></clr-icon>
+        {{ user.name }}
+      </clr-dg-cell>
+      <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+    </clr-dg-row>
+  }
 
   <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
 </clr-datagrid>
@@ -52,18 +54,20 @@ const ELLIPSIS_EXAMPLE = `
   <clr-dg-column [style.width.px]="300">Long Text Static Width 300px</clr-dg-column>
   <clr-dg-column>Pokemon</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
-  <clr-dg-row *ngFor="let user of users; let i = index">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>
-      <clr-icon shape="user"></clr-icon>
-      {{ user.name }}
-    </clr-dg-cell>
-    <clr-dg-cell>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque ins id sed quam.
-    </clr-dg-cell>
-    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-  </clr-dg-row>
+  @for (user of users; track user.id) {
+    <clr-dg-row>
+      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+      <clr-dg-cell>
+        <clr-icon shape="user"></clr-icon>
+        {{ user.name }}
+      </clr-dg-cell>
+      <clr-dg-cell>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque ins id sed quam.
+      </clr-dg-cell>
+      <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    </clr-dg-row>
+  }
 
   <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
 </clr-datagrid>
@@ -101,43 +105,49 @@ const FULL_EXAMPLE_HTML = `
   <clr-dg-column [style.width.px]="300">Long Text Static Width 300px</clr-dg-column>
   <clr-dg-column>Pokemon</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
-  <clr-dg-row *ngFor="let user of users; let i = index">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>
-      <clr-icon shape="user"></clr-icon>
-      {{ user.name }}
-    </clr-dg-cell>
-    <clr-dg-cell [attr.title]="detail === 'title' ? longString : null">
-      <clr-tooltip *ngIf="detail === 'tooltip'">
-        <clr-icon clrTooltipTrigger shape="info-circle" solid></clr-icon>
-        <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
-          {{ longString }}
-        </clr-tooltip-content>
-      </clr-tooltip>
-      {{ longString }}
-    </clr-dg-cell>
-    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+  @for (user of users; track user.id) {
+    <clr-dg-row>
+      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+      <clr-dg-cell>
+        <clr-icon shape="user"></clr-icon>
+        {{ user.name }}
+      </clr-dg-cell>
+      <clr-dg-cell [attr.title]="detail === 'title' ? longString : null">
+        @if (detail === 'tooltip') {
+          <clr-tooltip>
+            <clr-icon clrTooltipTrigger shape="info-circle" solid></clr-icon>
+            <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
+              {{ longString }}
+            </clr-tooltip-content>
+          </clr-tooltip>
+        }
+        {{ longString }}
+      </clr-dg-cell>
+      <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
 
-    <ng-container ngProjectAs="clr-dg-row-detail" *ngIf="detail === 'rowDetails'">
-      <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="true">
-        <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-        <clr-dg-cell>
-          <clr-icon shape="user"></clr-icon>
-          {{ user.name }}
-        </clr-dg-cell>
-        <clr-dg-cell>{{ longString }}</clr-dg-cell>
-        <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-        <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-      </clr-dg-row-detail>
-    </ng-container>
-  </clr-dg-row>
+      @if (detail === 'rowDetails') {
+        <ng-container ngProjectAs="clr-dg-row-detail">
+          <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="true">
+            <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+            <clr-dg-cell>
+              <clr-icon shape="user"></clr-icon>
+              {{ user.name }}
+            </clr-dg-cell>
+            <clr-dg-cell>{{ longString }}</clr-dg-cell>
+            <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+            <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+          </clr-dg-row-detail>
+        </ng-container>
+      }
+    </clr-dg-row>
+  }
 
   <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
 </clr-datagrid>
 `;
 const FULL_EXAMPLE_TS = `
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -157,7 +167,7 @@ import { User } from './inventory/user';
 
   providers: [Inventory],
   imports: [
-    CommonModule,
+    DatePipe,
     FormsModule,
     ClrCheckboxModule,
     ClrDatagridModule,

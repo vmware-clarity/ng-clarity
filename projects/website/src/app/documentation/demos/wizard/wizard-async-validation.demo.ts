@@ -19,7 +19,6 @@ import {
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const code = `
-import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -35,14 +34,7 @@ import {
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [
-    CommonModule,
-    ClrAlertModule,
-    ClrSpinnerModule,
-    ClrWizardModule,
-    ClrFormsModule,
-    FormsModule,
-  ],
+  imports: [ClrAlertModule, ClrSpinnerModule, ClrWizardModule, ClrFormsModule, FormsModule],
 })
 export class ExampleComponent {
   @ViewChild('wizard', { static: true }) wizard: ClrWizard | undefined;
@@ -91,7 +83,9 @@ const html = `
     (clrWizardPageOnCancel)="doCancel()"
   >
     <ng-template clrPageTitle>Form with async validation</ng-template>
-    <clr-spinner *ngIf="loadingFlag">Loading</clr-spinner>
+    @if (loadingFlag) {
+      <clr-spinner>Loading</clr-spinner>
+    }
     <clr-alert
       [clrAlertType]="'alert-info'"
       [clrAlertClosable]="false"
@@ -108,13 +102,11 @@ const html = `
         &nbsp;might help you answer the question.
       </clr-alert-item>
     </clr-alert>
-    <clr-alert
-      *ngIf="errorFlag"
-      [clrAlertType]="'alert-danger'"
-      [clrCloseButtonAriaLabel]="'Close Answer alert'"
-    >
-      <clr-alert-item>Your answer is incorrect.</clr-alert-item>
-    </clr-alert>
+    @if (errorFlag) {
+      <clr-alert [clrAlertType]="'alert-danger'" [clrCloseButtonAriaLabel]="'Close Answer alert'">
+        <clr-alert-item>Your answer is incorrect.</clr-alert-item>
+      </clr-alert>
+    }
 
     <form clrForm #myForm="ngForm" [class.hide]="loadingFlag">
       <clr-input-container>

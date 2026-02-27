@@ -456,10 +456,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
       return;
     }
 
-    // TODO: The 'emit' function requires a mandatory ClrWizardPage argument
     currentPage.pageOnCancel.emit();
     if (!currentPageHasOverrides) {
-      // TODO: The 'emit' function requires a mandatory any argument
       this.onCancel.emit();
     }
 
@@ -490,13 +488,12 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    */
   reset(): void {
     this.pageCollection.reset();
-    // TODO: The 'emit' function requires a mandatory any argument
+
     this.onReset.emit();
   }
 
   private listenForNextPageChanges(): Subscription {
     return this.navService.movedToNextPage.pipe(filter(() => isPlatformBrowser(this.platformId))).subscribe(() => {
-      // TODO: The 'emit' function requires a mandatory any argument
       this.onMoveNext.emit();
       this.pageTitle?.nativeElement.focus();
     });
@@ -504,7 +501,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
 
   private listenForPreviousPageChanges(): Subscription {
     return this.navService.movedToPreviousPage.pipe(filter(() => isPlatformBrowser(this.platformId))).subscribe(() => {
-      // TODO: The 'emit' function requires a mandatory any argument
       this.onMovePrevious.emit();
       this.pageTitle?.nativeElement.focus();
     });
@@ -524,7 +520,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
       //   When clicking on a wizard tab, focus should move to that
       //   tabs content to make the wizard more accessible.
       this.pageTitle?.nativeElement.focus();
-      // TODO: The 'emit' function requires a mandatory any argument
+
       this.currentPageChanged.emit();
 
       // scroll to top of page in case there is long page content

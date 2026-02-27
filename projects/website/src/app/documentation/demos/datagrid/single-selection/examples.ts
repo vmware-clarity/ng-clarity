@@ -9,14 +9,17 @@ const main = `
 <div class="card card-block">
   <p class="card-text">
     Selected user:
-    <em *ngIf="selected.length === 0">No user selected.</em>
-    <span class="username" *ngIf="selected.length > 0">{{ selected[0].name }}</span>
+    @if (!selected.length) {
+      <em>No user selected.</em>
+    } @else {
+      <span class="username">{{ selected[0].name }}</span>
+    }
   </p>
 </div>
 
 <clr-datagrid
   [(clrDgSelected)]="selected"
-  clrDgSelectionType="single"
+  [clrDgSelectionType]="'single'"
   [clrDgItemsIdentityFn]="trackUserItemById"
 >
   <clr-dg-column>User ID</clr-dg-column>
@@ -46,7 +49,7 @@ const singleRow = `
 const rowSelection = `
 <clr-datagrid
   [(clrDgSelected)]="selected"
-  clrDgSelectionType="single"
+  [clrDgSelectionType]="'single'"
   [clrDgRowSelection]="true"
   [clrDgItemsIdentityFn]="trackUserItemById"
 >
@@ -71,7 +74,7 @@ const rowSelection = `
 const selectionChangeEvent = `
 <clr-datagrid
   [clrDgSelected]="selected"
-  clrDgSelectionType="single"
+  [clrDgSelectionType]="'single'"
   (clrDgSelectedChange)="selectionChanged($event)"
 >
   <!-- ... -->
@@ -85,7 +88,7 @@ const unselectableRow = `
 `;
 
 const componentTS = `
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { ClrDatagridModule } from '@clr/angular';
 import { Inventory } from './inventory/inventory';
@@ -97,7 +100,7 @@ import { User } from './inventory/user';
   styleUrl: './example.component.scss',
 
   providers: [Inventory],
-  imports: [CommonModule, ClrDatagridModule],
+  imports: [DatePipe, ClrDatagridModule],
 })
 export class ExampleComponent {
   users: User[];
@@ -121,7 +124,7 @@ const fullHtml = `
 
 <clr-datagrid
   [(clrDgSelected)]="selected"
-  clrDgSelectionType="single"
+  [clrDgSelectionType]="'single'"
   [clrDgItemsIdentityFn]="trackUserItemById"
   (clrDgSelectedChange)="selectionChanged($event)"
 >
@@ -145,24 +148,29 @@ const fullHtml = `
 <div class="card card-block">
   <p class="card-text">
     Selected user:
-    <em *ngIf="selected.length === 0">No user selected.</em>
-    <span class="username" *ngIf="selected.length > 0">{{ selected[0].name }}</span>
+    @if (!selected.length) {
+      <em>No user selected.</em>
+    } @else {
+      <span class="username">{{ selected[0].name }}</span>
+    }
   </p>
 </div>
 
 <div class="card card-block">
   <p class="card-text">
     Locked users:
-    <em *ngIf="findLocked.length == 0">No user locked.</em>
-    <span class="username" *ngFor="let user of findLocked; last as isLast">
-      {{ user.name }}{{ isLast ? '.' : ',' }}
-    </span>
+    @if (findLocked.length === 0) {
+      <em>No user locked.</em>
+    }
+    @for (user of findLocked; track user.id; let isLast = $last) {
+      <span class="username">{{ user.name }}{{ isLast ? '.' : ',' }}</span>
+    }
   </p>
 </div>
 `;
 
 const fullTS = `
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { ClrDatagridModule } from '@clr/angular';
 import { Inventory } from './inventory/inventory';
@@ -174,7 +182,7 @@ import { User } from './inventory/user';
   styleUrl: './example.component.scss',
 
   providers: [Inventory],
-  imports: [CommonModule, ClrDatagridModule],
+  imports: [DatePipe, ClrDatagridModule],
 })
 export class ExampleComponent {
   users: User[];

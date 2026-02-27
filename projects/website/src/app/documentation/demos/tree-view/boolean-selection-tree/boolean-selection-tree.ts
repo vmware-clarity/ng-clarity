@@ -16,16 +16,16 @@ const EXAMPLE_HTML = `
 <clr-tree>
   <clr-tree-node [clrExpanded]="true">
     Permissions
-    <clr-tree-node *ngFor="let permission of permissions" [clrExpanded]="true">
-      {{ permission.type }}
-      <clr-tree-node
-        *ngFor="let right of permission.rights"
-        [clrSelected]="right.enable"
-        (clrSelectedChange)="right.enable = !!$event"
-      >
-        {{ right.name }}
+    @for (permission of permissions; track permission.type) {
+      <clr-tree-node [clrExpanded]="true">
+        {{ permission.type }}
+        @for (right of permission.rights; track right.name) {
+          <clr-tree-node [clrSelected]="right.enable" (clrSelectedChange)="right.enable = !!$event">
+            {{ right.name }}
+          </clr-tree-node>
+        }
       </clr-tree-node>
-    </clr-tree-node>
+    }
   </clr-tree-node>
 </clr-tree>
 `;

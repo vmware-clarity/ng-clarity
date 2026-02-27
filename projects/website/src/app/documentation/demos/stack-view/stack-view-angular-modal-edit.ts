@@ -22,42 +22,48 @@ const EXAMPLE = `
     </button>
   </clr-stack-header>
 
-  <clr-stack-block *ngFor="let block of blocks; let i = index" [clrStackViewLevel]="1">
-    <clr-stack-label>{{ block.title }}</clr-stack-label>
-    <clr-stack-content>{{ block.content }}</clr-stack-content>
+  @for (block of blocks; track $index; let i = $index) {
+    <clr-stack-block [clrStackViewLevel]="1">
+      <clr-stack-label>{{ block.title }}</clr-stack-label>
+      <clr-stack-content>{{ block.content }}</clr-stack-content>
 
-    <clr-stack-block *ngFor="let child of block.children; let j = index" [clrStackViewLevel]="2">
-      <clr-stack-label>{{ child.title }}</clr-stack-label>
-      <clr-stack-content>{{ child.content }}</clr-stack-content>
+      @for (child of block.children; track $index) {
+        <clr-stack-block [clrStackViewLevel]="2">
+          <clr-stack-label>{{ child.title }}</clr-stack-label>
+          <clr-stack-content>{{ child.content }}</clr-stack-content>
+        </clr-stack-block>
+      }
     </clr-stack-block>
-  </clr-stack-block>
+  }
 </clr-stack-view>
 
 <clr-modal [(clrModalOpen)]="editModal">
   <h3 class="modal-title">Edit mode</h3>
   <div class="modal-body">
     <clr-stack-view>
-      <clr-stack-block
-        *ngFor="let block of blocks; let blockIndex = index"
-        [clrSbNotifyChange]="block.content !== 'Content ' + blockIndex"
-        [clrStackViewLevel]="1"
-      >
-        <clr-stack-label>{{ block.title }}</clr-stack-label>
-        <clr-stack-content>
-          <input type="text" [(ngModel)]="block.content" class="clr-input" />
-        </clr-stack-content>
-
+      @for (block of blocks; track $index; let blockIndex = $index) {
         <clr-stack-block
-          *ngFor="let child of block.children; let blockChildIndex = index"
-          [clrSbNotifyChange]="child.content !== 'Sub-content ' + blockChildIndex"
-          [clrStackViewLevel]="2"
+          [clrSbNotifyChange]="block.content !== 'Content ' + blockIndex"
+          [clrStackViewLevel]="1"
         >
-          <clr-stack-label>{{ child.title }}</clr-stack-label>
+          <clr-stack-label>{{ block.title }}</clr-stack-label>
           <clr-stack-content>
-            <input type="text" [(ngModel)]="child.content" class="clr-input" />
+            <input type="text" [(ngModel)]="block.content" class="clr-input" />
           </clr-stack-content>
+
+          @for (child of block.children; track $index; let blockChildIndex = $index) {
+            <clr-stack-block
+              [clrSbNotifyChange]="child.content !== 'Sub-content ' + blockChildIndex"
+              [clrStackViewLevel]="2"
+            >
+              <clr-stack-label>{{ child.title }}</clr-stack-label>
+              <clr-stack-content>
+                <input type="text" [(ngModel)]="child.content" class="clr-input" />
+              </clr-stack-content>
+            </clr-stack-block>
+          }
         </clr-stack-block>
-      </clr-stack-block>
+      }
     </clr-stack-view>
   </div>
   <div class="modal-footer">
@@ -69,14 +75,13 @@ const EXAMPLE = `
 const CODE = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-example',
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, FormsModule, ClrStackViewModule, ClrModalModule],
+  imports: [FormsModule, ClrStackViewModule, ClrModalModule],
 })
 export class ExampleComponent {
   editModal = false;

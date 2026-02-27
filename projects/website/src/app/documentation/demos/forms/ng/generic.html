@@ -33,7 +33,9 @@
   <clr-select-container>
     <label>Clr Select 1</label>
     <select multiple clrSelect formControlName="cars">
-      <option *ngFor="let car of cars" [value]="car.id" [disabled]="car.disabled">{{ car.name }}</option>
+      @for (car of cars; track car.id) {
+      <option [value]="car.id" [disabled]="car.disabled">{{ car.name }}</option>
+      }
     </select>
     <clr-control-helper>Helper text</clr-control-helper>
     <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
@@ -64,7 +66,9 @@
   <clr-select-container>
     <label>Clr Select 2</label>
     <select multiple clrSelect formControlName="cars">
-      <option *ngFor="let car of cars" [value]="car.id" [disabled]="car.disabled">{{ car.name }}</option>
+      @for (car of cars; track car.id) {
+      <option [value]="car.id" [disabled]="car.disabled">{{ car.name }}</option>
+      }
     </select>
     <clr-control-helper>Helper text</clr-control-helper>
     <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>

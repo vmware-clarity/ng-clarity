@@ -62,30 +62,34 @@ const EXAMPLE_CONTROLS = `
       </clr-radio-container>
     </div>
   </div>
-  <div class="card-block" *ngIf="loadingMethod === 'server'">
-    <h4 class="card-title">Server side loading</h4>
-    <div class="card-text">
-      <clr-number-input-container>
-        <label>Row count per query</label>
-        <input
-          clrNumberInput
-          id="rows-per-query"
-          type="number"
-          name="rows"
-          [(ngModel)]="currentPageSize"
-        />
-      </clr-number-input-container>
+  @if (loadingMethod === 'server') {
+    <div class="card-block">
+      <h4 class="card-title">Server side loading</h4>
+      <div class="card-text">
+        <clr-number-input-container>
+          <label>Row count per query</label>
+          <input
+            clrNumberInput
+            id="rows-per-query"
+            type="number"
+            name="rows"
+            [(ngModel)]="currentPageSize"
+          />
+        </clr-number-input-container>
+      </div>
     </div>
-  </div>
-  <div class="card-block" *ngIf="loadingMethod === 'client'">
-    <h4 class="card-title">Client side loading</h4>
-    <div class="card-text">
-      <clr-number-input-container>
-        <label>Total Rows to load</label>
-        <input clrNumberInput id="total-rows" type="number" name="rows" [(ngModel)]="totalRows" />
-      </clr-number-input-container>
+  }
+  @if (loadingMethod === 'client') {
+    <div class="card-block">
+      <h4 class="card-title">Client side loading</h4>
+      <div class="card-text">
+        <clr-number-input-container>
+          <label>Total Rows to load</label>
+          <input clrNumberInput id="total-rows" type="number" name="rows" [(ngModel)]="totalRows" />
+        </clr-number-input-container>
+      </div>
     </div>
-  </div>
+  }
   <div class="card-footer">
     <button class="btn" (click)="refreshPage()">Reload Datagrid</button>
   </div>
@@ -157,79 +161,83 @@ const EXAMPLE_STATIC = `
 `;
 
 const EXAMPLE_ASYNC = `
-<clr-datagrid
-  *ngIf="{ users: users | async }; let data"
-  [clrDgLoading]="loading"
-  [clrDgItemsIdentityFn]="trackItemById"
-  [clrLoadingMoreItems]="loadingMoreItems"
-  [(clrDgSelected)]="selected"
-  (clrDgRefresh)="refresh($event)"
-  [class.datagrid-compact]="rowSize === 'compact'"
-  style="height: 24rem"
->
-  <clr-dg-column [clrDgField]="'id'">
-    <ng-container *clrDgHideableColumn="{ hidden: false }">User ID</ng-container>
-  </clr-dg-column>
-  <clr-dg-column [clrDgField]="'name'">
-    <ng-container *clrDgHideableColumn="{ hidden: false }">Name</ng-container>
-  </clr-dg-column>
-  <clr-dg-column [clrDgField]="'creation'">
-    <ng-container *clrDgHideableColumn="{ hidden: false }">Created At</ng-container>
-  </clr-dg-column>
-  <clr-dg-column [clrDgField]="'pokemon.name'">
-    <ng-container *clrDgHideableColumn="{ hidden: false }">Pokemon</ng-container>
-  </clr-dg-column>
-  <clr-dg-column>
-    <ng-container *clrDgHideableColumn="{ hidden: false }">Color Used</ng-container>
-    <clr-dg-filter [clrDgFilter]="colorFilter">
-      <clr-datagrid-color-filter #colorFilter></clr-datagrid-color-filter>
-    </clr-dg-filter>
-  </clr-dg-column>
-  <clr-dg-column [clrDgField]="'wins'" [clrDgColType]="'number'">
-    <ng-container *clrDgHideableColumn="{ hidden: false }">Wins</ng-container>
-  </clr-dg-column>
-
-  <ng-template
-    *ngIf="data.users"
-    ClrVirtualScroll
-    let-user
-    [clrVirtualRowsOf]="data.users"
-    (renderedRangeChange)="renderRangeChange($event)"
+@if ({ users: (users | async) }; as data) {
+  <clr-datagrid
+    [clrDgLoading]="loading"
+    [clrDgItemsIdentityFn]="trackItemById"
+    [clrLoadingMoreItems]="loadingMoreItems"
+    [(clrDgSelected)]="selected"
+    (clrDgRefresh)="refresh($event)"
+    [class.datagrid-compact]="rowSize === 'compact'"
+    style="height: 24rem"
   >
-    <clr-dg-row [clrDgItem]="user">
-      <clr-dg-action-overflow (clrDgActionOverflowOpenChange)="clrDgActionOverflowOpenChangeFn($event)">
-        <button class="action-item">
-          <clr-icon shape="note"></clr-icon>
-          Edit
-        </button>
-        <button class="action-item">
-          <clr-icon shape="trash"></clr-icon>
-          Delete
-        </button>
-      </clr-dg-action-overflow>
-      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-      <clr-dg-cell>
-        <span class="color-square" [style.backgroundColor]="user.color"></span>
-      </clr-dg-cell>
-      <clr-dg-cell>{{ user.wins }}</clr-dg-cell>
+    <clr-dg-column [clrDgField]="'id'">
+      <ng-container *clrDgHideableColumn="{ hidden: false }">User ID</ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'name'">
+      <ng-container *clrDgHideableColumn="{ hidden: false }">Name</ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'creation'">
+      <ng-container *clrDgHideableColumn="{ hidden: false }">Created At</ng-container>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'pokemon.name'">
+      <ng-container *clrDgHideableColumn="{ hidden: false }">Pokemon</ng-container>
+    </clr-dg-column>
+    <clr-dg-column>
+      <ng-container *clrDgHideableColumn="{ hidden: false }">Color Used</ng-container>
+      <clr-dg-filter [clrDgFilter]="colorFilter">
+        <clr-datagrid-color-filter #colorFilter></clr-datagrid-color-filter>
+      </clr-dg-filter>
+    </clr-dg-column>
+    <clr-dg-column [clrDgField]="'wins'" [clrDgColType]="'number'">
+      <ng-container *clrDgHideableColumn="{ hidden: false }">Wins</ng-container>
+    </clr-dg-column>
 
-      <clr-dg-row-detail
-        [clrIfExpanded]="user.expanded"
-        (clrIfExpandedChange)="setExpanded($event, user)"
+    @if (data.users) {
+      <ng-template
+        ClrVirtualScroll
+        let-user
+        [clrVirtualRowsOf]="data.users"
+        (renderedRangeChange)="renderRangeChange($event)"
       >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis
-        id sed quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet
-        suscipit eget, pellentesque sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl
-        imperdiet viverra.
-      </clr-dg-row-detail>
-    </clr-dg-row>
-  </ng-template>
+        <clr-dg-row [clrDgItem]="user">
+          <clr-dg-action-overflow
+            (clrDgActionOverflowOpenChange)="clrDgActionOverflowOpenChangeFn($event)"
+          >
+            <button class="action-item">
+              <clr-icon shape="note"></clr-icon>
+              Edit
+            </button>
+            <button class="action-item">
+              <clr-icon shape="trash"></clr-icon>
+              Delete
+            </button>
+          </clr-dg-action-overflow>
+          <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+          <clr-dg-cell>
+            <span class="color-square" [style.backgroundColor]="user.color"></span>
+          </clr-dg-cell>
+          <clr-dg-cell>{{ user.wins }}</clr-dg-cell>
 
-  <clr-dg-footer>{{ data.users?.length }} users</clr-dg-footer>
-</clr-datagrid>
+          <clr-dg-row-detail
+            [clrIfExpanded]="user.expanded"
+            (clrIfExpandedChange)="setExpanded($event, user)"
+          >
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat
+            mattis id sed quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque
+            aliquet suscipit eget, pellentesque sed arcu. Vivamus in dui lectus. Suspendisse cursus est
+            ac nisl imperdiet viverra.
+          </clr-dg-row-detail>
+        </clr-dg-row>
+      </ng-template>
+    }
+
+    <clr-dg-footer>{{ data.users?.length }} users</clr-dg-footer>
+  </clr-datagrid>
+}
 `;
 
 const dataDrivenHtml = `
@@ -318,9 +326,11 @@ const dataDrivenHtml = `
         <clr-icon shape="angle" direction="down"></clr-icon>
       </button>
       <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
-        <div *ngFor="let index of getIndexes(dataRange.total)" (click)="jumpTo(index)" clrDropdownItem>
-          {{ index + 1 }}
-        </div>
+        @for (index of getIndexes(dataRange.total); track index) {
+          <div (click)="jumpTo(index)" clrDropdownItem>
+            {{ index + 1 }}
+          </div>
+        }
       </clr-dropdown-menu>
     </clr-dropdown>
 
@@ -344,7 +354,7 @@ const dataDrivenHtml = `
 `;
 
 const asyncTs = `
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { ListRange } from '@angular/cdk/collections';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -371,7 +381,8 @@ import { ColorFilter } from './utils/color-filter';
 
   providers: [Inventory],
   imports: [
-    CommonModule,
+    AsyncPipe,
+    DatePipe,
     ClrDatagridModule,
     ClrRadioModule,
     ClrCheckboxModule,
@@ -499,7 +510,7 @@ export class ExampleComponent implements OnInit, OnDestroy {
 `;
 
 const staticTs = `
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { ListRange } from '@angular/cdk/collections';
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -524,7 +535,7 @@ import { ColorFilter } from './utils/color-filter';
 
   providers: [Inventory],
   imports: [
-    CommonModule,
+    DatePipe,
     ClrDatagridItemsIdentityFunction,
     ClrDatagridModule,
     ClrRadioModule,
@@ -648,7 +659,7 @@ export class ExampleComponent implements OnDestroy {
 `;
 
 const dataDrivenTs = `
-import { CommonModule } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { ListRange } from '@angular/cdk/collections';
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -674,7 +685,8 @@ import { ColorFilter } from './utils/color-filter';
 
   providers: [Inventory],
   imports: [
-    CommonModule,
+    DatePipe,
+    JsonPipe,
     ClrDatagridModule,
     ClrDropdownModule,
     ClrCheckboxModule,

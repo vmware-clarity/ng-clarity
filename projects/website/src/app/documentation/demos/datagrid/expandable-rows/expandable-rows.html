@@ -148,9 +148,8 @@
 
 <p class="clr-mt-16px" cds-text="body">
   Sometimes you want to conditionally display the expandable row, depending on if the given row has any content to
-  expand. In order to handle this, you'll need to wrap your expandable row in a conditional
-  <code cds-text="code">*ngIf</code> directive to handle this, but since you can't put two structural directives on the
-  same element you'll need to use an <code cds-text="code">ng-container</code> and
+  expand. In order to handle this, you can wrap your expandable row in an
+  <code cds-text="code">&#64;if</code> block together with an <code cds-text="code">ng-container</code> and
   <code cds-text="code">ngProjectAs</code>
   like you see here in the following example.
 </p>

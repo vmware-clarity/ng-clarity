@@ -16,7 +16,7 @@ interface ClrDatagridFilterInterface<T, S = any> {
 `;
 
 const inlineFilterTS = `
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { ClrDatagridFilterInterface, ClrDatagridModule } from '@clr/angular';
 import { Observable, Subject } from 'rxjs';
@@ -68,7 +68,7 @@ class ColorFilter implements ClrDatagridFilterInterface<User> {
   styleUrl: './example.component.scss',
 
   providers: [Inventory],
-  imports: [CommonModule, ClrDatagridModule],
+  imports: [DatePipe, ClrDatagridModule],
 })
 export class ExampleComponent {
   public colorFilter = new ColorFilter();
@@ -92,13 +92,14 @@ const inlineFilterHTML = `
     Favorite color
     <clr-dg-filter [clrDgFilter]="colorFilter">
       <div class="color-filter">
-        <span
-          *ngFor="let color of colorFilter.allColors"
-          class="color-square color-selectable"
-          (click)="colorFilter.toggleColor(color)"
-          [style.backgroundColor]="color"
-          [class.color-selected]="colorFilter.selectedColors[color]"
-        ></span>
+        @for (color of colorFilter.allColors; track color) {
+          <span
+            class="color-square color-selectable"
+            (click)="colorFilter.toggleColor(color)"
+            [style.backgroundColor]="color"
+            [class.color-selected]="colorFilter.selectedColors[color]"
+          ></span>
+        }
       </div>
     </clr-dg-filter>
   </clr-dg-column>
@@ -118,7 +119,7 @@ const inlineFilterHTML = `
 `;
 
 const customFilterComponentTS = `
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { ColorFilter } from './utils/color-filter';
 import { Inventory } from './inventory/inventory';
@@ -130,7 +131,7 @@ import { User } from './inventory/user';
   styleUrl: './example.component.scss',
 
   providers: [Inventory],
-  imports: [CommonModule, ClrDatagridModule, ColorFilter],
+  imports: [DatePipe, ClrDatagridModule, ColorFilter],
 })
 export class ExampleComponent {
   users: User[];
@@ -172,7 +173,7 @@ const customFilterComponentHTML = `
 `;
 
 const templateVariableTS = `
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { ColorFilter } from './utils/color-filter';
 import { Inventory } from './inventory/inventory';
@@ -184,7 +185,7 @@ import { User } from './inventory/user';
   styleUrl: './example.component.scss',
 
   providers: [Inventory],
-  imports: [CommonModule, ClrDatagridModule, ColorFilter],
+  imports: [DatePipe, ClrDatagridModule, ColorFilter],
 })
 export class ExampleComponent {
   public colorFilter = new ColorFilter();
@@ -254,7 +255,7 @@ const stringFilterColumnPresetHTML = `
 `;
 
 const stringFilterColumnPresetTS = `
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
@@ -266,7 +267,7 @@ import { PokemonFilter } from './utils/pokemon-filter';
   styleUrl: './example.component.scss',
 
   providers: [Inventory],
-  imports: [CommonModule, ClrDatagridModule],
+  imports: [DatePipe, ClrDatagridModule],
 })
 export class ExampleComponent {
   users: User[];
@@ -295,10 +296,12 @@ const filterSearchResults = `
     -->
   <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
 
-  <clr-dg-row *ngFor="let user of users">
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.id }} : {{ user.name }}</clr-dg-cell>
-  </clr-dg-row>
+  @for (user of users; track user.id) {
+    <clr-dg-row>
+      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.id }} : {{ user.name }}</clr-dg-cell>
+    </clr-dg-row>
+  }
 </clr-datagrid>
 `;
 

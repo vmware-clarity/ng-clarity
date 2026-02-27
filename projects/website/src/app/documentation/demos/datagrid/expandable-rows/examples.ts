@@ -6,12 +6,14 @@
  */
 
 const basic = `
-<clr-dg-row *ngFor="let user of users">
-  <!-- Cells declarations -->
-  <clr-dg-cell>...</clr-dg-cell>
+@for (user of users; track user.id) {
+  <clr-dg-row>
+    <!-- Cells declarations -->
+    <clr-dg-cell>...</clr-dg-cell>
 
-  <clr-dg-row-detail *clrIfExpanded>Lorem ipsum...</clr-dg-row-detail>
-</clr-dg-row>
+    <clr-dg-row-detail *clrIfExpanded>Lorem ipsum...</clr-dg-row-detail>
+  </clr-dg-row>
+}
 `;
 
 const replace = `<clr-dg-row-detail *clrIfExpanded [clrDgReplace]="true">Lorem ipsum...</clr-dg-row-detail>`;
@@ -24,23 +26,25 @@ const lazyLoadingRow = `
   <clr-dg-column [clrDgField]="'pokemon.name'">Pokemon</clr-dg-column>
   <clr-dg-column [clrDgField]="'color'">Favorite color</clr-dg-column>
 
-  <clr-dg-row *ngFor="let user of users">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
+  @for (user of users; track user.id) {
+    <clr-dg-row>
+      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+      <clr-dg-cell>
+        <span class="color-square" [style.backgroundColor]="user.color"></span>
+      </clr-dg-cell>
 
-    <expandable-row *clrIfExpanded [user]="user" ngProjectAs="clr-dg-row-detail"></expandable-row>
-  </clr-dg-row>
+      <expandable-row *clrIfExpanded [user]="user" ngProjectAs="clr-dg-row-detail"></expandable-row>
+    </clr-dg-row>
+  }
   <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
 </clr-datagrid>
 `;
 
 const lazyLoadingTs = `
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { ClrConditionalModule, ClrDatagridModule, ClrLoading } from '@clr/angular';
 import { Inventory } from './inventory/inventory';
@@ -53,7 +57,7 @@ import { ExpandableRowComponent } from './expandableRowComponent';
   styleUrl: './example.component.scss',
 
   providers: [Inventory],
-  imports: [CommonModule, ClrConditionalModule, ClrDatagridModule, ExpandableRowComponent],
+  imports: [DatePipe, ClrConditionalModule, ClrDatagridModule, ExpandableRowComponent],
 })
 export class ExampleComponent {
   users: User[];
@@ -67,7 +71,7 @@ export class ExampleComponent {
 `;
 
 const lazyLoadingDetailComponent = `
-import { CommonModule } from '@angular/common';
+import { JsonPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { User } from './inventory/user';
 
@@ -76,7 +80,7 @@ import { User } from './inventory/user';
   template: \`<div cds-layout="m:sm" clrLoading>{{user|json}}</div>\`,
   
   providers: [ClrLoading],
-  imports: [CommonModule],
+  imports: [JsonPipe],
 })
 export class ExpandableRowComponent implements OnInit {
   @Input() user: User | undefined;
@@ -109,15 +113,17 @@ const conditionalExpandableRow = `
       <span class="color-square" [style.backgroundColor]="user.color"></span>
     </clr-dg-cell>
 
-    <ng-container *ngIf="i % 2 === 0" ngProjectAs="clr-dg-row-detail">
-      <clr-dg-row-detail *clrIfExpanded>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis
-        id sed quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet
-        suscipit eget, pellentesque sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl
-        imperdiet viverra. Aenean sagittis nibh lacus, in eleifend urna ultrices et. Mauris porttitor
-        nisi nec velit pharetra porttitor.
-      </clr-dg-row-detail>
-    </ng-container>
+    @if (i % 2 === 0) {
+      <ng-container ngProjectAs="clr-dg-row-detail">
+        <clr-dg-row-detail *clrIfExpanded>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat
+          mattis id sed quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque
+          aliquet suscipit eget, pellentesque sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac
+          nisl imperdiet viverra. Aenean sagittis nibh lacus, in eleifend urna ultrices et. Mauris
+          porttitor nisi nec velit pharetra porttitor.
+        </clr-dg-row-detail>
+      </ng-container>
+    }
   </clr-dg-row>
 
   <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
@@ -164,15 +170,15 @@ const fullHtml = `
     </clr-dg-cell>
 
     <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="replace">
-      <ng-container *ngIf="detail === 'default'">
+      @if (detail === 'default') {
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis
         id sed quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet
         suscipit eget, pellentesque sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl
         imperdiet viverra. Aenean sagittis nibh lacus, in eleifend urna ultrices et. Mauris porttitor
         nisi nec velit pharetra porttitor.
-      </ng-container>
+      }
 
-      <ng-container *ngIf="detail === 'columns'">
+      @if (detail === 'columns') {
         <clr-dg-cell>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</clr-dg-cell>
         <clr-dg-cell>Proin in neque in ante placerat mattis id sed quam.</clr-dg-cell>
         <clr-dg-cell>Proin rhoncus lacus et tempor dignissim.</clr-dg-cell>
@@ -182,7 +188,7 @@ const fullHtml = `
         <clr-dg-cell>
           Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.
         </clr-dg-cell>
-      </ng-container>
+      }
     </clr-dg-row-detail>
   </clr-dg-row>
 
@@ -191,7 +197,7 @@ const fullHtml = `
 `;
 
 const fullTs = `
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component } from '@angular/core';
 import {
@@ -218,7 +224,7 @@ class DateFilter implements ClrDatagridStringFilterInterface<User> {
 
   providers: [Inventory],
   imports: [
-    CommonModule,
+    DatePipe,
     ClrConditionalModule,
     ClrCheckboxModule,
     ClrDatagridModule,

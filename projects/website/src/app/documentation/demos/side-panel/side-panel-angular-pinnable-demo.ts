@@ -22,44 +22,45 @@ ClarityIcons.addIcons(pinIcon, unpinIcon);
 
 const EXAMPLE = `
 <button class="btn btn-primary" (click)="opened = true">Pinnable side panel</button>
-<div clrModalHost *ngIf="opened" cds-layout="p:md m-t:md" style="width: 800px; height: 260px">
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus non beatae omnis esse quibusdam
-  dolorum voluptatem reiciendis quaerat assumenda optio, porro expedita similique dolore quidem aliquam.
-  Ullam, eaque enim nobis.
-  <clr-side-panel
-    #sidePanel
-    [(clrSidePanelOpen)]="opened"
-    [clrSidePanelPinnable]="pinnable"
-    clrSidePanelSize="md"
-  >
-    <div class="side-panel-title">
-      <clr-icon shape="arrow" direction="left"></clr-icon>
-      Click the Pin Button
-    </div>
-    <div class="side-panel-body">
-      <p>
-        When pinned the close [X] button and backdrop click are blocked. "Gentle Close" button will also
-        not close the pinned panel.
-      </p>
-      <p>"Forced Close" will close the panel no matter if pinned or not.</p>
-    </div>
-    <div class="side-panel-footer">
-      <button type="button" class="btn btn-outline" (click)="opened = false">Forced Close</button>
-      <button type="button" class="btn btn-primary" (click)="sidePanel.close()">Gentle Close</button>
-    </div>
-  </clr-side-panel>
-</div>
+@if (opened) {
+  <div clrModalHost cds-layout="p:md m-t:md" style="width: 800px; height: 260px">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus non beatae omnis esse quibusdam
+    dolorum voluptatem reiciendis quaerat assumenda optio, porro expedita similique dolore quidem
+    aliquam. Ullam, eaque enim nobis.
+    <clr-side-panel
+      #sidePanel
+      [(clrSidePanelOpen)]="opened"
+      [clrSidePanelPinnable]="pinnable"
+      clrSidePanelSize="md"
+    >
+      <div class="side-panel-title">
+        <clr-icon shape="arrow" direction="left"></clr-icon>
+        Click the Pin Button
+      </div>
+      <div class="side-panel-body">
+        <p>
+          When pinned the close [X] button and backdrop click are blocked. "Gentle Close" button will
+          also not close the pinned panel.
+        </p>
+        <p>"Forced Close" will close the panel no matter if pinned or not.</p>
+      </div>
+      <div class="side-panel-footer">
+        <button type="button" class="btn btn-outline" (click)="opened = false">Forced Close</button>
+        <button type="button" class="btn btn-primary" (click)="sidePanel.close()">Gentle Close</button>
+      </div>
+    </clr-side-panel>
+  </div>
+}
 `;
 
 const EXAMPLE_TS = `
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-example',
   templateUrl: './example.component.html',
 
-  imports: [ClrSidePanelModule, CommonModule],
+  imports: [ClrSidePanelModule],
 })
 export class ExampleComponent {
   opened = false;

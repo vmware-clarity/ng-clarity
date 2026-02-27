@@ -13,8 +13,10 @@
   <button class="btn" type="button" (click)="resetForm()">Reset</button>
 </form>
 
-<clr-alert *ngIf="submitted" [clrAlertLightweight]="true" [clrAlertType]="'success'">
+@if (submitted) {
+<clr-alert [clrAlertLightweight]="true" [clrAlertType]="'success'">
   <clr-alert-item>
     <span class="alert-text">Form is submitted.</span>
   </clr-alert-item>
 </clr-alert>
+}

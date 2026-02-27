@@ -12,7 +12,6 @@ import { ClrCommonFormsModule, ClrInputModule, ClrNumberInputModule, ClrWizard, 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const code = `
-import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -21,7 +20,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, ClrWizardModule, ClrFormsModule, FormsModule],
+  imports: [ClrWizardModule, ClrFormsModule, FormsModule],
 })
 export class ExampleComponent {
   @ViewChild('wizard') wizard: ClrWizard | undefined;
@@ -92,33 +91,38 @@ const html = `
     <ng-template clrPageTitle>Title for page 3</ng-template>
     <!-- mandatory -->
     <ng-template clrPageNavTitle>
-      <span *ngIf="formPageOne.valid && formPageTwo.valid">Ready to go!</span>
-      <span *ngIf="!formPageOne.valid || !formPageTwo.valid">Not ready yet</span>
+      @if (formPageOne.valid && formPageTwo.valid) {
+        <span>Ready to go!</span>
+      } @else {
+        <span>Not ready yet</span>
+      }
     </ng-template>
     <!-- optional -->
 
-    <div *ngIf="formPageOne.valid && formPageTwo.valid">
-      <p>Congratulations! You are done with this wizard.</p>
-      <label>Your information</label>
-      <section>
-        <p>
-          <label>Your name:</label>
-          <span>{{ model.name }}</span>
-        </p>
-        <p>
-          <label>Your favorite food:</label>
-          <span>{{ model.favorite }}</span>
-        </p>
-        <p>
-          <label>Your lucky number:</label>
-          <span>{{ model.number }}</span>
-        </p>
-      </section>
-    </div>
-
-    <div *ngIf="!formPageOne.valid || !formPageTwo.valid">
-      <p>Not quite there yet.</p>
-    </div>
+    @if (formPageOne.valid && formPageTwo.valid) {
+      <div>
+        <p>Congratulations! You are done with this wizard.</p>
+        <label>Your information</label>
+        <section>
+          <p>
+            <label>Your name:</label>
+            <span>{{ model.name }}</span>
+          </p>
+          <p>
+            <label>Your favorite food:</label>
+            <span>{{ model.favorite }}</span>
+          </p>
+          <p>
+            <label>Your lucky number:</label>
+            <span>{{ model.number }}</span>
+          </p>
+        </section>
+      </div>
+    } @else {
+      <div>
+        <p>Not quite there yet.</p>
+      </div>
+    }
   </clr-wizard-page>
 </clr-wizard>
 `;

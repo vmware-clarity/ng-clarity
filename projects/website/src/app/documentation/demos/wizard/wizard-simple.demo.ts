@@ -11,7 +11,6 @@ import { ClrWizard, ClrWizardModule } from '@clr/angular';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const code = `
-import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 
 @Component({
@@ -19,7 +18,7 @@ import { Component, ViewChild } from '@angular/core';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, ClrWizardModule],
+  imports: [ClrWizardModule],
 })
 export class ExampleComponent {
   @ViewChild('wizard') wizard: ClrWizard | undefined;
@@ -53,23 +52,31 @@ const html = `
     <p>Content for step 1</p>
     <p>
       <button class="btn btn-secondary" (click)="toggleStepTwo()">
-        <span *ngIf="skipStepTwo">Show Page 2</span>
-        <span *ngIf="!skipStepTwo">Hide Page 2</span>
+        @if (skipStepTwo) {
+          <span>Show Page 2</span>
+        } @else {
+          <span>Hide Page 2</span>
+        }
       </button>
     </p>
   </clr-wizard-page>
 
-  <clr-wizard-page *ngIf="!skipStepTwo">
-    <ng-template clrPageTitle>Title for page 2</ng-template>
-    <ng-template clrPageNavTitle>Step 2</ng-template>
-    <p>Content for step 2</p>
-  </clr-wizard-page>
+  @if (!skipStepTwo) {
+    <clr-wizard-page>
+      <ng-template clrPageTitle>Title for page 2</ng-template>
+      <ng-template clrPageNavTitle>Step 2</ng-template>
+      <p>Content for step 2</p>
+    </clr-wizard-page>
+  }
 
   <clr-wizard-page>
     <ng-template clrPageTitle>Title for page 3</ng-template>
     <ng-template clrPageNavTitle>Step 3</ng-template>
-    <p *ngIf="skipStepTwo">Page 3 is the last page because we skipped page 2.</p>
-    <p *ngIf="!skipStepTwo">Now our wizard has three pages/steps.</p>
+    @if (skipStepTwo) {
+      <p>Page 3 is the last page because we skipped page 2.</p>
+    } @else {
+      <p>Now our wizard has three pages/steps.</p>
+    }
   </clr-wizard-page>
 </clr-wizard>
 `;

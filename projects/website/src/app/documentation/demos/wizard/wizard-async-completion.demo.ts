@@ -20,7 +20,6 @@ import {
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const code = `
-import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -37,14 +36,7 @@ import {
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [
-    CommonModule,
-    ClrAlertModule,
-    ClrSpinnerModule,
-    ClrWizardModule,
-    ClrFormsModule,
-    FormsModule,
-  ],
+  imports: [ClrAlertModule, ClrSpinnerModule, ClrWizardModule, ClrFormsModule, FormsModule],
 })
 export class ExampleComponent {
   @ViewChild('wizard', { static: true }) wizard: ClrWizard | undefined;
@@ -153,23 +145,27 @@ const html = `
   >
     <ng-template clrPageTitle>Async validation on finish</ng-template>
 
-    <clr-alert
-      *ngIf="errorFlag"
-      [clrAlertType]="'alert-danger'"
-      [clrCloseButtonAriaLabel]="'Close Answer alert'"
-    >
-      <div class="alert-item">Your answer is incorrect.</div>
-    </clr-alert>
+    @if (errorFlag) {
+      <clr-alert [clrAlertType]="'alert-danger'" [clrCloseButtonAriaLabel]="'Close Answer alert'">
+        <div class="alert-item">Your answer is incorrect.</div>
+      </clr-alert>
+    }
 
-    <clr-spinner *ngIf="loadingFlag">Loading</clr-spinner>
+    @if (loadingFlag) {
+      <clr-spinner>Loading</clr-spinner>
+    }
 
-    <p *ngIf="errorFlag && !loadingFlag">Go back and try again!</p>
+    @if (errorFlag && !loadingFlag) {
+      <p>Go back and try again!</p>
+    }
 
-    <p *ngIf="showCongrats && !loadingFlag">
-      Congratulations! Now you know the answer to life, the universe and everything!
-    </p>
+    @if (showCongrats && !loadingFlag) {
+      <p>Congratulations! Now you know the answer to life, the universe and everything!</p>
+    }
 
-    <p *ngIf="!checked && !loadingFlag">Click finish to see if you got the answer right.</p>
+    @if (!checked && !loadingFlag) {
+      <p>Click finish to see if you got the answer right.</p>
+    }
   </clr-wizard-page>
 </clr-wizard>
 `;

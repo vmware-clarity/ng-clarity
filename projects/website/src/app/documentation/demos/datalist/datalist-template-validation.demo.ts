@@ -26,7 +26,9 @@ const templateHTML = `
       [(ngModel)]="value"
     />
     <datalist>
-      <option *ngFor="let item of items" [value]="item"></option>
+      @for (item of items; track item) {
+        <option [value]="item"></option>
+      }
     </datalist>
     <clr-control-helper>Helper text</clr-control-helper>
     <clr-control-error>There was an error</clr-control-error>
@@ -35,7 +37,6 @@ const templateHTML = `
 `;
 
 const templateTS = `
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -44,7 +45,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, FormsModule, ClrFormsModule],
+  imports: [FormsModule, ClrFormsModule],
 })
 export class ExampleComponent {
   disabled = false;

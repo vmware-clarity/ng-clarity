@@ -76,7 +76,9 @@ const MAIN_EXAMPLE = `
 </clr-datagrid>
 
 Selected users:
-<span *ngFor="let user of selected">{{ user.name }}</span>
+@for (user of selected; track user.id) {
+  <span>{{ user.name }}</span>
+}
 `;
 
 const DETAIL_PANE_EXAMPLE = `
@@ -92,8 +94,12 @@ const CHANGE_EVENT_EXAMPLE = `
 <div class="card card-block">
   <p class="card-text">
     Opened Pane:
-    <em *ngIf="!state">No user selected.</em>
-    <span *ngIf="state">{{ state.id }}</span>
+    @if (!state) {
+      <em>No user selected.</em>
+    }
+    @if (state) {
+      <span>{{ state.id }}</span>
+    }
   </p>
 </div>
 
@@ -159,8 +165,12 @@ const TWO_WAY_BINDING_EXAMPLE = `
 <div class="card card-block">
   <p class="card-text">
     Opened Pane:
-    <em *ngIf="!state">No user selected.</em>
-    <span *ngIf="state">{{ state.id }}</span>
+    @if (!state) {
+      <em>No user selected.</em>
+    }
+    @if (state) {
+      <span>{{ state.id }}</span>
+    }
   </p>
 </div>
 

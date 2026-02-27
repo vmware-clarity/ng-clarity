@@ -80,15 +80,17 @@ const serverDrivenHTML = `
   <clr-dg-column [clrDgField]="'pokemon'">Pokemon</clr-dg-column>
   <clr-dg-column [clrDgField]="'color'">Favorite color</clr-dg-column>
 
-  <clr-dg-row *ngFor="let user of users">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-  </clr-dg-row>
+  @for (user of users; track user.id) {
+    <clr-dg-row>
+      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+      <clr-dg-cell>
+        <span class="color-square" [style.backgroundColor]="user.color"></span>
+      </clr-dg-cell>
+    </clr-dg-row>
+  }
 
   <clr-dg-footer>
     <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="totalUserCount">

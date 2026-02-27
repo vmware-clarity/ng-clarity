@@ -163,7 +163,6 @@ export class ClrKeyFocus {
 
       if (this.focusOnLoad) {
         this.currentItem.focus();
-        // TODO: The 'emit' function requires a mandatory number argument
         this.focusChange.emit();
       }
     }

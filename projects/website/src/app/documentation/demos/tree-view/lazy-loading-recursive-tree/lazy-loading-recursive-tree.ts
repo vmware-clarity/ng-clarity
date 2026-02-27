@@ -15,19 +15,21 @@ import { StackblitzExampleComponent } from '../../../../shared/stackblitz-exampl
 import { File, files } from '../utils/files';
 
 const EXAMPLE_HTML = `
-<clr-tree *ngIf="root$ | async; let files" [clrLazy]="true">
-  <clr-tree-node
-    *clrRecursiveFor="let file of files; getChildren: getChildren"
-    [clrExpandable]="file.isFolder"
-  >
-    <clr-icon [shape]="file.isFolder ? 'folder' : 'file'"></clr-icon>
-    {{ file.name }}
-  </clr-tree-node>
-</clr-tree>
+@if (root$ | async; as files) {
+  <clr-tree [clrLazy]="true">
+    <clr-tree-node
+      *clrRecursiveFor="let file of files; getChildren: getChildren"
+      [clrExpandable]="file.isFolder"
+    >
+      <clr-icon [shape]="file.isFolder ? 'folder' : 'file'"></clr-icon>
+      {{ file.name }}
+    </clr-tree-node>
+  </clr-tree>
+}
 `;
 
 const EXAMPLE_TS = `
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { timer, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -38,7 +40,7 @@ import { File, files } from './files';
   selector: 'app-example',
   templateUrl: './example.component.html',
 
-  imports: [CommonModule, ClrIcon, ClrTreeViewModule],
+  imports: [AsyncPipe, ClrIcon, ClrTreeViewModule],
 })
 export class ExampleComponent {
   root$ = of(files);

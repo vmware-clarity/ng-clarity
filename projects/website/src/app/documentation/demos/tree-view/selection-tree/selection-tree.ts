@@ -13,19 +13,22 @@ import { StackblitzExampleComponent } from '../../../../shared/stackblitz-exampl
 
 const EXAMPLE_HTML = `
 <clr-tree>
-  <clr-tree-node *ngFor="let group of groceries" [(clrSelected)]="group.selected" [clrExpanded]="true">
-    {{ group.name }}
-    <clr-tree-node *ngFor="let item of group.items" [(clrSelected)]="item.selected">
-      {{ item.name }}
+  @for (group of groceries; track group.name) {
+    <clr-tree-node [(clrSelected)]="group.selected" [clrExpanded]="true">
+      {{ group.name }}
+      @for (item of group.items; track item.name) {
+        <clr-tree-node [(clrSelected)]="item.selected">
+          {{ item.name }}
+        </clr-tree-node>
+      }
     </clr-tree-node>
-  </clr-tree-node>
+  }
 </clr-tree>
 
 <button class="btn btn-sm" type="button" (click)="selectVegetables()">Select all vegetables</button>
 `;
 
 const EXAMPLE_TS = `
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { groceries } from './groceries';
 
@@ -34,7 +37,7 @@ import { groceries } from './groceries';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, ClrTreeViewModule],
+  imports: [ClrTreeViewModule],
 })
 export class ExampleComponent {
   groceries = groceries;

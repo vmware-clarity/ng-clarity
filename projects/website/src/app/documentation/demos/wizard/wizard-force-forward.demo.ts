@@ -11,7 +11,6 @@ import { ClrWizard, ClrWizardModule } from '@clr/angular';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const code = `
-import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 
 @Component({
@@ -19,7 +18,7 @@ import { Component, ViewChild } from '@angular/core';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, ClrWizardModule],
+  imports: [ClrWizardModule],
 })
 export class ExampleComponent {
   @ViewChild('wizard') wizard: ClrWizard | undefined;
@@ -38,10 +37,12 @@ const html = `
   <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
   <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
 
-  <clr-wizard-page *ngFor="let page of [1, 2, 3, 4]">
-    <ng-template clrPageTitle>Title for page {{ page }}</ng-template>
-    <p>Content for page {{ page }}.</p>
-  </clr-wizard-page>
+  @for (page of [1, 2, 3, 4]; track page) {
+    <clr-wizard-page>
+      <ng-template clrPageTitle>Title for page {{ page }}</ng-template>
+      <p>Content for page {{ page }}.</p>
+    </clr-wizard-page>
+  }
 </clr-wizard>
 `;
 

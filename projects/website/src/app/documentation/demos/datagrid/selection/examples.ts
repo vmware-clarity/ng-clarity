@@ -9,10 +9,12 @@ const main = `
 <div class="card card-block">
   <p class="card-text">
     Selected users:
-    <em *ngIf="selected.length == 0">No user selected.</em>
-    <span class="username" *ngFor="let user of selected; last as isLast">
-      {{ user.name }}{{ isLast ? '.' : ',' }}
-    </span>
+    @if (selected.length === 0) {
+      <em>No user selected.</em>
+    }
+    @for (user of selected; track user.id; let isLast = $last) {
+      <span class="username">{{ user.name }}{{ isLast ? '.' : ',' }}</span>
+    }
   </p>
 </div>
 
@@ -96,7 +98,7 @@ import { User } from './inventory/user';
   styleUrl: './example.component.scss',
 
   providers: [Inventory],
-  imports: [CommonModule, ClrDatagridModule],
+  imports: [DatePipe, ClrDatagridModule],
 })
 export class ExampleComponent {
   users: User[];
@@ -148,26 +150,30 @@ const fullHtml = `
 <div class="card card-block">
   <p class="card-text">
     Selected users:
-    <em *ngIf="selected.length == 0">No user selected.</em>
-    <span class="username" *ngFor="let user of selected; last as isLast">
-      {{ user.name }}{{ isLast ? '.' : ',' }}
-    </span>
+    @if (selected.length === 0) {
+      <em>No user selected.</em>
+    }
+    @for (user of selected; track user.id; let isLast = $last) {
+      <span class="username">{{ user.name }}{{ isLast ? '.' : ',' }}</span>
+    }
   </p>
 </div>
 
 <div class="card card-block">
   <p class="card-text">
     Locked users:
-    <em *ngIf="findLocked.length == 0">No user locked.</em>
-    <span class="username" *ngFor="let user of findLocked; last as isLast">
-      {{ user.name }}{{ isLast ? '.' : ',' }}
-    </span>
+    @if (findLocked.length === 0) {
+      <em>No user locked.</em>
+    }
+    @for (user of findLocked; track user.id; let isLast = $last) {
+      <span class="username">{{ user.name }}{{ isLast ? '.' : ',' }}</span>
+    }
   </p>
 </div>
 `;
 
 const fullTS = `
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
@@ -178,7 +184,7 @@ import { User } from './inventory/user';
   styleUrl: './example.component.scss',
 
   providers: [Inventory],
-  imports: [CommonModule, ClrDatagridModule],
+  imports: [DatePipe, ClrDatagridModule],
 })
 export class ExampleComponent {
   users: User[];

@@ -11,7 +11,6 @@ import { ClrWizard, ClrWizardModule } from '@clr/angular';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const code = `
-import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 
 @Component({
@@ -19,7 +18,7 @@ import { Component, ViewChild } from '@angular/core';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, ClrWizardModule],
+  imports: [ClrWizardModule],
 })
 export class ExampleComponent {
   @ViewChild('wizard', { static: true }) wizard: ClrWizard | undefined;
@@ -45,16 +44,20 @@ const html = `
 >
   <clr-wizard-title>Wizard that you can't close</clr-wizard-title>
 
-  <clr-wizard-page *ngFor="let page of pageArray">
-    <ng-template clrPageTitle>Page {{ page }}</ng-template>
-    <p>Page {{ page }} of {{ pageArray.length }}</p>
+  @for (page of pageArray; track page) {
+    <clr-wizard-page>
+      <ng-template clrPageTitle>Page {{ page }}</ng-template>
+      <p>Page {{ page }} of {{ pageArray.length }}</p>
 
-    <ng-template clrPageButtons>
-      <clr-wizard-button type="previous">Back</clr-wizard-button>
-      <clr-wizard-button type="next">Next</clr-wizard-button>
-      <clr-wizard-button *ngIf="page === '3'" type="finish">YAY</clr-wizard-button>
-    </ng-template>
-  </clr-wizard-page>
+      <ng-template clrPageButtons>
+        <clr-wizard-button type="previous">Back</clr-wizard-button>
+        <clr-wizard-button type="next">Next</clr-wizard-button>
+        @if (page === '3') {
+          <clr-wizard-button type="finish">YAY</clr-wizard-button>
+        }
+      </ng-template>
+    </clr-wizard-page>
+  }
 </clr-wizard>
 `;
 

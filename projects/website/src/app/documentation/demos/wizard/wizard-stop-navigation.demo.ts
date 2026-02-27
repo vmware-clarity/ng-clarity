@@ -12,7 +12,6 @@ import { ClrCommonFormsModule, ClrInputModule, ClrWizard, ClrWizardModule } from
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const code = `
-import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -21,7 +20,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, ClrWizardModule, ClrFormsModule, FormsModule],
+  imports: [ClrWizardModule, ClrFormsModule, FormsModule],
 })
 export class ExampleComponent {
   @ViewChild('wizard', { static: true }) wizard: ClrWizard | undefined;
@@ -91,13 +90,21 @@ const html = `
 >
   <clr-wizard-title>Wizard stops navigating while validating</clr-wizard-title>
 
-  <clr-wizard-button type="cancel" *ngIf="!readyToFinish">Cancel</clr-wizard-button>
-  <clr-wizard-button type="previous" *ngIf="!readyToFinish">Back</clr-wizard-button>
+  @if (!readyToFinish) {
+    <clr-wizard-button type="cancel">Cancel</clr-wizard-button>
+    <clr-wizard-button type="previous">Back</clr-wizard-button>
+  }
   <clr-wizard-button type="next">Next</clr-wizard-button>
   <clr-wizard-button type="finish">
-    <span *ngIf="untouched && !loading">Validate</span>
-    <span *ngIf="loading">Please wait...</span>
-    <span *ngIf="readyToFinish">OK</span>
+    @if (untouched && !loading) {
+      <span>Validate</span>
+    }
+    @if (loading) {
+      <span>Please wait...</span>
+    }
+    @if (readyToFinish) {
+      <span>OK</span>
+    }
   </clr-wizard-button>
 
   <clr-wizard-page
@@ -132,24 +139,32 @@ const html = `
   <clr-wizard-page [clrWizardPagePreventDefaultNext]="true" (clrWizardPageOnCommit)="onCommit()">
     <ng-template clrPageTitle>Validate your information</ng-template>
     <ng-template clrPageNavTitle>
-      <span *ngIf="!readyToFinish">Validate Info</span>
-      <span *ngIf="readyToFinish">Ready to Go!</span>
+      @if (!readyToFinish) {
+        <span>Validate Info</span>
+      }
+      @if (readyToFinish) {
+        <span>Ready to Go!</span>
+      }
     </ng-template>
 
-    <p *ngIf="untouched && !loading">
-      Click the Validate button to kick off a timed routine. While the validation is running, try
-      clicking buttons and stepnav items. Note that they don't do anything while the validation is
-      running. The validation is just an exercise. It will not fail.
-    </p>
+    @if (untouched && !loading) {
+      <p>
+        Click the Validate button to kick off a timed routine. While the validation is running, try
+        clicking buttons and stepnav items. Note that they don't do anything while the validation is
+        running. The validation is just an exercise. It will not fail.
+      </p>
+    }
 
-    <ng-container *ngIf="loading">
+    @if (loading) {
       <p>Loading...</p>
       <div class="progress">
         <progress [value]="progress" max="100" [attr.data-displayval]="progress + '%'"></progress>
       </div>
-    </ng-container>
+    }
 
-    <p *ngIf="readyToFinish">Click on the OK button to close the wizard.</p>
+    @if (readyToFinish) {
+      <p>Click on the OK button to close the wizard.</p>
+    }
   </clr-wizard-page>
 </clr-wizard>
 `;

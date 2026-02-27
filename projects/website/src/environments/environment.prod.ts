@@ -7,6 +7,6 @@
 
 export const environment = {
   production: true,
-  version: '21',
+  version: '18',
   versions_url: '/versions.json',
 };

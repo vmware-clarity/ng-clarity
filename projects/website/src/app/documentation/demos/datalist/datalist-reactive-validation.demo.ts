@@ -17,7 +17,9 @@ const reactiveHTML = `
     <label>Reactive Datalist</label>
     <input clrDatalistInput placeholder="Option" name="Option" formControlName="item" />
     <datalist>
-      <option *ngFor="let item of items" [value]="item"></option>
+      @for (item of items; track item) {
+        <option [value]="item"></option>
+      }
     </datalist>
   </clr-datalist-container>
   <button class="btn btn-primary" type="submit" [disabled]="form.invalid" (click)="submit()">
@@ -27,7 +29,6 @@ const reactiveHTML = `
 `;
 
 const reactiveTS = `
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -36,7 +37,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
-  imports: [CommonModule, ReactiveFormsModule, ClrFormsModule],
+  imports: [ReactiveFormsModule, ClrFormsModule],
 })
 export class ExampleComponent {
   items: string[] = ['Item1', 'Item2', 'Item3'];

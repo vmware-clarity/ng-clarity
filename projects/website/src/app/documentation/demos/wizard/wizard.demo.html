@@ -266,32 +266,31 @@
     </h3>
 
     <p cds-text="body" class="clr-mt-16px" cds-layout="m-b:sm">
-      Depending on the flow of the wizard, you may want to skip or add steps in the wizard. In the 0.9.0 wizard, this is
-      accomplished by using the <code cds-text="code">*ngIf</code>
-      Angular directive.
+      Depending on the flow of the wizard, you may want to skip or add steps in the wizard. This is accomplished by
+      using the <code cds-text="code">&#64;if</code>
+      control flow block.
     </p>
 
     <clr-wizard-simple></clr-wizard-simple>
 
-    <h4 id="skipping-with-ngfor" cds-text="subsection" class="clr-mt-32px">Skipping steps and *ngFor</h4>
+    <h4 id="skipping-with-for" cds-text="subsection" class="clr-mt-32px">Skipping steps and &#64;for</h4>
 
     <p cds-text="body" class="clr-mt-16px">
-      If you are using <code cds-text="code">*ngFor</code> to generate your wizard pages and still want to use
-      <code cds-text="code">*ngIf</code> to hide them, you will want to follow
-      <a href="https://angular.io/docs/ts/latest/guide/structural-directives.html#!#one-per-element" target="_blank">
-        the Angular team's recommendations on nested structural directives.
-      </a>
+      If you are using <code cds-text="code">&#64;for</code> to generate your wizard pages and still want to use
+      <code cds-text="code">&#64;if</code> to hide them, you can nest <code cds-text="code">&#64;if</code> inside
+      <code cds-text="code">&#64;for</code> blocks directly, since Angular's built-in control flow blocks can be freely
+      nested without restriction.
     </p>
 
     <p cds-text="body" class="clr-mt-24px">
       At a high level, this means wrapping your
-      <code cds-text="code">&lt;clr-wizard-page *ngIf="yourCondition"&gt;</code> inside a
-      <code cds-text="code">&lt;ng-container *ngFor="let page of pages"&gt;</code> element.
+      <code cds-text="code">&#64;if (yourCondition) { &lt;clr-wizard-page&gt; ... &lt;/clr-wizard-page&gt; }</code>
+      inside a <code cds-text="code">&#64;for (page of pages; track page) { ... }</code> block.
     </p>
 
     <p cds-text="body" class="clr-mt-24px">
       Alternatively, you could add and remove elements from the array of pages you are sending to the
-      <code cds-text="code">*ngFor</code>.
+      <code cds-text="code">&#64;for</code>.
     </p>
 
     <clr-wizard-nested-directives></clr-wizard-nested-directives>

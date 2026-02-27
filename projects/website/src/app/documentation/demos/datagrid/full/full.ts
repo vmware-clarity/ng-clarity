@@ -65,122 +65,139 @@ const exampleHtml = `
     <label>Server-driven</label>
   </clr-checkbox-wrapper>
 
-  <clr-select-container *ngIf="options.server">
-    <label>Latency</label>
-    <select clrSelect name="latency" [(ngModel)]="options.latency">
-      <option value="0">0 ms</option>
-      <option value="100">100ms</option>
-      <option value="200">200ms</option>
-      <option value="500">500ms</option>
-      <option value="1000">1s</option>
-      <option value="2000">2s</option>
-    </select>
-  </clr-select-container>
+  @if (options.server) {
+    <clr-select-container>
+      <label>Latency</label>
+      <select clrSelect name="latency" [(ngModel)]="options.latency">
+        <option value="0">0 ms</option>
+        <option value="100">100ms</option>
+        <option value="200">200ms</option>
+        <option value="500">500ms</option>
+        <option value="1000">1s</option>
+        <option value="2000">2s</option>
+      </select>
+    </clr-select-container>
+  }
 
   <button type="submit" class="btn btn-primary">Apply</button>
 </form>
 
-<div *ngIf="!resetting">
-  <div *ngIf="selected" class="card card-block">
-    <p class="card-text username-list">
-      Selected users:
-      <em *ngIf="selected.length == 0">No user selected.</em>
-      <span class="username" *ngFor="let user of selected">{{ user.name }}</span>
-    </p>
-  </div>
+@if (!resetting) {
+  @if (selected) {
+    <div class="card card-block">
+      <p class="card-text username-list">
+        Selected users:
+        @if (selected.length === 0) {
+          <em>No user selected.</em>
+        }
+        @for (user of selected; track user.id) {
+          <span class="username">{{ user.name }}</span>
+        }
+      </p>
+    </div>
+  }
 
-  <clr-datagrid
-    *ngIf="!isServerDriven && users"
-    [(clrDgSelected)]="selected"
-    [clrDgItemsIdentityFn]="trackUserItemById"
-  >
-    <clr-dg-column>User ID</clr-dg-column>
-    <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
-    <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
-    <clr-dg-column [clrDgSortBy]="pokemonComparator">
-      Pokemon
-      <clr-dg-string-filter [clrDgStringFilter]="pokemonFilter"></clr-dg-string-filter>
-    </clr-dg-column>
-    <clr-dg-column [clrDgField]="'color'">
-      Favorite color
-      <clr-dg-filter [clrDgFilter]="colorFilter">
-        <clr-datagrid-color-filter #colorFilter class="color-filter"></clr-datagrid-color-filter>
-      </clr-dg-filter>
-    </clr-dg-column>
-    <clr-dg-column *ngIf="loremIpsumColumn">Multi-line text</clr-dg-column>
+  @if (!isServerDriven && users) {
+    <clr-datagrid [(clrDgSelected)]="selected" [clrDgItemsIdentityFn]="trackUserItemById">
+      <clr-dg-column>User ID</clr-dg-column>
+      <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+      <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
+      <clr-dg-column [clrDgSortBy]="pokemonComparator">
+        Pokemon
+        <clr-dg-string-filter [clrDgStringFilter]="pokemonFilter"></clr-dg-string-filter>
+      </clr-dg-column>
+      <clr-dg-column [clrDgField]="'color'">
+        Favorite color
+        <clr-dg-filter [clrDgFilter]="colorFilter">
+          <clr-datagrid-color-filter #colorFilter class="color-filter"></clr-datagrid-color-filter>
+        </clr-dg-filter>
+      </clr-dg-column>
+      @if (loremIpsumColumn) {
+        <clr-dg-column>Multi-line text</clr-dg-column>
+      }
 
-    <clr-dg-placeholder>No users found</clr-dg-placeholder>
-    <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-      <clr-dg-cell>
-        <span class="color-square" [style.backgroundColor]="user.color"></span>
-      </clr-dg-cell>
-      <clr-dg-cell class="lorem-ipsum" *ngIf="loremIpsumColumn">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortor tellus, tincidunt eget
-        mauris molestie, ullamcorper facilisis lacus. Vivamus sagittis suscipit libero, et tristique
-        justo consectetur eget.
-      </clr-dg-cell>
-    </clr-dg-row>
+      <clr-dg-placeholder>No users found</clr-dg-placeholder>
+      <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+        <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+        <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+        <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+        <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+        <clr-dg-cell>
+          <span class="color-square" [style.backgroundColor]="user.color"></span>
+        </clr-dg-cell>
+        @if (loremIpsumColumn) {
+          <clr-dg-cell class="lorem-ipsum">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortor tellus, tincidunt eget
+            mauris molestie, ullamcorper facilisis lacus. Vivamus sagittis suscipit libero, et tristique
+            justo consectetur eget.
+          </clr-dg-cell>
+        }
+      </clr-dg-row>
 
-    <clr-dg-footer>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
-      {{ pagination.totalItems }} users
-      <clr-dg-pagination #pagination [clrDgPageSize]="currentPageSize"></clr-dg-pagination>
-    </clr-dg-footer>
-  </clr-datagrid>
+      <clr-dg-footer>
+        {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+        {{ pagination.totalItems }} users
+        <clr-dg-pagination #pagination [clrDgPageSize]="currentPageSize"></clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+  }
 
-  <clr-datagrid
-    *ngIf="isServerDriven"
-    [(clrDgSelected)]="selected"
-    (clrDgRefresh)="refresh($event)"
-    [clrDgLoading]="loading"
-    [clrDgItemsIdentityFn]="trackUserItemById"
-  >
-    <clr-dg-column>User ID</clr-dg-column>
-    <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
-    <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
-    <clr-dg-column [clrDgField]="'pokemon'">Pokemon</clr-dg-column>
-    <clr-dg-column [clrDgField]="'color'">
-      Favorite color
-      <clr-dg-filter [clrDgFilter]="colorFilter">
-        <clr-datagrid-color-filter #colorFilter class="color-filter"></clr-datagrid-color-filter>
-      </clr-dg-filter>
-    </clr-dg-column>
-    <clr-dg-column *ngIf="loremIpsumColumn">Multi-line text</clr-dg-column>
+  @if (isServerDriven) {
+    <clr-datagrid
+      [(clrDgSelected)]="selected"
+      (clrDgRefresh)="refresh($event)"
+      [clrDgLoading]="loading"
+      [clrDgItemsIdentityFn]="trackUserItemById"
+    >
+      <clr-dg-column>User ID</clr-dg-column>
+      <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+      <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
+      <clr-dg-column [clrDgField]="'pokemon'">Pokemon</clr-dg-column>
+      <clr-dg-column [clrDgField]="'color'">
+        Favorite color
+        <clr-dg-filter [clrDgFilter]="colorFilter">
+          <clr-datagrid-color-filter #colorFilter class="color-filter"></clr-datagrid-color-filter>
+        </clr-dg-filter>
+      </clr-dg-column>
+      @if (loremIpsumColumn) {
+        <clr-dg-column>Multi-line text</clr-dg-column>
+      }
 
-    <clr-dg-placeholder>No users found</clr-dg-placeholder>
-    <clr-dg-row *ngFor="let user of users" [clrDgItem]="user">
-      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-      <clr-dg-cell>
-        <span class="color-square" [style.backgroundColor]="user.color"></span>
-      </clr-dg-cell>
-      <clr-dg-cell class="lorem-ipsum" *ngIf="loremIpsumColumn">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortor tellus, tincidunt eget
-        mauris molestie, ullamcorper facilisis lacus. Vivamus sagittis suscipit libero, et tristique
-        justo consectetur eget.
-      </clr-dg-cell>
-    </clr-dg-row>
+      <clr-dg-placeholder>No users found</clr-dg-placeholder>
+      @for (user of users; track user.id) {
+        <clr-dg-row [clrDgItem]="user">
+          <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+          <clr-dg-cell>
+            <span class="color-square" [style.backgroundColor]="user.color"></span>
+          </clr-dg-cell>
+          @if (loremIpsumColumn) {
+            <clr-dg-cell class="lorem-ipsum">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortor tellus, tincidunt eget
+              mauris molestie, ullamcorper facilisis lacus. Vivamus sagittis suscipit libero, et
+              tristique justo consectetur eget.
+            </clr-dg-cell>
+          }
+        </clr-dg-row>
+      }
 
-    <clr-dg-footer>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ total }} users
-      <clr-dg-pagination
-        #pagination
-        [clrDgPageSize]="currentPageSize"
-        [clrDgTotalItems]="total"
-      ></clr-dg-pagination>
-    </clr-dg-footer>
-  </clr-datagrid>
-</div>
+      <clr-dg-footer>
+        {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ total }} users
+        <clr-dg-pagination
+          #pagination
+          [clrDgPageSize]="currentPageSize"
+          [clrDgTotalItems]="total"
+        ></clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+  }
+}
 `;
 
 const exampleTs = `
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -206,7 +223,7 @@ import { PokemonFilter } from './utils/pokemon-filter';
 
   providers: [Inventory],
   imports: [
-    CommonModule,
+    DatePipe,
     ClrDatagridModule,
     ClrRadioModule,
     ClrCheckboxModule,

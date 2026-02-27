@@ -14,39 +14,40 @@ ClarityIcons.addIcons(pinIcon, unpinIcon);
 
 const EXAMPLE = `
 <button class="btn btn-primary" (click)="opened = true">Pinned side panel</button>
-<div clrModalHost *ngIf="opened" cds-layout="p:md m-t:md" style="width: 800px; height: 260px">
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus non beatae omnis esse quibusdam
-  dolorum voluptatem reiciendis quaerat assumenda optio, porro expedita similique dolore quidem aliquam.
-  Ullam, eaque enim nobis.
-  <clr-side-panel
-    #sidePanel
-    [(clrSidePanelOpen)]="opened"
-    [clrSidePanelPinnable]="false"
-    [clrSidePanelPinned]="true"
-    [clrSidePanelClosable]="false"
-    clrSidePanelSize="md"
-  >
-    <div class="side-panel-title">Pinned by default</div>
-    <div class="side-panel-body">
-      <p>Panel is by default pinned side by side with the container content.</p>
-      <p>No pin/unpin buttons are displayed.</p>
-    </div>
-    <div class="side-panel-footer">
-      <button type="button" class="btn btn-outline" (click)="opened = false">Close</button>
-    </div>
-  </clr-side-panel>
-</div>
+@if (opened) {
+  <div clrModalHost cds-layout="p:md m-t:md" style="width: 800px; height: 260px">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus non beatae omnis esse quibusdam
+    dolorum voluptatem reiciendis quaerat assumenda optio, porro expedita similique dolore quidem
+    aliquam. Ullam, eaque enim nobis.
+    <clr-side-panel
+      #sidePanel
+      [(clrSidePanelOpen)]="opened"
+      [clrSidePanelPinnable]="false"
+      [clrSidePanelPinned]="true"
+      [clrSidePanelClosable]="false"
+      clrSidePanelSize="md"
+    >
+      <div class="side-panel-title">Pinned by default</div>
+      <div class="side-panel-body">
+        <p>Panel is by default pinned side by side with the container content.</p>
+        <p>No pin/unpin buttons are displayed.</p>
+      </div>
+      <div class="side-panel-footer">
+        <button type="button" class="btn btn-outline" (click)="opened = false">Close</button>
+      </div>
+    </clr-side-panel>
+  </div>
+}
 `;
 
 const EXAMPLE_TS = `
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-example',
   templateUrl: './example.component.html',
 
-  imports: [ClrSidePanelModule, CommonModule],
+  imports: [ClrSidePanelModule],
 })
 export class ExampleComponent {
   opened = false;

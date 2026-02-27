@@ -19,7 +19,6 @@ import {
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const code = `
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -28,7 +27,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './example.component.html',
   styles: ['.stress { color: var(--cds-alias-status-danger); }'],
 
-  imports: [CommonModule, ClrWizardModule, ClrAlertModule, ClrFormsModule, FormsModule],
+  imports: [ClrWizardModule, ClrAlertModule, ClrFormsModule, FormsModule],
 })
 export class ExampleComponent implements OnInit {
   @ViewChild('wizard', { static: true }) wizard: ClrWizard | undefined;
@@ -117,7 +116,9 @@ const html = `
 
   <clr-wizard-page (clrWizardPageNext)="pageCustomNext()" [clrWizardPagePreventDefaultNext]="true">
     <ng-template clrPageTitle>Page level alt-next</ng-template>
-    <p *ngIf="showCancelConfirm">Complete this fibonacci sequence</p>
+    @if (showCancelConfirm) {
+      <p>Complete this fibonacci sequence</p>
+    }
 
     <p>1, 2...</p>
 
@@ -159,17 +160,16 @@ const html = `
 
   <clr-wizard-page>
     <ng-template clrPageTitle>Wizard level alt-next and the finish button</ng-template>
-    <clr-alert *ngIf="errorFlag" clrAlertType="danger">
-      <clr-alert-item>Your sequence should be 1, 2, 3, 5, 8.</clr-alert-item>
-    </clr-alert>
-
-    <ng-container *ngIf="!errorFlag">
+    @if (errorFlag) {
+      <clr-alert clrAlertType="danger">
+        <clr-alert-item>Your sequence should be 1, 2, 3, 5, 8.</clr-alert-item>
+      </clr-alert>
+      <p>Click back to the previous page to change your answers.</p>
+    } @else {
       <p>Alt-next at the wizard level also affects the finish button!</p>
       <p>So make sure to call through to finish when you use it.</p>
       <p>Click the finish button to test your answers.</p>
-    </ng-container>
-
-    <p *ngIf="errorFlag">Click back to the previous page to change your answers.</p>
+    }
   </clr-wizard-page>
 </clr-wizard>
 `;
