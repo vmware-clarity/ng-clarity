@@ -1,0 +1,27 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example">
+  <clr-tabs clrLayout="vertical">
+    <clr-tab>
+      <button clrTabLink>Dashboard</button>
+      <clr-tab-content *clrIfActive>
+        Content for Dashboard tab. Here is a <a href="javascript://">link</a> that can be accessed via clicking or
+        through keyboard via tabbing.
+      </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Management</button>
+      <clr-tab-content *clrIfActive> Content for Management tab. </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Cloud</button>
+      <clr-tab-content *clrIfActive> Content for Cloud tab. </clr-tab-content>
+    </clr-tab>
+  </clr-tabs>
+</div>
+<app-stackblitz-example name="tabs angular vertical example" [componentTemplate]="example"></app-stackblitz-example>

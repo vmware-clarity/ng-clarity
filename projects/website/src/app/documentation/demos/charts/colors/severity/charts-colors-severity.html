@@ -1,0 +1,231 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h2 id="severity" cds-text="title" cds-layout="m-t:xxl">Visualizing Status and Severity</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  <strong cds-text="medium">Token library</strong>: <code cds-text="code">--cds-alias-viz-severity-</code>
+</p>
+
+<p cds-text="body" cds-layout="m-t:md m-b:lg">
+  Visualizing status and severity helps users quickly identify and understand the importance or urgency of the data
+  being presented.  These colors can be used in all types of visualizations to convey critical information at a glance.
+  There are two “Free space” tokens - fill and border. Always apply “free-space-fill” together with “free-space-border”
+  to comply with accessibility requirements for contrast.
+  <br />
+  The standard color states include:
+</p>
+
+<app-color-example-item [token]="'--cds-alias-viz-severity-neutral'">
+  <strong cds-text="medium">Neutral</strong>&nbsp;<code cds-text="code">--cds-alias-viz-severity-neutral</code> -
+  Indicates an inactive, unknown, or neutral status.
+</app-color-example-item>
+
+<app-color-example-item [token]="'--cds-alias-viz-severity-success'">
+  <strong cds-text="medium">Success</strong>&nbsp;<code cds-text="code">--cds-alias-viz-severity-success</code> -
+  Indicates a positive or normal status.
+</app-color-example-item>
+
+<app-color-example-item [token]="'--cds-alias-viz-severity-warning'">
+  <strong cds-text="medium">Warning</strong>&nbsp;<code cds-text="code">--cds-alias-viz-severity-warning</code> -
+  Indicates a cautionary status that requires attention.
+</app-color-example-item>
+
+<app-color-example-item
+  [token]="'--cds-alias-viz-severity-warning-light'"
+  [borderColor]="'--cds-alias-viz-severity-warning'"
+>
+  <strong cds-text="medium">Warning-light</strong>&nbsp;
+  <code cds-text="code">--cds-alias-viz-severity-warning-light</code>
+  - Indicates a cautionary status that requires action. In light theme use only with stroke.
+</app-color-example-item>
+
+<app-color-example-item [token]="'--cds-alias-viz-severity-immediate'">
+  <strong cds-text="medium">Immediate</strong>&nbsp;<code cds-text="code">--cds-alias-viz-severity-immediate</code> -
+  Indicates a situation that needs prompt attention.
+</app-color-example-item>
+
+<app-color-example-item [token]="'--cds-alias-viz-severity-critical'">
+  <strong cds-text="medium">Critical</strong>&nbsp;<code cds-text="code">--cds-alias-viz-severity-critical</code> -
+  Indicates a critical status that requires immediate action.
+</app-color-example-item>
+
+<app-color-example-item [token]="'--cds-alias-viz-severity-free-space-fill'">
+  <strong cds-text="medium">Free space fill</strong>&nbsp;<code cds-text="code"
+    >--cds-alias-viz-severity-free-space-fill</code
+  >
+  - To be used as fill for the ‘Free space' in capacity chart
+</app-color-example-item>
+
+<app-color-example-item [token]="'--cds-alias-viz-severity-free-space-border'">
+  <strong cds-text="medium">Free space border</strong>&nbsp;<code cds-text="code"
+    >--cds-alias-viz-severity-free-space-border</code
+  >
+  - To be used as a border for the ‘Free space' in capacity chart
+</app-color-example-item>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Examples</h3>
+
+<p cds-text="body" cds-layout="m-t:md">
+  The unique colors within the severity palette allow it to be combined effectively with any other palettes.
+</p>
+
+<div cds-layout="m-t:lg grid cols@sm:6 gap:lg">
+  <div>
+    <h4 cds-text="medium">Memory Usage</h4>
+    <p cds-text="body" cds-layout="m-t:sm">A dashboard showing available memory.</p>
+    <ul cds-text="body" cds-layout="m-t:sm m-l:xs">
+      <li>Success indicates "sufficient memory available"</li>
+      <li>Warning indicates "moderate memory usage"</li>
+      <li>Immediate indicates "low memory available"</li>
+      <li>Critical indicates "critical low memory available"</li>
+      <li>Free space signifies the free space of the chart.</li>
+    </ul>
+  </div>
+  <div>
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-colors-severity-examples-memory-usage.svg'"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-colors-severity-examples-memory-usage.svg'"
+      [imageAlt]="'memory usage example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+</div>
+
+<div cds-layout="m-t:lg grid cols@sm:6 gap:lg">
+  <div>
+    <h4 cds-text="medium">System Health</h4>
+    <p cds-text="body" cds-layout="m-t:sm">Using colors to indicate the health of different systems or components.</p>
+    <ul cds-text="body" cds-layout="m-t:sm m-l:xs">
+      <li>Neutral indicates "neutral"</li>
+      <li>Warning indicates "degraded performance"</li>
+      <li>Immediate indicates "immediate issue"</li>
+      <li>Critical indicates "critical failure"</li>
+    </ul>
+  </div>
+  <div>
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-colors-severity-examples-system-health.svg'"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-colors-severity-examples-system-health.svg'"
+      [imageAlt]="'system health example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+</div>
+
+<div cds-layout="m-t:lg grid cols@sm:6 gap:lg">
+  <div>
+    <h4 cds-text="medium">Incident Reporting</h4>
+    <p cds-text="body" cds-layout="m-t:sm">Indicating the severity of reported incidents or issues.</p>
+    <ul cds-text="body" cds-layout="m-t:sm m-l:xs">
+      <li>Warning indicates "medium severity"</li>
+      <li>Immediate indicates "high severity"</li>
+      <li>Critical indicates "critical severity"</li>
+    </ul>
+  </div>
+  <div>
+    <app-themed-image
+      [lightSrc]="
+        '/assets/images/documentation/charts/light-theme/charts-colors-severity-examples-incident-reporting.svg'
+      "
+      [darkSrc]="
+        '/assets/images/documentation/charts/dark-theme/charts-colors-severity-examples-incident-reporting.svg'
+      "
+      [imageAlt]="'incident reporting example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+</div>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Best Practices</h3>
+
+<ul cds-text="body" cds-layout="m-t:md m-l:xs">
+  <li>
+    <strong cds-text="medium">Consistent Color Usage</strong>: Use a consistent color scheme for statuses and severities
+    across all visualizations to avoid confusion.
+  </li>
+  <li>
+    <strong cds-text="medium">Limit Color Range</strong>: Stick to a strict set of status colors (gray, green, yellow,
+    orange, red) to ensure clarity and avoid overwhelming users.
+  </li>
+</ul>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Accessibility</h3>
+
+<div cds-layout="m-t:lg grid cols@sm:6 gap:lg">
+  <div>
+    <h4 cds-text="medium">Stroke Contrast</h4>
+    <ul cds-text="body" cds-layout="m-t:sm m-l:xs">
+      <li>Use strokes when there are clusters of different colors to enhance visibility and differentiation.</li>
+      <li>
+        Example: In pie charts or similar visualizations, apply a stroke that matches the background color - white for
+        light themes and dark for dark themes.
+      </li>
+    </ul>
+  </div>
+  <div>
+    <app-themed-image
+      [lightSrc]="
+        '/assets/images/documentation/charts/light-theme/charts-colors-severity-accessibility-stroke-contrast.svg'
+      "
+      [darkSrc]="
+        '/assets/images/documentation/charts/dark-theme/charts-colors-severity-accessibility-stroke-contrast.svg'
+      "
+      [imageAlt]="'stroke contrast example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+</div>
+
+<div cds-layout="m-t:lg grid cols@sm:6 gap:lg">
+  <div>
+    <h4 cds-text="medium">Alternative Indicators</h4>
+    <p cds-text="body" cds-layout="m-t:sm">such as labels or icons to reinforce the meaning of colors</p>
+  </div>
+  <div>
+    <app-themed-image
+      [lightSrc]="
+        '/assets/images/documentation/charts/light-theme/charts-colors-severity-accessibility-alternative-indicators.svg'
+      "
+      [darkSrc]="
+        '/assets/images/documentation/charts/dark-theme/charts-colors-severity-accessibility-alternative-indicators.svg'
+      "
+      [imageAlt]="'alternative indicators example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+</div>
+
+<div cds-layout="m-t:lg grid cols@sm:6 gap:lg">
+  <div>
+    <h4 cds-text="medium">Severity Warning - Light:</h4>
+    <p cds-text="body" cds-layout="m-t:sm">
+      when there is a need for more prominent emphasis on a severity warning status in data visualisations, we offer
+      Severity Warning-Light color <code cds-text="code">--cds-alias-severity-warning-light</code>, a vibrant yellow
+      color.<br /><br />
+
+      While this color is visually appealing, it does not meet accessibility standards, and must always be used
+      alongside an inner border. The border should be an inner border of 1 pixel and the color should be:
+      <code cds-text="code">--cds-alias-severity-warning</code> and 1 pixel wide.<br /><br />
+
+      Never use Severity Warning-Light color <code cds-text="code">--cds-alias-severity-warning-light</code> for
+      alternative indicators like labels, icons and line charts. For these elements use Severity Warning color
+      <code cds-text="code">--cds-alias-severity-warning</code>.
+    </p>
+  </div>
+  <div>
+    <app-themed-image
+      [lightSrc]="
+        '/assets/images/documentation/charts/light-theme/charts-colors-severity-accessibility-warning-light.svg'
+      "
+      [darkSrc]="
+        '/assets/images/documentation/charts/dark-theme/charts-colors-severity-accessibility-warning-light.svg'
+      "
+      [imageAlt]="'alternative indicators example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+</div>

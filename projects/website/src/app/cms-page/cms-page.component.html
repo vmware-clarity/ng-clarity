@@ -1,0 +1,16 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+@if (page | async; as page) {
+  <app-site-nav></app-site-nav>
+  <main #scrollParent class="content-area" appHashListener>
+    <app-table-of-contents [scrollParent]="scrollParent"></app-table-of-contents>
+    <section class="cms-content" [innerHTML]="page.html | appSafeHtml" (click)="onContentClick($event)"></section>
+    <app-site-footer></app-site-footer>
+  </main>
+} @else {
+  <page-not-found></page-not-found>
+}

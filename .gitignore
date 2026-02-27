@@ -54,5 +54,10 @@ Thumbs.db
 /playwright/.cache/
 /test-results/
 
+# Website
+projects/website/src/compiled-content/*.json
+projects/website/src/assets/clarity-icons.zip
+projects/website/src/admin/main.js
+
 #Storybook
 debug-storybook.log

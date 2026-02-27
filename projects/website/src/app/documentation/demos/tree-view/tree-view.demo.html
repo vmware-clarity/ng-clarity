@@ -1,0 +1,638 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      A tree view is a hierarchical component that shows the visual representation of the parent-child relationship
+      between the branch nodes.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="usage">Usage</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Use a tree view to organize large amounts of information by main nodes and child nodes, allowing the user to
+      expand and collapse the nodes to find what they need. For example, a directory and file structure or a long list
+      of application settings.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="types">Types</h2>
+    <h3 class="clr-mt-24px" cds-text="section" id="basic-tree">Basic Tree</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      A basic tree view provides a tree structure with named nodes and an arrow to expand and collapse child nodes.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-5">
+        <div class="clrweb-DoxMedia clr-mt-16px">
+          <div class="clrweb-DoxMedia-block">
+            <div class="clrweb-DoxMedia-img is-left-aligned">
+              <clr-tree-basic-demo></clr-tree-basic-demo>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="icon-tree">Icon Tree</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      A tree can include icons to represent the type of nodes within that group. Icons appear between the
+      collapse/expand arrow and the parent node title.
+    </p>
+    <p class="clr-mt-24px" cds-text="body">
+      When using icons in a tree, make sure to use them on all nodes. Do not alternate between using and not using icons
+      within the same tree.
+    </p>
+    <p class="clr-mt-24px" cds-text="body">
+      If using a tree in the context of other components, make sure those icons are distinctive and easily recognizable.
+      Use neutral colors to avoid overloading the tree and related components with colors and shapes.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-5">
+        <div class="clrweb-DoxMedia clr-mt-16px">
+          <div class="clrweb-DoxMedia-block">
+            <div class="clrweb-DoxMedia-img is-left-aligned">
+              <clr-tree-view-dynamic-demo></clr-tree-view-dynamic-demo>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="checkbox-tree">Checkbox Tree</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      A checkbox tree features checkboxes between the collapse/expand arrows and the name to indicate whether a node is
+      selected. A parent node with a mix of selected and unselected child nodes is shown with an “indeterminate” state.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-5">
+        <div class="clrweb-DoxMedia clr-mt-16px">
+          <div class="clrweb-DoxMedia-block">
+            <div class="clrweb-DoxMedia-img is-left-aligned">
+              <clr-small-selection-tree-demo></clr-small-selection-tree-demo>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      As with icon trees, make sure to put checkboxes on all nodes of a checkbox tree.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      Do not alternate between types of trees. Checkbox trees should not be used with icons for the nodes.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="style">Style</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      The styling of each piece of a tree node is consistent across the different types of trees.
+    </p>
+    <h3 class="clr-mt-24px" cds-text="section" id="touch-targets">Touch Targets</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      The dimensions of the expand/collapse arrow and the node title should allow for a comfortable touch target with a
+      mouse or a touch screen.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-5">
+        <div class="clrweb-DoxMedia clr-mt-16px">
+          <div class="clrweb-DoxMedia-block">
+            <div class="clrweb-DoxMedia-img is-left-aligned">
+              <app-themed-image
+                [lightSrc]="'/assets/images/documentation/tree-view/light-theme/style.svg'"
+                [darkSrc]="'/assets/images/documentation/tree-view/dark-theme/style.svg'"
+                [imageAlt]="'Touch Targets'"
+                [imageStyle]="'max-width: 100%'"
+              ></app-themed-image>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-info clr-mt-16px">
+      <div class="alert-items">
+        <div class="alert-item static">
+          <div class="alert-icon-wrapper">
+            <clr-icon class="alert-icon" shape="info-circle"></clr-icon>
+          </div>
+          <div class="alert-text">
+            Touch Targets are relevant even outside of a mobile form factor. Many new desktop environments, especially
+            those running Windows, allow for the use of a touch screen and should be considered when designing your
+            applications.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="behavior">Behavior</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      To explain the behavior of the tree, below is the terminology that we’ll be using in this section:
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-4">
+        <h3 class="clr-mt-24px" cds-text="section" id="expand-collapse">Expand / Collapse</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          Use the arrow to the left of a node to expand or collapse a node in the tree.
+        </p>
+      </div>
+      <div class="clr-col-12 clr-col-md-4">
+        <h3 class="clr-mt-24px" cds-text="section" id="highlight">Highlight</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          Click a node in the tree to either “highlight” it or navigate to its relative content.
+        </p>
+      </div>
+      <div class="clr-col-12 clr-col-md-4">
+        <h3 class="clr-mt-24px" cds-text="section" id="select">Select</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          Choose items to apply an action. For example, selecting a checkbox in the tree.
+        </p>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="interacting-with-nodes">Interacting with Nodes</h2>
+    <h3 class="clr-mt-24px" cds-text="section" id="expanding-collapsing-nodes">Expanding / Collapsing Nodes</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      To expand or collapse a parent node, the user clicks the expand/collapse arrow. Clicking on the node item itself
+      does not expand or collapse a node.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-5">
+        <div class="clrweb-DoxMedia clr-mt-16px">
+          <div class="clrweb-DoxMedia-block">
+            <div class="clrweb-DoxMedia-img is-left-aligned">
+              <app-themed-image
+                [lightSrc]="'/assets/images/documentation/tree-view/light-theme/expanding-collapsing.svg'"
+                [darkSrc]="'/assets/images/documentation/tree-view/dark-theme/expanding-collapsing.svg'"
+                [imageAlt]="'Expanding or Collapsing Nodes'"
+                [imageStyle]="'max-width: 100%'"
+              ></app-themed-image>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="highlighting-nodes-and-navigations">
+      Highlighting Nodes and Navigating
+    </h3>
+    <p class="clr-mt-16px" cds-text="body">
+      To highlight a tree node or navigate to a content area to take a subsequent action based on the selection, a user
+      clicks the node title itself. <br />
+      In read-only trees, highlighting is not an option.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-5">
+        <div class="clrweb-DoxMedia clr-mt-16px">
+          <div class="clrweb-DoxMedia-block">
+            <div class="clrweb-DoxMedia-img is-left-aligned">
+              <app-highlighting-nodes-tree-demo></app-highlighting-nodes-tree-demo>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="interacting-with-checkbox-trees">Interacting With Checkbox Trees</h3>
+    <p class="clr-mt-16px clr-mb-16px" cds-text="body">
+      With a checkbox tree, a user is able to perform one or a combination of three actions by clicking on one of three
+      distinct targets:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Expanding and Collapsing: A user can perform this action by clicking the expand/collapse arrow.</li>
+      <li>
+        Checking a Checkbox: A user can click a checkbox to select or unselect a tree node. This action also affects the
+        status of the parent node’s checkbox
+      </li>
+      <li>
+        Highlighting Tree Node: A user can highlight a tree node by clicking the name (label) of the node. This allows
+        for the possibility of loading content based on selection to provide more information within the node.
+      </li>
+    </ul>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-5">
+        <div class="clrweb-DoxMedia clr-mt-16px">
+          <div class="clrweb-DoxMedia-block">
+            <div class="clrweb-DoxMedia-img is-left-aligned">
+              <app-interaction-checkbox-tree-demo></app-interaction-checkbox-tree-demo>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="disabled-nodes">Disabled Nodes</h3>
+    <p class="clr-mt-16px clr-mb-16px" cds-text="body">
+      Disabled nodes are only focusable and all other interactions such as expanding, collapsing and interacting with
+      the checkbox are not supported.
+      <br />
+      If a disabled node is initially expanded, it is not collapsible and vice versa.
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-5">
+        <div class="clrweb-DoxMedia clr-mt-16px">
+          <div class="clrweb-DoxMedia-block">
+            <div class="clrweb-DoxMedia-img is-left-aligned">
+              <app-disabled-nodes-overview-demo></app-disabled-nodes-overview-demo>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="loading-datea">Loading Data</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      A general goal to keep in mind is that you want to minimize the time a user spends before their first interaction
+      with the tree and every subsequent interaction afterwards. <br />
+      With a dynamic tree, load the parent nodes first and then lazy-load child nodes as needed.
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-5">
+        <div class="clrweb-DoxMedia clr-mt-16px">
+          <div class="clrweb-DoxMedia-block">
+            <div class="clrweb-DoxMedia-img is-left-aligned">
+              <app-tree-data-loading-demo></app-tree-data-loading-demo>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
+
+    <h3 data-toc-item id="basic-tree" cds-text="section" class="clr-mt-32px">Basic Tree</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      A basic tree can be created by simply nesting
+      <code cds-text="code">clr-tree-node</code> components at will. To pre-expand a node, you can use the
+      <code cds-text="code">[clrExpanded]</code> input.
+    </p>
+
+    <div class="alert alert-info has-margin-top-b2">
+      <div class="alert-items">
+        <div class="alert-item static">
+          <div class="alert-icon-wrapper">
+            <clr-icon class="alert-icon" shape="info-circle"></clr-icon>
+          </div>
+          <div class="alert-text">
+            Please note that every tree requires to have root node to work properly, this is done by having
+            <code cds-text="code">clr-tree</code> as root wrapper, please check the example below.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="clr-demo">
+      <clr-tree-basic-dm-demo></clr-tree-basic-dm-demo>
+    </section>
+
+    <h3 data-toc-item id="disabled-nodes-code" cds-text="section" class="clr-mt-32px">Disabled Nodes</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      To disable a node, you can use the <code cds-text="code">[clrDisabled]</code> input.
+    </p>
+    <p cds-text="body" class="clr-mt-16px">Disabled nodes are immutable.</p>
+
+    <section class="clr-demo">
+      <app-disabled-nodes-demo></app-disabled-nodes-demo>
+    </section>
+
+    <h3 data-toc-item id="expanded-nodes" cds-text="section" class="clr-mt-32px">Keeping track of expanded nodes</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      If you need to keep track of whether certain nodes are expanded or collapsed, each tree node offers a
+      <code cds-text="code">[(clrExpanded)]</code> boolean two-way binding.
+    </p>
+
+    <section class="clr-demo">
+      <clr-tree-node-label-change-expand-demo></clr-tree-node-label-change-expand-demo>
+    </section>
+
+    <h3 data-toc-item id="routing-tree" cds-text="section" class="clr-mt-32px">Routing using a Tree</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Use the <code cds-text="code">.clr-treenode-link</code> class to style content inside of a Tree Node as clickable.
+      To indicate an active Tree Node use the <code cds-text="code">.active</code> class along with
+      <code cds-text="code">.clr-treenode-link</code>.
+    </p>
+
+    <section class="clr-demo">
+      <clr-tree-node-routing-demo></clr-tree-node-routing-demo>
+    </section>
+
+    <h3 data-toc-item id="dynamically-generated" cds-text="section" class="clr-mt-32px">
+      Generating A Tree Dynamically
+    </h3>
+
+    <section class="clr-demo">
+      <clr-tree-view-dynamic-demo [clrDemoShowCode]="true" [clrDemoShowHalf]="true"></clr-tree-view-dynamic-demo>
+    </section>
+
+    <h3 data-toc-item id="checkbox-tree" cds-text="section" class="clr-mt-32px">Checkbox Tree</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Selection on the whole tree is enabled as soon as one of the nodes uses the
+      <code cds-text="code">[(clrSelected)]</code> two-way binding. This two-way binding can receive either booleans or
+      <code cds-text="code">ClrSelectedState</code> enum values, which can be <code cds-text="code">UNSELECTED</code>,
+      <code cds-text="code">SELECTED</code> or <code cds-text="code">INDETERMINATE</code>. It will however always output
+      <code cds-text="code">ClrSelectedState</code> enum values because the node could become indeterminate, so true
+      two-way binding should be used on a <code cds-text="code">ClrSelectedState</code> property.
+    </p>
+    <p cds-text="body" class="clr-mt-16px">
+      As with any two-way binding, the input can be used to pre-select nodes or dynamically select them due to external
+      actions.
+    </p>
+
+    <section class="clr-demo">
+      <clr-selection-tree-demo></clr-selection-tree-demo>
+    </section>
+
+    <h3 data-toc-item id="checkbox-tree-disabled-nodes" cds-text="section" class="clr-mt-32px">
+      Checkbox Tree Disabled nodes
+    </h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Selected, unselected or indeterminate nodes on the whole tree is enabled as soon as one of the nodes uses the
+      action.
+    </p>
+    <p cds-text="body" class="clr-mt-16px">Disabled nodes are immutable.</p>
+
+    <section class="clr-demo">
+      <app-disabled-nodes-selection-demo></app-disabled-nodes-selection-demo>
+    </section>
+
+    <h3 data-toc-item id="boolean-selection" cds-text="section" class="clr-mt-32px">Binding selection to a boolean</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      If you know a specific node can never become indeterminate, you probably want to use a boolean property on your
+      node. As mentioned previously, <code cds-text="code">[(clrSelected)]</code> always outputs
+      <code cds-text="code">ClrSelectedState</code> enum values, making two-way binding with a boolean problematic. The
+      most straightforward solution is to use
+      <a href="https://angular.io/guide/template-syntax#two-way-binding---">
+        the de-sugarized syntax of the two-way binding,
+      </a>
+      transforming the output to a boolean directly.
+    </p>
+
+    <section class="clr-demo">
+      <clr-boolean-selection-tree-demo></clr-boolean-selection-tree-demo>
+    </section>
+
+    <h3 data-toc-item id="recursive-tree" cds-text="section" class="clr-mt-32px">Recursive tree</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      If the data you are displaying is recursive or has an unknown depth, you can use our
+      <code cds-text="code">*clrRecursiveFor</code> structural directive to recursively iterate over your data. It has
+      the same syntax as <code cds-text="code">&#64;for</code>, and accepts an additional
+      <code cds-text="code">getChildren</code> parameter that receives a node and should return its children. Please
+      note that it needs to be used inside of a <code cds-text="code">&lt;clr-tree&gt;</code> to function properly.
+    </p>
+
+    <section class="clr-demo">
+      <clr-recursive-tree-demo></clr-recursive-tree-demo>
+    </section>
+
+    <h3 data-toc-item id="lazy-loading" cds-text="section" class="clr-mt-32px">Lazy-loading children</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      If your tree is too large to be fully build on initialization or getting the children of a node is an expensive
+      operation like an HTTP request, you might want to lazy-load tree nodes, only loading the ones that are currently
+      displayed. To lazy-load children for a simple tree component, you need to combine several features as follows:
+    </p>
+    <ul class="list list-spacer">
+      <li>
+        use our <code cds-text="code">&lt;clr-tree&gt;</code> root component, giving it a
+        <code cds-text="code">[clrLazy]="true"</code> input,
+      </li>
+      <li>
+        leverage our <code cds-text="code">*clrIfExpanded</code> structural directive to only instantiate children when
+        they are displayed,
+      </li>
+      <li>listen to the <code cds-text="code">(clrIfExpandedChange)</code> output to fetch the children's data,</li>
+      <li>
+        add a <code cds-text="code">[clrLoading]</code> boolean input to the node if fetching children is asynchronous,
+        to display a spinner while waiting for the data to be loaded.
+      </li>
+    </ul>
+
+    <section class="clr-demo">
+      <clr-lazy-loading-tree-demo></clr-lazy-loading-tree-demo>
+    </section>
+
+    <h3 data-toc-item id="lazy-loading-selection" cds-text="section" class="clr-mt-32px">Lazy-loading and selection</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      When lazy-loading nodes in a tree, Clarity only has partial information on the overall data and cannot link parent
+      and children state as it does in the previous cases. For instance, in a lazy-loaded file system tree, our tree
+      component does not know the contents of a folder until it is expanded. This means that if the user selects the
+      folder without expanding it first we cannot output the selection change for the files, only for the folder itself.
+      It is up to the application or up to the server to preserve consistency, ensuring files in the folder are selected
+      if the folder itself is.
+    </p>
+
+    <section class="clr-demo">
+      <clr-lazy-loading-selection-tree-demo></clr-lazy-loading-selection-tree-demo>
+    </section>
+
+    <h3 data-toc-item id="lazy-loading-recursive" cds-text="section" class="clr-mt-32px">
+      Lazy-loading recursive trees
+    </h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Lazy-loading data for recursive trees is actually the simplest case: as soon as you set
+      <code cds-text="code">[clrLazy]="true"</code> on the parent <code cds-text="code">&lt;clr-tree&gt;</code>, the
+      <code cds-text="code">getChildren</code> function will only be lazily called when a node becomes expanded, and
+      supports both <code cds-text="code">Promise</code> and <code cds-text="code">Observable</code>
+      return types if you need to fetch children asynchronously.
+    </p>
+    <p cds-text="body" class="clr-mt-16px">
+      By default, recursive trees will pre-load on level ahead to know if the currently displayed nodes are expandable
+      or not. If you do not want this behavior and have a way of knowing if a node is expandable without fetching its
+      children, you can prevent the extra loading by using the
+      <code cds-text="code">[clrExpandable]</code> boolean input on nodes based on your own condition.
+    </p>
+
+    <section class="clr-demo">
+      <clr-lazy-loading-recursive-tree-demo></clr-lazy-loading-recursive-tree-demo>
+    </section>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 id="api-tables">Summary of Options</h2>
+
+    <h3>Tree <code cds-text="code">&lt;clr-tree&gt;</code></h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="hidden-xs-down">Values</th>
+          <th class="hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[(clrLazy)]</b>
+            <div class="hidden-sm-up">Type: boolean</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="hidden-xs-down">boolean</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">Indicates to the tree that children nodes should be lazy-loaded</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Tree Node <code cds-text="code">&lt;clr-tree-node&gt;</code></h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="hidden-xs-down">Values</th>
+          <th class="hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[(clrSelected)]</b>
+            <div class="hidden-sm-up">Type: ClrSelectedState</div>
+            <div class="hidden-sm-up">Default: UNSELECTED</div>
+          </td>
+          <td class="hidden-xs-down">ClrSelectedState</td>
+          <td class="hidden-xs-down">UNSELECTED</td>
+          <td class="left">Two-way binding on the state of a Tree Node: UNSELECTED, SELECTED or INDETERMINATE.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[(clrExpanded)]</b>
+            <div class="hidden-sm-up">Type: boolean</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="hidden-xs-down">boolean</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">Two-way binding on the expanded/collapsed state of the node.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrExpandable]</b>
+            <div class="hidden-sm-up">Type: boolean | undefined</div>
+            <div class="hidden-sm-up">Default: undefined</div>
+          </td>
+          <td class="hidden-xs-down">boolean | undefined</td>
+          <td class="hidden-xs-down">undefined</td>
+          <td class="left">Forces a node to be expandable or node, regardless of its children.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrDisabled]</b>
+            <div class="hidden-sm-up">Type: boolean | undefined</div>
+            <div class="hidden-sm-up">Default: undefined</div>
+          </td>
+          <td class="hidden-xs-down">boolean | undefined</td>
+          <td class="hidden-xs-down">undefined</td>
+          <td class="left">Disables a node and its children.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Recursive iterator <code cds-text="code">*clrRecursiveFor</code></h3>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="hidden-xs-down">Values</th>
+          <th class="hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrRecursiveForOf]</b>
+            <div class="hidden-sm-up">Type: T | T[]</div>
+            <div class="hidden-sm-up">Default: none</div>
+          </td>
+          <td class="hidden-xs-down">T | T[]</td>
+          <td class="hidden-xs-down">none</td>
+          <td class="left">Root node(s) of the recursive tree, to begin the iteration.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrRecursiveForGetChildren]</b>
+            <!-- TODO: Use ClrGetChildrenFunction<T> as soon as we have it -->
+            <div class="hidden-sm-up">Type: T => T[] | Promise&lt;T[]&gt; | Observable&lt;T[]&gt;</div>
+            <div class="hidden-sm-up">Default: none</div>
+          </td>
+          <!-- TODO: Use ClrGetChildrenFunction<T> as soon as we have it -->
+          <td class="hidden-xs-down">T => T[] | Promise&lt;T[]&gt; | Observable&lt;T[]&gt;</td>
+          <td class="hidden-xs-down">none</td>
+          <td class="left">
+            The function to call in order to iterate over the children of a node. Can return an asynchronous result in
+            the form of a Promise or an Observable.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3><code cds-text="code">*clrIfExpanded</code> directive</h3>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="hidden-xs-down">Values</th>
+          <th class="hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[(clrIfExpanded)]</b>
+            <div class="hidden-sm-up">Type: boolean</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="hidden-xs-down">boolean</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">Two-way binding on the expanded/collapsed state of the node.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Loading directive <code cds-text="code">[clrLoading]</code></h3>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="hidden-xs-down">Values</th>
+          <th class="hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrLoading]</b>
+            <div class="hidden-sm-up">Type: boolean</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="hidden-xs-down">boolean</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">Activates a spinner to indicate that children nodes are loading.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-style-docs styleDocsKey="Tree view"></app-style-docs>
+  </app-doc-tab>
+</app-doc-tabs>

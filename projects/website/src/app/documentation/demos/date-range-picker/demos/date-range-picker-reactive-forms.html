@@ -1,0 +1,20 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<form clrForm clrLayout="vertical" [formGroup]="dateForm" novalidate>
+  <h3 data-toc-item id="reactive-demo" cds-text="section" class="clr-mt-32px">Reactive Form Demo</h3>
+  <clr-date-range-container>
+    <label>Date</label>
+    <input type="date" autocomplete="off" clrStartDate formControlName="startDate" />
+    <input type="date" autocomplete="off" clrEndDate formControlName="endDate" />
+  </clr-date-range-container>
+</form>
+<pre>{{ dateForm.value | json }}</pre>
+<app-stackblitz-example
+  name="datepicker (reactive form)"
+  [componentTemplate]="htmlExample"
+  [componentClass]="tsExample"
+></app-stackblitz-example>

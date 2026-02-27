@@ -1,0 +1,28 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+@for (type of colorTypes; track type) {
+<div class="progbar-examples">
+  <h4 class="clr-mt-32px" cds-text="subsection">{{ type.title }}</h4>
+  <div [ngClass]="type.cssClassnames()" class="clr-mt-8px">
+    <progress value="{{ type.value }}" max="100" [attr.data-displayval]="type.value + '%'"></progress>
+    {{ type.label }}
+  </div>
+  <div style="min-height: 1rem">
+    @if (type.label === 'flash-danger' && type.isFinished()) {
+    <span class="danger-text">
+      <clr-icon shape="exclamation-circle" size="24"></clr-icon>
+      Connection to database timed out.
+      <a href="javascript://" class="btn btn-link" (click)="type.start()">Try again</a>
+    </span>
+    }
+  </div>
+  <p><button class="btn btn-outline" (click)="type.start()">Show</button></p>
+</div>
+}
+
+<app-stackblitz-example name="progress bar colors" [componentTemplate]="example"></app-stackblitz-example>

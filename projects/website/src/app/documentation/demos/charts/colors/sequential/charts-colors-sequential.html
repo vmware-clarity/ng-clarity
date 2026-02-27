@@ -1,0 +1,106 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h2 id="sequential" cds-text="title" cds-layout="m-t:xxl">Sequential</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  <strong cds-text="medium">Token library</strong>: <code cds-text="code">--cds-alias-viz-sequential-</code>
+</p>
+
+<p cds-text="body" cds-layout="m-t:md">
+  Sequential palettes are used to show ordered or numerical data, such as progression from low to high.
+</p>
+
+<div cds-layout="m-t:xl grid cols@sm:6 gap:lg">
+  @for (palette of palettes; track palette) {
+  <div>
+    <h3 cds-text="subsection" cds-layout="m-b:sm">{{ palette.name }}</h3>
+    @for (color of palette.colors; track color) {
+    <app-color-example-item [text]="color" [token]="color"></app-color-example-item>
+    }
+  </div>
+  }
+</div>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Examples</h3>
+
+<div cds-layout="m-t:lg grid cols@sm:6 gap:lg">
+  <div>
+    <h4 cds-text="medium" cds-layout="m-b:sm">Bar Chart</h4>
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-colors-sequential-examples-bar-chart.svg'"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-colors-sequential-examples-bar-chart.svg'"
+      [imageAlt]="'bar chart example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+  <div>
+    <h4 cds-text="medium" cds-layout="m-b:sm">Heatmap</h4>
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/charts/light-theme/charts-colors-sequential-examples-heatmap.svg'"
+      [darkSrc]="'/assets/images/documentation/charts/dark-theme/charts-colors-sequential-examples-heatmap.svg'"
+      [imageAlt]="'heatmap example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+</div>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Best Practices</h3>
+
+<p cds-text="body" cds-layout="m-t:md">Select palettes that best suit the type of data being visualized.</p>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Color Application</h3>
+
+<p cds-text="body" cds-layout="m-t:md">
+  In light themes, higher values are associated with darker colors. In dark themes, the lighter colors represent larger
+  values.
+</p>
+
+<h3 cds-text="section" cds-layout="m-t:lg">Accessibility</h3>
+
+<div cds-layout="m-t:lg grid cols@sm:6 gap:lg">
+  <div>
+    <h4 cds-text="medium">Stroke Contrast</h4>
+    <p cds-text="body" cds-layout="m-t:xs">
+      Use <code cds-text="code">--cds-alias-viz-border</code> to ensure stroke usage has adequate contrast against the
+      background. This ensures clear visibility of borders regardless of the data range.
+    </p>
+  </div>
+  <div>
+    <app-themed-image
+      [lightSrc]="
+        '/assets/images/documentation/charts/light-theme/charts-colors-sequential-accessibility-stroke-contrast.svg'
+      "
+      [darkSrc]="
+        '/assets/images/documentation/charts/dark-theme/charts-colors-sequential-accessibility-stroke-contrast.svg'
+      "
+      [imageAlt]="'stroke contrast example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+</div>
+
+<div cds-layout="m-t:lg grid cols@sm:6 gap:lg">
+  <div>
+    <h4 cds-text="medium">Border Color</h4>
+    <p cds-text="body" cds-layout="m-t:xs">
+      Utilize 1 px stroke and use <code cds-text="code">--cds-alias-viz-border</code> for the border color at the end of
+      each bar, heatmap, segment, or other elements using sequential palettes.
+    </p>
+  </div>
+  <div>
+    <app-themed-image
+      [lightSrc]="
+        '/assets/images/documentation/charts/light-theme/charts-colors-sequential-accessibility-border-color.svg'
+      "
+      [darkSrc]="
+        '/assets/images/documentation/charts/dark-theme/charts-colors-sequential-accessibility-border-color.svg'
+      "
+      [imageAlt]="'border color example'"
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+</div>

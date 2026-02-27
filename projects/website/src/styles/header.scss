@@ -1,0 +1,61 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:map';
+@use 'variables.tokens' as tokens;
+@use 'mixins';
+@use 'variables/variables.layout' as variables;
+
+.header-demo {
+  padding: tokens.$cds-global-space-4;
+  margin: #{tokens.$cds-global-space-7} 0 0;
+  background-color: transparent;
+
+  header {
+    a {
+      &:hover {
+        color: inherit;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) {
+  // Override for the comp demos
+  .header-demo {
+    padding: tokens.$cds-global-layout-space-sm tokens.$cds-global-space-9;
+
+    .branding {
+      padding: 0 tokens.$cds-global-layout-space-sm;
+      min-width: mixins.baselinePx(100);
+    }
+  }
+  // Override for the sub-nav demo
+  .subnav {
+    .nav {
+      .nav-item {
+        &:nth-child(4) {
+          // Removing this so it fits inside for demo purposes on mobile.
+          display: none;
+        }
+      }
+    }
+  }
+
+  .header-actions {
+    &--overflow {
+      width: mixins.baselinePx(165);
+      overflow: hidden;
+      font-size: mixins.baselinePx(11);
+    }
+  }
+}
+
+.col-no-padding {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}

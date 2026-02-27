@@ -1,0 +1,44 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'variables.tokens' as tokens;
+@use 'mixins';
+
+.demo-title {
+  margin-top: tokens.$cds-global-layout-space-sm;
+}
+
+.datagrid-demo-pagination {
+  display: flex;
+  justify-content: space-between;
+}
+
+.demo-pagination-next {
+  margin-left: auto;
+}
+
+.content-area.demo-allow-scroll {
+  overflow-y: auto;
+}
+
+.box-padding {
+  padding: 0;
+}
+
+.align-nav-items {
+  width: 50%;
+  margin: tokens.$cds-global-layout-space-sm auto;
+}
+
+.example-margin {
+  margin-top: 0;
+}
+
+.nav-box {
+  width: calc(#{tokens.$cds-global-space-9} * 10);
+  height: mixins.baselinePx(408);
+}

@@ -1,0 +1,36 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div>
+  <div class="signpost-positions">
+    <div class="description">
+      <clr-select-container>
+        <label>Select a position:</label>
+        <select clrSelect name="position" [(ngModel)]="position">
+          @for (position of positions; track position) {
+          <option [ngValue]="position">{{ position }}</option>
+          }
+        </select>
+      </clr-select-container>
+    </div>
+    <div class="demo">
+      <clr-signpost>
+        <clr-signpost-content *clrIfOpen [clrPosition]="position">
+          <h3 style="margin-top: 0">Position</h3>
+          <p>
+            <code cds-text="code">{{ position }}</code>
+          </p>
+        </clr-signpost-content>
+      </clr-signpost>
+    </div>
+  </div>
+
+  <app-stackblitz-example
+    name="signpost paragraph"
+    [componentClass]="code"
+    [componentTemplate]="html"
+  ></app-stackblitz-example>
+</div>

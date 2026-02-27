@@ -1,0 +1,10 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../modal/modal-size-design-demo-mixin' as modal_mixins;
+
+@include modal_mixins.modal-wizard-size-row(4);

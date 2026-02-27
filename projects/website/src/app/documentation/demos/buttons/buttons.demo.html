@@ -1,0 +1,450 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      Buttons allow users to trigger actions or events with a single click. For example, a user can click a button to
+      agree to the terms contained on the page, start a checkout process, or apply updates to a form.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="usage">Usage</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Clarity comes with three different types of buttons. They are provided to give visual distinction between the
+      priority or hierarchy of the buttons in the application.
+    </p>
+
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-4">
+        <div class="clrweb-DoxMedia">
+          <div class="clrweb-DoxMedia-block component-box-container">
+            <div class="clrweb-DoxMedia-img">
+              <button class="btn btn-primary">Solid Button</button>
+            </div>
+          </div>
+          <div class="clrweb-DoxMedia-text">
+            <p cds-text="body" class="clr-mt-16px">
+              Solid buttons look heavy on purpose. They direct the user's attention to the primary action that the
+              application is suggesting that the user take.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="clr-col-12 clr-col-md-4">
+        <div class="clrweb-DoxMedia">
+          <div class="clrweb-DoxMedia-block component-box-container">
+            <div class="clrweb-DoxMedia-img">
+              <button class="btn">Outline Button</button>
+            </div>
+          </div>
+          <div class="clrweb-DoxMedia-text">
+            <p cds-text="body" class="clr-mt-16px">
+              Outline buttons provide a lighter-weight button style. They are used to indicate a secondary action that
+              complements a primary action or to reduce visual noise when there are many actions of equal importance on
+              the page
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="clr-col-12 clr-col-md-4">
+        <div class="clrweb-DoxMedia">
+          <div class="clrweb-DoxMedia-block component-box-container">
+            <div class="clrweb-DoxMedia-img">
+              <button class="btn btn-link">Flat Button</button>
+            </div>
+          </div>
+          <div class="clrweb-DoxMedia-text">
+            <p cds-text="body" class="clr-mt-16px">
+              Flat buttons can be used in multiple scenarios. You can use them as tertiary buttons. They can also be
+              used inline because they are different from content in style and recognizable as buttons alongside
+              content.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-48px" cds-text="section" id="buttons-vs-links">Buttons vs. Links</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      While buttons and links can look similar, there is an important distinction. A link (or anchor element) should be
+      used if clicking the element will navigate the user to a different page. Buttons are used for interactions in the
+      current page, such as refreshing the content or submitting a form.
+    </p>
+
+    <div class="clrweb-DoxVersusBox clr-mt-16px">
+      <div class="clrweb-DoxVersusBox-items clrweb-DoxVersusBox-vsContent">
+        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+          <div class="clrweb-DoxVersusBox-item">
+            <button class="btn btn-link">Button</button>
+            <p>Use flat buttons when a user is expected to take an action.</p>
+          </div>
+        </div>
+        <div class="clrweb-DoxVersusBox-vsWrapper clr-col-12">
+          <app-themed-image
+            [lightSrc]="'/assets/images/versus-icon-light.svg'"
+            [darkSrc]="'/assets/images/versus-icon-dark.svg'"
+            [imageAlt]="'versus'"
+            [imageStyle]="'margin: 0 auto;width: 72px;'"
+          ></app-themed-image>
+        </div>
+        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+          <div class="clrweb-DoxVersusBox-item">
+            <a href="javascript://">Link</a>
+            <p>Use a link when a user is expected to be taken to a different page.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="placement" class="clr-mt-48px" cds-text="title">Placement</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      There are two distinct patterns when it comes to the placement of a button.
+    </p>
+
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-6">
+        <div class="clrweb-DoxMedia-img">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/buttons/light-theme/zpattern.svg'"
+            [darkSrc]="'/assets/images/documentation/buttons/dark-theme/zpattern.svg'"
+            [imageAlt]="'Z pattern'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+        <div class="clrweb-DoxMedia-text">
+          <h3 cds-text="secondary medium" cds-layout="m-y:md" id="Z-pattern">Z Pattern</h3>
+          <p cds-text="secondary">
+            The Z-pattern is a natural way for the user to go through content within a constrained container when tasks
+            start at the top-left and end with a primary call to action on the right-bottom side of the container. This
+            pattern is reversed for right-to-left languages.(icon) Modals and Wizards follow the Z Pattern
+          </p>
+        </div>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <div class="clrweb-DoxMedia-img">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/buttons/light-theme/fpattern.svg'"
+            [darkSrc]="'/assets/images/documentation/buttons/dark-theme/fpattern.svg'"
+            [imageAlt]="'F pattern'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+        <div class="clrweb-DoxMedia-text">
+          <h3 cds-text="secondary medium" cds-layout="m-y:md" id="f-pattern">F Pattern</h3>
+          <p cds-text="secondary">
+            The F-pattern is a natural way to go through content in an unconstrained container, such as a form on the
+            page itself. The user will go through the content line-by-line, arriving at a call to action at the
+            end.(icon) Forms and Cards follow the F Pattern
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="style" class="clr-mt-32px" cds-text="title">Style</h2>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Consistent button styles make it easier for a user to recognize where to take action across an application.
+    </p>
+
+    <h3 id="typography" class="clr-mt-32px" cds-text="section">Typography</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The text inside of buttons is always uppercase. This indicates action by differentiating button text from links
+      and other content on the page. Use descriptive language on buttons to help the user understand its intent.
+    </p>
+
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-6">
+        <app-do-dont type="do" caption="Use a call to action on buttons.">
+          <div class="clrweb-DoxMedia-block backdrop-example-container component-box-container" style="height: 276px">
+            <div class="modal static" style="padding: 0">
+              <div class="modal-dialog" role="dialog" aria-hidden="true" style="width: unset">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <p>Would you like to add the tag "Production" to the virtual machine "Palo Alto"?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-primary" type="button">Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+
+      <div class="clr-col-12 clr-col-md-6">
+        <app-do-dont
+          type="dont"
+          caption="Use generic language not related to the action and not relating to the intent of the user."
+        >
+          <div class="clrweb-DoxMedia-block backdrop-example-container component-box-container" style="height: 276px">
+            <div class="modal static" style="padding: 0">
+              <div class="modal-dialog" role="dialog" aria-hidden="true" style="width: unset">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <p>Would you like to add the tag "Production" to the virtual machine "Palo Alto"?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-primary" type="button">Ok</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+    </div>
+
+    <h3 id="visual-style" class="clr-mt-32px" cds-text="section">Visual Style</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Clarity buttons have several distinct properties and design considerations.
+    </p>
+
+    <h4 id="border-radius" class="clr-mt-24px" cds-text="subsection">Border Radius</h4>
+    <p cds-text="body" class="clr-mt-16px">Clarity buttons have a border radius of 4px.</p>
+
+    <h4 id="size" class="clr-mt-24px" cds-text="subsection">Sizes</h4>
+    <p class="clr-mt-8px" cds-text="body">Clarity offers two button sizes:</p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Default height of 1.8rem (36px)</li>
+      <li>Compact height of 1.2rem (24px)</li>
+    </ul>
+
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-6">
+        <div class="clrweb-DoxMedia">
+          <div class="clrweb-DoxMedia-img">
+            <app-themed-image
+              [lightSrc]="'/assets/images/documentation/buttons/light-theme/sizes.svg'"
+              [darkSrc]="'/assets/images/documentation/buttons/dark-theme/sizes.svg'"
+              [imageAlt]="'default and compact button sizes'"
+              [imageStyle]="'max-width: 100%'"
+            ></app-themed-image>
+          </div>
+        </div>
+      </div>
+
+      <div class="clr-col-12 clr-col-md-6">
+        <div class="clrweb-DoxMedia">
+          <div class="clrweb-DoxMedia-img">
+            <app-themed-image
+              [lightSrc]="'/assets/images/documentation/buttons/light-theme/sizes-demo.svg'"
+              [darkSrc]="'/assets/images/documentation/buttons/dark-theme/sizes-demo.svg'"
+              [imageAlt]="'compact button size'"
+              [imageStyle]="'max-width: 100%'"
+            ></app-themed-image>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Compact is used in content areas where smaller buttons are needed to de-emphasize calls to action. This is
+      especially true when multiple actions of equal importance are available.
+    </p>
+
+    <h4 id="primary-color" class="clr-mt-24px" cds-text="subsection">Primary Color</h4>
+    <p cds-text="body" class="clr-mt-16px">
+      A primary color provides consistency across an application. It trains the user to look for that color when trying
+      to find an action. Clarity defaults to blue. This "action blue" can be found across all types of buttons, tabs,
+      and other action-related components.
+    </p>
+
+    <h2 id="using-icons" class="clr-mt-32px" cds-text="title">Using Icons</h2>
+    <div class="clrweb-DoxMedia clr-mt-16px">
+      <div class="clrweb-DoxMedia-block buttons-center component-box-container">
+        <button class="btn btn-primary-outline">
+          <clr-icon shape="cog"></clr-icon>
+          Setting
+        </button>
+        <button class="btn btn-warning-outline">
+          Cancel
+          <clr-icon shape="times"></clr-icon>
+        </button>
+        <button class="btn btn-primary">
+          Download
+          <clr-icon shape="download"></clr-icon>
+        </button>
+        <button class="btn btn-primary" aria-label="download">
+          <clr-icon shape="download"></clr-icon>
+        </button>
+      </div>
+    </div>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Icons can be used inside buttons to provide the call to action with a visual indicator. Include text by the icons
+      that clearly indicates what the button will do.
+    </p>
+    <p cds-text="body" class="clr-mt-16px">
+      Place icons to the left or right of the button text. However, if the button action will extend outside the current
+      context, place the icon to the right of the text. Examples of such button actions include downloading a file,
+      opening a new window, or navigating to a page outside the application.
+    </p>
+    <p cds-text="body" class="clr-mt-16px">
+      If your user interface is constrained by space and you want a button with only an icon with no text, use the icon
+      button component.
+    </p>
+
+    <h2 id="using-badges" class="clr-mt-32px" cds-text="title">Using Badges</h2>
+    <div class="clrweb-DoxMedia clr-mt-16px">
+      <div class="clrweb-DoxMedia-block buttons-center component-box-container">
+        <button class="btn btn-warning-outline">
+          Delete Items
+          <span class="badge badge-danger">10</span>
+        </button>
+        <button class="btn btn-primary">
+          <clr-icon shape="envelope"></clr-icon>
+          Mark as read
+          <span class="badge badge-info">99+<span class="clr-sr-only">items</span></span>
+        </button>
+      </div>
+    </div>
+    <p cds-text="body" class="clr-mt-16px">
+      You can use badges inside buttons to indicate a known number of items associated with the action. This can help
+      the user understand the impact or severity of the action. Badges always appear to the right of the text in a
+      left-to-right presentation.
+    </p>
+
+    <h2 class="clr-mt-32px" cds-text="title" id="interactions">Interactions</h2>
+    <p cds-text="body" class="clr-mt-16px">Buttons have built-in loading and disabled states.</p>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="loading-states">Loading States</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      There are three sub-states within the loading state: loading, error, and success. The loading state indicates that
+      the application is working on the corresponding action. The error state indicates that the action has failed to
+      complete. The success state indicates that the action has completed successfully. A button can remain in the
+      success state if the action is only intended to be performed once. All three states (loading, error, and success)
+      prevent further execution of the call to action.
+    </p>
+    <div class="clrweb-DoxMedia clr-mt-16px">
+      <div class="clrweb-DoxMedia-block buttons-center component-box-container">
+        <button
+          class="btn btn-primary no-spinner-animation"
+          aria-label="loading"
+          [disabled]="true"
+          [clrLoading]="true"
+        ></button>
+        <button class="btn btn-primary" aria-label="danger" [disabled]="true">
+          <clr-icon shape="error-standard" status="danger"></clr-icon>
+        </button>
+        <button class="btn btn-primary" aria-label="success" [disabled]="true">
+          <clr-icon shape="check" status="success"></clr-icon>
+        </button>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="disabled-buttons">Disabled Buttons</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Buttons might be disabled to indicate that the action is unavailable. Avoid using disabled buttons, but if you do
+      need them within your user interface, the best practice is to make sure that the user understands why a button is
+      disabled and how they can enable the button, for example by explaining in an alert. 
+    </p>
+
+    <div class="clrweb-DoxMedia clr-mt-16px">
+      <div class="clrweb-DoxMedia-block buttons-center component-box-container">
+        <button class="btn btn-primary" [disabled]="true">A disabled button</button>
+        <button class="btn btn-primary-outline" [disabled]="true">A disabled button</button>
+        <button class="btn btn-link" [disabled]="true">A disabled button</button>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-16px clr-mb-24px">
+      <div class="clr-col-12 clr-col-md-6">
+        <app-do-dont
+          type="do"
+          caption="Disabling buttons is very useful for preventing double actions or in a combination with a visual indicator to state that a process is in progress, for example during installation or while updating or uploading data."
+        >
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/buttons/disabled-button-DO.svg'"
+            [darkSrc]="'/assets/images/documentation/buttons/disabled-button-DO-dark.svg'"
+            [imageAlt]="'example with disabled button for do'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </app-do-dont>
+      </div>
+
+      <div class="clr-col-12 clr-col-md-6">
+        <app-do-dont
+          type="dont"
+          caption="Don’t disable buttons that might confuse the user, for example “Next” buttons. It’s better to validate the user’s input and directly show them the errors after clicking the button."
+        >
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/buttons/disabled-button-DONT.svg'"
+            [darkSrc]="'/assets/images/documentation/buttons/disabled-button-DONT-dark.svg'"
+            [imageAlt]="'example with disabled button for don\'t'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </app-do-dont>
+      </div>
+    </div>
+  </app-doc-tab>
+
+  <!--See [Letter Case and Text Legibility in Normal and Low Vision](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2016-2023788/).-->
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
+
+    <h3 data-toc-item id="button-styles" cds-text="section" class="clr-mt-32px">Styles</h3>
+
+    <p cds-text="body" class="clr-mt-16px">Clarity defines three button styles:</p>
+
+    <ul class="list list-spacer">
+      <li>
+        <strong cds-text="medium">Solid.</strong> A solid background with light text. These buttons are prominent on the
+        page.
+      </li>
+      <li>
+        <strong cds-text="medium">Outline.</strong> A transparent background with colored border and text. On hover, the
+        button fills with color.
+      </li>
+      <li><strong cds-text="medium">Flat.</strong> Text in Action Blue, used to indicate an action.</li>
+    </ul>
+
+    <clr-buttons-demo-real-button class="clrweb-button-demo"></clr-buttons-demo-real-button>
+
+    <h3 data-toc-item id="button-states" cds-text="section" class="clr-mt-32px" id="states">States</h3>
+
+    <clr-buttons-demo-button-states class="clrweb-button-demo"></clr-buttons-demo-button-states>
+
+    <h3 data-toc-item id="button-sizes" cds-text="section" class="clr-mt-32px" id="sizes">Sizes</h3>
+
+    <clr-buttons-demo-button-sizes class="clrweb-button-demo"></clr-buttons-demo-button-sizes>
+
+    <h3 data-toc-item id="button-inverse" cds-text="section" class="clr-mt-32px" id="inverse">Inverse</h3>
+
+    <clr-buttons-demo-inverse-button class="clrweb-button-demo"></clr-buttons-demo-inverse-button>
+
+    <h3 data-toc-item id="icon-buttons" cds-text="section" class="clr-mt-32px">Icon Buttons</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Use the <code cds-text="code">.btn-icon</code> class to create Icon Buttons. Make sure to set an appropriate
+      aria-label that describes the action for screen readers.
+    </p>
+
+    <cds-icon-buttons-demo class="clrweb-button-demo"></cds-icon-buttons-demo>
+
+    <h3 data-toc-item id="loading-buttons" cds-text="section" class="clr-mt-32px">Loading Buttons</h3>
+
+    <clr-buttons-demo-button-loading></clr-buttons-demo-button-loading>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <app-style-docs styleDocsKey="Button"></app-style-docs>
+  </app-doc-tab>
+
+  <app-doc-tab tab="accessibility">
+    <app-nesting-table
+      componentName="Button"
+      [canNestComponents]="canNestComponents"
+      [cannotNestComponents]="cannotNestComponents"
+      [conditionalNesting]="conditionalNesting"
+    >
+    </app-nesting-table>
+  </app-doc-tab>
+</app-doc-tabs>

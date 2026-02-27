@@ -143,6 +143,92 @@
         }
       }
     },
+    "clr-website": {
+      "projectType": "application",
+      "root": "projects/website",
+      "sourceRoot": "projects/website/src",
+      "prefix": "app",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "outputPath": {
+              "base": "dist/website",
+              "browser": ""
+            },
+            "index": "projects/website/src/index.html",
+            "browser": "projects/website/src/main.ts",
+            "tsConfig": "projects/website/tsconfig.app.json",
+            "allowedCommonJsDependencies": ["prismjs"],
+            "assets": [
+              "projects/website/src/favicon.ico",
+              "projects/website/src/manifest.json",
+              "projects/website/src/robots.txt",
+              "projects/website/src/service-worker.js",
+              {
+                "glob": "versions.json",
+                "input": "projects/website/src/settings/",
+                "output": "/"
+              },
+              {
+                "glob": "*",
+                "input": "projects/website/src/admin/",
+                "output": "/admin/"
+              },
+              "projects/website/src/assets"
+            ],
+            "styles": ["projects/angular/main.scss", "projects/website/src/styles/main.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/angular/styles",
+                "projects/angular/styles/core/tokens",
+                "projects/angular/progress"
+              ]
+            },
+            "scripts": [],
+            "extractLicenses": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/website/src/environments/environment.ts",
+                  "with": "projects/website/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true
+            }
+          },
+          "defaultConfiguration": ""
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "options": {
+            "buildTarget": "clr-website:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "clr-website:build:production"
+            }
+          }
+        }
+      }
+    },
     "clr-addons": {
       "projectType": "library",
       "root": "projects/addons",

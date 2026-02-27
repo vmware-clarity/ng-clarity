@@ -1,0 +1,179 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <h2 id="density-model" class="clr-mt-48px" cds-text="title">Density</h2>
+
+    <p cds-text="body" cds-layout="m-t:md">
+      Clarity introduces a density model that enables applications to adapt layout and component sizing based on user
+      needs or platform constraints. By utilizing density tokens in combination with existing design and component
+      tokens, applications can seamlessly toggle between <span cds-text="code">regular</span> and
+      <span cds-text="code">compact</span>
+      UI experiences.
+    </p>
+
+    <div cds-layout="m-t:xxl">
+      <h3 cds-text="section">Visual comparison between default and compact</h3>
+      <p cds-text="body" cds-layout="m-t:md">
+        Shows the visual difference between default and compact theme which resolves in smaller paddings, font-sizes,
+        line-heights and etc.
+      </p>
+
+      <div cds-layout="grid cols:6 gap:md m-t:md">
+        <div>
+          <h4 cds-layout="m-b:xs">Default</h4>
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/density/density_datagrid-default_example.svg'"
+            [darkSrc]="'/assets/images/documentation/density/density_datagrid-default-dark_example.svg'"
+            [imageAlt]="'Density attributes image'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+
+        <div>
+          <h4 cds-layout="m-b:xs">Compact</h4>
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/density/density_datagrid-compact_example.svg'"
+            [darkSrc]="'/assets/images/documentation/density/density_datagrid-compact-dark_example.svg'"
+            [imageAlt]="'Density attributes image'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+      </div>
+    </div>
+
+    <h3 id="regular-and-compact" class="clr-mt-32px" cds-text="section">Density Modes</h3>
+
+    <p cds-text="body" cds-layout="m-t:md">The density model offers two primary modes:</p>
+
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        <strong>Default</strong> – optimized for readability and comfort, with ample spacing ideal for touch devices and
+        desktop applications.
+      </li>
+      <li>
+        <strong>Regular</strong> – Will replace "Default" in next major version although it's the same as default plus
+        little optimisations in terms of row heights from 36px to 32px.
+      </li>
+      <li>
+        <strong>Compact</strong> – optimized for data-dense views, reducing spacing and component padding to maximize
+        information visibility in constrained spaces.
+      </li>
+    </ul>
+
+    <p cds-text="body" class="clr-mt-24px">
+      These modes are applied globally and can be toggled dynamically, allowing responsive experiences across different
+      form factors and use cases.
+    </p>
+
+    <h3 id="using-density-tokens" class="clr-mt-32px" cds-text="section">Using Density Tokens</h3>
+
+    <p cds-text="body" cds-layout="m-t:md">
+      Density tokens extend the existing space and sizing token system in Clarity. Instead of fixed values,
+      density-aware tokens adjust component padding, spacing, and sizing based on the selected density mode. This allows
+      consistent behavior across themes and layouts.
+    </p>
+
+    <p cds-text="body medium" cds-layout="m-t:xxl">Common density token categories include:</p>
+
+    <ul class="list" cds-text="body" cds-layout="m-t:sm m-l:lg">
+      <li><code cds-text="code">--clr-base-typography-font-size-*</code> – font-sizes</li>
+      <li><code cds-text="code">--clr-base-typography-line-height-*</code> – line-heights</li>
+      <li><code cds-text="code">--clr-base-border-radius-*</code> – border-radius</li>
+      <li><code cds-text="code">--clr-base-vertical-offset-*</code> – vertical offsets</li>
+      <li><code cds-text="code">--clr-base-horizontal-offset-*</code> – horizontal offsets</li>
+      <li><code cds-text="code">--clr-base-gap-*</code> – layout gaps</li>
+      <li><code cds-text="code">--clr-base-icon-size-*</code> – icon sizes</li>
+      <li><code cds-text="code">--clr-base-layout-space-*</code> – general-purpose spacing</li>
+    </ul>
+
+    <p cds-text="body" class="clr-mt-24px">
+      These tokens automatically resolve to their appropriate value depending on the active density context.
+    </p>
+
+    <h3 id="design-considerations" class="clr-mt-32px" cds-text="section">Design Considerations</h3>
+
+    <p cds-text="body" cds-layout="m-t:md">
+      Components and layouts built using space and density tokens will automatically respond to density changes.
+      However, if you're implementing custom components, ensure they consume these tokens rather than hardcoded values.
+    </p>
+
+    <p cds-text="body" cds-layout="m-t:md">
+      The compact density mode is especially useful in table-based layouts, dashboards, or tools where screen real
+      estate is limited. The regular mode is preferable for forms, content-heavy views, or accessibility-focused
+      designs.
+    </p>
+
+    <h3 id="accessibility-and-density" class="clr-mt-32px" cds-text="section">Accessibility and Density</h3>
+
+    <p cds-text="body" cds-layout="m-t:md">
+      While compact layouts increase information density, it is important to validate accessibility, especially for
+      touch targets.
+    </p>
+
+    <div cds-layout="p-t:md">
+      <clr-alert [clrAlertClosable]="false">
+        <clr-alert-item>
+          <span class="alert-text">
+            Always test all density modes with real users to ensure usability and accessibility are preserved.
+          </span>
+        </clr-alert-item>
+      </clr-alert>
+    </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 cds-layout="m-t:xxl" cds-text="title">Code & Examples</h2>
+
+    <h3 cds-text="section disable-lhe" cds-layout="m-t:xl">Applying Density</h3>
+
+    <p cds-text="body" cds-layout="m-t:md m-b:lg">
+      Density is applied using the <code cds-text="code">clr-density</code> attribute. This attribute can be placed on
+      the <code cds-text="code">&lt;body&gt;</code> element to define a global layout mode, or on individual containers
+      to scope compact or regular density locally within your application.
+    </p>
+
+    <app-code-snippet [code]="uiClrDensity" language="html"></app-code-snippet>
+
+    <p cds-text="body" cds-layout="m-t:md m-b:lg">The supported values are:</p>
+
+    <ul class="list" cds-text="body" cds-layout="m-t:sm m-l:lg">
+      <li><code cds-text="code">default</code> – default layout with generous spacing for readability and comfort.</li>
+      <li>
+        <code cds-text="code">regular</code> – similar to default layout but with lowered row height. 36px -> 32px
+      </li>
+      <li>
+        <code cds-text="code">compact</code> – reduced spacing and control sizes, suitable for data-dense interfaces.
+      </li>
+    </ul>
+
+    <h3 cds-text="section disable-lhe" cds-layout="m-t:xl">Custom components</h3>
+
+    <p cds-text="body" cds-layout="m-t:md m-b:lg">
+      When developing custom components for your product or application, you can take advantage of the density
+      functionality by leveraging the design system density tokens. These tokens are designed to be mapped to their
+      appropriate constant value based on the density definition. Take a look at the following example from our system.
+    </p>
+
+    <app-code-snippet [code]="uiDensityTokensExample" language="css"></app-code-snippet>
+
+    <p cds-text="body" cds-layout="m-t:md m-b:lg">
+      There may be some instances where the density tokens aren't appropriate for your use case. In these instances, you
+      can still add your own application specific design tokens and can handle the density remapping yourself.
+    </p>
+
+    <app-code-snippet [code]="uiDensityCustomTokensExample" language="css"></app-code-snippet>
+
+    <p cds-text="body" cds-layout="m-t:md m-b:lg">
+      If you're using SCSS and want to take advantage of runtime checking of design tokens from the Clarity Design
+      System, you can import the tokens and set them using the SCSS variable.
+    </p>
+
+    <app-code-snippet [code]="uiDensityUseScssVariables" language="css"></app-code-snippet>
+  </app-doc-tab>
+</app-doc-tabs>

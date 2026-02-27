@@ -1,0 +1,131 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary" id="badges-header">
+      Badges are dynamic status modifiers to other components that indicate the number of instances of that component.
+    </p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p>
+      Badges have a colorful, bold, and filled style that makes them stand out when appearing within or next to another
+      component.
+    </p>
+    <div class="clrweb-DoxVersusBox clr-mt-24px">
+      <div class="clrweb-DoxVersusBox-items clrweb-DoxVersusBox-vsContent">
+        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+          <div class="clrweb-DoxVersusBox-item">
+            <span>Use a badge to <b cds-text="medium">highlight the count.</b></span>
+          </div>
+        </div>
+        <div class="clrweb-DoxVersusBox-vsWrapper clr-col-12">
+          <app-themed-image
+            [lightSrc]="'/assets/images/versus-icon-light.svg'"
+            [darkSrc]="'/assets/images/versus-icon-dark.svg'"
+            [imageAlt]="'versus'"
+            [imageStyle]="'margin: 0 auto;width: 72px;'"
+          ></app-themed-image>
+        </div>
+        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+          <div class="clrweb-DoxVersusBox-item">
+            <span>
+              Use a <a routerLink="/documentation/label">label</a> to show metadata. It is usually text content. A
+              <a routerLink="/documentation/label">label</a> can contain a badge.
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="placement" cds-text="title" class="clr-mt-48px">Placement</h2>
+    <p cds-text="body" class="clr-mt-16px">Place a badge next to or inside the element.</p>
+
+    <h2 id="recommendations" cds-text="title" class="clr-mt-32px">Recommendations</h2>
+
+    <h3 id="over-99" cds-text="section" class="clr-mt-32px">Over 99</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      When a badge needs to display a number above 99, use 99+ instead of the number. Only show a number over 99 if it
+      is essential to the user's objectives and you are certain there is room in the design to accommodate it.
+    </p>
+    <div class="clr-mt-24px">
+      <span class="label label-info">
+        Info
+        <span class="badge badge-info">99+ <span class="clr-sr-only">items</span></span>
+      </span>
+      <span class="label label-warning clr-ml-10px">
+        Warning
+        <span class="badge badge-orange">99+ <span class="clr-sr-only">items</span></span>
+      </span>
+    </div>
+
+    <h3 id="color" cds-text="section" class="clr-mt-32px">Color</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Badges can use a variety of colors. For accessibility, be sure to always pair badges with a label or text that
+      conveys the information.
+    </p>
+
+    <div class="clr-mt-24px">
+      <span class="label">
+        Needs attention
+        <span class="badge">1<span class="clr-sr-only">items</span></span>
+      </span>
+      <span class="label label-orange clr-ml-10px">
+        Inbox
+        <span class="badge badge-orange">99+ <span class="clr-sr-only">items</span></span>
+      </span>
+      <span class="label label-purple clr-ml-10px">
+        Ordered
+        <span class="badge badge-purple">2 <span class="clr-sr-only">items</span></span>
+      </span>
+      <span class="label label-success clr-ml-10px">
+        Success
+        <span class="badge badge-success">3 <span class="clr-sr-only">items</span></span>
+      </span>
+      <span class="label label-warning clr-ml-10px">
+        Warning
+        <span class="badge badge-warning">12 <span class="clr-sr-only">items</span></span>
+      </span>
+      <span class="label label-danger clr-ml-10px">
+        Danger
+        <span class="badge badge-danger">13 <span class="clr-sr-only">items</span></span>
+      </span>
+    </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      A badge overlays a count of items on another component, such as a menu or label.
+    </p>
+    <p cds-text="body" class="clr-mt-16px">
+      For accessibility, add a screen reader only class within an element in the badge using
+      <code cds-text="code">.clr-sr-only</code> (see below) to uniquely label each badge.
+    </p>
+
+    <h3 data-toc-item id="badges-color-options" cds-text="section" class="clr-mt-32px">Badges (Color Options)</h3>
+
+    <clr-badge-colors-demo></clr-badge-colors-demo>
+
+    <h3 data-toc-item id="status-badges" cds-text="section" class="clr-mt-32px">Status Badges</h3>
+
+    <clr-badge-statuses-demo></clr-badge-statuses-demo>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <app-style-docs styleDocsKey="Badge"></app-style-docs>
+  </app-doc-tab>
+
+  <app-doc-tab tab="accessibility">
+    <app-nesting-table
+      componentName="Badge"
+      [canNestComponents]="canNestComponents"
+      [cannotNestComponents]="cannotNestComponents"
+    >
+    </app-nesting-table>
+  </app-doc-tab>
+</app-doc-tabs>

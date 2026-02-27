@@ -1,0 +1,35 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example">
+  <div class="btn-group btn-primary">
+    <button class="btn" aria-label="primary add">Add</button>
+    <button class="btn" aria-label="primary edit">Edit</button>
+    <button class="btn" aria-label="primary download">Download</button>
+    <button class="btn" aria-label="primary delete">Delete</button>
+  </div>
+</div>
+<app-stackblitz-example name="button group" [componentTemplate]="htmlExample1"></app-stackblitz-example>
+
+<h3 data-toc-item id="overflow" cds-text="section" class="clr-mt-32px">Overflow</h3>
+
+<div class="clr-example" style="min-height: 144px">
+  <div class="btn-group btn-primary">
+    <button class="btn" aria-label="overflow add">Add</button>
+    <button class="btn" aria-label="overflow edit">Edit</button>
+    <div class="btn-group-overflow open">
+      <button class="btn dropdown-toggle" aria-label="overflow toggle">
+        <clr-icon shape="ellipsis-horizontal"></clr-icon>
+      </button>
+      <div class="dropdown-menu" role="menu">
+        <button class="btn" role="menuitem">Download</button>
+        <button class="btn" role="menuitem">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+<app-stackblitz-example name="button group overflow" [componentTemplate]="htmlExample2"></app-stackblitz-example>

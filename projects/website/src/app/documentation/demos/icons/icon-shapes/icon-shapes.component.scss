@@ -1,0 +1,23 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:map';
+@use 'variables.tokens' as tokens;
+
+.sticky-form {
+  position: sticky;
+  top: tokens.$cds-global-space-0-static;
+  background-color: tokens.$cds-alias-object-app-background;
+  z-index: 11;
+  padding: tokens.$cds-global-layout-space-md tokens.$cds-global-space-0-static;
+  margin-top: tokens.$cds-global-layout-space-md;
+  margin-bottom: tokens.$cds-global-layout-space-xl;
+
+  .preview-section {
+    max-width: tokens.$cds-global-space-15;
+  }
+}

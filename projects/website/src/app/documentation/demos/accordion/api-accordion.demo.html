@@ -1,0 +1,121 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h2 id="summary-of-options" cds-text="title" class="clr-mt-24px">Angular Components</h2>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">&lt;clr-accordion&gt;</code> component</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Input / Output</th>
+      <th class="left clr-hidden-xs-down">Values</th>
+      <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">[clrAccordionMultiPanel]</b>
+        <div class="clr-hidden-sm-up">Type: Boolean</div>
+        <div class="clr-hidden-sm-up">Default: false</div>
+      </td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
+      <td class="left clr-hidden-xs-down">false</td>
+      <td class="left">Override default behavior to allow multiple panels open at one time.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 cds-text="section" class="clr-mt-24px"><code cds-text="code">&lt;clr-accordion-panel&gt;</code> component</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Input / Output</th>
+      <th class="left clr-hidden-xs-down">Values</th>
+      <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">[(clrAccordionPanelOpen)]</b>
+        <div class="clr-hidden-sm-up">Type: Boolean</div>
+        <div class="clr-hidden-sm-up">Default: false</div>
+      </td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
+      <td class="left clr-hidden-xs-down">false</td>
+      <td class="left">Set and listen for open changes to a given panel.</td>
+    </tr>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">[clrAccordionPanelDisabled]</b>
+        <div class="clr-hidden-sm-up">Type: Boolean</div>
+        <div class="clr-hidden-sm-up">Default: false</div>
+      </td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
+      <td class="left clr-hidden-xs-down">false</td>
+      <td class="left">Disable a given panel from being opened or closed.</td>
+    </tr>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">[clrAccordionPanelHeadingEnabled]</b>
+        <div class="clr-hidden-sm-up">Type: Boolean</div>
+        <div class="clr-hidden-sm-up">Default: false</div>
+      </td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
+      <td class="left clr-hidden-xs-down">false</td>
+      <td class="left">Enables the heading role for given panel header.</td>
+    </tr>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">[clrAccordionPanelHeadingLevel]</b>
+        <div class="clr-hidden-sm-up">Type: number</div>
+        <div class="clr-hidden-sm-up">Default: None</div>
+      </td>
+      <td class="left clr-hidden-xs-down">1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6'</td>
+      <td class="left clr-hidden-xs-down">None</td>
+      <td class="left">
+        Defines the hierarchical level of an element within a structure with
+        <a href="https://www.w3.org/TR/wai-aria-1.1/#aria-level" target="_blank">aria-level</a>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">(clrAccordionPanelOpenChange)</b>
+      </td>
+      <td class="left clr-hidden-xs-down"></td>
+      <td class="left clr-hidden-xs-down"></td>
+      <td class="left">Emits when the Panel is opened or closed.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">*clrIfExpanded</code> directive</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Input/Output</th>
+      <th class="clr-hidden-xs-down">Values</th>
+      <th class="clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">[(clrIfExpanded)]</b>
+        <div class="clr-hidden-sm-up">Type: boolean</div>
+        <div class="clr-hidden-sm-up">Default: false</div>
+      </td>
+      <td class="clr-hidden-xs-down">Boolean</td>
+      <td class="clr-hidden-xs-down">false</td>
+      <td class="left">Two-way binding DOM rendering optimization for collapsed state</td>
+    </tr>
+  </tbody>
+</table>

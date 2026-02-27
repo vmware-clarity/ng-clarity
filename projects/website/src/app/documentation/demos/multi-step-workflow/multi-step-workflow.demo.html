@@ -1,0 +1,498 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      A multi-step workflow is a process in which there are many individual parts, typically in a series. Scenarios
+      include creating an object, setting up a configuration, or onboarding to a new service.
+    </p>
+
+    <h2 cds-text="title" class="clr-mt-48px" id="usage">Usage</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Use a multi-step workflow when the users want to accomplish a goal with many steps or need complete steps in a
+      specific sequence. It also helps guide novice users or those needing to complete an infrequent process. By showing
+      less information at a time, multi-step workflows allow users to focus better on the content pertinent to each step
+      and decrease the chance of errors.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      For more straightforward tasks or when the audience is advanced and doesn’t need guidance, multi-step workflows
+      can slow them down. Consider using an alternative, like a form. Multi-step workflows are also impractical if you
+      try to teach a process or educate the user with text-heavy content because the user is not consuming any
+      additional knowledge when going through a workflow. Instead, their primary focus is to finish the workflow. If
+      education is your goal, try creating an informative tutorial instead.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      Here is a quick comparison between when to use a multi-step workflow vs. a form.
+    </p>
+    <div class="clrweb-DoxVersusBox clr-mt-24px">
+      <div class="clrweb-DoxVersusBox-items clrweb-DoxVersusBox-vsContent">
+        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+          <div class="clrweb-DoxVersusBox-item">
+            <p cds-text="body">Use multi-step workflows</p>
+            <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+              <li>For complex workflows with 2+ steps</li>
+              <li>For novice users or infrequent processes</li>
+              <li>When there are dependencies between steps</li>
+              <li>When it needs to be completed in a specific order</li>
+              <li>When the user may leave and come back to complete</li>
+            </ul>
+          </div>
+        </div>
+        <div class="clrweb-DoxVersusBox-vsWrapper clr-col-12">
+          <app-themed-image
+            [lightSrc]="'/assets/images/versus-icon-light.svg'"
+            [darkSrc]="'/assets/images/versus-icon-dark.svg'"
+            [imageAlt]="'versus'"
+            [imageStyle]="'margin: 0 auto;width: 72px;'"
+          ></app-themed-image>
+        </div>
+        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+          <div class="clrweb-DoxVersusBox-item">
+            <p cds-text="body">Use forms</p>
+            <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+              <li>For non-complex workflows</li>
+              <li>For advanced users</li>
+              <li>If the user need to view everything in one page or refer to the content back and forth</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 cds-text="title" class="clr-mt-48px" id="types-of-multi-step-workflow">Types of multi-step workflows</h2>
+
+    <h3 cds-text="section" class="clr-mt-32px" id="basic-workflows">Basic workflows</h3>
+
+    <h4 cds-text="subsection" class="clr-mt-24px">Stepper and Timeline</h4>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Both the stepper and timeline components are in-page, multi-step patterns that allow users to navigate freely to
+      other parts of an application during the workflow. Both make it easy to resume if users quit the process midway
+      and provide a less constrained workspace when compared to wizards. Because of the bigger workspace, steppers and
+      timelines can also display more complex content in each step.
+    </p>
+
+    <p class="clr-mt-16px" cds-text="body">An application screen with compact and standard line height.</p>
+
+    <div class="clr-row" cds-text="body">
+      <div class="clr-col-12 clr-col-md-6 clr-mt-16px">
+        <div class="clrweb-DoxMedia-img">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/stepper.svg'"
+            [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/stepper.svg'"
+            [imageAlt]="'Example of Stepper'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+        <p class="clr-mt-8px">
+          Steppers are good for many steps with small data set in each step. Steppers provide additional context of each
+          steps, but it also limit the vertical space for the dataset within.
+        </p>
+      </div>
+    </div>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6 clr-mt-24px">
+        <div class="clrweb-DoxMedia-img">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/timeline.svg'"
+            [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/timeline.svg'"
+            [imageAlt]="'Example of Timeline'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+        <p class="clr-mt-8px">
+          Timelines offer more space for longer forms shown on a fewer number of steps due to horizontal constraints.
+        </p>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clr-mt-24px">
+        <div class="clrweb-DoxMedia-img">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/timeline_datagrid.svg'"
+            [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/timeline_datagrid.svg'"
+            [imageAlt]="'Example of Timeline within datagrid'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+        <p class="clr-mt-8px">
+          A timeline can be used in either a full page or small space (e.g. nested inside an expandable datagrid).
+        </p>
+      </div>
+    </div>
+
+    <h3 cds-text="section" class="clr-mt-32px" id="wizard">Wizard</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      A wizard helps the user stay focused on the task by presenting the workflow in a separate modal. Only use a wizard
+      when the content is self-sufficient since it blocks access to other parts of the app that are necessary for
+      completing the process. The user will be brought back to the original context after the workflow is finished. This
+      means the entry point and exit point of a wizard are always the same.
+    </p>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Use wizards for workflows with 3-10 steps. They come in three different sizes to fit different screen sizes and
+      content.
+    </p>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Be mindful when using wizards since they are not gracefully disruptive and introduce more cognitive load. If users
+      quit the process midway, they might lose their work and may need to click through the preceding steps again. Don't
+      include long or complex content in each step to avoid scrolling and truncation
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6 clr-mt-16px">
+        <app-do-dont type="do" caption="Use a timeline for complex steps.">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/timeline_complex_steps.svg'"
+            [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/timeline_complex_steps.svg'"
+            [imageAlt]="'Example of how to use timeline for complex steps'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </app-do-dont>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clr-mt-16px">
+        <app-do-dont
+          type="dont"
+          caption="Use wizard for complex steps as user might miss the content below the viewpoint. It also introduces accessibility concerns."
+        >
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/wizard_complex_steps.svg'"
+            [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/wizard_complex_steps.svg'"
+            [imageAlt]="'Example of how not to use Wizard for complex steps'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </app-do-dont>
+      </div>
+    </div>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6 clr-mt-16px">
+        <app-do-dont type="do" caption="Use a stepper or a timeline if an additional modal is needed.">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/stepper_with_modal.svg'"
+            [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/stepper_with_modal.svg'"
+            [imageAlt]="'Example of how to Use a stepper or a timeline if an additional modal is needed'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </app-do-dont>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clr-mt-16px">
+        <app-do-dont
+          type="dont"
+          caption="Use a wizard when an additional modal is needed. Users can lose context. It also blocks accessibility for keyboard users."
+        >
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/wizard_with_modal.svg'"
+            [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/wizard_with_modal.svg'"
+            [imageAlt]="'Example of how not to use a wizard when an additional modal is needed'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </app-do-dont>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="nested-workflows">Nested workflows</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      A nested workflow is a long and complex workflow that can be broken down into several smaller workflows. Some
+      workflows may involve multiple products or parties (other users or the system) to complete. It is a good idea to
+      include an overview page to set the expectation of the entire process. The overview page shows the nested
+      workflow's progress with each step's status, actions, and descriptions. Consider showing the user any
+      prerequisites beforehand to avoid the need to leave midway to find additional information. It is important to show
+      progress, considering if the user leaves the workflow and forgets where they were. If the user cannot finish the
+      entire nested workflow at once, provide ways to save their progress (or even better, save it automatically and
+      indicate to them that their progress has been saved) and let the user resume the workflow when ready.
+    </p>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Possible implementations of nested workflow include timeline + steppers, overview page + steppers, etc.
+    </p>
+
+    <h4 cds-text="subsection" class="clr-mt-24px">Timeline + stepper</h4>
+
+    <div class="clrweb-DoxMedia">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/timeline_stepper.svg'"
+        [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/timeline_stepper.svg'"
+        [imageAlt]="'Example of Timeline and stepper nested workflow'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <p class="clr-mt-8px" cds-text="body">
+      The user can view the overall progress all the time. Each step in the timeline consisted of a basic workflow.
+    </p>
+
+    <h4 cds-text="subsection" class="clr-mt-24px">Overview page + stepper</h4>
+
+    <div class="clrweb-DoxMedia">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/overview_page_stepper.svg'"
+        [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/overview_page_stepper.svg'"
+        [imageAlt]="'Example of Overview page and stepper nested workflow'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <div class="clr-mt-8px" cds-text="body">
+      <ul>
+        <li>The overview page give the user an high level expectation</li>
+        <li>Each step is consisted of a basic workflow</li>
+      </ul>
+    </div>
+    <p cds-text="body" class="clr-mt-16px">
+      After the basic workflow is completed, it returns to the overview page for the next step
+    </p>
+
+    <h2 cds-text="title" class="clr-mt-48px" id="building-a-multi-step-workflow">Building a multi-step workflow</h2>
+
+    <h3 cds-text="section" class="clr-mt-32px" id="breaking-down-content">Breaking down content</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      After gathering the required information for the multi-step workflow, the first step is to consolidate all the
+      information. Decide what the required tasks to achieve the user goals versus what are the optional ones are.
+      Eliminating unnecessary optional tasks reduces user effort and increased completion rates. The user can always
+      perform the optional tasks after completing the workflow.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      When building a multi-step workflow, break up the task into a series of chunks, or groups of operations. Unrelated
+      tasks should be separated into a new step. This helps preserve context around the step being completed. Also,
+      balance the amount of the content and the number of steps.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">Let’s take an example of creating an account for an enterprise software.</p>
+
+    <h2 cds-text="title" class="clr-mt-48px" id="ordering-steps">Ordering steps</h2>
+
+    <h3 cds-text="section" class="clr-mt-32px" id="linear-vs-non-linear">Linear vs. non-linear</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      <strong cds-text="medium">Linear workflow</strong> requires the user to complete the entire workflow in a
+      prescribed order. It works best when they are dependencies between steps or the steps fall into a logical
+      sequence. Wizard, stepper, and timeline can all support the linear use case.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      Use a <strong cds-text="medium">non-linear workflow</strong> if there are no dependencies between steps or the
+      user should be able to choose their path. The order of the tasks “suggests” the order to do the steps, without
+      locking the user into that order (if you have to restrict the order, dynamically disable the controls that launch
+      the steps as necessary).
+    </p>
+
+    <div class="clrweb-DoxMedia">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/non_linear_workflow.svg'"
+        [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/non_linear_workflow.svg'"
+        [imageAlt]="'Example of non-linear workflow'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <p class="clr-mt-8px" cds-text="body">Example of a non-linear workflow. The user can start either step 3 or 4.</p>
+
+    <h3 cds-text="section" class="clr-mt-32px" id="conditional-workflows">Conditional workflows</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Conditional workflows change step content or the number of steps based on the entry from previous steps.
+      Non-conditional wizards are preferable, but if it’s not an option, use a conditional wizard and update the steps
+      following the input. This will cue the user to the changes.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      If the selection of the first step changes the following steps significantly, consider separating the first step
+      in a stand-alone page to avoid content shifting.
+    </p>
+
+    <div class="clrweb-DoxMedia">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/conditional_workflow.svg'"
+        [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/conditional_workflow.svg'"
+        [imageAlt]="'Example of conditional workflow'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h2 cds-text="title" class="clr-mt-48px" id="selecting-the-component">Selecting the component</h2>
+
+    <p class="clr-mt-16px" cds-text="body">Select the appropriate component depending on your use cases.</p>
+
+    <clr-component-table-demo cds-layout="m-t:lg display:block"></clr-component-table-demo>
+
+    <h2 cds-text="title" class="clr-mt-48px" id="moving-between-steps">Moving between steps</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      <strong cds-text="medium">Show progress.</strong> Because of the complexity of the multi-step workflow, it is
+      important to clearly indicate the progress at all times.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      <strong cds-text="medium">Provide incremental validation.</strong> Incremental validation can help the user
+      discover and recover mistakes early. Common types of input, such as email addresses and dates, can be validated
+      when the user tab or click away from the component. Otherwise, a validation after each step can also help the user
+      recover while still in context and prevent errors in later steps with dependencies.
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6 clr-mt-24px">
+        <div class="clrweb-DoxMedia-img">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/validation_tab_away.svg'"
+            [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/validation_tab_away.svg'"
+            [imageAlt]="'Example of client-side validation'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+        <p class="clr-mt-8px" cds-text="body disable-lhe">Validate email format when users tab away</p>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clr-mt-24px">
+        <div class="clrweb-DoxMedia-img">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/validation_click_next.svg'"
+            [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/validation_click_next.svg'"
+            [imageAlt]="'Example of server-side validation'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+        <p class="clr-mt-8px" cds-text="body disable-lhe">Run server-side validation when users click NEXT</p>
+      </div>
+    </div>
+
+    <p class="clr-mt-16px" cds-text="body">
+      <strong cds-text="medium">Let users return to previous steps.</strong> The user should be able to go back to
+      previous steps to view or modify the content. If changes to the previous step have dependencies on later steps,
+      the user will need to input it again.
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6 clr-mt-24px">
+        <div class="clrweb-DoxMedia-img">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/dismiss_workflow.svg'"
+            [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/dismiss_workflow.svg'"
+            [imageAlt]="'Example of how to dismiss the workflow'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clr-mt-24px">
+        <h3 cds-text="subsection disable-lhe" id="allow-users-to-dismiss-the-workflow">
+          Allow users to dismiss the workflow.
+        </h3>
+        <p class="clr-mt-16px" cds-text="body">
+          A user should be able to actively dismiss a workflow. Completing all of the steps or canceling should dismiss
+          the wizard.
+        </p>
+        <h3 cds-text="subsection" class="clr-mt-24px" id="provide-a-way-to-save-progress">
+          Provide a way to save progress.
+        </h3>
+        <p class="clr-mt-16px" cds-text="body">
+          If the user needs to leave the workflow halfway, it is ideal to auto-save or provide a manual way to save the
+          state so that the user can resume at a later time. However, if the progress cannot be saved because of
+          technical reasons, make sure to warn the user of the consequences of losing the data.
+        </p>
+      </div>
+    </div>
+
+    <h2 cds-text="title" class="clr-mt-48px" id="submit-a-workflow">Submit a workflow</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      <strong cds-text="medium">Review before complete.</strong> It is good practice to present a review of choices made
+      throughout the workflow near the end. This will allow the user to review and double-check the input data before
+      the final button is clicked. If users need to change the data entered, they should be able to navigate back to the
+      given page where the date was entered. If the amount of steps in the wizard is greater than 8, it is a good idea
+      to provide links directly to the screen of the data input.
+    </p>
+
+    <h2 cds-text="title" class="clr-mt-48px" id="loading">Loading</h2>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6 clr-mt-24px">
+        <div class="clrweb-DoxMedia-img">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/loading.svg'"
+            [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/loading.svg'"
+            [imageAlt]="'Example of loading button with 0.5 second delay'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+        <p class="clr-mt-8px" cds-text="body">Example: Loading button with 0.5 seconds delay</p>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clr-mt-24px">
+        <h3 cds-text="subsection disable-lhe" id="within-1-second">Within 1.0 second.</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          There is no need for any loading if the workflow can be completed within a second.
+        </p>
+      </div>
+    </div>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6 clr-mt-24px">
+        <div class="clrweb-DoxMedia-img">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/loading.svg'"
+            [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/loading.svg'"
+            [imageAlt]="'Example of loading button with 5 second delay'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+        <p class="clr-mt-8px" cds-text="body">Example: Loading button with 5 seconds delay</p>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clr-mt-24px">
+        <h3 cds-text="subsection disable-lhe" id="within-10-seconds">Within 10 seconds</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          Show a spinner and optionally with the contexual text below to set the expectations. Be as accurate as you can
+          be. Once the workflow is completed, provide clear feedback on the success.
+        </p>
+      </div>
+    </div>
+
+    <h3 cds-text="subsection" class="clr-mt-24px" id="more-than-10-seconds">More than 10 seconds</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      User a progress bar to show the percent-done progress. They reassure the user that the system has not crashed but
+      is working. For operations that are hard to estimate, provide running progress feedback in terms of the absolute
+      amount of work done, for example, 2/10 tasks done. Consider allowing the user to access other parts of the
+      applications while waiting for completion. Make sure to notify the user once the workflow is completed.
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6 clr-mt-16px">
+        <div class="clrweb-DoxMedia-img">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/determinate_progress_bar.svg'"
+            [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/determinate_progress_bar.svg'"
+            [imageAlt]="'Example of Determinate progress bar'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+        <p class="clr-mt-8px" cds-text="body">Example: Determinate progress bar for more than 10 seconds delay</p>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clr-mt-16px">
+        <div class="clrweb-DoxMedia-img">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/multi-step-workflow/light-theme/indeterminate_progress_bar.svg'"
+            [darkSrc]="'/assets/images/documentation/multi-step-workflow/dark-theme/indeterminate_progress_bar.svg'"
+            [imageAlt]="'Example of Indeterminate progress bar'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </div>
+        <p class="clr-mt-8px" cds-text="body">Example: Indeterminate progress bar for more than 10 seconds delay</p>
+      </div>
+    </div>
+
+    <h2 cds-text="title" class="clr-mt-48px" id="validation">Validation</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      The entire workflow may be validated once it has been completed, or on submitted. This is appropriate for secure
+      and server side validation cases. Complex validation such as cases where objects are interdependent, and in cases
+      where to data must be handled securely are best handled on the server side.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      When an error occurs, bring the user back to workflow, if it can be corrected. Also, the validation can be done
+      within a few seconds. Otherwise, show a clear error message to the user and provide clear instructions on how to
+      resolve it. See the validation section of the form editing and submitting pattern (coming soon) for more details.
+    </p>
+  </app-doc-tab>
+</app-doc-tabs>

@@ -1,0 +1,31 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<button
+  class="color-palette-section"
+  [attr.aria-label]="'Copy ' + color + ' ' + colorCode + ' color token to clipboard'"
+  [ngClass]="{
+    uppercase: !copied,
+    'color-palette-section--copied': copied,
+    'color-palette-section--bordered': color === 'white' || copied
+  }"
+  [ngStyle]="{ '--color': colorToken | cssVariable }"
+  (mouseover)="showColorCode = false"
+  (mouseleave)="showColorCode = true"
+  (click)="copyTokenToClipboard()"
+>
+  @if (copied) {
+  <span cds-text="caption">Copied!</span>
+  } @if (!copied && color && colorCode && showColorCode) {
+  <span
+    [ngStyle]="{
+      color: copied || color == 'white' || colorCode <= (colorContrastThreshold[color] || 0) ? '#000' : '#fff'
+    }"
+  >
+    @if (colorCode) { {{ colorCode }} } @if (color === 'black') { Black } @if (color === 'white') { White }
+  </span>
+  }
+</button>

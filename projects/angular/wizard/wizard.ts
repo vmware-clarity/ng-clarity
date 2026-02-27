@@ -488,6 +488,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    */
   reset(): void {
     this.pageCollection.reset();
+
     this.onReset.emit();
   }
 
@@ -519,6 +520,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
       //   When clicking on a wizard tab, focus should move to that
       //   tabs content to make the wizard more accessible.
       this.pageTitle?.nativeElement.focus();
+
       this.currentPageChanged.emit();
 
       // scroll to top of page in case there is long page content

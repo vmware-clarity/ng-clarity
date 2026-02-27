@@ -1,0 +1,50 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<grid-confirm-form [(options)]="options"> </grid-confirm-form>
+
+<button class="btn btn-primary" (click)="reset()">Render</button>
+<button class="btn btn-primary" (click)="refresh()">Refresh data</button>
+
+@if (options.selectionType !== 'none') {
+<div class="card card-block">
+  <p class="card-text">
+    Selected VMs: @if (selectedVms?.length == 0) {
+    <em>No vm selected.</em>
+    } @for (vm of selectedVms; track vm) {
+    <span>{{ vm.name + ' ' }}</span>
+    }
+  </p>
+</div>
+}
+
+<hr />
+
+@if (!resetting) {
+<appfx-datagrid
+  [gridItems]="filteredVms"
+  [selectedItems]="selectedVms"
+  [columns]="columns"
+  [layoutModel]="{
+    stretchToParentHeight: false,
+    compact: options.compactDatagrid,
+    disabled: options.disabled
+  }"
+  [footerModel]="{
+    clientSideExportConfig: options.enableExport ? exportConfig : undefined,
+    showFooter: options.showFooter,
+    hideColumnToggle: !options.showColumnToggle
+  }"
+  [loading]="options.loading"
+  [selectionType]="options.selectionType"
+  [pageSize]="options.pageSize!"
+  [pageSizeOptions]="options.pageSizeOptions!"
+  [rowSelectionMode]="options.enableRowSelection"
+  (selectedItemsChange)="onSelectedItemsChange($event)"
+  (searchTermChange)="onSearchTermChange($event)"
+>
+</appfx-datagrid>
+}

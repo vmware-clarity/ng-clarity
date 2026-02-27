@@ -177,5 +177,6 @@ module.exports = [
     '/projects/**/*.api.md',
     '.storybook/preview.js',
     'documentation.json',
+    'projects/website/src/admin/main.js',
   ]),
 ];

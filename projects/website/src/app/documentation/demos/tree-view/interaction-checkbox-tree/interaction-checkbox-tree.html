@@ -1,0 +1,19 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<clr-tree>
+  @for (group of userPriveleges; track group) {
+  <clr-tree-node [(clrSelected)]="group.selected" [clrExpanded]="true">
+    {{ group.name }} @for (item of group.items; track item) {
+    <clr-tree-node [(clrSelected)]="item.selected">
+      {{ item.name }} @for (innerItem of item.items; track innerItem) {
+      <clr-tree-node [(clrSelected)]="innerItem.selected"> {{ innerItem.name }} </clr-tree-node>
+      }
+    </clr-tree-node>
+    }
+  </clr-tree-node>
+  }
+</clr-tree>

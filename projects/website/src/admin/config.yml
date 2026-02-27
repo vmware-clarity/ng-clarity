@@ -1,0 +1,48 @@
+backend:
+  name: github
+  repo: dummy_value_will_be_replaced_by_actions_workflow
+  branch: dummy_value_will_be_replaced_by_actions_workflow
+  squash_merges: true
+local_backend: true
+publish_mode: editorial_workflow
+media_folder: assets/images/uploads
+public_folder: /images/uploads
+collections:
+  - name: nav
+    label: Nav
+    folder: cms-content/nav
+    slug: '{{slug}}'
+    create: false
+    fields:
+      - name: title
+        label: Title
+        widget: string
+      - name: groups
+        label: Groups
+        widget: 'list'
+        fields:
+          - name: label
+            label: Label
+            widget: string
+          - name: links
+            label: Links
+            widget: list
+            fields:
+              - name: label
+                label: Label
+                widget: string
+              - name: url
+                label: Url
+                widget: string
+  - name: pages
+    label: Pages
+    folder: cms-content/pages
+    slug: '{{slug}}'
+    create: true
+    fields:
+      - name: title
+        label: Title
+        widget: string
+      - name: body
+        label: Body
+        widget: markdown

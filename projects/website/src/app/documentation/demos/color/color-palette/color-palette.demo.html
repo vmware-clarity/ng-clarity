@@ -1,0 +1,54 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h3 data-toc-item cds-text="section" id="color-system-global-palette" class="clr-mt-32px">Global Palette</h3>
+<h4 cds-text="subsection" class="clr-mt-32px">Basic Colors</h4>
+<p cds-text="body" class="clr-mt-16px">
+  The complete palette has 13 saturated colors, 5 muted colors, a set of cool grays for construction of containers and
+  type, and black and white. Each is described by its hue and a common name, which is then extended through a set of
+  values for each. This set of colors is defined by Clarity at the system level. This means that when you refer to them
+  in your application, you can assume consistency and trouble-free updates.
+</p>
+<div class="clr-palette-row clr-mt-24px">
+  @for (color of paletteRow1Colors; track color) {
+  <div class="color-palette-col">
+    <h5 cds-text="body medium" class="clr-mt-16px capitalize">{{ color }}</h5>
+    @for (colorCode of colorCodes; track colorCode) {
+    <clr-color-palette-example-item [color]="color" [colorCode]="colorCode"></clr-color-palette-example-item>
+    }
+  </div>
+  }
+</div>
+
+<div class="clr-palette-row clr-mt-32px">
+  @for (color of paletteRow2Colors; track color) {
+  <div class="color-palette-col">
+    <h5 cds-text="body medium" class="clr-mt-16px capitalize">{{ color }}</h5>
+    @for (colorCode of colorCodes; track colorCode) {
+    <clr-color-palette-example-item [color]="color" [colorCode]="colorCode"></clr-color-palette-example-item>
+    }
+  </div>
+  }
+</div>
+
+<h4 cds-text="subsection" class="clr-mt-32px">Muted & Utility Colors</h4>
+<div class="clr-palette-row clr-mt-24px">
+  @for (color of mutedUtilityColors; track color) {
+  <div class="color-palette-col">
+    <h5 cds-text="body medium" class="clr-mt-16px capitalize">{{ getColorName(color) }}</h5>
+    @for (colorCode of colorCodes; track colorCode) {
+    <clr-color-palette-example-item [color]="color" [colorCode]="colorCode"></clr-color-palette-example-item>
+    }
+  </div>
+  }
+
+  <div class="color-palette-col">
+    <div cds-text="body medium" class="clr-mt-16px">&nbsp;</div>
+    <clr-color-palette-example-item color="white"></clr-color-palette-example-item>
+    <clr-color-palette-example-item color="black"></clr-color-palette-example-item>
+  </div>
+</div>

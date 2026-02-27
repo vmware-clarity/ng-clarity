@@ -1,0 +1,295 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="code">
+    <p
+      class="component-summary"
+      id="a-sound-navigation-layout-offers-a-high-degree-of-discoverability-and-feedback-letting-users-know-where-they-are-at-all-times-and-ensuring-they-can-easily-get-to-where-they-want-to-go"
+    >
+      A sound navigation layout offers a high degree of discoverability and feedback, letting users know where they are
+      at all times and ensuring they can easily get to where they want to go.
+    </p>
+    <h2 class="clr-mt-48px" cds-text="title">Navigation Components</h2>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Clarity has three navigation components: header, subnav, and vertical nav. Following are the possible combinations
+      of navigation.
+    </p>
+
+    <h3 cds-text="section" class="clr-mt-32px">Header + Sub Navigation</h3>
+    <clr-layout-no-vertical-nav-demo></clr-layout-no-vertical-nav-demo>
+
+    <h3 cds-text="section" class="clr-mt-32px">Header + Vertical Navigation</h3>
+    <clr-layout-no-subnav-demo></clr-layout-no-subnav-demo>
+
+    <h3 cds-text="section" class="clr-mt-32px">Header</h3>
+    <clr-layout-only-header-demo></clr-layout-only-header-demo>
+
+    <h3 cds-text="section" class="clr-mt-32px">Vertical Navigation</h3>
+    <clr-layout-only-vertical-nav-primary></clr-layout-only-vertical-nav-primary>
+
+    <h3 cds-text="section" class="clr-mt-32px">Sub Navigation + Vertical Navigation</h3>
+    <clr-layout-only-subnav-primary></clr-layout-only-subnav-primary>
+
+    <h2 id="responsive_navigation" class="clr-mt-48px" cds-text="title">Responsive Navigation</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Clarity provides three levels of navigation represented by the following classnames:
+    </p>
+
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        <code cds-text="code">.header-nav</code> in the application <a routerLink="/documentation/header">header</a>.
+      </li>
+      <li><code cds-text="code">.subnav</code> immediately below the header.</li>
+      <li>
+        <code cds-text="code">clr-vertical-nav</code> inside the content container. See
+        <a routerLink="/documentation/vertical-nav">vertical nav</a>.
+      </li>
+    </ul>
+
+    <p class="clr-mt-16px" cds-text="body">Clarity supports responsive navigation as follows:</p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Up to two levels of navigation can be made responsive.</li>
+      <li>
+        Responsiveness is triggered below the <code cds-text="code">768px</code> breakpoint by adding the
+        <code cds-text="code">clr-nav-level</code> input to the navigation level.
+      </li>
+      <li>
+        A <code cds-text="code">clr-nav-level</code> value of <code cds-text="code">1</code> is for primary navigation
+        and <code cds-text="code">2</code> is for secondary navigation.
+      </li>
+      <li>
+        On small screens:
+        <ul class="list" cds-text="body" cds-layout="m-t:xs m-l:lg">
+          <li>The hamburger icon appears on the left of the header and triggers the primary navigation</li>
+          <li>The overflow icon appears on the right and triggers the secondary navigation</li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="alert alert-info cozy">
+      <div class="alert-items">
+        <div class="alert-item static">
+          <div class="alert-icon-wrapper">
+            <clr-icon class="alert-icon" shape="info-circle"></clr-icon>
+          </div>
+          <span class="alert-text">
+            Although three levels of navigation make sense on large screens, this number of levels becomes hard to
+            navigate on smaller screens. Clarity recommends that applications for tablets and phones are not exact
+            replicas of the desktop versions, but rather a different, simplified experience.
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <p class="clr-mt-16px" cds-text="body">
+      <strong cds-text="medium">Note:</strong> Responsive navigation requires you to use the following Angular
+      components to build the layout of your application:
+    </p>
+
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li><code cds-text="code">clr-main-container</code></li>
+      <li><code cds-text="code">clr-header</code></li>
+    </ul>
+
+    <h3 id="examples" cds-text="section" class="clr-mt-32px">Examples</h3>
+
+    <h4 cds-text="subsection" class="clr-mt-32px">1. Header navigation as primary and vertical nav as secondary</h4>
+
+    <clr-responsive-nav-header-vertical-nav-demo></clr-responsive-nav-header-vertical-nav-demo>
+
+    <h4 cds-text="subsection" class="clr-mt-32px">2. Subnav as primary and vertical nav as secondary</h4>
+
+    <clr-responsive-nav-subnav-vertical-nav-demo></clr-responsive-nav-subnav-vertical-nav-demo>
+  </app-doc-tab>
+
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      A sound navigation layout offers a high degree of discoverability and feedback. It lets users know where they are
+      at all times and ensures they can easily get to where they want to go.
+    </p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Clarity Navigation depends on a specific Document Object Model (DOM) structure. Consult an appropriate demo to see
+      the code and structure needed for the styles and layout to work. Clarity provides three levels of navigation
+      represented by the following elements:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Header navigation (<code cds-text="code">.header-nav</code>)</li>
+      <li>Sub navigation immediately below the header (<code cds-text="code">.subnav</code>)</li>
+      <li>Vertical navigation inside the content container (<code cds-text="code">clr-vertical-nav</code>)</li>
+    </ul>
+
+    <h3 cds-text="section" id="designing-navigation-patterns" class="clr-mt-32px">Designing Navigation Patterns</h3>
+
+    <p class="clr-mt-16px" cds-text="body">When establishing your navigation model, consider:</p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>The key use cases of your application</li>
+      <li>
+        The proper hierarchy and what belongs in the primary navigation versus what goes in the secondary or lower
+        levels of the navigation
+      </li>
+      <li>Whether to orient the navigation horizontally, vertically, or both</li>
+      <li>Whether responsiveness needs to be part of your platform strategy</li>
+    </ul>
+
+    <h3 cds-text="section" id="using-navigation-components" class="clr-mt-32px">Using Navigation Components</h3>
+
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-6">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/nav/light-theme/header.svg'"
+          [darkSrc]="'/assets/images/documentation/nav/dark-theme/header.svg'"
+          [imageAlt]="'Header'"
+          [imageStyle]="'max-width: 100%'"
+        >
+        </app-themed-image>
+      </div>
+      <div class="clr-col-6">
+        <h4 id="using-navigation-components-header" cds-text="subsection">Header</h4>
+        <p class="clr-mt-16px" cds-text="body">
+          The <a routerLink="/documentation/header">header</a> is for primary navigation. Benefits of this navigation
+          pattern are:
+        </p>
+        <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+          <li>Users often look for navigation in the header.</li>
+          <li>Top-level navigation is kept simple–the recommended number of links is from two to four.</li>
+          <li>Navigation does not take real estate away from the content area.</li>
+        </ul>
+        <p class="clr-mt-16px" cds-text="body">
+          However, keep in mind that the header supports other items, such as search and settings. So the navigation
+          links might become crowded.
+        </p>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-6">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/nav/light-theme/sub-navigation.svg'"
+          [darkSrc]="'/assets/images/documentation/nav/dark-theme/sub-navigation.svg'"
+          [imageAlt]="'sub navigation'"
+          [imageStyle]="'max-width: 100%'"
+        >
+        </app-themed-image>
+      </div>
+      <div class="clr-col-6">
+        <h4 id="using-navigation-components-sub-nav" cds-text="subsection">Sub navigation</h4>
+        <p class="clr-mt-16px" cds-text="body">
+          Use a <a routerLink="/documentation/header" fragment="subnav">sub navigation</a> for primary navigation when
+          you need the vertical bar for secondary navigation and any of the following conditions apply:
+        </p>
+        <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+          <li>You have more links than can fit in the header.</li>
+          <li>The text of your links is too long for the header.</li>
+          <li>You want to limit the header to search and settings.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-6">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/nav/light-theme/vertical-navigation.svg'"
+          [darkSrc]="'/assets/images/documentation/nav/dark-theme/vertical-navigation.svg'"
+          [imageAlt]="'vertical navigation'"
+          [imageStyle]="'max-width: 100%'"
+        >
+        </app-themed-image>
+      </div>
+      <div class="clr-col-6">
+        <h4 id="using-navigation-components-vertical-nav" cds-text="subsection">Vertical navigation</h4>
+        <p class="clr-mt-16px" cds-text="body">
+          Benefits of the <a routerLink="/documentation/vertical-nav">vertical navigation</a> are that it:
+        </p>
+        <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+          <li>Is a familiar navigation pattern for users.</li>
+          <li>
+            Accommodates a large number of links, becoming vertically scrollable when content exceeds the view port.
+          </li>
+          <li>Supports progressive disclosure of a hierarchy.</li>
+          <li>Supports categorization of links.</li>
+        </ul>
+        <p class="clr-mt-16px" cds-text="body">
+          A drawback of a vertical navigation is that it takes real estate away from the content area. Also, in a mobile
+          environment, the hierarchy within the vertical navigation should be kept to a minimum.
+        </p>
+      </div>
+    </div>
+
+    <clr-navigation-types-demo></clr-navigation-types-demo>
+
+    <h2 cds-text="title" id="behavior" class="clr-mt-48px">Behavior</h2>
+
+    <h3 cds-text="section" id="responsive_navigation" class="clr-mt-32px">Responsive</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Responsive navigation requires you to use the following Angular components to build the layout of your
+      application:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li><code cds-text="code">clr-main-container</code></li>
+      <li><code cds-text="code">clr-header</code></li>
+    </ul>
+
+    <p class="clr-mt-16px" cds-text="body">Clarity supports responsive navigation as follows:</p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Up to two levels of navigation can be made responsive.</li>
+      <li>
+        Responsiveness is triggered below the <code cds-text="code">768px</code> breakpoint by adding the
+        <code cds-text="code">clr-nav-level</code> input to the navigation level.
+      </li>
+      <li>
+        A <code cds-text="code">clr-nav-level</code> value of <code cds-text="code">1</code> is for primary navigation
+        and <code cds-text="code">2</code> is for secondary navigation.
+      </li>
+      <li>
+        <strong cds-text="medium">On small screens:</strong>
+        <ul class="list" cds-text="body" cds-layout="m-t:xs m-l:lg">
+          <li>The hamburger icon appears on the left of the header and triggers the primary navigation.</li>
+          <li>The overflow icon appears on the right and triggers the secondary navigation.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="clr-mt-16px">
+      <clr-alert clrAlertType="warning" [clrAlertClosable]="false">
+        <clr-alert-item>
+          <span class="alert-text">
+            Although three levels of navigation make sense on large screens, this number of levels becomes hard to
+            navigate on smaller screens. If your desktop applications have three navigation levels, adjust the
+            application for tablets and phones to create a different, simplified experience.
+          </span>
+        </clr-alert-item>
+      </clr-alert>
+    </div>
+
+    <h3 cds-text="section" id="screen-size" class="clr-mt-32px">Screen Size</h3>
+
+    <h4 cds-text="subsection" id="large-screens" class="clr-mt-24px">Large Screens</h4>
+    <div class="clr-mt-16px">
+      <clr-layout-large-screen-nav></clr-layout-large-screen-nav>
+    </div>
+
+    <h4 cds-text="subsection" id="small-screens" class="clr-mt-24px">Small Screens</h4>
+    <div class="clr-row">
+      <div class="clr-col-6 clr-mt-24px">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/nav/light-theme/responsive-left.svg'"
+          [darkSrc]="'/assets/images/documentation/nav/dark-theme/responsive-left.svg'"
+          [imageAlt]="'Small size screen with expanded navbar'"
+          [imageStyle]="'max-width: 100%'"
+        >
+        </app-themed-image>
+      </div>
+      <div class="clr-col-6">
+        <clr-layout-small-screen-nav></clr-layout-small-screen-nav>
+      </div>
+    </div>
+  </app-doc-tab>
+</app-doc-tabs>

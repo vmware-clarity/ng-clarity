@@ -97,8 +97,8 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
   ngAfterContentInit() {
     this.subscriptions.push(
       this.multiAlertService.changes.subscribe(index => {
-        this.currentAlertIndexChange.next(index);
-        this.currentAlertChange.next(this.multiAlertService.currentAlert);
+        this.currentAlertIndexChange.emit(index);
+        this.currentAlertChange.emit(this.multiAlertService.currentAlert);
       })
     );
   }
