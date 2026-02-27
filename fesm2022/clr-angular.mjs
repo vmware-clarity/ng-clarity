@@ -10509,8 +10509,8 @@ class ClrAlerts {
     }
     ngAfterContentInit() {
         this.subscriptions.push(this.multiAlertService.changes.subscribe(index => {
-            this.currentAlertIndexChange.next(index);
-            this.currentAlertChange.next(this.multiAlertService.currentAlert);
+            this.currentAlertIndexChange.emit(index);
+            this.currentAlertChange.emit(this.multiAlertService.currentAlert);
         }));
     }
     ngOnDestroy() {
@@ -30703,7 +30703,7 @@ class ClrPopoverCloseButton {
         this.closeChange = new EventEmitter();
         this.subscriptions = [];
         this.subscriptions.push(popoverService.openChange.pipe(filter(value => !value)).subscribe(() => {
-            this.closeChange.next();
+            this.closeChange.emit();
         }));
     }
     handleClick(event) {
@@ -30748,7 +30748,7 @@ class ClrPopoverOpenCloseButton {
         this.openCloseChange = new EventEmitter();
         this.subscriptions = [];
         this.subscriptions.push(popoverService.openChange.subscribe(change => {
-            this.openCloseChange.next(change);
+            this.openCloseChange.emit(change);
         }));
     }
     handleClick(event) {
@@ -33265,7 +33265,7 @@ class ClrKeyFocus {
     }
     focusCurrent() {
         this.currentItem.focus();
-        this.focusChange.next(this._current);
+        this.focusChange.emit(this._current);
     }
     moveTo(position) {
         if (this.positionInRange(position)) {

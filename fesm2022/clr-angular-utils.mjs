@@ -1710,7 +1710,7 @@ class ClrKeyFocus {
     }
     focusCurrent() {
         this.currentItem.focus();
-        this.focusChange.next(this._current);
+        this.focusChange.emit(this._current);
     }
     moveTo(position) {
         if (this.positionInRange(position)) {

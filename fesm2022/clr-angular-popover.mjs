@@ -1398,7 +1398,7 @@ class ClrPopoverCloseButton {
         this.closeChange = new EventEmitter();
         this.subscriptions = [];
         this.subscriptions.push(popoverService.openChange.pipe(filter(value => !value)).subscribe(() => {
-            this.closeChange.next();
+            this.closeChange.emit();
         }));
     }
     handleClick(event) {
@@ -1443,7 +1443,7 @@ class ClrPopoverOpenCloseButton {
         this.openCloseChange = new EventEmitter();
         this.subscriptions = [];
         this.subscriptions.push(popoverService.openChange.subscribe(change => {
-            this.openCloseChange.next(change);
+            this.openCloseChange.emit(change);
         }));
     }
     handleClick(event) {
