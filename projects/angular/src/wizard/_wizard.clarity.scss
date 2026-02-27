@@ -139,7 +139,6 @@
       max-width: 34%;
       display: flex;
       flex-direction: column;
-      order: -1;
       overflow: hidden;
       border-right: variables.$clr-global-borderwidth solid wizard-variables.$clr-wizard-stepnav-border-color;
       background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
@@ -189,7 +188,7 @@
       &.active {
         color: wizard-variables.$clr-wizard-stepnav-text--active;
         background-color: wizard-variables.$clr-wizard-stepnav-selected-bgcolor;
-        border-left-color: wizard-variables.$clr-wizard-stepnav-selected-border-color;
+        border-color: wizard-variables.$clr-wizard-stepnav-selected-border-color;
 
         &:hover {
           background-color: wizard-variables.$clr-wizard-stepnav-selected-hover-bgcolor;
@@ -219,7 +218,6 @@
 
       &.complete {
         border-color: wizard-variables.$clr-wizard-stepnav-item-border-color--active;
-        transition: border-color 0.2s ease-in;
 
         .clr-wizard-stepnav-link-icon cds-icon {
           --color: #{wizard-variables.$clr-wizard-stepnav-link-complete-icon-color};
@@ -228,7 +226,6 @@
 
       &.error {
         border-color: wizard-variables.$clr-wizard-stepnav-item-error-border-color;
-        transition: border-color 0.2s ease-in;
 
         &.active:not(:active):not(:hover) {
           background-color: wizard-variables.$clr-wizard-stepnav-selected-error-bgcolor;
@@ -291,11 +288,6 @@
       @include mixins.equilateral(100%);
       // firefox fix
       max-height: 100%;
-
-      // edge fix, related to the firefox fix above
-      .modal-nav {
-        height: auto;
-      }
     }
 
     .clr-wizard-footer-buttons {
@@ -517,6 +509,78 @@
 
     .clr-wizard-stepnav {
       padding-top: density.$clr-base-vertical-offset-2xl;
+    }
+  }
+
+  .clr-wizard.wizard-horizontal {
+    .clr-wizard-title-wrapper {
+      display: flex;
+      align-items: center;
+      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space;
+
+      .clr-wizard-title {
+        flex: 1;
+        padding: 0;
+      }
+    }
+
+    .modal-content-wrapper {
+      flex-direction: column;
+    }
+
+    .modal-content,
+    .clr-wizard-stepnav-wrapper {
+      width: 100%;
+    }
+
+    .modal-content {
+      flex: 1;
+    }
+
+    .clr-wizard-stepnav-wrapper {
+      flex: 0;
+      height: unset;
+      max-width: unset;
+      overflow: unset;
+      border-right: 0;
+
+      .clr-wizard-stepnav {
+        display: flex;
+        padding: wizard-variables.$clr-wizard-vertical-space 0;
+      }
+
+      .clr-wizard-stepnav-nav--with-one-scroll-button {
+        width: calc(100% - tokens.$cds-global-space-12);
+      }
+
+      .clr-wizard-stepnav-nav--with-two-scroll-buttons {
+        width: calc(100% - 2 * tokens.$cds-global-space-12);
+      }
+
+      .clr-wizard-stepnav-scroll-button {
+        margin: 0;
+        min-width: tokens.$cds-global-space-12;
+      }
+
+      .clr-wizard-stepnav-list {
+        display: flex;
+        overflow-x: hidden;
+      }
+
+      .clr-wizard-stepnav-item {
+        border-left: 0;
+        border-bottom-width: wizard-variables.$clr-wizard-stepnav-border-size;
+        border-bottom-style: solid;
+        min-width: calc(tokens.$cds-global-space-15 * 1.25);
+      }
+
+      .clr-wizard-stepnav-link {
+        align-items: start;
+
+        .clr-wizard-stepnav-link-icon > cds-icon {
+          margin-top: tokens.$cds-global-space-2; // align icon with the text
+        }
+      }
     }
   }
 
