@@ -284,8 +284,10 @@
 
     <p cds-text="body" class="clr-mt-24px">
       At a high level, this means wrapping your
-      <code cds-text="code">&#64;if (yourCondition) { &lt;clr-wizard-page&gt; ... &lt;/clr-wizard-page&gt; }</code>
-      inside a <code cds-text="code">&#64;for (page of pages; track page) { ... }</code> block.
+      <code cds-text="code"
+        >&#64;if (yourCondition) {{ '{' }} &lt;clr-wizard-page&gt; ... &lt;/clr-wizard-page&gt; {{ '}' }}</code
+      >
+      inside a <code cds-text="code">&#64;for (page of pages; track page) {{ '{' }} ... {{ '}' }}</code> block.
     </p>
 
     <p cds-text="body" class="clr-mt-24px">
