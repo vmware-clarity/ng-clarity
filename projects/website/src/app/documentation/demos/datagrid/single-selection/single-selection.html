@@ -27,9 +27,9 @@
 
 <div class="card card-block">
   <p class="card-text username-list">
-    Selected user: @if (singleSelected.length === 0) {
+    Selected user: @if (!singleSelected.length) {
     <em>No user selected.</em>
-    } @if (singleSelected.length > 0) {
+    } @if (singleSelected?.length) {
     <span class="username">{{ singleSelected[0].name }}</span>
     }
   </p>
@@ -93,9 +93,9 @@
 
 <div class="card card-block">
   <p class="card-text username-list">
-    Selected user: @if (rowSelected.length === 0) {
+    Selected user: @if (!rowSelected.length) {
     <em>No user selected.</em>
-    } @if (rowSelected.length > 0) {
+    } @if (rowSelected?.length) {
     <span class="username">{{ rowSelected[0].name }}</span>
     }
   </p>
