@@ -2,32 +2,25 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                                 | Description                                                         |
-| --------------------------------------------------- | ------------------------------------------------------------------- |
-| --clr-accordion-text-color                          | Text color of the accordion component.                              |
-| --clr-accordion-text-color-hover                    | Text color of the accordion header when hovered.                    |
-| --clr-accordion-text-color-active                   | Text color of the accordion header when active.                     |
-| --clr-accordion-text-color-selected                 | Text color of the accordion header when selected.                   |
-| --clr-accordion-panel-disabled-color                | Text color of the accordion header when disabled.                   |
-| --clr-accordion-active-background-color             | Background color of the active accordion panel.                     |
-| --clr-accordion-content-background-color            | Background color of the accordion content area.                     |
-| --clr-accordion-content-color                       | Color of the text in the accordion content area.                    |
-| --clr-accordion-content-font-size                   | DEPRECATED Font size of the text in the accordion content area.     |
-| --clr-accordion-header-background-color             | Background color of the accordion header.                           |
-| --clr-accordion-header-disabled-background-color    | Background color of the accordion header when disabled.             |
-| --clr-accordion-header-hover-background-color       | Background color of the accordion header on hover.                  |
-| --clr-accordion-header-active-background-color      | Background color of the accordion header when active.               |
-| --clr-accordion-header-open-hover-background-color  | Background color of the accordion header when opened and hovered.   |
-| --clr-accordion-header-open-active-background-color | Background color of the accordion header when opened and :active.   |
-| --clr-accordion-error-color                         | Color representing an error state in the accordion.                 |
-| --clr-accordion-complete-color                      | Color representing a completed state in the accordion.              |
-| --clr-accordion-border-color                        | Color of the accordion border.                                      |
-| --clr-accordion-border-radius                       | Border radius of the accordion.                                     |
-| --clr-accordion-border-left-color-complete          | Color of the left border in the accordion for the complete state.   |
-| --clr-accordion-border-left-color-error             | Color of the left border in the accordion for the error state.      |
-| --clr-accordion-header-left-indicator               | Left indicator style for the accordion header.                      |
-| --clr-accordion-header-left-current-indicator       | Left indicator style for the accordion header when on current step. |
-| --clr-accordion-step-title-min-width                | Sets the min-width for the step title.                              |
+| CSS Custom Property                                 | Description                                                       |
+| --------------------------------------------------- | ----------------------------------------------------------------- |
+| --clr-accordion-text-color                          | Text color of the accordion component.                            |
+| --clr-accordion-text-color-hover                    | Text color of the accordion header when hovered.                  |
+| --clr-accordion-text-color-active                   | Text color of the accordion header when active.                   |
+| --clr-accordion-text-color-selected                 | Text color of the accordion header when selected.                 |
+| --clr-accordion-panel-disabled-color                | Text color of the accordion header when disabled.                 |
+| --clr-accordion-active-background-color             | Background color of the active accordion panel.                   |
+| --clr-accordion-content-background-color            | Background color of the accordion content area.                   |
+| --clr-accordion-content-color                       | Color of the text in the accordion content area.                  |
+| --clr-accordion-content-font-size                   | DEPRECATED Font size of the text in the accordion content area.   |
+| --clr-accordion-header-background-color             | Background color of the accordion header.                         |
+| --clr-accordion-header-disabled-background-color    | Background color of the accordion header when disabled.           |
+| --clr-accordion-header-hover-background-color       | Background color of the accordion header on hover.                |
+| --clr-accordion-header-active-background-color      | Background color of the accordion header when active.             |
+| --clr-accordion-header-open-hover-background-color  | Background color of the accordion header when opened and hovered. |
+| --clr-accordion-header-open-active-background-color | Background color of the accordion header when opened and :active. |
+| --clr-accordion-border-color                        | Color of the accordion border.                                    |
+| --clr-accordion-border-radius                       | Border radius of the accordion.                                   |
 
 ## CSS Classes
 
@@ -46,14 +39,8 @@
 | clr-accordion-content-region         | Content region section of an accordion panel.         |
 | clr-accordion-inner-content          | Inner content section within the accordion content.   |
 | clr-accordion-angle                  | Angle or arrow indicator within the accordion header. |
-| clr-accordion-error-icon             | Error icon within the accordion header.               |
-| clr-accordion-complete-icon          | Complete icon within the accordion header.            |
 | clr-accordion-panel-open             | Open or expanded accordion panel.                     |
-| clr-accordion-panel-complete         | Complete state of an accordion panel.                 |
-| clr-accordion-panel-error            | Error state of an accordion panel.                    |
 | clr-accordion-panel-disabled         | Disabled state of an accordion panel.                 |
-| clr-stepper-forms                    | Stepper forms mode for the accordion.                 |
-| clr-step-button                      | Step button within the accordion.                     |
 
 # Alert
 
@@ -200,34 +187,75 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property             | Description                       |
-| ------------------------------- | --------------------------------- |
-| --clr-badge-background-color    | Background color                  |
-| --clr-badge-color               | Font color                        |
-| --clr-badge-info-bg-color       | Info badge background color       |
-| --clr-badge-info-color          | Info badge text color             |
-| --clr-badge-success-bg-color    | Success badge background color    |
-| --clr-badge-success-color       | Success badge text color          |
-| --clr-badge-warning-bg-color    | Warning badge background color    |
-| --clr-badge-warning-color       | Warning badge text color          |
-| --clr-badge-danger-bg-color     | Danger badge background color     |
-| --clr-badge-danger-color        | Danger badge text color           |
-| --clr-badge-gray-bg-color       | Gray badge background color       |
-| --clr-badge-gray-color          | Gray badge text color             |
-| --clr-badge-purple-bg-color     | Purple badge background color     |
-| --clr-badge-purple-color        | Purple badge text color           |
-| --clr-badge-blue-bg-color       | Blue badge background color       |
-| --clr-badge-blue-color          | Blue badge text color             |
-| --clr-badge-orange-bg-color     | Orange badge background color     |
-| --clr-badge-orange-color        | Orange badge text color           |
-| --clr-badge-light-blue-bg-color | Light-blue badge background color |
-| --clr-badge-light-blue-color    | Light-blue badge text color       |
+| CSS Custom Property                         | Description                                |
+| ------------------------------------------- | ------------------------------------------ |
+| --clr-badge-background-color                | Default badge background color             |
+| --clr-badge-border-color                    | Default badge border color                 |
+| --clr-badge-color                           | Default badge text color                   |
+| --clr-badge-outline-bg-color                | Default badge outlined background color    |
+| --clr-badge-outline-border-color            | Default badge outlined border color        |
+| --clr-badge-outline-color                   | Default badge outlined text color          |
+| --clr-badge-info-bg-color                   | Info badge background color                |
+| --clr-badge-info-border-color               | Info badge border color                    |
+| --clr-badge-info-color                      | Info badge text color                      |
+| --clr-badge-info-outline-bg-color           | Info badge outlined background color       |
+| --clr-badge-info-outline-border-color       | Info badge outlined border color           |
+| --clr-badge-info-outline-color              | Info badge outlined text color             |
+| --clr-badge-success-bg-color                | Success badge background color             |
+| --clr-badge-success-border-color            | Success badge border color                 |
+| --clr-badge-success-color                   | Success badge text color                   |
+| --clr-badge-success-outline-bg-color        | Success badge outlined background color    |
+| --clr-badge-success-outline-border-color    | Success badge outlined border color        |
+| --clr-badge-success-outline-color           | Success badge outlined text color          |
+| --clr-badge-warning-bg-color                | Warning badge background color             |
+| --clr-badge-warning-border-color            | Warning badge border color                 |
+| --clr-badge-warning-color                   | Warning badge text color                   |
+| --clr-badge-warning-outline-bg-color        | Warning badge outlined background color    |
+| --clr-badge-warning-outline-border-color    | Warning badge outlined border color        |
+| --clr-badge-warning-outline-color           | Warning badge outlined text color          |
+| --clr-badge-danger-bg-color                 | Danger badge background color              |
+| --clr-badge-danger-border-color             | Danger badge border color                  |
+| --clr-badge-danger-color                    | Danger badge text color                    |
+| --clr-badge-danger-outline-bg-color         | Danger badge outlined background color     |
+| --clr-badge-danger-outline-border-color     | Danger badge outlined border color         |
+| --clr-badge-danger-outline-color            | Danger badge outlined text color           |
+| --clr-badge-gray-bg-color                   | Gray badge background color                |
+| --clr-badge-gray-border-color               | Gray badge border color                    |
+| --clr-badge-gray-color                      | Gray badge text color                      |
+| --clr-badge-gray-outline-bg-color           | Gray badge outlined background color       |
+| --clr-badge-gray-outline-border-color       | Gray badge outlined border color           |
+| --clr-badge-gray-outline-color              | Gray badge outlined text color             |
+| --clr-badge-purple-bg-color                 | Purple badge background color              |
+| --clr-badge-purple-border-color             | Purple badge border color                  |
+| --clr-badge-purple-color                    | Purple badge text color                    |
+| --clr-badge-purple-outline-bg-color         | Purple badge outlined background color     |
+| --clr-badge-purple-outline-border-color     | Purple badge outlined border color         |
+| --clr-badge-purple-outline-color            | Purple badge outlined text color           |
+| --clr-badge-blue-bg-color                   | Blue badge background color                |
+| --clr-badge-blue-border-color               | Blue badge border color                    |
+| --clr-badge-blue-color                      | Blue badge text color                      |
+| --clr-badge-blue-outline-bg-color           | Blue badge outlined background color       |
+| --clr-badge-blue-outline-border-color       | Blue badge outlined border color           |
+| --clr-badge-blue-outline-color              | Blue badge outlined text color             |
+| --clr-badge-orange-bg-color                 | Orange badge background color              |
+| --clr-badge-orange-border-color             | Orange badge border color                  |
+| --clr-badge-orange-color                    | Orange badge text color                    |
+| --clr-badge-orange-outline-bg-color         | Orange badge outlined background color     |
+| --clr-badge-orange-outline-border-color     | Orange badge outlined border color         |
+| --clr-badge-orange-outline-color            | Orange badge outlined text color           |
+| --clr-badge-light-blue-bg-color             | Light-blue badge background color          |
+| --clr-badge-light-blue-border-color         | Light-blue badge border color              |
+| --clr-badge-light-blue-color                | Light-blue badge text color                |
+| --clr-badge-light-blue-outline-bg-color     | Light-blue badge outlined background color |
+| --clr-badge-light-blue-outline-border-color | Light-blue badge outlined border color     |
+| --clr-badge-light-blue-outline-color        | Light-blue badge outlined text color       |
 
 ## CSS Classes
 
 | Class name       | Description                                                         |
 | ---------------- | ------------------------------------------------------------------- |
 | badge            | Main badge element. All of the following require this class as well |
+| outlined         | Outlined label class                                                |
 | badge-info       | Info badge                                                          |
 | badge-success    | Success badge                                                       |
 | badge-danger     | Danger badge                                                        |
@@ -583,6 +611,49 @@
 | -------------------- | ---------------------------------------- |
 | clr-checkbox-wrapper | Wrapper class for the checkbox component |
 
+# Collapsible Panel
+
+## CSS Custom Properties
+
+| CSS Custom Property                                         | Description                                                     |
+| ----------------------------------------------------------- | --------------------------------------------------------------- |
+| --clr-collapsible-panel-text-color                          | Text color of the panel header.                                 |
+| --clr-collapsible-panel-text-color-hover                    | Text color of the panel header when hovered.                    |
+| --clr-collapsible-panel-text-color-active                   | Text color of the panel header when active.                     |
+| --clr-collapsible-panel-panel-disabled-color                | Text color of the panel header when disabled.                   |
+| --clr-collapsible-panel-active-background-color             | Background color of the active (open) panel.                    |
+| --clr-collapsible-panel-content-background-color            | Background color of the panel content area.                     |
+| --clr-collapsible-panel-content-color                       | Text color of the panel content area.                           |
+| --clr-collapsible-panel-content-font-size                   | Font size of the text in the panel content area.                |
+| --clr-collapsible-panel-header-background-color             | Background color of the panel header.                           |
+| --clr-collapsible-panel-header-disabled-background-color    | Background color of the panel header when disabled.             |
+| --clr-collapsible-panel-header-hover-background-color       | Background color of the panel header on hover.                  |
+| --clr-collapsible-panel-header-active-background-color      | Background color of the panel header when active.               |
+| --clr-collapsible-panel-header-open-background-color        | Background color of the panel header when the panel is open.    |
+| --clr-collapsible-panel-header-open-hover-background-color  | Background color of the panel header when open and hovered.     |
+| --clr-collapsible-panel-header-open-active-background-color | Background color of the panel header when open and active.      |
+| --clr-collapsible-panel-border-color                        | Color of the panel border.                                      |
+| --clr-collapsible-panel-border-radius                       | Border radius of the panel.                                     |
+| --clr-collapsible-panel-title-min-width                     | Minimum width of the panel title when a description is present. |
+
+## CSS Classes
+
+| Class Name                      | Description                                            |
+| ------------------------------- | ------------------------------------------------------ |
+| {prefix}-panel                  | Panel container element.                               |
+| {prefix}-header                 | Header section of a panel.                             |
+| {prefix}-header-button          | Clickable button within the panel header.              |
+| {prefix}-status                 | Status indicator within the panel header.              |
+| {prefix}-title                  | Title text within the panel header.                    |
+| {prefix}-header-has-description | Panel header that includes a description.              |
+| {prefix}-description            | Description text within the panel header.              |
+| {prefix}-content                | Content section of a panel.                            |
+| {prefix}-content-region         | Wrapper region for the panel content (animation host). |
+| {prefix}-inner-content          | Inner content section within the panel content.        |
+| {prefix}-angle                  | Chevron/angle indicator within the panel header.       |
+| {prefix}-panel-open             | State class for an open/expanded panel.                |
+| {prefix}-panel-disabled         | State class for a disabled panel.                      |
+
 # Combobox
 
 ## CSS Custom Properties
@@ -676,6 +747,7 @@
 | --clr-datagrid-detail-body-text-color                | Font color for detail body                                                              |
 | --clr-datagrid-detail-header-title-color             | Font color for detail header title                                                      |
 | --clr-datagrid-detail-pane-bg-color                  | Background color for detail panel                                                       |
+| --clr-datagrid-detail-pane-open-row-bg-color         | Background color for the row associated with the open detail panel.                     |
 | --clr-datagrid-detail-pane-border-color              | Border color for detail panel                                                           |
 | --clr-datagrid-placeholder-color                     | Deprecated in v17 and will be removed in v18.Font color for empty datagrid placeholder. |
 | --clr-datagrid-placeholder-font-size                 | Deprecated in v17 and will be removed in v18. Font size for empty datagrid placeholder. |
@@ -993,11 +1065,6 @@
 | --clr-header-nav-hover-opacity             | Header nav item opacity on hover                       |
 | --clr-header-2-bg-color                    | Second version of header background color              |
 | --clr-header-3-bg-color                    | Third version of header background color               |
-| --clr-header-4-bg-color                    | Fourth version of header background color              |
-| --clr-header-5-bg-color                    | Fifth version of header background color               |
-| --clr-header-6-bg-color                    | Sixth version of header background color               |
-| --clr-header-7-bg-color                    | Seventh version of header background color             |
-| --clr-header-8-bg-color                    | Eighth version of header background color              |
 | --clr-header-font-color                    | Header text color                                      |
 | --clr-header-font-color-hover              | Header hovered item color                              |
 | --clr-header-title-color                   | Header branding title text color                       |
@@ -1018,8 +1085,8 @@
 
 | Class name               | Description                          |
 | ------------------------ | ------------------------------------ |
-| clr-header               | Application header element           |
-| clr-header > search      | Header search field                  |
+| header                   | Application header element           |
+| header > search          | Header search field                  |
 | header-hamburger-trigger | Hamburger icon for responsive header |
 | header-actions           | Responsive header actions            |
 
@@ -1046,34 +1113,69 @@
 
 ## CSS Properties
 
-| CSS Property Name                | Description                            |
-| -------------------------------- | -------------------------------------- |
-| --clr-label-font-color-light     | Font color for light labels            |
-| --clr-label-font-color-dark      | Font color for dark labels             |
-| --clr-label-default-border-color | Default border color for labels        |
-| --clr-label-bg-hover-color       | Background color on hover for labels   |
-| --clr-label-gray-bg-color        | Background color for gray labels       |
-| --clr-label-gray-color           | Font color for gray labels             |
-| --clr-label-purple-bg-color      | Background color for purple labels     |
-| --clr-label-purple-color         | Font color for purple labels           |
-| --clr-label-blue-bg-color        | Background color for blue labels       |
-| --clr-label-blue-color           | Font color for blue labels             |
-| --clr-label-orange-bg-color      | Background color for orange labels     |
-| --clr-label-orange-color         | Font color for orange labels           |
-| --clr-label-light-blue-bg-color  | Background color for light blue labels |
-| --clr-label-light-blue-color     | Font color for light blue labels       |
-| --clr-label-info-bg-color        | Background color for info labels       |
-| --clr-label-info-font-color      | Font color for info labels             |
-| --clr-label-info-border-color    | Border color for info labels           |
-| --clr-label-success-bg-color     | Background color for success labels    |
-| --clr-label-success-font-color   | Font color for success labels          |
-| --clr-label-success-border-color | Border color for success labels        |
-| --clr-label-warning-bg-color     | Background color for warning labels    |
-| --clr-label-warning-font-color   | Font color for warning labels          |
-| --clr-label-warning-border-color | Border color for warning labels        |
-| --clr-label-danger-bg-color      | Background color for danger labels     |
-| --clr-label-danger-font-color    | Font color for danger labels           |
-| --clr-label-danger-border-color  | Border color for danger labels         |
+| CSS Property Name                         | Description                                  |
+| ----------------------------------------- | -------------------------------------------- |
+| --clr-label-font-color                    | Font color for default labels                |
+| --clr-label-default-border-color          | Border color for default labels              |
+| --clr-label-default-bg-color              | Background color for default labels          |
+| --clr-label-font-solid-color              | Font color for solid default labels          |
+| --clr-label-default-solid-border-color    | Border color for solid default labels        |
+| --clr-label-default-solid-bg-color        | Background color for solid default labels    |
+| --clr-label-bg-hover-color                | Background color on hover for labels         |
+| --clr-label-gray-bg-color                 | Background color for gray labels             |
+| --clr-label-gray-border-color             | Border color for gray labels                 |
+| --clr-label-gray-color                    | Font color for gray labels                   |
+| --clr-label-gray-solid-bg-color           | Background color for solid gray labels       |
+| --clr-label-gray-solid-border-color       | Border color for solid gray labels           |
+| --clr-label-gray-solid-color              | Font color for solid gray labels             |
+| --clr-label-purple-bg-color               | Background color for purple labels           |
+| --clr-label-purple-border-color           | Border color for purple labels               |
+| --clr-label-purple-color                  | Font color for purple labels                 |
+| --clr-label-purple-solid-bg-color         | Background color for solid purple labels     |
+| --clr-label-purple-solid-border-color     | Border color for solid purple labels         |
+| --clr-label-purple-solid-color            | Font color for solid purple labels           |
+| --clr-label-blue-bg-color                 | Background color for blue labels             |
+| --clr-label-blue-border-color             | Border color for blue labels                 |
+| --clr-label-blue-color                    | Font color for blue labels                   |
+| --clr-label-blue-solid-bg-color           | Background color for solid blue labels       |
+| --clr-label-blue-solid-border-color       | Border color for solid blue labels           |
+| --clr-label-blue-solid-color              | Font color for solid blue labels             |
+| --clr-label-orange-bg-color               | Background color for orange labels           |
+| --clr-label-orange-border-color           | Border color for orange labels               |
+| --clr-label-orange-color                  | Font color for orange labels                 |
+| --clr-label-orange-solid-bg-color         | Background color for solid orange labels     |
+| --clr-label-orange-solid-border-color     | Border color for solid orange labels         |
+| --clr-label-orange-solid-color            | Font color for solid orange labels           |
+| --clr-label-light-blue-bg-color           | Background color for light blue labels       |
+| --clr-label-light-blue-border-color       | Border color for light blue labels           |
+| --clr-label-light-blue-color              | Font color for light blue labels             |
+| --clr-label-light-blue-solid-bg-color     | Background color for solid light blue labels |
+| --clr-label-light-blue-solid-border-color | Border color for solid light blue labels     |
+| --clr-label-light-blue-solid-color        | Font color for solid light blue labels       |
+| --clr-label-info-bg-color                 | Background color for info labels             |
+| --clr-label-info-font-color               | Font color for info labels                   |
+| --clr-label-info-border-color             | Border color for info labels                 |
+| --clr-label-info-solid-bg-color           | Background color for solid info labels       |
+| --clr-label-info-solid-border-color       | Border color for solid info labels           |
+| --clr-label-info-solid-color              | Font color for solid info labels             |
+| --clr-label-success-bg-color              | Background color for success labels          |
+| --clr-label-success-font-color            | Font color for success labels                |
+| --clr-label-success-border-color          | Border color for success labels              |
+| --clr-label-success-solid-bg-color        | Background color for solid success labels    |
+| --clr-label-success-solid-border-color    | Border color for solid success labels        |
+| --clr-label-success-solid-color           | Font color for solid success labels          |
+| --clr-label-warning-bg-color              | Background color for warning labels          |
+| --clr-label-warning-font-color            | Font color for warning labels                |
+| --clr-label-warning-border-color          | Border color for warning labels              |
+| --clr-label-warning-solid-bg-color        | Background color for solid warning labels    |
+| --clr-label-warning-solid-border-color    | Border color for solid warning labels        |
+| --clr-label-warning-solid-color           | Font color for solid warning labels          |
+| --clr-label-danger-bg-color               | Background color for danger labels           |
+| --clr-label-danger-font-color             | Font color for danger labels                 |
+| --clr-label-danger-border-color           | Border color for danger labels               |
+| --clr-label-danger-solid-bg-color         | Background color for solid danger labels     |
+| --clr-label-danger-solid-border-color     | Border color for solid danger labels         |
+| --clr-label-danger-solid-color            | Font color for solid danger labels           |
 
 ## Classes
 
@@ -1081,6 +1183,7 @@
 | ------------- | ------------------------------- |
 | label         | Default label class             |
 | label-<color> | Label class with specific color |
+| solid         | Solid label class               |
 | clickable     | Clickable label class           |
 | text          | Inner text class for the label  |
 

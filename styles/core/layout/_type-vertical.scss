@@ -1,0 +1,26 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use './mixins/mixins' as mixins;
+@use 'mixins/mixins.type-vertical' as vertical-mixins;
+@use 'optimize';
+
+[#{optimize.$layout}~='#{optimize.$vertical}'] {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+@include vertical-mixins.generateVerticalAlignments();
+
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
+  @media (min-width: $breakpoint-value) {
+    @include vertical-mixins.generateVerticalAlignments($breakpoint);
+  }
+}

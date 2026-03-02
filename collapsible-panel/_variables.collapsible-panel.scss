@@ -1,0 +1,42 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:map';
+@use '../styles/variables/variables';
+
+$clr-collapsible-panel-text-color: var(--clr-collapsible-panel-text-color) !default;
+$clr-collapsible-panel-text-color-hover: var(--clr-collapsible-panel-text-color-hover) !default;
+$clr-collapsible-panel-text-color-active: var(--clr-collapsible-panel-text-color-active) !default;
+$clr-collapsible-panel-panel-disabled-color: var(--clr-collapsible-panel-panel-disabled-color) !default;
+$clr-collapsible-panel-active-background-color: var(--clr-collapsible-panel-active-background-color) !default;
+$clr-collapsible-panel-content-background-color: var(--clr-collapsible-panel-content-background-color) !default;
+$clr-collapsible-panel-header-background-color: var(--clr-collapsible-panel-header-background-color) !default;
+$clr-collapsible-panel-header-disabled-background-color: var(
+  --clr-collapsible-panel-header-disabled-background-color
+) !default;
+$clr-collapsible-panel-header-hover-background-color: var(
+  --clr-collapsible-panel-header-hover-background-color
+) !default;
+$clr-collapsible-panel-header-active-background-color: var(
+  --clr-collapsible-panel-header-active-background-color
+) !default;
+$clr-collapsible-panel-header-open-background-color: var(--clr-collapsible-panel-header-open-background-color) !default;
+$clr-collapsible-panel-header-open-active-background-color: var(
+  --clr-collapsible-panel-header-open-active-background-color
+) !default;
+$clr-collapsible-panel-header-open-hover-background-color: var(
+  --clr-collapsible-panel-header-open-hover-background-color
+) !default;
+
+$clr-collapsible-panel-content-color: var(--clr-collapsible-panel-content-color) !default;
+$clr-collapsible-panel-content-font-size: var(--clr-collapsible-panel-content-font-size) !default;
+
+$clr-collapsible-panel-responsive-breakpoint: map.get(variables.$clr-grid-breakpoints, sm) !default;
+
+$clr-collapsible-panel-border-color: var(--clr-collapsible-panel-border-color) !default;
+$clr-collapsible-panel-border-radius: var(--clr-collapsible-panel-border-radius) !default;
+$clr-collapsible-panel-title-min-width: var(--clr-collapsible-panel-title-min-width) !default;

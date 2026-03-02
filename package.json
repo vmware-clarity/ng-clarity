@@ -11,8 +11,5 @@
   "bugs": {
     "url": "https://github.com/vmware-clarity/ng-clarity/issues"
   },
-  "peerDependencies": {
-    "@cds/core": "^6.9.2"
-  },
-  "version": "0.0.0-preview.cbfa1de"
+  "version": "0.0.0-preview.a373de6"
 }
