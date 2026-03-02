@@ -1,0 +1,4 @@
+{
+  "module": "../../fesm2022/clr-angular-utils-loading.mjs",
+  "typings": "../../types/clr-angular-utils-loading.d.ts"
+}
