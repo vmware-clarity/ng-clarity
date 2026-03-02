@@ -139,6 +139,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   @ContentChild(ClrWizardTitle) protected wizardTitle: ClrWizardTitle;
   @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
 
+  private _title: ElementRef<HTMLElement>;
   private _forceForward = false;
   private _stopNext = false;
   private _stopCancel = false;
@@ -168,6 +169,16 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     );
 
     this.differ = differs.find([]).create(null);
+  }
+
+  @ViewChild('title')
+  get title(): ElementRef<HTMLElement> {
+    return this._title;
+  }
+  set title(title: ElementRef<HTMLElement>) {
+    this._title = title;
+
+    this.modal.title = title;
   }
 
   /**
