@@ -548,9 +548,3 @@
     }
   }
 }
-@include mixins.fixForMsEdge {
-  // Edge is pushing header actions down. This aligns them with the close btn.
-  .clr-wizard .clr-wizard-header-action {
-    margin-top: mixins.baselinePx(-3);
-  }
-}
