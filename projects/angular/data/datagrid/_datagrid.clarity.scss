@@ -573,7 +573,6 @@
         }
 
         .exceeded-max {
-          // TODO: CSS property here?
           border-right: tokens.$cds-alias-object-border-width-100 dotted tokens.$cds-alias-status-danger-dark;
         }
       }
@@ -606,8 +605,6 @@
       min-width: tokens.$cds-global-space-15;
       border: none;
 
-      // TODO can width/column classes be combined? width is added programetically as part of rendering, column is
-      //  class in template
       &.datagrid-fixed-width {
         flex: 0 0 auto;
       }
@@ -1380,8 +1377,6 @@
 
   .datagrid-detail-header {
     flex: 0 0 auto;
-    //TODO Fix figma font sizes in next GA 17+
-
     @include mixins.generate-typography-token('SECTION-20-STD');
 
     margin-top: 0;
