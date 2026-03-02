@@ -58,20 +58,6 @@
 
     @extend %card-border-appearance;
 
-    .alert {
-      margin: 0 0 #{density.$clr-base-gap-s} 0;
-    }
-
-    .btn-link {
-      min-width: 0;
-
-      //NOTE: Set left and right padding of link buttons to 0. aligning these buttons
-      //without removing the paddings is a huge task and leads to a brittle card css
-      //plus the alignment doesn't work in all the cases
-      padding: 0;
-    }
-
-    //Clickable Cards
     &.clickable {
       color: inherit;
 
@@ -79,34 +65,42 @@
         @extend %clickable-card-transition;
       }
     }
+  }
 
-    .card-title,
-    .card-text,
-    .card-media-block,
-    .list,
-    .list-unstyled {
-      @extend %card-space-between;
-    }
+  .card .alert {
+    margin: 0 0 #{density.$clr-base-gap-s} 0;
+  }
 
-    //Clarity Lists
-    & > .list,
-    & > .list-unstyled {
-      padding: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-xl;
-    }
+  .card .btn-link {
+    min-width: 0;
+    padding: 0;
+  }
 
-    .list-group {
-      padding-left: 0;
-      margin-bottom: 0;
-      list-style: none;
-    }
+  .card .card-title,
+  .card .card-text,
+  .card .card-media-block,
+  .card .list,
+  .card .list-unstyled {
+    @extend %card-space-between;
+  }
 
-    .list-group-item {
-      @include mixins.generate-typography-token('BODY-14-RG-STD');
+  .card > .list,
+  .card > .list-unstyled {
+    padding: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-xl;
+  }
 
-      padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
-      background-color: card-variables.$clr-card-bg-color;
-      border-bottom: card-variables.$clr-card-border-width solid card-variables.$clr-card-border-color;
-    }
+  .card .list-group {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+  }
+
+  .card .list-group-item {
+    @include mixins.generate-typography-token('BODY-14-RG-STD');
+
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
+    background-color: card-variables.$clr-card-bg-color;
+    border-bottom: card-variables.$clr-card-border-width solid card-variables.$clr-card-border-color;
   }
 
   .card-block {
