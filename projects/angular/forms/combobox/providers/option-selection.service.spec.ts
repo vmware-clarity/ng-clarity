@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 
 import { OptionSelectionService } from './option-selection.service';
 import { ComboboxModel } from '../model/combobox.model';
+import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from '../model/single-select-combobox.model';
 
 export default function () {
@@ -107,6 +108,36 @@ export default function () {
       expect(optionSelectionService.selectionModel.isEmpty()).toBeFalse();
       optionSelectionService.currentInput = '';
       expect(optionSelectionService.selectionModel.isEmpty()).toBeTrue();
+    });
+
+    it('does not emit selectionChanged when setSelectionValue is called with same value by identity', () => {
+      type Item = { id: number };
+      const service = new OptionSelectionService<Item>();
+      service.selectionModel = new SingleSelectComboboxModel<Item>();
+      service.identityFn = (item: Item) => item.id;
+
+      let emitCount = 0;
+      service.selectionChanged.subscribe(() => emitCount++);
+
+      service.setSelectionValue({ id: 1 });
+      expect(emitCount).toBe(1);
+      service.setSelectionValue({ id: 1 }); // same identity, different ref
+      expect(emitCount).toBe(1);
+    });
+
+    it('does not emit selectionChanged when setSelectionValue multi is same by identity', () => {
+      type Item = { id: number };
+      const service = new OptionSelectionService<Item>();
+      service.selectionModel = new MultiSelectComboboxModel<Item>();
+      service.identityFn = (item: Item) => item.id;
+
+      let emitCount = 0;
+      service.selectionChanged.subscribe(() => emitCount++);
+
+      service.setSelectionValue([{ id: 1 }, { id: 2 }]);
+      expect(emitCount).toBe(1);
+      service.setSelectionValue([{ id: 2 }, { id: 1 }]); // same identities, different refs and order
+      expect(emitCount).toBe(1);
     });
   });
 }

@@ -8,7 +8,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 
-import { ComboboxModel } from '../model/combobox.model';
+import { ClrComboboxIdentityFunction, ComboboxModel } from '../model/combobox.model';
 import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 
 @Injectable()
@@ -25,6 +25,7 @@ export class OptionSelectionService<T> {
 
   private _currentInput = '';
   private _displayField: string;
+  private _identityFn: ClrComboboxIdentityFunction<T>;
   private _inputChanged = new BehaviorSubject('');
   private _selectionChanged = new ReplaySubject<ComboboxModel<T>>(1);
 
@@ -64,6 +65,17 @@ export class OptionSelectionService<T> {
     return this.selectionModel instanceof MultiSelectComboboxModel;
   }
 
+  get identityFn(): ClrComboboxIdentityFunction<T> {
+    return this._identityFn;
+  }
+
+  set identityFn(value: ClrComboboxIdentityFunction<T>) {
+    this._identityFn = value;
+    if (this.selectionModel) {
+      this.selectionModel.identityFn = value;
+    }
+  }
+
   select(item: T) {
     if (item === null || item === undefined || this.selectionModel.containsItem(item)) {
       return;
@@ -92,14 +104,16 @@ export class OptionSelectionService<T> {
     this._selectionChanged.next(this.selectionModel);
   }
 
-  // TODO: Add support for trackBy and compareFn
   setSelectionValue(value: T | T[]): void {
-    // NOTE: Currently we assume that no 2 options will have the same value
-    // but Eudes and I discussed that this is a possibility but we will handle
-    // this later
+    if (!this.selectionModel) {
+      return;
+    }
 
-    // if selection is undefined, or its value hasn't changed, or changing from null <-> undefined, that's not really changing so we return
-    if (!this.selectionModel || this.selectionModel.model === value || (!this.selectionModel.model && !value)) {
+    const current = this.selectionModel.model;
+    const noChange =
+      current === value || (!current && !value) || (this._identityFn && this.valuesEqualByIdentity(current, value));
+
+    if (noChange) {
       return;
     }
 
@@ -114,5 +128,27 @@ export class OptionSelectionService<T> {
       } as T;
     }
     return value as T;
+  }
+
+  private valuesEqualByIdentity(current: T | T[], value: T | T[]): boolean {
+    if (!current !== !value) {
+      return false;
+    }
+    if (!current && !value) {
+      return true;
+    }
+    const fn = this._identityFn;
+    if (this.multiselectable) {
+      const cur = current as T[];
+      const val = value as T[];
+      if (cur.length !== val.length) {
+        return false;
+      }
+      const curIds = cur.map(fn).sort();
+      const valIds = val.map(fn).sort();
+      return curIds.length === valIds.length && curIds.every((id, i) => id === valIds[i]);
+    } else {
+      return fn(current as T) === fn(value as T);
+    }
   }
 }
