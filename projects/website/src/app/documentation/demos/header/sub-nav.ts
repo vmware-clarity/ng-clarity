@@ -19,7 +19,7 @@ const EXAMPLE = `
         <span class="title">Clarity Design</span>
       </a>
     </div>
-    <div class="settings">
+    <div class="header-actions">
       <a href="javascript://" class="nav-link nav-icon" aria-label="settings">
         <clr-icon shape="cog"></clr-icon>
       </a>

@@ -24,7 +24,7 @@ const EXAMPLE = `
         <input id="search-input-sidenav-ng" type="text" placeholder="Search for keywords..." />
       </label>
     </form>
-    <div class="settings">
+    <div class="header-actions">
       <a href="javascript://" class="nav-link nav-icon">
         <clr-icon shape="cog"></clr-icon>
       </a>

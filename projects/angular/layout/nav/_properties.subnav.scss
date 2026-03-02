@@ -12,8 +12,8 @@
   @include mixins.root-or-host() {
     &,
     & [cds-theme] {
-      // Usage: ../layout/nav/_subnav.clarity.scss
       --clr-subnav-bg-color: #{tokens.$cds-alias-object-container-background};
+      --clr-subnav-text-color: #{tokens.$cds-alias-typography-color-450};
     }
   }
 }

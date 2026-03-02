@@ -16,8 +16,7 @@
       // Usage: ./_links.scss
       // Link colors
 
-      // @TODO update to SASS token once core is updated.
-      --clr-link-active-color: var(--cds-alias-typography-link-color-active);
+      --clr-link-active-color: #{tokens.$cds-alias-typography-link-color-active};
       --clr-link-color: #{tokens.$cds-alias-typography-link-color};
       --clr-link-hover-color: #{tokens.$cds-alias-typography-link-color-hover};
       --clr-link-visited-color: #{tokens.$cds-alias-typography-link-color-visited};
