@@ -23,6 +23,7 @@ import { ClrConditionalModule, ClrKeyFocusModule } from '@clr/angular/utils';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxContainer } from './combobox-container';
+import { ClrFilterHighlight } from './filter-highlight.directive';
 import { ClrOption } from './option';
 import { ClrOptionGroup } from './option-group';
 import { ClrOptionItems } from './option-items.directive';
@@ -43,6 +44,7 @@ import { ClrOptions } from './options';
   declarations: [
     ClrCombobox,
     ClrComboboxContainer,
+    ClrFilterHighlight,
     ClrOptions,
     ClrOption,
     ClrOptionGroup,
@@ -53,6 +55,7 @@ import { ClrOptions } from './options';
     ClrCommonFormsModule,
     ClrCombobox,
     ClrComboboxContainer,
+    ClrFilterHighlight,
     ClrOptions,
     ClrOption,
     ClrOptionGroup,
