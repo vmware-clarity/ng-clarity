@@ -152,7 +152,7 @@
     "rimraf": "6.1.2",
     "rxjs": "7.8.2",
     "semantic-release": "25.0.3",
-    "storybook": "10.2.8",
+    "storybook": "10.2.13",
     "storybook-addon-pseudo-states": "10.2.8",
     "stylelint": "17.2.0",
     "stylelint-config-recommended-scss": "17.0.0",
