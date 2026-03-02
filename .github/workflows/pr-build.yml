@@ -22,12 +22,6 @@ jobs:
         run: npm run lint
       - name: Build
         run: npm run build
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
-      - name: Generate Website Sitemap
-        run: node ./projects/website/scripts/generate-sitemap.js
-      - name: Configure Website CMS
-        run: node ./projects/website/scripts/configure-cms-for-github.js --repo $GITHUB_REPOSITORY --branch $GITHUB_HEAD_REF
       - name: Test
         run: npm run test
       - name: Public Api Check

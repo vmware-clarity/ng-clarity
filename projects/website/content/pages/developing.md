@@ -12,12 +12,12 @@ title: Developing
 - (Option B) Install Clarity into an existing Angular application.
 
 <div cds-layout="m-t:xxl">
-  <app-cms-themed-image
+  <app-themed-image
     light-src="/assets/images/clarity-developing-banner.svg"
     dark-src="/assets/images/clarity-developing-banner-dark.svg"
     image-alt=""
     image-style="max-width: 100%"
-  ></app-cms-themed-image>
+  ></app-themed-image>
 </div>
 
 <p class="clr-mt-16px" cds-text="subsection">

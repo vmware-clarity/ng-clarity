@@ -14,7 +14,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 export const appRoutes: Routes = [
   {
     path: 'pages/:slug',
-    loadComponent: () => import('./cms-page/cms-page.component').then(m => m.CmsPageComponent),
+    loadComponent: () => import('./content-page/content-page.component').then(m => m.ContentPageComponent),
   },
   {
     path: '',

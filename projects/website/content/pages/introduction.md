@@ -16,12 +16,12 @@ title: Introduction
 </p>
 
 <div cds-layout="m-t:xxl">
-  <app-cms-themed-image
+  <app-themed-image
     light-src="/assets/images/clarity-introduction-banner.svg"
     dark-src="/assets/images/clarity-introduction-banner-dark.svg"
     image-alt=""
     image-style="max-width: 100%"
-  ></app-cms-themed-image>
+  ></app-themed-image>
 <div>
 
 ## How to Get Started

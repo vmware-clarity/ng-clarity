@@ -178,11 +178,6 @@
                 "input": "projects/website/src/settings/",
                 "output": "/"
               },
-              {
-                "glob": "*",
-                "input": "projects/website/src/admin/",
-                "output": "/admin/"
-              },
               "projects/website/src/assets"
             ],
             "styles": ["projects/angular/main.scss", "projects/website/src/styles/main.scss"],
