@@ -219,7 +219,6 @@ export class ClrCombobox<T>
   }
 
   ngAfterViewInit() {
-    this.focusHandler.componentCdRef = this.cdr;
     this.focusHandler.textInput = this.textbox.nativeElement;
     this.focusHandler.trigger = this.trigger.nativeElement;
     // The text input is the actual element we are wrapping

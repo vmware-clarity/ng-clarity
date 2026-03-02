@@ -24,7 +24,7 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { Keys, normalizeKey } from '@clr/angular/utils';
+import { Keys } from '@clr/angular/utils';
 import { fromEvent, merge, Subscription } from 'rxjs';
 
 import { ClrPopoverService } from './providers/popover.service';
@@ -199,7 +199,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         this.overlayRef?.updatePosition();
       }),
       this.overlayRef.keydownEvents().subscribe(event => {
-        if (event && event.key && normalizeKey(event.key) === Keys.Escape && !hasModifierKey(event)) {
+        if (event && event.key && event.key === Keys.Escape && !hasModifierKey(event)) {
           event.preventDefault();
           this.closePopover();
         }

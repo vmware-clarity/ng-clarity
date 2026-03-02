@@ -6,7 +6,7 @@
  */
 
 import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
-import { ClrCommonStringsService, Keys, normalizeKey } from '@clr/angular/utils';
+import { ClrCommonStringsService, Keys } from '@clr/angular/utils';
 
 import { YearRangeModel } from './model/year-range.model';
 import { DateNavigationService } from './providers/date-navigation.service';
@@ -144,7 +144,7 @@ export class ClrYearpicker implements AfterViewInit {
     // the logic is fairly simple and it didn't make sense for me
     // to create extra observables just to move this logic to the service.
     if (event) {
-      const key = normalizeKey(event.key);
+      const key = event.key;
       if (key === Keys.ArrowUp) {
         event.preventDefault();
         this.incrementFocusYearBy(-2);

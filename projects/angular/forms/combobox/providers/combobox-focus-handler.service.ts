@@ -6,9 +6,9 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { ChangeDetectorRef, Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { ArrowKeyDirection, customFocusableItemProvider, Keys, normalizeKey } from '@clr/angular/utils';
+import { ArrowKeyDirection, customFocusableItemProvider, Keys } from '@clr/angular/utils';
 import { take } from 'rxjs/operators';
 
 import { OptionSelectionService } from './option-selection.service';
@@ -16,9 +16,6 @@ import { PseudoFocusModel } from '../model/pseudo-focus.model';
 
 @Injectable()
 export class ComboboxFocusHandler<T> {
-  // We need a Change Detector from the related component, so we can update it on Blur
-  // (which is needed because of Edge specific lifecycle mis-behavior)
-  componentCdRef: ChangeDetectorRef;
   pseudoFocus: PseudoFocusModel<OptionData<T>> = new PseudoFocusModel<OptionData<T>>();
 
   private renderer: Renderer2;
@@ -140,7 +137,7 @@ export class ComboboxFocusHandler<T> {
   // this service is only interested in keys that may move the focus
   private handleTextInput(event: KeyboardEvent): boolean {
     let preventDefault = false;
-    const key = normalizeKey(event.key);
+    const key = event.key;
     if (event) {
       switch (key) {
         case Keys.Enter:
@@ -201,19 +198,13 @@ export class ComboboxFocusHandler<T> {
       this.renderer.listen(el, 'blur', event => {
         if (this.focusOutOfComponent(event)) {
           this.popoverService.open = false;
-          // Workaround for popover close-on-outside-click timing issues in Edge browser
-          if (this.componentCdRef) {
-            this.componentCdRef.detectChanges();
-          }
         }
       });
     }
   }
 
   private focusOutOfComponent(event: FocusEvent): boolean {
-    // event.relatedTarget is null in IE11. In that case we use document.activeElement
-    // which points to the element that becomes active as the blur event occurs on the input.
-    const target = (event.relatedTarget || document.activeElement) as Node;
+    const target = event.relatedTarget as Node;
     return !(this.textInput.contains(target) || this.trigger.contains(target) || this.listbox.contains(target));
   }
 }
