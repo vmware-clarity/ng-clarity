@@ -5,36 +5,35 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { defineConfig, devices } from '@playwright/test';
+import 'dotenv/config';
 
-const browser = process.env['CLARITY_VRT_BROWSER'];
-
-const deviceMap = {
-  chromium: { ...devices['Desktop Chrome'], channel: 'chromium' },
-  firefox: { ...devices['Desktop Firefox'] },
-};
+import { EyesFixture } from '@applitools/eyes-playwright/fixture';
+import { defineConfig } from '@playwright/test';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig({
+export default defineConfig<EyesFixture>({
   testDir: './tests',
-  snapshotPathTemplate: './tests/snapshots/{arg}{ext}',
-  timeout: 30 * 1000,
-  expect: {
-    timeout: 5000,
-  },
+  timeout: 60_000,
   fullyParallel: true,
   forbidOnly: true,
-  retries: 2,
-  workers: '95%',
-  reporter: 'html',
-  projects: [
-    {
-      name: browser,
-      use: deviceMap[browser],
+  retries: 0,
+  workers: '50%',
+  reporter: [['html'], ['@applitools/eyes-playwright/reporter']],
+  use: {
+    eyesConfig: {
+      appName: 'Clarity Design System',
+      matchLevel: 'Strict',
+      type: 'ufg',
+      browsersInfo: [
+        { name: 'chrome', width: 1920, height: 1080 },
+        { name: 'firefox', width: 1920, height: 1080 },
+      ],
+      batch: { name: 'Clarity VRT' },
+      failTestsOnDiff: 'afterAll',
     },
-  ],
+  },
   webServer: {
     command: 'npm run ts-node -- ./scripts/start-storybook-server.ts',
     port: 8080,

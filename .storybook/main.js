@@ -9,6 +9,7 @@ import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
 export default {
   stories: ['./**/*.mdx', './**/*.stories.ts'],
+
   addons: ['@storybook/addon-a11y', '@storybook/addon-docs', 'storybook-addon-pseudo-states'],
 
   framework: {
