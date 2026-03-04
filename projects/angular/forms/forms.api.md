@@ -988,13 +988,13 @@ export class ClrFileList {
     // (undocumented)
     protected createFileMessagesTemplateContext(file: File): ClrFileMessagesTemplateContext;
     // (undocumented)
-    protected createFileMessagesTemplateInjector(fileMessagesTemplateContext: ClrFileMessagesTemplateContext): i0.DestroyableInjector;
-    // (undocumented)
     protected readonly fileMessagesTemplate: ClrFileMessagesTemplate;
     // (undocumented)
     protected get files(): File[];
     // (undocumented)
     protected getClearFileLabel(filename: string): string;
+    // (undocumented)
+    protected injectorCache: Map<File, Injector>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileList, "clr-file-list", never, {}, {}, ["fileMessagesTemplate"], never, false, never>;
     // (undocumented)

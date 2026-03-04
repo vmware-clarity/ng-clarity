@@ -70,7 +70,7 @@ function advancedFileInputTemplateFn(label: string) {
   @if (${ngModel}NgModel.invalid && !${ngModel}NgModel.control.hasError('required')) {
     <clr-control-error>Error message for file input control</clr-control-error>
   }
-  
+
   <!-- This makes this file input an "advanced" file input. -->
   <clr-file-list>
     <ng-template clr-file-messages let-file let-errors="errors">
