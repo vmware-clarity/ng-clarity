@@ -246,6 +246,8 @@ export class WizardNavigationService implements OnDestroy {
    * @memberof WizardNavigationService
    */
   get currentPageChanged(): Observable<ClrWizardPage> {
+    // TODO: MAKE SURE EXTERNAL OUTPUTS SAY 'CHANGE' NOT 'CHANGED'
+    // A BREAKING CHANGE SO AWAITING MINOR RELEASE
     return this._currentChanged.asObservable();
   }
 
