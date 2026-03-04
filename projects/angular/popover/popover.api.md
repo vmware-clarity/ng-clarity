@@ -548,7 +548,7 @@ export class ÇlrClrPopoverOpenCloseButton implements OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-popover.d.ts:67:191 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-popover.d.ts
+// projects/angular/popover/dropdown/dropdown.ts:34:12 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-popover.d.ts
 
 // (No @packageDocumentation comment for this package)
 

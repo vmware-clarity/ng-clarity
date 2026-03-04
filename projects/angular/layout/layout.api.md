@@ -683,7 +683,7 @@ export class ÇlrTabsWillyWonka extends WillyWonka {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-layout.d.ts:280:194 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-layout.d.ts
+// projects/angular/layout/tabs/tabs.ts:287:3 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-layout.d.ts
 
 // (No @packageDocumentation comment for this package)
 
