@@ -322,7 +322,7 @@ export default function (): void {
       // const startPage = wizardNavigationService.pageCollection.getPageByIndex(0);
       const secondPage = wizardNavigationService.pageCollection.getPageByIndex(1);
       let pageTest: ClrWizardPage;
-      wizardNavigationService.currentPageChanged.subscribe(page => (pageTest = page));
+      wizardNavigationService.currentPageChange.subscribe(page => (pageTest = page));
 
       expect(pageTest).toBeUndefined();
       wizardNavigationService.goTo(secondPage, true);

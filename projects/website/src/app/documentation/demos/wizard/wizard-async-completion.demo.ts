@@ -100,7 +100,7 @@ export class ExampleComponent {
 const html = `
 <button class="btn btn-primary" (click)="wizard.open()">Wizard Async Completion</button>
 
-<clr-wizard #wizard [(clrWizardOpen)]="open" (clrWizardCurrentPageChanged)="resetFinalPage()">
+<clr-wizard #wizard [(clrWizardOpen)]="open" (clrWizardCurrentPageChange)="resetFinalPage()">
   <clr-wizard-title>Async validation on completion</clr-wizard-title>
 
   <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
