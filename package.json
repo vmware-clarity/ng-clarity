@@ -95,7 +95,7 @@
     "@playwright/test": "1.58.2",
     "@semantic-release/exec": "7.1.0",
     "@stackblitz/sdk": "1.11.0",
-    "@storybook/addon-a11y": "10.2.8",
+    "@storybook/addon-a11y": "10.2.14",
     "@storybook/addon-docs": "10.2.8",
     "@storybook/angular": "10.2.8",
     "@textlint/markdown-to-ast": "15.5.2",
