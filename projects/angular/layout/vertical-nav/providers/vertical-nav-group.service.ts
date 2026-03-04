@@ -6,14 +6,29 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class VerticalNavGroupService {
   private _expandChange = new Subject<boolean>();
+  private _expandAnimationState = new BehaviorSubject<string>('collapsed');
 
   get expandChange(): Observable<boolean> {
     return this._expandChange.asObservable();
+  }
+
+  get expandAnimationState(): Observable<string> {
+    return this._expandAnimationState.asObservable();
+  }
+
+  get expandAnimationStateValue(): string {
+    return this._expandAnimationState.value;
+  }
+
+  set expandAnimationStateValue(value: string) {
+    if (value !== this._expandAnimationState.value) {
+      this._expandAnimationState.next(value);
+    }
   }
 
   expand(): void {

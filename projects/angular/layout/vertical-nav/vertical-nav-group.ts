@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
 import { AfterContentInit, Component, EventEmitter, HostBinding, Input, OnDestroy, Output } from '@angular/core';
 import { ClrCommonStringsService, IfExpandService } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
@@ -21,13 +20,6 @@ const COLLAPSED_STATE = 'collapsed';
   selector: 'clr-vertical-nav-group',
   templateUrl: './vertical-nav-group.html',
   providers: [IfExpandService, VerticalNavGroupService],
-  animations: [
-    trigger('clrExpand', [
-      state(EXPANDED_STATE, style({ height: '*' })),
-      state(COLLAPSED_STATE, style({ height: 0, visibility: 'hidden' })),
-      transition(`${EXPANDED_STATE} <=> ${COLLAPSED_STATE}`, animate('0.2s ease-in-out')),
-    ]),
-  ],
   host: { class: 'nav-group' },
   standalone: false,
 })
@@ -36,12 +28,11 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
 
   private wasExpanded = false;
   private _subscriptions: Subscription[] = [];
-  private _expandAnimationState: string = COLLAPSED_STATE;
 
   constructor(
     private _itemExpand: IfExpandService,
     private _navGroupRegistrationService: VerticalNavGroupRegistrationService,
-    navGroupService: VerticalNavGroupService,
+    private _navGroupService: VerticalNavGroupService,
     private _navService: VerticalNavService,
     public commonStrings: ClrCommonStringsService
   ) {
@@ -82,7 +73,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
 
     // If a link is clicked, expand the nav group
     this._subscriptions.push(
-      navGroupService.expandChange.subscribe((expand: boolean) => {
+      _navGroupService.expandChange.subscribe((expand: boolean) => {
         if (expand && !this.expanded) {
           this.expandGroup();
         }
@@ -113,12 +104,10 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   }
 
   get expandAnimationState(): string {
-    return this._expandAnimationState;
+    return this._navGroupService.expandAnimationStateValue;
   }
   set expandAnimationState(value: string) {
-    if (value !== this._expandAnimationState) {
-      this._expandAnimationState = value;
-    }
+    this._navGroupService.expandAnimationStateValue = value;
   }
 
   ngAfterContentInit() {
@@ -145,13 +134,6 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // If a Vertical Nav Group toggle button is clicked while the Vertical Nav is in Collapsed state,
     // the Vertical Nav should be expanded first.
     this.expandAnimationState = COLLAPSED_STATE;
-  }
-
-  // closes a group after the collapse animation
-  expandAnimationDone($event: AnimationEvent) {
-    if ($event.toState === COLLAPSED_STATE) {
-      this.expanded = false;
-    }
   }
 
   toggleExpand(): void {
