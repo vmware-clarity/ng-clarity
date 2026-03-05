@@ -55,7 +55,7 @@ async function main() {
 async function compileNav() {
   const nav = {};
 
-  for (const navFilePath of glob.sync(path.join(PROJECT_ROOT, 'content/nav/*.md'))) {
+  for (const navFilePath of glob.sync(path.join(PROJECT_ROOT, 'content/nav/*.md'), { windowsPathsNoEscape: true })) {
     const slug = path.parse(navFilePath).name;
     const { attributes } = parseFrontMatter(fs.readFileSync(navFilePath).toString());
 
@@ -68,7 +68,7 @@ async function compileNav() {
 async function compilePages() {
   const pages = {};
 
-  for (const pageFilePath of glob.sync(path.join(PROJECT_ROOT, 'content/pages/*.md'))) {
+  for (const pageFilePath of glob.sync(path.join(PROJECT_ROOT, 'content/pages/*.md'), { windowsPathsNoEscape: true })) {
     const slug = path.parse(pageFilePath).name;
     const { attributes, body } = parseFrontMatter(fs.readFileSync(pageFilePath).toString());
 
@@ -116,8 +116,7 @@ async function compileStackBlitzExampleTemplate() {
   const files = {};
 
   const templateDir = path.join(PROJECT_ROOT, 'stackblitz-example-template');
-
-  for (const filePath of glob.sync(path.join(templateDir, '**/*.*'))) {
+  for (const filePath of glob.sync(templateDir + '**/*.*', { windowsPathsNoEscape: true })) {
     const relativeFilePath = path.relative(templateDir, filePath);
 
     files[relativeFilePath.split(path.sep).join('/')] = fs.readFileSync(filePath).toString();
