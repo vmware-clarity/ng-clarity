@@ -9,6 +9,8 @@ jobs:
     name: PR Build
     timeout-minutes: 30
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3

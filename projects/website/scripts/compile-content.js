@@ -116,7 +116,7 @@ async function compileStackBlitzExampleTemplate() {
   const files = {};
 
   const templateDir = path.join(PROJECT_ROOT, 'stackblitz-example-template');
-  for (const filePath of glob.sync(templateDir + '**/*.*', { windowsPathsNoEscape: true })) {
+  for (const filePath of glob.sync(templateDir + '/**/*.*', { windowsPathsNoEscape: true })) {
     const relativeFilePath = path.relative(templateDir, filePath);
 
     files[relativeFilePath.split(path.sep).join('/')] = fs.readFileSync(filePath).toString();
