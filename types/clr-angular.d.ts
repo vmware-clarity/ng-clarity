@@ -9221,7 +9221,7 @@ declare class WizardNavigationService implements OnDestroy {
      *
      * @memberof WizardNavigationService
      */
-    get currentPageChanged(): Observable<ClrWizardPage>;
+    get currentPageChange(): Observable<ClrWizardPage>;
     /**
      * @memberof WizardNavigationService
      */
@@ -9491,10 +9491,10 @@ declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
      */
     onReset: EventEmitter<any>;
     /**
-     * Emits when the current page has changed. Listen via `(clrWizardCurrentPageChanged)` event.
+     * Emits when the current page has changed. Listen via `(clrWizardCurrentPageChange)` event.
      * output. Useful for non-blocking validation.
      */
-    currentPageChanged: EventEmitter<any>;
+    currentPageChange: EventEmitter<any>;
     /**
      * Emits when the wizard moves to the next page. Listen via `(clrWizardOnNext)` event.
      * Can be combined with the `[clrWizardPreventDefaultNext]` input to create
@@ -9680,7 +9680,7 @@ declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     private initializeButtons;
     private emitWizardFinished;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChange": "clrWizardCurrentPageChange"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
 }
 
 declare class ClrWizardStepnav {
