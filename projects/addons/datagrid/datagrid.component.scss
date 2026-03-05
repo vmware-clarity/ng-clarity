@@ -306,12 +306,33 @@ clr-datagrid {
   }
 }
 
+// Hide both drop status icons by default
+.drop-status {
+  display: none;
+  margin-left: 4px;
+  color: var(--cds-global-color-black);
+}
+
+// Show valid drop status icon when body has drag-valid-target class
+:host-context(body.drag-valid-target) .drop-status-valid {
+  display: inline-block;
+}
+
+// Show invalid drop status icon when body has drag-invalid-target class
+:host-context(body.drag-invalid-target) .drop-status-invalid {
+  display: inline-block;
+}
+
 // Dark theme
 :host-context([data-theme='dark']) {
   clr-datagrid {
     .custom-preview {
       .grid-ghost {
         background-color: var(--clr-table-bgcolor);
+
+        .drop-status {
+          color: var(--cds-global-color-white);
+        }
       }
     }
   }
