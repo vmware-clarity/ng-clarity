@@ -57,8 +57,8 @@ export class ExampleComponent {
 `;
 
 const additionalFiles = {
-  'grocery-models.ts': '',
-  'grocery-items.component.ts': '',
+  'grocery-models.ts': require('!raw-loader!./grocery-models').default,
+  'grocery-items.component.ts': require('!raw-loader!./grocery-items.component').default,
 };
 
 @Component({

@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ClrCheckboxModule, ClrCommonFormsModule, ClrIcon, ClrIconModule } from '@clr/angular';
 
-import { CheckboxesDemoModule } from './checkboxes.demo.module';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsComponent, LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
@@ -21,17 +20,17 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
 import { ClarityDocComponent } from '../clarity-doc';
 import { formsPatternLink } from '../pattern-links';
 
-const NgBasic = '';
-const NgDisabled = '';
-const NgHelpers = '';
-const NgIndeterminate = '';
-const NgInline = '';
-const NgLabel = '';
-const UiBasic = '';
-const UiDisabled = '';
-const UiError = '';
-const UiFull = '';
-const UiInline = '';
+const NgBasic = require('raw-loader!./ng/basic.html');
+const NgDisabled = require('raw-loader!./ng/disabled.html');
+const NgHelpers = require('raw-loader!./ng/helpers.html');
+const NgIndeterminate = require('raw-loader!./ng/indeterminate.html');
+const NgInline = require('raw-loader!./ng/inline.html');
+const NgLabel = require('raw-loader!./ng/label.html');
+const UiBasic = require('raw-loader!./ui/basic.html');
+const UiDisabled = require('raw-loader!./ui/disabled.html');
+const UiError = require('raw-loader!./ui/error.html');
+const UiFull = require('raw-loader!./ui/full.html');
+const UiInline = require('raw-loader!./ui/inline.html');
 
 const AngularTs = `
 import { Component } from '@angular/core';
@@ -95,7 +94,6 @@ export class ExampleComponent {
     ClrIconModule,
     StyleDocsComponent,
     NestingTableComponent,
-    CheckboxesDemoModule,
   ],
 })
 export class CheckboxesDemo extends ClarityDocComponent {

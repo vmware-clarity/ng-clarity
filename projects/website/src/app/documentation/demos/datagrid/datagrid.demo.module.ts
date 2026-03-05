@@ -49,6 +49,7 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
+        redirectTo: 'structure',
       },
       {
         path: 'structure',

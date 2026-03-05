@@ -47,7 +47,7 @@ export class ExampleComponent {
 `;
 
 const additionalFiles = {
-  'files.ts': '',
+  'files.ts': require('!raw-loader!../utils/files.ts').default,
 };
 
 @Component({
