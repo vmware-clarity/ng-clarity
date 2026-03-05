@@ -78,10 +78,6 @@ export default function (): void {
       expect(wizardNavigationService.currentPage).toBe(testPage, 'wizard did not navigate');
     });
 
-    /*
-     * TODO: as next() calls finish(), it seems that there are repetition in the following tests.
-     * We should investigate possibilities of stripping down some of these tests on finish() and next() */
-
     it('.finish() should commit the current page and emit the event', function () {
       const testPage = wizardNavigationService.pageCollection.lastPage;
 
@@ -326,7 +322,7 @@ export default function (): void {
       // const startPage = wizardNavigationService.pageCollection.getPageByIndex(0);
       const secondPage = wizardNavigationService.pageCollection.getPageByIndex(1);
       let pageTest: ClrWizardPage;
-      wizardNavigationService.currentPageChanged.subscribe(page => (pageTest = page));
+      wizardNavigationService.currentPageChange.subscribe(page => (pageTest = page));
 
       expect(pageTest).toBeUndefined();
       wizardNavigationService.goTo(secondPage, true);
