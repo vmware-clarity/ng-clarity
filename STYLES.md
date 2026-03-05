@@ -1780,43 +1780,42 @@ All other table classes like `table, thead, tbody, th, td` are not specific to C
 
 ## CSS Custom Properties
 
-| CSS Custom Property                            | Description                                                                               |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| --clr-wizard-footer-vertical-space             | Vertical spacing for footer buttons                                                       |
-| --clr-wizard-main-bgcolor                      | Wizard background color                                                                   |
-| --clr-wizard-stepnav-bgcolor                   | Wizard navigation background color                                                        |
-| --clr-wizard-main-text-color                   | Wizard text color                                                                         |
-| --clr-wizard-stepnav-text                      | Wizard navigation text color                                                              |
-| --clr-wizard-stepnav-text-active               | Wizard navigation item color when active                                                  |
-| --clr-wizard-stepnav-text-hover                | Wizard navigation item color when hovered                                                 |
-| --clr-wizard-stepnav-text--active              | Wizard navigation item color when selected (misnamed)                                     |
-| --clr-wizard-stepnav-text-disabled             | Wizard navigation item color when disabled                                                |
-| --clr-wizard-title-text                        | Wizard title text color                                                                   |
-| --clr-wizard-stepnav-border-size               | Wizard navigation border size                                                             |
-| --clr-wizard-stepnav-item-border-color         | Wizard navigation border color                                                            |
-| --clr-wizard-stepnav-item-border-color--active | Wizard navigation item complete border color (misnamed)                                   |
-| --clr-wizard-stepnav-selected-border-color     | Wizard navigation border color of current not completed step                              |
-| --clr-wizard-stepnav-active-bgcolor            | _Deprecated in v18_ Wizard navigation background color for the currently selected element |
-| --clr-wizard-stepnav-selected-bgcolor          | Wizard navigation background color for the currently selected element                     |
-| --clr-wizard-stepnav-selected-error-bgcolor    | Wizard navigation background color for the currently selected element if error            |
-| --clr-wizard-stepnav-selected-hover-bgcolor    | Wizard navigation background color for the currently hovered selected element             |
-| --clr-wizard-stepnav-selected-active-bgcolor   | Wizard navigation background color for the currently active selected element              |
-| --clr-wizard-header-action-color               | Wizard header actions color                                                               |
-| --clr-wizard-header-action-color--hovered      | Wizard header actions color on hover                                                      |
-| --clr-wizard-border-radius                     | Wizard border radius                                                                      |
-| --clr-wizard-stepnav-border-color              | Wizard navigation border color                                                            |
-| --clr-wizard-box-shadow                        | Wizard highlight indication                                                               |
-| --clr-wizard-stepnav-link-font-size            | Wizard navigation item font size                                                          |
-| --clr-wizard-stepnav-link-line-height          | Wizard navigation item line height                                                        |
-| --clr-wizard-stepnav-link-error-icon-color     | Wizard navigation item button error icon color                                            |
-| --clr-wizard-stepnav-item-error-border-color   | Wizard navigation item error border color                                                 |
-| --clr-wizard-stepnav-link-complete-icon-color  | Wizard navigation item button complete icon color                                         |
-| --clr-wizard-footer-height                     | Wizard page footer height                                                                 |
-| --clr-wizard-stepnav-link-active-bg-color      | Wizard navigation item button background color when active                                |
-| --clr-wizard-stepnav-link-hover-bg-color       | Wizard navigation item button background color when hovered                               |
-| --clr-wizard-title-font-size                   | Wizard title font size                                                                    |
-| --clr-wizard-title-line-height                 | Wizard title line height                                                                  |
-| --clr-wizard-content-background-color          | Wizard content background color                                                           |
+| CSS Custom Property                             | Description                                                                    |
+| ----------------------------------------------- | ------------------------------------------------------------------------------ |
+| --clr-wizard-footer-vertical-space              | Vertical spacing for footer buttons                                            |
+| --clr-wizard-main-bgcolor                       | Wizard background color                                                        |
+| --clr-wizard-stepnav-bgcolor                    | Wizard navigation background color                                             |
+| --clr-wizard-main-text-color                    | Wizard text color                                                              |
+| --clr-wizard-stepnav-text                       | Wizard navigation text color                                                   |
+| --clr-wizard-stepnav-text-active                | Wizard navigation item color when active                                       |
+| --clr-wizard-stepnav-text-hover                 | Wizard navigation item color when hovered                                      |
+| --clr-wizard-stepnav-text-selected              | Wizard navigation item color when selected                                     |
+| --clr-wizard-stepnav-text-disabled              | Wizard navigation item color when disabled                                     |
+| --clr-wizard-title-text                         | Wizard title text color                                                        |
+| --clr-wizard-stepnav-border-size                | Wizard navigation border size                                                  |
+| --clr-wizard-stepnav-item-border-color          | Wizard navigation border color                                                 |
+| --clr-wizard-stepnav-item-complete-border-color | Wizard navigation item complete border color                                   |
+| --clr-wizard-stepnav-selected-border-color      | Wizard navigation border color of current not completed step                   |
+| --clr-wizard-stepnav-selected-bgcolor           | Wizard navigation background color for the currently selected element          |
+| --clr-wizard-stepnav-selected-error-bgcolor     | Wizard navigation background color for the currently selected element if error |
+| --clr-wizard-stepnav-selected-hover-bgcolor     | Wizard navigation background color for the currently hovered selected element  |
+| --clr-wizard-stepnav-selected-active-bgcolor    | Wizard navigation background color for the currently active selected element   |
+| --clr-wizard-header-action-color                | Wizard header actions color                                                    |
+| --clr-wizard-header-action-color--hovered       | Wizard header actions color on hover                                           |
+| --clr-wizard-border-radius                      | Wizard border radius                                                           |
+| --clr-wizard-stepnav-border-color               | Wizard navigation border color                                                 |
+| --clr-wizard-box-shadow                         | Wizard highlight indication                                                    |
+| --clr-wizard-stepnav-link-font-size             | Wizard navigation item font size                                               |
+| --clr-wizard-stepnav-link-line-height           | Wizard navigation item line height                                             |
+| --clr-wizard-stepnav-link-error-icon-color      | Wizard navigation item button error icon color                                 |
+| --clr-wizard-stepnav-item-error-border-color    | Wizard navigation item error border color                                      |
+| --clr-wizard-stepnav-link-complete-icon-color   | Wizard navigation item button complete icon color                              |
+| --clr-wizard-footer-height                      | Wizard page footer height                                                      |
+| --clr-wizard-stepnav-active-bgcolor             | Wizard navigation item button background color when active                     |
+| --clr-wizard-stepnav-hover-bgcolor              | Wizard navigation item button background color when hovered                    |
+| --clr-wizard-title-font-size                    | Wizard title font size                                                         |
+| --clr-wizard-title-line-height                  | Wizard title line height                                                       |
+| --clr-wizard-content-background-color           | Wizard content background color                                                |
 
 ## CSS Classes
 
