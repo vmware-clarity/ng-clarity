@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { A11yModule as CdkA11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -92,6 +93,7 @@ describe('CompositeFiltersComponent', () => {
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        CdkA11yModule,
         ClrIcon,
       ],
       declarations: [

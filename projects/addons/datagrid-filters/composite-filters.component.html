@@ -17,7 +17,12 @@
       {{ filterStrings.addNew }}
     </button>
     <ng-template [(clrIfOpen)]="signPostOpened">
-      <clr-signpost-content [clrPosition]="'bottom-middle'" filterPopoverReposition>
+      <clr-signpost-content
+        cdkTrapFocus
+        [cdkTrapFocusAutoCapture]="true"
+        [clrPosition]="'bottom-middle'"
+        filterPopoverReposition
+      >
         <clr-select-container class="mt-0">
           <label class="clr-control-label"> {{ filterStrings.filterLabel }} </label>
           <select clrSelect [(ngModel)]="selectedFilterableProperty" (ngModelChange)="onPropertyChange()">

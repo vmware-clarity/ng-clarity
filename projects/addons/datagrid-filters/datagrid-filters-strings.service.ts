@@ -32,6 +32,11 @@ import { ComparisonOperator, LogicalOperator, TimeSpan, Unit } from './model/dat
 @Injectable()
 export class DatagridFiltersStrings {
   /**
+   * Filter type label.
+   */
+  readonly filterType: string = 'Filter Type';
+
+  /**
    * Quick filter label.
    */
   readonly quickFilter: string = 'Quick Filter';

@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { A11yModule as CdkA11yModule } from '@angular/cdk/a11y';
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -42,6 +43,7 @@ export function datagridFiltersStringsServiceFactory(existing: DatagridFiltersSt
     SkipFiltersPipe,
   ],
   imports: [
+    CdkA11yModule,
     ClrCheckboxModule,
     ClrIcon,
     ClrInputModule,
