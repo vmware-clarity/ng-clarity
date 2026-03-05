@@ -94,7 +94,6 @@ declare class EmptyAnchor {
 /**
  * HostWrapper must be called in OnInit to ensure that the Views are ready. If its called in a constructor the view is
  * still undefined.
- * TODO - make sure these comment annotations do not break ng-packgr.
  */
 declare class HostWrapper<W> implements Injector {
     private injector;

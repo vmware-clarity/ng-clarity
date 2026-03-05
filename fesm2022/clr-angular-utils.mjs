@@ -313,7 +313,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
 /**
  * HostWrapper must be called in OnInit to ensure that the Views are ready. If its called in a constructor the view is
  * still undefined.
- * TODO - make sure these comment annotations do not break ng-packgr.
  */
 class HostWrapper {
     constructor(containerType, vcr, index = 0) {
