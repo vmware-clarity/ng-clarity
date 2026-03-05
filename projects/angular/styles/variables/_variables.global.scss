@@ -21,9 +21,6 @@ $browser-default-size: 16; // if font-size set to 100% on html selector, it equa
 // and then converts it to a percentage so that browser settings sizing is not broken
 $clr-basefont-size: math.div($clr-baseline-denominator, $browser-default-size) * 100% !default;
 
-// DEPRECATED in 3.0; No longer sets anything now that we are using percentage
-$clr-font-base-size: 14 !default; // Moved from original needs a better name
-
 @function convertBaselineToBase20($size: 24) {
   $clr-baseline-to-basefontsize-multiplier: math.div($clr-baseline-int, $clr-baseline-denominator);
 

@@ -22,32 +22,16 @@ $imported-modules: () !default;
     @content;
   }
 }
-
-// Outline Styles
-$clr-outline-color: hsl(197deg 68% 65%) !default;
-$clr-outline-color-inverse: hsl(0deg 0% 100% / 9%) !default;
-$clr-outline-blur: var(--cds-global-space-2);
-$clr-outline-spread: var(--cds-global-space-2);
-
-@mixin include-outline-style-form-fields($offset: var(--cds-alias-object-interaction-outline-offset)) {
+@mixin include-outline-style-form-fields($offset: tokens.$cds-alias-object-interaction-outline-offset) {
   outline: var(--cds-alias-object-interaction-outline);
   outline-color: -webkit-focus-ring-color;
   outline-offset: $offset;
 }
-@mixin include-slim-outline-style-form-fields($width: var(--cds-global-space-2)) {
+@mixin include-slim-outline-style-form-fields($width: tokens.$cds-global-space-2) {
   outline-color: Highlight;
   outline-color: -webkit-focus-ring-color;
   outline-style: auto;
   outline-width: $width;
-}
-@mixin include-outline-style-links() {
-  outline: 0;
-  text-decoration: underline;
-}
-@mixin include-outline-style-header-links($outline-color: $clr-outline-color-inverse) {
-  background: $outline-color;
-  outline: 0;
-  text-decoration: none;
 }
 @mixin overflow-ellipsis($leftAlignment: false) {
   white-space: nowrap;
