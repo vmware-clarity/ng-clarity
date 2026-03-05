@@ -22,12 +22,12 @@ $imported-modules: () !default;
     @content;
   }
 }
-@mixin include-outline-style-form-fields($offset: tokens.$cds-alias-object-interaction-outline-offset) {
+@mixin include-outline-style-form-fields($offset: var(--cds-alias-object-interaction-outline-offset)) {
   outline: var(--cds-alias-object-interaction-outline);
   outline-color: -webkit-focus-ring-color;
   outline-offset: $offset;
 }
-@mixin include-slim-outline-style-form-fields($width: tokens.$cds-global-space-2) {
+@mixin include-slim-outline-style-form-fields($width: var(--cds-global-space-2)) {
   outline-color: Highlight;
   outline-color: -webkit-focus-ring-color;
   outline-style: auto;
