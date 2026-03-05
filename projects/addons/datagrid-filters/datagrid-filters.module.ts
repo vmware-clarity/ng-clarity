@@ -10,8 +10,17 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
-import { angleIcon, ClarityIcons, ClrIcon, filterGridIcon, plusIcon, windowCloseIcon } from '@clr/angular/icon';
+import {
+  angleIcon,
+  ClarityIcons,
+  ClrIcon,
+  filterGridIcon,
+  plusIcon,
+  searchIcon,
+  windowCloseIcon,
+} from '@clr/angular/icon';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
+import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 
 import { DateTimeFilterComponent } from './advanced-filters/date-time-filter.component';
 import { EnumFilterComponent } from './advanced-filters/enum-filter.component';
@@ -50,6 +59,7 @@ export function datagridFiltersStringsServiceFactory(existing: DatagridFiltersSt
     ClrRadioModule,
     ClrSelectModule,
     ClrSignpostModule,
+    ClrSpinnerModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -67,6 +77,6 @@ export function datagridFiltersStringsServiceFactory(existing: DatagridFiltersSt
 })
 export class AppfxDatagridFiltersModule {
   constructor() {
-    ClarityIcons.addIcons(angleIcon, filterGridIcon, plusIcon, windowCloseIcon);
+    ClarityIcons.addIcons(angleIcon, filterGridIcon, plusIcon, searchIcon, windowCloseIcon);
   }
 }

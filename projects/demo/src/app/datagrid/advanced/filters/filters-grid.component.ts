@@ -18,6 +18,7 @@ import {
 } from '@clr/addons/datagrid-filters';
 import { ClrSelectModule, SelectionType } from '@clr/angular';
 
+import { CATEGORY_ENUM_VALUES } from './assets/category-enum-values';
 import { Inventory, VmItem } from '../inventory/inventory';
 
 @Component({
@@ -44,6 +45,10 @@ export class FiltersGridComponent {
     {
       displayName: 'Used space',
       field: 'usedSpace',
+    },
+    {
+      displayName: 'Category',
+      field: 'event',
     },
   ];
 
@@ -113,24 +118,30 @@ export class FiltersGridComponent {
   }
 
   private initFilterableProperties(): void {
-    const stringNameProperty: StringPropertyDefinition = new StringPropertyDefinition('VM Name', 'name');
-    const stateEnumMap: Map<string, string> = new Map<string, string>();
+    const stringNameProperty = new StringPropertyDefinition('VM Name', 'name');
+
+    const stateEnumMap = new Map<string, string>();
     stateEnumMap.set('Powered On', 'Powered On');
     stateEnumMap.set('Powered Off', 'Powered Off');
-    const singleSelectStateProperty: EnumPropertyDefinition = new EnumPropertyDefinition(
-      'State',
-      'state',
-      stateEnumMap,
-      true
-    );
+    const singleSelectStateProperty = new EnumPropertyDefinition('State', 'state', stateEnumMap, true);
 
-    const enumStatusMap: Map<string, string> = new Map<string, string>();
+    const enumStatusMap = new Map<string, string>();
     enumStatusMap.set('Normal', 'Normal');
     enumStatusMap.set('Warning', 'Warning');
     enumStatusMap.set('Alert', 'Alert');
-    const enumProperty: EnumPropertyDefinition = new EnumPropertyDefinition('Status', 'status', enumStatusMap);
+    const enumProperty = new EnumPropertyDefinition('Status', 'status', enumStatusMap);
 
-    this.filterableProperties.push(stringNameProperty, singleSelectStateProperty, enumProperty);
+    const categoryEnumProp = new EnumPropertyDefinition(
+      'Category',
+      'event',
+      new Map(Object.entries(CATEGORY_ENUM_VALUES)),
+      false,
+      true,
+      true,
+      true
+    );
+
+    this.filterableProperties.push(stringNameProperty, singleSelectStateProperty, enumProperty, categoryEnumProp);
   }
 
   private applyOperatorFilter(item: string, predicateValue: string, operator: ComparisonOperator): boolean {
