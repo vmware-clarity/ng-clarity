@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
 import { PropertyType } from './model/datagrid-filters.enums';
@@ -16,6 +24,7 @@ import {
   NumericPropertyDefinition,
   PropertyFilter,
   StringPropertyDefinition,
+  UserPropertyDefinition,
 } from './model/datagrid-filters.interfaces';
 
 /**
@@ -43,6 +52,7 @@ export class CompositeFiltersComponent implements OnInit {
   readonly enumPropertyType: PropertyType = PropertyType.Enum;
   readonly numericPropertyType: PropertyType = PropertyType.Numeric;
   readonly dateTimePropertyType: PropertyType = PropertyType.DateTime;
+  readonly userPropertyType: PropertyType = PropertyType.User;
 
   signPostOpened = false;
   selectedFilterableProperty: FilterablePropertyDefinition;
@@ -51,6 +61,7 @@ export class CompositeFiltersComponent implements OnInit {
   enumProperty: EnumPropertyDefinition;
   numericProperty: NumericPropertyDefinition;
   dateTimeProperty: DateTimePropertyDefinition;
+  userProperty: UserPropertyDefinition;
   // List of active filters to be sent to the hosting view
   propertyFilters: PropertyFilter[] = [];
   collapsedFilters = false;
@@ -58,7 +69,10 @@ export class CompositeFiltersComponent implements OnInit {
   showHideFiltersLabel: string;
   showHideFiltersAriaLabel: string;
 
-  constructor(public filterStrings: DatagridFiltersStrings) {
+  constructor(
+    public filterStrings: DatagridFiltersStrings,
+    private cdr: ChangeDetectorRef
+  ) {
     this.showHideFiltersLabel = filterStrings.hideButtonLabel;
     this.showHideFiltersAriaLabel = filterStrings.hideButtonAriaLabel;
   }
@@ -83,6 +97,9 @@ export class CompositeFiltersComponent implements OnInit {
     } else if (this.isDateTimeProperty(this.selectedFilterableProperty)) {
       this.propertyType = PropertyType.DateTime;
       this.dateTimeProperty = this.castDateTimeProperty();
+    } else if (this.isUserProperty(this.selectedFilterableProperty)) {
+      this.propertyType = PropertyType.User;
+      this.userProperty = this.castUserProperty();
     }
   }
 
@@ -123,6 +140,9 @@ export class CompositeFiltersComponent implements OnInit {
     this.signPostOpened = false;
     this.preselectFirstProperty();
     this.updateShowHideLabel();
+    // The filter sometimes fails to close, necessitating
+    // a check to detect this state change.
+    this.cdr.markForCheck();
   }
 
   /**
@@ -195,6 +215,10 @@ export class CompositeFiltersComponent implements OnInit {
     return property instanceof DateTimePropertyDefinition;
   }
 
+  private isUserProperty(property: FilterablePropertyDefinition): property is UserPropertyDefinition {
+    return property instanceof UserPropertyDefinition;
+  }
+
   private castStringProperty(): StringPropertyDefinition {
     return this.selectedFilterableProperty as StringPropertyDefinition;
   }
@@ -209,5 +233,9 @@ export class CompositeFiltersComponent implements OnInit {
 
   private castDateTimeProperty(): DateTimePropertyDefinition {
     return this.selectedFilterableProperty as DateTimePropertyDefinition;
+  }
+
+  private castUserProperty(): UserPropertyDefinition {
+    return this.selectedFilterableProperty as UserPropertyDefinition;
   }
 }

@@ -215,6 +215,16 @@ export class DatagridFiltersStrings {
 
   readonly loadMore: string = 'Load more ...';
 
+  readonly domain: string = 'Domain';
+
+  readonly user: string = 'User';
+
+  readonly errorSearchingUsers: string = 'Error searching users.';
+
+  readonly errorLoadingDomains: string = 'Error loading domains.';
+
+  readonly emptyUsersError: string = 'Add at least one user.';
+
   /**
    * Add time condition button label.
    */

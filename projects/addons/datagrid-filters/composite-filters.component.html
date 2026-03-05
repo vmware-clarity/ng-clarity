@@ -59,6 +59,10 @@
             >
             </appfx-datetime-filter>
           }
+          @case (userPropertyType) {
+            <appfx-users-filter [filterProperty]="userProperty" (filterCriteriaChange)="onFilterCriteriaChange($event)">
+            </appfx-users-filter>
+          }
         }
       </clr-signpost-content>
     </ng-template>

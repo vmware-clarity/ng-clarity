@@ -26,8 +26,10 @@ import { DateTimeFilterComponent } from './advanced-filters/date-time-filter.com
 import { EnumFilterComponent } from './advanced-filters/enum-filter.component';
 import { FilterFormComponent } from './advanced-filters/filter-form.component';
 import { GeneralFilterComponent } from './advanced-filters/general-filter.component';
+import { UsersFilterComponent } from './advanced-filters/users-filter.component';
 import { CompositeFiltersComponent } from './composite-filters.component';
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
+import { DatagridFiltersUserService } from './datagrid-filters-user-service';
 import { DataGridFiltersComponent } from './datagrid-filters.component';
 import { FilterPopoverRepositionDirective } from './filter-popover-reposition-directive';
 import { DismissableDirective } from './manage-filters/dismissable.directive';
@@ -36,6 +38,10 @@ import { SkipFiltersPipe } from './skip-filters.pipe';
 
 export function datagridFiltersStringsServiceFactory(existing: DatagridFiltersStrings) {
   return existing || new DatagridFiltersStrings();
+}
+
+export function datagridFiltersUserServiceFactory(existing: DatagridFiltersUserService) {
+  return existing || new DatagridFiltersUserService();
 }
 
 @NgModule({
@@ -50,6 +56,7 @@ export function datagridFiltersStringsServiceFactory(existing: DatagridFiltersSt
     GeneralFilterComponent,
     ManageFilterComponent,
     SkipFiltersPipe,
+    UsersFilterComponent,
   ],
   imports: [
     CdkA11yModule,
@@ -72,6 +79,11 @@ export function datagridFiltersStringsServiceFactory(existing: DatagridFiltersSt
       provide: DatagridFiltersStrings,
       useFactory: datagridFiltersStringsServiceFactory,
       deps: [[new Optional(), new SkipSelf(), DatagridFiltersStrings]],
+    },
+    {
+      provide: DatagridFiltersUserService,
+      useFactory: datagridFiltersUserServiceFactory,
+      deps: [[new Optional(), new SkipSelf(), DatagridFiltersUserService]],
     },
   ],
 })

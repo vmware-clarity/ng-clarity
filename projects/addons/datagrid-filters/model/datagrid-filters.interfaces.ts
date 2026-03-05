@@ -190,6 +190,13 @@ export class NumericPropertyDefinition extends FilterablePropertyDefinition {
   }
 }
 
+export class UserPropertyDefinition extends FilterablePropertyDefinition {
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+  constructor(displayName: string, property: string) {
+    super(displayName, property);
+  }
+}
+
 export class DateTimePropertyDefinition extends FilterablePropertyDefinition {
   /**
    * Flag indicating whether to include seconds in the time selector for the DateTime filter.
