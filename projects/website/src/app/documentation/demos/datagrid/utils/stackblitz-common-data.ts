@@ -74,7 +74,6 @@ const exampleCss = `
 }
 `;
 
-/* eslint-disable @typescript-eslint/no-var-requires */
 const additionalFiles = {
   'inventory/inventory.ts': require('!raw-loader!../inventory/inventory.ts').default,
   'inventory/inventory-items.json': JSON.stringify(require('../inventory/inventory-items.json')),
@@ -82,7 +81,6 @@ const additionalFiles = {
   'inventory/user.ts': require('!raw-loader!../inventory/user.ts').default,
   'inventory/values.ts': require('!raw-loader!../inventory/values.ts').default,
 };
-/* eslint-enable @typescript-eslint/no-var-requires */
 
 export const CommonFiles = {
   additionalFiles,
