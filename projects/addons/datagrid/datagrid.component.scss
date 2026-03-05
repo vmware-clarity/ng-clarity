@@ -45,26 +45,44 @@ clr-datagrid {
   }
 
   .custom-preview {
-    width: 200px;
+    width: 250px;
     overflow: hidden;
+    font-size: var(--cds-global-typography-secondary-font-size);
+    line-height: var(--cds-global-typography-secondary-line-height);
+
+    .grid-ghost {
+      border: 1px solid var(--clr-table-border-color);
+      border-left: 2px solid var(--cds-alias-object-interaction-background-highlight);
+      border-radius: 3px 0 0 3px;
+      background-color: var(--cds-global-color-white);
+      padding: 5px;
+      max-height: 60px;
+      white-space: normal;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+
+      .drop-status {
+        margin-top: -4px;
+      }
+    }
+  }
+
+  &.datagrid-compact {
+    .custom-preview {
+      .grid-ghost {
+        .drop-status {
+          margin-top: -8px;
+        }
+      }
+    }
   }
 
   clr-dg-cell.fixed-cell-height {
     // Fixed cell height for datagrids with virtual scrolling.
     // Considering padding and border row height will be 25px
     height: 16px;
-  }
-
-  .grid-ghost {
-    border: 1px solid var(--clr-table-border-color);
-    border-left: 2px solid var(--cds-alias-object-interaction-background-highlight);
-    border-radius: 3px 0 0 3px;
-    background-color: var(--cds-global-color-white);
-    padding: 5px;
-    width: 90%;
-    max-height: 60px;
-    color: var(--cds-global-color-gray-400);
-    white-space: normal;
   }
 
   .single-ghost {
@@ -105,7 +123,7 @@ clr-datagrid {
   }
 
   clr-dg-footer {
-    ::ng-deep .export-link {
+    ::ng-deep .footer-actions {
       margin-left: 10px;
       display: flex;
       align-items: center;
