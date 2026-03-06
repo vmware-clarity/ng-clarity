@@ -8,7 +8,7 @@
   <app-site-nav></app-site-nav>
   <main #scrollParent class="content-area" appHashListener>
     <app-table-of-contents [scrollParent]="scrollParent"></app-table-of-contents>
-    <section class="cms-content" [innerHTML]="page.html | appSafeHtml" (click)="onContentClick($event)"></section>
+    <section class="page-content" [innerHTML]="page.html | appSafeHtml" (click)="onContentClick($event)"></section>
     <app-site-footer></app-site-footer>
   </main>
 } @else {

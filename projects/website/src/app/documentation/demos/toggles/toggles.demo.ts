@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ClrCheckboxModule, ClrCommonFormsModule, ClrIcon, ClrIconModule } from '@clr/angular';
 
-import { TogglesDemoModule } from './toggles.demo.module';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsComponent, LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
@@ -39,18 +38,18 @@ export class ExampleComponent {
 }
 `;
 
-const NgBasic = '';
-const NgDisabled = '';
-const NgHelpers = '';
-const NgInline = '';
-const NgLabel = '';
-const NgRight = '';
-const UiBasic = '';
-const UiDisabled = '';
-const UiError = '';
-const UiFull = '';
-const UiInline = '';
-const UiRight = '';
+const NgBasic = require('raw-loader!./ng/basic.html').default;
+const NgDisabled = require('raw-loader!./ng/disabled.html').default;
+const NgHelpers = require('raw-loader!./ng/helpers.html').default;
+const NgInline = require('raw-loader!./ng/inline.html').default;
+const NgLabel = require('raw-loader!./ng/label.html').default;
+const NgRight = require('raw-loader!./ng/right.html').default;
+const UiBasic = require('raw-loader!./ui/basic.html').default;
+const UiDisabled = require('raw-loader!./ui/disabled.html').default;
+const UiError = require('raw-loader!./ui/error.html').default;
+const UiFull = require('raw-loader!./ui/full.html').default;
+const UiInline = require('raw-loader!./ui/inline.html').default;
+const UiRight = require('raw-loader!./ui/right.html').default;
 
 @Component({
   templateUrl: './toggles.demo.html',
@@ -71,7 +70,6 @@ const UiRight = '';
     RouterLink,
     LinkCardsComponent,
     StyleDocsComponent,
-    TogglesDemoModule,
   ],
 })
 export class TogglesDemo extends ClarityDocComponent {
