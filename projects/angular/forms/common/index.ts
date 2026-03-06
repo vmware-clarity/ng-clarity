@@ -12,7 +12,6 @@ export * from './control-container';
 export * from './control-subtexts/helper';
 export * from './control-subtexts/error';
 export * from './control-subtexts/success';
-export * from './control-subtexts/subtext-container';
 export * from './form';
 export * from './if-control-state/if-error';
 export * from './if-control-state/if-success';

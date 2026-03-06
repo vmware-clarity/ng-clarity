@@ -20,7 +20,7 @@ import { ControlIdService } from '../providers/control-id.service';
     </span>
   `,
   host: {
-    '[class.clr-control-success]': 'true',
+    '[class.clr-subtext-wrapper]': 'true',
     '[attr.id]': 'id',
   },
   standalone: false,

@@ -13,7 +13,6 @@ import { ClrControl } from './control';
 import { ClrControlContainer } from './control-container';
 import { ClrControlError } from './control-subtexts/error';
 import { ClrControlHelper } from './control-subtexts/helper';
-import { ClrControlSubtextContainer } from './control-subtexts/subtext-container';
 import { ClrControlSuccess } from './control-subtexts/success';
 import { ClrForm } from './form';
 import { ClrIfError } from './if-control-state/if-error';
@@ -28,7 +27,6 @@ import { ClrLayout } from './layout';
     ClrControlError,
     ClrControlSuccess,
     ClrControlHelper,
-    ClrControlSubtextContainer,
     ClrIfError,
     ClrIfSuccess,
     ClrForm,
@@ -41,7 +39,6 @@ import { ClrLayout } from './layout';
     ClrControlError,
     ClrControlSuccess,
     ClrControlHelper,
-    ClrControlSubtextContainer,
     ClrIfError,
     ClrIfSuccess,
     ClrForm,

@@ -24,11 +24,17 @@ import { ComboboxContainerService } from './providers/combobox-container.service
     }
     <div class="clr-control-container" [ngClass]="controlClass()" #controlContainer>
       <ng-content select="clr-combobox"></ng-content>
-      <clr-control-subtext-container [showHelper]="showHelper" [showInvalid]="showInvalid" [showValid]="showValid">
-        <ng-content select="clr-control-helper" ngProjectAs="clr-control-helper"></ng-content>
-        <ng-content select="clr-control-error" ngProjectAs="clr-control-error"></ng-content>
-        <ng-content select="clr-control-success" ngProjectAs="clr-control-success"></ng-content>
-      </clr-control-subtext-container>
+      <div class="clr-subtext-container">
+        @if (showHelper) {
+          <ng-content select="clr-control-helper"></ng-content>
+        }
+        @if (showInvalid) {
+          <ng-content select="clr-control-error"></ng-content>
+        }
+        @if (showValid) {
+          <ng-content select="clr-control-success"></ng-content>
+        }
+      </div>
     </div>
   `,
   host: {

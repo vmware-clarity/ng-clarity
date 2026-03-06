@@ -79,7 +79,7 @@
     @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
   }
 
-  .clr-control-subtext-container {
+  .clr-subtext-container {
     flex-basis: 100%;
     display: flex;
     flex-flow: row wrap;
@@ -122,15 +122,6 @@
     display: flex;
     align-items: flex-start;
     gap: density.$clr-base-gap-xs;
-    flex-direction: column;
-
-    .clr-control-error,
-    .clr-control-success {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: density.$clr-base-gap-xs;
-    }
   }
 
   .clr-validate-icon {
@@ -189,7 +180,7 @@
       margin-top: density.$clr-base-vertical-offset-l;
     }
 
-    .clr-control-subtext-container {
+    .clr-subtext-container {
       flex-basis: auto;
       margin-top: 0;
     }

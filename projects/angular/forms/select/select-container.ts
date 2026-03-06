@@ -26,11 +26,27 @@ import {
       <div [ngClass]="wrapperClass()">
         <ng-content select="[clrSelect]"></ng-content>
       </div>
-      <clr-control-subtext-container [showHelper]="showHelper" [showInvalid]="showInvalid" [showValid]="showValid">
-        <ng-content select="clr-control-helper" ngProjectAs="clr-control-helper"></ng-content>
-        <ng-content select="clr-control-error" ngProjectAs="clr-control-error"></ng-content>
-        <ng-content select="clr-control-success" ngProjectAs="clr-control-success"></ng-content>
-      </clr-control-subtext-container>
+      <div class="clr-subtext-container">
+        @if (showHelper) {
+          <ng-content select="clr-control-helper"></ng-content>
+        }
+        @if (showInvalid) {
+          <ng-content select="clr-control-error"></ng-content>
+        }
+        @if (showValid) {
+          <ng-content select="clr-control-success"></ng-content>
+        }
+      </div>
+
+      <!--        <div class="clr-subtext-wrapper">-->
+      <!--&lt;!&ndash;          <div class="clr-control-error">&ndash;&gt;-->
+      <!--            <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>-->
+      <!--            <span class="clr-subtext error">-->
+      <!--              <ng-content select="clr-control-error"></ng-content>-->
+      <!--            </span>-->
+      <!--&lt;!&ndash;          </div>&ndash;&gt;-->
+
+      <!--        </div>-->
     </div>
   `,
   host: {

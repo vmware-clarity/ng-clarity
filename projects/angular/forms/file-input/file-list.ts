@@ -45,7 +45,7 @@ import {
             </span>
           </div>
           @if (fileMessagesTemplate) {
-            <div class="clr-control-subtext-container">
+            <div class="clr-subtext-container">
               <ng-container
                 [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
                 [ngTemplateOutletContext]="fileMessagesTemplateContext"
