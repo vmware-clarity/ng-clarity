@@ -285,7 +285,6 @@ describe('DatagridColumnsOrderDirective', () => {
       </clr-dg-row>
     </clr-datagrid>
   `,
-  standalone: true,
 })
 class TestClrDatagridHostComponent {
   @ViewChild(DatagridColumnsOrderDirective) dgColumnsOrderDirective: DatagridColumnsOrderDirective;

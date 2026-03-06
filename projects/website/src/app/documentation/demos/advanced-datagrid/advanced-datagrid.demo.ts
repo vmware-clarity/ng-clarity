@@ -83,9 +83,11 @@ export class ExampleComponent {
 `;
 
 const DATAGRID_FILTERS_EXAMPLE = `
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, EventEmitter, Inject, Injectable, OnInit, Output } from '@angular/core';
 
 import {
+  DatagridFiltersUserService,
   DateTimePropertyDefinition,
   EnumPropertyDefinition,
   FilterablePropertyDefinition,
@@ -94,22 +96,36 @@ import {
   PropertyFilter,
   StringPropertyDefinition,
   Unit,
+  UserPropertyDefinition,
 } from '@clr/addons/datagrid-filters';
+import { Observable, throwError, timer } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+
+// Provide a custom user service for the User filter
+@Injectable()
+export class CustomUserService extends DatagridFiltersUserService {
+  getDomains(): Observable<string[]> {
+    return timer(1000).pipe(map(() => ['CORP.EXAMPLE', 'CLOUD.EXAMPLE']));
+  }
+
+  searchUsers(searchTerm: string, domain: string): Observable<string[]> {
+    const users = ['admin', 'john.doe', 'jane.smith'];
+    return timer(500).pipe(
+      map(() => users.filter(u => u.toLowerCase().includes(searchTerm.toLowerCase())))
+    );
+  }
+}
 
 @Component({
   templateUrl: 'datagrid-filters-demo.component.html',
+  providers: [
+    { provide: DatagridFiltersUserService, useClass: CustomUserService },
+  ],
 })
 export class DatagridFiltersDemoComponent implements OnInit {
-  /**
-   * Event emitter to tell hosting view that search term, used for filtering
-   * has changed.
-   */
   @Output()
   public searchTermChange: EventEmitter<string> = new EventEmitter<string>();
 
-  /**
-   * Event emitter to tell hosting view that filtering criteria have changed.
-   */
   @Output()
   public advancedFilterChange: EventEmitter<PropertyFilter[]> = new EventEmitter<PropertyFilter[]>();
 
@@ -117,44 +133,49 @@ export class DatagridFiltersDemoComponent implements OnInit {
   public filterableProperties: FilterablePropertyDefinition[] = [];
 
   public ngOnInit() {
-    const stringNameProperty: StringPropertyDefinition = new StringPropertyDefinition('Name', 'name');
-    const stringAddressProperty: StringPropertyDefinition = new StringPropertyDefinition(
-      'Address',
-      'address'
-    );
+    const stringNameProperty = new StringPropertyDefinition('Name', 'name');
+    const stringAddressProperty = new StringPropertyDefinition('Address', 'address');
 
-    const dateTimeProperty: DateTimePropertyDefinition = new DateTimePropertyDefinition(
-      'Last change',
-      'lastChanged'
-    );
+    const dateTimeProperty = new DateTimePropertyDefinition('Last change', 'lastChanged');
 
-    const numericCustomerCountProperty: NumericPropertyDefinition = new NumericPropertyDefinition(
+    const numericCustomerCountProperty = new NumericPropertyDefinition(
       'Number of customers',
       'customersCount'
     );
-    const numericCapacityProperty: NumericPropertyDefinition = new NumericPropertyDefinition(
+    const numericCapacityProperty = new NumericPropertyDefinition(
       'Capacity',
       'capacity',
-      undefined, // default operators
+      undefined,
       Unit.MB
     );
 
-    const enumValuesMap: Map<string, string> = new Map<string, string>();
+    const enumValuesMap = new Map<string, string>();
     enumValuesMap.set('green', 'Green');
     enumValuesMap.set('yellow', 'Yellow');
     enumValuesMap.set('orange', 'Orange');
     enumValuesMap.set('red', 'Red');
-    const enumProperty: EnumPropertyDefinition = new EnumPropertyDefinition(
-      'Status',
-      'status',
-      enumValuesMap
+    const enumProperty = new EnumPropertyDefinition('Status', 'status', enumValuesMap);
+    const singleSelectEnumProperty = new EnumPropertyDefinition('Color', 'color', enumValuesMap, true);
+
+    // Searchable enum with many values
+    const categoryValues = new Map<string, string>([
+      ['auth.login', 'User Login'],
+      ['resource.created', 'Resource Created'],
+      ['deploy.completed', 'Deployment Completed'],
+      // ... many more values
+    ]);
+    const categoryEnumProp = new EnumPropertyDefinition(
+      'Category',
+      'category',
+      categoryValues,
+      false, // multi-select
+      true,  // searchable
+      true,  // show search
+      true   // show select all
     );
-    const singleSelectEnumProperty: EnumPropertyDefinition = new EnumPropertyDefinition(
-      'Color',
-      'color',
-      enumValuesMap,
-      true
-    );
+
+    // User filter — requires DatagridFiltersUserService
+    const userProp = new UserPropertyDefinition('User', 'user');
 
     this.filterableProperties.push(
       stringNameProperty,
@@ -163,7 +184,9 @@ export class DatagridFiltersDemoComponent implements OnInit {
       numericCustomerCountProperty,
       numericCapacityProperty,
       enumProperty,
-      singleSelectEnumProperty
+      singleSelectEnumProperty,
+      categoryEnumProp,
+      userProp
     );
   }
 
