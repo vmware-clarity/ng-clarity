@@ -7,12 +7,12 @@
 //
 // 1. Change the default font family in all browsers (opinionated).
 // 2. Correct the line height in all browsers.
-// 3. Prevent adjustments of font size after orientation changes in IE and iOS.
+// 3. Prevent adjustments of font size after orientation changes in iOS.
 //
 
 html {
   font-family: sans-serif; // 1
-  line-height: 1.15; // 2 // 3
+  line-height: 1.15; // 2
   text-size-adjust: 100%; // 3
 }
 
@@ -22,42 +22,6 @@ html {
 
 body {
   margin: 0;
-}
-
-// HTML5 display definitions
-// ==========================================================================
-
-//
-// Add the correct display in IE 9-.
-// 1. Add the correct display in Edge, IE, and Firefox.
-// 2. Add the correct display in IE.
-//
-
-article,
-aside,
-details, /* 1*/
-figcaption,
-figure,
-footer,
-header,
-main, /* 2*/
-menu,
-nav,
-section,
-summary {
-  // 1
-  display: block;
-}
-
-//
-// Add the correct display in IE 9-.
-//
-
-audio,
-canvas,
-progress,
-video {
-  display: inline-block;
 }
 
 //
@@ -77,26 +41,8 @@ progress {
   vertical-align: baseline;
 }
 
-//
-// Add the correct display in IE 10-.
-// 1. Add the correct display in IE.
-//
-
-template, /* 1*/
 [hidden] {
   display: none;
-}
-
-// Links
-// ==========================================================================
-
-//
-// 1. Remove the gray background on active links in IE 10.
-// 2. Remove gaps in links underline in iOS 8+ and Safari 8+.
-//
-
-a {
-  background-color: transparent; // 1
 }
 
 //
@@ -114,7 +60,7 @@ a:hover {
 
 //
 // 1. Remove the bottom border in Firefox 39-.
-// 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+// 2. Add the correct text decoration in Chrome, Edge, Opera, and Safari.
 //
 
 abbr[title] {
@@ -160,15 +106,6 @@ h1 {
 }
 
 //
-// Add the correct background and color in IE 9-.
-//
-
-mark {
-  background-color: #ff0;
-  color: #000;
-}
-
-//
 // Add the correct font size in all browsers.
 //
 
@@ -197,25 +134,6 @@ sup {
   top: -0.5em;
 }
 
-// Embedded content
-// ==========================================================================
-
-//
-// Remove the border on images inside links in IE 10-.
-//
-
-img {
-  border-style: none;
-}
-
-//
-// Hide the overflow in IE.
-//
-
-svg:not(:root) {
-  overflow: hidden;
-}
-
 // Grouping content
 // ==========================================================================
 
@@ -233,22 +151,12 @@ samp {
 }
 
 //
-// Add the correct margin in IE 8.
-//
-
-figure {
-  margin: 1em 40px;
-}
-
-//
 // 1. Add the correct box sizing in Firefox.
-// 2. Show the overflow in Edge and IE.
 //
 
 hr {
   box-sizing: content-box; // 1
   height: 0; // 1
-  overflow: visible; // 2
 }
 
 // Forms
@@ -283,24 +191,11 @@ optgroup {
 }
 
 //
-// Show the overflow in IE.
-// 1. Show the overflow in Edge.
-//
-
-button,
-input {
-  // 1
-  overflow: visible;
-}
-
-//
-// Remove the inheritance of text transform in Edge, Firefox, and IE.
-// 1. Remove the inheritance of text transform in Firefox.
+// Remove the inheritance of text transform in Firefox.
 //
 
 button,
 select {
-  // 1
   text-transform: none;
 }
 
@@ -340,38 +235,18 @@ fieldset {
 }
 
 //
-// 1. Correct the text wrapping in Edge and IE.
-// 2. Correct the color inheritance from `fieldset` elements in IE.
-// 3. Remove the padding so developers are not caught out when they zero out
+// 1. Correct the text wrapping in Edge.
+// 2. Remove the padding so developers are not caught out when they zero out
 //    `fieldset` elements in all browsers.
 //
 
 legend {
-  box-sizing: border-box; // 1
-  color: inherit; // 2
+  box-sizing: border-box;
+  color: inherit;
   display: table; // 1
   max-width: 100%; // 1
-  padding: 0; // 3
-  white-space: normal; // 1
-}
-
-//
-// Remove the default vertical scrollbar in IE.
-//
-
-textarea {
-  overflow: auto;
-}
-
-//
-// 1. Add the correct box sizing in IE 10-.
-// 2. Remove the padding in IE 10-.
-//
-
-[type='checkbox'],
-[type='radio'] {
-  box-sizing: border-box; // 1
   padding: 0; // 2
+  white-space: normal; // 1
 }
 
 //
