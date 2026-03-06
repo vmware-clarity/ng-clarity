@@ -41,7 +41,7 @@ function switchTheme(toTheme: string): string {
   const theme = (themes as Record<string, any>)[toTheme];
 
   document.head.appendChild(newStyle);
-  newStyle.id = 'ie-theme_' + counter++;
+  newStyle.id = 'theme_' + counter++;
 
   const myStyles = [':root { '];
   for (const item in theme) {

@@ -773,22 +773,6 @@ export class HostWrapper<W> implements Injector {
 }
 
 // @public (undocumented)
-export enum IEKeys {
-    // (undocumented)
-    ArrowDown = "Down",
-    // (undocumented)
-    ArrowLeft = "Left",
-    // (undocumented)
-    ArrowRight = "Right",
-    // (undocumented)
-    ArrowUp = "Up",
-    // (undocumented)
-    Escape = "Esc",
-    // (undocumented)
-    Space = "Spacebar"
-}
-
-// @public (undocumented)
 export const IF_ACTIVE_ID: InjectionToken<number>;
 
 // @public (undocumented)
@@ -950,9 +934,6 @@ export class MockFocusableItem implements FocusableItem {
     // (undocumented)
     up?: FocusableItem | Observable<FocusableItem>;
 }
-
-// @public (undocumented)
-export function normalizeKey(key: string): string;
 
 // @public (undocumented)
 export abstract class OompaLoompa implements AfterContentChecked, OnDestroy {

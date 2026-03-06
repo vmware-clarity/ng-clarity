@@ -32,7 +32,6 @@ import {
   isKeyEitherLetterOrNumber,
   Keys,
   LoadingListener,
-  normalizeKey,
   preventArrowKeyScroll,
   uniqueIdFactory,
 } from '@clr/angular/utils';
@@ -272,7 +271,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     preventArrowKeyScroll(event);
 
     // https://www.w3.org/TR/wai-aria-practices-1.1/#keyboard-interaction-22
-    switch (normalizeKey(event.key)) {
+    switch (event.key) {
       case Keys.ArrowUp:
         this.focusManager.focusNodeAbove(this._model);
         break;
