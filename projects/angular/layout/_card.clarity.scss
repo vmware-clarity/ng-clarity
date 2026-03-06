@@ -233,7 +233,6 @@
     display: flex;
 
     .card-media-image {
-      display: inline-block; //to make sure IE11 respects the max-height and max-width
       flex: 0 0 auto;
 
       @include mixins.max-equilateral(density.$clr-base-icon-size-4xl);

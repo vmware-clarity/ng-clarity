@@ -191,16 +191,6 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     return false;
   }
 
-  /**
-   * Computes the height of the datagrid.
-   *
-   * NOTE: We had to choose to set the height instead of the min-height because
-   * IE 11 requires the height on the parent for the children flex grow/shrink properties to work.
-   * When we used min-height, 1 1 auto doesn't used to work in IE11 :-(
-   * But this doesn't affect the fix. It works in both fixed & variable height datagrids.
-   *
-   * Refer: http://stackoverflow.com/questions/24396205/flex-grow-not-working-in-internet-explorer-11-0
-   */
   private computeDatagridHeight() {
     const height = window.getComputedStyle(this.el.nativeElement).height;
     this.renderer.setStyle(this.el.nativeElement, 'height', height);
