@@ -9,7 +9,6 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ClrAlertModule } from '@clr/angular';
 
-import { NotificationsDemoModule } from './notifications.demo.module';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
@@ -23,15 +22,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     '[class.dox-content-panel]': 'true',
   },
   styleUrl: './notifications.demo.scss',
-  imports: [
-    DocTabsComponent,
-    DocTabComponent,
-    ClrAlertModule,
-    ThemedImageComponent,
-    RouterLink,
-    UseDontUseComponent,
-    NotificationsDemoModule,
-  ],
+  imports: [DocTabsComponent, DocTabComponent, ClrAlertModule, ThemedImageComponent, RouterLink, UseDontUseComponent],
 })
 export class NotificationsDemo extends ClarityDocComponent {
   constructor() {

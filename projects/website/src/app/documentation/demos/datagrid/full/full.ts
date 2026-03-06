@@ -350,9 +350,9 @@ export class DatagridFullDemo {
 
   additionalFiles = {
     ...CommonFiles.additionalFiles,
-    'utils/color-filter.ts': '',
-    'utils/pokemon-filter.ts': '',
-    'utils/pokemon-comparator.ts': '',
+    'utils/color-filter.ts': require('!raw-loader!../utils/color-filter').default,
+    'utils/pokemon-filter.ts': require('!raw-loader!../utils/pokemon-filter').default,
+    'utils/pokemon-comparator.ts': require('!raw-loader!../utils/pokemon-comparator').default,
   };
 
   options = {

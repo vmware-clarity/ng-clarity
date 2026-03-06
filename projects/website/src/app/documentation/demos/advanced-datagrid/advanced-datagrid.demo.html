@@ -498,12 +498,22 @@
         </li>
         <li>
           <strong cds-text="medium">Filterable Properties:</strong> Defines which columns are available for advanced
-          filtering using <code cds-text="code">FilterablePropertyDefinition</code> objects (e.g., String, Enum).
+          filtering using <code cds-text="code">FilterablePropertyDefinition</code> objects (e.g., String, Enum, User).
         </li>
         <li>
           <strong cds-text="medium">Event Handling:</strong> Listens to
           <code cds-text="code">(searchTermChange)</code> for quick search updates and
           <code cds-text="code">(advancedFilterChange)</code> for complex query updates.
+        </li>
+        <li>
+          <strong cds-text="medium">User Filter:</strong> The <code cds-text="code">UserPropertyDefinition</code> adds a
+          domain-aware user search filter. Requires a <code cds-text="code">DatagridFiltersUserService</code> to be
+          provided.
+        </li>
+        <li>
+          <strong cds-text="medium">Searchable Enum:</strong> Enum filters with large value sets support
+          <code cds-text="code">searchable</code>, <code cds-text="code">showSearch</code>, and
+          <code cds-text="code">showSelectAll</code> options for easier selection.
         </li>
         <li>
           <strong cds-text="medium">Custom Logic:</strong> Demonstrates how to manually filter the dataset based on the
@@ -1271,7 +1281,8 @@ class DemoTextRendererComponent implements ColumnRenderer&lt;unknown&gt;, OnInit
             Array of properties used for advanced filtering. Supported types:
             <code cds-text="code">StringPropertyDefinition</code>,
             <code cds-text="code">NumericPropertyDefinition</code>, <code cds-text="code">EnumPropertyDefinition</code>,
-            <code cds-text="code">DateTimePropertyDefinition</code>.
+            <code cds-text="code">DateTimePropertyDefinition</code>,
+            <code cds-text="code">UserPropertyDefinition</code>.
           </td>
         </tr>
         <tr>
@@ -1378,6 +1389,27 @@ class DemoTextRendererComponent implements ColumnRenderer&lt;unknown&gt;, OnInit
           <td><code cds-text="code">boolean</code></td>
           <td>Optional. Indicates single select filtering. Default: <code cds-text="code">false</code>.</td>
         </tr>
+        <tr>
+          <td><code cds-text="code">searchable</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>
+            Optional. Enables search functionality within the enum values list. Useful for large enum lists. Default:
+            <code cds-text="code">false</code>.
+          </td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">showSearch</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>
+            Optional. Shows the search input field within the filter popover. Default:
+            <code cds-text="code">false</code>.
+          </td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">showSelectAll</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>Optional. Shows a "Select All" toggle option. Default: <code cds-text="code">false</code>.</td>
+        </tr>
       </tbody>
     </table>
 
@@ -1429,6 +1461,61 @@ class DemoTextRendererComponent implements ColumnRenderer&lt;unknown&gt;, OnInit
       <strong>Default operators:</strong> Equals, Before, BeforeOrEqualTo, After, AfterOrEqualTo, CustomRange, IsEmpty,
       LastDay, LastWeek, LastMonth, LastYear, TimeSpan.
     </p>
+
+    <h3 data-toc-item id="user-property-definition" cds-text="section" class="clr-mt-32px">UserPropertyDefinition</h3>
+    <p cds-text="body" class="clr-mt-16px">Extends <code cds-text="code">FilterablePropertyDefinition</code>.</p>
+    <p cds-text="body" class="clr-mt-16px">
+      Provides a user-selection filter with domain-aware user search. Requires a
+      <code cds-text="code">DatagridFiltersUserService</code> to be provided for retrieving domains and searching users.
+    </p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">displayName</code></td>
+          <td><code cds-text="code">string</code></td>
+          <td>Name as shown to users.</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">property</code></td>
+          <td><code cds-text="code">string</code></td>
+          <td>Actual name of the property that is used for filtering.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 cds-text="subsection" class="clr-mt-24px">DatagridFiltersUserService</h4>
+    <p cds-text="body" class="clr-mt-16px">
+      Abstract service that must be provided when using <code cds-text="code">UserPropertyDefinition</code>. Implement
+      the following methods:
+    </p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Returns</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">getDomains()</code></td>
+          <td><code cds-text="code">Observable&lt;string[]&gt;</code></td>
+          <td>Returns available authentication domains.</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">searchUsers(searchTerm, domain)</code></td>
+          <td><code cds-text="code">Observable&lt;string[]&gt;</code></td>
+          <td>Searches for users matching the search term in the specified domain.</td>
+        </tr>
+      </tbody>
+    </table>
 
     <h3 data-toc-item id="property-filter" cds-text="section" class="clr-mt-32px">PropertyFilter</h3>
     <table class="table">

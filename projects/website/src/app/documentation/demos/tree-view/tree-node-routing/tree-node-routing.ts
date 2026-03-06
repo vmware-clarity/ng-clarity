@@ -47,9 +47,9 @@ export class ExampleComponent {}
 `;
 
 const additionalFiles = {
-  'app.routes.ts': '',
-  'albums.ts': '',
-  'album.component.ts': '',
+  'app.routes.ts': require('!raw-loader!./app.routes').default,
+  'albums.ts': require('!raw-loader!./albums').default,
+  'album.component.ts': require('!raw-loader!./album.component').default,
 };
 
 @Component({

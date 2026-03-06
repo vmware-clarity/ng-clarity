@@ -13,7 +13,6 @@ import { ComboboxAsyncDemo } from './combobox-async.demo';
 import { ComboboxGroupingDemo } from './combobox-grouping.demo';
 import { ComboboxMultiDemo } from './combobox-multi.demo';
 import { ComboboxSingleDemo } from './combobox-single.demo';
-import { ComboboxDemoModule } from './combobox.demo.module';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsComponent, LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
@@ -42,7 +41,6 @@ import { formsPatternLink } from '../pattern-links';
     ComboboxGroupingDemo,
     StyleDocsComponent,
     NestingTableComponent,
-    ComboboxDemoModule,
   ],
 })
 export class ComboboxDemo extends ClarityDocComponent {

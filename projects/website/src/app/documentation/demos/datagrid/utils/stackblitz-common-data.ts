@@ -74,15 +74,13 @@ const exampleCss = `
 }
 `;
 
-/* eslint-disable @typescript-eslint/no-var-requires */
 const additionalFiles = {
-  'inventory/inventory.ts': '',
+  'inventory/inventory.ts': require('!raw-loader!../inventory/inventory.ts').default,
   'inventory/inventory-items.json': JSON.stringify(require('../inventory/inventory-items.json')),
-  'inventory/pokemon.ts': '',
-  'inventory/user.ts': '',
-  'inventory/values.ts': '',
+  'inventory/pokemon.ts': require('!raw-loader!../inventory/pokemon.ts').default,
+  'inventory/user.ts': require('!raw-loader!../inventory/user.ts').default,
+  'inventory/values.ts': require('!raw-loader!../inventory/values.ts').default,
 };
-/* eslint-enable @typescript-eslint/no-var-requires */
 
 export const CommonFiles = {
   additionalFiles,

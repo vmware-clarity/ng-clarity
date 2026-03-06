@@ -99,11 +99,26 @@ export class DragDropGridDemoComponent {
   }
 
   protected drop(event: CdkDragDrop<any[]>) {
+    document.body.classList.remove('drag-valid-target');
     event.item.data?.forEach((item: VmItem) => {
       if (this.receivedItems.includes(item.name)) {
         return;
       }
       this.receivedItems.push(item.name);
     });
+  }
+
+  protected dropListEnter() {
+    document.body.classList.remove('drag-invalid-target');
+    document.body.classList.add('drag-valid-target');
+  }
+
+  protected dropEnterInInvalidList() {
+    document.body.classList.remove('drag-valid-target');
+    document.body.classList.add('drag-invalid-target');
+  }
+
+  protected dropInInvalidList() {
+    document.body.classList.remove('drag-invalid-target');
   }
 }

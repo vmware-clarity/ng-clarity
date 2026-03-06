@@ -5,12 +5,12 @@ title: Support Policies
 # Clarity Support Policies
 
 <div cds-layout="m-t:xxl">
-  <app-cms-themed-image
+  <app-themed-image
     light-src="/assets/images/clarity-support-policies-banner.svg"
     dark-src="/assets/images/clarity-support-policies-banner-dark.svg"
     image-alt=""
     image-style="max-width: 100%"
-  ></app-cms-themed-image>
+  ></app-themed-image>
 <div>
 
 ## Versioning
