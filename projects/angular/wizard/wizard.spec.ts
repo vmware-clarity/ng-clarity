@@ -259,14 +259,14 @@ export default function (): void {
           expect(context.testComponent._pagesLoaded).toBe(1);
         });
 
-        it('should notify clrWizardCurrentPageChanged output', () => {
-          expect(context.testComponent._currentPageChanged).toBe(1, 'only initial load');
+        it('should notify clrWizardCurrentPageChange output', () => {
+          expect(context.testComponent._currentPageChange).toBe(1, 'only initial load');
           wizard.next();
-          expect(context.testComponent._currentPageChanged).toBe(2, 'increases with move forward');
+          expect(context.testComponent._currentPageChange).toBe(2, 'increases with move forward');
           wizard.next();
-          expect(context.testComponent._currentPageChanged).toBe(3, 'increases with move forward');
+          expect(context.testComponent._currentPageChange).toBe(3, 'increases with move forward');
           wizard.previous();
-          expect(context.testComponent._currentPageChanged).toBe(4, 'increases with move backward');
+          expect(context.testComponent._currentPageChange).toBe(4, 'increases with move backward');
         });
 
         it('should notify clrWizardOnNext output', () => {
