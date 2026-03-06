@@ -45,6 +45,7 @@ export enum PropertyType {
   Enum,
   Numeric,
   DateTime,
+  User,
 }
 
 export enum Unit {

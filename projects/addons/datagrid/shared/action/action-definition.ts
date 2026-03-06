@@ -24,7 +24,10 @@ export interface ActionDefinition<T = string> {
   enabled: boolean;
   tooltip?: T;
   /**
-   * Specify style class to be applied. Default style is flatCompact - 'btn btn-sm btn-link'.
+   * Specify style class to be applied.
+   * @note Applicable only for ActionBar actions.
+   * Footer actions are with default style for footer actions - ('btn btn-sm column-toggle-action').
+   * Default style for ActionBar actions is flatCompact - ('btn btn-sm btn-link').
    * {@see ActionBarLayout}
    */
   class?: string;
@@ -32,6 +35,7 @@ export interface ActionDefinition<T = string> {
   /**
    * True if the action button is visible above the grid, otherwise the button
    * is placed within a dropdown.
+   * @note Applicable only for ActionBar actions.
    */
   isVisible?: boolean;
 

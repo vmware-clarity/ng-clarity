@@ -26,7 +26,6 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      // IE/OldEdge
       box-shadow: wizard-variables.$clr-wizard-box-shadow;
       height: 50%;
       max-height: 100%;
@@ -186,7 +185,7 @@
 
       // active class actually means "selected"
       &.active {
-        color: wizard-variables.$clr-wizard-stepnav-text--active;
+        color: wizard-variables.$clr-wizard-stepnav-text-selected;
         background-color: wizard-variables.$clr-wizard-stepnav-selected-bgcolor;
         border-left-color: wizard-variables.$clr-wizard-stepnav-selected-border-color;
 
@@ -202,12 +201,12 @@
       &:not(.disabled, .active) {
         &:hover {
           color: wizard-variables.$clr-wizard-stepnav-text-hover;
-          background-color: wizard-variables.$clr-wizard-stepnav-link-hover-bg-color;
+          background-color: wizard-variables.$clr-wizard-stepnav-hover-bgcolor;
         }
 
         &:active {
           color: wizard-variables.$clr-wizard-stepnav-text-active;
-          background-color: wizard-variables.$clr-wizard-stepnav-link-active-bg-color;
+          background-color: wizard-variables.$clr-wizard-stepnav-active-bgcolor;
         }
       }
 
@@ -218,7 +217,7 @@
       }
 
       &.complete {
-        border-color: wizard-variables.$clr-wizard-stepnav-item-border-color--active;
+        border-color: wizard-variables.$clr-wizard-stepnav-item-complete-border-color;
         transition: border-color 0.2s ease-in;
 
         .clr-wizard-stepnav-link-icon cds-icon {
@@ -546,11 +545,5 @@
     .clr-wizard-page[aria-hidden='true'] {
       display: none;
     }
-  }
-}
-@include mixins.fixForMsEdge {
-  // Edge is pushing header actions down. This aligns them with the close btn.
-  .clr-wizard .clr-wizard-header-action {
-    margin-top: mixins.baselinePx(-3);
   }
 }

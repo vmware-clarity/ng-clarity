@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ClrAlertModule, ClrCommonFormsModule, ClrIcon, ClrIconModule, ClrSelectModule } from '@clr/angular';
 
-import { SelectDemoModule } from './select.demo.module';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsComponent, LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
@@ -21,12 +20,12 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
 import { ClarityDocComponent } from '../clarity-doc';
 import { formsPatternLink } from '../pattern-links';
 
-const NgBasic = '';
-const NgHelpers = '';
-const NgLabel = '';
-const UiBasic = '';
-const UiError = '';
-const UiFull = '';
+const NgBasic = require('raw-loader!./ng/basic.html');
+const NgHelpers = require('raw-loader!./ng/helpers.html');
+const NgLabel = require('raw-loader!./ng/label.html');
+const UiBasic = require('raw-loader!./ui/basic.html');
+const UiError = require('raw-loader!./ui/error.html');
+const UiFull = require('raw-loader!./ui/full.html');
 
 const ngCode = `
 import { Component } from '@angular/core';
@@ -65,7 +64,6 @@ export class ExampleComponent {
     RouterLink,
     StyleDocsComponent,
     NestingTableComponent,
-    SelectDemoModule,
   ],
 })
 export class SelectDemo extends ClarityDocComponent {

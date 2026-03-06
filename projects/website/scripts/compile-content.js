@@ -42,8 +42,8 @@ async function main() {
   const compiledContentPath = path.join(PROJECT_ROOT, 'src/compiled-content');
   fs.mkdirSync(compiledContentPath, { recursive: true });
 
-  writeJson('cms-nav.json', await compileCmsNav());
-  writeJson('cms-pages.json', await compileCmsPages());
+  writeJson('nav.json', await compileNav());
+  writeJson('pages.json', await compilePages());
   writeJson('style-docs.json', await compileStyleDocs());
   writeJson('stackblitz-example-template.json', await compileStackBlitzExampleTemplate());
 
@@ -52,35 +52,35 @@ async function main() {
   }
 }
 
-async function compileCmsNav() {
-  const cmsNav = {};
+async function compileNav() {
+  const nav = {};
 
-  for (const navFilePath of glob.sync(path.join(PROJECT_ROOT, 'cms-content/nav/*.md'))) {
+  for (const navFilePath of glob.sync(path.join(PROJECT_ROOT, 'content/nav/*.md'), { windowsPathsNoEscape: true })) {
     const slug = path.parse(navFilePath).name;
     const { attributes } = parseFrontMatter(fs.readFileSync(navFilePath).toString());
 
-    cmsNav[slug] = attributes.groups;
+    nav[slug] = attributes.groups;
   }
 
-  return cmsNav;
+  return nav;
 }
 
-async function compileCmsPages() {
-  const cmsPages = {};
+async function compilePages() {
+  const pages = {};
 
-  for (const pageFilePath of glob.sync(path.join(PROJECT_ROOT, 'cms-content/pages/*.md'))) {
+  for (const pageFilePath of glob.sync(path.join(PROJECT_ROOT, 'content/pages/*.md'), { windowsPathsNoEscape: true })) {
     const slug = path.parse(pageFilePath).name;
     const { attributes, body } = parseFrontMatter(fs.readFileSync(pageFilePath).toString());
 
     const extraTransformers = attributes.addLevel3HeadingsToToc ? [addLevel3HeadingsToToc] : [];
 
-    cmsPages[slug] = {
+    pages[slug] = {
       title: attributes['title'],
       html: await compileMarkdown(body, extraTransformers),
     };
   }
 
-  return cmsPages;
+  return pages;
 }
 
 async function compileStyleDocs() {
@@ -116,8 +116,7 @@ async function compileStackBlitzExampleTemplate() {
   const files = {};
 
   const templateDir = path.join(PROJECT_ROOT, 'stackblitz-example-template');
-
-  for (const filePath of glob.sync(path.join(templateDir, '**/*.*'))) {
+  for (const filePath of glob.sync(templateDir + '/**/*.*', { windowsPathsNoEscape: true })) {
     const relativeFilePath = path.relative(templateDir, filePath);
 
     files[relativeFilePath.split(path.sep).join('/')] = fs.readFileSync(filePath).toString();
@@ -127,7 +126,14 @@ async function compileStackBlitzExampleTemplate() {
   const repoDeps = { ...repoPackageManifest.dependencies, ...repoPackageManifest.devDependencies };
   const templatePackageManifest = JSON.parse(files['package.json']);
 
+  const clarityPackages = ['@clr/angular', '@clr/ui', '@clr/addons'];
+
   for (const dependency of Object.keys(templatePackageManifest.dependencies || {})) {
+    if (clarityPackages.includes(dependency)) {
+      // @clr/* versions stay as CLARITY_VERSION_PLACEHOLDER and are patched
+      // post-release in the CI workflow with the actual released version
+      continue;
+    }
     if (repoDeps[dependency]) {
       templatePackageManifest.dependencies[dependency] = repoDeps[dependency];
     }
@@ -143,7 +149,6 @@ async function compileStackBlitzExampleTemplate() {
 
   files['package.json'] = JSON.stringify(templatePackageManifest, undefined, 2);
 
-  // return files
   return files;
 }
 

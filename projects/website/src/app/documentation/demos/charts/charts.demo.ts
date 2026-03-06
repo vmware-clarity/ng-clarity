@@ -8,7 +8,6 @@
 import { Component } from '@angular/core';
 
 import { ChartsAccessibility } from './accessibility/charts-accessibility';
-import { ChartsDemoModule } from './charts.demo.module';
 import { ChartsColors } from './colors/charts-colors';
 import { ChartsOverview } from './overview/charts-overview';
 import { DocTabActiveDirective } from '../../../shared/doc-tabs/doc-tab-active.directive';
@@ -29,7 +28,6 @@ import { ClarityDocComponent } from '../clarity-doc';
     ChartsOverview,
     ChartsColors,
     ChartsAccessibility,
-    ChartsDemoModule,
   ],
 })
 export class ChartsDemo extends ClarityDocComponent {

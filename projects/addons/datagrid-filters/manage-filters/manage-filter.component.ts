@@ -16,6 +16,7 @@ import {
   NumericPropertyDefinition,
   PropertyFilter,
   StringPropertyDefinition,
+  UserPropertyDefinition,
 } from '../model/datagrid-filters.interfaces';
 
 const enterKey = 'Enter';
@@ -42,12 +43,14 @@ export class ManageFilterComponent implements OnInit {
   readonly enumPropertyType: PropertyType = PropertyType.Enum;
   readonly numericPropertyType: PropertyType = PropertyType.Numeric;
   readonly dateTimePropertyType: PropertyType = PropertyType.DateTime;
+  readonly userPropertyType: PropertyType = PropertyType.User;
 
   managedPropertyType: PropertyType;
   stringProperty: StringPropertyDefinition;
   numericProperty: NumericPropertyDefinition;
   enumProperty: EnumPropertyDefinition;
   dateTimeProperty: DateTimePropertyDefinition;
+  userProperty: UserPropertyDefinition;
   openPrimaryConditionSignPost = false;
   openSecondaryConditionSignPost = false;
   primaryConditionDisplayText = '';
@@ -78,6 +81,9 @@ export class ManageFilterComponent implements OnInit {
     } else if (this.isDateTimeProperty(this.managedProperty)) {
       this.managedPropertyType = PropertyType.DateTime;
       this.dateTimeProperty = this.castDateTimeProperty();
+    } else if (this.isUserProperty(this.managedProperty)) {
+      this.managedPropertyType = PropertyType.User;
+      this.userProperty = this.castUserProperty();
     }
     this.updateDisplayValues();
   }
@@ -221,6 +227,10 @@ export class ManageFilterComponent implements OnInit {
     return property instanceof DateTimePropertyDefinition;
   }
 
+  private isUserProperty(property: FilterablePropertyDefinition): property is UserPropertyDefinition {
+    return property instanceof UserPropertyDefinition;
+  }
+
   private isNumericUnitFilterProperty(property: FilterablePropertyDefinition): boolean {
     return this.isNumericProperty(property) && property.unit !== undefined;
   }
@@ -239,6 +249,10 @@ export class ManageFilterComponent implements OnInit {
 
   private castDateTimeProperty(): DateTimePropertyDefinition {
     return this.managedProperty as DateTimePropertyDefinition;
+  }
+
+  private castUserProperty(): UserPropertyDefinition {
+    return this.managedProperty as UserPropertyDefinition;
   }
 
   private operatorDisplayName(operator: ComparisonOperator): string {

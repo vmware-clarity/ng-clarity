@@ -9,7 +9,6 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ClarityIcons, codeIcon, rulerPencilIcon } from '@clr/angular';
 
-import { TokensDemoModule } from './tokens.demo.module';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -62,7 +61,6 @@ const COMPONENTS_TOKENS_EXAMPLE = `
     LinkCardsComponent,
     CodeSnippetComponent,
     RouterLink,
-    TokensDemoModule,
   ],
 })
 export class TokensDemo extends ClarityDocComponent {

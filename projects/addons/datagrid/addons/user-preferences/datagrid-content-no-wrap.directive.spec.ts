@@ -11,16 +11,17 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MockDatagridColumnToggleComponent } from '@clr/addons/testing';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 import { of } from 'rxjs';
 
 import { appfxDatagridUserPreferencesToken } from './appfx-datagrid-user-preferences.token';
 import { DatagridContentNoWrapDirective } from './datagrid-content-no-wrap.directive';
 import { DatagridUserPreferencesService } from './datagrid-user-preferences.interfaces';
+import { MockDatagridColumnToggleComponent } from '../../../testing';
 import { DatagridComponent } from '../../datagrid.component';
 import { AppfxDatagridModule } from '../../datagrid.module';
 import { DatagridStrings } from '../../i18n/datagrid-strings.service';
+import { CsvHelperService } from '../export/csv-helper.service';
 import { ExportProviderService } from '../export/export-provider.service';
 
 import Spy = jasmine.Spy;
@@ -34,7 +35,7 @@ describe('DatagridContentNoWrapDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrDatagridModule, FormsModule, NoopAnimationsModule, DragDropModule, OverlayModule],
-      declarations: [MockDatagridColumnToggleComponent],
+      declarations: [DatagridContentNoWrapDirective, MockDatagridColumnToggleComponent],
       providers: [
         {
           provide: appfxDatagridUserPreferencesToken,
@@ -44,6 +45,7 @@ describe('DatagridContentNoWrapDirective', () => {
           provide: DatagridStrings,
           useClass: DatagridStrings,
         },
+        CsvHelperService,
       ],
     }).overrideProvider(ExportProviderService, {
       useValue: {
@@ -83,7 +85,6 @@ describe('DatagridContentNoWrapDirective', () => {
   selector: 'appfx-datagrid-host-component',
   imports: [AppfxDatagridModule, DragDropModule, FormsModule, OverlayModule],
   template: `<appfx-datagrid></appfx-datagrid>`,
-  standalone: true,
 })
 class DatagridHostComponent {
   @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent: DatagridComponent<unknown>;

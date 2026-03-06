@@ -67,7 +67,7 @@ export class DatagridVirtualScrollDemo implements OnInit, OnDestroy {
 
   additionalFiles = {
     ...CommonFiles.additionalFiles,
-    'utils/color-filter.ts': '',
+    'utils/color-filter.ts': require('!raw-loader!../utils/color-filter').default,
   };
 
   // server side
