@@ -1,12 +1,15 @@
 import * as i0 from '@angular/core';
-import { OnInit, EventEmitter, OnDestroy, AfterViewInit, OnChanges, Renderer2, ElementRef, PipeTransform } from '@angular/core';
-import * as i14 from '@angular/common';
+import { OnInit, EventEmitter, ChangeDetectorRef, OnDestroy, AfterViewInit, OnChanges, Renderer2, ElementRef, PipeTransform, SimpleChanges } from '@angular/core';
+import * as i17 from '@angular/common';
 import { DatePipe } from '@angular/common';
-import * as i15 from '@angular/forms';
+import * as i18 from '@angular/forms';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
-import * as i11 from '@clr/angular/forms';
-import * as i12 from '@clr/angular/icon';
-import * as i13 from '@clr/angular/popover/signpost';
+import { Observable } from 'rxjs';
+import * as i12 from '@angular/cdk/a11y';
+import * as i13 from '@clr/angular/forms';
+import * as i14 from '@clr/angular/icon';
+import * as i15 from '@clr/angular/popover/signpost';
+import * as i16 from '@clr/angular/progress/spinner';
 
 declare enum ComparisonOperator {
     Contains = 0,
@@ -44,7 +47,8 @@ declare enum PropertyType {
     String = 0,
     Enum = 1,
     Numeric = 2,
-    DateTime = 3
+    DateTime = 3,
+    User = 4
 }
 declare enum Unit {
     Byte = 0,
@@ -95,6 +99,10 @@ declare enum TimeSpan {
  * ```
  */
 declare class DatagridFiltersStrings {
+    /**
+     * Filter type label.
+     */
+    readonly filterType: string;
     /**
      * Quick filter label.
      */
@@ -205,6 +213,19 @@ declare class DatagridFiltersStrings {
     readonly filterText: string;
     readonly clearAllButtonLabel: string;
     readonly clearAllButtonAriaLabel: string;
+    readonly searchOptions: string;
+    readonly searchPlaceholder: string;
+    readonly showingFormat: string;
+    readonly noValuesFound: string;
+    readonly elementsSelectedFormat: string;
+    readonly loading: string;
+    readonly allSearchResults: string;
+    readonly loadMore: string;
+    readonly domain: string;
+    readonly user: string;
+    readonly errorSearchingUsers: string;
+    readonly errorLoadingDomains: string;
+    readonly emptyUsersError: string;
     /**
      * Add time condition button label.
      */
@@ -263,6 +284,7 @@ declare class DatagridFiltersStrings {
         mbitps: string;
         gbitps: string;
     };
+    formatString(stringFormat: string, args: string[]): string;
     getOperatorDisplayName(operator: ComparisonOperator): string;
     getConjoinerDisplayName(conjoiner: LogicalOperator): string;
     getTimeSpanDisplayName(timeSpan: TimeSpan): string;
@@ -318,7 +340,29 @@ declare class EnumPropertyDefinition extends FilterablePropertyDefinition {
      * Indicates that the property should be used for single select filtering
      */
     singleSelect: boolean;
-    constructor(displayName: string, property: string, values: Map<string, string>, singleSelect?: boolean);
+    /**
+     * Indicates that the enumeration should be searchable in the filter UI.
+     */
+    searchable: boolean;
+    /**
+     * Flag indicating whether to show the key (after the value) of the enum
+     * in parentheses. This is useful when users want to search values by key
+     * where the key represents an identifier (e.g., eventTypeId) and the
+     * value is a human-readable description.
+     */
+    showKeyInParentheses: boolean;
+    /**
+     * Creates an instance of EnumPropertyDefinition.
+     * @param displayName - The human-readable name of the property shown in the UI.
+     * @param property - The technical property name used for filtering logic.
+     * @param values - A Map containing the enum keys and their corresponding display values.
+     * @param singleSelect - Whether the filter restricts selection to a single item. Defaults to false.
+     * @param searchable - Whether to enable a search input for the enum options. Defaults to false.
+     * @param showKeyInParentheses - Whether to display keys next to values in the UI. Defaults to false.
+     * @param allowNotInOperator - Flag indicating whether to allow the use of the "NOT IN" operator
+     *        for the selected values, enabling users to exclude specific enum items.
+     */
+    constructor(displayName: string, property: string, values: Map<string, string>, singleSelect?: boolean, searchable?: boolean, showKeyInParentheses?: boolean, allowNotInOperator?: boolean);
 }
 declare class NumericPropertyDefinition extends FilterablePropertyDefinition {
     /**
@@ -337,9 +381,16 @@ declare class NumericPropertyDefinition extends FilterablePropertyDefinition {
     constructor(displayName: string, property: string, operators?: ComparisonOperator[], unit?: Unit, singleCondition?: boolean, logicalOperator?: LogicalOperator);
     getOperators(): ComparisonOperator[];
 }
+declare class UserPropertyDefinition extends FilterablePropertyDefinition {
+    constructor(displayName: string, property: string);
+}
 declare class DateTimePropertyDefinition extends FilterablePropertyDefinition {
+    /**
+     * Flag indicating whether to include seconds in the time selector for the DateTime filter.
+     */
+    includeSeconds: boolean;
     private readonly defaultOperators;
-    constructor(displayName: string, property: string, operators?: ComparisonOperator[]);
+    constructor(displayName: string, property: string, operators?: ComparisonOperator[], includeSeconds?: boolean);
     getOperators(): ComparisonOperator[];
 }
 declare class PropertyFilter {
@@ -377,6 +428,7 @@ interface EnumPropertyData {
  */
 declare class CompositeFiltersComponent implements OnInit {
     filterStrings: DatagridFiltersStrings;
+    private cdr;
     filterableProperties: FilterablePropertyDefinition[];
     /**
      * Event emitter to tell hosting view that the filtering conditions have changed
@@ -386,6 +438,7 @@ declare class CompositeFiltersComponent implements OnInit {
     readonly enumPropertyType: PropertyType;
     readonly numericPropertyType: PropertyType;
     readonly dateTimePropertyType: PropertyType;
+    readonly userPropertyType: PropertyType;
     signPostOpened: boolean;
     selectedFilterableProperty: FilterablePropertyDefinition;
     propertyType: PropertyType;
@@ -393,12 +446,13 @@ declare class CompositeFiltersComponent implements OnInit {
     enumProperty: EnumPropertyDefinition;
     numericProperty: NumericPropertyDefinition;
     dateTimeProperty: DateTimePropertyDefinition;
+    userProperty: UserPropertyDefinition;
     propertyFilters: PropertyFilter[];
     collapsedFilters: boolean;
     showHideFiltersArrowDir: string;
     showHideFiltersLabel: string;
     showHideFiltersAriaLabel: string;
-    constructor(filterStrings: DatagridFiltersStrings);
+    constructor(filterStrings: DatagridFiltersStrings, cdr: ChangeDetectorRef);
     ngOnInit(): void;
     onPropertyChange(): void;
     onFilterCriteriaChange(propertyFilter: PropertyFilter): void;
@@ -418,10 +472,12 @@ declare class CompositeFiltersComponent implements OnInit {
     private isEnumProperty;
     private isNumericProperty;
     private isDateTimeProperty;
+    private isUserProperty;
     private castStringProperty;
     private castEnumProperty;
     private castNumericProperty;
     private castDateTimeProperty;
+    private castUserProperty;
     static ɵfac: i0.ɵɵFactoryDeclaration<CompositeFiltersComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; }, { "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
 }
@@ -469,6 +525,26 @@ declare class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
 }
 
 /**
+ * User service that provides users for the datagrid users filter.
+ *
+ * ```
+ * @NgModule({
+ *    ...
+ *    providers: [
+ *       { provide: DatagridFiltersUserService, useClass: CustomUserService },
+ *    ]
+ * })
+ * export class AppModule {}
+ * ```
+ */
+declare class DatagridFiltersUserService {
+    getDomains(): Observable<string[]>;
+    searchUsers(searchTerm: string, domain: string): Observable<string[]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridFiltersUserService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<DatagridFiltersUserService>;
+}
+
+/**
  * Datetime filter component collects filtering criteria for datetime based properties
  *
  */
@@ -485,6 +561,7 @@ declare class DateTimeFilterComponent implements OnInit, OnChanges {
     isRelativePredicate: boolean;
     isTimeSpanPredicate: boolean;
     timePredicate: boolean;
+    includeSeconds: boolean;
     /**
      * In case the component is used for filter editing
      */
@@ -563,8 +640,10 @@ declare class DismissableDirective implements AfterViewInit {
  *
  */
 declare class EnumFilterComponent implements OnInit, OnChanges {
+    #private;
     private formBuilder;
     filterStrings: DatagridFiltersStrings;
+    private cdr;
     /**
      * Property used for filtering
      */
@@ -579,15 +658,29 @@ declare class EnumFilterComponent implements OnInit, OnChanges {
     filterCriteriaChange: EventEmitter<PropertyFilter>;
     enumFilterForm: FormGroup;
     optionsData: EnumPropertyData[];
-    private selectedFilterCriteria;
-    constructor(formBuilder: FormBuilder, filterStrings: DatagridFiltersStrings);
+    filteredOptions: {
+        data: EnumPropertyData;
+        index: number;
+    }[];
+    enumOperators: ComparisonOperator[];
+    isProcessing: boolean;
+    searchResultsLen: number;
+    selectedCount: number;
+    constructor(formBuilder: FormBuilder, filterStrings: DatagridFiltersStrings, cdr: ChangeDetectorRef);
+    get additionalOperators(): boolean;
     get optionsFormArray(): FormArray;
     ngOnInit(): void;
     ngOnChanges(): void;
+    loadMore(): void;
+    onSelectAllChange(): void;
+    onOptionChange(): void;
+    clearSearch(): void;
     onApplyButtonClick(): void;
     onCancelButtonClick(): void;
-    onSelectAllChange(): void;
-    onOptionChange(event: any): void;
+    private runAsyncOperation;
+    private initializeFilter;
+    private performSearch;
+    private updateSelectedCount;
     private selectedOptionsValidator;
     private updateData;
     private updateForm;
@@ -642,9 +735,6 @@ declare class GeneralFilterComponent implements OnInit, OnChanges {
     filterStrings: DatagridFiltersStrings;
     readonly logicalOperators: LogicalOperator[];
     readonly isEmptyOperator: ComparisonOperator;
-    /**
-     * Property used for filtering
-     */
     generalFilterForm: FormGroup;
     comparisonOperators: ComparisonOperator[];
     units: Unit[];
@@ -701,11 +791,13 @@ declare class ManageFilterComponent implements OnInit {
     readonly enumPropertyType: PropertyType;
     readonly numericPropertyType: PropertyType;
     readonly dateTimePropertyType: PropertyType;
+    readonly userPropertyType: PropertyType;
     managedPropertyType: PropertyType;
     stringProperty: StringPropertyDefinition;
     numericProperty: NumericPropertyDefinition;
     enumProperty: EnumPropertyDefinition;
     dateTimeProperty: DateTimePropertyDefinition;
+    userProperty: UserPropertyDefinition;
     openPrimaryConditionSignPost: boolean;
     openSecondaryConditionSignPost: boolean;
     primaryConditionDisplayText: string;
@@ -726,11 +818,13 @@ declare class ManageFilterComponent implements OnInit {
     private isEnumProperty;
     private isNumericProperty;
     private isDateTimeProperty;
+    private isUserProperty;
     private isNumericUnitFilterProperty;
     private castStringProperty;
     private castEnumProperty;
     private castNumericProperty;
     private castDateTimeProperty;
+    private castUserProperty;
     private operatorDisplayName;
     static ɵfac: i0.ɵɵFactoryDeclaration<ManageFilterComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ManageFilterComponent, "appfx-manage-filter", never, { "propertyFilter": { "alias": "propertyFilter"; "required": false; }; }, { "filterCriteriaChange": "filterCriteriaChange"; }, never, never, false, never>;
@@ -746,11 +840,64 @@ declare class SkipFiltersPipe implements PipeTransform {
     static ɵpipe: i0.ɵɵPipeDeclaration<SkipFiltersPipe, "skipFilter", false>;
 }
 
+declare enum ErrorType {
+    DOMAIN = 0,
+    USER_SEARCH = 1
+}
+declare class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
+    #private;
+    private fb;
+    private cdr;
+    filterStrings: DatagridFiltersStrings;
+    private userService;
+    filterProperty: UserPropertyDefinition;
+    propertyFilter: PropertyFilter;
+    filterCriteriaChange: EventEmitter<PropertyFilter>;
+    userOperators: ComparisonOperator[];
+    usersSelectionForm: FormGroup;
+    isLoading: boolean;
+    domains: string[];
+    errorRetrievingDomains?: string;
+    errorSearchingUsers?: string;
+    allFetchedUsers: string[];
+    visibleUsers: string[];
+    selectedValues: Set<string>;
+    constructor(fb: FormBuilder, cdr: ChangeDetectorRef, filterStrings: DatagridFiltersStrings, userService: DatagridFiltersUserService);
+    get optionsFormArray(): FormArray;
+    get hasMoreItems(): boolean;
+    ngOnInit(): void;
+    ngOnChanges(changes: SimpleChanges): void;
+    ngOnDestroy(): void;
+    onDomainChange(): void;
+    fetchUsers(searchTerm: string): Observable<string[]>;
+    loadMore(event: Event): void;
+    onOptionChange(index: number): void;
+    onSelectAllChange(): void;
+    clearSearch(): void;
+    handleError(error: any, errorType: ErrorType): Observable<string[]>;
+    showLoading(): void;
+    hideLoading(): void;
+    formatUser(user: string): string;
+    onCancelButtonClick(): void;
+    onApplyButtonClick(): void;
+    private setupListeners;
+    private loadDomains;
+    private resetPagination;
+    private createUsersSelectionForm;
+    private initializeSelectionInEditMode;
+    private rebuildCheckboxList;
+    private updateSelectAllState;
+    private selectionValidator;
+    private createUserPropertyPredicate;
+    static ɵfac: i0.ɵɵFactoryDeclaration<UsersFilterComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<UsersFilterComponent, "appfx-users-filter", never, { "filterProperty": { "alias": "filterProperty"; "required": false; }; "propertyFilter": { "alias": "propertyFilter"; "required": false; }; }, { "filterCriteriaChange": "filterCriteriaChange"; }, never, never, false, never>;
+}
+
 declare class AppfxDatagridFiltersModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<AppfxDatagridFiltersModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof DismissableDirective, typeof EnumFilterComponent, typeof FilterFormComponent, typeof FilterPopoverRepositionDirective, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof SkipFiltersPipe], [typeof i11.ClrCheckboxModule, typeof i12.ClrIcon, typeof i11.ClrInputModule, typeof i11.ClrRadioModule, typeof i11.ClrSelectModule, typeof i13.ClrSignpostModule, typeof i14.CommonModule, typeof i15.FormsModule, typeof i15.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof DismissableDirective, typeof EnumFilterComponent, typeof FilterFormComponent, typeof FilterPopoverRepositionDirective, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof SkipFiltersPipe, typeof UsersFilterComponent], [typeof i12.A11yModule, typeof i13.ClrCheckboxModule, typeof i14.ClrIcon, typeof i13.ClrInputModule, typeof i13.ClrRadioModule, typeof i13.ClrSelectModule, typeof i15.ClrSignpostModule, typeof i16.ClrSpinnerModule, typeof i17.CommonModule, typeof i18.FormsModule, typeof i18.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<AppfxDatagridFiltersModule>;
 }
 
-export { AppfxDatagridFiltersModule, ComparisonOperator, CompositeFiltersComponent, DataGridFiltersComponent, AppfxDatagridFiltersModule as DatagridFiltersModule, DatagridFiltersStrings, DateTimePropertyDefinition, EnumPropertyDefinition, FilterFormComponent, FilterMode, FilterablePropertyDefinition, LogicalOperator, NumericPropertyDefinition, PropertyFilter, PropertyPredicate, StringPropertyDefinition, Unit };
+export { AppfxDatagridFiltersModule, ComparisonOperator, CompositeFiltersComponent, DataGridFiltersComponent, AppfxDatagridFiltersModule as DatagridFiltersModule, DatagridFiltersStrings, DatagridFiltersUserService, DateTimePropertyDefinition, EnumPropertyDefinition, FilterFormComponent, FilterMode, FilterablePropertyDefinition, LogicalOperator, NumericPropertyDefinition, PropertyFilter, PropertyPredicate, PropertyType, StringPropertyDefinition, Unit, UserPropertyDefinition };

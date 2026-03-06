@@ -41,13 +41,17 @@ interface ActionDefinition<T = string> {
     enabled: boolean;
     tooltip?: T;
     /**
-     * Specify style class to be applied. Default style is flatCompact - 'btn btn-sm btn-link'.
+     * Specify style class to be applied.
+     * @note Applicable only for ActionBar actions.
+     * Footer actions are with default style for footer actions - ('btn btn-sm column-toggle-action').
+     * Default style for ActionBar actions is flatCompact - ('btn btn-sm btn-link').
      * {@see ActionBarLayout}
      */
     class?: string;
     /**
      * True if the action button is visible above the grid, otherwise the button
      * is placed within a dropdown.
+     * @note Applicable only for ActionBar actions.
      */
     isVisible?: boolean;
     /**
@@ -680,6 +684,21 @@ interface GridFooterModel {
      * Defaults to `false` if not specified.
      */
     enableCustomExport?: boolean;
+    /**
+     * An array of action definitions to be rendered in the Datagrid footer.
+     * These actions are displayed as small buttons on the left side of the footer.
+     *
+     * Interaction:
+     * When a footer action is clicked, the {@link #onActionClick} callback is invoked,
+     * passing the specific {@link ActionDefinition} and the current datagrid
+     * selection (single or multiple items) as context.
+     *
+     * Note on Styling:
+     * Unlike ActionBar actions, footer actions ignore the 'class' property and
+     * apply a consistent style to maintain visual harmony with
+     * pagination and other footer elements.
+     */
+    footerActions?: ActionDefinition[];
 }
 /**
  * DatagridComponent represents a data-bound list control that displays items from an array-based source in the form of columns and rows.

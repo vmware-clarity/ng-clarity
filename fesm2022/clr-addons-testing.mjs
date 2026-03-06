@@ -577,6 +577,20 @@ class GridHelper {
             .indexOf(label);
         return matched >= 0 ? menuItems[matched] : undefined;
     }
+    findFooterButton(label) {
+        const buttons = this.gridElement.querySelectorAll('clr-dg-footer button');
+        const matched = Array.from(buttons)
+            .map(e => (e.textContent ? e.textContent.trim() : ''))
+            .indexOf(label);
+        return matched >= 0 ? buttons[matched] : undefined;
+    }
+    findFooterDropdownChildButton(label) {
+        const buttons = document.querySelectorAll('clr-dropdown-menu button');
+        const matched = Array.from(buttons)
+            .map(e => (e.textContent ? e.textContent.trim() : ''))
+            .indexOf(label);
+        return matched >= 0 ? buttons[matched] : undefined;
+    }
     /**
      * handle string and array-based i18n bundle-key structures
      */

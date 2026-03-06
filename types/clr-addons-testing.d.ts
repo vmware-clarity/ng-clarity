@@ -161,6 +161,8 @@ declare class GridHelper {
     getActionBarActionLabels(hasSpan?: boolean): Array<string>;
     isDataLoading(): boolean;
     findActionBarButton(label: string): HTMLButtonElement | undefined;
+    findFooterButton(label: string): HTMLButtonElement | undefined;
+    findFooterDropdownChildButton(label: string): HTMLButtonElement | undefined;
     /**
      * handle string and array-based i18n bundle-key structures
      */
