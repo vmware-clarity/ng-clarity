@@ -23,7 +23,6 @@ import { TimelineComponentDemo } from './timeline-component';
 import { TimelineContainerDemo } from './timeline-container-demo';
 import { TimelineFullDemo } from './timeline-full-demo.component';
 import { TimelineStepDemo } from './timeline-step-demo';
-import { TimelineDemoModule } from './timeline.demo.module';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsComponent, LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
@@ -55,7 +54,6 @@ import { multiStepPatternLink } from '../pattern-links';
     TimelineFullDemo,
     TimelineComponentDemo,
     StyleDocsComponent,
-    TimelineDemoModule,
   ],
 })
 export class TimelineDemo extends ClarityDocComponent {

@@ -11,7 +11,6 @@ import { RouterLink } from '@angular/router';
 import { ClrCommonFormsModule, ClrRangeModule } from '@clr/angular';
 
 import { RangeBasicDemo } from './range-basic.demo';
-import { RangeDemoModule } from './range.module';
 import { DocTabActiveDirective } from '../../../shared/doc-tabs/doc-tab-active.directive';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -42,7 +41,6 @@ import { formsPatternLink } from '../pattern-links';
     RangeBasicDemo,
     StyleDocsComponent,
     NestingTableComponent,
-    RangeDemoModule,
   ],
 })
 export class RangeDemo extends ClarityDocComponent {

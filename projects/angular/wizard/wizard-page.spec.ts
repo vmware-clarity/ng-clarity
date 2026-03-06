@@ -857,9 +857,6 @@ export default function (): void {
         });
       });
 
-      // TODO: HAVE TO TEST ONCOMMIT AS PART OF PAGE-COLLECTION B/C IT IS ONLY USED THERE
-      // JUST MAKE SURE IT PASSES THE PAGE.ID...
-
       describe('onLoad', () => {
         it('should emit when page is made current and pass page id when emitted', () => {
           const emitSpy = spyOn(otherWizardPage.onLoad, 'emit').and.callThrough();

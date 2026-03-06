@@ -10,7 +10,6 @@ import { ClrAlertModule } from '@clr/angular';
 
 import { ColorTypeDemo } from './color-type/color-type.demo';
 import { ColorizeCapitalizeLettersPipe } from './colorize-capitalized-letters.pipe';
-import { TypographyDemoModule } from './typography.demo.module';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -32,7 +31,6 @@ import { ClarityDocComponent } from '../clarity-doc';
     ClrAlertModule,
     ColorTypeDemo,
     DoDontComponent,
-    TypographyDemoModule,
     ColorizeCapitalizeLettersPipe,
   ],
 })

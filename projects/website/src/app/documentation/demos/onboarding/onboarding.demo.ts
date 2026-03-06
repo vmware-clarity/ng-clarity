@@ -7,7 +7,6 @@
 
 import { Component } from '@angular/core';
 
-import { OnboardingDemoModule } from './onboarding.demo.module';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
@@ -20,7 +19,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
-  imports: [DocTabsComponent, DocTabComponent, UseDontUseComponent, ThemedImageComponent, OnboardingDemoModule],
+  imports: [DocTabsComponent, DocTabComponent, UseDontUseComponent, ThemedImageComponent],
 })
 export class OnboardingDemo extends ClarityDocComponent {
   constructor() {
