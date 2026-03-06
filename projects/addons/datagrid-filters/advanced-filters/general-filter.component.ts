@@ -35,9 +35,7 @@ const unmericPatternRegex = '^-?[0-9]+$';
 export class GeneralFilterComponent implements OnInit, OnChanges {
   readonly logicalOperators: LogicalOperator[];
   readonly isEmptyOperator: ComparisonOperator = ComparisonOperator.IsEmpty;
-  /**
-   * Property used for filtering
-   */
+
   generalFilterForm: FormGroup;
   comparisonOperators: ComparisonOperator[];
   units: Unit[] = [];
@@ -54,10 +52,14 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
    * Event emitter to tell hosting view that filtering criteria have changed
    */
   @Output() filterCriteriaChange: EventEmitter<PropertyFilter> = new EventEmitter<PropertyFilter>();
+
   protected LogicalOperator = LogicalOperator;
   private selectedFilterCriteria: PropertyFilter = new PropertyFilter();
   private primaryPredicate: PropertyPredicate = new PropertyPredicate();
   private secondaryPredicate: PropertyPredicate = new PropertyPredicate();
+  /**
+   * Property used for filtering
+   */
   #filterProperty: StringPropertyDefinition | NumericPropertyDefinition;
 
   constructor(

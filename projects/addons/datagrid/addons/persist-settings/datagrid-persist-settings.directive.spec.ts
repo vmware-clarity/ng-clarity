@@ -187,8 +187,8 @@ describe('DatagridPersistSettingsDirective', () => {
         column: columns[2],
       });
       expect(persistedData.sorting).toBeTruthy();
-      expect(persistedData.sorting?.sortOrder).toEqual(ClrDatagridSortOrder.DESC);
-      expect(persistedData.sorting?.column.uid).toEqual(columns[2].displayName);
+      expect(persistedData.sorting.sortOrder).toEqual(ClrDatagridSortOrder.DESC);
+      expect(persistedData.sorting.column.uid).toEqual(columns[2].displayName);
     });
 
     it('when column visible state is changes ', fakeAsync(function (this: any) {
@@ -202,7 +202,7 @@ describe('DatagridPersistSettingsDirective', () => {
       });
       tick(100);
       expect(persistedData.columns).toBeTruthy();
-      expect(persistedData.columns?.length).toEqual(3);
+      expect(persistedData.columns.length).toEqual(3);
       expect(persistedData.columns[0].visible).toEqual(true);
       expect(persistedData.columns[0].uid).toEqual(columns[0].uid as string);
       expect(persistedData.columns[1].visible).toEqual(false);
@@ -223,7 +223,7 @@ describe('DatagridPersistSettingsDirective', () => {
       });
       tick(100);
       expect(persistedData.columns).toBeTruthy();
-      expect(persistedData.columns?.length).toEqual(3);
+      expect(persistedData.columns.length).toEqual(3);
       expect(persistedData.columns[0].visible).toEqual(true);
       expect(persistedData.columns[0].uid).toEqual(columns[0].uid as string);
       expect(persistedData.columns[0].width).toEqual(101);
@@ -242,7 +242,7 @@ describe('DatagridPersistSettingsDirective', () => {
       });
       tick(100);
       expect(persistedData.columns).toBeTruthy();
-      expect(persistedData.columns?.length).toEqual(3);
+      expect(persistedData.columns.length).toEqual(3);
       expect(persistedData.columns[0].visible).toEqual(true);
       expect(persistedData.columns[0].uid).toEqual(columns[0].uid as string);
     }));
@@ -348,7 +348,6 @@ describe('DatagridPersistSettingsDirective', () => {
       [persistSortOrder]="persistSortOrder"
     ></appfx-datagrid>
   `,
-  standalone: true,
 })
 class DatagridHostComponent {
   @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent: DatagridComponent<unknown>;

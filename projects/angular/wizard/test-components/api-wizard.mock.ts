@@ -17,7 +17,7 @@ import { ClrWizard } from '../wizard';
       [clrWizardOpen]="open"
       (clrWizardOpenChange)="onOpenChange()"
       [clrWizardSize]="mySize"
-      (clrWizardCurrentPageChanged)="handleCurrentChange()"
+      (clrWizardCurrentPageChange)="handleCurrentChange()"
       (clrWizardOnNext)="handleOnNext()"
       (clrWizardOnPrevious)="handleOnPrevious()"
       (clrWizardOnCancel)="handleOnCancel()"
@@ -77,7 +77,7 @@ export class TemplateApiWizardTestComponent {
   _openChange = 0;
   _pagesLoaded = 0;
   _firstPageLoaded = 0;
-  _currentPageChanged = 0;
+  _currentPageChange = 0;
   _movedForward = 0;
   _movedBackward = 0;
   _cancelled = 0;
@@ -107,7 +107,7 @@ export class TemplateApiWizardTestComponent {
   }
 
   handleCurrentChange(): void {
-    this._currentPageChanged++;
+    this._currentPageChange++;
   }
 
   handleOnNext(): void {

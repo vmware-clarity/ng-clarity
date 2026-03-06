@@ -292,12 +292,12 @@
           [selectedItemsCount]="selectedItemsCount"
           [filteredItemsCount]="filteredItemsCount"
           (exportEventEmitter)="onExportEvent($event)"
-          class="export-link"
+          class="footer-actions"
         >
         </appfx-dg-export>
       }
       @if (showDeselectAll) {
-        <div class="column-switch-wrapper export-link">
+        <div class="column-switch-wrapper footer-actions">
           <button
             class="btn btn-sm column-toggle-action"
             [disabled]="deselectAllDisabled"
@@ -306,6 +306,49 @@
             {{ dgStrings.deselectAll }}
           </button>
         </div>
+      }
+      <!-- Custom footer actions -->
+      @if (gridFooterModel?.footerActions) {
+        @for (action of gridFooterModel.footerActions; track action) {
+          <div class="footer-actions column-switch-wrapper">
+            @if (action.children) {
+              <clr-dropdown>
+                <button
+                  class="btn btn-sm column-toggle-action"
+                  clrDropdownTrigger
+                  [disabled]="!action.enabled"
+                  [attr.aria-label]="action.ariaLabel"
+                >
+                  {{ action.label }}
+                  <cds-icon shape="angle" direction="up"></cds-icon>
+                </button>
+                <clr-dropdown-menu clrPosition="top-left" *clrIfOpen>
+                  @for (childAction of action.children; track childAction) {
+                    <button
+                      type="button"
+                      [disabled]="!childAction.enabled"
+                      [attr.aria-label]="childAction.ariaLabel"
+                      clrDropdownItem
+                      (click)="onActionClick(childAction)"
+                    >
+                      {{ childAction.label }}
+                    </button>
+                  }
+                </clr-dropdown-menu>
+              </clr-dropdown>
+            } @else {
+              <button
+                type="button"
+                class="column-toggle-action btn btn-sm"
+                [attr.aria-label]="action.ariaLabel"
+                [disabled]="!action.enabled"
+                (click)="onActionClick(action)"
+              >
+                {{ action.label }}
+              </button>
+            }
+          </div>
+        }
       }
       <ng-content select=".custom-footer-content"></ng-content>
       @if (pageSize > 0) {
@@ -358,11 +401,11 @@
       <div class="custom-placeholder" *cdkDragPlaceholder></div>
       <div class="custom-preview" *cdkDragPreview>
         @if (draggedItems.length === 1) {
-          <div class="grid-ghost text-truncate single-ghost" [ngClass]="{ 'selection-ghost': isItemSelected(item) }">
+          <div class="grid-ghost single-ghost" [ngClass]="{ 'selection-ghost': isItemSelected(item) }">
             <ng-container *ngTemplateOutlet="draggableGhostContent; context: { $implicit: item }"> </ng-container>
           </div>
         } @else {
-          <div class="grid-ghost text-truncate multiple-ghost selection-ghost">
+          <div class="grid-ghost multiple-ghost selection-ghost">
             <ng-container *ngTemplateOutlet="draggableGhostContent; context: { $implicit: item }"> </ng-container>
           </div>
           <span class="badge badge-purple ghost-badge">
@@ -375,6 +418,8 @@
 </ng-template>
 
 <ng-template #draggableGhostContent let-item>
+  <cds-icon class="drop-status drop-status-valid" shape="plus" size="18"></cds-icon>
+  <cds-icon class="drop-status drop-status-invalid" shape="ban" size="18"></cds-icon>
   <i class="{{ item.primaryIconId }}"></i>
   <span>{{ item[dragConfig.fieldName] }}</span>
 </ng-template>

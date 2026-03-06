@@ -13,7 +13,6 @@ import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
 import { ClarityDocComponent } from '../clarity-doc';
 import { multiStepPatternLink } from '../pattern-links';
-import { DragAndDropDemoModule } from './drag-and-drop.demo.module';
 
 @Component({
   selector: 'clr-drag-and-drop-demo',
@@ -22,7 +21,7 @@ import { DragAndDropDemoModule } from './drag-and-drop.demo.module';
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
-  imports: [DocTabsComponent, DocTabComponent, DragAndDropDemoModule],
+  imports: [DocTabsComponent, DocTabComponent],
 })
 export class DragAndDropDemo extends ClarityDocComponent {
   readonly patternLinks: LinkCardsLink[] = [multiStepPatternLink];

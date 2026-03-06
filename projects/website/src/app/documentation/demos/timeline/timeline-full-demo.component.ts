@@ -19,7 +19,6 @@ import {
   ClrTimelineStepState,
 } from '@clr/angular';
 
-import { TimelineDemo } from './timeline.demo';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const code = {
@@ -237,7 +236,6 @@ export class ExampleComponent {
     ClrSpinnerModule,
     StackblitzExampleComponent,
     ClrTimelineModule,
-    TimelineDemo,
   ],
 })
 export class TimelineFullDemo {

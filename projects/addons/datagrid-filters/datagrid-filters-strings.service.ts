@@ -32,6 +32,11 @@ import { ComparisonOperator, LogicalOperator, TimeSpan, Unit } from './model/dat
 @Injectable()
 export class DatagridFiltersStrings {
   /**
+   * Filter type label.
+   */
+  readonly filterType: string = 'Filter Type';
+
+  /**
    * Quick filter label.
    */
   readonly quickFilter: string = 'Quick Filter';
@@ -194,6 +199,32 @@ export class DatagridFiltersStrings {
 
   readonly clearAllButtonAriaLabel: string = 'Clear all filters';
 
+  readonly searchOptions: string = 'Search options';
+
+  readonly searchPlaceholder: string = 'Search...';
+
+  readonly showingFormat: string = 'Showing {} of {} results';
+
+  readonly noValuesFound: string = 'No matching values found.';
+
+  readonly elementsSelectedFormat: string = '{} elements selected';
+
+  readonly loading: string = 'Loading...';
+
+  readonly allSearchResults: string = 'Select All Search Results';
+
+  readonly loadMore: string = 'Load more ...';
+
+  readonly domain: string = 'Domain';
+
+  readonly user: string = 'User';
+
+  readonly errorSearchingUsers: string = 'Error searching users.';
+
+  readonly errorLoadingDomains: string = 'Error loading domains.';
+
+  readonly emptyUsersError: string = 'Add at least one user.';
+
   /**
    * Add time condition button label.
    */
@@ -288,6 +319,14 @@ export class DatagridFiltersStrings {
     mbitps: 'Mbit/s',
     gbitps: 'Gbit/s',
   };
+
+  formatString(stringFormat: string, args: string[]): string {
+    let result = stringFormat;
+    for (const arg of args) {
+      result = result.replace('{}', arg);
+    }
+    return result;
+  }
 
   getOperatorDisplayName(operator: ComparisonOperator): string {
     switch (operator) {
