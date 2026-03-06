@@ -83,7 +83,7 @@ clr-signpost-content {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgb(255 255 255 / 70%);
+  background: var(--clr-datagrid-loading-background);
   display: flex;
   align-items: center;
   justify-content: center;
