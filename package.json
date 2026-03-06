@@ -225,5 +225,5 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "version": "0.0.0-preview.feaa90c"
+  "version": "0.0.0-preview.5be26d7"
 }
