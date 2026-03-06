@@ -42,6 +42,7 @@ import { DatagridResponsiveFooterDemo } from './responsive-footer/responsive-foo
 import { DatagridScrollingDemo } from './scrolling/scrolling';
 import { DatagridSelectionDemo } from './selection/selection';
 import { DatagridSelectionRowModeDemo } from './selection-row-mode/selection-row-mode';
+import { DatagridSelectionSandboxDemo } from './selection-sandbox/selection-sandbox';
 import { DatagridSelectionSingleDemo } from './selection-single/selection-single';
 import { DatagridServerDrivenDemo } from './server-driven/server-driven';
 import { DatagridSmartIteratorDemo } from './smart-iterator/smart-iterator';
@@ -72,6 +73,7 @@ const ROUTES: Routes = [
       { path: 'pagination-conditional', component: DatagridConditionalPaginationDemo },
       { path: 'performance', component: DatagridPerformanceDemo },
       { path: 'selection', component: DatagridSelectionDemo },
+      { path: 'selection-sandbox', component: DatagridSelectionSandboxDemo },
       { path: 'selection-single', component: DatagridSelectionSingleDemo },
       { path: 'selection-row-mode', component: DatagridSelectionRowModeDemo },
       { path: 'preserve-selection', component: DatagridPreserveSelectionDemo },

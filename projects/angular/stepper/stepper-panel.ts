@@ -10,45 +10,55 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChildren,
   ElementRef,
+  HostBinding,
   Inject,
   OnInit,
   Optional,
   PLATFORM_ID,
+  QueryList,
   ViewChild,
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
-import { AccordionPanelModel, AccordionStatus, ClrAccordionPanel, stepAnimation } from '@clr/angular/accordion';
+import { CollapsiblePanel, collapsiblePanelAnimation } from '@clr/angular/collapsible-panel';
 import { ClrCommonStringsService, IfExpandService, triggerAllFormControlValidation } from '@clr/angular/utils';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, skipUntil, tap } from 'rxjs/operators';
 
+import { StepperPanelStatus } from './enums/stepper-panel-status.enum';
+import { StepperPanelModel } from './models/stepper-panel.model';
 import { StepperService } from './providers/stepper.service';
+import { ClrStepDescription } from './step-description';
+
 @Component({
   selector: 'clr-stepper-panel',
   templateUrl: 'stepper-panel.html',
   host: { '[class.clr-stepper-panel]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: stepAnimation,
+  animations: collapsiblePanelAnimation,
   providers: [IfExpandService],
   standalone: false,
 })
-export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
+export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   @ViewChild('headerButton') headerButton: ElementRef<HTMLButtonElement>;
-  readonly AccordionStatus = AccordionStatus;
+  @ContentChildren(ClrStepDescription) stepDescription: QueryList<ClrStepDescription>;
+  @HostBinding('class.clr-stepper-panel-disabled') disabled = false;
+  readonly PanelStatus = StepperPanelStatus;
+  override panel: Observable<StepperPanelModel>;
 
   private subscriptions: Subscription[] = [];
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
-    public override commonStrings: ClrCommonStringsService,
+    public commonStrings: ClrCommonStringsService,
     @Optional() private formGroupName: FormGroupName,
     @Optional() private ngModelGroup: NgModelGroup,
     private stepperService: StepperService,
     ifExpandService: IfExpandService,
     cdr: ChangeDetectorRef
   ) {
-    super(null, commonStrings, stepperService, ifExpandService, cdr);
+    super(stepperService, ifExpandService, cdr);
   }
 
   override get id(): string {
@@ -58,8 +68,28 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     // overriding parent id required empty setter
   }
 
+  get panelNumber() {
+    return this._panelIndex + 1;
+  }
+
   get formGroup() {
     return this.formGroupName ? this.formGroupName.control : this.ngModelGroup.control;
+  }
+
+  getPanelStatus(panel: StepperPanelModel): StepperPanelStatus {
+    return panel.status;
+  }
+
+  getPanelStateClasses(panel: StepperPanelModel) {
+    return `clr-stepper-panel-${this.getPanelStatus(panel)} ${panel.open ? 'clr-stepper-panel-open' : ''}`;
+  }
+
+  getContentId(id: string) {
+    return `clr-stepper-content-${id}`;
+  }
+
+  getHeaderId(id: string) {
+    return `clr-stepper-header-${id}`;
   }
 
   override ngOnInit(): void {
@@ -93,6 +123,14 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
+  protected stepCompleteText(panelNumber: number) {
+    return this.commonStrings.parse(this.commonStrings.keys.stepComplete, { STEP: panelNumber.toString() });
+  }
+
+  protected stepErrorText(panelNumber: number) {
+    return this.commonStrings.parse(this.commonStrings.keys.stepError, { STEP: panelNumber.toString() });
+  }
+
   private listenToFocusChanges() {
     this.subscriptions.push(
       this.stepperService.activeStep
@@ -103,8 +141,8 @@ export class ClrStepperPanel extends ClrAccordionPanel implements OnInit {
     );
   }
 
-  private triggerAllFormControlValidationIfError(panel: AccordionPanelModel) {
-    if (panel.status === AccordionStatus.Error) {
+  private triggerAllFormControlValidationIfError(panel: StepperPanelModel) {
+    if (panel.status === StepperPanelStatus.Error) {
       triggerAllFormControlValidation(this.formGroup);
     }
   }

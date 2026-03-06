@@ -1,0 +1,96 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<button class="btn btn-primary" (click)="wizard.open()">Wizard: Stop Navigation</button>
+
+<clr-wizard
+  #wizard
+  [(clrWizardOpen)]="open"
+  [clrWizardSize]="'lg'"
+  [clrWizardPreventNavigation]="loading"
+  [clrWizardDisableStepnav]="readyToFinish"
+  [clrWizardPreventDefaultCancel]="true"
+  (clrWizardOnCancel)="doCancel()"
+  [clrWizardClosable]="!readyToFinish"
+>
+  <clr-wizard-title>Wizard stops navigating while validating</clr-wizard-title>
+
+  @if (!readyToFinish) {
+  <clr-wizard-button type="cancel">Cancel</clr-wizard-button>
+  } @if (!readyToFinish) {
+  <clr-wizard-button type="previous">Back</clr-wizard-button>
+  }
+  <clr-wizard-button type="next">Next</clr-wizard-button>
+  <clr-wizard-button type="finish">
+    @if (untouched && !loading) {
+    <span>Validate</span>
+    } @if (loading) {
+    <span>Please wait...</span>
+    } @if (readyToFinish) {
+    <span>OK</span>
+    }
+  </clr-wizard-button>
+
+  <clr-wizard-page
+    [clrWizardPageNextDisabled]="(name.pristine && quest.pristine && velocity.pristine) || !formPage.valid"
+  >
+    <ng-template clrPageTitle>Form to submit</ng-template>
+    <!-- mandatory -->
+
+    <form clrForm #formPage="ngForm">
+      <label>To proceed, you must answer these three questions...</label>
+      <clr-input-container>
+        <label>What is your name?</label>
+        <input clrInput name="name" required [(ngModel)]="model.won" #name="ngModel" />
+        <clr-control-error>This field is required!</clr-control-error>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>What is your quest?</label>
+        <input clrInput name="quest" required [(ngModel)]="model.too" #quest="ngModel" />
+        <clr-control-error>This field is required!</clr-control-error>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>What is the air-speed velocity of an unladen swallow?</label>
+        <input clrInput name="velocity" required [(ngModel)]="model.tree" #velocity="ngModel" />
+        <clr-control-error>This field is required!</clr-control-error>
+      </clr-input-container>
+    </form>
+  </clr-wizard-page>
+  <clr-wizard-page [clrWizardPagePreventDefaultNext]="true" (clrWizardPageOnCommit)="onCommit()">
+    <ng-template clrPageTitle> Validate your information </ng-template>
+    <ng-template clrPageNavTitle>
+      @if (!readyToFinish) {
+      <span>Validate Info</span>
+      } @if (readyToFinish) {
+      <span>Ready to Go!</span>
+      }
+    </ng-template>
+
+    @if (untouched && !loading) {
+    <p>
+      Click the Validate button to kick off a timed routine. While the validation is running, try clicking buttons and
+      stepnav items. Note that they don't do anything while the validation is running. The validation is just an
+      exercise. It will not fail.
+    </p>
+    } @if (loading) {
+    <p>Loading...</p>
+    <div class="progress">
+      <progress [value]="progress" max="100" [attr.data-displayval]="progress + '%'"></progress>
+    </div>
+    } @if (readyToFinish) {
+    <p>Click on the OK button to close the wizard.</p>
+    }
+  </clr-wizard-page>
+</clr-wizard>
+
+<app-stackblitz-example
+  name="Wizard Stop Navigation"
+  [componentTemplate]="html"
+  [componentClass]="code"
+></app-stackblitz-example>

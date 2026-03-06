@@ -25,7 +25,7 @@ export class ClrPopoverOpenCloseButton implements OnDestroy {
   constructor(private popoverService: ClrPopoverService) {
     this.subscriptions.push(
       popoverService.openChange.subscribe(change => {
-        this.openCloseChange.next(change);
+        this.openCloseChange.emit(change);
       })
     );
   }

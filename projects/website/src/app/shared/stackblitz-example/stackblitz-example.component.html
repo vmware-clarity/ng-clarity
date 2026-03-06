@@ -1,0 +1,59 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<!-- If Styles or Typescript content is available then show code snippet in tabs -->
+@if ((showComponentStyles && !!componentStyles) || (showComponentClass && !!componentClass)) {
+  <clr-tabs class="code-snippet-tabs">
+    @if (showComponentTemplate() && (componentTemplateSnippet || componentTemplate)) {
+      <clr-tab>
+        <button clrTabLink>HTML</button>
+        <clr-tab-content *clrIfActive>
+          <app-code-snippet [code]="componentTemplateSnippet || componentTemplate" language="html"></app-code-snippet>
+        </clr-tab-content>
+      </clr-tab>
+    }
+    @if (showComponentClass && componentClass) {
+      <clr-tab>
+        <button clrTabLink>TypeScript</button>
+        <clr-tab-content *clrIfActive>
+          <app-code-snippet
+            [code]="componentClass | appCondenseComponentClass"
+            language="typescript"
+          ></app-code-snippet>
+        </clr-tab-content>
+      </clr-tab>
+    }
+    @if (showComponentStyles && componentStyles) {
+      <clr-tab>
+        <button clrTabLink>CSS</button>
+        <clr-tab-content *clrIfActive>
+          <app-code-snippet [code]="componentStyles" language="css"></app-code-snippet>
+        </clr-tab-content>
+      </clr-tab>
+    }
+  </clr-tabs>
+} @else {
+  @if (componentTemplateSnippet || componentTemplate) {
+    <app-code-snippet [code]="componentTemplateSnippet || componentTemplate" language="html"></app-code-snippet>
+  }
+}
+
+<div class="addons">
+  <button class="btn btn-link" (click)="copyCode()" [attr.aria-label]="'Copy ' + name() + ' example code to clipboard'">
+    <clr-icon shape="copy"></clr-icon>
+    {{ copied ? 'Copied!' : 'Copy Code' }}
+  </button>
+  <button
+    class="btn btn-link"
+    (click)="openInStackBlitz()"
+    [attr.aria-label]="'Open ' + name() + ' example in StackBlitz'"
+  >
+    <clr-icon shape="stackblitz"></clr-icon>
+    <span class="clr-hidden-sm-down">Open in Stackblitz</span>
+    <span class="clr-hidden-md-up">Stackblitz</span>
+    <clr-icon shape="arrow" style="transform: rotate(45deg)"></clr-icon>
+  </button>
+</div>

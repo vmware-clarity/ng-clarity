@@ -1,0 +1,175 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2 class="clr-mt-48px" cds-text="title">Selection (Single)</h2>
+
+<p class="clr-mt-16px clr-mb-16px" cds-text="body">
+  Depending on the use case, you might want to restrict the user to only allow single selection in a datagrid. If you
+  haven't done so, please read the previous section on general selection first.
+</p>
+<ul>
+  <li>
+    For single select, use <code cds-text="code">[(clrDgSelected)]</code> together with
+    <code cds-text="code">[clrDgSelectionType]="'single'"</code> on the datagrid itself. The selected value is always a
+    <code cds-text="code">T[]</code> array; for single selection, use <code cds-text="code">$event[0]</code> to access
+    the selected item.
+  </li>
+</ul>
+
+<p class="clr-mt-16px" cds-text="body">
+  In the following example, we simply display the name of the selected user, but since we have access to the full
+  objects, we could perform any operation we want on it.
+</p>
+
+<div class="card card-block">
+  <p class="card-text username-list">
+    Selected user: @if (!singleSelected.length) {
+    <em>No user selected.</em>
+    } @if (singleSelected?.length) {
+    <span class="username">{{ singleSelected[0].name }}</span>
+    }
+  </p>
+</div>
+
+<clr-datagrid [(clrDgSelected)]="singleSelected" [clrDgSelectionType]="'single'">
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>Favorite color</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Single Selection"
+  [componentTemplate]="examples.main"
+  [componentClass]="examples.componentTS"
+  [showComponentClass]="false"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>
+
+<p class="clr-mt-16px clr-mb-16px" cds-text="body">
+  We also offer an <code cds-text="code">[clrDgRowSelection]</code> input to allow users to click anywhere on a row to
+  select it. We however recommend against using this feature unless you have a very specific use case that requires it,
+  due to the various accessibility concerns it raises (table rows cannot be actionable elements at the same time). We
+  are considering deprecating this feature in the future if it continues to hinder accessibility.
+</p>
+
+<clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="false">
+  <clr-alert-item>
+    <span class="alert-text">
+      <code cds-text="code">clrDgRowSelection</code> has been deprecated in 2.0 and will be removed in a future major
+      release. It is impossible to support this functionality properly and also comply with accessibility standards for
+      Clarity, and we no longer can recommend using this pattern. The workaround is to simply use single selection
+      without row selection.
+    </span>
+  </clr-alert-item>
+</clr-alert>
+
+<clr-alert [clrAlertType]="'warning'" [clrAlertClosable]="false">
+  <clr-alert-item>
+    <span class="alert-text">
+      Do not use <code cds-text="code">[clrDgRowSelection]</code> if your row contains any type of clickable elements
+      (buttons, links, inputs, expand caret, single-row actions, etc.). Doing so would produce invalid HTML in the form
+      of nested buttons, which will break in various unpredictable ways depending on the browser.
+    </span>
+  </clr-alert-item>
+</clr-alert>
+
+<div class="card card-block">
+  <p class="card-text username-list">
+    Selected user: @if (!rowSelected.length) {
+    <em>No user selected.</em>
+    } @if (rowSelected?.length) {
+    <span class="username">{{ rowSelected[0].name }}</span>
+    }
+  </p>
+</div>
+
+<clr-datagrid [(clrDgSelected)]="rowSelected" [clrDgSelectionType]="'single'" [clrDgRowSelection]="true">
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>Favorite color</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Single Row Selection"
+  [componentTemplate]="examples.rowSelection"
+  [componentClass]="examples.fullTS"
+  [showComponentClass]="false"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>
+
+<p class="clr-mt-16px clr-mb-16px" cds-text="body">
+  If you need to listen to when the selection changes, you can use Angular's
+  <a href="https://angular.io/guide/template-syntax">two way binding</a> to listen to the
+  <code cds-text="code">(clrDgSelectedChange)</code> event:
+</p>
+<app-code-snippet [code]="examples.selectionChangeEvent" language="html"></app-code-snippet>
+
+<p class="clr-mt-16px clr-mb-16px" cds-text="body">
+  In order to conditionally disable selection on a row, use the <code cds-text="code">clrDgSelectable</code>
+  input to disable selection state changes. This has to be done on each row you wish to disable, and works with single
+  and multi selection.
+</p>
+<app-code-snippet [code]="examples.unselectableRow" language="html"></app-code-snippet>
+
+<button class="btn btn-primary" (click)="lockRows()">Lock Rows</button>
+<button class="btn btn-primary" (click)="unlockRows()">Unlock Rows</button>
+
+<clr-datagrid [(clrDgSelected)]="rowSelected" [clrDgSelectionType]="'single'">
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>Favorite color</clr-dg-column>
+
+  <clr-dg-row [clrDgSelectable]="!user.locked" *clrDgItems="let user of lockedUsers" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Single Selection Full"
+  [componentTemplate]="examples.fullHtml"
+  [componentClass]="examples.fullTS"
+  [showComponentClass]="false"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>

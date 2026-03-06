@@ -1,0 +1,42 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-row">
+  <div class="clr-col-12" [class.clr-col-md-4]="showHalf()">
+    <clr-tree>
+      @for (directory of rootDirectory; track directory) {
+      <clr-tree-node [(clrExpanded)]="directory.expanded">
+        <clr-icon [shape]="directory.icon"></clr-icon>
+        {{ directory.name }} @for (file of directory.files; track file) {
+        <clr-tree-node>
+          <button (click)="openFile(directory.name, file.name)" class="clr-treenode-link" [class.active]="file.active">
+            <clr-icon [shape]="file.icon"></clr-icon>
+            {{ file.name }}
+          </button>
+        </clr-tree-node>
+        }
+      </clr-tree-node>
+      }
+    </clr-tree>
+  </div>
+  @if (showHalf()) {
+  <div class="clr-col-12 clr-col-md-8">
+    <pre class="example-display-json">{{ rootDirectory | json }}</pre>
+  </div>
+  }
+</div>
+
+@if (showCode()) {
+<div>
+  <app-stackblitz-example
+    name="dynamic tree view"
+    [componentTemplate]="exampleHtml"
+    [componentClass]="exampleTs"
+    [additionalFiles]="additionalFiles"
+  ></app-stackblitz-example>
+</div>
+}

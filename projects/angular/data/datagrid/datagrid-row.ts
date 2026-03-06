@@ -346,7 +346,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
       return;
     }
     if (this.selection.selectionType === this.SELECTION_TYPE.Single) {
-      this.selection.currentSingle = this.item;
+      this.selection.current = [this.item];
     } else {
       this.toggle(selected);
     }

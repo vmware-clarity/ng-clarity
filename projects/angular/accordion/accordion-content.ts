@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-accordion-content, clr-step-content',
+  selector: 'clr-accordion-content',
   template: `<ng-content></ng-content>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,

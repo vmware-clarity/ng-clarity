@@ -1,0 +1,357 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      Clarity icons provides pixel-perfect, scalable SVG-based icons. The icon system gives you complete control over
+      icon color, orientation, and size. Additionally, you can access and customize any SVG graphic elements inside the
+      icon through standard CSS.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="usage">Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Follow the instructions in
+      <a routerLink="/pages/developing">Getting Started: Developing</a>
+      to install the &#64;cds/core package.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="import">Import</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      To start rendering SVG shapes or providing custom SVG shapes, import the icon with the icon service.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="iconsImportExample" language="typescript"> </app-code-snippet>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="instantiate">Instantiate</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Add an icon element to the application templates as needed and specify a registered shape.
+      <br />
+      Tip: You can browse the collection of
+      <a href="https://core.clarity.design/foundation/icons/shapes/" target="_blank" rel="noopener">shapes</a>
+      included with Clarity.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="iconsInstantiateExample" language="typescript"> </app-code-snippet>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="customize">Customize</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      You can add your own custom SVG shapes if the Clarity icon library doesn't have exactly what you need. You must
+      provide a unique shape name and the SVG for its shape.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="addIconsExample" language="typescript"> </app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">After the custom shape is added, use it just like any other icon.</p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="iconsCustomizeExample" language="typescript"> </app-code-snippet>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="behavior">Behavior</h2>
+
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="icon-size">Icon size</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      By default, the size for Clarity icons is 16 by 16 pixels. You have two ways of customizing this default value:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg m-b:md">
+      <li>Use the size attribute.</li>
+      <li>Manually customize the width and height values in your icon's style.</li>
+    </ul>
+    <p cds-text="body">The size attribute takes a string number or one of the standard Clarity t-shirt sizes.</p>
+
+    <h4 class="clr-mt-16px" cds-text="subsection">Use style attribute (CSS)</h4>
+    <div class="component-box-container clr-mt-16px clrweb-DoxMedia-img">
+      <clr-icon shape="info-circle" size="sm"></clr-icon>
+      <clr-icon shape="info-circle" size="md"></clr-icon>
+      <clr-icon shape="info-circle" size="lg"></clr-icon>
+      <clr-icon shape="info-circle" size="xl"></clr-icon>
+      <clr-icon shape="info-circle" size="xxl"></clr-icon>
+    </div>
+
+    <h4 class="clr-mt-16px" cds-text="subsection">Use cds-icon size attribute</h4>
+    <div class="component-box-container clr-mt-16px clrweb-DoxMedia-img">
+      <clr-icon shape="info-circle" style="width: 12px; height: 12px"></clr-icon>
+      <clr-icon shape="info-circle" style="width: 16px; height: 16px"></clr-icon>
+      <clr-icon shape="info-circle" style="width: 36px; height: 36px"></clr-icon>
+      <clr-icon shape="info-circle" style="width: 48px; height: 48px"></clr-icon>
+      <clr-icon shape="info-circle" style="width: 64px; height: 64px"></clr-icon>
+      <clr-icon shape="info-circle" style="width: 72px; height: 72px"></clr-icon>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="rotation">Rotation</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      The default rotation for every shape that comes in the Clarity icon library is 0 degrees. With directional icons
+      such as arrows and carets, 0 degrees means that it points up. To rotate an icon to face another direction, specify
+      this using the direction attribute. Alternatively, you can set the rotation values in the icon's style attribute.
+    </p>
+
+    <h4 class="clr-mt-16px" cds-text="subsection">Use the cds-icon direction attribute</h4>
+    <div class="component-box-container clr-mt-16px clrweb-DoxMedia-img">
+      <clr-icon size="lg" shape="angle" direction="up"></clr-icon>
+      <clr-icon size="lg" shape="angle" direction="down"></clr-icon>
+      <clr-icon size="lg" shape="angle" direction="down"></clr-icon>
+      <clr-icon size="lg" shape="angle" direction="left"></clr-icon>
+    </div>
+
+    <h4 class="clr-mt-16px" cds-text="subsection">Use the style attribute</h4>
+    <div class="component-box-container clr-mt-16px clrweb-DoxMedia-img">
+      <clr-icon size="lg" shape="angle" style="transform: rotate(0deg)"></clr-icon>
+      <clr-icon size="lg" shape="angle" style="transform: rotate(90deg)"></clr-icon>
+      <clr-icon size="lg" shape="angle" style="transform: rotate(180deg)"></clr-icon>
+      <clr-icon size="lg" shape="angle" style="transform: rotate(270deg)"></clr-icon>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="flips">Flips</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      You can flip icons horizontally or vertically through the use of the flip attribute.
+    </p>
+    <div class="component-box-container clr-mt-16px clrweb-DoxMedia-img">
+      <clr-icon size="lg" shape="image"></clr-icon>
+      <clr-icon size="lg" flip="vertical" shape="image"></clr-icon>
+      <clr-icon size="lg" flip="horizontal" shape="image"></clr-icon>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="icon-colors">Icon Colors</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Clarity icons also come with predefined colors using the status attribute. Colors are described as:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg m-b:md">
+      <li>Danger: Use this color when you want to show errors or make the user pause and evaluate.</li>
+      <li>Warning: Use this color when you want the user to proceed with caution.</li>
+      <li>Success: Use this color when you want the user to know that something is correct.</li>
+      <li>Info: Use this color when you want the user to be informed.</li>
+    </ul>
+    <p cds-text="body">
+      For best accessibility remember that the color alone is an error since it is not sufficient to communicate status.
+      Using an icon shape that clarifies the status associated with the color fulfils this requirement.
+    </p>
+    <div class="component-box-container clr-mt-16px clrweb-DoxMedia-img">
+      <clr-icon size="lg" shape="info-circle"></clr-icon>
+      <clr-icon size="lg" shape="info-circle" status="danger"></clr-icon>
+      <clr-icon size="lg" shape="info-circle" status="warning"></clr-icon>
+      <clr-icon size="lg" shape="info-circle" status="success"></clr-icon>
+      <clr-icon size="lg" shape="info-circle" status="info"></clr-icon>
+    </div>
+    <p class="clr-mt-8px" cds-text="body">
+      There is also an inverse attribute, which is suitable for icons used on contrasting backgrounds.
+    </p>
+    <div class="component-box-container clr-mt-16px clrweb-DoxMedia-img">
+      <div class="clr-row align-center">
+        <div cds-layout="p:xl gap:xsm" class="user-icons-layout icons-display">
+          <clr-icon shape="user" inverse size="lg"></clr-icon>
+          <clr-icon shape="user" inverse status="info" size="lg"></clr-icon>
+          <clr-icon shape="user" inverse status="success" size="lg"></clr-icon>
+          <clr-icon shape="user" inverse status="warning" size="lg"></clr-icon>
+          <clr-icon shape="user" inverse status="danger" size="lg"></clr-icon>
+          <clr-icon shape="user" inverse size="lg" solid=""></clr-icon>
+          <clr-icon shape="user" inverse status="info" size="lg" solid=""></clr-icon>
+          <clr-icon shape="user" inverse status="success" size="lg" solid=""></clr-icon>
+          <clr-icon shape="user" inverse status="warning" size="lg" solid=""></clr-icon>
+          <clr-icon shape="user" inverse status="danger" size="lg" solid=""></clr-icon>
+        </div>
+      </div>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="badges-and-variants">Badges and Variants</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Clarity icons come with variants for badges that add visual indicators to the badge, where applicable.
+    </p>
+
+    <h4 class="clr-mt-16px" cds-text="subsection">Badge shapes and colors</h4>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg m-b:md">
+      <li>Info (circle): Use this variant when you want the icon to inform.</li>
+      <li>Success (circle): Use this variant when you want the icon to show something is correct.</li>
+      <li>Danger (circle): Use this variant when you want this icon to show something is incorrect.</li>
+      <li>Warning (circle): Use this variant when you want to show something needs caution.</li>
+      <li>Danger (triangle): Use this variant when you want this icon to show something is incorrect.</li>
+    </ul>
+    <p class="clr-mt-16px" cds-text="body">
+      Note: Not all icons support all variants. Check the details for specific
+      <a href="https://core.clarity.design/foundation/icons/shapes/" target="_blank" rel="noopener">shapes</a>
+      to see the variants that it supports.
+    </p>
+    <div class="component-box-container clr-mt-16px clrweb-DoxMedia-img">
+      <div class="clr-row">
+        <div cds-layout="p:xl gap:xsm" class="icons-display">
+          <clr-icon shape="user" size="lg" badge="info"></clr-icon>
+          <clr-icon shape="user" size="lg" badge="success"></clr-icon>
+          <clr-icon shape="user" size="lg" badge="danger"></clr-icon>
+          <clr-icon shape="user" size="lg" badge="warning"></clr-icon>
+          <clr-icon shape="user" size="lg" badge="warning-triangle"></clr-icon>
+        </div>
+        <div cds-layout="p:xl" class="user-icons-layout">
+          <clr-icon shape="user" size="lg" badge="inherit-triangle" inverse></clr-icon>
+        </div>
+        <div cds-layout="p:xl gap:xsm" class="icons-display">
+          <clr-icon solid="" shape="user" size="lg" badge="info"></clr-icon>
+          <clr-icon solid="" shape="user" size="lg" badge="success"></clr-icon>
+          <clr-icon solid="" shape="user" size="lg" badge="danger"></clr-icon>
+          <clr-icon solid="" shape="user" size="lg" badge="warning"></clr-icon>
+          <clr-icon solid="" shape="user" size="lg" badge="warning-triangle"></clr-icon>
+        </div>
+        <div cds-layout="p:xl" class="user-icons-layout">
+          <clr-icon solid="" shape="user" size="lg" badge="inherit-triangle" inverse></clr-icon>
+        </div>
+      </div>
+    </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 class="clr-mt-32px" cds-text="title">Icon Properties</h2>
+    <table class="table clr-mt-24px" cds-text="body">
+      <thead>
+        <tr>
+          <th class="left">Name</th>
+          <th class="left">Type</th>
+          <th class="left">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">shape</td>
+          <td class="left">string</td>
+          <td class="left">
+            Changes the SVG glyph displayed in the icon component.<br />
+            Defaults to the 'unknown' icon if the specified icon cannot be found in the icon registry.
+          </td>
+        </tr>
+        <tr>
+          <td class="left">size</td>
+          <td class="left">string | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'</td>
+          <td class="left">Applies numerical width-height or a t-shirt-sized CSS class name.</td>
+        </tr>
+        <tr>
+          <td class="left">direction</td>
+          <td class="left">'up' | 'down' | 'left' | 'right'</td>
+          <td class="left">
+            Applies a directional value that rotates the icon 90° with the top of the icon pointing in the specified
+            direction.
+          </td>
+        </tr>
+        <tr>
+          <td class="left">flip</td>
+          <td class="left">'horizontal' | 'vertical'</td>
+          <td class="left">
+            Applies an orientation value that flips the orientation of the icon vertically or horizontally.
+          </td>
+        </tr>
+        <tr>
+          <td class="left">solid</td>
+          <td class="left">boolean</td>
+          <td class="left">Displays most icons in their "filled" version if set to `true`.</td>
+        </tr>
+        <tr>
+          <td class="left">status</td>
+          <td class="left">'info' | 'success' | 'warning' | 'danger' | 'neutral'</td>
+          <td class="left">Changes the fill and outline color of the icon.</td>
+        </tr>
+        <tr>
+          <td class="left">inverse</td>
+          <td class="left">boolean</td>
+          <td class="left">
+            Inverts the fill and outline color of the icon if `true`. Useful to display icons on a dark background.
+          </td>
+        </tr>
+        <tr>
+          <td class="left">badge</td>
+          <td class="left">
+            'info' | 'success' | 'warning' | 'danger' | 'inherit' | 'warning-triangle' | 'inherit-triangle'
+          </td>
+          <td class="left">
+            Adds a dot or triangle badge with a status color. The badges and their colors are shown in the following
+            list:
+            <ul class="list" cds-text="body" cds-layout="m-t:sm m-b:md m-l:lg">
+              <li>'info' - blue dot</li>
+              <li>'success' - green dot</li>
+              <li>'warning' - yellow dot</li>
+              <li>'danger' - red dot</li>
+              <li>'inherit' - dot inherits color of full icon glyph</li>
+              <li>'warning-triangle' - yellow triangle</li>
+              <li>'inherit-triangle' - triangle inherits color of full icon glyph</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="clr-mt-32px" cds-text="title">Icon CSS Properties</h2>
+    <table class="table clr-mt-24px" cds-text="body">
+      <thead>
+        <tr>
+          <th class="left">Name</th>
+          <th class="left">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">--color</td>
+          <td class="left">The color of the icon.</td>
+        </tr>
+        <tr>
+          <td class="left">--badge-color</td>
+          <td class="left">The color of the badge.</td>
+        </tr>
+      </tbody>
+    </table>
+  </app-doc-tab>
+
+  <app-doc-tab tab="accessibility">
+    <p class="component-summary">
+      Icons have different accessibility requirements depending on the context in which they are used.
+    </p>
+    <p class="clr-mt-24px" cds-text="subsection">
+      The three main contexts to consider for icon accessibility are listed below.
+    </p>
+    <ul class="list" cds-text="subsection" cds-layout="m-t:lg m-l:lg">
+      <li>Inert Icons</li>
+      <li>Interactive Icons</li>
+      <li>Status/Indicator Icons</li>
+    </ul>
+
+    <h2 class="clr-mt-48px" cds-text="title">Inert Icons</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      By default, icons are inert, meaning that they don’t provide any information to screen readers and are not
+      interactive. Without additional markup, an icon is purely cosmetic and doesn’t need additional accessibility
+      markup.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="inertIconsExample" language="typescript"> </app-code-snippet>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title">Interactive Icons</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      When icons are used in buttons or links, you can also include descriptive text that briefly explains the icon’s
+      meaning for accessibility.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="interactiveIconsExample" language="typescript"> </app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      If the icon is an interactive item that doesn’t include descriptive text, add an aria-label to describe the
+      interaction.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="interactiveIconsExampleWithoutDescriptiveText" language="typescript">
+      </app-code-snippet>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title">Status or Indicator Icons</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      If an icon is used to show a status, display some other indicator, or is part of a larger body of text content,
+      add an aria-label for the icon and the role="img" attribute.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="statusOrIndicatorIconsExample" language="typescript"> </app-code-snippet>
+    </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="shapes">
+    <app-icon-shapes></app-icon-shapes>
+  </app-doc-tab>
+</app-doc-tabs>

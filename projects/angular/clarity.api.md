@@ -108,91 +108,34 @@ export const accessibility2Icon: IconShapeTuple;
 // @public (undocumented)
 export const accessibility2IconName = "accessibility-2";
 
+// Warning: (ae-forgotten-export) The symbol "CollapsiblePanelGroupModel_2" needs to be exported by the entry point clr-angular.d.ts
+//
 // @public (undocumented)
-export class AccordionModel {
-    // (undocumented)
-    protected accordionCount: number;
-    // (undocumented)
-    addPanel(id: string, open?: boolean): void;
-    // (undocumented)
-    disablePanel(panelId: string, disabled: boolean): void;
-    // (undocumented)
-    get panels(): AccordionPanelModel[];
-    // (undocumented)
-    protected _panels: {
-        [id: string]: AccordionPanelModel;
-    };
-    // (undocumented)
-    setStrategy(strategy: AccordionStrategy): void;
-    // (undocumented)
-    protected strategy: AccordionStrategy;
-    // (undocumented)
-    togglePanel(panelId: string, open?: boolean): void;
-    // (undocumented)
-    updatePanelOrder(ids: string[]): void;
-}
-
-// @public (undocumented)
-export class AccordionPanelModel {
-    constructor(id: string, accordionId: number | string);
-    // (undocumented)
-    accordionId: number | string;
-    // (undocumented)
-    disabled: boolean;
-    // (undocumented)
-    id: string;
-    // (undocumented)
-    index: number;
-    // (undocumented)
-    open: boolean;
-    // (undocumented)
-    status: AccordionStatus;
-    // (undocumented)
-    templateId: string;
-}
-
-// @public (undocumented)
-export class AccordionService {
-    // (undocumented)
-    protected accordion: AccordionModel;
-    // (undocumented)
-    addPanel(panelId: string, open?: boolean): void;
-    // (undocumented)
-    disablePanel(panelId: string, disabled?: boolean): void;
-    // (undocumented)
-    protected emitUpdatedPanels(): void;
-    // (undocumented)
-    getPanelChanges(panelId: string): Observable<AccordionPanelModel>;
-    // (undocumented)
-    protected readonly _panelsChanges: BehaviorSubject<AccordionPanelModel[]>;
+export class AccordionModel extends CollapsiblePanelGroupModel_2 {
     // (undocumented)
     setStrategy(strategy: AccordionStrategy): void;
     // (undocumented)
     togglePanel(panelId: string, open?: boolean): void;
+}
+
+// Warning: (ae-forgotten-export) The symbol "CollapsiblePanelService_2" needs to be exported by the entry point clr-angular.d.ts
+//
+// @public (undocumented)
+export class AccordionService extends CollapsiblePanelService_2 {
     // (undocumented)
-    updatePanelOrder(ids: string[]): void;
+    protected panelGroup: AccordionModel;
+    // (undocumented)
+    setStrategy(strategy: AccordionStrategy): void;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<AccordionService, never>;
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<AccordionService>;
 }
 
-// @public (undocumented)
-export enum AccordionStatus {
-    // (undocumented)
-    Complete = "complete",
-    // (undocumented)
-    Error = "error",
-    // (undocumented)
-    Inactive = "inactive"
-}
-
-// @public (undocumented)
+// @public
 export enum AccordionStrategy {
-    // (undocumented)
-    Default = "default",// only one panel at a time
-    // (undocumented)
-    Multi = "multi"
+    Multi = "multi",
+    Single = "single"
 }
 
 // @public (undocumented)
@@ -836,24 +779,25 @@ export class ClarityModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClarityModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClarityModule>;
-    // Warning: (ae-forgotten-export) The symbol "i7" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i5" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_2" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3_2" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i39" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i6_2" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i7$1" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i7" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i8_3" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i9" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i10" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i12_2" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i8$1" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i13_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i16" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, [typeof i7.ClrIcon], [typeof i2_2.ClrEmphasisModule, typeof i3_2.ClrDataModule, typeof i7.ClrIcon, typeof i7.ClrIconModule, typeof i4.ClrModalModule, typeof i39.ClrLoadingModule, typeof i39.ClrConditionalModule, typeof i39.ClrFocusOnViewInitModule, typeof i6_2.ClrButtonModule, typeof i7$1.ClrFormsModule, typeof i8_3.ClrLayoutModule, typeof i9.ClrPopoverModule, typeof i10.ClrWizardModule, typeof i4.ClrSidePanelModule, typeof i11.ClrStepperModule, typeof i8$1.ClrSpinnerModule, typeof i13_2.ClrProgressBarModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i15.ClrTimelineModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, [typeof i5.ClrIcon], [typeof i2_2.ClrEmphasisModule, typeof i3_2.ClrDataModule, typeof i5.ClrIcon, typeof i5.ClrIconModule, typeof i4.ClrModalModule, typeof i39.ClrLoadingModule, typeof i39.ClrConditionalModule, typeof i39.ClrFocusOnViewInitModule, typeof i6_2.ClrButtonModule, typeof i7.ClrFormsModule, typeof i8_3.ClrLayoutModule, typeof i9.ClrPopoverModule, typeof i10.ClrWizardModule, typeof i4.ClrSidePanelModule, typeof i11.ClrAccordionModule, typeof i12_2.ClrStepperModule, typeof i8$1.ClrSpinnerModule, typeof i14.ClrProgressBarModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i16.ClrTimelineModule]>;
 }
 
 // @public (undocumented)
@@ -1048,8 +992,6 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
     // (undocumented)
     panels: QueryList<ClrAccordionPanel>;
     // (undocumented)
-    subscriptions: Subscription[];
-    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordion, "clr-accordion", never, { "multiPanel": { "alias": "clrAccordionMultiPanel"; "required": false; }; }, {}, ["panels"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordion, never>;
@@ -1058,7 +1000,7 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
 // @public (undocumented)
 export class ClrAccordionContent {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionContent, "clr-accordion-content, clr-step-content", never, {}, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionContent, "clr-accordion-content", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionContent, never>;
 }
@@ -1066,7 +1008,7 @@ export class ClrAccordionContent {
 // @public (undocumented)
 export class ClrAccordionDescription {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionDescription, "clr-accordion-description, clr-step-description", never, {}, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionDescription, "clr-accordion-description", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionDescription, never>;
 }
@@ -1079,62 +1021,43 @@ export class ClrAccordionModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrAccordionModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAccordionModule, [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof ÇlrAccordionOompaLoompa, typeof ÇlrAccordionWillyWonka], [typeof i2.CommonModule, typeof i7.ClrIcon], [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof ÇlrAccordionOompaLoompa, typeof ÇlrAccordionWillyWonka]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAccordionModule, [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof ÇlrAccordionOompaLoompa, typeof ÇlrAccordionWillyWonka], [typeof i2.CommonModule, typeof i5.ClrIcon], [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof ÇlrAccordionOompaLoompa, typeof ÇlrAccordionWillyWonka]>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "CollapsiblePanel_2" needs to be exported by the entry point clr-angular.d.ts
+//
 // @public (undocumented)
-export class ClrAccordionPanel implements OnInit, OnChanges {
-    // Warning: (ae-forgotten-export) The symbol "IfExpandService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(parent: ClrAccordionPanel, commonStrings: ClrCommonStringsService_2, accordionService: AccordionService, ifExpandService: IfExpandService_2, cdr: ChangeDetectorRef);
+export class ClrAccordionPanel extends CollapsiblePanel_2 implements OnChanges {
     // (undocumented)
     accordionDescription: QueryList<ClrAccordionDescription>;
-    // (undocumented)
-    collapsePanelOnAnimationDone(panel: AccordionPanelModel): void;
-    // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService_2" needs to be exported by the entry point clr-angular.d.ts
-    //
-    // (undocumented)
-    commonStrings: ClrCommonStringsService_2;
     // (undocumented)
     disabled: boolean;
     // Warning: (ae-forgotten-export) The symbol "HeadingLevel_2" needs to be exported by the entry point clr-angular.d.ts
     explicitHeadingLevel: HeadingLevel_2;
     // (undocumented)
-    getAccordionContentId(id: string): string;
+    getContentId(id: string): string;
     // (undocumented)
-    getAccordionHeaderId(id: string): string;
+    getHeaderId(id: string): string;
+    // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelModel_2" needs to be exported by the entry point clr-angular.d.ts
+    //
     // (undocumented)
-    getPanelStateClasses(panel: AccordionPanelModel): string;
-    // (undocumented)
-    get id(): string;
-    set id(value: string);
+    getPanelStateClasses(panel: CollapsiblePanelModel_2): "clr-accordion-panel-open" | "clr-accordion-panel-closed";
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
-    // (undocumented)
-    ngOnInit(): void;
-    // (undocumented)
-    panel: Observable<AccordionPanelModel>;
-    // (undocumented)
-    get panelNumber(): number;
     // (undocumented)
     panelOpen: boolean;
     // (undocumented)
     panelOpenChange: EventEmitter<boolean>;
     // (undocumented)
-    protected stepCompleteText(panelNumber: number): string;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": { "alias": "clrAccordionPanelDisabled"; "required": false; }; "panelOpen": { "alias": "clrAccordionPanelOpen"; "required": false; }; "explicitHeadingLevel": { "alias": "clrAccordionPanelHeadingLevel"; "required": false; }; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title", "clr-accordion-description", "*"], false, never>;
     // (undocumented)
-    protected stepErrorText(panelNumber: number): string;
-    // (undocumented)
-    togglePanel(): void;
-    // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": { "alias": "clrAccordionPanelDisabled"; "required": false; }; "panelOpen": { "alias": "clrAccordionPanelOpen"; "required": false; }; "explicitHeadingLevel": { "alias": "clrAccordionPanelHeadingLevel"; "required": false; }; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title, clr-step-title", "clr-accordion-description, clr-step-description", "*"], false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, never>;
 }
 
 // @public (undocumented)
 export class ClrAccordionTitle {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionTitle, "clr-accordion-title, clr-step-title", never, {}, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionTitle, "clr-accordion-title", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionTitle, never>;
 }
@@ -1143,6 +1066,7 @@ export class ClrAccordionTitle {
 export class ClrAlert implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "AlertIconAndTypesService_3" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "MultiAlertService_3" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService_2" needs to be exported by the entry point clr-angular.d.ts
     constructor(iconService: AlertIconAndTypesService_3, cdr: ChangeDetectorRef, multiAlertService: MultiAlertService_3, commonStrings: ClrCommonStringsService_2, renderer: Renderer2, hostElement: ElementRef<HTMLElement>);
     // (undocumented)
     get alertClass(): string;
@@ -1208,7 +1132,7 @@ export class ClrAlertModule {
     // Warning: (ae-forgotten-export) The symbol "i8" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAlertModule, [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText], [typeof i2.CommonModule, typeof i7.ClrIcon, typeof i8.ClrDropdownModule, typeof i8$1.ClrSpinnerModule], [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAlertModule, [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText], [typeof i2.CommonModule, typeof i5.ClrIcon, typeof i8.ClrDropdownModule, typeof i8$1.ClrSpinnerModule], [typeof ClrAlert, typeof ClrAlertItem, typeof ClrAlerts, typeof ClrAlertsPager, typeof ClrAlertText]>;
 }
 
 // @public (undocumented)
@@ -1379,7 +1303,7 @@ export class ClrBreadcrumbsModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrBreadcrumbsModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBreadcrumbsModule, [typeof ClrBreadcrumbs, typeof ClrBreadcrumbItem], [typeof i2.CommonModule, typeof i7.ClrIcon, typeof i39.ClrHostWrappingModule, typeof i6$1_2.RouterModule], [typeof ClrBreadcrumbs, typeof i7.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBreadcrumbsModule, [typeof ClrBreadcrumbs, typeof ClrBreadcrumbItem], [typeof i2.CommonModule, typeof i5.ClrIcon, typeof i39.ClrHostWrappingModule, typeof i6$1_2.RouterModule], [typeof ClrBreadcrumbs, typeof i5.ClrIcon]>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "LoadingListener_3" needs to be exported by the entry point clr-angular.d.ts
@@ -1494,7 +1418,7 @@ export class ClrButtonGroupModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrButtonGroupModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonGroupModule, [typeof ClrButton, typeof ClrButtonGroup], [typeof i2.CommonModule, typeof i7.ClrIcon, typeof i1.ÇlrClrPopoverModuleNext], [typeof ClrButton, typeof ClrButtonGroup]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonGroupModule, [typeof ClrButton, typeof ClrButtonGroup], [typeof i2.CommonModule, typeof i5.ClrIcon, typeof i1.ÇlrClrPopoverModuleNext], [typeof ClrButton, typeof ClrButtonGroup]>;
 }
 
 // @public (undocumented)
@@ -1606,7 +1530,7 @@ export class ClrCheckboxModule {
     // Warning: (ae-forgotten-export) The symbol "i6" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCheckboxModule, [typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper], [typeof i2.CommonModule, typeof i7.ClrIcon, typeof i6.ClrCommonFormsModule, typeof i39.ClrHostWrappingModule], [typeof i6.ClrCommonFormsModule, typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCheckboxModule, [typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper], [typeof i2.CommonModule, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule, typeof i39.ClrHostWrappingModule], [typeof i6.ClrCommonFormsModule, typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper]>;
 }
 
 // @public (undocumented)
@@ -1756,7 +1680,7 @@ export class ClrComboboxModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrComboboxModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof ClrOptionItems], [typeof i2.CommonModule, typeof i46.FormsModule, typeof i7.ClrIcon, typeof i39.ClrKeyFocusModule, typeof i6.ClrCommonFormsModule, typeof i39.ClrConditionalModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i8$1.ClrSpinnerModule], [typeof i6.ClrCommonFormsModule, typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof i39.ClrConditionalModule, typeof ClrOptionItems]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof ClrOptionItems], [typeof i2.CommonModule, typeof i46.FormsModule, typeof i5.ClrIcon, typeof i39.ClrKeyFocusModule, typeof i6.ClrCommonFormsModule, typeof i39.ClrConditionalModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i8$1.ClrSpinnerModule], [typeof i6.ClrCommonFormsModule, typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof i39.ClrConditionalModule, typeof ClrOptionItems]>;
 }
 
 // @public (undocumented)
@@ -1767,7 +1691,7 @@ export class ClrCommonFormsModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrCommonFormsModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCommonFormsModule, [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl], [typeof i2.CommonModule, typeof i7.ClrIcon], [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl, typeof i7.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCommonFormsModule, [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl], [typeof i2.CommonModule, typeof i5.ClrIcon], [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl, typeof i5.ClrIcon]>;
 }
 
 // @public (undocumented)
@@ -2104,6 +2028,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     loadingMoreItems: boolean;
     // (undocumented)
+    static ngAcceptInputType_selectionType: SelectionType | string;
+    // (undocumented)
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
     // (undocumented)
@@ -2131,18 +2057,15 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     scrollableColumns: ViewContainerRef;
     // (undocumented)
     selectAllId: string;
-    set selected(value: T[] | undefined);
+    set selected(value: T[]);
     // (undocumented)
     selectedChanged: EventEmitter<T[]>;
     // (undocumented)
     selection: Selection_2<T>;
-    // Warning: (ae-forgotten-export) The symbol "SelectionType_3" needs to be exported by the entry point clr-angular.d.ts
-    //
     // (undocumented)
-    SELECTION_TYPE: typeof SelectionType_3;
-    set singleSelected(value: T);
-    // (undocumented)
-    singleSelectedChanged: EventEmitter<T>;
+    SELECTION_TYPE: typeof SelectionType;
+    get selectionType(): SelectionType;
+    set selectionType(value: SelectionType);
     // (undocumented)
     stickyHeaders: QueryList<ElementRef>;
     // (undocumented)
@@ -2152,7 +2075,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     get virtualScroll(): ÇlrDatagridVirtualScrollDirective<any>;
     _virtualScroll: QueryList<ÇlrDatagridVirtualScrollDirective<any>>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": { "alias": "clrLoadingMoreItems"; "required": false; }; "clrDgSingleSelectionAriaLabel": { "alias": "clrDgSingleSelectionAriaLabel"; "required": false; }; "clrDgSingleActionableAriaLabel": { "alias": "clrDgSingleActionableAriaLabel"; "required": false; }; "clrDetailExpandableAriaLabel": { "alias": "clrDetailExpandableAriaLabel"; "required": false; }; "clrDgDisablePageFocus": { "alias": "clrDgDisablePageFocus"; "required": false; }; "customSelectAllEnabled": { "alias": "clrDgCustomSelectAllEnabled"; "required": false; }; "loading": { "alias": "clrDgLoading"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "singleSelected": { "alias": "clrDgSingleSelected"; "required": false; }; "clrDgPreserveSelection": { "alias": "clrDgPreserveSelection"; "required": false; }; "rowSelectionMode": { "alias": "clrDgRowSelection"; "required": false; }; "identityFn": { "alias": "clrDgItemsIdentityFn"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": { "alias": "clrLoadingMoreItems"; "required": false; }; "clrDgSingleSelectionAriaLabel": { "alias": "clrDgSingleSelectionAriaLabel"; "required": false; }; "clrDgSingleActionableAriaLabel": { "alias": "clrDgSingleActionableAriaLabel"; "required": false; }; "clrDetailExpandableAriaLabel": { "alias": "clrDetailExpandableAriaLabel"; "required": false; }; "clrDgDisablePageFocus": { "alias": "clrDgDisablePageFocus"; "required": false; }; "customSelectAllEnabled": { "alias": "clrDgCustomSelectAllEnabled"; "required": false; }; "loading": { "alias": "clrDgLoading"; "required": false; }; "selectionType": { "alias": "clrDgSelectionType"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "clrDgPreserveSelection": { "alias": "clrDgPreserveSelection"; "required": false; }; "rowSelectionMode": { "alias": "clrDgRowSelection"; "required": false; }; "identityFn": { "alias": "clrDgItemsIdentityFn"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagrid<any>, never>;
 }
@@ -2489,7 +2412,7 @@ export class ClrDatagridFooter<T = any> {
     // (undocumented)
     selection: Selection_2<T>;
     // (undocumented)
-    SELECTION_TYPE: typeof SelectionType_3;
+    SELECTION_TYPE: typeof SelectionType;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFooter<any>, "clr-dg-footer", never, {}, {}, never, ["*", "clr-dg-pagination"], false, never>;
     // (undocumented)
@@ -2553,7 +2476,7 @@ export class ClrDatagridModule {
     // Warning: (ae-forgotten-export) The symbol "i45" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ÇlrDatagridSelectionCellDirective, typeof ÇlrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof ÇlrDatagridDetailRegisterer, typeof ÇlrWrappedCell, typeof ÇlrWrappedColumn, typeof ÇlrWrappedRow, typeof ÇlrDatagridCellRenderer, typeof ÇlrDatagridHeaderRenderer, typeof ÇlrDatagridMainRenderer, typeof ÇlrDatagridRowDetailRenderer, typeof ÇlrDatagridRowRenderer, typeof ÇlrActionableOompaLoompa, typeof ÇlrDatagridWillyWonka, typeof ÇlrExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i2.CommonModule, typeof i39.CdkDragModule, typeof i39.CdkTrapFocusModule, typeof i7.ClrIcon, typeof i41.ClrInputModule, typeof i42.ClrRadioModule, typeof i43.ClrCheckboxModule, typeof i44.ClrNumberInputModule, typeof i45.ClrSelectModule, typeof i46.FormsModule, typeof i39.ClrLoadingModule, typeof i39.ClrConditionalModule, typeof i39.ClrOutsideClickModule, typeof i39.ClrExpandableAnimationModule, typeof i8$1.ClrSpinnerModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i39.ClrKeyFocusModule, typeof ÇlrDatagridSingleSelectionValueAccessor, typeof i39.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ÇlrDatagridSelectionCellDirective, typeof ÇlrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof ÇlrDatagridDetailRegisterer, typeof ÇlrWrappedCell, typeof ÇlrWrappedColumn, typeof ÇlrWrappedRow, typeof ÇlrDatagridCellRenderer, typeof ÇlrDatagridHeaderRenderer, typeof ÇlrDatagridMainRenderer, typeof ÇlrDatagridRowDetailRenderer, typeof ÇlrDatagridRowRenderer, typeof ÇlrActionableOompaLoompa, typeof ÇlrDatagridWillyWonka, typeof ÇlrExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ÇlrDatagridSingleSelectionValueAccessor, typeof i39.ClrIfExpanded]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ÇlrDatagridSelectionCellDirective, typeof ÇlrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof ÇlrDatagridDetailRegisterer, typeof ÇlrWrappedCell, typeof ÇlrWrappedColumn, typeof ÇlrWrappedRow, typeof ÇlrDatagridCellRenderer, typeof ÇlrDatagridHeaderRenderer, typeof ÇlrDatagridMainRenderer, typeof ÇlrDatagridRowDetailRenderer, typeof ÇlrDatagridRowRenderer, typeof ÇlrActionableOompaLoompa, typeof ÇlrDatagridWillyWonka, typeof ÇlrExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i2.CommonModule, typeof i39.CdkDragModule, typeof i39.CdkTrapFocusModule, typeof i5.ClrIcon, typeof i41.ClrInputModule, typeof i42.ClrRadioModule, typeof i43.ClrCheckboxModule, typeof i44.ClrNumberInputModule, typeof i45.ClrSelectModule, typeof i46.FormsModule, typeof i39.ClrLoadingModule, typeof i39.ClrConditionalModule, typeof i39.ClrOutsideClickModule, typeof i39.ClrExpandableAnimationModule, typeof i8$1.ClrSpinnerModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i39.ClrKeyFocusModule, typeof ÇlrDatagridSingleSelectionValueAccessor, typeof i39.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ÇlrDatagridSelectionCellDirective, typeof ÇlrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof ÇlrDatagridDetailRegisterer, typeof ÇlrWrappedCell, typeof ÇlrWrappedColumn, typeof ÇlrWrappedRow, typeof ÇlrDatagridCellRenderer, typeof ÇlrDatagridHeaderRenderer, typeof ÇlrDatagridMainRenderer, typeof ÇlrDatagridRowDetailRenderer, typeof ÇlrDatagridRowRenderer, typeof ÇlrActionableOompaLoompa, typeof ÇlrDatagridWillyWonka, typeof ÇlrExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ÇlrDatagridSingleSelectionValueAccessor, typeof i39.ClrIfExpanded]>;
 }
 
 // @public (undocumented)
@@ -2722,7 +2645,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     selection: Selection_2<T>;
     // (undocumented)
-    SELECTION_TYPE: typeof SelectionType_3;
+    SELECTION_TYPE: typeof SelectionType;
     // @deprecated (undocumented)
     protected selectRow(selected: boolean, $event: any): void;
     // (undocumented)
@@ -2773,7 +2696,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     // (undocumented)
     selection: Selection_2;
     // (undocumented)
-    SELECTION_TYPE: typeof SelectionType_3;
+    SELECTION_TYPE: typeof SelectionType;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRowDetail, "clr-dg-row-detail", never, { "_beginningOfExpandableContentAriaText": { "alias": "clrRowDetailBeginningAriaText"; "required": false; }; "_endOfExpandableContentAriaText": { "alias": "clrRowDetailEndAriaText"; "required": false; }; "replace": { "alias": "clrDgReplace"; "required": false; }; }, {}, ["cells"], ["*"], false, never>;
     // (undocumented)
@@ -2880,7 +2803,7 @@ export class ClrDatalistModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatalistModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatalistModule, [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer], [typeof i2.CommonModule, typeof i41.ClrInputModule, typeof i7.ClrIcon], [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatalistModule, [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer], [typeof i2.CommonModule, typeof i41.ClrInputModule, typeof i5.ClrIcon], [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer]>;
 }
 
 // @public (undocumented)
@@ -3057,7 +2980,7 @@ export class ClrDatepickerModule {
     // Warning: (ae-forgotten-export) The symbol "i18" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions], [typeof i2.CommonModule, typeof i39.CdkTrapFocusModule, typeof i39.ClrHostWrappingModule, typeof i39.ClrConditionalModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i7.ClrIcon, typeof i6.ClrCommonFormsModule, typeof i18.ClrVerticalNavModule], [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions], [typeof i2.CommonModule, typeof i39.CdkTrapFocusModule, typeof i39.ClrHostWrappingModule, typeof i39.ClrConditionalModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule, typeof i18.ClrVerticalNavModule], [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions]>;
 }
 
 // @public (undocumented)
@@ -3202,7 +3125,7 @@ export class ClrDropdownModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDropdownModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDropdownModule, [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem], [typeof i2.CommonModule, typeof i7.ClrIcon, typeof i1.ClrIfOpen], [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem, typeof i1.ClrIfOpen, typeof i7.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDropdownModule, [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem], [typeof i2.CommonModule, typeof i5.ClrIcon, typeof i1.ClrIfOpen], [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem, typeof i1.ClrIfOpen, typeof i5.ClrIcon]>;
 }
 
 // @public (undocumented)
@@ -3398,7 +3321,7 @@ export class ClrFileInputModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrFileInputModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFileInputModule, [typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError], [typeof i2.CommonModule, typeof i7.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFileInputModule, [typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError], [typeof i2.CommonModule, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError]>;
 }
 
 // @public (undocumented)
@@ -3835,7 +3758,7 @@ export class ClrInputModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrInputModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof ClrInput, typeof ClrInputContainer], [typeof i2.CommonModule, typeof i46.FormsModule, typeof i7.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrInput, typeof ClrInputContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof ClrInput, typeof ClrInputContainer], [typeof i2.CommonModule, typeof i46.FormsModule, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrInput, typeof ClrInputContainer]>;
 }
 
 // @public (undocumented)
@@ -3988,10 +3911,10 @@ export class ClrLayoutModule {
     // Warning: (ae-forgotten-export) The symbol "i1_4" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_5" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3_4" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i5" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i5_2" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLayoutModule, never, never, [typeof i1_4.ClrMainContainerModule, typeof i2_5.ClrNavigationModule, typeof i3_4.ClrTabsModule, typeof i18.ClrVerticalNavModule, typeof i5.ClrBreadcrumbsModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLayoutModule, never, never, [typeof i1_4.ClrMainContainerModule, typeof i2_5.ClrNavigationModule, typeof i3_4.ClrTabsModule, typeof i18.ClrVerticalNavModule, typeof i5_2.ClrBreadcrumbsModule]>;
 }
 
 // @public (undocumented)
@@ -4090,7 +4013,7 @@ export class ClrMainContainerModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrMainContainerModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrMainContainerModule, [typeof ClrMainContainer], [typeof i2.CommonModule, typeof i7.ClrIcon], [typeof ClrMainContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrMainContainerModule, [typeof ClrMainContainer], [typeof i2.CommonModule, typeof i5.ClrIcon], [typeof ClrMainContainer]>;
 }
 
 // @public (undocumented)
@@ -4193,7 +4116,7 @@ export class ClrModalModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrModalModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent], [typeof i2.CommonModule, typeof i39.CdkTrapFocusModule, typeof i7.ClrIcon], [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent, typeof i7.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrModalModule, [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent], [typeof i2.CommonModule, typeof i39.CdkTrapFocusModule, typeof i5.ClrIcon], [typeof ClrModal, typeof ClrModalBody, typeof ClrModalHostComponent, typeof i5.ClrIcon]>;
 }
 
 // @public (undocumented)
@@ -4240,7 +4163,7 @@ export class ClrNavigationModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrNavigationModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka], [typeof i2.CommonModule, typeof i7.ClrIcon, typeof i8.ClrDropdownModule], [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka], [typeof i2.CommonModule, typeof i5.ClrIcon, typeof i8.ClrDropdownModule], [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka]>;
 }
 
 // @public (undocumented)
@@ -4335,7 +4258,7 @@ export class ClrNumberInputModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrNumberInputModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNumberInputModule, [typeof ClrNumberInput, typeof ClrNumberInputContainer], [typeof i2.CommonModule, typeof i46.FormsModule, typeof i7.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrNumberInput, typeof ClrNumberInputContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNumberInputModule, [typeof ClrNumberInput, typeof ClrNumberInputContainer], [typeof i2.CommonModule, typeof i46.FormsModule, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrNumberInput, typeof ClrNumberInputContainer]>;
 }
 
 // @public (undocumented)
@@ -4521,7 +4444,7 @@ export class ClrPasswordModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPasswordModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof ClrPassword, typeof ClrPasswordContainer], [typeof i2.CommonModule, typeof i46.FormsModule, typeof i7.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrPassword, typeof ClrPasswordContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof ClrPassword, typeof ClrPasswordContainer], [typeof i2.CommonModule, typeof i46.FormsModule, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrPassword, typeof ClrPasswordContainer]>;
 }
 
 // @public (undocumented)
@@ -4809,7 +4732,7 @@ export class ClrRadioModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrRadioModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRadioModule, [typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper], [typeof i2.CommonModule, typeof i6.ClrCommonFormsModule, typeof i39.ClrHostWrappingModule, typeof i7.ClrIcon], [typeof i6.ClrCommonFormsModule, typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRadioModule, [typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper], [typeof i2.CommonModule, typeof i6.ClrCommonFormsModule, typeof i39.ClrHostWrappingModule, typeof i5.ClrIcon], [typeof i6.ClrCommonFormsModule, typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper]>;
 }
 
 // @public (undocumented)
@@ -4856,7 +4779,7 @@ export class ClrRangeModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrRangeModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRangeModule, [typeof ClrRange, typeof ClrRangeContainer], [typeof i2.CommonModule, typeof i6.ClrCommonFormsModule, typeof i39.ClrHostWrappingModule, typeof i7.ClrIcon], [typeof i6.ClrCommonFormsModule, typeof ClrRange, typeof ClrRangeContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRangeModule, [typeof ClrRange, typeof ClrRangeContainer], [typeof i2.CommonModule, typeof i6.ClrCommonFormsModule, typeof i39.ClrHostWrappingModule, typeof i5.ClrIcon], [typeof i6.ClrCommonFormsModule, typeof ClrRange, typeof ClrRangeContainer]>;
 }
 
 // @public (undocumented)
@@ -4957,7 +4880,7 @@ export class ClrSelectModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSelectModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSelectModule, [typeof ClrSelect, typeof ClrSelectContainer], [typeof i2.CommonModule, typeof i46.FormsModule, typeof i7.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrSelect, typeof ClrSelectContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSelectModule, [typeof ClrSelect, typeof ClrSelectContainer], [typeof i2.CommonModule, typeof i46.FormsModule, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrSelect, typeof ClrSelectContainer]>;
 }
 
 // @public (undocumented)
@@ -5024,7 +4947,7 @@ export class ClrSidePanelModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSidePanelModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSidePanelModule, [typeof ClrSidePanel], [typeof i2.CommonModule, typeof i39.CdkTrapFocusModule, typeof i7.ClrIcon, typeof ClrModalModule], [typeof ClrSidePanel, typeof ClrModalModule, typeof i7.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSidePanelModule, [typeof ClrSidePanel], [typeof i2.CommonModule, typeof i39.CdkTrapFocusModule, typeof i5.ClrIcon, typeof ClrModalModule], [typeof ClrSidePanel, typeof ClrModalModule, typeof i5.ClrIcon]>;
 }
 
 // @public (undocumented)
@@ -5080,7 +5003,7 @@ export class ClrSignpostModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSignpostModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i2.CommonModule, typeof i7.ClrIcon, typeof i39.ClrFocusOnViewInitModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i1.ClrIfOpen], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof i1.ClrIfOpen]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i2.CommonModule, typeof i5.ClrIcon, typeof i39.ClrFocusOnViewInitModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i1.ClrIfOpen], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof i1.ClrIfOpen]>;
 }
 
 // @public (undocumented)
@@ -5264,7 +5187,7 @@ export class ClrStackViewModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStackViewModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags], [typeof i2.CommonModule, typeof i46.FormsModule, typeof i7.ClrIcon, typeof i39.ClrExpandableAnimationModule], [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags], [typeof i2.CommonModule, typeof i46.FormsModule, typeof i5.ClrIcon, typeof i39.ClrExpandableAnimationModule], [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags]>;
 }
 
 // @public (undocumented)
@@ -5311,8 +5234,7 @@ export class ClrStartDateInputValidator implements Validator {
 
 // @public (undocumented)
 export class ClrStepButton implements OnInit {
-    // Warning: (ae-forgotten-export) The symbol "StepperService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(clrStep: ClrStepperPanel, stepperService: StepperService_2);
+    constructor(clrStep: ClrStepperPanel, stepperService: StepperService);
     // (undocumented)
     navigateToNextPanel(): void;
     // (undocumented)
@@ -5340,8 +5262,24 @@ export enum ClrStepButtonType {
 }
 
 // @public (undocumented)
+export class ClrStepContent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepContent, "clr-step-content", never, {}, {}, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepContent, never>;
+}
+
+// @public (undocumented)
+export class ClrStepDescription {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepDescription, "clr-step-description", never, {}, {}, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepDescription, never>;
+}
+
+// @public (undocumented)
 export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-    constructor(formGroup: FormGroupDirective, ngForm: NgForm, stepperService: StepperService_2);
+    constructor(formGroup: FormGroupDirective, ngForm: NgForm, stepperService: StepperService);
     // (undocumented)
     form: FormGroupDirective | NgForm;
     // (undocumented)
@@ -5357,8 +5295,6 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
     // (undocumented)
     panels: QueryList<ClrStepperPanel>;
     // (undocumented)
-    subscriptions: Subscription[];
-    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepper, "form[clrStepper]", never, { "initialPanel": { "alias": "clrInitialStep"; "required": false; }; }, {}, ["panels"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepper, [{ optional: true; }, { optional: true; }, null]>;
@@ -5366,29 +5302,33 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrStepperModule {
+    constructor();
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStepperModule>;
-    // Warning: (ae-forgotten-export) The symbol "_clr_angular_accordion" needs to be exported by the entry point clr-angular.d.ts
-    //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka], [typeof i2.CommonModule, typeof i7.ClrIcon, typeof _clr_angular_accordion.ClrAccordionModule], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka, typeof _clr_angular_accordion.ClrAccordionModule, typeof i7.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka], [typeof i2.CommonModule, typeof i5.ClrIcon], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka, typeof i5.ClrIcon]>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "ClrAccordionPanel_2" needs to be exported by the entry point clr-angular.d.ts
-//
 // @public (undocumented)
-export class ClrStepperPanel extends ClrAccordionPanel_2 implements OnInit {
-    constructor(platformId: any, commonStrings: ClrCommonStringsService_2, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService_2, ifExpandService: IfExpandService_2, cdr: ChangeDetectorRef);
-    // Warning: (ae-forgotten-export) The symbol "AccordionStatus_2" needs to be exported by the entry point clr-angular.d.ts
-    //
-    // (undocumented)
-    readonly AccordionStatus: typeof AccordionStatus_2;
+export class ClrStepperPanel extends CollapsiblePanel_2 implements OnInit {
+    // Warning: (ae-forgotten-export) The symbol "IfExpandService_2" needs to be exported by the entry point clr-angular.d.ts
+    constructor(platformId: any, commonStrings: ClrCommonStringsService_2, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService_2, cdr: ChangeDetectorRef);
     // (undocumented)
     commonStrings: ClrCommonStringsService_2;
     // (undocumented)
+    disabled: boolean;
+    // (undocumented)
     get formGroup(): i46.FormGroup<any>;
+    // (undocumented)
+    getContentId(id: string): string;
+    // (undocumented)
+    getHeaderId(id: string): string;
+    // (undocumented)
+    getPanelStateClasses(panel: StepperPanelModel): string;
+    // (undocumented)
+    getPanelStatus(panel: StepperPanelModel): StepperPanelStatus;
     // (undocumented)
     headerButton: ElementRef<HTMLButtonElement>;
     // (undocumented)
@@ -5399,9 +5339,29 @@ export class ClrStepperPanel extends ClrAccordionPanel_2 implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, never, ["clr-step-title", "clr-step-description", "*"], false, never>;
+    panel: Observable<StepperPanelModel>;
+    // (undocumented)
+    get panelNumber(): number;
+    // (undocumented)
+    readonly PanelStatus: typeof StepperPanelStatus;
+    // (undocumented)
+    protected stepCompleteText(panelNumber: number): string;
+    // (undocumented)
+    stepDescription: QueryList<ClrStepDescription>;
+    // (undocumented)
+    protected stepErrorText(panelNumber: number): string;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, ["stepDescription"], ["clr-step-title", "clr-step-description", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
+}
+
+// @public (undocumented)
+export class ClrStepTitle {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepTitle, "clr-step-title", never, {}, {}, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepTitle, never>;
 }
 
 // @public (undocumented)
@@ -5601,7 +5561,7 @@ export class ClrTabsModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTabsModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa], [typeof i2.CommonModule, typeof i39.ClrConditionalModule, typeof i7.ClrIcon, typeof i39.ClrTemplateRefModule, typeof i39.ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa, typeof i39.ClrConditionalModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa], [typeof i2.CommonModule, typeof i39.ClrConditionalModule, typeof i5.ClrIcon, typeof i39.ClrTemplateRefModule, typeof i39.ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa, typeof i39.ClrConditionalModule]>;
 }
 
 // @public (undocumented)
@@ -5641,7 +5601,7 @@ export class ClrTextareaModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTextareaModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTextareaModule, [typeof ClrTextarea, typeof ClrTextareaContainer], [typeof i2.CommonModule, typeof i46.FormsModule, typeof i7.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrTextarea, typeof ClrTextareaContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTextareaModule, [typeof ClrTextarea, typeof ClrTextareaContainer], [typeof i2.CommonModule, typeof i46.FormsModule, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrTextarea, typeof ClrTextareaContainer]>;
 }
 
 // @public (undocumented)
@@ -5672,7 +5632,7 @@ export class ClrTimelineModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTimelineModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTimelineModule, [typeof ClrTimeline, typeof ClrTimelineStep, typeof ClrTimelineStepDescription, typeof ClrTimelineStepHeader, typeof ClrTimelineStepTitle], [typeof i2.CommonModule, typeof i7.ClrIcon, typeof i8$1.ClrSpinnerModule], [typeof ClrTimeline, typeof ClrTimelineStep, typeof ClrTimelineStepDescription, typeof ClrTimelineStepHeader, typeof ClrTimelineStepTitle, typeof i7.ClrIcon, typeof i8$1.ClrSpinnerModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTimelineModule, [typeof ClrTimeline, typeof ClrTimelineStep, typeof ClrTimelineStepDescription, typeof ClrTimelineStepHeader, typeof ClrTimelineStepTitle], [typeof i2.CommonModule, typeof i5.ClrIcon, typeof i8$1.ClrSpinnerModule], [typeof ClrTimeline, typeof ClrTimelineStep, typeof ClrTimelineStepDescription, typeof ClrTimelineStepHeader, typeof ClrTimelineStepTitle, typeof i5.ClrIcon, typeof i8$1.ClrSpinnerModule]>;
 }
 
 // @public (undocumented)
@@ -5778,7 +5738,7 @@ export class ClrTooltipModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTooltipModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i2.CommonModule, typeof i7.ClrIcon, typeof i1.ÇlrClrPopoverModuleNext], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof i1.ClrIfOpen, typeof i7.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i2.CommonModule, typeof i5.ClrIcon, typeof i1.ÇlrClrPopoverModuleNext], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof i1.ClrIfOpen, typeof i5.ClrIcon]>;
 }
 
 // @public (undocumented)
@@ -5905,7 +5865,7 @@ export class ClrTreeViewModule {
     // Warning: (ae-forgotten-export) The symbol "RecursiveChildren_3" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren_3], [typeof i2.CommonModule, typeof i7.ClrIcon, typeof i39.ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren_3], [typeof i2.CommonModule, typeof i5.ClrIcon, typeof i39.ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
 }
 
 // @public (undocumented)
@@ -6014,7 +5974,7 @@ export class ClrVerticalNavModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrVerticalNavModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrVerticalNavModule, [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon], [typeof i2.CommonModule, typeof i7.ClrIcon, typeof i39.ClrConditionalModule, typeof i39.ClrFocusOnViewInitModule], [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon, typeof i39.ClrConditionalModule, typeof i7.ClrIcon, typeof i39.ClrFocusOnViewInitModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrVerticalNavModule, [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon], [typeof i2.CommonModule, typeof i5.ClrIcon, typeof i39.ClrConditionalModule, typeof i39.ClrFocusOnViewInitModule], [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon, typeof i39.ClrConditionalModule, typeof i5.ClrIcon, typeof i39.ClrFocusOnViewInitModule]>;
 }
 
 // @public (undocumented)
@@ -6034,7 +5994,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     get currentPage(): ClrWizardPage;
     set currentPage(page: ClrWizardPage);
-    currentPageChanged: EventEmitter<any>;
+    currentPageChange: EventEmitter<any>;
     get disableStepnav(): boolean;
     set disableStepnav(value: boolean);
     finish(skipChecksAndEmits?: boolean): void;
@@ -6098,6 +6058,9 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     set stopNavigation(value: boolean);
     get stopNext(): boolean;
     set stopNext(value: boolean);
+    // (undocumented)
+    get title(): ElementRef<HTMLElement>;
+    set title(title: ElementRef<HTMLElement>);
     toggle(open: boolean): void;
     wizardFinished: EventEmitter<any>;
     // (undocumented)
@@ -6105,7 +6068,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     protected wizardTitle: ClrWizardTitle;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChange": "clrWizardCurrentPageChange"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
 }
@@ -6179,7 +6142,7 @@ export class ClrWizardModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrWizardModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions], [typeof i2.CommonModule, typeof i7.ClrIcon, typeof i4.ClrModalModule, typeof i3.ClrAlertModule], [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions], [typeof i2.CommonModule, typeof i5.ClrIcon, typeof i4.ClrModalModule, typeof i3.ClrAlertModule], [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions]>;
 }
 
 // @public
@@ -6430,6 +6393,115 @@ export const collapseCardIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const collapseCardIconName = "collapse-card";
+
+// @public (undocumented)
+export abstract class CollapsiblePanel implements OnInit {
+    constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService_2, cdr: ChangeDetectorRef);
+    // (undocumented)
+    protected cdr: ChangeDetectorRef;
+    // (undocumented)
+    collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
+    // (undocumented)
+    abstract get disabled(): boolean;
+    // (undocumented)
+    abstract getContentId(id: string): string;
+    // (undocumented)
+    abstract getHeaderId(id: string): string;
+    // (undocumented)
+    abstract getPanelStateClasses(panel: CollapsiblePanelModel): string;
+    // (undocumented)
+    protected handlePanelInputChanges(changes: SimpleChanges): void;
+    // (undocumented)
+    get id(): string;
+    set id(value: string);
+    // (undocumented)
+    protected ifExpandService: IfExpandService_2;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    panel: Observable<CollapsiblePanelModel>;
+    // (undocumented)
+    protected _panelIndex: number;
+    // (undocumented)
+    panelOpen: boolean;
+    // (undocumented)
+    panelOpenChange: EventEmitter<boolean>;
+    // (undocumented)
+    protected panelService: CollapsiblePanelService;
+    // (undocumented)
+    togglePanel(): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<CollapsiblePanel, never, never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<CollapsiblePanel, never>;
+}
+
+// @public (undocumented)
+export const collapsiblePanelAnimation: _angular_animations.AnimationTriggerMetadata[];
+
+// @public (undocumented)
+export const collapsiblePanelExpandAnimation: _angular_animations.AnimationTriggerMetadata[];
+
+// @public (undocumented)
+export class CollapsiblePanelGroupModel {
+    // (undocumented)
+    addPanel(id: string, open?: boolean): void;
+    // (undocumented)
+    disablePanel(panelId: string, disabled: boolean): void;
+    // (undocumented)
+    protected panelGroupCount: number;
+    // (undocumented)
+    get panels(): CollapsiblePanelModel[];
+    // (undocumented)
+    protected _panels: {
+        [id: string]: CollapsiblePanelModel;
+    };
+    // (undocumented)
+    togglePanel(panelId: string, open?: boolean): void;
+    // (undocumented)
+    updatePanelOrder(ids: string[]): void;
+}
+
+// @public (undocumented)
+export class CollapsiblePanelModel {
+    constructor(id: string, groupId: number | string);
+    // (undocumented)
+    disabled: boolean;
+    // (undocumented)
+    groupId: number | string;
+    // (undocumented)
+    id: string;
+    // (undocumented)
+    index: number;
+    // (undocumented)
+    open: boolean;
+    // (undocumented)
+    templateId: string;
+}
+
+// @public (undocumented)
+export class CollapsiblePanelService {
+    // (undocumented)
+    addPanel(panelId: string, open?: boolean): void;
+    // (undocumented)
+    disablePanel(panelId: string, disabled?: boolean): void;
+    // (undocumented)
+    protected emitUpdatedPanels(): void;
+    // (undocumented)
+    getPanelChanges(panelId: string): Observable<CollapsiblePanelModel>;
+    // (undocumented)
+    protected panelGroup: CollapsiblePanelGroupModel;
+    // (undocumented)
+    protected readonly _panelsChanges: BehaviorSubject<CollapsiblePanelModel[]>;
+    // (undocumented)
+    togglePanel(panelId: string, open?: boolean): void;
+    // (undocumented)
+    updatePanelOrder(ids: string[]): void;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<CollapsiblePanelService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<CollapsiblePanelService>;
+}
 
 // @public (undocumented)
 export const colorPaletteIcon: IconShapeTuple;
@@ -8235,7 +8307,10 @@ export const paintRollerIcon: IconShapeTuple;
 export const paintRollerIconName = "paint-roller";
 
 // @public (undocumented)
-export const panelAnimation: _angular_animations.AnimationTriggerMetadata[];
+export const panelCollapseTransition: _angular_animations.AnimationTransitionMetadata;
+
+// @public (undocumented)
+export const panelExpandTransition: _angular_animations.AnimationTransitionMetadata;
 
 // @public (undocumented)
 export const paperclipIcon: IconShapeTuple;
@@ -8610,7 +8685,7 @@ export function selectFiles(fileInputElement: HTMLInputElement, files: File[] | 
 class Selection_2<T = any> {
     constructor(_items: Items_3<T>, filters: FiltersProvider_3<T>, differs: IterableDiffers);
     // (undocumented)
-    get change(): Observable<T[] | T>;
+    get change(): Observable<T[]>;
     // (undocumented)
     checkForChanges(): void;
     // (undocumented)
@@ -8620,7 +8695,6 @@ class Selection_2<T = any> {
     set current(value: T[]);
     // (undocumented)
     get currentSingle(): T;
-    set currentSingle(value: T);
     destroy(): void;
     // (undocumented)
     id: string;
@@ -8634,8 +8708,10 @@ class Selection_2<T = any> {
     // @deprecated (undocumented)
     rowSelectionMode: boolean;
     // (undocumented)
-    get selectionType(): SelectionType_3;
-    set selectionType(value: SelectionType_3);
+    get selectable(): boolean;
+    // (undocumented)
+    get selectionType(): SelectionType;
+    set selectionType(value: SelectionType);
     setSelected(item: T, selected: boolean): void;
     shiftPressed: boolean;
     toggleAll(): void;
@@ -8647,6 +8723,16 @@ class Selection_2<T = any> {
     static ɵprov: i0.ɵɵInjectableDeclaration<Selection_2<any>>;
 }
 export { Selection_2 as Selection }
+
+// @public (undocumented)
+export enum SelectionType {
+    Multi = "multi",
+    None = "none",
+    Single = "single"
+}
+
+// @public (undocumented)
+export function selectionTypeAttribute(value: SelectionType | string): SelectionType;
 
 // @public (undocumented)
 export const shareIcon: IconShapeTuple;
@@ -8700,6 +8786,9 @@ export const shuffleIconName = "shuffle";
 export const SIGNPOST_POSITIONS: ClrPopoverPosition[];
 
 // @public (undocumented)
+export const skipInitialRenderTrigger: _angular_animations.AnimationTriggerMetadata;
+
+// @public (undocumented)
 export function slide(direction: string): AnimationMetadata[];
 
 // @public (undocumented)
@@ -8751,9 +8840,6 @@ export const starIconName = "star";
 export type StatusTypes = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
 
 // @public (undocumented)
-export const stepAnimation: _angular_animations.AnimationTriggerMetadata[];
-
-// @public (undocumented)
 export const stepForward2Icon: IconShapeTuple;
 
 // @public (undocumented)
@@ -8764,6 +8850,53 @@ export const stepForwardIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const stepForwardIconName = "step-forward";
+
+// @public (undocumented)
+export class StepperPanelModel extends CollapsiblePanelModel_2 {
+    // (undocumented)
+    status: StepperPanelStatus;
+}
+
+// @public (undocumented)
+export enum StepperPanelStatus {
+    // (undocumented)
+    Complete = "complete",
+    // (undocumented)
+    Error = "error",
+    // (undocumented)
+    Inactive = "inactive"
+}
+
+// @public (undocumented)
+export class StepperService extends CollapsiblePanelService_2 {
+    constructor();
+    // (undocumented)
+    readonly activeStep: Observable<string>;
+    // (undocumented)
+    navigateToNextPanel(currentPanelId: string, currentPanelValid?: boolean): void;
+    // (undocumented)
+    navigateToPreviousPanel(currentPanelId: string): void;
+    // (undocumented)
+    overrideInitialPanel(panelId: string): void;
+    // Warning: (ae-forgotten-export) The symbol "StepperModel_2" needs to be exported by the entry point clr-angular.d.ts
+    //
+    // (undocumented)
+    protected panelGroup: StepperModel_2;
+    // (undocumented)
+    readonly panelsCompleted: Observable<boolean>;
+    // (undocumented)
+    resetPanels(): void;
+    // (undocumented)
+    setPanelInvalid(panelId: string): void;
+    // (undocumented)
+    setPanelsWithErrors(ids: string[]): void;
+    // (undocumented)
+    setPanelValid(panelId: string): void;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<StepperService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<StepperService>;
+}
 
 // @public (undocumented)
 export const stopIcon: IconShapeTuple;

@@ -1,0 +1,27 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<clr-alert [clrAlertClosable]="false">
+  <div class="alert-item">
+    <span class="alert-text">
+      Date picker emits <code cds-text="code">null</code> when an invalid date is entered after a valid date was set.
+    </span>
+  </div>
+</clr-alert>
+<form clrForm clrLayout="vertical">
+  <clr-date-range-container>
+    <label>Date Object</label>
+    <input type="date" autocomplete="off" [(clrStartDate)]="startDate" />
+    <input type="date" autocomplete="off" [(clrEndDate)]="endDate" />
+  </clr-date-range-container>
+</form>
+<pre>Start Date: {{ startDate | json }}, End Date: {{ endDate | json }}</pre>
+<app-stackblitz-example
+  name="datepicker (date object output)"
+  [componentTemplate]="htmlExample"
+  [componentClass]="tsExample"
+  [showComponentClass]="false"
+></app-stackblitz-example>

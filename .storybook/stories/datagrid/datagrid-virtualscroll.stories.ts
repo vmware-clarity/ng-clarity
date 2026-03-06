@@ -11,6 +11,7 @@ import {
   ClrDatagridModule,
   ClrDropdownModule,
   commonStringsDefault,
+  SelectionType,
 } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
@@ -28,11 +29,17 @@ export default {
   argTypes: {
     // inputs
     clrDgSelected: { control: { disable: true } },
-    clrDgSingleSelected: { control: { disable: true } },
+    clrDgSelectionType: {
+      control: { type: 'select' },
+      options: {
+        None: SelectionType.None,
+        Single: SelectionType.Single,
+        Multi: SelectionType.Multi,
+      },
+    },
     // outputs
     clrDgRefresh: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
-    clrDgSingleSelectedChange: { control: { disable: true } },
     clrRenderRangeChange: { control: { disable: true } },
     clrDgActionOverflowOpenChange: { control: { disable: true } },
     // methods
@@ -59,7 +66,6 @@ export default {
     // outputs
     clrDgRefresh: action('clrDgRefresh'),
     clrDgSelectedChange: action('clrDgSelectedChange'),
-    clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
     clrRenderRangeChange: action('clrRenderRangeChange'),
     clrDgActionOverflowOpenChange: action('clrDgActionOverflowOpenChange'),
     clrDgCustomSelectAll(this: { selectedRows: number[] }, selectAllChecked: boolean) {
@@ -68,9 +74,8 @@ export default {
     },
     // story helpers
     behaviorElements,
+    clrDgSelectionType: SelectionType.None,
     scrollToIndexBehavior: 'smooth',
-    singleSelectable: false,
-    multiSelectable: false,
     expandable: false,
     actionOverflow: false,
     compact: false,
@@ -79,6 +84,7 @@ export default {
     showFooterNavButtons: false,
     height: 480,
     selectedRows: [],
+    selectedRowsArray: [],
     setExpanded,
   },
 };
@@ -108,8 +114,8 @@ const DatagridTemplate: StoryFn = args => ({
       <clr-datagrid
         #datagrid
         ${args.height ? '[style.height.px]="height"' : ''}
-        ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
-        ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
+        [(clrDgSelected)]="selectedRowsArray"
+        [clrDgSelectionType]="clrDgSelectionType"
         [ngClass]="{ 'datagrid-compact': compact }"
         [clrDetailExpandableAriaLabel]="clrDetailExpandableAriaLabel"
         [clrDgDisablePageFocus]="clrDgDisablePageFocus"
@@ -121,7 +127,6 @@ const DatagridTemplate: StoryFn = args => ({
         [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
         (clrDgRefresh)="clrDgRefresh($event)"
         (clrDgSelectedChange)="clrDgSelectedChange($event)"
-        (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
         (clrDgCustomSelectAll)="clrDgCustomSelectAll($event)"
         [clrLoadingMoreItems]="clrLoadingMoreItems"
       >
@@ -246,19 +251,19 @@ export const Datagrid: StoryObj = {
 export const SingleSelect: StoryObj = {
   render: DatagridTemplate,
   args: {
-    singleSelectable: true,
+    clrDgSelectionType: SelectionType.Single,
   },
 };
 export const MultiSelect: StoryObj = {
   render: DatagridTemplate,
   args: {
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
   },
 };
 export const MultiSelectWithSelection: StoryObj = {
   render: DatagridTemplate,
   args: {
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
     selectedRows: [1],
   },
 };
@@ -287,21 +292,21 @@ export const CompactSingleSelect: StoryObj = {
   render: DatagridTemplate,
   args: {
     compact: true,
-    singleSelectable: true,
+    clrDgSelectionType: SelectionType.Single,
   },
 };
 export const CompactMultiSelect: StoryObj = {
   render: DatagridTemplate,
   args: {
     compact: true,
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
   },
 };
 export const CompactMultiSelectWithSelection: StoryObj = {
   render: DatagridTemplate,
   args: {
     compact: true,
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
     selectedRows: [1],
   },
 };
@@ -320,7 +325,7 @@ export const Full: StoryObj = {
     actionOverflow: true,
     expandable: true,
     hidableColumns: true,
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
   },
 };
 
@@ -331,7 +336,7 @@ export const FullCompact: StoryObj = {
     compact: true,
     expandable: true,
     hidableColumns: true,
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
   },
 };
 
@@ -342,7 +347,7 @@ export const FullCompactWithButtonNavigationPattern: StoryObj = {
     compact: true,
     expandable: true,
     hidableColumns: true,
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
     showFooterNavButtons: true,
   },
 };

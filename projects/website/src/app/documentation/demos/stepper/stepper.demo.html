@@ -1,0 +1,183 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary" id="stepper-header">
+      The stepper is an extension of the base accordion component. It structures multi-step processes into two or more
+      expanding panels that break up complex workflows.
+    </p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+
+    <p class="clr-mt-16px clr-mb-16px" cds-text="body">Use the stepper component:</p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>When you have complex and long work processes that may not fit in one viewport</li>
+      <li>When users need to see the forms in-line with the rest of the page content</li>
+      <li>When users need more detail than step titles to understand the process</li>
+    </ul>
+    <p class="clr-mt-32px" cds-text="body">
+      Check in the patterns which component and when is best to use for your multi-step process:
+    </p>
+    <app-link-cards [linkColWidth]="4" [links]="patternLinks"></app-link-cards>
+
+    <h2 id="anatomy-and-behavior" class="clr-mt-48px" cds-text="title">Anatomy and Behavior</h2>
+
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Stepper panels are composed of two sections, the header and the input section.</li>
+      <li>The header contains a title and a description for the step.</li>
+      <li>When closed, the panels provide a high-level overview of the entire workflow at a glance.</li>
+    </ul>
+
+    <div class="clr-mt-24px">
+      <form clrStepper (ngSubmit)="contactFormSubmit()">
+        <clr-stepper-panel ngModelGroup="name">
+          <clr-step-title>Legal Name</clr-step-title>
+          <clr-step-description>Description goes here.</clr-step-description>
+          <clr-step-content>
+            <clr-input-container>
+              <label>First Name</label>
+              <input clrInput [(ngModel)]="contactForm.name.firstName" name="firstName" required />
+            </clr-input-container>
+
+            <clr-input-container>
+              <label>Last Name</label>
+              <input clrInput [(ngModel)]="contactForm.name.lastName" name="lastName" required />
+            </clr-input-container>
+
+            <button clrStepButton="next">next</button>
+          </clr-step-content>
+        </clr-stepper-panel>
+
+        <clr-stepper-panel ngModelGroup="contact">
+          <clr-step-title>Contact Information</clr-step-title>
+          <clr-step-description>Description goes here.</clr-step-description>
+          <clr-step-content>
+            <clr-input-container>
+              <label>Email</label>
+              <input clrInput [ngModel]="contactForm.contact.email" name="email" />
+            </clr-input-container>
+
+            <clr-input-container>
+              <label>Phone</label>
+              <input clrInput [ngModel]="contactForm.contact.phone" name="phone" />
+            </clr-input-container>
+
+            <button clrStepButton="next">next</button>
+          </clr-step-content>
+        </clr-stepper-panel>
+
+        <clr-stepper-panel ngModelGroup="password">
+          <clr-step-title>Password</clr-step-title>
+          <clr-step-description>Description goes here.</clr-step-description>
+          <clr-step-content>
+            <clr-password-container>
+              <label>Password</label>
+              <input
+                clrPassword
+                autocomplete="current-password"
+                [ngModel]="contactForm.password.password"
+                name="password"
+              />
+            </clr-password-container>
+
+            <clr-password-container>
+              <label>Confirm Password</label>
+              <input
+                clrPassword
+                autocomplete="current-password"
+                [ngModel]="contactForm.password.confirm"
+                name="confirm"
+              />
+            </clr-password-container>
+
+            <button clrStepButton="submit">submit</button>
+          </clr-step-content>
+        </clr-stepper-panel>
+      </form>
+    </div>
+
+    <h3 data-toc-item id="header" class="clr-mt-32px" cds-text="section">Header</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      The step header section has three states: completed, active, to-do. When a step is in its active state, the header
+      section is highlighted and its input section is visible for users to interact. As users complete steps, the steps
+      are marked with a green bar to the left, and a summary of user's input will replace the description.
+    </p>
+
+    <h3 data-toc-item id="input-section" class="clr-mt-32px" cds-text="section">Input Section</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      The input section has two elements: the form and the buttons. The form is used to collect input from users to
+      finish the step. The buttons section will allow the users to proceed to the next step or finish the workflow. To
+      go back to a previous step, users click the step title of one of the previous steps. That step will then become
+      the active step with its input section visible for editing.
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-6">
+        <div class="clr-mt-16px">
+          <app-do-dont type="do" caption="The action is correctly aligned to the left.">
+            <app-themed-image
+              [lightSrc]="'/assets/images/documentation/stepper/light-theme/stepper-do.svg'"
+              [darkSrc]="'/assets/images/documentation/stepper/dark-theme/stepper-do.svg'"
+              [imageAlt]="'input section with correctly aligned buttons having meaningful description'"
+              [imageStyle]="'width: 100%'"
+            ></app-themed-image>
+          </app-do-dont>
+        </div>
+      </div>
+      <div class="clr-col-6">
+        <div class="clr-mt-16px">
+          <app-do-dont
+            type="dont"
+            caption="Don't use ambiguous non-action oriented descriptions that do not specify what users are accomplishing."
+          >
+            <app-themed-image
+              [lightSrc]="'/assets/images/documentation/stepper/light-theme/stepper-dont.svg'"
+              [darkSrc]="'/assets/images/documentation/stepper/dark-theme/stepper-dont.svg'"
+              [imageAlt]="'input section with buttons having ambiguous description'"
+              [imageStyle]="'width: 100%'"
+            ></app-themed-image>
+          </app-do-dont>
+        </div>
+      </div>
+    </div>
+
+    <h3 data-toc-item id="final-call-to-action" class="clr-mt-32px" cds-text="section">Final Call to Action</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      For the button label in the final call to action, we recommend that the copy also describe an immediate outcome of
+      completing the stepper. If the workflow will require more time to process after the stepper is complete, then
+      FINISH or other non-specific terminology may work better.
+    </p>
+
+    <p class="clr-mt-24px" cds-text="body">
+      Though we recommend action-oriented button labels, there are use cases where labels like DONE work well. If the
+      user is viewing read-only information, we recommend using labels like DONE.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" class="clr-mt-48px" cds-text="title">Code &amp; Examples</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      The Stepper is an extension of the base Accordion component. The stepper requires use of the Angular Forms API.
+      Using the Forms API allows the stepper to easily reflect the form state of each step in the stepper template.
+    </p>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Leverage our <code>*clrIfExpanded</code> structural directive on the <code>clr-stepper-panel</code> to only
+      instantiate children when they are displayed.
+    </p>
+
+    <clr-angular-stepper-reactive-demo *appIfTabActive></clr-angular-stepper-reactive-demo>
+    <clr-angular-stepper-template-demo *appIfTabActive></clr-angular-stepper-template-demo>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <clr-angular-stepper-api-demo></clr-angular-stepper-api-demo>
+  </app-doc-tab>
+</app-doc-tabs>

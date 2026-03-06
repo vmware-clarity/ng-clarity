@@ -1,0 +1,31 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-row">
+  <div class="clr-col-12 clr-col-md-4">
+    <clr-tree>
+      <clr-tree-node
+        *clrRecursiveFor="let file of root; getChildren: getChildren"
+        [clrSelected]="file.selected"
+        [clrDisabled]="file.disabled"
+        [clrExpanded]="file.expanded"
+      >
+        {{ file.name }}
+      </clr-tree-node>
+    </clr-tree>
+  </div>
+  <div class="clr-col-12 clr-col-md-8">
+    <pre class="example-display-json">{{ root | json }}</pre>
+  </div>
+</div>
+
+<app-stackblitz-example
+  name="disabled node selection tree view"
+  [componentTemplate]="exampleHtml"
+  [componentClass]="exampleTs"
+  [additionalFiles]="additionalFiles"
+></app-stackblitz-example>

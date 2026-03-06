@@ -1,0 +1,56 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'variables.tokens' as tokens;
+
+:host {
+  display: block;
+}
+
+.heading {
+  $heading: &;
+
+  &__icon,
+  &__text,
+  &__bar {
+    margin-top: tokens.$cds-global-layout-space-xs;
+  }
+
+  &__icon {
+    #{$heading}--use & clr-icon {
+      --color: #{tokens.$cds-alias-status-success};
+    }
+
+    #{$heading}--dont-use & clr-icon {
+      --color: #{tokens.$cds-alias-status-danger};
+    }
+  }
+
+  &__text {
+    align-self: center;
+
+    #{$heading}--use & {
+      color: tokens.$cds-alias-status-success;
+    }
+
+    #{$heading}--dont-use & {
+      color: tokens.$cds-alias-status-danger;
+    }
+  }
+
+  &__bar {
+    #{$heading}--use & {
+      border: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-status-success;
+      background: tokens.$cds-alias-status-success;
+    }
+
+    #{$heading}--dont-use & {
+      border: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-status-danger;
+      background: tokens.$cds-alias-status-danger;
+    }
+  }
+}

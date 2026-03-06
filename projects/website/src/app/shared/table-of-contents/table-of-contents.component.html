@@ -1,0 +1,40 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+@if (tableOfContents && tableOfContents.length) {
+  <div class="table-of-contents">
+    <span class="title">Content</span>
+    <ng-container *ngTemplateOutlet="tocList; context: { $implicit: tableOfContents }"></ng-container>
+    @if (showScrollToTopButton) {
+      <button class="scroll-to-top" (click)="scrollToTop()" aria-label="Scroll to top">
+        <clr-icon shape="angle"></clr-icon>
+      </button>
+    }
+  </div>
+}
+
+<ng-template #tocList let-entries>
+  @if (entries?.length) {
+    <ul class="list-unstyled toc-list">
+      @for (entry of entries; track entry) {
+        <li>
+          <a
+            routerLink="."
+            [fragment]="entry.id"
+            [replaceUrl]="true"
+            [ngClass]="{ active: activeHash === entry.id }"
+            (click)="onClick(entry.id)"
+            (pointerdown)="smoothScroll(true)"
+            (pointerup)="smoothScroll(false)"
+          >
+            {{ entry.label }}
+          </a>
+          <ng-container *ngTemplateOutlet="tocList; context: { $implicit: entry.children }"></ng-container>
+        </li>
+      }
+    </ul>
+  }
+</ng-template>

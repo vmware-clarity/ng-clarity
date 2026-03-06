@@ -1,0 +1,40 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+
+import { CSS_EXAMPLE } from './grid-css-example';
+import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
+
+const EXAMPLE1 = `
+<div class="clr-row">
+  <div class="clr-col">
+    <span>clr-col</span>
+  </div>
+  <div class="clr-col">
+    <span>clr-col</span>
+  </div>
+  <div class="clr-break-row"></div>
+  <div class="clr-col">
+    <span>clr-col</span>
+  </div>
+  <div class="clr-col">
+    <span>clr-col</span>
+  </div>
+</div>
+`;
+
+@Component({
+  selector: 'clr-grid-demo-auto-layout-4',
+  templateUrl: './grid-auto-layout-4.html',
+  styleUrl: './grid.demo.scss',
+  imports: [StackblitzExampleComponent],
+})
+export class GridAutoLayout4Demo {
+  example1 = EXAMPLE1;
+  cssExample = CSS_EXAMPLE;
+}

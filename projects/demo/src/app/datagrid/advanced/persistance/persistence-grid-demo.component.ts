@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition } from '@clr/addons/datagrid';
-import { ClrAlertModule } from '@clr/angular';
+import { ClrAlertModule, SelectionType } from '@clr/angular';
 
 import { Inventory, VmItem } from '../inventory/inventory';
 
@@ -19,6 +19,7 @@ import { Inventory, VmItem } from '../inventory/inventory';
   providers: [Inventory],
 })
 export class PersistenceGridDemoComponent {
+  SelectionType = SelectionType;
   protected readonly allItems: VmItem[];
   protected readonly columns: ColumnDefinition<VmItem>[] = [
     {

@@ -4,3 +4,4 @@
 /dist
 /projects/**/*.api.md
 /documentation.json
+/projects/website/src/compiled-content

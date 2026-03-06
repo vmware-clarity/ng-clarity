@@ -1,0 +1,27 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+
+import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
+
+const EXAMPLE = `
+<span class="label">Austin</span>
+<span class="label">New York</span>
+<span class="label">Palo Alto</span>
+<span class="label">San Francisco</span>
+<span class="label">Seattle</span>
+`;
+
+@Component({
+  selector: 'clr-labels-default-demo',
+  templateUrl: './labels-default.demo.html',
+  imports: [StackblitzExampleComponent],
+})
+export class LabelsDefaultDemo {
+  example = EXAMPLE;
+}

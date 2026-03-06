@@ -19,7 +19,7 @@ import { User } from '../inventory/user';
 })
 export class DatagridSelectionRowModeDemo {
   users: User[];
-  singleSelected: User;
+  singleSelected: User[] = [];
   multiSelected: User[] = [];
 
   constructor(inventory: Inventory) {

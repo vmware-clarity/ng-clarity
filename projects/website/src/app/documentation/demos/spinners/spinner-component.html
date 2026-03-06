@@ -1,0 +1,61 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2 id="angular-component" cds-text="title" class="clr-mt-48px">Angular Spinner Component</h2>
+<p cds-text="body" class="clr-mt-16px">
+  Clarity provides a component to help with displaying a spinner for loading purposes. This component also helps with
+  accessibility needs to announce loading tasks to a screen reader user.
+</p>
+
+<h3 data-toc-item id="angular-examples" cds-text="section" class="clr-mt-32px">Examples</h3>
+
+<div class="clr-example squeeze">
+  @if (!fetchingUserInformation) {
+  <button (click)="toggleSpinner('fetchingUserInformation')" class="btn btn-primary">Fetch user information</button>
+  } @if (fetchingUserInformation) {
+  <clr-spinner>Loading data</clr-spinner>
+  <br />
+  <br />
+  <button class="btn" (click)="toggleSpinner('fetchingUserInformation')">Cancel fetching user information</button>
+  }
+</div>
+<app-stackblitz-example
+  name="spinner fetch"
+  [componentTemplate]="example1"
+  [componentClass]="code1"
+  [showComponentClass]="false"
+></app-stackblitz-example>
+
+<h3 data-toc-item id="modify" cds-text="section" class="clr-mt-32px">Modifiers</h3>
+<p cds-text="body" class="clr-mt-16px">
+  Add modifiers like <code cds-text="code">clrInline</code> for Inline Spinners or
+  <code cds-text="code">clrInverse</code> for spinners with dark background.
+</p>
+<p>
+  If you need to make change on the size you could add <code cds-text="code">clrSmall</code> or
+  <code cds-text="code">clrMedium</code>, the default size is auto set to <code cds-text="code">large</code>.
+</p>
+
+<div class="clr-example squeeze">
+  @if (!downloadingFile) {
+  <button (click)="toggleSpinner('downloadingFile')" class="btn btn-primary">Download file</button>
+  } @if (downloadingFile) {
+  <div>
+    <clr-spinner clrInline>Downloading</clr-spinner>
+    <span> Downloading</span>
+    <br />
+    <br />
+    <button class="btn" (click)="toggleSpinner('downloadingFile')">Cancel file download</button>
+  </div>
+  }
+</div>
+<app-stackblitz-example
+  name="spinner file download"
+  [componentTemplate]="example2"
+  [componentClass]="code2"
+  [showComponentClass]="false"
+></app-stackblitz-example>

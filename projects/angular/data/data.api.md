@@ -148,6 +148,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     loadingMoreItems: boolean;
     // (undocumented)
+    static ngAcceptInputType_selectionType: SelectionType | string;
+    // (undocumented)
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
     // (undocumented)
@@ -175,18 +177,15 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     scrollableColumns: ViewContainerRef;
     // (undocumented)
     selectAllId: string;
-    set selected(value: T[] | undefined);
+    set selected(value: T[]);
     // (undocumented)
     selectedChanged: EventEmitter<T[]>;
     // (undocumented)
     selection: Selection_2<T>;
-    // Warning: (ae-forgotten-export) The symbol "SelectionType_2" needs to be exported by the entry point clr-angular-data.d.ts
-    //
     // (undocumented)
-    SELECTION_TYPE: typeof SelectionType_2;
-    set singleSelected(value: T);
-    // (undocumented)
-    singleSelectedChanged: EventEmitter<T>;
+    SELECTION_TYPE: typeof SelectionType;
+    get selectionType(): SelectionType;
+    set selectionType(value: SelectionType);
     // (undocumented)
     stickyHeaders: QueryList<ElementRef>;
     // (undocumented)
@@ -196,7 +195,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     get virtualScroll(): ÇlrDatagridVirtualScrollDirective<any>;
     _virtualScroll: QueryList<ÇlrDatagridVirtualScrollDirective<any>>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": { "alias": "clrLoadingMoreItems"; "required": false; }; "clrDgSingleSelectionAriaLabel": { "alias": "clrDgSingleSelectionAriaLabel"; "required": false; }; "clrDgSingleActionableAriaLabel": { "alias": "clrDgSingleActionableAriaLabel"; "required": false; }; "clrDetailExpandableAriaLabel": { "alias": "clrDetailExpandableAriaLabel"; "required": false; }; "clrDgDisablePageFocus": { "alias": "clrDgDisablePageFocus"; "required": false; }; "customSelectAllEnabled": { "alias": "clrDgCustomSelectAllEnabled"; "required": false; }; "loading": { "alias": "clrDgLoading"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "singleSelected": { "alias": "clrDgSingleSelected"; "required": false; }; "clrDgPreserveSelection": { "alias": "clrDgPreserveSelection"; "required": false; }; "rowSelectionMode": { "alias": "clrDgRowSelection"; "required": false; }; "identityFn": { "alias": "clrDgItemsIdentityFn"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "singleSelectedChanged": "clrDgSingleSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": { "alias": "clrLoadingMoreItems"; "required": false; }; "clrDgSingleSelectionAriaLabel": { "alias": "clrDgSingleSelectionAriaLabel"; "required": false; }; "clrDgSingleActionableAriaLabel": { "alias": "clrDgSingleActionableAriaLabel"; "required": false; }; "clrDetailExpandableAriaLabel": { "alias": "clrDetailExpandableAriaLabel"; "required": false; }; "clrDgDisablePageFocus": { "alias": "clrDgDisablePageFocus"; "required": false; }; "customSelectAllEnabled": { "alias": "clrDgCustomSelectAllEnabled"; "required": false; }; "loading": { "alias": "clrDgLoading"; "required": false; }; "selectionType": { "alias": "clrDgSelectionType"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "clrDgPreserveSelection": { "alias": "clrDgPreserveSelection"; "required": false; }; "rowSelectionMode": { "alias": "clrDgRowSelection"; "required": false; }; "identityFn": { "alias": "clrDgItemsIdentityFn"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagrid<any>, never>;
 }
@@ -538,7 +537,7 @@ export class ClrDatagridFooter<T = any> {
     // (undocumented)
     selection: Selection_2<T>;
     // (undocumented)
-    SELECTION_TYPE: typeof SelectionType_2;
+    SELECTION_TYPE: typeof SelectionType;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFooter<any>, "clr-dg-footer", never, {}, {}, never, ["*", "clr-dg-pagination"], false, never>;
     // (undocumented)
@@ -776,7 +775,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     selection: Selection_2<T>;
     // (undocumented)
-    SELECTION_TYPE: typeof SelectionType_2;
+    SELECTION_TYPE: typeof SelectionType;
     // @deprecated (undocumented)
     protected selectRow(selected: boolean, $event: any): void;
     // (undocumented)
@@ -827,7 +826,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     // (undocumented)
     selection: Selection_2;
     // (undocumented)
-    SELECTION_TYPE: typeof SelectionType_2;
+    SELECTION_TYPE: typeof SelectionType;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRowDetail, "clr-dg-row-detail", never, { "_beginningOfExpandableContentAriaText": { "alias": "clrRowDetailBeginningAriaText"; "required": false; }; "_endOfExpandableContentAriaText": { "alias": "clrRowDetailEndAriaText"; "required": false; }; "replace": { "alias": "clrDgReplace"; "required": false; }; }, {}, ["cells"], ["*"], false, never>;
     // (undocumented)
@@ -1295,7 +1294,7 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar_2<T, 
 class Selection_2<T = any> {
     constructor(_items: Items_2<T>, filters: FiltersProvider_2<T>, differs: IterableDiffers);
     // (undocumented)
-    get change(): Observable<T[] | T>;
+    get change(): Observable<T[]>;
     // (undocumented)
     checkForChanges(): void;
     // (undocumented)
@@ -1305,7 +1304,6 @@ class Selection_2<T = any> {
     set current(value: T[]);
     // (undocumented)
     get currentSingle(): T;
-    set currentSingle(value: T);
     destroy(): void;
     // (undocumented)
     id: string;
@@ -1319,8 +1317,10 @@ class Selection_2<T = any> {
     // @deprecated (undocumented)
     rowSelectionMode: boolean;
     // (undocumented)
-    get selectionType(): SelectionType_2;
-    set selectionType(value: SelectionType_2);
+    get selectable(): boolean;
+    // (undocumented)
+    get selectionType(): SelectionType;
+    set selectionType(value: SelectionType);
     setSelected(item: T, selected: boolean): void;
     shiftPressed: boolean;
     toggleAll(): void;
@@ -1332,6 +1332,16 @@ class Selection_2<T = any> {
     static ɵprov: i0.ɵɵInjectableDeclaration<Selection_2<any>>;
 }
 export { Selection_2 as Selection }
+
+// @public (undocumented)
+export enum SelectionType {
+    Multi = "multi",
+    None = "none",
+    Single = "single"
+}
+
+// @public (undocumented)
+export function selectionTypeAttribute(value: SelectionType | string): SelectionType;
 
 // Warning: (ae-forgotten-export) The symbol "OompaLoompa" needs to be exported by the entry point clr-angular-data.d.ts
 //
@@ -1607,7 +1617,7 @@ export class ÇlrWrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data.d.ts:1084:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data.d.ts:1094:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 

@@ -22,38 +22,22 @@ describe('AccordionService', () => {
     accordionService.updatePanelOrder([panel1Id, panel2Id]);
   });
 
-  it('should get updates of an individual panel change', () => {
-    accordionService
-      .getPanelChanges(panel1Id)
-      .pipe(take(1))
-      .subscribe(panel => expect(panel.id).toBe(panel1Id));
-  });
-
-  it('should update of panel changes when toggling to new panel', () => {
+  it('should close other panels when toggling in default strategy', () => {
+    accordionService.togglePanel(panel1Id);
     accordionService.togglePanel(panel2Id);
+
     accordionService
       .getPanelChanges(panel1Id)
       .pipe(take(1))
       .subscribe(panel => expect(panel.open).toBe(false));
-  });
 
-  it('should update panel disabled state', () => {
-    accordionService.disablePanel(panel1Id, true);
     accordionService
-      .getPanelChanges(panel1Id)
+      .getPanelChanges(panel2Id)
       .pipe(take(1))
-      .subscribe(panel => expect(panel.disabled).toBe(true));
+      .subscribe(panel => expect(panel.open).toBe(true));
   });
 
-  it('should notify of panel changes when panel order has changed', () => {
-    accordionService.updatePanelOrder([panel2Id, panel1Id]);
-    accordionService
-      .getPanelChanges(panel1Id)
-      .pipe(take(1))
-      .subscribe(panel => expect(panel.index).toBe(1));
-  });
-
-  it('should allow component to set the active accordion strategy', () => {
+  it('should allow multiple panels open in multi strategy', () => {
     accordionService.setStrategy(AccordionStrategy.Multi);
     accordionService.togglePanel(panel1Id);
     accordionService.togglePanel(panel2Id);

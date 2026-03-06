@@ -1,0 +1,25 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'variables.tokens' as tokens;
+
+.clr-palette-row {
+  display: flex;
+  flex-flow: row nowrap;
+
+  .capitalize {
+    text-transform: capitalize;
+  }
+
+  .color-palette-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-right: 26px;
+    width: 100px;
+  }
+}

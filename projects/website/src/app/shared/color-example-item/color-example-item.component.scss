@@ -1,0 +1,54 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'variables.tokens' as tokens;
+
+:host {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: tokens.$cds-global-space-5;
+}
+
+.color-example-item-button {
+  --color: #{tokens.$cds-alias-object-container-background};
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--cds-global-space-14);
+  height: tokens.$cds-global-space-11;
+  background-color: var(--color);
+  border: 1px solid tokens.$cds-alias-object-interaction-border-color;
+  border-radius: tokens.$cds-alias-object-border-radius-100;
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+
+  &--copied {
+    --color: #{tokens.$cds-alias-object-container-background} !important;
+  }
+
+  &:not(#{&}--copied) {
+    &:hover {
+      background: url('/assets/images/copy-icon.svg') center no-repeat;
+    }
+  }
+}
+
+.color-example-item-number,
+.color-example-item-text {
+  font-size: tokens.$cds-alias-typography-caption-font-size;
+}
+
+.color-example-item-number {
+  margin-right: tokens.$cds-global-space-5;
+  width: tokens.$cds-global-space-6;
+}
+
+.color-example-item-text {
+  margin-left: tokens.$cds-global-space-5;
+}

@@ -1,0 +1,30 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example">
+  <clr-tabs>
+    <clr-tab>
+      <button clrTabLink>Dashboard</button>
+      <clr-tab-content *clrIfActive>
+        <p cds-text="body" class="clr-mt-16px">Content for Dashboard tab.</p>
+      </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Management</button>
+      <clr-tab-content *clrIfActive="true">
+        <p cds-text="body" class="clr-mt-16px">Content for Management tab.</p>
+      </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Cloud</button>
+      <clr-tab-content *clrIfActive>
+        <p cds-text="body" class="clr-mt-16px">Content for Cloud tab.</p>
+      </clr-tab-content>
+    </clr-tab>
+  </clr-tabs>
+</div>
+<app-stackblitz-example name="tabs angular dynamic example" [componentTemplate]="example"></app-stackblitz-example>

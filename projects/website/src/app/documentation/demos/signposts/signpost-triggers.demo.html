@@ -1,0 +1,41 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div class="signpost-triggers-wrapper">
+  <div class="signpost-trigger-demo">
+    <div class="signpost-item">
+      <h4>Clarity Icon</h4>
+      <clr-signpost>
+        <button class="btn btn-link btn-icon" aria-label="Icon Button Trigger" clrSignpostTrigger>
+          <clr-icon shape="user" class="is-solid has-badge-info"> </clr-icon>
+        </button>
+        <clr-signpost-content *clrIfOpen [clrPosition]="'bottom-middle'"> Lorem ipsum... </clr-signpost-content>
+      </clr-signpost>
+    </div>
+    <div class="signpost-item">
+      <h4>Button Link</h4>
+      <div class="trigger-item">
+        <clr-signpost>
+          <button class="btn btn-link" clrSignpostTrigger>Button Link Trigger</button>
+          <clr-signpost-content *clrIfOpen [clrPosition]="'top-middle'"> Lorem ipsum... </clr-signpost-content>
+        </clr-signpost>
+      </div>
+    </div>
+    <div class="signpost-item">
+      <h4>Button Link w/ Clarity Icon</h4>
+      <div class="trigger-item">
+        <clr-signpost>
+          <button class="btn btn-link" clrSignpostTrigger>
+            Button Link
+            <clr-icon shape="help-info"></clr-icon>
+          </button>
+          <clr-signpost-content *clrIfOpen [clrPosition]="'bottom-middle'"> Lorem ipsum... </clr-signpost-content>
+        </clr-signpost>
+      </div>
+    </div>
+  </div>
+  <app-stackblitz-example name="signpost triggers" [componentTemplate]="html"></app-stackblitz-example>
+</div>

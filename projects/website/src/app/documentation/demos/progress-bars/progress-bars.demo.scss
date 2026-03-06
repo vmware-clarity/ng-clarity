@@ -1,0 +1,43 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'variables.tokens' as tokens;
+@use 'mixins';
+@use 'progress-bars/variables.progress-bars' as progress-bars-variables;
+
+.progress-bars-demo {
+  .nav-item {
+    padding: mixins.baselinePx(10) 0 #{tokens.$cds-global-space-7};
+  }
+
+  .progbar-examples {
+    margin-bottom: #{tokens.$cds-global-space-11};
+  }
+}
+
+.progbar-examples {
+  .progress-block {
+    margin-top: tokens.$cds-global-space-9;
+  }
+}
+
+.danger-text {
+  color: progress-bars-variables.$clr-progress-danger-color;
+  font-weight: 500;
+
+  a {
+    color: progress-bars-variables.$clr-progress-danger-color !important;
+  }
+}
+
+.clr-ml-32px {
+  margin-left: tokens.$cds-global-layout-space-xl;
+}
+
+.clr-pb-16px {
+  padding-bottom: tokens.$cds-global-layout-space-md;
+}

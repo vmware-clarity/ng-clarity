@@ -44,14 +44,9 @@ export class Selection<T = any> {
   private _current: T[];
 
   /**
-   * The current selection in single selection type
-   */
-  private _currentSingle: T;
-
-  /**
    * The Observable that lets other classes subscribe to selection changes
    */
-  private _change = new Subject<T[] | T>();
+  private _change = new Subject<T[]>();
 
   /**
    * Subscriptions to the other providers changes.
@@ -75,7 +70,7 @@ export class Selection<T = any> {
 
     this.subscriptions.push(
       filters.change.subscribe(() => {
-        if (!this._selectable || this.preserveSelection) {
+        if (!this.selectable || this.preserveSelection) {
           return;
         }
         this.clearSelection();
@@ -99,7 +94,7 @@ export class Selection<T = any> {
             updatedItems.forEach(item => {
               const ref = _items.identifyBy(item);
               // If one of the updated items is the previously selectedSingle, set it as the new one
-              if (this.currentSingleSelectionRef === ref) {
+              if (this.currentSelectionRefs[0] === ref) {
                 newSingle = item;
                 selectionUpdated = true;
               }
@@ -108,16 +103,8 @@ export class Selection<T = any> {
               }
             });
 
-            // If we're using smart datagrids, we expect all items to be present in the updatedItems array.
-            // Therefore, we should delete the currentSingle if it used to be defined but doesn't exist anymore.
-            // No explicit "delete" is required, since newSingle would be undefined at this point.
-            // Marking it as selectionUpdated here will set currentSingle to undefined below in the setTimeout.
-            if (_items.smart && !newSingle) {
-              selectionUpdated = true;
-            }
-
             if (selectionUpdated) {
-              this.currentSingle = newSingle;
+              this.current = [newSingle];
             }
             break;
           }
@@ -187,11 +174,11 @@ export class Selection<T = any> {
     if (value === this.selectionType) {
       return;
     }
-    this._selectionType = value;
-    if ([SelectionType.None, SelectionType.Single].includes(value)) {
-      delete this.current;
-    } else {
-      this.updateCurrent([], false);
+
+    this._selectionType = value ?? SelectionType.None;
+
+    if (!this._current && this._selectionType !== SelectionType.None) {
+      this._current = [];
     }
   }
 
@@ -204,33 +191,21 @@ export class Selection<T = any> {
   }
 
   get currentSingle(): T {
-    return this._currentSingle;
-  }
-  set currentSingle(value: T) {
-    if (value === this._currentSingle) {
-      return;
-    }
-    this._currentSingle = value;
-    this.emitChange();
+    return this._current?.length ? this._current[0] : undefined;
   }
 
   // We do not want to expose the Subject itself, but the Observable which is read-only
-  get change(): Observable<T[] | T> {
+  get change(): Observable<T[]> {
     return this._change.asObservable();
   }
 
-  private get _selectable(): boolean {
-    return this._selectionType === SelectionType.Multi || this._selectionType === SelectionType.Single;
+  get selectable(): boolean {
+    return this._selectionType !== SelectionType.None;
   }
 
   // Refs of currently selected items
   private get currentSelectionRefs(): T[] {
     return this._currentSelectionRefs;
-  }
-
-  // Ref of currently selected item
-  private get currentSingleSelectionRef(): T {
-    return this._currentSingle && this._items.identifyBy(this._currentSingle);
   }
 
   checkForChanges(): void {
@@ -247,7 +222,6 @@ export class Selection<T = any> {
   clearSelection(): void {
     this._current = [];
     this._currentSelectionRefs = [];
-    this._currentSingle = null;
     this.emitChange();
   }
 
@@ -269,12 +243,13 @@ export class Selection<T = any> {
    * Checks if an item is currently selected
    */
   isSelected(item: T): boolean {
-    const ref = this._items.identifyBy(item);
+    const refIndex = this.currentSelectionRefs.indexOf(this._items.identifyBy(item));
     if (this._selectionType === SelectionType.Single) {
-      return this.currentSingleSelectionRef === ref;
+      return refIndex === 0;
     } else if (this._selectionType === SelectionType.Multi) {
-      return this.currentSelectionRefs.indexOf(ref) >= 0;
+      return refIndex >= 0;
     }
+
     return false;
   }
 
@@ -290,7 +265,7 @@ export class Selection<T = any> {
         break;
       case SelectionType.Single:
         if (selected) {
-          this.currentSingle = item;
+          this.current = [item];
         }
         // in single selection, set currentSingle method should be used
         break;
@@ -417,11 +392,7 @@ export class Selection<T = any> {
   }
 
   private emitChange() {
-    if (this._selectionType === SelectionType.Single) {
-      this._change.next(this.currentSingle);
-    } else if (this._selectionType === SelectionType.Multi) {
-      this._change.next(this.current);
-    }
+    this._change.next(this.current);
   }
 
   private updateCurrentSelectionRefs() {

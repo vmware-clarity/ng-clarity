@@ -1,0 +1,105 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+@if (currentTab | async; as currentTab) {
+  <div class="dox-header">
+    <section>
+      <h1 cds-text="headline">{{ title }}</h1>
+      @if (type === 'component') {
+        <a class="storybook" href="{{ storybookURL + (storybookPath || componentPath) }}" target="_blank">
+          <span class="clr-hidden-sm-down storybook-text">Explore in Storybook</span>
+          <span class="clr-hidden-md-up storybook-text">Storybook</span>
+          <clr-icon shape="arrow" class="arrow-icon"></clr-icon>
+        </a>
+      }
+      <clr-tabs class="dox-tabs clr-mt-16px">
+        <clr-tab>
+          <a clrTabLink [routerLink]="[componentURL]" (keyup.space)="$any($event.target).click()">Overview</a>
+          <ng-template [clrIfActive]="currentTab === 'overview'"></ng-template>
+        </clr-tab>
+        @if (availableTabs['themes']) {
+          <clr-tab>
+            <a clrTabLink [routerLink]="[componentURL, 'themes']" (keyup.space)="$any($event.target).click()">Themes</a>
+            <ng-template [clrIfActive]="currentTab === 'themes'"></ng-template>
+          </clr-tab>
+        }
+        @if (availableTabs['density']) {
+          <clr-tab>
+            <a clrTabLink [routerLink]="[componentURL, 'density']" (keyup.space)="$any($event.target).click()"
+              >Density</a
+            >
+            <ng-template [clrIfActive]="currentTab === 'density'"></ng-template>
+          </clr-tab>
+        }
+        @if (availableTabs['usage']) {
+          <clr-tab>
+            <a clrTabLink [routerLink]="[componentURL, 'usage']" (keyup.space)="$any($event.target).click()">Usage</a>
+            <ng-template [clrIfActive]="currentTab === 'usage'"></ng-template>
+          </clr-tab>
+        }
+        @if (availableTabs['colors']) {
+          <clr-tab>
+            <a clrTabLink [routerLink]="[componentURL, 'colors']" (keyup.space)="$any($event.target).click()">Colors</a>
+            <ng-template [clrIfActive]="currentTab === 'colors'"></ng-template>
+          </clr-tab>
+        }
+        @if (availableTabs['shapes']) {
+          <clr-tab>
+            <a clrTabLink [routerLink]="[componentURL, 'shapes']" (keyup.space)="$any($event.target).click()">Shapes</a>
+            <ng-template [clrIfActive]="currentTab === 'shapes'"></ng-template>
+          </clr-tab>
+        }
+        @if (availableTabs['design']) {
+          <clr-tab>
+            <a clrTabLink [routerLink]="[componentURL, 'design']" (keyup.space)="$any($event.target).click()">Design</a>
+            <ng-template [clrIfActive]="currentTab === 'design'"></ng-template>
+          </clr-tab>
+        }
+        @if (availableTabs['code']) {
+          <clr-tab>
+            <a clrTabLink [routerLink]="[componentURL, 'code']" (keyup.space)="$any($event.target).click()">Code</a>
+            <ng-template [clrIfActive]="currentTab === 'code'"></ng-template>
+          </clr-tab>
+        }
+        @if (availableTabs['api']) {
+          <clr-tab>
+            <a clrTabLink [routerLink]="[componentURL, 'api']" (keyup.space)="$any($event.target).click()">API</a>
+            <ng-template [clrIfActive]="currentTab === 'api'"></ng-template>
+          </clr-tab>
+        }
+        @if (availableTabs['accessibility'] && (accessibilityEnabled || type !== 'component')) {
+          <clr-tab>
+            <a clrTabLink [routerLink]="[componentURL, 'accessibility']" (keyup.space)="$any($event.target).click()">
+              Accessibility
+            </a>
+            <ng-template [clrIfActive]="currentTab === 'accessibility'"></ng-template>
+          </clr-tab>
+        }
+      </clr-tabs>
+    </section>
+  </div>
+  <section #doxContent class="dox-content">
+    <div class="dox-content-wrapper" id="moveTop" appHashListener>
+      @if (
+        scrollParent &&
+        (currentTab === 'overview' ||
+          currentTab === 'design' ||
+          currentTab === 'code' ||
+          currentTab === 'colors' ||
+          currentTab === 'accessibility')
+      ) {
+        <app-table-of-contents [scrollParent]="scrollParent"></app-table-of-contents>
+      }
+      @if (currentTabComponent | async; as currentTabComponent) {
+        <ng-container *ngTemplateOutlet="currentTabComponent.templateRef()!"></ng-container>
+      }
+      @if (type === 'component' && currentTab === 'overview') {
+        <app-link-cards [links]="availableTabs | appDocTabsLinkCardsLinks"></app-link-cards>
+      }
+      <app-site-footer></app-site-footer>
+    </div>
+  </section>
+}

@@ -1,0 +1,26 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<form clrForm [formGroup]="exampleForm">
+  <clr-input-container>
+    <input clrInput formControlName="sample" />
+  </clr-input-container>
+  <button class="btn btn-primary" type="submit" (click)="submit()">Submit</button>
+</form>
+
+@if (submitted) {
+<clr-alert [clrAlertLightweight]="true" [clrAlertType]="'success'">
+  <clr-alert-item>
+    <span class="alert-text">Form is submitted.</span>
+  </clr-alert-item>
+</clr-alert>
+} @if (error) {
+<clr-alert [clrAlertLightweight]="true" [clrAlertType]="'danger'">
+  <clr-alert-item>
+    <span class="alert-text">Form has errors.</span>
+  </clr-alert-item>
+</clr-alert>
+}

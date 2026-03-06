@@ -1,0 +1,23 @@
+<svg width="271" height="286" viewBox="0 0 271 286" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="270" height="285" fill="white"/>
+<rect x="27" y="71" width="44" height="4" rx="2" fill="#ACB9BE"/>
+<rect x="155.25" y="82.25" width="88.5" height="0.5" stroke="#67777E" stroke-width="0.5"/>
+<rect x="155" y="71" width="75" height="4" rx="2" fill="#CBD4D8"/>
+<rect x="27" y="100" width="47" height="4" rx="2" fill="#ACB9BE"/>
+<rect x="155.25" y="111.25" width="88.5" height="0.5" stroke="#67777E" stroke-width="0.5"/>
+<rect x="155" y="100" width="75" height="4" rx="2" fill="#CBD4D8"/>
+<rect x="27" y="129" width="33" height="4" rx="2" fill="#ACB9BE"/>
+<rect x="155.25" y="140.25" width="88.5" height="0.5" stroke="#67777E" stroke-width="0.5"/>
+<rect x="155" y="129" width="75" height="4" rx="2" fill="#CBD4D8"/>
+<rect x="27" y="158" width="33" height="4" rx="2" fill="#ACB9BE"/>
+<rect x="155.25" y="169.25" width="88.5" height="0.5" stroke="#67777E" stroke-width="0.5"/>
+<rect x="155" y="158" width="75" height="4" rx="2" fill="#CBD4D8"/>
+<rect x="27" y="187" width="33" height="4" rx="2" fill="#ACB9BE"/>
+<rect x="155.25" y="198.25" width="88.5" height="0.5" stroke="#67777E" stroke-width="0.5"/>
+<rect x="155" y="187" width="75" height="4" rx="2" fill="#CBD4D8"/>
+<rect x="27" y="216" width="33" height="4" rx="2" fill="#ACB9BE"/>
+<rect x="155.25" y="227.25" width="88.5" height="0.5" stroke="#67777E" stroke-width="0.5"/>
+<rect x="155" y="216" width="75" height="4" rx="2" fill="#CBD4D8"/>
+<path d="M78.6464 124.646C78.4512 124.842 78.4512 125.158 78.6464 125.354L81.8284 128.536C82.0237 128.731 82.3403 128.731 82.5355 128.536C82.7308 128.34 82.7308 128.024 82.5355 127.828L79.7071 125L82.5355 122.172C82.7308 121.976 82.7308 121.66 82.5355 121.464C82.3403 121.269 82.0237 121.269 81.8284 121.464L78.6464 124.646ZM145.354 125.354C145.549 125.158 145.549 124.842 145.354 124.646L142.172 121.464C141.976 121.269 141.66 121.269 141.464 121.464C141.269 121.66 141.269 121.976 141.464 122.172L144.293 125L141.464 127.828C141.269 128.024 141.269 128.34 141.464 128.536C141.66 128.731 141.976 128.731 142.172 128.536L145.354 125.354ZM79 125.5H145V124.5H79V125.5Z" fill="#E02200"/>
+<rect x="0.5" y="0.5" width="270" height="285" stroke="#DEDEDE"/>
+</svg>

@@ -1,0 +1,31 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h2 id="value-accessor-example" cds-text="title" cds-layout="m-t:xxl">Value Accessor Example</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  Since the file picker uses the native file input element, you can use native browser behaviors and API to read and
+  upload the selected files. To assist you, the file picker provides a custom value accessor to set the Angular form
+  control value to the selected <code cds-text="code">FileList</code>
+</p>
+
+<form clrForm clrLayout="vertical" [formGroup]="form">
+  <clr-file-input-container>
+    <label>Label</label>
+    <input type="file" formControlName="files" multiple clrFileInput />
+    <clr-control-helper>Helper message</clr-control-helper>
+    <clr-control-success>Success message</clr-control-success>
+  </clr-file-input-container>
+</form>
+
+<pre>{{ files | json }}</pre>
+
+<app-stackblitz-example
+  name="file picker value accessor"
+  [componentTemplate]="componentTemplate"
+  [componentClass]="componentClass"
+>
+</app-stackblitz-example>

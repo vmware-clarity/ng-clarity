@@ -1,0 +1,43 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { ClarityModule } from '@clr/angular';
+
+import { DatalistBasicDemo } from './datalist-basic.demo';
+import { DatalistReactiveValidationDemo } from './datalist-reactive-validation.demo';
+import { DatalistTemplateValidationDemo } from './datalist-template-validation.demo';
+import { DatalistDemo } from './datalist.demo';
+import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
+import { LinkCardsComponent } from '../../../shared/link-cards/link-cards.component';
+import { NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
+import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
+import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
+
+@NgModule({
+  imports: [
+    CommonModule,
+    ClarityModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule.forChild([{ path: '', component: DatalistDemo }]),
+    DocTabsModule,
+    ThemedImageComponent,
+    StackblitzExampleComponent,
+    NestingTableComponent,
+    LinkCardsComponent,
+    DatalistDemo,
+    DatalistBasicDemo,
+    DatalistTemplateValidationDemo,
+    DatalistReactiveValidationDemo,
+  ],
+  exports: [DatalistDemo],
+})
+export class DatalistDemoModule {}

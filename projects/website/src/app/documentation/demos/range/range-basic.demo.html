@@ -1,0 +1,69 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h3 data-toc-item id="basic" class="clr-mt-32px" cds-text="section">Basic</h3>
+<form clrForm>
+  <clr-range-container [clrRangeHasProgress]="true">
+    <input type="range" clrRange name="two" [(ngModel)]="input.one" aria-label="basic" />
+  </clr-range-container>
+</form>
+<app-stackblitz-example
+  name="basic range"
+  [componentTemplate]="basicExample"
+  [componentClass]="code"
+  [showComponentClass]="false"
+></app-stackblitz-example>
+
+<h3 data-toc-item id="full-example" class="clr-mt-32px" cds-text="section">Full Example</h3>
+<form clrForm>
+  <clr-range-container [clrRangeHasProgress]="true">
+    <label>Full example</label>
+    <input type="range" clrRange [(ngModel)]="input.two" name="three" />
+    <clr-control-helper>Helper text</clr-control-helper>
+  </clr-range-container>
+</form>
+<app-stackblitz-example
+  name="range full example"
+  [componentTemplate]="fullExample"
+  [componentClass]="code"
+  [showComponentClass]="false"
+></app-stackblitz-example>
+
+<h3 data-toc-item id="disabled" class="clr-mt-32px" cds-text="section">Disabled</h3>
+<form clrForm>
+  <clr-range-container [clrRangeHasProgress]="true">
+    <label>Disabled</label>
+    <input type="range" clrRange [(ngModel)]="input.three" name="four" [disabled]="disabled" />
+    <clr-control-helper>Helper text</clr-control-helper>
+  </clr-range-container>
+</form>
+<app-stackblitz-example
+  name="range disabled"
+  [componentTemplate]="disabledExample"
+  [componentClass]="code"
+  [showComponentClass]="false"
+></app-stackblitz-example>
+
+<h3 data-toc-item id="value-changes" class="clr-mt-32px" cds-text="section">Value Changes</h3>
+<p class="clr-mt-16px" cds-text="body">
+  Applications may need to be aware of the current slider value. They can use the standard Angular
+  <code cds-text="code">(change)</code> output to handle changes to the slider value.
+</p>
+<form clrForm>
+  <clr-range-container [clrRangeHasProgress]="true">
+    <label>Value change example</label>
+    <input type="range" clrRange [(ngModel)]="input.two" name="three" (change)="rangeChange($event)" />
+    <clr-control-helper>Helper text</clr-control-helper>
+  </clr-range-container>
+</form>
+
+<app-stackblitz-example
+  name="Range Change Example"
+  [componentTemplate]="rangeChangeHTML"
+  [componentClass]="code2"
+  [showComponentClass]="false"
+></app-stackblitz-example>

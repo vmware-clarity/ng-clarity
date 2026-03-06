@@ -1,0 +1,52 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h3 cds-text="section" class="clr-mt-32px">Basic Structure</h3>
+
+<p cds-text="body" class="clr-mt-16px">
+  Use the <code cds-text="code">clr-vertical-nav</code> component to create the Vertical Nav. Add the
+  <code cds-text="code">clrVerticalNavLink</code> directive on each Nav Link in the Vertical Nav. Use
+  <code cds-text="code">&lt;div class="nav-divider"&gt;&lt;/div&gt;</code> to add a horizontal divider to separate
+  logical groups.
+</p>
+
+<div class="clr-example">
+  <div class="main-container" style="height: 420px">
+    <header class="header">
+      <div class="branding">
+        <a routerLink="./project-pokemon" routerLinkActive="active">
+          <clr-icon shape="bolt"></clr-icon>
+          <span class="title">Project Pokémon</span>
+        </a>
+      </div>
+    </header>
+    <div class="content-container">
+      <clr-vertical-nav>
+        <a clrVerticalNavLink routerLink="./charizard" routerLinkActive="active">Charizard</a>
+        <a clrVerticalNavLink routerLink="./charmander" routerLinkActive="active">Charmander</a>
+        <a clrVerticalNavLink routerLink="./jigglypuff" routerLinkActive="active">Jigglypuff</a>
+        <a clrVerticalNavLink routerLink="./pidgey" routerLinkActive="active">Pidgey</a>
+        <a clrVerticalNavLink routerLink="./pikachu" routerLinkActive="active">Pikachu</a>
+        <a clrVerticalNavLink routerLink="./raichu" routerLinkActive="active">Raichu</a>
+        <a clrVerticalNavLink routerLink="./snorlax" routerLinkActive="active">Snorlax</a>
+        <div class="nav-divider"></div>
+        <a clrVerticalNavLink routerLink="./credit" routerLinkActive="active">Credit</a>
+      </clr-vertical-nav>
+      <div class="content-area demo-allow-scroll">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-stackblitz-example
+  name="Vertical Nav Basic structure"
+  [componentTemplate]="htmlExample"
+  [componentClass]="tsExample"
+  [showComponentClass]="false"
+  [additionalFiles]="additionalFiles"
+></app-stackblitz-example>

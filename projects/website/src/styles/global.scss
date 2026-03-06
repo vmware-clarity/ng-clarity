@@ -1,0 +1,151 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'variables.tokens' as tokens;
+@use 'variables/variables.layout' as variables;
+
+body {
+  // Need to change the font-family so cds-text instances get updated
+  --cds-alias-typography-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
+  --cds-alias-typography-header-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
+}
+
+[cds-theme] {
+  color-scheme: light;
+}
+
+[cds-theme~='dark'] {
+  color-scheme: dark;
+}
+
+h1 {
+  // prevent irregular focus outline (https://stackoverflow.com/a/62733403)
+  display: inline-block;
+}
+
+.cozy {
+  margin-top: #{tokens.$cds-global-space-11};
+}
+
+.cozy-sm {
+  margin-top: tokens.$cds-global-layout-space-sm;
+}
+
+p.cozy + p {
+  margin-top: #{tokens.$cds-global-space-3};
+}
+
+%killListStyles {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+
+.list-unstyled {
+  @extend %killListStyles;
+
+  & > li {
+    @extend %killListStyles;
+  }
+}
+
+//Overriding PrismJS styles. This is in code.scss and not in code.clarity.scss because
+//we don't want to override the background in case someone chooses to use
+//another PrismJS theme.
+:not(pre) > code[class*='language-'],
+pre[class*='language-'],
+pre,
+code[class*='language-'] {
+  background: transparent;
+}
+
+@media (width <= 991px) {
+  .layout-components {
+    .content-area > section {
+      width: 100%;
+      padding-left: 0;
+    }
+  }
+}
+
+a.btn-primary {
+  color: tokens.$cds-alias-object-app-background;
+
+  &:hover,
+  &:active,
+  &:visited,
+  &:focus {
+    color: tokens.$cds-global-color-white;
+  }
+}
+
+:not(.layout-home) {
+  .content-area section:first-of-type h1 :not(.clr-wizard) {
+    margin-top: calc(-1 * tokens.$cds-global-space-4);
+  }
+}
+
+.header .branding .clarity-logo {
+  background-image: url('/assets/images/clarity-logo.svg');
+  margin-right: calc(tokens.$cds-global-layout-space-sm - tokens.$cds-global-space-1);
+  height: #{tokens.$cds-global-space-11};
+  width: #{tokens.$cds-global-space-11};
+}
+
+@media (width <= 769px) {
+  html {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+@media only screen and (device-width >= 481px) and (device-width <= 1024px) and (orientation: landscape) {
+  // landscape iPad
+  html {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+.main-container .content-container .content-area {
+  padding-left: #{tokens.$cds-global-space-11};
+  padding-top: 0;
+}
+
+.btn.no-margin {
+  padding: 0;
+  margin: 0;
+  width: auto;
+  min-width: auto;
+}
+
+.margin-right-0_25 {
+  // Fix for badges demo in tree-view
+  margin-right: #{tokens.$cds-global-space-4} !important;
+}
+
+// Global Pages
+.layout-home {
+  .main-container {
+    @media screen and (max-width: map-get(variables.$clr-grid-breakpoints, sm)) {
+      height: auto;
+    }
+
+    .content-area {
+      overflow-x: hidden;
+      padding: 0;
+    }
+  }
+}
+
+// Adds extra padding to the bottom of the nav to prevent the bottom entry from being obscured by browser content
+.nav-content {
+  padding-bottom: tokens.$cds-global-space-10;
+}
+
+// Prevent LiveAnnouncer aria-live element from messing with the layout
+// It's already visually hidden, not sure why display: none is needed.
+.cdk-live-announcer-element {
+  display: none;
+}

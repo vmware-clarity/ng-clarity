@@ -1,0 +1,82 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<ng-template #localLink let-item>
+  <a clrVerticalNavLink clrAriaCurrentLink [routerLink]="item.url" routerLinkActive="active">
+    {{ item.label }}
+  </a>
+</ng-template>
+<ng-template #externalLink let-item>
+  <a clrVerticalNavLink target="_blank" rel="noopener" [href]="item.url">
+    {{ item.label }}
+  </a>
+</ng-template>
+
+<clr-vertical-nav [clr-nav-level]="1">
+  @for (navGroup of navGroups; track navGroup) {
+    @if (!navGroup.url) {
+      <clr-vertical-nav-group
+        [clrVerticalNavGroupExpanded]="navExpandedState[navGroup.label]!"
+        (clrVerticalNavGroupExpandedChange)="cacheNavState($event, navGroup.label)"
+      >
+        {{ navGroup.label }}
+        <clr-vertical-nav-group-children>
+          @switch (navGroup.label) {
+            @case ('Components') {
+              <ng-container *ngTemplateOutlet="componentLinks"></ng-container>
+            }
+            @case ('Addons') {
+              <ng-container *ngTemplateOutlet="addonsLinks"></ng-container>
+            }
+            @default {
+              <ng-container *ngTemplateOutlet="pageLinks"></ng-container>
+            }
+          }
+          <ng-template #pageLinks>
+            @for (item of navGroup.links; track item) {
+              <ng-container
+                *ngTemplateOutlet="(item.url | urlIsExternal) ? externalLink : localLink; context: { $implicit: item }"
+              ></ng-container>
+            }
+          </ng-template>
+          <ng-template #componentLinks>
+            @for (component of components; track component) {
+              @if (component.type == 'component') {
+                <a
+                  clrVerticalNavLink
+                  clrAriaCurrentLink
+                  [routerLink]="['/documentation', component.url]"
+                  routerLinkActive="active"
+                >
+                  {{ component.text }}
+                </a>
+              }
+            }
+          </ng-template>
+          <ng-template #addonsLinks>
+            @for (component of components; track component) {
+              @if (component.type == 'addons') {
+                <a
+                  clrVerticalNavLink
+                  clrAriaCurrentLink
+                  [routerLink]="['/documentation', component.url]"
+                  routerLinkActive="active"
+                >
+                  {{ component.text }}
+                </a>
+              }
+            }
+          </ng-template>
+        </clr-vertical-nav-group-children>
+      </clr-vertical-nav-group>
+    }
+    @if (navGroup.url) {
+      <ng-container
+        *ngTemplateOutlet="(navGroup.url | urlIsExternal) ? externalLink : localLink; context: { $implicit: navGroup }"
+      ></ng-container>
+    }
+  }
+</clr-vertical-nav>

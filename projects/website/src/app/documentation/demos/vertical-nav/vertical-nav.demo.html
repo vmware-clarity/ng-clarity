@@ -1,0 +1,448 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      Vertical Nav is a vertically aligned navigational component. Vertical navigation is a familiar navigation pattern
+      for users. It can fit as many navigation links as needed, scrolling when the content exceeds the viewport.
+    </p>
+    <div class="clr-mt-16px">
+      <clr-basic-vertical-nav-demo></clr-basic-vertical-nav-demo>
+    </div>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p class="clr-mt-16px clr-mb-16px" cds-text="body">Use the vertical navigation when you need:</p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>To collapse and expand the navigation to free up space for the content area</li>
+      <li>A hierarchical navigation or nested navigation</li>
+      <li>Many links in the navigation across a top level of navigation</li>
+      <li>Icons to describe navigation items which are helpful when the navigation is collapsed</li>
+    </ul>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6">
+        <app-do-dont type="do" caption="Use vertical navigation with a header.">
+          <div class="clrweb-DoxMedia-block component-box-container box-padding clr-mt-16px">
+            <div class="clrweb-DoxMedia-img is-left-aligned">
+              <clr-basic-vertical-nav-usage-demo></clr-basic-vertical-nav-usage-demo>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+
+      <div class="clr-col-12 clr-col-md-6">
+        <app-do-dont
+          type="dont"
+          caption="Don’t use vertical navigation with a header and a sub navigation menu. Having too many places for navigation is confusing for users."
+        >
+          <div class="clrweb-DoxMedia-block component-box-container box-padding clr-mt-16px">
+            <div class="clrweb-DoxMedia-img is-left-aligned">
+              <clr-basic-vertical-nav-usage-demo [demoToggleDont]="true"></clr-basic-vertical-nav-usage-demo>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+    </div>
+
+    <h2 id="layout" class="clr-mt-48px" cds-text="title">Layout</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Vertical navigation has layout options including dividers and section headers. Active links are displayed with a
+      white background. Touch targets are larger for easier interaction and span the entire width of the navigation,
+      similar to the space of the active link indicator.
+    </p>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-4">
+        <clr-just-navs-demo></clr-just-navs-demo>
+        <div class="clr-mt-16px">
+          <h3 cds-text="subsection" id="layout-basic">Basic</h3>
+          <p class="clr-mt-8px" cds-text="body">No dividers or section headers.</p>
+        </div>
+      </div>
+
+      <div class="clr-col-4">
+        <clr-just-navs-demo [demoWithDividers]="true"></clr-just-navs-demo>
+        <div class="clr-mt-16px">
+          <h3 cds-text="subsection" id="dividers">Dividers</h3>
+          <p class="clr-mt-8px" cds-text="body">
+            Dividers separate logical clusters of navigation items. Best used when you have two or more links in the
+            clusters.
+          </p>
+        </div>
+      </div>
+
+      <div class="clr-col-4">
+        <clr-just-navs-demo [demoWithHeadersAndDividers]="true"></clr-just-navs-demo>
+        <div class="clr-mt-16px">
+          <h3 cds-text="subsection" id="dividers-and-headers">Dividers and Headers</h3>
+          <p class="clr-mt-8px" cds-text="body">
+            Dividers and headers are paired to separate logical clusters of navigation items. Best used when you have
+            two or more links in the clusters.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="icons" class="clr-mt-48px" cds-text="title">Icons</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      If you add icons, place them to the left of the top navigation labels. Active items will display a blue icon. Make
+      sure your icons are distinctive and easily recognizable. Touch targets include the entire width of the navigation
+      including the icon.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6">
+        <app-do-dont type="do" caption="Use icons on all top navigation items, if you choose to use them.">
+          <div class="clrweb-DoxMedia-block component-box-container box-padding clr-mt-16px">
+            <div class="clrweb-DoxMedia-img is-left-aligned align-nav-items">
+              <clr-vertical-nav-icons-demo></clr-vertical-nav-icons-demo>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+
+      <div class="clr-col-12 clr-col-md-6">
+        <app-do-dont
+          type="dont"
+          caption="Don’t add icons to some top navigation items and not to others. The inconsistency makes it hard to scan and read."
+        >
+          <div class="clrweb-DoxMedia-block component-box-container box-padding clr-mt-16px">
+            <div class="clrweb-DoxMedia-img is-left-aligned align-nav-items">
+              <clr-vertical-nav-icons-demo [demoHideIcons]="true"></clr-vertical-nav-icons-demo>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+    </div>
+
+    <h2 id="hierarchy" class="clr-mt-48px" cds-text="title">Hierarchy</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Hierarchy is used to show parent-child relationship between navigation items. If a child item is active and the
+      parent item is collapsed, the parent will display as active. When expanded, the active indicator will display on
+      the child. Clicking label text, carets, or icons expands and collapses the parent item.
+    </p>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-4">
+        <clr-vertical-nav-groups-demo [demoHideIcons]="true"></clr-vertical-nav-groups-demo>
+        <div class="clr-mt-16px">
+          <h3 cds-text="subsection" id="basic">Basic</h3>
+          <p class="clr-mt-8px" cds-text="body">
+            Top-level hierarchy items are in a semi bold font weight and have a caret to the right. Child links are
+            normal font weight.
+          </p>
+        </div>
+      </div>
+
+      <div class="clr-col-4">
+        <clr-vertical-nav-groups-demo [demoExpandedGroup]="true"></clr-vertical-nav-groups-demo>
+        <div class="clr-mt-16px">
+          <h3 cds-text="subsection" id="icons">Icons</h3>
+          <p class="clr-mt-8px" cds-text="body">
+            Icons are applied only to top-level navigation items. Do not add them to child links.
+          </p>
+        </div>
+      </div>
+
+      <div class="clr-col-4">
+        <clr-vertical-nav-groups-demo [demoHideIcons]="true" [demoMixedNav]="true"> </clr-vertical-nav-groups-demo>
+        <div class="clr-mt-16px">
+          <h3 cds-text="subsection" id="mixed">Mixed</h3>
+          <p class="clr-mt-8px" cds-text="body">
+            Top-level navigation items without child item are semi bold. Clicking navigates a user to a page.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="clr-mt-24px">
+      <clr-alert clrAlertType="info" [clrAlertClosable]="false">
+        <clr-alert-item>
+          <span class="alert-text">
+            If you need a summary or overview-type landing page for a link group, we recommend you make it as your first
+            child link.
+          </span>
+        </clr-alert-item>
+      </clr-alert>
+    </div>
+
+    <h2 id="collapsing-nav-bar" class="clr-mt-32px" cds-text="title">Collapsing the Navigation Bar</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      The navigation bar itself can be collapsed to allow more space in the content areas. The double caret in the
+      upper-right corner will collapse and expand the navigation bar.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6">
+        <div class="clr-mt-16px">
+          <div class="clrweb-DoxMedia-block box-padding clr-mt-16px">
+            <div class="clrweb-DoxMedia-img is-left-aligned">
+              <clr-collapsible-vertical-nav-demo
+                [demoCollapsed]="true"
+                [demoHideIcons]="true"
+              ></clr-collapsible-vertical-nav-demo>
+            </div>
+          </div>
+          <div class="clr-mt-16px">
+            <h3 cds-text="subsection" id="no-icons">No Icons</h3>
+            <p class="clr-mt-8px" cds-text="body">
+              When no icons are present, collapsing the navigation will show a basic bar. The entire bar is a click
+              target. Once clicked, the navigation bar expands again.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="clr-col-12 clr-col-md-6">
+        <div class="clr-mt-16px">
+          <div class="clrweb-DoxMedia-block box-padding clr-mt-16px">
+            <div class="clrweb-DoxMedia-img is-left-aligned">
+              <clr-collapsible-vertical-nav-demo [demoCollapsed]="true"></clr-collapsible-vertical-nav-demo>
+            </div>
+          </div>
+          <div class="clr-mt-16px">
+            <h3 cds-text="subsection" id="collapsing-icons">Icons</h3>
+            <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+              <li>
+                When collapsed, text will disappear and only icons or icons with carets are displayed. Top-level
+                navigation items with child items show a caret next to the icon. Top-level items without children show
+                no caret next to the icon.
+              </li>
+              <li>
+                Clicking an icon with a caret expands the navigation to the top-level item. Clicking an icon with no
+                caret navigates the user to the corresponding page.
+              </li>
+              <li>An active link is shown as an active icon when collapsed.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="long-labels" class="clr-mt-48px" cds-text="title">Long Labels</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      When labels are too long, they are trimmed and followed by an ellipsis (…). We recommend that navigation labels
+      remain short and concise to prevent an ellipsis from showing.
+    </p>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-4">
+        <clr-just-navs-demo [demoLongLabel]="true"></clr-just-navs-demo>
+      </div>
+
+      <div class="clr-col-4">
+        <clr-vertical-nav-icons-demo [demoLongLabel]="true"></clr-vertical-nav-icons-demo>
+      </div>
+
+      <div class="clr-col-4">
+        <clr-vertical-nav-groups-demo [demoLongLabel]="true" [demoExpandedGroup]="true"> </clr-vertical-nav-groups-demo>
+      </div>
+    </div>
+
+    <h2 id="responsive-behavior" class="clr-mt-48px" cds-text="title">Responsive Behavior on Small Screens</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      When screens are reduced to or drop below 768px wide, the navigation is completely hidden. It can be shown by
+      clicking one of the header icons. All normal vertical navigation designs and behaviors are the same in the
+      responsive state. Read the Responsive section in the Navigation for more information about how this works.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-12">
+        <div class="clr-mt-16px">
+          <div class="clrweb-DoxMedia-block box-padding clr-mt-16px">
+            <div class="clr-row">
+              <div class="clr-col-md-6 clr-col-12">
+                <app-themed-image
+                  [lightSrc]="'/assets/images/documentation/vertical-nav/light-theme/responsive-left.svg'"
+                  [darkSrc]="'/assets/images/documentation/vertical-nav/dark-theme/responsive-left.svg'"
+                  [imageAlt]="'Responsive Vertical Nav with left side navigation'"
+                  [imageStyle]="'max-width: 100%'"
+                ></app-themed-image>
+              </div>
+              <div class="clr-col-md-6 clr-col-12">
+                <app-themed-image
+                  [lightSrc]="'/assets/images/documentation/vertical-nav/light-theme/responsive-right.svg'"
+                  [darkSrc]="'/assets/images/documentation/vertical-nav/dark-theme/responsive-right.svg'"
+                  [imageAlt]="'Responsive Vertical Nav with right side navigation'"
+                  [imageStyle]="'max-width: 100%'"
+                ></app-themed-image>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="accessibility" class="clr-mt-48px" cds-text="title">Accessibility</h2>
+    <p class="clr-mt-16px clr-mb-16px" cds-text="body">
+      Applications need to inform users who rely on assistive technologies when a routing change loads new content. For
+      this reason, we offer <code cds-text="code">clrFocusOnViewInit</code> along with the Vertical Nav component. The
+      directive allows you to choose which element that assistive technologies should read first when the new content
+      gets loaded. We introduced clrFocusOnViewInit in Clarity v2.1.2, so make sure you are on that or later versions to
+      use the directive.<br /><br />
+      To let the assistive technologies better track the state of the vertical navigation we recommend adding
+      <code cds-text="code">aria-current="page"</code> to the active link. You will need to add it or remove it
+      depending on which link is currently active. A good marker for that will be the element that has the class
+      <code cds-text="code">.active</code>. The <code cds-text="code">clrAriaCurrentLink</code> directive can be added
+      to any link that uses the <code cds-text="code">routerLink</code> directive to accomplish this.<br />
+      If the vertical navigation is lazy loaded, the application should do either of the following actions:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        Move focus to the first navigation link after the vertical navigation is loaded if the user is in the vertical
+        navigation already.
+      </li>
+      <li>
+        Alert assistive technology users in another way (such as with an
+        <code cds-text="code">aria-live</code> announcement).
+      </li>
+    </ul>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
+
+    <p cds-text="body" class="clr-mt-16px">
+      We have {{ childRoutes?.length }} Vertical Nav demos. Starting with the basics, each demo shows you one or more of
+      the advanced Vertical Nav features.
+    </p>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-12 clr-col-md-4">
+        <ul class="list">
+          @for (route of childRoutes; track route) {
+          <li>
+            <a [routerLink]="[route?.path]">{{ route?.data?.demoName }}</a>
+          </li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div #demoView></div>
+
+    <router-outlet></router-outlet>
+
+    <div class="datagrid-demo-pagination" cds-layout="m-t:sm">
+      @if (previous && previousRoute) {
+      <button class="btn btn-primary demo-pagination-prev" (click)="movePrevious()">
+        <clr-icon shape="angle" direction="left"></clr-icon>
+        {{ previousRoute.data.demoName }}
+      </button>
+      } @if (next && nextRoute) {
+      <button class="btn btn-primary demo-pagination-next" (click)="moveNext()">
+        {{ nextRoute.data.demoName }}
+        <clr-icon shape="angle" direction="right"></clr-icon>
+      </button>
+      }
+    </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 id="summary-of-options" cds-text="title" class="clr-mt-24px">Angular Components</h2>
+
+    <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">&lt;clr-vertical-nav&gt;</code> component</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input / Output</th>
+          <th class="left clr-hidden-xs-down">Values</th>
+          <th class="left clr-hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrVerticalNavCollapsible]</b>
+            <div class="clr-hidden-sm-up">Type: Boolean</div>
+            <div class="clr-hidden-sm-up">Default: false</div>
+          </td>
+          <td class="left clr-hidden-xs-down">Boolean</td>
+          <td class="left clr-hidden-xs-down">false</td>
+          <td class="left">
+            If true, the vertical nav will be expandable/closable by clicking on the top-right:
+            <ul class="list list-unstyled">
+              <li><clr-icon shape="angle-double" direction="left"></clr-icon> to collapse</li>
+              <li><clr-icon shape="angle-double" direction="right"></clr-icon> to expand</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[(clrVerticalNavCollapsed)]</b>
+            <div class="clr-hidden-sm-up">Type: Boolean</div>
+            <div class="clr-hidden-sm-up">Default: false</div>
+          </td>
+          <td class="left clr-hidden-xs-down">Boolean</td>
+          <td class="left clr-hidden-xs-down">false</td>
+          <td class="left">Set and listen for collapsed changes to a vertical nav</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrVerticalNavToggleLabel]</b>
+            <div class="clr-hidden-sm-up">Type: String</div>
+            <div class="clr-hidden-sm-up">Default: Toggle vertical navigation</div>
+          </td>
+          <td class="left clr-hidden-xs-down">String</td>
+          <td class="left clr-hidden-xs-down">Toggle vertical navigation</td>
+          <td class="left">Override the aria-label for vertical nav toggle button</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 cds-text="section" class="clr-mt-24px">
+      <code cds-text="code">&lt;clr-vertical-nav-group&gt;</code> component
+    </h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input / Output</th>
+          <th class="left clr-hidden-xs-down">Values</th>
+          <th class="left clr-hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[(clrVerticalNavGroupExpanded)]</b>
+            <div class="clr-hidden-sm-up">Type: Boolean</div>
+            <div class="clr-hidden-sm-up">Default: false</div>
+          </td>
+          <td class="left clr-hidden-xs-down">Boolean</td>
+          <td class="left clr-hidden-xs-down">false</td>
+          <td class="left">Set and listen for expanded changes to a nav group</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">*clrIfExpanded</code> directive</h3>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="clr-hidden-xs-down">Values</th>
+          <th class="clr-hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[(clrIfExpanded)]</b>
+            <div class="clr-hidden-sm-up">Type: boolean</div>
+            <div class="clr-hidden-sm-up">Default: false</div>
+          </td>
+          <td class="clr-hidden-xs-down">Boolean</td>
+          <td class="clr-hidden-xs-down">false</td>
+          <td class="left">
+            Two-way binding DOM rendering optimization for collapsed <code cds-text="code">clr-vertical-nav</code> or
+            expanded <code cds-text="code">clr-vertical-nav-group</code> states
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-style-docs styleDocsKey="Vertical Nav"></app-style-docs>
+  </app-doc-tab>
+</app-doc-tabs>

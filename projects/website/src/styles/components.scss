@@ -1,0 +1,436 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:map';
+@use 'variables.tokens' as tokens;
+@use 'mixins';
+@use 'variables/variables' as clr-variables;
+@use './variables' as variables;
+
+@mixin clrwebMakeFlexbox($alignItems: false) {
+  display: flex;
+  flex-direction: row;
+
+  @if $alignItems {
+    align-items: $alignItems;
+  }
+}
+
+.component-banner-image {
+  display: block;
+  margin-top: tokens.$cds-global-layout-space-md;
+
+  @media (min-width: variables.$table-of-contents-breakpoint) {
+    margin-top: calc(-1 * variables.$dox-content-wrapper-padding-top);
+  }
+}
+
+.component-summary {
+  // These styles need `!important` to override the @clr/ui `body p:not([cds-text])` styles.
+  margin-top: tokens.$cds-global-layout-space-xl !important;
+  font-size: tokens.$cds-alias-typography-subsection-font-size !important;
+  font-weight: tokens.$cds-alias-typography-subsection-font-weight !important;
+  line-height: tokens.$cds-alias-typography-subsection-line-height !important;
+  letter-spacing: tokens.$cds-alias-typography-subsection-letter-spacing !important;
+}
+
+app-root:not(.layout-home) {
+  .content-area section,
+  .content-area app-site-footer {
+    display: block;
+    max-width: variables.$clrweb-content-maxwidth;
+  }
+
+  img {
+    max-width: variables.$clrweb-content-maxwidth;
+  }
+
+  img.img-fluid {
+    max-width: 100%;
+  }
+}
+
+.main-container .content-container .dox-content-panel {
+  padding: 0;
+  overflow: auto !important;
+
+  @media screen and (min-width: map.get(clr-variables.$clr-grid-breakpoints, sm)) {
+    overflow: hidden;
+    display: flex;
+  }
+}
+
+.clrweb-button-demo,
+.clrweb-stackview-demo {
+  display: block;
+}
+
+.clrweb-DoxMedia {
+  width: 100%;
+  margin-top: tokens.$cds-global-space-9;
+
+  &-block,
+  app-animated-example .animated-example {
+    background-color: var(--clr-card-bg-color, hsl(198deg 0% 100%));
+    border-color: var(--clr-card-border-color, hsl(198deg 0% 87%));
+    border-width: var(--clr-card-border-width, 0.05rem);
+    border-style: solid;
+    min-height: mixins.baselinePx(145);
+    padding: tokens.$cds-global-space-9;
+  }
+
+  &-block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+
+    &.not-centered {
+      align-items: baseline;
+    }
+  }
+
+  &.is-figure &-block {
+    background: none;
+    padding: 0;
+  }
+
+  &-img {
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+
+    > * {
+      margin: 0;
+    }
+
+    > img {
+      width: auto;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    &.is-left-aligned {
+      text-align: left;
+    }
+  }
+
+  &-text {
+    padding-bottom: tokens.$cds-global-space-9;
+  }
+}
+
+.clrweb-DoxVersusBox-item {
+  p:first-child {
+    margin-top: 0;
+  }
+
+  p + p {
+    margin-top: tokens.$cds-global-layout-space-sm;
+  }
+}
+
+.clrweb-DoxMedia.is-horizontal {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .clrweb-DoxMedia-block {
+    height: 100%;
+    min-height: auto;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .clrweb-DoxMedia-text {
+    padding: 0 0 tokens.$cds-global-layout-space-sm tokens.$cds-global-layout-space-sm;
+  }
+}
+
+.clrweb-DoxVersusBox {
+  width: 100%;
+  border: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-border-color;
+  border-radius: tokens.$cds-alias-object-border-radius-100;
+  margin-top: tokens.$cds-global-space-12;
+  @include clrwebMakeFlexbox;
+
+  &-items {
+    flex: 1 1 auto;
+    @include clrwebMakeFlexbox;
+  }
+
+  &-pin {
+    flex: 0 0 calc(3 * tokens.$cds-global-space-1);
+    min-height: calc(4 * tokens.$cds-global-space-9);
+    background: tokens.$cds-global-color-construction-200;
+    @include clrwebMakeFlexbox(center);
+
+    clr-icon {
+      height: tokens.$cds-global-space-9;
+      width: tokens.$cds-global-space-9;
+      color: hsl(276deg 48% 47%);
+      margin: 0 auto;
+      display: block;
+    }
+  }
+
+  &-vsWrapper {
+    flex: 0 0 tokens.$cds-global-space-12;
+    @include clrwebMakeFlexbox(center);
+  }
+
+  &-vsContent {
+    font-size: mixins.baselinePx(13);
+  }
+
+  &-vsImg {
+    margin: 0 auto;
+  }
+
+  &-itemWrapper {
+    flex: 1 1 auto;
+    padding: tokens.$cds-global-space-9;
+    @include clrwebMakeFlexbox(center);
+  }
+
+  &-vs {
+    $vs-dimension: #{tokens.$cds-global-space-11};
+
+    height: $vs-dimension;
+    width: $vs-dimension;
+    display: block;
+    background: hsl(276deg 48% 47%);
+    color: tokens.$cds-global-color-white;
+    line-height: $vs-dimension;
+    border-radius: 49%;
+    font-size: mixins.baselinePx(14);
+    font-weight: 100;
+    letter-spacing: 0.02em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  &-item p {
+    margin: 0;
+  }
+}
+
+.clrweb-Img {
+  width: 100%;
+}
+
+@media screen and (max-width: map-get(clr-variables.$clr-grid-breakpoints, sm)) {
+  .clrweb-DoxVersusBox {
+    &-items {
+      flex-direction: column;
+    }
+
+    &-vs {
+      margin: 0;
+      margin-left: tokens.$cds-global-space-9;
+    }
+  }
+}
+@media screen and (width <= 768px) {
+  .clrweb-Img {
+    margin-top: tokens.$cds-global-space-9;
+  }
+}
+
+.in-place-takeover {
+  .clr-example {
+    height: mixins.baselinePx(398);
+    position: relative;
+  }
+
+  &.is-large .clr-example {
+    height: mixins.baselinePx(588);
+  }
+
+  .backdrop-example-container {
+    background: hsl(200deg 100% 11%);
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .modal {
+    position: absolute;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+  }
+}
+
+@media (width <= 420px) {
+  .clr-example .modal.static {
+    padding: 0;
+  }
+}
+
+.has-margin-top-b2 {
+  margin-top: tokens.$cds-global-space-12;
+}
+
+.clr-demo {
+  margin-top: tokens.$cds-global-space-9;
+}
+
+.clr-demo-container {
+  min-height: auto !important;
+}
+
+// Utility class for an textarea element that's temporarily
+// created and used for copying content into clipboard
+.offscreen-clipboard-textarea {
+  position: fixed !important;
+  border: none !important;
+  height: 1px !important;
+  width: 1px !important;
+  left: 0 !important;
+  top: -1px !important;
+  padding: 0 !important;
+  margin: 0 0 -1px !important;
+}
+
+.component-box-container {
+  border: tokens.$cds-global-space-1 solid tokens.$cds-global-color-construction-300;
+  padding: 24px tokens.$cds-global-layout-space-xl;
+  border-radius: #{tokens.$cds-global-space-3};
+
+  app-do-dont & {
+    // no bottom border radius to compensate for the do/don't bars
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  clr-checkbox-container,
+  clr-radio-container,
+  clr-range-container,
+  clr-select-container,
+  clr-textarea-container,
+  clr-toggle-container {
+    // Overrides external margin on some components to align with specs
+    margin-top: 0;
+  }
+}
+
+.clr-component-no-top-margin {
+  clr-checkbox-container,
+  clr-radio-container,
+  clr-range-container,
+  clr-select-container,
+  clr-textarea-container,
+  clr-toggle-container {
+    // Overrides external margin on some components to align with specs
+    margin-top: 0;
+  }
+}
+
+.clr-mt-0px {
+  margin-top: 0;
+}
+
+.clr-mt-8px {
+  margin-top: tokens.$cds-global-layout-space-xs;
+}
+
+.clr-mt-16px {
+  margin-top: tokens.$cds-global-layout-space-md;
+}
+
+.clr-mt-24px {
+  margin-top: tokens.$cds-global-space-9;
+}
+
+.clr-mt-32px {
+  margin-top: tokens.$cds-global-layout-space-xl;
+}
+
+.clr-mt-48px {
+  margin-top: tokens.$cds-global-space-12;
+}
+
+.clr-ml-32px {
+  margin-left: tokens.$cds-global-layout-space-xl;
+}
+
+.clr-mb-16px {
+  margin-bottom: tokens.$cds-global-layout-space-md;
+}
+
+.clr-pl-16px {
+  padding-left: tokens.$cds-global-layout-space-md;
+}
+
+.clr-ml-16px {
+  margin-left: tokens.$cds-global-layout-space-md;
+}
+
+.clr-ml-24px {
+  margin-left: #{tokens.$cds-global-space-1};
+}
+
+.clr-ml-8px {
+  margin-left: tokens.$cds-global-layout-space-xs;
+}
+
+.clr-mb-24px {
+  margin-bottom: tokens.$cds-global-space-9;
+}
+
+.no-spinner-animation {
+  &.spinner,
+  & .spinner {
+    animation: none;
+  }
+}
+
+.color-example-container {
+  border: tokens.$cds-alias-object-border-width-100 solid;
+  border-radius: tokens.$cds-alias-object-border-radius-100;
+  border-color: tokens.$cds-alias-object-border-color-shade;
+  padding: tokens.$cds-global-layout-space-xl tokens.$cds-global-layout-space-lg;
+  display: grid;
+  gap: tokens.$cds-global-layout-space-sm;
+
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.clr-pink-text-color {
+  color: tokens.$cds-global-color-pink-500;
+
+  [cds-theme~='dark'] & {
+    color: tokens.$cds-global-color-pink-200;
+  }
+}
+
+.clr-control-container.full-width {
+  width: 100%;
+
+  .clr-select-wrapper {
+    width: 100%;
+  }
+
+  .clr-select.full-width {
+    width: 100%;
+  }
+
+  .clr-input.full-width {
+    width: 100%;
+  }
+}
+
+.no-padding {
+  padding: 0;
+}

@@ -184,7 +184,7 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
     // The current step when the wizard is opened might not be the first step. For example, the wizard can be closed and re-opened.
     let scrollBehavior: ScrollBehavior = 'auto';
 
-    return this.navService.currentPageChanged.pipe(
+    return this.navService.currentPageChange.pipe(
       startWith(this.navService.currentPage),
       tap(currentPage => {
         if (!this.skipNextScroll && currentPage === this.page) {

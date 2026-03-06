@@ -5,7 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrConditionalModule, ClrDatagridActionOverflow, ClrDatagridModule, commonStringsDefault } from '@clr/angular';
+import {
+  ClrConditionalModule,
+  ClrDatagridActionOverflow,
+  ClrDatagridModule,
+  commonStringsDefault,
+  SelectionType,
+} from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
 
@@ -20,6 +26,16 @@ export default {
     }),
   ],
   argTypes: {
+    // inputs
+    clrDgSelected: { control: { disable: true } },
+    clrDgSelectionType: {
+      control: { type: 'select' },
+      options: {
+        None: SelectionType.None,
+        Single: SelectionType.Single,
+        Multi: SelectionType.Multi,
+      },
+    },
     // outputs
     clrDgActionOverflowOpenChange: { control: { disable: true } },
     // methods
@@ -29,6 +45,7 @@ export default {
   },
   args: {
     // inputs
+    clrDgSelectionType: SelectionType.None,
     clrDgActionOverflowOpen: false,
     clrDgActionOverflowButtonLabel: commonStringsDefault.rowActions,
     // outputs
@@ -36,8 +53,6 @@ export default {
     // story helpers
     elements,
     highlight: true,
-    singleSelectable: false,
-    multiSelectable: false,
     expandable: false,
     compact: false,
     overflowEllipsis: false,
@@ -63,8 +78,8 @@ const ActionOverflowTemplate: StoryFn = args => ({
     </style>
     <clr-datagrid
       ${args.height ? '[style.height.px]="height"' : ''}
-      ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
-      ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
+      [clrDgSelected]="[]"
+      [clrDgSelectionType]="clrDgSelectionType"
       [ngClass]="{ 'datagrid-compact': compact, 'datagrid-overflow-ellipsis': overflowEllipsis }"
     >
       <clr-dg-column [style.width.px]="250">
@@ -137,7 +152,7 @@ export const CompactOverflowEllipsisActionOverflow: StoryObj = {
   args: {
     compact: true,
     overflowEllipsis: true,
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
   },
 };
 
