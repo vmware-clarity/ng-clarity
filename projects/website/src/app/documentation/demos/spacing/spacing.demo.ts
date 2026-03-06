@@ -7,7 +7,6 @@
 
 import { Component } from '@angular/core';
 
-import { SpacingDemoModule } from './spacing.demo.module';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
@@ -20,7 +19,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
-  imports: [DocTabsComponent, DocTabComponent, ThemedImageComponent, SpacingDemoModule],
+  imports: [DocTabsComponent, DocTabComponent, ThemedImageComponent],
 })
 export class SpacingDemo extends ClarityDocComponent {
   readonly layoutSpaceTokens: { name: string; pxValue: number }[] = [

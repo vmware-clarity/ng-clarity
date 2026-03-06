@@ -12,12 +12,6 @@
   to = "/demo/index.html"
   status = 200
 
-# Website CMS admin
-[[redirects]]
-  from = "/admin/"
-  to = "/admin/index.html"
-  status = 200
-
 # Website SPA fallback (must be last)
 [[redirects]]
   from = "/*"

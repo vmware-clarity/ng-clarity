@@ -42,16 +42,16 @@ export class DatagridFilteringDemo {
 
   colorFilters = {
     ...this.commonFiles.additionalFiles,
-    'utils/color-filter.ts': '',
+    'utils/color-filter.ts': require('!raw-loader!../utils/color-filter-default.ts').default,
   };
 
   colorFiltersTemplateVariable = {
     ...this.commonFiles.additionalFiles,
-    'utils/color-filter.ts': '',
+    'utils/color-filter.ts': require('!raw-loader!../utils/color-filter.ts').default,
   };
   pokemonFilters = {
     ...this.commonFiles.additionalFiles,
-    'utils/pokemon-filter.ts': '',
+    'utils/pokemon-filter.ts': require('!raw-loader!../utils/pokemon-filter.ts').default,
   };
 
   constructor(inventory: Inventory) {

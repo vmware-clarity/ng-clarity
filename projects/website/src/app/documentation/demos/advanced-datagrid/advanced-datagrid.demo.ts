@@ -18,7 +18,6 @@ import {
   successStandardIcon,
 } from '@clr/angular';
 
-import { AdvancedDatagridDemoModule } from './advanced-datagrid.demo.module';
 import { ClientSideDatagridDemoComponent } from './ng/client-side';
 import { CustomColumnDefinitionsDemoComponent } from './ng/custom-column-definitions';
 import { DetailPaneGridDemoComponent } from './ng/detail-pane';
@@ -41,22 +40,24 @@ const replaceComponentName = (file: string) => {
   return file;
 };
 
-const ClientSideHtml = '';
-const ClientSideTs = replaceComponentName('');
-const CustomColumnDefinitionsHtml = '';
-const CustomColumnDefinitionsTs = replaceComponentName('');
-const DetailPaneHtml = '';
-const DetailPaneTs = replaceComponentName('');
-const DragDropHtml = '';
-const DragDropTs = replaceComponentName('');
-const FiltersHtml = '';
-const FiltersTs = replaceComponentName('');
-const PersistanceHtml = '';
-const PersistanceTs = replaceComponentName('');
-const ServerDrivenHtml = '';
-const ServerDrivenTs = replaceComponentName('');
-const VirtualScrollHtml = '';
-const VirtualScrollTs = replaceComponentName('');
+const ClientSideHtml = require('!raw-loader!./ng/client-side.html').default;
+const ClientSideTs = replaceComponentName(require('!raw-loader!./ng/client-side.ts').default);
+const CustomColumnDefinitionsHtml = require('!raw-loader!./ng/custom-column-definitions.html').default;
+const CustomColumnDefinitionsTs = replaceComponentName(
+  require('!raw-loader!./ng/custom-column-definitions.ts').default
+);
+const DetailPaneHtml = require('!raw-loader!./ng/detail-pane.html').default;
+const DetailPaneTs = replaceComponentName(require('!raw-loader!./ng/detail-pane.ts').default);
+const DragDropHtml = require('!raw-loader!./ng/drag-drop.html').default;
+const DragDropTs = replaceComponentName(require('!raw-loader!./ng/drag-drop.ts').default);
+const FiltersHtml = require('!raw-loader!./ng/filters.html').default;
+const FiltersTs = replaceComponentName(require('!raw-loader!./ng/filters.ts').default);
+const PersistanceHtml = require('!raw-loader!./ng/persistance.html').default;
+const PersistanceTs = replaceComponentName(require('!raw-loader!./ng/persistance.ts').default);
+const ServerDrivenHtml = require('!raw-loader!./ng/server-driven.html').default;
+const ServerDrivenTs = replaceComponentName(require('!raw-loader!./ng/server-driven.ts').default);
+const VirtualScrollHtml = require('!raw-loader!./ng/virtual-scroll.html').default;
+const VirtualScrollTs = replaceComponentName(require('!raw-loader!./ng/virtual-scroll.ts').default);
 
 const BASIC_DATAGRID_EXAMPLE = `
 <appfx-datagrid [columns]="columns" [gridItems]="gridItems"></appfx-datagrid>
@@ -177,11 +178,14 @@ export class DatagridFiltersDemoComponent implements OnInit {
 `;
 
 const additionalFiles = {
-  'inventory/inventory.ts': '',
-  'inventory/values.ts': '',
-  'grid-config/grid-config-form.component.html': '',
-  'grid-config/grid-config-form.component.ts': '',
-  'persistance-datagrid-local-storage.service.ts': '',
+  'inventory/inventory.ts': require('!raw-loader!./ng/inventory/inventory.ts').default,
+  'inventory/values.ts': require('!raw-loader!./ng/inventory/values.ts').default,
+  'grid-config/grid-config-form.component.html': require('!raw-loader!./ng/grid-config/grid-config-form.component.html')
+    .default,
+  'grid-config/grid-config-form.component.ts': require('!raw-loader!./ng/grid-config/grid-config-form.component.ts')
+    .default,
+  'persistance-datagrid-local-storage.service.ts':
+    require('!raw-loader!./ng/persistance-datagrid-local-storage.service.ts').default,
 };
 
 @Component({
@@ -210,7 +214,6 @@ const additionalFiles = {
     FiltersGridComponent,
     ClrAlertModule,
     PersistenceGridDemoComponent,
-    AdvancedDatagridDemoModule,
   ],
 })
 export class AdvancedDatagridDemo extends ClarityDocComponent {
