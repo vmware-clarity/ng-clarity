@@ -34,9 +34,8 @@
           justify-content: center;
 
           > .clr-step-error-icon,
-          > .clr-step-current-icon,
           > .clr-step-complete-icon {
-            @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+            @include mixins.min-equilateral(density.$clr-base-icon-size-m);
 
             padding: 0;
           }
