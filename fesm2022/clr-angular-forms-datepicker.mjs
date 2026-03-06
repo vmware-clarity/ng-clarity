@@ -5,7 +5,7 @@ import { Injectable, LOCALE_ID, Inject, DOCUMENT, PLATFORM_ID, HostListener, Com
 import * as i7 from '@clr/angular/forms/common';
 import { ClrAbstractContainer, ControlIdService, ControlClassService, FormsFocusService, NgControlService, WrappedFormControl, ClrCommonFormsModule } from '@clr/angular/forms/common';
 import * as i4 from '@clr/angular/utils';
-import { DATEPICKER_ENABLE_BREAKPOINT, normalizeKey, Keys, isBooleanAttributeSet, CdkTrapFocusModule, ClrHostWrappingModule, ClrConditionalModule } from '@clr/angular/utils';
+import { DATEPICKER_ENABLE_BREAKPOINT, Keys, isBooleanAttributeSet, CdkTrapFocusModule, ClrHostWrappingModule, ClrConditionalModule } from '@clr/angular/utils';
 import { first, filter, startWith } from 'rxjs/operators';
 import * as i1 from '@clr/angular/popover/common';
 import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS, ClrPopoverHostDirective, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext } from '@clr/angular/popover/common';
@@ -976,7 +976,7 @@ class ClrMonthpicker {
         // the logic is fairly simple and it didn't make sense for me
         // to create extra observables just to move this logic to the service.
         if (event) {
-            const key = normalizeKey(event.key);
+            const key = event.key;
             if (key === Keys.ArrowUp && this._focusedMonthIndex > 1) {
                 event.preventDefault();
                 this._focusedMonthIndex -= 2;
@@ -1323,7 +1323,7 @@ class ClrYearpicker {
         // the logic is fairly simple and it didn't make sense for me
         // to create extra observables just to move this logic to the service.
         if (event) {
-            const key = normalizeKey(event.key);
+            const key = event.key;
             if (key === Keys.ArrowUp) {
                 event.preventDefault();
                 this.incrementFocusYearBy(-2);
@@ -1970,7 +1970,7 @@ class ClrCalendar {
      */
     onKeyDown(event) {
         if (event && this.focusedDay) {
-            switch (normalizeKey(event.key)) {
+            switch (event.key) {
                 case Keys.ArrowUp:
                     event.preventDefault();
                     this._dateNavigationService.incrementFocusDay(-1 * NO_OF_DAYS_IN_A_WEEK);

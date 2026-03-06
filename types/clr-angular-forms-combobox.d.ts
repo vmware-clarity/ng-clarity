@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { AfterContentInit, AfterViewInit, ElementRef, TemplateRef, ChangeDetectorRef, RendererFactory2, Renderer2, EventEmitter, ViewContainerRef, Injector, OnInit, OnDestroy, QueryList, DoCheck, IterableDiffers, TrackByFunction } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ElementRef, TemplateRef, RendererFactory2, Renderer2, EventEmitter, ViewContainerRef, Injector, ChangeDetectorRef, OnInit, OnDestroy, QueryList, DoCheck, IterableDiffers, TrackByFunction } from '@angular/core';
 import * as rxjs from 'rxjs';
 import { Observable } from 'rxjs';
 import * as i9 from '@angular/forms';
@@ -103,7 +103,6 @@ declare class ComboboxFocusHandler<T> {
     private popoverService;
     private selectionService;
     private platformId;
-    componentCdRef: ChangeDetectorRef;
     pseudoFocus: PseudoFocusModel<OptionData<T>>;
     private renderer;
     private _trigger;

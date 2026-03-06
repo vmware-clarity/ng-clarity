@@ -2,7 +2,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import * as i0 from '@angular/core';
 import { PLATFORM_ID, Inject, Injectable, EventEmitter, ViewChild, ContentChild, Input, Output, HostBinding, Component, Directive, NgModule, HostListener } from '@angular/core';
 import * as i1 from '@clr/angular/utils';
-import { normalizeKey, Keys, uniqueIdFactory, ScrollingService, CdkTrapFocusModule } from '@clr/angular/utils';
+import { Keys, uniqueIdFactory, ScrollingService, CdkTrapFocusModule } from '@clr/angular/utils';
 import * as i4 from '@angular/common';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import * as i5 from '@clr/angular/icon';
@@ -38,7 +38,7 @@ class ModalStackService {
         }
     }
     onKeyUp(event) {
-        if (this.modalStack.length && normalizeKey(event.key) === Keys.Escape) {
+        if (this.modalStack.length && event.key === Keys.Escape) {
             // We blur the active element because escaping with an input element in focus could cause
             // an ExpressionChangedAfterItHasBeenCheckedError for the touched state. (CDE-1662)
             document.activeElement.blur();

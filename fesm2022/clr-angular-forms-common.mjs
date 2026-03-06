@@ -219,10 +219,7 @@ class LayoutService {
         this.minLabelSize = 1;
         this.maxLabelSize = 12;
         this.layout = ClrFormLayout.HORIZONTAL;
-        // This is basically a replacement for Object.values(), which IE11 and Node <9 don't support :(
-        // String enums cannot be reverse-mapped, meaning ClrFormLayout['COMPACT'] does not return 'compact' so
-        // this exists to deal with this little caveat to get the list of the values as an array.
-        this.layoutValues = Object.keys(ClrFormLayout).map(key => ClrFormLayout[key]);
+        this.layoutValues = Object.values(ClrFormLayout);
         this._labelSize = 2;
     }
     get labelSize() {

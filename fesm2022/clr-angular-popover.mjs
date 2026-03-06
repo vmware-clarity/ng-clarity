@@ -3,7 +3,7 @@ import { PLATFORM_ID, SkipSelf, Optional, Inject, Injectable, Input, Component, 
 import * as i2 from '@clr/angular/popover/common';
 import { ClrPopoverHostDirective as ClrPopoverHostDirective$1, ClrPopoverType as ClrPopoverType$1, ClrPopoverPosition as ClrPopoverPosition$1, DROPDOWN_POSITIONS as DROPDOWN_POSITIONS$1, POPOVER_HOST_ANCHOR as POPOVER_HOST_ANCHOR$1, ClrPopoverContent as ClrPopoverContent$1, ClrIfOpen as ClrIfOpen$1, SIGNPOST_POSITIONS as SIGNPOST_POSITIONS$1, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext, TOOLTIP_POSITIONS as TOOLTIP_POSITIONS$1 } from '@clr/angular/popover/common';
 import * as i1 from '@clr/angular/utils';
-import { uniqueIdFactory, ArrowKeyDirection, Linkers, wrapObservable, customFocusableItemProvider, FOCUS_SERVICE_PROVIDER, FocusableItem, BASIC_FOCUSABLE_ITEM_PROVIDER, preventArrowKeyScroll, ClrPosition, normalizeKey, Keys, ClrFocusOnViewInitModule } from '@clr/angular/utils';
+import { uniqueIdFactory, ArrowKeyDirection, Linkers, wrapObservable, customFocusableItemProvider, FOCUS_SERVICE_PROVIDER, FocusableItem, BASIC_FOCUSABLE_ITEM_PROVIDER, preventArrowKeyScroll, ClrPosition, Keys, ClrFocusOnViewInitModule } from '@clr/angular/utils';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { ReplaySubject, of, Subject, merge, fromEvent } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
@@ -1015,7 +1015,7 @@ class ClrPopoverContent {
         }), this.popoverService.updatePositionChange().subscribe(() => {
             this.overlayRef?.updatePosition();
         }), this.overlayRef.keydownEvents().subscribe(event => {
-            if (event && event.key && normalizeKey(event.key) === Keys.Escape && !hasModifierKey(event)) {
+            if (event && event.key && event.key === Keys.Escape && !hasModifierKey(event)) {
                 event.preventDefault();
                 this.closePopover();
             }

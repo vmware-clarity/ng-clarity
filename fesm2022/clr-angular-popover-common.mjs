@@ -5,7 +5,7 @@ import { DomPortal } from '@angular/cdk/portal';
 import { isPlatformBrowser } from '@angular/common';
 import * as i0 from '@angular/core';
 import { Injectable, ElementRef, PLATFORM_ID, Input, Optional, SkipSelf, Inject, Directive, InjectionToken, HostListener, EventEmitter, Output, NgModule } from '@angular/core';
-import { preventArrowKeyScroll, ClrPosition, normalizeKey, Keys } from '@clr/angular/utils';
+import { preventArrowKeyScroll, ClrPosition, Keys } from '@clr/angular/utils';
 import { Subject, merge, fromEvent } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -535,7 +535,7 @@ class ClrPopoverContent {
         }), this.popoverService.updatePositionChange().subscribe(() => {
             this.overlayRef?.updatePosition();
         }), this.overlayRef.keydownEvents().subscribe(event => {
-            if (event && event.key && normalizeKey(event.key) === Keys.Escape && !hasModifierKey(event)) {
+            if (event && event.key && event.key === Keys.Escape && !hasModifierKey(event)) {
                 event.preventDefault();
                 this.closePopover();
             }

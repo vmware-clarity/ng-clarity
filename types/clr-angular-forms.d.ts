@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { OnInit, OnDestroy, Renderer2, ElementRef, TemplateRef, ViewContainerRef, QueryList, DoCheck, Type, Injector, InjectionToken, AfterContentInit, AfterViewInit, ChangeDetectorRef, RendererFactory2, EventEmitter, IterableDiffers, TrackByFunction, NgZone } from '@angular/core';
+import { OnInit, OnDestroy, Renderer2, ElementRef, TemplateRef, ViewContainerRef, QueryList, DoCheck, Type, Injector, InjectionToken, AfterContentInit, AfterViewInit, RendererFactory2, EventEmitter, ChangeDetectorRef, IterableDiffers, TrackByFunction, NgZone } from '@angular/core';
 import * as i4 from '@angular/forms';
 import { NgControl, ControlValueAccessor, Validator, AbstractControl, ValidationErrors, SelectMultipleControlValueAccessor } from '@angular/forms';
 import * as rxjs from 'rxjs';
@@ -501,7 +501,6 @@ declare class ComboboxFocusHandler<T> {
     private popoverService;
     private selectionService;
     private platformId;
-    componentCdRef: ChangeDetectorRef;
     pseudoFocus: PseudoFocusModel<OptionData<T>>;
     private renderer;
     private _trigger;
