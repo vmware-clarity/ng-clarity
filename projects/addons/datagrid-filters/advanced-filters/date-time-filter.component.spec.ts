@@ -19,6 +19,7 @@ import { DateTimePropertyDefinition, PropertyFilter, PropertyPredicate } from '.
 
 import Spy = jasmine.Spy;
 
+const augustNinth = '2023-08-09';
 const dateTimePropertyName = 'lastUpdated';
 const dateTimePropertyDisplayName = 'Last Updated';
 const dateTimeProperty: DateTimePropertyDefinition = new DateTimePropertyDefinition(
@@ -219,10 +220,10 @@ describe('DateTimeFilterComponent', () => {
       expect(this.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.Equals);
 
       const dateValueInput: HTMLInputElement = this.fixture.debugElement.nativeElement.querySelector(dateInputSelector);
-      dateValueInput.value = '2023-08-09';
+      dateValueInput.value = augustNinth;
       dateValueInput.dispatchEvent(new Event('input'));
       this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['dateValue'].value).toEqual('2023-08-09');
+      expect(this.component.dateTimeFilterForm.controls['dateValue'].value).toEqual(augustNinth);
       expect(submitDateTimeFilterButton.disabled).toBeFalsy();
       expect(this.component.dateTimeFilterForm.valid).toBeTruthy();
 
@@ -448,6 +449,172 @@ describe('DateTimeFilterComponent', () => {
       expect(this.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.TimeSpan);
       expect(this.component.dateTimeFilterForm.controls['timeSpanValue'].value).toEqual('5');
       expect(this.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Years);
+    });
+  });
+  describe('additional coverage', () => {
+    beforeEach(function (this: ThisTest) {
+      this.fixture.detectChanges();
+    });
+
+    it('should handle includeSeconds=true correctly by preserving seconds in the value', function (this: ThisTest) {
+      // Arrange
+      this.component.includeSeconds = true;
+      this.component.enableTimePredicate();
+      this.fixture.detectChanges();
+
+      // Act: Set operator to Equals (to trigger buildEqualsDateTimePredicates -> getFromDateTimePredicate)
+      this.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.Equals);
+      this.component.dateTimeFilterForm.controls['dateValue'].setValue(augustNinth);
+      // When includeSeconds is true, the component expects the input to contain the seconds
+      this.component.dateTimeFilterForm.controls['timeValue'].setValue('12:30:45');
+
+      spyOn(this.component.filterCriteriaChange, 'emit');
+      this.component.onApplyButtonClick();
+
+      // Assert
+      const emitSpy = this.component.filterCriteriaChange.emit as jasmine.Spy;
+      const emittedFilter = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
+      const primaryPredicate = emittedFilter.criteria[0];
+
+      // Should contain the explicit seconds provided, not appended with :00
+      // Note: +06:00 comes from the mocked timezone offset in beforeEach
+      expect(primaryPredicate.value).toContain('2023-08-09T12:30:45');
+    });
+
+    it('should submit form when Enter key is pressed and form is valid', function (this: ThisTest) {
+      spyOn(this.component, 'onApplyButtonClick');
+
+      // Arrange: Make form valid
+      this.component.dateTimeFilterForm.controls['dateValue'].setValue('2023-01-01');
+
+      const event = new KeyboardEvent('keypress', { key: 'Enter' });
+      spyOn(event, 'stopPropagation');
+      spyOn(event, 'preventDefault');
+
+      // Act
+      this.component.onInputKeyPress(event);
+
+      // Assert
+      expect(event.stopPropagation).toHaveBeenCalled();
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(this.component.onApplyButtonClick).toHaveBeenCalled();
+    });
+
+    it('should NOT submit form when Enter key is pressed and form is invalid', function (this: ThisTest) {
+      spyOn(this.component, 'onApplyButtonClick');
+
+      // Arrange: Make form invalid (dateValue is required by default)
+      this.component.dateTimeFilterForm.controls['dateValue'].setValue('');
+
+      const event = new KeyboardEvent('keypress', { key: 'Enter' });
+
+      // Act
+      this.component.onInputKeyPress(event);
+
+      // Assert
+      expect(this.component.onApplyButtonClick).not.toHaveBeenCalled();
+    });
+
+    it('should remove time controls when disableTimePredicate is called', function (this: ThisTest) {
+      // Arrange: Enable first to verify they exist
+      this.component.isCustomRangePredicate = true; // To test removal of 'To' controls
+      this.component.enableTimePredicate();
+
+      expect(this.component.dateTimeFilterForm.contains('timeValue')).toBeTrue();
+      expect(this.component.dateTimeFilterForm.contains('timeValueTo')).toBeTrue();
+
+      // Act
+      this.component.disableTimePredicate();
+
+      // Assert
+      expect(this.component.timePredicate).toBeFalse();
+      expect(this.component.dateTimeFilterForm.contains('timeValue')).toBeFalse();
+      expect(this.component.dateTimeFilterForm.contains('timeValueTo')).toBeFalse();
+    });
+
+    describe('getSinglePredicate switch cases', () => {
+      it('should handle Before operator', function (this: ThisTest) {
+        spyOn(this.component.filterCriteriaChange, 'emit');
+
+        // Act
+        this.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.Before);
+        this.component.dateTimeFilterForm.controls['dateValue'].setValue(augustNinth);
+        this.component.onApplyButtonClick();
+
+        // Assert
+        const emitSpy = this.component.filterCriteriaChange.emit as jasmine.Spy;
+        const filter = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
+
+        // Before 2023-08-09 means < 2023-08-09T00:00:00
+        expect(filter.criteria[0].operator).toEqual(ComparisonOperator.LessThan);
+        expect(filter.criteria[0].value).toContain('2023-08-09T00:00:00');
+      });
+
+      it('should handle BeforeOrEqualTo operator', function (this: ThisTest) {
+        spyOn(this.component.filterCriteriaChange, 'emit');
+
+        // Act
+        this.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.BeforeOrEqualTo);
+        this.component.dateTimeFilterForm.controls['dateValue'].setValue(augustNinth);
+        this.component.onApplyButtonClick();
+
+        // Assert
+        const emitSpy = this.component.filterCriteriaChange.emit as jasmine.Spy;
+        const filter = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
+
+        // BeforeOrEqualTo uses getFromDateTimePredicate(true), which adds 1 day (if no time)
+        // So <= 08-09 effectively becomes < 08-10
+        expect(filter.criteria[0].operator).toEqual(ComparisonOperator.LessThan);
+        expect(filter.criteria[0].value).toContain('2023-08-10T00:00:00');
+      });
+
+      it('should handle After operator', function (this: ThisTest) {
+        spyOn(this.component.filterCriteriaChange, 'emit');
+
+        // Act
+        this.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.After);
+        this.component.dateTimeFilterForm.controls['dateValue'].setValue(augustNinth);
+        this.component.onApplyButtonClick();
+
+        // Assert
+        const emitSpy = this.component.filterCriteriaChange.emit as jasmine.Spy;
+        const filter = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
+
+        // After uses getFromDateTimePredicate(true), adding 1 day
+        // After 08-09 effectively means >= 08-10
+        expect(filter.criteria[0].operator).toEqual(ComparisonOperator.GreaterThanOrEqualTo);
+        expect(filter.criteria[0].value).toContain('2023-08-10T00:00:00');
+      });
+    });
+
+    it('should handle getToDateTimePredicate else block (CustomRange without Time)', function (this: ThisTest) {
+      spyOn(this.component.filterCriteriaChange, 'emit');
+
+      // Arrange
+      this.component.timePredicate = false; // Ensure we hit the 'else' block
+
+      // Act
+      this.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.CustomRange);
+      // Trigger UI update to add controls (normally handled by subscription, but safer to be explicit in test setup logic)
+      // But here we just set values because enableCustomRangePredicate was likely called by valueChanges in real component
+      this.fixture.detectChanges();
+
+      this.component.dateTimeFilterForm.controls['dateValue'].setValue(augustNinth); // From
+      this.component.dateTimeFilterForm.controls['dateValueTo'].setValue('2023-08-15'); // To
+
+      this.component.onApplyButtonClick();
+
+      // Assert
+      const emitSpy = this.component.filterCriteriaChange.emit as jasmine.Spy;
+      const filter = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
+
+      // Index 0 is Primary (From), Index 1 is Secondary (To)
+      const toPredicate = filter.criteria[1];
+
+      // Logic: getToDateTimePredicate else block appends T00:00:00 then adds 1 day via getCustomDate
+      // 2023-08-15 -> 2023-08-16T00:00:00
+      expect(toPredicate.operator).toEqual(ComparisonOperator.LessThan);
+      expect(toPredicate.value).toContain('2023-08-16T00:00:00');
     });
   });
 });

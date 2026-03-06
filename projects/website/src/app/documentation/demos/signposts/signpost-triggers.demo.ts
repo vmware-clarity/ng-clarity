@@ -16,7 +16,6 @@ import {
   ClrStopEscapePropagationDirective,
 } from '@clr/angular';
 
-import { SignpostDemo } from './signpost.demo';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const html = `
@@ -79,7 +78,6 @@ const html = `
     ClrIfOpen,
     ClrPopoverContent,
     StackblitzExampleComponent,
-    SignpostDemo,
   ],
 })
 export class SignpostTriggersDemo {

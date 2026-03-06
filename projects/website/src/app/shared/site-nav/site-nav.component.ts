@@ -11,7 +11,7 @@ import { RouterModule } from '@angular/router';
 import { bookmarkIcon, ClarityIcons, ClrNavigationModule, ClrVerticalNavModule, objectsIcon } from '@clr/angular';
 
 import { UrlIsExternalPipe } from './url-is-external.pipe';
-import CMS_NAV from '../../../compiled-content/cms-nav.json';
+import NAV from '../../../compiled-content/nav.json';
 import COMPONENTS from '../../../settings/componentlist.json';
 
 @Component({
@@ -24,7 +24,7 @@ import COMPONENTS from '../../../settings/componentlist.json';
   imports: [CommonModule, RouterModule, ClrNavigationModule, ClrVerticalNavModule, UrlIsExternalPipe],
 })
 export class SiteNavComponent {
-  navGroups = CMS_NAV['site-nav'];
+  navGroups = NAV['site-nav'];
   components = COMPONENTS.list;
 
   navExpandedState: Record<string, boolean> = {};

@@ -6,7 +6,7 @@
  */
 
 import { preventArrowKeyScroll } from './util';
-import { IEKeys, Keys } from '../../enums/keys.enum';
+import { Keys } from '../../enums/keys.enum';
 
 describe('preventArrowKeyScroll', () => {
   it('should prevent scroll on element based on key event', () => {
@@ -33,19 +33,5 @@ describe('preventArrowKeyScroll', () => {
     spyOn(mockIncorrectKeyCodeEvent, 'preventDefault');
     preventArrowKeyScroll(mockIncorrectKeyCodeEvent as KeyboardEvent);
     expect(mockIncorrectKeyCodeEvent.preventDefault).not.toHaveBeenCalled();
-  });
-
-  it('should prevent scroll for IE', () => {
-    const mockEvent = {
-      key: IEKeys.ArrowDown,
-      code: undefined,
-      preventDefault: () => {
-        // Do nothing
-      },
-    };
-
-    spyOn(mockEvent, 'preventDefault');
-    preventArrowKeyScroll(mockEvent as KeyboardEvent);
-    expect(mockEvent.preventDefault).toHaveBeenCalled();
   });
 });

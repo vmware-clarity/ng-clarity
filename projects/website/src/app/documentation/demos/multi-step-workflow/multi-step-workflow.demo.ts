@@ -8,7 +8,6 @@
 import { Component } from '@angular/core';
 
 import { ComponentTableDemo } from './component-table';
-import { MultiStepWorkflowDemoModule } from './multi-step-workflow.demo.module';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -21,14 +20,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
-  imports: [
-    DocTabsComponent,
-    DocTabComponent,
-    ThemedImageComponent,
-    DoDontComponent,
-    ComponentTableDemo,
-    MultiStepWorkflowDemoModule,
-  ],
+  imports: [DocTabsComponent, DocTabComponent, ThemedImageComponent, DoDontComponent, ComponentTableDemo],
 })
 export class MultiStepWorkflowDemo extends ClarityDocComponent {
   constructor() {

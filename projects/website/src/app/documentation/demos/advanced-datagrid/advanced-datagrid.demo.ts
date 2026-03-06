@@ -18,7 +18,6 @@ import {
   successStandardIcon,
 } from '@clr/angular';
 
-import { AdvancedDatagridDemoModule } from './advanced-datagrid.demo.module';
 import { ClientSideDatagridDemoComponent } from './ng/client-side';
 import { CustomColumnDefinitionsDemoComponent } from './ng/custom-column-definitions';
 import { DetailPaneGridDemoComponent } from './ng/detail-pane';
@@ -41,22 +40,24 @@ const replaceComponentName = (file: string) => {
   return file;
 };
 
-const ClientSideHtml = '';
-const ClientSideTs = replaceComponentName('');
-const CustomColumnDefinitionsHtml = '';
-const CustomColumnDefinitionsTs = replaceComponentName('');
-const DetailPaneHtml = '';
-const DetailPaneTs = replaceComponentName('');
-const DragDropHtml = '';
-const DragDropTs = replaceComponentName('');
-const FiltersHtml = '';
-const FiltersTs = replaceComponentName('');
-const PersistanceHtml = '';
-const PersistanceTs = replaceComponentName('');
-const ServerDrivenHtml = '';
-const ServerDrivenTs = replaceComponentName('');
-const VirtualScrollHtml = '';
-const VirtualScrollTs = replaceComponentName('');
+const ClientSideHtml = require('!raw-loader!./ng/client-side.html').default;
+const ClientSideTs = replaceComponentName(require('!raw-loader!./ng/client-side.ts').default);
+const CustomColumnDefinitionsHtml = require('!raw-loader!./ng/custom-column-definitions.html').default;
+const CustomColumnDefinitionsTs = replaceComponentName(
+  require('!raw-loader!./ng/custom-column-definitions.ts').default
+);
+const DetailPaneHtml = require('!raw-loader!./ng/detail-pane.html').default;
+const DetailPaneTs = replaceComponentName(require('!raw-loader!./ng/detail-pane.ts').default);
+const DragDropHtml = require('!raw-loader!./ng/drag-drop.html').default;
+const DragDropTs = replaceComponentName(require('!raw-loader!./ng/drag-drop.ts').default);
+const FiltersHtml = require('!raw-loader!./ng/filters.html').default;
+const FiltersTs = replaceComponentName(require('!raw-loader!./ng/filters.ts').default);
+const PersistanceHtml = require('!raw-loader!./ng/persistance.html').default;
+const PersistanceTs = replaceComponentName(require('!raw-loader!./ng/persistance.ts').default);
+const ServerDrivenHtml = require('!raw-loader!./ng/server-driven.html').default;
+const ServerDrivenTs = replaceComponentName(require('!raw-loader!./ng/server-driven.ts').default);
+const VirtualScrollHtml = require('!raw-loader!./ng/virtual-scroll.html').default;
+const VirtualScrollTs = replaceComponentName(require('!raw-loader!./ng/virtual-scroll.ts').default);
 
 const BASIC_DATAGRID_EXAMPLE = `
 <appfx-datagrid [columns]="columns" [gridItems]="gridItems"></appfx-datagrid>
@@ -82,9 +83,11 @@ export class ExampleComponent {
 `;
 
 const DATAGRID_FILTERS_EXAMPLE = `
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, EventEmitter, Inject, Injectable, OnInit, Output } from '@angular/core';
 
 import {
+  DatagridFiltersUserService,
   DateTimePropertyDefinition,
   EnumPropertyDefinition,
   FilterablePropertyDefinition,
@@ -93,22 +96,36 @@ import {
   PropertyFilter,
   StringPropertyDefinition,
   Unit,
+  UserPropertyDefinition,
 } from '@clr/addons/datagrid-filters';
+import { Observable, throwError, timer } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+
+// Provide a custom user service for the User filter
+@Injectable()
+export class CustomUserService extends DatagridFiltersUserService {
+  getDomains(): Observable<string[]> {
+    return timer(1000).pipe(map(() => ['CORP.EXAMPLE', 'CLOUD.EXAMPLE']));
+  }
+
+  searchUsers(searchTerm: string, domain: string): Observable<string[]> {
+    const users = ['admin', 'john.doe', 'jane.smith'];
+    return timer(500).pipe(
+      map(() => users.filter(u => u.toLowerCase().includes(searchTerm.toLowerCase())))
+    );
+  }
+}
 
 @Component({
   templateUrl: 'datagrid-filters-demo.component.html',
+  providers: [
+    { provide: DatagridFiltersUserService, useClass: CustomUserService },
+  ],
 })
 export class DatagridFiltersDemoComponent implements OnInit {
-  /**
-   * Event emitter to tell hosting view that search term, used for filtering
-   * has changed.
-   */
   @Output()
   public searchTermChange: EventEmitter<string> = new EventEmitter<string>();
 
-  /**
-   * Event emitter to tell hosting view that filtering criteria have changed.
-   */
   @Output()
   public advancedFilterChange: EventEmitter<PropertyFilter[]> = new EventEmitter<PropertyFilter[]>();
 
@@ -116,44 +133,49 @@ export class DatagridFiltersDemoComponent implements OnInit {
   public filterableProperties: FilterablePropertyDefinition[] = [];
 
   public ngOnInit() {
-    const stringNameProperty: StringPropertyDefinition = new StringPropertyDefinition('Name', 'name');
-    const stringAddressProperty: StringPropertyDefinition = new StringPropertyDefinition(
-      'Address',
-      'address'
-    );
+    const stringNameProperty = new StringPropertyDefinition('Name', 'name');
+    const stringAddressProperty = new StringPropertyDefinition('Address', 'address');
 
-    const dateTimeProperty: DateTimePropertyDefinition = new DateTimePropertyDefinition(
-      'Last change',
-      'lastChanged'
-    );
+    const dateTimeProperty = new DateTimePropertyDefinition('Last change', 'lastChanged');
 
-    const numericCustomerCountProperty: NumericPropertyDefinition = new NumericPropertyDefinition(
+    const numericCustomerCountProperty = new NumericPropertyDefinition(
       'Number of customers',
       'customersCount'
     );
-    const numericCapacityProperty: NumericPropertyDefinition = new NumericPropertyDefinition(
+    const numericCapacityProperty = new NumericPropertyDefinition(
       'Capacity',
       'capacity',
-      undefined, // default operators
+      undefined,
       Unit.MB
     );
 
-    const enumValuesMap: Map<string, string> = new Map<string, string>();
+    const enumValuesMap = new Map<string, string>();
     enumValuesMap.set('green', 'Green');
     enumValuesMap.set('yellow', 'Yellow');
     enumValuesMap.set('orange', 'Orange');
     enumValuesMap.set('red', 'Red');
-    const enumProperty: EnumPropertyDefinition = new EnumPropertyDefinition(
-      'Status',
-      'status',
-      enumValuesMap
+    const enumProperty = new EnumPropertyDefinition('Status', 'status', enumValuesMap);
+    const singleSelectEnumProperty = new EnumPropertyDefinition('Color', 'color', enumValuesMap, true);
+
+    // Searchable enum with many values
+    const categoryValues = new Map<string, string>([
+      ['auth.login', 'User Login'],
+      ['resource.created', 'Resource Created'],
+      ['deploy.completed', 'Deployment Completed'],
+      // ... many more values
+    ]);
+    const categoryEnumProp = new EnumPropertyDefinition(
+      'Category',
+      'category',
+      categoryValues,
+      false, // multi-select
+      true,  // searchable
+      true,  // show search
+      true   // show select all
     );
-    const singleSelectEnumProperty: EnumPropertyDefinition = new EnumPropertyDefinition(
-      'Color',
-      'color',
-      enumValuesMap,
-      true
-    );
+
+    // User filter — requires DatagridFiltersUserService
+    const userProp = new UserPropertyDefinition('User', 'user');
 
     this.filterableProperties.push(
       stringNameProperty,
@@ -162,7 +184,9 @@ export class DatagridFiltersDemoComponent implements OnInit {
       numericCustomerCountProperty,
       numericCapacityProperty,
       enumProperty,
-      singleSelectEnumProperty
+      singleSelectEnumProperty,
+      categoryEnumProp,
+      userProp
     );
   }
 
@@ -177,11 +201,14 @@ export class DatagridFiltersDemoComponent implements OnInit {
 `;
 
 const additionalFiles = {
-  'inventory/inventory.ts': '',
-  'inventory/values.ts': '',
-  'grid-config/grid-config-form.component.html': '',
-  'grid-config/grid-config-form.component.ts': '',
-  'persistance-datagrid-local-storage.service.ts': '',
+  'inventory/inventory.ts': require('!raw-loader!./ng/inventory/inventory.ts').default,
+  'inventory/values.ts': require('!raw-loader!./ng/inventory/values.ts').default,
+  'grid-config/grid-config-form.component.html': require('!raw-loader!./ng/grid-config/grid-config-form.component.html')
+    .default,
+  'grid-config/grid-config-form.component.ts': require('!raw-loader!./ng/grid-config/grid-config-form.component.ts')
+    .default,
+  'persistance-datagrid-local-storage.service.ts':
+    require('!raw-loader!./ng/persistance-datagrid-local-storage.service.ts').default,
 };
 
 @Component({
@@ -210,7 +237,6 @@ const additionalFiles = {
     FiltersGridComponent,
     ClrAlertModule,
     PersistenceGridDemoComponent,
-    AdvancedDatagridDemoModule,
   ],
 })
 export class AdvancedDatagridDemo extends ClarityDocComponent {

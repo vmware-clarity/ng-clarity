@@ -8,9 +8,7 @@
 @use 'sass:list';
 @use 'sass:map';
 @use 'sass:selector';
-@use 'sass:string';
 @use 'variables/variables';
-// @use './core/tokens/variables.tokens' as tokens;
 
 //Credit: Zurb Foundation for Apps https://github.com/zurb/foundation-apps/blob/master/scss/helpers/_functions.scss
 //Keep track of modules that have been imported, so we don't import more than once
@@ -24,14 +22,6 @@ $imported-modules: () !default;
     @content;
   }
 }
-
-//TODO: Should these mixins be moved into their own separate file?
-//Outline Styles
-$clr-outline-color: hsl(197deg 68% 65%) !default;
-$clr-outline-color-inverse: hsl(0deg 0% 100% / 9%) !default;
-$clr-outline-blur: var(--cds-global-space-2);
-$clr-outline-spread: var(--cds-global-space-2);
-
 @mixin include-outline-style-form-fields($offset: var(--cds-alias-object-interaction-outline-offset)) {
   outline: var(--cds-alias-object-interaction-outline);
   outline-color: -webkit-focus-ring-color;
@@ -42,15 +32,6 @@ $clr-outline-spread: var(--cds-global-space-2);
   outline-color: -webkit-focus-ring-color;
   outline-style: auto;
   outline-width: $width;
-}
-@mixin include-outline-style-links() {
-  outline: 0;
-  text-decoration: underline;
-}
-@mixin include-outline-style-header-links($outline-color: $clr-outline-color-inverse) {
-  background: $outline-color;
-  outline: 0;
-  text-decoration: none;
 }
 @mixin overflow-ellipsis($leftAlignment: false) {
   white-space: nowrap;
@@ -138,12 +119,6 @@ $opp-directions: (
     margin-bottom: 0;
   }
 }
-@mixin fixForMsEdge() {
-  @supports (-ms-ime-align: auto) {
-    @content;
-  }
-}
-
 // Moves styles outside of any parent selector conditionally,
 // while allowing an additional selector to be appended.
 
@@ -172,50 +147,10 @@ $opp-directions: (
     @content;
   }
 }
-
-// @TODO experimental functions to improve property declaration
-// @mixin self-and($descendant) {
-//   @if & {
-//     // & , & <descendant>
-//     @at-root #{&}, #{&} #{string.unquote($descendant)} {
-//       @content;
-//     }
-//   } @else {
-//     // :where(:root,:host) , :where(:root,:host) <descendant>
-//     :where(:root,:host), :where(:root,:host) #{string.unquote($descendant)} {
-//       @content;
-//     }
-//   }
-// }
-
-// @mixin set-properties($component, $properties, $descendant: '') {
-//   @include self-and($descendant) {
-//     @each $name, $value in $properties {
-//       --clr-#{$component}-#{$name}: #{$value};
-//     }
-//   }
-// }
-
 @mixin input-placeholder-wrapper() {
-  /* _normalize overwrite */
-
   @include optional-at-root('::-webkit-input-placeholder') {
     @content;
   }
-
-  /* Internet Explorer 10-11 */
-
-  @include optional-at-root(':-ms-input-placeholder') {
-    @content;
-  }
-
-  /* Microsoft Edge */
-
-  @include optional-at-root('::-ms-input-placeholder') {
-    @content;
-  }
-
-  /* Chrome, Firefox, Opera, Safari 10.1+ */
 
   @include optional-at-root('::placeholder') {
     @content;

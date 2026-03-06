@@ -6,7 +6,16 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ClrIcon } from '@clr/angular';
 import { Subscription } from 'rxjs';
@@ -43,7 +52,8 @@ export class TableOfContentsComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private element: ElementRef
+    private element: ElementRef,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -51,6 +61,7 @@ export class TableOfContentsComponent implements OnInit, OnChanges, OnDestroy {
     this.subscriptions.push(
       this.intersectionService.activeHashChange.subscribe(activeHash => {
         this.activeHash = activeHash;
+        this.cdr.markForCheck();
       }),
       this.activatedRoute.params.pipe(debounceTime(0)).subscribe(() => {
         // Tab-switching case requires the cleanup here
@@ -58,6 +69,7 @@ export class TableOfContentsComponent implements OnInit, OnChanges, OnDestroy {
         const headingElements = Array.from(document.body.querySelectorAll<HTMLHeadingElement>(this.headingSelector));
         this.intersectionService.initialize(this.scrollParent(), this.headingSelector);
         this.tableOfContents = getTableOfContents(headingElements);
+        this.cdr.markForCheck();
       })
     );
 
@@ -69,6 +81,7 @@ export class TableOfContentsComponent implements OnInit, OnChanges, OnDestroy {
 
     this.scrollToTopIntersectionObserver = new IntersectionObserver(entries => {
       this.showScrollToTopButton = !entries[0].isIntersecting;
+      this.cdr.markForCheck();
     }, intersectionObserverOptions);
 
     this.scrollToTopIntersectionObserver.observe(this.element.nativeElement);

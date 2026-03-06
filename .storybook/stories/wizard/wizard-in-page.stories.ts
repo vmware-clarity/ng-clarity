@@ -34,7 +34,7 @@ export default {
     clrWizardInPage: { control: { disable: true }, table: { disable: true } },
     clrWizardPreventModalAnimation: { control: { disable: true }, table: { disable: true } },
     // outputs
-    clrWizardCurrentPageChanged: { control: { disable: true } },
+    clrWizardCurrentPageChange: { control: { disable: true } },
     clrWizardOnNext: { control: { disable: true } },
     clrWizardOnPrevious: { control: { disable: true } },
     clrWizardOnCancel: { control: { disable: true } },
@@ -71,7 +71,7 @@ export default {
     clrWizardInPageFillContentArea: false,
     clrWizardStepnavAriaLabel: commonStringsDefault.wizardStepnavAriaLabel,
     // outputs
-    clrWizardCurrentPageChanged: action('clrWizardCurrentPageChanged'),
+    clrWizardCurrentPageChange: action('clrWizardCurrentPageChange'),
     clrWizardOnNext: action('clrWizardOnNext'),
     clrWizardOnPrevious: action('clrWizardOnPrevious'),
     clrWizardOnCancel: function (...args) {
@@ -129,7 +129,7 @@ const InPageWizardTemplate: StoryFn = args => ({
             [clrWizardPreventDefaultNext]="clrWizardPreventDefaultNext"
             [clrWizardPreventDefaultCancel]="clrWizardPreventDefaultCancel"
             [clrWizardStepnavAriaLabel]="clrWizardStepnavAriaLabel"
-            (clrWizardCurrentPageChanged)="clrWizardCurrentPageChanged($event)"
+            (clrWizardCurrentPageChange)="clrWizardCurrentPageChange($event)"
             (clrWizardOnNext)="clrWizardOnNext($event)"
             (clrWizardOnPrevious)="clrWizardOnPrevious($event)"
             (clrWizardOnCancel)="clrWizardOnCancel($event)"

@@ -11,24 +11,24 @@ title: Designing
 </p>
 
 <div cds-layout="m-t:xxl">
-  <app-cms-themed-image
+  <app-themed-image
     light-src="/assets/images/clarity-designing-banner.svg"
     dark-src="/assets/images/clarity-designing-banner-dark.svg"
     image-alt=""
     image-style="max-width: 100%"
-  ></app-cms-themed-image>
+  ></app-themed-image>
 <div>
 
 ## Primary Font
 
 <div class="clr-row clr-mt-24px">
   <div class="clr-col-2">
-    <app-cms-themed-image
+    <app-themed-image
       light-src="/assets/images/clarity-designing-primary-font.svg"
       dark-src="/assets/images/clarity-designing-primary-font-dark.svg"
     image-alt=""
     image-style="max-width: 100%"
-    ></app-cms-themed-image>
+    ></app-themed-image>
   </div>
   <div class="clr-col-10">
     The default font intended for use with Clarity is 
@@ -42,12 +42,12 @@ title: Designing
 
 <div class="clr-row clr-mt-24px">
   <div class="clr-col-2">
-    <app-cms-themed-image
+    <app-themed-image
       light-src="/assets/images/clarity-designing-icon-assets.svg"
       dark-src="/assets/images/clarity-designing-icon-assets-dark.svg"
       image-alt=""
       image-style="max-width: 100%"
-    ></app-cms-themed-image>
+    ></app-themed-image>
   </div>
   <div class="clr-col-10">
     We provide a convenient zip of all icon files. This download includes all the icon SVG files in

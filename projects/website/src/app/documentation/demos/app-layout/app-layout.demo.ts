@@ -8,7 +8,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { AppLayoutDemoModule } from './app-layout.demo.module';
 import { LayoutAllDemo } from './layout-all';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
@@ -32,7 +31,6 @@ import { ClarityDocComponent } from '../clarity-doc';
     ThemedImageComponent,
     DoDontComponent,
     StyleDocsComponent,
-    AppLayoutDemoModule,
   ],
 })
 export class AppLayoutDemo extends ClarityDocComponent {
