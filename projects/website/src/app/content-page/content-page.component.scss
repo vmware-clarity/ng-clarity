@@ -7,7 +7,7 @@
 
 @use 'variables.tokens' as tokens;
 
-.cms-content ::ng-deep {
+.page-content ::ng-deep {
   .table--left-aligned {
     th,
     td {

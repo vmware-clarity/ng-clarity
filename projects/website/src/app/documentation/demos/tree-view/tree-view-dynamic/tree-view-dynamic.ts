@@ -70,7 +70,7 @@ export class ExampleComponent {
 `;
 
 const additionalFiles = {
-  'organization.ts': '',
+  'organization.ts': require('!raw-loader!./organization.ts').default,
 };
 
 @Component({

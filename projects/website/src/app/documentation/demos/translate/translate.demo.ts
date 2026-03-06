@@ -31,7 +31,6 @@ import {
   successStandardIcon,
 } from '@clr/angular';
 
-import { TranslateAddonDemoModule } from './translate.demo.module';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
@@ -39,8 +38,8 @@ import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/s
 import { ClarityDocComponent } from '../clarity-doc';
 import { multiStepPatternLink } from '../pattern-links';
 
-const DefaultHtml = '';
-const DefaultTs = '';
+const DefaultHtml = require('!raw-loader!./ng/default.html').default;
+const DefaultTs = require('!raw-loader!./ng/default.ts').default;
 
 @Component({
   selector: 'clr-translate-addon-demo',
@@ -80,7 +79,6 @@ const DefaultTs = '';
     ClrCommonFormsModule,
     FormsModule,
     StackblitzExampleComponent,
-    TranslateAddonDemoModule,
     AppfxTranslateModule,
   ],
 })

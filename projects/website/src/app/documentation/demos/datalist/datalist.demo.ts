@@ -13,7 +13,6 @@ import { ClrCommonFormsModule, ClrDatalistModule, ClrIcon, ClrIconModule } from 
 import { DatalistBasicDemo } from './datalist-basic.demo';
 import { DatalistReactiveValidationDemo } from './datalist-reactive-validation.demo';
 import { DatalistTemplateValidationDemo } from './datalist-template-validation.demo';
-import { DatalistDemoModule } from './datalist.module';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsComponent, LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
@@ -45,7 +44,6 @@ import { formsPatternLink } from '../pattern-links';
     DatalistTemplateValidationDemo,
     DatalistReactiveValidationDemo,
     NestingTableComponent,
-    DatalistDemoModule,
   ],
 })
 export class DatalistDemo extends ClarityDocComponent {

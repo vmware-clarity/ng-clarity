@@ -11,7 +11,6 @@ import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ClarityDocComponent } from '../clarity-doc';
-import { I18nDemoModule } from './i18n.demo.module';
 
 const KLINGON_TRANSLATION_EXAMPLE = `
 export const klingonLocale: Partial<ClrCommonStrings> = {
@@ -80,7 +79,7 @@ export const klingonLocale: Partial<ClrCommonStrings> = {
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
-  imports: [DocTabsComponent, DocTabComponent, CodeSnippetComponent, I18nDemoModule],
+  imports: [DocTabsComponent, DocTabComponent, CodeSnippetComponent],
 })
 export class I18nDemo extends ClarityDocComponent {
   newLayout = true;
