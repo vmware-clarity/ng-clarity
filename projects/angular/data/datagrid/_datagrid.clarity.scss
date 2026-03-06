@@ -77,7 +77,6 @@
     // Overrides the table defaults so the new structure has correct corners
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
     overflow: auto;
     flex: 1 1 auto;
     margin-top: datagrid-variables.$clr-datagrid-margin-top;
@@ -1563,7 +1562,7 @@
       gap: density.$clr-base-gap-xs;
       max-height: mixins.baselinePx(300);
       overflow-y: auto;
-      min-height: tables-variables.$clr-table-row-height; // prevents scrollbars in IE.
+      min-height: tables-variables.$clr-table-row-height;
 
       // Increase specificity
       &.list-unstyled {
