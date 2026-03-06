@@ -10,7 +10,6 @@ import { RouterLink } from '@angular/router';
 import { ClrIcon, ClrIconModule } from '@clr/angular';
 
 import { IconShapesComponent } from './icon-shapes/icon-shapes.component';
-import { IconsDemoModule } from './icons.demo.module';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -65,7 +64,6 @@ const STATUS_OR_INDICATOR_ICONS_EXAMPLE = `
     ClrIcon,
     ClrIconModule,
     IconShapesComponent,
-    IconsDemoModule,
   ],
 })
 export class IconsDemo extends ClarityDocComponent {

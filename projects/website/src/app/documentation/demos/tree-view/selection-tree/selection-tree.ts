@@ -49,7 +49,7 @@ export class ExampleComponent {
 `;
 
 const additionalFiles = {
-  'groceries.ts': '',
+  'groceries.ts': require('!raw-loader!./groceries.ts').default,
 };
 
 @Component({

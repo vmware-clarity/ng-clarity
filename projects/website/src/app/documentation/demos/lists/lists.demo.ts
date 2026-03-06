@@ -7,7 +7,6 @@
 
 import { Component } from '@angular/core';
 
-import { ListsDemoModule } from './lists.demo.module';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -79,7 +78,7 @@ const EXAMPLE4 = `
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
-  imports: [DocTabsComponent, DocTabComponent, StackblitzExampleComponent, StyleDocsComponent, ListsDemoModule],
+  imports: [DocTabsComponent, DocTabComponent, StackblitzExampleComponent, StyleDocsComponent],
 })
 export class ListsDemo extends ClarityDocComponent {
   example1 = EXAMPLE1;

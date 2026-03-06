@@ -49,7 +49,7 @@ export class ExampleComponent {
 `;
 
 const additionalFiles = {
-  'permissions.ts': '',
+  'permissions.ts': require('!raw-loader!./permissions.ts').default,
 };
 
 @Component({

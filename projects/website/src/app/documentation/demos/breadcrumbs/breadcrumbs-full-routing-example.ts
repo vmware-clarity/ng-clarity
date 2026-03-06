@@ -88,12 +88,17 @@ function createBreadcrumbs(route: ActivatedRoute): BreadcrumbItem[] {
 `;
 
 const additionalFiles = {
-  'app.routes.ts': '',
-  'stackblitz-examples/project-technology/react-example.ts': '',
-  'stackblitz-examples/project-technology/framework-example.ts': '',
-  'stackblitz-examples/project-technology/angular-example.ts': '',
-  'stackblitz-examples/project-technology/clarity-example.ts': '',
-  'stackblitz-examples/project-technology/dashboard-example.ts': '',
+  'app.routes.ts': require('!raw-loader!./stackblitz-examples/app.routes').default,
+  'stackblitz-examples/project-technology/react-example.ts':
+    require('!raw-loader!./stackblitz-examples/project-technology/react-example').default,
+  'stackblitz-examples/project-technology/framework-example.ts':
+    require('!raw-loader!./stackblitz-examples/project-technology/framework-example').default,
+  'stackblitz-examples/project-technology/angular-example.ts':
+    require('!raw-loader!./stackblitz-examples/project-technology/angular-example').default,
+  'stackblitz-examples/project-technology/clarity-example.ts':
+    require('!raw-loader!./stackblitz-examples/project-technology/clarity-example').default,
+  'stackblitz-examples/project-technology/dashboard-example.ts':
+    require('!raw-loader!./stackblitz-examples/project-technology/dashboard-example').default,
 };
 
 @Component({

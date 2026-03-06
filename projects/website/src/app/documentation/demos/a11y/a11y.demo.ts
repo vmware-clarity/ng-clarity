@@ -21,7 +21,6 @@ import {
   successStandardIcon,
 } from '@clr/angular';
 
-import { AccessibilityAddonDemoModule } from './a11y.demo.module';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -31,14 +30,14 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
 import { ClarityDocComponent } from '../clarity-doc';
 import { multiStepPatternLink } from '../pattern-links';
 
-const RequiredFieldsHtml = '';
-const RequiredFieldsTs = '';
-const TabsOverflowHtml = '';
-const TabsOverflowTs = '';
-const ZoomLevelServiceTs = '';
-const ZoomLevelHtml = '';
-const ZoomLevelScss = '';
-const ZoomLevelTs = '';
+const RequiredFieldsHtml = require('!raw-loader!./ng/required-fields.html').default;
+const RequiredFieldsTs = require('!raw-loader!./ng/required-fields.ts').default;
+const TabsOverflowHtml = require('!raw-loader!./ng/tabs-overflow.html').default;
+const TabsOverflowTs = require('!raw-loader!./ng/tabs-overflow.ts').default;
+const ZoomLevelServiceTs = require('!raw-loader!./ng/zoom-level-service.ts').default;
+const ZoomLevelHtml = require('!raw-loader!./ng/zoom-level.html').default;
+const ZoomLevelScss = require('!raw-loader!./ng/zoom-level.scss').default;
+const ZoomLevelTs = require('!raw-loader!./ng/zoom-level.ts').default;
 
 const ModuleImportExample = `
 import { AppfxA11yModule } from '@vmw/appfx/a11y';
@@ -70,7 +69,6 @@ export class MyModule {}
     FormsModule,
     ClrCommonFormsModule,
     ClrInputModule,
-    AccessibilityAddonDemoModule,
   ],
 })
 export class AcessibilityAddonDemo extends ClarityDocComponent {

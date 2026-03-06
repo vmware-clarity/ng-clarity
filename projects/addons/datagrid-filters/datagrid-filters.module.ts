@@ -5,19 +5,31 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { A11yModule as CdkA11yModule } from '@angular/cdk/a11y';
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
-import { angleIcon, ClarityIcons, ClrIcon, filterGridIcon, plusIcon, windowCloseIcon } from '@clr/angular/icon';
+import {
+  angleIcon,
+  ClarityIcons,
+  ClrIcon,
+  filterGridIcon,
+  plusIcon,
+  searchIcon,
+  windowCloseIcon,
+} from '@clr/angular/icon';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
+import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 
 import { DateTimeFilterComponent } from './advanced-filters/date-time-filter.component';
 import { EnumFilterComponent } from './advanced-filters/enum-filter.component';
 import { FilterFormComponent } from './advanced-filters/filter-form.component';
 import { GeneralFilterComponent } from './advanced-filters/general-filter.component';
+import { UsersFilterComponent } from './advanced-filters/users-filter.component';
 import { CompositeFiltersComponent } from './composite-filters.component';
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
+import { DatagridFiltersUserService } from './datagrid-filters-user-service';
 import { DataGridFiltersComponent } from './datagrid-filters.component';
 import { FilterPopoverRepositionDirective } from './filter-popover-reposition-directive';
 import { DismissableDirective } from './manage-filters/dismissable.directive';
@@ -26,6 +38,10 @@ import { SkipFiltersPipe } from './skip-filters.pipe';
 
 export function datagridFiltersStringsServiceFactory(existing: DatagridFiltersStrings) {
   return existing || new DatagridFiltersStrings();
+}
+
+export function datagridFiltersUserServiceFactory(existing: DatagridFiltersUserService) {
+  return existing || new DatagridFiltersUserService();
 }
 
 @NgModule({
@@ -40,14 +56,17 @@ export function datagridFiltersStringsServiceFactory(existing: DatagridFiltersSt
     GeneralFilterComponent,
     ManageFilterComponent,
     SkipFiltersPipe,
+    UsersFilterComponent,
   ],
   imports: [
+    CdkA11yModule,
     ClrCheckboxModule,
     ClrIcon,
     ClrInputModule,
     ClrRadioModule,
     ClrSelectModule,
     ClrSignpostModule,
+    ClrSpinnerModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -61,10 +80,15 @@ export function datagridFiltersStringsServiceFactory(existing: DatagridFiltersSt
       useFactory: datagridFiltersStringsServiceFactory,
       deps: [[new Optional(), new SkipSelf(), DatagridFiltersStrings]],
     },
+    {
+      provide: DatagridFiltersUserService,
+      useFactory: datagridFiltersUserServiceFactory,
+      deps: [[new Optional(), new SkipSelf(), DatagridFiltersUserService]],
+    },
   ],
 })
 export class AppfxDatagridFiltersModule {
   constructor() {
-    ClarityIcons.addIcons(angleIcon, filterGridIcon, plusIcon, windowCloseIcon);
+    ClarityIcons.addIcons(angleIcon, filterGridIcon, plusIcon, searchIcon, windowCloseIcon);
   }
 }

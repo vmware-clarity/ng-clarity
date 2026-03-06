@@ -5,18 +5,22 @@ git config user.email "noreply@github.com"
 # fetch preview build branch remotes
 git fetch origin preview-build/$GIT_BRANCH/clr-ui
 git fetch origin preview-build/$GIT_BRANCH/clr-angular
+git fetch origin preview-build/$GIT_BRANCH/clr-addons
 
 # add worktrees
 git worktree add --track -b preview-build-clr-ui preview-build-clr-ui origin/preview-build/$GIT_BRANCH/clr-ui || git worktree add --orphan preview-build-clr-ui
 git worktree add --track -b preview-build-clr-angular preview-build-clr-angular origin/preview-build/$GIT_BRANCH/clr-angular || git worktree add --orphan preview-build-clr-angular
+git worktree add --track -b preview-build-clr-addons preview-build-clr-addons origin/preview-build/$GIT_BRANCH/clr-addons || git worktree add --orphan preview-build-clr-addons
 
 # delete old files
 rm -rf ./preview-build-clr-ui/*
 rm -rf ./preview-build-clr-angular/*
+rm -rf ./preview-build-clr-addons/*
 
 # copy new files
 cp -r ./dist/clr-ui/* ./preview-build-clr-ui
 cp -r ./dist/clr-angular/* ./preview-build-clr-angular
+cp -r ./dist/clr-addons/* ./preview-build-clr-addons
 
 shortsha=$(echo "${GIT_COMMIT_SHA}" | cut -c1-7)
 next_version="0.0.0-preview.${shortsha}"
@@ -38,4 +42,12 @@ npm version "${next_version}" --no-git-tag-version --allow-same-version
 git add .
 git commit -m "build: preview build (${next_version}) for ${GIT_COMMIT_SHA}"
 git push origin preview-build-clr-angular:refs/heads/preview-build/$GIT_BRANCH/clr-angular
+popd
+
+# push @clr/addons
+pushd ./preview-build-clr-addons
+npm version "${next_version}" --no-git-tag-version --allow-same-version
+git add .
+git commit -m "build: preview build (${next_version}) for ${GIT_COMMIT_SHA}"
+git push origin preview-build-clr-addons:refs/heads/preview-build/$GIT_BRANCH/clr-addons
 popd

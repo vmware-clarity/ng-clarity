@@ -71,13 +71,14 @@ const HTML_EXAMPLE = `
 </div>
 `;
 
-const EXAMPLE_TS = '';
+const EXAMPLE_TS = require('!raw-loader!../stackblitz-examples/example.component').default;
 
 const additionalFiles = {
   ...pokemonComponents,
-  'app.routes.ts': '',
-  'project-pokemon/project-pokemon.ts': '',
-  'credits/pokedex.ts': '',
+  'app.routes.ts': require('!raw-loader!../stackblitz-examples/pokemon-groups.routes').default,
+  'project-pokemon/project-pokemon.ts': require('!raw-loader!../stackblitz-examples/project-pokemon/project-pokemon')
+    .default,
+  'credits/pokedex.ts': require('!raw-loader!../stackblitz-examples/credits/pokedex').default,
 };
 
 @Component({
