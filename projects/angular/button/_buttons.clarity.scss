@@ -37,10 +37,6 @@
     }
   }
 
-  //.btn-outline-<state> is the new BS4 naming convention. We are using both for now
-  // TODO: Refactor these classnames when the standard clarity naming convention is set.
-  // This is a breaking change and will need an upgrade path so users know how to easily migrate to the new
-  // version.
   a.btn,
   .btn.btn-secondary,
   .btn-secondary .btn {
@@ -274,8 +270,6 @@
       width: 100%;
     }
 
-    //.btn-outline-<state> is the new BS4 naming convention
-    //TODO: we support both the previous one and the new one but we will deprecate the old ones from the example in 0.5.0
     &.btn-secondary,
     &.btn-info,
     &.btn-outline,
@@ -336,10 +330,6 @@
       width: 100%;
     }
 
-    //.btn-outline-<state> is the new BS4 naming convention. We are using both for now
-    // TODO: Refactor these classnames when the standard clarity naming convention is set.
-    // This is a breaking change and will need an upgrade path so users know how to easily migrate to the new
-    // version.
     &.btn-secondary,
     &.btn-info,
     &.btn-outline,
