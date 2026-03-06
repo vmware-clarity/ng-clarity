@@ -21,12 +21,3 @@ export enum Keys {
   PageDown = 'PageDown',
   PageUp = 'PageUp',
 }
-
-export enum IEKeys {
-  ArrowUp = 'Up',
-  ArrowDown = 'Down',
-  ArrowRight = 'Right',
-  ArrowLeft = 'Left',
-  Space = 'Spacebar',
-  Escape = 'Esc',
-}
