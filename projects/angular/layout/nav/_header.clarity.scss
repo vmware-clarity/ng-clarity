@@ -15,8 +15,7 @@
 @include meta.load-css('../main-container/properties.header');
 @include mixins.exports('header.clarity') {
   header,
-  .header,
-  .clr-header {
+  .header {
     display: flex;
     color: header-variables.$clr-header-font-color;
     background-color: header-variables.$clr-header-bg-color;
@@ -33,8 +32,7 @@
 
   @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) {
     header,
-    .header,
-    .clr-header {
+    .header {
       @include header-mixins.header-search-md();
     }
   }

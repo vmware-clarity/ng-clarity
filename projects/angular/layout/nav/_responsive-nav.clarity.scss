@@ -50,14 +50,17 @@
     .main-container {
       .header-hamburger-trigger,
       .header-overflow-trigger {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+        display: inline-block;
         border: none;
         background: none;
         cursor: pointer;
 
         @include mixins.equilateral(header-variables.$clr-header-height);
+
+        clr-icon,
+        cds-icon {
+          @include mixins.equilateral(density.$clr-base-icon-size-l);
+        }
 
         &:focus {
           outline-offset: calc(-1 * tokens.$cds-global-space-4);
@@ -244,7 +247,8 @@
             }
 
             cds-icon[shape='vm-bug'],
-            clr-icon[shape='vm-bug'] {
+            clr-icon[shape='vm-bug'],
+            .clr-vmw-logo {
               background-color: header-variables.$clr-header-bg-color;
               border-radius: tokens.$cds-alias-object-border-radius-100;
             }
