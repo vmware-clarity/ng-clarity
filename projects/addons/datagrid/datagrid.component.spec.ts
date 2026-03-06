@@ -1377,6 +1377,74 @@ describe('DatagridComponent', () => {
       expect(gridFooter.getFooterText()).toContain('4 items');
     });
 
+    it('footer actions emit events', function (this: any) {
+      this.component.appfxDatagridComponent.footerModel = {
+        footerActions: [
+          {
+            id: 'footer-action-1',
+            label: 'Footer Action 1',
+            enabled: true,
+          },
+        ],
+        showFooter: true,
+      };
+      spyOn(this.component, 'onActionClick');
+      this.component.appfxDatagridComponent.ngOnInit();
+      this.fixture.detectChanges(false);
+      const gridHelper = new GridHelper(this.fixture.debugElement);
+      const button = gridHelper.findFooterButton(
+        this.component.appfxDatagridComponent.footerModel.footerActions[0].label
+      );
+      expect(button).toBeDefined();
+      button?.click();
+      expect(this.component.onActionClick).toHaveBeenCalledWith({
+        action: this.component.appfxDatagridComponent.footerModel.footerActions[0],
+        context: [],
+      });
+    });
+
+    it('footer action with children emits events with correct context', function (this: any) {
+      this.component.appfxDatagridComponent.selectionType = SelectionType.Multi;
+      this.component.data = this.data;
+      this.component.appfxDatagridComponent.footerModel = {
+        footerActions: [
+          {
+            id: 'footer-action-1',
+            label: 'Footer Action 1',
+            enabled: true,
+            children: [
+              {
+                id: 'footer-action-2',
+                label: 'Footer Action 2',
+                enabled: true,
+              },
+            ],
+          },
+        ],
+        showFooter: true,
+      };
+      spyOn(this.component, 'onActionClick');
+      this.component.appfxDatagridComponent.ngOnInit();
+      this.fixture.detectChanges(false);
+      const gridHelper = new GridHelper(this.fixture.debugElement);
+      gridHelper.getRows().forEach(row => row.select());
+      const button = gridHelper.findFooterButton(
+        this.component.appfxDatagridComponent.footerModel.footerActions[0].label
+      );
+      expect(button).toBeDefined();
+      button?.click();
+      this.fixture.detectChanges(false);
+      const childButton = gridHelper.findFooterDropdownChildButton(
+        this.component.appfxDatagridComponent.footerModel.footerActions[0].children[0].label
+      );
+      expect(childButton).toBeDefined();
+      childButton?.click();
+      expect(this.component.onActionClick).toHaveBeenCalledWith({
+        action: this.component.appfxDatagridComponent.footerModel.footerActions[0].children[0],
+        context: this.component.appfxDatagridComponent.selectedItems,
+      });
+    });
+
     it('can be by hide', function (this: any) {
       this.component.columnsDefs = this.columnsDefs;
       this.component.data = this.data;
