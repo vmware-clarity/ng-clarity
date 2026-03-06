@@ -25,22 +25,30 @@ import {
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div [ngClass]="wrapperClass()">
         <ng-content select="[clrSelect]"></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
-      @if (showHelper) {
-        <ng-content select="clr-control-helper"></ng-content>
+      @if (showHelper || showInvalid || showValid) {
+        <div class="clr-subtext-container">
+          @if (showHelper) {
+            <ng-content select="clr-control-helper"></ng-content>
+          }
+          @if (showInvalid) {
+            <ng-content select="clr-control-error"></ng-content>
+          }
+          @if (showValid) {
+            <ng-content select="clr-control-success"></ng-content>
+          }
+        </div>
       }
-      @if (showInvalid) {
-        <ng-content select="clr-control-error"></ng-content>
-      }
-      @if (showValid) {
-        <ng-content select="clr-control-success"></ng-content>
-      }
+
+      <!--        <div class="clr-subtext-wrapper">-->
+      <!--&lt;!&ndash;          <div class="clr-control-error">&ndash;&gt;-->
+      <!--            <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>-->
+      <!--            <span class="clr-subtext error">-->
+      <!--              <ng-content select="clr-control-error"></ng-content>-->
+      <!--            </span>-->
+      <!--&lt;!&ndash;          </div>&ndash;&gt;-->
+
+      <!--        </div>-->
     </div>
   `,
   host: {

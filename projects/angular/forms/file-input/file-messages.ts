@@ -15,9 +15,13 @@ export const CLR_FILE_MESSAGES_TEMPLATE_CONTEXT = new InjectionToken<ClrFileMess
 
 @Component({
   selector: 'clr-file-info',
-  template: `<ng-content></ng-content>`,
+  template: `
+    <span class="clr-subtext">
+      <ng-content></ng-content>
+    </span>
+  `,
   host: {
-    '[class.clr-subtext]': 'true',
+    '[class.clr-subtext-wrapper]': 'true',
   },
   standalone: false,
 })
@@ -26,13 +30,19 @@ export class ClrFileInfo {}
 @Component({
   selector: 'clr-file-success',
   // We check for success here so that consumers don't have to.
-  template: `@if (context.success) {
-    <ng-content></ng-content>
-  }`,
+  template: `
+    @if (context.success) {
+      <div class="clr-control-success">
+        <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+        <span class="clr-subtext success">
+          <ng-content></ng-content>
+        </span>
+      </div>
+    }
+  `,
   host: {
-    '[style.display]': 'context.success ? "inline-block" : "none"',
-    '[class.clr-subtext]': 'true',
-    '[class.success]': 'true',
+    '[style.display]': 'context.success ? "flex" : "none"',
+    '[class.clr-subtext-wrapper]': 'true',
   },
   standalone: false,
 })
@@ -42,11 +52,17 @@ export class ClrFileSuccess {
 
 @Component({
   selector: 'clr-file-error',
-  // The host should have an `@if` or `@if` that checks for the relevant error.
-  template: `<ng-content></ng-content>`,
+  // The host should have an `*ngIf` or `@if` that checks for the relevant error.
+  template: `
+    <div class="clr-control-error">
+      <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+      <span class="clr-subtext error">
+        <ng-content></ng-content>
+      </span>
+    </div>
+  `,
   host: {
-    '[class.clr-subtext]': 'true',
-    '[class.error]': 'true',
+    '[class.clr-subtext-wrapper]': 'true',
   },
   standalone: false,
 })

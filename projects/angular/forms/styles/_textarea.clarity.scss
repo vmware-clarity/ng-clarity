@@ -20,6 +20,11 @@
     .clr-validate-icon {
       margin-left: 0;
     }
+
+    + .clr-subtext-container {
+      margin-top: 0;
+      align-self: flex-start;
+    }
   }
 
   .clr-textarea {

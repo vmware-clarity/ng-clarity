@@ -24,20 +24,18 @@ import { ComboboxContainerService } from './providers/combobox-container.service
     }
     <div class="clr-control-container" [ngClass]="controlClass()" #controlContainer>
       <ng-content select="clr-combobox"></ng-content>
-      @if (showInvalid) {
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-      }
-      @if (showValid) {
-        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-      }
-      @if (showHelper) {
-        <ng-content select="clr-control-helper"></ng-content>
-      }
-      @if (showInvalid) {
-        <ng-content select="clr-control-error"></ng-content>
-      }
-      @if (showValid) {
-        <ng-content select="clr-control-success"></ng-content>
+      @if (showHelper || showInvalid || showValid) {
+        <div class="clr-subtext-container">
+          @if (showHelper) {
+            <ng-content select="clr-control-helper"></ng-content>
+          }
+          @if (showInvalid) {
+            <ng-content select="clr-control-error"></ng-content>
+          }
+          @if (showValid) {
+            <ng-content select="clr-control-success"></ng-content>
+          }
+        </div>
       }
     </div>
   `,

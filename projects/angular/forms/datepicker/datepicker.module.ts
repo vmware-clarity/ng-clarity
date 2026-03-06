@@ -11,11 +11,11 @@ import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 import {
   angleIcon,
   calendarIcon,
-  checkCircleIcon,
   ClarityIcons,
   ClrIcon,
+  errorStandardIcon,
   eventIcon,
-  exclamationCircleIcon,
+  successStandardIcon,
 } from '@clr/angular/icon';
 import { ClrVerticalNavModule } from '@clr/angular/layout/vertical-nav';
 import { ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
@@ -67,6 +67,6 @@ export const CLR_DATEPICKER_DIRECTIVES: Type<any>[] = [
 })
 export class ClrDatepickerModule {
   constructor() {
-    ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, angleIcon, eventIcon, calendarIcon);
+    ClarityIcons.addIcons(successStandardIcon, errorStandardIcon, angleIcon, eventIcon, calendarIcon);
   }
 }
