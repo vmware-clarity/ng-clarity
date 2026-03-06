@@ -87,7 +87,7 @@ const html = `
       <clr-spinner>Loading</clr-spinner>
     }
     <clr-alert
-      [clrAlertType]="'alert-info'"
+      [clrAlertType]="'info'"
       [clrAlertClosable]="false"
       [clrCloseButtonAriaLabel]="'Close Wiki alert'"
     >
@@ -103,7 +103,7 @@ const html = `
       </clr-alert-item>
     </clr-alert>
     @if (errorFlag) {
-      <clr-alert [clrAlertType]="'alert-danger'" [clrCloseButtonAriaLabel]="'Close Answer alert'">
+      <clr-alert [clrAlertType]="'danger'" [clrCloseButtonAriaLabel]="'Close Answer alert'">
         <clr-alert-item>Your answer is incorrect.</clr-alert-item>
       </clr-alert>
     }
