@@ -27,6 +27,13 @@ import { getNumberOfDaysInTheMonth, parseToFourDigitYear } from '../utils/date-u
 
 @Injectable()
 export class DateIOService {
+  /**
+   * This is the default range. It approximates the beginning of time to the end of time.
+   * The disabled dates are the dates that are not allowed to be selected.
+   * The min date is the earliest date that can be selected.
+   * The max date is the latest date that can be selected.
+   * Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
+   */
   disabledDates: DateRange = {
     minDate: new DayModel(0, 0, 1),
     maxDate: new DayModel(9999, 11, 31),
