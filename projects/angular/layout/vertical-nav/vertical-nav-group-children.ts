@@ -10,26 +10,23 @@ import { Component, HostBinding, HostListener, OnDestroy, OnInit } from '@angula
 import { IfExpandService } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
-import { VerticalNavGroupService } from './providers/vertical-nav-group.service';
-
-const EXPANDED_STATE = 'expanded';
-const COLLAPSED_STATE = 'collapsed';
+import { ExpandAnimationState, VerticalNavGroupService } from './providers/vertical-nav-group.service';
 
 @Component({
   selector: 'clr-vertical-nav-group-children',
   template: `<ng-content></ng-content>`,
   animations: [
     trigger('clrExpand', [
-      state(EXPANDED_STATE, style({ height: '*' })),
-      state(COLLAPSED_STATE, style({ height: 0, visibility: 'hidden' })),
-      transition(`${EXPANDED_STATE} <=> ${COLLAPSED_STATE}`, animate('0.2s ease-in-out')),
+      state(ExpandAnimationState.EXPANDED, style({ height: '*' })),
+      state(ExpandAnimationState.COLLAPSED, style({ height: 0, visibility: 'hidden' })),
+      transition(`${ExpandAnimationState.EXPANDED} <=> ${ExpandAnimationState.COLLAPSED}`, animate('0.2s ease-in-out')),
     ]),
   ],
   host: { class: 'nav-group-children' },
   standalone: false,
 })
 export class ClrVerticalNavGroupChildren implements OnInit, OnDestroy {
-  private expandAnimationState: string = COLLAPSED_STATE;
+  private expandAnimationState: ExpandAnimationState = ExpandAnimationState.COLLAPSED;
   private subscription: Subscription;
 
   constructor(
@@ -54,7 +51,7 @@ export class ClrVerticalNavGroupChildren implements OnInit, OnDestroy {
 
   @HostListener('@clrExpand.done', ['$event'])
   onExpandAnimationDone(event: AnimationEvent) {
-    if (event.toState === COLLAPSED_STATE) {
+    if (event.toState === ExpandAnimationState.COLLAPSED) {
       this.expandService.expanded = false;
     }
   }

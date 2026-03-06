@@ -510,9 +510,11 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     collapseGroup(): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
+    // Warning: (ae-forgotten-export) The symbol "ExpandAnimationState_2" needs to be exported by the entry point clr-angular-layout.d.ts
+    //
     // (undocumented)
-    get expandAnimationState(): string;
-    set expandAnimationState(value: string);
+    get expandAnimationState(): ExpandAnimationState_2;
+    set expandAnimationState(value: ExpandAnimationState_2);
     // (undocumented)
     get expanded(): boolean;
     set expanded(value: boolean);
@@ -538,7 +540,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
 export class ClrVerticalNavGroupChildren implements OnInit, OnDestroy {
     constructor(navGroupService: VerticalNavGroupService_2, expandService: IfExpandService);
     // (undocumented)
-    get expandAnimation(): string;
+    get expandAnimation(): ExpandAnimationState_2;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)

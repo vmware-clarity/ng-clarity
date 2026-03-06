@@ -10,11 +10,8 @@ import { ClrCommonStringsService, IfExpandService } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
-import { VerticalNavGroupService } from './providers/vertical-nav-group.service';
+import { ExpandAnimationState, VerticalNavGroupService } from './providers/vertical-nav-group.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
-
-const EXPANDED_STATE = 'expanded';
-const COLLAPSED_STATE = 'collapsed';
 
 @Component({
   selector: 'clr-vertical-nav-group',
@@ -46,13 +43,13 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // animation states are correct for that edge case.
     this._subscriptions.push(
       _itemExpand.expandChange.subscribe(value => {
-        if (value && this.expandAnimationState === COLLAPSED_STATE) {
+        if (value && this.expandAnimationState === ExpandAnimationState.COLLAPSED) {
           if (_navService.collapsed) {
             _navService.collapsed = false;
           }
-          this.expandAnimationState = EXPANDED_STATE;
-        } else if (!value && this.expandAnimationState === EXPANDED_STATE) {
-          this.expandAnimationState = COLLAPSED_STATE;
+          this.expandAnimationState = ExpandAnimationState.EXPANDED;
+        } else if (!value && this.expandAnimationState === ExpandAnimationState.EXPANDED) {
+          this.expandAnimationState = ExpandAnimationState.COLLAPSED;
         }
       })
     );
@@ -63,7 +60,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
       _navService.animateOnCollapsed.subscribe((goingToCollapse: boolean) => {
         if (goingToCollapse && this.expanded) {
           this.wasExpanded = true;
-          this.expandAnimationState = COLLAPSED_STATE;
+          this.expandAnimationState = ExpandAnimationState.COLLAPSED;
         } else if (!goingToCollapse && this.wasExpanded) {
           this.expandGroup();
           this.wasExpanded = false;
@@ -103,10 +100,10 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     }
   }
 
-  get expandAnimationState(): string {
+  get expandAnimationState(): ExpandAnimationState {
     return this._navGroupService.expandAnimationStateValue;
   }
-  set expandAnimationState(value: string) {
+  set expandAnimationState(value: ExpandAnimationState) {
     this._navGroupService.expandAnimationStateValue = value;
   }
 
@@ -115,7 +112,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // the expanded property is switched back to collapsed state.
     if (this._navService.collapsed && this.expanded) {
       this.wasExpanded = true;
-      this.expandAnimationState = COLLAPSED_STATE;
+      this.expandAnimationState = ExpandAnimationState.COLLAPSED;
     }
   }
 
@@ -127,13 +124,13 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   expandGroup(): void {
     this.expanded = true;
     // Expanded animation occurs after Expand.expand is set to true
-    this.expandAnimationState = EXPANDED_STATE;
+    this.expandAnimationState = ExpandAnimationState.EXPANDED;
   }
 
   collapseGroup(): void {
     // If a Vertical Nav Group toggle button is clicked while the Vertical Nav is in Collapsed state,
     // the Vertical Nav should be expanded first.
-    this.expandAnimationState = COLLAPSED_STATE;
+    this.expandAnimationState = ExpandAnimationState.COLLAPSED;
   }
 
   toggleExpand(): void {
