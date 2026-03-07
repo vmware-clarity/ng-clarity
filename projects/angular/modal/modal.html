@@ -12,7 +12,6 @@
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="true"
     [@fadeMove]="fadeMove"
-    (@fadeMove.done)="fadeDone($event)"
     class="modal-dialog"
     [class.modal-sm]="size == 'sm'"
     [class.modal-lg]="size == 'lg'"
@@ -27,7 +26,7 @@
     <div class="modal-content-wrapper">
       @if (!modalContentTemplate) {
       <div class="modal-content">
-        <div class="modal-header--accessible">
+        <div class="modal-header">
           <ng-content select=".leading-button"></ng-content>
           <div class="modal-title-wrapper" #title [id]="modalId" cdkFocusInitial tabindex="-1">
             <ng-content select=".modal-title"></ng-content>

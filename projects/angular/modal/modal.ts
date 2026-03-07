@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
 import {
   Component,
   ContentChild,
@@ -147,14 +147,8 @@ export class ClrModal implements OnChanges, OnDestroy {
       return;
     }
     this._open = false;
-  }
-
-  fadeDone(e: AnimationEvent) {
-    if (e.toState === 'void') {
-      // TODO: Investigate if we can decouple from animation events
-      this._openChanged.emit(false);
-      this.modalStackService.trackModalClose(this);
-    }
+    this._openChanged.emit(false);
+    this.modalStackService.trackModalClose(this);
   }
 
   scrollTop() {
