@@ -8,6 +8,7 @@
 export * from './combobox.module';
 export * from './combobox-container';
 export * from './combobox';
+export * from './filter-highlight.directive';
 export * from './options';
 export * from './option';
 export * from './option-group';

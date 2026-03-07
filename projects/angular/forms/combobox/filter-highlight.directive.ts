@@ -11,10 +11,6 @@ import { Subscription } from 'rxjs';
 
 import { OptionSelectionService } from './providers/option-selection.service';
 
-// TODO: Check if this directive is properly sanitized and:
-//       - return to module
-//       - return to dev-app examples
-//       - return to website docs
 @Directive({
   selector: '[clrFilterHighlight]',
   standalone: false,
