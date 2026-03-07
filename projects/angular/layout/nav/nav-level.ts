@@ -161,17 +161,16 @@ export class ClrNavLevel implements OnInit {
     this.showNavigation();
   }
 
-  // TODO: Figure out whats the best way to do this. Possible methods
-  // 1. HostListener (current solution)
-  // 2. Directives on the .nav-link class. We discussed on moving away from class selectors but I forget the reason
-  // why
+  /**
+   * Uses event delegation on the host to detect clicks on `.nav-link` elements
+   * and close the nav when in responsive (mobile) mode. This avoids class-selector
+   * directives and keeps a single listener instead of one per link.
+   */
   @HostListener('click', ['$event.target'])
-  onMouseClick(target: any) {
-    let current: any = target; // Get the element in the DOM on which the mouse was clicked
-    const navHost: any = this.elementRef.nativeElement; // Get the current nav native HTML element
+  onMouseClick(target: HTMLElement) {
+    let current: HTMLElement | null = target;
+    const navHost = this.elementRef.nativeElement;
 
-    // Start checking if current and navHost are equal.
-    // If not traverse to the parentNode and check again.
     while (current) {
       if (current === navHost) {
         return;
@@ -179,7 +178,7 @@ export class ClrNavLevel implements OnInit {
         this.close();
         return;
       }
-      current = current.parentNode;
+      current = current.parentElement;
     }
   }
 
