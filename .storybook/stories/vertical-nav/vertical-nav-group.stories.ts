@@ -43,7 +43,6 @@ export default {
     clrVerticalNavGroupExpandedChange: { control: { disable: true } },
     // methods
     collapseGroup: { control: { disable: true }, table: { disable: true } },
-    expandAnimationDone: { control: { disable: true }, table: { disable: true } },
     expandGroup: { control: { disable: true }, table: { disable: true } },
     toggleExpand: { control: { disable: true }, table: { disable: true } },
     // story helpers

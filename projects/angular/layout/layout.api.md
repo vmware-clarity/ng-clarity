@@ -505,16 +505,16 @@ export class ClrVerticalNav implements OnDestroy {
 export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "IfExpandService" needs to be exported by the entry point clr-angular-layout.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupService_2" needs to be exported by the entry point clr-angular-layout.d.ts
-    constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService_2, navGroupService: VerticalNavGroupService_2, _navService: VerticalNavService_2, commonStrings: ClrCommonStringsService);
+    constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService_2, _navGroupService: VerticalNavGroupService_2, _navService: VerticalNavService_2, commonStrings: ClrCommonStringsService);
     // (undocumented)
     collapseGroup(): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
+    // Warning: (ae-forgotten-export) The symbol "ExpandAnimationState_2" needs to be exported by the entry point clr-angular-layout.d.ts
+    //
     // (undocumented)
-    expandAnimationDone($event: AnimationEvent_2): void;
-    // (undocumented)
-    get expandAnimationState(): string;
-    set expandAnimationState(value: string);
+    get expandAnimationState(): ExpandAnimationState_2;
+    set expandAnimationState(value: ExpandAnimationState_2);
     // (undocumented)
     get expanded(): boolean;
     set expanded(value: boolean);
@@ -537,7 +537,16 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrVerticalNavGroupChildren {
+export class ClrVerticalNavGroupChildren implements OnInit, OnDestroy {
+    constructor(navGroupService: VerticalNavGroupService_2, expandService: IfExpandService);
+    // (undocumented)
+    get expandAnimation(): ExpandAnimationState_2;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    onExpandAnimationDone(event: AnimationEvent_2): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroupChildren, "clr-vertical-nav-group-children", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)

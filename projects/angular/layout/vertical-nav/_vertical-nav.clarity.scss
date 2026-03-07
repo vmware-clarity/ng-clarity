@@ -98,10 +98,6 @@
       }
     }
 
-    .nav-group-children {
-      overflow-y: hidden;
-    }
-
     .nav-trigger,
     .nav-group-trigger {
       //Display
@@ -268,8 +264,10 @@
       vertical-align: middle;
     }
 
-    clr-vertical-nav-group-children {
+    clr-vertical-nav-group-children,
+    .nav-group-children {
       display: block;
+      overflow-y: hidden;
     }
 
     .nav-btn {
