@@ -7,7 +7,7 @@
 
 import { Component, ElementRef, HostListener, OnDestroy } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { Keys, normalizeKey } from '@clr/angular/utils';
+import { Keys } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { DateRangeInput } from './interfaces/date-range.interface';
@@ -95,7 +95,7 @@ export class ClrCalendar implements OnDestroy {
   @HostListener('keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
     if (event && this.focusedDay) {
-      switch (normalizeKey(event.key)) {
+      switch (event.key) {
         case Keys.ArrowUp:
           event.preventDefault();
           this._dateNavigationService.incrementFocusDay(-1 * NO_OF_DAYS_IN_A_WEEK);
