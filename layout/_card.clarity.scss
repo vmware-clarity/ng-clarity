@@ -49,7 +49,6 @@
     max-width: 100%;
   }
 
-  //TODO: Try to reduce the nesting in .card
   .card {
     position: relative;
     display: block;
@@ -89,7 +88,6 @@
       @extend %card-space-between;
     }
 
-    //Clarity Lists
     & > .list,
     & > .list-unstyled {
       padding: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-xl;
@@ -191,9 +189,6 @@
       margin: 0;
     }
 
-    //Need this level of nesting for now.
-    //Adding a TODO to remove the nesting in a separate PR
-    //Don't want to create a PR which solves multiple different issues.
     .btn-group .btn {
       margin: 0;
     }
