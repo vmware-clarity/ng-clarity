@@ -81,7 +81,6 @@ export default function () {
         spyOn(datepickerFocusService, 'focusInput').and.callThrough();
       });
 
-      // @TODO Figure out how to make these tests conform to the rest of the forms tests, which test these already
       describe('View', () => {
         beforeEach(() => {
           context.detectChanges();
@@ -295,24 +294,24 @@ export default function () {
 
         it('binds to the min attribute', () => {
           const testComponent = context.fixture.componentInstance;
-          const [minYear, minMonth, minDay] = testComponent.maxDate.split('-').map(n => parseInt(n, 10));
+          const [minYear, minMonth, minDay] = testComponent.minDate.split('-').map(n => parseInt(n, 10));
           const testMinDateModel = new DayModel(minYear, minMonth - 1, minDay);
-          expect(testMinDateModel).toEqual(dateIOService.disabledDates.maxDate);
+          expect(testMinDateModel).toEqual(dateIOService.disabledDates.minDate);
 
           // should handle null input
-          testComponent.maxDate = null;
+          testComponent.minDate = null;
           context.fixture.detectChanges();
-          expect(testMinDateModel).not.toEqual(dateIOService.disabledDates.maxDate);
+          expect(testMinDateModel).not.toEqual(dateIOService.disabledDates.minDate);
 
           // should handle undefined
-          testComponent.maxDate = undefined;
+          testComponent.minDate = undefined;
           context.fixture.detectChanges();
-          expect(testMinDateModel).not.toEqual(dateIOService.disabledDates.maxDate);
+          expect(testMinDateModel).not.toEqual(dateIOService.disabledDates.minDate);
 
           // should handle empty string
-          testComponent.maxDate = '';
+          testComponent.minDate = '';
           context.fixture.detectChanges();
-          expect(testMinDateModel).not.toEqual(dateIOService.disabledDates.maxDate);
+          expect(testMinDateModel).not.toEqual(dateIOService.disabledDates.minDate);
         });
 
         it('binds to the max attribute', () => {
@@ -321,17 +320,17 @@ export default function () {
           const testMaxDateModel = new DayModel(maxYear, maxMonth - 1, maxDay);
           expect(testMaxDateModel).toEqual(dateIOService.disabledDates.maxDate);
 
-          // should handle null axput
+          // should handle null input
           testComponent.maxDate = null;
           context.fixture.detectChanges();
           expect(testMaxDateModel).not.toEqual(dateIOService.disabledDates.maxDate);
 
-          // should handle undefaxed
+          // should handle undefined
           testComponent.maxDate = undefined;
           context.fixture.detectChanges();
           expect(testMaxDateModel).not.toEqual(dateIOService.disabledDates.maxDate);
 
-          // should handle empty straxg
+          // should handle empty string
           testComponent.maxDate = '';
           context.fixture.detectChanges();
           expect(testMaxDateModel).not.toEqual(dateIOService.disabledDates.maxDate);
