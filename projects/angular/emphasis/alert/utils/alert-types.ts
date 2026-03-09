@@ -5,5 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-// @TODO Make this an enum
-export const ALERT_TYPES: string[] = ['info', 'warning', 'danger', 'success', 'neutral', 'unknown', 'loading'];
+export type AlertType = 'info' | 'warning' | 'danger' | 'success' | 'neutral' | 'unknown' | 'loading';
+
+export const ALERT_TYPES: AlertType[] = ['info', 'warning', 'danger', 'success', 'neutral', 'unknown', 'loading'];
