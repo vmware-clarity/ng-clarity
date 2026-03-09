@@ -14,7 +14,6 @@
 
 @include meta.load-css('../main-container/properties.header');
 @include mixins.exports('header.clarity') {
-  // TODO: rename to follow clr naming convention
   header,
   .header {
     display: flex;

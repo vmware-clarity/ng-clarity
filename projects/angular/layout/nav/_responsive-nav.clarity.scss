@@ -40,83 +40,9 @@
   .header-hamburger-trigger,
   .header-overflow-trigger {
     display: none;
-  }
 
-  .header-hamburger-trigger {
-    $trigger-span-pseudo-positioning: calc(-1 * tokens.$cds-global-space-5);
-
-    & > span,
-    & > span::before,
-    & > span::after {
-      display: inline-block;
-      height: tokens.$cds-global-space-2;
-      width: tokens.$cds-global-space-9;
-      background: responsive-nav-variables.$clr-responsive-nav-trigger-bg-color;
-      border-radius: tokens.$cds-alias-object-border-radius-100;
-    }
-
-    & > span {
-      position: relative;
-      vertical-align: middle;
-
-      &::before,
-      &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-      }
-
-      &::before {
-        top: $trigger-span-pseudo-positioning;
-      }
-
-      &::after {
-        bottom: $trigger-span-pseudo-positioning;
-      }
-    }
-
-    &.active {
-      @include responsive-nav-mixins.hamburger-menu-trigger-animation();
-    }
-  }
-
-  .header-overflow-trigger {
-    $overflow-trigger-pseudo-positioning: calc(-1 * tokens.$cds-global-space-5);
-
-    & > span,
-    & > span::before,
-    & > span::after {
-      display: inline-block;
-
-      @include mixins.equilateral(tokens.$cds-global-space-3);
-
-      background: responsive-nav-variables.$clr-responsive-nav-trigger-bg-color;
-      // TODO: Use border radius token?
-      border-radius: tokens.$cds-global-space-3;
-    }
-
-    & > span {
-      position: relative;
-      vertical-align: middle;
-
-      &::before,
-      &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-      }
-
-      &::before {
-        top: $overflow-trigger-pseudo-positioning;
-      }
-
-      &::after {
-        bottom: $overflow-trigger-pseudo-positioning;
-      }
-    }
-
-    &.active {
-      @include responsive-nav-mixins.overflow-menu-trigger-animation();
+    cds-icon {
+      color: responsive-nav-variables.$clr-responsive-nav-trigger-bg-color;
     }
   }
 
@@ -131,14 +57,12 @@
 
         @include mixins.equilateral(header-variables.$clr-header-height);
 
-        // TODO: replace `hamburger` and `dots` to use CDS-ICON `bars` and `ellipsis-vertical` respectively.
-        // 2px to vertically align the trigger lines. display flex was not working on all browsers.
-        padding: 0 0 tokens.$cds-global-space-2 0;
-        text-align: center;
-        white-space: nowrap;
+        clr-icon,
+        cds-icon {
+          @include mixins.equilateral(density.$clr-base-icon-size-l);
+        }
 
         &:focus {
-          // So that the outline styles aren't hidden because of the browser
           outline-offset: calc(-1 * tokens.$cds-global-space-4);
         }
 
@@ -147,7 +71,6 @@
 
       .header-nav.clr-nav-level-1,
       .subnav.clr-nav-level-1,
-      .sub-nav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
         @include responsive-nav-mixins.sliding-nav-positioning();
 
@@ -157,7 +80,6 @@
 
       .header-nav.clr-nav-level-2,
       .subnav.clr-nav-level-2,
-      .sub-nav.clr-nav-level-2,
       .clr-vertical-nav.clr-nav-level-2 {
         @include responsive-nav-mixins.sliding-nav-positioning(0, 0, 0, auto);
 
@@ -166,9 +88,7 @@
       }
 
       .subnav.clr-nav-level-1,
-      .sub-nav.clr-nav-level-1,
-      .subnav.clr-nav-level-2,
-      .sub-nav.clr-nav-level-2 {
+      .subnav.clr-nav-level-2 {
         .nav,
         aside {
           flex-direction: column;
@@ -180,9 +100,8 @@
           width: 100%;
         }
 
-        //Such deep nesting is unfortunately required here because we don't want
-        //navs which are not subnav to behave in a similar way.
-        // TODO: more specificity in classname is preferable to nesting...
+        // Nesting is required to scope .nav/.nav-item/.nav-link styling
+        // to subnav context without adding custom classes to consumer markup.
         .nav {
           padding-left: 0;
           gap: density.$clr-base-gap-s;
@@ -241,9 +160,6 @@
           padding-left: 0;
           margin-left: calc(-1 * density.$clr-base-horizontal-offset-m);
 
-          //TODO: deprecate .clr-icon, .logo
-          .clr-icon,
-          .logo,
           cds-icon,
           clr-icon {
             display: none;
@@ -325,9 +241,6 @@
               overflow: hidden;
             }
 
-            //deprecate .clr-icon, .logo
-            .clr-icon,
-            .logo,
             cds-icon,
             clr-icon {
               display: inline-block;
@@ -350,12 +263,10 @@
 
         .clr-nav-close {
           @include responsive-nav-mixins.menu-trigger();
-          @include responsive-nav-mixins.hamburger-menu-trigger-animation();
         }
 
         .header-nav.clr-nav-level-1,
         .subnav.clr-nav-level-1,
-        .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
           padding-top: calc(header-variables.$clr-header-height + density.$clr-base-gap-xl);
           transform: translateX(0);
@@ -366,15 +277,13 @@
       &.open-overflow-menu {
         .header-nav.clr-nav-level-2,
         .subnav.clr-nav-level-2,
-        .sub-nav.clr-nav-level-2,
         .clr-vertical-nav.clr-nav-level-2 {
           transform: translateX(0);
           transition: responsive-nav-variables.$clr-sliding-panel-animation;
         }
 
         .header-nav.clr-nav-level-2,
-        .subnav.clr-nav-level-2,
-        .sub-nav.clr-nav-level-2 {
+        .subnav.clr-nav-level-2 {
           padding-top: density.$clr-base-vertical-offset-2xl;
         }
 
@@ -384,14 +293,12 @@
             auto,
             (calc(-1 * #{responsive-nav-variables.$clr-trigger-position}))
           );
-          @include responsive-nav-mixins.overflow-menu-trigger-animation();
         }
       }
 
       &.open-hamburger-menu {
         .header-nav.clr-nav-level-1,
         .subnav.clr-nav-level-1,
-        .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
           overflow: inherit;
           width: responsive-nav-variables.$clr-sliding-panel-width;
@@ -410,7 +317,6 @@
       &.open-overflow-menu {
         .header-nav.clr-nav-level-2,
         .subnav.clr-nav-level-2,
-        .sub-nav.clr-nav-level-2,
         .clr-vertical-nav.clr-nav-level-2 {
           width: responsive-nav-variables.$clr-sliding-panel-width;
           max-width: responsive-nav-variables.$clr-sliding-panel-width;
@@ -430,14 +336,12 @@
 
       .header-nav.clr-nav-level-1,
       .subnav.clr-nav-level-1,
-      .sub-nav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
         transform: translateX(calc(-1 * #{responsive-nav-variables.$clr-sliding-panel-width-sm}));
       }
 
       .header-nav.clr-nav-level-2,
       .subnav.clr-nav-level-2,
-      .sub-nav.clr-nav-level-2,
       .clr-vertical-nav.clr-nav-level-2 {
         transform: translateX(responsive-nav-variables.$clr-sliding-panel-width-sm);
       }
@@ -454,7 +358,6 @@
 
         .header-nav.clr-nav-level-1,
         .subnav.clr-nav-level-1,
-        .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
           overflow: inherit;
           width: responsive-nav-variables.$clr-sliding-panel-width-sm;
@@ -469,7 +372,6 @@
       &.open-overflow-menu {
         .header-nav.clr-nav-level-2,
         .subnav.clr-nav-level-2,
-        .sub-nav.clr-nav-level-2,
         .clr-vertical-nav.clr-nav-level-2 {
           width: responsive-nav-variables.$clr-sliding-panel-width-sm;
           max-width: responsive-nav-variables.$clr-sliding-panel-width-sm;

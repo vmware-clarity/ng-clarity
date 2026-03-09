@@ -70,7 +70,6 @@
       @include header-nav-link(density.$clr-base-horizontal-offset-m);
     }
 
-    .clr-icon,
     cds-icon,
     clr-icon {
       flex-grow: 0;
@@ -97,7 +96,6 @@
   }
 }
 @mixin header-links {
-  .settings, /* TODO: deprecated. Remove when the clarity css naming convention is implemented.*/
   .header-nav,
   .header-actions {
     .nav-text {
@@ -168,7 +166,6 @@
   }
 }
 @mixin header-actions {
-  .settings,
   .header-actions {
     flex: 1 0 auto;
     display: flex;
@@ -203,13 +200,9 @@
         }
       }
 
-      // Pull the dropdown menus of all dropdowns up to compensate for the height of the header.
       .dropdown-menu {
         margin-top: calc(-1 * tokens.$cds-global-space-5);
         margin-right: tokens.$cds-global-space-5;
-        // TODO: As of 0.10.0 the dropdown-menu inside header without clrIfOpen directive (legacy)
-        // will create empty space beyond the .main-container if the right isn't set to zero.
-        // Re-evaluate later if we can come up with a better solution.
         left: auto;
         right: 0;
       }
