@@ -119,12 +119,6 @@ $opp-directions: (
     margin-bottom: 0;
   }
 }
-@mixin fixForMsEdge() {
-  @supports (-ms-ime-align: auto) {
-    @content;
-  }
-}
-
 // Moves styles outside of any parent selector conditionally,
 // while allowing an additional selector to be appended.
 

@@ -19,16 +19,9 @@
   // - Firefox does not handle transitions on progress bars yet. So the movement
   //   of the progress bar is going to be choppy if it's not indeterminate.
 
-  // - There is a small black line to the farthest right of the progress bar as it
-  //   grows. Internet Explorer will not allow me to get rid of that via CSS.
-
-  // - When browsers allow us  control over the styling and animating of the HTML5
-  //   progress bars, we can get rid of the container And do all our styling 100%
+  // - When browsers allow us control over the styling and animating of the HTML5
+  //   progress bars, we can get rid of the container and do all our styling 100%
   //   on the progress element.
-
-  // - There's no way to turn off the animation for progress bars in Internet
-  //   Explorer/Edge. This means static progress bars need a different DOM structure,
-  //   like indeterminate progress bars.
 
   // - The concept of a static progress bar fits better with the idea of the HTML5
   //   meter element. Sadly there's very little support for this element. When the
@@ -122,7 +115,7 @@
       padding-right: tokens.$cds-global-space-11;
       color: progress-bars-variables.$clr-progress-label-color;
 
-      // We have to use this span hack because browsers (Firefox, Safari, and IE) do
+      // We have to use this span hack because browsers (Firefox, Safari) do
       // not currently support using either the :before or :after pseudoelements on
       // the progress element.
       // When that support happens (one day), we can remove both the progress container
@@ -167,19 +160,11 @@
   }
 
   $clr-progress-flashTiming: 0.1s;
-  $clr-progress-ieTransition: color $clr-progress-flashTiming ease-out 1s;
   $clr-progress-transition:
     width 0.23s ease-in,
     background-color $clr-progress-flashTiming ease-out 0.3s;
 
   %clr-progress-animatedTransition {
-    // for IE...
-    transition: $clr-progress-ieTransition;
-
-    // browsers don't like it when i group these styles in a fancy SCSS selector.
-    // the generated CSS is throwing it the browsers give up when they hit
-    // a webkit selector or a moz selector.
-
     &::-webkit-progress-value {
       transition: $clr-progress-transition;
     }
