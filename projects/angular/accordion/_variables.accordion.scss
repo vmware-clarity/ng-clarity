@@ -23,10 +23,6 @@ $clr-accordion-panel-disabled-color: var(
   --clr-accordion-panel-disabled-color,
   #{panel-variables.$clr-collapsible-panel-panel-disabled-color}
 ) !default;
-$clr-accordion-active-background-color: var(
-  --clr-accordion-active-background-color,
-  #{panel-variables.$clr-collapsible-panel-active-background-color}
-) !default;
 $clr-accordion-content-background-color: var(
   --clr-accordion-content-background-color,
   #{panel-variables.$clr-collapsible-panel-content-background-color}

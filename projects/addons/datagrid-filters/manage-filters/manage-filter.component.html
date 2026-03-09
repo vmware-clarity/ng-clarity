@@ -70,6 +70,14 @@
               >
               </appfx-datetime-filter>
             }
+            @case (userPropertyType) {
+              <appfx-users-filter
+                [filterProperty]="userProperty"
+                [propertyFilter]="propertyFilter"
+                (filterCriteriaChange)="onFilterCriteriaChange($event)"
+              >
+              </appfx-users-filter>
+            }
           }
         </clr-signpost-content>
       </ng-template>
@@ -136,6 +144,14 @@
                   (filterCriteriaChange)="onFilterCriteriaChange($event)"
                 >
                 </appfx-enum-filter>
+              }
+              @case (userPropertyType) {
+                <appfx-users-filter
+                  [filterProperty]="userProperty"
+                  [propertyFilter]="propertyFilter"
+                  (filterCriteriaChange)="onFilterCriteriaChange($event)"
+                >
+                </appfx-users-filter>
               }
             }
           </clr-signpost-content>

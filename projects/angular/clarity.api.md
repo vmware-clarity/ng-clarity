@@ -7587,22 +7587,6 @@ export const idBadgeIcon: IconShapeTuple;
 export const idBadgeIconName = "id-badge";
 
 // @public (undocumented)
-export enum IEKeys {
-    // (undocumented)
-    ArrowDown = "Down",
-    // (undocumented)
-    ArrowLeft = "Left",
-    // (undocumented)
-    ArrowRight = "Right",
-    // (undocumented)
-    ArrowUp = "Up",
-    // (undocumented)
-    Escape = "Esc",
-    // (undocumented)
-    Space = "Spacebar"
-}
-
-// @public (undocumented)
 export const IF_ACTIVE_ID: InjectionToken<number>;
 
 // @public (undocumented)
@@ -8212,9 +8196,6 @@ export const nodesIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const nodesIconName = "nodes";
-
-// @public (undocumented)
-export function normalizeKey(key: string): string;
 
 // @public (undocumented)
 export const noteIcon: IconShapeTuple;

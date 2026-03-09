@@ -24,14 +24,13 @@
       --clr-collapsible-panel-text-color-hover: #{tokens.$cds-alias-object-interaction-color-hover};
       --clr-collapsible-panel-text-color-active: #{tokens.$cds-alias-object-interaction-color-active};
       --clr-collapsible-panel-panel-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
-      --clr-collapsible-panel-active-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
       --clr-collapsible-panel-content-background-color: #{tokens.$cds-alias-object-container-background};
       --clr-collapsible-panel-content-color: #{tokens.$cds-alias-typography-color-450};
       --clr-collapsible-panel-header-background-color: #{tokens.$cds-alias-object-container-background};
       --clr-collapsible-panel-header-disabled-background-color: #{tokens.$cds-alias-object-container-background};
       --clr-collapsible-panel-header-hover-background-color: #{tokens.$cds-alias-object-interaction-background-hover};
       --clr-collapsible-panel-header-active-background-color: #{tokens.$cds-alias-object-interaction-background-active};
-      --clr-collapsible-panel-header-open-background-color: var(--clr-collapsible-panel-active-background-color);
+      --clr-collapsible-panel-header-open-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
       --clr-collapsible-panel-header-open-active-background-color: var(
         --cds-alias-object-interaction-background-selected-active
       );

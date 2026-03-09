@@ -8,7 +8,6 @@
 | --clr-collapsible-panel-text-color-hover                    | Text color of the panel header when hovered.                    |
 | --clr-collapsible-panel-text-color-active                   | Text color of the panel header when active.                     |
 | --clr-collapsible-panel-panel-disabled-color                | Text color of the panel header when disabled.                   |
-| --clr-collapsible-panel-active-background-color             | Background color of the active (open) panel.                    |
 | --clr-collapsible-panel-content-background-color            | Background color of the panel content area.                     |
 | --clr-collapsible-panel-content-color                       | Text color of the panel content area.                           |
 | --clr-collapsible-panel-content-font-size                   | Font size of the text in the panel content area.                |
