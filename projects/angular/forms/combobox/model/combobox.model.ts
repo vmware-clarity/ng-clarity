@@ -10,7 +10,7 @@ export type ClrComboboxIdentityFunction<T> = (item: T) => any;
 export abstract class ComboboxModel<T> {
   model: T | T[];
   displayField?: string;
-  identityFn?: ClrComboboxIdentityFunction<T>;
+  identityFn: ClrComboboxIdentityFunction<T> = (item: T) => item;
   abstract containsItem(item: T): boolean;
   abstract select(item: T): void;
   abstract unselect(item: T): void;

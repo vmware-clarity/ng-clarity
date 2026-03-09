@@ -15,13 +15,7 @@ export class MultiSelectComboboxModel<T> extends ComboboxModel<T> {
     if (!this.model) {
       return false;
     }
-    if (this.identityFn) {
-      return this.model.some(m => this.identityFn(m) === this.identityFn(item));
-    }
-    if (this.displayField && typeof item === 'object') {
-      return this.model.some(modelItem => modelItem[this.displayField] === (item as any)[this.displayField]);
-    }
-    return this.model.includes(item);
+    return this.model.some(m => this.identityFn(m) === this.identityFn(item));
   }
 
   select(item: T): void {
@@ -91,9 +85,7 @@ export class MultiSelectComboboxModel<T> extends ComboboxModel<T> {
       return;
     }
 
-    const index = this.identityFn
-      ? this.model.findIndex(m => this.identityFn(m) === this.identityFn(item))
-      : this.model.indexOf(item);
+    const index = this.model.findIndex(m => this.identityFn(m) === this.identityFn(item));
 
     if (index > -1) {
       this.model.splice(index, 1);

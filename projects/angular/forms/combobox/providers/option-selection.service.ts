@@ -25,7 +25,6 @@ export class OptionSelectionService<T> {
 
   private _currentInput = '';
   private _displayField: string;
-  private _identityFn: ClrComboboxIdentityFunction<T>;
   private _inputChanged = new BehaviorSubject('');
   private _selectionChanged = new ReplaySubject<ComboboxModel<T>>(1);
 
@@ -70,9 +69,9 @@ export class OptionSelectionService<T> {
   }
 
   set identityFn(value: ClrComboboxIdentityFunction<T>) {
-    this._identityFn = value;
+    this._identityFn = value || ((item: T) => item);
     if (this.selectionModel) {
-      this.selectionModel.identityFn = value;
+      this.selectionModel.identityFn = this._identityFn;
     }
   }
 
@@ -110,10 +109,7 @@ export class OptionSelectionService<T> {
     }
 
     const current = this.selectionModel.model;
-    const noChange =
-      current === value || (!current && !value) || (this._identityFn && this.valuesEqualByIdentity(current, value));
-
-    if (noChange) {
+    if (this.valuesEqualByIdentity(current, value)) {
       return;
     }
 
@@ -130,13 +126,19 @@ export class OptionSelectionService<T> {
     return value as T;
   }
 
+  private _identityFn: ClrComboboxIdentityFunction<T> = (item: T) => item;
+
   private valuesEqualByIdentity(current: T | T[], value: T | T[]): boolean {
-    if (!current !== !value) {
-      return false;
+    if (current === value) {
+      return true;
     }
     if (!current && !value) {
       return true;
     }
+    if (!current || !value) {
+      return false;
+    }
+
     const fn = this._identityFn;
     if (this.multiselectable) {
       const cur = current as T[];
