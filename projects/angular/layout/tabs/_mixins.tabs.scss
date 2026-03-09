@@ -18,6 +18,7 @@
     border: none;
     border-#{$position}: tokens.$cds-alias-object-border-width-300 solid
       tokens.$cds-alias-object-interaction-background-highlight;
-    transition: border-#{$position} 0.2s ease-in;
+    transition: border-#{$position} tokens.$cds-global-animation-duration-quick
+      tokens.$cds-global-animation-easing-in-out;
   }
 }

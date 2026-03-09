@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+@use '../../styles/variables/variables.density' as density;
 @use 'variables.vertical-nav' as vertical-nav-variables;
 @use '../tabs/mixins.tabs' as tabs-mixins;
 
@@ -21,6 +23,15 @@
     position: relative;
 
     @include tabs-mixins.nav-link-border-appearance('left');
+
+    // nav-link-border-appearance overrides
+    &::before {
+      margin: density.$clr-base-vertical-offset-xs 0;
+      left: density.$clr-base-horizontal-offset-xs;
+      width: tokens.$cds-alias-object-border-width-100;
+      border-width: tokens.$cds-alias-object-border-width-400;
+      border-radius: tokens.$cds-alias-object-border-radius-100;
+    }
 
     .nav-icon {
       fill: vertical-nav-variables.$clr-vertical-nav-icon-active-color;
