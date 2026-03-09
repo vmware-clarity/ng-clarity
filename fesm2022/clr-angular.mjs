@@ -14190,10 +14190,14 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class DateIOService {
     constructor(localeHelperService) {
+        /**
+         * This is the default range. It approximates the beginning of time to the end of time.
+         * The disabled dates are the dates that are not allowed to be selected.
+         * The min date is the earliest date that can be selected.
+         * The max date is the latest date that can be selected.
+         * Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
+         */
         this.disabledDates = {
-            // This is the default range. It approximates the beginning of time to the end of time.
-            // Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
-            // TODO: turn this into an Array of min/max ranges that allow configuration of multiple ranges.
             minDate: new DayModel(0, 0, 1),
             maxDate: new DayModel(9999, 11, 31),
         };
