@@ -1,0 +1,76 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'variables.tokens' as tokens;
+@use 'variables/variables' as variables;
+
+.italic {
+  font-style: italic;
+}
+
+.link-normal {
+  color: tokens.$cds-alias-typography-link-color;
+}
+
+.link-hovered {
+  color: tokens.$cds-alias-typography-link-color-hover;
+}
+
+.link-clicked {
+  color: tokens.$cds-alias-typography-link-color-visited;
+}
+
+.link-visited {
+  color: tokens.$cds-alias-typography-link-color-visited;
+}
+
+.typography-demo-table {
+  td > * {
+    margin-top: 0;
+  }
+
+  td {
+    & > ul {
+      &.list-unstyled {
+        margin-left: 0;
+        list-style: none;
+      }
+
+      & > li {
+        margin-bottom: #{tokens.$cds-global-space-4};
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: map-get(variables.$clr-grid-breakpoints, md)) {
+  .nowrap-md {
+    white-space: nowrap;
+  }
+}
+
+.clr-lh-16px {
+  line-height: #{tokens.$cds-global-space-7};
+}
+
+.clr-lh-24px {
+  line-height: 24px;
+}
+
+.line-height-container {
+  border: #{tokens.$cds-global-space-1} solid tokens.$cds-alias-object-border-color-shade;
+  padding: #{tokens.$cds-global-space-7};
+  border-radius: #{tokens.$cds-global-space-3};
+}
+
+.colorize-first-letter::first-letter {
+  color: tokens.$cds-global-color-pink-500;
+}

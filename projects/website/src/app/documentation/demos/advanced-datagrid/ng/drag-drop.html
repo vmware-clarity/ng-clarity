@@ -1,0 +1,49 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div style="display: flex; gap: 20px; margin-bottom: 20px">
+  <div
+    cdkDropList
+    [cdkDropListData]="receivedItems"
+    (cdkDropListDropped)="drop($event)"
+    (cdkDropListEntered)="dropListEnter()"
+    class="dropzone"
+    [cdkDropListConnectedTo]="dropGroup(dragConfig.dragGroup)"
+  >
+    @if (receivedItems.length === 0) {
+    <h4>Drop VM items here</h4>
+    } @for (item of receivedItems; track item) {
+    <div cdkDrag class="draggable-item">{{ item }}</div>
+    }
+  </div>
+  <div
+    cdkDropList
+    [cdkDropListData]="receivedItems"
+    (cdkDropListDropped)="dropInInvalidList()"
+    (cdkDropListEntered)="dropEnterInInvalidList()"
+    class="dropzone"
+    [cdkDropListConnectedTo]="dropGroup(dragConfig.dragGroup)"
+  >
+    <h4>Not valid drop container, drop VM item here</h4>
+  </div>
+</div>
+<button class="btn btn-primary" (click)="receivedItems = []">Reset</button>
+
+<hr />
+
+<appfx-datagrid
+  [gridItems]="allItems"
+  [columns]="columns"
+  [dragConfig]="dragConfig"
+  [layoutModel]="{
+    compact: false,
+    stretchToParentHeight: false
+  }"
+  [selectionType]="selectionType"
+  [pageSize]="10"
+  [rowSelectionMode]="false"
+>
+</appfx-datagrid>

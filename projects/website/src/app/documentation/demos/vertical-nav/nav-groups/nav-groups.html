@@ -1,0 +1,109 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example example-margin">
+  <div class="main-container nav-box">
+    <div class="content-container">
+      <clr-vertical-nav [clrVerticalNavCollapsible]="demoCollapsible()">
+        <clr-vertical-nav-group>
+          @if (!demoHideIcons()) {
+          <clr-icon shape="user" clrVerticalNavIcon></clr-icon>
+          } Normal
+          <clr-vertical-nav-group-children>
+            <a href="javascript://" clrVerticalNavLink> Pidgey </a>
+            <a href="javascript://" clrVerticalNavLink> Rattata </a>
+            <a href="javascript://" clrVerticalNavLink> Spearow </a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        <clr-vertical-nav-group class="active" [clrVerticalNavGroupExpanded]="demoExpandedGroup()">
+          @if (!demoHideIcons()) {
+          <clr-icon shape="flame" clrVerticalNavIcon></clr-icon>
+          } Fire
+          <clr-vertical-nav-group-children>
+            <a href="javascript://" clrVerticalNavLink class="active"> Charmander </a>
+            <a href="javascript://" clrVerticalNavLink> Charmeleon </a>
+            @if (!demoLongLabel()) {
+            <a href="javascript://" clrVerticalNavLink> Charizard </a>
+            } @if (demoLongLabel()) {
+            <a href="javascript://" clrVerticalNavLink> Ultra Rare Mega Charizard (Secret Rare) </a>
+            }
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        @if (demoMixedNav()) {
+        <a href="javascript://" clrVerticalNavLink> Ice </a>
+        } @if (demoMixedNavWithIcons()) {
+        <a href="javascript://" clrVerticalNavLink>
+          @if (!demoHideIcons()) {
+          <clr-icon shape="block" clrVerticalNavIcon></clr-icon>
+          } Ice
+        </a>
+        }
+        <clr-vertical-nav-group>
+          @if (!demoHideIcons()) {
+          <clr-icon shape="download-cloud" clrVerticalNavIcon></clr-icon>
+          } Water
+          <clr-vertical-nav-group-children>
+            <a href="javascript://" clrVerticalNavLink> Blastoise </a>
+            <a href="javascript://" clrVerticalNavLink> Squirtle </a>
+            <a href="javascript://" clrVerticalNavLink> Wartortle </a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        <clr-vertical-nav-group>
+          @if (!demoHideIcons()) {
+          <clr-icon shape="bolt" clrVerticalNavIcon></clr-icon>
+          } Electric
+          <clr-vertical-nav-group-children>
+            <a href="javascript://" clrVerticalNavLink> Magnemite </a>
+            <a href="javascript://" clrVerticalNavLink> Pikachu </a>
+            <a href="javascript://" clrVerticalNavLink> Raichu </a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        @if (demoMixedNav()) {
+        <a href="javascript://" clrVerticalNavLink> Poison </a>
+        } @if (demoMixedNavWithIcons()) {
+        <a href="javascript://" clrVerticalNavLink>
+          @if (!demoHideIcons()) {
+          <clr-icon shape="sad-face" clrVerticalNavIcon></clr-icon>
+          } Poison
+        </a>
+        } @if (!demoLongLabel()) {
+        <clr-vertical-nav-group>
+          @if (!demoHideIcons()) {
+          <clr-icon shape="bug" clrVerticalNavIcon></clr-icon>
+          } Grass
+          <clr-vertical-nav-group-children>
+            <a href="javascript://" clrVerticalNavLink> Bulbasaur </a>
+            <a href="javascript://" clrVerticalNavLink> Ivysaur </a>
+            <a href="javascript://" clrVerticalNavLink> Venusaur </a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        } @if (demoLongLabel()) {
+        <clr-vertical-nav-group>
+          @if (!demoHideIcons()) {
+          <clr-icon shape="bug" clrVerticalNavIcon></clr-icon>
+          } Grass, Fighting, Dragon, Steel, Psychic
+          <clr-vertical-nav-group-children>
+            <a href="javascript://" clrVerticalNavLink> Bulbasaur </a>
+            <a href="javascript://" clrVerticalNavLink> Ivysaur </a>
+            <a href="javascript://" clrVerticalNavLink> Venusaur </a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        }
+        <clr-vertical-nav-group>
+          @if (!demoHideIcons()) {
+          <clr-icon shape="block" clrVerticalNavIcon></clr-icon>
+          } Ice
+          <clr-vertical-nav-group-children>
+            <a href="javascript://" clrVerticalNavLink> Articuno </a>
+            <a href="javascript://" clrVerticalNavLink> Dewgong </a>
+            <a href="javascript://" clrVerticalNavLink> Jynx </a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+      </clr-vertical-nav>
+    </div>
+  </div>
+</div>

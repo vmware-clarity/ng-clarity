@@ -57,13 +57,6 @@
     // font-size: $font-size-root;
     // NOTE: Clarity handles this^^^ on its own, not needed here
 
-    // As a side-effect of setting the @viewport above,
-    // IE11 & Edge make the scrollbar overlap the content and automatically hide itself when not in use.
-    // Unfortunately, the auto-showing of the scrollbar is sometimes too sensitive,
-    // thus making it hard to click on stuff near the right edge of the page.
-    // So we add this style to force IE11 & Edge to use a "normal", non-overlapping, non-auto-hiding scrollbar.
-    // See https://github.com/twbs/bootstrap/issues/18543
-    -ms-overflow-style: scrollbar;
     // Changes the default tap highlight to be completely transparent in iOS.
     -webkit-tap-highlight-color: rgb(0 0 0 / 0%);
   }
@@ -244,14 +237,7 @@
   }
 
   // Avoid 300ms click delay on touch devices that support the `touch-action` CSS property.
-  //
-  // In particular, unlike most other browsers, IE11+Edge on Windows 10 on touch devices and IE Mobile 10-11
-  // DON'T remove the click delay when `<meta name="viewport" content="width=device-width">` is present.
-  // However, they DO support removing the click delay via `touch-action: manipulation`.
-  // See:
-  // * http://v4-alpha.getbootstrap.com/content/reboot/#click-delay-optimization-for-touch
-  // * http://caniuse.com/#feat=css-touch-action
-  // * http://patrickhlauke.github.io/touch/tests/results/#suppressing-300ms-delay
+  // See: http://caniuse.com/#feat=css-touch-action
 
   a,
   area,
@@ -376,9 +362,6 @@
   }
 
   // END BS4 REBOOT STYLES
-
-  //Overrides carried over from earlier versions of Clarity
-  //TODO: Review below items for removal before 2.0.
 
   dl {
     margin-bottom: 0;

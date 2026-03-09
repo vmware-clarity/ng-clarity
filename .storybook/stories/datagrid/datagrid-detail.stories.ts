@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrConditionalModule, ClrDatagridDetail, ClrDatagridModule } from '@clr/angular';
+import { ClrConditionalModule, ClrDatagridDetail, ClrDatagridModule, SelectionType } from '@clr/angular';
 import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
 
 import { Element, elements } from '../../helpers/elements.data';
@@ -19,6 +19,16 @@ export default {
     }),
   ],
   argTypes: {
+    // inputs
+    clrDgSelected: { control: { disable: true } },
+    clrDgSelectionType: {
+      control: { type: 'select' },
+      options: {
+        None: SelectionType.None,
+        Single: SelectionType.Single,
+        Multi: SelectionType.Multi,
+      },
+    },
     // methods
     close: { control: { disable: true } },
     // story helpers
@@ -41,6 +51,7 @@ export default {
   },
   args: {
     //inputs
+    clrDgSelectionType: SelectionType.None,
     clrDetailAriaLabel: '',
     clrDetailAriaLabelledBy: '',
     // story helpers
@@ -49,8 +60,6 @@ export default {
     showLongContent: false,
     showLongUninterruptedContent: false,
     highlight: true,
-    singleSelectable: false,
-    multiSelectable: false,
     expandable: false,
     compact: false,
     removeMargin: false,
@@ -104,8 +113,8 @@ const DetailTemplate: StoryFn = args => {
       </style>
       <clr-datagrid
         ${args.height ? '[style.height.px]="height"' : ''}
-        ${args.multiSelectable ? '[clrDgSelected]="[]"' : ''}
-        ${args.singleSelectable ? '[clrDgSingleSelected]="true"' : ''}
+        [clrDgSelected]="[]"
+        [clrDgSelectionType]="clrDgSelectionType"
         [ngClass]="{ 'datagrid-compact': compact, 'removed-margin': removeMargin }"
       >
         <clr-dg-column ${args.showLongUninterruptedContent ? '' : '[style.width.px]="250"'}>

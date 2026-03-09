@@ -1,0 +1,47 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { ClarityModule } from '@clr/angular';
+
+import { ComboboxAsyncDemo } from './combobox-async.demo';
+import { ComboboxGroupingDemo } from './combobox-grouping.demo';
+import { ComboboxMultiDemo } from './combobox-multi.demo';
+import { ComboboxSingleDemo } from './combobox-single.demo';
+import { ComboboxDemo } from './combobox.demo';
+import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
+import { LinkCardsComponent } from '../../../shared/link-cards/link-cards.component';
+import { NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
+import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
+import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
+import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
+
+@NgModule({
+  imports: [
+    CommonModule,
+    ClarityModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule.forChild([{ path: '', component: ComboboxDemo }]),
+    DocTabsModule,
+    NestingTableComponent,
+    StyleDocsComponent,
+    ThemedImageComponent,
+    StackblitzExampleComponent,
+    LinkCardsComponent,
+    ComboboxDemo,
+    ComboboxSingleDemo,
+    ComboboxMultiDemo,
+    ComboboxAsyncDemo,
+    ComboboxGroupingDemo,
+  ],
+  exports: [ComboboxDemo],
+})
+export class ComboboxDemoModule {}

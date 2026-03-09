@@ -1,0 +1,565 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      A form is a collection of related input controls that allows a user to provide data or configure options.
+    </p>
+
+    <h2 id="usage" cds-text="title" class="clr-mt-48px">Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Forms are composed of control components such as checkboxes, dropdowns, input fields, radio buttons, toggle
+      switches and more. Forms that are easy to complete increase the quality of the response from the user. Clear and
+      simple forms help prevent user confusion and incorrect data submission.
+    </p>
+
+    <h2 id="form-length" cds-text="title" class="clr-mt-48px">Form Length</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Forms should only be as long as necessary. Only include controls that are required. Before finalizing a form,
+      review each component and eliminate any unnecessary components. Ask yourself if you can obtain the information in
+      another way or at more intuitive location within the app. Keeping the form simple frees the user from determining
+      which controls need their attention. If a control is optional, find a more natural place and time to collect that
+      information.
+    </p>
+
+    <h2 id="layouts" cds-text="title" class="clr-mt-48px">Layouts</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Clarity offers two types of forms: vertical and horizontal. Use these layouts to adapt the form to a variety of
+      conditions that can affect the users submission experience. Some conditions to consider when choosing a form
+      layout are:
+    </p>
+    <ol class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Narrow or mobile screens</li>
+      <li>Very wide screens</li>
+      <li>Form is to be embedded into one section of a page layout</li>
+    </ol>
+
+    <h3 id="horizontal" cds-text="section" class="clr-mt-24px">Horizontal</h3>
+    <p class="clr-mt-16px" cds-text="body">The horizontal layout is the default. This format:</p>
+    <ol class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Helps users to quickly scan labels.</li>
+      <li>Can be used if the screen has limited vertical space.</li>
+    </ol>
+    <p class="clr-mt-24px" cds-text="body">However, the space between the label and input can slow down users.</p>
+    <div class="clr-mt-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/forms/light-theme/forms-horizontal-layout.svg'"
+        [darkSrc]="'/assets/images/documentation/forms/dark-theme/forms-horizontal-layout.svg'"
+        [imageAlt]="'forms horizontal layout example'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h3 id="vertical-and-vertical-inline" cds-text="section" class="clr-mt-24px">Vertical & Vertical Inline</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      The vertical options are better for scanning, mobile experiences, accessibility, and localization. While they
+      offer better completion rates, they are less ideal for longer forms.
+    </p>
+    <div class="clr-mt-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/forms/light-theme/forms-vertical-layout.svg'"
+        [darkSrc]="'/assets/images/documentation/forms/dark-theme/forms-vertical-layout.svg'"
+        [imageAlt]="'forms vertical layout example'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h2 id="form-controls" cds-text="title" class="clr-mt-48px">Form Controls</h2>
+    <h3 id="input-grouping" cds-text="section" class="clr-mt-24px">Input Grouping</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Grouping can make scanning easier. A form with more than six inputs will likely have inputs that can be logically
+      grouped together, such as Address: street, city, zip, county, country, etc.<br />
+      To help the user scan quickly, place labels closely with their respective input fields.
+    </p>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <app-do-dont type="do" caption="Put labels close to their input controls.">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/forms/light-theme/forms-input-do.svg'"
+            [darkSrc]="'/assets/images/documentation/forms/dark-theme/forms-input-do.svg'"
+            [imageAlt]="'example with labels close to their input controls'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </app-do-dont>
+      </div>
+      <div class="clr-col-6">
+        <app-do-dont type="dont" caption="Place labels far from their input controls">
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/forms/light-theme/forms-input-dont.svg'"
+            [darkSrc]="'/assets/images/documentation/forms/dark-theme/forms-input-dont.svg'"
+            [imageAlt]="'example with labels far from their input controls'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </app-do-dont>
+      </div>
+    </div>
+
+    <h3 id="form-elements" cds-text="section" class="clr-mt-24px">Radios, Checkboxes, and Select Box</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      For inputs with three or more options, you can use radio buttons, checkboxes or select boxes. We recommend placing
+      your options vertically in one column to make it easier to scan.
+    </p>
+    <p class="clr-mt-24px" cds-text="body">
+      Radio buttons and checkboxes are used when it is helpful to compare options within the context of the form, as all
+      selections will be visible at all times. Use select boxes when you have more than seven options that do not need
+      to be compared with each other.
+    </p>
+
+    <h3 id="required-fields" cds-text="section" class="clr-mt-24px">Required Fields</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Required fields have an asterisk after the label. This allows the user to scan the form and quickly identify which
+      fields are required and which are optional. Inputs are validated upon submission. Always include a legend at the
+      top of the form to inform users that the asterisk denotes a required field. An exception to using an asterisk
+      would be a login form where it’s obvious that the fields are required to proceed.
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-6 clr-mt-16px">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/forms/light-theme/form-with-required-fields.svg'"
+          [darkSrc]="'/assets/images/documentation/forms/dark-theme/form-with-required-fields.svg'"
+          [imageAlt]="'Form with a legend on top saying that all fields marked with * are required'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+        <p cds-text="secondary" class="clr-mt-8px">Form with required fields</p>
+      </div>
+      <div class="clr-col-6 clr-mt-16px">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/forms/light-theme/form-with-required-fields-error.svg'"
+          [darkSrc]="'/assets/images/documentation/forms/dark-theme/form-with-required-fields-error.svg'"
+          [imageAlt]="'Form with errors with a legend on top saying that all fields marked with * are required'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+        <p cds-text="secondary" class="clr-mt-8px">Form validated on submission</p>
+      </div>
+    </div>
+
+    <h2 id="error-message-styling" cds-text="title" class="clr-mt-48px">Error Message Styling</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      When showing error inputs, highlight the input field with red in some way, but also pair the red with another
+      visual indicator, like an icon. This will help with accessibility if you use an appropriate aria-label with the
+      visual item.all times. Use select boxes when you have more than seven options that do not need to be compared with
+      each other.
+    </p>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <app-do-dont
+          type="do"
+          caption="Place icons outside the input field. This helps avoid browser and third-party app collision conflicts."
+        >
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/forms/light-theme/forms-error-do.svg'"
+            [darkSrc]="'/assets/images/documentation/forms/dark-theme/forms-error-do.svg'"
+            [imageAlt]="'example with icons outside the input field'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </app-do-dont>
+      </div>
+      <div class="clr-col-6">
+        <app-do-dont
+          type="dont"
+          caption="Don't put icons inside the input field. If you do place inside, account for changing form value space (increase characters)."
+        >
+          <app-themed-image
+            [lightSrc]="'/assets/images/documentation/forms/light-theme/forms-error-dont.svg'"
+            [darkSrc]="'/assets/images/documentation/forms/dark-theme/forms-error-dont.svg'"
+            [imageAlt]="'examples with icons inside the input field'"
+            [imageStyle]="'max-width: 100%'"
+          ></app-themed-image>
+        </app-do-dont>
+      </div>
+    </div>
+
+    <h2 id="behavior" cds-text="title" class="clr-mt-48px">Behavior</h2>
+    <h3 id="validation-and-error-messaging" cds-text="section" class="clr-mt-24px">Validation and Error Messaging</h3>
+    <p class="clr-mt-16px" cds-text="body">Let users know when something is wrong with the information provided.</p>
+    <h3 id="when-to-validate" cds-text="section" class="clr-mt-24px">When to Validate</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      In most cases, validate when the user leaves the field (blur event). Validating fields while users are still
+      typing can be frustrating.
+    </p>
+    <p class="clr-mt-24px" cds-text="body">
+      There are some cases where real-time validation can be helpful. Such cases include:
+    </p>
+    <ol class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Inputs with sensitive field value lengths (such as tweets)</li>
+      <li>When users return to an error field and successfully edit the error field</li>
+      <li>For password fields with visible password strength criteria.</li>
+    </ol>
+
+    <h2 id="placement" cds-text="title" class="clr-mt-48px">Placement</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      The best practice is to display error messages near where the error occurs.
+    </p>
+
+    <h2 id="content" cds-text="title" class="clr-mt-48px">Content</h2>
+    <h3 id="error-message-content" cds-text="section" class="clr-mt-24px">Error Message Content</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Make the error message as clear as possible. The content should provide clear guidance about how to fix the error.
+      Avoid unrecognizable system error messages like "code 500 error". You may also consider using more than one error
+      message when helpful. For example, if an email address input field has an error, consider either showing please
+      enter an email address for a blank field, or an email address needs an ’&#64;’ symbol followed by a domain for an
+      invalid symbol.
+    </p>
+
+    <h2 id="forms-accessibility" cds-text="title" class="clr-mt-48px">Forms Accessibility</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      For screen reader accessibility, forms with validation messages should provide a descriptive message on how
+      validation messages will be triggered. The <code cds-text="code">.clr-sr-only</code> class will hide content and
+      make it only available only for screen readers.
+    </p>
+    <p class="clr-mt-24px" cds-text="body">
+      Clarity form controls are built with <code cds-text="code">clr-CONTROLNAME-group</code> elements. These elements
+      are used to build in the accessibility needed to make Clarity forms accessible. While it is control dependent, the
+      containers enable screen readers to be aware of errors both on the control itself and in the form as a whole. They
+      enable the behaviors that describe controls with their respective labels in an accessible way.
+    </p>
+    <p class="clr-mt-24px" cds-text="body">
+      Without the <code cds-text="code">clr-CONTROL-group</code> parent the forms and form controls are not accessible.
+    </p>
+
+    <h2 id="helper-and-validation-messages" cds-text="title" class="clr-mt-48px">Helper and validation messages</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      The form controls support built-in helper text and validation with error messages.
+    </p>
+    <h3 id="helper" cds-text="section" class="clr-mt-24px">Helper</h3>
+    <div class="clr-mt-16px clr-ml-24px clr-mb-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/forms/light-theme/forms-helper-example.svg'"
+        [darkSrc]="'/assets/images/documentation/forms/dark-theme/forms-helper-example.svg'"
+        [imageAlt]="'forms example with helper message'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+    <h3 id="error" cds-text="section" class="clr-mt-24px">Error</h3>
+    <div class="clr-mt-16px clr-ml-24px clr-mb-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/forms/light-theme/forms-error-example.svg'"
+        [darkSrc]="'/assets/images/documentation/forms/dark-theme/forms-error-example.svg'"
+        [imageAlt]="'forms example with red error icon and error message'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+    <h3 id="success" cds-text="section" class="clr-mt-24px">Success</h3>
+    <div class="clr-mt-16px clr-ml-24px clr-mb-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/forms/light-theme/forms-success-example.svg'"
+        [darkSrc]="'/assets/images/documentation/forms/dark-theme/forms-success-example.svg'"
+        [imageAlt]="'forms example with green success icon and success message'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h2 id="custom-and-non-clarity-controls" cds-text="title" class="clr-mt-48px">Custom and non-Clarity Controls</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Applications often have form controls that are not supported by Clarity directly. To make these controls work
+      nicely with Clarity, you can wrap them in a generic control container. Regardless of whether you make your own
+      form controls or import a third-party control, the generic container should help make your controls more
+      consistent.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="forms-using-angular" class="clr-mt-48px" cds-text="title">Forms Using Angular</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Clarity has created a set of directives to help manage forms with minimal effort by developers. The structure is
+      more condensed and easier to implement, so it is the recommended approach to use the following if you are using
+      Angular. More form controls are being added regularly.
+    </p>
+
+    <h3 id="examples" class="clr-mt-32px" cds-text="section">Basic form</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Then declare a form start by adding the <code cds-text="code">clrForm</code> directive to the form element. This
+      will wire up some internals to manage the form itself.
+    </p>
+
+    <app-stackblitz-example name="Forms Angular Basic" [componentTemplate]="ngForm"></app-stackblitz-example>
+
+    <h3 class="clr-mt-32px" cds-text="section">Layout options</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      If you wish to have a different layout, then you can use the <code cds-text="code">clrLayout</code> directive to
+      set the desired layout. The appropriate grid classes will be applied to enable automatic layout switching for
+      mobile viewports.
+    </p>
+
+    <app-stackblitz-example name="Forms Angular Layouts" [componentTemplate]="ngLayouts"></app-stackblitz-example>
+
+    <h3 class="clr-mt-32px" cds-text="section">Basic structure</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      When you start to fill in your form controls, each will should be wrapped in a container like you see here in this
+      text input example.
+    </p>
+
+    <app-stackblitz-example
+      name="Forms Angular Basic Structure"
+      [componentTemplate]="ngStructure"
+      [componentClass]="ngBasicTs"
+      [showComponentClass]="false"
+    ></app-stackblitz-example>
+
+    <h3 class="clr-mt-32px" cds-text="section">Helper and validation messages</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      These Angular components also support built in helper text and validation with error messages.
+    </p>
+
+    <app-stackblitz-example
+      name="Forms Angular Helpers"
+      [componentTemplate]="ngHelpers"
+      [componentClass]="ngBasicTs"
+      [showComponentClass]="false"
+    ></app-stackblitz-example>
+
+    <clr-alert clrAlertType="info" [clrAlertClosable]="false">
+      <clr-alert-item>
+        <span class="alert-text">
+          For screen reader accessibility, forms with validation messages should provide a descriptive message on how
+          validation messages will be triggered. The <code cds-text="code">.clr-sr-only</code> class will hide content
+          and only make it visible for screen readers.
+        </span>
+      </clr-alert-item>
+    </clr-alert>
+
+    <h4 class="clr-mt-32px" cds-text="subsection">Multiple error messages</h4>
+
+    <p class="clr-mt-16px" cds-text="body">
+      If you want to support multiple error messages, you can do this by defining an error message for each scenario
+      using <code cds-text="code">clrIfError</code>. It is recommended that you create an error message for each
+      validator you specify. Use the validator name provided in the binding for
+      <code cds-text="code">*clrIfError="'errorName'"</code>, which might be your custom validator or a built in Angular
+      one. Optionally, you can access the error object
+      <code cds-text="code">*clrIfError="'errorName'; error as err"</code> to customize the error message.
+    </p>
+
+    <h4 class="clr-mt-32px" cds-text="subsection">Reset and force validation</h4>
+
+    <p class="clr-mt-16px" cds-text="body">
+      All Clarity form controls support resetting the validation state simply by calling the
+      <code cds-text="code">reset()</code> method on the <code cds-text="code">FormControl</code> or
+      <code cds-text="code">FormGroup</code>.
+    </p>
+
+    <app-stackblitz-example
+      name="Forms Angular Reset"
+      [componentTemplate]="ngResetHtml"
+      [componentClass]="ngResetTs"
+    ></app-stackblitz-example>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Normally, validation errors only appear after the control has been focused on by the user. In cases where you want
+      to force validation errors to show (such as when the user tried to submit a form), you simply need to mark every
+      control as touched with Angular. You can use the form API to accomplish this,
+      <code cds-text="code">ClrForm.markAsTouched()</code>, which will force all form controls inside of a form to be
+      touched, which will display the validation errors.
+    </p>
+
+    <app-stackblitz-example
+      name="Angular Forms Validate"
+      [componentTemplate]="ngValidateHtml"
+      [componentClass]="ngValidateTs"
+    ></app-stackblitz-example>
+
+    <h3 class="clr-mt-32px" cds-text="section">Required fields</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Use <code cds-text="code">.clr-required-mark</code> class to add an asterisk on the labels.
+    </p>
+
+    <app-stackblitz-example
+      name="Angular Forms Required Fields"
+      [componentTemplate]="ngRequiredMark"
+      [componentClass]="ngBasicTs"
+      [showComponentClass]="false"
+    ></app-stackblitz-example>
+
+    <p class="clr-mt-16px" cds-text="body">
+      With the same approach a legend "* Required information" can be added above the fields in a form.
+    </p>
+
+    <app-stackblitz-example
+      name="Angular Forms Required Information Label"
+      [componentTemplate]="ngRequiredInformationLabel"
+    ></app-stackblitz-example>
+
+    <h3 class="clr-mt-32px" cds-text="section">Layout with grid</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      You can use the <code cds-text="code">clrLabelSize</code> directive to configure the label width for an entire
+      form. This is useful for <code cds-text="code">horizontal</code> and compact layouts, but doesn't apply when you
+      are using <code cds-text="code">vertical</code> layout. It will accept a number between 1-12 to calculate the
+      width according to our grid, and the controls will adopt the remaining size. For example if you pass
+      <code cds-text="code">clrLabelSize="4"</code> it will size the controls to use 8 grid columns for a total of 12
+      columns.
+    </p>
+
+    <app-stackblitz-example
+      name="Angular Forms Label Size"
+      [componentTemplate]="ngLabelSize"
+      [componentClass]="ngBasicTs"
+      [showComponentClass]="false"
+    ></app-stackblitz-example>
+
+    <h4 class="clr-mt-32px" cds-text="subsection">Overriding column widths</h4>
+
+    <p class="clr-mt-16px" cds-text="body">
+      For horizontal layouts, you can override the default widths for labels (2 columns) and controls (10 columns). Even
+      on horizontal layouts, the default behavior should still use a vertical layout for narrow mobile sizes. That means
+      you should always include the class <code cds-text="code">clr-col-12</code> on both the input and label. Ensure
+      your override columns add up to 12 to use the full space.
+    </p>
+
+    <app-stackblitz-example
+      name="Angular Forms Override Column Width"
+      [componentTemplate]="ngOverride"
+      [componentClass]="ngBasicTs"
+      [showComponentClass]="false"
+    ></app-stackblitz-example>
+
+    <h3 class="clr-mt-32px" cds-text="section">Reactive Forms</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Forms also work with reactive forms with the same support for validations.
+    </p>
+
+    <app-stackblitz-example
+      name="Angular Reactive Forms Fields"
+      [componentTemplate]="ngReactiveHtml"
+      [componentClass]="ngReactiveTs"
+    ></app-stackblitz-example>
+
+    <h3 class="clr-mt-32px" cds-text="section">Custom and non-Clarity Controls</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Applications often have form controls that are not supported by Clarity directly. To make these controls work
+      nicely with Clarity, you can wrap them in a generic control container. Regardless if you make your own form
+      controls or import a third party control, the generic container should help make your controls more consistent.
+      The only requirement is that the form control works with Angular forms (Reactive or Template-Driven).
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      The basic process is to wrap the form control in the
+      <code cds-text="code">clr-control-container</code> component, and then apply the
+      <code cds-text="code">clrControl</code> directive to the form control itself.
+    </p>
+    <div class="alert alert-info">
+      <div class="alert-items">
+        <div class="alert-item static">
+          <div class="alert-icon-wrapper">
+            <clr-icon class="alert-icon" shape="info-circle"></clr-icon>
+          </div>
+          <span class="alert-text">
+            It is likely that you'll have to write some CSS rules to make the custom controls fit and look correct
+            within the generic control container. Use specific selectors to avoid changing the default form control
+            behaviors in other parts of the application!
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <app-stackblitz-example
+      name="Angular Forms Custom Non-Clarity Controls "
+      [componentTemplate]="ngGenericHtml"
+      [componentClass]="ngGenericTs"
+    ></app-stackblitz-example>
+
+    <h2 id="forms-code-samples" class="clr-mt-48px" cds-text="title">Forms with CSS</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      If you want to use just the HTML/CSS for building your own form controls, this section describes how to use them.
+      If you are interested in how to use it with Angular, please jump to the Angular section.
+    </p>
+
+    <h3 class="clr-mt-32px" cds-text="section">Basic form</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      A Clarity form first must include the <code cds-text="code">.clr-form</code> class, typically on the form element
+      itself.
+    </p>
+
+    <app-stackblitz-example name="Basic CSS Form" [componentTemplate]="uiForm"></app-stackblitz-example>
+
+    <h3 class="clr-mt-32px" cds-text="section">Layout options</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Forms support three layout options, horizontal, vertical (used if no classes are provided), and compact. You can
+      change the layout by simply applying an additional class to the form.
+    </p>
+
+    <app-stackblitz-example name="Layouts CSS Form" [componentTemplate]="uiLayouts"></app-stackblitz-example>
+
+    <h3 class="clr-mt-32px" cds-text="section">Basic structure</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Each control that you add inside has a similar structure, and they are each covered in their own documentation.
+      However, the general structure is like this for a normal text input.
+    </p>
+
+    <app-stackblitz-example name="CSS Form Structure" [componentTemplate]="uiStructure"></app-stackblitz-example>
+
+    <h3 class="clr-mt-32px" cds-text="section">Layouts with grid</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      If you choose to use a layout other than vertical, you should also provide the corresponding grid classes to allow
+      the form layout to dynamically switch to vertical for narrow width devices. Excluding this may cause experience
+      issues with mobile or narrow widths.
+    </p>
+
+    <app-stackblitz-example name="CSS Form Grid Layouts" [componentTemplate]="uiGrid"></app-stackblitz-example>
+
+    <h3 class="clr-mt-32px" cds-text="section">Error state</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      For error states, you need to add the <code cds-text="code">clr-error</code> class to the
+      <code cds-text="code">clr-control-container</code> element. This will automatically display the error icon, turn
+      the input outline to red. Add classes <code cds-text="code">clr-subtext error</code> to change the color of the
+      subtext to red.
+    </p>
+
+    <app-stackblitz-example name="CSS Form Error State" [componentTemplate]="uiErrors"></app-stackblitz-example>
+
+    <h3 class="clr-mt-32px" cds-text="section">Success state</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      For success states, you need to add the <code cds-text="code">clr-success</code> class to the
+      <code cds-text="code">clr-control-container</code> element. This will automatically display the success icon, turn
+      the input outline to green. Add classes <code cds-text="code">clr-subtext success</code> to change the color of
+      the subtext to green.
+    </p>
+
+    <app-stackblitz-example name="CSS Form Success State" [componentTemplate]="uiSuccess"></app-stackblitz-example>
+
+    <p class="clr-mt-16px" cds-text="body">
+      View documentation for each form control to get specifics on their HTML structure.
+    </p>
+
+    <h3 class="clr-mt-32px" cds-text="section">Required fields</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Use <code cds-text="code">.clr-required-mark</code> class to add an asterisk on the labels.
+    </p>
+
+    <app-stackblitz-example
+      name="CSS Form Required Fields"
+      [componentTemplate]="uiRequiredMark"
+    ></app-stackblitz-example>
+
+    <p class="clr-mt-16px" cds-text="body">
+      With the same approach a legend "* Required information" can be added above the fields in a form.
+    </p>
+
+    <app-stackblitz-example
+      name="Basic CSS Required Info Label"
+      [componentTemplate]="uiRequiredInformationLabel"
+    ></app-stackblitz-example>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <app-style-docs styleDocsKey="Forms"></app-style-docs>
+  </app-doc-tab>
+</app-doc-tabs>

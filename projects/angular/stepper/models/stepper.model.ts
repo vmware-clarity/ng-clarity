@@ -5,11 +5,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AccordionModel, AccordionStatus } from '@clr/angular/accordion';
+import { CollapsiblePanelGroupModel } from '@clr/angular/collapsible-panel';
 
-export class StepperModel extends AccordionModel {
+import { StepperPanelModel } from './stepper-panel.model';
+import { StepperPanelStatus } from '../enums/stepper-panel-status.enum';
+
+export class StepperModel extends CollapsiblePanelGroupModel {
+  protected override _panels: { [id: string]: StepperPanelModel } = {};
+
   private stepperModelInitialize = false;
   private initialPanel: string;
+
+  override get panels(): StepperPanelModel[] {
+    return Object.keys(this._panels).map(id => this._panels[id]);
+  }
 
   get allPanelsCompleted(): boolean {
     return this.panels.length && this.getNumberOfIncompletePanels() === 0 && this.getNumberOfOpenPanels() === 0;
@@ -20,8 +29,10 @@ export class StepperModel extends AccordionModel {
   }
 
   override addPanel(id: string, open = false) {
-    super.addPanel(id, open);
-    this._panels[id].disabled = true;
+    const panel = new StepperPanelModel(id, this.panelGroupCount);
+    panel.open = open;
+    panel.disabled = true;
+    this._panels[id] = panel;
   }
 
   override updatePanelOrder(ids: string[]) {
@@ -32,7 +43,7 @@ export class StepperModel extends AccordionModel {
   }
 
   override togglePanel(panelId: string) {
-    if (this._panels[panelId].status === AccordionStatus.Complete) {
+    if (this._panels[panelId]?.status === StepperPanelStatus.Complete) {
       this._panels[panelId].open = !this._panels[panelId].open;
     }
   }
@@ -66,11 +77,11 @@ export class StepperModel extends AccordionModel {
   }
 
   setPanelValid(panelId: string) {
-    this._panels[panelId].status = AccordionStatus.Complete;
+    this._panels[panelId].status = StepperPanelStatus.Complete;
   }
 
   setPanelInvalid(panelId: string) {
-    this._panels[panelId].status = AccordionStatus.Error;
+    this._panels[panelId].status = StepperPanelStatus.Error;
   }
 
   setPanelsWithErrors(ids: string[]) {
@@ -78,7 +89,6 @@ export class StepperModel extends AccordionModel {
   }
 
   resetPanels() {
-    /* return stepper to initialize state */
     this.stepperModelInitialize = false;
     this.panels.forEach(p => this.resetPanel(p.id));
     this.openFirstPanel();
@@ -97,7 +107,7 @@ export class StepperModel extends AccordionModel {
   }
 
   private resetPanel(panelId: string) {
-    this._panels[panelId].status = AccordionStatus.Inactive;
+    this._panels[panelId].status = StepperPanelStatus.Inactive;
     this._panels[panelId].open = false;
     this._panels[panelId].disabled = true;
   }
@@ -107,11 +117,6 @@ export class StepperModel extends AccordionModel {
       return;
     }
     const firstPanel = this.getFirstPanel();
-    /**
-     * You need to call updatePanelOrder first to get the correct order,
-     * else the list of panels will not have `index` set and we won't know
-     * how to find the first panel.
-     */
     if (!firstPanel) {
       return;
     }
@@ -122,7 +127,7 @@ export class StepperModel extends AccordionModel {
   }
 
   private completePanel(panelId: string) {
-    this._panels[panelId].status = AccordionStatus.Complete;
+    this._panels[panelId].status = StepperPanelStatus.Complete;
     this._panels[panelId].disabled = false;
     this._panels[panelId].open = false;
   }
@@ -152,7 +157,7 @@ export class StepperModel extends AccordionModel {
   private setPanelError(panelId: string) {
     this.resetAllFuturePanels(panelId);
     this._panels[panelId].open = true;
-    this._panels[panelId].status = AccordionStatus.Error;
+    this._panels[panelId].status = StepperPanelStatus.Error;
   }
 
   private getFirstPanel() {
@@ -160,7 +165,7 @@ export class StepperModel extends AccordionModel {
   }
 
   private getNumberOfIncompletePanels() {
-    return this.panels.reduce((prev, next) => (next.status !== AccordionStatus.Complete ? prev + 1 : prev), 0);
+    return this.panels.reduce((prev, next) => (next.status !== StepperPanelStatus.Complete ? prev + 1 : prev), 0);
   }
 
   private getNumberOfOpenPanels() {

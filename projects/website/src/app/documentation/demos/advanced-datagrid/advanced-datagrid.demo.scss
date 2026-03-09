@@ -1,0 +1,18 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+.align-image {
+  max-width: 100%;
+}
+
+.spinner-mr-0 {
+  margin-right: 0;
+}
+
+:host ::ng-deep app-virtual-scroll-advanced-grid-demo clr-datagrid {
+  min-height: 500px !important;
+}

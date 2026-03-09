@@ -1,0 +1,42 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<clr-tree>
+  <clr-tree-node [clrExpanded]="true">
+    <clr-icon [shape]="'folder-open'"></clr-icon>
+    Applications
+    <clr-tree-node [clrExpanded]="false" [clrDisabled]="true">
+      <clr-icon [shape]="'folder-open'"></clr-icon>
+      Images
+      <clr-tree-node>Sreenshot.png</clr-tree-node>
+    </clr-tree-node>
+    <clr-tree-node [clrExpanded]="false">
+      <clr-icon [shape]="'folder-open'"></clr-icon>
+      Files
+      <clr-tree-node>Sreenshot.png</clr-tree-node>
+      <clr-tree-node>abc.jpeg </clr-tree-node>
+      <clr-tree-node [clrDisabled]="true"> again.png </clr-tree-node>
+    </clr-tree-node>
+  </clr-tree-node>
+</clr-tree>
+<clr-tree>
+  <clr-tree-node [clrExpanded]="true">
+    Permissions
+    <clr-tree-node [clrExpanded]="false">
+      Authenticated Users
+      <clr-tree-node>John Doe</clr-tree-node>
+    </clr-tree-node>
+    <clr-tree-node [clrSelected]="true" [clrExpanded]="false">
+      Owners
+      <clr-tree-node>Jane Doe</clr-tree-node>
+    </clr-tree-node>
+    <clr-tree-node [clrSelected]="false" [clrExpanded]="false" [clrDisabled]="true">
+      Public
+      <clr-tree-node>Mr. Doe</clr-tree-node>
+    </clr-tree-node>
+  </clr-tree-node>
+</clr-tree>

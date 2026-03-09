@@ -11,3 +11,21 @@
   from = "/demo/*"
   to = "/demo/index.html"
   status = 200
+
+# Website SPA fallback (must be last)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Allow versions.json for all clarity.design subdomains (version switcher)
+[[headers]]
+  for = "/versions.json"
+    [headers.values]
+    Access-Control-Allow-Origin = "*"
+
+# Allow placeholder images in StackBlitz examples
+[[headers]]
+  for = "/assets/images/documentation/cards/placeholder_*.png"
+    [headers.values]
+    Access-Control-Allow-Origin = "*"

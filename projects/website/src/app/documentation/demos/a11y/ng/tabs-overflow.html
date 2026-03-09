@@ -1,0 +1,17 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h3>Tabs Overflow Directive</h3>
+<div>
+  <clr-tabs appfxOverflowTabs>
+    @for (tab of [].constructor(10); track $index) {
+    <clr-tab>
+      <button clrTabLink>Clarity Tab {{ $index + 1 }}</button>
+      <clr-tab-content>Tab {{ $index + 1 }} content</clr-tab-content>
+    </clr-tab>
+    }
+  </clr-tabs>
+</div>

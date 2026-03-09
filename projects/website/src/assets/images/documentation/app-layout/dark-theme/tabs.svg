@@ -1,0 +1,20 @@
+<svg width="293" height="193" viewBox="0 0 293 193" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_9092_3147)">
+<rect y="0.22876" width="293" height="192" fill="#1B2B32"/>
+<rect width="293" height="17" transform="translate(0 0.22876)" fill="#3A4D55"/>
+<rect width="51" height="174" transform="translate(1 17.2288)" fill="#22343C"/>
+<line opacity="0.4" x1="66.1816" y1="40.2288" x2="84.1816" y2="40.2288" stroke="#ACB8BE" stroke-width="2" stroke-linecap="round"/>
+<line x1="98.1816" y1="40.2288" x2="131.162" y2="40.2288" stroke="#ACB8BE" stroke-width="2" stroke-linecap="round"/>
+<line opacity="0.4" x1="145.162" y1="40.2288" x2="158.421" y2="40.2288" stroke="#ACB8BE" stroke-width="2" stroke-linecap="round"/>
+<line opacity="0.4" x1="172.421" y1="40.2288" x2="185.68" y2="40.2288" stroke="#ACB8BE" stroke-width="2" stroke-linecap="round"/>
+<line opacity="0.4" x1="199.68" y1="40.2288" x2="226.818" y2="40.2288" stroke="#ACB8BE" stroke-width="2" stroke-linecap="round"/>
+<rect opacity="0.4" x="59.5029" y="47.0096" width="222.445" height="0.5" stroke="#ACB8BE" stroke-width="0.5"/>
+<rect x="94.7822" y="45.4575" width="40.9507" height="2" fill="#2EC0FF"/>
+</g>
+<rect x="0.5" y="0.72876" width="292" height="191" stroke="#4F6169"/>
+<defs>
+<clipPath id="clip0_9092_3147">
+<rect y="0.22876" width="293" height="192" fill="white"/>
+</clipPath>
+</defs>
+</svg>

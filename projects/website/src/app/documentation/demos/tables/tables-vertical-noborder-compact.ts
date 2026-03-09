@@ -1,0 +1,63 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+
+import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
+
+const EXAMPLE = `
+<table class="table table-vertical table-noborder table-compact">
+  <tbody>
+    <tr>
+      <th>Basic table</th>
+      <td>.table</td>
+      <td>The classname for applying general styling of Clarity tables to an HTML table.</td>
+    </tr>
+    <tr>
+      <th>Left-aligned table cells</th>
+      <td>.left</td>
+      <td>
+        This classname on a
+        <code cds-text="code">td</code>
+        aligns content to the left edge of the table cell.
+        <br />
+        This is not necessary for vertical tables.
+      </td>
+    </tr>
+    <tr>
+      <th>Tables without borders</th>
+      <td>.table-noborder</td>
+      <td>
+        This classname removes borders between table rows and the border around the table.
+        <br />
+        It also removes the background so that the table is transparent over its container background.
+      </td>
+    </tr>
+    <tr>
+      <th>Compact tables</th>
+      <td>.table-compact</td>
+      <td>This classname changes the height of the table rows from 36px to 24px.</td>
+    </tr>
+    <tr>
+      <th>Vertical tables</th>
+      <td>.table-vertical</td>
+      <td>
+        This classname removes the table header and applies table header styles to the left-most column.
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+@Component({
+  selector: 'clr-tables-vertical-noborder-compact-demo',
+  templateUrl: './tables-vertical-noborder-compact.html',
+  imports: [StackblitzExampleComponent],
+})
+export class TablesVerticalNoborderCompactDemo {
+  example = EXAMPLE;
+}

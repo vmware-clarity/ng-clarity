@@ -7,7 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { angleIcon, checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '@clr/angular/icon';
+import { angleIcon, ClarityIcons, ClrIcon } from '@clr/angular/icon';
 
 import { ClrAccordion } from './accordion';
 import { ClrAccordionContent } from './accordion-content';
@@ -34,6 +34,6 @@ const declarations = [
 })
 export class ClrAccordionModule {
   constructor() {
-    ClarityIcons.addIcons(angleIcon, exclamationCircleIcon, checkCircleIcon);
+    ClarityIcons.addIcons(angleIcon);
   }
 }

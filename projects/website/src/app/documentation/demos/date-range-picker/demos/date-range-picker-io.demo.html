@@ -1,0 +1,56 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h3 data-toc-item id="accessing-the-date" cds-text="section" class="clr-mt-32px">Accessing the Date</h3>
+
+<div>
+  <p cds-text="body" class="clr-mt-16px">You can access the Date in two ways:</p>
+  <div>
+    <h4 cds-text="subsection" class="clr-mt-32px">1. As a Javascript Date Object</h4>
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      You can add a two way binding on <code cds-text="code">clrStartDate</code> and
+      <code cds-text="code">clrEndDate</code> to access the start and end date values. The benefit of using this
+      approach is that you can interact with the Date picker directly using Javascript Date objects which would avoid
+      converting values from string to date and vice versa on the application side.
+    </p>
+    <clr-date-range-picker-date-io-demo></clr-date-range-picker-date-io-demo>
+  </div>
+  <div>
+    <h4 cds-text="subsection" class="clr-mt-32px">2. As a date string (in current locale format)</h4>
+    <div class="clr-mt-8px">
+      <p cds-text="body">
+        a.
+        <a href="https://angular.io/guide/forms#template-driven-forms" target="_blank">Template Driven Forms</a>
+      </p>
+      <p cds-text="body" class="clr-mt-16px">
+        Template Driven Forms use the <code cds-text="code">ngModel</code> directive to create a binding between the
+        model and the input field.
+      </p>
+      <clr-date-range-picker-template-driven-forms-demo></clr-date-range-picker-template-driven-forms-demo>
+    </div>
+    <div class="clr-mt-24px">
+      <p cds-text="body">
+        b.
+        <a href="https://angular.io/guide/reactive-forms" target="_blank">Reactive Forms</a>
+      </p>
+      <p cds-text="body" class="clr-mt-16px">
+        Reactive Forms use <code cds-text="code">FormControl</code>s to create the binding between the model and the
+        input field.
+      </p>
+      <clr-date-range-picker-reactive-forms-demo></clr-date-range-picker-reactive-forms-demo>
+    </div>
+  </div>
+  <div class="clr-mt-24px">
+    <clr-alert [clrAlertClosable]="false" [clrAlertType]="'warning'">
+      <div class="alert-item">
+        <span class="alert-text">
+          We recommend that you either access the date as a string or as a javascript date object from the date picker.
+          Using both at the same time might cause unexpected behavior.
+        </span>
+      </div>
+    </clr-alert>
+  </div>
+</div>

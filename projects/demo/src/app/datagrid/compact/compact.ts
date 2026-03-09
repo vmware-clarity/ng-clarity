@@ -25,7 +25,7 @@ export class DatagridCompactDemo {
   sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
   pokemonComparator = new PokemonComparator();
   pokemonFilter = new PokemonFilter();
-  singleSelected: User;
+  singleSelected: User[] = [];
   _selected: User[] = [];
   selected2: User[];
   toAdd: User[] = [];

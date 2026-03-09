@@ -9,6 +9,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Needed to recreate issue #1084
+import { SelectionType } from '@clr/angular';
 import { delay, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridColumn } from '../datagrid-column';
@@ -378,7 +379,7 @@ export default function (): void {
       </clr-datagrid>
     </ng-template>
     <ng-template #single>
-      <clr-datagrid #datagridSingleSelect [(clrDgSingleSelected)]="singleSelect">
+      <clr-datagrid #datagridSingleSelect [(clrDgSelected)]="selected" [clrDgSelectionType]="'single'">
         <clr-dg-column>Column</clr-dg-column>
         <clr-dg-column>Column</clr-dg-column>
         <clr-dg-row>
@@ -388,7 +389,7 @@ export default function (): void {
       </clr-datagrid>
     </ng-template>
     <ng-template #multi>
-      <clr-datagrid #datagridMultiSelect [(clrDgSelected)]="selected">
+      <clr-datagrid #datagridMultiSelect [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
         <clr-dg-column>Column</clr-dg-column>
         <clr-dg-column>Column</clr-dg-column>
         <clr-dg-row>
@@ -405,11 +406,11 @@ class RenderWidthTest {
   expandable = false;
   hasActions = false;
   selected: any[] = [];
-  singleSelect;
   @ViewChild('dgContainer', { read: ElementRef }) container: ElementRef<HTMLElement>;
   @ViewChild('datagridDefault', { read: ElementRef }) datagridDefault: ElementRef<HTMLElement>;
   @ViewChild('datagridSingleSelect', { read: ElementRef }) datagridSingleSelect: ElementRef<HTMLElement>;
   @ViewChild('datagridMultiSelect', { read: ElementRef }) datagridMultiSelect: ElementRef<HTMLElement>;
+  protected readonly SelectionType = SelectionType;
 }
 
 @Component({

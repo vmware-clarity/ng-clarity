@@ -1,0 +1,751 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <div class="clr-mt-24px">
+      <clr-alert clrAlertType="warning" [clrAlertClosable]="false">
+        <clr-alert-item>
+          <span class="alert-text">
+            This pattern documentation covers usage and use cases for notification needs. The components shown are not
+            yet available in the Clarity libraries but have been validated by implementation in VMware applications.
+          </span>
+        </clr-alert-item>
+      </clr-alert>
+    </div>
+
+    <p class="clr-mt-24px" cds-text="subsection">
+      A notification is the system provides a range of methods for communicating with the user. Notifications let the
+      user know when something needs attention by alerting the user to events that have occurred, and by providing
+      guidance about the actions that need to be taken.
+    </p>
+    <p class="clr-mt-24px" cds-text="subsection">
+      To ensure that users don't become frustrated, keep the following guidelines in mind:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Ensure that notifications are relevant and timely.</li>
+      <li>Use the right notification for the right situation.</li>
+      <li>Ensure that the component or UI element used to notify users matches the event's priority.</li>
+    </ul>
+
+    <h2 id="notification-channels" cds-text="title" class="clr-mt-48px">Notification Channels</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Notifications can be delivered in a variety of channels: email, text message, in-application, web hooks, etc. When
+      delivering notifications offline (when users aren't in-app), be sensitive to deliver only those notifications
+      which complement the users' sense of urgency. For example, sending a promotional offer via text message would
+      violate the user's sense of urgency in relation to that channel.
+    </p>
+
+    <h3 id="in-app-notifications" cds-text="section" class="clr-mt-24px">In-App Notifications</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      How and when to deliver Notifications is based on their <strong cds-text="medium">priority to the User.</strong>
+    </p>
+    <div class="clr-mt-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/notifications/light-theme/priority_to_user.svg'"
+        [darkSrc]="'/assets/images/documentation/notifications/dark-theme/priority_to_user.svg'"
+        [imageAlt]="'priority to user from low to high'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <div class="clr-row">
+      <div class="clr-col">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/notifications/light-theme/notifications_in_app_snackbars.svg'"
+          [darkSrc]="'/assets/images/documentation/notifications/dark-theme/notifications_in_app_snackbars.svg'"
+          [imageAlt]="'in app snackbar notifications'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+        <h3 id="snackbars" cds-text="subsection" class="clr-mt-24px">Snackbars</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          Snackbars are quick conformations of successful user actions. (e.g. Form submission, edit object successful,
+          delete object successful)
+          <a routerLink="." fragment="snackbar">snackbar details</a>
+        </p>
+      </div>
+      <div class="clr-col">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/notifications/light-theme/notifications_in_app_alerts.svg'"
+          [darkSrc]="'/assets/images/documentation/notifications/dark-theme/notifications_in_app_alerts.svg'"
+          [imageAlt]="'in app alert notifications'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+        <h3 id="alerts" cds-text="subsection" class="clr-mt-24px">Alerts</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          Alerts communicate low-priority events related to specific objects or parts of an app. (e.g. Non-disruptive
+          maintenance, configuration suggestions)
+          <a routerLink="/documentation/alert">alert details</a>
+        </p>
+      </div>
+      <div class="clr-col">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/notifications/light-theme/notifications_in_app_toasts.svg'"
+          [darkSrc]="'/assets/images/documentation/notifications/dark-theme/notifications_in_app_toasts.svg'"
+          [imageAlt]="'in app toast notifications'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+        <h3 id="toasts" cds-text="subsection" class="clr-mt-24px">Toasts</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          Toasts communicate medium-priority events that the user may want to reference later in the notifications
+          panel. (e.g. Approval needed, sddc created)
+          <a routerLink="." fragment="toast">toast details</a>
+        </p>
+      </div>
+      <div class="clr-col">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/notifications/light-theme/notifications_in_app_banners.svg'"
+          [darkSrc]="'/assets/images/documentation/notifications/dark-theme/notifications_in_app_banners.svg'"
+          [imageAlt]="'in app banner notifications'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+        <h3 id="banners" cds-text="subsection" class="clr-mt-24px">Banners</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          Banners are critical notifications that require user action but do not prevent the user from continuing to use
+          the app. (e.g. Payment problem)
+          <a routerLink="/documentation/alert">banner details</a>
+        </p>
+      </div>
+      <div class="clr-col">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/notifications/light-theme/notifications_in_app_modals.svg'"
+          [darkSrc]="'/assets/images/documentation/notifications/dark-theme/notifications_in_app_modals.svg'"
+          [imageAlt]="'in app modal notifications'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+        <h3 id="modals" cds-text="subsection" class="clr-mt-24px">Modals</h3>
+        <p class="clr-mt-16px" cds-text="body">
+          Modals are the highest priority notification: since they disrupt user task flows, they should be reserved for
+          critical events that require user action (e.g. Account Suspended)
+          <a routerLink="/documentation/modal">modal details</a>
+        </p>
+      </div>
+    </div>
+
+    <h2 id="snackbar" cds-text="title" class="clr-mt-48px">Snackbar</h2>
+    <p class="clr-mt-16px" cds-text="body">Snackbars are quick confirmations of successful user actions.</p>
+    <p class="clr-mt-24px" cds-text="body">
+      Snackbars are low in the visual/interaction hierarchy because users are aware of the request they have submitted,
+      and can visit the associated object later elsewhere in the UI (ex. after adding a user, I can see that the user
+      has been added in the "Users" list).
+    </p>
+
+    <h3 id="anatomy-snackbar" cds-text="section" class="clr-mt-32px">Anatomy</h3>
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-10">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/notifications/light-theme/notifications_snackbar_anatomy.svg'"
+          [darkSrc]="'/assets/images/documentation/notifications/dark-theme/notifications_snackbar_anatomy.svg'"
+          [imageAlt]="'anatomy of snackbar notification'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+    </div>
+    <ol class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        Icon: Success Icon. For errors, warnings, or information, use
+        <a routerLink="." fragment="toast">Toast</a> or
+        <a routerLink="/documentation/alert">Banner</a>
+      </li>
+      <li>Description (max: 156 characters): A description of the confirmation event.</li>
+      <li>Link (max: 25 characters): When possible, provide a link to details describing the event.</li>
+      <li>
+        Dismiss: An icon allowing the user to remove the toast from their view. Do not use "dismiss" as a link, clicking
+        the dismiss button dismisses the snackbar.
+      </li>
+    </ol>
+
+    <h4 id="interaction" cds-text="subsection" class="clr-mt-24px">Interaction</h4>
+    <div class="clr-row">
+      <div class="clr-col-7 clr-mt-32px">
+        <img
+          src="/assets/images/documentation/notifications/notifications_snackbar_interaction.svg"
+          alt="snackbar interaction"
+        />
+      </div>
+    </div>
+
+    <h3 id="usage-guidelines-snackbar" cds-text="section" class="clr-mt-32px">Usage Guidelines</h3>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-6">
+        <app-use-dont-use type="use" heading="Do">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>Use snackbars to communicate successful actions.</li>
+            <li>Provide a link to the created/modified/updated object when possible.</li>
+            <li>Allow the user to dismiss the snackbar.</li>
+            <li>
+              Remove the snackbar after a 6 second timeout if the user has not already dismissed it. This allows the
+              snackbar to provide an ephemeral confirmation that does not disrupt from the user's ongoing tasks.
+            </li>
+            <li>Remove the snackbar if the user navigates away from the current view.</li>
+            <li>
+              When an action has updated multiple records, communicate the number of affected records in the messaging
+              when the records are greater than 2 ("johndoe&#64;gmail.com, annedoe&#64;gmail.com, and 5 other users
+              added.")
+            </li>
+            <li>
+              For accessibility considerations, allow the user to set the length of time disappearing objects remain in
+              the viewport. Additionally, allow the user to turn off UI motion overall.
+            </li>
+            <li>Use "View Details" as the link title in most cases.</li>
+            <li>
+              When the snackbar confirms multiple elements, only show a link if the destination that references all
+              elements.
+            </li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <app-use-dont-use type="dont_use" heading="Don't use empty states">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>
+              Leave snackbars on screen, unless the user has explicitly configured that as an accessibility setting.
+            </li>
+            <li>
+              Use more than a single link in the snackbar. The snackbar provides a single link for accessbility
+              purposes.
+            </li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+    </div>
+
+    <h3 id="use-cases-snackbar" cds-text="section" class="clr-mt-32px">Use Cases</h3>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Form Success</li>
+      <li>Edit Object Success</li>
+      <li>Delete Object Success</li>
+    </ul>
+
+    <h2 id="toast" cds-text="title" class="clr-mt-48px">Toast</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Toast messages provide the user information about medium-priority events that they may want to reference later.
+    </p>
+    <p class="clr-mt-24px" cds-text="body">
+      Toast messages, when they aren't dismissed, live in the notifications panel until the user dismisses them or the
+      notification expires.
+    </p>
+
+    <h3 id="anatomy-toasts" cds-text="section" class="clr-mt-32px">Anatomy</h3>
+    <div class="clr-row clr-mt-32px">
+      <div class="clr-col-6">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/notifications/light-theme/notifications_toast_anatomy.svg'"
+          [darkSrc]="'/assets/images/documentation/notifications/dark-theme/notifications_toast_anatomy.svg'"
+          [imageAlt]="'anatomy of toast notification'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+    </div>
+    <ol class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>App Icon: Application that is sending the notification. Only use in multi-application environments.</li>
+      <li>
+        Status Icon: Informational or Error. (use
+        <a routerLink="." fragment="snackbar">Snackbar</a>
+        for confirmations)
+      </li>
+      <li>Title (max: 35 characters): Short Title Describing the Event</li>
+      <li>Description (max: 156 characters): Short Description of the event</li>
+      <li>
+        Dismiss: An icon allowing the user to remove the toast from their view. Do not use "dismiss" as an action,
+        clicking the dismiss button dismisses the toast.
+      </li>
+      <li>
+        Time: Use "now" if the event is occurring currently. If the event happened in the past, use "[x] [time_period]
+        ago"
+      </li>
+      <li>
+        Actions [optional] (max: 19 characters each) (2 actions maximum): Provide the user actions to remediate the
+        event when possible.
+      </li>
+    </ol>
+
+    <h3 id="usage-guidelines-toast" cds-text="section" class="clr-mt-32px">Usage Guidelines</h3>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-6">
+        <app-use-dont-use type="use" heading="Do">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>Provide a location for the user to navigate to from the toast.</li>
+            <li>Use timestamps relative to the user (ex. "1 hour ago" instead of "May 11, 12:34pm")</li>
+            <li>
+              Use a short, succinct summary message as the title. The title should be a short, consumable phrase that
+              quickly communicates the high-level messaging in the toast. The maximum length for the title is 35
+              characters.
+            </li>
+            <li>
+              Use a consumable description for the toast message. The maximum length for the description is 156
+              characters.
+            </li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <app-use-dont-use type="dont_use" heading="Don't use empty states">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>Use "Dismiss" as an action. Clicking the dismiss button dismisses the toast.</li>
+            <li>
+              Use more than 2 actions in a toast. If you need to provide more actions, surface the 2 most important
+              actions, then allow the user to navigate to the object's detail view.
+            </li>
+            <li>
+              Use object identifier in the title. (ie. “VM12324235324234”). Use object identifiers in the description
+              area as needed.
+            </li>
+            <li>
+              Add icons to the toast. The toast communicates high-level information quickly; adding iconography confuses
+              the high-level meaning.
+            </li>
+            <li>
+              Show toasts when the condition or event is no longer relevant to the user. For example, if a subscription
+              had expired, but was renewed by the user, the “Subscription Expiring Soon” notification is no longer
+              relevant.
+            </li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+    </div>
+
+    <h3 id="use-cases-toast" cds-text="section" class="clr-mt-32px">Use Cases</h3>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Configuration Change Initiated by Co-Admin, Security Implication (user added to organization)</li>
+      <li>Credit Available for Account</li>
+      <li>Requesting Approval from Administrator</li>
+      <li>
+        Event that Impact User Account in Future Time (SDDC Maintenance Will Occur, Subscription Expiring in 30 Days)
+      </li>
+    </ul>
+    <p cds-text="body" cds-layout="m-t:md">
+      See Notifications Usage for CSP's Snackbar Usage, and VMC Notification for VMC's.
+    </p>
+
+    <h2 id="long-running-operations" cds-text="title" class="clr-mt-48px">Long Running Operations</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      When users perform an action that is asynchronous, the action triggers an API request to the backend. If the
+      request is submitted successfully, the backend will begin the action. If the request fails to be submitted, the
+      progress won't start.<br />
+      Asynchronous tasks usually take longer to complete, consequently the user may want to move on to other tasks. The
+      user may want to be informed of the long-running operation’s status in their current context, and may want to
+      continue to other tasks upon the operation’s completion.
+    </p>
+    <p class="clr-mt-24px" cds-text="body">
+      The Long-Running Operation Component allows the user visibility into a long running operation's status while
+      providing them the opportunity to accomplish other tasks. Insure the Long Running Operation Panel persists
+      throughout the views the user visits during while the operation is running. If a user's session ends, re-populate
+      the Long Running Operation with its current status when the return. If the operation has completed or failed since
+      the user's last session, inform them with the appropriate notifications.
+    </p>
+
+    <h3 id="states-of-long-running-operations" cds-text="section" class="clr-mt-32px">
+      States of the long running operation panel
+    </h3>
+
+    <h4 id="request-submitted" cds-text="subsection" class="clr-mt-24px">1. Request submitted</h4>
+    <p class="clr-mt-16px" cds-text="body">
+      When a user triggers an asynchronous task, the request can fail or succeed.
+    </p>
+    <ol class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        If the request fails, show an alert banner on the page where the action was performed. The alert banner should
+        be close to the action button.
+        <div class="clr-mt-16px">
+          <img
+            src="/assets/images/documentation/notifications/states_request_submitted_failure.svg"
+            alt="example for request submitted if request fails"
+          />
+        </div>
+      </li>
+      <li class="clr-mt-16px">
+        If the request is successfully submitted, send the user a notification using the long running task panel. Do not
+        send this notification in a toast. Once the backend operation starts, transition the long running task panel
+        into the in-progress state (see #2 below).
+        <div class="clr-mt-16px">
+          <img
+            src="/assets/images/documentation/notifications/states_request_submitted_success.svg"
+            alt="example for request submitted successfully"
+          />
+        </div>
+      </li>
+    </ol>
+
+    <h4 id="in-progress" cds-text="subsection" class="clr-mt-24px">2. In progress</h4>
+    <p class="clr-mt-16px" cds-text="body">A progress state should be displayed as soon as backend operation begins.</p>
+
+    <h4 id="anatomy-in-progress" cds-text="subsection" class="clr-mt-24px">2.1. Anatomy</h4>
+    <div class="clr-mt-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/notifications/light-theme/states_in_progress_anatomy.svg'"
+        [darkSrc]="'/assets/images/documentation/notifications/dark-theme/states_in_progress_anatomy.svg'"
+        [imageAlt]="'anatomy of in progress state'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+    <ol class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        Title - Title is required for all operations. The title shouldn't exceed 35 characters to ensure it fits on the
+        panel.
+      </li>
+      <li>Time - Time counter is optional. Display time when this information is available.</li>
+      <li>Collapse / expand button - This button should be displayed on all operations.</li>
+      <li>
+        Progress bar - Progress bar is required for all operations. If the operation doesn't have determinate steps,
+        display the indeterminate progress bar.
+      </li>
+      <li>
+        Progress counter - Display progress counter only when this information is available. If you are using
+        indeterminate progress bar, don't display the progress counter.
+      </li>
+      <li>
+        Description - The description may describe the operation in detail, or be used to display status information
+        about the progress.
+      </li>
+      <li>Dismiss - A dismiss button is required on all operations</li>
+      <li>Cancel - If an operation can be cancelled, you can display the cancel button.</li>
+    </ol>
+
+    <h4 id="panel-variations-in-progress" cds-text="subsection" class="clr-mt-24px">
+      2.2 In progress panel variations
+    </h4>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_in_progress_panel_variations_informative.svg"
+          class="image-width"
+          alt="informative in progress panel variations"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">
+          <strong cds-text="medium">1. Informative (with all possible elements)</strong>: When possible, provide the
+          user with the time to completion, percentage to completion, and the operation status message.
+        </p>
+      </div>
+    </div>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_in_progress_panel_variations_minimal.svg"
+          class="image-width"
+          alt="minimal in progress panel variations"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">
+          <strong cds-text="medium">2. Minimal (with only required elements)</strong>: If certain information is not
+          available, provide the user a granular sense of how long it will take the operation to complete.
+        </p>
+      </div>
+    </div>
+    <div class="clr-mt-24px">
+      <clr-alert clrAlertType="info" [clrAlertClosable]="false">
+        <clr-alert-item>
+          <span class="alert-text">
+            There are other variables between informative and minimal. You can choose to use as many or as few optional
+            elements as possible based on availability of information and your use cases.
+          </span>
+        </clr-alert-item>
+      </clr-alert>
+    </div>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_in_progress_panel_variations_collapsed.svg"
+          class="image-width"
+          alt="collapsed in progress panel variations"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">
+          <strong cds-text="medium">3. Collapsed (when the user clicks on the collapse button)</strong>: Display the
+          title and progress bar. Also display progress counter if available.
+        </p>
+      </div>
+    </div>
+
+    <h4 id="cancel" cds-text="subsection" class="clr-mt-24px">3. Cancel</h4>
+    <p class="clr-mt-16px" cds-text="body">
+      There are occasionally cases where users are allowed to cancel an operation.
+    </p>
+
+    <h4 id="cancel-states" cds-text="subsection" class="clr-mt-24px">3.1 Cancel States</h4>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_cancel_1.svg"
+          class="image-width"
+          alt="notification showing cancel state"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">
+          1. User clicks on CANCEL, show state below. If user clicks on "NO", return to previous state.
+        </p>
+      </div>
+    </div>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_cancel_2.svg"
+          class="image-width"
+          alt="notification showing confirmed state once user confirms cancel"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">2. User confirms cancel. Show this confirmed state:</p>
+      </div>
+    </div>
+
+    <h4 id="error" cds-text="subsection" class="clr-mt-24px">4. Error</h4>
+    <p class="clr-mt-16px">If the operation fails, use the following variables to inform the user.</p>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_error_informative.svg"
+          class="image-width"
+          alt="error notification with informative variable"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">
+          <strong cds-text="medium">1. Informative variable</strong>: An informative state with all possible elements
+          includes the title (required), description (optional), actions buttons (optional), and dismiss icon
+          (required). Use "VIEW DETAIL" to take the user to the context of the operation when applicable. Use"TRY AGAIN"
+          to allow the user to easily re-initiate the operation easily.
+        </p>
+      </div>
+    </div>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_error_minimal.svg"
+          class="image-width"
+          alt="error notification with minimal variable"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">
+          <strong cds-text="medium">2. Minimal variable</strong>: the minimum requirement of the error state includes
+          the title and the dismiss button. Only use this variable if no additional information is available.
+        </p>
+      </div>
+    </div>
+
+    <h4 id="success" cds-text="subsection" class="clr-mt-24px">5. Success</h4>
+    <p class="clr-mt-16px" cds-text="body">When the operation completes, inform the user of the result.</p>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_success_informative.svg"
+          class="image-width"
+          alt="success notification with informative variable"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">
+          <strong cds-text="medium">1. Informative variable</strong>: An informative state with all possible elements
+          includes the title (required), description (optional), actions buttons (optional), and dismiss icon
+          (required). Use "VIEW DETAIL" to take the user to the context of the operation when applicable.
+        </p>
+      </div>
+    </div>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_success_minimal.svg"
+          class="image-width"
+          alt="success notification with minimal variable"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">
+          <strong cds-text="medium">2. Minimal variable</strong>: the minimum requirement of the success state includes
+          the title and the dismiss button.
+        </p>
+      </div>
+    </div>
+    <div class="clr-mt-24px">
+      <clr-alert clrAlertType="info" [clrAlertClosable]="false">
+        <clr-alert-item>
+          <span class="alert-text">
+            You can choose to use as many or as few optional elements as possible based on availability of information
+            and your use cases.
+          </span>
+        </clr-alert-item>
+      </clr-alert>
+    </div>
+
+    <h4 id="multiple" cds-text="subsection" class="clr-mt-24px">6. Multiple</h4>
+    <p class="clr-mt-16px" cds-text="body">
+      If the user has multiple long running operations in progress at the same time, combine the operations into a
+      collapsed view to preserve screen space.
+    </p>
+
+    <h4 id="mix-in-progress" cds-text="subsection" class="clr-mt-24px">6.1 Mix In progress</h4>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_mix_in_progress_default.svg"
+          class="image-width"
+          alt="notification showing default mix in progress state"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">
+          <strong cds-text="medium">1. Default.</strong> The default stack view includes the title (required), time
+          (optional), progress bar (required), progress count (optional) and the collapse button (required). The second
+          item in this view includes only the required elements.
+        </p>
+      </div>
+    </div>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_mix_in_progress_collapsed.svg"
+          class="image-width"
+          alt="notification showing collapsed mix in progress state"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">
+          <strong cds-text="medium">2. Collapsed.</strong> The collapsed view includes only the text to indicate how
+          many tasks are currently running.
+        </p>
+      </div>
+    </div>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_mix_in_progress_detail.svg"
+          class="image-width"
+          alt="notification showing detail mix in progress state"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">
+          <strong cds-text="medium">3. Detail.</strong> The user can click on one of the operation and view more detail.
+          The detail view includes the same elements as the in progress state (see #2.2 above), and can be any variation
+          of the in progress state. Instead of the collapse button, this detail view includes a back button to go back
+          to the default view (6.1.1)
+        </p>
+      </div>
+    </div>
+
+    <h4 id="mix-error" cds-text="subsection" class="clr-mt-24px">6.2 Mix error</h4>
+    <p class="clr-mt-16px" cds-text="body">If one item in a progress stack fails, use the following interactions.</p>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_mix_error_default.svg"
+          class="image-width"
+          alt="notification showing default mix error state"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">
+          <strong cds-text="medium">1. Default.</strong> Show the error title of the operation with a dismiss icon.
+        </p>
+      </div>
+    </div>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_mix_error_detail.svg"
+          class="image-width"
+          alt="notification showing detail mix error state"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">
+          <strong cds-text="medium">2. Detail.</strong> If you have additional detail to display for the failed
+          operation, allow the user to click on the error and show the detail view. This detail view follow the same
+          rules as the regular error state (See #4 above), except with a back button.
+        </p>
+      </div>
+    </div>
+
+    <h4 id="mix-success" cds-text="subsection" class="clr-mt-24px">6.3 Mix success</h4>
+    <p class="clr-mt-16px" cds-text="body">If one of the stacked progress completed, use the following interactions.</p>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_mix_success_default.svg"
+          class="image-width"
+          alt="notification showing default mix success state"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">
+          <strong cds-text="medium">1. Default.</strong> Show the success title of the operation with a dismiss icon.
+        </p>
+      </div>
+    </div>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_mix_success_detail.svg"
+          class="image-width"
+          alt="notification showing detail mix success state"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p class="content-indent" cds-text="body">
+          <strong cds-text="medium">2. Detail.</strong> If you have additional detail to display for the completed
+          operation, allow the user to click on the success message and show the detail view. This detail view follow
+          the same rules as the regular success state (See #5 above), except with a back button.
+        </p>
+      </div>
+    </div>
+
+    <h4 id="mix-success-and-error" cds-text="subsection" class="clr-mt-24px">6.4 Mix success & error</h4>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <img
+          src="/assets/images/documentation/notifications/states_mix_success_and_error.svg"
+          class="image-width"
+          alt="notification showing mix success and error state"
+        />
+      </div>
+      <div class="clr-col-6">
+        <p cds-text="body">It's also possible to have a mix of success & error message in a stacked view.</p>
+      </div>
+    </div>
+
+    <h3 id="usage-guidelines-long-running-operations" cds-text="section" class="clr-mt-32px">Usage Guidelines</h3>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-6">
+        <app-use-dont-use type="use" heading="Do">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>Use when the user triggers an asynchronous operation.</li>
+            <li>
+              Allow the user to "Cancel" the operation. If there is no ability to "Cancel," the use case may require a
+              different presentation.
+            </li>
+            <li>
+              Allow the user to "Dismiss" the operation if a Notifications Panel exists. "Dismissing" the operation
+              would remove it from the main view and place it into the Notifications Panel.
+            </li>
+            <li>Provide a link to "Try Again" if the operation fails, when possible.</li>
+            <li>Provide a link to the object's detail view if the operation is successful, when possible.</li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <app-use-dont-use type="dont_use" heading="Don't use empty states">
+          <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+            <li>Allow "Dismiss" if no Notifications Panel exists.</li>
+          </ul>
+        </app-use-dont-use>
+      </div>
+    </div>
+
+    <h3 id="workflow-diaagram" cds-text="section" class="clr-mt-32px">Workflow Diagram</h3>
+    <div class="clr-mt-16px">
+      <img
+        src="/assets/images/documentation/notifications/notifications_workflow_diagram.svg"
+        alt="workflow diagram of notifications showing states of long running operations"
+      />
+    </div>
+  </app-doc-tab>
+</app-doc-tabs>

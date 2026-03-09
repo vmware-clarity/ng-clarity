@@ -11,6 +11,7 @@ import {
   ClrDatagridModule,
   ClrDropdownModule,
   commonStringsDefault,
+  SelectionType,
 } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
@@ -28,11 +29,17 @@ export default {
   argTypes: {
     // inputs
     clrDgSelected: { control: { disable: true } },
-    clrDgSingleSelected: { control: { disable: true } },
+    clrDgSelectionType: {
+      control: { type: 'select' },
+      options: {
+        None: SelectionType.None,
+        Single: SelectionType.Single,
+        Multi: SelectionType.Multi,
+      },
+    },
     // outputs
     clrDgRefresh: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },
-    clrDgSingleSelectedChange: { control: { disable: true } },
     // methods
     dataChanged: { control: { disable: true } },
     resize: { control: { disable: true } },
@@ -56,11 +63,9 @@ export default {
       this.selectedRows = selectAllChecked ? elements.map((element, i) => i).filter(i => i % 2) : [];
     },
     clrDgItemsIdentityFn: item => item.id,
-    clrDgSingleSelectedChange: action('clrDgSingleSelectedChange'),
     // story helpers
     elements,
-    singleSelectable: false,
-    multiSelectable: false,
+    clrDgSelectionType: SelectionType.None,
     expandable: false,
     compact: false,
     overflowEllipsis: false,
@@ -68,7 +73,6 @@ export default {
     showActions: false,
     height: 0,
     selectedRows: [],
-    selectedRow: null,
   },
 };
 
@@ -86,8 +90,8 @@ const DatagridTemplate: StoryFn = args => ({
     </style>
     <clr-datagrid
       ${args.height ? '[style.height.px]="height"' : ''}
-      ${args.multiSelectable ? '[(clrDgSelected)]="selectedRows"' : ''}
-      ${args.singleSelectable ? '[clrDgSingleSelected]="selectedRow"' : ''}
+      [(clrDgSelected)]="selectedRows"
+      [clrDgSelectionType]="clrDgSelectionType"
       [ngClass]="{ 'datagrid-compact': compact, 'datagrid-overflow-ellipsis': overflowEllipsis }"
       [clrDgItemsIdentityFn]="clrDgItemsIdentityFn"
       [clrDetailExpandableAriaLabel]="clrDetailExpandableAriaLabel"
@@ -100,7 +104,6 @@ const DatagridTemplate: StoryFn = args => ({
       [clrDgSingleSelectionAriaLabel]="clrDgSingleSelectionAriaLabel"
       (clrDgRefresh)="clrDgRefresh($event)"
       (clrDgSelectedChange)="clrDgSelectedChange($event)"
-      (clrDgSingleSelectedChange)="clrDgSingleSelectedChange($event)"
       (clrDgCustomSelectAll)="clrDgCustomSelectAll($event)"
     >
       @if (showActions) {
@@ -212,27 +215,27 @@ export const Datagrid: StoryObj = {
 export const SingleSelect: StoryObj = {
   render: DatagridTemplate,
   args: {
-    singleSelectable: true,
+    clrDgSelectionType: SelectionType.Single,
   },
 };
 
 export const SingleSelectWithSelection: StoryObj = {
   render: DatagridTemplate,
   args: {
-    singleSelectable: true,
-    selectedRow: { ...elements[1] },
+    clrDgSelectionType: SelectionType.Single,
+    selectedRows: [{ ...elements[1] }],
   },
 };
 export const MultiSelect: StoryObj = {
   render: DatagridTemplate,
   args: {
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
   },
 };
 export const MultiSelectWithSelection: StoryObj = {
   render: DatagridTemplate,
   args: {
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
     selectedRows: [{ ...elements[1] }, { ...elements[2] }],
   },
 };
@@ -254,7 +257,7 @@ export const CompactSingleSelect: StoryObj = {
   render: DatagridTemplate,
   args: {
     compact: true,
-    singleSelectable: true,
+    clrDgSelectionType: SelectionType.Single,
   },
 };
 
@@ -262,22 +265,22 @@ export const CompactSingleSelectWithSelection: StoryObj = {
   render: DatagridTemplate,
   args: {
     compact: true,
-    singleSelectable: true,
-    selectedRow: { ...elements[1] },
+    clrDgSelectionType: SelectionType.Single,
+    selectedRows: [{ ...elements[1] }],
   },
 };
 export const CompactMultiSelect: StoryObj = {
   render: DatagridTemplate,
   args: {
     compact: true,
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
   },
 };
 export const CompactMultiSelectWithSelection: StoryObj = {
   render: DatagridTemplate,
   args: {
     compact: true,
-    multiSelectable: true,
+    clrDgSelectionType: SelectionType.Multi,
     selectedRows: [{ ...elements[1] }, { ...elements[2] }],
   },
 };

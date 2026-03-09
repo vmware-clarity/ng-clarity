@@ -1,0 +1,13 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<form clrForm clrLayout="horizontal" clrLabelSize="4">
+  <clr-input-container>
+    <label>First name</label>
+    <input clrInput type="text" [(ngModel)]="model" name="firstName" required />
+    <clr-control-error>We need your first name for legal compliance</clr-control-error>
+  </clr-input-container>
+</form>

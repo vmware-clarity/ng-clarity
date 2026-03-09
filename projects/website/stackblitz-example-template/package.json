@@ -1,0 +1,31 @@
+{
+  "name": "clarity-example",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "ng serve"
+  },
+  "dependencies": {
+    "@angular/animations": "PLACEHOLDER",
+    "@angular/cdk": "PLACEHOLDER",
+    "@angular/common": "PLACEHOLDER",
+    "@angular/compiler": "PLACEHOLDER",
+    "@angular/core": "PLACEHOLDER",
+    "@angular/forms": "PLACEHOLDER",
+    "@angular/platform-browser": "PLACEHOLDER",
+    "@angular/platform-browser-dynamic": "PLACEHOLDER",
+    "@angular/router": "PLACEHOLDER",
+    "@clr/angular": "CLARITY_VERSION_PLACEHOLDER",
+    "@clr/ui": "CLARITY_VERSION_PLACEHOLDER",
+    "@clr/addons": "CLARITY_VERSION_PLACEHOLDER",
+    "rxjs": "PLACEHOLDER",
+    "tslib": "PLACEHOLDER",
+    "zone.js": "PLACEHOLDER"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "PLACEHOLDER",
+    "@angular/cli": "PLACEHOLDER",
+    "@angular/compiler-cli": "PLACEHOLDER",
+    "typescript": "PLACEHOLDER"
+  }
+}

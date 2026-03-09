@@ -1,0 +1,19 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<form clrForm clrLayout="vertical" #simpleForm="ngForm">
+  <h3 data-toc-item id="template-driven-demo" cds-text="section" class="clr-mt-32px">Template Driven Form Demo</h3>
+  <clr-date-container>
+    <label>Enter Date</label>
+    <input type="date" autocomplete="off" name="date" [(ngModel)]="date" clrDate />
+  </clr-date-container>
+</form>
+<pre>{{ simpleForm.value | json }}</pre>
+<app-stackblitz-example
+  name="datepicker (template form)"
+  [componentTemplate]="htmlExample"
+  [componentClass]="tsExample"
+></app-stackblitz-example>

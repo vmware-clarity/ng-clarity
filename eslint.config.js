@@ -141,6 +141,14 @@ module.exports = [
       'license-header/header': ['error', './.license-header.js'],
     },
   },
+  // Website demo files use require('raw-loader!...') for loading code examples as strings
+  {
+    files: ['projects/website/src/app/documentation/demos/**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-var-requires': 'off',
+    },
+  },
+
   // JSON files (keep behavior: disable license header there)
   {
     files: ['**/*.json'],

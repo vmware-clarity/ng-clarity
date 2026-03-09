@@ -7,7 +7,7 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { Keys, normalizeKey } from '@clr/angular/utils';
+import { Keys } from '@clr/angular/utils';
 
 export interface Closable {
   close(): void;
@@ -43,7 +43,7 @@ export class ModalStackService {
   }
 
   private onKeyUp(event: KeyboardEvent) {
-    if (this.modalStack.length && normalizeKey(event.key) === Keys.Escape) {
+    if (this.modalStack.length && event.key === Keys.Escape) {
       // We blur the active element because escaping with an input element in focus could cause
       // an ExpressionChangedAfterItHasBeenCheckedError for the touched state. (CDE-1662)
       (document.activeElement as HTMLElement).blur();

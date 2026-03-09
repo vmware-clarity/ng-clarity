@@ -1,0 +1,78 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<form clrForm>
+  <clr-control-container>
+    <input clrControl placeholder="Basic text" name="basic" [(ngModel)]="model.container" />
+  </clr-control-container>
+
+  <clr-control-container>
+    <label>Required</label>
+    <input
+      clrControl
+      placeholder="Input control"
+      name="required"
+      [(ngModel)]="model.required"
+      pattern="asdfasdf"
+      required
+      minlength="5"
+    />
+    <clr-control-helper>Helper text</clr-control-helper>
+    <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
+    <clr-control-error *clrIfError="'minlength'; error as err">
+      Must be at least {{ err.requiredLength }} characters
+    </clr-control-error>
+    <clr-control-error *clrIfError="'pattern'; error as err">
+      It must match '{{ err.requiredPattern }}'
+    </clr-control-error>
+  </clr-control-container>
+
+  <clr-select-container>
+    <label>Clr Select 1</label>
+    <select multiple clrSelect formControlName="cars">
+      @for (car of cars; track car.id) {
+      <option [value]="car.id" [disabled]="car.disabled">{{ car.name }}</option>
+      }
+    </select>
+    <clr-control-helper>Helper text</clr-control-helper>
+    <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
+  </clr-select-container>
+
+  <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+
+<!-- Reactive Example -->
+<form clrForm [formGroup]="reactiveModel">
+  <clr-control-container>
+    <input clrControl placeholder="Basic text" formControlName="container" />
+  </clr-control-container>
+
+  <clr-control-container>
+    <label>Required</label>
+    <input clrControl placeholder="Input control" formControlName="required" />
+    <clr-control-helper>Helper text</clr-control-helper>
+    <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
+    <clr-control-error *clrIfError="'minlength'; error as err">
+      Must be at least {{ err.requiredLength }} characters
+    </clr-control-error>
+    <clr-control-error *clrIfError="'pattern'; error as err">
+      It must match '{{ err.requiredPattern }}'
+    </clr-control-error>
+  </clr-control-container>
+
+  <clr-select-container>
+    <label>Clr Select 2</label>
+    <select multiple clrSelect formControlName="cars">
+      @for (car of cars; track car.id) {
+      <option [value]="car.id" [disabled]="car.disabled">{{ car.name }}</option>
+      }
+    </select>
+    <clr-control-helper>Helper text</clr-control-helper>
+    <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
+  </clr-select-container>
+
+  <button class="btn btn-primary" type="submit">Submit</button>
+</form>

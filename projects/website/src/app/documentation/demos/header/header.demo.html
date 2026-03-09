@@ -1,0 +1,429 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      The header is the component at the top of every page of your application. Headers provide a consistent place for
+      branding, navigation, search, and access to global application actions such as settings and notifications.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-sm-10">
+        <div class="clrweb-DocMedia-block">
+          <div class="header-demo">
+            <header class="header-1">
+              <div class="branding">
+                <a class="logo-and-title">
+                  <clr-icon shape="file"></clr-icon>
+                  <span class="title">Note App</span>
+                </a>
+              </div>
+              <div class="header-nav">
+                <a href="javascript://" class="nav-link">
+                  <span class="nav-text">Notes</span>
+                </a>
+                <a href="javascript://" class="active nav-link" aria-current="page">
+                  <span class="nav-text">Shared Notes</span>
+                </a>
+              </div>
+              <div class="header-actions">
+                <div class="dropdown">
+                  <button class="nav-icon dropdown-toggle" aria-label="toggle settings menu">
+                    <clr-icon shape="cog"></clr-icon>
+                    <clr-icon shape="angle" direction="down"></clr-icon>
+                  </button>
+                  <div class="dropdown-menu" role="menu">
+                    <a href="javascript://" role="menuitem">About</a>
+                    <a href="javascript://" role="menuitem">Preferences</a>
+                    <a href="javascript://" role="menuitem">Log out</a>
+                  </div>
+                </div>
+              </div>
+            </header>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="style">Style</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      The header is consistent across all pages of an application. This offers a recognizable unified experience for the
+      application.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="branding">Branding</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Include both your application’s name and logo if available. Clicking on either of these take you to the homepage
+      of the application.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-sm-5 clr-mt-16px">
+        <div class="header-demo">
+          <img
+            class="clrweb-Img"
+            src="/assets/images/documentation/header/header-1.svg"
+            alt="header with application name and logo"
+          />
+        </div>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="top-level-navigation">Top-Level Navigation</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Include top-level navigation items in the header. These items should be persistent throughout the user’s
+      experience. <br />
+      Have a maximum of four items in top-level navigation. For more info, take a look at
+      <a routerLink="/documentation/navigation">Navigation</a>.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="typography">Typography</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      For top-level navigation items in text, use clear language. Although using icons instead of text is often not as
+      helpful to users, if you do use icons, add tooltips to help users understand what the icons mean.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">Do not combine icons and text unless the text provides some user context.</p>
+
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-sm-6">
+        <div class="clrweb-DoxMedia">
+          <app-do-dont type="do" caption="Use text for top-level navigational items.">
+            <div class="header-demo">
+              <img
+                class="clrweb-Img"
+                src="/assets/images/documentation/header/header-2.svg"
+                alt="header with text for top-level navigational items"
+              />
+            </div>
+          </app-do-dont>
+        </div>
+      </div>
+      <div class="clr-col-12 clr-col-sm-6">
+        <div class="clrweb-DoxMedia">
+          <app-do-dont
+            type="warn"
+            caption="Use icons alone for top-level navigation items if you are certain that this is intuitive to your users.
+          For example, if you are certain that your users know a magnifying glass icon means “search,” you can use
+          only the icon."
+          >
+            <div class="header-demo">
+              <img
+                class="clrweb-Img"
+                src="/assets/images/documentation/header/header-3.svg"
+                alt="header with icons for top-level navigational items"
+              />
+            </div>
+          </app-do-dont>
+        </div>
+      </div>
+    </div>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-sm-6">
+        <div class="clrweb-DoxMedia">
+          <app-do-dont
+            type="warn"
+            caption="Only pair icons with text when the provided text gives additional context specific to the user, for
+          example, the user's name."
+          >
+            <div class="header-demo">
+              <img
+                class="clrweb-Img"
+                src="/assets/images/documentation/header/header-3.svg"
+                alt="header with icons and text paired together for top-level navigational items"
+              />
+            </div>
+          </app-do-dont>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="responsive-navigation">Responsive Navigation</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Clarity includes functionality for displaying the navigation on smaller devices like tablets and phones with the
+      responsive navigation component in clarity-angular. For more information, see
+      <a routerLink="/documentation/navigation" fragment="responsive_navigation">Responsive navigation</a> in the
+      Navigation component documentation.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="search">Search</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      There are many different ways to include search in the header. Which way you choose depends on search's prominence
+      and its utility within the application.<br />
+      You can read more about
+      <a href="https://github.com/vmware-clarity/ng-clarity" target="_blank">search</a> in the design spec. The search
+      component itself is a work in progress.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="high-profile">High profile</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Use search as a prominent navigation item in the header if you are building a search-based user experience.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-sm-10">
+        <div class="clrweb-DocMedia-block">
+          <div class="header-demo">
+            <header class="header-1">
+              <div class="branding">
+                <a class="logo-and-title">
+                  <clr-icon shape="file"></clr-icon>
+                  <span class="title">Note App</span>
+                </a>
+              </div>
+              <form class="search">
+                <label for="search_input2">
+                  <input id="search_input2" type="text" placeholder="Search all notes..." />
+                </label>
+              </form>
+              <div class="header-actions">
+                <div class="dropdown">
+                  <button class="nav-icon dropdown-toggle" aria-label="toggle settings menu">
+                    <clr-icon shape="cog"></clr-icon>
+                    <clr-icon shape="angle" direction="down"></clr-icon>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a href="javascript://">About</a>
+                    <a href="javascript://">Preferences</a>
+                    <a href="javascript://">Log out</a>
+                  </div>
+                </div>
+              </div>
+            </header>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="medium-profile">Medium profile</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Use search in addition to navigation items when you have two or three top-level navigational items yet search
+      continues to be core to your navigation experience.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-sm-10">
+        <div class="clrweb-DocMedia-block">
+          <div class="header-demo">
+            <header class="header-1">
+              <div class="branding">
+                <a class="logo-and-title">
+                  <clr-icon shape="file"></clr-icon>
+                  <span class="title">Note App</span>
+                </a>
+              </div>
+              <div class="header-nav">
+                <a href="javascript://" class="nav-link">
+                  <span class="nav-text">Notes</span>
+                </a>
+                <a href="javascript://" class="active nav-link" aria-current="page">
+                  <span class="nav-text">Shared Notes</span>
+                </a>
+              </div>
+              <form class="search">
+                <label for="search_input3">
+                  <input id="search_input3" type="text" placeholder="Search all notes..." />
+                </label>
+              </form>
+              <div class="header-actions">
+                <div class="dropdown" aria-label="toggle settings menu">
+                  <button class="nav-icon dropdown-toggle" aria-label="settings menu button">
+                    <clr-icon shape="cog"></clr-icon>
+                    <clr-icon shape="angle" direction="down"></clr-icon>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a href="javascript://">About</a>
+                    <a href="javascript://">Preferences</a>
+                    <a href="javascript://">Log out</a>
+                  </div>
+                </div>
+              </div>
+            </header>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="clr-mt-24px" cds-text="section" id="low-profile">Low profile</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Use search as a secondary item to the right of the header if search is not core to your navigation experience or
+      if you need to emphasize three or more top-level navigation items.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-sm-10">
+        <div class="clrweb-DocMedia-block">
+          <div class="header-demo">
+            <img
+              class="clrweb-Img"
+              src="/assets/images/documentation/header/header-3.svg"
+              alt="header with search as a secondary item at the right"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="right-side-action-area">Right-Side Action Area</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      The area to the right of the header serves as a location for global actions and top-level navigational items that
+      are important, yet visited less frequently.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-sm-10">
+        <div class="clrweb-DocMedia-block">
+          <div class="header-demo">
+            <img
+              class="clrweb-Img"
+              src="/assets/images/documentation/header/header-1.svg"
+              alt="header with global actions at the right"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="clr-mt-16px p3">
+      For example, the action area could include application settings, user settings, help, about, and other similar
+      items.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="angular-demo" cds-text="title" cds-layout="m-t:xl">Angular Header Component</h2>
+
+    <p cds-text="body" class="clr-mt-24px">The header and subnav support app-level information and navigation links.</p>
+
+    <h3 data-toc-item id="angular-basic" cds-text="section" cds-layout="m-t:lg" class="clr-mt-24px">Basic Header</h3>
+
+    <div class="clr-mt-24px">
+      <clr-header>
+        <div class="branding">
+          <a href="javascript://" class="nav-link">
+            <clr-icon shape="vm-bug"></clr-icon>
+            <span class="title">Project Clarity</span>
+          </a>
+        </div>
+        <div class="header-nav">
+          <a href="javascript://" class="nav-link nav-text">Home</a>
+          <a href="javascript://" class="nav-link nav-text">About</a>
+          <a href="javascript://" class="nav-link nav-text">Services</a>
+        </div>
+        <div class="header-actions">
+          <a href="javascript://" class="nav-link">
+            <clr-icon shape="cog"></clr-icon>
+          </a>
+        </div>
+      </clr-header>
+      <nav class="subnav">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="javascript://" aria-current="page"> Dashboard </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript://">Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript://">Cloud</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript://">Tenants</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <app-stackblitz-example name="header component" [componentTemplate]="example"></app-stackblitz-example>
+
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">CSS Header Component</h2>
+
+    <h3 data-toc-item id="header-css" cds-text="section" class="clr-mt-32px">CSS Classes</h3>
+
+    <h5 id="header-1" cds-text="subsection" class="clr-mt-24px">.header</h5>
+
+    <p cds-text="body" class="clr-mt-16px">
+      <code cds-text="code">.header</code> is a wrapper around the following four sections:
+    </p>
+
+    <ul class="list list-spacer">
+      <li>Branding</li>
+      <li>Navigation</li>
+      <li>Search</li>
+      <li>Settings</li>
+    </ul>
+
+    <h5 id="branding" cds-text="subsection" class="clr-mt-24px">.branding</h5>
+
+    <p cds-text="body" class="clr-mt-16px">
+      <code cds-text="code">.branding</code> contains the product logo and the product title. The logo extends the
+      <code cds-text="code">.cds-icon</code> class and the title extends the <code cds-text="code">.title</code> class.
+    </p>
+
+    <h5 id="header-nav" cds-text="subsection" class="clr-mt-24px">.header-nav</h5>
+
+    <p cds-text="body" class="clr-mt-16px">
+      <code cds-text="code">.header-nav</code> contains the navigation links. Each navigation link extends the
+      <code cds-text="code">.nav-link</code> class along with the <code cds-text="code">.nav-text</code> class for text
+      links and the <code cds-text="code">.nav-icon</code> class icon links.
+    </p>
+
+    <clr-header-demo-links></clr-header-demo-links>
+
+    <h5 id="search" cds-text="subsection" class="clr-mt-24px">.search</h5>
+
+    <p><code cds-text="code">.search</code> is a form containing the search icon and the search input field.</p>
+
+    <h5 id="header-actions" cds-text="subsection" class="clr-mt-24px">.header-actions</h5>
+
+    <p cds-text="body" class="clr-mt-16px" cds-layout="m-b:xxl">
+      <code cds-text="code">.header-actions</code> is a wrapper that contains secondary navigation links. Each
+      navigation link extends the <code cds-text="code">.nav-link</code>
+      class. Navigation links can be text or icons.
+    </p>
+
+    <clr-alert [clrAlertClosable]="false">
+      <clr-alert-item>
+        <span class="alert-text">
+          For information about headers with responsive navigation, see
+          <a routerLink="/documentation/navigation" fragment="responsive_navigation">Responsive Navigation</a>.
+        </span>
+      </clr-alert-item>
+    </clr-alert>
+
+    <h3 data-toc-item id="types" cds-text="section" class="clr-mt-32px">Types</h3>
+    <clr-header-demo-types></clr-header-demo-types>
+
+    <h3 data-toc-item id="color-options" cds-text="subsection" class="clr-mt-32px">Color Options</h3>
+    <clr-header-demo-colors></clr-header-demo-colors>
+
+    <h3 data-toc-item id="subnav" cds-text="section" class="clr-mt-32px">Subnav</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      <code cds-text="code">.subnav</code> immediately follows the <code cds-text="code">.header</code>. It wraps a
+      <a routerLink="/documentation/tabs">tab</a> and an <code cds-text="code">aside</code> section.
+    </p>
+
+    <clr-nav-demo-subnav></clr-nav-demo-subnav>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <app-style-docs styleDocsKey="Headers"></app-style-docs>
+  </app-doc-tab>
+
+  <app-doc-tab tab="accessibility">
+    <h2 class="clr-mt-48px" cds-text="title" id="accessibility">Accessibility</h2>
+
+    <p class="clr-mt-16px" cds-text="body">
+      To let the assistive technologies better track the state of the navigation we recommend adding
+      <code cds-text="code">aria-current="page"</code> to the active link. You will need to add it or remove it
+      depending on which link is currently active. A good marker for that will be the element that is having the class
+      <code cds-text="code">.active</code> on it. The <code cds-text="code">clrAriaCurrentLink</code> directive can be
+      added to any link that uses the <code cds-text="code">routerLink</code> directive to accomplish this.
+    </p>
+
+    <app-nesting-table
+      [componentName]="'Header'"
+      [canNestComponents]="canNestComponents"
+      [cannotNestComponents]="cannotNestComponents"
+      [conditionalNesting]="conditionalNesting"
+    >
+    </app-nesting-table>
+  </app-doc-tab>
+</app-doc-tabs>

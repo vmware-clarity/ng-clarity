@@ -17,6 +17,7 @@ export * from './modal/index';
 export * from './popover/index';
 export * from './utils/index';
 export * from './wizard/index';
+export * from './collapsible-panel/index';
 export * from './accordion/index';
 export * from './stepper/index';
 export * from './progress/spinner/index';

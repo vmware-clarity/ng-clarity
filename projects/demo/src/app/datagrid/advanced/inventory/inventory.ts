@@ -8,7 +8,7 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
 
-import { colors, cpus, names, states, status, usedSpace } from './values';
+import { colors, cpus, events, names, states, status, usedSpace, users } from './values';
 
 export interface VmItem {
   // Type for dynamic access to specific properties
@@ -21,6 +21,8 @@ export interface VmItem {
   cpus: string;
   creation: string;
   color: string;
+  event: string;
+  user: string;
 }
 
 @Injectable()
@@ -47,6 +49,8 @@ export class Inventory {
         usedSpace: this.getItem(i, usedSpace) + ' GHz',
         cpus: this.getItem(i, cpus),
         creation: this.getRandomDate(),
+        event: this.getItem(i, events),
+        user: this.getItem(i, users),
       });
     }
   }

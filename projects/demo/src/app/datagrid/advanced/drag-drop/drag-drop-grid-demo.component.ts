@@ -7,8 +7,9 @@
 
 import { CDK_DROP_LIST, CdkDragDrop, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { AppfxDatagridModule, ColumnDefinition, DatagridDragConfig, SelectionType } from '@clr/addons/datagrid';
+import { AppfxDatagridModule, ColumnDefinition, DatagridDragConfig } from '@clr/addons/datagrid';
 import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
+import { SelectionType } from '@clr/angular/data/datagrid';
 
 import { Inventory, VmItem } from '../inventory/inventory';
 
@@ -89,11 +90,26 @@ export class DragDropGridDemoComponent {
   }
 
   protected drop(event: CdkDragDrop<unknown[]>) {
+    document.body.classList.remove('drag-valid-target');
     event.item.data?.forEach((item: VmItem) => {
       if (this.receivedItems.includes(item.name)) {
         return;
       }
       this.receivedItems.push(item.name);
     });
+  }
+
+  protected dropListEnter() {
+    document.body.classList.remove('drag-invalid-target');
+    document.body.classList.add('drag-valid-target');
+  }
+
+  protected dropEnterInInvalidList() {
+    document.body.classList.remove('drag-valid-target');
+    document.body.classList.add('drag-invalid-target');
+  }
+
+  protected dropInInvalidList() {
+    document.body.classList.remove('drag-invalid-target');
   }
 }

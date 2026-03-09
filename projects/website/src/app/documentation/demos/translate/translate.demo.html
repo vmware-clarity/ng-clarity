@@ -1,0 +1,140 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      AppFx Translate provides translations for AppFx components. It aims to provide independence and applicability of
+      AppFx components across different products using different localization libraries, or to remain independent of the
+      application's chosen localization library.
+    </p>
+
+    <h2 id="design" class="clr-mt-48px" cds-text="title">Design</h2>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="appfx-translate-service">AppfxTranslateService</h3>
+
+    <div class="alert alert-info clr-mt-24px" role="alert">
+      <div class="alert-items">
+        <div class="alert-item static">
+          <div class="alert-icon-wrapper">
+            <clr-icon class="alert-icon" shape="info-circle"></clr-icon>
+          </div>
+          <span class="alert-text">
+            Consumers of the AppFx library should only use the <code cds-text="code">AppfxTranslateService</code> to
+            sync the locale with their application locale.
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <h4 class="clr-mt-24px" cds-text="subsection">Features</h4>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Single locale management point for AppFx components.</li>
+      <li>
+        Simple translate functionality with interpolation arguments similar to
+        <a href="https://github.com/ngx-translate/core" target="_blank">&#64;ngx-translate/core</a>.
+      </li>
+      <li>Per-component translations isolation through <code cds-text="code">InjectionToken</code>s.</li>
+    </ul>
+
+    <h4 class="clr-mt-24px" cds-text="subsection">Limitations &amp; Best Practices</h4>
+    <p class="clr-mt-16px" cds-text="body">
+      <strong>The service does not support:</strong>
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Loading translations from an endpoint.</li>
+    </ul>
+
+    <p class="clr-mt-16px" cds-text="body">
+      <strong>It is discouraged to:</strong>
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        Use the service as a general purpose translate service outside AppFx. It is meant to be a lightweight
+        implementation for AppFx components and lacks general purpose functionalities.
+      </li>
+      <li>
+        Provide global translations. Each AppFx component that needs translations should use its own component providers
+        to achieve isolation.
+      </li>
+    </ul>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="translate-pipe">TranslatePipe</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Exposes the translate functionality of the <code cds-text="code">AppfxTranslateService</code> as a pipe.
+    </p>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="date-time-service">DateTimeService</h3>
+    <p class="clr-mt-16px" cds-text="body">Standardized date-time formatting for AppFx components.</p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        <strong>Limitations:</strong> Custom date formats are not supported. To keep the formatting standardized there
+        are only a few different formatting options.
+      </li>
+    </ul>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="date-time-pipe">DateTimePipe</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Exposes the date-time formatting functionality of the <code cds-text="code">DateTimeService</code> as a pipe.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
+
+    <h3 data-toc-item id="demo" cds-text="section" class="clr-mt-32px">Interactive Demo</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Toggle the locale and format options below to see how the service handles translations and date formatting.
+    </p>
+
+    <div class="demo-section">
+      <clr-select-container>
+        <label>Locale</label>
+        <select clrSelect name="locales" [(ngModel)]="translateService.locale">
+          @for (locale of locales; track locale) {
+          <option [value]="locale[1]">{{ locale[0] }}</option>
+          }
+        </select>
+      </clr-select-container>
+
+      <section class="clr-mt-24px">
+        <p><strong cds-text="medium">Translated Text:</strong> {{ 'hello-world' | translate }}</p>
+      </section>
+
+      <section class="clr-mt-24px">
+        <clr-select-container>
+          <label>DateTimeKind</label>
+          <select clrSelect name="dateTimeKind" [(ngModel)]="dateTimeFormat.dateTimeKind">
+            @for (dateTimeKind of dateTimeKinds; track dateTimeKind) {
+            <option [value]="dateTimeKind[1]">{{ dateTimeKind[0] }}</option>
+            }
+          </select>
+        </clr-select-container>
+
+        <clr-select-container>
+          <label>HourFormat</label>
+          <select clrSelect name="hourFormat" [(ngModel)]="dateTimeFormat.hourFormat">
+            @for (hourFormat of hourFormats; track hourFormat) {
+            <option [value]="hourFormat[1]">{{ hourFormat[0] }}</option>
+            }
+          </select>
+        </clr-select-container>
+
+        <p class="clr-mt-16px">
+          <strong cds-text="medium">Formatted Date:</strong> {{ getNow() | dateTime: dateTimeFormat }}
+        </p>
+      </section>
+    </div>
+
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="translate-demo"
+        [componentTemplate]="defaultHtml"
+        [componentClass]="defaultTs"
+      ></app-stackblitz-example>
+    </div>
+  </app-doc-tab>
+</app-doc-tabs>

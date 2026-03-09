@@ -19,7 +19,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, FormGroupDirective, NgForm } from '@angular/forms';
-import { AccordionService } from '@clr/angular/accordion';
+import { CollapsiblePanelService } from '@clr/angular/collapsible-panel';
 import { Observable, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
@@ -30,18 +30,17 @@ import { ClrStepperPanel } from './stepper-panel';
   selector: 'form[clrStepper]',
   template: `<ng-content></ng-content>`,
   host: {
-    '[class.clr-accordion]': 'true',
     '[class.clr-stepper-forms]': 'true',
   },
-  providers: [StepperService, { provide: AccordionService, useExisting: StepperService }],
+  providers: [StepperService, { provide: CollapsiblePanelService, useExisting: StepperService }],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
 export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input('clrInitialStep') initialPanel: string;
-  @ContentChildren(ClrStepperPanel, { descendants: true }) panels: QueryList<ClrStepperPanel>;
-  subscriptions: Subscription[] = [];
+  @ContentChildren(ClrStepperPanel) panels: QueryList<ClrStepperPanel>;
   form: FormGroupDirective | NgForm;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     @Optional() private formGroup: FormGroupDirective,
@@ -60,7 +59,11 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.initialPanel.currentValue !== changes.initialPanel.previousValue) {
+    if (
+      changes.initialPanel &&
+      !changes.initialPanel.firstChange &&
+      changes.initialPanel.currentValue !== changes.initialPanel.previousValue
+    ) {
       this.stepperService.overrideInitialPanel(this.initialPanel);
     }
   }

@@ -17,12 +17,12 @@ import {
   MockDatagridColumnToggleComponent,
   MockIsRowSelectablePipe,
 } from '@clr/addons/testing';
+import { SelectionType } from '@clr/angular/data/datagrid';
 
 import { DatagridPageDirective } from './datagrid-page.directive';
 import { DatagridComponent } from '../../datagrid.component';
 import { AppfxDatagridModule } from '../../datagrid.module';
 import { DatagridStrings } from '../../i18n/datagrid-strings.service';
-import { SelectionType } from '../../interfaces/selection-type';
 import { ColumnDefinition } from '../../shared/column/column-definitions';
 import { DatagridColumnsOrderModule } from '../column-ordering/datagrid-columns-order.module';
 import { ExportProviderService } from '../export/export-provider.service';
@@ -230,7 +230,6 @@ describe('datagridPage directive', () => {
       [columns]="columnsDefs"
     ></appfx-datagrid>
   `,
-  standalone: true,
 })
 class DatagridForClientSideGridHostComponent {
   @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent: DatagridComponent<unknown>;
@@ -264,7 +263,6 @@ class DatagridForClientSideGridHostComponent {
       (refreshGridData)="refreshData($event)"
     ></appfx-datagrid>
   `,
-  standalone: true,
 })
 class DatagridForServerSideGridHostComponent {
   @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent: DatagridComponent<unknown>;

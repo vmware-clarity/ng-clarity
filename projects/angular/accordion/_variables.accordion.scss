@@ -5,40 +5,93 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use 'sass:map';
-@use '../styles/core/tokens/variables.tokens' as tokens;
-@use '../styles/variables/variables';
+@use '../collapsible-panel/variables.collapsible-panel' as panel-variables;
 
-$clr-accordion-text-color: var(--clr-accordion-text-color) !default;
-$clr-accordion-text-color-hover: var(--clr-accordion-text-color-hover) !default;
-$clr-accordion-text-color-active: var(--clr-accordion-text-color-active) !default;
-$clr-accordion-panel-disabled-color: var(--clr-accordion-panel-disabled-color) !default;
-$clr-accordion-active-background-color: var(--clr-accordion-active-background-color) !default;
-$clr-accordion-content-background-color: var(--clr-accordion-content-background-color) !default;
-$clr-accordion-header-background-color: var(--clr-accordion-header-background-color) !default;
-$clr-accordion-header-disabled-background-color: var(--clr-accordion-header-disabled-background-color) !default;
-$clr-accordion-header-hover-background-color: var(--clr-accordion-header-hover-background-color) !default;
-$clr-accordion-header-active-background-color: var(--clr-accordion-header-active-background-color) !default;
-$clr-accordion-header-open-background-color: var(--clr-accordion-header-open-background-color) !default;
-$clr-accordion-header-open-active-background-color: var(--clr-accordion-header-open-active-background-color) !default;
-$clr-accordion-header-open-hover-background-color: var(--clr-accordion-header-open-hover-background-color) !default;
+$clr-accordion-text-color: var(
+  --clr-accordion-text-color,
+  #{panel-variables.$clr-collapsible-panel-text-color}
+) !default;
+$clr-accordion-text-color-hover: var(
+  --clr-accordion-text-color-hover,
+  #{panel-variables.$clr-collapsible-panel-text-color-hover}
+) !default;
+$clr-accordion-text-color-active: var(
+  --clr-accordion-text-color-active,
+  #{panel-variables.$clr-collapsible-panel-text-color-active}
+) !default;
+$clr-accordion-panel-disabled-color: var(
+  --clr-accordion-panel-disabled-color,
+  #{panel-variables.$clr-collapsible-panel-panel-disabled-color}
+) !default;
+$clr-accordion-content-background-color: var(
+  --clr-accordion-content-background-color,
+  #{panel-variables.$clr-collapsible-panel-content-background-color}
+) !default;
+$clr-accordion-header-background-color: var(
+  --clr-accordion-header-background-color,
+  #{panel-variables.$clr-collapsible-panel-header-background-color}
+) !default;
+$clr-accordion-header-disabled-background-color: var(
+  --clr-accordion-header-disabled-background-color,
+  #{panel-variables.$clr-collapsible-panel-header-disabled-background-color}
+) !default;
+$clr-accordion-header-hover-background-color: var(
+  --clr-accordion-header-hover-background-color,
+  #{panel-variables.$clr-collapsible-panel-header-hover-background-color}
+) !default;
+$clr-accordion-header-active-background-color: var(
+  --clr-accordion-header-active-background-color,
+  #{panel-variables.$clr-collapsible-panel-header-active-background-color}
+) !default;
+$clr-accordion-header-open-background-color: var(
+  --clr-accordion-header-open-background-color,
+  #{panel-variables.$clr-collapsible-panel-header-open-background-color}
+) !default;
+$clr-accordion-header-open-active-background-color: var(
+  --clr-accordion-header-open-active-background-color,
+  #{panel-variables.$clr-collapsible-panel-header-open-active-background-color}
+) !default;
+$clr-accordion-header-open-hover-background-color: var(
+  --clr-accordion-header-open-hover-background-color,
+  #{panel-variables.$clr-collapsible-panel-header-open-hover-background-color}
+) !default;
 
-$clr-accordion-error-color: var(--clr-accordion-error-color) !default;
-$clr-accordion-complete-color: var(--clr-accordion-complete-color) !default;
-$clr-accordion-header-left-indicator: var(--clr-accordion-header-left-indicator) !default;
-$clr-accordion-header-left-current-indicator: var(--clr-accordion-header-left-current-indicator) !default;
-
-$clr-accordion-content-color: var(--clr-accordion-content-color) !default;
+$clr-accordion-content-color: var(
+  --clr-accordion-content-color,
+  #{panel-variables.$clr-collapsible-panel-content-color}
+) !default;
 
 // @Deprecated in v17
-$clr-accordion-content-font-size: var(--clr-accordion-content-font-size) !default;
-$clr-accordion-content-color: var(--clr-accordion-content-color) !default;
+$clr-accordion-content-font-size: var(
+  --clr-accordion-content-font-size,
+  #{panel-variables.$clr-collapsible-panel-content-font-size}
+) !default;
 
-$clr-accordion-responsive-breakpoint: map.get(variables.$clr-grid-breakpoints, sm) !default;
+$clr-accordion-responsive-breakpoint: panel-variables.$clr-collapsible-panel-responsive-breakpoint !default;
 
-$clr-accordion-border-color: var(--clr-accordion-border-color) !default;
-$clr-accordion-border-radius: var(--clr-accordion-border-radius) !default;
-$clr-accordion-border-left-color-complete: var(--clr-accordion-border-left-color-complete) !default;
-$clr-accordion-border-left-color-error: var(--clr-accordion-border-left-color-error) !default;
+$clr-accordion-border-color: var(
+  --clr-accordion-border-color,
+  #{panel-variables.$clr-collapsible-panel-border-color}
+) !default;
+$clr-accordion-border-radius: var(
+  --clr-accordion-border-radius,
+  #{panel-variables.$clr-collapsible-panel-border-radius}
+) !default;
 
-$clr-accordion-step-title-min-width: var(--clr-accordion-step-title-min-width) !default;
+$clr-accordion-theme: (
+  text-color: $clr-accordion-text-color,
+  text-color-hover: $clr-accordion-text-color-hover,
+  text-color-active: $clr-accordion-text-color-active,
+  panel-disabled-color: $clr-accordion-panel-disabled-color,
+  content-background-color: $clr-accordion-content-background-color,
+  header-background-color: $clr-accordion-header-background-color,
+  header-disabled-background-color: $clr-accordion-header-disabled-background-color,
+  header-hover-background-color: $clr-accordion-header-hover-background-color,
+  header-active-background-color: $clr-accordion-header-active-background-color,
+  header-open-background-color: $clr-accordion-header-open-background-color,
+  header-open-active-background-color: $clr-accordion-header-open-active-background-color,
+  header-open-hover-background-color: $clr-accordion-header-open-hover-background-color,
+  border-color: $clr-accordion-border-color,
+  content-color: $clr-accordion-content-color,
+  responsive-breakpoint: $clr-accordion-responsive-breakpoint,
+);

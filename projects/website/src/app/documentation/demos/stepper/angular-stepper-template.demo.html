@@ -1,0 +1,71 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h3 data-toc-item id="template-driven-demo" cds-layout="m-b:md" cds-text="section" class="clr-mt-32px">
+  Angular - Template Forms
+</h3>
+
+<form clrStepper #contactForm="ngForm" (ngSubmit)="templateFormSubmit(contactForm.value)">
+  <clr-stepper-panel ngModelGroup="name">
+    <clr-step-title>Legal Name</clr-step-title>
+    <clr-step-description>Description goes here.</clr-step-description>
+    <clr-step-content>
+      <clr-input-container>
+        <label>First Name</label>
+        <input clrInput [ngModel]="templateForm.name.firstName" name="firstName" required />
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>Last Name</label>
+        <input clrInput [ngModel]="templateForm.name.lastName" name="lastName" required />
+      </clr-input-container>
+
+      <button clrStepButton="next">next</button>
+    </clr-step-content>
+  </clr-stepper-panel>
+
+  <clr-stepper-panel ngModelGroup="contact">
+    <clr-step-title>Contact Information</clr-step-title>
+    <clr-step-description>Description goes here.</clr-step-description>
+    <clr-step-content>
+      <clr-input-container>
+        <label>Email</label>
+        <input clrInput [ngModel]="templateForm.contact.email" name="email" />
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>Phone</label>
+        <input clrInput [ngModel]="templateForm.contact.phone" name="phone" />
+      </clr-input-container>
+
+      <button clrStepButton="next">next</button>
+    </clr-step-content>
+  </clr-stepper-panel>
+
+  <clr-stepper-panel ngModelGroup="password">
+    <clr-step-title>Password</clr-step-title>
+    <clr-step-description>Description goes here.</clr-step-description>
+    <clr-step-content>
+      <clr-password-container>
+        <label>Password</label>
+        <input clrPassword autocomplete="current-password" [ngModel]="templateForm.password.password" name="password" />
+      </clr-password-container>
+
+      <clr-password-container>
+        <label>Confirm Password</label>
+        <input clrPassword autocomplete="current-password" [ngModel]="templateForm.password.confirm" name="confirm" />
+      </clr-password-container>
+
+      <button clrStepButton="submit">submit</button>
+    </clr-step-content>
+  </clr-stepper-panel>
+</form>
+
+<app-stackblitz-example
+  name="stepper with template form"
+  [componentClass]="componentExample"
+  [componentTemplate]="templateExample"
+></app-stackblitz-example>

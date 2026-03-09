@@ -1,0 +1,45 @@
+<svg width="174" height="112" viewBox="0 0 174 112" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g opacity="0.6">
+<mask id="path-1-inside-1_11284_9440" fill="white">
+<path d="M0 0H174V112H0V0Z"/>
+</mask>
+<path d="M0 0H174V112H0V0Z" fill="#1B2B32"/>
+<path d="M174 112V112.3H174.3V112H174ZM0 112H-0.3V112.3H0V112ZM173.7 0V112H174.3V0H173.7ZM174 111.7H0V112.3H174V111.7ZM0.3 112V0H-0.3V112H0.3Z" fill="#4F6169" mask="url(#path-1-inside-1_11284_9440)"/>
+<rect width="174" height="9" fill="black"/>
+<rect opacity="0.5" x="168" y="2" width="4" height="4" fill="white"/>
+<rect opacity="0.5" x="147" y="2" width="18.2215" height="1" fill="white"/>
+<rect opacity="0.5" x="147" y="5" width="18.2215" height="1" fill="white"/>
+<rect opacity="0.5" x="10.0566" y="3.96924" width="18.2215" height="1" fill="white"/>
+<circle opacity="0.5" cx="142.101" cy="3.98096" r="2.5" fill="white"/>
+<rect opacity="0.3" x="2.05273" y="2.03955" width="5" height="5" rx="0.65077" fill="white"/>
+<g opacity="0.5">
+<mask id="path-10-inside-2_11284_9440" fill="white">
+<path d="M0 0H174V112H0V0Z"/>
+</mask>
+<path d="M0 0H174V112H0V0Z" fill="black"/>
+<path d="M174 112V112.3H174.3V112H174ZM0 112H-0.3V112.3H0V112ZM173.7 0V112H174.3V0H173.7ZM174 111.7H0V112.3H174V111.7ZM0.3 112V0H-0.3V112H0.3Z" fill="#4F6169" mask="url(#path-10-inside-2_11284_9440)"/>
+</g>
+<g filter="url(#filter0_d_11284_9440)">
+<rect x="49" y="35" width="77" height="37" rx="1" fill="#22343C"/>
+<rect x="49.5" y="35.5" width="76" height="36" rx="0.5" stroke="black"/>
+<rect x="55" y="41" width="25" height="1" fill="#ACB9BE"/>
+<rect opacity="0.5" x="55" y="46" width="54" height="1" fill="#ACB9BE"/>
+<rect opacity="0.5" x="55" y="51" width="51" height="1" fill="#ACB9BE"/>
+<rect opacity="0.5" x="55" y="56" width="52" height="1" fill="#ACB9BE"/>
+<rect opacity="0.5" x="55" y="61" width="38" height="1" fill="#ACB9BE"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M119.078 38.4518C118.974 38.3484 118.974 38.1809 119.078 38.0775C119.181 37.9742 119.348 37.9742 119.452 38.0775L120.643 39.2686L121.834 38.0775C121.937 37.9742 122.105 37.9742 122.208 38.0775C122.311 38.1809 122.311 38.3484 122.208 38.4518L121.017 39.6428L122.098 40.724C122.202 40.8273 122.202 40.9949 122.098 41.0983C121.995 41.2016 121.827 41.2016 121.724 41.0983L120.643 40.0171L119.562 41.0983C119.458 41.2016 119.291 41.2016 119.187 41.0983C119.084 40.9949 119.084 40.8273 119.187 40.724L120.269 39.6428L119.078 38.4518Z" fill="#ACB8BE"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_11284_9440" x="48" y="35" width="79" height="39" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="0.5"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_11284_9440"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_11284_9440" result="shape"/>
+</filter>
+</defs>
+</svg>

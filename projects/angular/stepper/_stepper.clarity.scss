@@ -6,15 +6,77 @@
  */
 
 @use 'sass:meta';
-@use '../styles/a11y';
 @use '../styles/mixins';
-@use '../accordion/variables.accordion' as accordion-variables;
+@use '../collapsible-panel/variables.collapsible-panel' as panel-variables;
+@use '../collapsible-panel/mixins.collapsible-panel' as collapsible-panel;
 @use '../styles/variables/variables.density' as density;
+@use 'variables.stepper' as stepper-variables;
 
-@include meta.load-css('../accordion/properties.accordion');
+@include meta.load-css('properties.stepper');
 @include mixins.exports('stepper.clarity') {
+  @include collapsible-panel.collapsible-panel('clr-stepper');
+
+  // Left-indicator box-shadows by state
+  .clr-stepper-header {
+    box-shadow: stepper-variables.$clr-stepper-header-left-indicator;
+  }
+
+  .clr-stepper-panel-open > .clr-stepper-header {
+    box-shadow: stepper-variables.$clr-stepper-header-left-current-indicator;
+  }
+
+  .clr-stepper-panel-complete > .clr-stepper-header {
+    box-shadow: stepper-variables.$clr-stepper-header-left-complete-indicator;
+  }
+
+  .clr-stepper-panel-error > .clr-stepper-header {
+    box-shadow: stepper-variables.$clr-stepper-header-left-error-indicator;
+  }
+
+  // Higher specificity overrides so complete/error shadows win over the
+  // .clr-stepper-panel-open shadow when both states coexist on a panel.
+  .clr-stepper-panel-open {
+    .clr-stepper-panel-complete > .clr-stepper-header {
+      box-shadow: stepper-variables.$clr-stepper-header-left-complete-indicator;
+    }
+
+    .clr-stepper-panel-error > .clr-stepper-header {
+      box-shadow: stepper-variables.$clr-stepper-header-left-error-indicator;
+    }
+  }
+
+  // Status icons and visibility
+  .clr-stepper-panel-complete {
+    & > .clr-stepper-complete-icon {
+      display: inline-block;
+      color: stepper-variables.$clr-stepper-complete-color;
+    }
+
+    & > .clr-stepper-angle {
+      visibility: visible;
+    }
+
+    .ng-trigger.clr-stepper-content {
+      display: block;
+    }
+  }
+
+  .clr-stepper-panel-error > .clr-stepper-error-icon {
+    display: inline-block;
+    color: stepper-variables.$clr-stepper-error-color;
+  }
+
+  .clr-stepper-panel-error .clr-stepper-number,
+  .clr-stepper-panel-complete .clr-stepper-number {
+    @include mixins.screen-reader-only();
+  }
+
+  // Stepper form layout
   .clr-stepper-forms {
-    .clr-stepper-header > .clr-accordion-header-button {
+    display: block;
+    margin-bottom: density.$clr-base-vertical-offset-xl;
+
+    .clr-stepper-header > .clr-stepper-header-button {
       align-items: center;
       gap: density.$clr-base-gap-l;
       min-height: density.$clr-base-dg-row-height;
@@ -29,28 +91,32 @@
         > .clr-step-status-icon {
           @include mixins.min-equilateral(density.$clr-base-icon-size-l);
 
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+
           > .clr-step-error-icon,
           > .clr-step-complete-icon {
-            @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+            @include mixins.min-equilateral(density.$clr-base-icon-size-m);
 
             padding: 0;
           }
 
           > .clr-step-error-icon {
-            color: accordion-variables.$clr-accordion-error-color;
+            color: stepper-variables.$clr-stepper-error-color;
           }
 
           > .clr-step-complete-icon {
-            color: accordion-variables.$clr-accordion-complete-color;
+            color: stepper-variables.$clr-stepper-complete-color;
           }
         }
       }
 
       > .clr-step-title-wrapper {
-        min-width: accordion-variables.$clr-accordion-step-title-min-width;
+        display: inline-flex;
+        min-width: panel-variables.$clr-collapsible-panel-title-min-width;
         max-width: calc(264 * (1rem / var(--cds-global-base)));
         width: 100%;
-        display: inline-flex;
         gap: density.$clr-base-gap-xs;
         align-items: center;
 
@@ -60,7 +126,7 @@
           min-width: density.$clr-base-layout-space-l;
         }
 
-        > .clr-accordion-title {
+        > .clr-stepper-title {
           min-width: initial;
           max-width: initial;
           width: initial;
@@ -68,14 +134,14 @@
         }
       }
 
-      > .clr-accordion-description,
+      > .clr-stepper-description,
       > .clr-step-description {
         margin-left: 0;
 
         @include mixins.generate-typography-token('BODY-14-RG-EXP');
       }
 
-      @media (max-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+      @media (max-width: panel-variables.$clr-collapsible-panel-responsive-breakpoint) {
         gap: density.$clr-base-gap-xs;
 
         > .clr-step-status {
@@ -90,18 +156,13 @@
             min-width: initial;
           }
         }
-
-        > .clr-accordion-description,
-        > .clr-step-description {
-          margin-left: 0;
-        }
       }
     }
 
-    .clr-accordion-panel-inactive:not(.clr-accordion-panel-open) > .clr-stepper-header .clr-step-angle {
+    .clr-stepper-panel-inactive:not(.clr-stepper-panel-open) > .clr-stepper-header .clr-step-angle {
       visibility: hidden;
 
-      @media (max-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+      @media (max-width: panel-variables.$clr-collapsible-panel-responsive-breakpoint) {
         display: none;
       }
     }
@@ -113,7 +174,7 @@
     }
   }
 
-  clr-stepper-panel .clr-accordion-inner-content {
+  clr-stepper-panel .clr-stepper-inner-content {
     padding: #{density.$clr-base-vertical-offset-2xl} #{density.$clr-base-layout-space-xl};
 
     clr-step-content > :first-child {

@@ -1,0 +1,45 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h3 data-toc-item cds-text="section" id="color-system-objects-borders" class="clr-mt-32px">Objects and Borders</h3>
+<div class="clr-row clr-mt-24px">
+  <div class="clr-col-3">
+    <h4 cds-text="body medium" class="clr-mt-16px">Application Background</h4>
+    @for (item of colorObjectBorder.applicationBackground; track item) {
+    <app-color-example-item [text]="item.text" [token]="item.color"></app-color-example-item>
+    }
+    <h4 cds-text="body medium" class="clr-mt-16px">Object Borders</h4>
+    @for (item of colorObjectBorder.objectBorders; track item) {
+    <app-color-example-item [text]="item.text" [token]="item.color"></app-color-example-item>
+    }
+  </div>
+
+  <div class="clr-col-3">
+    <h4 cds-text="body medium" class="clr-mt-16px">Hover / Active / Selected</h4>
+    @for (item of colorObjectBorder.states; track item) {
+    <app-color-example-item [text]="item.text" [token]="item.color"></app-color-example-item>
+    }
+  </div>
+
+  <div class="clr-col-3">
+    <h4 cds-text="body medium" class="clr-mt-16px">Containers</h4>
+    @for (item of colorObjectBorder.containers; track item) {
+    <app-color-example-item [text]="item.text" [token]="item.color"></app-color-example-item>
+    }
+  </div>
+
+  <div class="clr-col-3">
+    <h4 cds-text="body medium" class="clr-mt-16px">Shadows</h4>
+    @for (item of colorObjectBorder.shadows; track item) {
+    <app-color-example-item [text]="item.text" [token]="item.boxShadow" [tokenType]="'shadow'"></app-color-example-item>
+    }
+
+    <h4 cds-text="body medium" class="clr-mt-16px">Black / White</h4>
+    @for (item of colorObjectBorder.blackWhite; track item) {
+    <app-color-example-item [text]="item.text" [token]="item.color"></app-color-example-item>
+    }
+  </div>
+</div>
