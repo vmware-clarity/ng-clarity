@@ -45,13 +45,11 @@ import {
             </span>
           </div>
           @if (fileMessagesTemplate) {
-            <div class="clr-subtext-container">
-              <ng-container
-                [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
-                [ngTemplateOutletContext]="fileMessagesTemplateContext"
-                [ngTemplateOutletInjector]="injectorCache.get(file)"
-              ></ng-container>
-            </div>
+            <ng-container
+              [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
+              [ngTemplateOutletContext]="fileMessagesTemplateContext"
+              [ngTemplateOutletInjector]="injectorCache.get(file)"
+            ></ng-container>
           }
         </div>
       }

@@ -79,15 +79,6 @@
     @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
   }
 
-  .clr-subtext-container {
-    flex-basis: 100%;
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    margin-top: density.$clr-base-gap-xs;
-    gap: density.$clr-base-gap-xs;
-  }
-
   .clr-control-inline {
     @include forms-mixins.form-inline-input(true);
 
@@ -107,6 +98,7 @@
     @include mixins.generate-typography-token('CAPTION-LG-11-STD');
 
     color: forms-variables.$clr-forms-subtext-color;
+    margin-top: density.$clr-base-gap-xs;
 
     &.error {
       color: forms-variables.$clr-forms-invalid-text-color;
@@ -122,6 +114,11 @@
     display: flex;
     align-items: flex-start;
     gap: density.$clr-base-gap-xs;
+    margin-top: density.$clr-base-gap-xs;
+
+    .clr-subtext {
+      margin: 0;
+    }
   }
 
   .clr-validate-icon {
@@ -180,12 +177,6 @@
       margin-top: density.$clr-base-vertical-offset-l;
     }
 
-    .clr-subtext-container {
-      flex-basis: auto;
-      margin-top: 0;
-      flex-wrap: nowrap;
-    }
-
     .clr-control-container {
       display: flex;
       flex-flow: row wrap;
@@ -196,12 +187,18 @@
     .clr-subtext {
       display: inline-block;
       align-self: flex-start;
-      margin-top: 0;
+      margin-left: density.$clr-base-gap-s;
     }
 
     .clr-subtext-wrapper {
       flex-basis: auto;
       flex-direction: row;
+      align-self: flex-start;
+      margin-left: density.$clr-base-gap-s;
+
+      .clr-subtext {
+        margin: 0;
+      }
     }
   }
 }

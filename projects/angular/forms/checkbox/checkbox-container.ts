@@ -25,18 +25,14 @@ import { ClrCheckbox } from './checkbox';
     }
     <div class="clr-control-container" [class.clr-control-inline]="clrInline" [ngClass]="controlClass()">
       <ng-content select="clr-checkbox-wrapper,clr-toggle-wrapper"></ng-content>
-      @if (showHelper || showInvalid || showValid) {
-        <div class="clr-subtext-container">
-          @if (showHelper) {
-            <ng-content select="clr-control-helper"></ng-content>
-          }
-          @if (showInvalid) {
-            <ng-content select="clr-control-error"></ng-content>
-          }
-          @if (showValid) {
-            <ng-content select="clr-control-success"></ng-content>
-          }
-        </div>
+      @if (showHelper) {
+        <ng-content select="clr-control-helper"></ng-content>
+      }
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
   `,
