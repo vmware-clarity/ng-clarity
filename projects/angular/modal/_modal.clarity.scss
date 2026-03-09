@@ -171,22 +171,14 @@
   }
 
   .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     border-bottom: none;
     padding: modal-variables.$clr-modal-vertical-space modal-variables.$clr-modal-horizontal-space 0;
 
     & + .modal-footer {
       padding-top: modal-variables.$clr-modal-vertical-gap;
-    }
-
-    // TODO: This class is used only in the clr-modal template.
-    // It should be merged this with `.modal-header` in a major version
-    // because this would be breaking for the static modals.
-    &--accessible {
-      @extend .modal-header;
-
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
     }
 
     .modal-title,
@@ -195,19 +187,7 @@
       margin: 0;
 
       &:not([cds-text]) {
-        //cds-text do not have color, margin
-        font-family: modal-variables.$clr-modal-title-font-family; //TODO remove line and PI tokens in GA 17+
-        //TODO remove API tokens overrides in GA 17+
-
-        @include mixins.generate-typography-token(
-          'SECTION-20-STD',
-          (
-            font-size: modal-variables.$clr-modal-title-font-size,
-            font-weight: modal-variables.$clr-modal-title-font-weight,
-            line-height: modal-variables.$clr-modal-title-line-height,
-            letter-spacing: modal-variables.$clr-modal-title-letter-spacing,
-          )
-        );
+        @include mixins.generate-typography-token('SECTION-20-STD');
       }
     }
 
