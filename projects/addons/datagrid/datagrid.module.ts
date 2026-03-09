@@ -15,7 +15,7 @@ import { AppfxA11yModule } from '@clr/addons/a11y';
 import { AppfxDatagridFiltersModule } from '@clr/addons/datagrid-filters';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 import { ClrCheckboxModule, ClrInputModule } from '@clr/angular/forms';
-import { ClarityIcons, ClrIcon, dragHandleIcon } from '@clr/angular/icon';
+import { angleIcon, banIcon, ClarityIcons, ClrIcon, dragHandleIcon, plusIcon } from '@clr/angular/icon';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 import { ClrLoadingModule } from '@clr/angular/utils/loading';
 
@@ -92,7 +92,7 @@ const exportedDirectives: Array<Type<any>> = [
 })
 export class AppfxDatagridModule {
   constructor() {
-    ClarityIcons.addIcons(dragHandleIcon);
+    ClarityIcons.addIcons(angleIcon, banIcon, dragHandleIcon, plusIcon);
   }
 
   static forRoot(errorNotifiableService: Type<ErrorNotifiable>): ModuleWithProviders<AppfxDatagridModule> {

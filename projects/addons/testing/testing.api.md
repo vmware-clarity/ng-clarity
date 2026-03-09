@@ -135,6 +135,10 @@ export class GridHelper {
     // (undocumented)
     findActionBarButton(label: string): HTMLButtonElement | undefined;
     // (undocumented)
+    findFooterButton(label: string): HTMLButtonElement | undefined;
+    // (undocumented)
+    findFooterDropdownChildButton(label: string): HTMLButtonElement | undefined;
+    // (undocumented)
     getActionBarActionLabels(hasSpan?: boolean): Array<string>;
     // (undocumented)
     getFilterInput(): FilterInputTestHelper;

@@ -243,7 +243,6 @@ export default function () {
         expect(context.clarityDirective.getTabIndex(10)).toBe(0, "Month 11 does't have tabindex 0");
       });
 
-      // IE doesn't handle KeyboardEvent constructor
       it('handles the right arrow', function () {
         createMonthPicker(this, new DayModel(2015, 0, 1));
 

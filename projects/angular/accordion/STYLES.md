@@ -9,7 +9,6 @@
 | --clr-accordion-text-color-active                   | Text color of the accordion header when active.                   |
 | --clr-accordion-text-color-selected                 | Text color of the accordion header when selected.                 |
 | --clr-accordion-panel-disabled-color                | Text color of the accordion header when disabled.                 |
-| --clr-accordion-active-background-color             | Background color of the active accordion panel.                   |
 | --clr-accordion-content-background-color            | Background color of the accordion content area.                   |
 | --clr-accordion-content-color                       | Color of the text in the accordion content area.                  |
 | --clr-accordion-content-font-size                   | DEPRECATED Font size of the text in the accordion content area.   |
