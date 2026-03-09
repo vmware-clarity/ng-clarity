@@ -94,11 +94,6 @@ export class OptionSelectionService<T> {
 
   // TODO: Add support for trackBy and compareFn
   setSelectionValue(value: T | T[]): void {
-    // NOTE: Currently we assume that no 2 options will have the same value
-    // but Eudes and I discussed that this is a possibility but we will handle
-    // this later
-
-    // if selection is undefined, or its value hasn't changed, or changing from null <-> undefined, that's not really changing so we return
     if (!this.selectionModel || this.selectionModel.model === value || (!this.selectionModel.model && !value)) {
       return;
     }
