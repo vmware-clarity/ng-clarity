@@ -137,7 +137,9 @@ export default function () {
       service.setSelectionValue([{ id: 1 }, { id: 2 }]);
       expect(emitCount).toBe(1);
       service.setSelectionValue([{ id: 2 }, { id: 1 }]); // same identities, different refs and order
-      expect(emitCount).toBe(1);
+      expect(emitCount).toBe(2);
+      service.setSelectionValue([{ id: 2 }, { id: 1 }]); // same identities and order, different refs
+      expect(emitCount).toBe(2);
     });
 
     it('should correctly handle falsy values like 0', () => {
