@@ -101,7 +101,7 @@
     "@types/prismjs": "1.26.6",
     "@typescript-eslint/eslint-plugin": "8.55.0",
     "@typescript-eslint/parser": "8.55.0",
-    "autoprefixer": "10.4.24",
+    "autoprefixer": "10.4.27",
     "csso-cli": "4.0.2",
     "domino": "2.1.6",
     "eslint": "9.39.2",
