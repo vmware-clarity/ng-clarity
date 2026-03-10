@@ -47,8 +47,6 @@
 
         cds-icon,
         clr-icon {
-          transform: none;
-
           &[shape^='caret'],
           &[shape^='angle'] {
             right: button-variables.$clr-btn-horizontal-padding;
