@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectorRef, Component, Input, OnDestroy, Optional, SkipSelf } from '@angular/core';
-import { ClrPopoverHostDirective, ClrPopoverService } from '@clr/angular/popover/common';
+import { ClrPopoverHostDirective, ClrPopoverPoint, ClrPopoverService } from '@clr/angular/popover/common';
 import { FOCUS_SERVICE_PROVIDER } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
@@ -39,6 +39,10 @@ export class ClrDropdown implements OnDestroy {
   ) {
     this.subscriptions.push(dropdownService.changes.subscribe(value => (popoverService.open = value)));
     this.subscriptions.push(popoverService.openChange.subscribe(() => cdr.markForCheck()));
+  }
+
+  openAtPoint(point: ClrPopoverPoint, event?: Event) {
+    this.popoverService.openAtPoint(point, event);
   }
 
   ngOnDestroy() {

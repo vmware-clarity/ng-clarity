@@ -11,6 +11,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule, ClrPopoverService, ÇlrClrPopoverModuleNext } from '@clr/angular';
 
+import { DatagridContextMenuDemo } from './datagrid-context-menu.demo';
+import { DropdownContextMenuDemo } from './dropdown-context-menu.demo';
+import { PopoverContextMenuDemo } from './popover-context-menu.demo';
 import { PopoversDemo } from './popovers.demo';
 import { ROUTING } from './popovers.demo.routing';
 
@@ -23,6 +26,9 @@ import { ROUTING } from './popovers.demo.routing';
     ROUTING,
     FormsModule,
     ReactiveFormsModule,
+    DatagridContextMenuDemo,
+    DropdownContextMenuDemo,
+    PopoverContextMenuDemo,
   ],
   providers: [ClrPopoverService],
   declarations: [PopoversDemo],

@@ -6,7 +6,14 @@
  */
 
 import { hasModifierKey } from '@angular/cdk/keycodes';
-import { ConnectedPosition, Overlay, OverlayConfig, OverlayContainer, OverlayRef } from '@angular/cdk/overlay';
+import {
+  ConnectedPosition,
+  FlexibleConnectedPositionStrategyOrigin,
+  Overlay,
+  OverlayConfig,
+  OverlayContainer,
+  OverlayRef,
+} from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
 import { isPlatformBrowser } from '@angular/common';
 import {
@@ -25,7 +32,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { Keys } from '@clr/angular/utils';
-import { fromEvent, merge, Subscription } from 'rxjs';
+import { fromEvent, merge, Subscription, switchMap, timer } from 'rxjs';
 
 import { ClrPopoverService } from './providers/popover.service';
 import {
@@ -141,11 +148,24 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this._scrollToClose = !!scrollToClose;
   }
 
+  @Input('clrPopoverContentOrigin')
+  set contentOrigin(origin: FlexibleConnectedPositionStrategyOrigin) {
+    if (origin && 'x' in origin && 'y' in origin) {
+      this.popoverService.anchorPoint = origin as { x: number; y: number };
+    } else if (origin instanceof ElementRef) {
+      this.popoverService.anchorElementRef = origin;
+      this.popoverService.anchorPoint = null;
+    } else if (origin instanceof Element) {
+      this.popoverService.anchorElementRef = new ElementRef(origin as HTMLElement);
+      this.popoverService.anchorPoint = null;
+    }
+  }
+
   private get positionStrategy() {
     return this.overlay
       .position()
-      .flexibleConnectedTo(this.popoverService.anchorElementRef)
-      .setOrigin(this.popoverService.anchorElementRef)
+      .flexibleConnectedTo(this.popoverService.origin)
+      .setOrigin(this.popoverService.origin)
       .withPush(true)
       .withPositions([this.preferredPosition, ...this._availablePositions])
       .withFlexibleDimensions(true);
@@ -204,28 +224,39 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
           this.closePopover();
         }
       }),
-      this.overlayRef.outsidePointerEvents().subscribe(event => {
-        // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
-        if (this.elementRef && this.elementRef.nativeElement.contains(event.target)) {
-          return;
-        }
 
-        // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
-        const isToggleButton =
-          this.popoverService.openEvent &&
-          ((this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
-            (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
-            this.popoverService.openEvent.target === event.target);
-
-        if (isToggleButton) {
-          event.stopPropagation();
-        }
-
-        if (this._outsideClickClose || isToggleButton) {
-          this.closePopover();
-        }
-      })
+      this.createOutsideClickSubscription()
     );
+  }
+
+  /**
+   * Point-based origins (context menus) delay the subscription to avoid the
+   * mouseup from the same right-click that opened the popover.
+   */
+  private createOutsideClickSubscription(): Subscription {
+    const outsideEvents$ = this.popoverService.anchorPoint
+      ? timer(500).pipe(switchMap(() => this.overlayRef.outsidePointerEvents()))
+      : this.overlayRef.outsidePointerEvents();
+
+    return outsideEvents$.subscribe(event => {
+      if (this.elementRef && this.elementRef.nativeElement.contains(event.target)) {
+        return;
+      }
+
+      const isToggleButton =
+        this.popoverService.openEvent &&
+        ((this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
+          (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
+          this.popoverService.openEvent.target === event.target);
+
+      if (isToggleButton) {
+        event.stopPropagation();
+      }
+
+      if (this._outsideClickClose || isToggleButton) {
+        this.closePopover();
+      }
+    });
   }
 
   private resetPosition() {
@@ -243,13 +274,15 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.removeOverlay();
     this.popoverService.open = false;
 
-    const shouldFocusTrigger =
-      this.popoverType !== ClrPopoverType.TOOLTIP &&
-      (document.activeElement === document.body ||
-        document.activeElement === this.popoverService.anchorElementRef?.nativeElement);
+    if (this.popoverService.anchorElementRef) {
+      const shouldFocusTrigger =
+        this.popoverType !== ClrPopoverType.TOOLTIP &&
+        (document.activeElement === document.body ||
+          document.activeElement === this.popoverService.anchorElementRef.nativeElement);
 
-    if (shouldFocusTrigger) {
-      this.popoverService.focusAnchor();
+      if (shouldFocusTrigger) {
+        this.popoverService.focusAnchor();
+      }
     }
   }
 
@@ -272,13 +305,15 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       this.overlayRef.attach(this.domPortal);
     }
 
-    this.popoverService?.anchorElementRef?.nativeElement.scrollIntoView({
-      behavior: 'instant',
-      block: 'nearest',
-      inline: 'nearest',
-    });
+    if (this.popoverService.anchorElementRef) {
+      this.popoverService.anchorElementRef.nativeElement.scrollIntoView({
+        behavior: 'instant',
+        block: 'nearest',
+        inline: 'nearest',
+      });
 
-    this.setupIntersectionObserver();
+      this.setupIntersectionObserver();
+    }
 
     setTimeout(() => {
       // Get Scrollable Parents
@@ -375,6 +410,17 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     }
 
     const anchor = this.getRootPopover(this)?.popoverService?.anchorElementRef?.nativeElement;
+
+    if (!anchor && this.popoverService.anchorPoint) {
+      this.zone.runOutsideAngular(() => {
+        this.subscriptions.push(
+          fromEvent(window, 'scroll', { passive: true, capture: true }).subscribe(() => {
+            this.zone.run(() => this.closePopover());
+          })
+        );
+      });
+      return;
+    }
 
     const scrollableParents = this.getScrollableParents(anchor);
 

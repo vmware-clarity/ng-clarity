@@ -5,20 +5,27 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { ElementRef, Injectable } from '@angular/core';
 import { preventArrowKeyScroll } from '@clr/angular/utils';
 import { Observable, Subject } from 'rxjs';
 
 import { ClrPopoverPosition } from '../utils/popover-positions';
 
+export interface ClrPopoverPoint {
+  x: number;
+  y: number;
+}
+
 // Popovers might need to ignore click events on an element
 // (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
-
 @Injectable()
 export class ClrPopoverService {
   anchorElementRef: ElementRef<HTMLElement>;
+  anchorPoint: ClrPopoverPoint | null = null;
   closeButtonRef: ElementRef;
   panelClass: string[] = [];
+
   private _open = false;
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;
@@ -27,6 +34,15 @@ export class ClrPopoverService {
   private _resetPositions = new Subject<void>();
   private _updatePosition = new Subject<void>();
   private _popoverVisible = new Subject<boolean>();
+
+  /**
+   * Returns the CDK-compatible origin for overlay positioning.
+   * When `anchorPoint` is set, the overlay positions relative to that point
+   * (useful for context menus). Otherwise falls back to `anchorElementRef`.
+   */
+  get origin(): FlexibleConnectedPositionStrategyOrigin {
+    return this.anchorPoint ?? this.anchorElementRef;
+  }
 
   get openChange(): Observable<boolean> {
     return this._openChange.asObservable();
@@ -51,6 +67,9 @@ export class ClrPopoverService {
     value = !!value;
     if (this._open !== value) {
       this._open = value;
+      if (!value) {
+        this.anchorPoint = null;
+      }
       this._openChange.next(value);
     }
   }
@@ -84,6 +103,24 @@ export class ClrPopoverService {
 
     this.openEvent = event;
     this.open = !this.open;
+  }
+
+  /**
+   * Opens the popover at a specific screen coordinate.
+   * Useful for context menus where the popover should appear at the cursor position.
+   */
+  openAtPoint(point: ClrPopoverPoint, event?: Event) {
+    if (event) {
+      this.openEvent = event;
+    }
+
+    if (this._open) {
+      this._open = false;
+      this._openChange.next(false);
+    }
+
+    this.anchorPoint = point;
+    this.open = true;
   }
 
   popoverVisibleEmit(visible: boolean) {
