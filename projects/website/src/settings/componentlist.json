@@ -178,6 +178,11 @@
       "storybookPath": "forms-reactive"
     },
     {
+      "url": "popover",
+      "text": "Popover",
+      "type": "component"
+    },
+    {
       "url": "progress",
       "text": "Progress Bar",
       "type": "component"
