@@ -139,5 +139,24 @@ export default function () {
       service.setSelectionValue([{ id: 2 }, { id: 1 }]); // same identities, different refs and order
       expect(emitCount).toBe(1);
     });
+
+    it('should correctly handle falsy values like 0', () => {
+      const service = new OptionSelectionService<number>();
+      service.selectionModel = new SingleSelectComboboxModel<number>();
+
+      let emitCount = 0;
+      service.selectionChanged.subscribe(() => emitCount++);
+
+      service.setSelectionValue(0);
+      expect(emitCount).toBe(1);
+
+      // Should emit again because null is different from 0
+      service.setSelectionValue(null);
+      expect(emitCount).toBe(2);
+
+      // Should emit again because 0 is different from null
+      service.setSelectionValue(0);
+      expect(emitCount).toBe(3);
+    });
   });
 }

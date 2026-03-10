@@ -132,10 +132,13 @@ export class OptionSelectionService<T> {
     if (current === value) {
       return true;
     }
-    if (!current && !value) {
+    // Check if both are null or undefined.
+    if ((current === null || current === undefined) && (value === null || value === undefined)) {
       return true;
     }
-    if (!current || !value) {
+    // Check if one is null or undefined and the other is not.
+    // We already checked for both being null or undefined.
+    if (current === null || current === undefined || value === null || value === undefined) {
       return false;
     }
 
@@ -145,8 +148,9 @@ export class OptionSelectionService<T> {
       if (cur.length !== val.length) {
         return false;
       }
-      const curIds = cur.map(this._identityFn).sort();
-      const valIds = val.map(this._identityFn).sort();
+      // We only consider values equal if they are ordered the same way.
+      const curIds = cur.map(this._identityFn);
+      const valIds = val.map(this._identityFn);
       return curIds.every((id, i) => id === valIds[i]);
     } else {
       return this._identityFn(current as T) === this._identityFn(value as T);
