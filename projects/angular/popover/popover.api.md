@@ -274,15 +274,11 @@ export enum ClrPopoverPosition {
 // @public (undocumented)
 export class ClrPopoverService {
     // (undocumented)
-    anchorElementRef: ElementRef<HTMLElement>;
-    // (undocumented)
-    anchorPoint: ClrPopoverPoint | null;
-    // (undocumented)
     closeButtonRef: ElementRef;
     // (undocumented)
-    focusAnchor(): void;
-    // (undocumented)
     focusCloseButton(): void;
+    // (undocumented)
+    focusOrigin(): void;
     // (undocumented)
     getEventChange(): Observable<Event>;
     // (undocumented)
@@ -296,7 +292,12 @@ export class ClrPopoverService {
     // (undocumented)
     get openEvent(): Event;
     set openEvent(event: Event);
-    get origin(): FlexibleConnectedPositionStrategyOrigin;
+    // (undocumented)
+    origin: FlexibleConnectedPositionStrategyOrigin;
+    // (undocumented)
+    get originElement(): ElementRef<HTMLElement> | null;
+    // (undocumented)
+    get originPoint(): ClrPopoverPoint | null;
     // (undocumented)
     panelClass: string[];
     // (undocumented)

@@ -184,7 +184,7 @@ export default function (): void {
       const content = document.body.querySelectorAll('div.clr-popover-content');
       expect(content.length).toBe(1);
       expect(content[0].textContent.trim()).toBe('Point popover content');
-      expect(popoverService.anchorPoint).toEqual(point);
+      expect(popoverService.originPoint).toEqual(point);
 
       fixture.componentInstance.openState = false;
       fixture.detectChanges();
@@ -213,7 +213,7 @@ export default function (): void {
       fixture.detectChanges();
       tick();
 
-      expect(popoverService.anchorPoint).toBeNull();
+      expect(popoverService.originPoint).toBeNull();
 
       fixture.destroy();
     }));

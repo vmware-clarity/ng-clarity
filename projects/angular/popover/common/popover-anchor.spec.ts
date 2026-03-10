@@ -36,7 +36,7 @@ export default function (): void {
       });
 
       it('registers the anchor element with the event service', function (this: Context) {
-        expect(this.popoverService.anchorElementRef).toEqual(this.testComponent.anchor);
+        expect(this.popoverService.origin).toEqual(this.testComponent.anchor);
       });
     });
 

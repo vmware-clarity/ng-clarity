@@ -99,8 +99,8 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
    *
    * @description
    * A setter for the position of the ClrSignpostContent popover. This is a combination of the following:
-   * - anchorPoint - where on the trigger to anchor the ClrSignpostContent
-   * - popoverPoint - where on the ClrSignpostContent container to align with the anchorPoint
+   * - anchorPoint - where on the trigger to anchor the content
+   * - popoverPoint - where on the content container to align with the anchor
    * - offsetY - where on the Y axis to align the ClrSignpostContent so it meets specs
    * - offsetX - where on the X axis to align the ClrSignpostContent so it meets specs
    * There are 12 possible positions to place a ClrSignpostContent container:

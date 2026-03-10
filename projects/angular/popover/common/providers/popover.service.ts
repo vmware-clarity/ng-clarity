@@ -17,12 +17,9 @@ export interface ClrPopoverPoint {
   y: number;
 }
 
-// Popovers might need to ignore click events on an element
-// (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
 @Injectable()
 export class ClrPopoverService {
-  anchorElementRef: ElementRef<HTMLElement>;
-  anchorPoint: ClrPopoverPoint | null = null;
+  origin: FlexibleConnectedPositionStrategyOrigin;
   closeButtonRef: ElementRef;
   panelClass: string[] = [];
 
@@ -35,13 +32,12 @@ export class ClrPopoverService {
   private _updatePosition = new Subject<void>();
   private _popoverVisible = new Subject<boolean>();
 
-  /**
-   * Returns the CDK-compatible origin for overlay positioning.
-   * When `anchorPoint` is set, the overlay positions relative to that point
-   * (useful for context menus). Otherwise falls back to `anchorElementRef`.
-   */
-  get origin(): FlexibleConnectedPositionStrategyOrigin {
-    return this.anchorPoint ?? this.anchorElementRef;
+  get originElement(): ElementRef<HTMLElement> | null {
+    return this.origin instanceof ElementRef ? this.origin : null;
+  }
+
+  get originPoint(): ClrPopoverPoint | null {
+    return this.origin && 'x' in this.origin && 'y' in this.origin ? (this.origin as ClrPopoverPoint) : null;
   }
 
   get openChange(): Observable<boolean> {
@@ -67,9 +63,6 @@ export class ClrPopoverService {
     value = !!value;
     if (this._open !== value) {
       this._open = value;
-      if (!value) {
-        this.anchorPoint = null;
-      }
       this._openChange.next(value);
     }
   }
@@ -119,7 +112,7 @@ export class ClrPopoverService {
       this._openChange.next(false);
     }
 
-    this.anchorPoint = point;
+    this.origin = point;
     this.open = true;
   }
 
@@ -139,7 +132,7 @@ export class ClrPopoverService {
     this.closeButtonRef.nativeElement?.focus();
   }
 
-  focusAnchor(): void {
-    this.anchorElementRef?.nativeElement?.focus({ preventScroll: true });
+  focusOrigin(): void {
+    this.originElement?.nativeElement?.focus({ preventScroll: true });
   }
 }

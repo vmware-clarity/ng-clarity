@@ -25,10 +25,12 @@ The service is responsible for:
   - **`toggleWithEvent(event: any)`**: A helper method used by triggers. It toggles the `open` state, stores the triggering event (to prevent conflicts like "click outside" closing immediately), and prevents default scrolling behavior for arrow keys.
   - **`openEvent`**: Stores the specific browser event that triggered the opening of the popover.
 
-- **Focus & Anchor Management**:
-  - **`anchorElementRef`**: Holds the `ElementRef` of the anchor/trigger element. This is used by the CDK to calculate where the overlay should appear.
+- **Focus & Origin Management**:
+  - **`origin`**: Holds the `FlexibleConnectedPositionStrategyOrigin` — either an `ElementRef` (anchor element) or a `ClrPopoverPoint` (`{ x, y }` coordinate). This is used by the CDK to calculate where the overlay should appear.
+  - **`originElement`**: Convenience getter that returns the origin as `ElementRef<HTMLElement>` when element-based, or `null` when point-based.
+  - **`originPoint`**: Convenience getter that returns the origin as `ClrPopoverPoint` when point-based, or `null` when element-based.
   - **`closeButtonRef`**: Holds the `ElementRef` of the internal close button (if applicable).
-  - **`focusAnchor()`**: A utility method to return focus to the anchor element (e.g., when the menu closes), ensuring accessibility compliance.
+  - **`focusOrigin()`**: A utility method to return focus to the origin element (e.g., when the menu closes), ensuring accessibility compliance. No-op for point-based origins.
   - **`focusCloseButton()`**: Moves focus to the close button inside the content when appropriate.
 
 - **Reactive Streams**:

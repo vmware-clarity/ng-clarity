@@ -18,6 +18,6 @@ import { ClrPopoverService } from './providers/popover.service';
 })
 export class ClrPopoverAnchor {
   constructor(popoverService: ClrPopoverService, element: ElementRef<HTMLButtonElement>) {
-    popoverService.anchorElementRef = element;
+    popoverService.origin = element;
   }
 }

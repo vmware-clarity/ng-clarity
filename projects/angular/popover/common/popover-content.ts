@@ -150,14 +150,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
   @Input('clrPopoverContentOrigin')
   set contentOrigin(origin: FlexibleConnectedPositionStrategyOrigin) {
-    if (origin && 'x' in origin && 'y' in origin) {
-      this.popoverService.anchorPoint = origin as { x: number; y: number };
-    } else if (origin instanceof ElementRef) {
-      this.popoverService.anchorElementRef = origin;
-      this.popoverService.anchorPoint = null;
-    } else if (origin instanceof Element) {
-      this.popoverService.anchorElementRef = new ElementRef(origin as HTMLElement);
-      this.popoverService.anchorPoint = null;
+    if (origin instanceof Element) {
+      this.popoverService.origin = new ElementRef(origin as HTMLElement);
+    } else {
+      this.popoverService.origin = origin;
     }
   }
 
@@ -225,7 +221,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         }
       }),
 
-      this.popoverService.anchorPoint
+      this.popoverService.originPoint
         ? this.createPointBasedOutsideClickSubscription()
         : this.createAnchorBasedOutsideClickSubscription()
     );
@@ -290,14 +286,14 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.removeOverlay();
     this.popoverService.open = false;
 
-    if (this.popoverService.anchorElementRef) {
+    if (this.popoverService.originElement) {
       const shouldFocusTrigger =
         this.popoverType !== ClrPopoverType.TOOLTIP &&
         (document.activeElement === document.body ||
-          document.activeElement === this.popoverService.anchorElementRef.nativeElement);
+          document.activeElement === this.popoverService.originElement.nativeElement);
 
       if (shouldFocusTrigger) {
-        this.popoverService.focusAnchor();
+        this.popoverService.focusOrigin();
       }
     }
   }
@@ -321,8 +317,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       this.overlayRef.attach(this.domPortal);
     }
 
-    if (this.popoverService.anchorElementRef) {
-      this.popoverService.anchorElementRef.nativeElement.scrollIntoView({
+    if (this.popoverService.originElement) {
+      this.popoverService.originElement.nativeElement.scrollIntoView({
         behavior: 'instant',
         block: 'nearest',
         inline: 'nearest',
@@ -400,14 +396,13 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    * This handles the "Close on Scroll" logic much cheaper than getBoundingClientRect.
    */
   private setupIntersectionObserver() {
-    if (!this.popoverService.anchorElementRef || this.intersectionObserver) {
+    if (!this.popoverService.originElement || this.intersectionObserver) {
       return;
     }
 
     this.intersectionObserver = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
-          // If the anchor is no longer visible (scrolled out of view)
           if (!entry.isIntersecting && this.popoverService.open) {
             this.zone.run(() => this.closePopover());
           }
@@ -416,7 +411,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       { root: null, threshold: 0.8 }
     );
 
-    this.intersectionObserver.observe(this.popoverService.anchorElementRef.nativeElement);
+    this.intersectionObserver.observe(this.popoverService.originElement.nativeElement);
   }
 
   //Align the popover on scrolling
@@ -425,9 +420,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    const anchor = this.getRootPopover(this)?.popoverService?.anchorElementRef?.nativeElement;
+    const anchor = this.getRootPopover(this)?.popoverService?.originElement?.nativeElement;
 
-    if (!anchor && this.popoverService.anchorPoint) {
+    if (!anchor && this.popoverService.originPoint) {
       this.zone.runOutsideAngular(() => {
         this.subscriptions.push(
           fromEvent(window, 'scroll', { passive: true, capture: true }).subscribe(() => {

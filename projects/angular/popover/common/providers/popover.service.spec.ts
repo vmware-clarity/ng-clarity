@@ -105,8 +105,8 @@ export default function (): void {
         const point = { x: 100, y: 200 };
         this.popoverService.openAtPoint(point);
         expect(this.popoverService.open).toBeTrue();
-        expect(this.popoverService.anchorPoint).toEqual(point);
         expect(this.popoverService.origin).toEqual(point);
+        expect(this.popoverService.originPoint).toEqual(point);
       });
 
       it('opens at a point with an event', function (this: TestContext) {
@@ -114,28 +114,22 @@ export default function (): void {
         const event = new MouseEvent('contextmenu');
         this.popoverService.openAtPoint(point, event);
         expect(this.popoverService.open).toBeTrue();
-        expect(this.popoverService.anchorPoint).toEqual(point);
+        expect(this.popoverService.originPoint).toEqual(point);
         expect(this.popoverService.openEvent).toBe(event);
       });
 
-      it('clears anchorPoint when closed', function (this: TestContext) {
-        this.popoverService.openAtPoint({ x: 10, y: 20 });
-        expect(this.popoverService.anchorPoint).toEqual({ x: 10, y: 20 });
-        this.popoverService.open = false;
-        expect(this.popoverService.anchorPoint).toBeNull();
-      });
-
-      it('returns anchorPoint as origin when set', function (this: TestContext) {
+      it('returns originPoint when origin is a point', function (this: TestContext) {
         const point = { x: 300, y: 400 };
-        this.popoverService.anchorPoint = point;
-        expect(this.popoverService.origin).toBe(point);
+        this.popoverService.origin = point;
+        expect(this.popoverService.originPoint).toEqual(point);
+        expect(this.popoverService.originElement).toBeNull();
       });
 
-      it('returns anchorElementRef as origin when no point is set', function (this: TestContext) {
+      it('returns originElement when origin is an ElementRef', function (this: TestContext) {
         const elRef = { nativeElement: document.createElement('button') };
-        this.popoverService.anchorElementRef = elRef as any;
-        this.popoverService.anchorPoint = null;
-        expect(this.popoverService.origin).toBe(elRef as any);
+        this.popoverService.origin = elRef as any;
+        expect(this.popoverService.originElement).toBe(elRef as any);
+        expect(this.popoverService.originPoint).toBeNull();
       });
 
       /**
