@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { ClrIcon } from '@clr/angular/icon';
-import { ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 
 import { ClrButton } from './button';
 import { ClrButtonGroup } from './button-group';
@@ -16,7 +16,7 @@ import { ClrButtonGroup } from './button-group';
 export const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[] = [ClrButton, ClrButtonGroup];
 
 @NgModule({
-  imports: [CommonModule, ClrIcon, ÇlrClrPopoverModuleNext],
+  imports: [CommonModule, ClrIcon, ClrPopoverModuleNext],
   declarations: [CLR_BUTTON_GROUP_DIRECTIVES],
   exports: [CLR_BUTTON_GROUP_DIRECTIVES],
 })
