@@ -226,6 +226,18 @@
 
     <clr-dropdown-angular-close-item-false-demo></clr-dropdown-angular-close-item-false-demo>
 
+    <h4 id="context-menu-open-at-point" class="clr-mt-32px" cds-text="subsection">
+      3. Context Menu (Point-based Positioning)
+    </h4>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Dropdowns can be opened at a specific screen coordinate using <code cds-text="code">openAtPoint()</code>. This is
+      useful for context menus triggered by right-click. The dropdown appears at the cursor position instead of being
+      anchored to a trigger button. Nested menus and all standard dropdown features work with point-based positioning.
+    </p>
+
+    <clr-dropdown-angular-context-menu-demo></clr-dropdown-angular-context-menu-demo>
+
     <h2 id="css-dropdown-component" class="clr-mt-48px" cds-text="title">CSS Dropdown Component</h2>
 
     <h3 id="css-classes" data-toc-item class="clr-mt-32px" cds-text="section">CSS Classes</h3>
@@ -335,6 +347,20 @@
           <td class="left hidden-xs-down">Boolean</td>
           <td class="left hidden-xs-down">true</td>
           <td class="left">If true, the menu will close when a dropdown item is clicked</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">openAtPoint(point, event?)</b>
+            <div class="hidden-sm-up">Type: Method</div>
+          </td>
+          <td class="left hidden-xs-down">
+            point: <code cds-text="code">{{ '{' }} x: number, y: number {{ '}' }}</code>, event?: Event
+          </td>
+          <td class="left hidden-xs-down">n/a</td>
+          <td class="left">
+            Opens the dropdown at a specific screen coordinate. Useful for context menus triggered by right-click. Pass
+            the <code cds-text="code">contextmenu</code> event to prevent the immediate mouseup from closing the menu.
+          </td>
         </tr>
       </tbody>
     </table>

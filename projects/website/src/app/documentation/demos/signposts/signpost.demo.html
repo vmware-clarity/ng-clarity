@@ -236,6 +236,17 @@
     </p>
 
     <clr-signpost-triggers-demo></clr-signpost-triggers-demo>
+
+    <h3 data-toc-item id="open-at-point" cds-text="section" class="clr-mt-32px">Open at Point (Context Menu)</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Signposts can be opened at a specific screen coordinate using the
+      <code cds-text="code">openAtPoint()</code> method. This is useful for displaying contextual information at the
+      cursor position, for example on right-click. Use the
+      <code cds-text="code">[clrSignpostHideTrigger]="true"</code> input to hide the default trigger icon when the
+      signpost is opened programmatically.
+    </p>
+
+    <clr-signpost-open-at-point-demo></clr-signpost-open-at-point-demo>
   </app-doc-tab>
 
   <app-doc-tab tab="api">
@@ -277,6 +288,34 @@
           <td class="left">
             The SignpostTriggerDirective is placed on the outer-most container element for a custom trigger. It
             overrides the default Signpost trigger with custom content.
+          </td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrSignpostHideTrigger]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="hidden-xs-down">Boolean</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">
+            Hides the default trigger button. Use when the signpost is opened programmatically via
+            <code cds-text="code">openAtPoint()</code> and no trigger icon is needed.
+          </td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">openAtPoint(point, event?)</b>
+            <div class="hidden-sm-up">Type: Method</div>
+          </td>
+          <td class="hidden-xs-down">
+            point: <code cds-text="code">{{ '{' }} x: number, y: number {{ '}' }}</code>, event?: Event
+          </td>
+          <td class="hidden-xs-down">n/a</td>
+          <td class="left">
+            Opens the signpost at a specific screen coordinate. Useful for showing contextual information at the cursor
+            position. Pass the <code cds-text="code">contextmenu</code> event to prevent the immediate mouseup from
+            closing the signpost.
           </td>
         </tr>
       </tbody>
