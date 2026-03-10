@@ -234,12 +234,21 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    * mouseup from the same right-click that opened the popover.
    */
   private createOutsideClickSubscription(): Subscription {
-    const outsideEvents$ = this.popoverService.anchorPoint
+    const isPointBased = !!this.popoverService.anchorPoint;
+
+    const outsideEvents$ = isPointBased
       ? timer(500).pipe(switchMap(() => this.overlayRef.outsidePointerEvents()))
       : this.overlayRef.outsidePointerEvents();
 
     return outsideEvents$.subscribe(event => {
       if (this.elementRef && this.elementRef.nativeElement.contains(event.target)) {
+        return;
+      }
+
+      if (isPointBased) {
+        if (this._outsideClickClose) {
+          this.closePopover();
+        }
         return;
       }
 

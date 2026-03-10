@@ -12,27 +12,14 @@ import { ClarityModule, ClrDropdown } from '@clr/angular';
   selector: 'clr-dropdown-context-menu-demo',
   standalone: true,
   imports: [ClarityModule],
-  styles: [
-    `
-      .context-menu-area {
-        border: 2px dashed var(--cds-alias-object-border-color);
-        padding: var(--cds-global-space-9);
-        margin: var(--cds-global-space-5) 0;
-        min-height: 200px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: context-menu;
-      }
-    `,
-  ],
+  styleUrls: ['./popovers.demo.scss'],
   template: `
     <h4>Dropdown Context Menu (Point-based Positioning)</h4>
     <p>Right-click anywhere in the box below to open a dropdown menu at the cursor position.</p>
+    <div class="context-menu-area" (contextmenu)="onContextMenu($event)">
+      <span>Right-click here</span>
+    </div>
     <clr-dropdown #contextDropdown>
-      <div class="context-menu-area" (contextmenu)="onContextMenu($event)">
-        <span>Right-click here</span>
-      </div>
       <clr-dropdown-menu>
         <button type="button" clrDropdownItem>Cut</button>
         <button type="button" clrDropdownItem>Copy</button>

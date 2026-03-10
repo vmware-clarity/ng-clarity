@@ -22,21 +22,7 @@ interface FileItem {
   selector: 'clr-datagrid-context-menu-demo',
   standalone: true,
   imports: [ClarityModule, DatePipe],
-  styles: [
-    `
-      .action-log {
-        margin-top: var(--cds-global-space-6);
-        padding: var(--cds-global-space-5);
-        background: var(--cds-alias-object-container-background-tint);
-        border: 1px solid var(--cds-alias-object-border-color);
-        border-radius: var(--cds-alias-object-border-radius-100);
-        max-height: 120px;
-        overflow-y: auto;
-        font-family: var(--cds-global-typography-font-family);
-        font-size: var(--cds-global-typography-font-size-2);
-      }
-    `,
-  ],
+  styleUrls: ['./popovers.demo.scss'],
   template: `
     <h4>Datagrid Context Menu (Point-based Positioning)</h4>
     <p>
