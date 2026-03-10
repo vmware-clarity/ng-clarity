@@ -94,7 +94,8 @@
       color: forms-variables.$clr-forms-text-disabled-color;
       cursor: not-allowed;
 
-      cds-icon {
+      cds-icon,
+      clr-icon {
         fill: forms-variables.$clr-forms-input-group-icon-disabled-color;
       }
     }
