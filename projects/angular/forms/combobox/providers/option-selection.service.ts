@@ -139,18 +139,17 @@ export class OptionSelectionService<T> {
       return false;
     }
 
-    const fn = this._identityFn;
     if (this.multiselectable) {
       const cur = current as T[];
       const val = value as T[];
       if (cur.length !== val.length) {
         return false;
       }
-      const curIds = cur.map(fn).sort();
-      const valIds = val.map(fn).sort();
-      return curIds.length === valIds.length && curIds.every((id, i) => id === valIds[i]);
+      const curIds = cur.map(this._identityFn).sort();
+      const valIds = val.map(this._identityFn).sort();
+      return curIds.every((id, i) => id === valIds[i]);
     } else {
-      return fn(current as T) === fn(value as T);
+      return this._identityFn(current as T) === this._identityFn(value as T);
     }
   }
 }
