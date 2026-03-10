@@ -14,3 +14,6 @@ export * from './tab-link.directive';
 export * from './tab-action.directive';
 export * from './tabs.module';
 export * from './tabs-actions';
+
+export { TabsWillyWonka as ÇlrTabsWillyWonka } from './chocolate/tabs-willy-wonka';
+export { ActiveOompaLoompa as ÇlrActiveOompaLoompa } from './chocolate/active-oompa-loompa';
