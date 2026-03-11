@@ -6,9 +6,13 @@
   -->
 <div>
   <p cds-text="body" class="clr-mt-16px">
+    The <code cds-text="code">availablePositions</code> array defines fallback positions that are tried
+    <strong>in order</strong> when the preferred position does not fit the viewport. The CDK checks each position
+    sequentially and uses the first one that fits.
+  </p>
+  <p cds-text="body" class="clr-mt-8px">
     Resize the browser or scroll the page so the button is near the edge. The popover prefers
-    <code cds-text="code">top-right</code>, but when there is not enough space above, it falls back to
-    <code cds-text="code">bottom-right</code>, then <code cds-text="code">right-middle</code>.
+    <code cds-text="code">top-right</code>, but falls back through bottom, top, left, and right positions.
   </p>
   <div class="clr-example popover-centered-area">
     <button class="btn btn-outline" clrPopoverOpenCloseButton clrPopoverAnchor>
@@ -29,10 +33,13 @@
       <h4 cds-text="section" style="margin-top: 0">Fallback Positions</h4>
       <p cds-text="body" class="clr-mt-8px">
         Preferred: <code cds-text="code">top-right</code><br />
-        Fallbacks: <code cds-text="code">bottom-right</code>, <code cds-text="code">right-middle</code>
+        Fallbacks (in order): <code cds-text="code">bottom-middle</code>, <code cds-text="code">bottom-left</code>,
+        <code cds-text="code">bottom-right</code>, <code cds-text="code">top-middle</code>,
+        <code cds-text="code">left-middle</code>,
+        <code cds-text="code">right-middle</code>
       </p>
       <p cds-text="body" class="clr-mt-8px">
-        Move the button near the top edge of the viewport to see the overlay reposition automatically.
+        Move the button near an edge of the viewport to see the overlay reposition automatically.
       </p>
       <button class="btn btn-sm btn-outline clr-mt-8px" clrPopoverCloseButton>
         Close <cds-icon shape="times"></cds-icon>

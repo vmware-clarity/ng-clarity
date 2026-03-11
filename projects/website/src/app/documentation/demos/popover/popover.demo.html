@@ -361,12 +361,19 @@
       <code cds-text="code">toggleWithEvent()</code> on click and handles keyboard events (Enter, Space) for
       accessibility.
     </p>
+    <p class="clr-mt-8px" cds-text="body">
+      <strong>Note:</strong> <code cds-text="code">[clrPopoverAnchor]</code> and
+      <code cds-text="code">[clrPopoverOpenCloseButton]</code> are independent directives and do not have to be on the
+      same element. However, placing them together on the trigger button is the recommended pattern — it ensures the
+      overlay positions relative to the same element the user clicked. Separating them across different elements is
+      possible but requires careful consideration of positioning and focus behavior.
+    </p>
 
     <h3 class="clr-mt-32px" cds-text="section">
       <code cds-text="code">[clrPopoverCloseButton]</code> &mdash; attribute directive
     </h3>
     <p class="clr-mt-16px" cds-text="body">
-      Place inside the overlay content to provide a close action. Closes the popover and restores focus to the anchor
+      Place inside the overlay content to provide a close action. Closes the popover and restores focus to the origin
       element. Only valid inside a <code cds-text="code">*clrPopoverContent</code> container.
     </p>
   </app-doc-tab>
