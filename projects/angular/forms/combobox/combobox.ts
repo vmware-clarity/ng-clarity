@@ -123,7 +123,10 @@ export class ClrCombobox<T>
       control.valueAccessor = this;
     }
 
-    this.multiSelect = false;
+    // default to SingleSelectComboboxModel, in case the optional input [ClrMulti] isn't used
+    optionSelectionService.selectionModel = new SingleSelectComboboxModel<T>();
+    optionSelectionService.selectionModel.identityFn = optionSelectionService.identityFn;
+    this.updateControlValue();
   }
 
   @Input('clrEditable')
