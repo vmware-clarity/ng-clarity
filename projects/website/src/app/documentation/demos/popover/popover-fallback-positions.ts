@@ -29,11 +29,7 @@ const HTML = `
   <p>
     The CDK tries
     <code>top-right</code>
-    first, then falls back to
-    <code>bottom-right</code>
-    or
-    <code>right-middle</code>
-    .
+    first, then checks each fallback in order until one fits the viewport.
   </p>
   <button class="btn btn-sm btn-outline" clrPopoverCloseButton>Close</button>
 </div>
@@ -53,9 +49,14 @@ import { ClrPopoverService, ÇlrClrPopoverModuleNext } from '@clr/angular';
 export class PopoverFallbackComponent {
   open = false;
 
+  // Positions are tried in order — the first one that fits the viewport wins.
   fallbackPositions: ConnectedPosition[] = [
-    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top' },
-    { originX: 'end', originY: 'center', overlayX: 'start', overlayY: 'center' },
+    { originX: 'center', originY: 'bottom', overlayX: 'center', overlayY: 'top' }, // bottom-middle
+    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top' }, // bottom-left
+    { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top' }, // bottom-right
+    { originX: 'center', originY: 'top', overlayX: 'center', overlayY: 'bottom' }, // top-middle
+    { originX: 'start', originY: 'center', overlayX: 'end', overlayY: 'center' }, // left-middle
+    { originX: 'end', originY: 'center', overlayX: 'start', overlayY: 'center' }, // right-middle
   ];
 }
 `;
@@ -72,8 +73,12 @@ export class PopoverFallbackPositionsDemo {
   open = false;
 
   fallbackPositions: ConnectedPosition[] = [
-    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top' },
-    { originX: 'end', originY: 'center', overlayX: 'start', overlayY: 'center' },
+    { originX: 'center', originY: 'bottom', overlayX: 'center', overlayY: 'top' }, // bottom-middle
+    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top' }, // bottom-left
+    { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top' }, // bottom-right
+    { originX: 'center', originY: 'top', overlayX: 'center', overlayY: 'bottom' }, // top-middle
+    { originX: 'start', originY: 'center', overlayX: 'end', overlayY: 'center' }, // left-middle
+    { originX: 'end', originY: 'center', overlayX: 'start', overlayY: 'center' }, // right-middle
   ];
 
   html = HTML;
