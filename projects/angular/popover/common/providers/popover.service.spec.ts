@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Keys } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
@@ -117,9 +117,9 @@ export default function (): void {
       });
 
       it('returns originElement when origin is an ElementRef', function (this: TestContext) {
-        const elRef = { nativeElement: document.createElement('button') };
-        this.popoverService.origin = elRef as any;
-        expect(this.popoverService.originElement).toBe(elRef as any);
+        const elRef = new ElementRef(document.createElement('button'));
+        this.popoverService.origin = elRef;
+        expect(this.popoverService.originElement).toBe(elRef);
         expect(this.popoverService.originPoint).toBeNull();
       });
 

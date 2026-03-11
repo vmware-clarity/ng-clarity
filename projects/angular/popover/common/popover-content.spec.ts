@@ -213,7 +213,7 @@ export default function (): void {
       fixture.detectChanges();
       tick();
 
-      expect(popoverService.originPoint).toBeNull();
+      expect(popoverService.open).toBeFalse();
 
       fixture.destroy();
     }));
