@@ -17,7 +17,7 @@ import {
   exclamationCircleIcon,
   windowCloseIcon,
 } from '@clr/angular/icon';
-import { ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import { ClrConditionalModule, ClrKeyFocusModule } from '@clr/angular/utils';
 
@@ -37,7 +37,7 @@ import { ClrOptions } from './options';
     ClrKeyFocusModule,
     ClrCommonFormsModule,
     ClrConditionalModule,
-    ÇlrClrPopoverModuleNext,
+    ClrPopoverModuleNext,
     ClrSpinnerModule,
   ],
   declarations: [

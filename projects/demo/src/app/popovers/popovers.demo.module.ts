@@ -9,21 +9,13 @@ import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClarityModule, ClrPopoverService, ÇlrClrPopoverModuleNext } from '@clr/angular';
+import { ClarityModule, ClrPopoverModuleNext, ClrPopoverService } from '@clr/angular';
 
 import { PopoversDemo } from './popovers.demo';
 import { ROUTING } from './popovers.demo.routing';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ClarityModule,
-    CdkTrapFocus,
-    ÇlrClrPopoverModuleNext,
-    ROUTING,
-    FormsModule,
-    ReactiveFormsModule,
-  ],
+  imports: [CommonModule, ClarityModule, CdkTrapFocus, ClrPopoverModuleNext, ROUTING, FormsModule, ReactiveFormsModule],
   providers: [ClrPopoverService],
   declarations: [PopoversDemo],
   exports: [PopoversDemo],
