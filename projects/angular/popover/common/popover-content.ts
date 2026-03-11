@@ -223,7 +223,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
       this.popoverService.originPoint
         ? this.createPointBasedOutsideClickSubscription()
-        : this.createAnchorBasedOutsideClickSubscription()
+        : this.createElementBasedOutsideClickSubscription()
     );
   }
 
@@ -246,10 +246,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   /**
-   * Anchor-based origins close on outside clicks and suppress toggle-button
+   * Element-based origins close on outside clicks and suppress toggle-button
    * re-clicks so the popover doesn't immediately reopen.
    */
-  private createAnchorBasedOutsideClickSubscription(): Subscription {
+  private createElementBasedOutsideClickSubscription(): Subscription {
     return this.overlayRef.outsidePointerEvents().subscribe(event => {
       if (this.elementRef?.nativeElement?.contains(event.target)) {
         return;
@@ -392,7 +392,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   /**
-   * Uses IntersectionObserver to detect when the anchor leaves the screen.
+   * Uses IntersectionObserver to detect when the origin element leaves the screen.
    * This handles the "Close on Scroll" logic much cheaper than getBoundingClientRect.
    */
   private setupIntersectionObserver() {
@@ -420,9 +420,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    const anchor = this.getRootPopover(this)?.popoverService?.originElement?.nativeElement;
+    const originEl = this.getRootPopover(this)?.popoverService?.originElement?.nativeElement;
 
-    if (!anchor && this.popoverService.originPoint) {
+    if (!originEl && this.popoverService.originPoint) {
       this.zone.runOutsideAngular(() => {
         this.subscriptions.push(
           fromEvent(window, 'scroll', { passive: true, capture: true }).subscribe(() => {
@@ -433,7 +433,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    const scrollableParents = this.getScrollableParents(anchor);
+    const scrollableParents = this.getScrollableParents(originEl);
 
     this.zone.runOutsideAngular(() => {
       this.subscriptions.push(

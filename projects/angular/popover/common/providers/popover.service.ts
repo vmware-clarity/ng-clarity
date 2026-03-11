@@ -102,11 +102,7 @@ export class ClrPopoverService {
    * Opens the popover at a specific screen coordinate.
    * Useful for context menus where the popover should appear at the cursor position.
    */
-  openAtPoint(point: ClrPopoverPoint, event?: Event) {
-    if (event) {
-      this.openEvent = event;
-    }
-
+  openAtPoint(point: ClrPopoverPoint) {
     if (this._open) {
       this._open = false;
       this._openChange.next(false);

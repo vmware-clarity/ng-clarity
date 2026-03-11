@@ -112,7 +112,7 @@ export class DatagridContextMenuDemo {
   onRowContextMenu(event: MouseEvent, file: FileItem) {
     event.preventDefault();
     this.contextFile = file;
-    this.dropdown.openAtPoint({ x: event.clientX, y: event.clientY }, event);
+    this.dropdown.openAtPoint({ x: event.clientX, y: event.clientY });
   }
 
   doAction(action: string, file: FileItem) {

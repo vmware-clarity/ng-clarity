@@ -48,7 +48,7 @@ export class ExampleComponent {
   onContextMenu(event: MouseEvent) {
     event.preventDefault();
     this.lastPoint = { x: event.clientX, y: event.clientY };
-    this.signpost.openAtPoint(this.lastPoint, event);
+    this.signpost.openAtPoint(this.lastPoint);
   }
 }
 `;
@@ -91,6 +91,6 @@ export class SignpostOpenAtPointDemo {
   onContextMenu(event: MouseEvent) {
     event.preventDefault();
     this.lastPoint = { x: event.clientX, y: event.clientY };
-    this.signpost.openAtPoint(this.lastPoint, event);
+    this.signpost.openAtPoint(this.lastPoint);
   }
 }

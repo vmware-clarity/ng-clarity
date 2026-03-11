@@ -36,6 +36,6 @@ export class SignpostContextMenuDemo {
   onContextMenu(event: MouseEvent) {
     event.preventDefault();
     this.lastPoint = { x: event.clientX, y: event.clientY };
-    this.signpost.openAtPoint(this.lastPoint, event);
+    this.signpost.openAtPoint(this.lastPoint);
   }
 }

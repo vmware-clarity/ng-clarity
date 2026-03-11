@@ -17,7 +17,7 @@ import { ClrPopoverPosition } from './utils/popover-positions';
 @Component({
   selector: 'test-host',
   template: `
-    <button #anchor clrPopoverAnchor clrPopoverOpenCloseButton>Popover Toggle</button>
+    <button #anchor clrPopoverOrigin clrPopoverOpenCloseButton>Popover Toggle</button>
     <div
       *clrPopoverContent="openState; at: popoverPosition; outsideClickToClose: closeClick; scrollToClose: closeScroll"
       (clrPopoverContentChange)="changeCounter()"
@@ -170,7 +170,7 @@ export default function (): void {
       });
     });
 
-    it('opens a popover at a specific point without an anchor element', fakeAsync(function () {
+    it('opens a popover at a specific point origin', fakeAsync(function () {
       const fixture = TestBed.createComponent(PointContent);
       fixture.detectChanges();
 

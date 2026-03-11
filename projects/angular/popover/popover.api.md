@@ -76,7 +76,7 @@ export class ClrDropdown implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ClrPopoverPoint_2" needs to be exported by the entry point clr-angular-popover.d.ts
     //
     // (undocumented)
-    openAtPoint(point: ClrPopoverPoint_2, event?: Event): void;
+    openAtPoint(point: ClrPopoverPoint_2): void;
     // (undocumented)
     parent: ClrDropdown;
     // Warning: (ae-forgotten-export) The symbol "ClrPopoverService_2" needs to be exported by the entry point clr-angular-popover.d.ts
@@ -171,15 +171,6 @@ export class ClrIfOpen implements OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrPopoverAnchor {
-    constructor(popoverService: ClrPopoverService, element: ElementRef<HTMLButtonElement>);
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverAnchor, "[clrPopoverAnchor]", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverAnchor, never>;
-}
-
-// @public (undocumented)
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     constructor(element: ElementRef, container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, parent: ClrPopoverContent, overlay: Overlay, popoverService: ClrPopoverService, zone: NgZone, platformId: any);
     // (undocumented)
@@ -229,6 +220,15 @@ export class ClrPopoverModule {
     //
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, never, [typeof i1$1.ClrDropdownModule, typeof i2.ClrSignpostModule, typeof i3.ClrTooltipModule]>;
+}
+
+// @public (undocumented)
+export class ClrPopoverOrigin {
+    constructor(popoverService: ClrPopoverService, element: ElementRef<HTMLButtonElement>);
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverOrigin, "[clrPopoverOrigin]", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverOrigin, never>;
 }
 
 // @public (undocumented)
@@ -286,7 +286,7 @@ export class ClrPopoverService {
     // (undocumented)
     get open(): boolean;
     set open(value: boolean);
-    openAtPoint(point: ClrPopoverPoint, event?: Event): void;
+    openAtPoint(point: ClrPopoverPoint): void;
     // (undocumented)
     get openChange(): Observable<boolean>;
     // (undocumented)
@@ -343,7 +343,7 @@ export class ClrSignpost {
     set customTrigger(trigger: ClrSignpostTrigger);
     hideTrigger: boolean;
     // (undocumented)
-    openAtPoint(point: ClrPopoverPoint_2, event?: Event): void;
+    openAtPoint(point: ClrPopoverPoint_2): void;
     // (undocumented)
     get showDefaultTrigger(): boolean;
     // (undocumented)
@@ -503,16 +503,16 @@ export class ClrTooltipTrigger {
 // @public (undocumented)
 export const DROPDOWN_POSITIONS: ClrPopoverPosition[];
 
-// Warning: (ae-forgotten-export) The symbol "ClrPosition" needs to be exported by the entry point clr-angular-popover.d.ts
-//
-// @public (undocumented)
-export function getAnchorPosition(key: ClrPosition): Partial<ConnectedPosition>;
-
 // @public (undocumented)
 export function getConnectedPositions(type: ClrPopoverType): ConnectedPosition[];
 
+// Warning: (ae-forgotten-export) The symbol "ClrPosition" needs to be exported by the entry point clr-angular-popover.d.ts
+//
 // @public (undocumented)
 export function getContentPosition(key: ClrPosition): Partial<ConnectedPosition>;
+
+// @public (undocumented)
+export function getOriginPosition(key: ClrPosition): Partial<ConnectedPosition>;
 
 // @public (undocumented)
 export function getPositionsArray(type: ClrPopoverType): ClrPopoverPosition[];
@@ -521,7 +521,7 @@ export function getPositionsArray(type: ClrPopoverType): ClrPopoverPosition[];
 export function mapPopoverKeyToPosition(key: ClrPopoverPosition, type: ClrPopoverType): ConnectedPosition;
 
 // @public (undocumented)
-export const POPOVER_HOST_ANCHOR: InjectionToken<ElementRef<any>>;
+export const POPOVER_HOST_ORIGIN: InjectionToken<ElementRef<any>>;
 
 // @public (undocumented)
 export const SIGNPOST_POSITIONS: ClrPopoverPosition[];
@@ -553,7 +553,7 @@ export class ÇlrClrPopoverModuleNext {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ÇlrClrPopoverModuleNext>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ÇlrClrPopoverModuleNext, [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton], [typeof ClrPopoverContent, typeof ClrIfOpen], [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton, typeof ClrPopoverContent, typeof ClrIfOpen]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ÇlrClrPopoverModuleNext, [typeof ClrPopoverOrigin, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton], [typeof ClrPopoverContent, typeof ClrIfOpen], [typeof ClrPopoverOrigin, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton, typeof ClrPopoverContent, typeof ClrIfOpen]>;
 }
 
 // @public (undocumented)

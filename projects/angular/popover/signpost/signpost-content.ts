@@ -25,7 +25,7 @@ import {
   ClrPopoverPosition,
   ClrPopoverService,
   ClrPopoverType,
-  POPOVER_HOST_ANCHOR,
+  POPOVER_HOST_ORIGIN,
   SIGNPOST_POSITIONS,
 } from '@clr/angular/popover/common';
 import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
@@ -74,7 +74,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
 
   constructor(
     @Optional()
-    @Inject(POPOVER_HOST_ANCHOR)
+    @Inject(POPOVER_HOST_ORIGIN)
     parentHost: ElementRef<HTMLElement>,
     private element: ElementRef,
     public commonStrings: ClrCommonStringsService,
@@ -99,8 +99,8 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
    *
    * @description
    * A setter for the position of the ClrSignpostContent popover. This is a combination of the following:
-   * - anchorPoint - where on the trigger to anchor the content
-   * - popoverPoint - where on the content container to align with the anchor
+   * - originPoint - where on the trigger to position the content
+   * - popoverPoint - where on the content container to align with the origin
    * - offsetY - where on the Y axis to align the ClrSignpostContent so it meets specs
    * - offsetX - where on the X axis to align the ClrSignpostContent so it meets specs
    * There are 12 possible positions to place a ClrSignpostContent container:

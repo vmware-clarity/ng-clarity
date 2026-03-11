@@ -46,6 +46,6 @@ export class PopoverContextMenuDemo {
   onContextMenu(event: MouseEvent) {
     event.preventDefault();
     this.contextMenuPoint = { x: event.clientX, y: event.clientY };
-    this.popoverService.openAtPoint(this.contextMenuPoint, event);
+    this.popoverService.openAtPoint(this.contextMenuPoint);
   }
 }

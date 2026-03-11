@@ -109,15 +109,6 @@ export default function (): void {
         expect(this.popoverService.originPoint).toEqual(point);
       });
 
-      it('opens at a point with an event', function (this: TestContext) {
-        const point = { x: 50, y: 75 };
-        const event = new MouseEvent('contextmenu');
-        this.popoverService.openAtPoint(point, event);
-        expect(this.popoverService.open).toBeTrue();
-        expect(this.popoverService.originPoint).toEqual(point);
-        expect(this.popoverService.openEvent).toBe(event);
-      });
-
       it('returns originPoint when origin is a point', function (this: TestContext) {
         const point = { x: 300, y: 400 };
         this.popoverService.origin = point;

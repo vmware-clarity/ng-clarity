@@ -7,13 +7,13 @@
 
 import { Directive, ElementRef } from '@angular/core';
 
-import { POPOVER_HOST_ANCHOR } from './popover-host-anchor.token';
+import { POPOVER_HOST_ORIGIN } from './popover-host-origin.token';
 import { ClrPopoverService } from './providers/popover.service';
 import { ClrStopEscapePropagationDirective } from './stop-escape-propagation.directive';
 
 @Directive({
   standalone: true,
-  providers: [ClrPopoverService, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
+  providers: [ClrPopoverService, { provide: POPOVER_HOST_ORIGIN, useExisting: ElementRef }],
   hostDirectives: [ClrStopEscapePropagationDirective],
 })
 export class ClrPopoverHostDirective {}

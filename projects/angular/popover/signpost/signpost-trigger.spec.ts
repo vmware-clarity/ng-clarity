@@ -85,7 +85,7 @@ export default function (): void {
 @Component({
   template: `
     <button
-      #anchor
+      #origin
       type="button"
       class="signpost-action btn btn-sm btn-link"
       [ngClass]="{ active: open }"
