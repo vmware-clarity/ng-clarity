@@ -26,7 +26,9 @@ import { ClrCheckbox } from './checkbox';
     <div class="clr-control-container" [class.clr-control-inline]="clrInline" [ngClass]="controlClass()">
       <ng-content select="clr-checkbox-wrapper,clr-toggle-wrapper"></ng-content>
       @if (showHelper) {
-        <ng-content select="clr-control-helper"></ng-content>
+        <div class="clr-subtext-wrapper">
+          <ng-content select="clr-control-helper"></ng-content>
+        </div>
       }
       @if (showInvalid) {
         <ng-content select="clr-control-error"></ng-content>
