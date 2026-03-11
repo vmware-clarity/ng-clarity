@@ -1,0 +1,282 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Virtual scroll</h2>
+<p>
+  This example handles 2 input types `Columns` and `Rows` count, based on which generates a full example. Filtering and
+  sorting is only applicable for client side virtual scroll.
+</p>
+<div>
+  <div class="card">
+    <div class="card-header">Datagrid controls</div>
+    <div class="card-block">
+      <div class="card-text">
+        <clr-radio-container class="clr-mt-0px">
+          <label>Row Size</label>
+          <clr-radio-wrapper>
+            <input
+              type="radio"
+              clrRadio
+              name="row-size"
+              value="default"
+              [(ngModel)]="rowSize"
+              [checked]="rowSize === 'default'"
+            />
+            <label>Default</label>
+          </clr-radio-wrapper>
+          <clr-radio-wrapper>
+            <input
+              type="radio"
+              clrRadio
+              name="row-size"
+              value="compact"
+              [(ngModel)]="rowSize"
+              [checked]="rowSize === 'compact'"
+            />
+            <label>Compact</label>
+          </clr-radio-wrapper>
+        </clr-radio-container>
+        <clr-radio-container>
+          <label>Loading Method</label>
+          <clr-radio-wrapper>
+            <input
+              type="radio"
+              clrRadio
+              name="loading-methods"
+              value="server"
+              [(ngModel)]="loadingMethod"
+              [checked]="loadingMethod === 'server'"
+            />
+            <label>Server side</label>
+          </clr-radio-wrapper>
+          <clr-radio-wrapper>
+            <input
+              type="radio"
+              clrRadio
+              name="loading-methods"
+              value="client"
+              [(ngModel)]="loadingMethod"
+              [checked]="loadingMethod === 'client'"
+            />
+            <label>Client side</label>
+          </clr-radio-wrapper>
+          <clr-radio-wrapper>
+            <input
+              type="radio"
+              clrRadio
+              name="loading-methods"
+              value="data-driven"
+              [(ngModel)]="loadingMethod"
+              [checked]="loadingMethod === 'data-driven'"
+            />
+            <label>Data driven scroller</label>
+          </clr-radio-wrapper>
+        </clr-radio-container>
+      </div>
+    </div>
+    @if (loadingMethod === 'server') {
+    <div class="card-block">
+      <h4 class="card-title">Server side loading</h4>
+      <div class="card-text">
+        <clr-number-input-container>
+          <label>Row count per query</label>
+          <input clrNumberInput id="rows-per-query" type="number" name="rows" [(ngModel)]="currentPageSize" />
+        </clr-number-input-container>
+      </div>
+    </div>
+    } @if (loadingMethod === 'client') {
+    <div class="card-block">
+      <h4 class="card-title">Client side loading</h4>
+      <div class="card-text">
+        <clr-number-input-container>
+          <label>Total Rows to load</label>
+          <input clrNumberInput id="total-rows" type="number" name="rows" [(ngModel)]="totalRows" />
+        </clr-number-input-container>
+      </div>
+    </div>
+    }
+    <div class="card-footer">
+      <button class="btn" (click)="refreshPage()">Reload Datagrid</button>
+    </div>
+  </div>
+</div>
+
+@if (loadingMethod !== 'data-driven' && { users: users | async }; as data) {
+<clr-datagrid
+  [clrDgItemsIdentityFn]="trackItemById"
+  [clrDgLoading]="loading"
+  [clrLoadingMoreItems]="loadingMoreItems"
+  [(clrDgSelected)]="selected"
+  (clrDgRefresh)="refresh($event)"
+  [class.datagrid-compact]="rowSize === 'compact'"
+  style="height: 24rem"
+>
+  <clr-dg-column [clrDgField]="'id'">
+    <ng-container *clrDgHideableColumn="{ hidden: false }">User ID</ng-container>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'name'">
+    <ng-container *clrDgHideableColumn="{ hidden: false }">Name</ng-container>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'creation'">
+    <ng-container *clrDgHideableColumn="{ hidden: false }">Created At</ng-container>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'pokemon.name'">
+    <ng-container *clrDgHideableColumn="{ hidden: false }">Pokemon</ng-container>
+  </clr-dg-column>
+  <clr-dg-column>
+    <ng-container *clrDgHideableColumn="{ hidden: false }">Color Used</ng-container>
+    <clr-dg-filter [clrDgFilter]="colorFilter">
+      <clr-datagrid-color-filter #colorFilter></clr-datagrid-color-filter>
+    </clr-dg-filter>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'wins'" [clrDgColType]="'number'">
+    <ng-container *clrDgHideableColumn="{ hidden: false }">Wins</ng-container>
+  </clr-dg-column>
+  @if (data.users; as user) {
+  <ng-template
+    ClrVirtualScroll
+    let-user
+    [clrVirtualRowsOf]="data.users"
+    (renderedRangeChange)="renderRangeChange($event)"
+  >
+    <clr-dg-row [clrDgItem]="user">
+      <clr-dg-action-overflow (clrDgActionOverflowOpenChange)="clrDgActionOverflowOpenChangeFn($event)">
+        <button class="action-item">
+          <clr-icon shape="note"></clr-icon>
+          Edit
+        </button>
+        <button class="action-item">
+          <clr-icon shape="trash"></clr-icon>
+          Delete
+        </button>
+      </clr-dg-action-overflow>
+      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+      <clr-dg-cell> {{ user.pokemon.name }} </clr-dg-cell>
+      <clr-dg-cell>
+        <span class="color-square" [style.backgroundColor]="user.color"></span>
+      </clr-dg-cell>
+      <clr-dg-cell>{{ user.wins }}</clr-dg-cell>
+      <clr-dg-row-detail [clrIfExpanded]="user.expanded" (clrIfExpandedChange)="setExpanded($event, user)">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+        Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed
+        arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.
+      </clr-dg-row-detail>
+    </clr-dg-row>
+  </ng-template>
+  }
+  <clr-dg-footer> {{ data.users?.length }} users </clr-dg-footer>
+</clr-datagrid>
+} @if (loadingMethod === 'data-driven') {
+<clr-datagrid
+  #datagrid
+  [(clrDgSelected)]="selected"
+  [clrDgItemsIdentityFn]="trackItemById"
+  (clrDgRefresh)="refreshDataDriven($event)"
+  class="datagrid-compact"
+  style="height: 24rem"
+>
+  <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
+  <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+  <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
+  <clr-dg-column [clrDgField]="'pokemon.name'">Pokemon</clr-dg-column>
+  <clr-dg-column [clrDgField]="'color'">Favorite color</clr-dg-column>
+  <ng-template
+    clrVirtualScroll
+    let-user
+    let-index="index"
+    [clrVirtualDataRange]="dataRange"
+    [clrVirtualPersistItems]="persistItems"
+    [clrVirtualRowsItemSize]="24"
+    [clrVirtualRowsMinBufferPx]="200"
+    [clrVirtualRowsMaxBufferPx]="400"
+    [clrVirtualRowsTemplateCacheSize]="400"
+    [clrVirtualRowsTrackBy]="rowByIndex"
+    (renderedRangeChange)="renderUserRangeChange($event)"
+  >
+    <clr-dg-row [clrDgItem]="user" [clrDgSkeletonLoading]="!user">
+      <clr-dg-cell>{{ user?.id }} index: {{ index }}</clr-dg-cell>
+      <clr-dg-cell>{{ user?.name }}</clr-dg-cell>
+      <clr-dg-cell>{{ user?.creation | date }}</clr-dg-cell>
+      <clr-dg-cell>
+        {{ user?.pokemon?.name }}
+        <span class="badge badge-5">#{{ user?.pokemon?.number }}</span>
+      </clr-dg-cell>
+      <clr-dg-cell>
+        <span class="color-square" [style.backgroundColor]="user?.color"></span>
+      </clr-dg-cell>
+    </clr-dg-row>
+  </ng-template>
+  <clr-dg-detail *clrIfDetail="let detail">
+    <clr-dg-detail-header> {{ detail.name }} </clr-dg-detail-header>
+    <clr-dg-detail-body>
+      <pre>{{ detail | json }}</pre>
+    </clr-dg-detail-body>
+  </clr-dg-detail>
+  <clr-dg-footer>
+    <div class="footer-counters">
+      Rows {{ (userRange.start || 0) + 1 }} - {{ userRange.end }} of {{ totalDataDrivenRows }}
+    </div>
+    <clr-dropdown>
+      <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
+        Snap Jump to
+        <clr-icon shape="angle" direction="down"></clr-icon>
+      </button>
+      <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
+        @for (index of getIndexes(totalDataDrivenRows); track index) {
+        <div (click)="jumpTo(index)" clrDropdownItem>{{ index + 1 }}</div>
+        }
+      </clr-dropdown-menu>
+    </clr-dropdown>
+    <button class="btn btn-sm btn-link-neutral footer-button" (click)="jumpTo(0, 'smooth')">
+      <clr-icon shape="step-forward-2" direction="left"></clr-icon>
+    </button>
+    <button class="btn btn-sm btn-link-neutral footer-button" (click)="scrollUp(19)">
+      <clr-icon shape="angle" direction="up"></clr-icon>
+    </button>
+    <button class="btn btn-sm btn-link-neutral footer-button" (click)="scrollDown(19)">
+      <clr-icon shape="angle" direction="down"></clr-icon>
+    </button>
+    <button class="btn btn-sm btn-link-neutral footer-button" (click)="jumpTo(totalDataDrivenRows, 'smooth')">
+      <clr-icon shape="step-forward-2" direction="right"></clr-icon>
+    </button>
+  </clr-dg-footer>
+</clr-datagrid>
+}
+
+<h3>Static Example</h3>
+<app-stackblitz-example
+  name="Datagrid Virtual Scroll Static"
+  [componentTemplate]="examples.staticHtml"
+  [componentClass]="examples.staticTs"
+  [showComponentClass]="false"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="additionalFiles"
+></app-stackblitz-example>
+
+<h3>Async Example</h3>
+<app-stackblitz-example
+  name="Datagrid Virtual Scroll Async"
+  [componentTemplate]="examples.asyncHtml"
+  [componentClass]="examples.asyncTs"
+  [showComponentClass]="false"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="additionalFiles"
+></app-stackblitz-example>
+
+<h3>Data driven Example</h3>
+<app-stackblitz-example
+  name="Datagrid with Data Driven Virtual Scroll"
+  [componentTemplate]="examples.dataDrivenHtml"
+  [componentClass]="examples.dataDrivenTs"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="additionalFiles"
+></app-stackblitz-example>

@@ -23,7 +23,7 @@ export default {
     clrWizardSize: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
     // outputs
     clrWizardOpenChange: { control: { disable: true } },
-    clrWizardCurrentPageChanged: { control: { disable: true } },
+    clrWizardCurrentPageChange: { control: { disable: true } },
     clrWizardOnNext: { control: { disable: true } },
     clrWizardOnPrevious: { control: { disable: true } },
     clrWizardOnCancel: { control: { disable: true } },
@@ -61,7 +61,7 @@ export default {
     clrWizardStepnavAriaLabel: commonStringsDefault.wizardStepnavAriaLabel,
     // outputs
     clrWizardOpenChange: action('clrWizardOpenChange'),
-    clrWizardCurrentPageChanged: action('clrWizardCurrentPageChanged'),
+    clrWizardCurrentPageChange: action('clrWizardCurrentPageChange'),
     clrWizardOnNext: action('clrWizardOnNext'),
     clrWizardOnPrevious: action('clrWizardOnPrevious'),
     clrWizardOnCancel: action('clrWizardOnCancel'),
@@ -94,7 +94,7 @@ const WizardTemplate: StoryFn = args => ({
       [clrWizardSize]="clrWizardSize"
       [clrWizardStepnavAriaLabel]="clrWizardStepnavAriaLabel"
       (clrWizardOpenChange)="clrWizardOpenChange($event)"
-      (clrWizardCurrentPageChanged)="clrWizardCurrentPageChanged($event)"
+      (clrWizardCurrentPageChange)="clrWizardCurrentPageChange($event)"
       (clrWizardOnNext)="clrWizardOnNext($event)"
       (clrWizardOnPrevious)="clrWizardOnPrevious($event)"
       (clrWizardOnCancel)="clrWizardOnCancel($event)"

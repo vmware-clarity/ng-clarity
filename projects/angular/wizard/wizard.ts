@@ -111,10 +111,10 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   @Output('clrWizardOnReset') onReset = new EventEmitter<any>(false);
 
   /**
-   * Emits when the current page has changed. Listen via `(clrWizardCurrentPageChanged)` event.
+   * Emits when the current page has changed. Listen via `(clrWizardCurrentPageChange)` event.
    * output. Useful for non-blocking validation.
    */
-  @Output('clrWizardCurrentPageChanged') currentPageChanged = new EventEmitter<any>(false);
+  @Output('clrWizardCurrentPageChange') currentPageChange = new EventEmitter<any>(false);
 
   /**
    * Emits when the wizard moves to the next page. Listen via `(clrWizardOnNext)` event.
@@ -488,6 +488,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    */
   reset(): void {
     this.pageCollection.reset();
+
     this.onReset.emit();
   }
 
@@ -514,12 +515,13 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   }
 
   private listenForPageChanges(): Subscription {
-    return this.navService.currentPageChanged.subscribe(() => {
+    return this.navService.currentPageChange.subscribe(() => {
       // Added to address VPAT-749:
       //   When clicking on a wizard tab, focus should move to that
       //   tabs content to make the wizard more accessible.
       this.pageTitle?.nativeElement.focus();
-      this.currentPageChanged.emit();
+
+      this.currentPageChange.emit();
 
       // scroll to top of page in case there is long page content
       this.bodyElementRef?.nativeElement.scrollTo(0, 0);

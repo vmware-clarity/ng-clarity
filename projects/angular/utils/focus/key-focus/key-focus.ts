@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 import { ClrFocusDirection } from './enums/focus-direction.enum';
 import { FocusableItem } from './interfaces';
 import { ClrKeyFocusItem } from './key-focus-item';
-import { normalizeKey, preventArrowKeyScroll } from './util';
+import { preventArrowKeyScroll } from './util';
 import { Keys } from '../../enums/keys.enum';
 
 @Component({
@@ -130,7 +130,7 @@ export class ClrKeyFocus {
 
   focusCurrent() {
     this.currentItem.focus();
-    this.focusChange.next(this._current);
+    this.focusChange.emit(this._current);
   }
 
   moveTo(position: number) {
@@ -169,30 +169,26 @@ export class ClrKeyFocus {
   }
 
   protected nextKeyPressed(event: KeyboardEvent) {
-    const key = normalizeKey(event.key);
-
     switch (this.direction) {
       case ClrFocusDirection.VERTICAL:
-        return key === Keys.ArrowDown;
+        return event.key === Keys.ArrowDown;
       case ClrFocusDirection.HORIZONTAL:
-        return key === Keys.ArrowRight;
+        return event.key === Keys.ArrowRight;
       case ClrFocusDirection.BOTH:
-        return key === Keys.ArrowDown || key === Keys.ArrowRight;
+        return event.key === Keys.ArrowDown || event.key === Keys.ArrowRight;
       default:
         return false;
     }
   }
 
   protected prevKeyPressed(event: KeyboardEvent) {
-    const key = normalizeKey(event.key);
-
     switch (this.direction) {
       case ClrFocusDirection.VERTICAL:
-        return key === Keys.ArrowUp;
+        return event.key === Keys.ArrowUp;
       case ClrFocusDirection.HORIZONTAL:
-        return key === Keys.ArrowLeft;
+        return event.key === Keys.ArrowLeft;
       case ClrFocusDirection.BOTH:
-        return key === Keys.ArrowUp || key === Keys.ArrowLeft;
+        return event.key === Keys.ArrowUp || event.key === Keys.ArrowLeft;
       default:
         return false;
     }

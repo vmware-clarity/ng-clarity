@@ -1,0 +1,99 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<button class="btn btn-primary" (click)="wizard.open()">Alt-Next Wizard</button>
+
+<clr-wizard
+  #wizard
+  [(clrWizardOpen)]="open"
+  [clrWizardSize]="'lg'"
+  (clrWizardOnNext)="doNext()"
+  (clrWizardOnFinish)="doFinish()"
+  [clrWizardPreventDefaultNext]="true"
+>
+  <clr-wizard-title>Wizard with alternate next flows</clr-wizard-title>
+
+  <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+  <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+  <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+  <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Wizard level alt-next</ng-template>
+    <p [class.stress]="stressText">Alt-Next means you manually move users to the next page.</p>
+
+    <clr-checkbox-wrapper>
+      <input #allowNext type="checkbox" clrCheckbox name="allowNext" [(ngModel)]="model.allowNext" />
+      <label>Check the box if you want to go to the next page</label>
+    </clr-checkbox-wrapper>
+  </clr-wizard-page>
+
+  <clr-wizard-page (clrWizardPageNext)="pageCustomNext()" [clrWizardPagePreventDefaultNext]="true">
+    <ng-template clrPageTitle>Page level alt-next</ng-template>
+    @if (showCancelConfirm) {
+    <p>Complete this fibonacci sequence</p>
+    }
+
+    <p>1, 2...</p>
+
+    <form clrForm>
+      <clr-number-input-container>
+        <label>What comes after 2?</label>
+        <input
+          clrNumberInput
+          type="number"
+          name="number"
+          placeholder="Enter a number"
+          [(ngModel)]="model.sequenceOne"
+        />
+      </clr-number-input-container>
+
+      <clr-number-input-container>
+        <label>What is the next number in the sequence?</label>
+        <input
+          clrNumberInput
+          type="number"
+          name="number2"
+          placeholder="Enter a number"
+          [(ngModel)]="model.sequenceTwo"
+        />
+      </clr-number-input-container>
+
+      <clr-number-input-container>
+        <label>What is the next number in the sequence?</label>
+        <input
+          clrNumberInput
+          type="number"
+          name="number3"
+          placeholder="Enter a number"
+          [(ngModel)]="model.sequenceThree"
+        />
+      </clr-number-input-container>
+    </form>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Wizard level alt-next and the finish button</ng-template>
+    @if (errorFlag) {
+    <clr-alert clrAlertType="danger">
+      <clr-alert-item> Your sequence should be 1, 2, 3, 5, 8. </clr-alert-item>
+    </clr-alert>
+    } @if (!errorFlag) {
+    <p>Alt-next at the wizard level also affects the finish button!</p>
+    <p>So make sure to call through to finish when you use it.</p>
+    <p>Click the finish button to test your answers.</p>
+    } @if (errorFlag) {
+    <p>Click back to the previous page to change your answers.</p>
+    }
+  </clr-wizard-page>
+</clr-wizard>
+
+<app-stackblitz-example
+  name="Wizard Alt Next Text"
+  [componentTemplate]="html"
+  [componentClass]="code"
+></app-stackblitz-example>

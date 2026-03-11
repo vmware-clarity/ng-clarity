@@ -1,0 +1,45 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h3 data-toc-item cds-text="section" id="color-system-type" class="clr-mt-32px">Type</h3>
+<p cds-text="body" class="clr-mt-16px">
+  Headings are slightly lighter to balance their size and weight, copy is darker. Labels use full black for prominence.
+  Secondary and tertiary colors are for type that is less important, such as helper and hint text. All type classes have
+  default colors based on this guidance, but these may be overridden to suit the needs of your application.
+</p>
+<div class="clr-row">
+  <div class="clr-col-3">
+    <h4 cds-text="body medium" class="clr-mt-16px">Basic Type</h4>
+    @for (item of colorType.basicType; track item) {
+    <app-color-example-item [text]="item.text" [token]="item.color"></app-color-example-item>
+    }
+  </div>
+  <div class="clr-col-3">
+    <h4 cds-text="body medium" class="clr-mt-16px">Outline Button Text</h4>
+    @for (item of colorType.outlineButtonText; track item) {
+    <app-color-example-item [text]="item.text" [token]="item.color"></app-color-example-item>
+    }
+  </div>
+  <div class="clr-col-3">
+    <h4 cds-text="body medium" class="clr-mt-16px">Links</h4>
+    @for (item of colorType.links; track item) {
+    <app-color-example-item [text]="item.text" [token]="item.color"></app-color-example-item>
+    }
+  </div>
+</div>
+<div class="clr-row clr-mt-24px">
+  <div class="clr-col-8">
+    <app-themed-image
+      [lightSrc]="'/assets/images/documentation/color/light-theme/color-modal.svg'"
+      [darkSrc]="'/assets/images/documentation/color/dark-theme/color-modal.svg'"
+      [imageAlt]="
+        'Form component example showing a link in the link-color, remove buttons outlined in the danger-hover color, and a cancel button outlined in the info-hover color.'
+      "
+      [imageStyle]="'max-width: 100%'"
+    ></app-themed-image>
+  </div>
+</div>
+<p class="clr-mt-16px" cds-text="subsection">Type colors as used in form components</p>

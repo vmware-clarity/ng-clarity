@@ -1,0 +1,23 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<clr-tree [clrLazy]="true">
+  <clr-tree-node [clrLoading]="loading">
+    <clr-icon shape="building"></clr-icon>
+    Office Locations
+    <ng-template clrIfExpanded (clrIfExpandedChange)="$event ? fetchLocations() : null">
+      @for (location of locations$ | async; track location) {
+      <clr-tree-node> {{ location }} </clr-tree-node>
+      }
+    </ng-template>
+  </clr-tree-node>
+</clr-tree>
+
+<app-stackblitz-example
+  name="lazy loading tree view"
+  [componentTemplate]="exampleHtml"
+  [componentClass]="exampleTs"
+></app-stackblitz-example>

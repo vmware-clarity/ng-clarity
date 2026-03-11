@@ -15,7 +15,8 @@ export {
 } from './datagrid-filters.module';
 export { AppfxDatagridFiltersModule } from './datagrid-filters.module';
 export { DatagridFiltersStrings } from './datagrid-filters-strings.service';
-export { ComparisonOperator, FilterMode, LogicalOperator, Unit } from './model/datagrid-filters.enums';
+export { DatagridFiltersUserService } from './datagrid-filters-user-service';
+export { ComparisonOperator, FilterMode, LogicalOperator, PropertyType, Unit } from './model/datagrid-filters.enums';
 export {
   DateTimePropertyDefinition,
   EnumPropertyDefinition,
@@ -24,6 +25,7 @@ export {
   PropertyFilter,
   PropertyPredicate,
   StringPropertyDefinition,
+  UserPropertyDefinition,
 } from './model/datagrid-filters.interfaces';
 
 // FIXME

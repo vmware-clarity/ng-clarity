@@ -1,0 +1,94 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h2 cds-text="title" cds-layout="m-t:xxl">Angular</h2>
+
+<h3><code cds-text="code">clr-file-input-container</code> component</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Input</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">[clrButtonLabel]</b>
+        <div class="clr-hidden-sm-up">string</div>
+        <div class="clr-hidden-sm-up">undefined</div>
+      </td>
+      <td class="left clr-hidden-xs-down">string</td>
+      <td class="left clr-hidden-xs-down">undefined</td>
+      <td class="left">Overrides the button label no file is selected</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><code cds-text="code">clrFileInput</code> directive</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Input</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">required</b>
+      </td>
+      <td class="left clr-hidden-xs-down">N/A</td>
+      <td class="left clr-hidden-xs-down">N/A</td>
+      <td class="left">Provides a required validator</td>
+    </tr>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">accept</b>
+        <div class="clr-hidden-sm-up">string</div>
+        <div class="clr-hidden-sm-up">undefined</div>
+      </td>
+      <td class="left clr-hidden-xs-down">string</td>
+      <td class="left clr-hidden-xs-down">undefined</td>
+      <td class="left">Provides a file type validator</td>
+    </tr>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">[clrMinFileSize]</b>
+        <div class="clr-hidden-sm-up">number</div>
+        <div class="clr-hidden-sm-up">undefined</div>
+      </td>
+      <td class="left clr-hidden-xs-down">number</td>
+      <td class="left clr-hidden-xs-down">undefined</td>
+      <td class="left">Provides a min file size validator</td>
+    </tr>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">[clrMaxFileSize]</b>
+        <div class="clr-hidden-sm-up">number</div>
+        <div class="clr-hidden-sm-up">undefined</div>
+      </td>
+      <td class="left clr-hidden-xs-down">number</td>
+      <td class="left clr-hidden-xs-down">undefined</td>
+      <td class="left">Provides a max file size validator</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><code cds-text="code">clr-file-list</code> component</h3>
+
+The <code cds-text="code">clr-file-list</code> components enables the advanced file input mode. It has no inputs, but
+you can provide an <code cds-text="code">ng-template</code> with a
+<code cds-text="code">clr-file-message</code> attribute. That template is rendered for each file and can contain
+messages via the <code cds-text="code">clr-file-info</code>, <code cds-text="code">clr-file-success</code>, and
+<code cds-text="code">clr-file-error</code> messages. See the example in the
+<a routerLink="/documentation/file-picker/code" fragment="advanced-file-picker-example">code tab</a>.

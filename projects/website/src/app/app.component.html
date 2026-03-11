@@ -1,0 +1,27 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<clr-main-container>
+  <app-skip-link></app-skip-link>
+  <clr-header role="banner" class="header-1" #header>
+    <div class="branding">
+      <a routerLink="/" class="logo-and-title">
+        <span class="clr-icon clarity-logo"></span>
+        <span class="title">Clarity Design</span>
+      </a>
+      <app-version-select></app-version-select>
+    </div>
+    <div class="header-actions">
+      @if (header.openNavLevel !== 1) {
+        <app-theme-toggle></app-theme-toggle>
+      }
+      @if (header.openNavLevel !== 1) {
+        <app-density-toggle></app-density-toggle>
+      }
+    </div>
+  </clr-header>
+  <router-outlet></router-outlet>
+</clr-main-container>

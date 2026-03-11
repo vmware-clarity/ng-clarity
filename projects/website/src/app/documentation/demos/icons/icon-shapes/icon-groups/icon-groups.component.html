@@ -1,0 +1,37 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+@for (iconSet of iconSets | async; track iconSet) {
+  @if (iconSet.icons.length > 0) {
+    <h2 cds-text="headline" class="icon-section-title clr-mt-48px">{{ iconSet.setName }}</h2>
+    <div class="clr-mt-16px icon-section">
+      @for (icon of iconSet.icons; track icon) {
+        <button
+          class="icon-section__button"
+          [ngClass]="{ 'icon-section__button--selected': selectedIcon === icon.name }"
+          (click)="onIconClick(icon.name)"
+        >
+          <clr-icon
+            cds-layout="m-l:sm m-r:sm"
+            size="md"
+            status="neutral"
+            [shape]="icon.name"
+            [solid]="formOptions()?.solid"
+            [badge]="formOptions()?.badge | appIconBadge: icon"
+          ></clr-icon>
+          <div class="icon-section__text" cds-text="body">{{ icon.name }}</div>
+        </button>
+        @if (selectedIcon === icon.name) {
+          <div class="icon-section__detail">
+            <app-icon-details [icon]="icon" [formOptions]="formOptions()"></app-icon-details>
+          </div>
+        }
+      }
+    </div>
+  }
+}
+
+<span class="clr-sr-only" role="status">{{ iconCountForScreenReader | async }} search results found</span>

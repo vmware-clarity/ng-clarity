@@ -16,7 +16,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { ClrCommonStringsService, Keys, normalizeKey, uniqueIdFactory } from '@clr/angular/utils';
+import { ClrCommonStringsService, Keys, uniqueIdFactory } from '@clr/angular/utils';
 
 import { ColumnResizerService } from './providers/column-resizer.service';
 import { TableSizeService } from './providers/table-size.service';
@@ -161,10 +161,10 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
   }
 
   private isArrowLeftKeyEvent(event: KeyboardEvent) {
-    return normalizeKey(event.key) === Keys.ArrowLeft;
+    return event.key === Keys.ArrowLeft;
   }
 
   private isArrowRightKeyEvent(event: KeyboardEvent) {
-    return normalizeKey(event.key) === Keys.ArrowRight;
+    return event.key === Keys.ArrowRight;
   }
 }

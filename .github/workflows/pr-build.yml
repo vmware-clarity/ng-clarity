@@ -9,6 +9,8 @@ jobs:
     name: PR Build
     timeout-minutes: 30
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -31,6 +33,11 @@ jobs:
         with:
           name: docs
           path: dist/docs/
+      - name: Upload Website Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: website
+          path: dist/website/
       - name: Upload Coverage Artifact
         uses: actions/upload-artifact@v4
         with:

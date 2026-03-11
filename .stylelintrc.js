@@ -29,7 +29,7 @@ module.exports = {
     'selector-type-no-unknown': [
       true,
       {
-        ignoreTypes: ['/^clr-/', '/^cds-/', '_', '/^appfx-/'],
+        ignoreTypes: ['/^clr-/', '/^cds-/', '_', '/^appfx-/', '/^app-/'],
       },
     ],
     'at-rule-no-unknown': [
@@ -80,4 +80,13 @@ module.exports = {
       { ignoreAtRules: ['else'], except: ['after-same-name'], ignore: ['after-comment', 'inside-block'] },
     ],
   },
+  overrides: [
+    {
+      files: ['projects/website/**/*.scss'],
+      rules: {
+        'selector-class-pattern': null,
+        'declaration-property-value-no-unknown': null,
+      },
+    },
+  ],
 };

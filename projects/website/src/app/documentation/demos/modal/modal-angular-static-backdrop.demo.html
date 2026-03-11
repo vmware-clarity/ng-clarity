@@ -1,0 +1,27 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<p>
+  <button class="btn btn-primary" (click)="static = true">Show modal</button>
+</p>
+
+<clr-modal [(clrModalOpen)]="static" [clrModalStaticBackdrop]="false">
+  <div class="modal-title">Static backdrop</div>
+  <div class="modal-body">
+    <p>Clicking on the backdrop closes the modal.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="static = false">Ok</button>
+  </div>
+</clr-modal>
+
+<app-stackblitz-example
+  name="Modal Static Backdrop"
+  [componentTemplate]="exampleHtml"
+  [componentClass]="exampleTs"
+  [showComponentClass]="false"
+></app-stackblitz-example>

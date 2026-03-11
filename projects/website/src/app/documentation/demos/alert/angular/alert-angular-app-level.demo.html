@@ -1,0 +1,37 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example">
+  <div class="main-container">
+    <clr-alert [clrAlertType]="'danger'" [clrAlertAppLevel]="true">
+      <clr-alert-item>
+        <span class="alert-text"> This is an app level alert. </span>
+        <div class="alert-actions">
+          <button class="btn alert-action">Fix</button>
+        </div>
+      </clr-alert-item>
+    </clr-alert>
+    <header class="header header-1">
+      <div class="branding">
+        <span class="nav-link"><span class="title">Header</span></span>
+      </div>
+    </header>
+    <div class="content-container">
+      <div class="content-area" cds-layout="m-t:md">
+        <p cds-text="body" class="clr-mt-16px">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus non beatae omnis esse quibusdam dolorum
+          voluptatem reiciendis quaerat assumenda optio, porro expedita similique dolore quidem aliquam. Ullam, eaque
+          enim nobis.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<app-stackblitz-example
+  name="alert component app-level alert"
+  [componentTemplate]="htmlExample"
+></app-stackblitz-example>

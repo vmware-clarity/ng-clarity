@@ -1,0 +1,27 @@
+<svg width="293" height="193" viewBox="0 0 293 193" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_9091_1438)">
+<rect y="0.457764" width="293" height="192" fill="white"/>
+<rect width="293" height="17" transform="translate(0 0.457764)" fill="#859399"/>
+<rect width="51" height="174" transform="translate(1 17.4578)" fill="#F1F6F8"/>
+<line opacity="0.7" x1="66.1816" y1="122.174" x2="108.224" y2="122.174" stroke="#4F6169" stroke-width="2" stroke-linecap="round"/>
+<line opacity="0.4" x1="66.1816" y1="132.174" x2="157.27" y2="132.174" stroke="#4F6169" stroke-width="2" stroke-linecap="round"/>
+<line opacity="0.4" x1="66.1816" y1="142.174" x2="157.27" y2="142.174" stroke="#4F6169" stroke-width="2" stroke-linecap="round"/>
+<line opacity="0.4" x1="66.1816" y1="152.174" x2="157.27" y2="152.174" stroke="#4F6169" stroke-width="2" stroke-linecap="round"/>
+<line opacity="0.4" x1="66.1816" y1="162.174" x2="121.603" y2="162.174" stroke="#4F6169" stroke-width="2" stroke-linecap="round"/>
+<g opacity="0.3">
+<rect width="81" height="52" transform="translate(171.326 123.458)" fill="#4F6169"/>
+</g>
+<line opacity="0.7" x1="66.1816" y1="33.3157" x2="108.224" y2="33.3157" stroke="#4F6169" stroke-width="2" stroke-linecap="round"/>
+<rect opacity="0.3" x="65.1816" y="44.3157" width="154.555" height="56.1422" fill="#4F6169"/>
+<line opacity="0.4" x1="228.062" y1="45.4578" x2="251.799" y2="45.4578" stroke="#4F6169" stroke-width="2" stroke-linecap="round"/>
+<line opacity="0.4" x1="228.062" y1="51.4578" x2="251.799" y2="51.4578" stroke="#4F6169" stroke-width="2" stroke-linecap="round"/>
+<line opacity="0.4" x1="228.062" y1="57.4578" x2="251.799" y2="57.4578" stroke="#4F6169" stroke-width="2" stroke-linecap="round"/>
+<line opacity="0.4" x1="228.062" y1="63.4578" x2="251.799" y2="63.4578" stroke="#4F6169" stroke-width="2" stroke-linecap="round"/>
+</g>
+<rect x="0.5" y="0.957764" width="292" height="191" stroke="#ACB8BE"/>
+<defs>
+<clipPath id="clip0_9091_1438">
+<rect y="0.457764" width="293" height="192" fill="white"/>
+</clipPath>
+</defs>
+</svg>

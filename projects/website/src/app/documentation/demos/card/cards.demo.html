@@ -1,0 +1,285 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p id="stepper-header" class="component-summary">
+      Cards are containers around a related grouping of content and actions.
+    </p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Use a card to present high-level information and guide the user toward related actions and details. Clarity offers
+      clickable cards if you want to use a card to initiate an action.
+    </p>
+    <p cds-text="body" class="clr-mt-16px clr-mb-16px">
+      Typical elements included in cards include the following items:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Images</li>
+      <li>Dropdown menus</li>
+      <li>Media blocks</li>
+      <li>Lists and List groups</li>
+    </ul>
+
+    <h2 id="anatomy" class="clr-mt-48px clr-mb-16px" cds-text="title">Anatomy</h2>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>Cards can have dividers.</li>
+      <li>
+        Flat buttons should be used on cards to keep their prominence in perspective with other information on the card.
+      </li>
+      <li>
+        Place the primary action and a single additional action, if required, in the card footer, left-aligned. This
+        placement supports the F-pattern layout. For more than two actions, use a dropdown menu.
+      </li>
+      <li>Do not place more than eight items in any dropdown menu.</li>
+    </ul>
+
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-sm-6">
+        <app-do-dont type="do" [isCard]="true" caption="The action is correctly aligned to the left.">
+          <div class="card">
+            <div class="card-header">Card Title</div>
+            <div class="card-block">
+              <div class="card-text">This is a sample card, use the correct button alignment.</div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-sm btn-link">Action</button>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+      <div class="clr-col-12 clr-col-sm-6">
+        <app-do-dont
+          type="dont"
+          [isCard]="true"
+          caption="The action aligned to the right can be easily missed. Users might not scan to the bottom-right of wide
+        cards."
+        >
+          <div class="card">
+            <div class="card-header">Card Title</div>
+            <div class="card-block">
+              <div class="card-text">This is a sample card, use the correct button alignment.</div>
+            </div>
+            <div class="card-footer">
+              <div class="clr-row">
+                <div class="clr-offset-9 clr-offset-lg-10 clr-col-2">
+                  <button class="btn btn-sm btn-link">Action</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </app-do-dont>
+      </div>
+    </div>
+
+    <h2 id="behavior" class="clr-mt-48px" cds-text="title">Behavior</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      In similar card groups, consider enabling users to switch between card view and datagrid view. While cards show
+      richer content than a datagrid, a datagrid lists more items at once.
+    </p>
+
+    <p class="clr-mt-24px" cds-text="body">
+      Place the toggles for switching between views in the upper-right of the card group. The card group should be the
+      default view.
+    </p>
+
+    <h2 id="placement" class="clr-mt-48px" cds-text="title">Placement</h2>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Group cards by theme or element. Similar content helps scanning because users can quickly find and compare
+      information of interest. Content of varying types often shows the bigger picture.
+    </p>
+
+    <p class="clr-mt-24px" cds-text="body">
+      A grid places cards in fixed rows and columns. In this fixed design, you can often fit the cards into a smaller
+      vertical space, which means less scrolling for the user. It's easy for users to quickly scan content in this
+      layout. If in doubt, use the grid.
+    </p>
+
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-sm-4">
+        <div class="card">
+          <div class="card-header">Card Title</div>
+          <div class="card-block">
+            <div class="card-text">
+              Message: Can you imagine what we will be downloading in another twenty years? Who would have ever thought
+              that you could record sound with digital quality fifty years ago? Now we routinely download whole albums
+              worth of music in a couple of minutes.
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-sm btn-link">Action</button>
+          </div>
+        </div>
+      </div>
+      <div class="clr-col-12 clr-col-sm-4">
+        <div class="card">
+          <div class="card-header">Card Title</div>
+          <div class="card-block">
+            <div class="card-text">
+              Message: Can you imagine what we will be downloading in another twenty years? Who would have ever thought
+              that you could record sound with digital quality fifty years ago? Now we routinely download whole albums
+              worth of music in a couple of minutes.
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-sm btn-link">Action</button>
+          </div>
+        </div>
+      </div>
+      <div class="clr-col-12 clr-col-sm-4">
+        <div class="card">
+          <div class="card-header">Card Title</div>
+          <div class="card-block">
+            <div class="card-text">
+              Message: Can you imagine what we will be downloading in another twenty years? Who would have ever thought
+              that you could record sound with digital quality fifty years ago? Now we routinely download whole albums
+              worth of music in a couple of minutes.
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-sm btn-link">Action</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Cards can contain text, images, data visualizations, or multimedia. Ensure that the content serves your use case.
+      Keep it simple and legible. Avoid using too much content, overloading the card with too many actions, or placing
+      links within the content.
+    </p>
+
+    <p cds-text="body" class="clr-mt-24px">
+      Assuming that you are using the Metropolis font family, the card should have a title using 20px Metropolis Medium
+      and content using 14px Metropolis Regular.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <p
+      class="component-summary"
+      id="a-card-presents-high-level-information-and-can-guide-the-user-toward-related-actions-and-details"
+    >
+      A card presents high-level information and can guide the user toward related actions and details.
+    </p>
+
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="basic-card">Basic Card</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      A <code cds-text="code">.card</code> can contain a <code cds-text="code">.card-header</code>,
+      <code cds-text="code">.card-footer</code>, and one or more <code cds-text="code">.card-block</code>s.
+    </p>
+
+    <clr-card-layout-demo></clr-card-layout-demo>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="clickable-cards">Clickable Cards</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Adding the <code cds-text="code">.clickable</code> class makes the entire card clickable, initiating a single
+      action.
+    </p>
+
+    <clr-card-clickable-demo></clr-card-clickable-demo>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="images-in-cards">Images in Cards</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      A <code cds-text="code">.card-img</code> can be placed anywhere in the card, or it can occupy the entire card.
+    </p>
+
+    <clr-card-images-demo></clr-card-images-demo>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="dropdowns-in-cards">Dropdowns in Cards</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The footer can contain two actions. For more actions, use a <a routerLink="/documentation/dropdown">dropdown</a>.
+    </p>
+
+    <clr-card-dropdown-demo></clr-card-dropdown-demo>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="card-media-block">Card Media Block</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      A <code cds-text="code">.card-media-block</code> combines a <code cds-text="code">.card-media-image</code> and
+      <code cds-text="code">.card-media-description</code>. The description can contain a
+      <code cds-text="code">.card-media-title</code> and a <code cds-text="code">.card-media-text</code>.
+    </p>
+
+    <clr-card-media-block-demo></clr-card-media-block-demo>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="alerts-in-cards">Alerts in Cards</h3>
+
+    <p cds-text="body" class="clr-mt-16px">Cards can contain <a routerLink="/documentation/alert">alerts</a>.</p>
+
+    <clr-card-alert-demo></clr-card-alert-demo>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="lists-in-cards">Lists in Cards</h3>
+
+    <p cds-text="body" class="clr-mt-16px">Cards can contain <a routerLink="/documentation/list">lists</a>.</p>
+
+    <clr-lists-in-cards-demo></clr-lists-in-cards-demo>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="list-groups-in-cards">List Groups in Cards</h3>
+
+    <p cds-text="body" class="clr-mt-16px">Cards can contain list groups.</p>
+
+    <clr-list-group-demo></clr-list-group-demo>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="progress-bars-in-cards">Progress Bars in Cards</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Cards can contain <a routerLink="/documentation/progress">progress bars</a>.
+    </p>
+
+    <clr-progress-bar-cards-demo></clr-progress-bar-cards-demo>
+
+    <clr-progress-bar-inline-cards-demo></clr-progress-bar-inline-cards-demo>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="card-layout">Card Layout</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Clarity recommends using cards in a <a routerLink="/documentation/grid">grid</a> or a CSS column layout.
+    </p>
+
+    <h4 cds-text="subsection" class="clr-mt-32px" id="cards-in-a-grid">Cards in a Grid</h4>
+
+    <clr-card-grid-demo></clr-card-grid-demo>
+
+    <h4 cds-text="subsection" class="clr-mt-32px" id="cards-in-css-columns">Cards in CSS Columns</h4>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Cards can be placed in <code cds-text="code">.card-columns</code>. The default number of columns is three, but can
+      be changed to two or four by adding <code cds-text="code">.card-columns-2</code> or
+      <code cds-text="code">.card-columns-4</code>.
+    </p>
+
+    <clr-card-masonry-demo class="clr-mt-16px clr-display-block"></clr-card-masonry-demo>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <app-style-docs styleDocsKey="Card"></app-style-docs>
+  </app-doc-tab>
+
+  <app-doc-tab tab="accessibility">
+    <h5 cds-text="subsection" class="clr-mt-24px">Clarity offers clickable Cards and Information Cards.</h5>
+
+    <app-nesting-table
+      componentName="Information Card"
+      subComponentName="body"
+      [canNestComponents]="canNestComponents"
+      [cannotNestComponents]="cannotNestComponents"
+    >
+    </app-nesting-table>
+    <p class="clr-mt-24px">The Card header should include only a concise title with no clickable elements.</p>
+    <p>Information Card Footers can contain only Buttons or Button Groups.</p>
+    <p>Clarity supports only the following non-clickable elements: Status/Indicator Icons, Badges, and Labels.</p>
+    <h5 cds-text="subsection" class="clr-mt-24px">Clickable cards must not contain any clickable elements.</h5>
+  </app-doc-tab>
+</app-doc-tabs>

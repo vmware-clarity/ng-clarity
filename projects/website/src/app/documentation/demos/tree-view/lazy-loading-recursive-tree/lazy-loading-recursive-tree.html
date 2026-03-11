@@ -1,0 +1,21 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+@if (root$ | async; as files) {
+<clr-tree [clrLazy]="true">
+  <clr-tree-node *clrRecursiveFor="let file of files; getChildren: getChildren" [clrExpandable]="file.isFolder">
+    <clr-icon [shape]="file.isFolder ? 'folder' : 'file'"></clr-icon>
+    {{ file.name }}
+  </clr-tree-node>
+</clr-tree>
+}
+
+<app-stackblitz-example
+  name="lazy loading recursive tree"
+  [componentTemplate]="exampleHtml"
+  [componentClass]="exampleTs"
+  [additionalFiles]="additionalFiles"
+></app-stackblitz-example>

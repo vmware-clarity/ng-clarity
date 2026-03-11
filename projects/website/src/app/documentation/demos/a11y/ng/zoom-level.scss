@@ -1,0 +1,31 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+.colors-legend {
+  display: flex;
+  margin-bottom: 3rem;
+  list-style-type: none;
+
+  li {
+    margin: 0.5rem;
+    padding: 0.1rem;
+  }
+}
+
+.my-component {
+  &.no-zoom {
+    background-color: var(--cds-alias-utility-red);
+  }
+
+  &.zoom2x {
+    background-color: var(--cds-alias-utility-green);
+  }
+
+  &.zoom4x {
+    background-color: var(--cds-alias-utility-light-blue);
+  }
+}

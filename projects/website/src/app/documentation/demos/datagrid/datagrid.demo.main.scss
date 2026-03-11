@@ -1,0 +1,35 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+.datagrid-demo-pagination {
+  display: flex;
+  justify-content: space-between;
+}
+
+.demo-pagination-next {
+  margin-left: auto;
+}
+
+.demo-list {
+  column-count: 3;
+  list-style-position: inside;
+}
+
+::ng-deep.clr-accordion:not(.clr-stepper-forms) .clr-accordion-inner-content {
+  margin: 0;
+  padding: 0;
+
+  table {
+    margin: 0;
+  }
+}
+
+::ng-deep.clr-accordion-inner-content {
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}

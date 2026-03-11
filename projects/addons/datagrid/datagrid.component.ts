@@ -142,6 +142,22 @@ export interface GridFooterModel {
    * Defaults to `false` if not specified.
    */
   enableCustomExport?: boolean;
+
+  /**
+   * An array of action definitions to be rendered in the Datagrid footer.
+   * These actions are displayed as small buttons on the left side of the footer.
+   *
+   * Interaction:
+   * When a footer action is clicked, the {@link #onActionClick} callback is invoked,
+   * passing the specific {@link ActionDefinition} and the current datagrid
+   * selection (single or multiple items) as context.
+   *
+   * Note on Styling:
+   * Unlike ActionBar actions, footer actions ignore the 'class' property and
+   * apply a consistent style to maintain visual harmony with
+   * pagination and other footer elements.
+   */
+  footerActions?: ActionDefinition[];
 }
 
 /**

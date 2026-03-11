@@ -1,0 +1,32 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-row">
+  <div class="clr-col-12 clr-col-md-4">
+    <clr-tree>
+      @for (group of groceries; track group) {
+      <clr-tree-node [(clrSelected)]="group.selected" [clrExpanded]="true">
+        {{ group.name }} @for (item of group.items; track item) {
+        <clr-tree-node [(clrSelected)]="item.selected"> {{ item.name }} </clr-tree-node>
+        }
+      </clr-tree-node>
+      }
+    </clr-tree>
+
+    <button class="btn btn-sm" type="button" (click)="selectVegetables()">Select all vegetables</button>
+  </div>
+  <div class="clr-col-12 clr-col-md-8">
+    <pre class="example-display-json">{{ displayGroceries }}</pre>
+  </div>
+</div>
+
+<app-stackblitz-example
+  name="selection tree view"
+  [componentTemplate]="exampleHtml"
+  [componentClass]="exampleTs"
+  [additionalFiles]="additionalFiles"
+></app-stackblitz-example>

@@ -1,0 +1,39 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example">
+  <div class="main-container">
+    <header class="header header-1">
+      <div class="branding">
+        <span class="nav-link"><span class="title">Header</span></span>
+      </div>
+    </header>
+    <div class="content-container">
+      <div class="content-area">
+        <clr-alert [clrAlertType]="'success'">
+          <clr-alert-item>
+            <span class="alert-text"> This alert indicates success. </span>
+          </clr-alert-item>
+        </clr-alert>
+        <clr-alert>
+          <clr-alert-item>
+            <span class="alert-text"> This is a default info alert. </span>
+          </clr-alert-item>
+        </clr-alert>
+        <p cds-text="body" class="clr-mt-16px">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+          est laborum.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-stackblitz-example name="alert component type" [componentTemplate]="htmlExample"></app-stackblitz-example>

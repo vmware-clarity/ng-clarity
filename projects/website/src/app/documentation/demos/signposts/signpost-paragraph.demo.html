@@ -1,0 +1,25 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div>
+  <p cds-text="body" class="clr-mt-16px">
+    Signposts should be used when you want to show a small amount of contextual help of information without taking the
+    user out of the current context. Use sparingly as a supplemental element and not as a primary method of adding
+    detail.
+    <clr-signpost>
+      <clr-signpost-content *clrIfOpen="openState">
+        <h3 style="margin-top: 0">Inline signpost</h3>
+        <p>Position: <code cds-text="code">right-middle</code></p>
+      </clr-signpost-content>
+    </clr-signpost>
+  </p>
+
+  <app-stackblitz-example
+    name="signpost paragraph"
+    [componentClass]="code"
+    [componentTemplate]="html"
+  ></app-stackblitz-example>
+</div>

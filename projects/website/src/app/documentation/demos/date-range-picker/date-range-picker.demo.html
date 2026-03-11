@@ -1,0 +1,264 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary" id="datepicker-header">
+      Date Range Picker is a popover control that combines two date inputs for selecting a range of date values.
+    </p>
+
+    <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Use the Date Range Picker component to allow selection of a range of date values. This helps the user see and
+      select the date in context with other possible dates. Date choices are influenced by day of the week, or week
+      within a month. A Date Range Picker is also helpful when the formatting of the date is important.
+    </p>
+    <p class="clr-mt-24px clr-mb-16px" cds-text="body">
+      Consider omitting the Date Range Picker component in the following scenarios:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        When the user does not require to select custom range from calendar and has static predefined date ranges. Then
+        provide predefined date ranges using the
+        <a href="https://clarity.design/documentation/select" target="_blank">select</a> component.
+      </li>
+      <li>When space is limited.</li>
+    </ul>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="behavior">Behavior</h2>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-12 clr-col-md-6 clr-col-lg-7">
+        <p cds-text="body disable-lhe">
+          The user can open the Date Range Picker popover by clicking, or gaining focus and hitting enter, on the
+          calendar icon next to the input field.
+        </p>
+
+        <p class="clr-mt-24px" cds-text="body">Today’s date is displayed in bold.</p>
+
+        <p class="clr-mt-24px" cds-text="body">
+          Clicking on the check-calendar icon inside the Date Picker returns the focus to today’s date.
+        </p>
+
+        <p class="clr-mt-24px" cds-text="body">
+          Focus is indicated by blue bordered line around the date. Focus can be moved around inside the Date Range
+          Picker using arrow and tab keys. Clicking the enter key will select a value.
+        </p>
+      </div>
+      <div class="clr-col-12 clr-col-md-6 clr-col-lg-5">
+        <div class="clrweb-DoxMedia clr-mt-0px">
+          <div class="clrweb-DoxMedia-block">
+            <div class="clrweb-DoxMedia-img">
+              <app-themed-image
+                [lightSrc]="'/assets/images/documentation/date-range-picker/light-theme/daterangepicker.svg'"
+                [darkSrc]="'/assets/images/documentation/date-range-picker/dark-theme/daterangepicker.svg'"
+                [imageAlt]="'Date Range Picker'"
+                [imageStyle]="'max-width: 100%'"
+              ></app-themed-image>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="views">Views</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      The Month and Year views are shown when a user clicks the month or year titles in the date view.
+    </p>
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6">
+        <div class="clrweb-DoxMedia">
+          <div class="clrweb-DoxMedia-block">
+            <div class="clrweb-DoxMedia-img">
+              <app-themed-image
+                [lightSrc]="'/assets/images/documentation/date-range-picker/light-theme/monthpicker.svg'"
+                [darkSrc]="'/assets/images/documentation/date-range-picker/dark-theme/monthpicker.svg'"
+                [imageAlt]="'Month Picker'"
+                [imageStyle]="'max-width: 100%'"
+              ></app-themed-image>
+            </div>
+          </div>
+          <div class="clrweb-DoxMedia-text">
+            <h3 cds-text="subsection" cds-layout="m-y:md" id="month">Month</h3>
+            <p cds-text="secondary">
+              Monthly values can be selected when the user clicks the month title in the date view. Selecting a month
+              value returns the user back to the date view.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="clr-col-12 clr-col-md-6">
+        <div class="clrweb-DoxMedia">
+          <div class="clrweb-DoxMedia-block">
+            <div class="clrweb-DoxMedia-img">
+              <app-themed-image
+                [lightSrc]="'/assets/images/documentation/date-range-picker/light-theme/yearpicker.svg'"
+                [darkSrc]="'/assets/images/documentation/date-range-picker/dark-theme/yearpicker.svg'"
+                [imageAlt]="'Year Picker'"
+                [imageStyle]="'max-width: 100%'"
+              ></app-themed-image>
+            </div>
+          </div>
+          <div class="clrweb-DoxMedia-text">
+            <h3 cds-text="subsection" cds-layout="m-y:md" id="year">Year</h3>
+            <p cds-text="secondary">
+              Ten years are displayed at one time. Arrow keys can be used to navigate through the values: future years
+              and past years. Selecting a year value will return the user back to the date view.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-32px" cds-text="title" id="small-screens">Small Screens</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Clarity Date Range Picker is only shown when screen width is 768px and above.
+    </p>
+    <p class="clr-mt-24px" cds-text="body">
+      We automatically disable the Clarity Date Picker on small mobile phones. This is done because, unlike desktop
+      browsers, most mobile browsers have built-in date pickers. These built-in date pickers are optimized to work on
+      mobile devices and provide an experience that is familiar to the user.
+    </p>
+
+    <h2 class="clr-mt-32px" cds-text="title" id="input-behavior">Input Behavior</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Every time the user changes the value in the input field, the value is validated against the placeholder to check
+      if a valid date is entered. If a valid date is entered, the date range picker opens with the entered date
+      selected. If an invalid date is entered, the date range picker opens with the focus on today's date.
+    </p>
+    <p class="clr-mt-24px" cds-text="body">
+      Selecting a date from the date range picker overrides the value in the input field.
+    </p>
+    <p class="clr-mt-24px" cds-text="body">
+      Date range picker ideally requires a 4 digit year but can convert a 2 digit year input by the user to a 4 digit
+      year. For example, a 2 digit year 20 will convert to 2020. If the 4 digit conversion is 20 more than the current
+      year, we subtract 100 from it. If the current year is 2018 and the year input is 99, then the converted year is
+      1999. Anything other than a 4 digit or 2 digit year is considered invalid.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="accessibility">Accessibility</h2>
+    <p class="clr-mt-16px clr-mb-16px" cds-text="body">
+      For applications that use the <code cds-text="code">ClrStartDateInput</code> /
+      <code cds-text="code">ClrEndDateInput</code> directive and the associated
+      <code cds-text="code">ClrDateRangeContainer</code> component there is built in support that adds accessible
+      behavior to the control and its form. This behavior includes:
+    </p>
+    <ol class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        Programmatically associating the correct label <code cds-text="code">for</code> attribute with the
+        <code cds-text="code">id</code> of the input
+      </li>
+      <li>
+        Automatic wiring up of the <code cds-text="code">aria-describedby</code> behavior with associated
+        <code cds-text="code">clr-control-error</code> elements
+      </li>
+      <li>
+        Adding the label to a general form summary for screen readers when the control is in an error state after a form
+        is submitted
+      </li>
+    </ol>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code & Examples</h2>
+    <ng-container *appIfTabActive>
+      <clr-datepicker-api-demo></clr-datepicker-api-demo>
+      <clr-date-range-picker-internationalization-demo></clr-date-range-picker-internationalization-demo>
+      <clr-date-range-picker-io-demo></clr-date-range-picker-io-demo>
+    </ng-container>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 id="angular-component" cds-text="title" class="clr-mt-48px">Angular Component</h2>
+
+    <h3 cds-text="section" class="clr-mt-32px">
+      <code cds-text="code">&lt;clr-date-range-container&gt;</code> component
+    </h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="hidden-xs-down">Values</th>
+          <th class="hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">[min]</td>
+          <td class="hidden-xs-down">string</td>
+          <td class="hidden-xs-down">N/A</td>
+          <td class="left">Sets the earliest acceptable date and must be in the YYYY-MM-DD format.</td>
+        </tr>
+        <tr>
+          <td class="left">[max]</td>
+          <td class="hidden-xs-down">string</td>
+          <td class="hidden-xs-down">N/A</td>
+          <td class="left">Sets the latest acceptable date and must be in the YYYY-MM-DD format.</td>
+        </tr>
+        <tr>
+          <td class="left">[rangeOptions]</td>
+          <td class="hidden-xs-down">DateRangeOption[]</td>
+          <td class="hidden-xs-down">[]</td>
+          <td class="left">Predefined Date range options.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">[(clrStartDate)]</code> directive</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="clr-hidden-xs-down">Values</th>
+          <th class="clr-hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">[(clrStartDate)]</td>
+          <td class="clr-hidden-xs-down">Boolean</td>
+          <td class="clr-hidden-xs-down">false</td>
+          <td class="left">Two-way binding on the start date value.</td>
+        </tr>
+        <tr>
+          <td class="left">(clrStartDateChange)</td>
+          <td class="clr-hidden-xs-down">Date</td>
+          <td class="clr-hidden-xs-down">N/A</td>
+          <td class="left">emits when the start date value is changed</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">[(clrEndDate)]</code> directive</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Input/Output</th>
+          <th class="clr-hidden-xs-down">Values</th>
+          <th class="clr-hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">[(clrEndDate)]</td>
+          <td class="clr-hidden-xs-down">Boolean</td>
+          <td class="clr-hidden-xs-down">false</td>
+          <td class="left">Two-way binding on the end date value.</td>
+        </tr>
+        <tr>
+          <td class="left">(clrEndDateChange)</td>
+          <td class="clr-hidden-xs-down">Date</td>
+          <td class="clr-hidden-xs-down">N/A</td>
+          <td class="left">emits when the end date value is changed</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-style-docs styleDocsKey="Datepicker"></app-style-docs>
+  </app-doc-tab>
+</app-doc-tabs>

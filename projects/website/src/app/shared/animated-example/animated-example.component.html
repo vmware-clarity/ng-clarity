@@ -1,0 +1,37 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div class="animated-example" [ngClass]="{ 'animated-example--center': !show || centerContent() }">
+  <div
+    class="animated-example__content"
+    [ngClass]="{ 'animated-example__content--full-width': show && fullWidthContent() }"
+  >
+    @if (show) {
+      <ng-content></ng-content>
+    }
+    @if (!show) {
+      <clr-icon class="animated-example__hide-icon" shape="eye-hide" size="md" status="neutral"></clr-icon>
+    }
+  </div>
+
+  <button
+    #showButton
+    class="btn btn-sm btn-link animated-example__toggle-btn"
+    [style.display]="show ? 'none' : 'block'"
+    (click)="showExample()"
+  >
+    Show {{ label() }} Animation
+  </button>
+
+  <button
+    #hideButton
+    class="btn btn-sm btn-link animated-example__toggle-btn"
+    [style.display]="show ? 'block' : 'none'"
+    (click)="hideExample()"
+  >
+    Hide {{ label() }} Animation
+  </button>
+</div>

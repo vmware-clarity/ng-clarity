@@ -1,0 +1,83 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<table class="table" cds-text="body">
+  <thead>
+    <tr>
+      <th class="left"></th>
+      <th class="left">Use When..</th>
+      <th class="left">Don’t use when..</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left">Wizard</td>
+      <td class="left">
+        <ul class="list">
+          <li>Self-sufficient workflows (no need to access other parts of the app)</li>
+          <li>The user needs to be taken back to the original context after the wizard</li>
+          <li>3-10 steps</li>
+        </ul>
+      </td>
+      <td class="left">
+        <ul class="list">
+          <li>Very long step content that requires scrolling</li>
+          <li>Certain steps require additional horizontal panel</li>
+          <li>Additional popup cannot be avoided</li>
+          <li>The user needs to leave half way and resume</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="left">Stepper</td>
+      <td class="left">
+        <ul class="list">
+          <li>Requires the full content area to show information</li>
+          <li>Needs a preview or summary of each steps</li>
+          <li>2+ steps</li>
+        </ul>
+      </td>
+      <td class="left">
+        <ul class="list">
+          <li>When certain steps are so long that they bury the steps below</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="left">Timeline</td>
+      <td class="left">
+        <ul class="list">
+          <li>Requires the full content area to show information</li>
+          <li>Content with distinct, higher-level stages</li>
+          <li>Needs clear progress indication</li>
+          <li>Complex content in steps</li>
+          <li>3-5 steps for horizontal; 5+ for vertical</li>
+        </ul>
+      </td>
+      <td class="left">
+        <ul class="list">
+          <li>When certain steps are so long that they bury the steps below</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="left">Nested</td>
+      <td class="left">
+        <ul class="list">
+          <li>When the workflow is too long and complex that to fit in a basic workflow</li>
+          <li>Involves multiple products or parties (other users or the system) to complete</li>
+          <li>When the workflow is not linear</li>
+        </ul>
+      </td>
+      <td class="left">
+        <ul class="list">
+          <li>Workflows that are simple enough to fit in one of the basic workflow component</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>

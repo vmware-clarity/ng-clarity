@@ -63,11 +63,6 @@
         background-color: forms-variables.$clr-forms-select-option-background-color;
       }
     }
-
-    //Remove default arrow from IE
-    select::-ms-expand {
-      display: none;
-    }
   }
 
   .clr-select-wrapper {

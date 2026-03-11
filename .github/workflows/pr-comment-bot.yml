@@ -7,8 +7,8 @@ jobs:
     name: PR Comment Bot
     runs-on: ubuntu-latest
     steps:
-      - name: Check For Docs
-        id: check-for-docs
+      - name: Check For Artifacts
+        id: check-for-artifacts
         uses: actions/github-script@v6
         with:
           script: |
@@ -18,7 +18,11 @@ jobs:
               run_id: '${{github.event.workflow_run.id}}',
             });
 
-            return !!artifacts.data.artifacts.find(artifact => artifact.name === 'docs');
+            const hasDocs = !!artifacts.data.artifacts.find(artifact => artifact.name === 'docs');
+            const hasWebsite = !!artifacts.data.artifacts.find(artifact => artifact.name === 'website');
+
+            core.setOutput('has_docs', hasDocs);
+            core.setOutput('has_website', hasWebsite);
       - name: Get PR Event
         id: get-pr-event
         uses: potiuk/get-workflow-origin@v1_5
@@ -62,15 +66,14 @@ jobs:
             * 🙏 The Clarity team thanks you for opening a pull request
             * 🎉 The build for this PR has succeeded
             * 🔍 The PR is now ready for review
-            * 🍿 In the meantime, view a [preview of this PR](https://${{steps.get-pr-event.outputs.pullRequestNumber}}--${{secrets.NETLIFY_SITE_NAME}}.netlify.app) or explore it in [StackBlitz](https://stackblitz.com/~/github.com/${{github.repository}}/pull/${{steps.get-pr-event.outputs.pullRequestNumber}})
-            * 🖐 You can always follow up here. If you're a VMware employee, you can also reach us on our [internal Clarity Support space](https://chat.google.com/room/AAAA5GLgPr4)
+            * 🍿 Preview: [Storybook](https://${{steps.get-pr-event.outputs.pullRequestNumber}}--${{secrets.NETLIFY_SITE_NAME}}.netlify.app) | [Website](https://${{steps.get-pr-event.outputs.pullRequestNumber}}--${{secrets.NETLIFY_WEBSITE_SITE_NAME}}.netlify.app) | [StackBlitz](https://stackblitz.com/~/github.com/${{github.repository}}/pull/${{steps.get-pr-event.outputs.pullRequestNumber}})
 
             Thank you,
 
             🤖 Clarity Release Bot
           edit-mode: replace
-      - name: Build Failed with Docs Artifact PR Comment
-        if: ${{github.event.workflow_run.conclusion == 'failure' && steps.check-for-docs.outputs.result == 'true'}}
+      - name: Build Failed with Artifacts PR Comment
+        if: ${{github.event.workflow_run.conclusion == 'failure' && (steps.check-for-artifacts.outputs.has_docs == 'true' || steps.check-for-artifacts.outputs.has_website == 'true')}}
         uses: peter-evans/create-or-update-comment@v2
         with:
           comment-id: ${{steps.find-comment.outputs.comment-id}}
@@ -80,15 +83,14 @@ jobs:
 
             * 😭 The build for this PR has failed
             * 🗒 Please check out the [build log](${{github.event.workflow_run.html_url}})
-            * 🍿 Although the build failed, you can still view a [preview of this PR](https://${{steps.get-pr-event.outputs.pullRequestNumber}}--${{secrets.NETLIFY_SITE_NAME}}.netlify.app) or explore it in [StackBlitz](https://stackblitz.com/~/github.com/${{github.repository}}/pull/${{steps.get-pr-event.outputs.pullRequestNumber}})
-            * 🖐 You can always follow up here. If you're a VMware employee, you can also reach us on our [internal Clarity Support space](https://chat.google.com/room/AAAA5GLgPr4)
+            * 🍿 Although the build failed, you can still view a preview: [Storybook](https://${{steps.get-pr-event.outputs.pullRequestNumber}}--${{secrets.NETLIFY_SITE_NAME}}.netlify.app) | [Website](https://${{steps.get-pr-event.outputs.pullRequestNumber}}--${{secrets.NETLIFY_WEBSITE_SITE_NAME}}.netlify.app) | [StackBlitz](https://stackblitz.com/~/github.com/${{github.repository}}/pull/${{steps.get-pr-event.outputs.pullRequestNumber}})
 
             Thank you,
 
             🤖 Clarity Release Bot
           edit-mode: replace
-      - name: Build Failed without Docs Artifact PR Comment
-        if: ${{github.event.workflow_run.conclusion == 'failure' && steps.check-for-docs.outputs.result == 'false'}}
+      - name: Build Failed without Artifacts PR Comment
+        if: ${{github.event.workflow_run.conclusion == 'failure' && steps.check-for-artifacts.outputs.has_docs != 'true' && steps.check-for-artifacts.outputs.has_website != 'true'}}
         uses: peter-evans/create-or-update-comment@v2
         with:
           comment-id: ${{steps.find-comment.outputs.comment-id}}
@@ -99,7 +101,6 @@ jobs:
             * 😭 The build for this PR has failed
             * 🗒 Please check the [build log](${{github.event.workflow_run.html_url}})
             * 🍿 In the meantime, explore it in [StackBlitz](https://stackblitz.com/~/github.com/${{github.repository}}/pull/${{steps.get-pr-event.outputs.pullRequestNumber}})
-            * 🖐 You can always follow up here. If you're a VMware employee, you can also reach us on our [internal Clarity Support space](https://chat.google.com/room/AAAA5GLgPr4)
 
             Thank you,
 

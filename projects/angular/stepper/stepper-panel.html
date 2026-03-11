@@ -22,9 +22,9 @@
         <cds-icon shape="angle" direction="right" class="clr-stepper-angle clr-step-angle"></cds-icon>
         <span class="clr-step-status-icon">
           @if (getPanelStatus(panel) === PanelStatus.Error) {
-          <cds-icon status="danger" shape="exclamation-circle" class="clr-step-error-icon"></cds-icon>
+          <cds-icon status="danger" shape="error-standard" class="clr-step-error-icon"></cds-icon>
           } @if (getPanelStatus(panel) === PanelStatus.Complete) {
-          <cds-icon status="success" shape="check-circle" class="clr-step-complete-icon"></cds-icon>
+          <cds-icon status="success" shape="success-standard" class="clr-step-complete-icon"></cds-icon>
           }
         </span>
       </span>

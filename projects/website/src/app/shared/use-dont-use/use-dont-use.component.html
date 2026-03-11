@@ -1,0 +1,24 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div
+  class="heading"
+  [ngClass]="{
+    'heading--use': type() === 'use',
+    'heading--dont-use': type() === 'dont_use',
+  }"
+>
+  <div class="clr-row">
+    <div class="clr-col-1 heading__icon">
+      <clr-icon size="md" [shape]="'UseDontUseComponent:' + type()"></clr-icon>
+    </div>
+    <div class="clr-col-8 heading__text" cds-text="secondary bold">
+      {{ heading() }}
+    </div>
+  </div>
+  <div class="heading__bar"></div>
+</div>
+<ng-content></ng-content>
