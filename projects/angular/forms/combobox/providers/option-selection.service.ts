@@ -132,13 +132,22 @@ export class OptionSelectionService<T> {
     if (current === value) {
       return true;
     }
-    // Check if both are null or undefined.
-    if ((current === null || current === undefined) && (value === null || value === undefined)) {
+    // Check if both are null or undefined or empty string.
+    if (
+      (current === null || current === undefined || current === '') &&
+      (value === null || value === undefined || value === '')
+    ) {
       return true;
     }
-    // Check if one is null or undefined and the other is not.
-    // We already checked for both being null or undefined.
-    if (current === null || current === undefined || value === null || value === undefined) {
+    // Check if one is null or undefined or empty string and the other is not.
+    if (
+      current === null ||
+      current === undefined ||
+      current === '' ||
+      value === null ||
+      value === undefined ||
+      value === ''
+    ) {
       return false;
     }
 
