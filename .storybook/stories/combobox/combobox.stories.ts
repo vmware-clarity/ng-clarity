@@ -47,6 +47,7 @@ export default {
     optionGroups: { control: { disable: true }, table: { disable: true } },
     optionCount: { control: { type: 'number', min: 1, max: elements.length } },
     updateOn: { control: { type: 'radio' }, options: ['change', 'blur', 'submit'] },
+    useIdentityFn: { control: { type: 'boolean' } },
   },
   args: {
     clrEditable: false,
@@ -61,6 +62,7 @@ export default {
     helperText: 'Helper text',
     useGroups: false,
     objectValues: false,
+    useIdentityFn: false,
     elements: elements,
     singleModel: 'Am',
     multiModel: ['Am', 'As', 'Ba'],
@@ -93,6 +95,7 @@ export const SingleSelectionEditable: StoryObj = {
     clrEditable: true,
   },
 };
+
 export const SingleSelectionEditableWithObjectValues: StoryObj = {
   args: {
     clrEditable: true,
@@ -109,6 +112,25 @@ export const SingleSelectionEditableWithObjectValues: StoryObj = {
       },
       template: `
         <storybook-combobox ${argsToTemplate(args)}></storybook-combobox>
+      `,
+    };
+  },
+};
+
+export const SingleSelectionWithIdentityFn: StoryObj = {
+  args: {
+    objectValues: true,
+    useIdentityFn: true,
+  },
+  render: (args: StorybookComboboxComponent) => {
+    const transformedArgs = args;
+    transformedArgs.singleModel = transformedArgs.objectValues
+      ? { name: 'Americium', symbol: 'Am', number: 95, electronegativity: 1.3 }
+      : ('Am' as any);
+    return {
+      props: transformedArgs,
+      template: `
+        <storybook-combobox ${argsToTemplate(transformedArgs)}></storybook-combobox>
       `,
     };
   },
@@ -147,6 +169,7 @@ export const MultiSelectionEditable: StoryObj = {
     clrEditable: true,
   },
 };
+
 export const MultiSelectionEditableWithObjectValues: StoryObj = {
   args: {
     clrMulti: true,
@@ -168,6 +191,34 @@ export const MultiSelectionEditableWithObjectValues: StoryObj = {
       },
       template: `
         <storybook-combobox ${argsToTemplate(args)}></storybook-combobox>
+      `,
+    };
+  },
+};
+
+export const MultiSelectionWithIdentityFn: StoryObj = {
+  args: {
+    clrMulti: true,
+    objectValues: true,
+    useIdentityFn: true,
+    multiModel: [
+      { name: 'Americium', symbol: 'Am', number: 95, electronegativity: 1.3 },
+      { name: 'Berkelium', symbol: 'Bk', number: 97, electronegativity: 1.3 },
+    ],
+  },
+  render: (args: StorybookComboboxComponent) => {
+    const transformedArgs = args;
+    transformedArgs.multiModel = transformedArgs.objectValues
+      ? [
+          { name: 'Americium', symbol: 'Am', number: 95, electronegativity: 1.3 },
+          { name: 'Berkelium', symbol: 'Bk', number: 97, electronegativity: 1.3 },
+          { name: 'Chlorine', symbol: 'Cl', number: 17, electronegativity: 3.16 },
+        ]
+      : (['Am', 'As', 'Ba'] as any);
+    return {
+      props: transformedArgs,
+      template: `
+        <storybook-combobox ${argsToTemplate(transformedArgs)}></storybook-combobox>
       `,
     };
   },
@@ -199,11 +250,13 @@ export const Loading: StoryObj = {
     (canvasElement.querySelector('.clr-combobox-trigger') as HTMLElement).click();
   },
 };
+
 export const Opened: StoryObj = {
   play({ canvasElement }) {
     (canvasElement.querySelector('.clr-combobox-trigger') as HTMLElement).click();
   },
 };
+
 export const OpenedMultiLineItems: StoryObj = {
   args: {
     multiLineItems: true,
