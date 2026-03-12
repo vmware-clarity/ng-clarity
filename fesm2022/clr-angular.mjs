@@ -12333,20 +12333,24 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class MultiSelectComboboxModel {
+class ComboboxModel {
+    constructor() {
+        this.identityFn = (item) => item;
+    }
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class MultiSelectComboboxModel extends ComboboxModel {
     containsItem(item) {
-        if (this.model) {
-            if (this.displayField && typeof item === 'object') {
-                const includes = this.model.some(modelItem => {
-                    return modelItem[this.displayField] === item[this.displayField];
-                });
-                return includes;
-            }
-            else {
-                return this.model.includes(item);
-            }
+        if (!this.model) {
+            return false;
         }
-        return false;
+        return this.model.some(m => this.identityFn(m) === this.identityFn(item));
     }
     select(item) {
         this.addItem(item);
@@ -12409,7 +12413,7 @@ class MultiSelectComboboxModel {
         if (this.model === null || this.model === undefined) {
             return;
         }
-        const index = this.model.indexOf(item);
+        const index = this.model.findIndex(m => this.identityFn(m) === this.identityFn(item));
         if (index > -1) {
             this.model.splice(index, 1);
         }
@@ -12426,9 +12430,9 @@ class MultiSelectComboboxModel {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class SingleSelectComboboxModel {
+class SingleSelectComboboxModel extends ComboboxModel {
     containsItem(item) {
-        return this.model === item;
+        return this.model !== null && this.identityFn(this.model) === this.identityFn(item);
     }
     select(item) {
         this.model = item;
@@ -12522,6 +12526,7 @@ class OptionSelectionService {
         this._currentInput = '';
         this._inputChanged = new BehaviorSubject('');
         this._selectionChanged = new ReplaySubject(1);
+        this._identityFn = (item) => item;
         this.inputChanged = this._inputChanged.asObservable();
     }
     get displayField() {
@@ -12552,6 +12557,15 @@ class OptionSelectionService {
     get multiselectable() {
         return this.selectionModel instanceof MultiSelectComboboxModel;
     }
+    get identityFn() {
+        return this._identityFn;
+    }
+    set identityFn(value) {
+        this._identityFn = value || ((item) => item);
+        if (this.selectionModel) {
+            this.selectionModel.identityFn = this._identityFn;
+        }
+    }
     select(item) {
         if (item === null || item === undefined || this.selectionModel.containsItem(item)) {
             return;
@@ -12578,13 +12592,12 @@ class OptionSelectionService {
         this.selectionModel.unselect(item);
         this._selectionChanged.next(this.selectionModel);
     }
-    // TODO: Add support for trackBy and compareFn
     setSelectionValue(value) {
-        // NOTE: Currently we assume that no 2 options will have the same value
-        // but Eudes and I discussed that this is a possibility but we will handle
-        // this later
-        // if selection is undefined, or its value hasn't changed, or changing from null <-> undefined, that's not really changing so we return
-        if (!this.selectionModel || this.selectionModel.model === value || (!this.selectionModel.model && !value)) {
+        if (!this.selectionModel) {
+            return;
+        }
+        const current = this.selectionModel.model;
+        if (this.valuesEqualByIdentity(current, value)) {
             return;
         }
         this.selectionModel.model = value;
@@ -12597,6 +12610,39 @@ class OptionSelectionService {
             };
         }
         return value;
+    }
+    valuesEqualByIdentity(current, value) {
+        if (current === value) {
+            return true;
+        }
+        // Check if both are null or undefined or empty string.
+        if ((current === null || current === undefined || current === '') &&
+            (value === null || value === undefined || value === '')) {
+            return true;
+        }
+        // Check if one is null or undefined or empty string and the other is not.
+        if (current === null ||
+            current === undefined ||
+            current === '' ||
+            value === null ||
+            value === undefined ||
+            value === '') {
+            return false;
+        }
+        if (this.multiselectable) {
+            const cur = current;
+            const val = value;
+            if (cur.length !== val.length) {
+                return false;
+            }
+            // We only consider values equal if they are ordered the same way.
+            const curIds = cur.map(this._identityFn);
+            const valIds = val.map(this._identityFn);
+            return curIds.every((id, i) => id === valIds[i]);
+        }
+        else {
+            return this._identityFn(current) === this._identityFn(value);
+        }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: OptionSelectionService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
     static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: OptionSelectionService }); }
@@ -13093,14 +13139,16 @@ class ClrCombobox extends WrappedFormControl$1 {
             control.valueAccessor = this;
         }
         // default to SingleSelectComboboxModel, in case the optional input [ClrMulti] isn't used
-        optionSelectionService.selectionModel = new SingleSelectComboboxModel();
-        this.updateControlValue();
+        this.multiSelect = false;
     }
     get editable() {
         return this.optionSelectionService.editable;
     }
     set editable(value) {
         this.optionSelectionService.editable = value;
+    }
+    set identityFn(value) {
+        this.optionSelectionService.identityFn = value;
     }
     get multiSelect() {
         return this.optionSelectionService.multiselectable;
@@ -13114,6 +13162,7 @@ class ClrCombobox extends WrappedFormControl$1 {
             // since the initial call to writeValue (caused by [ngModel] input) should happen after this
             this.optionSelectionService.selectionModel = new SingleSelectComboboxModel();
         }
+        this.optionSelectionService.selectionModel.identityFn = this.optionSelectionService.identityFn;
         this.updateControlValue();
     }
     // Override the id of WrappedFormControl, as we want to move it to the embedded input.
@@ -13336,7 +13385,7 @@ class ClrCombobox extends WrappedFormControl$1 {
         return [this.optionSelectionService.selectionModel.model];
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCombobox, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$5.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: OptionSelectionService }, { token: i1$1.ClrCommonStringsService }, { token: i2.ClrPopoverService }, { token: ComboboxContainerService, optional: true }, { token: PLATFORM_ID }, { token: ComboboxFocusHandler }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrCombobox, isStandalone: false, selector: "clr-combobox", inputs: { placeholder: "placeholder", editable: ["clrEditable", "editable"], multiSelect: ["clrMulti", "multiSelect"] }, outputs: { clrInputChange: "clrInputChange", clrOpenChange: "clrOpenChange", clrSelectionChange: "clrSelectionChange" }, host: { listeners: { "keydown": "onKeyUp($event)" }, properties: { "class.aria-required": "true", "class.clr-combobox": "true", "class.clr-combobox-disabled": "control?.disabled" } }, providers: [
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrCombobox, isStandalone: false, selector: "clr-combobox", inputs: { placeholder: "placeholder", editable: ["clrEditable", "editable"], identityFn: ["clrComboboxIdentityFn", "identityFn"], multiSelect: ["clrMulti", "multiSelect"] }, outputs: { clrInputChange: "clrInputChange", clrOpenChange: "clrOpenChange", clrSelectionChange: "clrSelectionChange" }, host: { listeners: { "keydown": "onKeyUp($event)" }, properties: { "class.aria-required": "true", "class.clr-combobox": "true", "class.clr-combobox-disabled": "control?.disabled" } }, providers: [
             OptionSelectionService,
             { provide: LoadingListener$1, useExisting: ClrCombobox },
             IF_ACTIVE_ID_PROVIDER$1,
@@ -13393,6 +13442,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], editable: [{
                 type: Input,
                 args: ['clrEditable']
+            }], identityFn: [{
+                type: Input,
+                args: ['clrComboboxIdentityFn']
             }], multiSelect: [{
                 type: Input,
                 args: ['clrMulti']
