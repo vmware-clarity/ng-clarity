@@ -30,6 +30,7 @@ interface OptionGroup {
         [placeholder]="placeholder"
         [id]="id"
         [clrLoading]="clrLoading"
+        [clrComboboxIdentityFn]="useIdentityFn ? identityBySymbol : undefined"
         [ngModel]="clrMulti ? multiModel : singleModel"
         (ngModelChange)="onModelChange($event)"
         (clrInputChange)="clrInputChange.emit($event)"
@@ -107,6 +108,7 @@ export class StorybookComboboxComponent {
   @Input() useGroups = true;
   @Input() multiLineItems = false;
   @Input() objectValues = false;
+  @Input() useIdentityFn = false;
 
   /**
    * If true, expects `elements` as array of strings (flat list).
@@ -134,6 +136,8 @@ export class StorybookComboboxComponent {
       group.options.push(element);
       return groups;
     }, []);
+
+  identityBySymbol = (item: { symbol?: string }) => item?.symbol;
 
   onModelChange(value: string | string[]) {
     if (this.clrMulti) {

@@ -43,7 +43,7 @@ import {
 } from '@clr/angular/utils';
 
 import { ClrComboboxContainer } from './combobox-container';
-import { ComboboxModel } from './model/combobox.model';
+import { ClrComboboxIdentityFunction, ComboboxModel } from './model/combobox.model';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
 import { ClrOptionSelected } from './option-selected.directive';
@@ -124,8 +124,7 @@ export class ClrCombobox<T>
     }
 
     // default to SingleSelectComboboxModel, in case the optional input [ClrMulti] isn't used
-    optionSelectionService.selectionModel = new SingleSelectComboboxModel<T>();
-    this.updateControlValue();
+    this.multiSelect = false;
   }
 
   @Input('clrEditable')
@@ -134,6 +133,11 @@ export class ClrCombobox<T>
   }
   set editable(value: boolean) {
     this.optionSelectionService.editable = value;
+  }
+
+  @Input('clrComboboxIdentityFn')
+  set identityFn(value: ClrComboboxIdentityFunction<T>) {
+    this.optionSelectionService.identityFn = value;
   }
 
   @Input('clrMulti')
@@ -148,6 +152,7 @@ export class ClrCombobox<T>
       // since the initial call to writeValue (caused by [ngModel] input) should happen after this
       this.optionSelectionService.selectionModel = new SingleSelectComboboxModel<T>();
     }
+    this.optionSelectionService.selectionModel.identityFn = this.optionSelectionService.identityFn;
     this.updateControlValue();
   }
 
