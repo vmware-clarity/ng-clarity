@@ -257,5 +257,63 @@ export default function (): void {
         expect(button.disabled).toBeTruthy();
       });
     });
+
+    describe('clrComboboxIdentityFn', () => {
+      interface Item {
+        id: number;
+        label: string;
+      }
+      const options: Item[] = [
+        { id: 1, label: 'One' },
+        { id: 2, label: 'Two' },
+        { id: 3, label: 'Three' },
+      ];
+      const identityFn = (item: Item) => item.id;
+
+      @Component({
+        template: `
+          <clr-combobox [(ngModel)]="selection" [clrComboboxIdentityFn]="identityFn">
+            <clr-options>
+              @for (opt of options; track opt.id) {
+                <clr-option [clrValue]="opt">{{ opt.label }}</clr-option>
+              }
+            </clr-options>
+          </clr-combobox>
+        `,
+        standalone: false,
+      })
+      class IdentityTestComponent {
+        selection: Item | null = null;
+        options = options;
+        identityFn = identityFn;
+      }
+
+      it('pre-selection works when writeValue has same identity as option (different ref)', async () => {
+        TestBed.resetTestingModule();
+        TestBed.configureTestingModule({
+          imports: [ClrComboboxModule, ClrIcon, FormsModule, NoopAnimationsModule, ClrPopoverContent],
+          declarations: [IdentityTestComponent],
+          providers: [
+            OptionSelectionService,
+            IF_ACTIVE_ID_PROVIDER,
+            FOCUS_SERVICE_PROVIDER,
+            COMBOBOX_FOCUS_HANDLER_PROVIDER,
+          ],
+        });
+        const identityFixture = TestBed.createComponent(IdentityTestComponent);
+        const comboboxDE = identityFixture.debugElement.query(By.directive(ClrCombobox));
+        const selectionService = comboboxDE.injector.get(OptionSelectionService) as OptionSelectionService<Item>;
+        identityFixture.detectChanges();
+        await identityFixture.whenStable();
+
+        // writeValue with object that has same id as options[0] but different ref (e.g. from API)
+        const preSelected = { id: 1, label: 'One' };
+        (comboboxDE.componentInstance as ClrCombobox<Item>).writeValue(preSelected);
+        identityFixture.detectChanges();
+
+        // Option with value options[0] should be considered selected (same identity)
+        expect(selectionService.selectionModel.containsItem(options[0])).toBeTrue();
+      });
+    });
   });
 }
