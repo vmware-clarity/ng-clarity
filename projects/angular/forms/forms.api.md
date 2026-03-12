@@ -318,6 +318,8 @@ export class ClrCombobox<T> extends WrappedFormControl_2<ClrComboboxContainer> i
     get id(): string;
     set id(id: string);
     // (undocumented)
+    set identityFn(value: ClrComboboxIdentityFunction<T>);
+    // (undocumented)
     protected index: number;
     // (undocumented)
     inputId(): string;
@@ -382,7 +384,7 @@ export class ClrCombobox<T> extends WrappedFormControl_2<ClrComboboxContainer> i
     // (undocumented)
     writeValue(value: T | T[]): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "identityFn": { "alias": "clrComboboxIdentityFn"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, { optional: true; }, null, null, null]>;
 }
@@ -401,6 +403,9 @@ export class ClrComboboxContainer extends ClrAbstractContainer_2 implements Afte
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrComboboxContainer, [{ optional: true; }, null, null, null, null]>;
 }
+
+// @public (undocumented)
+export type ClrComboboxIdentityFunction<T> = (item: T) => any;
 
 // @public (undocumented)
 export class ClrComboboxModule {
@@ -1883,7 +1888,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-forms.d.ts:606:440 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-forms.d.ts
+// dist/clr-angular/types/clr-angular-forms.d.ts:613:512 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-forms.d.ts
 
 // (No @packageDocumentation comment for this package)
 
