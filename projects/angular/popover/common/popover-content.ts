@@ -251,10 +251,12 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    */
   private createElementBasedOutsideClickSubscription(): Subscription {
     return this.overlayRef.outsidePointerEvents().subscribe(event => {
+      // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
       if (this.elementRef?.nativeElement?.contains(event.target)) {
         return;
       }
 
+      // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
       const isToggleButton =
         this.popoverService.openEvent &&
         ((this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
@@ -329,7 +331,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     setTimeout(() => {
       // Get Scrollable Parents
-      this.listenToMouseEvents();
+      this.listenToScrollEvents();
 
       this.popoverService.popoverVisibleEmit(true);
 
@@ -403,6 +405,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.intersectionObserver = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
+          // If the origin is no longer visible (scrolled out of view)
           if (!entry.isIntersecting && this.popoverService.open) {
             this.zone.run(() => this.closePopover());
           }
@@ -414,25 +417,32 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.intersectionObserver.observe(this.popoverService.originElement.nativeElement);
   }
 
-  //Align the popover on scrolling
-  private listenToMouseEvents() {
+  private listenToScrollEvents() {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
 
-    const originEl = this.getRootPopover(this)?.popoverService?.originElement?.nativeElement;
-
-    if (!originEl && this.popoverService.originPoint) {
-      this.zone.runOutsideAngular(() => {
-        this.subscriptions.push(
-          fromEvent(window, 'scroll', { passive: true, capture: true }).subscribe(() => {
-            this.zone.run(() => this.closePopover());
-          })
-        );
-      });
-      return;
+    if (this.popoverService.originPoint) {
+      this.listenToScrollForPointOrigin();
+    } else {
+      this.listenToScrollForElementOrigin();
     }
+  }
 
+  // Point origins have no scrollable parent chain — close on any scroll.
+  private listenToScrollForPointOrigin() {
+    this.zone.runOutsideAngular(() => {
+      this.subscriptions.push(
+        fromEvent(window, 'scroll', { passive: true, capture: true }).subscribe(() => {
+          this.zone.run(() => this.closePopover());
+        })
+      );
+    });
+  }
+
+  // Element origins track ancestor scroll containers to reposition or close.
+  private listenToScrollForElementOrigin() {
+    const originEl = this.getRootPopover(this)?.popoverService?.originElement?.nativeElement;
     const scrollableParents = this.getScrollableParents(originEl);
 
     this.zone.runOutsideAngular(() => {
