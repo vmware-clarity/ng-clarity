@@ -1,0 +1,75 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+@use 'variables.responsive-nav' as responsive-nav-variables;
+@use '../../layout/vertical-nav/variables.vertical-nav' as vertical-nav-variables;
+
+@mixin sliding-nav-positioning($top: 0, $right: auto, $bottom: 0, $left: 0) {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  inset: $top $right $bottom $left;
+  background: vertical-nav-variables.$clr-vertical-nav-bg-color;
+  z-index: responsive-nav-variables.$clr-sliding-panel-z-index;
+  height: 100vh;
+}
+@mixin menu-trigger($right: auto, $left: 0, $transformX: responsive-nav-variables.$clr-trigger-position) {
+  position: fixed;
+  top: 0;
+  right: $right;
+  left: $left;
+  z-index: responsive-nav-variables.$clr-sliding-panel-z-index;
+  transform: translateX($transformX);
+  transition: responsive-nav-variables.$clr-trigger-animation;
+
+  &::after {
+    content: none;
+  }
+}
+@mixin hamburger-menu-trigger-animation() {
+  & > span {
+    background: transparent;
+
+    &::before,
+    &::after {
+      left: tokens.$cds-global-space-3;
+      transform-origin: 9%;
+      transition: responsive-nav-variables.$clr-trigger-animation;
+    }
+
+    &::before {
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      transform: rotate(-45deg);
+    }
+  }
+}
+@mixin overflow-menu-trigger-animation() {
+  & > span {
+    background: transparent;
+
+    &::before,
+    &::after {
+      height: tokens.$cds-global-space-2;
+      width: tokens.$cds-global-space-9;
+      left: calc(-1 * tokens.$cds-global-space-4);
+      transform-origin: -3%;
+      transition: responsive-nav-variables.$clr-trigger-animation;
+    }
+
+    &::before {
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      transform: rotate(-45deg);
+    }
+  }
+}

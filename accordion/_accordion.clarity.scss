@@ -1,0 +1,84 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:meta';
+@use '../styles/mixins';
+@use 'variables.accordion' as accordion-variables;
+@use '../styles/variables/variables.density' as density;
+@use '../collapsible-panel/mixins.collapsible-panel' as collapsible-panel;
+
+@include meta.load-css('properties.accordion');
+@include mixins.exports('accordion.clarity') {
+  @include collapsible-panel.collapsible-panel('clr-accordion', accordion-variables.$clr-accordion-theme...);
+
+  .clr-accordion {
+    display: block;
+    margin-bottom: density.$clr-base-vertical-offset-xl;
+
+    .clr-accordion-panel .clr-accordion-header {
+      border-radius: accordion-variables.$clr-accordion-border-radius;
+
+      & + .clr-accordion-content-region > .clr-accordion-content {
+        border-bottom-left-radius: accordion-variables.$clr-accordion-border-radius;
+        border-bottom-right-radius: accordion-variables.$clr-accordion-border-radius;
+      }
+    }
+
+    .clr-accordion-panel + .clr-accordion-panel > div[class*='clr-accordion-panel-'] > .clr-accordion-header {
+      border-top-left-radius: unset;
+      border-top-right-radius: unset;
+    }
+
+    .clr-accordion-panel:not(:last-child) > div[class*='clr-accordion-panel-'] > .clr-accordion-header {
+      &,
+      & + .clr-accordion-content-region > .clr-accordion-content {
+        border-bottom-left-radius: unset;
+        border-bottom-right-radius: unset;
+      }
+    }
+
+    .clr-accordion-panel-open > .clr-accordion-header {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .clr-accordion-header-button {
+      align-items: center;
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
+    }
+
+    .clr-accordion-inner-content {
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l
+        density.$clr-base-vertical-offset-m
+        calc(
+          density.$clr-base-horizontal-offset-l + density.$clr-base-icon-size-s + density.$clr-base-horizontal-offset-m
+        );
+      color: accordion-variables.$clr-accordion-content-color;
+
+      @include mixins.generate-typography-token(
+        'SECONDARY-13-RG-STD',
+        (
+          font-size: accordion-variables.$clr-accordion-content-font-size,
+        )
+      );
+    }
+
+    .clr-accordion-panel-disabled .clr-accordion-inner-content {
+      color: accordion-variables.$clr-accordion-panel-disabled-color;
+      cursor: not-allowed;
+    }
+
+    .clr-accordion-status {
+      width: auto;
+
+      cds-icon:not([size]),
+      clr-icon {
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+      }
+    }
+  }
+}

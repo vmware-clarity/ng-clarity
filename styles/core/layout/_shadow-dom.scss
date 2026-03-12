@@ -1,0 +1,47 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+// The following styles are the layout alignment utilities adapted for Shadow DOM
+// support. This enables alignments to be used for sloted content. This is limited
+// to only layout alignment utils to prevent excessive code bloat and duplication between
+// global and component stylesheets. Example:
+
+/*
+  <div cds-layout="horizontal gap:lg">
+    <slot></slot>
+  </div>
+
+  <my-element>
+    <button></button>
+    <button></button>
+    <button cds-layout="align:bottom"></button>
+  </my-element>
+*/
+
+@use './mixins/mixins';
+@use './mixins/mixins.shadow-dom' as shadow-dom-mixins;
+@use 'optimize';
+
+@include shadow-dom-mixins.generateShadowDomVerticalStretch();
+@include shadow-dom-mixins.generateShadowDomVerticalItemAlignment();
+
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
+  @media (min-width: $breakpoint-value) {
+    @include shadow-dom-mixins.generateShadowDomVerticalStretch($breakpoint);
+    @include shadow-dom-mixins.generateShadowDomVerticalItemAlignment($breakpoint);
+  }
+}
+
+@include shadow-dom-mixins.generateShadowDomHorizontalStretch();
+@include shadow-dom-mixins.generateShadowDomHorizontalItemAlignment();
+
+@each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
+  @media (min-width: $breakpoint-value) {
+    @include shadow-dom-mixins.generateShadowDomHorizontalStretch($breakpoint);
+    @include shadow-dom-mixins.generateShadowDomHorizontalItemAlignment($breakpoint);
+  }
+}
