@@ -1,0 +1,71 @@
+{
+  "name": "@clr/addons",
+  "description": "Addons for Clarity",
+  "homepage": "https://clarity.design",
+  "keywords": [
+    "ng-add",
+    "clarity",
+    "angular",
+    "components"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vmware-clarity/ng-clarity.git"
+  },
+  "author": "Clarity Design System",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vmware-clarity/ng-clarity/issues"
+  },
+  "peerDependencies": {
+    "@angular/animations": "^21",
+    "@angular/cdk": "^21",
+    "@angular/common": "^21",
+    "@angular/core": "^21",
+    "@angular/forms": "^21",
+    "@angular/platform-browser": "^21",
+    "@angular/router": "^21",
+    "@clr/angular": ">= 18",
+    "rxjs": "^7.8.0"
+  },
+  "module": "fesm2022/clr-addons.mjs",
+  "typings": "types/clr-addons.d.ts",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./types/clr-addons.d.ts",
+      "default": "./fesm2022/clr-addons.mjs"
+    },
+    "./a11y": {
+      "types": "./types/clr-addons-a11y.d.ts",
+      "default": "./fesm2022/clr-addons-a11y.mjs"
+    },
+    "./datagrid": {
+      "types": "./types/clr-addons-datagrid.d.ts",
+      "default": "./fesm2022/clr-addons-datagrid.mjs"
+    },
+    "./datagrid-filters": {
+      "types": "./types/clr-addons-datagrid-filters.d.ts",
+      "default": "./fesm2022/clr-addons-datagrid-filters.mjs"
+    },
+    "./drag-and-drop": {
+      "types": "./types/clr-addons-drag-and-drop.d.ts",
+      "default": "./fesm2022/clr-addons-drag-and-drop.mjs"
+    },
+    "./testing": {
+      "types": "./types/clr-addons-testing.d.ts",
+      "default": "./fesm2022/clr-addons-testing.mjs"
+    },
+    "./translate": {
+      "types": "./types/clr-addons-translate.d.ts",
+      "default": "./fesm2022/clr-addons-translate.mjs"
+    }
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "version": "0.0.0-preview.460fd03"
+}
