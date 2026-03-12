@@ -1,0 +1,25 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<clr-combobox-container>
+  <label>User Selection</label>
+  <clr-combobox [(ngModel)]="selection" name="user" required [clrComboboxIdentityFn]="identityFn">
+    <ng-container *clrOptionSelected="let selected"> {{ selected?.name }} </ng-container>
+    <clr-options>
+      <clr-option *clrOptionItems="let user of users; field: 'name'" [clrValue]="user">
+        {{ user.name }}
+        <span>(ID: {{ user.id }})</span>
+      </clr-option>
+    </clr-options>
+  </clr-combobox>
+</clr-combobox-container>
+
+<app-stackblitz-example
+  name="identity function combobox"
+  [componentTemplate]="basicHTML"
+  [componentClass]="basicComponent"
+></app-stackblitz-example>
