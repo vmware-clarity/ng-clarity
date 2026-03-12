@@ -4197,8 +4197,7 @@ export class ClrNavLevel implements OnInit {
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
-    // (undocumented)
-    onMouseClick(target: any): void;
+    onMouseClick(target: HTMLElement): void;
     // (undocumented)
     onResize(event: Event): void;
     // (undocumented)
