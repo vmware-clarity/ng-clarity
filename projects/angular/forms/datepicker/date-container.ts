@@ -40,7 +40,7 @@ import { ViewManagerService } from './providers/view-manager.service';
       <label></label>
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
-      <div class="clr-input-wrapper" clrPopoverAnchor>
+      <div class="clr-input-wrapper" clrPopoverOrigin>
         <div class="clr-input-group" [class.clr-focus]="focus">
           <!-- render range inputs only if using clr-date-range-container -->
           @if (isRangePicker) {
@@ -72,12 +72,6 @@ import { ViewManagerService } from './providers/view-manager.service';
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>

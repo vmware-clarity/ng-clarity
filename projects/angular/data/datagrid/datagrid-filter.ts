@@ -42,7 +42,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
       #anchor
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="popoverId"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
       [class.datagrid-filter-open]="open"
       [class.datagrid-filtered]="active"

@@ -8,7 +8,14 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ClrCheckboxModule, ClrCommonFormsModule, ClrIcon, ClrIconModule } from '@clr/angular';
+import {
+  ClarityIcons,
+  ClrCheckboxModule,
+  ClrCommonFormsModule,
+  ClrIcon,
+  errorStandardIcon,
+  successStandardIcon,
+} from '@clr/angular';
 
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -91,7 +98,6 @@ export class ExampleComponent {
     FormsModule,
     StackblitzExampleComponent,
     ClrIcon,
-    ClrIconModule,
     StyleDocsComponent,
     NestingTableComponent,
   ],
@@ -136,6 +142,7 @@ export class CheckboxesDemo extends ClarityDocComponent {
 
   constructor() {
     super('checkbox');
+    ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
   }
 
   resetIndeterminateState() {

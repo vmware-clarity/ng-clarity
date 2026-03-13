@@ -7,7 +7,7 @@
 
 import { Component, ElementRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { ClrPopoverService, POPOVER_HOST_ANCHOR } from '@clr/angular/popover/common';
+import { ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/common';
 import { TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService, FocusService, IF_ACTIVE_ID_PROVIDER } from '@clr/angular/utils';
 
@@ -26,7 +26,7 @@ const OPTION_PROVIDERS = [
 
 @Component({
   template: `<clr-options>Test</clr-options>`,
-  providers: [...OPTION_PROVIDERS, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
+  providers: [...OPTION_PROVIDERS, { provide: POPOVER_HOST_ORIGIN, useExisting: ElementRef }],
   standalone: false,
 })
 class TestComponent {}
@@ -39,7 +39,7 @@ class TestComponent {}
       }
     </clr-options>
   `,
-  providers: [...OPTION_PROVIDERS, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
+  providers: [...OPTION_PROVIDERS, { provide: POPOVER_HOST_ORIGIN, useExisting: ElementRef }],
   standalone: false,
 })
 class TestComponentWithChild {

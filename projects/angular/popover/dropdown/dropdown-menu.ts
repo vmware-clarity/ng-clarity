@@ -24,7 +24,7 @@ import {
   ClrPopoverService,
   ClrPopoverType,
   DROPDOWN_POSITIONS,
-  POPOVER_HOST_ANCHOR,
+  POPOVER_HOST_ORIGIN,
 } from '@clr/angular/popover/common';
 import { FocusableItem } from '@clr/angular/utils';
 
@@ -45,7 +45,7 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
 
   constructor(
     @Optional()
-    @Inject(POPOVER_HOST_ANCHOR)
+    @Inject(POPOVER_HOST_ORIGIN)
     parentHost: ElementRef<HTMLElement>,
     @Optional()
     @SkipSelf()

@@ -20,7 +20,7 @@
     background-color: vertical-nav-variables.$clr-vertical-nav-selected-bg-color;
     position: relative;
 
-    @include tabs-mixins.nav-link-border-appearance('left');
+    @include tabs-mixins.nav-link-border-appearance('left', true);
 
     .nav-icon {
       fill: vertical-nav-variables.$clr-vertical-nav-icon-active-color;

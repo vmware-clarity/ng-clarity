@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TestContext } from '@clr/angular/testing';
 
 import { ClrPopoverContent } from './popover-content';
@@ -17,7 +17,7 @@ import { ClrPopoverPosition } from './utils/popover-positions';
 @Component({
   selector: 'test-host',
   template: `
-    <button #anchor clrPopoverAnchor clrPopoverOpenCloseButton>Popover Toggle</button>
+    <button #anchor clrPopoverOrigin clrPopoverOpenCloseButton>Popover Toggle</button>
     <div
       *clrPopoverContent="openState; at: popoverPosition; outsideClickToClose: closeClick; scrollToClose: closeScroll"
       (clrPopoverContentChange)="changeCounter()"
@@ -43,6 +43,20 @@ class SimpleContent {
   changeCounter() {
     this.changeCount += 1;
   }
+}
+
+@Component({
+  template: `
+    <div *clrPopoverContent="openState; at: 'bottom-left'; outsideClickToClose: true; origin: point">
+      Point popover content
+    </div>
+  `,
+  providers: [ClrPopoverService],
+  standalone: false,
+})
+class PointContent {
+  openState = false;
+  point: { x: number; y: number } | null = null;
 }
 
 export default function (): void {
@@ -146,5 +160,62 @@ export default function (): void {
         expect(this.fixture.detectChanges).not.toThrowAnyError();
       });
     });
+  });
+
+  describe('Point-based positioning', function () {
+    beforeEach(function () {
+      TestBed.configureTestingModule({
+        imports: [ClrPopoverModuleNext],
+        declarations: [PointContent],
+      });
+    });
+
+    it('opens a popover at a specific point origin', fakeAsync(function () {
+      const fixture = TestBed.createComponent(PointContent);
+      fixture.detectChanges();
+
+      const popoverService = fixture.debugElement.injector.get(ClrPopoverService);
+      const point = { x: 150, y: 250 };
+      fixture.componentInstance.point = point;
+      fixture.componentInstance.openState = true;
+      fixture.detectChanges();
+      tick();
+
+      const content = document.body.querySelectorAll('div.clr-popover-content');
+      expect(content.length).toBe(1);
+      expect(content[0].textContent.trim()).toBe('Point popover content');
+      expect(popoverService.originPoint).toEqual(point);
+
+      fixture.componentInstance.openState = false;
+      fixture.detectChanges();
+      tick();
+
+      fixture.destroy();
+    }));
+
+    it('opens via popoverService.openAtPoint without errors', fakeAsync(function () {
+      const fixture = TestBed.createComponent(PointContent);
+      fixture.detectChanges();
+
+      const popoverService = fixture.debugElement.injector.get(ClrPopoverService);
+      const point = { x: 300, y: 100 };
+
+      fixture.componentInstance.point = point;
+      popoverService.openAtPoint(point);
+      fixture.componentInstance.openState = true;
+      fixture.detectChanges();
+      tick();
+
+      const content = document.body.querySelectorAll('div.clr-popover-content');
+      expect(content.length).toBe(1);
+
+      popoverService.open = false;
+      fixture.detectChanges();
+      tick();
+
+      expect(popoverService.open).toBeFalse();
+
+      fixture.destroy();
+    }));
   });
 }

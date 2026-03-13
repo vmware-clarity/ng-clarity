@@ -6,7 +6,7 @@
  */
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ClrPopoverService, POPOVER_HOST_ANCHOR } from '@clr/angular/popover/common';
+import { ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/common';
 import { TestContext } from '@clr/angular/testing';
 
 import { ComboboxModel } from './model/combobox.model';
@@ -19,7 +19,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
   template: `<clr-option [clrValue]="value" [id]="id" #option>Test</clr-option>`,
   providers: [
     ClrPopoverService,
-    { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef },
+    { provide: POPOVER_HOST_ORIGIN, useExisting: ElementRef },
     SingleSelectComboboxModel,
     ComboboxFocusHandler,
     OptionSelectionService,

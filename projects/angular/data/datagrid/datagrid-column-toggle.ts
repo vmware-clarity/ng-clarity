@@ -27,7 +27,7 @@ import { ColumnsService } from './providers/columns.service';
       role="button"
       type="button"
       class="btn btn-sm column-toggle-action"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
       [attr.aria-controls]="popoverId"
       [attr.aria-expanded]="openState"

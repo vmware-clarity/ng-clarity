@@ -7,16 +7,20 @@
 
 import { Component, Optional } from '@angular/core';
 
-import { ClrAbstractControl, CONTROL_SUFFIX } from './abstract-control';
-import { ContainerIdService } from './providers/container-id.service';
-import { ControlIdService } from './providers/control-id.service';
+import { ClrAbstractControl, CONTROL_SUFFIX } from '../abstract-control';
+import { ContainerIdService } from '../providers/container-id.service';
+import { ControlIdService } from '../providers/control-id.service';
 
 @Component({
   selector: 'clr-control-error',
-  template: `<ng-content></ng-content>`,
+  template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `,
   host: {
-    '[class.clr-subtext]': 'true',
-    '[class.error]': 'true',
+    '[class.clr-subtext-wrapper]': 'true',
     '[attr.id]': 'id',
   },
   standalone: false,

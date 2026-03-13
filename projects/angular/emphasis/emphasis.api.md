@@ -11,6 +11,7 @@ import { ConnectedPosition } from '@angular/cdk/overlay';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ElementRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import * as i0 from '@angular/core';
 import * as i6 from '@angular/common';
 import { InjectionToken } from '@angular/core';
