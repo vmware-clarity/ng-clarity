@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
-import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '@clr/angular/icon';
+import { ClarityIcons, ClrIcon, errorStandardIcon, successStandardIcon } from '@clr/angular/icon';
 
 import { ClrInput } from './input';
 import { ClrInputContainer } from './input-container';
@@ -21,9 +21,6 @@ import { ClrInputContainer } from './input-container';
 })
 export class ClrInputModule {
   constructor() {
-    ClarityIcons.addIcons(
-      exclamationCircleIcon,
-      checkCircleIcon // caret
-    );
+    ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
   }
 }
