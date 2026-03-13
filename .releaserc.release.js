@@ -25,6 +25,10 @@ module.exports = {
             npmPublish: true,
             pkgRoot: './dist/clr-ui',
           },
+          addons: {
+            npmPublish: true,
+            pkgRoot: './dist/clr-addons',
+          },
         },
       },
     ],
