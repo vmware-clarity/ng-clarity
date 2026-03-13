@@ -6,20 +6,20 @@
  */
 
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { Component } from '@angular/core';
-
+import { Component, ViewEncapsulation } from '@angular/core';
 import {
   ClrPopoverPosition,
   ClrPopoverType,
   getConnectedPositions,
   getPositionsArray,
-} from '../../../../angular/popover/common/utils/popover-positions';
-import { uniqueIdFactory } from '../../../../angular/utils/id-generator/id-generator.service';
+} from '@clr/angular/popover/common';
+import { uniqueIdFactory } from '@clr/angular/utils';
 
 @Component({
   selector: 'clr-popovers-demo',
   styleUrls: ['./popovers.demo.scss'],
   templateUrl: './popovers.demo.html',
+  encapsulation: ViewEncapsulation.None,
   standalone: false,
 })
 export class PopoversDemo {

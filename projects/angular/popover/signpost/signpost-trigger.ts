@@ -51,7 +51,7 @@ export class ClrSignpostTrigger implements OnDestroy {
   }
 
   ngOnInit() {
-    this.popoverService.anchorElementRef = this.el;
+    this.popoverService.origin = this.el;
     this.signpostFocusManager.triggerEl = this.el.nativeElement;
     this.subscriptions.push(
       this.popoverService.openChange.subscribe((isOpen: boolean) => {

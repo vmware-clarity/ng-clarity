@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
-import { ClarityIcons, ClrIcon, folderOpenIcon } from '@clr/angular/icon';
+import { ClarityIcons, ClrIcon, errorStandardIcon, folderOpenIcon, successStandardIcon } from '@clr/angular/icon';
 
 import { ClrFileInput } from './file-input';
 import { ClrFileInputContainer } from './file-input-container';
@@ -46,6 +46,6 @@ import { ClrFileMessagesTemplate } from './file-messages-template';
 })
 export class ClrFileInputModule {
   constructor() {
-    ClarityIcons.addIcons(folderOpenIcon);
+    ClarityIcons.addIcons(folderOpenIcon, successStandardIcon, errorStandardIcon);
   }
 }

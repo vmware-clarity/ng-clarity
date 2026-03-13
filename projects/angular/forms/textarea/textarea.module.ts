@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
-import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '@clr/angular/icon';
+import { ClarityIcons, ClrIcon, errorStandardIcon, successStandardIcon } from '@clr/angular/icon';
 
 import { ClrTextarea } from './textarea';
 import { ClrTextareaContainer } from './textarea-container';
@@ -21,6 +21,6 @@ import { ClrTextareaContainer } from './textarea-container';
 })
 export class ClrTextareaModule {
   constructor() {
-    ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+    ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
   }
 }

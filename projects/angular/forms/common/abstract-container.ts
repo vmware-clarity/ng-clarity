@@ -9,14 +9,14 @@ import { ContentChild, Directive, OnDestroy, Optional } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { ClrControlError } from './error';
-import { ClrControlHelper } from './helper';
+import { ClrControlError } from './control-subtexts/error';
+import { ClrControlHelper } from './control-subtexts/helper';
+import { ClrControlSuccess } from './control-subtexts/success';
 import { CONTROL_STATE } from './if-control-state/control-state.enum';
 import { ClrControlLabel } from './label';
 import { ControlClassService } from './providers/control-class.service';
 import { LayoutService } from './providers/layout.service';
 import { NgControlService } from './providers/ng-control.service';
-import { ClrControlSuccess } from './success';
 
 @Directive()
 export abstract class ClrAbstractContainer implements OnDestroy {

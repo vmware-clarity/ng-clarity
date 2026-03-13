@@ -1,0 +1,33 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div class="clr-example">
+  <clr-dropdown #contextDropdown>
+    <div class="context-menu-area" (contextmenu)="onContextMenu($event)">
+      <span>Right-click here to open context menu</span>
+    </div>
+    <clr-dropdown-menu>
+      <button type="button" clrDropdownItem>Cut</button>
+      <button type="button" clrDropdownItem>Copy</button>
+      <button type="button" clrDropdownItem>Paste</button>
+      <div class="dropdown-divider" role="separator"></div>
+      <clr-dropdown>
+        <button type="button" clrDropdownTrigger>Share</button>
+        <clr-dropdown-menu>
+          <button type="button" clrDropdownItem>Email</button>
+          <button type="button" clrDropdownItem>Slack</button>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+      <div class="dropdown-divider" role="separator"></div>
+      <button type="button" clrDropdownItem>Delete</button>
+    </clr-dropdown-menu>
+  </clr-dropdown>
+</div>
+<app-stackblitz-example
+  name="dropdown context menu"
+  [componentTemplate]="example"
+  [componentClass]="exampleTs"
+></app-stackblitz-example>

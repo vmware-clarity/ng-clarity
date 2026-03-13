@@ -27,6 +27,7 @@ import { DragDropConfig } from '@angular/cdk/drag-drop';
 import { ElementRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
+import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
@@ -979,13 +980,13 @@ export class ClrFileList {
     // (undocumented)
     protected createFileMessagesTemplateContext(file: File): ClrFileMessagesTemplateContext;
     // (undocumented)
-    protected createFileMessagesTemplateInjector(fileMessagesTemplateContext: ClrFileMessagesTemplateContext): i0.DestroyableInjector;
-    // (undocumented)
     protected readonly fileMessagesTemplate: ClrFileMessagesTemplate;
     // (undocumented)
     protected get files(): File[];
     // (undocumented)
     protected getClearFileLabel(filename: string): string;
+    // (undocumented)
+    protected injectorCache: Map<File, Injector>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileList, "clr-file-list", never, {}, {}, ["fileMessagesTemplate"], never, false, never>;
     // (undocumented)
