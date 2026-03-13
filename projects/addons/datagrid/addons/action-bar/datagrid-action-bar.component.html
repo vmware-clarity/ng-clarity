@@ -75,7 +75,7 @@
                   [ngClass]="action.class"
                 >
                   {{ action.label }}
-                  <clr-icon shape="caret down"></clr-icon>
+                  <clr-icon shape="caret" direction="down"></clr-icon>
                 </button>
                 <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
                   @for (childAction of action.children; track childAction) {
