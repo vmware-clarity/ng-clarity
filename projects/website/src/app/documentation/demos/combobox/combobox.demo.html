@@ -249,6 +249,16 @@
         </tr>
         <tr>
           <td class="left">
+            [clrComboboxIdentityFn]
+            <div class="clr-hidden-sm-up">Type: (item: T) => any</div>
+            <div class="clr-hidden-sm-up">Default: (item: T) => item</div>
+          </td>
+          <td class="left clr-hidden-xs-down">(item: T) => any</td>
+          <td class="left clr-hidden-xs-down">(item: T) => item</td>
+          <td class="left">A function that returns a unique identifier for an item. Default is the item reference</td>
+        </tr>
+        <tr>
+          <td class="left">
             (clrInputChange)
             <div class="clr-hidden-sm-up">Type: string</div>
             <div class="clr-hidden-sm-up">Default: N/A</div>
@@ -276,16 +286,6 @@
           <td class="left clr-hidden-xs-down">ComboboxModel&lt;T&gt;</td>
           <td class="left clr-hidden-xs-down">N/A</td>
           <td class="left">emits when the combobox selection is changed</td>
-        </tr>
-        <tr>
-          <td class="left">
-            [clrComboboxIdentityFn]
-            <div class="clr-hidden-sm-up">Type: (item: T) => any</div>
-            <div class="clr-hidden-sm-up">Default: (item: T) => item</div>
-          </td>
-          <td class="left clr-hidden-xs-down">(item: T) => any</td>
-          <td class="left clr-hidden-xs-down">(item: T) => item</td>
-          <td class="left">A function that returns a unique identifier for an item</td>
         </tr>
       </tbody>
     </table>
