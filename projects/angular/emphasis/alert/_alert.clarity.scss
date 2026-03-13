@@ -144,9 +144,11 @@
 
       @include mixins.equilateral(density.$clr-base-icon-size-l);
 
-      cds-icon:not([size]),
+      cds-icon,
       clr-icon {
-        @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+        &:not([size]) {
+          @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+        }
       }
     }
 

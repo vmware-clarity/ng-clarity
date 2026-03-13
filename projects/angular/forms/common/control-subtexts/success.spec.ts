@@ -9,44 +9,44 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { CONTROL_SUFFIX } from './abstract-control';
-import { ClrControlHelper } from './helper';
-import { ContainerIdService } from './providers/container-id.service';
-import { ControlIdService } from './providers/control-id.service';
+import { CONTROL_SUFFIX } from '../abstract-control';
+import { ClrControlSuccess } from './success';
+import { ContainerIdService } from '../providers/container-id.service';
+import { ControlIdService } from '../providers/control-id.service';
 
 @Component({
-  template: `<clr-control-helper>Test helper</clr-control-helper>`,
+  template: `<clr-control-success>Test success message</clr-control-success>`,
   standalone: false,
 })
 class SimpleTest {}
 
 export default function (): void {
-  describe('ClrControlHelper', () => {
+  describe('ClrControlSuccess', () => {
     describe('Default:', () => {
       let fixture: ComponentFixture<SimpleTest>;
       let element: HTMLElement;
 
-      beforeEach(async function () {
+      beforeEach(function () {
         TestBed.configureTestingModule({
-          declarations: [ClrControlHelper, SimpleTest],
+          declarations: [ClrControlSuccess, SimpleTest],
           providers: [ControlIdService],
-        }).compileComponents();
+        });
         fixture = TestBed.createComponent(SimpleTest);
         fixture.detectChanges();
-        element = fixture.debugElement.query(By.directive(ClrControlHelper)).nativeElement;
+        element = fixture.debugElement.query(By.directive(ClrControlSuccess)).nativeElement;
       });
 
       it('projects content', function () {
-        expect(element.innerText).toContain('Test helper');
+        expect(element.innerText).toContain('Test success message');
       });
 
-      it('adds the .clr-subtext class to host', function () {
-        expect(element.classList.contains('clr-subtext')).toBeTrue();
+      it('adds the .clr-subtext-wrapper class to host', function () {
+        expect(element.classList.contains('clr-subtext-wrapper')).toBeTrue();
       });
 
-      it('adds the id to host', function () {
+      it('should add id to host', function () {
         expect(element.getAttribute('id')).toContain('clr-form-control');
-        expect(element.getAttribute('id')).toContain(CONTROL_SUFFIX.HELPER);
+        expect(element.getAttribute('id')).toContain(CONTROL_SUFFIX.SUCCESS);
       });
     });
 
@@ -56,17 +56,17 @@ export default function (): void {
 
       beforeEach(async function () {
         TestBed.configureTestingModule({
-          declarations: [ClrControlHelper, SimpleTest],
+          declarations: [ClrControlSuccess, SimpleTest],
           providers: [ControlIdService, ContainerIdService],
         }).compileComponents();
         fixture = TestBed.createComponent(SimpleTest);
         fixture.detectChanges();
-        element = fixture.debugElement.query(By.directive(ClrControlHelper)).nativeElement;
+        element = fixture.debugElement.query(By.directive(ClrControlSuccess)).nativeElement;
       });
 
       it('should have `*-container-*` as part of the id', () => {
         expect(element.getAttribute('id')).toContain('clr-form-container');
-        expect(element.getAttribute('id')).toContain(CONTROL_SUFFIX.HELPER);
+        expect(element.getAttribute('id')).toContain(CONTROL_SUFFIX.SUCCESS);
       });
     });
   });

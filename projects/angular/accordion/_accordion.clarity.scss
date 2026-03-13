@@ -75,9 +75,11 @@
     .clr-accordion-status {
       width: auto;
 
-      cds-icon:not([size]),
+      cds-icon,
       clr-icon {
-        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+        &:not([size]) {
+          @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+        }
       }
     }
   }

@@ -26,7 +26,7 @@
     gap: timeline-variables.$clr-timeline-step-internal-spacing;
 
     > cds-icon:not([size]),
-    > clr-icon {
+    > clr-icon:not([size]) {
       @include mixins.min-equilateral(timeline-variables.$clr-timeline-icon-size);
     }
 

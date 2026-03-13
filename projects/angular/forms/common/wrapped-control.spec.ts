@@ -13,14 +13,14 @@ import { delay } from '@clr/angular/testing';
 import { ClrHostWrappingModule, HostWrapper } from '@clr/angular/utils';
 
 import { ClrAbstractContainer } from './abstract-container';
-import { ClrControlError } from './error';
-import { ClrControlHelper } from './helper';
+import { ClrControlError } from './control-subtexts/error';
+import { ClrControlHelper } from './control-subtexts/helper';
+import { ClrControlSuccess } from './control-subtexts/success';
 import { ControlClassService } from './providers/control-class.service';
 import { ControlIdService } from './providers/control-id.service';
 import { LayoutService } from './providers/layout.service';
 import { MarkControlService } from './providers/mark-control.service';
 import { NgControlService } from './providers/ng-control.service';
-import { ClrControlSuccess } from './success';
 import { WrappedFormControl } from './wrapped-control';
 
 /*

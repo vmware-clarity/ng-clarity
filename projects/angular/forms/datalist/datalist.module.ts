@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ClrInputModule } from '@clr/angular/forms/input';
-import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '@clr/angular/icon';
+import { ClarityIcons, ClrIcon, errorStandardIcon, successStandardIcon } from '@clr/angular/icon';
 
 import { ClrDatalist } from './datalist';
 import { ClrDatalistContainer } from './datalist-container';
@@ -21,6 +21,6 @@ import { ClrDatalistInput } from './datalist-input';
 })
 export class ClrDatalistModule {
   constructor() {
-    ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+    ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
   }
 }
