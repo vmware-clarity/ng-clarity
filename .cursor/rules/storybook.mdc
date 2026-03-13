@@ -1,0 +1,22 @@
+---
+description: Storybook conventions and VRT testing patterns
+globs: .storybook/**,tests/visual-snapshots*,tests/snapshots/**
+---
+
+# Storybook & Visual Regression Testing
+
+## Storybook
+
+- Stories live in `.storybook/stories/<component>/`.
+- Story format: CSF 3.0 (`StoryObj` / `StoryFn`).
+- Shared helpers in `.storybook/helpers/common.ts` (`CommonModules`, `createArray`).
+- Theme helper in `.storybook/helpers/theme.helper.ts`.
+- Storybook globals (`theme`, `density`) are read from query params by the preview decorator.
+
+## Visual Regression Testing (VRT)
+
+- Playwright config: `playwright.config.ts`.
+- Test spec: `tests/visual-snapshots.spec.ts`.
+- Screenshots stored in `tests/snapshots/{browser}/{component}/{story-name}-{theme}-{density}.png`.
+- CI matrix: `browser` (chromium/firefox) × `theme` (light/dark) × `density` (default/compact).
+- Environment variables: `CLARITY_VRT_BROWSER`, `CLARITY_VRT_THEME`, `CLARITY_VRT_DENSITY`.
