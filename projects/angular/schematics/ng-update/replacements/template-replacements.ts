@@ -23,13 +23,6 @@ export const TEMPLATE_OUTPUT_REPLACEMENTS: readonly TemplateReplacement[] = [
     new: 'clrWizardCurrentPageChange',
     context: 'wizard',
   },
-
-  // #2007 - Datagrid identity function rename
-  {
-    old: 'clrDgItemsTrackBy',
-    new: 'clrDgItemsIdentityFn',
-    context: 'datagrid',
-  },
 ];
 
 export const TEMPLATE_ATTRIBUTE_REPLACEMENTS: readonly TemplateReplacement[] = [
@@ -50,6 +43,13 @@ export const TEMPLATE_INPUT_REPLACEMENTS: readonly TemplateReplacement[] = [
     old: 'clrBadgeColor',
     new: 'clrColor',
     context: 'badge',
+  },
+
+  // #2007 - Datagrid identity function rename (input, not output)
+  {
+    old: 'clrDgItemsTrackBy',
+    new: 'clrDgItemsIdentityFn',
+    context: 'datagrid',
   },
 ];
 
