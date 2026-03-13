@@ -1,0 +1,4 @@
+{
+  "module": "../fesm2022/clr-addons-drag-and-drop.mjs",
+  "typings": "../types/clr-addons-drag-and-drop.d.ts"
+}
