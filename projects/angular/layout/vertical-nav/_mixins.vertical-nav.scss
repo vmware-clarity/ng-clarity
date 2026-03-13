@@ -24,15 +24,6 @@
 
     @include tabs-mixins.nav-link-border-appearance('left', true);
 
-    // nav-link-border-appearance overrides
-    &::before {
-      margin: density.$clr-base-vertical-offset-xs 0;
-      left: density.$clr-base-horizontal-offset-xs;
-      width: tokens.$cds-alias-object-border-width-100;
-      border-width: tokens.$cds-alias-object-border-width-400;
-      border-radius: tokens.$cds-alias-object-border-radius-100;
-    }
-
     .nav-icon {
       fill: vertical-nav-variables.$clr-vertical-nav-icon-active-color;
     }
