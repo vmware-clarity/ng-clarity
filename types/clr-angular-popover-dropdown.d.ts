@@ -1,7 +1,7 @@
 import * as i0 from '@angular/core';
 import { OnDestroy, Renderer2, ChangeDetectorRef, AfterContentInit, QueryList, ElementRef, Type } from '@angular/core';
 import * as i1 from '@clr/angular/popover/common';
-import { ClrPopoverService, ClrPopoverContent, ClrPopoverPosition } from '@clr/angular/popover/common';
+import { ClrPopoverService, ClrPopoverPoint, ClrPopoverContent, ClrPopoverPosition } from '@clr/angular/popover/common';
 import { FocusableItem, FocusService } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import * as i5 from '@angular/common';
@@ -57,6 +57,7 @@ declare class ClrDropdown implements OnDestroy {
     isMenuClosable: boolean;
     private subscriptions;
     constructor(parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
+    openAtPoint(point: ClrPopoverPoint): void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdown, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": { "alias": "clrCloseMenuOnItemClick"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;

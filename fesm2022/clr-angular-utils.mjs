@@ -2392,11 +2392,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  *
  *
  * Consumers tell us that they want something to display on the TOP_LEFT of the trigger and that they want the
- * _content_ container to anchor/orient AT the bottom left.
- * In order to calculate the position for the content I need to match up the anchor/toggle ClrPosition with the
+ * _content_ container to orient AT the bottom left.
+ * In order to calculate the position for the content I need to match up the origin/trigger ClrPosition with the
  * content ClrPosition.
  *
- * Anchor TOP_LEFT **AT** Content BOTTOM_LEFT.
+ * Origin TOP_LEFT **AT** Content BOTTOM_LEFT.
  *     -----------
  *     |         |
  *     |         |
