@@ -6,8 +6,7 @@ import * as i1$1 from '@angular/forms';
 import { SelectMultipleControlValueAccessor, FormsModule } from '@angular/forms';
 import * as i2 from '@angular/common';
 import { CommonModule } from '@angular/common';
-import * as i3 from '@clr/angular/icon';
-import { ClarityIcons, exclamationCircleIcon, checkCircleIcon, ClrIcon } from '@clr/angular/icon';
+import { ClarityIcons, successStandardIcon, errorStandardIcon, ClrIcon } from '@clr/angular/icon';
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -37,12 +36,6 @@ class ClrSelectContainer extends ClrAbstractContainer {
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div [ngClass]="wrapperClass()">
         <ng-content select="[clrSelect]"></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -54,7 +47,7 @@ class ClrSelectContainer extends ClrAbstractContainer {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSelectContainer, decorators: [{
             type: Component,
@@ -68,12 +61,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div [ngClass]="wrapperClass()">
         <ng-content select="[clrSelect]"></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -136,7 +123,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrSelectModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSelectModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrSelectModule, declarations: [ClrSelect, ClrSelectContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrSelect, ClrSelectContainer] }); }

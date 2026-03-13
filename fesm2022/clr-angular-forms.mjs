@@ -2,11 +2,11 @@ import * as i0 from '@angular/core';
 import { Injectable, Optional, Directive, Component, ElementRef, HostListener, ContentChild, Input, HostBinding, KeyValueDiffers, Self, ContentChildren, NgModule, InjectionToken, forwardRef, Inject, Attribute, ViewChild, PLATFORM_ID, DOCUMENT, EventEmitter, Output, LOCALE_ID, inject, TemplateRef, Injector } from '@angular/core';
 import * as i2 from 'rxjs';
 import { BehaviorSubject, Subject, tap, merge, of, ReplaySubject } from 'rxjs';
+import * as i3 from '@clr/angular/icon';
+import { ClarityIcons, successStandardIcon, errorStandardIcon, ClrIcon, angleIcon, windowCloseIcon, eventIcon, calendarIcon, folderOpenIcon, minusIcon, plusIcon, eyeHideIcon, eyeIcon } from '@clr/angular/icon';
 import { ClrSignpost } from '@clr/angular/popover/signpost';
 import * as i1 from '@angular/common';
 import { CommonModule, isPlatformBrowser, NgForOf, getLocaleDayNames, FormStyle, TranslationWidth, getLocaleMonthNames, getLocaleFirstDayOfWeek, getLocaleDateFormat, FormatWidth } from '@angular/common';
-import * as i3 from '@clr/angular/icon';
-import { ClarityIcons, exclamationCircleIcon, checkCircleIcon, ClrIcon, angleIcon, windowCloseIcon, eventIcon, calendarIcon, folderOpenIcon, minusIcon, plusIcon, eyeHideIcon, eyeIcon } from '@clr/angular/icon';
 import * as i2$1 from '@clr/angular/utils';
 import { HostWrapper, ClrHostWrappingModule, ArrowKeyDirection, Keys, customFocusableItemProvider, uniqueIdFactory, ClrLoadingState, IF_ACTIVE_ID, LoadingListener, IF_ACTIVE_ID_PROVIDER, FOCUS_SERVICE_PROVIDER, ClrConditionalModule, ClrKeyFocusModule, DATEPICKER_ENABLE_BREAKPOINT, isBooleanAttributeSet, CdkTrapFocusModule, ClrCommonStringsService } from '@clr/angular/utils';
 import * as i1$1 from '@angular/forms';
@@ -160,16 +160,25 @@ class ClrControlError extends ClrAbstractControl {
         this.controlIdSuffix = CONTROL_SUFFIX.ERROR;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlError, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlError, isStandalone: false, selector: "clr-control-error", host: { properties: { "class.clr-subtext": "true", "class.error": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlError, isStandalone: false, selector: "clr-control-error", host: { properties: { "class.clr-subtext-wrapper": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlError, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-control-error',
-                    template: `<ng-content></ng-content>`,
+                    template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `,
                     host: {
-                        '[class.clr-subtext]': 'true',
-                        '[class.error]': 'true',
+                        '[class.clr-subtext-wrapper]': 'true',
                         '[attr.id]': 'id',
                     },
                     standalone: false,
@@ -203,6 +212,49 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     template: `<ng-content></ng-content>`,
                     host: {
                         '[class.clr-subtext]': 'true',
+                        '[attr.id]': 'id',
+                    },
+                    standalone: false,
+                }]
+        }], ctorParameters: () => [{ type: ControlIdService, decorators: [{
+                    type: Optional
+                }] }, { type: ContainerIdService, decorators: [{
+                    type: Optional
+                }] }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrControlSuccess extends ClrAbstractControl {
+    constructor(controlIdService, containerIdService) {
+        super(controlIdService, containerIdService);
+        this.controlIdService = controlIdService;
+        this.containerIdService = containerIdService;
+        this.controlIdSuffix = CONTROL_SUFFIX.SUCCESS;
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlSuccess, isStandalone: false, selector: "clr-control-success", host: { properties: { "class.clr-subtext-wrapper": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `
+    <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext success">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'clr-control-success',
+                    template: `
+    <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext success">
+      <ng-content></ng-content>
+    </span>
+  `,
+                    host: {
+                        '[class.clr-subtext-wrapper]': 'true',
                         '[attr.id]': 'id',
                     },
                     standalone: false,
@@ -416,40 +468,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class ClrControlSuccess extends ClrAbstractControl {
-    constructor(controlIdService, containerIdService) {
-        super(controlIdService, containerIdService);
-        this.controlIdService = controlIdService;
-        this.containerIdService = containerIdService;
-        this.controlIdSuffix = CONTROL_SUFFIX.SUCCESS;
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlSuccess, isStandalone: false, selector: "clr-control-success", host: { properties: { "class.clr-subtext": "true", "class.success": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, decorators: [{
-            type: Component,
-            args: [{
-                    selector: 'clr-control-success',
-                    template: `<ng-content></ng-content>`,
-                    host: {
-                        '[class.clr-subtext]': 'true',
-                        '[class.success]': 'true',
-                        '[attr.id]': 'id',
-                    },
-                    standalone: false,
-                }]
-        }], ctorParameters: () => [{ type: ControlIdService, decorators: [{
-                    type: Optional
-                }] }, { type: ContainerIdService, decorators: [{
-                    type: Optional
-                }] }] });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 const CLASS_ERROR = 'clr-error';
 const CLASS_SUCCESS = 'clr-success';
 class ControlClassService {
@@ -640,12 +658,6 @@ class ClrControlContainer extends ClrAbstractContainer {
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper">
         <ng-content></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -657,7 +669,7 @@ class ClrControlContainer extends ClrAbstractContainer {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlContainer, decorators: [{
             type: Component,
@@ -671,12 +683,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper">
         <ng-content></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -1160,7 +1166,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrCommonFormsModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCommonFormsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrCommonFormsModule, declarations: [ClrControlLabel,
@@ -1418,29 +1424,14 @@ class ClrCheckboxContainer extends ClrAbstractContainer$1 {
           <ng-content select="clr-control-helper"></ng-content>
         </div>
       }
-      @if (showInvalid || showValid) {
-        <div class="clr-subtext-wrapper">
-          @if (showInvalid) {
-            <cds-icon
-              class="clr-validate-icon"
-              shape="exclamation-circle"
-              status="danger"
-              aria-hidden="true"
-            ></cds-icon>
-          }
-          @if (showValid) {
-            <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-          }
-          @if (showInvalid) {
-            <ng-content select="clr-control-error"></ng-content>
-          }
-          @if (showValid) {
-            <ng-content select="clr-control-success"></ng-content>
-          }
-        </div>
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxContainer, decorators: [{
             type: Component,
@@ -1458,26 +1449,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           <ng-content select="clr-control-helper"></ng-content>
         </div>
       }
-      @if (showInvalid || showValid) {
-        <div class="clr-subtext-wrapper">
-          @if (showInvalid) {
-            <cds-icon
-              class="clr-validate-icon"
-              shape="exclamation-circle"
-              status="danger"
-              aria-hidden="true"
-            ></cds-icon>
-          }
-          @if (showValid) {
-            <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-          }
-          @if (showInvalid) {
-            <ng-content select="clr-control-error"></ng-content>
-          }
-          @if (showValid) {
-            <ng-content select="clr-control-success"></ng-content>
-          }
-        </div>
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
   `,
@@ -1507,7 +1483,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrCheckboxModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxModule, declarations: [ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper], imports: [CommonModule, ClrIcon, ClrCommonFormsModule$1, ClrHostWrappingModule], exports: [ClrCommonFormsModule$1, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper] }); }
@@ -1575,12 +1551,6 @@ class ClrComboboxContainer extends ClrAbstractContainer$1 {
     }
     <div class="clr-control-container" [ngClass]="controlClass()" #controlContainer>
       <ng-content select="clr-combobox"></ng-content>
-      @if (showInvalid) {
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-      }
-      @if (showValid) {
-        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-      }
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
       }
@@ -1591,7 +1561,7 @@ class ClrComboboxContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrComboboxContainer, decorators: [{
             type: Component,
@@ -1604,12 +1574,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
     }
     <div class="clr-control-container" [ngClass]="controlClass()" #controlContainer>
       <ng-content select="clr-combobox"></ng-content>
-      @if (showInvalid) {
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-      }
-      @if (showValid) {
-        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-      }
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
       }
@@ -2916,7 +2880,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrComboboxModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, angleIcon, windowCloseIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon, angleIcon, windowCloseIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrComboboxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrComboboxModule, declarations: [ClrCombobox,
@@ -3102,12 +3066,6 @@ class ClrDatalistContainer extends ClrAbstractContainer$1 {
           <ng-content select="datalist"></ng-content>
           <cds-icon shape="angle" class="clr-datalist-caret" direction="down" (click)="showPicker(datalist)"></cds-icon>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -3137,12 +3095,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           <ng-content select="datalist"></ng-content>
           <cds-icon shape="angle" class="clr-datalist-caret" direction="down" (click)="showPicker(datalist)"></cds-icon>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -3229,7 +3181,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrDatalistModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatalistModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrDatalistModule, declarations: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer], imports: [CommonModule, ClrInputModule$1, ClrIcon], exports: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer] }); }
@@ -5710,12 +5662,6 @@ class ClrDateContainer extends ClrAbstractContainer$1 {
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -5771,12 +5717,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -6389,7 +6329,7 @@ const CLR_DATEPICKER_DIRECTIVES = [
 ];
 class ClrDatepickerModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, angleIcon, eventIcon, calendarIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon, angleIcon, eventIcon, calendarIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatepickerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrDatepickerModule, declarations: [ClrDateInput,
@@ -6491,15 +6431,23 @@ function clearFiles(fileInputElement) {
 const CLR_FILE_MESSAGES_TEMPLATE_CONTEXT = new InjectionToken('ClrFileMessagesTemplateContext');
 class ClrFileInfo {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInfo, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileInfo, isStandalone: false, selector: "clr-file-info", host: { properties: { "class.clr-subtext": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileInfo, isStandalone: false, selector: "clr-file-info", host: { properties: { "class.clr-subtext-wrapper": "true" } }, ngImport: i0, template: `
+    <span class="clr-subtext">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInfo, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-info',
-                    template: `<ng-content></ng-content>`,
+                    template: `
+    <span class="clr-subtext">
+      <ng-content></ng-content>
+    </span>
+  `,
                     host: {
-                        '[class.clr-subtext]': 'true',
+                        '[class.clr-subtext-wrapper]': 'true',
                     },
                     standalone: false,
                 }]
@@ -6509,39 +6457,57 @@ class ClrFileSuccess {
         this.context = inject(CLR_FILE_MESSAGES_TEMPLATE_CONTEXT);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileSuccess, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrFileSuccess, isStandalone: false, selector: "clr-file-success", host: { properties: { "style.display": "context.success ? \"inline-block\" : \"none\"", "class.clr-subtext": "true", "class.success": "true" } }, ngImport: i0, template: `@if (context.success) {
-    <ng-content></ng-content>
-  }`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrFileSuccess, isStandalone: false, selector: "clr-file-success", host: { properties: { "style.display": "context.success ? \"flex\" : \"none\"", "class.clr-subtext-wrapper": "true" } }, ngImport: i0, template: `
+    @if (context.success) {
+      <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+      <span class="clr-subtext success">
+        <ng-content></ng-content>
+      </span>
+    }
+  `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileSuccess, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-success',
                     // We check for success here so that consumers don't have to.
-                    template: `@if (context.success) {
-    <ng-content></ng-content>
-  }`,
+                    template: `
+    @if (context.success) {
+      <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+      <span class="clr-subtext success">
+        <ng-content></ng-content>
+      </span>
+    }
+  `,
                     host: {
-                        '[style.display]': 'context.success ? "inline-block" : "none"',
-                        '[class.clr-subtext]': 'true',
-                        '[class.success]': 'true',
+                        '[style.display]': 'context.success ? "flex" : "none"',
+                        '[class.clr-subtext-wrapper]': 'true',
                     },
                     standalone: false,
                 }]
         }] });
 class ClrFileError {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileError, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileError, isStandalone: false, selector: "clr-file-error", host: { properties: { "class.clr-subtext": "true", "class.error": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileError, isStandalone: false, selector: "clr-file-error", host: { properties: { "class.clr-subtext-wrapper": "true" } }, ngImport: i0, template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileError, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-error',
-                    // The host should have an `@if` or `@if` that checks for the relevant error.
-                    template: `<ng-content></ng-content>`,
+                    // The host should have an `*ngIf` or `@if` that checks for the relevant error.
+                    template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `,
                     host: {
-                        '[class.clr-subtext]': 'true',
-                        '[class.error]': 'true',
+                        '[class.clr-subtext-wrapper]': 'true',
                     },
                     standalone: false,
                 }]
@@ -6579,6 +6545,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrFileList {
     constructor() {
+        this.injectorCache = new Map();
+        this.contextCache = new Map();
         this.injector = inject(Injector);
         this.commonStrings = inject(ClrCommonStringsService);
         this.ngControlService = inject(NgControlService$1, { optional: true });
@@ -6617,13 +6585,26 @@ class ClrFileList {
             maxFileSize: fileInputErrors.maxFileSize?.find(error => error.name === file.name),
         };
         const success = Object.values(errors).every(error => !error);
-        return { $implicit: file, success, errors };
+        const cached = this.contextCache.get(file);
+        if (cached && cached.success === success && this.errorsEqual(cached.errors, errors)) {
+            return cached;
+        }
+        // new context is made and old reference replaced
+        const context = { $implicit: file, success, errors };
+        this.contextCache.set(file, context);
+        // new injector is made and old reference replaced
+        const injector = this.createFileMessagesTemplateInjector(context);
+        this.injectorCache.set(file, injector);
+        return context;
     }
     createFileMessagesTemplateInjector(fileMessagesTemplateContext) {
         return Injector.create({
             parent: this.injector,
             providers: [{ provide: CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, useValue: fileMessagesTemplateContext }],
         });
+    }
+    errorsEqual(a, b) {
+        return a.accept === b.accept && a.minFileSize === b.minFileSize && a.maxFileSize === b.maxFileSize;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileList, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrFileList, isStandalone: false, selector: "clr-file-list", host: { properties: { "attr.role": "\"list\"", "class.clr-file-list": "true" } }, queries: [{ propertyName: "fileMessagesTemplate", first: true, predicate: ClrFileMessagesTemplate, descendants: true }], ngImport: i0, template: `
@@ -6648,18 +6629,12 @@ class ClrFileList {
                 <cds-icon shape="times"></cds-icon>
               </button>
             </span>
-            <cds-icon
-              class="clr-validate-icon"
-              [shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
-              [status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
-              aria-hidden="true"
-            ></cds-icon>
           </div>
           @if (fileMessagesTemplate) {
             <ng-container
               [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
               [ngTemplateOutletContext]="fileMessagesTemplateContext"
-              [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
+              [ngTemplateOutletInjector]="injectorCache.get(file)"
             ></ng-container>
           }
         </div>
@@ -6693,18 +6668,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                 <cds-icon shape="times"></cds-icon>
               </button>
             </span>
-            <cds-icon
-              class="clr-validate-icon"
-              [shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
-              [status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
-              aria-hidden="true"
-            ></cds-icon>
           </div>
           @if (fileMessagesTemplate) {
             <ng-container
               [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
               [ngTemplateOutletContext]="fileMessagesTemplateContext"
-              [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
+              [ngTemplateOutletInjector]="injectorCache.get(file)"
             ></ng-container>
           }
         </div>
@@ -6828,12 +6797,6 @@ class ClrFileInputContainer extends ClrAbstractContainer$1 {
             <cds-icon shape="times" status="neutral"></cds-icon>
           </button>
         }
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -6901,12 +6864,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           >
             <cds-icon shape="times" status="neutral"></cds-icon>
           </button>
-        }
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
         }
       </div>
       @if (showHelper) {
@@ -7191,7 +7148,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrFileInputModule {
     constructor() {
-        ClarityIcons.addIcons(folderOpenIcon);
+        ClarityIcons.addIcons(folderOpenIcon, successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInputModule, declarations: [ClrFileInput,
@@ -7271,12 +7228,6 @@ class ClrInputContainer extends ClrAbstractContainer$1 {
           <ng-content select="[clrInput]"></ng-content>
           <ng-content select="[clrInputSuffix]"></ng-content>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -7288,7 +7239,7 @@ class ClrInputContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrInputContainer, decorators: [{
             type: Component,
@@ -7306,12 +7257,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           <ng-content select="[clrInput]"></ng-content>
           <ng-content select="[clrInputSuffix]"></ng-content>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -7378,8 +7323,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrInputModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon // caret
-        );
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrInputModule, declarations: [ClrInput, ClrInputContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule$1], exports: [ClrCommonFormsModule$1, ClrInput, ClrInputContainer] }); }
@@ -7446,12 +7390,6 @@ class ClrNumberInputContainer extends ClrAbstractContainer$1 {
             </button>
           </div>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -7498,12 +7436,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             </button>
           </div>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -7611,7 +7543,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrNumberInputModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, minusIcon, plusIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon, minusIcon, plusIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrNumberInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrNumberInputModule, declarations: [ClrNumberInput, ClrNumberInputContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule$1], exports: [ClrCommonFormsModule$1, ClrNumberInput, ClrNumberInputContainer] }); }
@@ -7696,12 +7628,6 @@ class ClrPasswordContainer extends ClrAbstractContainer$1 {
             </button>
           }
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -7737,12 +7663,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             </button>
           }
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -7836,7 +7756,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrPasswordModule {
     constructor() {
-        ClarityIcons.addIcons(eyeHideIcon, eyeIcon, exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(eyeHideIcon, eyeIcon, successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPasswordModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrPasswordModule, declarations: [ClrPassword, ClrPasswordContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule$1], exports: [ClrCommonFormsModule$1, ClrPassword, ClrPasswordContainer] }); }
@@ -7988,29 +7908,14 @@ class ClrRadioContainer extends ClrAbstractContainer$1 {
           <ng-content select="clr-control-helper"></ng-content>
         </div>
       }
-      @if (showValid || showInvalid) {
-        <div class="clr-subtext-wrapper">
-          @if (showInvalid) {
-            <cds-icon
-              class="clr-validate-icon"
-              shape="exclamation-circle"
-              status="danger"
-              aria-hidden="true"
-            ></cds-icon>
-          }
-          @if (showValid) {
-            <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-          }
-          @if (showInvalid) {
-            <ng-content select="clr-control-error"></ng-content>
-          }
-          @if (showValid) {
-            <ng-content select="clr-control-success"></ng-content>
-          }
-        </div>
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrRadioContainer, decorators: [{
             type: Component,
@@ -8028,26 +7933,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           <ng-content select="clr-control-helper"></ng-content>
         </div>
       }
-      @if (showValid || showInvalid) {
-        <div class="clr-subtext-wrapper">
-          @if (showInvalid) {
-            <cds-icon
-              class="clr-validate-icon"
-              shape="exclamation-circle"
-              status="danger"
-              aria-hidden="true"
-            ></cds-icon>
-          }
-          @if (showValid) {
-            <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-          }
-          @if (showInvalid) {
-            <ng-content select="clr-control-error"></ng-content>
-          }
-          @if (showValid) {
-            <ng-content select="clr-control-success"></ng-content>
-          }
-        </div>
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
   `,
@@ -8081,7 +7971,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrRadioModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrRadioModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrRadioModule, declarations: [ClrRadio, ClrRadioContainer, ClrRadioWrapper], imports: [CommonModule, ClrCommonFormsModule$1, ClrHostWrappingModule, ClrIcon], exports: [ClrCommonFormsModule$1, ClrRadio, ClrRadioContainer, ClrRadioWrapper] }); }
@@ -8131,12 +8021,6 @@ class ClrSelectContainer extends ClrAbstractContainer$1 {
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div [ngClass]="wrapperClass()">
         <ng-content select="[clrSelect]"></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -8148,7 +8032,7 @@ class ClrSelectContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSelectContainer, decorators: [{
             type: Component,
@@ -8162,12 +8046,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div [ngClass]="wrapperClass()">
         <ng-content select="[clrSelect]"></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -8230,7 +8108,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrSelectModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSelectModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrSelectModule, declarations: [ClrSelect, ClrSelectContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule$1], exports: [ClrCommonFormsModule$1, ClrSelect, ClrSelectContainer] }); }
@@ -8268,12 +8146,6 @@ class ClrTextareaContainer extends ClrAbstractContainer$1 {
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-textarea-wrapper">
         <ng-content select="[clrTextarea]"></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -8285,7 +8157,7 @@ class ClrTextareaContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTextareaContainer, decorators: [{
             type: Component,
@@ -8299,12 +8171,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-textarea-wrapper">
         <ng-content select="[clrTextarea]"></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -8362,7 +8228,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrTextareaModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTextareaModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrTextareaModule, declarations: [ClrTextarea, ClrTextareaContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule$1], exports: [ClrCommonFormsModule$1, ClrTextarea, ClrTextareaContainer] }); }
@@ -8443,12 +8309,6 @@ class ClrRangeContainer extends ClrAbstractContainer$1 {
         @if (hasProgress) {
           <span class="fill-input" [style.width]="getRangeProgressFillWidth()"></span>
         }
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -8460,7 +8320,7 @@ class ClrRangeContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrRangeContainer, decorators: [{
             type: Component,
@@ -8476,12 +8336,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
         <ng-content select="[clrRange]"></ng-content>
         @if (hasProgress) {
           <span class="fill-input" [style.width]="getRangeProgressFillWidth()"></span>
-        }
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
         }
       </div>
       @if (showHelper) {
@@ -8544,7 +8398,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrRangeModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrRangeModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrRangeModule, declarations: [ClrRange, ClrRangeContainer], imports: [CommonModule, ClrCommonFormsModule$1, ClrHostWrappingModule, ClrIcon], exports: [ClrCommonFormsModule$1, ClrRange, ClrRangeContainer] }); }

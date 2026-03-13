@@ -9,7 +9,7 @@ import { map, distinctUntilChanged, tap, filter, skipUntil, startWith } from 'rx
 import * as i2 from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import * as i5 from '@clr/angular/icon';
-import { ClarityIcons, angleIcon, exclamationCircleIcon, checkCircleIcon, ClrIcon } from '@clr/angular/icon';
+import { ClarityIcons, angleIcon, successStandardIcon, errorStandardIcon, ClrIcon } from '@clr/angular/icon';
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -644,7 +644,7 @@ const declarations = [
 ];
 class ClrStepperModule {
     constructor() {
-        ClarityIcons.addIcons(angleIcon, exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(angleIcon, successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepperModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrStepperModule, declarations: [ClrStepper,

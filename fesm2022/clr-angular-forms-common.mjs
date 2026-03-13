@@ -1,11 +1,11 @@
 import * as i0 from '@angular/core';
 import { Injectable, Optional, Directive, Component, ElementRef, HostListener, ContentChild, Input, HostBinding, KeyValueDiffers, Self, ContentChildren, NgModule } from '@angular/core';
 import { BehaviorSubject, Subject, tap, merge, of } from 'rxjs';
+import * as i3 from '@clr/angular/icon';
+import { ClarityIcons, successStandardIcon, errorStandardIcon, ClrIcon } from '@clr/angular/icon';
 import { ClrSignpost } from '@clr/angular/popover/signpost';
 import * as i1 from '@angular/common';
 import { CommonModule } from '@angular/common';
-import * as i2 from '@clr/angular/icon';
-import { ClarityIcons, exclamationCircleIcon, checkCircleIcon, ClrIcon } from '@clr/angular/icon';
 import { HostWrapper } from '@clr/angular/utils';
 import * as i1$1 from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -137,16 +137,25 @@ class ClrControlError extends ClrAbstractControl {
         this.controlIdSuffix = CONTROL_SUFFIX.ERROR;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlError, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlError, isStandalone: false, selector: "clr-control-error", host: { properties: { "class.clr-subtext": "true", "class.error": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlError, isStandalone: false, selector: "clr-control-error", host: { properties: { "class.clr-subtext-wrapper": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlError, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-control-error',
-                    template: `<ng-content></ng-content>`,
+                    template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `,
                     host: {
-                        '[class.clr-subtext]': 'true',
-                        '[class.error]': 'true',
+                        '[class.clr-subtext-wrapper]': 'true',
                         '[attr.id]': 'id',
                     },
                     standalone: false,
@@ -180,6 +189,49 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     template: `<ng-content></ng-content>`,
                     host: {
                         '[class.clr-subtext]': 'true',
+                        '[attr.id]': 'id',
+                    },
+                    standalone: false,
+                }]
+        }], ctorParameters: () => [{ type: ControlIdService, decorators: [{
+                    type: Optional
+                }] }, { type: ContainerIdService, decorators: [{
+                    type: Optional
+                }] }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrControlSuccess extends ClrAbstractControl {
+    constructor(controlIdService, containerIdService) {
+        super(controlIdService, containerIdService);
+        this.controlIdService = controlIdService;
+        this.containerIdService = containerIdService;
+        this.controlIdSuffix = CONTROL_SUFFIX.SUCCESS;
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlSuccess, isStandalone: false, selector: "clr-control-success", host: { properties: { "class.clr-subtext-wrapper": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `
+    <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext success">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'clr-control-success',
+                    template: `
+    <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext success">
+      <ng-content></ng-content>
+    </span>
+  `,
+                    host: {
+                        '[class.clr-subtext-wrapper]': 'true',
                         '[attr.id]': 'id',
                     },
                     standalone: false,
@@ -393,40 +445,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class ClrControlSuccess extends ClrAbstractControl {
-    constructor(controlIdService, containerIdService) {
-        super(controlIdService, containerIdService);
-        this.controlIdService = controlIdService;
-        this.containerIdService = containerIdService;
-        this.controlIdSuffix = CONTROL_SUFFIX.SUCCESS;
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlSuccess, isStandalone: false, selector: "clr-control-success", host: { properties: { "class.clr-subtext": "true", "class.success": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, decorators: [{
-            type: Component,
-            args: [{
-                    selector: 'clr-control-success',
-                    template: `<ng-content></ng-content>`,
-                    host: {
-                        '[class.clr-subtext]': 'true',
-                        '[class.success]': 'true',
-                        '[attr.id]': 'id',
-                    },
-                    standalone: false,
-                }]
-        }], ctorParameters: () => [{ type: ControlIdService, decorators: [{
-                    type: Optional
-                }] }, { type: ContainerIdService, decorators: [{
-                    type: Optional
-                }] }] });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 const CLASS_ERROR = 'clr-error';
 const CLASS_SUCCESS = 'clr-success';
 class ControlClassService {
@@ -617,12 +635,6 @@ class ClrControlContainer extends ClrAbstractContainer {
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper">
         <ng-content></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -634,7 +646,7 @@ class ClrControlContainer extends ClrAbstractContainer {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i2.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlContainer, decorators: [{
             type: Component,
@@ -648,12 +660,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper">
         <ng-content></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -1137,7 +1143,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrCommonFormsModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCommonFormsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrCommonFormsModule, declarations: [ClrControlLabel,

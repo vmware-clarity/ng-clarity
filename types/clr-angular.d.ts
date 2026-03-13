@@ -2616,6 +2616,15 @@ declare class ClrControlHelper extends ClrAbstractControl {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlHelper, "clr-control-helper", never, {}, {}, never, ["*"], false, never>;
 }
 
+declare class ClrControlSuccess extends ClrAbstractControl {
+    protected controlIdService: ControlIdService;
+    protected containerIdService: ContainerIdService;
+    controlIdSuffix: string;
+    constructor(controlIdService: ControlIdService, containerIdService: ContainerIdService);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlSuccess, [{ optional: true; }, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlSuccess, "clr-control-success", never, {}, {}, never, ["*"], false, never>;
+}
+
 declare enum ClrFormLayout {
     VERTICAL = "vertical",
     HORIZONTAL = "horizontal",
@@ -2694,15 +2703,6 @@ declare class ControlClassService {
     initControlClass(renderer: Renderer2, element: HTMLElement): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ControlClassService, [{ optional: true; }]>;
     static ɵprov: i0.ɵɵInjectableDeclaration<ControlClassService>;
-}
-
-declare class ClrControlSuccess extends ClrAbstractControl {
-    protected controlIdService: ControlIdService;
-    protected containerIdService: ContainerIdService;
-    controlIdSuffix: string;
-    constructor(controlIdService: ControlIdService, containerIdService: ContainerIdService);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlSuccess, [{ optional: true; }, { optional: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlSuccess, "clr-control-success", never, {}, {}, never, ["*"], false, never>;
 }
 
 declare abstract class ClrAbstractContainer implements OnDestroy {
@@ -4294,6 +4294,8 @@ declare class ClrFileMessagesTemplate {
 
 declare class ClrFileList {
     protected readonly fileMessagesTemplate: ClrFileMessagesTemplate;
+    protected injectorCache: Map<File, Injector>;
+    private contextCache;
     private readonly injector;
     private readonly commonStrings;
     private readonly ngControlService;
@@ -4303,7 +4305,8 @@ declare class ClrFileList {
     protected getClearFileLabel(filename: string): string;
     protected clearFile(fileToRemove: File): void;
     protected createFileMessagesTemplateContext(file: File): ClrFileMessagesTemplateContext;
-    protected createFileMessagesTemplateInjector(fileMessagesTemplateContext: ClrFileMessagesTemplateContext): i0.DestroyableInjector;
+    private createFileMessagesTemplateInjector;
+    private errorsEqual;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileList, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileList, "clr-file-list", never, {}, {}, ["fileMessagesTemplate"], never, false, never>;
 }

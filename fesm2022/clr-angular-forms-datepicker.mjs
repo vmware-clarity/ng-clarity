@@ -11,7 +11,7 @@ import * as i1 from '@clr/angular/popover/common';
 import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS, ClrPopoverHostDirective, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { Subject, tap } from 'rxjs';
 import * as i5 from '@clr/angular/icon';
-import { ClarityIcons, exclamationCircleIcon, checkCircleIcon, angleIcon, eventIcon, calendarIcon, ClrIcon } from '@clr/angular/icon';
+import { ClarityIcons, successStandardIcon, errorStandardIcon, angleIcon, eventIcon, calendarIcon, ClrIcon } from '@clr/angular/icon';
 import * as i6 from '@clr/angular/layout/vertical-nav';
 import { ClrVerticalNavModule } from '@clr/angular/layout/vertical-nav';
 import * as i1$1 from '@angular/forms';
@@ -2476,12 +2476,6 @@ class ClrDateContainer extends ClrAbstractContainer {
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -2537,12 +2531,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -3155,7 +3143,7 @@ const CLR_DATEPICKER_DIRECTIVES = [
 ];
 class ClrDatepickerModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, angleIcon, eventIcon, calendarIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon, angleIcon, eventIcon, calendarIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatepickerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrDatepickerModule, declarations: [ClrDateInput,
