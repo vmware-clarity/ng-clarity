@@ -96,7 +96,7 @@ const svc = new FocusService();`
       tree.create(
         '/app.ts',
         `import { ClrLabel } from '@clr/angular/forms';
-@Component({ providers: [ClrLabel] })
+const x = ClrLabel;
 class MyComp {}`
       );
 
@@ -111,7 +111,7 @@ class MyComp {}`
       tree.create(
         '/app.ts',
         `import { ClrIconModule } from '@clr/angular';
-@NgModule({ imports: [ClrIconModule] })
+const imports = [ClrIconModule];
 class AppModule {}`
       );
 
@@ -242,7 +242,7 @@ const svc: ClrPopoverToggleService = inject(ClrPopoverToggleService);`
     it('should migrate inline templates in .ts files', () => {
       tree.create(
         '/app.component.ts',
-        `@Component({
+        `${'@'}Component({
   template: \`<clr-wizard (clrWizardCurrentPageChanged)="onPage()"></clr-wizard>\`
 })
 class AppComponent {}`
@@ -337,7 +337,7 @@ class AppComponent {}`
     it('should migrate inline styles in TypeScript files', () => {
       tree.create(
         '/app.component.ts',
-        `@Component({
+        `${'@'}Component({
   styles: [\`
     :host {
       --clr-wizard-stepnav-text--active: red;
