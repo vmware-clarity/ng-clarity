@@ -8,43 +8,43 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { spec, TestContext } from '@clr/angular/testing';
 
-import { ClrPopoverAnchor } from './popover-anchor';
+import { ClrPopoverOrigin } from './popover-origin';
 import { ClrPopoverService } from './providers/popover.service';
 
 @Component({
   selector: 'test-host',
-  template: '<button #testAnchor clrPopoverAnchor>Smart Anchor</button>',
+  template: '<button #testOrigin clrPopoverOrigin>Smart Origin</button>',
   providers: [ClrPopoverService],
   standalone: false,
 })
 class TestHost {
-  @ViewChild('testAnchor', { read: ElementRef, static: true }) anchor: ElementRef<HTMLButtonElement>;
+  @ViewChild('testOrigin', { read: ElementRef, static: true }) origin: ElementRef<HTMLButtonElement>;
 }
 
 export default function (): void {
-  describe('ClrPopoverAnchor', function () {
-    type Context = TestContext<ClrPopoverAnchor, TestHost> & {
+  describe('ClrPopoverOrigin', function () {
+    type Context = TestContext<ClrPopoverOrigin, TestHost> & {
       popoverService: ClrPopoverService;
     };
 
     describe('Template API', () => {
-      spec(ClrPopoverAnchor, TestHost, undefined);
+      spec(ClrPopoverOrigin, TestHost, undefined);
 
       beforeEach(function (this: Context) {
         this.popoverService = this.getClarityProvider(ClrPopoverService);
         this.detectChanges();
       });
 
-      it('registers the anchor element with the event service', function (this: Context) {
-        expect(this.popoverService.anchorElementRef).toEqual(this.testComponent.anchor);
+      it('registers the element as the popover origin', function (this: Context) {
+        expect(this.popoverService.origin).toEqual(this.testComponent.origin);
       });
     });
 
     describe('View Basics', function (this: Context) {
-      spec(ClrPopoverAnchor, TestHost, undefined);
+      spec(ClrPopoverOrigin, TestHost, undefined);
 
-      it('adds the clr-anchor classname', function (this: Context) {
-        expect(this.clarityElement.classList).toContain('clr-anchor');
+      it('adds the clr-popover-origin classname', function (this: Context) {
+        expect(this.clarityElement.classList).toContain('clr-popover-origin');
       });
     });
   });

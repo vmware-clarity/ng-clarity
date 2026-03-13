@@ -38,7 +38,7 @@ export class ClrDropdownTrigger {
       this.isRootLevelToggle = false;
     }
     focusHandler.trigger = el.nativeElement;
-    popoverService.anchorElementRef = el;
+    popoverService.origin = el;
   }
 
   get active(): boolean {

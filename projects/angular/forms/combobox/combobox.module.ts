@@ -11,10 +11,10 @@ import { FormsModule } from '@angular/forms';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 import {
   angleIcon,
-  checkCircleIcon,
   ClarityIcons,
   ClrIcon,
-  exclamationCircleIcon,
+  errorStandardIcon,
+  successStandardIcon,
   windowCloseIcon,
 } from '@clr/angular/icon';
 import { ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
@@ -63,6 +63,6 @@ import { ClrOptions } from './options';
 })
 export class ClrComboboxModule {
   constructor() {
-    ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, angleIcon, windowCloseIcon);
+    ClarityIcons.addIcons(successStandardIcon, errorStandardIcon, angleIcon, windowCloseIcon);
   }
 }

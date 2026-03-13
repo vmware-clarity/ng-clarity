@@ -16,7 +16,7 @@ import { ClrPopoverService } from './providers/popover.service';
   selector: 'test-host',
   template: `
     <button #closeButton clrPopoverCloseButton (clrPopoverOnCloseChange)="handleClose()">Smart Close Button</button>
-    <button #toggleButton clrPopoverAnchor>Toggle Button</button>
+    <button #toggleButton clrPopoverOrigin>Toggle Button</button>
   `,
   providers: [ClrPopoverService],
   standalone: false,
@@ -76,7 +76,7 @@ export default function (): void {
         expect(this.testComponent.openState).toBe(this.popoverService.open);
       });
 
-      it('focuses on the toggle/anchor element when clicked', function (this: Context) {
+      it('focuses on the origin element when clicked', function (this: Context) {
         const clickSpy = spyOn(this.popoverService, 'toggleWithEvent');
         const closeBtn: HTMLButtonElement = this.testElement.querySelector('.clr-smart-close-button');
         const focusSpy = spyOn(this.testComponent.toggleButton.nativeElement, 'focus');

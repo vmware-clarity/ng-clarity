@@ -43,18 +43,12 @@ import {
                 <cds-icon shape="times"></cds-icon>
               </button>
             </span>
-            <cds-icon
-              class="clr-validate-icon"
-              [shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
-              [status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
-              aria-hidden="true"
-            ></cds-icon>
           </div>
           @if (fileMessagesTemplate) {
             <ng-container
               [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
               [ngTemplateOutletContext]="fileMessagesTemplateContext"
-              [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
+              [ngTemplateOutletInjector]="injectorCache.get(file)"
             ></ng-container>
           }
         </div>
@@ -69,6 +63,9 @@ import {
 })
 export class ClrFileList {
   @ContentChild(ClrFileMessagesTemplate) protected readonly fileMessagesTemplate: ClrFileMessagesTemplate;
+
+  protected injectorCache = new Map<File, Injector>();
+  private contextCache = new Map<File, ClrFileMessagesTemplateContext>();
 
   private readonly injector = inject(Injector);
   private readonly commonStrings = inject(ClrCommonStringsService);
@@ -121,13 +118,30 @@ export class ClrFileList {
 
     const success = Object.values(errors).every(error => !error);
 
-    return { $implicit: file, success, errors };
+    const cached = this.contextCache.get(file);
+    if (cached && cached.success === success && this.errorsEqual(cached.errors, errors)) {
+      return cached;
+    }
+
+    // new context is made and old reference replaced
+    const context: ClrFileMessagesTemplateContext = { $implicit: file, success, errors };
+    this.contextCache.set(file, context);
+
+    // new injector is made and old reference replaced
+    const injector = this.createFileMessagesTemplateInjector(context);
+    this.injectorCache.set(file, injector);
+
+    return context;
   }
 
-  protected createFileMessagesTemplateInjector(fileMessagesTemplateContext: ClrFileMessagesTemplateContext) {
+  private createFileMessagesTemplateInjector(fileMessagesTemplateContext: ClrFileMessagesTemplateContext) {
     return Injector.create({
       parent: this.injector,
       providers: [{ provide: CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, useValue: fileMessagesTemplateContext }],
     });
+  }
+
+  private errorsEqual(a: ClrSingleFileValidationErrors, b: ClrSingleFileValidationErrors): boolean {
+    return a.accept === b.accept && a.minFileSize === b.minFileSize && a.maxFileSize === b.maxFileSize;
   }
 }

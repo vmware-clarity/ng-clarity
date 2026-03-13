@@ -25,7 +25,7 @@ interface Version {
     <clr-dropdown class="version-select">
       <button class="btn btn-sm btn-primary" clrDropdownTrigger>
         v{{ currentVersion }}
-        <clr-icon shape="angle" dir="down"></clr-icon>
+        <clr-icon shape="angle" direction="down"></clr-icon>
       </button>
       <clr-dropdown-menu clrPosition="bottom-left">
         <div class="prevent-indent"><div class="dropdown-header">Switch to:</div></div>

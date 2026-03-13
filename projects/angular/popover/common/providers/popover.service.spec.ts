@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Keys } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
@@ -99,6 +99,28 @@ export default function (): void {
         this.popoverService.toggleWithEvent(closeClickEvent);
         expect(this.popoverService.open).toBeFalse();
         expect(this.popoverService.openEvent).toBe(closeClickEvent);
+      });
+
+      it('opens at a specific point', function (this: TestContext) {
+        const point = { x: 100, y: 200 };
+        this.popoverService.openAtPoint(point);
+        expect(this.popoverService.open).toBeTrue();
+        expect(this.popoverService.origin).toEqual(point);
+        expect(this.popoverService.originPoint).toEqual(point);
+      });
+
+      it('returns originPoint when origin is a point', function (this: TestContext) {
+        const point = { x: 300, y: 400 };
+        this.popoverService.origin = point;
+        expect(this.popoverService.originPoint).toEqual(point);
+        expect(this.popoverService.originElement).toBeNull();
+      });
+
+      it('returns originElement when origin is an ElementRef', function (this: TestContext) {
+        const elRef = new ElementRef(document.createElement('button'));
+        this.popoverService.origin = elRef;
+        expect(this.popoverService.originElement).toBe(elRef);
+        expect(this.popoverService.originPoint).toBeNull();
       });
 
       /**

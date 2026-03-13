@@ -1,0 +1,22 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div class="clr-example">
+  <div class="context-menu-area" (contextmenu)="onContextMenu($event)">
+    <span>Right-click here to open signpost at cursor</span>
+    <clr-signpost #signpost [clrSignpostHideTrigger]="true">
+      <clr-signpost-content [clrPosition]="'bottom-middle'">
+        <clr-signpost-title>Info at Point</clr-signpost-title>
+        <p>This signpost was opened at coordinates ({{ lastPoint?.x }}, {{ lastPoint?.y }}).</p>
+      </clr-signpost-content>
+    </clr-signpost>
+  </div>
+</div>
+<app-stackblitz-example
+  name="signpost open at point"
+  [componentTemplate]="example"
+  [componentClass]="exampleTs"
+></app-stackblitz-example>

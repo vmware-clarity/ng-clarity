@@ -9,7 +9,6 @@ import { Component } from '@angular/core';
 import {
   ClarityIcons,
   ClrIcon,
-  ClrIconModule,
   ClrIfOpen,
   ClrPopoverContent,
   ClrPopoverHostDirective,
@@ -19,6 +18,7 @@ import {
   userIcon,
 } from '@clr/angular';
 
+import { SignpostOpenAtPointDemo } from './signpost-open-at-point.demo';
 import { SignpostParagraphDemo } from './signpost-paragraph.demo';
 import { SignpostPositionsDemo } from './signpost-positions.demo';
 import { SignpostTriggersDemo } from './signpost-triggers.demo';
@@ -61,8 +61,8 @@ const html = `
     ClrIfOpen,
     ClrPopoverContent,
     ClrIcon,
-    ClrIconModule,
     CodeSnippetComponent,
+    SignpostOpenAtPointDemo,
     SignpostParagraphDemo,
     SignpostPositionsDemo,
     SignpostTriggersDemo,

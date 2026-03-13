@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
-import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon, eyeHideIcon, eyeIcon } from '@clr/angular/icon';
+import { ClarityIcons, ClrIcon, errorStandardIcon, eyeHideIcon, eyeIcon, successStandardIcon } from '@clr/angular/icon';
 
 import { ClrPassword } from './password';
 import { ClrPasswordContainer } from './password-container';
@@ -21,6 +21,6 @@ import { ClrPasswordContainer } from './password-container';
 })
 export class ClrPasswordModule {
   constructor() {
-    ClarityIcons.addIcons(eyeHideIcon, eyeIcon, exclamationCircleIcon, checkCircleIcon);
+    ClarityIcons.addIcons(eyeHideIcon, eyeIcon, successStandardIcon, errorStandardIcon);
   }
 }

@@ -44,7 +44,7 @@ export default function (): void {
     });
 
     describe('Simple', function (this: TooltipContext) {
-      it('projects anchor content', function () {
+      it('projects trigger content', function () {
         expect(this.clarityElement.textContent).toMatch(/Hello/);
       });
     });

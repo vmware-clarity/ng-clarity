@@ -6,8 +6,9 @@
  */
 
 @use '../../styles/core/tokens/variables.tokens' as tokens;
+@use '../../styles/variables/variables.density' as density;
 
-@mixin nav-link-border-appearance($position) {
+@mixin nav-link-border-appearance($position, $left-inset: false) {
   &::before {
     content: '';
     position: absolute;
@@ -18,6 +19,16 @@
     border: none;
     border-#{$position}: tokens.$cds-alias-object-border-width-300 solid
       tokens.$cds-alias-object-interaction-background-highlight;
-    transition: border-#{$position} 0.2s ease-in;
+    transition: border-#{$position} tokens.$cds-global-animation-duration-quick
+      tokens.$cds-global-animation-easing-in-out;
+
+    // overrides for left inset
+    @if ($left-inset) {
+      margin: density.$clr-base-vertical-offset-xs 0;
+      left: density.$clr-base-horizontal-offset-xs;
+      width: tokens.$cds-alias-object-border-width-100;
+      border-width: tokens.$cds-alias-object-border-width-400;
+      border-radius: tokens.$cds-alias-object-border-radius-100;
+    }
   }
 }
