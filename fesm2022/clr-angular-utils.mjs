@@ -313,7 +313,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
 /**
  * HostWrapper must be called in OnInit to ensure that the Views are ready. If its called in a constructor the view is
  * still undefined.
- * TODO - make sure these comment annotations do not break ng-packgr.
  */
 class HostWrapper {
     constructor(containerType, vcr, index = 0) {
@@ -1565,15 +1564,6 @@ var Keys;
     Keys["PageDown"] = "PageDown";
     Keys["PageUp"] = "PageUp";
 })(Keys || (Keys = {}));
-var IEKeys;
-(function (IEKeys) {
-    IEKeys["ArrowUp"] = "Up";
-    IEKeys["ArrowDown"] = "Down";
-    IEKeys["ArrowRight"] = "Right";
-    IEKeys["ArrowLeft"] = "Left";
-    IEKeys["Space"] = "Spacebar";
-    IEKeys["Escape"] = "Esc";
-})(IEKeys || (IEKeys = {}));
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -1581,31 +1571,8 @@ var IEKeys;
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-function normalizeKey(key) {
-    if (key === Keys.ArrowUp || key === IEKeys.ArrowUp) {
-        return Keys.ArrowUp;
-    }
-    else if (key === Keys.ArrowDown || key === IEKeys.ArrowDown) {
-        return Keys.ArrowDown;
-    }
-    else if (key === Keys.ArrowRight || key === IEKeys.ArrowRight) {
-        return Keys.ArrowRight;
-    }
-    else if (key === Keys.ArrowLeft || key === IEKeys.ArrowLeft) {
-        return Keys.ArrowLeft;
-    }
-    else if (key === Keys.Space || key === IEKeys.Space) {
-        return Keys.Space;
-    }
-    else if (key === Keys.Escape || key === IEKeys.Escape) {
-        return Keys.Escape;
-    }
-    else {
-        return key;
-    }
-}
 function preventArrowKeyScroll(event) {
-    const key = normalizeKey(event.key);
+    const key = event.key;
     if (key === Keys.ArrowUp || key === Keys.ArrowDown || key === Keys.ArrowLeft || key === Keys.ArrowRight) {
         // prevent element container scroll
         // MDN references this is really the only way to prevent native browser interactions
@@ -1710,7 +1677,7 @@ class ClrKeyFocus {
     }
     focusCurrent() {
         this.currentItem.focus();
-        this.focusChange.next(this._current);
+        this.focusChange.emit(this._current);
     }
     moveTo(position) {
         if (this.positionInRange(position)) {
@@ -1742,27 +1709,25 @@ class ClrKeyFocus {
         }
     }
     nextKeyPressed(event) {
-        const key = normalizeKey(event.key);
         switch (this.direction) {
             case ClrFocusDirection.VERTICAL:
-                return key === Keys.ArrowDown;
+                return event.key === Keys.ArrowDown;
             case ClrFocusDirection.HORIZONTAL:
-                return key === Keys.ArrowRight;
+                return event.key === Keys.ArrowRight;
             case ClrFocusDirection.BOTH:
-                return key === Keys.ArrowDown || key === Keys.ArrowRight;
+                return event.key === Keys.ArrowDown || event.key === Keys.ArrowRight;
             default:
                 return false;
         }
     }
     prevKeyPressed(event) {
-        const key = normalizeKey(event.key);
         switch (this.direction) {
             case ClrFocusDirection.VERTICAL:
-                return key === Keys.ArrowUp;
+                return event.key === Keys.ArrowUp;
             case ClrFocusDirection.HORIZONTAL:
-                return key === Keys.ArrowLeft;
+                return event.key === Keys.ArrowLeft;
             case ClrFocusDirection.BOTH:
-                return key === Keys.ArrowUp || key === Keys.ArrowLeft;
+                return event.key === Keys.ArrowUp || event.key === Keys.ArrowLeft;
             default:
                 return false;
         }
@@ -2427,11 +2392,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  *
  *
  * Consumers tell us that they want something to display on the TOP_LEFT of the trigger and that they want the
- * _content_ container to anchor/orient AT the bottom left.
- * In order to calculate the position for the content I need to match up the anchor/toggle ClrPosition with the
+ * _content_ container to orient AT the bottom left.
+ * In order to calculate the position for the content I need to match up the origin/trigger ClrPosition with the
  * content ClrPosition.
  *
- * Anchor TOP_LEFT **AT** Content BOTTOM_LEFT.
+ * Origin TOP_LEFT **AT** Content BOTTOM_LEFT.
  *     -----------
  *     |         |
  *     |         |
@@ -2540,5 +2505,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CLR_LOADING_DIRECTIVES, CONDITIONAL_DIRECTIVES, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, ClrCommonStringsService, ClrConditionalModule, ClrDestroyService, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrHostWrappingModule, ClrIfActive, ClrIfExpanded, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrLoading, ClrLoadingModule, ClrLoadingState, ClrOutsideClickModule, ClrPosition, ClrRovingTabindex, ClrStandaloneCdkTrapFocus, ClrTemplateRefModule, DATEPICKER_ENABLE_BREAKPOINT, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, HostWrapper, IEKeys, IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IfActiveService, IfExpandService, Keys, LARGE_BREAKPOINT, Linkers, LoadingListener, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter, MockFocusableItem, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, SMALL_BREAKPOINT, ScrollingService, TemplateRefContainer, WillyWonka, assertNever, clrFocusServiceFactory, collapse, commonStringsDefault, customFocusableItemProvider, defaultAnimationTiming, defaultExpandAnimation, fade, fadeSlide, isBooleanAttributeSet, isKeyEitherLetterOrNumber, normalizeKey, preventArrowKeyScroll, slide, tokenFactory, triggerAllFormControlValidation, uniqueIdFactory, wrapObservable };
+export { ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CLR_LOADING_DIRECTIVES, CONDITIONAL_DIRECTIVES, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, ClrCommonStringsService, ClrConditionalModule, ClrDestroyService, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrHostWrappingModule, ClrIfActive, ClrIfExpanded, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrLoading, ClrLoadingModule, ClrLoadingState, ClrOutsideClickModule, ClrPosition, ClrRovingTabindex, ClrStandaloneCdkTrapFocus, ClrTemplateRefModule, DATEPICKER_ENABLE_BREAKPOINT, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, HostWrapper, IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IfActiveService, IfExpandService, Keys, LARGE_BREAKPOINT, Linkers, LoadingListener, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter, MockFocusableItem, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, SMALL_BREAKPOINT, ScrollingService, TemplateRefContainer, WillyWonka, assertNever, clrFocusServiceFactory, collapse, commonStringsDefault, customFocusableItemProvider, defaultAnimationTiming, defaultExpandAnimation, fade, fadeSlide, isBooleanAttributeSet, isKeyEitherLetterOrNumber, preventArrowKeyScroll, slide, tokenFactory, triggerAllFormControlValidation, uniqueIdFactory, wrapObservable };
 //# sourceMappingURL=clr-angular-utils.mjs.map

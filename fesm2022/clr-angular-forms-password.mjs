@@ -8,7 +8,7 @@ import * as i2 from '@clr/angular/utils';
 import * as i3 from '@angular/common';
 import { CommonModule } from '@angular/common';
 import * as i4 from '@clr/angular/icon';
-import { ClarityIcons, eyeHideIcon, eyeIcon, exclamationCircleIcon, checkCircleIcon, ClrIcon } from '@clr/angular/icon';
+import { ClarityIcons, eyeHideIcon, eyeIcon, successStandardIcon, errorStandardIcon, ClrIcon } from '@clr/angular/icon';
 import * as i1$1 from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
@@ -75,12 +75,6 @@ class ClrPasswordContainer extends ClrAbstractContainer {
             </button>
           }
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -116,12 +110,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             </button>
           }
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -215,7 +203,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrPasswordModule {
     constructor() {
-        ClarityIcons.addIcons(eyeHideIcon, eyeIcon, exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(eyeHideIcon, eyeIcon, successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPasswordModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrPasswordModule, declarations: [ClrPassword, ClrPasswordContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrPassword, ClrPasswordContainer] }); }

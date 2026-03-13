@@ -5,13 +5,13 @@ import { Injectable, LOCALE_ID, Inject, DOCUMENT, PLATFORM_ID, HostListener, Com
 import * as i7 from '@clr/angular/forms/common';
 import { ClrAbstractContainer, ControlIdService, ControlClassService, FormsFocusService, NgControlService, WrappedFormControl, ClrCommonFormsModule } from '@clr/angular/forms/common';
 import * as i4 from '@clr/angular/utils';
-import { DATEPICKER_ENABLE_BREAKPOINT, normalizeKey, Keys, isBooleanAttributeSet, CdkTrapFocusModule, ClrHostWrappingModule, ClrConditionalModule } from '@clr/angular/utils';
+import { DATEPICKER_ENABLE_BREAKPOINT, Keys, isBooleanAttributeSet, CdkTrapFocusModule, ClrHostWrappingModule, ClrConditionalModule } from '@clr/angular/utils';
 import { first, filter, startWith } from 'rxjs/operators';
 import * as i1 from '@clr/angular/popover/common';
 import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS, ClrPopoverHostDirective, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { Subject, tap } from 'rxjs';
 import * as i5 from '@clr/angular/icon';
-import { ClarityIcons, exclamationCircleIcon, checkCircleIcon, angleIcon, eventIcon, calendarIcon, ClrIcon } from '@clr/angular/icon';
+import { ClarityIcons, successStandardIcon, errorStandardIcon, angleIcon, eventIcon, calendarIcon, ClrIcon } from '@clr/angular/icon';
 import * as i6 from '@clr/angular/layout/vertical-nav';
 import { ClrVerticalNavModule } from '@clr/angular/layout/vertical-nav';
 import * as i1$1 from '@angular/forms';
@@ -318,10 +318,14 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class DateIOService {
     constructor(localeHelperService) {
+        /**
+         * This is the default range. It approximates the beginning of time to the end of time.
+         * The disabled dates are the dates that are not allowed to be selected.
+         * The min date is the earliest date that can be selected.
+         * The max date is the latest date that can be selected.
+         * Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
+         */
         this.disabledDates = {
-            // This is the default range. It approximates the beginning of time to the end of time.
-            // Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
-            // TODO: turn this into an Array of min/max ranges that allow configuration of multiple ranges.
             minDate: new DayModel(0, 0, 1),
             maxDate: new DayModel(9999, 11, 31),
         };
@@ -976,7 +980,7 @@ class ClrMonthpicker {
         // the logic is fairly simple and it didn't make sense for me
         // to create extra observables just to move this logic to the service.
         if (event) {
-            const key = normalizeKey(event.key);
+            const key = event.key;
             if (key === Keys.ArrowUp && this._focusedMonthIndex > 1) {
                 event.preventDefault();
                 this._focusedMonthIndex -= 2;
@@ -1323,7 +1327,7 @@ class ClrYearpicker {
         // the logic is fairly simple and it didn't make sense for me
         // to create extra observables just to move this logic to the service.
         if (event) {
-            const key = normalizeKey(event.key);
+            const key = event.key;
             if (key === Keys.ArrowUp) {
                 event.preventDefault();
                 this.incrementFocusYearBy(-2);
@@ -1970,7 +1974,7 @@ class ClrCalendar {
      */
     onKeyDown(event) {
         if (event && this.focusedDay) {
-            switch (normalizeKey(event.key)) {
+            switch (event.key) {
                 case Keys.ArrowUp:
                     event.preventDefault();
                     this._dateNavigationService.incrementFocusDay(-1 * NO_OF_DAYS_IN_A_WEEK);
@@ -2440,7 +2444,7 @@ class ClrDateContainer extends ClrAbstractContainer {
       <label></label>
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
-      <div class="clr-input-wrapper" clrPopoverAnchor>
+      <div class="clr-input-wrapper" clrPopoverOrigin>
         <div class="clr-input-group" [class.clr-focus]="focus">
           <!-- render range inputs only if using clr-date-range-container -->
           @if (isRangePicker) {
@@ -2472,12 +2476,6 @@ class ClrDateContainer extends ClrAbstractContainer {
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -2489,7 +2487,7 @@ class ClrDateContainer extends ClrAbstractContainer {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i5$1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i4.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: i1.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i1.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i1.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i7.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: ClrDatepickerViewManager, selector: "clr-datepicker-view-manager" }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i5$1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i4.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: i1.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i1.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i1.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i7.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: ClrDatepickerViewManager, selector: "clr-datepicker-view-manager" }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDateContainer, decorators: [{
             type: Component,
@@ -2501,7 +2499,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
       <label></label>
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
-      <div class="clr-input-wrapper" clrPopoverAnchor>
+      <div class="clr-input-wrapper" clrPopoverOrigin>
         <div class="clr-input-group" [class.clr-focus]="focus">
           <!-- render range inputs only if using clr-date-range-container -->
           @if (isRangePicker) {
@@ -2533,12 +2531,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -3151,7 +3143,7 @@ const CLR_DATEPICKER_DIRECTIVES = [
 ];
 class ClrDatepickerModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, angleIcon, eventIcon, calendarIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon, angleIcon, eventIcon, calendarIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatepickerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrDatepickerModule, declarations: [ClrDateInput,

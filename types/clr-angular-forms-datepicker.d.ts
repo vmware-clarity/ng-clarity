@@ -121,6 +121,13 @@ interface DateRangeOption {
 }
 
 declare class DateIOService {
+    /**
+     * This is the default range. It approximates the beginning of time to the end of time.
+     * The disabled dates are the dates that are not allowed to be selected.
+     * The min date is the earliest date that can be selected.
+     * The max date is the latest date that can be selected.
+     * Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
+     */
     disabledDates: DateRange;
     cldrLocaleDateFormat: string;
     minDateChange: Subject<DayModel>;

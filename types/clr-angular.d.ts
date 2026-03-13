@@ -17,7 +17,7 @@ import * as i12 from '@clr/angular/stepper';
 import * as i8$1 from '@clr/angular/progress/spinner';
 import * as i14 from '@clr/angular/progress/progress-bars';
 import * as i1 from '@clr/angular/popover/common';
-import { ClrPopoverService as ClrPopoverService$1, ClrPopoverType as ClrPopoverType$1, ClrPopoverPosition as ClrPopoverPosition$1, ClrPopoverContent as ClrPopoverContent$1 } from '@clr/angular/popover/common';
+import { ClrPopoverService as ClrPopoverService$1, ClrPopoverType as ClrPopoverType$1, ClrPopoverPosition as ClrPopoverPosition$1, ClrPopoverPoint as ClrPopoverPoint$1, ClrPopoverContent as ClrPopoverContent$1 } from '@clr/angular/popover/common';
 import * as i16 from '@clr/angular/timeline';
 import * as i2$1 from '@angular/common';
 import { NgForOfContext } from '@angular/common';
@@ -35,7 +35,7 @@ import { Directionality } from '@angular/cdk/bidi';
 import { ListRange } from '@angular/cdk/collections';
 import { CdkVirtualForOfContext, ScrollDispatcher, ViewportRuler, CdkVirtualForOf, CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
 import * as _angular_cdk_overlay from '@angular/cdk/overlay';
-import { ConnectedPosition, OverlayContainer, Overlay } from '@angular/cdk/overlay';
+import { ConnectedPosition, FlexibleConnectedPositionStrategyOrigin, OverlayContainer, Overlay } from '@angular/cdk/overlay';
 import * as i6$1 from '@clr/angular/forms/common';
 import { ClrControlLabel as ClrControlLabel$1, WrappedFormControl as WrappedFormControl$1, ClrAbstractContainer as ClrAbstractContainer$1, LayoutService as LayoutService$1, ControlClassService as ControlClassService$1, NgControlService as NgControlService$1, FormsFocusService as FormsFocusService$1, ControlIdService as ControlIdService$1 } from '@clr/angular/forms/common';
 import * as i41 from '@clr/angular/forms/input';
@@ -1968,16 +1968,6 @@ declare class DatagridMainRenderer implements AfterContentInit, AfterViewInit, A
     toggleDetailPane(state: boolean): void;
     private setupColumns;
     private shouldComputeHeight;
-    /**
-     * Computes the height of the datagrid.
-     *
-     * NOTE: We had to choose to set the height instead of the min-height because
-     * IE 11 requires the height on the parent for the children flex grow/shrink properties to work.
-     * When we used min-height, 1 1 auto doesn't used to work in IE11 :-(
-     * But this doesn't affect the fix. It works in both fixed & variable height datagrids.
-     *
-     * Refer: http://stackoverflow.com/questions/24396205/flex-grow-not-working-in-internet-explorer-11-0
-     */
     private computeDatagridHeight;
     private resetDatagridHeight;
     /**
@@ -2626,6 +2616,15 @@ declare class ClrControlHelper extends ClrAbstractControl {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlHelper, "clr-control-helper", never, {}, {}, never, ["*"], false, never>;
 }
 
+declare class ClrControlSuccess extends ClrAbstractControl {
+    protected controlIdService: ControlIdService;
+    protected containerIdService: ContainerIdService;
+    controlIdSuffix: string;
+    constructor(controlIdService: ControlIdService, containerIdService: ContainerIdService);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlSuccess, [{ optional: true; }, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlSuccess, "clr-control-success", never, {}, {}, never, ["*"], false, never>;
+}
+
 declare enum ClrFormLayout {
     VERTICAL = "vertical",
     HORIZONTAL = "horizontal",
@@ -2704,15 +2703,6 @@ declare class ControlClassService {
     initControlClass(renderer: Renderer2, element: HTMLElement): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ControlClassService, [{ optional: true; }]>;
     static ɵprov: i0.ɵɵInjectableDeclaration<ControlClassService>;
-}
-
-declare class ClrControlSuccess extends ClrAbstractControl {
-    protected controlIdService: ControlIdService;
-    protected containerIdService: ContainerIdService;
-    controlIdSuffix: string;
-    constructor(controlIdService: ControlIdService, containerIdService: ContainerIdService);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlSuccess, [{ optional: true; }, { optional: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlSuccess, "clr-control-success", never, {}, {}, never, ["*"], false, never>;
 }
 
 declare abstract class ClrAbstractContainer implements OnDestroy {
@@ -2971,9 +2961,11 @@ declare class ClrComboboxContainer extends ClrAbstractContainer$1 implements Aft
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrComboboxContainer, "clr-combobox-container", never, {}, {}, never, ["label", "clr-combobox", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
 }
 
+type ClrComboboxIdentityFunction<T> = (item: T) => any;
 declare abstract class ComboboxModel<T> {
     model: T | T[];
     displayField?: string;
+    identityFn: ClrComboboxIdentityFunction<T>;
     abstract containsItem(item: T): boolean;
     abstract select(item: T): void;
     abstract unselect(item: T): void;
@@ -3012,16 +3004,20 @@ declare class OptionSelectionService<T> {
     set currentInput(input: string);
     get selectionChanged(): Observable<ComboboxModel<T>>;
     get multiselectable(): boolean;
+    get identityFn(): ClrComboboxIdentityFunction<T>;
+    set identityFn(value: ClrComboboxIdentityFunction<T>);
     select(item: T): void;
     toggle(item: T): void;
     unselect(item: T): void;
     setSelectionValue(value: T | T[]): void;
     parseStringToModel(value: string): T;
+    private _identityFn;
+    private valuesEqualByIdentity;
     static ɵfac: i0.ɵɵFactoryDeclaration<OptionSelectionService<any>, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<OptionSelectionService<any>>;
 }
 
-declare class SingleSelectComboboxModel<T> implements ComboboxModel<T> {
+declare class SingleSelectComboboxModel<T> extends ComboboxModel<T> {
     model: T;
     containsItem(item: T): boolean;
     select(item: T): void;
@@ -3041,7 +3037,6 @@ declare class ComboboxFocusHandler<T> {
     private popoverService;
     private selectionService;
     private platformId;
-    componentCdRef: ChangeDetectorRef;
     pseudoFocus: PseudoFocusModel<OptionData<T>>;
     private renderer;
     private _trigger;
@@ -3109,6 +3104,7 @@ declare class ClrCombobox<T> extends WrappedFormControl$1<ClrComboboxContainer> 
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService$1, popoverService: ClrPopoverService$1, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
     get editable(): boolean;
     set editable(value: boolean);
+    set identityFn(value: ClrComboboxIdentityFunction<T>);
     get multiSelect(): boolean | string;
     set multiSelect(value: boolean | string);
     get id(): string;
@@ -3144,7 +3140,7 @@ declare class ClrCombobox<T> extends WrappedFormControl$1<ClrComboboxContainer> 
     private updateControlValue;
     private getDisplayNames;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, { optional: true; }, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "identityFn": { "alias": "clrComboboxIdentityFn"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
 declare class ClrOption<T> implements OnInit {
@@ -3392,6 +3388,13 @@ interface DateRangeOption {
 }
 
 declare class DateIOService {
+    /**
+     * This is the default range. It approximates the beginning of time to the end of time.
+     * The disabled dates are the dates that are not allowed to be selected.
+     * The min date is the earliest date that can be selected.
+     * The max date is the latest date that can be selected.
+     * Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
+     */
     disabledDates: DateRange;
     cldrLocaleDateFormat: string;
     minDateChange: Subject<DayModel>;
@@ -4291,6 +4294,8 @@ declare class ClrFileMessagesTemplate {
 
 declare class ClrFileList {
     protected readonly fileMessagesTemplate: ClrFileMessagesTemplate;
+    protected injectorCache: Map<File, Injector>;
+    private contextCache;
     private readonly injector;
     private readonly commonStrings;
     private readonly ngControlService;
@@ -4300,7 +4305,8 @@ declare class ClrFileList {
     protected getClearFileLabel(filename: string): string;
     protected clearFile(fileToRemove: File): void;
     protected createFileMessagesTemplateContext(file: File): ClrFileMessagesTemplateContext;
-    protected createFileMessagesTemplateInjector(fileMessagesTemplateContext: ClrFileMessagesTemplateContext): i0.DestroyableInjector;
+    private createFileMessagesTemplateInjector;
+    private errorsEqual;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileList, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileList, "clr-file-list", never, {}, {}, ["fileMessagesTemplate"], never, false, never>;
 }
@@ -6753,6 +6759,7 @@ declare class ClrDropdown implements OnDestroy {
     isMenuClosable: boolean;
     private subscriptions;
     constructor(parent: ClrDropdown, popoverService: ClrPopoverService$1, focusHandler: DropdownFocusHandler, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
+    openAtPoint(point: ClrPopoverPoint$1): void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdown, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": { "alias": "clrCloseMenuOnItemClick"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
@@ -6843,11 +6850,15 @@ declare const SIGNPOST_POSITIONS: ClrPopoverPosition[];
 declare function getPositionsArray(type: ClrPopoverType): ClrPopoverPosition[];
 declare function getConnectedPositions(type: ClrPopoverType): ConnectedPosition[];
 declare function mapPopoverKeyToPosition(key: ClrPopoverPosition, type: ClrPopoverType): ConnectedPosition;
-declare function getAnchorPosition(key: ClrPosition$1): Partial<ConnectedPosition>;
+declare function getOriginPosition(key: ClrPosition$1): Partial<ConnectedPosition>;
 declare function getContentPosition(key: ClrPosition$1): Partial<ConnectedPosition>;
 
+interface ClrPopoverPoint {
+    x: number;
+    y: number;
+}
 declare class ClrPopoverService {
-    anchorElementRef: ElementRef<HTMLElement>;
+    origin: FlexibleConnectedPositionStrategyOrigin;
     closeButtonRef: ElementRef;
     panelClass: string[];
     private _open;
@@ -6858,6 +6869,8 @@ declare class ClrPopoverService {
     private _resetPositions;
     private _updatePosition;
     private _popoverVisible;
+    get originElement(): ElementRef<HTMLElement> | null;
+    get originPoint(): ClrPopoverPoint | null;
     get openChange(): Observable<boolean>;
     get popoverVisible(): Observable<boolean>;
     get openEvent(): Event;
@@ -6874,11 +6887,16 @@ declare class ClrPopoverService {
      * This is for instance the case of components that open on a click, but close on a click outside.
      */
     toggleWithEvent(event: any): void;
+    /**
+     * Opens the popover at a specific screen coordinate.
+     * Useful for context menus where the popover should appear at the cursor position.
+     */
+    openAtPoint(point: ClrPopoverPoint): void;
     popoverVisibleEmit(visible: boolean): void;
     resetPositions(): void;
     updatePosition(): void;
     focusCloseButton(): void;
-    focusAnchor(): void;
+    focusOrigin(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverService>;
 }
@@ -6918,31 +6936,44 @@ declare class ClrPopoverContent implements OnDestroy, AfterViewInit {
     set outsideClickClose(clickToClose: boolean);
     get scrollToClose(): boolean;
     set scrollToClose(scrollToClose: boolean);
+    set contentOrigin(origin: FlexibleConnectedPositionStrategyOrigin);
     private get positionStrategy();
     private get preferredPosition();
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
     private _createOverlayRef;
+    /**
+     * Point-based origins (context menus) delay the subscription to avoid the
+     * mouseup from the same right-click that opened the popover.
+     */
+    private createPointBasedOutsideClickSubscription;
+    /**
+     * Element-based origins close on outside clicks and suppress toggle-button
+     * re-clicks so the popover doesn't immediately reopen.
+     */
+    private createElementBasedOutsideClickSubscription;
     private resetPosition;
     private closePopover;
     private showOverlay;
     private removeOverlay;
     private getScrollableParents;
     /**
-     * Uses IntersectionObserver to detect when the anchor leaves the screen.
+     * Uses IntersectionObserver to detect when the origin element leaves the screen.
      * This handles the "Close on Scroll" logic much cheaper than getBoundingClientRect.
      */
     private setupIntersectionObserver;
-    private listenToMouseEvents;
+    private listenToScrollEvents;
+    private listenToScrollForPointOrigin;
+    private listenToScrollForElementOrigin;
     private getRootPopover;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, null, { optional: true; }, null, { optional: true; skipSelf: true; }, null, null, null, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; "contentOrigin": { "alias": "clrPopoverContentOrigin"; "required": false; }; }, {}, never, never, true, never>;
 }
 
-declare class ClrPopoverAnchor {
+declare class ClrPopoverOrigin {
     constructor(popoverService: ClrPopoverService, element: ElementRef<HTMLButtonElement>);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverAnchor, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverAnchor, "[clrPopoverAnchor]", never, {}, {}, never, never, false, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverOrigin, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverOrigin, "[clrPopoverOrigin]", never, {}, {}, never, never, false, never>;
 }
 
 declare class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
@@ -6962,7 +6993,7 @@ declare class ClrPopoverHostDirective {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverHostDirective, never, never, {}, {}, never, never, true, [{ directive: typeof ClrStopEscapePropagationDirective; inputs: {}; outputs: {}; }]>;
 }
 
-declare const POPOVER_HOST_ANCHOR: InjectionToken<ElementRef<any>>;
+declare const POPOVER_HOST_ORIGIN: InjectionToken<ElementRef<any>>;
 
 /**********
  *
@@ -7034,7 +7065,7 @@ declare class ClrPopoverOpenCloseButton implements OnDestroy {
 
 declare class ClrPopoverModuleNext {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverModuleNext, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModuleNext, [typeof ClrPopoverAnchor, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton], [typeof ClrPopoverContent, typeof ClrIfOpen], [typeof ClrPopoverAnchor, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton, typeof ClrPopoverContent, typeof ClrIfOpen]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModuleNext, [typeof ClrPopoverOrigin, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton], [typeof ClrPopoverContent, typeof ClrIfOpen], [typeof ClrPopoverOrigin, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton, typeof ClrPopoverContent, typeof ClrIfOpen]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModuleNext>;
 }
 
@@ -7087,6 +7118,7 @@ declare class ClrSignpostTrigger implements OnDestroy {
 
 declare class ClrSignpost {
     commonStrings: ClrCommonStringsService$1;
+    private popoverService;
     /**********
      * @property useCustomTrigger
      *
@@ -7096,7 +7128,12 @@ declare class ClrSignpost {
      */
     useCustomTrigger: boolean;
     signpostTriggerAriaLabel: string;
-    constructor(commonStrings: ClrCommonStringsService$1);
+    /**
+     * Hides the default trigger button. Use when the signpost is opened
+     * programmatically via `openAtPoint()` and no trigger icon is needed.
+     */
+    hideTrigger: boolean;
+    constructor(commonStrings: ClrCommonStringsService$1, popoverService: ClrPopoverService$1);
     /**********
      * @property signPostTrigger
      *
@@ -7105,8 +7142,10 @@ declare class ClrSignpost {
      *
      */
     set customTrigger(trigger: ClrSignpostTrigger);
+    get showDefaultTrigger(): boolean;
+    openAtPoint(point: ClrPopoverPoint$1): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpost, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; "hideTrigger": { "alias": "clrSignpostHideTrigger"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
 declare class ClrSignpostContent implements OnDestroy, AfterViewInit {
@@ -7126,8 +7165,8 @@ declare class ClrSignpostContent implements OnDestroy, AfterViewInit {
      *
      * @description
      * A setter for the position of the ClrSignpostContent popover. This is a combination of the following:
-     * - anchorPoint - where on the trigger to anchor the ClrSignpostContent
-     * - popoverPoint - where on the ClrSignpostContent container to align with the anchorPoint
+     * - originPoint - where on the trigger to position the content
+     * - popoverPoint - where on the content container to align with the origin
      * - offsetY - where on the Y axis to align the ClrSignpostContent so it meets specs
      * - offsetX - where on the X axis to align the ClrSignpostContent so it meets specs
      * There are 12 possible positions to place a ClrSignpostContent container:
@@ -7340,7 +7379,6 @@ declare class EmptyAnchor {
 /**
  * HostWrapper must be called in OnInit to ensure that the Views are ready. If its called in a constructor the view is
  * still undefined.
- * TODO - make sure these comment annotations do not break ng-packgr.
  */
 declare class HostWrapper<W> implements Injector {
     private injector;
@@ -8008,7 +8046,6 @@ declare class ClrKeyFocus {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrKeyFocus, "[clrKeyFocus]", never, { "direction": { "alias": "clrDirection"; "required": false; }; "focusOnLoad": { "alias": "clrFocusOnLoad"; "required": false; }; "focusableItems": { "alias": "clrKeyFocus"; "required": false; }; }, { "focusChange": "clrFocusChange"; }, ["clrKeyFocusItems"], ["*"], false, never>;
 }
 
-declare function normalizeKey(key: string): string;
 declare function preventArrowKeyScroll(event: KeyboardEvent): void;
 declare function isKeyEitherLetterOrNumber(event: KeyboardEvent): boolean;
 
@@ -8223,14 +8260,6 @@ declare enum Keys {
     PageDown = "PageDown",
     PageUp = "PageUp"
 }
-declare enum IEKeys {
-    ArrowUp = "Up",
-    ArrowDown = "Down",
-    ArrowRight = "Right",
-    ArrowLeft = "Left",
-    Space = "Spacebar",
-    Escape = "Esc"
-}
 
 /**
  * A (clockwise) enumeration for positions around an element.
@@ -8260,11 +8289,11 @@ declare enum IEKeys {
  *
  *
  * Consumers tell us that they want something to display on the TOP_LEFT of the trigger and that they want the
- * _content_ container to anchor/orient AT the bottom left.
- * In order to calculate the position for the content I need to match up the anchor/toggle ClrPosition with the
+ * _content_ container to orient AT the bottom left.
+ * In order to calculate the position for the content I need to match up the origin/trigger ClrPosition with the
  * content ClrPosition.
  *
- * Anchor TOP_LEFT **AT** Content BOTTOM_LEFT.
+ * Origin TOP_LEFT **AT** Content BOTTOM_LEFT.
  *     -----------
  *     |         |
  *     |         |
@@ -9221,7 +9250,7 @@ declare class WizardNavigationService implements OnDestroy {
      *
      * @memberof WizardNavigationService
      */
-    get currentPageChanged(): Observable<ClrWizardPage>;
+    get currentPageChange(): Observable<ClrWizardPage>;
     /**
      * @memberof WizardNavigationService
      */
@@ -9491,10 +9520,10 @@ declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
      */
     onReset: EventEmitter<any>;
     /**
-     * Emits when the current page has changed. Listen via `(clrWizardCurrentPageChanged)` event.
+     * Emits when the current page has changed. Listen via `(clrWizardCurrentPageChange)` event.
      * output. Useful for non-blocking validation.
      */
-    currentPageChanged: EventEmitter<any>;
+    currentPageChange: EventEmitter<any>;
     /**
      * Emits when the wizard moves to the next page. Listen via `(clrWizardOnNext)` event.
      * Can be combined with the `[clrWizardPreventDefaultNext]` input to create
@@ -9513,6 +9542,7 @@ declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     wizardId: string;
     protected wizardTitle: ClrWizardTitle;
     private readonly bodyElementRef;
+    private _title;
     private _forceForward;
     private _stopNext;
     private _stopCancel;
@@ -9522,6 +9552,8 @@ declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     private subscriptions;
     private readonly modal;
     constructor(platformId: any, commonStrings: ClrCommonStringsService$1, navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService, headerActionService: HeaderActionService, elementRef: ElementRef<HTMLElement>, differs: IterableDiffers);
+    get title(): ElementRef<HTMLElement>;
+    set title(title: ElementRef<HTMLElement>);
     /**
      * Resets page completed states when navigating backwards.
      * Set using `[clrWizardForceForwardNavigation]` input.
@@ -9677,7 +9709,7 @@ declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     private initializeButtons;
     private emitWizardFinished;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChanged": "clrWizardCurrentPageChanged"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChange": "clrWizardCurrentPageChange"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
 }
 
 declare class ClrWizardStepnav {
@@ -10253,5 +10285,5 @@ declare class ClrTimelineModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTimelineModule>;
 }
 
-export { ALERT_TYPES, AbstractIfState, AccordionModel, AccordionService, AccordionStrategy, ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CHANGE_KEYS, CLR_ALERT_DIRECTIVES, CLR_BUTTON_GROUP_DIRECTIVES, CLR_DATAGRID_DIRECTIVES, CLR_DATEPICKER_DIRECTIVES, CLR_DROPDOWN_DIRECTIVES, CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, CLR_ICON_DIRECTIVES, CLR_LAYOUT_DIRECTIVES, CLR_LOADING_BUTTON_DIRECTIVES, CLR_LOADING_DIRECTIVES, CLR_MENU_POSITIONS, CLR_MODAL_DIRECTIVES, CLR_NAVIGATION_DIRECTIVES, CLR_PROGRESS_BAR_DIRECTIVES, CLR_SIDEPANEL_DIRECTIVES, CLR_SIGNPOST_DIRECTIVES, CLR_SPINNER_DIRECTIVES, CLR_STACK_VIEW_DIRECTIVES, CLR_TABS_DIRECTIVES, CLR_TOOLTIP_DIRECTIVES, CLR_TREE_VIEW_DIRECTIVES, CLR_VERTICAL_NAV_DIRECTIVES, CLR_WIZARD_DIRECTIVES, CONDITIONAL_DIRECTIVES, CUSTOM_BUTTON_TYPES, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, CdsIconCustomTag, ClarityIcons, ClarityModule, ClrAbstractContainer, ClrAccordion, ClrAccordionContent, ClrAccordionDescription, ClrAccordionModule, ClrAccordionPanel, ClrAccordionTitle, ClrAlert, ClrAlertItem, ClrAlertModule, ClrAlertText, ClrAlerts, ClrAlertsPager, ClrAriaCurrentLink, ClrBadge, ClrBadgeColors, ClrBreadcrumbItem, ClrBreadcrumbs, ClrBreadcrumbsModule, ClrButton, ClrButtonGroup, ClrButtonGroupModule, ClrButtonModule, ClrCalendar, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxModule, ClrCheckboxWrapper, ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrCommonFormsModule, ClrCommonStringsService, ClrConditionalModule, ClrControl, ClrControlContainer, ClrControlError, ClrControlHelper, ClrControlLabel, ClrControlSuccess, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSortOrder, ClrDatalist, ClrDatalistContainer, ClrDatalistInput, ClrDatalistModule, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrDestroyService, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, ClrEmphasisModule, ClrEndDateInput, ClrEndDateInputValidator, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFileError, ClrFileInfo, ClrFileInput, ClrFileInputContainer, ClrFileInputModule, ClrFileInputValidator, ClrFileInputValueAccessor, ClrFileList, ClrFileMessagesTemplate, ClrFileSuccess, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrForm, ClrFormLayout, ClrFormsModule, ClrHeader, ClrHostWrappingModule, ClrIcon, ClrIconCustomTag, ClrIconModule, ClrIfActive, ClrIfDetail, ClrIfError, ClrIfExpanded, ClrIfOpen, ClrIfSuccess, ClrInput, ClrInputContainer, ClrInputModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrLabel, ClrLabelColors, ClrLayout, ClrLayoutModule, ClrLoading, ClrLoadingButton, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState, ClrMainContainer, ClrMainContainerModule, ClrModal, ClrModalBody, ClrModalConfigurationService, ClrModalHostComponent, ClrModalModule, ClrMonthpicker, ClrNavLevel, ClrNavigationModule, ClrNumberInput, ClrNumberInputContainer, ClrNumberInputModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions, ClrOutsideClickModule, ClrPassword, ClrPasswordContainer, ClrPasswordModule, ClrPopoverAnchor, ClrPopoverContent, ClrPopoverHostDirective, ClrPopoverModule, ClrPopoverPosition, ClrPopoverService, ClrPopoverType, ClrPosition, ClrProgressBar, ClrProgressBarModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrRadioWrapper, ClrRange, ClrRangeContainer, ClrRangeModule, ClrRecursiveForOf, ClrRovingTabindex, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrSelectedState, ClrSidePanel, ClrSidePanelModule, ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTitle, ClrSignpostTrigger, ClrSpinner, ClrSpinnerModule, ClrStackBlock, ClrStackContentInput, ClrStackHeader, ClrStackView, ClrStackViewCustomTags, ClrStackViewLabel, ClrStackViewModule, ClrStandaloneCdkTrapFocus, ClrStartDateInput, ClrStartDateInputValidator, ClrStepButton, ClrStepButtonType, ClrStepContent, ClrStepDescription, ClrStepTitle, ClrStepper, ClrStepperModule, ClrStepperPanel, ClrStopEscapePropagationDirective, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, ClrTemplateRefModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrTimeline, ClrTimelineLayout, ClrTimelineModule, ClrTimelineStep, ClrTimelineStepDescription, ClrTimelineStepHeader, ClrTimelineStepState, ClrTimelineStepTitle, ClrTooltip, ClrTooltipContent, ClrTooltipModule, ClrTooltipTrigger, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule, ClrVerticalNav, ClrVerticalNavGroup, ClrVerticalNavGroupChildren, ClrVerticalNavIcon, ClrVerticalNavLink, ClrVerticalNavModule, ClrWizard, ClrWizardButton, ClrWizardHeaderAction, ClrWizardModule, ClrWizardPage, ClrWizardPageButtons, ClrWizardPageHeaderActions, ClrWizardPageNavTitle, ClrWizardPageTitle, ClrWizardStepnav, ClrWizardStepnavItem, ClrWizardTitle, ClrYearpicker, CollapsiblePanel, CollapsiblePanelGroupModel, CollapsiblePanelModel, CollapsiblePanelService, ContainerIdService, ControlClassService, ControlIdService, DATEPICKER_ENABLE_BREAKPOINT, DEFAULT_BUTTON_TYPES, DROPDOWN_POSITIONS, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridStringFilter, DatalistIdService, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, FormsFocusService, HostWrapper, IEKeys, IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IS_TOGGLE, IS_TOGGLE_PROVIDER, IconHtmlPipe, IfActiveService, IfExpandService, Keys, LARGE_BREAKPOINT, LayoutService, Linkers, LoadingListener, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MainContainerWillyWonka, MarkControlService, MockDomAdapter, MockFocusableItem, ModalStackService, NavDetectionOompaLoompa, NgControlService, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, POPOVER_HOST_ANCHOR, ResponsiveNavCodes, ResponsiveNavControlMessage, ResponsiveNavigationService, SIGNPOST_POSITIONS, SMALL_BREAKPOINT, ScrollingService, Selection, SelectionType, StepperPanelModel, StepperPanelStatus, StepperService, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, TOOLTIP_POSITIONS, TemplateRefContainer, ToggleServiceFactory, WillyWonka, WrappedFormControl, accessibility1Icon, accessibility1IconName, accessibility2Icon, accessibility2IconName, addTextIcon, addTextIconName, administratorIcon, administratorIconName, airplaneIcon, airplaneIconName, alarmClockIcon, alarmClockIconName, alarmOffIcon, alarmOffIconName, alignBottomIcon, alignBottomIconName, alignCenterIcon, alignCenterIconName, alignLeftIcon, alignLeftIconName, alignLeftTextIcon, alignLeftTextIconName, alignMiddleIcon, alignMiddleIconName, alignRightIcon, alignRightIconName, alignRightTextIcon, alignRightTextIconName, alignTopIcon, alignTopIconName, angleDoubleIcon, angleDoubleIconName, angleIcon, angleIconName, animationIcon, animationIconName, announcementIcon, announcementIconName, applicationIcon, applicationIconName, applicationsIcon, applicationsIconName, archiveIcon, archiveIconName, arrowIcon, arrowIconName, arrowMiniIcon, arrowMiniIconName, assertNever, assignUserIcon, assignUserIconName, asteriskIcon, asteriskIconName, atomIcon, atomIconName, axisChartIcon, axisChartIconName, backupIcon, backupIconName, backupRestoreIcon, backupRestoreIconName, banIcon, banIconName, bankIcon, bankIconName, barChartIcon, barChartIconName, barCodeIcon, barCodeIconName, barsIcon, barsIconName, batteryIcon, batteryIconName, bellCurveIcon, bellCurveIconName, bellIcon, bellIconName, betaIcon, betaIconName, bicycleIcon, bicycleIconName, birthdayCakeIcon, birthdayCakeIconName, bitcoinIcon, bitcoinIconName, blockIcon, blockIconName, blockQuoteIcon, blockQuoteIconName, blocksGroupIcon, blocksGroupIconName, bluetoothIcon, bluetoothIconName, bluetoothOffIcon, bluetoothOffIconName, boatIcon, boatIconName, boldIcon, boldIconName, boltIcon, boltIconName, bookIcon, bookIconName, bookmarkIcon, bookmarkIconName, boxPlotIcon, boxPlotIconName, briefcaseIcon, briefcaseIconName, bubbleChartIcon, bubbleChartIconName, bubbleExclamationIcon, bubbleExclamationIconName, bugIcon, bugIconName, buildFileList, buildingIcon, buildingIconName, bulletListIcon, bulletListIconName, bullseyeIcon, bullseyeIconName, bundleIcon, bundleIconName, calculatorIcon, calculatorIconName, calendarIcon, calendarIconName, calendarMiniIcon, calendarMiniIconName, cameraIcon, cameraIconName, campervanIcon, campervanIconName, capacitorIcon, capacitorIconName, carIcon, carIconName, caravanIcon, caravanIconName, cdDvdIcon, cdDvdIconName, centerTextIcon, centerTextIconName, certificateIcon, certificateIconName, chartCollectionAliases, chartCollectionIcons, chatBubbleIcon, chatBubbleIconName, checkCircleIcon, checkCircleIconName, checkCircleMiniIcon, checkCircleMiniIconName, checkIcon, checkIconName, checkMiniIcon, checkMiniIconName, checkboxListIcon, checkboxListIconName, childArrowIcon, childArrowIconName, ciCdIcon, ciCdIconName, circleArrowIcon, circleArrowIconName, circleIcon, circleIconName, clearFiles, clipboardIcon, clipboardIconName, clockIcon, clockIconName, cloneIcon, cloneIconName, cloudChartIcon, cloudChartIconName, cloudIcon, cloudIconName, cloudNetworkIcon, cloudNetworkIconName, cloudScaleIcon, cloudScaleIconName, cloudTrafficIcon, cloudTrafficIconName, clrFocusServiceFactory, clusterIcon, clusterIconName, codeIcon, codeIconName, cogIcon, cogIconName, coinBagIcon, coinBagIconName, collapse, collapseCardIcon, collapseCardIconName, collapsiblePanelAnimation, collapsiblePanelExpandAnimation, colorPaletteIcon, colorPaletteIconName, colorPickerIcon, colorPickerIconName, commerceCollectionAliases, commerceCollectionIcons, commonStringsDefault, compassIcon, compassIconName, computerIcon, computerIconName, connectIcon, connectIconName, containerGroupIcon, containerGroupIconName, containerIcon, containerIconName, containerVolumeIcon, containerVolumeIconName, contractIcon, contractIconName, controlLunIcon, controlLunIconName, copyIcon, copyIconName, copyToClipboardIcon, copyToClipboardIconName, coreCollectionAliases, coreCollectionIcons, cpuIcon, cpuIconName, creditCardIcon, creditCardIconName, crosshairsIcon, crosshairsIconName, crownIcon, crownIconName, cursorArrowIcon, cursorArrowIconName, cursorHandClickIcon, cursorHandClickIconName, cursorHandGrabIcon, cursorHandGrabIconName, cursorHandIcon, cursorHandIconName, cursorHandOpenIcon, cursorHandOpenIconName, cursorMoveIcon, cursorMoveIconName, curveChartIcon, curveChartIconName, customFocusableItemProvider, dashboardIcon, dashboardIconName, dataClusterIcon, dataClusterIconName, defaultAnimationTiming, defaultExpandAnimation, deployIcon, deployIconName, detailCollapseIcon, detailCollapseIconName, detailExpandIcon, detailExpandIconName, detailsIcon, detailsIconName, devicesIcon, devicesIconName, digitalSignatureIcon, digitalSignatureIconName, disconnectIcon, disconnectIconName, displayIcon, displayIconName, dollarBillIcon, dollarBillIconName, dollarIcon, dollarIconName, dotCircleIcon, dotCircleIconName, downloadCloudIcon, downloadCloudIconName, downloadIcon, downloadIconName, dragHandleCornerIcon, dragHandleCornerIconName, dragHandleIcon, dragHandleIconName, eCheckIcon, eCheckIconName, ellipsisHorizontalIcon, ellipsisHorizontalIconName, ellipsisVerticalIcon, ellipsisVerticalIconName, employeeGroupIcon, employeeGroupIconName, employeeIcon, employeeIconName, envelopeIcon, envelopeIconName, eraserIcon, eraserIconName, errorMiniIcon, errorMiniIconName, errorStandardIcon, errorStandardIconName, essentialCollectionAliases, essentialCollectionIcons, euroIcon, euroIconName, eventIcon, eventIconName, eventMiniIcon, eventMiniIconName, exclamationCircleIcon, exclamationCircleIconName, exclamationTriangleIcon, exclamationTriangleIconName, expandCardIcon, expandCardIconName, exportIcon, exportIconName, eyeHideIcon, eyeHideIconName, eyeIcon, eyeIconName, factoryIcon, factoryIconName, fade, fadeSlide, fastForwardIcon, fastForwardIconName, ferryIcon, ferryIconName, fileGroupIcon, fileGroupIconName, fileIcon, fileIconName, fileSettingsIcon, fileSettingsIconName, fileShare2Icon, fileShare2IconName, fileShareIcon, fileShareIconName, fileZipIcon, fileZipIconName, filmStripIcon, filmStripIconName, filter2Icon, filter2IconName, filterGridCircleIcon, filterGridCircleIconName, filterGridCircleMiniIcon, filterGridCircleMiniIconName, filterGridIcon, filterGridIconName, filterGridMiniIcon, filterGridMiniIconName, filterIcon, filterIconName, filterOffIcon, filterOffIconName, firewallIcon, firewallIconName, firstAidIcon, firstAidIconName, fishIcon, fishIconName, flagIcon, flagIconName, flameIcon, flameIconName, flaskIcon, flaskIconName, floppyIcon, floppyIconName, folderIcon, folderIconName, folderOpenIcon, folderOpenIconName, fontSizeIcon, fontSizeIconName, forkingIcon, forkingIconName, formIcon, formIconName, fuelIcon, fuelIconName, gavelIcon, gavelIconName, getAnchorPosition, getConnectedPositions, getContentPosition, getPositionsArray, gridChartIcon, gridChartIconName, gridViewIcon, gridViewIconName, halfStarIcon, halfStarIconName, happyFaceIcon, happyFaceIconName, hardDiskIcon, hardDiskIconName, hardDriveDisksIcon, hardDriveDisksIconName, hardDriveIcon, hardDriveIconName, hashtagIcon, hashtagIconName, headphonesIcon, headphonesIconName, heartBrokenIcon, heartBrokenIconName, heartIcon, heartIconName, heatMapIcon, heatMapIconName, helixIcon, helixIconName, helpIcon, helpIconName, helpInfoIcon, helpInfoIconName, highlighterIcon, highlighterIconName, historyIcon, historyIconName, homeIcon, homeIconName, hostGroupIcon, hostGroupIconName, hostIcon, hostIconName, hourglassIcon, hourglassIconName, idBadgeIcon, idBadgeIconName, imageGalleryIcon, imageGalleryIconName, imageIcon, imageIconName, importIcon, importIconName, inboxIcon, inboxIconName, indentIcon, indentIconName, inductorIcon, inductorIconName, infoCircleIcon, infoCircleIconName, infoCircleMiniIcon, infoCircleMiniIconName, infoStandardIcon, infoStandardIconName, installIcon, installIconName, internetOfThingsIcon, internetOfThingsIconName, isBooleanAttributeSet, isKeyEitherLetterOrNumber, isToggleFactory, italicIcon, italicIconName, justifyTextIcon, justifyTextIconName, keyIcon, keyIconName, keyboardIcon, keyboardIconName, landscapeIcon, landscapeIconName, languageIcon, languageIconName, launchpadIcon, launchpadIconName, layersIcon, layersIconName, libraryIcon, libraryIconName, lightbulbIcon, lightbulbIconName, lineChartIcon, lineChartIconName, linkIcon, linkIconName, listIcon, listIconName, loadChartIconSet, loadCommerceIconSet, loadCoreIconSet, loadEssentialIconSet, loadMediaIconSet, loadMiniIconSet, loadSocialIconSet, loadTechnologyIconSet, loadTextEditIconSet, loadTravelIconSet, lockIcon, lockIconName, loginIcon, loginIconName, logoutIcon, logoutIconName, mapIcon, mapIconName, mapMarkerIcon, mapMarkerIconName, mapPopoverKeyToPosition, mediaChangerIcon, mediaChangerIconName, mediaCollectionAliases, mediaCollectionIcons, memoryIcon, memoryIconName, microphoneIcon, microphoneIconName, microphoneMuteIcon, microphoneMuteIconName, miniCollectionAliases, miniCollectionIcons, minusCircleIcon, minusCircleIconName, minusIcon, minusIconName, mobileIcon, mobileIconName, moonIcon, moonIconName, mouseIcon, mouseIconName, musicNoteIcon, musicNoteIconName, namespaceIcon, namespaceIconName, networkGlobeIcon, networkGlobeIconName, networkSettingsIcon, networkSettingsIconName, networkSwitchIcon, networkSwitchIconName, neutralFaceIcon, neutralFaceIconName, newIcon, newIconName, noAccessIcon, noAccessIconName, noWifiIcon, noWifiIconName, nodeGroupIcon, nodeGroupIconName, nodeIcon, nodeIconName, nodesIcon, nodesIconName, normalizeKey, noteIcon, noteIconName, numberListIcon, numberListIconName, nvmeIcon, nvmeIconName, objectsIcon, objectsIconName, onHolidayIcon, onHolidayIconName, organizationIcon, organizationIconName, outdentIcon, outdentIconName, paintRollerIcon, paintRollerIconName, panelCollapseTransition, panelExpandTransition, paperclipIcon, paperclipIconName, pasteIcon, pasteIconName, pauseIcon, pauseIconName, pdfFileIcon, pdfFileIconName, pencilIcon, pencilIconName, pesoIcon, pesoIconName, phoneHandsetIcon, phoneHandsetIconName, pictureIcon, pictureIconName, pieChartIcon, pieChartIconName, piggyBankIcon, piggyBankIconName, pinIcon, pinIconName, pinboardIcon, pinboardIconName, playIcon, playIconName, pluginIcon, pluginIconName, plusCircleIcon, plusCircleIconName, plusIcon, plusIconName, podIcon, podIconName, popOutIcon, popOutIconName, portraitIcon, portraitIconName, poundIcon, poundIconName, powerIcon, powerIconName, preventArrowKeyScroll, printerIcon, printerIconName, processOnVmIcon, processOnVmIconName, qrCodeIcon, qrCodeIconName, rackServerIcon, rackServerIconName, radarIcon, radarIconName, recycleIcon, recycleIconName, redoIcon, redoIconName, refreshIcon, refreshIconName, renderIcon, repeatIcon, repeatIconName, replayAllIcon, replayAllIconName, replayOneIcon, replayOneIconName, resistorIcon, resistorIconName, resizeIcon, resizeIconName, resourcePoolIcon, resourcePoolIconName, rewindIcon, rewindIconName, routerIcon, routerIconName, rubleIcon, rubleIconName, rulerPencilIcon, rulerPencilIconName, rupeeIcon, rupeeIconName, sadFaceIcon, sadFaceIconName, scatterPlotIcon, scatterPlotIconName, scissorsIcon, scissorsIconName, scriptExecuteIcon, scriptExecuteIconName, scriptScheduleIcon, scriptScheduleIconName, scrollIcon, scrollIconName, searchIcon, searchIconName, selectFiles, selectionTypeAttribute, shareIcon, shareIconName, shieldCheckIcon, shieldCheckIconName, shieldIcon, shieldIconName, shieldXIcon, shieldXIconName, shoppingBagIcon, shoppingBagIconName, shoppingCartIcon, shoppingCartIconName, shrinkIcon, shrinkIconName, shuffleIcon, shuffleIconName, skipInitialRenderTrigger, slide, sliderIcon, sliderIconName, snowflakeIcon, snowflakeIconName, socialCollectionAliases, socialCollectionIcons, sortByIcon, sortByIconName, squidIcon, squidIconName, ssdIcon, ssdIconName, starIcon, starIconName, stepForward2Icon, stepForward2IconName, stepForwardIcon, stepForwardIconName, stopIcon, stopIconName, storageAdapterIcon, storageAdapterIconName, storageIcon, storageIconName, storeIcon, storeIconName, strikethroughIcon, strikethroughIconName, subscriptIcon, subscriptIconName, successStandardIcon, successStandardIconName, sunIcon, sunIconName, superscriptIcon, superscriptIconName, switchIcon, switchIconName, syncIcon, syncIconName, tableIcon, tableIconName, tabletIcon, tabletIconName, tagIcon, tagIconName, tagsIcon, tagsIconName, talkBubblesIcon, talkBubblesIconName, tapeDriveIcon, tapeDriveIconName, targetIcon, targetIconName, tasksIcon, tasksIconName, technologyCollectionAliases, technologyCollectionIcons, terminalIcon, terminalIconName, textColorIcon, textColorIconName, textEditCollectionAliases, textEditCollectionIcons, textIcon, textIconName, thermometerIcon, thermometerIconName, thinClientIcon, thinClientIconName, thumbsDownIcon, thumbsDownIconName, thumbsUpIcon, thumbsUpIconName, tickChartIcon, tickChartIconName, timelineIcon, timelineIconName, timesCircleIcon, timesCircleIconName, timesIcon, timesIconName, timesMiniIcon, timesMiniIconName, tokenFactory, toolsIcon, toolsIconName, trailerIcon, trailerIconName, trashIcon, trashIconName, travelCollectionAliases, travelCollectionIcons, treeIcon, treeIconName, treeViewIcon, treeViewIconName, triggerAllFormControlValidation, truckIcon, truckIconName, twoWayArrowsIcon, twoWayArrowsIconName, unarchiveIcon, unarchiveIconName, underlineIcon, underlineIconName, undoIcon, undoIconName, uninstallIcon, uninstallIconName, uniqueIdFactory, unknownIcon, unknownIconName, unknownStatusIcon, unknownStatusIconName, unlinkIcon, unlinkIconName, unlockIcon, unlockIconName, unpinIcon, unpinIconName, updateIcon, updateIconName, uploadCloudIcon, uploadCloudIconName, uploadIcon, uploadIconName, usbIcon, usbIconName, userIcon, userIconName, usersIcon, usersIconName, videoCameraIcon, videoCameraIconName, videoGalleryIcon, videoGalleryIconName, viewCardsIcon, viewCardsIconName, viewColumnsIcon, viewColumnsIconName, viewListIcon, viewListIconName, vmBugIcon, vmBugIconName, vmBugInverseIcon, vmBugInverseIconName, vmIcon, vmIconName, vmwAppIcon, vmwAppIconName, volumeDownIcon, volumeDownIconName, volumeIcon, volumeIconName, volumeMuteIcon, volumeMuteIconName, volumeUpIcon, volumeUpIconName, walletIcon, walletIconName, wandIcon, wandIconName, warningMiniIcon, warningMiniIconName, warningStandardIcon, warningStandardIconName, wifiIcon, wifiIconName, windowCloseIcon, windowCloseIconName, windowMaxIcon, windowMaxIconName, windowMinIcon, windowMinIconName, windowRestoreIcon, windowRestoreIconName, wonIcon, wonIconName, worldIcon, worldIconName, wrapObservable, wrenchIcon, wrenchIconName, xlsFileIcon, xlsFileIconName, yenIcon, yenIconName, zoomInIcon, zoomInIconName, zoomOutIcon, zoomOutIconName, AccordionOompaLoompa as ÇlrAccordionOompaLoompa, AccordionWillyWonka as ÇlrAccordionWillyWonka, ActionableOompaLoompa as ÇlrActionableOompaLoompa, ActiveOompaLoompa as ÇlrActiveOompaLoompa, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton, DatagridCellRenderer as ÇlrDatagridCellRenderer, DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer, DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer, DatagridMainRenderer as ÇlrDatagridMainRenderer, DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer, DatagridRowRenderer as ÇlrDatagridRowRenderer, ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor, ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective, DatagridWillyWonka as ÇlrDatagridWillyWonka, ExpandableOompaLoompa as ÇlrExpandableOompaLoompa, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka, TabsWillyWonka as ÇlrTabsWillyWonka, WrappedCell as ÇlrWrappedCell, WrappedColumn as ÇlrWrappedColumn, WrappedRow as ÇlrWrappedRow };
-export type { BreadcrumbItem, Closable, ClrCommonStrings, ClrDatagridComparatorInterface, ClrDatagridFilterInterface, ClrDatagridItemsIdentityFunction, ClrDatagridNumericFilterInterface, ClrDatagridStateInterface, ClrDatagridStringFilterInterface, ClrDatagridVirtualScrollRangeInterface, ClrFileAcceptError, ClrFileInputSelection, ClrFileListValidationErrors, ClrFileMaxFileSizeError, ClrFileMessagesTemplateContext, ClrFileMinFileSizeError, ClrRecursiveForOfContext, ClrSingleFileValidationErrors, ClrTabsActionsPosition, Directions, HeadingLevel, Helpers, IconAlias, IconRegistry, IconRegistrySources, IconShapeCollection, IconShapeSources, IconShapeTuple, Orientations, StatusTypes };
+export { ALERT_TYPES, AbstractIfState, AccordionModel, AccordionService, AccordionStrategy, ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CHANGE_KEYS, CLR_ALERT_DIRECTIVES, CLR_BUTTON_GROUP_DIRECTIVES, CLR_DATAGRID_DIRECTIVES, CLR_DATEPICKER_DIRECTIVES, CLR_DROPDOWN_DIRECTIVES, CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, CLR_ICON_DIRECTIVES, CLR_LAYOUT_DIRECTIVES, CLR_LOADING_BUTTON_DIRECTIVES, CLR_LOADING_DIRECTIVES, CLR_MENU_POSITIONS, CLR_MODAL_DIRECTIVES, CLR_NAVIGATION_DIRECTIVES, CLR_PROGRESS_BAR_DIRECTIVES, CLR_SIDEPANEL_DIRECTIVES, CLR_SIGNPOST_DIRECTIVES, CLR_SPINNER_DIRECTIVES, CLR_STACK_VIEW_DIRECTIVES, CLR_TABS_DIRECTIVES, CLR_TOOLTIP_DIRECTIVES, CLR_TREE_VIEW_DIRECTIVES, CLR_VERTICAL_NAV_DIRECTIVES, CLR_WIZARD_DIRECTIVES, CONDITIONAL_DIRECTIVES, CUSTOM_BUTTON_TYPES, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, CdsIconCustomTag, ClarityIcons, ClarityModule, ClrAbstractContainer, ClrAccordion, ClrAccordionContent, ClrAccordionDescription, ClrAccordionModule, ClrAccordionPanel, ClrAccordionTitle, ClrAlert, ClrAlertItem, ClrAlertModule, ClrAlertText, ClrAlerts, ClrAlertsPager, ClrAriaCurrentLink, ClrBadge, ClrBadgeColors, ClrBreadcrumbItem, ClrBreadcrumbs, ClrBreadcrumbsModule, ClrButton, ClrButtonGroup, ClrButtonGroupModule, ClrButtonModule, ClrCalendar, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxModule, ClrCheckboxWrapper, ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrCommonFormsModule, ClrCommonStringsService, ClrConditionalModule, ClrControl, ClrControlContainer, ClrControlError, ClrControlHelper, ClrControlLabel, ClrControlSuccess, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSortOrder, ClrDatalist, ClrDatalistContainer, ClrDatalistInput, ClrDatalistModule, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrDestroyService, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, ClrEmphasisModule, ClrEndDateInput, ClrEndDateInputValidator, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFileError, ClrFileInfo, ClrFileInput, ClrFileInputContainer, ClrFileInputModule, ClrFileInputValidator, ClrFileInputValueAccessor, ClrFileList, ClrFileMessagesTemplate, ClrFileSuccess, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrForm, ClrFormLayout, ClrFormsModule, ClrHeader, ClrHostWrappingModule, ClrIcon, ClrIconCustomTag, ClrIconModule, ClrIfActive, ClrIfDetail, ClrIfError, ClrIfExpanded, ClrIfOpen, ClrIfSuccess, ClrInput, ClrInputContainer, ClrInputModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrLabel, ClrLabelColors, ClrLayout, ClrLayoutModule, ClrLoading, ClrLoadingButton, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState, ClrMainContainer, ClrMainContainerModule, ClrModal, ClrModalBody, ClrModalConfigurationService, ClrModalHostComponent, ClrModalModule, ClrMonthpicker, ClrNavLevel, ClrNavigationModule, ClrNumberInput, ClrNumberInputContainer, ClrNumberInputModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions, ClrOutsideClickModule, ClrPassword, ClrPasswordContainer, ClrPasswordModule, ClrPopoverContent, ClrPopoverHostDirective, ClrPopoverModule, ClrPopoverOrigin, ClrPopoverPosition, ClrPopoverService, ClrPopoverType, ClrPosition, ClrProgressBar, ClrProgressBarModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrRadioWrapper, ClrRange, ClrRangeContainer, ClrRangeModule, ClrRecursiveForOf, ClrRovingTabindex, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrSelectedState, ClrSidePanel, ClrSidePanelModule, ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTitle, ClrSignpostTrigger, ClrSpinner, ClrSpinnerModule, ClrStackBlock, ClrStackContentInput, ClrStackHeader, ClrStackView, ClrStackViewCustomTags, ClrStackViewLabel, ClrStackViewModule, ClrStandaloneCdkTrapFocus, ClrStartDateInput, ClrStartDateInputValidator, ClrStepButton, ClrStepButtonType, ClrStepContent, ClrStepDescription, ClrStepTitle, ClrStepper, ClrStepperModule, ClrStepperPanel, ClrStopEscapePropagationDirective, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, ClrTemplateRefModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrTimeline, ClrTimelineLayout, ClrTimelineModule, ClrTimelineStep, ClrTimelineStepDescription, ClrTimelineStepHeader, ClrTimelineStepState, ClrTimelineStepTitle, ClrTooltip, ClrTooltipContent, ClrTooltipModule, ClrTooltipTrigger, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule, ClrVerticalNav, ClrVerticalNavGroup, ClrVerticalNavGroupChildren, ClrVerticalNavIcon, ClrVerticalNavLink, ClrVerticalNavModule, ClrWizard, ClrWizardButton, ClrWizardHeaderAction, ClrWizardModule, ClrWizardPage, ClrWizardPageButtons, ClrWizardPageHeaderActions, ClrWizardPageNavTitle, ClrWizardPageTitle, ClrWizardStepnav, ClrWizardStepnavItem, ClrWizardTitle, ClrYearpicker, CollapsiblePanel, CollapsiblePanelGroupModel, CollapsiblePanelModel, CollapsiblePanelService, ContainerIdService, ControlClassService, ControlIdService, DATEPICKER_ENABLE_BREAKPOINT, DEFAULT_BUTTON_TYPES, DROPDOWN_POSITIONS, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridStringFilter, DatalistIdService, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, FormsFocusService, HostWrapper, IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IS_TOGGLE, IS_TOGGLE_PROVIDER, IconHtmlPipe, IfActiveService, IfExpandService, Keys, LARGE_BREAKPOINT, LayoutService, Linkers, LoadingListener, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MainContainerWillyWonka, MarkControlService, MockDomAdapter, MockFocusableItem, ModalStackService, NavDetectionOompaLoompa, NgControlService, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, POPOVER_HOST_ORIGIN, ResponsiveNavCodes, ResponsiveNavControlMessage, ResponsiveNavigationService, SIGNPOST_POSITIONS, SMALL_BREAKPOINT, ScrollingService, Selection, SelectionType, StepperPanelModel, StepperPanelStatus, StepperService, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, TOOLTIP_POSITIONS, TemplateRefContainer, ToggleServiceFactory, WillyWonka, WrappedFormControl, accessibility1Icon, accessibility1IconName, accessibility2Icon, accessibility2IconName, addTextIcon, addTextIconName, administratorIcon, administratorIconName, airplaneIcon, airplaneIconName, alarmClockIcon, alarmClockIconName, alarmOffIcon, alarmOffIconName, alignBottomIcon, alignBottomIconName, alignCenterIcon, alignCenterIconName, alignLeftIcon, alignLeftIconName, alignLeftTextIcon, alignLeftTextIconName, alignMiddleIcon, alignMiddleIconName, alignRightIcon, alignRightIconName, alignRightTextIcon, alignRightTextIconName, alignTopIcon, alignTopIconName, angleDoubleIcon, angleDoubleIconName, angleIcon, angleIconName, animationIcon, animationIconName, announcementIcon, announcementIconName, applicationIcon, applicationIconName, applicationsIcon, applicationsIconName, archiveIcon, archiveIconName, arrowIcon, arrowIconName, arrowMiniIcon, arrowMiniIconName, assertNever, assignUserIcon, assignUserIconName, asteriskIcon, asteriskIconName, atomIcon, atomIconName, axisChartIcon, axisChartIconName, backupIcon, backupIconName, backupRestoreIcon, backupRestoreIconName, banIcon, banIconName, bankIcon, bankIconName, barChartIcon, barChartIconName, barCodeIcon, barCodeIconName, barsIcon, barsIconName, batteryIcon, batteryIconName, bellCurveIcon, bellCurveIconName, bellIcon, bellIconName, betaIcon, betaIconName, bicycleIcon, bicycleIconName, birthdayCakeIcon, birthdayCakeIconName, bitcoinIcon, bitcoinIconName, blockIcon, blockIconName, blockQuoteIcon, blockQuoteIconName, blocksGroupIcon, blocksGroupIconName, bluetoothIcon, bluetoothIconName, bluetoothOffIcon, bluetoothOffIconName, boatIcon, boatIconName, boldIcon, boldIconName, boltIcon, boltIconName, bookIcon, bookIconName, bookmarkIcon, bookmarkIconName, boxPlotIcon, boxPlotIconName, briefcaseIcon, briefcaseIconName, bubbleChartIcon, bubbleChartIconName, bubbleExclamationIcon, bubbleExclamationIconName, bugIcon, bugIconName, buildFileList, buildingIcon, buildingIconName, bulletListIcon, bulletListIconName, bullseyeIcon, bullseyeIconName, bundleIcon, bundleIconName, calculatorIcon, calculatorIconName, calendarIcon, calendarIconName, calendarMiniIcon, calendarMiniIconName, cameraIcon, cameraIconName, campervanIcon, campervanIconName, capacitorIcon, capacitorIconName, carIcon, carIconName, caravanIcon, caravanIconName, cdDvdIcon, cdDvdIconName, centerTextIcon, centerTextIconName, certificateIcon, certificateIconName, chartCollectionAliases, chartCollectionIcons, chatBubbleIcon, chatBubbleIconName, checkCircleIcon, checkCircleIconName, checkCircleMiniIcon, checkCircleMiniIconName, checkIcon, checkIconName, checkMiniIcon, checkMiniIconName, checkboxListIcon, checkboxListIconName, childArrowIcon, childArrowIconName, ciCdIcon, ciCdIconName, circleArrowIcon, circleArrowIconName, circleIcon, circleIconName, clearFiles, clipboardIcon, clipboardIconName, clockIcon, clockIconName, cloneIcon, cloneIconName, cloudChartIcon, cloudChartIconName, cloudIcon, cloudIconName, cloudNetworkIcon, cloudNetworkIconName, cloudScaleIcon, cloudScaleIconName, cloudTrafficIcon, cloudTrafficIconName, clrFocusServiceFactory, clusterIcon, clusterIconName, codeIcon, codeIconName, cogIcon, cogIconName, coinBagIcon, coinBagIconName, collapse, collapseCardIcon, collapseCardIconName, collapsiblePanelAnimation, collapsiblePanelExpandAnimation, colorPaletteIcon, colorPaletteIconName, colorPickerIcon, colorPickerIconName, commerceCollectionAliases, commerceCollectionIcons, commonStringsDefault, compassIcon, compassIconName, computerIcon, computerIconName, connectIcon, connectIconName, containerGroupIcon, containerGroupIconName, containerIcon, containerIconName, containerVolumeIcon, containerVolumeIconName, contractIcon, contractIconName, controlLunIcon, controlLunIconName, copyIcon, copyIconName, copyToClipboardIcon, copyToClipboardIconName, coreCollectionAliases, coreCollectionIcons, cpuIcon, cpuIconName, creditCardIcon, creditCardIconName, crosshairsIcon, crosshairsIconName, crownIcon, crownIconName, cursorArrowIcon, cursorArrowIconName, cursorHandClickIcon, cursorHandClickIconName, cursorHandGrabIcon, cursorHandGrabIconName, cursorHandIcon, cursorHandIconName, cursorHandOpenIcon, cursorHandOpenIconName, cursorMoveIcon, cursorMoveIconName, curveChartIcon, curveChartIconName, customFocusableItemProvider, dashboardIcon, dashboardIconName, dataClusterIcon, dataClusterIconName, defaultAnimationTiming, defaultExpandAnimation, deployIcon, deployIconName, detailCollapseIcon, detailCollapseIconName, detailExpandIcon, detailExpandIconName, detailsIcon, detailsIconName, devicesIcon, devicesIconName, digitalSignatureIcon, digitalSignatureIconName, disconnectIcon, disconnectIconName, displayIcon, displayIconName, dollarBillIcon, dollarBillIconName, dollarIcon, dollarIconName, dotCircleIcon, dotCircleIconName, downloadCloudIcon, downloadCloudIconName, downloadIcon, downloadIconName, dragHandleCornerIcon, dragHandleCornerIconName, dragHandleIcon, dragHandleIconName, eCheckIcon, eCheckIconName, ellipsisHorizontalIcon, ellipsisHorizontalIconName, ellipsisVerticalIcon, ellipsisVerticalIconName, employeeGroupIcon, employeeGroupIconName, employeeIcon, employeeIconName, envelopeIcon, envelopeIconName, eraserIcon, eraserIconName, errorMiniIcon, errorMiniIconName, errorStandardIcon, errorStandardIconName, essentialCollectionAliases, essentialCollectionIcons, euroIcon, euroIconName, eventIcon, eventIconName, eventMiniIcon, eventMiniIconName, exclamationCircleIcon, exclamationCircleIconName, exclamationTriangleIcon, exclamationTriangleIconName, expandCardIcon, expandCardIconName, exportIcon, exportIconName, eyeHideIcon, eyeHideIconName, eyeIcon, eyeIconName, factoryIcon, factoryIconName, fade, fadeSlide, fastForwardIcon, fastForwardIconName, ferryIcon, ferryIconName, fileGroupIcon, fileGroupIconName, fileIcon, fileIconName, fileSettingsIcon, fileSettingsIconName, fileShare2Icon, fileShare2IconName, fileShareIcon, fileShareIconName, fileZipIcon, fileZipIconName, filmStripIcon, filmStripIconName, filter2Icon, filter2IconName, filterGridCircleIcon, filterGridCircleIconName, filterGridCircleMiniIcon, filterGridCircleMiniIconName, filterGridIcon, filterGridIconName, filterGridMiniIcon, filterGridMiniIconName, filterIcon, filterIconName, filterOffIcon, filterOffIconName, firewallIcon, firewallIconName, firstAidIcon, firstAidIconName, fishIcon, fishIconName, flagIcon, flagIconName, flameIcon, flameIconName, flaskIcon, flaskIconName, floppyIcon, floppyIconName, folderIcon, folderIconName, folderOpenIcon, folderOpenIconName, fontSizeIcon, fontSizeIconName, forkingIcon, forkingIconName, formIcon, formIconName, fuelIcon, fuelIconName, gavelIcon, gavelIconName, getConnectedPositions, getContentPosition, getOriginPosition, getPositionsArray, gridChartIcon, gridChartIconName, gridViewIcon, gridViewIconName, halfStarIcon, halfStarIconName, happyFaceIcon, happyFaceIconName, hardDiskIcon, hardDiskIconName, hardDriveDisksIcon, hardDriveDisksIconName, hardDriveIcon, hardDriveIconName, hashtagIcon, hashtagIconName, headphonesIcon, headphonesIconName, heartBrokenIcon, heartBrokenIconName, heartIcon, heartIconName, heatMapIcon, heatMapIconName, helixIcon, helixIconName, helpIcon, helpIconName, helpInfoIcon, helpInfoIconName, highlighterIcon, highlighterIconName, historyIcon, historyIconName, homeIcon, homeIconName, hostGroupIcon, hostGroupIconName, hostIcon, hostIconName, hourglassIcon, hourglassIconName, idBadgeIcon, idBadgeIconName, imageGalleryIcon, imageGalleryIconName, imageIcon, imageIconName, importIcon, importIconName, inboxIcon, inboxIconName, indentIcon, indentIconName, inductorIcon, inductorIconName, infoCircleIcon, infoCircleIconName, infoCircleMiniIcon, infoCircleMiniIconName, infoStandardIcon, infoStandardIconName, installIcon, installIconName, internetOfThingsIcon, internetOfThingsIconName, isBooleanAttributeSet, isKeyEitherLetterOrNumber, isToggleFactory, italicIcon, italicIconName, justifyTextIcon, justifyTextIconName, keyIcon, keyIconName, keyboardIcon, keyboardIconName, landscapeIcon, landscapeIconName, languageIcon, languageIconName, launchpadIcon, launchpadIconName, layersIcon, layersIconName, libraryIcon, libraryIconName, lightbulbIcon, lightbulbIconName, lineChartIcon, lineChartIconName, linkIcon, linkIconName, listIcon, listIconName, loadChartIconSet, loadCommerceIconSet, loadCoreIconSet, loadEssentialIconSet, loadMediaIconSet, loadMiniIconSet, loadSocialIconSet, loadTechnologyIconSet, loadTextEditIconSet, loadTravelIconSet, lockIcon, lockIconName, loginIcon, loginIconName, logoutIcon, logoutIconName, mapIcon, mapIconName, mapMarkerIcon, mapMarkerIconName, mapPopoverKeyToPosition, mediaChangerIcon, mediaChangerIconName, mediaCollectionAliases, mediaCollectionIcons, memoryIcon, memoryIconName, microphoneIcon, microphoneIconName, microphoneMuteIcon, microphoneMuteIconName, miniCollectionAliases, miniCollectionIcons, minusCircleIcon, minusCircleIconName, minusIcon, minusIconName, mobileIcon, mobileIconName, moonIcon, moonIconName, mouseIcon, mouseIconName, musicNoteIcon, musicNoteIconName, namespaceIcon, namespaceIconName, networkGlobeIcon, networkGlobeIconName, networkSettingsIcon, networkSettingsIconName, networkSwitchIcon, networkSwitchIconName, neutralFaceIcon, neutralFaceIconName, newIcon, newIconName, noAccessIcon, noAccessIconName, noWifiIcon, noWifiIconName, nodeGroupIcon, nodeGroupIconName, nodeIcon, nodeIconName, nodesIcon, nodesIconName, noteIcon, noteIconName, numberListIcon, numberListIconName, nvmeIcon, nvmeIconName, objectsIcon, objectsIconName, onHolidayIcon, onHolidayIconName, organizationIcon, organizationIconName, outdentIcon, outdentIconName, paintRollerIcon, paintRollerIconName, panelCollapseTransition, panelExpandTransition, paperclipIcon, paperclipIconName, pasteIcon, pasteIconName, pauseIcon, pauseIconName, pdfFileIcon, pdfFileIconName, pencilIcon, pencilIconName, pesoIcon, pesoIconName, phoneHandsetIcon, phoneHandsetIconName, pictureIcon, pictureIconName, pieChartIcon, pieChartIconName, piggyBankIcon, piggyBankIconName, pinIcon, pinIconName, pinboardIcon, pinboardIconName, playIcon, playIconName, pluginIcon, pluginIconName, plusCircleIcon, plusCircleIconName, plusIcon, plusIconName, podIcon, podIconName, popOutIcon, popOutIconName, portraitIcon, portraitIconName, poundIcon, poundIconName, powerIcon, powerIconName, preventArrowKeyScroll, printerIcon, printerIconName, processOnVmIcon, processOnVmIconName, qrCodeIcon, qrCodeIconName, rackServerIcon, rackServerIconName, radarIcon, radarIconName, recycleIcon, recycleIconName, redoIcon, redoIconName, refreshIcon, refreshIconName, renderIcon, repeatIcon, repeatIconName, replayAllIcon, replayAllIconName, replayOneIcon, replayOneIconName, resistorIcon, resistorIconName, resizeIcon, resizeIconName, resourcePoolIcon, resourcePoolIconName, rewindIcon, rewindIconName, routerIcon, routerIconName, rubleIcon, rubleIconName, rulerPencilIcon, rulerPencilIconName, rupeeIcon, rupeeIconName, sadFaceIcon, sadFaceIconName, scatterPlotIcon, scatterPlotIconName, scissorsIcon, scissorsIconName, scriptExecuteIcon, scriptExecuteIconName, scriptScheduleIcon, scriptScheduleIconName, scrollIcon, scrollIconName, searchIcon, searchIconName, selectFiles, selectionTypeAttribute, shareIcon, shareIconName, shieldCheckIcon, shieldCheckIconName, shieldIcon, shieldIconName, shieldXIcon, shieldXIconName, shoppingBagIcon, shoppingBagIconName, shoppingCartIcon, shoppingCartIconName, shrinkIcon, shrinkIconName, shuffleIcon, shuffleIconName, skipInitialRenderTrigger, slide, sliderIcon, sliderIconName, snowflakeIcon, snowflakeIconName, socialCollectionAliases, socialCollectionIcons, sortByIcon, sortByIconName, squidIcon, squidIconName, ssdIcon, ssdIconName, starIcon, starIconName, stepForward2Icon, stepForward2IconName, stepForwardIcon, stepForwardIconName, stopIcon, stopIconName, storageAdapterIcon, storageAdapterIconName, storageIcon, storageIconName, storeIcon, storeIconName, strikethroughIcon, strikethroughIconName, subscriptIcon, subscriptIconName, successStandardIcon, successStandardIconName, sunIcon, sunIconName, superscriptIcon, superscriptIconName, switchIcon, switchIconName, syncIcon, syncIconName, tableIcon, tableIconName, tabletIcon, tabletIconName, tagIcon, tagIconName, tagsIcon, tagsIconName, talkBubblesIcon, talkBubblesIconName, tapeDriveIcon, tapeDriveIconName, targetIcon, targetIconName, tasksIcon, tasksIconName, technologyCollectionAliases, technologyCollectionIcons, terminalIcon, terminalIconName, textColorIcon, textColorIconName, textEditCollectionAliases, textEditCollectionIcons, textIcon, textIconName, thermometerIcon, thermometerIconName, thinClientIcon, thinClientIconName, thumbsDownIcon, thumbsDownIconName, thumbsUpIcon, thumbsUpIconName, tickChartIcon, tickChartIconName, timelineIcon, timelineIconName, timesCircleIcon, timesCircleIconName, timesIcon, timesIconName, timesMiniIcon, timesMiniIconName, tokenFactory, toolsIcon, toolsIconName, trailerIcon, trailerIconName, trashIcon, trashIconName, travelCollectionAliases, travelCollectionIcons, treeIcon, treeIconName, treeViewIcon, treeViewIconName, triggerAllFormControlValidation, truckIcon, truckIconName, twoWayArrowsIcon, twoWayArrowsIconName, unarchiveIcon, unarchiveIconName, underlineIcon, underlineIconName, undoIcon, undoIconName, uninstallIcon, uninstallIconName, uniqueIdFactory, unknownIcon, unknownIconName, unknownStatusIcon, unknownStatusIconName, unlinkIcon, unlinkIconName, unlockIcon, unlockIconName, unpinIcon, unpinIconName, updateIcon, updateIconName, uploadCloudIcon, uploadCloudIconName, uploadIcon, uploadIconName, usbIcon, usbIconName, userIcon, userIconName, usersIcon, usersIconName, videoCameraIcon, videoCameraIconName, videoGalleryIcon, videoGalleryIconName, viewCardsIcon, viewCardsIconName, viewColumnsIcon, viewColumnsIconName, viewListIcon, viewListIconName, vmBugIcon, vmBugIconName, vmBugInverseIcon, vmBugInverseIconName, vmIcon, vmIconName, vmwAppIcon, vmwAppIconName, volumeDownIcon, volumeDownIconName, volumeIcon, volumeIconName, volumeMuteIcon, volumeMuteIconName, volumeUpIcon, volumeUpIconName, walletIcon, walletIconName, wandIcon, wandIconName, warningMiniIcon, warningMiniIconName, warningStandardIcon, warningStandardIconName, wifiIcon, wifiIconName, windowCloseIcon, windowCloseIconName, windowMaxIcon, windowMaxIconName, windowMinIcon, windowMinIconName, windowRestoreIcon, windowRestoreIconName, wonIcon, wonIconName, worldIcon, worldIconName, wrapObservable, wrenchIcon, wrenchIconName, xlsFileIcon, xlsFileIconName, yenIcon, yenIconName, zoomInIcon, zoomInIconName, zoomOutIcon, zoomOutIconName, AccordionOompaLoompa as ÇlrAccordionOompaLoompa, AccordionWillyWonka as ÇlrAccordionWillyWonka, ActionableOompaLoompa as ÇlrActionableOompaLoompa, ActiveOompaLoompa as ÇlrActiveOompaLoompa, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton, DatagridCellRenderer as ÇlrDatagridCellRenderer, DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer, DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer, DatagridMainRenderer as ÇlrDatagridMainRenderer, DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer, DatagridRowRenderer as ÇlrDatagridRowRenderer, ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor, ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective, DatagridWillyWonka as ÇlrDatagridWillyWonka, ExpandableOompaLoompa as ÇlrExpandableOompaLoompa, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka, TabsWillyWonka as ÇlrTabsWillyWonka, WrappedCell as ÇlrWrappedCell, WrappedColumn as ÇlrWrappedColumn, WrappedRow as ÇlrWrappedRow };
+export type { BreadcrumbItem, Closable, ClrComboboxIdentityFunction, ClrCommonStrings, ClrDatagridComparatorInterface, ClrDatagridFilterInterface, ClrDatagridItemsIdentityFunction, ClrDatagridNumericFilterInterface, ClrDatagridStateInterface, ClrDatagridStringFilterInterface, ClrDatagridVirtualScrollRangeInterface, ClrFileAcceptError, ClrFileInputSelection, ClrFileListValidationErrors, ClrFileMaxFileSizeError, ClrFileMessagesTemplateContext, ClrFileMinFileSizeError, ClrPopoverPoint, ClrRecursiveForOfContext, ClrSingleFileValidationErrors, ClrTabsActionsPosition, Directions, HeadingLevel, Helpers, IconAlias, IconRegistry, IconRegistrySources, IconShapeCollection, IconShapeSources, IconShapeTuple, Orientations, StatusTypes };

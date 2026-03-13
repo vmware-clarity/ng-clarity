@@ -6,27 +6,27 @@ import { ClrDataModule as ClrDataModule$1 } from '@clr/angular/data';
 import { ClrEmphasisModule as ClrEmphasisModule$1 } from '@clr/angular/emphasis';
 import { ClrFormsModule as ClrFormsModule$1 } from '@clr/angular/forms';
 import * as i5 from '@clr/angular/icon';
-import { ClrIcon as ClrIcon$1, ClrIconModule as ClrIconModule$1, ClarityIcons as ClarityIcons$1, ellipsisHorizontalIcon as ellipsisHorizontalIcon$1, ellipsisVerticalIcon as ellipsisVerticalIcon$1, viewColumnsIcon as viewColumnsIcon$1, windowCloseIcon as windowCloseIcon$1, arrowIcon as arrowIcon$1, timesIcon as timesIcon$1, stepForward2Icon as stepForward2Icon$1, angleDoubleIcon as angleDoubleIcon$1, filterGridCircleIcon as filterGridCircleIcon$1, filterGridIcon as filterGridIcon$1, angleIcon as angleIcon$1, errorStandardIcon as errorStandardIcon$1, helpIcon as helpIcon$1, infoStandardIcon as infoStandardIcon$1, noteIcon as noteIcon$1, successStandardIcon as successStandardIcon$1, warningStandardIcon as warningStandardIcon$1, exclamationCircleIcon as exclamationCircleIcon$1, checkCircleIcon as checkCircleIcon$1, eventIcon as eventIcon$1, calendarIcon as calendarIcon$1, folderOpenIcon as folderOpenIcon$1, minusIcon as minusIcon$1, plusIcon as plusIcon$1, eyeHideIcon as eyeHideIcon$1, eyeIcon as eyeIcon$1, infoCircleIcon as infoCircleIcon$1, circleIcon as circleIcon$1, dotCircleIcon as dotCircleIcon$1 } from '@clr/angular/icon';
+import { ClrIcon as ClrIcon$1, ClrIconModule as ClrIconModule$1, ClarityIcons as ClarityIcons$1, ellipsisHorizontalIcon as ellipsisHorizontalIcon$1, ellipsisVerticalIcon as ellipsisVerticalIcon$1, viewColumnsIcon as viewColumnsIcon$1, windowCloseIcon as windowCloseIcon$1, arrowIcon as arrowIcon$1, timesIcon as timesIcon$1, stepForward2Icon as stepForward2Icon$1, angleDoubleIcon as angleDoubleIcon$1, filterGridCircleIcon as filterGridCircleIcon$1, filterGridIcon as filterGridIcon$1, angleIcon as angleIcon$1, errorStandardIcon as errorStandardIcon$1, helpIcon as helpIcon$1, infoStandardIcon as infoStandardIcon$1, noteIcon as noteIcon$1, successStandardIcon as successStandardIcon$1, warningStandardIcon as warningStandardIcon$1, eventIcon as eventIcon$1, calendarIcon as calendarIcon$1, folderOpenIcon as folderOpenIcon$1, minusIcon as minusIcon$1, plusIcon as plusIcon$1, eyeHideIcon as eyeHideIcon$1, eyeIcon as eyeIcon$1, infoCircleIcon as infoCircleIcon$1, circleIcon as circleIcon$1, dotCircleIcon as dotCircleIcon$1 } from '@clr/angular/icon';
 import { ClrLayoutModule as ClrLayoutModule$1 } from '@clr/angular/layout';
 import * as i1$3 from '@clr/angular/modal';
 import { ClrModalModule as ClrModalModule$1, ClrSidePanelModule as ClrSidePanelModule$1, ClrModal as ClrModal$1 } from '@clr/angular/modal';
 import { ClrPopoverModule as ClrPopoverModule$1 } from '@clr/angular/popover';
 import * as i2 from '@clr/angular/popover/common';
-import { ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext, ClrPopoverType as ClrPopoverType$1, ClrPopoverPosition as ClrPopoverPosition$1, DROPDOWN_POSITIONS as DROPDOWN_POSITIONS$1, ClrPopoverHostDirective as ClrPopoverHostDirective$1, mapPopoverKeyToPosition as mapPopoverKeyToPosition$1, POPOVER_HOST_ANCHOR as POPOVER_HOST_ANCHOR$1, ClrPopoverContent as ClrPopoverContent$1, ClrIfOpen as ClrIfOpen$1, SIGNPOST_POSITIONS as SIGNPOST_POSITIONS$1, TOOLTIP_POSITIONS as TOOLTIP_POSITIONS$1 } from '@clr/angular/popover/common';
+import { ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext, ClrPopoverType as ClrPopoverType$1, ClrPopoverPosition as ClrPopoverPosition$1, DROPDOWN_POSITIONS as DROPDOWN_POSITIONS$1, ClrPopoverHostDirective as ClrPopoverHostDirective$1, mapPopoverKeyToPosition as mapPopoverKeyToPosition$1, POPOVER_HOST_ORIGIN as POPOVER_HOST_ORIGIN$1, ClrPopoverContent as ClrPopoverContent$1, ClrIfOpen as ClrIfOpen$1, SIGNPOST_POSITIONS as SIGNPOST_POSITIONS$1, TOOLTIP_POSITIONS as TOOLTIP_POSITIONS$1 } from '@clr/angular/popover/common';
 import { ClrProgressBarModule as ClrProgressBarModule$1 } from '@clr/angular/progress/progress-bars';
 import * as i14 from '@clr/angular/progress/spinner';
 import { ClrSpinnerModule as ClrSpinnerModule$1 } from '@clr/angular/progress/spinner';
 import { ClrStepperModule as ClrStepperModule$1 } from '@clr/angular/stepper';
 import { ClrTimelineModule as ClrTimelineModule$1 } from '@clr/angular/timeline';
 import * as i1$1 from '@clr/angular/utils';
-import { ClrLoadingModule as ClrLoadingModule$1, ClrConditionalModule as ClrConditionalModule$1, ClrFocusOnViewInitModule as ClrFocusOnViewInitModule$1, uniqueIdFactory as uniqueIdFactory$1, ClrLoadingState as ClrLoadingState$1, LoadingListener as LoadingListener$1, Linkers as Linkers$1, ClrDestroyService as ClrDestroyService$1, FOCUS_SERVICE_PROVIDER as FOCUS_SERVICE_PROVIDER$1, normalizeKey as normalizeKey$1, Keys as Keys$1, HostWrapper as HostWrapper$1, IfExpandService as IfExpandService$1, ClrExpandableAnimationDirective as ClrExpandableAnimationDirective$1, WillyWonka as WillyWonka$1, OompaLoompa as OompaLoompa$1, ClrKeyFocus as ClrKeyFocus$1, DomAdapter as DomAdapter$1, ClrIfExpanded as ClrIfExpanded$1, CdkDragModule as CdkDragModule$1, CdkTrapFocusModule as CdkTrapFocusModule$1, ClrOutsideClickModule as ClrOutsideClickModule$1, ClrExpandableAnimationModule as ClrExpandableAnimationModule$1, ClrKeyFocusModule as ClrKeyFocusModule$1, preventArrowKeyScroll as preventArrowKeyScroll$1, isKeyEitherLetterOrNumber as isKeyEitherLetterOrNumber$1, ClrHostWrappingModule as ClrHostWrappingModule$1, ArrowKeyDirection as ArrowKeyDirection$1, customFocusableItemProvider as customFocusableItemProvider$1, IF_ACTIVE_ID as IF_ACTIVE_ID$1, IF_ACTIVE_ID_PROVIDER as IF_ACTIVE_ID_PROVIDER$1, DATEPICKER_ENABLE_BREAKPOINT as DATEPICKER_ENABLE_BREAKPOINT$1, isBooleanAttributeSet as isBooleanAttributeSet$1, ClrCommonStringsService as ClrCommonStringsService$1, commonStringsDefault as commonStringsDefault$1, LARGE_BREAKPOINT as LARGE_BREAKPOINT$1, ClrStandaloneCdkTrapFocus as ClrStandaloneCdkTrapFocus$1, TemplateRefContainer as TemplateRefContainer$1, IfActiveService as IfActiveService$1, ClrTemplateRefModule as ClrTemplateRefModule$1, ScrollingService as ScrollingService$1, wrapObservable as wrapObservable$1, FocusableItem as FocusableItem$1, BASIC_FOCUSABLE_ITEM_PROVIDER as BASIC_FOCUSABLE_ITEM_PROVIDER$1, ClrPosition as ClrPosition$1, defaultAnimationTiming as defaultAnimationTiming$1, triggerAllFormControlValidation as triggerAllFormControlValidation$1 } from '@clr/angular/utils';
+import { ClrLoadingModule as ClrLoadingModule$1, ClrConditionalModule as ClrConditionalModule$1, ClrFocusOnViewInitModule as ClrFocusOnViewInitModule$1, uniqueIdFactory as uniqueIdFactory$1, ClrLoadingState as ClrLoadingState$1, LoadingListener as LoadingListener$1, Linkers as Linkers$1, ClrDestroyService as ClrDestroyService$1, FOCUS_SERVICE_PROVIDER as FOCUS_SERVICE_PROVIDER$1, Keys as Keys$1, HostWrapper as HostWrapper$1, IfExpandService as IfExpandService$1, ClrExpandableAnimationDirective as ClrExpandableAnimationDirective$1, WillyWonka as WillyWonka$1, OompaLoompa as OompaLoompa$1, ClrKeyFocus as ClrKeyFocus$1, DomAdapter as DomAdapter$1, ClrIfExpanded as ClrIfExpanded$1, CdkDragModule as CdkDragModule$1, CdkTrapFocusModule as CdkTrapFocusModule$1, ClrOutsideClickModule as ClrOutsideClickModule$1, ClrExpandableAnimationModule as ClrExpandableAnimationModule$1, ClrKeyFocusModule as ClrKeyFocusModule$1, preventArrowKeyScroll as preventArrowKeyScroll$1, isKeyEitherLetterOrNumber as isKeyEitherLetterOrNumber$1, ClrHostWrappingModule as ClrHostWrappingModule$1, ArrowKeyDirection as ArrowKeyDirection$1, customFocusableItemProvider as customFocusableItemProvider$1, IF_ACTIVE_ID as IF_ACTIVE_ID$1, IF_ACTIVE_ID_PROVIDER as IF_ACTIVE_ID_PROVIDER$1, DATEPICKER_ENABLE_BREAKPOINT as DATEPICKER_ENABLE_BREAKPOINT$1, isBooleanAttributeSet as isBooleanAttributeSet$1, ClrCommonStringsService as ClrCommonStringsService$1, commonStringsDefault as commonStringsDefault$1, LARGE_BREAKPOINT as LARGE_BREAKPOINT$1, ClrStandaloneCdkTrapFocus as ClrStandaloneCdkTrapFocus$1, TemplateRefContainer as TemplateRefContainer$1, IfActiveService as IfActiveService$1, ClrTemplateRefModule as ClrTemplateRefModule$1, ScrollingService as ScrollingService$1, wrapObservable as wrapObservable$1, FocusableItem as FocusableItem$1, BASIC_FOCUSABLE_ITEM_PROVIDER as BASIC_FOCUSABLE_ITEM_PROVIDER$1, ClrPosition as ClrPosition$1, defaultAnimationTiming as defaultAnimationTiming$1, triggerAllFormControlValidation as triggerAllFormControlValidation$1 } from '@clr/angular/utils';
 import { ClrWizardModule as ClrWizardModule$1 } from '@clr/angular/wizard';
 import * as i1$2 from '@angular/common';
 import { CommonModule, isPlatformBrowser, NgForOf, getLocaleDayNames, FormStyle, TranslationWidth, getLocaleMonthNames, getLocaleFirstDayOfWeek, getLocaleDateFormat, FormatWidth } from '@angular/common';
 import * as i1 from '@angular/router';
 import { RouterModule } from '@angular/router';
 import * as i2$2 from 'rxjs';
-import { Subject, BehaviorSubject, fromEvent, ReplaySubject, combineLatest, merge, of, isObservable, tap, Observable, startWith as startWith$1 } from 'rxjs';
+import { Subject, BehaviorSubject, fromEvent, ReplaySubject, combineLatest, merge, of, isObservable, tap, timer, switchMap as switchMap$1, Observable, startWith as startWith$1 } from 'rxjs';
 import { takeUntil, filter, delay, debounceTime, map, switchMap, startWith, take, first, tap as tap$1, distinctUntilChanged, skipUntil } from 'rxjs/operators';
 import * as i2$3 from '@angular/animations';
 import { trigger, transition, style, animate, keyframes, state, animation, useAnimation } from '@angular/animations';
@@ -581,11 +581,11 @@ class ClrButtonGroup {
         });
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrButtonGroup, deps: [{ token: ButtonInGroupService }, { token: i2.ClrPopoverService }, { token: i1$1.ClrCommonStringsService }, { token: i1$1.ClrDestroyService }, { token: ButtonGroupFocusHandler }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrButtonGroup, isStandalone: false, selector: "clr-button-group", inputs: { clrToggleButtonAriaLabel: "clrToggleButtonAriaLabel", menuPosition: ["clrMenuPosition", "menuPosition"] }, host: { properties: { "class.btn-group": "true" } }, providers: [ButtonInGroupService, ClrDestroyService$1, BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FOCUS_SERVICE_PROVIDER$1], queries: [{ propertyName: "buttons", predicate: ClrButton }], viewQueries: [{ propertyName: "menuToggle", first: true, predicate: ["menuToggle"], descendants: true }, { propertyName: "menu", first: true, predicate: ["menu"], descendants: true }], hostDirectives: [{ directive: i2.ClrPopoverHostDirective }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n@for (inlineButton of inlineButtons; track inlineButton) {\n<ng-template [ngTemplateOutlet]=\"inlineButton.templateRef\"></ng-template>\n} @if (menuButtons.length > 0) {\n<div class=\"btn-group-overflow open\" [ngClass]=\"menuPosition\">\n  <button\n    #menuToggle\n    class=\"btn dropdown-toggle\"\n    clrPopoverAnchor\n    clrPopoverOpenCloseButton\n    (keydown.arrowup)=\"openMenu($event, InitialFocus.LAST_ITEM)\"\n    (keydown.arrowdown)=\"openMenu($event, InitialFocus.FIRST_ITEM)\"\n    [attr.aria-controls]=\"popoverId\"\n    [attr.aria-expanded]=\"open\"\n    [attr.aria-label]=\"clrToggleButtonAriaLabel\"\n  >\n    <cds-icon shape=\"ellipsis-horizontal\" [attr.title]=\"commonStrings.keys.more\"></cds-icon>\n  </button>\n  <div\n    #menu\n    role=\"menu\"\n    class=\"dropdown-menu clr-button-group-menu\"\n    [id]=\"popoverId\"\n    [attr.id]=\"popoverId\"\n    [attr.aria-hidden]=\"!open\"\n    *clrPopoverContent=\"open; at menuPosition; type: popoverType; outsideClickToClose: true; scrollToClose: true\"\n  >\n    @for (menuButton of menuButtons; track menuButton) {\n    <ng-template [ngTemplateOutlet]=\"menuButton.templateRef\"></ng-template>\n    }\n  </div>\n</div>\n}\n", dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i2.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i2.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i2.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }] }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrButtonGroup, isStandalone: false, selector: "clr-button-group", inputs: { clrToggleButtonAriaLabel: "clrToggleButtonAriaLabel", menuPosition: ["clrMenuPosition", "menuPosition"] }, host: { properties: { "class.btn-group": "true" } }, providers: [ButtonInGroupService, ClrDestroyService$1, BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FOCUS_SERVICE_PROVIDER$1], queries: [{ propertyName: "buttons", predicate: ClrButton }], viewQueries: [{ propertyName: "menuToggle", first: true, predicate: ["menuToggle"], descendants: true }, { propertyName: "menu", first: true, predicate: ["menu"], descendants: true }], hostDirectives: [{ directive: i2.ClrPopoverHostDirective }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n@for (inlineButton of inlineButtons; track inlineButton) {\n<ng-template [ngTemplateOutlet]=\"inlineButton.templateRef\"></ng-template>\n} @if (menuButtons.length > 0) {\n<div class=\"btn-group-overflow open\" [ngClass]=\"menuPosition\">\n  <button\n    #menuToggle\n    class=\"btn dropdown-toggle\"\n    clrPopoverOrigin\n    clrPopoverOpenCloseButton\n    (keydown.arrowup)=\"openMenu($event, InitialFocus.LAST_ITEM)\"\n    (keydown.arrowdown)=\"openMenu($event, InitialFocus.FIRST_ITEM)\"\n    [attr.aria-controls]=\"popoverId\"\n    [attr.aria-expanded]=\"open\"\n    [attr.aria-label]=\"clrToggleButtonAriaLabel\"\n  >\n    <cds-icon shape=\"ellipsis-horizontal\" [attr.title]=\"commonStrings.keys.more\"></cds-icon>\n  </button>\n  <div\n    #menu\n    role=\"menu\"\n    class=\"dropdown-menu clr-button-group-menu\"\n    [id]=\"popoverId\"\n    [attr.id]=\"popoverId\"\n    [attr.aria-hidden]=\"!open\"\n    *clrPopoverContent=\"open; at menuPosition; type: popoverType; outsideClickToClose: true; scrollToClose: true\"\n  >\n    @for (menuButton of menuButtons; track menuButton) {\n    <ng-template [ngTemplateOutlet]=\"menuButton.templateRef\"></ng-template>\n    }\n  </div>\n</div>\n}\n", dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i2.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i2.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i2.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrButtonGroup, decorators: [{
             type: Component,
-            args: [{ selector: 'clr-button-group', providers: [ButtonInGroupService, ClrDestroyService$1, BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FOCUS_SERVICE_PROVIDER$1], hostDirectives: [ClrPopoverHostDirective$1], host: { '[class.btn-group]': 'true' }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n@for (inlineButton of inlineButtons; track inlineButton) {\n<ng-template [ngTemplateOutlet]=\"inlineButton.templateRef\"></ng-template>\n} @if (menuButtons.length > 0) {\n<div class=\"btn-group-overflow open\" [ngClass]=\"menuPosition\">\n  <button\n    #menuToggle\n    class=\"btn dropdown-toggle\"\n    clrPopoverAnchor\n    clrPopoverOpenCloseButton\n    (keydown.arrowup)=\"openMenu($event, InitialFocus.LAST_ITEM)\"\n    (keydown.arrowdown)=\"openMenu($event, InitialFocus.FIRST_ITEM)\"\n    [attr.aria-controls]=\"popoverId\"\n    [attr.aria-expanded]=\"open\"\n    [attr.aria-label]=\"clrToggleButtonAriaLabel\"\n  >\n    <cds-icon shape=\"ellipsis-horizontal\" [attr.title]=\"commonStrings.keys.more\"></cds-icon>\n  </button>\n  <div\n    #menu\n    role=\"menu\"\n    class=\"dropdown-menu clr-button-group-menu\"\n    [id]=\"popoverId\"\n    [attr.id]=\"popoverId\"\n    [attr.aria-hidden]=\"!open\"\n    *clrPopoverContent=\"open; at menuPosition; type: popoverType; outsideClickToClose: true; scrollToClose: true\"\n  >\n    @for (menuButton of menuButtons; track menuButton) {\n    <ng-template [ngTemplateOutlet]=\"menuButton.templateRef\"></ng-template>\n    }\n  </div>\n</div>\n}\n" }]
+            args: [{ selector: 'clr-button-group', providers: [ButtonInGroupService, ClrDestroyService$1, BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FOCUS_SERVICE_PROVIDER$1], hostDirectives: [ClrPopoverHostDirective$1], host: { '[class.btn-group]': 'true' }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n@for (inlineButton of inlineButtons; track inlineButton) {\n<ng-template [ngTemplateOutlet]=\"inlineButton.templateRef\"></ng-template>\n} @if (menuButtons.length > 0) {\n<div class=\"btn-group-overflow open\" [ngClass]=\"menuPosition\">\n  <button\n    #menuToggle\n    class=\"btn dropdown-toggle\"\n    clrPopoverOrigin\n    clrPopoverOpenCloseButton\n    (keydown.arrowup)=\"openMenu($event, InitialFocus.LAST_ITEM)\"\n    (keydown.arrowdown)=\"openMenu($event, InitialFocus.FIRST_ITEM)\"\n    [attr.aria-controls]=\"popoverId\"\n    [attr.aria-expanded]=\"open\"\n    [attr.aria-label]=\"clrToggleButtonAriaLabel\"\n  >\n    <cds-icon shape=\"ellipsis-horizontal\" [attr.title]=\"commonStrings.keys.more\"></cds-icon>\n  </button>\n  <div\n    #menu\n    role=\"menu\"\n    class=\"dropdown-menu clr-button-group-menu\"\n    [id]=\"popoverId\"\n    [attr.id]=\"popoverId\"\n    [attr.aria-hidden]=\"!open\"\n    *clrPopoverContent=\"open; at menuPosition; type: popoverType; outsideClickToClose: true; scrollToClose: true\"\n  >\n    @for (menuButton of menuButtons; track menuButton) {\n    <ng-template [ngTemplateOutlet]=\"menuButton.templateRef\"></ng-template>\n    }\n  </div>\n</div>\n}\n" }]
         }], ctorParameters: () => [{ type: ButtonInGroupService }, { type: i2.ClrPopoverService }, { type: i1$1.ClrCommonStringsService }, { type: i1$1.ClrDestroyService }, { type: ButtonGroupFocusHandler }], propDecorators: { clrToggleButtonAriaLabel: [{
                 type: Input,
                 args: ['clrToggleButtonAriaLabel']
@@ -1220,10 +1220,6 @@ class CustomFilter {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-// @TODO The top two are not used now, which is probably a performance drag that was broken along the way.
-// There was a previous pattern to hide everything to do computation then display, for Firefox, needs revisiting.
-const NO_LAYOUT_CLASS = 'datagrid-no-layout';
-const COMPUTE_WIDTH_CLASS = 'datagrid-computing-columns-width';
 const STRICT_WIDTH_CLASS = 'datagrid-fixed-width';
 const HIDDEN_COLUMN_CLASS = 'datagrid-hidden-column';
 
@@ -2000,10 +1996,10 @@ class ClrDatagridColumnSeparator {
         }
     }
     isArrowLeftKeyEvent(event) {
-        return normalizeKey$1(event.key) === Keys$1.ArrowLeft;
+        return event.key === Keys$1.ArrowLeft;
     }
     isArrowRightKeyEvent(event) {
-        return normalizeKey$1(event.key) === Keys$1.ArrowRight;
+        return event.key === Keys$1.ArrowRight;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridColumnSeparator, deps: [{ token: ColumnResizerService }, { token: i0.Renderer2 }, { token: i0.NgZone }, { token: TableSizeService }, { token: i1$1.ClrCommonStringsService }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrDatagridColumnSeparator, isStandalone: false, selector: "clr-dg-column-separator", host: { properties: { "class.datagrid-column-separator": "true" } }, viewQueries: [{ propertyName: "resizeTrackerRef", first: true, predicate: ["resizeTracker"], descendants: true }, { propertyName: "columnHandleRef", first: true, predicate: ["columnHandle"], descendants: true }], ngImport: i0, template: `
@@ -2815,7 +2811,7 @@ class ClrDatagridFilter extends DatagridFilterRegistrar {
       #anchor
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="popoverId"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
       [class.datagrid-filter-open]="open"
       [class.datagrid-filtered]="active"
@@ -2843,7 +2839,7 @@ class ClrDatagridFilter extends DatagridFilterRegistrar {
 
       <ng-content></ng-content>
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1$1.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i2.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i2.ÇlrClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: i2.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i2.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1$1.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i2.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i2.ÇlrClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: i2.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i2.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridFilter, decorators: [{
             type: Component,
@@ -2858,7 +2854,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
       #anchor
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="popoverId"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
       [class.datagrid-filter-open]="open"
       [class.datagrid-filtered]="active"
@@ -6328,7 +6324,7 @@ class ClrDatagridActionOverflow {
       [attr.aria-controls]="popoverId"
       [attr.aria-expanded]="open"
       [attr.aria-label]="buttonLabel || commonStrings.keys.rowActions"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
     >
       <cds-icon shape="ellipsis-vertical" [attr.title]="buttonLabel || commonStrings.keys.rowActions"></cds-icon>
@@ -6352,7 +6348,7 @@ class ClrDatagridActionOverflow {
     >
       <ng-content></ng-content>
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1$1.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i2.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i2.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i2.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }, { kind: "component", type: i1$1.ClrKeyFocus, selector: "[clrKeyFocus]", inputs: ["clrDirection", "clrFocusOnLoad", "clrKeyFocus"], outputs: ["clrFocusChange"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1$1.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i2.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i2.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i2.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }, { kind: "component", type: i1$1.ClrKeyFocus, selector: "[clrKeyFocus]", inputs: ["clrDirection", "clrFocusOnLoad", "clrKeyFocus"], outputs: ["clrFocusChange"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridActionOverflow, decorators: [{
             type: Component,
@@ -6370,7 +6366,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
       [attr.aria-controls]="popoverId"
       [attr.aria-expanded]="open"
       [attr.aria-label]="buttonLabel || commonStrings.keys.rowActions"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
     >
       <cds-icon shape="ellipsis-vertical" [attr.title]="buttonLabel || commonStrings.keys.rowActions"></cds-icon>
@@ -6540,7 +6536,7 @@ class ClrDatagridColumnToggle {
       role="button"
       type="button"
       class="btn btn-sm column-toggle-action"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
       [attr.aria-controls]="popoverId"
       [attr.aria-expanded]="openState"
@@ -6598,7 +6594,7 @@ class ClrDatagridColumnToggle {
         <clr-dg-column-toggle-button (clrAllSelected)="allColumnsSelected()"></clr-dg-column-toggle-button>
       </div>
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1$1.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i7.ClrCheckbox, selector: "[clrCheckbox],[clrToggle]" }, { kind: "component", type: i7.ClrCheckboxWrapper, selector: "clr-checkbox-wrapper,clr-toggle-wrapper" }, { kind: "directive", type: i1$5.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i1$5.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1$5.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "directive", type: i2.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i2.ÇlrClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: i2.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i2.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }, { kind: "component", type: ClrDatagridColumnToggleButton, selector: "clr-dg-column-toggle-button", outputs: ["clrAllSelected"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1$1.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i7.ClrCheckbox, selector: "[clrCheckbox],[clrToggle]" }, { kind: "component", type: i7.ClrCheckboxWrapper, selector: "clr-checkbox-wrapper,clr-toggle-wrapper" }, { kind: "directive", type: i1$5.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i1$5.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1$5.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "directive", type: i2.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i2.ÇlrClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: i2.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i2.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }, { kind: "component", type: ClrDatagridColumnToggleButton, selector: "clr-dg-column-toggle-button", outputs: ["clrAllSelected"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridColumnToggle, decorators: [{
             type: Component,
@@ -6609,7 +6605,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
       role="button"
       type="button"
       class="btn btn-sm column-toggle-action"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
       [attr.aria-controls]="popoverId"
       [attr.aria-expanded]="openState"
@@ -8061,16 +8057,6 @@ class DatagridMainRenderer {
         }
         return false;
     }
-    /**
-     * Computes the height of the datagrid.
-     *
-     * NOTE: We had to choose to set the height instead of the min-height because
-     * IE 11 requires the height on the parent for the children flex grow/shrink properties to work.
-     * When we used min-height, 1 1 auto doesn't used to work in IE11 :-(
-     * But this doesn't affect the fix. It works in both fixed & variable height datagrids.
-     *
-     * Refer: http://stackoverflow.com/questions/24396205/flex-grow-not-working-in-internet-explorer-11-0
-     */
     computeDatagridHeight() {
         const height = window.getComputedStyle(this.el.nativeElement).height;
         this.renderer.setStyle(this.el.nativeElement, 'height', height);
@@ -9097,7 +9083,7 @@ class ClrTreeNode {
         //    By default, pressing arrow key makes AT focus go into the nested content of the item.
         preventArrowKeyScroll$1(event);
         // https://www.w3.org/TR/wai-aria-practices-1.1/#keyboard-interaction-22
-        switch (normalizeKey$1(event.key)) {
+        switch (event.key) {
             case Keys$1.ArrowUp:
                 this.focusManager.focusNodeAbove(this._model);
                 break;
@@ -10509,8 +10495,8 @@ class ClrAlerts {
     }
     ngAfterContentInit() {
         this.subscriptions.push(this.multiAlertService.changes.subscribe(index => {
-            this.currentAlertIndexChange.next(index);
-            this.currentAlertChange.next(this.multiAlertService.currentAlert);
+            this.currentAlertIndexChange.emit(index);
+            this.currentAlertChange.emit(this.multiAlertService.currentAlert);
         }));
     }
     ngOnDestroy() {
@@ -10864,16 +10850,25 @@ class ClrControlError extends ClrAbstractControl {
         this.controlIdSuffix = CONTROL_SUFFIX.ERROR;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlError, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlError, isStandalone: false, selector: "clr-control-error", host: { properties: { "class.clr-subtext": "true", "class.error": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlError, isStandalone: false, selector: "clr-control-error", host: { properties: { "class.clr-subtext-wrapper": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true, dependencies: [{ kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlError, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-control-error',
-                    template: `<ng-content></ng-content>`,
+                    template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `,
                     host: {
-                        '[class.clr-subtext]': 'true',
-                        '[class.error]': 'true',
+                        '[class.clr-subtext-wrapper]': 'true',
                         '[attr.id]': 'id',
                     },
                     standalone: false,
@@ -10923,6 +10918,49 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+class ClrControlSuccess extends ClrAbstractControl {
+    constructor(controlIdService, containerIdService) {
+        super(controlIdService, containerIdService);
+        this.controlIdService = controlIdService;
+        this.containerIdService = containerIdService;
+        this.controlIdSuffix = CONTROL_SUFFIX.SUCCESS;
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlSuccess, isStandalone: false, selector: "clr-control-success", host: { properties: { "class.clr-subtext-wrapper": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `
+    <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext success">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true, dependencies: [{ kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'clr-control-success',
+                    template: `
+    <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext success">
+      <ng-content></ng-content>
+    </span>
+  `,
+                    host: {
+                        '[class.clr-subtext-wrapper]': 'true',
+                        '[attr.id]': 'id',
+                    },
+                    standalone: false,
+                }]
+        }], ctorParameters: () => [{ type: ControlIdService, decorators: [{
+                    type: Optional
+                }] }, { type: ContainerIdService, decorators: [{
+                    type: Optional
+                }] }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 var CONTROL_STATE;
 (function (CONTROL_STATE) {
     CONTROL_STATE["VALID"] = "VALID";
@@ -10946,10 +10984,7 @@ class LayoutService {
         this.minLabelSize = 1;
         this.maxLabelSize = 12;
         this.layout = ClrFormLayout.HORIZONTAL;
-        // This is basically a replacement for Object.values(), which IE11 and Node <9 don't support :(
-        // String enums cannot be reverse-mapped, meaning ClrFormLayout['COMPACT'] does not return 'compact' so
-        // this exists to deal with this little caveat to get the list of the values as an array.
-        this.layoutValues = Object.keys(ClrFormLayout).map(key => ClrFormLayout[key]);
+        this.layoutValues = Object.values(ClrFormLayout);
         this._labelSize = 2;
     }
     get labelSize() {
@@ -11116,40 +11151,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                 type: HostListener,
                 args: ['click', ['$event']]
             }] } });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrControlSuccess extends ClrAbstractControl {
-    constructor(controlIdService, containerIdService) {
-        super(controlIdService, containerIdService);
-        this.controlIdService = controlIdService;
-        this.containerIdService = containerIdService;
-        this.controlIdSuffix = CONTROL_SUFFIX.SUCCESS;
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlSuccess, isStandalone: false, selector: "clr-control-success", host: { properties: { "class.clr-subtext": "true", "class.success": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, decorators: [{
-            type: Component,
-            args: [{
-                    selector: 'clr-control-success',
-                    template: `<ng-content></ng-content>`,
-                    host: {
-                        '[class.clr-subtext]': 'true',
-                        '[class.success]': 'true',
-                        '[attr.id]': 'id',
-                    },
-                    standalone: false,
-                }]
-        }], ctorParameters: () => [{ type: ControlIdService, decorators: [{
-                    type: Optional
-                }] }, { type: ContainerIdService, decorators: [{
-                    type: Optional
-                }] }] });
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -11347,12 +11348,6 @@ class ClrControlContainer extends ClrAbstractContainer {
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper">
         <ng-content></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -11364,7 +11359,7 @@ class ClrControlContainer extends ClrAbstractContainer {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlContainer, decorators: [{
             type: Component,
@@ -11378,12 +11373,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper">
         <ng-content></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -11867,7 +11856,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrCommonFormsModule {
     constructor() {
-        ClarityIcons$1.addIcons(exclamationCircleIcon$1, checkCircleIcon$1);
+        ClarityIcons$1.addIcons(successStandardIcon$1, errorStandardIcon$1);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCommonFormsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrCommonFormsModule, declarations: [ClrControlLabel,
@@ -12125,29 +12114,14 @@ class ClrCheckboxContainer extends ClrAbstractContainer$1 {
           <ng-content select="clr-control-helper"></ng-content>
         </div>
       }
-      @if (showInvalid || showValid) {
-        <div class="clr-subtext-wrapper">
-          @if (showInvalid) {
-            <cds-icon
-              class="clr-validate-icon"
-              shape="exclamation-circle"
-              status="danger"
-              aria-hidden="true"
-            ></cds-icon>
-          }
-          @if (showValid) {
-            <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-          }
-          @if (showInvalid) {
-            <ng-content select="clr-control-error"></ng-content>
-          }
-          @if (showValid) {
-            <ng-content select="clr-control-success"></ng-content>
-          }
-        </div>
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxContainer, decorators: [{
             type: Component,
@@ -12165,26 +12139,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           <ng-content select="clr-control-helper"></ng-content>
         </div>
       }
-      @if (showInvalid || showValid) {
-        <div class="clr-subtext-wrapper">
-          @if (showInvalid) {
-            <cds-icon
-              class="clr-validate-icon"
-              shape="exclamation-circle"
-              status="danger"
-              aria-hidden="true"
-            ></cds-icon>
-          }
-          @if (showValid) {
-            <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-          }
-          @if (showInvalid) {
-            <ng-content select="clr-control-error"></ng-content>
-          }
-          @if (showValid) {
-            <ng-content select="clr-control-success"></ng-content>
-          }
-        </div>
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
   `,
@@ -12214,7 +12173,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrCheckboxModule {
     constructor() {
-        ClarityIcons$1.addIcons(exclamationCircleIcon$1, checkCircleIcon$1);
+        ClarityIcons$1.addIcons(successStandardIcon$1, errorStandardIcon$1);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxModule, declarations: [ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper], imports: [CommonModule, ClrIcon$1, ClrCommonFormsModule$1, ClrHostWrappingModule$1], exports: [ClrCommonFormsModule$1, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper] }); }
@@ -12282,12 +12241,6 @@ class ClrComboboxContainer extends ClrAbstractContainer$1 {
     }
     <div class="clr-control-container" [ngClass]="controlClass()" #controlContainer>
       <ng-content select="clr-combobox"></ng-content>
-      @if (showInvalid) {
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-      }
-      @if (showValid) {
-        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-      }
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
       }
@@ -12298,7 +12251,7 @@ class ClrComboboxContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrComboboxContainer, decorators: [{
             type: Component,
@@ -12311,12 +12264,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
     }
     <div class="clr-control-container" [ngClass]="controlClass()" #controlContainer>
       <ng-content select="clr-combobox"></ng-content>
-      @if (showInvalid) {
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-      }
-      @if (showValid) {
-        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-      }
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
       }
@@ -12350,20 +12297,24 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class MultiSelectComboboxModel {
+class ComboboxModel {
+    constructor() {
+        this.identityFn = (item) => item;
+    }
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class MultiSelectComboboxModel extends ComboboxModel {
     containsItem(item) {
-        if (this.model) {
-            if (this.displayField && typeof item === 'object') {
-                const includes = this.model.some(modelItem => {
-                    return modelItem[this.displayField] === item[this.displayField];
-                });
-                return includes;
-            }
-            else {
-                return this.model.includes(item);
-            }
+        if (!this.model) {
+            return false;
         }
-        return false;
+        return this.model.some(m => this.identityFn(m) === this.identityFn(item));
     }
     select(item) {
         this.addItem(item);
@@ -12426,7 +12377,7 @@ class MultiSelectComboboxModel {
         if (this.model === null || this.model === undefined) {
             return;
         }
-        const index = this.model.indexOf(item);
+        const index = this.model.findIndex(m => this.identityFn(m) === this.identityFn(item));
         if (index > -1) {
             this.model.splice(index, 1);
         }
@@ -12443,9 +12394,9 @@ class MultiSelectComboboxModel {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class SingleSelectComboboxModel {
+class SingleSelectComboboxModel extends ComboboxModel {
     containsItem(item) {
-        return this.model === item;
+        return this.model !== null && this.identityFn(this.model) === this.identityFn(item);
     }
     select(item) {
         this.model = item;
@@ -12539,6 +12490,7 @@ class OptionSelectionService {
         this._currentInput = '';
         this._inputChanged = new BehaviorSubject('');
         this._selectionChanged = new ReplaySubject(1);
+        this._identityFn = (item) => item;
         this.inputChanged = this._inputChanged.asObservable();
     }
     get displayField() {
@@ -12569,6 +12521,15 @@ class OptionSelectionService {
     get multiselectable() {
         return this.selectionModel instanceof MultiSelectComboboxModel;
     }
+    get identityFn() {
+        return this._identityFn;
+    }
+    set identityFn(value) {
+        this._identityFn = value || ((item) => item);
+        if (this.selectionModel) {
+            this.selectionModel.identityFn = this._identityFn;
+        }
+    }
     select(item) {
         if (item === null || item === undefined || this.selectionModel.containsItem(item)) {
             return;
@@ -12595,13 +12556,12 @@ class OptionSelectionService {
         this.selectionModel.unselect(item);
         this._selectionChanged.next(this.selectionModel);
     }
-    // TODO: Add support for trackBy and compareFn
     setSelectionValue(value) {
-        // NOTE: Currently we assume that no 2 options will have the same value
-        // but Eudes and I discussed that this is a possibility but we will handle
-        // this later
-        // if selection is undefined, or its value hasn't changed, or changing from null <-> undefined, that's not really changing so we return
-        if (!this.selectionModel || this.selectionModel.model === value || (!this.selectionModel.model && !value)) {
+        if (!this.selectionModel) {
+            return;
+        }
+        const current = this.selectionModel.model;
+        if (this.valuesEqualByIdentity(current, value)) {
             return;
         }
         this.selectionModel.model = value;
@@ -12614,6 +12574,39 @@ class OptionSelectionService {
             };
         }
         return value;
+    }
+    valuesEqualByIdentity(current, value) {
+        if (current === value) {
+            return true;
+        }
+        // Check if both are null or undefined or empty string.
+        if ((current === null || current === undefined || current === '') &&
+            (value === null || value === undefined || value === '')) {
+            return true;
+        }
+        // Check if one is null or undefined or empty string and the other is not.
+        if (current === null ||
+            current === undefined ||
+            current === '' ||
+            value === null ||
+            value === undefined ||
+            value === '') {
+            return false;
+        }
+        if (this.multiselectable) {
+            const cur = current;
+            const val = value;
+            if (cur.length !== val.length) {
+                return false;
+            }
+            // We only consider values equal if they are ordered the same way.
+            const curIds = cur.map(this._identityFn);
+            const valIds = val.map(this._identityFn);
+            return curIds.every((id, i) => id === valIds[i]);
+        }
+        else {
+            return this._identityFn(current) === this._identityFn(value);
+        }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: OptionSelectionService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
     static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: OptionSelectionService }); }
@@ -12739,7 +12732,7 @@ class ComboboxFocusHandler {
     // this service is only interested in keys that may move the focus
     handleTextInput(event) {
         let preventDefault = false;
-        const key = normalizeKey$1(event.key);
+        const key = event.key;
         if (event) {
             switch (key) {
                 case Keys$1.Enter:
@@ -12796,18 +12789,12 @@ class ComboboxFocusHandler {
             this.renderer.listen(el, 'blur', event => {
                 if (this.focusOutOfComponent(event)) {
                     this.popoverService.open = false;
-                    // Workaround for popover close-on-outside-click timing issues in Edge browser
-                    if (this.componentCdRef) {
-                        this.componentCdRef.detectChanges();
-                    }
                 }
             });
         }
     }
     focusOutOfComponent(event) {
-        // event.relatedTarget is null in IE11. In that case we use document.activeElement
-        // which points to the element that becomes active as the blur event occurs on the input.
-        const target = (event.relatedTarget || document.activeElement);
+        const target = event.relatedTarget;
         return !(this.textInput.contains(target) || this.trigger.contains(target) || this.listbox.contains(target));
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ComboboxFocusHandler, deps: [{ token: i0.RendererFactory2 }, { token: i2.ClrPopoverService }, { token: OptionSelectionService }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable }); }
@@ -12999,7 +12986,7 @@ class ClrOptions {
     loadingStateChange(state) {
         this.loading = state === ClrLoadingState$1.LOADING;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrOptions, deps: [{ token: OptionSelectionService }, { token: IF_ACTIVE_ID$1 }, { token: i0.ElementRef }, { token: i1$1.ClrCommonStringsService }, { token: ComboboxFocusHandler }, { token: i2.ClrPopoverService }, { token: POPOVER_HOST_ANCHOR$1, optional: true }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrOptions, deps: [{ token: OptionSelectionService }, { token: IF_ACTIVE_ID$1 }, { token: i0.ElementRef }, { token: i1$1.ClrCommonStringsService }, { token: ComboboxFocusHandler }, { token: i2.ClrPopoverService }, { token: POPOVER_HOST_ORIGIN$1, optional: true }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrOptions, isStandalone: false, selector: "clr-options", inputs: { optionsId: ["id", "optionsId"] }, host: { properties: { "class.clr-combobox-options": "true", "class.clr-combobox-options-hidden": "emptyOptions && editable", "attr.role": "\"listbox\"", "id": "optionsId" } }, providers: [{ provide: LoadingListener$1, useExisting: ClrOptions }], queries: [{ propertyName: "items", predicate: ClrOption, descendants: true }], ngImport: i0, template: `
     @if (optionSelectionService.loading) {
       <div class="clr-combobox-options-loading">
@@ -13069,7 +13056,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     type: Optional
                 }, {
                     type: Inject,
-                    args: [POPOVER_HOST_ANCHOR$1]
+                    args: [POPOVER_HOST_ORIGIN$1]
                 }] }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [DOCUMENT]
@@ -13116,14 +13103,16 @@ class ClrCombobox extends WrappedFormControl$1 {
             control.valueAccessor = this;
         }
         // default to SingleSelectComboboxModel, in case the optional input [ClrMulti] isn't used
-        optionSelectionService.selectionModel = new SingleSelectComboboxModel();
-        this.updateControlValue();
+        this.multiSelect = false;
     }
     get editable() {
         return this.optionSelectionService.editable;
     }
     set editable(value) {
         this.optionSelectionService.editable = value;
+    }
+    set identityFn(value) {
+        this.optionSelectionService.identityFn = value;
     }
     get multiSelect() {
         return this.optionSelectionService.multiselectable;
@@ -13137,6 +13126,7 @@ class ClrCombobox extends WrappedFormControl$1 {
             // since the initial call to writeValue (caused by [ngModel] input) should happen after this
             this.optionSelectionService.selectionModel = new SingleSelectComboboxModel();
         }
+        this.optionSelectionService.selectionModel.identityFn = this.optionSelectionService.identityFn;
         this.updateControlValue();
     }
     // Override the id of WrappedFormControl, as we want to move it to the embedded input.
@@ -13196,7 +13186,6 @@ class ClrCombobox extends WrappedFormControl$1 {
         }
     }
     ngAfterViewInit() {
-        this.focusHandler.componentCdRef = this.cdr;
         this.focusHandler.textInput = this.textbox.nativeElement;
         this.focusHandler.trigger = this.trigger.nativeElement;
         // The text input is the actual element we are wrapping
@@ -13360,13 +13349,13 @@ class ClrCombobox extends WrappedFormControl$1 {
         return [this.optionSelectionService.selectionModel.model];
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCombobox, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$5.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: OptionSelectionService }, { token: i1$1.ClrCommonStringsService }, { token: i2.ClrPopoverService }, { token: ComboboxContainerService, optional: true }, { token: PLATFORM_ID }, { token: ComboboxFocusHandler }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrCombobox, isStandalone: false, selector: "clr-combobox", inputs: { placeholder: "placeholder", editable: ["clrEditable", "editable"], multiSelect: ["clrMulti", "multiSelect"] }, outputs: { clrInputChange: "clrInputChange", clrOpenChange: "clrOpenChange", clrSelectionChange: "clrSelectionChange" }, host: { listeners: { "keydown": "onKeyUp($event)" }, properties: { "class.aria-required": "true", "class.clr-combobox": "true", "class.clr-combobox-disabled": "control?.disabled" } }, providers: [
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrCombobox, isStandalone: false, selector: "clr-combobox", inputs: { placeholder: "placeholder", editable: ["clrEditable", "editable"], identityFn: ["clrComboboxIdentityFn", "identityFn"], multiSelect: ["clrMulti", "multiSelect"] }, outputs: { clrInputChange: "clrInputChange", clrOpenChange: "clrOpenChange", clrSelectionChange: "clrSelectionChange" }, host: { listeners: { "keydown": "onKeyUp($event)" }, properties: { "class.aria-required": "true", "class.clr-combobox": "true", "class.clr-combobox-disabled": "control?.disabled" } }, providers: [
             OptionSelectionService,
             { provide: LoadingListener$1, useExisting: ClrCombobox },
             IF_ACTIVE_ID_PROVIDER$1,
             FOCUS_SERVICE_PROVIDER$1,
             COMBOBOX_FOCUS_HANDLER_PROVIDER,
-        ], queries: [{ propertyName: "optionSelected", first: true, predicate: ClrOptionSelected, descendants: true }, { propertyName: "options", first: true, predicate: ClrOptions, descendants: true }], viewQueries: [{ propertyName: "textbox", first: true, predicate: ["textboxInput"], descendants: true }, { propertyName: "trigger", first: true, predicate: ["trigger"], descendants: true }], usesInheritance: true, hostDirectives: [{ directive: i2.ClrPopoverHostDirective }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  class=\"clr-combobox-wrapper\"\n  clrPopoverAnchor\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"(control?.control.touched && control?.invalid)\"\n  [class.disabled]=\"control?.disabled\"\n>\n  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    @for (item of multiSelectModel; track item; let i = $index) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n          @if (optionSelected) {\n          <ng-container\n            [ngTemplateOutlet]=\"optionSelected.template\"\n            [ngTemplateOutletContext]=\"{$implicit: optionSelectionService.selectionModel.model[i]}\"\n          ></ng-container>\n          }\n        </span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          [disabled]=\"control?.disabled? true: null\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n          (click)=\"unselect(item)\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    }\n  </span>\n  }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually due to issues in Edge browser.\nAdditionally 'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n", dependencies: [{ kind: "directive", type: i1$2.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1$5.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i1$5.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1$5.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: i1$1.ClrRovingTabindex, selector: "[clrRovingTabindex]", inputs: ["clrRovingTabindex", "clrRovingTabindexDisabled"] }, { kind: "directive", type: i1$1.ClrKeyFocusItem, selector: "[clrKeyFocusItem]" }, { kind: "directive", type: i2.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i2.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }] }); }
+        ], queries: [{ propertyName: "optionSelected", first: true, predicate: ClrOptionSelected, descendants: true }, { propertyName: "options", first: true, predicate: ClrOptions, descendants: true }], viewQueries: [{ propertyName: "textbox", first: true, predicate: ["textboxInput"], descendants: true }, { propertyName: "trigger", first: true, predicate: ["trigger"], descendants: true }], usesInheritance: true, hostDirectives: [{ directive: i2.ClrPopoverHostDirective }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  class=\"clr-combobox-wrapper\"\n  clrPopoverOrigin\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"(control?.control.touched && control?.invalid)\"\n  [class.disabled]=\"control?.disabled\"\n>\n  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    @for (item of multiSelectModel; track item; let i = $index) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n          @if (optionSelected) {\n          <ng-container\n            [ngTemplateOutlet]=\"optionSelected.template\"\n            [ngTemplateOutletContext]=\"{$implicit: optionSelectionService.selectionModel.model[i]}\"\n          ></ng-container>\n          }\n        </span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          [disabled]=\"control?.disabled? true: null\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n          (click)=\"unselect(item)\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    }\n  </span>\n  }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually.\n'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n", dependencies: [{ kind: "directive", type: i1$2.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1$5.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i1$5.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1$5.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: i1$1.ClrRovingTabindex, selector: "[clrRovingTabindex]", inputs: ["clrRovingTabindex", "clrRovingTabindexDisabled"] }, { kind: "directive", type: i1$1.ClrKeyFocusItem, selector: "[clrKeyFocusItem]" }, { kind: "directive", type: i2.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i2.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCombobox, decorators: [{
             type: Component,
@@ -13380,7 +13369,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                         '[class.aria-required]': 'true',
                         '[class.clr-combobox]': 'true',
                         '[class.clr-combobox-disabled]': 'control?.disabled',
-                    }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  class=\"clr-combobox-wrapper\"\n  clrPopoverAnchor\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"(control?.control.touched && control?.invalid)\"\n  [class.disabled]=\"control?.disabled\"\n>\n  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    @for (item of multiSelectModel; track item; let i = $index) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n          @if (optionSelected) {\n          <ng-container\n            [ngTemplateOutlet]=\"optionSelected.template\"\n            [ngTemplateOutletContext]=\"{$implicit: optionSelectionService.selectionModel.model[i]}\"\n          ></ng-container>\n          }\n        </span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          [disabled]=\"control?.disabled? true: null\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n          (click)=\"unselect(item)\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    }\n  </span>\n  }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually due to issues in Edge browser.\nAdditionally 'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n" }]
+                    }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  class=\"clr-combobox-wrapper\"\n  clrPopoverOrigin\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"(control?.control.touched && control?.invalid)\"\n  [class.disabled]=\"control?.disabled\"\n>\n  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    @for (item of multiSelectModel; track item; let i = $index) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n          @if (optionSelected) {\n          <ng-container\n            [ngTemplateOutlet]=\"optionSelected.template\"\n            [ngTemplateOutletContext]=\"{$implicit: optionSelectionService.selectionModel.model[i]}\"\n          ></ng-container>\n          }\n        </span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          [disabled]=\"control?.disabled? true: null\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n          (click)=\"unselect(item)\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    }\n  </span>\n  }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually.\n'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n" }]
         }], ctorParameters: () => [{ type: i0.ViewContainerRef }, { type: i0.Injector }, { type: i1$5.NgControl, decorators: [{
                     type: Self
                 }, {
@@ -13417,6 +13406,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], editable: [{
                 type: Input,
                 args: ['clrEditable']
+            }], identityFn: [{
+                type: Input,
+                args: ['clrComboboxIdentityFn']
             }], multiSelect: [{
                 type: Input,
                 args: ['clrMulti']
@@ -13578,7 +13570,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrComboboxModule {
     constructor() {
-        ClarityIcons$1.addIcons(exclamationCircleIcon$1, checkCircleIcon$1, angleIcon$1, windowCloseIcon$1);
+        ClarityIcons$1.addIcons(successStandardIcon$1, errorStandardIcon$1, angleIcon$1, windowCloseIcon$1);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrComboboxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrComboboxModule, declarations: [ClrCombobox,
@@ -13764,12 +13756,6 @@ class ClrDatalistContainer extends ClrAbstractContainer$1 {
           <ng-content select="datalist"></ng-content>
           <cds-icon shape="angle" class="clr-datalist-caret" direction="down" (click)="showPicker(datalist)"></cds-icon>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -13799,12 +13785,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           <ng-content select="datalist"></ng-content>
           <cds-icon shape="angle" class="clr-datalist-caret" direction="down" (click)="showPicker(datalist)"></cds-icon>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -13891,7 +13871,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrDatalistModule {
     constructor() {
-        ClarityIcons$1.addIcons(exclamationCircleIcon$1, checkCircleIcon$1);
+        ClarityIcons$1.addIcons(successStandardIcon$1, errorStandardIcon$1);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatalistModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrDatalistModule, declarations: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer], imports: [CommonModule, ClrInputModule$1, ClrIcon$1], exports: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer] }); }
@@ -14214,10 +14194,14 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class DateIOService {
     constructor(localeHelperService) {
+        /**
+         * This is the default range. It approximates the beginning of time to the end of time.
+         * The disabled dates are the dates that are not allowed to be selected.
+         * The min date is the earliest date that can be selected.
+         * The max date is the latest date that can be selected.
+         * Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
+         */
         this.disabledDates = {
-            // This is the default range. It approximates the beginning of time to the end of time.
-            // Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
-            // TODO: turn this into an Array of min/max ranges that allow configuration of multiple ranges.
             minDate: new DayModel(0, 0, 1),
             maxDate: new DayModel(9999, 11, 31),
         };
@@ -14872,7 +14856,7 @@ class ClrMonthpicker {
         // the logic is fairly simple and it didn't make sense for me
         // to create extra observables just to move this logic to the service.
         if (event) {
-            const key = normalizeKey$1(event.key);
+            const key = event.key;
             if (key === Keys$1.ArrowUp && this._focusedMonthIndex > 1) {
                 event.preventDefault();
                 this._focusedMonthIndex -= 2;
@@ -15219,7 +15203,7 @@ class ClrYearpicker {
         // the logic is fairly simple and it didn't make sense for me
         // to create extra observables just to move this logic to the service.
         if (event) {
-            const key = normalizeKey$1(event.key);
+            const key = event.key;
             if (key === Keys$1.ArrowUp) {
                 event.preventDefault();
                 this.incrementFocusYearBy(-2);
@@ -15866,7 +15850,7 @@ class ClrCalendar {
      */
     onKeyDown(event) {
         if (event && this.focusedDay) {
-            switch (normalizeKey$1(event.key)) {
+            switch (event.key) {
                 case Keys$1.ArrowUp:
                     event.preventDefault();
                     this._dateNavigationService.incrementFocusDay(-1 * NO_OF_DAYS_IN_A_WEEK);
@@ -16336,7 +16320,7 @@ class ClrDateContainer extends ClrAbstractContainer$1 {
       <label></label>
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
-      <div class="clr-input-wrapper" clrPopoverAnchor>
+      <div class="clr-input-wrapper" clrPopoverOrigin>
         <div class="clr-input-group" [class.clr-focus]="focus">
           <!-- render range inputs only if using clr-date-range-container -->
           @if (isRangePicker) {
@@ -16368,12 +16352,6 @@ class ClrDateContainer extends ClrAbstractContainer$1 {
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -16385,7 +16363,7 @@ class ClrDateContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$1.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: i2.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i2.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i2.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: ClrDatepickerViewManager, selector: "clr-datepicker-view-manager" }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$1.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: i2.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i2.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i2.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: ClrDatepickerViewManager, selector: "clr-datepicker-view-manager" }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDateContainer, decorators: [{
             type: Component,
@@ -16397,7 +16375,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
       <label></label>
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
-      <div class="clr-input-wrapper" clrPopoverAnchor>
+      <div class="clr-input-wrapper" clrPopoverOrigin>
         <div class="clr-input-group" [class.clr-focus]="focus">
           <!-- render range inputs only if using clr-date-range-container -->
           @if (isRangePicker) {
@@ -16429,12 +16407,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -17047,7 +17019,7 @@ const CLR_DATEPICKER_DIRECTIVES = [
 ];
 class ClrDatepickerModule {
     constructor() {
-        ClarityIcons$1.addIcons(exclamationCircleIcon$1, checkCircleIcon$1, angleIcon$1, eventIcon$1, calendarIcon$1);
+        ClarityIcons$1.addIcons(successStandardIcon$1, errorStandardIcon$1, angleIcon$1, eventIcon$1, calendarIcon$1);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatepickerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrDatepickerModule, declarations: [ClrDateInput,
@@ -17149,15 +17121,23 @@ function clearFiles(fileInputElement) {
 const CLR_FILE_MESSAGES_TEMPLATE_CONTEXT = new InjectionToken('ClrFileMessagesTemplateContext');
 class ClrFileInfo {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInfo, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileInfo, isStandalone: false, selector: "clr-file-info", host: { properties: { "class.clr-subtext": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileInfo, isStandalone: false, selector: "clr-file-info", host: { properties: { "class.clr-subtext-wrapper": "true" } }, ngImport: i0, template: `
+    <span class="clr-subtext">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInfo, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-info',
-                    template: `<ng-content></ng-content>`,
+                    template: `
+    <span class="clr-subtext">
+      <ng-content></ng-content>
+    </span>
+  `,
                     host: {
-                        '[class.clr-subtext]': 'true',
+                        '[class.clr-subtext-wrapper]': 'true',
                     },
                     standalone: false,
                 }]
@@ -17167,39 +17147,57 @@ class ClrFileSuccess {
         this.context = inject(CLR_FILE_MESSAGES_TEMPLATE_CONTEXT);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileSuccess, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrFileSuccess, isStandalone: false, selector: "clr-file-success", host: { properties: { "style.display": "context.success ? \"inline-block\" : \"none\"", "class.clr-subtext": "true", "class.success": "true" } }, ngImport: i0, template: `@if (context.success) {
-    <ng-content></ng-content>
-  }`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrFileSuccess, isStandalone: false, selector: "clr-file-success", host: { properties: { "style.display": "context.success ? \"flex\" : \"none\"", "class.clr-subtext-wrapper": "true" } }, ngImport: i0, template: `
+    @if (context.success) {
+      <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+      <span class="clr-subtext success">
+        <ng-content></ng-content>
+      </span>
+    }
+  `, isInline: true, dependencies: [{ kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileSuccess, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-success',
                     // We check for success here so that consumers don't have to.
-                    template: `@if (context.success) {
-    <ng-content></ng-content>
-  }`,
+                    template: `
+    @if (context.success) {
+      <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+      <span class="clr-subtext success">
+        <ng-content></ng-content>
+      </span>
+    }
+  `,
                     host: {
-                        '[style.display]': 'context.success ? "inline-block" : "none"',
-                        '[class.clr-subtext]': 'true',
-                        '[class.success]': 'true',
+                        '[style.display]': 'context.success ? "flex" : "none"',
+                        '[class.clr-subtext-wrapper]': 'true',
                     },
                     standalone: false,
                 }]
         }] });
 class ClrFileError {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileError, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileError, isStandalone: false, selector: "clr-file-error", host: { properties: { "class.clr-subtext": "true", "class.error": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileError, isStandalone: false, selector: "clr-file-error", host: { properties: { "class.clr-subtext-wrapper": "true" } }, ngImport: i0, template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true, dependencies: [{ kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileError, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-error',
-                    // The host should have an `@if` or `@if` that checks for the relevant error.
-                    template: `<ng-content></ng-content>`,
+                    // The host should have an `*ngIf` or `@if` that checks for the relevant error.
+                    template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `,
                     host: {
-                        '[class.clr-subtext]': 'true',
-                        '[class.error]': 'true',
+                        '[class.clr-subtext-wrapper]': 'true',
                     },
                     standalone: false,
                 }]
@@ -17237,6 +17235,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrFileList {
     constructor() {
+        this.injectorCache = new Map();
+        this.contextCache = new Map();
         this.injector = inject(Injector);
         this.commonStrings = inject(ClrCommonStringsService$1);
         this.ngControlService = inject(NgControlService$1, { optional: true });
@@ -17275,13 +17275,26 @@ class ClrFileList {
             maxFileSize: fileInputErrors.maxFileSize?.find(error => error.name === file.name),
         };
         const success = Object.values(errors).every(error => !error);
-        return { $implicit: file, success, errors };
+        const cached = this.contextCache.get(file);
+        if (cached && cached.success === success && this.errorsEqual(cached.errors, errors)) {
+            return cached;
+        }
+        // new context is made and old reference replaced
+        const context = { $implicit: file, success, errors };
+        this.contextCache.set(file, context);
+        // new injector is made and old reference replaced
+        const injector = this.createFileMessagesTemplateInjector(context);
+        this.injectorCache.set(file, injector);
+        return context;
     }
     createFileMessagesTemplateInjector(fileMessagesTemplateContext) {
         return Injector.create({
             parent: this.injector,
             providers: [{ provide: CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, useValue: fileMessagesTemplateContext }],
         });
+    }
+    errorsEqual(a, b) {
+        return a.accept === b.accept && a.minFileSize === b.minFileSize && a.maxFileSize === b.maxFileSize;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileList, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrFileList, isStandalone: false, selector: "clr-file-list", host: { properties: { "attr.role": "\"list\"", "class.clr-file-list": "true" } }, queries: [{ propertyName: "fileMessagesTemplate", first: true, predicate: ClrFileMessagesTemplate, descendants: true }], ngImport: i0, template: `
@@ -17306,18 +17319,12 @@ class ClrFileList {
                 <cds-icon shape="times"></cds-icon>
               </button>
             </span>
-            <cds-icon
-              class="clr-validate-icon"
-              [shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
-              [status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
-              aria-hidden="true"
-            ></cds-icon>
           </div>
           @if (fileMessagesTemplate) {
             <ng-container
               [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
               [ngTemplateOutletContext]="fileMessagesTemplateContext"
-              [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
+              [ngTemplateOutletInjector]="injectorCache.get(file)"
             ></ng-container>
           }
         </div>
@@ -17351,18 +17358,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                 <cds-icon shape="times"></cds-icon>
               </button>
             </span>
-            <cds-icon
-              class="clr-validate-icon"
-              [shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
-              [status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
-              aria-hidden="true"
-            ></cds-icon>
           </div>
           @if (fileMessagesTemplate) {
             <ng-container
               [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
               [ngTemplateOutletContext]="fileMessagesTemplateContext"
-              [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
+              [ngTemplateOutletInjector]="injectorCache.get(file)"
             ></ng-container>
           }
         </div>
@@ -17486,12 +17487,6 @@ class ClrFileInputContainer extends ClrAbstractContainer$1 {
             <cds-icon shape="times" status="neutral"></cds-icon>
           </button>
         }
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -17559,12 +17554,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           >
             <cds-icon shape="times" status="neutral"></cds-icon>
           </button>
-        }
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
         }
       </div>
       @if (showHelper) {
@@ -17849,7 +17838,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrFileInputModule {
     constructor() {
-        ClarityIcons$1.addIcons(folderOpenIcon$1);
+        ClarityIcons$1.addIcons(folderOpenIcon$1, successStandardIcon$1, errorStandardIcon$1);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInputModule, declarations: [ClrFileInput,
@@ -17929,12 +17918,6 @@ class ClrInputContainer extends ClrAbstractContainer$1 {
           <ng-content select="[clrInput]"></ng-content>
           <ng-content select="[clrInputSuffix]"></ng-content>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -17946,7 +17929,7 @@ class ClrInputContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrInputContainer, decorators: [{
             type: Component,
@@ -17964,12 +17947,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           <ng-content select="[clrInput]"></ng-content>
           <ng-content select="[clrInputSuffix]"></ng-content>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -18036,8 +18013,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrInputModule {
     constructor() {
-        ClarityIcons$1.addIcons(exclamationCircleIcon$1, checkCircleIcon$1 // caret
-        );
+        ClarityIcons$1.addIcons(successStandardIcon$1, errorStandardIcon$1);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrInputModule, declarations: [ClrInput, ClrInputContainer], imports: [CommonModule, FormsModule, ClrIcon$1, ClrCommonFormsModule$1], exports: [ClrCommonFormsModule$1, ClrInput, ClrInputContainer] }); }
@@ -18104,12 +18080,6 @@ class ClrNumberInputContainer extends ClrAbstractContainer$1 {
             </button>
           </div>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -18156,12 +18126,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             </button>
           </div>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -18269,7 +18233,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrNumberInputModule {
     constructor() {
-        ClarityIcons$1.addIcons(exclamationCircleIcon$1, checkCircleIcon$1, minusIcon$1, plusIcon$1);
+        ClarityIcons$1.addIcons(successStandardIcon$1, errorStandardIcon$1, minusIcon$1, plusIcon$1);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrNumberInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrNumberInputModule, declarations: [ClrNumberInput, ClrNumberInputContainer], imports: [CommonModule, FormsModule, ClrIcon$1, ClrCommonFormsModule$1], exports: [ClrCommonFormsModule$1, ClrNumberInput, ClrNumberInputContainer] }); }
@@ -18354,12 +18318,6 @@ class ClrPasswordContainer extends ClrAbstractContainer$1 {
             </button>
           }
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -18395,12 +18353,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             </button>
           }
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -18494,7 +18446,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrPasswordModule {
     constructor() {
-        ClarityIcons$1.addIcons(eyeHideIcon$1, eyeIcon$1, exclamationCircleIcon$1, checkCircleIcon$1);
+        ClarityIcons$1.addIcons(eyeHideIcon$1, eyeIcon$1, successStandardIcon$1, errorStandardIcon$1);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPasswordModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrPasswordModule, declarations: [ClrPassword, ClrPasswordContainer], imports: [CommonModule, FormsModule, ClrIcon$1, ClrCommonFormsModule$1], exports: [ClrCommonFormsModule$1, ClrPassword, ClrPasswordContainer] }); }
@@ -18646,29 +18598,14 @@ class ClrRadioContainer extends ClrAbstractContainer$1 {
           <ng-content select="clr-control-helper"></ng-content>
         </div>
       }
-      @if (showValid || showInvalid) {
-        <div class="clr-subtext-wrapper">
-          @if (showInvalid) {
-            <cds-icon
-              class="clr-validate-icon"
-              shape="exclamation-circle"
-              status="danger"
-              aria-hidden="true"
-            ></cds-icon>
-          }
-          @if (showValid) {
-            <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-          }
-          @if (showInvalid) {
-            <ng-content select="clr-control-error"></ng-content>
-          }
-          @if (showValid) {
-            <ng-content select="clr-control-success"></ng-content>
-          }
-        </div>
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrRadioContainer, decorators: [{
             type: Component,
@@ -18686,26 +18623,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           <ng-content select="clr-control-helper"></ng-content>
         </div>
       }
-      @if (showValid || showInvalid) {
-        <div class="clr-subtext-wrapper">
-          @if (showInvalid) {
-            <cds-icon
-              class="clr-validate-icon"
-              shape="exclamation-circle"
-              status="danger"
-              aria-hidden="true"
-            ></cds-icon>
-          }
-          @if (showValid) {
-            <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-          }
-          @if (showInvalid) {
-            <ng-content select="clr-control-error"></ng-content>
-          }
-          @if (showValid) {
-            <ng-content select="clr-control-success"></ng-content>
-          }
-        </div>
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
   `,
@@ -18739,7 +18661,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrRadioModule {
     constructor() {
-        ClarityIcons$1.addIcons(exclamationCircleIcon$1, checkCircleIcon$1);
+        ClarityIcons$1.addIcons(successStandardIcon$1, errorStandardIcon$1);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrRadioModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrRadioModule, declarations: [ClrRadio, ClrRadioContainer, ClrRadioWrapper], imports: [CommonModule, ClrCommonFormsModule$1, ClrHostWrappingModule$1, ClrIcon$1], exports: [ClrCommonFormsModule$1, ClrRadio, ClrRadioContainer, ClrRadioWrapper] }); }
@@ -18789,12 +18711,6 @@ class ClrSelectContainer extends ClrAbstractContainer$1 {
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div [ngClass]="wrapperClass()">
         <ng-content select="[clrSelect]"></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -18806,7 +18722,7 @@ class ClrSelectContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSelectContainer, decorators: [{
             type: Component,
@@ -18820,12 +18736,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div [ngClass]="wrapperClass()">
         <ng-content select="[clrSelect]"></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -18888,7 +18798,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrSelectModule {
     constructor() {
-        ClarityIcons$1.addIcons(exclamationCircleIcon$1, checkCircleIcon$1);
+        ClarityIcons$1.addIcons(successStandardIcon$1, errorStandardIcon$1);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSelectModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrSelectModule, declarations: [ClrSelect, ClrSelectContainer], imports: [CommonModule, FormsModule, ClrIcon$1, ClrCommonFormsModule$1], exports: [ClrCommonFormsModule$1, ClrSelect, ClrSelectContainer] }); }
@@ -18926,12 +18836,6 @@ class ClrTextareaContainer extends ClrAbstractContainer$1 {
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-textarea-wrapper">
         <ng-content select="[clrTextarea]"></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -18943,7 +18847,7 @@ class ClrTextareaContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTextareaContainer, decorators: [{
             type: Component,
@@ -18957,12 +18861,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-textarea-wrapper">
         <ng-content select="[clrTextarea]"></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -19020,7 +18918,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrTextareaModule {
     constructor() {
-        ClarityIcons$1.addIcons(exclamationCircleIcon$1, checkCircleIcon$1);
+        ClarityIcons$1.addIcons(successStandardIcon$1, errorStandardIcon$1);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTextareaModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrTextareaModule, declarations: [ClrTextarea, ClrTextareaContainer], imports: [CommonModule, FormsModule, ClrIcon$1, ClrCommonFormsModule$1], exports: [ClrCommonFormsModule$1, ClrTextarea, ClrTextareaContainer] }); }
@@ -19101,12 +18999,6 @@ class ClrRangeContainer extends ClrAbstractContainer$1 {
         @if (hasProgress) {
           <span class="fill-input" [style.width]="getRangeProgressFillWidth()"></span>
         }
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -19118,7 +19010,7 @@ class ClrRangeContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrRangeContainer, decorators: [{
             type: Component,
@@ -19134,12 +19026,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
         <ng-content select="[clrRange]"></ng-content>
         @if (hasProgress) {
           <span class="fill-input" [style.width]="getRangeProgressFillWidth()"></span>
-        }
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
         }
       </div>
       @if (showHelper) {
@@ -19202,7 +19088,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrRangeModule {
     constructor() {
-        ClarityIcons$1.addIcons(exclamationCircleIcon$1, checkCircleIcon$1);
+        ClarityIcons$1.addIcons(successStandardIcon$1, errorStandardIcon$1);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrRangeModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrRangeModule, declarations: [ClrRange, ClrRangeContainer], imports: [CommonModule, ClrCommonFormsModule$1, ClrHostWrappingModule$1, ClrIcon$1], exports: [ClrCommonFormsModule$1, ClrRange, ClrRangeContainer] }); }
@@ -28750,7 +28636,7 @@ class ModalStackService {
         }
     }
     onKeyUp(event) {
-        if (this.modalStack.length && normalizeKey$1(event.key) === Keys$1.Escape) {
+        if (this.modalStack.length && event.key === Keys$1.Escape) {
             // We blur the active element because escaping with an input element in focus could cause
             // an ExpressionChangedAfterItHasBeenCheckedError for the touched state. (CDE-1662)
             document.activeElement.blur();
@@ -29497,6 +29383,9 @@ class ClrDropdown {
         this.subscriptions.push(dropdownService.changes.subscribe(value => (popoverService.open = value)));
         this.subscriptions.push(popoverService.openChange.subscribe(() => cdr.markForCheck()));
     }
+    openAtPoint(point) {
+        this.popoverService.openAtPoint(point);
+    }
     ngOnDestroy() {
         this.subscriptions.forEach(sub => sub.unsubscribe());
     }
@@ -29571,7 +29460,7 @@ class ClrDropdownMenu {
     ngOnDestroy() {
         this.focusHandler.resetChildren();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDropdownMenu, deps: [{ token: POPOVER_HOST_ANCHOR$1, optional: true }, { token: ClrDropdownMenu, optional: true, skipSelf: true }, { token: DropdownFocusHandler }, { token: i0.ElementRef }, { token: i2.ClrPopoverService }, { token: i2.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDropdownMenu, deps: [{ token: POPOVER_HOST_ORIGIN$1, optional: true }, { token: ClrDropdownMenu, optional: true, skipSelf: true }, { token: DropdownFocusHandler }, { token: i0.ElementRef }, { token: i2.ClrPopoverService }, { token: i2.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrDropdownMenu, isStandalone: false, selector: "clr-dropdown-menu", inputs: { position: ["clrPosition", "position"] }, host: { properties: { "class.dropdown-menu": "true", "attr.role": "\"menu\"", "class.is-off-screen": "this.isOffScreen" } }, queries: [{ propertyName: "items", predicate: FocusableItem$1 }], hostDirectives: [{ directive: i2.ClrPopoverContent }], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDropdownMenu, decorators: [{
@@ -29590,7 +29479,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     type: Optional
                 }, {
                     type: Inject,
-                    args: [POPOVER_HOST_ANCHOR$1]
+                    args: [POPOVER_HOST_ORIGIN$1]
                 }] }, { type: ClrDropdownMenu, decorators: [{
                     type: Optional
                 }, {
@@ -29621,7 +29510,7 @@ class ClrDropdownTrigger {
             this.isRootLevelToggle = false;
         }
         focusHandler.trigger = el.nativeElement;
-        popoverService.anchorElementRef = el;
+        popoverService.origin = el;
     }
     get active() {
         return this.popoverService.open;
@@ -29794,14 +29683,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-// Popovers might need to ignore click events on an element
-// (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
 class ClrPopoverService {
     constructor() {
         this.panelClass = [];
@@ -29812,6 +29693,12 @@ class ClrPopoverService {
         this._resetPositions = new Subject();
         this._updatePosition = new Subject();
         this._popoverVisible = new Subject();
+    }
+    get originElement() {
+        return this.origin instanceof ElementRef ? this.origin : null;
+    }
+    get originPoint() {
+        return this.origin && 'x' in this.origin && 'y' in this.origin ? this.origin : null;
     }
     get openChange() {
         return this._openChange.asObservable();
@@ -29860,6 +29747,18 @@ class ClrPopoverService {
         this.openEvent = event;
         this.open = !this.open;
     }
+    /**
+     * Opens the popover at a specific screen coordinate.
+     * Useful for context menus where the popover should appear at the cursor position.
+     */
+    openAtPoint(point) {
+        if (this._open) {
+            this._open = false;
+            this._openChange.next(false);
+        }
+        this.origin = point;
+        this.open = true;
+    }
     popoverVisibleEmit(visible) {
         this._popoverVisible.next(visible);
     }
@@ -29872,8 +29771,8 @@ class ClrPopoverService {
     focusCloseButton() {
         this.closeButtonRef.nativeElement?.focus();
     }
-    focusAnchor() {
-        this.anchorElementRef?.nativeElement?.focus({ preventScroll: true });
+    focusOrigin() {
+        this.originElement?.nativeElement?.focus({ preventScroll: true });
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
     static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverService }); }
@@ -30009,52 +29908,52 @@ function getOffset(key, type) {
             };
     }
 }
-const STANDARD_ANCHORS = {
+const STANDARD_ORIGINS = {
     // TOP
-    [ClrPopoverPosition.TOP_RIGHT]: { anchor: ClrPosition$1.TOP_CENTER, content: ClrPosition$1.BOTTOM_LEFT },
-    [ClrPopoverPosition.TOP_MIDDLE]: { anchor: ClrPosition$1.TOP_CENTER, content: ClrPosition$1.BOTTOM_CENTER },
-    [ClrPopoverPosition.TOP_LEFT]: { anchor: ClrPosition$1.TOP_CENTER, content: ClrPosition$1.BOTTOM_RIGHT },
+    [ClrPopoverPosition.TOP_RIGHT]: { origin: ClrPosition$1.TOP_CENTER, content: ClrPosition$1.BOTTOM_LEFT },
+    [ClrPopoverPosition.TOP_MIDDLE]: { origin: ClrPosition$1.TOP_CENTER, content: ClrPosition$1.BOTTOM_CENTER },
+    [ClrPopoverPosition.TOP_LEFT]: { origin: ClrPosition$1.TOP_CENTER, content: ClrPosition$1.BOTTOM_RIGHT },
     // LEFT
-    [ClrPopoverPosition.LEFT]: { anchor: ClrPosition$1.LEFT_CENTER, content: ClrPosition$1.RIGHT_TOP },
-    [ClrPopoverPosition.LEFT_TOP]: { anchor: ClrPosition$1.LEFT_CENTER, content: ClrPosition$1.RIGHT_BOTTOM },
-    [ClrPopoverPosition.LEFT_MIDDLE]: { anchor: ClrPosition$1.LEFT_CENTER, content: ClrPosition$1.RIGHT_CENTER },
-    [ClrPopoverPosition.LEFT_BOTTOM]: { anchor: ClrPosition$1.LEFT_CENTER, content: ClrPosition$1.RIGHT_TOP },
+    [ClrPopoverPosition.LEFT]: { origin: ClrPosition$1.LEFT_CENTER, content: ClrPosition$1.RIGHT_TOP },
+    [ClrPopoverPosition.LEFT_TOP]: { origin: ClrPosition$1.LEFT_CENTER, content: ClrPosition$1.RIGHT_BOTTOM },
+    [ClrPopoverPosition.LEFT_MIDDLE]: { origin: ClrPosition$1.LEFT_CENTER, content: ClrPosition$1.RIGHT_CENTER },
+    [ClrPopoverPosition.LEFT_BOTTOM]: { origin: ClrPosition$1.LEFT_CENTER, content: ClrPosition$1.RIGHT_TOP },
     // RIGHT
-    [ClrPopoverPosition.RIGHT]: { anchor: ClrPosition$1.RIGHT_CENTER, content: ClrPosition$1.LEFT_TOP },
-    [ClrPopoverPosition.RIGHT_TOP]: { anchor: ClrPosition$1.RIGHT_CENTER, content: ClrPosition$1.LEFT_BOTTOM },
-    [ClrPopoverPosition.RIGHT_MIDDLE]: { anchor: ClrPosition$1.RIGHT_CENTER, content: ClrPosition$1.LEFT_CENTER },
-    [ClrPopoverPosition.RIGHT_BOTTOM]: { anchor: ClrPosition$1.RIGHT_CENTER, content: ClrPosition$1.LEFT_TOP },
+    [ClrPopoverPosition.RIGHT]: { origin: ClrPosition$1.RIGHT_CENTER, content: ClrPosition$1.LEFT_TOP },
+    [ClrPopoverPosition.RIGHT_TOP]: { origin: ClrPosition$1.RIGHT_CENTER, content: ClrPosition$1.LEFT_BOTTOM },
+    [ClrPopoverPosition.RIGHT_MIDDLE]: { origin: ClrPosition$1.RIGHT_CENTER, content: ClrPosition$1.LEFT_CENTER },
+    [ClrPopoverPosition.RIGHT_BOTTOM]: { origin: ClrPosition$1.RIGHT_CENTER, content: ClrPosition$1.LEFT_TOP },
     // BOTTOM
-    [ClrPopoverPosition.BOTTOM_RIGHT]: { anchor: ClrPosition$1.BOTTOM_CENTER, content: ClrPosition$1.TOP_LEFT },
-    [ClrPopoverPosition.BOTTOM_MIDDLE]: { anchor: ClrPosition$1.BOTTOM_CENTER, content: ClrPosition$1.TOP_CENTER },
-    [ClrPopoverPosition.BOTTOM_LEFT]: { anchor: ClrPosition$1.BOTTOM_CENTER, content: ClrPosition$1.TOP_RIGHT },
+    [ClrPopoverPosition.BOTTOM_RIGHT]: { origin: ClrPosition$1.BOTTOM_CENTER, content: ClrPosition$1.TOP_LEFT },
+    [ClrPopoverPosition.BOTTOM_MIDDLE]: { origin: ClrPosition$1.BOTTOM_CENTER, content: ClrPosition$1.TOP_CENTER },
+    [ClrPopoverPosition.BOTTOM_LEFT]: { origin: ClrPosition$1.BOTTOM_CENTER, content: ClrPosition$1.TOP_RIGHT },
 };
-const DROPDOWN_ANCHORS = {
+const DROPDOWN_ORIGINS = {
     // TOP
-    [ClrPopoverPosition.TOP_RIGHT]: { anchor: ClrPosition$1.TOP_RIGHT, content: ClrPosition$1.BOTTOM_RIGHT },
-    [ClrPopoverPosition.TOP_LEFT]: { anchor: ClrPosition$1.TOP_LEFT, content: ClrPosition$1.BOTTOM_LEFT },
+    [ClrPopoverPosition.TOP_RIGHT]: { origin: ClrPosition$1.TOP_RIGHT, content: ClrPosition$1.BOTTOM_RIGHT },
+    [ClrPopoverPosition.TOP_LEFT]: { origin: ClrPosition$1.TOP_LEFT, content: ClrPosition$1.BOTTOM_LEFT },
     // LEFT
-    [ClrPopoverPosition.LEFT_TOP]: { anchor: ClrPosition$1.LEFT_TOP, content: ClrPosition$1.TOP_RIGHT },
-    [ClrPopoverPosition.LEFT_BOTTOM]: { anchor: ClrPosition$1.LEFT_BOTTOM, content: ClrPosition$1.BOTTOM_RIGHT },
+    [ClrPopoverPosition.LEFT_TOP]: { origin: ClrPosition$1.LEFT_TOP, content: ClrPosition$1.TOP_RIGHT },
+    [ClrPopoverPosition.LEFT_BOTTOM]: { origin: ClrPosition$1.LEFT_BOTTOM, content: ClrPosition$1.BOTTOM_RIGHT },
     // RIGHT
-    [ClrPopoverPosition.RIGHT_TOP]: { anchor: ClrPosition$1.RIGHT_TOP, content: ClrPosition$1.LEFT_TOP },
-    [ClrPopoverPosition.RIGHT_BOTTOM]: { anchor: ClrPosition$1.RIGHT_BOTTOM, content: ClrPosition$1.LEFT_BOTTOM },
+    [ClrPopoverPosition.RIGHT_TOP]: { origin: ClrPosition$1.RIGHT_TOP, content: ClrPosition$1.LEFT_TOP },
+    [ClrPopoverPosition.RIGHT_BOTTOM]: { origin: ClrPosition$1.RIGHT_BOTTOM, content: ClrPosition$1.LEFT_BOTTOM },
     // BOTTOM
-    [ClrPopoverPosition.BOTTOM_RIGHT]: { anchor: ClrPosition$1.BOTTOM_LEFT, content: ClrPosition$1.TOP_RIGHT },
-    [ClrPopoverPosition.BOTTOM_LEFT]: { anchor: ClrPosition$1.BOTTOM_RIGHT, content: ClrPosition$1.TOP_LEFT },
+    [ClrPopoverPosition.BOTTOM_RIGHT]: { origin: ClrPosition$1.BOTTOM_LEFT, content: ClrPosition$1.TOP_RIGHT },
+    [ClrPopoverPosition.BOTTOM_LEFT]: { origin: ClrPosition$1.BOTTOM_RIGHT, content: ClrPosition$1.TOP_LEFT },
 };
 function mapPopoverKeyToPosition(key, type) {
     let offset = getOffset(key, type);
-    const defaultPosition = { anchor: ClrPosition$1.BOTTOM_LEFT, content: ClrPosition$1.TOP_LEFT };
-    const { anchor, content } = (type === ClrPopoverType.DROPDOWN ? DROPDOWN_ANCHORS[key] : STANDARD_ANCHORS[key]) ?? defaultPosition;
+    const defaultPosition = { origin: ClrPosition$1.BOTTOM_LEFT, content: ClrPosition$1.TOP_LEFT };
+    const { origin, content } = (type === ClrPopoverType.DROPDOWN ? DROPDOWN_ORIGINS[key] : STANDARD_ORIGINS[key]) ?? defaultPosition;
     return {
-        ...getAnchorPosition(anchor),
+        ...getOriginPosition(origin),
         ...getContentPosition(content),
         ...offset,
         panelClass: key,
     };
 }
-function getAnchorPosition(key) {
+function getOriginPosition(key) {
     switch (key) {
         // TOP Positions
         case ClrPosition$1.TOP_LEFT:
@@ -30273,11 +30172,19 @@ class ClrPopoverContent {
     set scrollToClose(scrollToClose) {
         this._scrollToClose = !!scrollToClose;
     }
+    set contentOrigin(origin) {
+        if (origin instanceof Element) {
+            this.popoverService.origin = new ElementRef(origin);
+        }
+        else {
+            this.popoverService.origin = origin;
+        }
+    }
     get positionStrategy() {
         return this.overlay
             .position()
-            .flexibleConnectedTo(this.popoverService.anchorElementRef)
-            .setOrigin(this.popoverService.anchorElementRef)
+            .flexibleConnectedTo(this.popoverService.origin)
+            .setOrigin(this.popoverService.origin)
             .withPush(true)
             .withPositions([this.preferredPosition, ...this._availablePositions])
             .withFlexibleDimensions(true);
@@ -30320,13 +30227,38 @@ class ClrPopoverContent {
         }), this.popoverService.updatePositionChange().subscribe(() => {
             this.overlayRef?.updatePosition();
         }), this.overlayRef.keydownEvents().subscribe(event => {
-            if (event && event.key && normalizeKey$1(event.key) === Keys$1.Escape && !hasModifierKey(event)) {
+            if (event && event.key && event.key === Keys$1.Escape && !hasModifierKey(event)) {
                 event.preventDefault();
                 this.closePopover();
             }
-        }), this.overlayRef.outsidePointerEvents().subscribe(event => {
+        }), this.popoverService.originPoint
+            ? this.createPointBasedOutsideClickSubscription()
+            : this.createElementBasedOutsideClickSubscription());
+    }
+    /**
+     * Point-based origins (context menus) delay the subscription to avoid the
+     * mouseup from the same right-click that opened the popover.
+     */
+    createPointBasedOutsideClickSubscription() {
+        return timer(500)
+            .pipe(switchMap$1(() => this.overlayRef.outsidePointerEvents()))
+            .subscribe(event => {
+            if (this.elementRef?.nativeElement?.contains(event.target)) {
+                return;
+            }
+            if (this._outsideClickClose) {
+                this.closePopover();
+            }
+        });
+    }
+    /**
+     * Element-based origins close on outside clicks and suppress toggle-button
+     * re-clicks so the popover doesn't immediately reopen.
+     */
+    createElementBasedOutsideClickSubscription() {
+        return this.overlayRef.outsidePointerEvents().subscribe(event => {
             // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
-            if (this.elementRef && this.elementRef.nativeElement.contains(event.target)) {
+            if (this.elementRef?.nativeElement?.contains(event.target)) {
                 return;
             }
             // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
@@ -30340,7 +30272,7 @@ class ClrPopoverContent {
             if (this._outsideClickClose || isToggleButton) {
                 this.closePopover();
             }
-        }));
+        });
     }
     resetPosition() {
         if (this.overlayRef) {
@@ -30354,11 +30286,13 @@ class ClrPopoverContent {
         }
         this.removeOverlay();
         this.popoverService.open = false;
-        const shouldFocusTrigger = this.popoverType !== ClrPopoverType.TOOLTIP &&
-            (document.activeElement === document.body ||
-                document.activeElement === this.popoverService.anchorElementRef?.nativeElement);
-        if (shouldFocusTrigger) {
-            this.popoverService.focusAnchor();
+        if (this.popoverService.originElement) {
+            const shouldFocusTrigger = this.popoverType !== ClrPopoverType.TOOLTIP &&
+                (document.activeElement === document.body ||
+                    document.activeElement === this.popoverService.originElement.nativeElement);
+            if (shouldFocusTrigger) {
+                this.popoverService.focusOrigin();
+            }
         }
     }
     showOverlay() {
@@ -30376,15 +30310,17 @@ class ClrPopoverContent {
             this.domPortal = new DomPortal(this.elementRef);
             this.overlayRef.attach(this.domPortal);
         }
-        this.popoverService?.anchorElementRef?.nativeElement.scrollIntoView({
-            behavior: 'instant',
-            block: 'nearest',
-            inline: 'nearest',
-        });
-        this.setupIntersectionObserver();
+        if (this.popoverService.originElement) {
+            this.popoverService.originElement.nativeElement.scrollIntoView({
+                behavior: 'instant',
+                block: 'nearest',
+                inline: 'nearest',
+            });
+            this.setupIntersectionObserver();
+        }
         setTimeout(() => {
             // Get Scrollable Parents
-            this.listenToMouseEvents();
+            this.listenToScrollEvents();
             this.popoverService.popoverVisibleEmit(true);
             if (this.elementRef?.nativeElement?.focus) {
                 this.elementRef.nativeElement.focus();
@@ -30431,30 +30367,46 @@ class ClrPopoverContent {
         return scrollableParents;
     }
     /**
-     * Uses IntersectionObserver to detect when the anchor leaves the screen.
+     * Uses IntersectionObserver to detect when the origin element leaves the screen.
      * This handles the "Close on Scroll" logic much cheaper than getBoundingClientRect.
      */
     setupIntersectionObserver() {
-        if (!this.popoverService.anchorElementRef || this.intersectionObserver) {
+        if (!this.popoverService.originElement || this.intersectionObserver) {
             return;
         }
         this.intersectionObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
-                // If the anchor is no longer visible (scrolled out of view)
+                // If the origin is no longer visible (scrolled out of view)
                 if (!entry.isIntersecting && this.popoverService.open) {
                     this.zone.run(() => this.closePopover());
                 }
             });
         }, { root: null, threshold: 0.8 });
-        this.intersectionObserver.observe(this.popoverService.anchorElementRef.nativeElement);
+        this.intersectionObserver.observe(this.popoverService.originElement.nativeElement);
     }
-    //Align the popover on scrolling
-    listenToMouseEvents() {
+    listenToScrollEvents() {
         if (!isPlatformBrowser(this.platformId)) {
             return;
         }
-        const anchor = this.getRootPopover(this)?.popoverService?.anchorElementRef?.nativeElement;
-        const scrollableParents = this.getScrollableParents(anchor);
+        if (this.popoverService.originPoint) {
+            this.listenToScrollForPointOrigin();
+        }
+        else {
+            this.listenToScrollForElementOrigin();
+        }
+    }
+    // Point origins have no scrollable parent chain — close on any scroll.
+    listenToScrollForPointOrigin() {
+        this.zone.runOutsideAngular(() => {
+            this.subscriptions.push(fromEvent(window, 'scroll', { passive: true, capture: true }).subscribe(() => {
+                this.zone.run(() => this.closePopover());
+            }));
+        });
+    }
+    // Element origins track ancestor scroll containers to reposition or close.
+    listenToScrollForElementOrigin() {
+        const originEl = this.getRootPopover(this)?.popoverService?.originElement?.nativeElement;
+        const scrollableParents = this.getScrollableParents(originEl);
         this.zone.runOutsideAngular(() => {
             this.subscriptions.push(merge(...scrollableParents.map(parent => fromEvent(parent, 'scroll', { passive: true }))).subscribe(() => {
                 if (this._scrollToClose) {
@@ -30472,7 +30424,7 @@ class ClrPopoverContent {
         return popover;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverContent, deps: [{ token: i0.ElementRef }, { token: i0.ViewContainerRef }, { token: i0.TemplateRef, optional: true }, { token: i1$8.OverlayContainer }, { token: ClrPopoverContent, optional: true, skipSelf: true }, { token: i1$8.Overlay }, { token: ClrPopoverService }, { token: i0.NgZone }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrPopoverContent, isStandalone: true, selector: "[clrPopoverContent]", inputs: { open: ["clrPopoverContent", "open"], contentAt: ["clrPopoverContentAt", "contentAt"], availablePositions: ["clrPopoverContentAvailablePositions", "availablePositions"], contentType: ["clrPopoverContentType", "contentType"], outsideClickClose: ["clrPopoverContentOutsideClickToClose", "outsideClickClose"], scrollToClose: ["clrPopoverContentScrollToClose", "scrollToClose"] }, ngImport: i0 }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrPopoverContent, isStandalone: true, selector: "[clrPopoverContent]", inputs: { open: ["clrPopoverContent", "open"], contentAt: ["clrPopoverContentAt", "contentAt"], availablePositions: ["clrPopoverContentAvailablePositions", "availablePositions"], contentType: ["clrPopoverContentType", "contentType"], outsideClickClose: ["clrPopoverContentOutsideClickToClose", "outsideClickClose"], scrollToClose: ["clrPopoverContentScrollToClose", "scrollToClose"], contentOrigin: ["clrPopoverContentOrigin", "contentOrigin"] }, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverContent, decorators: [{
             type: Directive,
@@ -30509,6 +30461,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], scrollToClose: [{
                 type: Input,
                 args: ['clrPopoverContentScrollToClose']
+            }], contentOrigin: [{
+                type: Input,
+                args: ['clrPopoverContentOrigin']
             }] } });
 
 /*
@@ -30517,19 +30472,19 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class ClrPopoverAnchor {
+class ClrPopoverOrigin {
     constructor(popoverService, element) {
-        popoverService.anchorElementRef = element;
+        popoverService.origin = element;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverAnchor, deps: [{ token: ClrPopoverService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrPopoverAnchor, isStandalone: false, selector: "[clrPopoverAnchor]", host: { properties: { "class.clr-anchor": "true" } }, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverOrigin, deps: [{ token: ClrPopoverService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrPopoverOrigin, isStandalone: false, selector: "[clrPopoverOrigin]", host: { properties: { "class.clr-popover-origin": "true" } }, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverAnchor, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverOrigin, decorators: [{
             type: Directive,
             args: [{
-                    selector: '[clrPopoverAnchor]',
+                    selector: '[clrPopoverOrigin]',
                     host: {
-                        '[class.clr-anchor]': 'true',
+                        '[class.clr-popover-origin]': 'true',
                     },
                     standalone: false,
                 }]
@@ -30541,7 +30496,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-const POPOVER_HOST_ANCHOR = new InjectionToken('POPOVER_HOST_ANCHOR');
+const POPOVER_HOST_ORIGIN = new InjectionToken('POPOVER_HOST_ORIGIN');
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -30591,13 +30546,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrPopoverHostDirective {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverHostDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrPopoverHostDirective, isStandalone: true, providers: [ClrPopoverService, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }], hostDirectives: [{ directive: ClrStopEscapePropagationDirective }], ngImport: i0 }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrPopoverHostDirective, isStandalone: true, providers: [ClrPopoverService, { provide: POPOVER_HOST_ORIGIN, useExisting: ElementRef }], hostDirectives: [{ directive: ClrStopEscapePropagationDirective }], ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverHostDirective, decorators: [{
             type: Directive,
             args: [{
                     standalone: true,
-                    providers: [ClrPopoverService, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
+                    providers: [ClrPopoverService, { provide: POPOVER_HOST_ORIGIN, useExisting: ElementRef }],
                     hostDirectives: [ClrStopEscapePropagationDirective],
                 }]
         }] });
@@ -30703,12 +30658,12 @@ class ClrPopoverCloseButton {
         this.closeChange = new EventEmitter();
         this.subscriptions = [];
         this.subscriptions.push(popoverService.openChange.pipe(filter(value => !value)).subscribe(() => {
-            this.closeChange.next();
+            this.closeChange.emit();
         }));
     }
     handleClick(event) {
         this.popoverService.toggleWithEvent(event);
-        this.popoverService.focusAnchor();
+        this.popoverService.focusOrigin();
     }
     ngAfterViewInit() {
         this.popoverService.closeButtonRef = this.elementRef;
@@ -30748,7 +30703,7 @@ class ClrPopoverOpenCloseButton {
         this.openCloseChange = new EventEmitter();
         this.subscriptions = [];
         this.subscriptions.push(popoverService.openChange.subscribe(change => {
-            this.openCloseChange.next(change);
+            this.openCloseChange.emit(change);
         }));
     }
     handleClick(event) {
@@ -30785,15 +30740,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrPopoverModuleNext {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverModuleNext, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverModuleNext, declarations: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton], imports: [ClrPopoverContent, ClrIfOpen], exports: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent, ClrIfOpen] }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverModuleNext, declarations: [ClrPopoverOrigin, ClrPopoverCloseButton, ClrPopoverOpenCloseButton], imports: [ClrPopoverContent, ClrIfOpen], exports: [ClrPopoverOrigin, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent, ClrIfOpen] }); }
     static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverModuleNext }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverModuleNext, decorators: [{
             type: NgModule,
             args: [{
                     imports: [ClrPopoverContent, ClrIfOpen],
-                    declarations: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton],
-                    exports: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent, ClrIfOpen],
+                    declarations: [ClrPopoverOrigin, ClrPopoverCloseButton, ClrPopoverOpenCloseButton],
+                    exports: [ClrPopoverOrigin, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent, ClrIfOpen],
                 }]
         }] });
 
@@ -30892,7 +30847,7 @@ class ClrSignpostTrigger {
         this.document = document;
     }
     ngOnInit() {
-        this.popoverService.anchorElementRef = this.el;
+        this.popoverService.origin = this.el;
         this.signpostFocusManager.triggerEl = this.el.nativeElement;
         this.subscriptions.push(this.popoverService.openChange.subscribe((isOpen) => {
             this.ariaExpanded = isOpen;
@@ -30969,8 +30924,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  *
  */
 class ClrSignpost {
-    constructor(commonStrings) {
+    constructor(commonStrings, popoverService) {
         this.commonStrings = commonStrings;
+        this.popoverService = popoverService;
         /**********
          * @property useCustomTrigger
          *
@@ -30979,6 +30935,11 @@ class ClrSignpost {
          *
          */
         this.useCustomTrigger = false;
+        /**
+         * Hides the default trigger button. Use when the signpost is opened
+         * programmatically via `openAtPoint()` and no trigger icon is needed.
+         */
+        this.hideTrigger = false;
     }
     /**********
      * @property signPostTrigger
@@ -30990,9 +30951,15 @@ class ClrSignpost {
     set customTrigger(trigger) {
         this.useCustomTrigger = !!trigger;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpost, deps: [{ token: i1$1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrSignpost, isStandalone: false, selector: "clr-signpost", inputs: { signpostTriggerAriaLabel: ["clrSignpostTriggerAriaLabel", "signpostTriggerAriaLabel"] }, host: { properties: { "class.signpost": "true" } }, providers: [SignpostFocusManager, SignpostIdService], queries: [{ propertyName: "customTrigger", first: true, predicate: ClrSignpostTrigger, descendants: true }], hostDirectives: [{ directive: i2.ClrPopoverHostDirective }], ngImport: i0, template: `
-    @if (!useCustomTrigger) {
+    get showDefaultTrigger() {
+        return !this.useCustomTrigger && !this.hideTrigger;
+    }
+    openAtPoint(point) {
+        this.popoverService.openAtPoint(point);
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpost, deps: [{ token: i1$1.ClrCommonStringsService }, { token: i2.ClrPopoverService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrSignpost, isStandalone: false, selector: "clr-signpost", inputs: { signpostTriggerAriaLabel: ["clrSignpostTriggerAriaLabel", "signpostTriggerAriaLabel"], hideTrigger: ["clrSignpostHideTrigger", "hideTrigger"] }, host: { properties: { "class.signpost": "true" } }, providers: [SignpostFocusManager, SignpostIdService], queries: [{ propertyName: "customTrigger", first: true, predicate: ClrSignpostTrigger, descendants: true }], hostDirectives: [{ directive: i2.ClrPopoverHostDirective }], ngImport: i0, template: `
+    @if (showDefaultTrigger) {
       <button
         type="button"
         class="signpost-action btn btn-sm btn-icon btn-link"
@@ -31011,7 +30978,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             args: [{
                     selector: 'clr-signpost',
                     template: `
-    @if (!useCustomTrigger) {
+    @if (showDefaultTrigger) {
       <button
         type="button"
         class="signpost-action btn btn-sm btn-icon btn-link"
@@ -31029,9 +30996,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     hostDirectives: [ClrPopoverHostDirective$1],
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i1$1.ClrCommonStringsService }], propDecorators: { signpostTriggerAriaLabel: [{
+        }], ctorParameters: () => [{ type: i1$1.ClrCommonStringsService }, { type: i2.ClrPopoverService }], propDecorators: { signpostTriggerAriaLabel: [{
                 type: Input,
                 args: ['clrSignpostTriggerAriaLabel']
+            }], hideTrigger: [{
+                type: Input,
+                args: ['clrSignpostHideTrigger']
             }], customTrigger: [{
                 type: ContentChild,
                 args: [ClrSignpostTrigger]
@@ -31066,8 +31036,8 @@ class ClrSignpostContent {
      *
      * @description
      * A setter for the position of the ClrSignpostContent popover. This is a combination of the following:
-     * - anchorPoint - where on the trigger to anchor the ClrSignpostContent
-     * - popoverPoint - where on the ClrSignpostContent container to align with the anchorPoint
+     * - originPoint - where on the trigger to position the content
+     * - popoverPoint - where on the content container to align with the origin
      * - offsetY - where on the Y axis to align the ClrSignpostContent so it meets specs
      * - offsetX - where on the X axis to align the ClrSignpostContent so it meets specs
      * There are 12 possible positions to place a ClrSignpostContent container:
@@ -31137,7 +31107,7 @@ class ClrSignpostContent {
     getFocusableElements(element) {
         return Array.from(element.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpostContent, deps: [{ token: POPOVER_HOST_ANCHOR$1, optional: true }, { token: i0.ElementRef }, { token: i1$1.ClrCommonStringsService }, { token: SignpostIdService }, { token: SignpostFocusManager }, { token: PLATFORM_ID }, { token: DOCUMENT }, { token: i2.ClrPopoverService }, { token: i2.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpostContent, deps: [{ token: POPOVER_HOST_ORIGIN$1, optional: true }, { token: i0.ElementRef }, { token: i1$1.ClrCommonStringsService }, { token: SignpostIdService }, { token: SignpostFocusManager }, { token: PLATFORM_ID }, { token: DOCUMENT }, { token: i2.ClrPopoverService }, { token: i2.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrSignpostContent, isStandalone: false, selector: "clr-signpost-content", inputs: { signpostCloseAriaLabel: ["clrSignpostCloseAriaLabel", "signpostCloseAriaLabel"], position: ["clrPosition", "position"] }, host: { attributes: { "role": "dialog" }, listeners: { "keydown": "onKeyDown($event)" }, properties: { "class.signpost-content": "true", "id": "signpostContentId", "class.is-off-screen": "this.isOffScreen" } }, viewQueries: [{ propertyName: "closeButton", first: true, predicate: ["closeButton"], descendants: true, read: ElementRef }], hostDirectives: [{ directive: i2.ClrPopoverContent }], ngImport: i0, template: `
     <div class="signpost-wrap">
       <div class="popover-pointer"></div>
@@ -31197,7 +31167,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     type: Optional
                 }, {
                     type: Inject,
-                    args: [POPOVER_HOST_ANCHOR$1]
+                    args: [POPOVER_HOST_ORIGIN$1]
                 }] }, { type: i0.ElementRef }, { type: i1$1.ClrCommonStringsService }, { type: SignpostIdService }, { type: SignpostFocusManager }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [PLATFORM_ID]
@@ -31385,7 +31355,7 @@ class ClrTooltipTrigger {
         this.subs = [];
         // The aria-described by comes from the id of content. It
         this.subs.push(tooltipIdService.id.subscribe(tooltipId => (this.ariaDescribedBy = tooltipId)));
-        popoverService.anchorElementRef = element;
+        popoverService.origin = element;
     }
     ngOnDestroy() {
         this.subs.forEach(sub => sub.unsubscribe());
@@ -31495,7 +31465,7 @@ class ClrTooltipContent {
         this.renderer.removeClass(this.el.nativeElement, oldClass);
         this.renderer.addClass(this.el.nativeElement, newClass);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTooltipContent, deps: [{ token: POPOVER_HOST_ANCHOR$1, optional: true }, { token: TooltipIdService }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i2.ClrPopoverService }, { token: TooltipMouseService }, { token: i2.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTooltipContent, deps: [{ token: POPOVER_HOST_ORIGIN$1, optional: true }, { token: TooltipIdService }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i2.ClrPopoverService }, { token: TooltipMouseService }, { token: i2.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrTooltipContent, isStandalone: false, selector: "clr-tooltip-content", inputs: { id: "id", position: ["clrPosition", "position"], size: ["clrSize", "size"] }, host: { listeners: { "mouseenter": "onMouseEnter()", "mouseleave": "onMouseLeave()" }, properties: { "class.tooltip-content": "true", "style.opacity": "1", "attr.role": "\"tooltip\"", "id": "id" } }, hostDirectives: [{ directive: i2.ClrPopoverContent }], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTooltipContent, decorators: [{
@@ -31516,7 +31486,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     type: Optional
                 }, {
                     type: Inject,
-                    args: [POPOVER_HOST_ANCHOR$1]
+                    args: [POPOVER_HOST_ORIGIN$1]
                 }] }, { type: TooltipIdService }, { type: i0.ElementRef }, { type: i0.Renderer2 }, { type: i2.ClrPopoverService }, { type: TooltipMouseService }, { type: i2.ClrPopoverContent }], propDecorators: { id: [{
                 type: Input
             }], position: [{
@@ -31868,7 +31838,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
 /**
  * HostWrapper must be called in OnInit to ensure that the Views are ready. If its called in a constructor the view is
  * still undefined.
- * TODO - make sure these comment annotations do not break ng-packgr.
  */
 class HostWrapper {
     constructor(containerType, vcr, index = 0) {
@@ -33120,15 +33089,6 @@ var Keys;
     Keys["PageDown"] = "PageDown";
     Keys["PageUp"] = "PageUp";
 })(Keys || (Keys = {}));
-var IEKeys;
-(function (IEKeys) {
-    IEKeys["ArrowUp"] = "Up";
-    IEKeys["ArrowDown"] = "Down";
-    IEKeys["ArrowRight"] = "Right";
-    IEKeys["ArrowLeft"] = "Left";
-    IEKeys["Space"] = "Spacebar";
-    IEKeys["Escape"] = "Esc";
-})(IEKeys || (IEKeys = {}));
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -33136,31 +33096,8 @@ var IEKeys;
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-function normalizeKey(key) {
-    if (key === Keys.ArrowUp || key === IEKeys.ArrowUp) {
-        return Keys.ArrowUp;
-    }
-    else if (key === Keys.ArrowDown || key === IEKeys.ArrowDown) {
-        return Keys.ArrowDown;
-    }
-    else if (key === Keys.ArrowRight || key === IEKeys.ArrowRight) {
-        return Keys.ArrowRight;
-    }
-    else if (key === Keys.ArrowLeft || key === IEKeys.ArrowLeft) {
-        return Keys.ArrowLeft;
-    }
-    else if (key === Keys.Space || key === IEKeys.Space) {
-        return Keys.Space;
-    }
-    else if (key === Keys.Escape || key === IEKeys.Escape) {
-        return Keys.Escape;
-    }
-    else {
-        return key;
-    }
-}
 function preventArrowKeyScroll(event) {
-    const key = normalizeKey(event.key);
+    const key = event.key;
     if (key === Keys.ArrowUp || key === Keys.ArrowDown || key === Keys.ArrowLeft || key === Keys.ArrowRight) {
         // prevent element container scroll
         // MDN references this is really the only way to prevent native browser interactions
@@ -33265,7 +33202,7 @@ class ClrKeyFocus {
     }
     focusCurrent() {
         this.currentItem.focus();
-        this.focusChange.next(this._current);
+        this.focusChange.emit(this._current);
     }
     moveTo(position) {
         if (this.positionInRange(position)) {
@@ -33297,27 +33234,25 @@ class ClrKeyFocus {
         }
     }
     nextKeyPressed(event) {
-        const key = normalizeKey(event.key);
         switch (this.direction) {
             case ClrFocusDirection.VERTICAL:
-                return key === Keys.ArrowDown;
+                return event.key === Keys.ArrowDown;
             case ClrFocusDirection.HORIZONTAL:
-                return key === Keys.ArrowRight;
+                return event.key === Keys.ArrowRight;
             case ClrFocusDirection.BOTH:
-                return key === Keys.ArrowDown || key === Keys.ArrowRight;
+                return event.key === Keys.ArrowDown || event.key === Keys.ArrowRight;
             default:
                 return false;
         }
     }
     prevKeyPressed(event) {
-        const key = normalizeKey(event.key);
         switch (this.direction) {
             case ClrFocusDirection.VERTICAL:
-                return key === Keys.ArrowUp;
+                return event.key === Keys.ArrowUp;
             case ClrFocusDirection.HORIZONTAL:
-                return key === Keys.ArrowLeft;
+                return event.key === Keys.ArrowLeft;
             case ClrFocusDirection.BOTH:
-                return key === Keys.ArrowUp || key === Keys.ArrowLeft;
+                return event.key === Keys.ArrowUp || event.key === Keys.ArrowLeft;
             default:
                 return false;
         }
@@ -33982,11 +33917,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  *
  *
  * Consumers tell us that they want something to display on the TOP_LEFT of the trigger and that they want the
- * _content_ container to anchor/orient AT the bottom left.
- * In order to calculate the position for the content I need to match up the anchor/toggle ClrPosition with the
+ * _content_ container to orient AT the bottom left.
+ * In order to calculate the position for the content I need to match up the origin/trigger ClrPosition with the
  * content ClrPosition.
  *
- * Anchor TOP_LEFT **AT** Content BOTTOM_LEFT.
+ * Origin TOP_LEFT **AT** Content BOTTOM_LEFT.
  *     -----------
  *     |         |
  *     |         |
@@ -34668,9 +34603,7 @@ class WizardNavigationService {
      *
      * @memberof WizardNavigationService
      */
-    get currentPageChanged() {
-        // TODO: MAKE SURE EXTERNAL OUTPUTS SAY 'CHANGE' NOT 'CHANGED'
-        // A BREAKING CHANGE SO AWAITING MINOR RELEASE
+    get currentPageChange() {
         return this._currentChanged.asObservable();
     }
     /**
@@ -36048,7 +35981,7 @@ class ClrWizardStepnavItem {
         // Don't use "smooth" scrolling when the wizard is first opened to avoid a delay in scrolling the current step into view.
         // The current step when the wizard is opened might not be the first step. For example, the wizard can be closed and re-opened.
         let scrollBehavior = 'auto';
-        return this.navService.currentPageChanged.pipe(startWith$1(this.navService.currentPage), tap(currentPage => {
+        return this.navService.currentPageChange.pipe(startWith$1(this.navService.currentPage), tap(currentPage => {
             if (!this.skipNextScroll && currentPage === this.page) {
                 this.elementRef.nativeElement.scrollIntoView({ behavior: scrollBehavior, block: 'center', inline: 'center' });
             }
@@ -36249,10 +36182,10 @@ class ClrWizard {
          */
         this.onReset = new EventEmitter(false);
         /**
-         * Emits when the current page has changed. Listen via `(clrWizardCurrentPageChanged)` event.
+         * Emits when the current page has changed. Listen via `(clrWizardCurrentPageChange)` event.
          * output. Useful for non-blocking validation.
          */
-        this.currentPageChanged = new EventEmitter(false);
+        this.currentPageChange = new EventEmitter(false);
         /**
          * Emits when the wizard moves to the next page. Listen via `(clrWizardOnNext)` event.
          * Can be combined with the `[clrWizardPreventDefaultNext]` input to create
@@ -36274,6 +36207,13 @@ class ClrWizard {
         this.subscriptions = [];
         this.subscriptions.push(this.listenForNextPageChanges(), this.listenForPreviousPageChanges(), this.listenForCancelChanges(), this.listenForFinishedChanges(), this.listenForPageChanges());
         this.differ = differs.find([]).create(null);
+    }
+    get title() {
+        return this._title;
+    }
+    set title(title) {
+        this._title = title;
+        this.modal.title = title;
     }
     /**
      * Resets page completed states when navigating backwards.
@@ -36564,12 +36504,12 @@ class ClrWizard {
         return this.navService.wizardFinished.subscribe(() => this.emitWizardFinished());
     }
     listenForPageChanges() {
-        return this.navService.currentPageChanged.subscribe(() => {
+        return this.navService.currentPageChange.subscribe(() => {
             // Added to address VPAT-749:
             //   When clicking on a wizard tab, focus should move to that
             //   tabs content to make the wizard more accessible.
             this.pageTitle?.nativeElement.focus();
-            this.currentPageChanged.emit();
+            this.currentPageChange.emit();
             // scroll to top of page in case there is long page content
             this.bodyElementRef?.nativeElement.scrollTo(0, 0);
         });
@@ -36594,7 +36534,7 @@ class ClrWizard {
         this.wizardFinished.emit();
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrWizard, deps: [{ token: PLATFORM_ID }, { token: i1$1.ClrCommonStringsService }, { token: WizardNavigationService }, { token: PageCollectionService }, { token: ButtonHubService }, { token: HeaderActionService }, { token: i0.ElementRef }, { token: i0.IterableDiffers }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrWizard, isStandalone: false, selector: "clr-wizard", inputs: { stepnavAriaLabel: ["clrWizardStepnavAriaLabel", "stepnavAriaLabel"], size: ["clrWizardSize", "size"], inPage: ["clrWizardInPage", "inPage"], inPageFillContentArea: ["clrWizardInPageFillContentArea", "inPageFillContentArea"], closable: ["clrWizardClosable", "closable"], _stopModalAnimations: ["clrWizardPreventModalAnimation", "_stopModalAnimations"], forceForward: ["clrWizardForceForwardNavigation", "forceForward"], clrWizardOpen: "clrWizardOpen", stopNext: ["clrWizardPreventDefaultNext", "stopNext"], stopCancel: ["clrWizardPreventDefaultCancel", "stopCancel"], stopNavigation: ["clrWizardPreventNavigation", "stopNavigation"], disableStepnav: ["clrWizardDisableStepnav", "disableStepnav"] }, outputs: { _openChanged: "clrWizardOpenChange", onCancel: "clrWizardOnCancel", wizardFinished: "clrWizardOnFinish", onReset: "clrWizardOnReset", currentPageChanged: "clrWizardCurrentPageChanged", onMoveNext: "clrWizardOnNext", onMovePrevious: "clrWizardOnPrevious" }, host: { properties: { "class.clr-wizard": "true", "class.wizard-md": "size == 'md'", "class.wizard-lg": "size == 'lg'", "class.wizard-xl": "size == 'xl'", "class.wizard-in-page": "inPage", "class.wizard-in-page--fill-content-area": "inPage && inPageFillContentArea" } }, providers: [WizardNavigationService, PageCollectionService, ButtonHubService, HeaderActionService], queries: [{ propertyName: "wizardTitle", first: true, predicate: ClrWizardTitle, descendants: true }, { propertyName: "pages", predicate: ClrWizardPage, descendants: true }, { propertyName: "headerActions", predicate: ClrWizardHeaderAction }], viewQueries: [{ propertyName: "pageTitle", first: true, predicate: ["pageTitle"], descendants: true }, { propertyName: "bodyElementRef", first: true, predicate: ["body"], descendants: true }, { propertyName: "modal", first: true, predicate: ClrModal$1, descendants: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<ng-template #coreWizardContent>\n  <div class=\"modal-content-wrapper\">\n    <div class=\"modal-nav clr-wizard-stepnav-wrapper\" role=\"region\">\n      <div class=\"clr-wizard-title\" [id]=\"wizardId\" role=\"heading\" [attr.aria-level]=\"wizardTitle?.headingLevel || 1\">\n        <ng-content select=\"clr-wizard-title\"></ng-content>\n      </div>\n      <clr-wizard-stepnav [label]=\"stepnavAriaLabel\"></clr-wizard-stepnav>\n    </div>\n\n    <div class=\"modal-content\">\n      <div class=\"modal-header--accessible\">\n        <div class=\"modal-title-wrapper\" #title cdkFocusInitial tabindex=\"-1\">\n          <div\n            class=\"modal-title\"\n            role=\"heading\"\n            [attr.aria-level]=\"navService.currentPage?.pageTitle?.headingLevel || 2\"\n          >\n            <span tabindex=\"-1\" #pageTitle class=\"modal-title-text\">\n              <ng-template [ngTemplateOutlet]=\"navService.currentPageTitle\"></ng-template>\n            </span>\n          </div>\n        </div>\n\n        @if (headerActionService.displayHeaderActionsWrapper) {\n        <div class=\"modal-header-actions-wrapper\">\n          @if (headerActionService.showWizardHeaderActions) {\n          <ng-content select=\"clr-wizard-header-action\"></ng-content>\n          } @if (headerActionService.currentPageHasHeaderActions) {\n          <ng-template [ngTemplateOutlet]=\"navService.currentPage?.headerActions\"></ng-template>\n          }\n        </div>\n        } @if (closable && !inPage) {\n        <button type=\"button\" class=\"close\" [attr.aria-label]=\"commonStrings.keys.close\" (click)=\"modalCancel()\">\n          <cds-icon shape=\"window-close\"></cds-icon>\n        </button>\n        }\n      </div>\n\n      <div #body class=\"modal-body-wrapper\">\n        <div class=\"modal-body\">\n          <main clr-wizard-pages-wrapper class=\"clr-wizard-content\">\n            <ng-content></ng-content>\n          </main>\n        </div>\n      </div>\n\n      <div class=\"modal-footer clr-wizard-footer\">\n        <div class=\"clr-wizard-footer-buttons\">\n          <div class=\"clr-wizard-footer-buttons-wrapper\">\n            @if (navService.currentPage?.hasButtons) {\n            <ng-template [ngTemplateOutlet]=\"navService.currentPage.buttons\"></ng-template>\n            } @else {\n            <ng-content select=\"clr-wizard-button\"></ng-content>\n            }\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</ng-template>\n\n@if (inPage) {\n<ng-container [ngTemplateOutlet]=\"coreWizardContent\"></ng-container>\n} @else {\n<clr-modal\n  [clrModalOpen]=\"_open\"\n  [clrModalSize]=\"size\"\n  [clrModalClosable]=\"closable\"\n  [clrModalStaticBackdrop]=\"true\"\n  [clrModalSkipAnimation]=\"stopModalAnimations\"\n  [clrModalOverrideScrollService]=\"isInline\"\n  [clrModalPreventClose]=\"true\"\n  (clrModalAlternateClose)=\"modalCancel()\"\n  [clrModalLabelledById]=\"wizardId\"\n>\n  <ng-template #clrInternalModalContentTemplate>\n    <ng-container [ngTemplateOutlet]=\"coreWizardContent\"></ng-container>\n  </ng-template>\n</clr-modal>\n}\n", dependencies: [{ kind: "directive", type: i1$2.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: i1$3.ClrModal, selector: "clr-modal", inputs: ["clrModalOpen", "clrModalClosable", "clrModalCloseButtonAriaLabel", "clrModalSize", "clrModalStaticBackdrop", "clrModalSkipAnimation", "clrModalPreventClose", "clrModalLabelledById", "clrModalOverrideScrollService"], outputs: ["clrModalOpenChange", "clrModalAlternateClose"] }, { kind: "directive", type: i1$3.ClrModalBody, selector: ".modal-body" }, { kind: "component", type: ClrWizardStepnav, selector: "clr-wizard-stepnav", inputs: ["label"] }] }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrWizard, isStandalone: false, selector: "clr-wizard", inputs: { stepnavAriaLabel: ["clrWizardStepnavAriaLabel", "stepnavAriaLabel"], size: ["clrWizardSize", "size"], inPage: ["clrWizardInPage", "inPage"], inPageFillContentArea: ["clrWizardInPageFillContentArea", "inPageFillContentArea"], closable: ["clrWizardClosable", "closable"], _stopModalAnimations: ["clrWizardPreventModalAnimation", "_stopModalAnimations"], forceForward: ["clrWizardForceForwardNavigation", "forceForward"], clrWizardOpen: "clrWizardOpen", stopNext: ["clrWizardPreventDefaultNext", "stopNext"], stopCancel: ["clrWizardPreventDefaultCancel", "stopCancel"], stopNavigation: ["clrWizardPreventNavigation", "stopNavigation"], disableStepnav: ["clrWizardDisableStepnav", "disableStepnav"] }, outputs: { _openChanged: "clrWizardOpenChange", onCancel: "clrWizardOnCancel", wizardFinished: "clrWizardOnFinish", onReset: "clrWizardOnReset", currentPageChange: "clrWizardCurrentPageChange", onMoveNext: "clrWizardOnNext", onMovePrevious: "clrWizardOnPrevious" }, host: { properties: { "class.clr-wizard": "true", "class.wizard-md": "size == 'md'", "class.wizard-lg": "size == 'lg'", "class.wizard-xl": "size == 'xl'", "class.wizard-in-page": "inPage", "class.wizard-in-page--fill-content-area": "inPage && inPageFillContentArea" } }, providers: [WizardNavigationService, PageCollectionService, ButtonHubService, HeaderActionService], queries: [{ propertyName: "wizardTitle", first: true, predicate: ClrWizardTitle, descendants: true }, { propertyName: "pages", predicate: ClrWizardPage, descendants: true }, { propertyName: "headerActions", predicate: ClrWizardHeaderAction }], viewQueries: [{ propertyName: "pageTitle", first: true, predicate: ["pageTitle"], descendants: true }, { propertyName: "bodyElementRef", first: true, predicate: ["body"], descendants: true }, { propertyName: "modal", first: true, predicate: ClrModal$1, descendants: true }, { propertyName: "title", first: true, predicate: ["title"], descendants: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<ng-template #coreWizardContent>\n  <div class=\"modal-content-wrapper\">\n    <div class=\"modal-nav clr-wizard-stepnav-wrapper\" role=\"region\">\n      <div class=\"clr-wizard-title\" [id]=\"wizardId\" role=\"heading\" [attr.aria-level]=\"wizardTitle?.headingLevel || 1\">\n        <ng-content select=\"clr-wizard-title\"></ng-content>\n      </div>\n      <clr-wizard-stepnav [label]=\"stepnavAriaLabel\"></clr-wizard-stepnav>\n    </div>\n\n    <div class=\"modal-content\">\n      <div class=\"modal-header--accessible\">\n        <div class=\"modal-title-wrapper\" #title cdkFocusInitial tabindex=\"-1\">\n          <div\n            class=\"modal-title\"\n            role=\"heading\"\n            [attr.aria-level]=\"navService.currentPage?.pageTitle?.headingLevel || 2\"\n          >\n            <span tabindex=\"-1\" #pageTitle class=\"modal-title-text\">\n              <ng-template [ngTemplateOutlet]=\"navService.currentPageTitle\"></ng-template>\n            </span>\n          </div>\n        </div>\n\n        @if (headerActionService.displayHeaderActionsWrapper) {\n        <div class=\"modal-header-actions-wrapper\">\n          @if (headerActionService.showWizardHeaderActions) {\n          <ng-content select=\"clr-wizard-header-action\"></ng-content>\n          } @if (headerActionService.currentPageHasHeaderActions) {\n          <ng-template [ngTemplateOutlet]=\"navService.currentPage?.headerActions\"></ng-template>\n          }\n        </div>\n        } @if (closable && !inPage) {\n        <button type=\"button\" class=\"close\" [attr.aria-label]=\"commonStrings.keys.close\" (click)=\"modalCancel()\">\n          <cds-icon shape=\"window-close\"></cds-icon>\n        </button>\n        }\n      </div>\n\n      <div #body class=\"modal-body-wrapper\">\n        <div class=\"modal-body\">\n          <main clr-wizard-pages-wrapper class=\"clr-wizard-content\">\n            <ng-content></ng-content>\n          </main>\n        </div>\n      </div>\n\n      <div class=\"modal-footer clr-wizard-footer\">\n        <div class=\"clr-wizard-footer-buttons\">\n          <div class=\"clr-wizard-footer-buttons-wrapper\">\n            @if (navService.currentPage?.hasButtons) {\n            <ng-template [ngTemplateOutlet]=\"navService.currentPage.buttons\"></ng-template>\n            } @else {\n            <ng-content select=\"clr-wizard-button\"></ng-content>\n            }\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</ng-template>\n\n@if (inPage) {\n<ng-container [ngTemplateOutlet]=\"coreWizardContent\"></ng-container>\n} @else {\n<clr-modal\n  [clrModalOpen]=\"_open\"\n  [clrModalSize]=\"size\"\n  [clrModalClosable]=\"closable\"\n  [clrModalStaticBackdrop]=\"true\"\n  [clrModalSkipAnimation]=\"stopModalAnimations\"\n  [clrModalOverrideScrollService]=\"isInline\"\n  [clrModalPreventClose]=\"true\"\n  (clrModalAlternateClose)=\"modalCancel()\"\n  [clrModalLabelledById]=\"wizardId\"\n>\n  <ng-template #clrInternalModalContentTemplate>\n    <ng-container [ngTemplateOutlet]=\"coreWizardContent\"></ng-container>\n  </ng-template>\n</clr-modal>\n}\n", dependencies: [{ kind: "directive", type: i1$2.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: i1$3.ClrModal, selector: "clr-modal", inputs: ["clrModalOpen", "clrModalClosable", "clrModalCloseButtonAriaLabel", "clrModalSize", "clrModalStaticBackdrop", "clrModalSkipAnimation", "clrModalPreventClose", "clrModalLabelledById", "clrModalOverrideScrollService"], outputs: ["clrModalOpenChange", "clrModalAlternateClose"] }, { kind: "directive", type: i1$3.ClrModalBody, selector: ".modal-body" }, { kind: "component", type: ClrWizardStepnav, selector: "clr-wizard-stepnav", inputs: ["label"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrWizard, decorators: [{
             type: Component,
@@ -36639,9 +36579,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], onReset: [{
                 type: Output,
                 args: ['clrWizardOnReset']
-            }], currentPageChanged: [{
+            }], currentPageChange: [{
                 type: Output,
-                args: ['clrWizardCurrentPageChanged']
+                args: ['clrWizardCurrentPageChange']
             }], onMoveNext: [{
                 type: Output,
                 args: ['clrWizardOnNext']
@@ -36666,6 +36606,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], modal: [{
                 type: ViewChild,
                 args: [ClrModal$1]
+            }], title: [{
+                type: ViewChild,
+                args: ['title']
             }], forceForward: [{
                 type: Input,
                 args: ['clrWizardForceForwardNavigation']
@@ -37805,11 +37748,11 @@ class ClrStepperPanel extends CollapsiblePanel$1 {
         }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepperPanel, deps: [{ token: PLATFORM_ID }, { token: i1$1.ClrCommonStringsService }, { token: i1$5.FormGroupName, optional: true }, { token: i1$5.NgModelGroup, optional: true }, { token: StepperService }, { token: i1$1.IfExpandService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrStepperPanel, isStandalone: false, selector: "clr-stepper-panel", host: { properties: { "class.clr-stepper-panel": "true", "class.clr-stepper-panel-disabled": "this.disabled" } }, providers: [IfExpandService$1], queries: [{ propertyName: "stepDescription", predicate: ClrStepDescription }], viewQueries: [{ propertyName: "headerButton", first: true, predicate: ["headerButton"], descendants: true }], usesInheritance: true, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n@if (panel | async; as panel) {\n<div [ngClass]=\"getPanelStateClasses(panel)\">\n  <div class=\"clr-stepper-header\">\n    <button\n      type=\"button\"\n      class=\"clr-stepper-header-button\"\n      (click)=\"togglePanel()\"\n      [id]=\"getHeaderId(panel.templateId)\"\n      [attr.aria-disabled]=\"panel.disabled\"\n      [attr.aria-controls]=\"getContentId(panel.templateId)\"\n      [attr.aria-expanded]=\"panel.open\"\n      [class.clr-stepper-header-has-description]=\"(stepDescription.changes | async)?.length || stepDescription.length\"\n      #headerButton\n    >\n      <span class=\"clr-step-status\">\n        <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-stepper-angle clr-step-angle\"></cds-icon>\n        <span class=\"clr-step-status-icon\">\n          @if (getPanelStatus(panel) === PanelStatus.Error) {\n          <cds-icon status=\"danger\" shape=\"exclamation-circle\" class=\"clr-step-error-icon\"></cds-icon>\n          } @if (getPanelStatus(panel) === PanelStatus.Complete) {\n          <cds-icon status=\"success\" shape=\"check-circle\" class=\"clr-step-complete-icon\"></cds-icon>\n          }\n        </span>\n      </span>\n      <span class=\"clr-step-title-wrapper\">\n        <span class=\"clr-step-number\">{{panelNumber}}.</span>\n        <ng-content select=\"clr-step-title\"></ng-content>\n      </span>\n      <ng-content select=\"clr-step-description\"></ng-content>\n    </button>\n    <div class=\"clr-sr-only\" role=\"status\">\n      @if (getPanelStatus(panel) === PanelStatus.Error) { {{ stepErrorText(panelNumber)}} } @if (getPanelStatus(panel)\n      === PanelStatus.Complete) { {{ stepCompleteText(panelNumber)}} }\n    </div>\n  </div>\n  <div\n    @skipInitialRender\n    role=\"region\"\n    class=\"clr-stepper-content-region\"\n    [id]=\"getContentId(panel.templateId)\"\n    [attr.aria-hidden]=\"!panel.open\"\n    [attr.aria-labelledby]=\"getHeaderId(panel.templateId)\"\n  >\n    @if (panel.open) {\n    <div @toggle (@toggle.done)=\"collapsePanelOnAnimationDone(panel)\" class=\"clr-stepper-content\">\n      <div class=\"clr-stepper-inner-content\">\n        <ng-content></ng-content>\n      </div>\n    </div>\n    }\n  </div>\n</div>\n}\n", dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "pipe", type: i1$2.AsyncPipe, name: "async" }], animations: collapsiblePanelAnimation$1, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrStepperPanel, isStandalone: false, selector: "clr-stepper-panel", host: { properties: { "class.clr-stepper-panel": "true", "class.clr-stepper-panel-disabled": "this.disabled" } }, providers: [IfExpandService$1], queries: [{ propertyName: "stepDescription", predicate: ClrStepDescription }], viewQueries: [{ propertyName: "headerButton", first: true, predicate: ["headerButton"], descendants: true }], usesInheritance: true, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n@if (panel | async; as panel) {\n<div [ngClass]=\"getPanelStateClasses(panel)\">\n  <div class=\"clr-stepper-header\">\n    <button\n      type=\"button\"\n      class=\"clr-stepper-header-button\"\n      (click)=\"togglePanel()\"\n      [id]=\"getHeaderId(panel.templateId)\"\n      [attr.aria-disabled]=\"panel.disabled\"\n      [attr.aria-controls]=\"getContentId(panel.templateId)\"\n      [attr.aria-expanded]=\"panel.open\"\n      [class.clr-stepper-header-has-description]=\"(stepDescription.changes | async)?.length || stepDescription.length\"\n      #headerButton\n    >\n      <span class=\"clr-step-status\">\n        <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-stepper-angle clr-step-angle\"></cds-icon>\n        <span class=\"clr-step-status-icon\">\n          @if (getPanelStatus(panel) === PanelStatus.Error) {\n          <cds-icon status=\"danger\" shape=\"error-standard\" class=\"clr-step-error-icon\"></cds-icon>\n          } @if (getPanelStatus(panel) === PanelStatus.Complete) {\n          <cds-icon status=\"success\" shape=\"success-standard\" class=\"clr-step-complete-icon\"></cds-icon>\n          }\n        </span>\n      </span>\n      <span class=\"clr-step-title-wrapper\">\n        <span class=\"clr-step-number\">{{panelNumber}}.</span>\n        <ng-content select=\"clr-step-title\"></ng-content>\n      </span>\n      <ng-content select=\"clr-step-description\"></ng-content>\n    </button>\n    <div class=\"clr-sr-only\" role=\"status\">\n      @if (getPanelStatus(panel) === PanelStatus.Error) { {{ stepErrorText(panelNumber)}} } @if (getPanelStatus(panel)\n      === PanelStatus.Complete) { {{ stepCompleteText(panelNumber)}} }\n    </div>\n  </div>\n  <div\n    @skipInitialRender\n    role=\"region\"\n    class=\"clr-stepper-content-region\"\n    [id]=\"getContentId(panel.templateId)\"\n    [attr.aria-hidden]=\"!panel.open\"\n    [attr.aria-labelledby]=\"getHeaderId(panel.templateId)\"\n  >\n    @if (panel.open) {\n    <div @toggle (@toggle.done)=\"collapsePanelOnAnimationDone(panel)\" class=\"clr-stepper-content\">\n      <div class=\"clr-stepper-inner-content\">\n        <ng-content></ng-content>\n      </div>\n    </div>\n    }\n  </div>\n</div>\n}\n", dependencies: [{ kind: "directive", type: i1$2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "pipe", type: i1$2.AsyncPipe, name: "async" }], animations: collapsiblePanelAnimation$1, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepperPanel, decorators: [{
             type: Component,
-            args: [{ selector: 'clr-stepper-panel', host: { '[class.clr-stepper-panel]': 'true' }, changeDetection: ChangeDetectionStrategy.OnPush, animations: collapsiblePanelAnimation$1, providers: [IfExpandService$1], standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n@if (panel | async; as panel) {\n<div [ngClass]=\"getPanelStateClasses(panel)\">\n  <div class=\"clr-stepper-header\">\n    <button\n      type=\"button\"\n      class=\"clr-stepper-header-button\"\n      (click)=\"togglePanel()\"\n      [id]=\"getHeaderId(panel.templateId)\"\n      [attr.aria-disabled]=\"panel.disabled\"\n      [attr.aria-controls]=\"getContentId(panel.templateId)\"\n      [attr.aria-expanded]=\"panel.open\"\n      [class.clr-stepper-header-has-description]=\"(stepDescription.changes | async)?.length || stepDescription.length\"\n      #headerButton\n    >\n      <span class=\"clr-step-status\">\n        <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-stepper-angle clr-step-angle\"></cds-icon>\n        <span class=\"clr-step-status-icon\">\n          @if (getPanelStatus(panel) === PanelStatus.Error) {\n          <cds-icon status=\"danger\" shape=\"exclamation-circle\" class=\"clr-step-error-icon\"></cds-icon>\n          } @if (getPanelStatus(panel) === PanelStatus.Complete) {\n          <cds-icon status=\"success\" shape=\"check-circle\" class=\"clr-step-complete-icon\"></cds-icon>\n          }\n        </span>\n      </span>\n      <span class=\"clr-step-title-wrapper\">\n        <span class=\"clr-step-number\">{{panelNumber}}.</span>\n        <ng-content select=\"clr-step-title\"></ng-content>\n      </span>\n      <ng-content select=\"clr-step-description\"></ng-content>\n    </button>\n    <div class=\"clr-sr-only\" role=\"status\">\n      @if (getPanelStatus(panel) === PanelStatus.Error) { {{ stepErrorText(panelNumber)}} } @if (getPanelStatus(panel)\n      === PanelStatus.Complete) { {{ stepCompleteText(panelNumber)}} }\n    </div>\n  </div>\n  <div\n    @skipInitialRender\n    role=\"region\"\n    class=\"clr-stepper-content-region\"\n    [id]=\"getContentId(panel.templateId)\"\n    [attr.aria-hidden]=\"!panel.open\"\n    [attr.aria-labelledby]=\"getHeaderId(panel.templateId)\"\n  >\n    @if (panel.open) {\n    <div @toggle (@toggle.done)=\"collapsePanelOnAnimationDone(panel)\" class=\"clr-stepper-content\">\n      <div class=\"clr-stepper-inner-content\">\n        <ng-content></ng-content>\n      </div>\n    </div>\n    }\n  </div>\n</div>\n}\n" }]
+            args: [{ selector: 'clr-stepper-panel', host: { '[class.clr-stepper-panel]': 'true' }, changeDetection: ChangeDetectionStrategy.OnPush, animations: collapsiblePanelAnimation$1, providers: [IfExpandService$1], standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n@if (panel | async; as panel) {\n<div [ngClass]=\"getPanelStateClasses(panel)\">\n  <div class=\"clr-stepper-header\">\n    <button\n      type=\"button\"\n      class=\"clr-stepper-header-button\"\n      (click)=\"togglePanel()\"\n      [id]=\"getHeaderId(panel.templateId)\"\n      [attr.aria-disabled]=\"panel.disabled\"\n      [attr.aria-controls]=\"getContentId(panel.templateId)\"\n      [attr.aria-expanded]=\"panel.open\"\n      [class.clr-stepper-header-has-description]=\"(stepDescription.changes | async)?.length || stepDescription.length\"\n      #headerButton\n    >\n      <span class=\"clr-step-status\">\n        <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-stepper-angle clr-step-angle\"></cds-icon>\n        <span class=\"clr-step-status-icon\">\n          @if (getPanelStatus(panel) === PanelStatus.Error) {\n          <cds-icon status=\"danger\" shape=\"error-standard\" class=\"clr-step-error-icon\"></cds-icon>\n          } @if (getPanelStatus(panel) === PanelStatus.Complete) {\n          <cds-icon status=\"success\" shape=\"success-standard\" class=\"clr-step-complete-icon\"></cds-icon>\n          }\n        </span>\n      </span>\n      <span class=\"clr-step-title-wrapper\">\n        <span class=\"clr-step-number\">{{panelNumber}}.</span>\n        <ng-content select=\"clr-step-title\"></ng-content>\n      </span>\n      <ng-content select=\"clr-step-description\"></ng-content>\n    </button>\n    <div class=\"clr-sr-only\" role=\"status\">\n      @if (getPanelStatus(panel) === PanelStatus.Error) { {{ stepErrorText(panelNumber)}} } @if (getPanelStatus(panel)\n      === PanelStatus.Complete) { {{ stepCompleteText(panelNumber)}} }\n    </div>\n  </div>\n  <div\n    @skipInitialRender\n    role=\"region\"\n    class=\"clr-stepper-content-region\"\n    [id]=\"getContentId(panel.templateId)\"\n    [attr.aria-hidden]=\"!panel.open\"\n    [attr.aria-labelledby]=\"getHeaderId(panel.templateId)\"\n  >\n    @if (panel.open) {\n    <div @toggle (@toggle.done)=\"collapsePanelOnAnimationDone(panel)\" class=\"clr-stepper-content\">\n      <div class=\"clr-stepper-inner-content\">\n        <ng-content></ng-content>\n      </div>\n    </div>\n    }\n  </div>\n</div>\n}\n" }]
         }], ctorParameters: () => [{ type: undefined, decorators: [{
                     type: Inject,
                     args: [PLATFORM_ID]
@@ -38092,7 +38035,7 @@ const declarations = [
 ];
 class ClrStepperModule {
     constructor() {
-        ClarityIcons$1.addIcons(angleIcon$1, exclamationCircleIcon$1, checkCircleIcon$1);
+        ClarityIcons$1.addIcons(angleIcon$1, successStandardIcon$1, errorStandardIcon$1);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrStepperModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrStepperModule, declarations: [ClrStepper,
@@ -38767,5 +38710,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { ALERT_TYPES, AbstractIfState, AccordionModel, AccordionService, AccordionStrategy, ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CHANGE_KEYS, CLR_ALERT_DIRECTIVES, CLR_BUTTON_GROUP_DIRECTIVES, CLR_DATAGRID_DIRECTIVES, CLR_DATEPICKER_DIRECTIVES, CLR_DROPDOWN_DIRECTIVES, CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, CLR_ICON_DIRECTIVES, CLR_LAYOUT_DIRECTIVES, CLR_LOADING_BUTTON_DIRECTIVES, CLR_LOADING_DIRECTIVES, CLR_MENU_POSITIONS, CLR_MODAL_DIRECTIVES, CLR_NAVIGATION_DIRECTIVES, CLR_PROGRESS_BAR_DIRECTIVES, CLR_SIDEPANEL_DIRECTIVES, CLR_SIGNPOST_DIRECTIVES, CLR_SPINNER_DIRECTIVES, CLR_STACK_VIEW_DIRECTIVES, CLR_TABS_DIRECTIVES, CLR_TOOLTIP_DIRECTIVES, CLR_TREE_VIEW_DIRECTIVES, CLR_VERTICAL_NAV_DIRECTIVES, CLR_WIZARD_DIRECTIVES, CONDITIONAL_DIRECTIVES, CUSTOM_BUTTON_TYPES, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, CdsIconCustomTag, ClarityIcons, ClarityModule, ClrAbstractContainer, ClrAccordion, ClrAccordionContent, ClrAccordionDescription, ClrAccordionModule, ClrAccordionPanel, ClrAccordionTitle, ClrAlert, ClrAlertItem, ClrAlertModule, ClrAlertText, ClrAlerts, ClrAlertsPager, ClrAriaCurrentLink, ClrBadge, ClrBadgeColors, ClrBreadcrumbItem, ClrBreadcrumbs, ClrBreadcrumbsModule, ClrButton, ClrButtonGroup, ClrButtonGroupModule, ClrButtonModule, ClrCalendar, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxModule, ClrCheckboxWrapper, ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrCommonFormsModule, ClrCommonStringsService, ClrConditionalModule, ClrControl, ClrControlContainer, ClrControlError, ClrControlHelper, ClrControlLabel, ClrControlSuccess, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSortOrder, ClrDatalist, ClrDatalistContainer, ClrDatalistInput, ClrDatalistModule, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrDestroyService, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, ClrEmphasisModule, ClrEndDateInput, ClrEndDateInputValidator, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFileError, ClrFileInfo, ClrFileInput, ClrFileInputContainer, ClrFileInputModule, ClrFileInputValidator, ClrFileInputValueAccessor, ClrFileList, ClrFileMessagesTemplate, ClrFileSuccess, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrForm, ClrFormLayout, ClrFormsModule, ClrHeader, ClrHostWrappingModule, ClrIcon, ClrIconCustomTag, ClrIconModule, ClrIfActive, ClrIfDetail, ClrIfError, ClrIfExpanded, ClrIfOpen, ClrIfSuccess, ClrInput, ClrInputContainer, ClrInputModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrLabel, ClrLabelColors, ClrLayout, ClrLayoutModule, ClrLoading, ClrLoadingButton, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState, ClrMainContainer, ClrMainContainerModule, ClrModal, ClrModalBody, ClrModalConfigurationService, ClrModalHostComponent, ClrModalModule, ClrMonthpicker, ClrNavLevel, ClrNavigationModule, ClrNumberInput, ClrNumberInputContainer, ClrNumberInputModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions, ClrOutsideClickModule, ClrPassword, ClrPasswordContainer, ClrPasswordModule, ClrPopoverAnchor, ClrPopoverContent, ClrPopoverHostDirective, ClrPopoverModule, ClrPopoverPosition, ClrPopoverService, ClrPopoverType, ClrPosition, ClrProgressBar, ClrProgressBarModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrRadioWrapper, ClrRange, ClrRangeContainer, ClrRangeModule, ClrRecursiveForOf, ClrRovingTabindex, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrSelectedState, ClrSidePanel, ClrSidePanelModule, ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTitle, ClrSignpostTrigger, ClrSpinner, ClrSpinnerModule, ClrStackBlock, ClrStackContentInput, ClrStackHeader, ClrStackView, ClrStackViewCustomTags, ClrStackViewLabel, ClrStackViewModule, ClrStandaloneCdkTrapFocus, ClrStartDateInput, ClrStartDateInputValidator, ClrStepButton, ClrStepButtonType, ClrStepContent, ClrStepDescription, ClrStepTitle, ClrStepper, ClrStepperModule, ClrStepperPanel, ClrStopEscapePropagationDirective, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, ClrTemplateRefModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrTimeline, ClrTimelineLayout, ClrTimelineModule, ClrTimelineStep, ClrTimelineStepDescription, ClrTimelineStepHeader, ClrTimelineStepState, ClrTimelineStepTitle, ClrTooltip, ClrTooltipContent, ClrTooltipModule, ClrTooltipTrigger, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule, ClrVerticalNav, ClrVerticalNavGroup, ClrVerticalNavGroupChildren, ClrVerticalNavIcon, ClrVerticalNavLink, ClrVerticalNavModule, ClrWizard, ClrWizardButton, ClrWizardHeaderAction, ClrWizardModule, ClrWizardPage, ClrWizardPageButtons, ClrWizardPageHeaderActions, ClrWizardPageNavTitle, ClrWizardPageTitle, ClrWizardStepnav, ClrWizardStepnavItem, ClrWizardTitle, ClrYearpicker, CollapsiblePanel, CollapsiblePanelGroupModel, CollapsiblePanelModel, CollapsiblePanelService, ContainerIdService, ControlClassService, ControlIdService, DATEPICKER_ENABLE_BREAKPOINT, DEFAULT_BUTTON_TYPES, DROPDOWN_POSITIONS, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridStringFilter, DatalistIdService, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, FormsFocusService, HostWrapper, IEKeys, IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IS_TOGGLE, IS_TOGGLE_PROVIDER, IconHtmlPipe, IfActiveService, IfExpandService, Keys, LARGE_BREAKPOINT, LayoutService, Linkers, LoadingListener, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MainContainerWillyWonka, MarkControlService, MockDomAdapter, MockFocusableItem, ModalStackService, NavDetectionOompaLoompa, NgControlService, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, POPOVER_HOST_ANCHOR, ResponsiveNavCodes, ResponsiveNavControlMessage, ResponsiveNavigationService, SIGNPOST_POSITIONS, SMALL_BREAKPOINT, ScrollingService, Selection, SelectionType, StepperPanelModel, StepperPanelStatus, StepperService, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, TOOLTIP_POSITIONS, TemplateRefContainer, ToggleServiceFactory, WillyWonka, WrappedFormControl, accessibility1Icon, accessibility1IconName, accessibility2Icon, accessibility2IconName, addTextIcon, addTextIconName, administratorIcon, administratorIconName, airplaneIcon, airplaneIconName, alarmClockIcon, alarmClockIconName, alarmOffIcon, alarmOffIconName, alignBottomIcon, alignBottomIconName, alignCenterIcon, alignCenterIconName, alignLeftIcon, alignLeftIconName, alignLeftTextIcon, alignLeftTextIconName, alignMiddleIcon, alignMiddleIconName, alignRightIcon, alignRightIconName, alignRightTextIcon, alignRightTextIconName, alignTopIcon, alignTopIconName, angleDoubleIcon, angleDoubleIconName, angleIcon, angleIconName, animationIcon, animationIconName, announcementIcon, announcementIconName, applicationIcon, applicationIconName, applicationsIcon, applicationsIconName, archiveIcon, archiveIconName, arrowIcon, arrowIconName, arrowMiniIcon, arrowMiniIconName, assertNever, assignUserIcon, assignUserIconName, asteriskIcon, asteriskIconName, atomIcon, atomIconName, axisChartIcon, axisChartIconName, backupIcon, backupIconName, backupRestoreIcon, backupRestoreIconName, banIcon, banIconName, bankIcon, bankIconName, barChartIcon, barChartIconName, barCodeIcon, barCodeIconName, barsIcon, barsIconName, batteryIcon, batteryIconName, bellCurveIcon, bellCurveIconName, bellIcon, bellIconName, betaIcon, betaIconName, bicycleIcon, bicycleIconName, birthdayCakeIcon, birthdayCakeIconName, bitcoinIcon, bitcoinIconName, blockIcon, blockIconName, blockQuoteIcon, blockQuoteIconName, blocksGroupIcon, blocksGroupIconName, bluetoothIcon, bluetoothIconName, bluetoothOffIcon, bluetoothOffIconName, boatIcon, boatIconName, boldIcon, boldIconName, boltIcon, boltIconName, bookIcon, bookIconName, bookmarkIcon, bookmarkIconName, boxPlotIcon, boxPlotIconName, briefcaseIcon, briefcaseIconName, bubbleChartIcon, bubbleChartIconName, bubbleExclamationIcon, bubbleExclamationIconName, bugIcon, bugIconName, buildFileList, buildingIcon, buildingIconName, bulletListIcon, bulletListIconName, bullseyeIcon, bullseyeIconName, bundleIcon, bundleIconName, calculatorIcon, calculatorIconName, calendarIcon, calendarIconName, calendarMiniIcon, calendarMiniIconName, cameraIcon, cameraIconName, campervanIcon, campervanIconName, capacitorIcon, capacitorIconName, carIcon, carIconName, caravanIcon, caravanIconName, cdDvdIcon, cdDvdIconName, centerTextIcon, centerTextIconName, certificateIcon, certificateIconName, chartCollectionAliases, chartCollectionIcons, chatBubbleIcon, chatBubbleIconName, checkCircleIcon, checkCircleIconName, checkCircleMiniIcon, checkCircleMiniIconName, checkIcon, checkIconName, checkMiniIcon, checkMiniIconName, checkboxListIcon, checkboxListIconName, childArrowIcon, childArrowIconName, ciCdIcon, ciCdIconName, circleArrowIcon, circleArrowIconName, circleIcon, circleIconName, clearFiles, clipboardIcon, clipboardIconName, clockIcon, clockIconName, cloneIcon, cloneIconName, cloudChartIcon, cloudChartIconName, cloudIcon, cloudIconName, cloudNetworkIcon, cloudNetworkIconName, cloudScaleIcon, cloudScaleIconName, cloudTrafficIcon, cloudTrafficIconName, clrFocusServiceFactory, clusterIcon, clusterIconName, codeIcon, codeIconName, cogIcon, cogIconName, coinBagIcon, coinBagIconName, collapse, collapseCardIcon, collapseCardIconName, collapsiblePanelAnimation, collapsiblePanelExpandAnimation, colorPaletteIcon, colorPaletteIconName, colorPickerIcon, colorPickerIconName, commerceCollectionAliases, commerceCollectionIcons, commonStringsDefault, compassIcon, compassIconName, computerIcon, computerIconName, connectIcon, connectIconName, containerGroupIcon, containerGroupIconName, containerIcon, containerIconName, containerVolumeIcon, containerVolumeIconName, contractIcon, contractIconName, controlLunIcon, controlLunIconName, copyIcon, copyIconName, copyToClipboardIcon, copyToClipboardIconName, coreCollectionAliases, coreCollectionIcons, cpuIcon, cpuIconName, creditCardIcon, creditCardIconName, crosshairsIcon, crosshairsIconName, crownIcon, crownIconName, cursorArrowIcon, cursorArrowIconName, cursorHandClickIcon, cursorHandClickIconName, cursorHandGrabIcon, cursorHandGrabIconName, cursorHandIcon, cursorHandIconName, cursorHandOpenIcon, cursorHandOpenIconName, cursorMoveIcon, cursorMoveIconName, curveChartIcon, curveChartIconName, customFocusableItemProvider, dashboardIcon, dashboardIconName, dataClusterIcon, dataClusterIconName, defaultAnimationTiming, defaultExpandAnimation, deployIcon, deployIconName, detailCollapseIcon, detailCollapseIconName, detailExpandIcon, detailExpandIconName, detailsIcon, detailsIconName, devicesIcon, devicesIconName, digitalSignatureIcon, digitalSignatureIconName, disconnectIcon, disconnectIconName, displayIcon, displayIconName, dollarBillIcon, dollarBillIconName, dollarIcon, dollarIconName, dotCircleIcon, dotCircleIconName, downloadCloudIcon, downloadCloudIconName, downloadIcon, downloadIconName, dragHandleCornerIcon, dragHandleCornerIconName, dragHandleIcon, dragHandleIconName, eCheckIcon, eCheckIconName, ellipsisHorizontalIcon, ellipsisHorizontalIconName, ellipsisVerticalIcon, ellipsisVerticalIconName, employeeGroupIcon, employeeGroupIconName, employeeIcon, employeeIconName, envelopeIcon, envelopeIconName, eraserIcon, eraserIconName, errorMiniIcon, errorMiniIconName, errorStandardIcon, errorStandardIconName, essentialCollectionAliases, essentialCollectionIcons, euroIcon, euroIconName, eventIcon, eventIconName, eventMiniIcon, eventMiniIconName, exclamationCircleIcon, exclamationCircleIconName, exclamationTriangleIcon, exclamationTriangleIconName, expandCardIcon, expandCardIconName, exportIcon, exportIconName, eyeHideIcon, eyeHideIconName, eyeIcon, eyeIconName, factoryIcon, factoryIconName, fade, fadeSlide, fastForwardIcon, fastForwardIconName, ferryIcon, ferryIconName, fileGroupIcon, fileGroupIconName, fileIcon, fileIconName, fileSettingsIcon, fileSettingsIconName, fileShare2Icon, fileShare2IconName, fileShareIcon, fileShareIconName, fileZipIcon, fileZipIconName, filmStripIcon, filmStripIconName, filter2Icon, filter2IconName, filterGridCircleIcon, filterGridCircleIconName, filterGridCircleMiniIcon, filterGridCircleMiniIconName, filterGridIcon, filterGridIconName, filterGridMiniIcon, filterGridMiniIconName, filterIcon, filterIconName, filterOffIcon, filterOffIconName, firewallIcon, firewallIconName, firstAidIcon, firstAidIconName, fishIcon, fishIconName, flagIcon, flagIconName, flameIcon, flameIconName, flaskIcon, flaskIconName, floppyIcon, floppyIconName, folderIcon, folderIconName, folderOpenIcon, folderOpenIconName, fontSizeIcon, fontSizeIconName, forkingIcon, forkingIconName, formIcon, formIconName, fuelIcon, fuelIconName, gavelIcon, gavelIconName, getAnchorPosition, getConnectedPositions, getContentPosition, getPositionsArray, gridChartIcon, gridChartIconName, gridViewIcon, gridViewIconName, halfStarIcon, halfStarIconName, happyFaceIcon, happyFaceIconName, hardDiskIcon, hardDiskIconName, hardDriveDisksIcon, hardDriveDisksIconName, hardDriveIcon, hardDriveIconName, hashtagIcon, hashtagIconName, headphonesIcon, headphonesIconName, heartBrokenIcon, heartBrokenIconName, heartIcon, heartIconName, heatMapIcon, heatMapIconName, helixIcon, helixIconName, helpIcon, helpIconName, helpInfoIcon, helpInfoIconName, highlighterIcon, highlighterIconName, historyIcon, historyIconName, homeIcon, homeIconName, hostGroupIcon, hostGroupIconName, hostIcon, hostIconName, hourglassIcon, hourglassIconName, idBadgeIcon, idBadgeIconName, imageGalleryIcon, imageGalleryIconName, imageIcon, imageIconName, importIcon, importIconName, inboxIcon, inboxIconName, indentIcon, indentIconName, inductorIcon, inductorIconName, infoCircleIcon, infoCircleIconName, infoCircleMiniIcon, infoCircleMiniIconName, infoStandardIcon, infoStandardIconName, installIcon, installIconName, internetOfThingsIcon, internetOfThingsIconName, isBooleanAttributeSet, isKeyEitherLetterOrNumber, isToggleFactory, italicIcon, italicIconName, justifyTextIcon, justifyTextIconName, keyIcon, keyIconName, keyboardIcon, keyboardIconName, landscapeIcon, landscapeIconName, languageIcon, languageIconName, launchpadIcon, launchpadIconName, layersIcon, layersIconName, libraryIcon, libraryIconName, lightbulbIcon, lightbulbIconName, lineChartIcon, lineChartIconName, linkIcon, linkIconName, listIcon, listIconName, loadChartIconSet, loadCommerceIconSet, loadCoreIconSet, loadEssentialIconSet, loadMediaIconSet, loadMiniIconSet, loadSocialIconSet, loadTechnologyIconSet, loadTextEditIconSet, loadTravelIconSet, lockIcon, lockIconName, loginIcon, loginIconName, logoutIcon, logoutIconName, mapIcon, mapIconName, mapMarkerIcon, mapMarkerIconName, mapPopoverKeyToPosition, mediaChangerIcon, mediaChangerIconName, mediaCollectionAliases, mediaCollectionIcons, memoryIcon, memoryIconName, microphoneIcon, microphoneIconName, microphoneMuteIcon, microphoneMuteIconName, miniCollectionAliases, miniCollectionIcons, minusCircleIcon, minusCircleIconName, minusIcon, minusIconName, mobileIcon, mobileIconName, moonIcon, moonIconName, mouseIcon, mouseIconName, musicNoteIcon, musicNoteIconName, namespaceIcon, namespaceIconName, networkGlobeIcon, networkGlobeIconName, networkSettingsIcon, networkSettingsIconName, networkSwitchIcon, networkSwitchIconName, neutralFaceIcon, neutralFaceIconName, newIcon, newIconName, noAccessIcon, noAccessIconName, noWifiIcon, noWifiIconName, nodeGroupIcon, nodeGroupIconName, nodeIcon, nodeIconName, nodesIcon, nodesIconName, normalizeKey, noteIcon, noteIconName, numberListIcon, numberListIconName, nvmeIcon, nvmeIconName, objectsIcon, objectsIconName, onHolidayIcon, onHolidayIconName, organizationIcon, organizationIconName, outdentIcon, outdentIconName, paintRollerIcon, paintRollerIconName, panelCollapseTransition, panelExpandTransition, paperclipIcon, paperclipIconName, pasteIcon, pasteIconName, pauseIcon, pauseIconName, pdfFileIcon, pdfFileIconName, pencilIcon, pencilIconName, pesoIcon, pesoIconName, phoneHandsetIcon, phoneHandsetIconName, pictureIcon, pictureIconName, pieChartIcon, pieChartIconName, piggyBankIcon, piggyBankIconName, pinIcon, pinIconName, pinboardIcon, pinboardIconName, playIcon, playIconName, pluginIcon, pluginIconName, plusCircleIcon, plusCircleIconName, plusIcon, plusIconName, podIcon, podIconName, popOutIcon, popOutIconName, portraitIcon, portraitIconName, poundIcon, poundIconName, powerIcon, powerIconName, preventArrowKeyScroll, printerIcon, printerIconName, processOnVmIcon, processOnVmIconName, qrCodeIcon, qrCodeIconName, rackServerIcon, rackServerIconName, radarIcon, radarIconName, recycleIcon, recycleIconName, redoIcon, redoIconName, refreshIcon, refreshIconName, renderIcon, repeatIcon, repeatIconName, replayAllIcon, replayAllIconName, replayOneIcon, replayOneIconName, resistorIcon, resistorIconName, resizeIcon, resizeIconName, resourcePoolIcon, resourcePoolIconName, rewindIcon, rewindIconName, routerIcon, routerIconName, rubleIcon, rubleIconName, rulerPencilIcon, rulerPencilIconName, rupeeIcon, rupeeIconName, sadFaceIcon, sadFaceIconName, scatterPlotIcon, scatterPlotIconName, scissorsIcon, scissorsIconName, scriptExecuteIcon, scriptExecuteIconName, scriptScheduleIcon, scriptScheduleIconName, scrollIcon, scrollIconName, searchIcon, searchIconName, selectFiles, selectionTypeAttribute, shareIcon, shareIconName, shieldCheckIcon, shieldCheckIconName, shieldIcon, shieldIconName, shieldXIcon, shieldXIconName, shoppingBagIcon, shoppingBagIconName, shoppingCartIcon, shoppingCartIconName, shrinkIcon, shrinkIconName, shuffleIcon, shuffleIconName, skipInitialRenderTrigger, slide, sliderIcon, sliderIconName, snowflakeIcon, snowflakeIconName, socialCollectionAliases, socialCollectionIcons, sortByIcon, sortByIconName, squidIcon, squidIconName, ssdIcon, ssdIconName, starIcon, starIconName, stepForward2Icon, stepForward2IconName, stepForwardIcon, stepForwardIconName, stopIcon, stopIconName, storageAdapterIcon, storageAdapterIconName, storageIcon, storageIconName, storeIcon, storeIconName, strikethroughIcon, strikethroughIconName, subscriptIcon, subscriptIconName, successStandardIcon, successStandardIconName, sunIcon, sunIconName, superscriptIcon, superscriptIconName, switchIcon, switchIconName, syncIcon, syncIconName, tableIcon, tableIconName, tabletIcon, tabletIconName, tagIcon, tagIconName, tagsIcon, tagsIconName, talkBubblesIcon, talkBubblesIconName, tapeDriveIcon, tapeDriveIconName, targetIcon, targetIconName, tasksIcon, tasksIconName, technologyCollectionAliases, technologyCollectionIcons, terminalIcon, terminalIconName, textColorIcon, textColorIconName, textEditCollectionAliases, textEditCollectionIcons, textIcon, textIconName, thermometerIcon, thermometerIconName, thinClientIcon, thinClientIconName, thumbsDownIcon, thumbsDownIconName, thumbsUpIcon, thumbsUpIconName, tickChartIcon, tickChartIconName, timelineIcon, timelineIconName, timesCircleIcon, timesCircleIconName, timesIcon, timesIconName, timesMiniIcon, timesMiniIconName, tokenFactory, toolsIcon, toolsIconName, trailerIcon, trailerIconName, trashIcon, trashIconName, travelCollectionAliases, travelCollectionIcons, treeIcon, treeIconName, treeViewIcon, treeViewIconName, triggerAllFormControlValidation, truckIcon, truckIconName, twoWayArrowsIcon, twoWayArrowsIconName, unarchiveIcon, unarchiveIconName, underlineIcon, underlineIconName, undoIcon, undoIconName, uninstallIcon, uninstallIconName, uniqueIdFactory, unknownIcon, unknownIconName, unknownStatusIcon, unknownStatusIconName, unlinkIcon, unlinkIconName, unlockIcon, unlockIconName, unpinIcon, unpinIconName, updateIcon, updateIconName, uploadCloudIcon, uploadCloudIconName, uploadIcon, uploadIconName, usbIcon, usbIconName, userIcon, userIconName, usersIcon, usersIconName, videoCameraIcon, videoCameraIconName, videoGalleryIcon, videoGalleryIconName, viewCardsIcon, viewCardsIconName, viewColumnsIcon, viewColumnsIconName, viewListIcon, viewListIconName, vmBugIcon, vmBugIconName, vmBugInverseIcon, vmBugInverseIconName, vmIcon, vmIconName, vmwAppIcon, vmwAppIconName, volumeDownIcon, volumeDownIconName, volumeIcon, volumeIconName, volumeMuteIcon, volumeMuteIconName, volumeUpIcon, volumeUpIconName, walletIcon, walletIconName, wandIcon, wandIconName, warningMiniIcon, warningMiniIconName, warningStandardIcon, warningStandardIconName, wifiIcon, wifiIconName, windowCloseIcon, windowCloseIconName, windowMaxIcon, windowMaxIconName, windowMinIcon, windowMinIconName, windowRestoreIcon, windowRestoreIconName, wonIcon, wonIconName, worldIcon, worldIconName, wrapObservable, wrenchIcon, wrenchIconName, xlsFileIcon, xlsFileIconName, yenIcon, yenIconName, zoomInIcon, zoomInIconName, zoomOutIcon, zoomOutIconName, AccordionOompaLoompa as ÇlrAccordionOompaLoompa, AccordionWillyWonka as ÇlrAccordionWillyWonka, ActionableOompaLoompa as ÇlrActionableOompaLoompa, ActiveOompaLoompa as ÇlrActiveOompaLoompa, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton, DatagridCellRenderer as ÇlrDatagridCellRenderer, DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer, DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer, DatagridMainRenderer as ÇlrDatagridMainRenderer, DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer, DatagridRowRenderer as ÇlrDatagridRowRenderer, ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor, ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective, DatagridWillyWonka as ÇlrDatagridWillyWonka, ExpandableOompaLoompa as ÇlrExpandableOompaLoompa, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka, TabsWillyWonka as ÇlrTabsWillyWonka, WrappedCell as ÇlrWrappedCell, WrappedColumn as ÇlrWrappedColumn, WrappedRow as ÇlrWrappedRow };
+export { ALERT_TYPES, AbstractIfState, AccordionModel, AccordionService, AccordionStrategy, ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CHANGE_KEYS, CLR_ALERT_DIRECTIVES, CLR_BUTTON_GROUP_DIRECTIVES, CLR_DATAGRID_DIRECTIVES, CLR_DATEPICKER_DIRECTIVES, CLR_DROPDOWN_DIRECTIVES, CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, CLR_ICON_DIRECTIVES, CLR_LAYOUT_DIRECTIVES, CLR_LOADING_BUTTON_DIRECTIVES, CLR_LOADING_DIRECTIVES, CLR_MENU_POSITIONS, CLR_MODAL_DIRECTIVES, CLR_NAVIGATION_DIRECTIVES, CLR_PROGRESS_BAR_DIRECTIVES, CLR_SIDEPANEL_DIRECTIVES, CLR_SIGNPOST_DIRECTIVES, CLR_SPINNER_DIRECTIVES, CLR_STACK_VIEW_DIRECTIVES, CLR_TABS_DIRECTIVES, CLR_TOOLTIP_DIRECTIVES, CLR_TREE_VIEW_DIRECTIVES, CLR_VERTICAL_NAV_DIRECTIVES, CLR_WIZARD_DIRECTIVES, CONDITIONAL_DIRECTIVES, CUSTOM_BUTTON_TYPES, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, CdsIconCustomTag, ClarityIcons, ClarityModule, ClrAbstractContainer, ClrAccordion, ClrAccordionContent, ClrAccordionDescription, ClrAccordionModule, ClrAccordionPanel, ClrAccordionTitle, ClrAlert, ClrAlertItem, ClrAlertModule, ClrAlertText, ClrAlerts, ClrAlertsPager, ClrAriaCurrentLink, ClrBadge, ClrBadgeColors, ClrBreadcrumbItem, ClrBreadcrumbs, ClrBreadcrumbsModule, ClrButton, ClrButtonGroup, ClrButtonGroupModule, ClrButtonModule, ClrCalendar, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxModule, ClrCheckboxWrapper, ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrCommonFormsModule, ClrCommonStringsService, ClrConditionalModule, ClrControl, ClrControlContainer, ClrControlError, ClrControlHelper, ClrControlLabel, ClrControlSuccess, ClrDataModule, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSortOrder, ClrDatalist, ClrDatalistContainer, ClrDatalistInput, ClrDatalistModule, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrDestroyService, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, ClrEmphasisModule, ClrEndDateInput, ClrEndDateInputValidator, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFileError, ClrFileInfo, ClrFileInput, ClrFileInputContainer, ClrFileInputModule, ClrFileInputValidator, ClrFileInputValueAccessor, ClrFileList, ClrFileMessagesTemplate, ClrFileSuccess, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrForm, ClrFormLayout, ClrFormsModule, ClrHeader, ClrHostWrappingModule, ClrIcon, ClrIconCustomTag, ClrIconModule, ClrIfActive, ClrIfDetail, ClrIfError, ClrIfExpanded, ClrIfOpen, ClrIfSuccess, ClrInput, ClrInputContainer, ClrInputModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrLabel, ClrLabelColors, ClrLayout, ClrLayoutModule, ClrLoading, ClrLoadingButton, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState, ClrMainContainer, ClrMainContainerModule, ClrModal, ClrModalBody, ClrModalConfigurationService, ClrModalHostComponent, ClrModalModule, ClrMonthpicker, ClrNavLevel, ClrNavigationModule, ClrNumberInput, ClrNumberInputContainer, ClrNumberInputModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions, ClrOutsideClickModule, ClrPassword, ClrPasswordContainer, ClrPasswordModule, ClrPopoverContent, ClrPopoverHostDirective, ClrPopoverModule, ClrPopoverOrigin, ClrPopoverPosition, ClrPopoverService, ClrPopoverType, ClrPosition, ClrProgressBar, ClrProgressBarModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrRadioWrapper, ClrRange, ClrRangeContainer, ClrRangeModule, ClrRecursiveForOf, ClrRovingTabindex, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrSelectedState, ClrSidePanel, ClrSidePanelModule, ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTitle, ClrSignpostTrigger, ClrSpinner, ClrSpinnerModule, ClrStackBlock, ClrStackContentInput, ClrStackHeader, ClrStackView, ClrStackViewCustomTags, ClrStackViewLabel, ClrStackViewModule, ClrStandaloneCdkTrapFocus, ClrStartDateInput, ClrStartDateInputValidator, ClrStepButton, ClrStepButtonType, ClrStepContent, ClrStepDescription, ClrStepTitle, ClrStepper, ClrStepperModule, ClrStepperPanel, ClrStopEscapePropagationDirective, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, ClrTemplateRefModule, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrTimeline, ClrTimelineLayout, ClrTimelineModule, ClrTimelineStep, ClrTimelineStepDescription, ClrTimelineStepHeader, ClrTimelineStepState, ClrTimelineStepTitle, ClrTooltip, ClrTooltipContent, ClrTooltipModule, ClrTooltipTrigger, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule, ClrVerticalNav, ClrVerticalNavGroup, ClrVerticalNavGroupChildren, ClrVerticalNavIcon, ClrVerticalNavLink, ClrVerticalNavModule, ClrWizard, ClrWizardButton, ClrWizardHeaderAction, ClrWizardModule, ClrWizardPage, ClrWizardPageButtons, ClrWizardPageHeaderActions, ClrWizardPageNavTitle, ClrWizardPageTitle, ClrWizardStepnav, ClrWizardStepnavItem, ClrWizardTitle, ClrYearpicker, CollapsiblePanel, CollapsiblePanelGroupModel, CollapsiblePanelModel, CollapsiblePanelService, ContainerIdService, ControlClassService, ControlIdService, DATEPICKER_ENABLE_BREAKPOINT, DEFAULT_BUTTON_TYPES, DROPDOWN_POSITIONS, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridStringFilter, DatalistIdService, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, FormsFocusService, HostWrapper, IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IS_TOGGLE, IS_TOGGLE_PROVIDER, IconHtmlPipe, IfActiveService, IfExpandService, Keys, LARGE_BREAKPOINT, LayoutService, Linkers, LoadingListener, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MainContainerWillyWonka, MarkControlService, MockDomAdapter, MockFocusableItem, ModalStackService, NavDetectionOompaLoompa, NgControlService, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, POPOVER_HOST_ORIGIN, ResponsiveNavCodes, ResponsiveNavControlMessage, ResponsiveNavigationService, SIGNPOST_POSITIONS, SMALL_BREAKPOINT, ScrollingService, Selection, SelectionType, StepperPanelModel, StepperPanelStatus, StepperService, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, TOOLTIP_POSITIONS, TemplateRefContainer, ToggleServiceFactory, WillyWonka, WrappedFormControl, accessibility1Icon, accessibility1IconName, accessibility2Icon, accessibility2IconName, addTextIcon, addTextIconName, administratorIcon, administratorIconName, airplaneIcon, airplaneIconName, alarmClockIcon, alarmClockIconName, alarmOffIcon, alarmOffIconName, alignBottomIcon, alignBottomIconName, alignCenterIcon, alignCenterIconName, alignLeftIcon, alignLeftIconName, alignLeftTextIcon, alignLeftTextIconName, alignMiddleIcon, alignMiddleIconName, alignRightIcon, alignRightIconName, alignRightTextIcon, alignRightTextIconName, alignTopIcon, alignTopIconName, angleDoubleIcon, angleDoubleIconName, angleIcon, angleIconName, animationIcon, animationIconName, announcementIcon, announcementIconName, applicationIcon, applicationIconName, applicationsIcon, applicationsIconName, archiveIcon, archiveIconName, arrowIcon, arrowIconName, arrowMiniIcon, arrowMiniIconName, assertNever, assignUserIcon, assignUserIconName, asteriskIcon, asteriskIconName, atomIcon, atomIconName, axisChartIcon, axisChartIconName, backupIcon, backupIconName, backupRestoreIcon, backupRestoreIconName, banIcon, banIconName, bankIcon, bankIconName, barChartIcon, barChartIconName, barCodeIcon, barCodeIconName, barsIcon, barsIconName, batteryIcon, batteryIconName, bellCurveIcon, bellCurveIconName, bellIcon, bellIconName, betaIcon, betaIconName, bicycleIcon, bicycleIconName, birthdayCakeIcon, birthdayCakeIconName, bitcoinIcon, bitcoinIconName, blockIcon, blockIconName, blockQuoteIcon, blockQuoteIconName, blocksGroupIcon, blocksGroupIconName, bluetoothIcon, bluetoothIconName, bluetoothOffIcon, bluetoothOffIconName, boatIcon, boatIconName, boldIcon, boldIconName, boltIcon, boltIconName, bookIcon, bookIconName, bookmarkIcon, bookmarkIconName, boxPlotIcon, boxPlotIconName, briefcaseIcon, briefcaseIconName, bubbleChartIcon, bubbleChartIconName, bubbleExclamationIcon, bubbleExclamationIconName, bugIcon, bugIconName, buildFileList, buildingIcon, buildingIconName, bulletListIcon, bulletListIconName, bullseyeIcon, bullseyeIconName, bundleIcon, bundleIconName, calculatorIcon, calculatorIconName, calendarIcon, calendarIconName, calendarMiniIcon, calendarMiniIconName, cameraIcon, cameraIconName, campervanIcon, campervanIconName, capacitorIcon, capacitorIconName, carIcon, carIconName, caravanIcon, caravanIconName, cdDvdIcon, cdDvdIconName, centerTextIcon, centerTextIconName, certificateIcon, certificateIconName, chartCollectionAliases, chartCollectionIcons, chatBubbleIcon, chatBubbleIconName, checkCircleIcon, checkCircleIconName, checkCircleMiniIcon, checkCircleMiniIconName, checkIcon, checkIconName, checkMiniIcon, checkMiniIconName, checkboxListIcon, checkboxListIconName, childArrowIcon, childArrowIconName, ciCdIcon, ciCdIconName, circleArrowIcon, circleArrowIconName, circleIcon, circleIconName, clearFiles, clipboardIcon, clipboardIconName, clockIcon, clockIconName, cloneIcon, cloneIconName, cloudChartIcon, cloudChartIconName, cloudIcon, cloudIconName, cloudNetworkIcon, cloudNetworkIconName, cloudScaleIcon, cloudScaleIconName, cloudTrafficIcon, cloudTrafficIconName, clrFocusServiceFactory, clusterIcon, clusterIconName, codeIcon, codeIconName, cogIcon, cogIconName, coinBagIcon, coinBagIconName, collapse, collapseCardIcon, collapseCardIconName, collapsiblePanelAnimation, collapsiblePanelExpandAnimation, colorPaletteIcon, colorPaletteIconName, colorPickerIcon, colorPickerIconName, commerceCollectionAliases, commerceCollectionIcons, commonStringsDefault, compassIcon, compassIconName, computerIcon, computerIconName, connectIcon, connectIconName, containerGroupIcon, containerGroupIconName, containerIcon, containerIconName, containerVolumeIcon, containerVolumeIconName, contractIcon, contractIconName, controlLunIcon, controlLunIconName, copyIcon, copyIconName, copyToClipboardIcon, copyToClipboardIconName, coreCollectionAliases, coreCollectionIcons, cpuIcon, cpuIconName, creditCardIcon, creditCardIconName, crosshairsIcon, crosshairsIconName, crownIcon, crownIconName, cursorArrowIcon, cursorArrowIconName, cursorHandClickIcon, cursorHandClickIconName, cursorHandGrabIcon, cursorHandGrabIconName, cursorHandIcon, cursorHandIconName, cursorHandOpenIcon, cursorHandOpenIconName, cursorMoveIcon, cursorMoveIconName, curveChartIcon, curveChartIconName, customFocusableItemProvider, dashboardIcon, dashboardIconName, dataClusterIcon, dataClusterIconName, defaultAnimationTiming, defaultExpandAnimation, deployIcon, deployIconName, detailCollapseIcon, detailCollapseIconName, detailExpandIcon, detailExpandIconName, detailsIcon, detailsIconName, devicesIcon, devicesIconName, digitalSignatureIcon, digitalSignatureIconName, disconnectIcon, disconnectIconName, displayIcon, displayIconName, dollarBillIcon, dollarBillIconName, dollarIcon, dollarIconName, dotCircleIcon, dotCircleIconName, downloadCloudIcon, downloadCloudIconName, downloadIcon, downloadIconName, dragHandleCornerIcon, dragHandleCornerIconName, dragHandleIcon, dragHandleIconName, eCheckIcon, eCheckIconName, ellipsisHorizontalIcon, ellipsisHorizontalIconName, ellipsisVerticalIcon, ellipsisVerticalIconName, employeeGroupIcon, employeeGroupIconName, employeeIcon, employeeIconName, envelopeIcon, envelopeIconName, eraserIcon, eraserIconName, errorMiniIcon, errorMiniIconName, errorStandardIcon, errorStandardIconName, essentialCollectionAliases, essentialCollectionIcons, euroIcon, euroIconName, eventIcon, eventIconName, eventMiniIcon, eventMiniIconName, exclamationCircleIcon, exclamationCircleIconName, exclamationTriangleIcon, exclamationTriangleIconName, expandCardIcon, expandCardIconName, exportIcon, exportIconName, eyeHideIcon, eyeHideIconName, eyeIcon, eyeIconName, factoryIcon, factoryIconName, fade, fadeSlide, fastForwardIcon, fastForwardIconName, ferryIcon, ferryIconName, fileGroupIcon, fileGroupIconName, fileIcon, fileIconName, fileSettingsIcon, fileSettingsIconName, fileShare2Icon, fileShare2IconName, fileShareIcon, fileShareIconName, fileZipIcon, fileZipIconName, filmStripIcon, filmStripIconName, filter2Icon, filter2IconName, filterGridCircleIcon, filterGridCircleIconName, filterGridCircleMiniIcon, filterGridCircleMiniIconName, filterGridIcon, filterGridIconName, filterGridMiniIcon, filterGridMiniIconName, filterIcon, filterIconName, filterOffIcon, filterOffIconName, firewallIcon, firewallIconName, firstAidIcon, firstAidIconName, fishIcon, fishIconName, flagIcon, flagIconName, flameIcon, flameIconName, flaskIcon, flaskIconName, floppyIcon, floppyIconName, folderIcon, folderIconName, folderOpenIcon, folderOpenIconName, fontSizeIcon, fontSizeIconName, forkingIcon, forkingIconName, formIcon, formIconName, fuelIcon, fuelIconName, gavelIcon, gavelIconName, getConnectedPositions, getContentPosition, getOriginPosition, getPositionsArray, gridChartIcon, gridChartIconName, gridViewIcon, gridViewIconName, halfStarIcon, halfStarIconName, happyFaceIcon, happyFaceIconName, hardDiskIcon, hardDiskIconName, hardDriveDisksIcon, hardDriveDisksIconName, hardDriveIcon, hardDriveIconName, hashtagIcon, hashtagIconName, headphonesIcon, headphonesIconName, heartBrokenIcon, heartBrokenIconName, heartIcon, heartIconName, heatMapIcon, heatMapIconName, helixIcon, helixIconName, helpIcon, helpIconName, helpInfoIcon, helpInfoIconName, highlighterIcon, highlighterIconName, historyIcon, historyIconName, homeIcon, homeIconName, hostGroupIcon, hostGroupIconName, hostIcon, hostIconName, hourglassIcon, hourglassIconName, idBadgeIcon, idBadgeIconName, imageGalleryIcon, imageGalleryIconName, imageIcon, imageIconName, importIcon, importIconName, inboxIcon, inboxIconName, indentIcon, indentIconName, inductorIcon, inductorIconName, infoCircleIcon, infoCircleIconName, infoCircleMiniIcon, infoCircleMiniIconName, infoStandardIcon, infoStandardIconName, installIcon, installIconName, internetOfThingsIcon, internetOfThingsIconName, isBooleanAttributeSet, isKeyEitherLetterOrNumber, isToggleFactory, italicIcon, italicIconName, justifyTextIcon, justifyTextIconName, keyIcon, keyIconName, keyboardIcon, keyboardIconName, landscapeIcon, landscapeIconName, languageIcon, languageIconName, launchpadIcon, launchpadIconName, layersIcon, layersIconName, libraryIcon, libraryIconName, lightbulbIcon, lightbulbIconName, lineChartIcon, lineChartIconName, linkIcon, linkIconName, listIcon, listIconName, loadChartIconSet, loadCommerceIconSet, loadCoreIconSet, loadEssentialIconSet, loadMediaIconSet, loadMiniIconSet, loadSocialIconSet, loadTechnologyIconSet, loadTextEditIconSet, loadTravelIconSet, lockIcon, lockIconName, loginIcon, loginIconName, logoutIcon, logoutIconName, mapIcon, mapIconName, mapMarkerIcon, mapMarkerIconName, mapPopoverKeyToPosition, mediaChangerIcon, mediaChangerIconName, mediaCollectionAliases, mediaCollectionIcons, memoryIcon, memoryIconName, microphoneIcon, microphoneIconName, microphoneMuteIcon, microphoneMuteIconName, miniCollectionAliases, miniCollectionIcons, minusCircleIcon, minusCircleIconName, minusIcon, minusIconName, mobileIcon, mobileIconName, moonIcon, moonIconName, mouseIcon, mouseIconName, musicNoteIcon, musicNoteIconName, namespaceIcon, namespaceIconName, networkGlobeIcon, networkGlobeIconName, networkSettingsIcon, networkSettingsIconName, networkSwitchIcon, networkSwitchIconName, neutralFaceIcon, neutralFaceIconName, newIcon, newIconName, noAccessIcon, noAccessIconName, noWifiIcon, noWifiIconName, nodeGroupIcon, nodeGroupIconName, nodeIcon, nodeIconName, nodesIcon, nodesIconName, noteIcon, noteIconName, numberListIcon, numberListIconName, nvmeIcon, nvmeIconName, objectsIcon, objectsIconName, onHolidayIcon, onHolidayIconName, organizationIcon, organizationIconName, outdentIcon, outdentIconName, paintRollerIcon, paintRollerIconName, panelCollapseTransition, panelExpandTransition, paperclipIcon, paperclipIconName, pasteIcon, pasteIconName, pauseIcon, pauseIconName, pdfFileIcon, pdfFileIconName, pencilIcon, pencilIconName, pesoIcon, pesoIconName, phoneHandsetIcon, phoneHandsetIconName, pictureIcon, pictureIconName, pieChartIcon, pieChartIconName, piggyBankIcon, piggyBankIconName, pinIcon, pinIconName, pinboardIcon, pinboardIconName, playIcon, playIconName, pluginIcon, pluginIconName, plusCircleIcon, plusCircleIconName, plusIcon, plusIconName, podIcon, podIconName, popOutIcon, popOutIconName, portraitIcon, portraitIconName, poundIcon, poundIconName, powerIcon, powerIconName, preventArrowKeyScroll, printerIcon, printerIconName, processOnVmIcon, processOnVmIconName, qrCodeIcon, qrCodeIconName, rackServerIcon, rackServerIconName, radarIcon, radarIconName, recycleIcon, recycleIconName, redoIcon, redoIconName, refreshIcon, refreshIconName, renderIcon, repeatIcon, repeatIconName, replayAllIcon, replayAllIconName, replayOneIcon, replayOneIconName, resistorIcon, resistorIconName, resizeIcon, resizeIconName, resourcePoolIcon, resourcePoolIconName, rewindIcon, rewindIconName, routerIcon, routerIconName, rubleIcon, rubleIconName, rulerPencilIcon, rulerPencilIconName, rupeeIcon, rupeeIconName, sadFaceIcon, sadFaceIconName, scatterPlotIcon, scatterPlotIconName, scissorsIcon, scissorsIconName, scriptExecuteIcon, scriptExecuteIconName, scriptScheduleIcon, scriptScheduleIconName, scrollIcon, scrollIconName, searchIcon, searchIconName, selectFiles, selectionTypeAttribute, shareIcon, shareIconName, shieldCheckIcon, shieldCheckIconName, shieldIcon, shieldIconName, shieldXIcon, shieldXIconName, shoppingBagIcon, shoppingBagIconName, shoppingCartIcon, shoppingCartIconName, shrinkIcon, shrinkIconName, shuffleIcon, shuffleIconName, skipInitialRenderTrigger, slide, sliderIcon, sliderIconName, snowflakeIcon, snowflakeIconName, socialCollectionAliases, socialCollectionIcons, sortByIcon, sortByIconName, squidIcon, squidIconName, ssdIcon, ssdIconName, starIcon, starIconName, stepForward2Icon, stepForward2IconName, stepForwardIcon, stepForwardIconName, stopIcon, stopIconName, storageAdapterIcon, storageAdapterIconName, storageIcon, storageIconName, storeIcon, storeIconName, strikethroughIcon, strikethroughIconName, subscriptIcon, subscriptIconName, successStandardIcon, successStandardIconName, sunIcon, sunIconName, superscriptIcon, superscriptIconName, switchIcon, switchIconName, syncIcon, syncIconName, tableIcon, tableIconName, tabletIcon, tabletIconName, tagIcon, tagIconName, tagsIcon, tagsIconName, talkBubblesIcon, talkBubblesIconName, tapeDriveIcon, tapeDriveIconName, targetIcon, targetIconName, tasksIcon, tasksIconName, technologyCollectionAliases, technologyCollectionIcons, terminalIcon, terminalIconName, textColorIcon, textColorIconName, textEditCollectionAliases, textEditCollectionIcons, textIcon, textIconName, thermometerIcon, thermometerIconName, thinClientIcon, thinClientIconName, thumbsDownIcon, thumbsDownIconName, thumbsUpIcon, thumbsUpIconName, tickChartIcon, tickChartIconName, timelineIcon, timelineIconName, timesCircleIcon, timesCircleIconName, timesIcon, timesIconName, timesMiniIcon, timesMiniIconName, tokenFactory, toolsIcon, toolsIconName, trailerIcon, trailerIconName, trashIcon, trashIconName, travelCollectionAliases, travelCollectionIcons, treeIcon, treeIconName, treeViewIcon, treeViewIconName, triggerAllFormControlValidation, truckIcon, truckIconName, twoWayArrowsIcon, twoWayArrowsIconName, unarchiveIcon, unarchiveIconName, underlineIcon, underlineIconName, undoIcon, undoIconName, uninstallIcon, uninstallIconName, uniqueIdFactory, unknownIcon, unknownIconName, unknownStatusIcon, unknownStatusIconName, unlinkIcon, unlinkIconName, unlockIcon, unlockIconName, unpinIcon, unpinIconName, updateIcon, updateIconName, uploadCloudIcon, uploadCloudIconName, uploadIcon, uploadIconName, usbIcon, usbIconName, userIcon, userIconName, usersIcon, usersIconName, videoCameraIcon, videoCameraIconName, videoGalleryIcon, videoGalleryIconName, viewCardsIcon, viewCardsIconName, viewColumnsIcon, viewColumnsIconName, viewListIcon, viewListIconName, vmBugIcon, vmBugIconName, vmBugInverseIcon, vmBugInverseIconName, vmIcon, vmIconName, vmwAppIcon, vmwAppIconName, volumeDownIcon, volumeDownIconName, volumeIcon, volumeIconName, volumeMuteIcon, volumeMuteIconName, volumeUpIcon, volumeUpIconName, walletIcon, walletIconName, wandIcon, wandIconName, warningMiniIcon, warningMiniIconName, warningStandardIcon, warningStandardIconName, wifiIcon, wifiIconName, windowCloseIcon, windowCloseIconName, windowMaxIcon, windowMaxIconName, windowMinIcon, windowMinIconName, windowRestoreIcon, windowRestoreIconName, wonIcon, wonIconName, worldIcon, worldIconName, wrapObservable, wrenchIcon, wrenchIconName, xlsFileIcon, xlsFileIconName, yenIcon, yenIconName, zoomInIcon, zoomInIconName, zoomOutIcon, zoomOutIconName, AccordionOompaLoompa as ÇlrAccordionOompaLoompa, AccordionWillyWonka as ÇlrAccordionWillyWonka, ActionableOompaLoompa as ÇlrActionableOompaLoompa, ActiveOompaLoompa as ÇlrActiveOompaLoompa, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton, DatagridCellRenderer as ÇlrDatagridCellRenderer, DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer, DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer, DatagridMainRenderer as ÇlrDatagridMainRenderer, DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer, DatagridRowRenderer as ÇlrDatagridRowRenderer, ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor, ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective, DatagridWillyWonka as ÇlrDatagridWillyWonka, ExpandableOompaLoompa as ÇlrExpandableOompaLoompa, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka, TabsWillyWonka as ÇlrTabsWillyWonka, WrappedCell as ÇlrWrappedCell, WrappedColumn as ÇlrWrappedColumn, WrappedRow as ÇlrWrappedRow };
 //# sourceMappingURL=clr-angular.mjs.map

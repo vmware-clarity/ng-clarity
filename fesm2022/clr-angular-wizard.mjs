@@ -589,9 +589,7 @@ class WizardNavigationService {
      *
      * @memberof WizardNavigationService
      */
-    get currentPageChanged() {
-        // TODO: MAKE SURE EXTERNAL OUTPUTS SAY 'CHANGE' NOT 'CHANGED'
-        // A BREAKING CHANGE SO AWAITING MINOR RELEASE
+    get currentPageChange() {
         return this._currentChanged.asObservable();
     }
     /**
@@ -1969,7 +1967,7 @@ class ClrWizardStepnavItem {
         // Don't use "smooth" scrolling when the wizard is first opened to avoid a delay in scrolling the current step into view.
         // The current step when the wizard is opened might not be the first step. For example, the wizard can be closed and re-opened.
         let scrollBehavior = 'auto';
-        return this.navService.currentPageChanged.pipe(startWith(this.navService.currentPage), tap(currentPage => {
+        return this.navService.currentPageChange.pipe(startWith(this.navService.currentPage), tap(currentPage => {
             if (!this.skipNextScroll && currentPage === this.page) {
                 this.elementRef.nativeElement.scrollIntoView({ behavior: scrollBehavior, block: 'center', inline: 'center' });
             }
@@ -2170,10 +2168,10 @@ class ClrWizard {
          */
         this.onReset = new EventEmitter(false);
         /**
-         * Emits when the current page has changed. Listen via `(clrWizardCurrentPageChanged)` event.
+         * Emits when the current page has changed. Listen via `(clrWizardCurrentPageChange)` event.
          * output. Useful for non-blocking validation.
          */
-        this.currentPageChanged = new EventEmitter(false);
+        this.currentPageChange = new EventEmitter(false);
         /**
          * Emits when the wizard moves to the next page. Listen via `(clrWizardOnNext)` event.
          * Can be combined with the `[clrWizardPreventDefaultNext]` input to create
@@ -2195,6 +2193,13 @@ class ClrWizard {
         this.subscriptions = [];
         this.subscriptions.push(this.listenForNextPageChanges(), this.listenForPreviousPageChanges(), this.listenForCancelChanges(), this.listenForFinishedChanges(), this.listenForPageChanges());
         this.differ = differs.find([]).create(null);
+    }
+    get title() {
+        return this._title;
+    }
+    set title(title) {
+        this._title = title;
+        this.modal.title = title;
     }
     /**
      * Resets page completed states when navigating backwards.
@@ -2485,12 +2490,12 @@ class ClrWizard {
         return this.navService.wizardFinished.subscribe(() => this.emitWizardFinished());
     }
     listenForPageChanges() {
-        return this.navService.currentPageChanged.subscribe(() => {
+        return this.navService.currentPageChange.subscribe(() => {
             // Added to address VPAT-749:
             //   When clicking on a wizard tab, focus should move to that
             //   tabs content to make the wizard more accessible.
             this.pageTitle?.nativeElement.focus();
-            this.currentPageChanged.emit();
+            this.currentPageChange.emit();
             // scroll to top of page in case there is long page content
             this.bodyElementRef?.nativeElement.scrollTo(0, 0);
         });
@@ -2515,7 +2520,7 @@ class ClrWizard {
         this.wizardFinished.emit();
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrWizard, deps: [{ token: PLATFORM_ID }, { token: i3.ClrCommonStringsService }, { token: WizardNavigationService }, { token: PageCollectionService }, { token: ButtonHubService }, { token: HeaderActionService }, { token: i0.ElementRef }, { token: i0.IterableDiffers }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrWizard, isStandalone: false, selector: "clr-wizard", inputs: { stepnavAriaLabel: ["clrWizardStepnavAriaLabel", "stepnavAriaLabel"], size: ["clrWizardSize", "size"], inPage: ["clrWizardInPage", "inPage"], inPageFillContentArea: ["clrWizardInPageFillContentArea", "inPageFillContentArea"], closable: ["clrWizardClosable", "closable"], _stopModalAnimations: ["clrWizardPreventModalAnimation", "_stopModalAnimations"], forceForward: ["clrWizardForceForwardNavigation", "forceForward"], clrWizardOpen: "clrWizardOpen", stopNext: ["clrWizardPreventDefaultNext", "stopNext"], stopCancel: ["clrWizardPreventDefaultCancel", "stopCancel"], stopNavigation: ["clrWizardPreventNavigation", "stopNavigation"], disableStepnav: ["clrWizardDisableStepnav", "disableStepnav"] }, outputs: { _openChanged: "clrWizardOpenChange", onCancel: "clrWizardOnCancel", wizardFinished: "clrWizardOnFinish", onReset: "clrWizardOnReset", currentPageChanged: "clrWizardCurrentPageChanged", onMoveNext: "clrWizardOnNext", onMovePrevious: "clrWizardOnPrevious" }, host: { properties: { "class.clr-wizard": "true", "class.wizard-md": "size == 'md'", "class.wizard-lg": "size == 'lg'", "class.wizard-xl": "size == 'xl'", "class.wizard-in-page": "inPage", "class.wizard-in-page--fill-content-area": "inPage && inPageFillContentArea" } }, providers: [WizardNavigationService, PageCollectionService, ButtonHubService, HeaderActionService], queries: [{ propertyName: "wizardTitle", first: true, predicate: ClrWizardTitle, descendants: true }, { propertyName: "pages", predicate: ClrWizardPage, descendants: true }, { propertyName: "headerActions", predicate: ClrWizardHeaderAction }], viewQueries: [{ propertyName: "pageTitle", first: true, predicate: ["pageTitle"], descendants: true }, { propertyName: "bodyElementRef", first: true, predicate: ["body"], descendants: true }, { propertyName: "modal", first: true, predicate: ClrModal, descendants: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<ng-template #coreWizardContent>\n  <div class=\"modal-content-wrapper\">\n    <div class=\"modal-nav clr-wizard-stepnav-wrapper\" role=\"region\">\n      <div class=\"clr-wizard-title\" [id]=\"wizardId\" role=\"heading\" [attr.aria-level]=\"wizardTitle?.headingLevel || 1\">\n        <ng-content select=\"clr-wizard-title\"></ng-content>\n      </div>\n      <clr-wizard-stepnav [label]=\"stepnavAriaLabel\"></clr-wizard-stepnav>\n    </div>\n\n    <div class=\"modal-content\">\n      <div class=\"modal-header--accessible\">\n        <div class=\"modal-title-wrapper\" #title cdkFocusInitial tabindex=\"-1\">\n          <div\n            class=\"modal-title\"\n            role=\"heading\"\n            [attr.aria-level]=\"navService.currentPage?.pageTitle?.headingLevel || 2\"\n          >\n            <span tabindex=\"-1\" #pageTitle class=\"modal-title-text\">\n              <ng-template [ngTemplateOutlet]=\"navService.currentPageTitle\"></ng-template>\n            </span>\n          </div>\n        </div>\n\n        @if (headerActionService.displayHeaderActionsWrapper) {\n        <div class=\"modal-header-actions-wrapper\">\n          @if (headerActionService.showWizardHeaderActions) {\n          <ng-content select=\"clr-wizard-header-action\"></ng-content>\n          } @if (headerActionService.currentPageHasHeaderActions) {\n          <ng-template [ngTemplateOutlet]=\"navService.currentPage?.headerActions\"></ng-template>\n          }\n        </div>\n        } @if (closable && !inPage) {\n        <button type=\"button\" class=\"close\" [attr.aria-label]=\"commonStrings.keys.close\" (click)=\"modalCancel()\">\n          <cds-icon shape=\"window-close\"></cds-icon>\n        </button>\n        }\n      </div>\n\n      <div #body class=\"modal-body-wrapper\">\n        <div class=\"modal-body\">\n          <main clr-wizard-pages-wrapper class=\"clr-wizard-content\">\n            <ng-content></ng-content>\n          </main>\n        </div>\n      </div>\n\n      <div class=\"modal-footer clr-wizard-footer\">\n        <div class=\"clr-wizard-footer-buttons\">\n          <div class=\"clr-wizard-footer-buttons-wrapper\">\n            @if (navService.currentPage?.hasButtons) {\n            <ng-template [ngTemplateOutlet]=\"navService.currentPage.buttons\"></ng-template>\n            } @else {\n            <ng-content select=\"clr-wizard-button\"></ng-content>\n            }\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</ng-template>\n\n@if (inPage) {\n<ng-container [ngTemplateOutlet]=\"coreWizardContent\"></ng-container>\n} @else {\n<clr-modal\n  [clrModalOpen]=\"_open\"\n  [clrModalSize]=\"size\"\n  [clrModalClosable]=\"closable\"\n  [clrModalStaticBackdrop]=\"true\"\n  [clrModalSkipAnimation]=\"stopModalAnimations\"\n  [clrModalOverrideScrollService]=\"isInline\"\n  [clrModalPreventClose]=\"true\"\n  (clrModalAlternateClose)=\"modalCancel()\"\n  [clrModalLabelledById]=\"wizardId\"\n>\n  <ng-template #clrInternalModalContentTemplate>\n    <ng-container [ngTemplateOutlet]=\"coreWizardContent\"></ng-container>\n  </ng-template>\n</clr-modal>\n}\n", dependencies: [{ kind: "directive", type: i4.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: i8.ClrModal, selector: "clr-modal", inputs: ["clrModalOpen", "clrModalClosable", "clrModalCloseButtonAriaLabel", "clrModalSize", "clrModalStaticBackdrop", "clrModalSkipAnimation", "clrModalPreventClose", "clrModalLabelledById", "clrModalOverrideScrollService"], outputs: ["clrModalOpenChange", "clrModalAlternateClose"] }, { kind: "directive", type: i8.ClrModalBody, selector: ".modal-body" }, { kind: "component", type: ClrWizardStepnav, selector: "clr-wizard-stepnav", inputs: ["label"] }] }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrWizard, isStandalone: false, selector: "clr-wizard", inputs: { stepnavAriaLabel: ["clrWizardStepnavAriaLabel", "stepnavAriaLabel"], size: ["clrWizardSize", "size"], inPage: ["clrWizardInPage", "inPage"], inPageFillContentArea: ["clrWizardInPageFillContentArea", "inPageFillContentArea"], closable: ["clrWizardClosable", "closable"], _stopModalAnimations: ["clrWizardPreventModalAnimation", "_stopModalAnimations"], forceForward: ["clrWizardForceForwardNavigation", "forceForward"], clrWizardOpen: "clrWizardOpen", stopNext: ["clrWizardPreventDefaultNext", "stopNext"], stopCancel: ["clrWizardPreventDefaultCancel", "stopCancel"], stopNavigation: ["clrWizardPreventNavigation", "stopNavigation"], disableStepnav: ["clrWizardDisableStepnav", "disableStepnav"] }, outputs: { _openChanged: "clrWizardOpenChange", onCancel: "clrWizardOnCancel", wizardFinished: "clrWizardOnFinish", onReset: "clrWizardOnReset", currentPageChange: "clrWizardCurrentPageChange", onMoveNext: "clrWizardOnNext", onMovePrevious: "clrWizardOnPrevious" }, host: { properties: { "class.clr-wizard": "true", "class.wizard-md": "size == 'md'", "class.wizard-lg": "size == 'lg'", "class.wizard-xl": "size == 'xl'", "class.wizard-in-page": "inPage", "class.wizard-in-page--fill-content-area": "inPage && inPageFillContentArea" } }, providers: [WizardNavigationService, PageCollectionService, ButtonHubService, HeaderActionService], queries: [{ propertyName: "wizardTitle", first: true, predicate: ClrWizardTitle, descendants: true }, { propertyName: "pages", predicate: ClrWizardPage, descendants: true }, { propertyName: "headerActions", predicate: ClrWizardHeaderAction }], viewQueries: [{ propertyName: "pageTitle", first: true, predicate: ["pageTitle"], descendants: true }, { propertyName: "bodyElementRef", first: true, predicate: ["body"], descendants: true }, { propertyName: "modal", first: true, predicate: ClrModal, descendants: true }, { propertyName: "title", first: true, predicate: ["title"], descendants: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<ng-template #coreWizardContent>\n  <div class=\"modal-content-wrapper\">\n    <div class=\"modal-nav clr-wizard-stepnav-wrapper\" role=\"region\">\n      <div class=\"clr-wizard-title\" [id]=\"wizardId\" role=\"heading\" [attr.aria-level]=\"wizardTitle?.headingLevel || 1\">\n        <ng-content select=\"clr-wizard-title\"></ng-content>\n      </div>\n      <clr-wizard-stepnav [label]=\"stepnavAriaLabel\"></clr-wizard-stepnav>\n    </div>\n\n    <div class=\"modal-content\">\n      <div class=\"modal-header--accessible\">\n        <div class=\"modal-title-wrapper\" #title cdkFocusInitial tabindex=\"-1\">\n          <div\n            class=\"modal-title\"\n            role=\"heading\"\n            [attr.aria-level]=\"navService.currentPage?.pageTitle?.headingLevel || 2\"\n          >\n            <span tabindex=\"-1\" #pageTitle class=\"modal-title-text\">\n              <ng-template [ngTemplateOutlet]=\"navService.currentPageTitle\"></ng-template>\n            </span>\n          </div>\n        </div>\n\n        @if (headerActionService.displayHeaderActionsWrapper) {\n        <div class=\"modal-header-actions-wrapper\">\n          @if (headerActionService.showWizardHeaderActions) {\n          <ng-content select=\"clr-wizard-header-action\"></ng-content>\n          } @if (headerActionService.currentPageHasHeaderActions) {\n          <ng-template [ngTemplateOutlet]=\"navService.currentPage?.headerActions\"></ng-template>\n          }\n        </div>\n        } @if (closable && !inPage) {\n        <button type=\"button\" class=\"close\" [attr.aria-label]=\"commonStrings.keys.close\" (click)=\"modalCancel()\">\n          <cds-icon shape=\"window-close\"></cds-icon>\n        </button>\n        }\n      </div>\n\n      <div #body class=\"modal-body-wrapper\">\n        <div class=\"modal-body\">\n          <main clr-wizard-pages-wrapper class=\"clr-wizard-content\">\n            <ng-content></ng-content>\n          </main>\n        </div>\n      </div>\n\n      <div class=\"modal-footer clr-wizard-footer\">\n        <div class=\"clr-wizard-footer-buttons\">\n          <div class=\"clr-wizard-footer-buttons-wrapper\">\n            @if (navService.currentPage?.hasButtons) {\n            <ng-template [ngTemplateOutlet]=\"navService.currentPage.buttons\"></ng-template>\n            } @else {\n            <ng-content select=\"clr-wizard-button\"></ng-content>\n            }\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</ng-template>\n\n@if (inPage) {\n<ng-container [ngTemplateOutlet]=\"coreWizardContent\"></ng-container>\n} @else {\n<clr-modal\n  [clrModalOpen]=\"_open\"\n  [clrModalSize]=\"size\"\n  [clrModalClosable]=\"closable\"\n  [clrModalStaticBackdrop]=\"true\"\n  [clrModalSkipAnimation]=\"stopModalAnimations\"\n  [clrModalOverrideScrollService]=\"isInline\"\n  [clrModalPreventClose]=\"true\"\n  (clrModalAlternateClose)=\"modalCancel()\"\n  [clrModalLabelledById]=\"wizardId\"\n>\n  <ng-template #clrInternalModalContentTemplate>\n    <ng-container [ngTemplateOutlet]=\"coreWizardContent\"></ng-container>\n  </ng-template>\n</clr-modal>\n}\n", dependencies: [{ kind: "directive", type: i4.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: i8.ClrModal, selector: "clr-modal", inputs: ["clrModalOpen", "clrModalClosable", "clrModalCloseButtonAriaLabel", "clrModalSize", "clrModalStaticBackdrop", "clrModalSkipAnimation", "clrModalPreventClose", "clrModalLabelledById", "clrModalOverrideScrollService"], outputs: ["clrModalOpenChange", "clrModalAlternateClose"] }, { kind: "directive", type: i8.ClrModalBody, selector: ".modal-body" }, { kind: "component", type: ClrWizardStepnav, selector: "clr-wizard-stepnav", inputs: ["label"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrWizard, decorators: [{
             type: Component,
@@ -2560,9 +2565,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], onReset: [{
                 type: Output,
                 args: ['clrWizardOnReset']
-            }], currentPageChanged: [{
+            }], currentPageChange: [{
                 type: Output,
-                args: ['clrWizardCurrentPageChanged']
+                args: ['clrWizardCurrentPageChange']
             }], onMoveNext: [{
                 type: Output,
                 args: ['clrWizardOnNext']
@@ -2587,6 +2592,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], modal: [{
                 type: ViewChild,
                 args: [ClrModal]
+            }], title: [{
+                type: ViewChild,
+                args: ['title']
             }], forceForward: [{
                 type: Input,
                 args: ['clrWizardForceForwardNavigation']

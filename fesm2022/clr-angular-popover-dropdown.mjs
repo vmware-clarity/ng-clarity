@@ -1,7 +1,7 @@
 import * as i0 from '@angular/core';
 import { PLATFORM_ID, SkipSelf, Optional, Inject, Injectable, Input, Component, HostBinding, ContentChildren, HostListener, Directive, NgModule } from '@angular/core';
 import * as i2 from '@clr/angular/popover/common';
-import { ClrPopoverHostDirective, ClrPopoverType, ClrPopoverPosition, DROPDOWN_POSITIONS, POPOVER_HOST_ANCHOR, ClrPopoverContent, ClrIfOpen } from '@clr/angular/popover/common';
+import { ClrPopoverHostDirective, ClrPopoverType, ClrPopoverPosition, DROPDOWN_POSITIONS, POPOVER_HOST_ORIGIN, ClrPopoverContent, ClrIfOpen } from '@clr/angular/popover/common';
 import * as i2$1 from '@clr/angular/utils';
 import { uniqueIdFactory, ArrowKeyDirection, Linkers, wrapObservable, customFocusableItemProvider, FOCUS_SERVICE_PROVIDER, FocusableItem, BASIC_FOCUSABLE_ITEM_PROVIDER } from '@clr/angular/utils';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
@@ -184,6 +184,9 @@ class ClrDropdown {
         this.subscriptions.push(dropdownService.changes.subscribe(value => (popoverService.open = value)));
         this.subscriptions.push(popoverService.openChange.subscribe(() => cdr.markForCheck()));
     }
+    openAtPoint(point) {
+        this.popoverService.openAtPoint(point);
+    }
     ngOnDestroy() {
         this.subscriptions.forEach(sub => sub.unsubscribe());
     }
@@ -258,7 +261,7 @@ class ClrDropdownMenu {
     ngOnDestroy() {
         this.focusHandler.resetChildren();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDropdownMenu, deps: [{ token: POPOVER_HOST_ANCHOR, optional: true }, { token: ClrDropdownMenu, optional: true, skipSelf: true }, { token: DropdownFocusHandler }, { token: i0.ElementRef }, { token: i2.ClrPopoverService }, { token: i2.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDropdownMenu, deps: [{ token: POPOVER_HOST_ORIGIN, optional: true }, { token: ClrDropdownMenu, optional: true, skipSelf: true }, { token: DropdownFocusHandler }, { token: i0.ElementRef }, { token: i2.ClrPopoverService }, { token: i2.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrDropdownMenu, isStandalone: false, selector: "clr-dropdown-menu", inputs: { position: ["clrPosition", "position"] }, host: { properties: { "class.dropdown-menu": "true", "attr.role": "\"menu\"", "class.is-off-screen": "this.isOffScreen" } }, queries: [{ propertyName: "items", predicate: FocusableItem }], hostDirectives: [{ directive: i2.ClrPopoverContent }], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDropdownMenu, decorators: [{
@@ -277,7 +280,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     type: Optional
                 }, {
                     type: Inject,
-                    args: [POPOVER_HOST_ANCHOR]
+                    args: [POPOVER_HOST_ORIGIN]
                 }] }, { type: ClrDropdownMenu, decorators: [{
                     type: Optional
                 }, {
@@ -308,7 +311,7 @@ class ClrDropdownTrigger {
             this.isRootLevelToggle = false;
         }
         focusHandler.trigger = el.nativeElement;
-        popoverService.anchorElementRef = el;
+        popoverService.origin = el;
     }
     get active() {
         return this.popoverService.open;

@@ -1,7 +1,7 @@
 import * as i0 from '@angular/core';
 import { Injectable, DOCUMENT, PLATFORM_ID, HostListener, Inject, Directive, ContentChild, Input, Component, ElementRef, HostBinding, ViewChild, Optional, NgModule } from '@angular/core';
 import * as i4 from '@clr/angular/popover/common';
-import { ClrPopoverHostDirective, ClrPopoverPosition, ClrPopoverType, SIGNPOST_POSITIONS, POPOVER_HOST_ANCHOR, ClrPopoverContent, ClrIfOpen, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrPopoverHostDirective, ClrPopoverPosition, ClrPopoverType, SIGNPOST_POSITIONS, POPOVER_HOST_ORIGIN, ClrPopoverContent, ClrIfOpen, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { Subject } from 'rxjs';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import * as i1 from '@clr/angular/utils';
@@ -79,7 +79,7 @@ class ClrSignpostTrigger {
         this.document = document;
     }
     ngOnInit() {
-        this.popoverService.anchorElementRef = this.el;
+        this.popoverService.origin = this.el;
         this.signpostFocusManager.triggerEl = this.el.nativeElement;
         this.subscriptions.push(this.popoverService.openChange.subscribe((isOpen) => {
             this.ariaExpanded = isOpen;
@@ -156,8 +156,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  *
  */
 class ClrSignpost {
-    constructor(commonStrings) {
+    constructor(commonStrings, popoverService) {
         this.commonStrings = commonStrings;
+        this.popoverService = popoverService;
         /**********
          * @property useCustomTrigger
          *
@@ -166,6 +167,11 @@ class ClrSignpost {
          *
          */
         this.useCustomTrigger = false;
+        /**
+         * Hides the default trigger button. Use when the signpost is opened
+         * programmatically via `openAtPoint()` and no trigger icon is needed.
+         */
+        this.hideTrigger = false;
     }
     /**********
      * @property signPostTrigger
@@ -177,9 +183,15 @@ class ClrSignpost {
     set customTrigger(trigger) {
         this.useCustomTrigger = !!trigger;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpost, deps: [{ token: i1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrSignpost, isStandalone: false, selector: "clr-signpost", inputs: { signpostTriggerAriaLabel: ["clrSignpostTriggerAriaLabel", "signpostTriggerAriaLabel"] }, host: { properties: { "class.signpost": "true" } }, providers: [SignpostFocusManager, SignpostIdService], queries: [{ propertyName: "customTrigger", first: true, predicate: ClrSignpostTrigger, descendants: true }], hostDirectives: [{ directive: i4.ClrPopoverHostDirective }], ngImport: i0, template: `
-    @if (!useCustomTrigger) {
+    get showDefaultTrigger() {
+        return !this.useCustomTrigger && !this.hideTrigger;
+    }
+    openAtPoint(point) {
+        this.popoverService.openAtPoint(point);
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpost, deps: [{ token: i1.ClrCommonStringsService }, { token: i4.ClrPopoverService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrSignpost, isStandalone: false, selector: "clr-signpost", inputs: { signpostTriggerAriaLabel: ["clrSignpostTriggerAriaLabel", "signpostTriggerAriaLabel"], hideTrigger: ["clrSignpostHideTrigger", "hideTrigger"] }, host: { properties: { "class.signpost": "true" } }, providers: [SignpostFocusManager, SignpostIdService], queries: [{ propertyName: "customTrigger", first: true, predicate: ClrSignpostTrigger, descendants: true }], hostDirectives: [{ directive: i4.ClrPopoverHostDirective }], ngImport: i0, template: `
+    @if (showDefaultTrigger) {
       <button
         type="button"
         class="signpost-action btn btn-sm btn-icon btn-link"
@@ -198,7 +210,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             args: [{
                     selector: 'clr-signpost',
                     template: `
-    @if (!useCustomTrigger) {
+    @if (showDefaultTrigger) {
       <button
         type="button"
         class="signpost-action btn btn-sm btn-icon btn-link"
@@ -216,9 +228,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     hostDirectives: [ClrPopoverHostDirective],
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i1.ClrCommonStringsService }], propDecorators: { signpostTriggerAriaLabel: [{
+        }], ctorParameters: () => [{ type: i1.ClrCommonStringsService }, { type: i4.ClrPopoverService }], propDecorators: { signpostTriggerAriaLabel: [{
                 type: Input,
                 args: ['clrSignpostTriggerAriaLabel']
+            }], hideTrigger: [{
+                type: Input,
+                args: ['clrSignpostHideTrigger']
             }], customTrigger: [{
                 type: ContentChild,
                 args: [ClrSignpostTrigger]
@@ -253,8 +268,8 @@ class ClrSignpostContent {
      *
      * @description
      * A setter for the position of the ClrSignpostContent popover. This is a combination of the following:
-     * - anchorPoint - where on the trigger to anchor the ClrSignpostContent
-     * - popoverPoint - where on the ClrSignpostContent container to align with the anchorPoint
+     * - originPoint - where on the trigger to position the content
+     * - popoverPoint - where on the content container to align with the origin
      * - offsetY - where on the Y axis to align the ClrSignpostContent so it meets specs
      * - offsetX - where on the X axis to align the ClrSignpostContent so it meets specs
      * There are 12 possible positions to place a ClrSignpostContent container:
@@ -324,7 +339,7 @@ class ClrSignpostContent {
     getFocusableElements(element) {
         return Array.from(element.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpostContent, deps: [{ token: POPOVER_HOST_ANCHOR, optional: true }, { token: i0.ElementRef }, { token: i1.ClrCommonStringsService }, { token: SignpostIdService }, { token: SignpostFocusManager }, { token: PLATFORM_ID }, { token: DOCUMENT }, { token: i4.ClrPopoverService }, { token: i4.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpostContent, deps: [{ token: POPOVER_HOST_ORIGIN, optional: true }, { token: i0.ElementRef }, { token: i1.ClrCommonStringsService }, { token: SignpostIdService }, { token: SignpostFocusManager }, { token: PLATFORM_ID }, { token: DOCUMENT }, { token: i4.ClrPopoverService }, { token: i4.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrSignpostContent, isStandalone: false, selector: "clr-signpost-content", inputs: { signpostCloseAriaLabel: ["clrSignpostCloseAriaLabel", "signpostCloseAriaLabel"], position: ["clrPosition", "position"] }, host: { attributes: { "role": "dialog" }, listeners: { "keydown": "onKeyDown($event)" }, properties: { "class.signpost-content": "true", "id": "signpostContentId", "class.is-off-screen": "this.isOffScreen" } }, viewQueries: [{ propertyName: "closeButton", first: true, predicate: ["closeButton"], descendants: true, read: ElementRef }], hostDirectives: [{ directive: i4.ClrPopoverContent }], ngImport: i0, template: `
     <div class="signpost-wrap">
       <div class="popover-pointer"></div>
@@ -384,7 +399,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     type: Optional
                 }, {
                     type: Inject,
-                    args: [POPOVER_HOST_ANCHOR]
+                    args: [POPOVER_HOST_ORIGIN]
                 }] }, { type: i0.ElementRef }, { type: i1.ClrCommonStringsService }, { type: SignpostIdService }, { type: SignpostFocusManager }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [PLATFORM_ID]

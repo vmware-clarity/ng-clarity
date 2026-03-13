@@ -2,13 +2,13 @@ import * as i0 from '@angular/core';
 import { Injectable, Optional, Directive, Component, ElementRef, HostListener, ContentChild, Input, HostBinding, KeyValueDiffers, Self, ContentChildren, NgModule, InjectionToken, forwardRef, Inject, Attribute, ViewChild, PLATFORM_ID, DOCUMENT, EventEmitter, Output, LOCALE_ID, inject, TemplateRef, Injector } from '@angular/core';
 import * as i2 from 'rxjs';
 import { BehaviorSubject, Subject, tap, merge, of, ReplaySubject } from 'rxjs';
+import * as i3 from '@clr/angular/icon';
+import { ClarityIcons, successStandardIcon, errorStandardIcon, ClrIcon, angleIcon, windowCloseIcon, eventIcon, calendarIcon, folderOpenIcon, minusIcon, plusIcon, eyeHideIcon, eyeIcon } from '@clr/angular/icon';
 import { ClrSignpost } from '@clr/angular/popover/signpost';
 import * as i1 from '@angular/common';
 import { CommonModule, isPlatformBrowser, NgForOf, getLocaleDayNames, FormStyle, TranslationWidth, getLocaleMonthNames, getLocaleFirstDayOfWeek, getLocaleDateFormat, FormatWidth } from '@angular/common';
-import * as i3 from '@clr/angular/icon';
-import { ClarityIcons, exclamationCircleIcon, checkCircleIcon, ClrIcon, angleIcon, windowCloseIcon, eventIcon, calendarIcon, folderOpenIcon, minusIcon, plusIcon, eyeHideIcon, eyeIcon } from '@clr/angular/icon';
 import * as i2$1 from '@clr/angular/utils';
-import { HostWrapper, ClrHostWrappingModule, ArrowKeyDirection, normalizeKey, Keys, customFocusableItemProvider, uniqueIdFactory, ClrLoadingState, IF_ACTIVE_ID, LoadingListener, IF_ACTIVE_ID_PROVIDER, FOCUS_SERVICE_PROVIDER, ClrConditionalModule, ClrKeyFocusModule, DATEPICKER_ENABLE_BREAKPOINT, isBooleanAttributeSet, CdkTrapFocusModule, ClrCommonStringsService } from '@clr/angular/utils';
+import { HostWrapper, ClrHostWrappingModule, ArrowKeyDirection, Keys, customFocusableItemProvider, uniqueIdFactory, ClrLoadingState, IF_ACTIVE_ID, LoadingListener, IF_ACTIVE_ID_PROVIDER, FOCUS_SERVICE_PROVIDER, ClrConditionalModule, ClrKeyFocusModule, DATEPICKER_ENABLE_BREAKPOINT, isBooleanAttributeSet, CdkTrapFocusModule, ClrCommonStringsService } from '@clr/angular/utils';
 import * as i1$1 from '@angular/forms';
 import { FormsModule, NG_VALIDATORS, NG_VALUE_ACCESSOR, SelectMultipleControlValueAccessor } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -16,7 +16,7 @@ import { switchMap, startWith, take, first, filter } from 'rxjs/operators';
 import * as i1$2 from '@clr/angular/forms/common';
 import { ClrControlLabel as ClrControlLabel$1, ControlIdService as ControlIdService$1, WrappedFormControl as WrappedFormControl$1, ClrAbstractContainer as ClrAbstractContainer$1, NgControlService as NgControlService$1, ControlClassService as ControlClassService$1, ContainerIdService as ContainerIdService$1, ClrCommonFormsModule as ClrCommonFormsModule$1, FormsFocusService as FormsFocusService$1 } from '@clr/angular/forms/common';
 import * as i1$3 from '@clr/angular/popover/common';
-import { POPOVER_HOST_ANCHOR, ClrPopoverPosition, ClrPopoverType, ClrPopoverHostDirective, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext, DROPDOWN_POSITIONS } from '@clr/angular/popover/common';
+import { POPOVER_HOST_ORIGIN, ClrPopoverPosition, ClrPopoverType, ClrPopoverHostDirective, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext, DROPDOWN_POSITIONS } from '@clr/angular/popover/common';
 import * as i5 from '@clr/angular/progress/spinner';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import { ClrInputModule as ClrInputModule$1 } from '@clr/angular/forms/input';
@@ -160,16 +160,25 @@ class ClrControlError extends ClrAbstractControl {
         this.controlIdSuffix = CONTROL_SUFFIX.ERROR;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlError, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlError, isStandalone: false, selector: "clr-control-error", host: { properties: { "class.clr-subtext": "true", "class.error": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlError, isStandalone: false, selector: "clr-control-error", host: { properties: { "class.clr-subtext-wrapper": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlError, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-control-error',
-                    template: `<ng-content></ng-content>`,
+                    template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `,
                     host: {
-                        '[class.clr-subtext]': 'true',
-                        '[class.error]': 'true',
+                        '[class.clr-subtext-wrapper]': 'true',
                         '[attr.id]': 'id',
                     },
                     standalone: false,
@@ -219,6 +228,49 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+class ClrControlSuccess extends ClrAbstractControl {
+    constructor(controlIdService, containerIdService) {
+        super(controlIdService, containerIdService);
+        this.controlIdService = controlIdService;
+        this.containerIdService = containerIdService;
+        this.controlIdSuffix = CONTROL_SUFFIX.SUCCESS;
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlSuccess, isStandalone: false, selector: "clr-control-success", host: { properties: { "class.clr-subtext-wrapper": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `
+    <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext success">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'clr-control-success',
+                    template: `
+    <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext success">
+      <ng-content></ng-content>
+    </span>
+  `,
+                    host: {
+                        '[class.clr-subtext-wrapper]': 'true',
+                        '[attr.id]': 'id',
+                    },
+                    standalone: false,
+                }]
+        }], ctorParameters: () => [{ type: ControlIdService, decorators: [{
+                    type: Optional
+                }] }, { type: ContainerIdService, decorators: [{
+                    type: Optional
+                }] }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 var CONTROL_STATE;
 (function (CONTROL_STATE) {
     CONTROL_STATE["VALID"] = "VALID";
@@ -242,10 +294,7 @@ class LayoutService {
         this.minLabelSize = 1;
         this.maxLabelSize = 12;
         this.layout = ClrFormLayout.HORIZONTAL;
-        // This is basically a replacement for Object.values(), which IE11 and Node <9 don't support :(
-        // String enums cannot be reverse-mapped, meaning ClrFormLayout['COMPACT'] does not return 'compact' so
-        // this exists to deal with this little caveat to get the list of the values as an array.
-        this.layoutValues = Object.keys(ClrFormLayout).map(key => ClrFormLayout[key]);
+        this.layoutValues = Object.values(ClrFormLayout);
         this._labelSize = 2;
     }
     get labelSize() {
@@ -412,40 +461,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                 type: HostListener,
                 args: ['click', ['$event']]
             }] } });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrControlSuccess extends ClrAbstractControl {
-    constructor(controlIdService, containerIdService) {
-        super(controlIdService, containerIdService);
-        this.controlIdService = controlIdService;
-        this.containerIdService = containerIdService;
-        this.controlIdSuffix = CONTROL_SUFFIX.SUCCESS;
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlSuccess, isStandalone: false, selector: "clr-control-success", host: { properties: { "class.clr-subtext": "true", "class.success": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, decorators: [{
-            type: Component,
-            args: [{
-                    selector: 'clr-control-success',
-                    template: `<ng-content></ng-content>`,
-                    host: {
-                        '[class.clr-subtext]': 'true',
-                        '[class.success]': 'true',
-                        '[attr.id]': 'id',
-                    },
-                    standalone: false,
-                }]
-        }], ctorParameters: () => [{ type: ControlIdService, decorators: [{
-                    type: Optional
-                }] }, { type: ContainerIdService, decorators: [{
-                    type: Optional
-                }] }] });
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -643,12 +658,6 @@ class ClrControlContainer extends ClrAbstractContainer {
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper">
         <ng-content></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -660,7 +669,7 @@ class ClrControlContainer extends ClrAbstractContainer {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlContainer, decorators: [{
             type: Component,
@@ -674,12 +683,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper">
         <ng-content></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -1163,7 +1166,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrCommonFormsModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCommonFormsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrCommonFormsModule, declarations: [ClrControlLabel,
@@ -1421,29 +1424,14 @@ class ClrCheckboxContainer extends ClrAbstractContainer$1 {
           <ng-content select="clr-control-helper"></ng-content>
         </div>
       }
-      @if (showInvalid || showValid) {
-        <div class="clr-subtext-wrapper">
-          @if (showInvalid) {
-            <cds-icon
-              class="clr-validate-icon"
-              shape="exclamation-circle"
-              status="danger"
-              aria-hidden="true"
-            ></cds-icon>
-          }
-          @if (showValid) {
-            <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-          }
-          @if (showInvalid) {
-            <ng-content select="clr-control-error"></ng-content>
-          }
-          @if (showValid) {
-            <ng-content select="clr-control-success"></ng-content>
-          }
-        </div>
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxContainer, decorators: [{
             type: Component,
@@ -1461,26 +1449,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           <ng-content select="clr-control-helper"></ng-content>
         </div>
       }
-      @if (showInvalid || showValid) {
-        <div class="clr-subtext-wrapper">
-          @if (showInvalid) {
-            <cds-icon
-              class="clr-validate-icon"
-              shape="exclamation-circle"
-              status="danger"
-              aria-hidden="true"
-            ></cds-icon>
-          }
-          @if (showValid) {
-            <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-          }
-          @if (showInvalid) {
-            <ng-content select="clr-control-error"></ng-content>
-          }
-          @if (showValid) {
-            <ng-content select="clr-control-success"></ng-content>
-          }
-        </div>
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
   `,
@@ -1510,7 +1483,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrCheckboxModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxModule, declarations: [ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper], imports: [CommonModule, ClrIcon, ClrCommonFormsModule$1, ClrHostWrappingModule], exports: [ClrCommonFormsModule$1, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxWrapper] }); }
@@ -1578,12 +1551,6 @@ class ClrComboboxContainer extends ClrAbstractContainer$1 {
     }
     <div class="clr-control-container" [ngClass]="controlClass()" #controlContainer>
       <ng-content select="clr-combobox"></ng-content>
-      @if (showInvalid) {
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-      }
-      @if (showValid) {
-        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-      }
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
       }
@@ -1594,7 +1561,7 @@ class ClrComboboxContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrComboboxContainer, decorators: [{
             type: Component,
@@ -1607,12 +1574,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
     }
     <div class="clr-control-container" [ngClass]="controlClass()" #controlContainer>
       <ng-content select="clr-combobox"></ng-content>
-      @if (showInvalid) {
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-      }
-      @if (showValid) {
-        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-      }
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
       }
@@ -1646,20 +1607,24 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class MultiSelectComboboxModel {
+class ComboboxModel {
+    constructor() {
+        this.identityFn = (item) => item;
+    }
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class MultiSelectComboboxModel extends ComboboxModel {
     containsItem(item) {
-        if (this.model) {
-            if (this.displayField && typeof item === 'object') {
-                const includes = this.model.some(modelItem => {
-                    return modelItem[this.displayField] === item[this.displayField];
-                });
-                return includes;
-            }
-            else {
-                return this.model.includes(item);
-            }
+        if (!this.model) {
+            return false;
         }
-        return false;
+        return this.model.some(m => this.identityFn(m) === this.identityFn(item));
     }
     select(item) {
         this.addItem(item);
@@ -1722,7 +1687,7 @@ class MultiSelectComboboxModel {
         if (this.model === null || this.model === undefined) {
             return;
         }
-        const index = this.model.indexOf(item);
+        const index = this.model.findIndex(m => this.identityFn(m) === this.identityFn(item));
         if (index > -1) {
             this.model.splice(index, 1);
         }
@@ -1739,9 +1704,9 @@ class MultiSelectComboboxModel {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class SingleSelectComboboxModel {
+class SingleSelectComboboxModel extends ComboboxModel {
     containsItem(item) {
-        return this.model === item;
+        return this.model !== null && this.identityFn(this.model) === this.identityFn(item);
     }
     select(item) {
         this.model = item;
@@ -1835,6 +1800,7 @@ class OptionSelectionService {
         this._currentInput = '';
         this._inputChanged = new BehaviorSubject('');
         this._selectionChanged = new ReplaySubject(1);
+        this._identityFn = (item) => item;
         this.inputChanged = this._inputChanged.asObservable();
     }
     get displayField() {
@@ -1865,6 +1831,15 @@ class OptionSelectionService {
     get multiselectable() {
         return this.selectionModel instanceof MultiSelectComboboxModel;
     }
+    get identityFn() {
+        return this._identityFn;
+    }
+    set identityFn(value) {
+        this._identityFn = value || ((item) => item);
+        if (this.selectionModel) {
+            this.selectionModel.identityFn = this._identityFn;
+        }
+    }
     select(item) {
         if (item === null || item === undefined || this.selectionModel.containsItem(item)) {
             return;
@@ -1891,13 +1866,12 @@ class OptionSelectionService {
         this.selectionModel.unselect(item);
         this._selectionChanged.next(this.selectionModel);
     }
-    // TODO: Add support for trackBy and compareFn
     setSelectionValue(value) {
-        // NOTE: Currently we assume that no 2 options will have the same value
-        // but Eudes and I discussed that this is a possibility but we will handle
-        // this later
-        // if selection is undefined, or its value hasn't changed, or changing from null <-> undefined, that's not really changing so we return
-        if (!this.selectionModel || this.selectionModel.model === value || (!this.selectionModel.model && !value)) {
+        if (!this.selectionModel) {
+            return;
+        }
+        const current = this.selectionModel.model;
+        if (this.valuesEqualByIdentity(current, value)) {
             return;
         }
         this.selectionModel.model = value;
@@ -1910,6 +1884,39 @@ class OptionSelectionService {
             };
         }
         return value;
+    }
+    valuesEqualByIdentity(current, value) {
+        if (current === value) {
+            return true;
+        }
+        // Check if both are null or undefined or empty string.
+        if ((current === null || current === undefined || current === '') &&
+            (value === null || value === undefined || value === '')) {
+            return true;
+        }
+        // Check if one is null or undefined or empty string and the other is not.
+        if (current === null ||
+            current === undefined ||
+            current === '' ||
+            value === null ||
+            value === undefined ||
+            value === '') {
+            return false;
+        }
+        if (this.multiselectable) {
+            const cur = current;
+            const val = value;
+            if (cur.length !== val.length) {
+                return false;
+            }
+            // We only consider values equal if they are ordered the same way.
+            const curIds = cur.map(this._identityFn);
+            const valIds = val.map(this._identityFn);
+            return curIds.every((id, i) => id === valIds[i]);
+        }
+        else {
+            return this._identityFn(current) === this._identityFn(value);
+        }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: OptionSelectionService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
     static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: OptionSelectionService }); }
@@ -2035,7 +2042,7 @@ class ComboboxFocusHandler {
     // this service is only interested in keys that may move the focus
     handleTextInput(event) {
         let preventDefault = false;
-        const key = normalizeKey(event.key);
+        const key = event.key;
         if (event) {
             switch (key) {
                 case Keys.Enter:
@@ -2092,18 +2099,12 @@ class ComboboxFocusHandler {
             this.renderer.listen(el, 'blur', event => {
                 if (this.focusOutOfComponent(event)) {
                     this.popoverService.open = false;
-                    // Workaround for popover close-on-outside-click timing issues in Edge browser
-                    if (this.componentCdRef) {
-                        this.componentCdRef.detectChanges();
-                    }
                 }
             });
         }
     }
     focusOutOfComponent(event) {
-        // event.relatedTarget is null in IE11. In that case we use document.activeElement
-        // which points to the element that becomes active as the blur event occurs on the input.
-        const target = (event.relatedTarget || document.activeElement);
+        const target = event.relatedTarget;
         return !(this.textInput.contains(target) || this.trigger.contains(target) || this.listbox.contains(target));
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ComboboxFocusHandler, deps: [{ token: i0.RendererFactory2 }, { token: i1$3.ClrPopoverService }, { token: OptionSelectionService }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable }); }
@@ -2295,7 +2296,7 @@ class ClrOptions {
     loadingStateChange(state) {
         this.loading = state === ClrLoadingState.LOADING;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrOptions, deps: [{ token: OptionSelectionService }, { token: IF_ACTIVE_ID }, { token: i0.ElementRef }, { token: i2$1.ClrCommonStringsService }, { token: ComboboxFocusHandler }, { token: i1$3.ClrPopoverService }, { token: POPOVER_HOST_ANCHOR, optional: true }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrOptions, deps: [{ token: OptionSelectionService }, { token: IF_ACTIVE_ID }, { token: i0.ElementRef }, { token: i2$1.ClrCommonStringsService }, { token: ComboboxFocusHandler }, { token: i1$3.ClrPopoverService }, { token: POPOVER_HOST_ORIGIN, optional: true }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrOptions, isStandalone: false, selector: "clr-options", inputs: { optionsId: ["id", "optionsId"] }, host: { properties: { "class.clr-combobox-options": "true", "class.clr-combobox-options-hidden": "emptyOptions && editable", "attr.role": "\"listbox\"", "id": "optionsId" } }, providers: [{ provide: LoadingListener, useExisting: ClrOptions }], queries: [{ propertyName: "items", predicate: ClrOption, descendants: true }], ngImport: i0, template: `
     @if (optionSelectionService.loading) {
       <div class="clr-combobox-options-loading">
@@ -2365,7 +2366,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     type: Optional
                 }, {
                     type: Inject,
-                    args: [POPOVER_HOST_ANCHOR]
+                    args: [POPOVER_HOST_ORIGIN]
                 }] }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [DOCUMENT]
@@ -2412,14 +2413,16 @@ class ClrCombobox extends WrappedFormControl$1 {
             control.valueAccessor = this;
         }
         // default to SingleSelectComboboxModel, in case the optional input [ClrMulti] isn't used
-        optionSelectionService.selectionModel = new SingleSelectComboboxModel();
-        this.updateControlValue();
+        this.multiSelect = false;
     }
     get editable() {
         return this.optionSelectionService.editable;
     }
     set editable(value) {
         this.optionSelectionService.editable = value;
+    }
+    set identityFn(value) {
+        this.optionSelectionService.identityFn = value;
     }
     get multiSelect() {
         return this.optionSelectionService.multiselectable;
@@ -2433,6 +2436,7 @@ class ClrCombobox extends WrappedFormControl$1 {
             // since the initial call to writeValue (caused by [ngModel] input) should happen after this
             this.optionSelectionService.selectionModel = new SingleSelectComboboxModel();
         }
+        this.optionSelectionService.selectionModel.identityFn = this.optionSelectionService.identityFn;
         this.updateControlValue();
     }
     // Override the id of WrappedFormControl, as we want to move it to the embedded input.
@@ -2492,7 +2496,6 @@ class ClrCombobox extends WrappedFormControl$1 {
         }
     }
     ngAfterViewInit() {
-        this.focusHandler.componentCdRef = this.cdr;
         this.focusHandler.textInput = this.textbox.nativeElement;
         this.focusHandler.trigger = this.trigger.nativeElement;
         // The text input is the actual element we are wrapping
@@ -2656,13 +2659,13 @@ class ClrCombobox extends WrappedFormControl$1 {
         return [this.optionSelectionService.selectionModel.model];
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCombobox, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: OptionSelectionService }, { token: i2$1.ClrCommonStringsService }, { token: i1$3.ClrPopoverService }, { token: ComboboxContainerService, optional: true }, { token: PLATFORM_ID }, { token: ComboboxFocusHandler }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrCombobox, isStandalone: false, selector: "clr-combobox", inputs: { placeholder: "placeholder", editable: ["clrEditable", "editable"], multiSelect: ["clrMulti", "multiSelect"] }, outputs: { clrInputChange: "clrInputChange", clrOpenChange: "clrOpenChange", clrSelectionChange: "clrSelectionChange" }, host: { listeners: { "keydown": "onKeyUp($event)" }, properties: { "class.aria-required": "true", "class.clr-combobox": "true", "class.clr-combobox-disabled": "control?.disabled" } }, providers: [
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrCombobox, isStandalone: false, selector: "clr-combobox", inputs: { placeholder: "placeholder", editable: ["clrEditable", "editable"], identityFn: ["clrComboboxIdentityFn", "identityFn"], multiSelect: ["clrMulti", "multiSelect"] }, outputs: { clrInputChange: "clrInputChange", clrOpenChange: "clrOpenChange", clrSelectionChange: "clrSelectionChange" }, host: { listeners: { "keydown": "onKeyUp($event)" }, properties: { "class.aria-required": "true", "class.clr-combobox": "true", "class.clr-combobox-disabled": "control?.disabled" } }, providers: [
             OptionSelectionService,
             { provide: LoadingListener, useExisting: ClrCombobox },
             IF_ACTIVE_ID_PROVIDER,
             FOCUS_SERVICE_PROVIDER,
             COMBOBOX_FOCUS_HANDLER_PROVIDER,
-        ], queries: [{ propertyName: "optionSelected", first: true, predicate: ClrOptionSelected, descendants: true }, { propertyName: "options", first: true, predicate: ClrOptions, descendants: true }], viewQueries: [{ propertyName: "textbox", first: true, predicate: ["textboxInput"], descendants: true }, { propertyName: "trigger", first: true, predicate: ["trigger"], descendants: true }], usesInheritance: true, hostDirectives: [{ directive: i1$3.ClrPopoverHostDirective }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  class=\"clr-combobox-wrapper\"\n  clrPopoverAnchor\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"(control?.control.touched && control?.invalid)\"\n  [class.disabled]=\"control?.disabled\"\n>\n  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    @for (item of multiSelectModel; track item; let i = $index) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n          @if (optionSelected) {\n          <ng-container\n            [ngTemplateOutlet]=\"optionSelected.template\"\n            [ngTemplateOutletContext]=\"{$implicit: optionSelectionService.selectionModel.model[i]}\"\n          ></ng-container>\n          }\n        </span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          [disabled]=\"control?.disabled? true: null\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n          (click)=\"unselect(item)\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    }\n  </span>\n  }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually due to issues in Edge browser.\nAdditionally 'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n", dependencies: [{ kind: "directive", type: i1.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1$1.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i1$1.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1$1.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: i2$1.ClrRovingTabindex, selector: "[clrRovingTabindex]", inputs: ["clrRovingTabindex", "clrRovingTabindexDisabled"] }, { kind: "directive", type: i2$1.ClrKeyFocusItem, selector: "[clrKeyFocusItem]" }, { kind: "directive", type: i1$3.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i1$3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }] }); }
+        ], queries: [{ propertyName: "optionSelected", first: true, predicate: ClrOptionSelected, descendants: true }, { propertyName: "options", first: true, predicate: ClrOptions, descendants: true }], viewQueries: [{ propertyName: "textbox", first: true, predicate: ["textboxInput"], descendants: true }, { propertyName: "trigger", first: true, predicate: ["trigger"], descendants: true }], usesInheritance: true, hostDirectives: [{ directive: i1$3.ClrPopoverHostDirective }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  class=\"clr-combobox-wrapper\"\n  clrPopoverOrigin\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"(control?.control.touched && control?.invalid)\"\n  [class.disabled]=\"control?.disabled\"\n>\n  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    @for (item of multiSelectModel; track item; let i = $index) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n          @if (optionSelected) {\n          <ng-container\n            [ngTemplateOutlet]=\"optionSelected.template\"\n            [ngTemplateOutletContext]=\"{$implicit: optionSelectionService.selectionModel.model[i]}\"\n          ></ng-container>\n          }\n        </span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          [disabled]=\"control?.disabled? true: null\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n          (click)=\"unselect(item)\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    }\n  </span>\n  }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually.\n'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n", dependencies: [{ kind: "directive", type: i1.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1$1.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i1$1.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1$1.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: i2$1.ClrRovingTabindex, selector: "[clrRovingTabindex]", inputs: ["clrRovingTabindex", "clrRovingTabindexDisabled"] }, { kind: "directive", type: i2$1.ClrKeyFocusItem, selector: "[clrKeyFocusItem]" }, { kind: "directive", type: i1$3.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i1$3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCombobox, decorators: [{
             type: Component,
@@ -2676,7 +2679,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                         '[class.aria-required]': 'true',
                         '[class.clr-combobox]': 'true',
                         '[class.clr-combobox-disabled]': 'control?.disabled',
-                    }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  class=\"clr-combobox-wrapper\"\n  clrPopoverAnchor\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"(control?.control.touched && control?.invalid)\"\n  [class.disabled]=\"control?.disabled\"\n>\n  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    @for (item of multiSelectModel; track item; let i = $index) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n          @if (optionSelected) {\n          <ng-container\n            [ngTemplateOutlet]=\"optionSelected.template\"\n            [ngTemplateOutletContext]=\"{$implicit: optionSelectionService.selectionModel.model[i]}\"\n          ></ng-container>\n          }\n        </span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          [disabled]=\"control?.disabled? true: null\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n          (click)=\"unselect(item)\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    }\n  </span>\n  }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually due to issues in Edge browser.\nAdditionally 'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n" }]
+                    }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  class=\"clr-combobox-wrapper\"\n  clrPopoverOrigin\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"(control?.control.touched && control?.invalid)\"\n  [class.disabled]=\"control?.disabled\"\n>\n  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    @for (item of multiSelectModel; track item; let i = $index) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n          @if (optionSelected) {\n          <ng-container\n            [ngTemplateOutlet]=\"optionSelected.template\"\n            [ngTemplateOutletContext]=\"{$implicit: optionSelectionService.selectionModel.model[i]}\"\n          ></ng-container>\n          }\n        </span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          [disabled]=\"control?.disabled? true: null\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n          (click)=\"unselect(item)\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    }\n  </span>\n  }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually.\n'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n" }]
         }], ctorParameters: () => [{ type: i0.ViewContainerRef }, { type: i0.Injector }, { type: i1$1.NgControl, decorators: [{
                     type: Self
                 }, {
@@ -2713,6 +2716,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], editable: [{
                 type: Input,
                 args: ['clrEditable']
+            }], identityFn: [{
+                type: Input,
+                args: ['clrComboboxIdentityFn']
             }], multiSelect: [{
                 type: Input,
                 args: ['clrMulti']
@@ -2874,7 +2880,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrComboboxModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, angleIcon, windowCloseIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon, angleIcon, windowCloseIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrComboboxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrComboboxModule, declarations: [ClrCombobox,
@@ -3060,12 +3066,6 @@ class ClrDatalistContainer extends ClrAbstractContainer$1 {
           <ng-content select="datalist"></ng-content>
           <cds-icon shape="angle" class="clr-datalist-caret" direction="down" (click)="showPicker(datalist)"></cds-icon>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -3095,12 +3095,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           <ng-content select="datalist"></ng-content>
           <cds-icon shape="angle" class="clr-datalist-caret" direction="down" (click)="showPicker(datalist)"></cds-icon>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -3187,7 +3181,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrDatalistModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatalistModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrDatalistModule, declarations: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer], imports: [CommonModule, ClrInputModule$1, ClrIcon], exports: [ClrDatalist, ClrDatalistInput, ClrDatalistContainer] }); }
@@ -3510,10 +3504,14 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class DateIOService {
     constructor(localeHelperService) {
+        /**
+         * This is the default range. It approximates the beginning of time to the end of time.
+         * The disabled dates are the dates that are not allowed to be selected.
+         * The min date is the earliest date that can be selected.
+         * The max date is the latest date that can be selected.
+         * Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
+         */
         this.disabledDates = {
-            // This is the default range. It approximates the beginning of time to the end of time.
-            // Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
-            // TODO: turn this into an Array of min/max ranges that allow configuration of multiple ranges.
             minDate: new DayModel(0, 0, 1),
             maxDate: new DayModel(9999, 11, 31),
         };
@@ -4168,7 +4166,7 @@ class ClrMonthpicker {
         // the logic is fairly simple and it didn't make sense for me
         // to create extra observables just to move this logic to the service.
         if (event) {
-            const key = normalizeKey(event.key);
+            const key = event.key;
             if (key === Keys.ArrowUp && this._focusedMonthIndex > 1) {
                 event.preventDefault();
                 this._focusedMonthIndex -= 2;
@@ -4515,7 +4513,7 @@ class ClrYearpicker {
         // the logic is fairly simple and it didn't make sense for me
         // to create extra observables just to move this logic to the service.
         if (event) {
-            const key = normalizeKey(event.key);
+            const key = event.key;
             if (key === Keys.ArrowUp) {
                 event.preventDefault();
                 this.incrementFocusYearBy(-2);
@@ -5162,7 +5160,7 @@ class ClrCalendar {
      */
     onKeyDown(event) {
         if (event && this.focusedDay) {
-            switch (normalizeKey(event.key)) {
+            switch (event.key) {
                 case Keys.ArrowUp:
                     event.preventDefault();
                     this._dateNavigationService.incrementFocusDay(-1 * NO_OF_DAYS_IN_A_WEEK);
@@ -5632,7 +5630,7 @@ class ClrDateContainer extends ClrAbstractContainer$1 {
       <label></label>
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
-      <div class="clr-input-wrapper" clrPopoverAnchor>
+      <div class="clr-input-wrapper" clrPopoverOrigin>
         <div class="clr-input-group" [class.clr-focus]="focus">
           <!-- render range inputs only if using clr-date-range-container -->
           @if (isRangePicker) {
@@ -5664,12 +5662,6 @@ class ClrDateContainer extends ClrAbstractContainer$1 {
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -5681,7 +5673,7 @@ class ClrDateContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i2$1.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: i1$3.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i1$3.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i1$3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: ClrDatepickerViewManager, selector: "clr-datepicker-view-manager" }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i2$1.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: i1$3.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i1$3.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i1$3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: ClrDatepickerViewManager, selector: "clr-datepicker-view-manager" }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDateContainer, decorators: [{
             type: Component,
@@ -5693,7 +5685,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
       <label></label>
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
-      <div class="clr-input-wrapper" clrPopoverAnchor>
+      <div class="clr-input-wrapper" clrPopoverOrigin>
         <div class="clr-input-group" [class.clr-focus]="focus">
           <!-- render range inputs only if using clr-date-range-container -->
           @if (isRangePicker) {
@@ -5725,12 +5717,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -6343,7 +6329,7 @@ const CLR_DATEPICKER_DIRECTIVES = [
 ];
 class ClrDatepickerModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, angleIcon, eventIcon, calendarIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon, angleIcon, eventIcon, calendarIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatepickerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrDatepickerModule, declarations: [ClrDateInput,
@@ -6445,15 +6431,23 @@ function clearFiles(fileInputElement) {
 const CLR_FILE_MESSAGES_TEMPLATE_CONTEXT = new InjectionToken('ClrFileMessagesTemplateContext');
 class ClrFileInfo {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInfo, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileInfo, isStandalone: false, selector: "clr-file-info", host: { properties: { "class.clr-subtext": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileInfo, isStandalone: false, selector: "clr-file-info", host: { properties: { "class.clr-subtext-wrapper": "true" } }, ngImport: i0, template: `
+    <span class="clr-subtext">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInfo, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-info',
-                    template: `<ng-content></ng-content>`,
+                    template: `
+    <span class="clr-subtext">
+      <ng-content></ng-content>
+    </span>
+  `,
                     host: {
-                        '[class.clr-subtext]': 'true',
+                        '[class.clr-subtext-wrapper]': 'true',
                     },
                     standalone: false,
                 }]
@@ -6463,39 +6457,57 @@ class ClrFileSuccess {
         this.context = inject(CLR_FILE_MESSAGES_TEMPLATE_CONTEXT);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileSuccess, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrFileSuccess, isStandalone: false, selector: "clr-file-success", host: { properties: { "style.display": "context.success ? \"inline-block\" : \"none\"", "class.clr-subtext": "true", "class.success": "true" } }, ngImport: i0, template: `@if (context.success) {
-    <ng-content></ng-content>
-  }`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrFileSuccess, isStandalone: false, selector: "clr-file-success", host: { properties: { "style.display": "context.success ? \"flex\" : \"none\"", "class.clr-subtext-wrapper": "true" } }, ngImport: i0, template: `
+    @if (context.success) {
+      <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+      <span class="clr-subtext success">
+        <ng-content></ng-content>
+      </span>
+    }
+  `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileSuccess, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-success',
                     // We check for success here so that consumers don't have to.
-                    template: `@if (context.success) {
-    <ng-content></ng-content>
-  }`,
+                    template: `
+    @if (context.success) {
+      <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+      <span class="clr-subtext success">
+        <ng-content></ng-content>
+      </span>
+    }
+  `,
                     host: {
-                        '[style.display]': 'context.success ? "inline-block" : "none"',
-                        '[class.clr-subtext]': 'true',
-                        '[class.success]': 'true',
+                        '[style.display]': 'context.success ? "flex" : "none"',
+                        '[class.clr-subtext-wrapper]': 'true',
                     },
                     standalone: false,
                 }]
         }] });
 class ClrFileError {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileError, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileError, isStandalone: false, selector: "clr-file-error", host: { properties: { "class.clr-subtext": "true", "class.error": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileError, isStandalone: false, selector: "clr-file-error", host: { properties: { "class.clr-subtext-wrapper": "true" } }, ngImport: i0, template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileError, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-error',
-                    // The host should have an `@if` or `@if` that checks for the relevant error.
-                    template: `<ng-content></ng-content>`,
+                    // The host should have an `*ngIf` or `@if` that checks for the relevant error.
+                    template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `,
                     host: {
-                        '[class.clr-subtext]': 'true',
-                        '[class.error]': 'true',
+                        '[class.clr-subtext-wrapper]': 'true',
                     },
                     standalone: false,
                 }]
@@ -6533,6 +6545,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrFileList {
     constructor() {
+        this.injectorCache = new Map();
+        this.contextCache = new Map();
         this.injector = inject(Injector);
         this.commonStrings = inject(ClrCommonStringsService);
         this.ngControlService = inject(NgControlService$1, { optional: true });
@@ -6571,13 +6585,26 @@ class ClrFileList {
             maxFileSize: fileInputErrors.maxFileSize?.find(error => error.name === file.name),
         };
         const success = Object.values(errors).every(error => !error);
-        return { $implicit: file, success, errors };
+        const cached = this.contextCache.get(file);
+        if (cached && cached.success === success && this.errorsEqual(cached.errors, errors)) {
+            return cached;
+        }
+        // new context is made and old reference replaced
+        const context = { $implicit: file, success, errors };
+        this.contextCache.set(file, context);
+        // new injector is made and old reference replaced
+        const injector = this.createFileMessagesTemplateInjector(context);
+        this.injectorCache.set(file, injector);
+        return context;
     }
     createFileMessagesTemplateInjector(fileMessagesTemplateContext) {
         return Injector.create({
             parent: this.injector,
             providers: [{ provide: CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, useValue: fileMessagesTemplateContext }],
         });
+    }
+    errorsEqual(a, b) {
+        return a.accept === b.accept && a.minFileSize === b.minFileSize && a.maxFileSize === b.maxFileSize;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileList, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrFileList, isStandalone: false, selector: "clr-file-list", host: { properties: { "attr.role": "\"list\"", "class.clr-file-list": "true" } }, queries: [{ propertyName: "fileMessagesTemplate", first: true, predicate: ClrFileMessagesTemplate, descendants: true }], ngImport: i0, template: `
@@ -6602,18 +6629,12 @@ class ClrFileList {
                 <cds-icon shape="times"></cds-icon>
               </button>
             </span>
-            <cds-icon
-              class="clr-validate-icon"
-              [shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
-              [status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
-              aria-hidden="true"
-            ></cds-icon>
           </div>
           @if (fileMessagesTemplate) {
             <ng-container
               [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
               [ngTemplateOutletContext]="fileMessagesTemplateContext"
-              [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
+              [ngTemplateOutletInjector]="injectorCache.get(file)"
             ></ng-container>
           }
         </div>
@@ -6647,18 +6668,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                 <cds-icon shape="times"></cds-icon>
               </button>
             </span>
-            <cds-icon
-              class="clr-validate-icon"
-              [shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
-              [status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
-              aria-hidden="true"
-            ></cds-icon>
           </div>
           @if (fileMessagesTemplate) {
             <ng-container
               [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
               [ngTemplateOutletContext]="fileMessagesTemplateContext"
-              [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
+              [ngTemplateOutletInjector]="injectorCache.get(file)"
             ></ng-container>
           }
         </div>
@@ -6782,12 +6797,6 @@ class ClrFileInputContainer extends ClrAbstractContainer$1 {
             <cds-icon shape="times" status="neutral"></cds-icon>
           </button>
         }
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -6855,12 +6864,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           >
             <cds-icon shape="times" status="neutral"></cds-icon>
           </button>
-        }
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
         }
       </div>
       @if (showHelper) {
@@ -7145,7 +7148,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrFileInputModule {
     constructor() {
-        ClarityIcons.addIcons(folderOpenIcon);
+        ClarityIcons.addIcons(folderOpenIcon, successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInputModule, declarations: [ClrFileInput,
@@ -7225,12 +7228,6 @@ class ClrInputContainer extends ClrAbstractContainer$1 {
           <ng-content select="[clrInput]"></ng-content>
           <ng-content select="[clrInputSuffix]"></ng-content>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -7242,7 +7239,7 @@ class ClrInputContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrInputContainer, decorators: [{
             type: Component,
@@ -7260,12 +7257,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           <ng-content select="[clrInput]"></ng-content>
           <ng-content select="[clrInputSuffix]"></ng-content>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -7332,8 +7323,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrInputModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon // caret
-        );
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrInputModule, declarations: [ClrInput, ClrInputContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule$1], exports: [ClrCommonFormsModule$1, ClrInput, ClrInputContainer] }); }
@@ -7400,12 +7390,6 @@ class ClrNumberInputContainer extends ClrAbstractContainer$1 {
             </button>
           </div>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -7452,12 +7436,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             </button>
           </div>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -7565,7 +7543,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrNumberInputModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, minusIcon, plusIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon, minusIcon, plusIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrNumberInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrNumberInputModule, declarations: [ClrNumberInput, ClrNumberInputContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule$1], exports: [ClrCommonFormsModule$1, ClrNumberInput, ClrNumberInputContainer] }); }
@@ -7650,12 +7628,6 @@ class ClrPasswordContainer extends ClrAbstractContainer$1 {
             </button>
           }
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -7691,12 +7663,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             </button>
           }
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -7790,7 +7756,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrPasswordModule {
     constructor() {
-        ClarityIcons.addIcons(eyeHideIcon, eyeIcon, exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(eyeHideIcon, eyeIcon, successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPasswordModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrPasswordModule, declarations: [ClrPassword, ClrPasswordContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule$1], exports: [ClrCommonFormsModule$1, ClrPassword, ClrPasswordContainer] }); }
@@ -7942,29 +7908,14 @@ class ClrRadioContainer extends ClrAbstractContainer$1 {
           <ng-content select="clr-control-helper"></ng-content>
         </div>
       }
-      @if (showValid || showInvalid) {
-        <div class="clr-subtext-wrapper">
-          @if (showInvalid) {
-            <cds-icon
-              class="clr-validate-icon"
-              shape="exclamation-circle"
-              status="danger"
-              aria-hidden="true"
-            ></cds-icon>
-          }
-          @if (showValid) {
-            <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-          }
-          @if (showInvalid) {
-            <ng-content select="clr-control-error"></ng-content>
-          }
-          @if (showValid) {
-            <ng-content select="clr-control-success"></ng-content>
-          }
-        </div>
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrRadioContainer, decorators: [{
             type: Component,
@@ -7982,26 +7933,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           <ng-content select="clr-control-helper"></ng-content>
         </div>
       }
-      @if (showValid || showInvalid) {
-        <div class="clr-subtext-wrapper">
-          @if (showInvalid) {
-            <cds-icon
-              class="clr-validate-icon"
-              shape="exclamation-circle"
-              status="danger"
-              aria-hidden="true"
-            ></cds-icon>
-          }
-          @if (showValid) {
-            <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-          }
-          @if (showInvalid) {
-            <ng-content select="clr-control-error"></ng-content>
-          }
-          @if (showValid) {
-            <ng-content select="clr-control-success"></ng-content>
-          }
-        </div>
+      @if (showInvalid) {
+        <ng-content select="clr-control-error"></ng-content>
+      }
+      @if (showValid) {
+        <ng-content select="clr-control-success"></ng-content>
       }
     </div>
   `,
@@ -8035,7 +7971,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrRadioModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrRadioModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrRadioModule, declarations: [ClrRadio, ClrRadioContainer, ClrRadioWrapper], imports: [CommonModule, ClrCommonFormsModule$1, ClrHostWrappingModule, ClrIcon], exports: [ClrCommonFormsModule$1, ClrRadio, ClrRadioContainer, ClrRadioWrapper] }); }
@@ -8085,12 +8021,6 @@ class ClrSelectContainer extends ClrAbstractContainer$1 {
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div [ngClass]="wrapperClass()">
         <ng-content select="[clrSelect]"></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -8102,7 +8032,7 @@ class ClrSelectContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSelectContainer, decorators: [{
             type: Component,
@@ -8116,12 +8046,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div [ngClass]="wrapperClass()">
         <ng-content select="[clrSelect]"></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -8184,7 +8108,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrSelectModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSelectModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrSelectModule, declarations: [ClrSelect, ClrSelectContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule$1], exports: [ClrCommonFormsModule$1, ClrSelect, ClrSelectContainer] }); }
@@ -8222,12 +8146,6 @@ class ClrTextareaContainer extends ClrAbstractContainer$1 {
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-textarea-wrapper">
         <ng-content select="[clrTextarea]"></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -8239,7 +8157,7 @@ class ClrTextareaContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTextareaContainer, decorators: [{
             type: Component,
@@ -8253,12 +8171,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-textarea-wrapper">
         <ng-content select="[clrTextarea]"></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -8316,7 +8228,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrTextareaModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTextareaModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrTextareaModule, declarations: [ClrTextarea, ClrTextareaContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule$1], exports: [ClrCommonFormsModule$1, ClrTextarea, ClrTextareaContainer] }); }
@@ -8397,12 +8309,6 @@ class ClrRangeContainer extends ClrAbstractContainer$1 {
         @if (hasProgress) {
           <span class="fill-input" [style.width]="getRangeProgressFillWidth()"></span>
         }
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -8414,7 +8320,7 @@ class ClrRangeContainer extends ClrAbstractContainer$1 {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrRangeContainer, decorators: [{
             type: Component,
@@ -8430,12 +8336,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
         <ng-content select="[clrRange]"></ng-content>
         @if (hasProgress) {
           <span class="fill-input" [style.width]="getRangeProgressFillWidth()"></span>
-        }
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
         }
       </div>
       @if (showHelper) {
@@ -8498,7 +8398,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrRangeModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrRangeModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrRangeModule, declarations: [ClrRange, ClrRangeContainer], imports: [CommonModule, ClrCommonFormsModule$1, ClrHostWrappingModule, ClrIcon], exports: [ClrCommonFormsModule$1, ClrRange, ClrRangeContainer] }); }

@@ -1,7 +1,7 @@
 import * as i0 from '@angular/core';
 import { Injectable, Directive, ViewChild, Component, PLATFORM_ID, Inject, DOCUMENT, EventEmitter, ElementRef, booleanAttribute, Input, Output, Optional, ContentChild, ChangeDetectionStrategy, ContentChildren, forwardRef, HostListener, ViewContainerRef, runInInjectionContext, Injector, ChangeDetectorRef, NgZone, Renderer2, inject, EnvironmentInjector, TemplateRef, IterableDiffers, ViewChildren, InjectionToken, NgModule } from '@angular/core';
 import * as i2 from '@clr/angular/utils';
-import { uniqueIdFactory, normalizeKey, Keys, HostWrapper, IfExpandService, ClrLoadingState, ClrExpandableAnimationDirective, LoadingListener, WillyWonka, OompaLoompa, ClrKeyFocus, DomAdapter, ClrIfExpanded, CdkDragModule, CdkTrapFocusModule, ClrLoadingModule, ClrConditionalModule, ClrOutsideClickModule, ClrExpandableAnimationModule, ClrKeyFocusModule } from '@clr/angular/utils';
+import { uniqueIdFactory, Keys, HostWrapper, IfExpandService, ClrLoadingState, ClrExpandableAnimationDirective, LoadingListener, WillyWonka, OompaLoompa, ClrKeyFocus, DomAdapter, ClrIfExpanded, CdkDragModule, CdkTrapFocusModule, ClrLoadingModule, ClrConditionalModule, ClrOutsideClickModule, ClrExpandableAnimationModule, ClrKeyFocusModule } from '@clr/angular/utils';
 import * as i2$2 from 'rxjs';
 import { Subject, BehaviorSubject, fromEvent, ReplaySubject, combineLatest, merge, of } from 'rxjs';
 import { filter, takeUntil, delay, debounceTime, map, switchMap } from 'rxjs/operators';
@@ -382,10 +382,6 @@ class CustomFilter {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-// @TODO The top two are not used now, which is probably a performance drag that was broken along the way.
-// There was a previous pattern to hide everything to do computation then display, for Firefox, needs revisiting.
-const NO_LAYOUT_CLASS = 'datagrid-no-layout';
-const COMPUTE_WIDTH_CLASS = 'datagrid-computing-columns-width';
 const STRICT_WIDTH_CLASS = 'datagrid-fixed-width';
 const HIDDEN_COLUMN_CLASS = 'datagrid-hidden-column';
 
@@ -1162,10 +1158,10 @@ class ClrDatagridColumnSeparator {
         }
     }
     isArrowLeftKeyEvent(event) {
-        return normalizeKey(event.key) === Keys.ArrowLeft;
+        return event.key === Keys.ArrowLeft;
     }
     isArrowRightKeyEvent(event) {
-        return normalizeKey(event.key) === Keys.ArrowRight;
+        return event.key === Keys.ArrowRight;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridColumnSeparator, deps: [{ token: ColumnResizerService }, { token: i0.Renderer2 }, { token: i0.NgZone }, { token: TableSizeService }, { token: i2.ClrCommonStringsService }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrDatagridColumnSeparator, isStandalone: false, selector: "clr-dg-column-separator", host: { properties: { "class.datagrid-column-separator": "true" } }, viewQueries: [{ propertyName: "resizeTrackerRef", first: true, predicate: ["resizeTracker"], descendants: true }, { propertyName: "columnHandleRef", first: true, predicate: ["columnHandle"], descendants: true }], ngImport: i0, template: `
@@ -1977,7 +1973,7 @@ class ClrDatagridFilter extends DatagridFilterRegistrar {
       #anchor
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="popoverId"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
       [class.datagrid-filter-open]="open"
       [class.datagrid-filtered]="active"
@@ -2005,7 +2001,7 @@ class ClrDatagridFilter extends DatagridFilterRegistrar {
 
       <ng-content></ng-content>
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i2.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i3.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i3.ÇlrClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: i3.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i2.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i3.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i3.ÇlrClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: i3.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridFilter, decorators: [{
             type: Component,
@@ -2020,7 +2016,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
       #anchor
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="popoverId"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
       [class.datagrid-filter-open]="open"
       [class.datagrid-filtered]="active"
@@ -5490,7 +5486,7 @@ class ClrDatagridActionOverflow {
       [attr.aria-controls]="popoverId"
       [attr.aria-expanded]="open"
       [attr.aria-label]="buttonLabel || commonStrings.keys.rowActions"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
     >
       <cds-icon shape="ellipsis-vertical" [attr.title]="buttonLabel || commonStrings.keys.rowActions"></cds-icon>
@@ -5514,7 +5510,7 @@ class ClrDatagridActionOverflow {
     >
       <ng-content></ng-content>
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i2.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i3.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i3.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }, { kind: "component", type: i2.ClrKeyFocus, selector: "[clrKeyFocus]", inputs: ["clrDirection", "clrFocusOnLoad", "clrKeyFocus"], outputs: ["clrFocusChange"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i2.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i3.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i3.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }, { kind: "component", type: i2.ClrKeyFocus, selector: "[clrKeyFocus]", inputs: ["clrDirection", "clrFocusOnLoad", "clrKeyFocus"], outputs: ["clrFocusChange"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridActionOverflow, decorators: [{
             type: Component,
@@ -5532,7 +5528,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
       [attr.aria-controls]="popoverId"
       [attr.aria-expanded]="open"
       [attr.aria-label]="buttonLabel || commonStrings.keys.rowActions"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
     >
       <cds-icon shape="ellipsis-vertical" [attr.title]="buttonLabel || commonStrings.keys.rowActions"></cds-icon>
@@ -5702,7 +5698,7 @@ class ClrDatagridColumnToggle {
       role="button"
       type="button"
       class="btn btn-sm column-toggle-action"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
       [attr.aria-controls]="popoverId"
       [attr.aria-expanded]="openState"
@@ -5760,7 +5756,7 @@ class ClrDatagridColumnToggle {
         <clr-dg-column-toggle-button (clrAllSelected)="allColumnsSelected()"></clr-dg-column-toggle-button>
       </div>
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i9.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i2.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i7.ClrCheckbox, selector: "[clrCheckbox],[clrToggle]" }, { kind: "component", type: i7.ClrCheckboxWrapper, selector: "clr-checkbox-wrapper,clr-toggle-wrapper" }, { kind: "directive", type: i13.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i13.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i13.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "directive", type: i3.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i3.ÇlrClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: i3.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }, { kind: "component", type: ClrDatagridColumnToggleButton, selector: "clr-dg-column-toggle-button", outputs: ["clrAllSelected"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i9.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i2.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i7.ClrCheckbox, selector: "[clrCheckbox],[clrToggle]" }, { kind: "component", type: i7.ClrCheckboxWrapper, selector: "clr-checkbox-wrapper,clr-toggle-wrapper" }, { kind: "directive", type: i13.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i13.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i13.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "directive", type: i3.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i3.ÇlrClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: i3.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }, { kind: "component", type: ClrDatagridColumnToggleButton, selector: "clr-dg-column-toggle-button", outputs: ["clrAllSelected"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridColumnToggle, decorators: [{
             type: Component,
@@ -5771,7 +5767,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
       role="button"
       type="button"
       class="btn btn-sm column-toggle-action"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
       [attr.aria-controls]="popoverId"
       [attr.aria-expanded]="openState"
@@ -7223,16 +7219,6 @@ class DatagridMainRenderer {
         }
         return false;
     }
-    /**
-     * Computes the height of the datagrid.
-     *
-     * NOTE: We had to choose to set the height instead of the min-height because
-     * IE 11 requires the height on the parent for the children flex grow/shrink properties to work.
-     * When we used min-height, 1 1 auto doesn't used to work in IE11 :-(
-     * But this doesn't affect the fix. It works in both fixed & variable height datagrids.
-     *
-     * Refer: http://stackoverflow.com/questions/24396205/flex-grow-not-working-in-internet-explorer-11-0
-     */
     computeDatagridHeight() {
         const height = window.getComputedStyle(this.el.nativeElement).height;
         this.renderer.setStyle(this.el.nativeElement, 'height', height);

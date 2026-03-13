@@ -1,11 +1,11 @@
 import * as i0 from '@angular/core';
 import { PLATFORM_ID, SkipSelf, Optional, Inject, Injectable, Input, Component, HostBinding, ContentChildren, HostListener, Directive, NgModule, ElementRef, InjectionToken, EventEmitter, Output, DOCUMENT, ContentChild, ViewChild } from '@angular/core';
 import * as i2 from '@clr/angular/popover/common';
-import { ClrPopoverHostDirective as ClrPopoverHostDirective$1, ClrPopoverType as ClrPopoverType$1, ClrPopoverPosition as ClrPopoverPosition$1, DROPDOWN_POSITIONS as DROPDOWN_POSITIONS$1, POPOVER_HOST_ANCHOR as POPOVER_HOST_ANCHOR$1, ClrPopoverContent as ClrPopoverContent$1, ClrIfOpen as ClrIfOpen$1, SIGNPOST_POSITIONS as SIGNPOST_POSITIONS$1, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext, TOOLTIP_POSITIONS as TOOLTIP_POSITIONS$1 } from '@clr/angular/popover/common';
+import { ClrPopoverHostDirective as ClrPopoverHostDirective$1, ClrPopoverType as ClrPopoverType$1, ClrPopoverPosition as ClrPopoverPosition$1, DROPDOWN_POSITIONS as DROPDOWN_POSITIONS$1, POPOVER_HOST_ORIGIN as POPOVER_HOST_ORIGIN$1, ClrPopoverContent as ClrPopoverContent$1, ClrIfOpen as ClrIfOpen$1, SIGNPOST_POSITIONS as SIGNPOST_POSITIONS$1, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext, TOOLTIP_POSITIONS as TOOLTIP_POSITIONS$1 } from '@clr/angular/popover/common';
 import * as i1 from '@clr/angular/utils';
-import { uniqueIdFactory, ArrowKeyDirection, Linkers, wrapObservable, customFocusableItemProvider, FOCUS_SERVICE_PROVIDER, FocusableItem, BASIC_FOCUSABLE_ITEM_PROVIDER, preventArrowKeyScroll, ClrPosition, normalizeKey, Keys, ClrFocusOnViewInitModule } from '@clr/angular/utils';
+import { uniqueIdFactory, ArrowKeyDirection, Linkers, wrapObservable, customFocusableItemProvider, FOCUS_SERVICE_PROVIDER, FocusableItem, BASIC_FOCUSABLE_ITEM_PROVIDER, preventArrowKeyScroll, ClrPosition, Keys, ClrFocusOnViewInitModule } from '@clr/angular/utils';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
-import { ReplaySubject, of, Subject, merge, fromEvent } from 'rxjs';
+import { ReplaySubject, of, Subject, merge, timer, switchMap, fromEvent } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import * as i3 from '@clr/angular/icon';
 import { ClrIcon, ClarityIcons, windowCloseIcon, infoCircleIcon } from '@clr/angular/icon';
@@ -192,6 +192,9 @@ class ClrDropdown {
         this.subscriptions.push(dropdownService.changes.subscribe(value => (popoverService.open = value)));
         this.subscriptions.push(popoverService.openChange.subscribe(() => cdr.markForCheck()));
     }
+    openAtPoint(point) {
+        this.popoverService.openAtPoint(point);
+    }
     ngOnDestroy() {
         this.subscriptions.forEach(sub => sub.unsubscribe());
     }
@@ -266,7 +269,7 @@ class ClrDropdownMenu {
     ngOnDestroy() {
         this.focusHandler.resetChildren();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDropdownMenu, deps: [{ token: POPOVER_HOST_ANCHOR$1, optional: true }, { token: ClrDropdownMenu, optional: true, skipSelf: true }, { token: DropdownFocusHandler }, { token: i0.ElementRef }, { token: i2.ClrPopoverService }, { token: i2.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDropdownMenu, deps: [{ token: POPOVER_HOST_ORIGIN$1, optional: true }, { token: ClrDropdownMenu, optional: true, skipSelf: true }, { token: DropdownFocusHandler }, { token: i0.ElementRef }, { token: i2.ClrPopoverService }, { token: i2.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrDropdownMenu, isStandalone: false, selector: "clr-dropdown-menu", inputs: { position: ["clrPosition", "position"] }, host: { properties: { "class.dropdown-menu": "true", "attr.role": "\"menu\"", "class.is-off-screen": "this.isOffScreen" } }, queries: [{ propertyName: "items", predicate: FocusableItem }], hostDirectives: [{ directive: i2.ClrPopoverContent }], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDropdownMenu, decorators: [{
@@ -285,7 +288,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     type: Optional
                 }, {
                     type: Inject,
-                    args: [POPOVER_HOST_ANCHOR$1]
+                    args: [POPOVER_HOST_ORIGIN$1]
                 }] }, { type: ClrDropdownMenu, decorators: [{
                     type: Optional
                 }, {
@@ -316,7 +319,7 @@ class ClrDropdownTrigger {
             this.isRootLevelToggle = false;
         }
         focusHandler.trigger = el.nativeElement;
-        popoverService.anchorElementRef = el;
+        popoverService.origin = el;
     }
     get active() {
         return this.popoverService.open;
@@ -489,14 +492,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-// Popovers might need to ignore click events on an element
-// (eg: popover opens on focus on an input field. Clicks should be ignored in this case)
 class ClrPopoverService {
     constructor() {
         this.panelClass = [];
@@ -507,6 +502,12 @@ class ClrPopoverService {
         this._resetPositions = new Subject();
         this._updatePosition = new Subject();
         this._popoverVisible = new Subject();
+    }
+    get originElement() {
+        return this.origin instanceof ElementRef ? this.origin : null;
+    }
+    get originPoint() {
+        return this.origin && 'x' in this.origin && 'y' in this.origin ? this.origin : null;
     }
     get openChange() {
         return this._openChange.asObservable();
@@ -555,6 +556,18 @@ class ClrPopoverService {
         this.openEvent = event;
         this.open = !this.open;
     }
+    /**
+     * Opens the popover at a specific screen coordinate.
+     * Useful for context menus where the popover should appear at the cursor position.
+     */
+    openAtPoint(point) {
+        if (this._open) {
+            this._open = false;
+            this._openChange.next(false);
+        }
+        this.origin = point;
+        this.open = true;
+    }
     popoverVisibleEmit(visible) {
         this._popoverVisible.next(visible);
     }
@@ -567,8 +580,8 @@ class ClrPopoverService {
     focusCloseButton() {
         this.closeButtonRef.nativeElement?.focus();
     }
-    focusAnchor() {
-        this.anchorElementRef?.nativeElement?.focus({ preventScroll: true });
+    focusOrigin() {
+        this.originElement?.nativeElement?.focus({ preventScroll: true });
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
     static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverService }); }
@@ -704,52 +717,52 @@ function getOffset(key, type) {
             };
     }
 }
-const STANDARD_ANCHORS = {
+const STANDARD_ORIGINS = {
     // TOP
-    [ClrPopoverPosition.TOP_RIGHT]: { anchor: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_LEFT },
-    [ClrPopoverPosition.TOP_MIDDLE]: { anchor: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_CENTER },
-    [ClrPopoverPosition.TOP_LEFT]: { anchor: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_RIGHT },
+    [ClrPopoverPosition.TOP_RIGHT]: { origin: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_LEFT },
+    [ClrPopoverPosition.TOP_MIDDLE]: { origin: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_CENTER },
+    [ClrPopoverPosition.TOP_LEFT]: { origin: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_RIGHT },
     // LEFT
-    [ClrPopoverPosition.LEFT]: { anchor: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_TOP },
-    [ClrPopoverPosition.LEFT_TOP]: { anchor: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_BOTTOM },
-    [ClrPopoverPosition.LEFT_MIDDLE]: { anchor: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_CENTER },
-    [ClrPopoverPosition.LEFT_BOTTOM]: { anchor: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_TOP },
+    [ClrPopoverPosition.LEFT]: { origin: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_TOP },
+    [ClrPopoverPosition.LEFT_TOP]: { origin: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_BOTTOM },
+    [ClrPopoverPosition.LEFT_MIDDLE]: { origin: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_CENTER },
+    [ClrPopoverPosition.LEFT_BOTTOM]: { origin: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_TOP },
     // RIGHT
-    [ClrPopoverPosition.RIGHT]: { anchor: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_TOP },
-    [ClrPopoverPosition.RIGHT_TOP]: { anchor: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_BOTTOM },
-    [ClrPopoverPosition.RIGHT_MIDDLE]: { anchor: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_CENTER },
-    [ClrPopoverPosition.RIGHT_BOTTOM]: { anchor: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_TOP },
+    [ClrPopoverPosition.RIGHT]: { origin: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_TOP },
+    [ClrPopoverPosition.RIGHT_TOP]: { origin: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_BOTTOM },
+    [ClrPopoverPosition.RIGHT_MIDDLE]: { origin: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_CENTER },
+    [ClrPopoverPosition.RIGHT_BOTTOM]: { origin: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_TOP },
     // BOTTOM
-    [ClrPopoverPosition.BOTTOM_RIGHT]: { anchor: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_LEFT },
-    [ClrPopoverPosition.BOTTOM_MIDDLE]: { anchor: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_CENTER },
-    [ClrPopoverPosition.BOTTOM_LEFT]: { anchor: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_RIGHT },
+    [ClrPopoverPosition.BOTTOM_RIGHT]: { origin: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_LEFT },
+    [ClrPopoverPosition.BOTTOM_MIDDLE]: { origin: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_CENTER },
+    [ClrPopoverPosition.BOTTOM_LEFT]: { origin: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_RIGHT },
 };
-const DROPDOWN_ANCHORS = {
+const DROPDOWN_ORIGINS = {
     // TOP
-    [ClrPopoverPosition.TOP_RIGHT]: { anchor: ClrPosition.TOP_RIGHT, content: ClrPosition.BOTTOM_RIGHT },
-    [ClrPopoverPosition.TOP_LEFT]: { anchor: ClrPosition.TOP_LEFT, content: ClrPosition.BOTTOM_LEFT },
+    [ClrPopoverPosition.TOP_RIGHT]: { origin: ClrPosition.TOP_RIGHT, content: ClrPosition.BOTTOM_RIGHT },
+    [ClrPopoverPosition.TOP_LEFT]: { origin: ClrPosition.TOP_LEFT, content: ClrPosition.BOTTOM_LEFT },
     // LEFT
-    [ClrPopoverPosition.LEFT_TOP]: { anchor: ClrPosition.LEFT_TOP, content: ClrPosition.TOP_RIGHT },
-    [ClrPopoverPosition.LEFT_BOTTOM]: { anchor: ClrPosition.LEFT_BOTTOM, content: ClrPosition.BOTTOM_RIGHT },
+    [ClrPopoverPosition.LEFT_TOP]: { origin: ClrPosition.LEFT_TOP, content: ClrPosition.TOP_RIGHT },
+    [ClrPopoverPosition.LEFT_BOTTOM]: { origin: ClrPosition.LEFT_BOTTOM, content: ClrPosition.BOTTOM_RIGHT },
     // RIGHT
-    [ClrPopoverPosition.RIGHT_TOP]: { anchor: ClrPosition.RIGHT_TOP, content: ClrPosition.LEFT_TOP },
-    [ClrPopoverPosition.RIGHT_BOTTOM]: { anchor: ClrPosition.RIGHT_BOTTOM, content: ClrPosition.LEFT_BOTTOM },
+    [ClrPopoverPosition.RIGHT_TOP]: { origin: ClrPosition.RIGHT_TOP, content: ClrPosition.LEFT_TOP },
+    [ClrPopoverPosition.RIGHT_BOTTOM]: { origin: ClrPosition.RIGHT_BOTTOM, content: ClrPosition.LEFT_BOTTOM },
     // BOTTOM
-    [ClrPopoverPosition.BOTTOM_RIGHT]: { anchor: ClrPosition.BOTTOM_LEFT, content: ClrPosition.TOP_RIGHT },
-    [ClrPopoverPosition.BOTTOM_LEFT]: { anchor: ClrPosition.BOTTOM_RIGHT, content: ClrPosition.TOP_LEFT },
+    [ClrPopoverPosition.BOTTOM_RIGHT]: { origin: ClrPosition.BOTTOM_LEFT, content: ClrPosition.TOP_RIGHT },
+    [ClrPopoverPosition.BOTTOM_LEFT]: { origin: ClrPosition.BOTTOM_RIGHT, content: ClrPosition.TOP_LEFT },
 };
 function mapPopoverKeyToPosition(key, type) {
     let offset = getOffset(key, type);
-    const defaultPosition = { anchor: ClrPosition.BOTTOM_LEFT, content: ClrPosition.TOP_LEFT };
-    const { anchor, content } = (type === ClrPopoverType.DROPDOWN ? DROPDOWN_ANCHORS[key] : STANDARD_ANCHORS[key]) ?? defaultPosition;
+    const defaultPosition = { origin: ClrPosition.BOTTOM_LEFT, content: ClrPosition.TOP_LEFT };
+    const { origin, content } = (type === ClrPopoverType.DROPDOWN ? DROPDOWN_ORIGINS[key] : STANDARD_ORIGINS[key]) ?? defaultPosition;
     return {
-        ...getAnchorPosition(anchor),
+        ...getOriginPosition(origin),
         ...getContentPosition(content),
         ...offset,
         panelClass: key,
     };
 }
-function getAnchorPosition(key) {
+function getOriginPosition(key) {
     switch (key) {
         // TOP Positions
         case ClrPosition.TOP_LEFT:
@@ -968,11 +981,19 @@ class ClrPopoverContent {
     set scrollToClose(scrollToClose) {
         this._scrollToClose = !!scrollToClose;
     }
+    set contentOrigin(origin) {
+        if (origin instanceof Element) {
+            this.popoverService.origin = new ElementRef(origin);
+        }
+        else {
+            this.popoverService.origin = origin;
+        }
+    }
     get positionStrategy() {
         return this.overlay
             .position()
-            .flexibleConnectedTo(this.popoverService.anchorElementRef)
-            .setOrigin(this.popoverService.anchorElementRef)
+            .flexibleConnectedTo(this.popoverService.origin)
+            .setOrigin(this.popoverService.origin)
             .withPush(true)
             .withPositions([this.preferredPosition, ...this._availablePositions])
             .withFlexibleDimensions(true);
@@ -1015,13 +1036,38 @@ class ClrPopoverContent {
         }), this.popoverService.updatePositionChange().subscribe(() => {
             this.overlayRef?.updatePosition();
         }), this.overlayRef.keydownEvents().subscribe(event => {
-            if (event && event.key && normalizeKey(event.key) === Keys.Escape && !hasModifierKey(event)) {
+            if (event && event.key && event.key === Keys.Escape && !hasModifierKey(event)) {
                 event.preventDefault();
                 this.closePopover();
             }
-        }), this.overlayRef.outsidePointerEvents().subscribe(event => {
+        }), this.popoverService.originPoint
+            ? this.createPointBasedOutsideClickSubscription()
+            : this.createElementBasedOutsideClickSubscription());
+    }
+    /**
+     * Point-based origins (context menus) delay the subscription to avoid the
+     * mouseup from the same right-click that opened the popover.
+     */
+    createPointBasedOutsideClickSubscription() {
+        return timer(500)
+            .pipe(switchMap(() => this.overlayRef.outsidePointerEvents()))
+            .subscribe(event => {
+            if (this.elementRef?.nativeElement?.contains(event.target)) {
+                return;
+            }
+            if (this._outsideClickClose) {
+                this.closePopover();
+            }
+        });
+    }
+    /**
+     * Element-based origins close on outside clicks and suppress toggle-button
+     * re-clicks so the popover doesn't immediately reopen.
+     */
+    createElementBasedOutsideClickSubscription() {
+        return this.overlayRef.outsidePointerEvents().subscribe(event => {
             // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
-            if (this.elementRef && this.elementRef.nativeElement.contains(event.target)) {
+            if (this.elementRef?.nativeElement?.contains(event.target)) {
                 return;
             }
             // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
@@ -1035,7 +1081,7 @@ class ClrPopoverContent {
             if (this._outsideClickClose || isToggleButton) {
                 this.closePopover();
             }
-        }));
+        });
     }
     resetPosition() {
         if (this.overlayRef) {
@@ -1049,11 +1095,13 @@ class ClrPopoverContent {
         }
         this.removeOverlay();
         this.popoverService.open = false;
-        const shouldFocusTrigger = this.popoverType !== ClrPopoverType.TOOLTIP &&
-            (document.activeElement === document.body ||
-                document.activeElement === this.popoverService.anchorElementRef?.nativeElement);
-        if (shouldFocusTrigger) {
-            this.popoverService.focusAnchor();
+        if (this.popoverService.originElement) {
+            const shouldFocusTrigger = this.popoverType !== ClrPopoverType.TOOLTIP &&
+                (document.activeElement === document.body ||
+                    document.activeElement === this.popoverService.originElement.nativeElement);
+            if (shouldFocusTrigger) {
+                this.popoverService.focusOrigin();
+            }
         }
     }
     showOverlay() {
@@ -1071,15 +1119,17 @@ class ClrPopoverContent {
             this.domPortal = new DomPortal(this.elementRef);
             this.overlayRef.attach(this.domPortal);
         }
-        this.popoverService?.anchorElementRef?.nativeElement.scrollIntoView({
-            behavior: 'instant',
-            block: 'nearest',
-            inline: 'nearest',
-        });
-        this.setupIntersectionObserver();
+        if (this.popoverService.originElement) {
+            this.popoverService.originElement.nativeElement.scrollIntoView({
+                behavior: 'instant',
+                block: 'nearest',
+                inline: 'nearest',
+            });
+            this.setupIntersectionObserver();
+        }
         setTimeout(() => {
             // Get Scrollable Parents
-            this.listenToMouseEvents();
+            this.listenToScrollEvents();
             this.popoverService.popoverVisibleEmit(true);
             if (this.elementRef?.nativeElement?.focus) {
                 this.elementRef.nativeElement.focus();
@@ -1126,30 +1176,46 @@ class ClrPopoverContent {
         return scrollableParents;
     }
     /**
-     * Uses IntersectionObserver to detect when the anchor leaves the screen.
+     * Uses IntersectionObserver to detect when the origin element leaves the screen.
      * This handles the "Close on Scroll" logic much cheaper than getBoundingClientRect.
      */
     setupIntersectionObserver() {
-        if (!this.popoverService.anchorElementRef || this.intersectionObserver) {
+        if (!this.popoverService.originElement || this.intersectionObserver) {
             return;
         }
         this.intersectionObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
-                // If the anchor is no longer visible (scrolled out of view)
+                // If the origin is no longer visible (scrolled out of view)
                 if (!entry.isIntersecting && this.popoverService.open) {
                     this.zone.run(() => this.closePopover());
                 }
             });
         }, { root: null, threshold: 0.8 });
-        this.intersectionObserver.observe(this.popoverService.anchorElementRef.nativeElement);
+        this.intersectionObserver.observe(this.popoverService.originElement.nativeElement);
     }
-    //Align the popover on scrolling
-    listenToMouseEvents() {
+    listenToScrollEvents() {
         if (!isPlatformBrowser(this.platformId)) {
             return;
         }
-        const anchor = this.getRootPopover(this)?.popoverService?.anchorElementRef?.nativeElement;
-        const scrollableParents = this.getScrollableParents(anchor);
+        if (this.popoverService.originPoint) {
+            this.listenToScrollForPointOrigin();
+        }
+        else {
+            this.listenToScrollForElementOrigin();
+        }
+    }
+    // Point origins have no scrollable parent chain — close on any scroll.
+    listenToScrollForPointOrigin() {
+        this.zone.runOutsideAngular(() => {
+            this.subscriptions.push(fromEvent(window, 'scroll', { passive: true, capture: true }).subscribe(() => {
+                this.zone.run(() => this.closePopover());
+            }));
+        });
+    }
+    // Element origins track ancestor scroll containers to reposition or close.
+    listenToScrollForElementOrigin() {
+        const originEl = this.getRootPopover(this)?.popoverService?.originElement?.nativeElement;
+        const scrollableParents = this.getScrollableParents(originEl);
         this.zone.runOutsideAngular(() => {
             this.subscriptions.push(merge(...scrollableParents.map(parent => fromEvent(parent, 'scroll', { passive: true }))).subscribe(() => {
                 if (this._scrollToClose) {
@@ -1167,7 +1233,7 @@ class ClrPopoverContent {
         return popover;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverContent, deps: [{ token: i0.ElementRef }, { token: i0.ViewContainerRef }, { token: i0.TemplateRef, optional: true }, { token: i1$1.OverlayContainer }, { token: ClrPopoverContent, optional: true, skipSelf: true }, { token: i1$1.Overlay }, { token: ClrPopoverService }, { token: i0.NgZone }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrPopoverContent, isStandalone: true, selector: "[clrPopoverContent]", inputs: { open: ["clrPopoverContent", "open"], contentAt: ["clrPopoverContentAt", "contentAt"], availablePositions: ["clrPopoverContentAvailablePositions", "availablePositions"], contentType: ["clrPopoverContentType", "contentType"], outsideClickClose: ["clrPopoverContentOutsideClickToClose", "outsideClickClose"], scrollToClose: ["clrPopoverContentScrollToClose", "scrollToClose"] }, ngImport: i0 }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrPopoverContent, isStandalone: true, selector: "[clrPopoverContent]", inputs: { open: ["clrPopoverContent", "open"], contentAt: ["clrPopoverContentAt", "contentAt"], availablePositions: ["clrPopoverContentAvailablePositions", "availablePositions"], contentType: ["clrPopoverContentType", "contentType"], outsideClickClose: ["clrPopoverContentOutsideClickToClose", "outsideClickClose"], scrollToClose: ["clrPopoverContentScrollToClose", "scrollToClose"], contentOrigin: ["clrPopoverContentOrigin", "contentOrigin"] }, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverContent, decorators: [{
             type: Directive,
@@ -1204,6 +1270,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], scrollToClose: [{
                 type: Input,
                 args: ['clrPopoverContentScrollToClose']
+            }], contentOrigin: [{
+                type: Input,
+                args: ['clrPopoverContentOrigin']
             }] } });
 
 /*
@@ -1212,19 +1281,19 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class ClrPopoverAnchor {
+class ClrPopoverOrigin {
     constructor(popoverService, element) {
-        popoverService.anchorElementRef = element;
+        popoverService.origin = element;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverAnchor, deps: [{ token: ClrPopoverService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrPopoverAnchor, isStandalone: false, selector: "[clrPopoverAnchor]", host: { properties: { "class.clr-anchor": "true" } }, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverOrigin, deps: [{ token: ClrPopoverService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrPopoverOrigin, isStandalone: false, selector: "[clrPopoverOrigin]", host: { properties: { "class.clr-popover-origin": "true" } }, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverAnchor, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverOrigin, decorators: [{
             type: Directive,
             args: [{
-                    selector: '[clrPopoverAnchor]',
+                    selector: '[clrPopoverOrigin]',
                     host: {
-                        '[class.clr-anchor]': 'true',
+                        '[class.clr-popover-origin]': 'true',
                     },
                     standalone: false,
                 }]
@@ -1236,7 +1305,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-const POPOVER_HOST_ANCHOR = new InjectionToken('POPOVER_HOST_ANCHOR');
+const POPOVER_HOST_ORIGIN = new InjectionToken('POPOVER_HOST_ORIGIN');
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -1286,13 +1355,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrPopoverHostDirective {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverHostDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrPopoverHostDirective, isStandalone: true, providers: [ClrPopoverService, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }], hostDirectives: [{ directive: ClrStopEscapePropagationDirective }], ngImport: i0 }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrPopoverHostDirective, isStandalone: true, providers: [ClrPopoverService, { provide: POPOVER_HOST_ORIGIN, useExisting: ElementRef }], hostDirectives: [{ directive: ClrStopEscapePropagationDirective }], ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverHostDirective, decorators: [{
             type: Directive,
             args: [{
                     standalone: true,
-                    providers: [ClrPopoverService, { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
+                    providers: [ClrPopoverService, { provide: POPOVER_HOST_ORIGIN, useExisting: ElementRef }],
                     hostDirectives: [ClrStopEscapePropagationDirective],
                 }]
         }] });
@@ -1398,12 +1467,12 @@ class ClrPopoverCloseButton {
         this.closeChange = new EventEmitter();
         this.subscriptions = [];
         this.subscriptions.push(popoverService.openChange.pipe(filter(value => !value)).subscribe(() => {
-            this.closeChange.next();
+            this.closeChange.emit();
         }));
     }
     handleClick(event) {
         this.popoverService.toggleWithEvent(event);
-        this.popoverService.focusAnchor();
+        this.popoverService.focusOrigin();
     }
     ngAfterViewInit() {
         this.popoverService.closeButtonRef = this.elementRef;
@@ -1443,7 +1512,7 @@ class ClrPopoverOpenCloseButton {
         this.openCloseChange = new EventEmitter();
         this.subscriptions = [];
         this.subscriptions.push(popoverService.openChange.subscribe(change => {
-            this.openCloseChange.next(change);
+            this.openCloseChange.emit(change);
         }));
     }
     handleClick(event) {
@@ -1480,15 +1549,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrPopoverModuleNext {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverModuleNext, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverModuleNext, declarations: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton], imports: [ClrPopoverContent, ClrIfOpen], exports: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent, ClrIfOpen] }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverModuleNext, declarations: [ClrPopoverOrigin, ClrPopoverCloseButton, ClrPopoverOpenCloseButton], imports: [ClrPopoverContent, ClrIfOpen], exports: [ClrPopoverOrigin, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent, ClrIfOpen] }); }
     static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverModuleNext }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrPopoverModuleNext, decorators: [{
             type: NgModule,
             args: [{
                     imports: [ClrPopoverContent, ClrIfOpen],
-                    declarations: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton],
-                    exports: [ClrPopoverAnchor, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent, ClrIfOpen],
+                    declarations: [ClrPopoverOrigin, ClrPopoverCloseButton, ClrPopoverOpenCloseButton],
+                    exports: [ClrPopoverOrigin, ClrPopoverCloseButton, ClrPopoverOpenCloseButton, ClrPopoverContent, ClrIfOpen],
                 }]
         }] });
 
@@ -1587,7 +1656,7 @@ class ClrSignpostTrigger {
         this.document = document;
     }
     ngOnInit() {
-        this.popoverService.anchorElementRef = this.el;
+        this.popoverService.origin = this.el;
         this.signpostFocusManager.triggerEl = this.el.nativeElement;
         this.subscriptions.push(this.popoverService.openChange.subscribe((isOpen) => {
             this.ariaExpanded = isOpen;
@@ -1664,8 +1733,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  *
  */
 class ClrSignpost {
-    constructor(commonStrings) {
+    constructor(commonStrings, popoverService) {
         this.commonStrings = commonStrings;
+        this.popoverService = popoverService;
         /**********
          * @property useCustomTrigger
          *
@@ -1674,6 +1744,11 @@ class ClrSignpost {
          *
          */
         this.useCustomTrigger = false;
+        /**
+         * Hides the default trigger button. Use when the signpost is opened
+         * programmatically via `openAtPoint()` and no trigger icon is needed.
+         */
+        this.hideTrigger = false;
     }
     /**********
      * @property signPostTrigger
@@ -1685,9 +1760,15 @@ class ClrSignpost {
     set customTrigger(trigger) {
         this.useCustomTrigger = !!trigger;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpost, deps: [{ token: i1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrSignpost, isStandalone: false, selector: "clr-signpost", inputs: { signpostTriggerAriaLabel: ["clrSignpostTriggerAriaLabel", "signpostTriggerAriaLabel"] }, host: { properties: { "class.signpost": "true" } }, providers: [SignpostFocusManager, SignpostIdService], queries: [{ propertyName: "customTrigger", first: true, predicate: ClrSignpostTrigger, descendants: true }], hostDirectives: [{ directive: i2.ClrPopoverHostDirective }], ngImport: i0, template: `
-    @if (!useCustomTrigger) {
+    get showDefaultTrigger() {
+        return !this.useCustomTrigger && !this.hideTrigger;
+    }
+    openAtPoint(point) {
+        this.popoverService.openAtPoint(point);
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpost, deps: [{ token: i1.ClrCommonStringsService }, { token: i2.ClrPopoverService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrSignpost, isStandalone: false, selector: "clr-signpost", inputs: { signpostTriggerAriaLabel: ["clrSignpostTriggerAriaLabel", "signpostTriggerAriaLabel"], hideTrigger: ["clrSignpostHideTrigger", "hideTrigger"] }, host: { properties: { "class.signpost": "true" } }, providers: [SignpostFocusManager, SignpostIdService], queries: [{ propertyName: "customTrigger", first: true, predicate: ClrSignpostTrigger, descendants: true }], hostDirectives: [{ directive: i2.ClrPopoverHostDirective }], ngImport: i0, template: `
+    @if (showDefaultTrigger) {
       <button
         type="button"
         class="signpost-action btn btn-sm btn-icon btn-link"
@@ -1706,7 +1787,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             args: [{
                     selector: 'clr-signpost',
                     template: `
-    @if (!useCustomTrigger) {
+    @if (showDefaultTrigger) {
       <button
         type="button"
         class="signpost-action btn btn-sm btn-icon btn-link"
@@ -1724,9 +1805,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     hostDirectives: [ClrPopoverHostDirective$1],
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i1.ClrCommonStringsService }], propDecorators: { signpostTriggerAriaLabel: [{
+        }], ctorParameters: () => [{ type: i1.ClrCommonStringsService }, { type: i2.ClrPopoverService }], propDecorators: { signpostTriggerAriaLabel: [{
                 type: Input,
                 args: ['clrSignpostTriggerAriaLabel']
+            }], hideTrigger: [{
+                type: Input,
+                args: ['clrSignpostHideTrigger']
             }], customTrigger: [{
                 type: ContentChild,
                 args: [ClrSignpostTrigger]
@@ -1761,8 +1845,8 @@ class ClrSignpostContent {
      *
      * @description
      * A setter for the position of the ClrSignpostContent popover. This is a combination of the following:
-     * - anchorPoint - where on the trigger to anchor the ClrSignpostContent
-     * - popoverPoint - where on the ClrSignpostContent container to align with the anchorPoint
+     * - originPoint - where on the trigger to position the content
+     * - popoverPoint - where on the content container to align with the origin
      * - offsetY - where on the Y axis to align the ClrSignpostContent so it meets specs
      * - offsetX - where on the X axis to align the ClrSignpostContent so it meets specs
      * There are 12 possible positions to place a ClrSignpostContent container:
@@ -1832,7 +1916,7 @@ class ClrSignpostContent {
     getFocusableElements(element) {
         return Array.from(element.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpostContent, deps: [{ token: POPOVER_HOST_ANCHOR$1, optional: true }, { token: i0.ElementRef }, { token: i1.ClrCommonStringsService }, { token: SignpostIdService }, { token: SignpostFocusManager }, { token: PLATFORM_ID }, { token: DOCUMENT }, { token: i2.ClrPopoverService }, { token: i2.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpostContent, deps: [{ token: POPOVER_HOST_ORIGIN$1, optional: true }, { token: i0.ElementRef }, { token: i1.ClrCommonStringsService }, { token: SignpostIdService }, { token: SignpostFocusManager }, { token: PLATFORM_ID }, { token: DOCUMENT }, { token: i2.ClrPopoverService }, { token: i2.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrSignpostContent, isStandalone: false, selector: "clr-signpost-content", inputs: { signpostCloseAriaLabel: ["clrSignpostCloseAriaLabel", "signpostCloseAriaLabel"], position: ["clrPosition", "position"] }, host: { attributes: { "role": "dialog" }, listeners: { "keydown": "onKeyDown($event)" }, properties: { "class.signpost-content": "true", "id": "signpostContentId", "class.is-off-screen": "this.isOffScreen" } }, viewQueries: [{ propertyName: "closeButton", first: true, predicate: ["closeButton"], descendants: true, read: ElementRef }], hostDirectives: [{ directive: i2.ClrPopoverContent }], ngImport: i0, template: `
     <div class="signpost-wrap">
       <div class="popover-pointer"></div>
@@ -1892,7 +1976,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     type: Optional
                 }, {
                     type: Inject,
-                    args: [POPOVER_HOST_ANCHOR$1]
+                    args: [POPOVER_HOST_ORIGIN$1]
                 }] }, { type: i0.ElementRef }, { type: i1.ClrCommonStringsService }, { type: SignpostIdService }, { type: SignpostFocusManager }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [PLATFORM_ID]
@@ -2080,7 +2164,7 @@ class ClrTooltipTrigger {
         this.subs = [];
         // The aria-described by comes from the id of content. It
         this.subs.push(tooltipIdService.id.subscribe(tooltipId => (this.ariaDescribedBy = tooltipId)));
-        popoverService.anchorElementRef = element;
+        popoverService.origin = element;
     }
     ngOnDestroy() {
         this.subs.forEach(sub => sub.unsubscribe());
@@ -2190,7 +2274,7 @@ class ClrTooltipContent {
         this.renderer.removeClass(this.el.nativeElement, oldClass);
         this.renderer.addClass(this.el.nativeElement, newClass);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTooltipContent, deps: [{ token: POPOVER_HOST_ANCHOR$1, optional: true }, { token: TooltipIdService }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i2.ClrPopoverService }, { token: TooltipMouseService }, { token: i2.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTooltipContent, deps: [{ token: POPOVER_HOST_ORIGIN$1, optional: true }, { token: TooltipIdService }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i2.ClrPopoverService }, { token: TooltipMouseService }, { token: i2.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrTooltipContent, isStandalone: false, selector: "clr-tooltip-content", inputs: { id: "id", position: ["clrPosition", "position"], size: ["clrSize", "size"] }, host: { listeners: { "mouseenter": "onMouseEnter()", "mouseleave": "onMouseLeave()" }, properties: { "class.tooltip-content": "true", "style.opacity": "1", "attr.role": "\"tooltip\"", "id": "id" } }, hostDirectives: [{ directive: i2.ClrPopoverContent }], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTooltipContent, decorators: [{
@@ -2211,7 +2295,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     type: Optional
                 }, {
                     type: Inject,
-                    args: [POPOVER_HOST_ANCHOR$1]
+                    args: [POPOVER_HOST_ORIGIN$1]
                 }] }, { type: TooltipIdService }, { type: i0.ElementRef }, { type: i0.Renderer2 }, { type: i2.ClrPopoverService }, { type: TooltipMouseService }, { type: i2.ClrPopoverContent }], propDecorators: { id: [{
                 type: Input
             }], position: [{
@@ -2267,5 +2351,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { CLR_DROPDOWN_DIRECTIVES, CLR_MENU_POSITIONS, CLR_SIGNPOST_DIRECTIVES, CLR_TOOLTIP_DIRECTIVES, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, ClrIfOpen, ClrPopoverAnchor, ClrPopoverContent, ClrPopoverHostDirective, ClrPopoverModule, ClrPopoverPosition, ClrPopoverService, ClrPopoverType, ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTitle, ClrSignpostTrigger, ClrStopEscapePropagationDirective, ClrTooltip, ClrTooltipContent, ClrTooltipModule, ClrTooltipTrigger, DROPDOWN_POSITIONS, POPOVER_HOST_ANCHOR, SIGNPOST_POSITIONS, TOOLTIP_POSITIONS, getAnchorPosition, getConnectedPositions, getContentPosition, getPositionsArray, mapPopoverKeyToPosition, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton };
+export { CLR_DROPDOWN_DIRECTIVES, CLR_MENU_POSITIONS, CLR_SIGNPOST_DIRECTIVES, CLR_TOOLTIP_DIRECTIVES, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, ClrIfOpen, ClrPopoverContent, ClrPopoverHostDirective, ClrPopoverModule, ClrPopoverOrigin, ClrPopoverPosition, ClrPopoverService, ClrPopoverType, ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTitle, ClrSignpostTrigger, ClrStopEscapePropagationDirective, ClrTooltip, ClrTooltipContent, ClrTooltipModule, ClrTooltipTrigger, DROPDOWN_POSITIONS, POPOVER_HOST_ORIGIN, SIGNPOST_POSITIONS, TOOLTIP_POSITIONS, getConnectedPositions, getContentPosition, getOriginPosition, getPositionsArray, mapPopoverKeyToPosition, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton };
 //# sourceMappingURL=clr-angular-popover.mjs.map

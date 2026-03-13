@@ -1,13 +1,13 @@
 import * as i0 from '@angular/core';
 import { OnDestroy, Renderer2, ChangeDetectorRef, AfterContentInit, QueryList, ElementRef, Type, AfterViewInit, ViewContainerRef, TemplateRef, NgZone, OnInit, InjectionToken, EventEmitter } from '@angular/core';
 import * as i1 from '@clr/angular/popover/common';
-import { ClrPopoverService as ClrPopoverService$1, ClrPopoverContent as ClrPopoverContent$1, ClrPopoverPosition as ClrPopoverPosition$1 } from '@clr/angular/popover/common';
+import { ClrPopoverService as ClrPopoverService$1, ClrPopoverPoint as ClrPopoverPoint$1, ClrPopoverContent as ClrPopoverContent$1, ClrPopoverPosition as ClrPopoverPosition$1 } from '@clr/angular/popover/common';
 import * as i7 from '@clr/angular/utils';
 import { FocusableItem, FocusService, ClrPosition, ClrCommonStringsService } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import * as i5 from '@angular/common';
 import * as i6 from '@clr/angular/icon';
-import { ConnectedPosition, OverlayContainer, Overlay } from '@angular/cdk/overlay';
+import { ConnectedPosition, FlexibleConnectedPositionStrategyOrigin, OverlayContainer, Overlay } from '@angular/cdk/overlay';
 import * as i1$1 from '@clr/angular/popover/dropdown';
 import * as i2 from '@clr/angular/popover/signpost';
 import * as i3 from '@clr/angular/popover/tooltip';
@@ -62,6 +62,7 @@ declare class ClrDropdown implements OnDestroy {
     isMenuClosable: boolean;
     private subscriptions;
     constructor(parent: ClrDropdown, popoverService: ClrPopoverService$1, focusHandler: DropdownFocusHandler, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
+    openAtPoint(point: ClrPopoverPoint$1): void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdown, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": { "alias": "clrCloseMenuOnItemClick"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
@@ -152,11 +153,15 @@ declare const SIGNPOST_POSITIONS: ClrPopoverPosition[];
 declare function getPositionsArray(type: ClrPopoverType): ClrPopoverPosition[];
 declare function getConnectedPositions(type: ClrPopoverType): ConnectedPosition[];
 declare function mapPopoverKeyToPosition(key: ClrPopoverPosition, type: ClrPopoverType): ConnectedPosition;
-declare function getAnchorPosition(key: ClrPosition): Partial<ConnectedPosition>;
+declare function getOriginPosition(key: ClrPosition): Partial<ConnectedPosition>;
 declare function getContentPosition(key: ClrPosition): Partial<ConnectedPosition>;
 
+interface ClrPopoverPoint {
+    x: number;
+    y: number;
+}
 declare class ClrPopoverService {
-    anchorElementRef: ElementRef<HTMLElement>;
+    origin: FlexibleConnectedPositionStrategyOrigin;
     closeButtonRef: ElementRef;
     panelClass: string[];
     private _open;
@@ -167,6 +172,8 @@ declare class ClrPopoverService {
     private _resetPositions;
     private _updatePosition;
     private _popoverVisible;
+    get originElement(): ElementRef<HTMLElement> | null;
+    get originPoint(): ClrPopoverPoint | null;
     get openChange(): Observable<boolean>;
     get popoverVisible(): Observable<boolean>;
     get openEvent(): Event;
@@ -183,11 +190,16 @@ declare class ClrPopoverService {
      * This is for instance the case of components that open on a click, but close on a click outside.
      */
     toggleWithEvent(event: any): void;
+    /**
+     * Opens the popover at a specific screen coordinate.
+     * Useful for context menus where the popover should appear at the cursor position.
+     */
+    openAtPoint(point: ClrPopoverPoint): void;
     popoverVisibleEmit(visible: boolean): void;
     resetPositions(): void;
     updatePosition(): void;
     focusCloseButton(): void;
-    focusAnchor(): void;
+    focusOrigin(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrPopoverService>;
 }
@@ -227,31 +239,44 @@ declare class ClrPopoverContent implements OnDestroy, AfterViewInit {
     set outsideClickClose(clickToClose: boolean);
     get scrollToClose(): boolean;
     set scrollToClose(scrollToClose: boolean);
+    set contentOrigin(origin: FlexibleConnectedPositionStrategyOrigin);
     private get positionStrategy();
     private get preferredPosition();
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
     private _createOverlayRef;
+    /**
+     * Point-based origins (context menus) delay the subscription to avoid the
+     * mouseup from the same right-click that opened the popover.
+     */
+    private createPointBasedOutsideClickSubscription;
+    /**
+     * Element-based origins close on outside clicks and suppress toggle-button
+     * re-clicks so the popover doesn't immediately reopen.
+     */
+    private createElementBasedOutsideClickSubscription;
     private resetPosition;
     private closePopover;
     private showOverlay;
     private removeOverlay;
     private getScrollableParents;
     /**
-     * Uses IntersectionObserver to detect when the anchor leaves the screen.
+     * Uses IntersectionObserver to detect when the origin element leaves the screen.
      * This handles the "Close on Scroll" logic much cheaper than getBoundingClientRect.
      */
     private setupIntersectionObserver;
-    private listenToMouseEvents;
+    private listenToScrollEvents;
+    private listenToScrollForPointOrigin;
+    private listenToScrollForElementOrigin;
     private getRootPopover;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, null, { optional: true; }, null, { optional: true; skipSelf: true; }, null, null, null, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; "contentOrigin": { "alias": "clrPopoverContentOrigin"; "required": false; }; }, {}, never, never, true, never>;
 }
 
-declare class ClrPopoverAnchor {
+declare class ClrPopoverOrigin {
     constructor(popoverService: ClrPopoverService, element: ElementRef<HTMLButtonElement>);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverAnchor, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverAnchor, "[clrPopoverAnchor]", never, {}, {}, never, never, false, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverOrigin, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverOrigin, "[clrPopoverOrigin]", never, {}, {}, never, never, false, never>;
 }
 
 declare class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
@@ -271,7 +296,7 @@ declare class ClrPopoverHostDirective {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverHostDirective, never, never, {}, {}, never, never, true, [{ directive: typeof ClrStopEscapePropagationDirective; inputs: {}; outputs: {}; }]>;
 }
 
-declare const POPOVER_HOST_ANCHOR: InjectionToken<ElementRef<any>>;
+declare const POPOVER_HOST_ORIGIN: InjectionToken<ElementRef<any>>;
 
 /**********
  *
@@ -343,7 +368,7 @@ declare class ClrPopoverOpenCloseButton implements OnDestroy {
 
 declare class ClrPopoverModuleNext {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverModuleNext, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModuleNext, [typeof ClrPopoverAnchor, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton], [typeof ClrPopoverContent, typeof ClrIfOpen], [typeof ClrPopoverAnchor, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton, typeof ClrPopoverContent, typeof ClrIfOpen]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModuleNext, [typeof ClrPopoverOrigin, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton], [typeof ClrPopoverContent, typeof ClrIfOpen], [typeof ClrPopoverOrigin, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton, typeof ClrPopoverContent, typeof ClrIfOpen]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModuleNext>;
 }
 
@@ -396,6 +421,7 @@ declare class ClrSignpostTrigger implements OnDestroy {
 
 declare class ClrSignpost {
     commonStrings: ClrCommonStringsService;
+    private popoverService;
     /**********
      * @property useCustomTrigger
      *
@@ -405,7 +431,12 @@ declare class ClrSignpost {
      */
     useCustomTrigger: boolean;
     signpostTriggerAriaLabel: string;
-    constructor(commonStrings: ClrCommonStringsService);
+    /**
+     * Hides the default trigger button. Use when the signpost is opened
+     * programmatically via `openAtPoint()` and no trigger icon is needed.
+     */
+    hideTrigger: boolean;
+    constructor(commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService$1);
     /**********
      * @property signPostTrigger
      *
@@ -414,8 +445,10 @@ declare class ClrSignpost {
      *
      */
     set customTrigger(trigger: ClrSignpostTrigger);
+    get showDefaultTrigger(): boolean;
+    openAtPoint(point: ClrPopoverPoint$1): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpost, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; "hideTrigger": { "alias": "clrSignpostHideTrigger"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
 declare class ClrSignpostContent implements OnDestroy, AfterViewInit {
@@ -435,8 +468,8 @@ declare class ClrSignpostContent implements OnDestroy, AfterViewInit {
      *
      * @description
      * A setter for the position of the ClrSignpostContent popover. This is a combination of the following:
-     * - anchorPoint - where on the trigger to anchor the ClrSignpostContent
-     * - popoverPoint - where on the ClrSignpostContent container to align with the anchorPoint
+     * - originPoint - where on the trigger to position the content
+     * - popoverPoint - where on the content container to align with the origin
      * - offsetY - where on the Y axis to align the ClrSignpostContent so it meets specs
      * - offsetX - where on the X axis to align the ClrSignpostContent so it meets specs
      * There are 12 possible positions to place a ClrSignpostContent container:
@@ -565,4 +598,5 @@ declare class ClrTooltipModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTooltipModule>;
 }
 
-export { CLR_DROPDOWN_DIRECTIVES, CLR_MENU_POSITIONS, CLR_SIGNPOST_DIRECTIVES, CLR_TOOLTIP_DIRECTIVES, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, ClrIfOpen, ClrPopoverAnchor, ClrPopoverContent, ClrPopoverHostDirective, ClrPopoverModule, ClrPopoverPosition, ClrPopoverService, ClrPopoverType, ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTitle, ClrSignpostTrigger, ClrStopEscapePropagationDirective, ClrTooltip, ClrTooltipContent, ClrTooltipModule, ClrTooltipTrigger, DROPDOWN_POSITIONS, POPOVER_HOST_ANCHOR, SIGNPOST_POSITIONS, TOOLTIP_POSITIONS, getAnchorPosition, getConnectedPositions, getContentPosition, getPositionsArray, mapPopoverKeyToPosition, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton };
+export { CLR_DROPDOWN_DIRECTIVES, CLR_MENU_POSITIONS, CLR_SIGNPOST_DIRECTIVES, CLR_TOOLTIP_DIRECTIVES, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, ClrIfOpen, ClrPopoverContent, ClrPopoverHostDirective, ClrPopoverModule, ClrPopoverOrigin, ClrPopoverPosition, ClrPopoverService, ClrPopoverType, ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTitle, ClrSignpostTrigger, ClrStopEscapePropagationDirective, ClrTooltip, ClrTooltipContent, ClrTooltipModule, ClrTooltipTrigger, DROPDOWN_POSITIONS, POPOVER_HOST_ORIGIN, SIGNPOST_POSITIONS, TOOLTIP_POSITIONS, getConnectedPositions, getContentPosition, getOriginPosition, getPositionsArray, mapPopoverKeyToPosition, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton };
+export type { ClrPopoverPoint };

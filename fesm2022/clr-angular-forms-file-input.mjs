@@ -2,13 +2,13 @@ import * as i0 from '@angular/core';
 import { InjectionToken, Component, inject, TemplateRef, Directive, Injector, ContentChild, ViewChild, forwardRef, Input, HostListener, HostBinding, Self, Optional, NgModule } from '@angular/core';
 import * as i3 from '@clr/angular/forms/common';
 import { NgControlService, ClrAbstractContainer, ControlIdService, ControlClassService, WrappedFormControl, ClrCommonFormsModule } from '@clr/angular/forms/common';
-import * as i2$1 from '@clr/angular/utils';
+import * as i2 from '@clr/angular/utils';
 import { ClrCommonStringsService } from '@clr/angular/utils';
-import * as i1 from '@angular/common';
+import * as i1 from '@clr/angular/icon';
+import { ClarityIcons, folderOpenIcon, successStandardIcon, errorStandardIcon, ClrIcon } from '@clr/angular/icon';
+import * as i1$1 from '@angular/common';
 import { CommonModule } from '@angular/common';
-import * as i2 from '@clr/angular/icon';
-import { ClarityIcons, folderOpenIcon, ClrIcon } from '@clr/angular/icon';
-import * as i1$1 from '@angular/forms';
+import * as i1$2 from '@angular/forms';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 /*
@@ -42,15 +42,23 @@ function clearFiles(fileInputElement) {
 const CLR_FILE_MESSAGES_TEMPLATE_CONTEXT = new InjectionToken('ClrFileMessagesTemplateContext');
 class ClrFileInfo {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInfo, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileInfo, isStandalone: false, selector: "clr-file-info", host: { properties: { "class.clr-subtext": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileInfo, isStandalone: false, selector: "clr-file-info", host: { properties: { "class.clr-subtext-wrapper": "true" } }, ngImport: i0, template: `
+    <span class="clr-subtext">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInfo, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-info',
-                    template: `<ng-content></ng-content>`,
+                    template: `
+    <span class="clr-subtext">
+      <ng-content></ng-content>
+    </span>
+  `,
                     host: {
-                        '[class.clr-subtext]': 'true',
+                        '[class.clr-subtext-wrapper]': 'true',
                     },
                     standalone: false,
                 }]
@@ -60,39 +68,57 @@ class ClrFileSuccess {
         this.context = inject(CLR_FILE_MESSAGES_TEMPLATE_CONTEXT);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileSuccess, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrFileSuccess, isStandalone: false, selector: "clr-file-success", host: { properties: { "style.display": "context.success ? \"inline-block\" : \"none\"", "class.clr-subtext": "true", "class.success": "true" } }, ngImport: i0, template: `@if (context.success) {
-    <ng-content></ng-content>
-  }`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrFileSuccess, isStandalone: false, selector: "clr-file-success", host: { properties: { "style.display": "context.success ? \"flex\" : \"none\"", "class.clr-subtext-wrapper": "true" } }, ngImport: i0, template: `
+    @if (context.success) {
+      <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+      <span class="clr-subtext success">
+        <ng-content></ng-content>
+      </span>
+    }
+  `, isInline: true, dependencies: [{ kind: "component", type: i1.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileSuccess, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-success',
                     // We check for success here so that consumers don't have to.
-                    template: `@if (context.success) {
-    <ng-content></ng-content>
-  }`,
+                    template: `
+    @if (context.success) {
+      <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+      <span class="clr-subtext success">
+        <ng-content></ng-content>
+      </span>
+    }
+  `,
                     host: {
-                        '[style.display]': 'context.success ? "inline-block" : "none"',
-                        '[class.clr-subtext]': 'true',
-                        '[class.success]': 'true',
+                        '[style.display]': 'context.success ? "flex" : "none"',
+                        '[class.clr-subtext-wrapper]': 'true',
                     },
                     standalone: false,
                 }]
         }] });
 class ClrFileError {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileError, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileError, isStandalone: false, selector: "clr-file-error", host: { properties: { "class.clr-subtext": "true", "class.error": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileError, isStandalone: false, selector: "clr-file-error", host: { properties: { "class.clr-subtext-wrapper": "true" } }, ngImport: i0, template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `, isInline: true, dependencies: [{ kind: "component", type: i1.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileError, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-file-error',
-                    // The host should have an `@if` or `@if` that checks for the relevant error.
-                    template: `<ng-content></ng-content>`,
+                    // The host should have an `*ngIf` or `@if` that checks for the relevant error.
+                    template: `
+    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <span class="clr-subtext error">
+      <ng-content></ng-content>
+    </span>
+  `,
                     host: {
-                        '[class.clr-subtext]': 'true',
-                        '[class.error]': 'true',
+                        '[class.clr-subtext-wrapper]': 'true',
                     },
                     standalone: false,
                 }]
@@ -130,6 +156,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrFileList {
     constructor() {
+        this.injectorCache = new Map();
+        this.contextCache = new Map();
         this.injector = inject(Injector);
         this.commonStrings = inject(ClrCommonStringsService);
         this.ngControlService = inject(NgControlService, { optional: true });
@@ -168,13 +196,26 @@ class ClrFileList {
             maxFileSize: fileInputErrors.maxFileSize?.find(error => error.name === file.name),
         };
         const success = Object.values(errors).every(error => !error);
-        return { $implicit: file, success, errors };
+        const cached = this.contextCache.get(file);
+        if (cached && cached.success === success && this.errorsEqual(cached.errors, errors)) {
+            return cached;
+        }
+        // new context is made and old reference replaced
+        const context = { $implicit: file, success, errors };
+        this.contextCache.set(file, context);
+        // new injector is made and old reference replaced
+        const injector = this.createFileMessagesTemplateInjector(context);
+        this.injectorCache.set(file, injector);
+        return context;
     }
     createFileMessagesTemplateInjector(fileMessagesTemplateContext) {
         return Injector.create({
             parent: this.injector,
             providers: [{ provide: CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, useValue: fileMessagesTemplateContext }],
         });
+    }
+    errorsEqual(a, b) {
+        return a.accept === b.accept && a.minFileSize === b.minFileSize && a.maxFileSize === b.maxFileSize;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileList, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrFileList, isStandalone: false, selector: "clr-file-list", host: { properties: { "attr.role": "\"list\"", "class.clr-file-list": "true" } }, queries: [{ propertyName: "fileMessagesTemplate", first: true, predicate: ClrFileMessagesTemplate, descendants: true }], ngImport: i0, template: `
@@ -199,24 +240,18 @@ class ClrFileList {
                 <cds-icon shape="times"></cds-icon>
               </button>
             </span>
-            <cds-icon
-              class="clr-validate-icon"
-              [shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
-              [status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
-              aria-hidden="true"
-            ></cds-icon>
           </div>
           @if (fileMessagesTemplate) {
             <ng-container
               [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
               [ngTemplateOutletContext]="fileMessagesTemplateContext"
-              [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
+              [ngTemplateOutletInjector]="injectorCache.get(file)"
             ></ng-container>
           }
         </div>
       }
     }
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i2.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1$1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1$1.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i1.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileList, decorators: [{
             type: Component,
@@ -244,18 +279,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                 <cds-icon shape="times"></cds-icon>
               </button>
             </span>
-            <cds-icon
-              class="clr-validate-icon"
-              [shape]="fileMessagesTemplateContext.success ? 'check-circle' : 'exclamation-circle'"
-              [status]="fileMessagesTemplateContext.success ? 'success' : 'danger'"
-              aria-hidden="true"
-            ></cds-icon>
           </div>
           @if (fileMessagesTemplate) {
             <ng-container
               [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
               [ngTemplateOutletContext]="fileMessagesTemplateContext"
-              [ngTemplateOutletInjector]="createFileMessagesTemplateInjector(fileMessagesTemplateContext)"
+              [ngTemplateOutletInjector]="injectorCache.get(file)"
             ></ng-container>
           }
         </div>
@@ -379,12 +408,6 @@ class ClrFileInputContainer extends ClrAbstractContainer {
             <cds-icon shape="times" status="neutral"></cds-icon>
           </button>
         }
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -402,7 +425,7 @@ class ClrFileInputContainer extends ClrAbstractContainer {
         <ng-content select="clr-file-list"></ng-content>
       </ng-container>
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i2.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i3.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1$1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i1.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i3.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInputContainer, decorators: [{
             type: Component,
@@ -452,12 +475,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           >
             <cds-icon shape="times" status="neutral"></cds-icon>
           </button>
-        }
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
         }
       </div>
       @if (showHelper) {
@@ -554,7 +571,7 @@ class ClrFileInput extends WrappedFormControl {
             clearFilesButtonLabel,
         };
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInput, deps: [{ token: i0.Injector }, { token: i0.Renderer2 }, { token: i0.ViewContainerRef }, { token: i0.ElementRef }, { token: i1$1.NgControl, optional: true, self: true }, { token: i2$1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInput, deps: [{ token: i0.Injector }, { token: i0.Renderer2 }, { token: i0.ViewContainerRef }, { token: i0.ElementRef }, { token: i1$2.NgControl, optional: true, self: true }, { token: i2.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileInput, isStandalone: false, selector: "input[type=\"file\"][clrFileInput]", host: { attributes: { "tabindex": "-1", "aria-hidden": "true" }, listeners: { "change": "handleChange()" }, properties: { "class.clr-file-input": "true", "disabled": "this.disabled" } }, usesInheritance: true, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInput, decorators: [{
@@ -568,11 +585,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     },
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i0.Injector }, { type: i0.Renderer2 }, { type: i0.ViewContainerRef }, { type: i0.ElementRef }, { type: i1$1.NgControl, decorators: [{
+        }], ctorParameters: () => [{ type: i0.Injector }, { type: i0.Renderer2 }, { type: i0.ViewContainerRef }, { type: i0.ElementRef }, { type: i1$2.NgControl, decorators: [{
                     type: Self
                 }, {
                     type: Optional
-                }] }, { type: i2$1.ClrCommonStringsService }], propDecorators: { disabled: [{
+                }] }, { type: i2.ClrCommonStringsService }], propDecorators: { disabled: [{
                 type: HostBinding,
                 args: ['disabled']
             }], handleChange: [{
@@ -742,7 +759,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrFileInputModule {
     constructor() {
-        ClarityIcons.addIcons(folderOpenIcon);
+        ClarityIcons.addIcons(folderOpenIcon, successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInputModule, declarations: [ClrFileInput,

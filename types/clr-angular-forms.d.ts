@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { OnInit, OnDestroy, Renderer2, ElementRef, TemplateRef, ViewContainerRef, QueryList, DoCheck, Type, Injector, InjectionToken, AfterContentInit, AfterViewInit, ChangeDetectorRef, RendererFactory2, EventEmitter, IterableDiffers, TrackByFunction, NgZone } from '@angular/core';
+import { OnInit, OnDestroy, Renderer2, ElementRef, TemplateRef, ViewContainerRef, QueryList, DoCheck, Type, Injector, InjectionToken, AfterContentInit, AfterViewInit, RendererFactory2, EventEmitter, ChangeDetectorRef, IterableDiffers, TrackByFunction, NgZone } from '@angular/core';
 import * as i4 from '@angular/forms';
 import { NgControl, ControlValueAccessor, Validator, AbstractControl, ValidationErrors, SelectMultipleControlValueAccessor } from '@angular/forms';
 import * as rxjs from 'rxjs';
@@ -86,6 +86,15 @@ declare class ClrControlHelper extends ClrAbstractControl {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlHelper, "clr-control-helper", never, {}, {}, never, ["*"], false, never>;
 }
 
+declare class ClrControlSuccess extends ClrAbstractControl {
+    protected controlIdService: ControlIdService;
+    protected containerIdService: ContainerIdService;
+    controlIdSuffix: string;
+    constructor(controlIdService: ControlIdService, containerIdService: ContainerIdService);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlSuccess, [{ optional: true; }, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlSuccess, "clr-control-success", never, {}, {}, never, ["*"], false, never>;
+}
+
 declare enum ClrFormLayout {
     VERTICAL = "vertical",
     HORIZONTAL = "horizontal",
@@ -164,15 +173,6 @@ declare class ControlClassService {
     initControlClass(renderer: Renderer2, element: HTMLElement): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ControlClassService, [{ optional: true; }]>;
     static ɵprov: i0.ɵɵInjectableDeclaration<ControlClassService>;
-}
-
-declare class ClrControlSuccess extends ClrAbstractControl {
-    protected controlIdService: ControlIdService;
-    protected containerIdService: ContainerIdService;
-    controlIdSuffix: string;
-    constructor(controlIdService: ControlIdService, containerIdService: ContainerIdService);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlSuccess, [{ optional: true; }, { optional: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlSuccess, "clr-control-success", never, {}, {}, never, ["*"], false, never>;
 }
 
 declare abstract class ClrAbstractContainer implements OnDestroy {
@@ -431,9 +431,11 @@ declare class ClrComboboxContainer extends ClrAbstractContainer$1 implements Aft
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrComboboxContainer, "clr-combobox-container", never, {}, {}, never, ["label", "clr-combobox", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
 }
 
+type ClrComboboxIdentityFunction<T> = (item: T) => any;
 declare abstract class ComboboxModel<T> {
     model: T | T[];
     displayField?: string;
+    identityFn: ClrComboboxIdentityFunction<T>;
     abstract containsItem(item: T): boolean;
     abstract select(item: T): void;
     abstract unselect(item: T): void;
@@ -472,16 +474,20 @@ declare class OptionSelectionService<T> {
     set currentInput(input: string);
     get selectionChanged(): Observable<ComboboxModel<T>>;
     get multiselectable(): boolean;
+    get identityFn(): ClrComboboxIdentityFunction<T>;
+    set identityFn(value: ClrComboboxIdentityFunction<T>);
     select(item: T): void;
     toggle(item: T): void;
     unselect(item: T): void;
     setSelectionValue(value: T | T[]): void;
     parseStringToModel(value: string): T;
+    private _identityFn;
+    private valuesEqualByIdentity;
     static ɵfac: i0.ɵɵFactoryDeclaration<OptionSelectionService<any>, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<OptionSelectionService<any>>;
 }
 
-declare class SingleSelectComboboxModel<T> implements ComboboxModel<T> {
+declare class SingleSelectComboboxModel<T> extends ComboboxModel<T> {
     model: T;
     containsItem(item: T): boolean;
     select(item: T): void;
@@ -501,7 +507,6 @@ declare class ComboboxFocusHandler<T> {
     private popoverService;
     private selectionService;
     private platformId;
-    componentCdRef: ChangeDetectorRef;
     pseudoFocus: PseudoFocusModel<OptionData<T>>;
     private renderer;
     private _trigger;
@@ -569,6 +574,7 @@ declare class ClrCombobox<T> extends WrappedFormControl$1<ClrComboboxContainer> 
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
     get editable(): boolean;
     set editable(value: boolean);
+    set identityFn(value: ClrComboboxIdentityFunction<T>);
     get multiSelect(): boolean | string;
     set multiSelect(value: boolean | string);
     get id(): string;
@@ -604,7 +610,7 @@ declare class ClrCombobox<T> extends WrappedFormControl$1<ClrComboboxContainer> 
     private updateControlValue;
     private getDisplayNames;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, { optional: true; }, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "identityFn": { "alias": "clrComboboxIdentityFn"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
 declare class ClrOption<T> implements OnInit {
@@ -852,6 +858,13 @@ interface DateRangeOption {
 }
 
 declare class DateIOService {
+    /**
+     * This is the default range. It approximates the beginning of time to the end of time.
+     * The disabled dates are the dates that are not allowed to be selected.
+     * The min date is the earliest date that can be selected.
+     * The max date is the latest date that can be selected.
+     * Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
+     */
     disabledDates: DateRange;
     cldrLocaleDateFormat: string;
     minDateChange: Subject<DayModel>;
@@ -1751,6 +1764,8 @@ declare class ClrFileMessagesTemplate {
 
 declare class ClrFileList {
     protected readonly fileMessagesTemplate: ClrFileMessagesTemplate;
+    protected injectorCache: Map<File, Injector>;
+    private contextCache;
     private readonly injector;
     private readonly commonStrings;
     private readonly ngControlService;
@@ -1760,7 +1775,8 @@ declare class ClrFileList {
     protected getClearFileLabel(filename: string): string;
     protected clearFile(fileToRemove: File): void;
     protected createFileMessagesTemplateContext(file: File): ClrFileMessagesTemplateContext;
-    protected createFileMessagesTemplateInjector(fileMessagesTemplateContext: ClrFileMessagesTemplateContext): i0.DestroyableInjector;
+    private createFileMessagesTemplateInjector;
+    private errorsEqual;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileList, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileList, "clr-file-list", never, {}, {}, ["fileMessagesTemplate"], never, false, never>;
 }
@@ -2069,4 +2085,4 @@ declare class ClrFormsModule {
 }
 
 export { AbstractIfState, CHANGE_KEYS, CLR_DATEPICKER_DIRECTIVES, CLR_FILE_MESSAGES_TEMPLATE_CONTEXT, ClrAbstractContainer, ClrCalendar, ClrCheckbox, ClrCheckboxContainer, ClrCheckboxModule, ClrCheckboxWrapper, ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrCommonFormsModule, ClrControl, ClrControlContainer, ClrControlError, ClrControlHelper, ClrControlLabel, ClrControlSuccess, ClrDatalist, ClrDatalistContainer, ClrDatalistInput, ClrDatalistModule, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrEndDateInput, ClrEndDateInputValidator, ClrFileError, ClrFileInfo, ClrFileInput, ClrFileInputContainer, ClrFileInputModule, ClrFileInputValidator, ClrFileInputValueAccessor, ClrFileList, ClrFileMessagesTemplate, ClrFileSuccess, ClrForm, ClrFormLayout, ClrFormsModule, ClrIfError, ClrIfSuccess, ClrInput, ClrInputContainer, ClrInputModule, ClrLayout, ClrMonthpicker, ClrNumberInput, ClrNumberInputContainer, ClrNumberInputModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions, ClrPassword, ClrPasswordContainer, ClrPasswordModule, ClrRadio, ClrRadioContainer, ClrRadioModule, ClrRadioWrapper, ClrRange, ClrRangeContainer, ClrRangeModule, ClrSelect, ClrSelectContainer, ClrSelectModule, ClrStartDateInput, ClrStartDateInputValidator, ClrTextarea, ClrTextareaContainer, ClrTextareaModule, ClrYearpicker, ContainerIdService, ControlClassService, ControlIdService, DatalistIdService, FormsFocusService, IS_TOGGLE, IS_TOGGLE_PROVIDER, LayoutService, MarkControlService, NgControlService, TOGGLE_SERVICE, TOGGLE_SERVICE_PROVIDER, ToggleServiceFactory, WrappedFormControl, buildFileList, clearFiles, isToggleFactory, selectFiles };
-export type { ClrFileAcceptError, ClrFileInputSelection, ClrFileListValidationErrors, ClrFileMaxFileSizeError, ClrFileMessagesTemplateContext, ClrFileMinFileSizeError, ClrSingleFileValidationErrors, Helpers };
+export type { ClrComboboxIdentityFunction, ClrFileAcceptError, ClrFileInputSelection, ClrFileListValidationErrors, ClrFileMaxFileSizeError, ClrFileMessagesTemplateContext, ClrFileMinFileSizeError, ClrSingleFileValidationErrors, Helpers };
