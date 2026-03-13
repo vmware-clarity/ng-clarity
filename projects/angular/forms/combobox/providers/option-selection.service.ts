@@ -8,7 +8,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 
-import { ComboboxModel } from '../model/combobox.model';
+import { ClrComboboxIdentityFunction, ComboboxModel } from '../model/combobox.model';
 import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 
 @Injectable()
@@ -64,6 +64,17 @@ export class OptionSelectionService<T> {
     return this.selectionModel instanceof MultiSelectComboboxModel;
   }
 
+  get identityFn(): ClrComboboxIdentityFunction<T> {
+    return this._identityFn;
+  }
+
+  set identityFn(value: ClrComboboxIdentityFunction<T>) {
+    this._identityFn = value || ((item: T) => item);
+    if (this.selectionModel) {
+      this.selectionModel.identityFn = this._identityFn;
+    }
+  }
+
   select(item: T) {
     if (item === null || item === undefined || this.selectionModel.containsItem(item)) {
       return;
@@ -92,14 +103,13 @@ export class OptionSelectionService<T> {
     this._selectionChanged.next(this.selectionModel);
   }
 
-  // TODO: Add support for trackBy and compareFn
   setSelectionValue(value: T | T[]): void {
-    // NOTE: Currently we assume that no 2 options will have the same value
-    // but Eudes and I discussed that this is a possibility but we will handle
-    // this later
+    if (!this.selectionModel) {
+      return;
+    }
 
-    // if selection is undefined, or its value hasn't changed, or changing from null <-> undefined, that's not really changing so we return
-    if (!this.selectionModel || this.selectionModel.model === value || (!this.selectionModel.model && !value)) {
+    const current = this.selectionModel.model;
+    if (this.valuesEqualByIdentity(current, value)) {
       return;
     }
 
@@ -114,5 +124,45 @@ export class OptionSelectionService<T> {
       } as T;
     }
     return value as T;
+  }
+
+  private _identityFn: ClrComboboxIdentityFunction<T> = (item: T) => item;
+
+  private valuesEqualByIdentity(current: T | T[], value: T | T[]): boolean {
+    if (current === value) {
+      return true;
+    }
+    // Check if both are null or undefined or empty string.
+    if (
+      (current === null || current === undefined || current === '') &&
+      (value === null || value === undefined || value === '')
+    ) {
+      return true;
+    }
+    // Check if one is null or undefined or empty string and the other is not.
+    if (
+      current === null ||
+      current === undefined ||
+      current === '' ||
+      value === null ||
+      value === undefined ||
+      value === ''
+    ) {
+      return false;
+    }
+
+    if (this.multiselectable) {
+      const cur = current as T[];
+      const val = value as T[];
+      if (cur.length !== val.length) {
+        return false;
+      }
+      // We only consider values equal if they are ordered the same way.
+      const curIds = cur.map(this._identityFn);
+      const valIds = val.map(this._identityFn);
+      return curIds.every((id, i) => id === valIds[i]);
+    } else {
+      return this._identityFn(current as T) === this._identityFn(value as T);
+    }
   }
 }

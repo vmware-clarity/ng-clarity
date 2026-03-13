@@ -11,7 +11,7 @@ import {
   ClrPopoverPosition,
   ClrPopoverService,
   ClrPopoverType,
-  POPOVER_HOST_ANCHOR,
+  POPOVER_HOST_ORIGIN,
   TOOLTIP_POSITIONS,
 } from '@clr/angular/popover/common';
 import { uniqueIdFactory } from '@clr/angular/utils';
@@ -43,7 +43,7 @@ export class ClrTooltipContent implements OnInit {
 
   constructor(
     @Optional()
-    @Inject(POPOVER_HOST_ANCHOR)
+    @Inject(POPOVER_HOST_ORIGIN)
     parentHost: ElementRef<HTMLElement>,
     private tooltipIdService: TooltipIdService,
     public el: ElementRef,
