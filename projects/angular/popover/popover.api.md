@@ -23,6 +23,7 @@ import { DragDropConfig } from '@angular/cdk/drag-drop';
 import { ElementRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
+import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
@@ -72,6 +73,10 @@ export class ClrDropdown implements OnDestroy {
     isMenuClosable: boolean;
     // (undocumented)
     ngOnDestroy(): void;
+    // Warning: (ae-forgotten-export) The symbol "ClrPopoverPoint_2" needs to be exported by the entry point clr-angular-popover.d.ts
+    //
+    // (undocumented)
+    openAtPoint(point: ClrPopoverPoint_2): void;
     // (undocumented)
     parent: ClrDropdown;
     // Warning: (ae-forgotten-export) The symbol "ClrPopoverService_2" needs to be exported by the entry point clr-angular-popover.d.ts
@@ -166,15 +171,6 @@ export class ClrIfOpen implements OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrPopoverAnchor {
-    constructor(popoverService: ClrPopoverService, element: ElementRef<HTMLButtonElement>);
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverAnchor, "[clrPopoverAnchor]", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverAnchor, never>;
-}
-
-// @public (undocumented)
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     constructor(element: ElementRef, container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, parent: ClrPopoverContent, overlay: Overlay, popoverService: ClrPopoverService, zone: NgZone, platformId: any);
     // (undocumented)
@@ -182,6 +178,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     // (undocumented)
     get contentAt(): string | ClrPopoverPosition | ConnectedPosition;
     set contentAt(position: string | ClrPopoverPosition | ConnectedPosition);
+    // (undocumented)
+    set contentOrigin(origin: FlexibleConnectedPositionStrategyOrigin);
     // (undocumented)
     set contentType(type: ClrPopoverType);
     // (undocumented)
@@ -197,7 +195,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     get scrollToClose(): boolean;
     set scrollToClose(scrollToClose: boolean);
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; }, {}, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverContent, "[clrPopoverContent]", never, { "open": { "alias": "clrPopoverContent"; "required": false; }; "contentAt": { "alias": "clrPopoverContentAt"; "required": false; }; "availablePositions": { "alias": "clrPopoverContentAvailablePositions"; "required": false; }; "contentType": { "alias": "clrPopoverContentType"; "required": false; }; "outsideClickClose": { "alias": "clrPopoverContentOutsideClickToClose"; "required": false; }; "scrollToClose": { "alias": "clrPopoverContentScrollToClose"; "required": false; }; "contentOrigin": { "alias": "clrPopoverContentOrigin"; "required": false; }; }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, null, { optional: true; }, null, { optional: true; skipSelf: true; }, null, null, null, null]>;
 }
@@ -222,6 +220,23 @@ export class ClrPopoverModule {
     //
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, never, [typeof i1$1.ClrDropdownModule, typeof i2.ClrSignpostModule, typeof i3.ClrTooltipModule]>;
+}
+
+// @public (undocumented)
+export class ClrPopoverOrigin {
+    constructor(popoverService: ClrPopoverService, element: ElementRef<HTMLButtonElement>);
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverOrigin, "[clrPopoverOrigin]", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverOrigin, never>;
+}
+
+// @public (undocumented)
+export interface ClrPopoverPoint {
+    // (undocumented)
+    x: number;
+    // (undocumented)
+    y: number;
 }
 
 // @public (undocumented)
@@ -259,13 +274,11 @@ export enum ClrPopoverPosition {
 // @public (undocumented)
 export class ClrPopoverService {
     // (undocumented)
-    anchorElementRef: ElementRef<HTMLElement>;
-    // (undocumented)
     closeButtonRef: ElementRef;
     // (undocumented)
-    focusAnchor(): void;
-    // (undocumented)
     focusCloseButton(): void;
+    // (undocumented)
+    focusOrigin(): void;
     // (undocumented)
     getEventChange(): Observable<Event>;
     // (undocumented)
@@ -273,11 +286,18 @@ export class ClrPopoverService {
     // (undocumented)
     get open(): boolean;
     set open(value: boolean);
+    openAtPoint(point: ClrPopoverPoint): void;
     // (undocumented)
     get openChange(): Observable<boolean>;
     // (undocumented)
     get openEvent(): Event;
     set openEvent(event: Event);
+    // (undocumented)
+    origin: FlexibleConnectedPositionStrategyOrigin;
+    // (undocumented)
+    get originElement(): ElementRef<HTMLElement> | null;
+    // (undocumented)
+    get originPoint(): ClrPopoverPoint | null;
     // (undocumented)
     panelClass: string[];
     // (undocumented)
@@ -315,17 +335,22 @@ export enum ClrPopoverType {
 
 // @public (undocumented)
 export class ClrSignpost {
-    constructor(commonStrings: ClrCommonStringsService);
+    constructor(commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService_2);
     // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService" needs to be exported by the entry point clr-angular-popover.d.ts
     //
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     set customTrigger(trigger: ClrSignpostTrigger);
+    hideTrigger: boolean;
+    // (undocumented)
+    openAtPoint(point: ClrPopoverPoint_2): void;
+    // (undocumented)
+    get showDefaultTrigger(): boolean;
     // (undocumented)
     signpostTriggerAriaLabel: string;
     useCustomTrigger: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; "hideTrigger": { "alias": "clrSignpostHideTrigger"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpost, never>;
 }
@@ -478,16 +503,16 @@ export class ClrTooltipTrigger {
 // @public (undocumented)
 export const DROPDOWN_POSITIONS: ClrPopoverPosition[];
 
-// Warning: (ae-forgotten-export) The symbol "ClrPosition" needs to be exported by the entry point clr-angular-popover.d.ts
-//
-// @public (undocumented)
-export function getAnchorPosition(key: ClrPosition): Partial<ConnectedPosition>;
-
 // @public (undocumented)
 export function getConnectedPositions(type: ClrPopoverType): ConnectedPosition[];
 
+// Warning: (ae-forgotten-export) The symbol "ClrPosition" needs to be exported by the entry point clr-angular-popover.d.ts
+//
 // @public (undocumented)
 export function getContentPosition(key: ClrPosition): Partial<ConnectedPosition>;
+
+// @public (undocumented)
+export function getOriginPosition(key: ClrPosition): Partial<ConnectedPosition>;
 
 // @public (undocumented)
 export function getPositionsArray(type: ClrPopoverType): ClrPopoverPosition[];
@@ -496,7 +521,7 @@ export function getPositionsArray(type: ClrPopoverType): ClrPopoverPosition[];
 export function mapPopoverKeyToPosition(key: ClrPopoverPosition, type: ClrPopoverType): ConnectedPosition;
 
 // @public (undocumented)
-export const POPOVER_HOST_ANCHOR: InjectionToken<ElementRef<any>>;
+export const POPOVER_HOST_ORIGIN: InjectionToken<ElementRef<any>>;
 
 // @public (undocumented)
 export const SIGNPOST_POSITIONS: ClrPopoverPosition[];
@@ -528,7 +553,7 @@ export class ÇlrClrPopoverModuleNext {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ÇlrClrPopoverModuleNext>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ÇlrClrPopoverModuleNext, [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton], [typeof ClrPopoverContent, typeof ClrIfOpen], [typeof ClrPopoverAnchor, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton, typeof ClrPopoverContent, typeof ClrIfOpen]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ÇlrClrPopoverModuleNext, [typeof ClrPopoverOrigin, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton], [typeof ClrPopoverContent, typeof ClrIfOpen], [typeof ClrPopoverOrigin, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton, typeof ClrPopoverContent, typeof ClrIfOpen]>;
 }
 
 // @public (undocumented)
@@ -548,7 +573,7 @@ export class ÇlrClrPopoverOpenCloseButton implements OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-popover.d.ts:67:191 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-popover.d.ts
+// dist/clr-angular/types/clr-angular-popover.d.ts:68:191 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-popover.d.ts
 
 // (No @packageDocumentation comment for this package)
 

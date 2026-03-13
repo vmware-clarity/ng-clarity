@@ -17,7 +17,7 @@ import {
   Optional,
   QueryList,
 } from '@angular/core';
-import { ClrPopoverService, POPOVER_HOST_ANCHOR } from '@clr/angular/popover/common';
+import { ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/common';
 import { ClrCommonStringsService, ClrLoadingState, IF_ACTIVE_ID, LoadingListener } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
@@ -78,7 +78,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     private focusHandler: ComboboxFocusHandler<T>,
     private popoverService: ClrPopoverService,
     @Optional()
-    @Inject(POPOVER_HOST_ANCHOR)
+    @Inject(POPOVER_HOST_ORIGIN)
     parentHost: ElementRef<HTMLElement>,
     @Inject(DOCUMENT) private document: any
   ) {
