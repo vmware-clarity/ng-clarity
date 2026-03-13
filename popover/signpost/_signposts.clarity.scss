@@ -92,7 +92,7 @@
       @include mixins.min-equilateral(density.$clr-base-icon-size-s);
 
       cds-icon:not([size]),
-      clr-icon {
+      clr-icon:not([size]) {
         @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       }
     }
