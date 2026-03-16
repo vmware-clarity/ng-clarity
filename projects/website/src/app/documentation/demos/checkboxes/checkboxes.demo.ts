@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormsModule, NgModel } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import {
   ClarityIcons,
@@ -26,6 +26,7 @@ import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.compon
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 import { ClarityDocComponent } from '../clarity-doc';
 import { formsPatternLink } from '../pattern-links';
+import { SmallSelectionTreeDemo } from '../tree-view/small-selection-tree/small-selection-tree';
 
 const NgBasic = require('raw-loader!./ng/basic.html');
 const NgDisabled = require('raw-loader!./ng/disabled.html');
@@ -100,6 +101,7 @@ export class ExampleComponent {
     ClrIcon,
     StyleDocsComponent,
     NestingTableComponent,
+    SmallSelectionTreeDemo,
   ],
 })
 export class CheckboxesDemo extends ClarityDocComponent {
@@ -133,6 +135,15 @@ export class CheckboxesDemo extends ClarityDocComponent {
     meetingReminder: true,
   };
 
+  @ViewChild('successCheckbox') successCheckbox: NgModel;
+  successCheckboxModel = {
+    newEmail: false,
+    meetingReminder: true,
+  };
+
+  @ViewChild('errorCheckbox') errorCheckbox: NgModel;
+  errorCheckboxModel = false;
+
   options = {
     option1: false,
     option2: true,
@@ -143,6 +154,10 @@ export class CheckboxesDemo extends ClarityDocComponent {
   constructor() {
     super('checkbox');
     ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
+  }
+  ngAfterViewInit() {
+    this.errorCheckbox.control.markAsTouched();
+    this.successCheckbox.control.markAsTouched();
   }
 
   resetIndeterminateState() {
