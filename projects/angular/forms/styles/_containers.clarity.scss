@@ -119,14 +119,11 @@
   .clr-validate-icon {
     @include mixins.min-equilateral(forms-variables.$clr-forms-icon-size);
 
-    color: forms-variables.$clr-forms-invalid-color;
-    fill: forms-variables.$clr-forms-invalid-color;
-    display: none;
+    display: inline-block;
   }
 
   .clr-success {
     .clr-validate-icon {
-      display: inline-block;
       color: forms-variables.$clr-forms-valid-color;
       fill: forms-variables.$clr-forms-valid-color;
     }
@@ -134,7 +131,8 @@
 
   .clr-error {
     .clr-validate-icon {
-      display: inline-block;
+      color: forms-variables.$clr-forms-invalid-color;
+      fill: forms-variables.$clr-forms-invalid-color;
     }
   }
 
