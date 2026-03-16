@@ -29,7 +29,7 @@
 
     <div class="clrweb-DoxVersusBox clr-mt-24px">
       <div class="clrweb-DoxVersusBox-items clrweb-DoxVersusBox-vsContent">
-        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+        <div class="clrweb-DoxVersusBox-itemWrapper align-box-items clr-col-12 clr-col-sm-6">
           <div class="clrweb-DoxVersusBox-item">
             <form clrForm clrLayout="horizontal">
               <clr-datalist-container>
@@ -59,22 +59,18 @@
             [imageStyle]="'margin: 0 auto;width: 72px;'"
           ></app-themed-image>
         </div>
-        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+        <div class="clrweb-DoxVersusBox-itemWrapper align-box-items clr-col-12 clr-col-sm-6">
           <div class="clrweb-DoxVersusBox-item">
             <form clrForm clrLayout="horizontal">
-              <div class="component-label">
-                <label for="select-full" class="clr-control-label">Select</label>
-                <div class="clr-control-container">
-                  <div class="clr-select-wrapper">
-                    <select id="select-full" class="clr-select">
-                      <option value="1">select one</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
-                  </div>
-                  <clr-control-helper>Helper message></clr-control-helper>
-                </div>
-              </div>
+              <clr-select-container>
+                <label>Select</label>
+                <select clrSelect name="options">
+                  <option value="1">select one</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+                <clr-control-helper>Helper text</clr-control-helper>
+              </clr-select-container>
             </form>
             <span>Use a select:</span>
             <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
@@ -152,23 +148,31 @@
       <li>When the user attempts to submit a form containing a datalist with no selection.</li>
     </ul>
     <div class="clr-mt-24px clr-ml-32px">
-      <app-themed-image
-        [lightSrc]="'/assets/images/documentation/datalist/light-theme/datalist-error.svg'"
-        [darkSrc]="'/assets/images/documentation/datalist/dark-theme/datalist-error.svg'"
-        [imageAlt]="'datalist input with red error icon and text'"
-        [imageStyle]="'max-width: 100%'"
-      ></app-themed-image>
+      <clr-datalist-container>
+        <label>Ice cream flavor</label>
+        <input clrDatalistInput required [(ngModel)]="errorDatalistModel" #errorDatalist="ngModel" />
+        <datalist>
+          @for (item of items; track item) {
+          <option [value]="item"></option>
+          }
+        </datalist>
+        <clr-control-error *clrIfError="'required'">There was an error</clr-control-error>
+      </clr-datalist-container>
     </div>
 
     <h3 id="success" class="clr-mt-32px" cds-text="section">Success</h3>
     <p>Use to provide real-time feedback immediately after a user’s valid input.</p>
     <div class="clr-mt-24px clr-ml-32px">
-      <app-themed-image
-        [lightSrc]="'/assets/images/documentation/datalist/light-theme/datalist-sucess.svg'"
-        [darkSrc]="'/assets/images/documentation/datalist/dark-theme/datalist-sucess.svg'"
-        [imageAlt]="'datalist input with green success icon and text'"
-        [imageStyle]="'max-width: 100%'"
-      ></app-themed-image>
+      <clr-datalist-container>
+        <label>Ice cream flavor</label>
+        <input clrDatalistInput [(ngModel)]="successDatalistModel" #successDatalist="ngModel" />
+        <datalist content="Cherry">
+          @for (item of items; track item) {
+          <option [value]="item"></option>
+          }
+        </datalist>
+        <clr-control-success>Changes saved</clr-control-success>
+      </clr-datalist-container>
     </div>
 
     <h2 class="clr-mt-48px" id="layouts" cds-text="title">Layouts</h2>

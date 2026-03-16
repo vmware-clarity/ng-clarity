@@ -155,6 +155,7 @@ export class CheckboxesDemo extends ClarityDocComponent {
     super('checkbox');
     ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
   }
+
   ngAfterViewInit() {
     this.errorCheckbox.control.markAsTouched();
     this.successCheckbox.control.markAsTouched();
