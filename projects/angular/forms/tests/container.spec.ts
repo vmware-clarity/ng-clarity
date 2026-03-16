@@ -163,7 +163,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       setValid(true);
       container.control.control.updateValueAndValidity();
       fixture.detectChanges();
-      const icon: HTMLElement = containerEl.querySelector('cds-icon[shape=check-circle]');
+      const icon: HTMLElement = containerEl.querySelector('cds-icon[shape=success-standard]');
       expect(icon).toBeTruthy();
     });
 

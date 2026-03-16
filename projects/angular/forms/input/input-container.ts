@@ -27,12 +27,6 @@ import {
           <ng-content select="[clrInput]"></ng-content>
           <ng-content select="[clrInputSuffix]"></ng-content>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>

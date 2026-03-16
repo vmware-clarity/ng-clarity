@@ -104,6 +104,7 @@
       @include mixins.generate-typography-token('BODY-14-RG-EXP');
     }
 
+    cds-icon,
     clr-icon {
       color: header-variables.$clr-header-font-color;
     }
@@ -116,7 +117,7 @@
       text-align: center;
 
       cds-icon:not([size]),
-      clr-icon {
+      clr-icon:not([size]) {
         @include mixins.equilateral(header-variables.$clr-header-clarity-icons-size);
       }
 
@@ -197,9 +198,11 @@
       }
 
       .dropdown-toggle.nav-icon {
-        cds-icon:not([size], [shape^='angle']),
-        clr-icon:not([shape^='angle']) {
-          @include mixins.equilateral(header-variables.$clr-header-clarity-icons-size);
+        cds-icon,
+        clr-icon {
+          &:not([size], [shape^='angle']) {
+            @include mixins.equilateral(header-variables.$clr-header-clarity-icons-size);
+          }
         }
       }
 

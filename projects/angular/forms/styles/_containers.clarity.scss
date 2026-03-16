@@ -108,6 +108,12 @@
     flex-basis: 100%;
     display: flex;
     align-items: flex-start;
+    gap: density.$clr-base-gap-xs;
+    margin-top: density.$clr-base-gap-xs;
+
+    .clr-subtext {
+      margin: 0;
+    }
   }
 
   .clr-validate-icon {
@@ -149,15 +155,6 @@
     }
   }
 
-  .clr-form:not(.clr-form-compact) .clr-control-container {
-    &.clr-error,
-    &.clr-success {
-      & > .clr-subtext-wrapper .clr-validate-icon {
-        margin-left: calc(-1 * #{density.$clr-base-horizontal-offset-xs});
-      }
-    }
-  }
-
   .clr-form-compact {
     .clr-form-control > .clr-control-label {
       width: calc(32 * #{forms-variables.$clr-forms-baseline});
@@ -184,28 +181,18 @@
     .clr-subtext {
       display: inline-block;
       align-self: flex-start;
-      padding: density.$clr-base-vertical-offset-xs 0;
-      margin-top: 0;
-
-      // special margin left based on --clr-forms-icon-size
-      // to align subtexts when error/success icon is missing.
-      margin-left: forms-variables.$clr-forms-icon-size;
-    }
-
-    .clr-error,
-    .clr-success {
-      .clr-subtext {
-        margin-left: density.$clr-base-gap-xs;
-      }
-
-      // Center the validation icon
-      .clr-validate-icon {
-        margin-left: 0;
-      }
+      margin-left: density.$clr-base-gap-s;
     }
 
     .clr-subtext-wrapper {
       flex-basis: auto;
+      flex-direction: row;
+      align-self: flex-start;
+      margin-left: density.$clr-base-gap-s;
+
+      .clr-subtext {
+        margin: 0;
+      }
     }
   }
 }

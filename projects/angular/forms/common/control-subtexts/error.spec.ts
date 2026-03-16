@@ -9,10 +9,10 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { CONTROL_SUFFIX } from './abstract-control';
+import { CONTROL_SUFFIX } from '../abstract-control';
 import { ClrControlError } from './error';
-import { ContainerIdService } from './providers/container-id.service';
-import { ControlIdService } from './providers/control-id.service';
+import { ContainerIdService } from '../providers/container-id.service';
+import { ControlIdService } from '../providers/control-id.service';
 
 @Component({
   template: `<clr-control-error>Test error</clr-control-error>`,
@@ -40,8 +40,8 @@ export default function (): void {
         expect(element.innerText).toContain('Test error');
       });
 
-      it('adds the .clr-subtext class to host', function () {
-        expect(element.classList.contains('clr-subtext')).toBeTrue();
+      it('adds the .clr-subtext-wrapper class to host', function () {
+        expect(element.classList.contains('clr-subtext-wrapper')).toBeTrue();
       });
 
       it('should add id to host', function () {

@@ -29,14 +29,6 @@
     }
   }
 
-  //Clarity Buttons
-  .btn-group > .btn,
-  .btn {
-    clr-icon {
-      transform: translate3d(0, calc(-1 * #{tokens.$cds-global-space-2}), 0);
-    }
-  }
-
   a.btn,
   .btn.btn-secondary,
   .btn-secondary .btn {
@@ -200,14 +192,12 @@
 
   //Small Icon Button
   .btn-sm:not(.btn-link) {
+    cds-icon,
     clr-icon {
-      transform: translate3d(0, calc(-1 * #{tokens.$cds-global-space-1}), 0);
-    }
-
-    clr-icon,
-    cds-icon:not([size]) {
-      height: buttons-variables.$clr-btn-appearance-standard-icon-size;
-      width: buttons-variables.$clr-btn-appearance-standard-icon-size;
+      &:not([size]) {
+        height: buttons-variables.$clr-btn-appearance-standard-icon-size;
+        width: buttons-variables.$clr-btn-appearance-standard-icon-size;
+      }
     }
   }
 

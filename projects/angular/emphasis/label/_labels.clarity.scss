@@ -53,23 +53,29 @@
 
     // Set lower padding size if there is a badge or icon in the start / end of a label.
     &:has(> .badge:first-child),
-    &:has(> cds-icon:first-child) {
+    &:has(> cds-icon:first-child),
+    &:has(> clr-icon:first-child) {
       padding-left: density.$clr-base-horizontal-offset-xs;
     }
 
     &:has(> .badge:last-child),
-    &:has(> cds-icon:last-child) {
+    &:has(> cds-icon:last-child),
+    &:has(> clr-icon:last-child) {
       padding-right: density.$clr-base-horizontal-offset-xs;
     }
 
     .badge,
-    cds-icon {
+    cds-icon,
+    clr-icon {
       margin: 0;
       text-decoration: none;
     }
 
-    cds-icon:not([size]) {
-      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+    cds-icon,
+    clr-icon {
+      &:not([size]) {
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+      }
     }
 
     &.clickable:not(:has(.text)) {

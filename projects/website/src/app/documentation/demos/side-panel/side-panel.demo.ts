@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { SidePanelAngularAlternateCloseDemo } from './side-panel-angular-alt-close-demo';
+import { SidePanelAngularBottomDemo } from './side-panel-angular-bottom-demo';
 import { SidePanelAngularDemo } from './side-panel-angular-demo';
 import { SidePanelAngularInlineDemo } from './side-panel-angular-inline-demo';
 import { SidePanelAngularPinnableDemo } from './side-panel-angular-pinnable-demo';
@@ -33,6 +34,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     DocTabsComponent,
     DocTabComponent,
     RouterLink,
+    SidePanelAngularBottomDemo,
     SidePanelAngularDemo,
     SidePanelAngularInlineDemo,
     SidePanelAngularPinnableDemo,

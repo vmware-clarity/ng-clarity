@@ -930,8 +930,13 @@
           .datagrid-detail-pane-close {
             flex-basis: mixins.baselinePx(20);
 
-            button cds-icon:not([size]) {
-              @include mixins.min-equilateral(mixins.baselinePx(20));
+            button {
+              cds-icon,
+              clr-icon {
+                &:not([size]) {
+                  @include mixins.min-equilateral(mixins.baselinePx(20));
+                }
+              }
             }
           }
         }
@@ -1055,6 +1060,7 @@
         [shape='error']
       ),
       clr-icon:not(
+        [size],
         [shape='info-circle'],
         [shape='exclamation-triangle'],
         [shape='exclamation-circle'],
@@ -1403,7 +1409,8 @@
         padding: 0;
         border: 0;
 
-        cds-icon {
+        cds-icon,
+        clr-icon {
           @include mixins.min-equilateral(datagrid-variables.$clr-datagrid-detail-pane-close-icon-size);
 
           color: modal-variables.$clr-modal-close-color;
@@ -1442,8 +1449,13 @@
       @include mixins.clr-no-styles-button();
       @include datagrid-mixins.datagrid-action-button-styles();
 
-      &:disabled cds-icon.datagrid-detail-caret-icon {
-        --color: #{tokens.$cds-alias-object-interaction-color-disabled};
+      &:disabled {
+        cds-icon,
+        clr-icon {
+          &.datagrid-detail-caret-icon {
+            --color: #{tokens.$cds-alias-object-interaction-color-disabled};
+          }
+        }
       }
 
       &.is-open .datagrid-detail-caret-icon {
@@ -1537,7 +1549,8 @@
         margin: 0;
         padding: 0;
 
-        cds-icon {
+        cds-icon,
+        clr-icon {
           color: datagrid-variables.$clr-datagrid-column-switch-header-font-color;
 
           &:hover {

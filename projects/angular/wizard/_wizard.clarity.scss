@@ -125,7 +125,7 @@
       }
 
       cds-icon:not([size]),
-      clr-icon {
+      clr-icon:not([size]) {
         @include mixins.equilateral(density.$clr-base-icon-size-l);
       }
     }
@@ -220,8 +220,11 @@
         border-color: wizard-variables.$clr-wizard-stepnav-item-complete-border-color;
         transition: border-color 0.2s ease-in;
 
-        .clr-wizard-stepnav-link-icon cds-icon {
-          --color: #{wizard-variables.$clr-wizard-stepnav-link-complete-icon-color};
+        .clr-wizard-stepnav-link-icon {
+          cds-icon,
+          clr-icon {
+            --color: #{wizard-variables.$clr-wizard-stepnav-link-complete-icon-color};
+          }
         }
       }
 
@@ -233,8 +236,11 @@
           background-color: wizard-variables.$clr-wizard-stepnav-selected-error-bgcolor;
         }
 
-        .clr-wizard-stepnav-link-icon cds-icon {
-          --color: #{wizard-variables.$clr-wizard-stepnav-link-error-icon-color};
+        .clr-wizard-stepnav-link-icon {
+          cds-icon,
+          clr-icon {
+            --color: #{wizard-variables.$clr-wizard-stepnav-link-error-icon-color};
+          }
         }
       }
 

@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 
 import { SidePanelAngularAlternateCloseDemo } from './side-panel-angular-alt-close-demo';
+import { SidePanelAngularBottomDemo } from './side-panel-angular-bottom-demo';
 import { SidePanelAngularDemo } from './side-panel-angular-demo';
 import { SidePanelAngularInlineDemo } from './side-panel-angular-inline-demo';
 import { SidePanelAngularPinnableDemo } from './side-panel-angular-pinnable-demo';
@@ -34,6 +35,7 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     ThemedImageComponent,
     StackblitzExampleComponent,
     SidePanelSizeDesignDemo,
+    SidePanelAngularBottomDemo,
     SidePanelAngularDemo,
     SidePanelAngularInlineDemo,
     SidePanelAngularPinnableDemo,
