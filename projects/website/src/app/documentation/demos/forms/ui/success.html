@@ -10,10 +10,12 @@
     <div class="clr-control-container clr-success">
       <div class="clr-input-wrapper">
         <input type="text" id="example" placeholder="Example Input" class="clr-input" />
-        <clr-icon class="clr-validate-icon" shape="check-circle"></clr-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
-      <span class="clr-subtext success">Success message</span>
+      <div class="clr-subtext-wrapper">
+        <cds-icon class="clr-validate-icon" shape="success-standard" status="danger"></cds-icon>
+        <span class="clr-subtext success">Success message</span>
+      </div>
     </div>
   </div>
 </form>

@@ -16,9 +16,11 @@
           placeholder="Password please!"
           class="clr-input"
         />
-        <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
       </div>
-      <span class="clr-subtext">Must contain at least 8 characters!</span>
+      <div class="clr-subtext-wrapper">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext error">Must contain at least 8 characters!</span>
+      </div>
     </div>
   </div>
 </form>
