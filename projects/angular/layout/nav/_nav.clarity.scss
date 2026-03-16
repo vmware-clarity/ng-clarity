@@ -60,29 +60,29 @@
       }
 
       &:hover,
-      &:focus,
-      &:active {
+      &:focus {
         color: inherit;
-      }
-
-      // TODO - separate :active and .active, currently .active is being used for selected state.
-      &:active {
-        background-color: tabs-variables.$clr-nav-active-bg-color;
-      }
-
-      &:hover,
-      &.active {
-        @include tabs-mixins.nav-link-border-appearance('bottom');
-      }
-
-      &:hover,
-      &:focus,
-      &:active,
-      &.active {
         text-decoration: none;
       }
 
+      &:hover {
+        @include tabs-mixins.nav-link-border-appearance('bottom');
+      }
+
+      // :active = mouse-down / press state
+      &:active {
+        color: inherit;
+        text-decoration: none;
+        background-color: tabs-variables.$clr-nav-active-bg-color;
+      }
+
+      // .active = selected / current nav item
       &.active {
+        color: tabs-variables.$clr-nav-link-active-color;
+        text-decoration: none;
+
+        @include tabs-mixins.nav-link-border-appearance('bottom');
+
         &:hover {
           background-color: tabs-variables.$clr-nav-selected-hover-background-color;
         }
@@ -90,8 +90,6 @@
         &:active {
           background-color: tabs-variables.$clr-nav-selected-active-background-color;
         }
-
-        color: tabs-variables.$clr-nav-link-active-color;
       }
     }
   }

@@ -23,7 +23,7 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
         [attr.aria-label]="responsiveNavCommonString"
         (click)="openNav(responsiveNavCodes.NAV_LEVEL_1)"
       >
-        <span></span>
+        <cds-icon shape="bars"></cds-icon>
       </button>
     }
     <ng-content></ng-content>
@@ -34,7 +34,7 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
         [attr.aria-label]="responsiveOverflowCommonString"
         (click)="openNav(responsiveNavCodes.NAV_LEVEL_2)"
       >
-        <span></span>
+        <cds-icon shape="ellipsis-vertical"></cds-icon>
       </button>
     }
     <div class="header-backdrop" (click)="closeOpenNav()"></div>
