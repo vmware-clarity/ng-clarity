@@ -6,8 +6,10 @@
  */
 
 @use 'variables.tokens' as tokens;
+@use '../../../styles/variables/variables.density' as density;
 @use '../../../styles/variables' as variables;
 @use 'mixins';
+@use '../../../layout/tabs/mixins.tabs' as tabs-mixins;
 
 $contentTopMargin: calc(2 * tokens.$cds-global-space-15);
 
@@ -77,14 +79,16 @@ $contentTopMargin: calc(2 * tokens.$cds-global-space-15);
       color: tokens.$cds-alias-object-interaction-color;
       font-weight: tokens.$cds-alias-typography-font-weight-regular;
       border-left: $activeBorderWidth solid transparent;
-      padding: tokens.$cds-global-space-3 tokens.$cds-global-space-7;
-      padding-left: calc(tokens.$cds-global-space-7 - $activeBorderWidth);
+      padding: density.$clr-base-vertical-offset-s density.$clr-base-vertical-offset-xl
+        density.$clr-base-vertical-offset-s calc(density.$clr-base-vertical-offset-xl - $activeBorderWidth);
       transition: border-left-color 200ms ease-in;
       text-decoration: none;
 
       &.active {
         color: tokens.$cds-alias-object-interaction-color-active;
-        border-left-color: tokens.$cds-alias-object-interaction-background-highlight;
+        position: relative;
+
+        @include tabs-mixins.nav-link-border-appearance('left', true);
       }
 
       &:hover {
