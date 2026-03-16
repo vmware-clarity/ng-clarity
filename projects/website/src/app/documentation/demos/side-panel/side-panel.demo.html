@@ -18,16 +18,24 @@
 
     <h2 id="position" class="clr-mt-48px" cds-text="title">Position</h2>
     <p class="clr-mt-16px" cds-text="body">
-      By default the side panels are positioned on the right side of the document body.
+      Side panels offer flexible positioning options to suit different layout needs:
     </p>
-    <clr-side-panel-angular-demo [showCode]="false"></clr-side-panel-angular-demo>
-
-    <p>
-      But using the <code cds-text="code">clrModalHost</code> directive, they can be positioned inside an arbitrary
-      container, that only occupies a portion of the screen.
-    </p>
-
-    <clr-side-panel-angular-inline-demo [showCode]="false"></clr-side-panel-angular-inline-demo>
+    <div class="clr-mt-8px">
+      <ul class="list" cds-text="body">
+        <li>
+          <b>Right (Default):</b> The standard position, where the panel slides in from the right side of the screen,
+          overlaying the content.
+        </li>
+        <li>
+          <b>Bottom:</b> The panel slides up from the bottom of the screen. This is useful for mobile contexts or less
+          critical information.
+        </li>
+        <li>
+          <b>Inline:</b> Using the <code cds-text="code">clrModalHost</code> directive, panels can be positioned inside
+          a specific container rather than covering the full page height.
+        </li>
+      </ul>
+    </div>
 
     <h2 id="pinning" class="clr-mt-48px" cds-text="title">Pinning</h2>
     <p class="clr-mt-16px" cds-text="body" cds-layout="m-b:md">
@@ -35,7 +43,7 @@
       achieved through the <code cds-text="code">clrSidePanelPinnable</code> input. Currently, the side panel pinning
       also depends on the <code cds-text="code">clrSidePanelSize</code> input to work properly. When pinned, all normal
       ways to close the panel are blocked and it's displayed side by side with the content, instead of overlapping it. A
-      pinnable container can also be inline.
+      pinnable container can also be inline. Pinning is also supported for bottom-positioned panels.
     </p>
     <clr-side-panel-angular-pinnable-demo [showCode]="false"></clr-side-panel-angular-pinnable-demo>
 
@@ -113,6 +121,15 @@
     <h2 id="angular-component" class="clr-mt-48px" cds-text="title">Side Panel Component</h2>
 
     <clr-side-panel-angular-demo></clr-side-panel-angular-demo>
+
+    <h3 data-toc-item id="clrsidepanelbottom" class="clr-mt-24px" cds-text="section">Bottom Position</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      The side-panel can be positioned at the bottom of the screen using the
+      <code cds-text="code">clrSidePanelPosition</code> input.
+    </p>
+
+    <clr-side-panel-angular-bottom-demo></clr-side-panel-angular-bottom-demo>
 
     <h3 data-toc-item id="clrsidepanelinline" class="clr-mt-24px" cds-text="section">Inline</h3>
 
@@ -194,6 +211,15 @@
           <td class="hidden-xs-down">"sm", "md", "lg", "xl"</td>
           <td class="hidden-xs-down">"md"</td>
           <td class="left">Sets the size of the side panel. Default is medium size.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrSidePanelPosition]</b>
+            <div class="hidden-sm-up">Values:<br />"right", "bottom"</div>
+          </td>
+          <td class="hidden-xs-down">"right", "bottom"</td>
+          <td class="hidden-xs-down">"right"</td>
+          <td class="left">Sets the position of the side panel.</td>
         </tr>
         <tr>
           <td class="left">
