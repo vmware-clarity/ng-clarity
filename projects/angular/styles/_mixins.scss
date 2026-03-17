@@ -390,13 +390,8 @@ $typography-tokens: (
   }
 }
 @mixin cell-children-aligment() {
+  cds-icon,
   clr-icon {
-    margin-top: calc((-1 * var(--cds-global-space-3)) - var(--cds-global-space-1));
-    margin-bottom: calc(-1 * var(--cds-global-space-3));
-    transform: translateY(calc(-1 * var(--cds-global-space-1)));
-  }
-
-  cds-icon {
     margin-top: calc((-1 * var(--cds-global-space-3)) - var(--cds-global-space-1));
     margin-bottom: calc(-1 * var(--cds-global-space-3));
   }

@@ -9,7 +9,7 @@ import { Component, ElementRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 // I'm giving up, I'm using the datagrid ones for now.
 import { ClrIcon } from '@clr/angular/icon';
-import { ClrPopoverPosition, ClrPopoverService, POPOVER_HOST_ANCHOR } from '@clr/angular/popover/common';
+import { ClrPopoverPosition, ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/common';
 import { TestContext } from '@clr/angular/testing';
 
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
@@ -70,7 +70,7 @@ export default function (): void {
     </button>
     <clr-signpost-content [clrPosition]="position">Signpost content</clr-signpost-content>
   `,
-  providers: [{ provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }],
+  providers: [{ provide: POPOVER_HOST_ORIGIN, useExisting: ElementRef }],
   standalone: false,
 })
 class SimpleTest {

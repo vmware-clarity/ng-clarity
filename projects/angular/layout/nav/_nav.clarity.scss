@@ -34,10 +34,11 @@
     }
 
     .nav-link {
-      position: relative;
       color: tabs-variables.$clr-nav-link-color;
 
       @include mixins.generate-typography-token('BODY-14-RG-STD');
+
+      @include tabs-mixins.nav-link-border-appearance('bottom');
 
       padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-m;
       display: flex;
@@ -53,7 +54,8 @@
       &.dropdown-toggle {
         padding: 0 density.$clr-base-horizontal-offset-m;
 
-        cds-icon {
+        cds-icon,
+        clr-icon {
           color: tabs-variables.$clr-nav-link-color;
         }
       }
@@ -69,9 +71,10 @@
         background-color: tabs-variables.$clr-nav-active-bg-color;
       }
 
-      &:hover,
       &.active {
-        @include tabs-mixins.nav-link-border-appearance('bottom');
+        &::before {
+          border-color: tokens.$cds-alias-object-interaction-background-highlight;
+        }
       }
 
       &:hover,

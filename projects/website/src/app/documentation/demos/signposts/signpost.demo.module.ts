@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 
+import { SignpostOpenAtPointDemo } from './signpost-open-at-point.demo';
 import { SignpostParagraphDemo } from './signpost-paragraph.demo';
 import { SignpostPositionsDemo } from './signpost-positions.demo';
 import { SignpostTriggersDemo } from './signpost-triggers.demo';
@@ -35,6 +36,7 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     StackblitzExampleComponent,
     LinkCardsComponent,
     SignpostDemo,
+    SignpostOpenAtPointDemo,
     SignpostParagraphDemo,
     SignpostPositionsDemo,
     SignpostTriggersDemo,

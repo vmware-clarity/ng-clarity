@@ -13,7 +13,7 @@ import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
 
 import { ClrIfError } from './if-error';
-import { ClrControlError } from '../error';
+import { ClrControlError } from '../control-subtexts/error';
 import { NgControlService } from '../providers/ng-control.service';
 
 const errorMessage = 'ERROR_MESSAGE';

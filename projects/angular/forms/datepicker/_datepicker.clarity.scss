@@ -172,9 +172,11 @@
 
     color: datepicker-variables.$clr-calendar-btn-color;
 
-    cds-icon:not([size]),
+    cds-icon,
     clr-icon {
-      @include mixins.equilateral(density.$clr-base-icon-size-s);
+      &:not([size]) {
+        @include mixins.equilateral(density.$clr-base-icon-size-s);
+      }
     }
   }
 

@@ -6,7 +6,7 @@
  */
 
 import { Component, ContentChild, Input } from '@angular/core';
-import { ClrPopoverHostDirective } from '@clr/angular/popover/common';
+import { ClrPopoverHostDirective, ClrPopoverPoint, ClrPopoverService } from '@clr/angular/popover/common';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
@@ -16,7 +16,7 @@ import { ClrSignpostTrigger } from './signpost-trigger';
 @Component({
   selector: 'clr-signpost',
   template: `
-    @if (!useCustomTrigger) {
+    @if (showDefaultTrigger) {
       <button
         type="button"
         class="signpost-action btn btn-sm btn-icon btn-link"
@@ -55,9 +55,16 @@ export class ClrSignpost {
   useCustomTrigger = false;
 
   @Input('clrSignpostTriggerAriaLabel') signpostTriggerAriaLabel: string;
+  /**
+   * Hides the default trigger button. Use when the signpost is opened
+   * programmatically via `openAtPoint()` and no trigger icon is needed.
+   */
+  @Input('clrSignpostHideTrigger') hideTrigger = false;
 
-  constructor(public commonStrings: ClrCommonStringsService) {}
-
+  constructor(
+    public commonStrings: ClrCommonStringsService,
+    private popoverService: ClrPopoverService
+  ) {}
   /**********
    * @property signPostTrigger
    *
@@ -68,5 +75,13 @@ export class ClrSignpost {
   @ContentChild(ClrSignpostTrigger)
   set customTrigger(trigger: ClrSignpostTrigger) {
     this.useCustomTrigger = !!trigger;
+  }
+
+  get showDefaultTrigger(): boolean {
+    return !this.useCustomTrigger && !this.hideTrigger;
+  }
+
+  openAtPoint(point: ClrPopoverPoint) {
+    this.popoverService.openAtPoint(point);
   }
 }

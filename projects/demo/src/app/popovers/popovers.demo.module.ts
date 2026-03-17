@@ -11,11 +11,27 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule, ClrPopoverModuleNext, ClrPopoverService } from '@clr/angular';
 
+import { DatagridContextMenuDemo } from './datagrid-context-menu.demo';
+import { DropdownContextMenuDemo } from './dropdown-context-menu.demo';
+import { PopoverContextMenuDemo } from './popover-context-menu.demo';
 import { PopoversDemo } from './popovers.demo';
 import { ROUTING } from './popovers.demo.routing';
+import { SignpostContextMenuDemo } from './signpost-context-menu.demo';
 
 @NgModule({
-  imports: [CommonModule, ClarityModule, CdkTrapFocus, ClrPopoverModuleNext, ROUTING, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ClarityModule,
+    CdkTrapFocus,
+    ClrPopoverModuleNext,
+    ROUTING,
+    FormsModule,
+    ReactiveFormsModule,
+    DatagridContextMenuDemo,
+    DropdownContextMenuDemo,
+    PopoverContextMenuDemo,
+    SignpostContextMenuDemo,
+  ],
   providers: [ClrPopoverService],
   declarations: [PopoversDemo],
   exports: [PopoversDemo],

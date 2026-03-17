@@ -10,14 +10,14 @@ import { Directive, ElementRef } from '@angular/core';
 import { ClrPopoverService } from './providers/popover.service';
 
 @Directive({
-  selector: '[clrPopoverAnchor]',
+  selector: '[clrPopoverOrigin]',
   host: {
-    '[class.clr-anchor]': 'true',
+    '[class.clr-popover-origin]': 'true',
   },
   standalone: false,
 })
-export class ClrPopoverAnchor {
+export class ClrPopoverOrigin {
   constructor(popoverService: ClrPopoverService, element: ElementRef<HTMLButtonElement>) {
-    popoverService.anchorElementRef = element;
+    popoverService.origin = element;
   }
 }

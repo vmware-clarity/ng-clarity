@@ -81,7 +81,11 @@ import { CommonModules } from '../../helpers/common';
       </clr-datalist-container>
       <clr-combobox-container>
         <label>Combobox</label>
-        <clr-combobox name="combobox" formControlName="selectedOptionCombobox">
+        <clr-combobox name="combobox" formControlName="selectedOptionCombobox" [clrMulti]="true">
+          <ng-container *clrOptionSelected="let selected">
+            <cds-icon shape="sun" size="12" role="img" aria-label="welcome home"></cds-icon>
+            {{ selected }}
+          </ng-container>
           <clr-options>
             <clr-option [clrValue]="'one'">One</clr-option>
             <clr-option [clrValue]="'two'">Two</clr-option>

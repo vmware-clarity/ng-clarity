@@ -142,64 +142,64 @@ function getOffset(key: ClrPopoverPosition, type: ClrPopoverType): Partial<Conne
   }
 }
 
-const STANDARD_ANCHORS = {
+const STANDARD_ORIGINS = {
   // TOP
-  [ClrPopoverPosition.TOP_RIGHT]: { anchor: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_LEFT },
-  [ClrPopoverPosition.TOP_MIDDLE]: { anchor: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_CENTER },
-  [ClrPopoverPosition.TOP_LEFT]: { anchor: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_RIGHT },
+  [ClrPopoverPosition.TOP_RIGHT]: { origin: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_LEFT },
+  [ClrPopoverPosition.TOP_MIDDLE]: { origin: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_CENTER },
+  [ClrPopoverPosition.TOP_LEFT]: { origin: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_RIGHT },
 
   // LEFT
-  [ClrPopoverPosition.LEFT]: { anchor: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_TOP },
-  [ClrPopoverPosition.LEFT_TOP]: { anchor: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_BOTTOM },
-  [ClrPopoverPosition.LEFT_MIDDLE]: { anchor: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_CENTER },
-  [ClrPopoverPosition.LEFT_BOTTOM]: { anchor: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_TOP },
+  [ClrPopoverPosition.LEFT]: { origin: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_TOP },
+  [ClrPopoverPosition.LEFT_TOP]: { origin: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_BOTTOM },
+  [ClrPopoverPosition.LEFT_MIDDLE]: { origin: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_CENTER },
+  [ClrPopoverPosition.LEFT_BOTTOM]: { origin: ClrPosition.LEFT_CENTER, content: ClrPosition.RIGHT_TOP },
 
   // RIGHT
-  [ClrPopoverPosition.RIGHT]: { anchor: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_TOP },
-  [ClrPopoverPosition.RIGHT_TOP]: { anchor: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_BOTTOM },
-  [ClrPopoverPosition.RIGHT_MIDDLE]: { anchor: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_CENTER },
-  [ClrPopoverPosition.RIGHT_BOTTOM]: { anchor: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_TOP },
+  [ClrPopoverPosition.RIGHT]: { origin: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_TOP },
+  [ClrPopoverPosition.RIGHT_TOP]: { origin: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_BOTTOM },
+  [ClrPopoverPosition.RIGHT_MIDDLE]: { origin: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_CENTER },
+  [ClrPopoverPosition.RIGHT_BOTTOM]: { origin: ClrPosition.RIGHT_CENTER, content: ClrPosition.LEFT_TOP },
 
   // BOTTOM
-  [ClrPopoverPosition.BOTTOM_RIGHT]: { anchor: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_LEFT },
-  [ClrPopoverPosition.BOTTOM_MIDDLE]: { anchor: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_CENTER },
-  [ClrPopoverPosition.BOTTOM_LEFT]: { anchor: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_RIGHT },
+  [ClrPopoverPosition.BOTTOM_RIGHT]: { origin: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_LEFT },
+  [ClrPopoverPosition.BOTTOM_MIDDLE]: { origin: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_CENTER },
+  [ClrPopoverPosition.BOTTOM_LEFT]: { origin: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_RIGHT },
 };
 
-const DROPDOWN_ANCHORS = {
+const DROPDOWN_ORIGINS = {
   // TOP
-  [ClrPopoverPosition.TOP_RIGHT]: { anchor: ClrPosition.TOP_RIGHT, content: ClrPosition.BOTTOM_RIGHT },
-  [ClrPopoverPosition.TOP_LEFT]: { anchor: ClrPosition.TOP_LEFT, content: ClrPosition.BOTTOM_LEFT },
+  [ClrPopoverPosition.TOP_RIGHT]: { origin: ClrPosition.TOP_RIGHT, content: ClrPosition.BOTTOM_RIGHT },
+  [ClrPopoverPosition.TOP_LEFT]: { origin: ClrPosition.TOP_LEFT, content: ClrPosition.BOTTOM_LEFT },
 
   // LEFT
-  [ClrPopoverPosition.LEFT_TOP]: { anchor: ClrPosition.LEFT_TOP, content: ClrPosition.TOP_RIGHT },
-  [ClrPopoverPosition.LEFT_BOTTOM]: { anchor: ClrPosition.LEFT_BOTTOM, content: ClrPosition.BOTTOM_RIGHT },
+  [ClrPopoverPosition.LEFT_TOP]: { origin: ClrPosition.LEFT_TOP, content: ClrPosition.TOP_RIGHT },
+  [ClrPopoverPosition.LEFT_BOTTOM]: { origin: ClrPosition.LEFT_BOTTOM, content: ClrPosition.BOTTOM_RIGHT },
 
   // RIGHT
-  [ClrPopoverPosition.RIGHT_TOP]: { anchor: ClrPosition.RIGHT_TOP, content: ClrPosition.LEFT_TOP },
-  [ClrPopoverPosition.RIGHT_BOTTOM]: { anchor: ClrPosition.RIGHT_BOTTOM, content: ClrPosition.LEFT_BOTTOM },
+  [ClrPopoverPosition.RIGHT_TOP]: { origin: ClrPosition.RIGHT_TOP, content: ClrPosition.LEFT_TOP },
+  [ClrPopoverPosition.RIGHT_BOTTOM]: { origin: ClrPosition.RIGHT_BOTTOM, content: ClrPosition.LEFT_BOTTOM },
 
   // BOTTOM
-  [ClrPopoverPosition.BOTTOM_RIGHT]: { anchor: ClrPosition.BOTTOM_LEFT, content: ClrPosition.TOP_RIGHT },
-  [ClrPopoverPosition.BOTTOM_LEFT]: { anchor: ClrPosition.BOTTOM_RIGHT, content: ClrPosition.TOP_LEFT },
+  [ClrPopoverPosition.BOTTOM_RIGHT]: { origin: ClrPosition.BOTTOM_LEFT, content: ClrPosition.TOP_RIGHT },
+  [ClrPopoverPosition.BOTTOM_LEFT]: { origin: ClrPosition.BOTTOM_RIGHT, content: ClrPosition.TOP_LEFT },
 };
 
 export function mapPopoverKeyToPosition(key: ClrPopoverPosition, type: ClrPopoverType): ConnectedPosition {
   let offset = getOffset(key, type);
 
-  const defaultPosition = { anchor: ClrPosition.BOTTOM_LEFT, content: ClrPosition.TOP_LEFT };
-  const { anchor, content } =
-    (type === ClrPopoverType.DROPDOWN ? DROPDOWN_ANCHORS[key] : STANDARD_ANCHORS[key]) ?? defaultPosition;
+  const defaultPosition = { origin: ClrPosition.BOTTOM_LEFT, content: ClrPosition.TOP_LEFT };
+  const { origin, content } =
+    (type === ClrPopoverType.DROPDOWN ? DROPDOWN_ORIGINS[key] : STANDARD_ORIGINS[key]) ?? defaultPosition;
 
   return {
-    ...getAnchorPosition(anchor),
+    ...getOriginPosition(origin),
     ...getContentPosition(content),
     ...offset,
     panelClass: key,
   } as ConnectedPosition;
 }
 
-export function getAnchorPosition(key: ClrPosition): Partial<ConnectedPosition> {
+export function getOriginPosition(key: ClrPosition): Partial<ConnectedPosition> {
   switch (key) {
     // TOP Positions
     case ClrPosition.TOP_LEFT:

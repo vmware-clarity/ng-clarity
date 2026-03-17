@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 
 import { DropdownAngularCloseItemFalseDemo } from './dropdown-angular-close-item-false';
+import { DropdownAngularContextMenuDemo } from './dropdown-angular-context-menu';
 import { DropdownAngularPositioningDemo } from './dropdown-angular-positioning';
 import { DropdownStaticButtonLinkToggleDemo } from './dropdown-static-buttonlink-toggle';
 import { DropdownStaticDefaultDemo } from './dropdown-static-default';
@@ -39,6 +40,7 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     DropdownStaticButtonLinkToggleDemo,
     DropdownAngularPositioningDemo,
     DropdownAngularCloseItemFalseDemo,
+    DropdownAngularContextMenuDemo,
     DropdownsDemo,
   ],
   exports: [DropdownsDemo],

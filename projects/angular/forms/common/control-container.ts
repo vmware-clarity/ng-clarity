@@ -22,12 +22,6 @@ import { NgControlService } from './providers/ng-control.service';
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper">
         <ng-content></ng-content>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>

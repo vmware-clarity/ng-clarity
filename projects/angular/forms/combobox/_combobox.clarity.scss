@@ -256,7 +256,8 @@
     }
 
     .label-combobox-pill .clr-combobox-pill-content,
-    .clr-combobox-remove-btn > cds-icon {
+    .clr-combobox-remove-btn > cds-icon,
+    .clr-combobox-remove-btn > clr-icon {
       color: tokens.$cds-alias-typography-disabled;
     }
   }

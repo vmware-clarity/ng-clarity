@@ -11,7 +11,6 @@ import {
   ClrAlertModule,
   ClrDropdownModule,
   ClrIcon,
-  ClrIconModule,
   ClrPopoverContent,
   ClrPopoverHostDirective,
   ClrStopEscapePropagationDirective,
@@ -20,6 +19,7 @@ import {
 } from '@clr/angular';
 
 import { DropdownAngularCloseItemFalseDemo } from './dropdown-angular-close-item-false';
+import { DropdownAngularContextMenuDemo } from './dropdown-angular-context-menu';
 import { DropdownAngularPositioningDemo } from './dropdown-angular-positioning';
 import { DropdownStaticButtonLinkToggleDemo } from './dropdown-static-buttonlink-toggle';
 import { DropdownStaticDefaultDemo } from './dropdown-static-default';
@@ -46,11 +46,11 @@ import { ClarityDocComponent } from '../clarity-doc';
     ClrPopoverHostDirective,
     ClrDropdownModule,
     ClrIcon,
-    ClrIconModule,
     ClrPopoverContent,
     ThemedImageComponent,
     DropdownAngularPositioningDemo,
     DropdownAngularCloseItemFalseDemo,
+    DropdownAngularContextMenuDemo,
     DropdownStaticDefaultDemo,
     DropdownStaticPositioningDemo,
     DropdownStaticIconToggleDemo,

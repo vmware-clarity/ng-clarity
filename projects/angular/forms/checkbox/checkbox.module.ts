@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
-import { checkCircleIcon, ClarityIcons, ClrIcon, exclamationCircleIcon } from '@clr/angular/icon';
+import { ClarityIcons, ClrIcon, errorStandardIcon, successStandardIcon } from '@clr/angular/icon';
 import { ClrHostWrappingModule } from '@clr/angular/utils';
 
 import { ClrCheckbox } from './checkbox';
@@ -22,6 +22,6 @@ import { ClrCheckboxWrapper } from './checkbox-wrapper';
 })
 export class ClrCheckboxModule {
   constructor() {
-    ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon);
+    ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
   }
 }
