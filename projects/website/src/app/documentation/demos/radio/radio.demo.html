@@ -366,7 +366,7 @@
 
     <div class="clrweb-DoxVersusBox clr-mt-24px clr-component-no-top-margin">
       <div class="clrweb-DoxVersusBox-items clrweb-DoxVersusBox-vsContent">
-        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6" style="align-items: normal">
           <div class="clrweb-DoxVersusBox-item">
             <form clrForm clrLayout="horizontal">
               <clr-radio-container>
@@ -459,12 +459,34 @@
     <div class="clr-row clr-mt-32px">
       <div class="clr-col-6">
         <div class="component-box-container">
-          <app-themed-image
-            [lightSrc]="'/assets/images/documentation/radios/light-theme/radio-error.svg'"
-            [darkSrc]="'/assets/images/documentation/radios/dark-theme/radio-error.svg'"
-            [imageAlt]="'radio button group with red error icon and error message'"
-            [imageStyle]="'max-width: 100%'"
-          ></app-themed-image>
+          <clr-radio-container>
+            <label>Select size</label>
+            <clr-radio-wrapper>
+              <input
+                type="radio"
+                clrRadio
+                name="error"
+                value="Small"
+                [(ngModel)]="errorRadioModel"
+                required
+                #errorRadio="ngModel"
+              />
+              <label>Small</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input
+                type="radio"
+                clrRadio
+                name="error"
+                value="Large"
+                [(ngModel)]="errorRadioModel"
+                required
+                #errorRadio="ngModel"
+              />
+              <label>Large</label>
+            </clr-radio-wrapper>
+            <clr-control-error *clrIfError="'required'">Size required</clr-control-error>
+          </clr-radio-container>
         </div>
       </div>
       <div class="clr-col-6">
@@ -479,12 +501,34 @@
     <div class="clr-row clr-mt-32px">
       <div class="clr-col-6">
         <div class="component-box-container">
-          <app-themed-image
-            [lightSrc]="'/assets/images/documentation/radios/light-theme/radio-success.svg'"
-            [darkSrc]="'/assets/images/documentation/radios/dark-theme/radio-success.svg'"
-            [imageAlt]="'radio button group with green success icon and success message'"
-            [imageStyle]="'max-width: 100%'"
-          ></app-themed-image>
+          <clr-radio-container>
+            <label>Select size</label>
+            <clr-radio-wrapper>
+              <input
+                type="radio"
+                clrRadio
+                name="error"
+                value="Small"
+                [(ngModel)]="successRadioModel"
+                required
+                #successRadio="ngModel"
+              />
+              <label>Small</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input
+                type="radio"
+                clrRadio
+                name="error"
+                value="Large"
+                [(ngModel)]="successRadioModel"
+                required
+                #successRadio="ngModel"
+              />
+              <label>Large</label>
+            </clr-radio-wrapper>
+            <clr-control-success>Changes saved</clr-control-success>
+          </clr-radio-container>
         </div>
       </div>
       <div class="clr-col-6">

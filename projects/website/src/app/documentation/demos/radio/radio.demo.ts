@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormsModule, NgModel } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ClrCommonFormsModule, ClrIcon, ClrIconModule, ClrRadioModule, ClrSelectModule } from '@clr/angular';
 
@@ -101,8 +101,19 @@ export class RadioDemo extends ClarityDocComponent {
 
   angularTs = AngularTs;
 
+  @ViewChild('successRadio') successRadio: NgModel;
+  successRadioModel = 'Large';
+
+  @ViewChild('errorRadio') errorRadio: NgModel;
+  errorRadioModel = '';
+
   constructor() {
     super('radio');
+  }
+
+  ngAfterViewInit() {
+    this.errorRadio.control.markAsTouched();
+    this.successRadio.control.markAsTouched();
   }
 
   selectNothing() {
