@@ -47,7 +47,7 @@ import * as i16 from '@angular/cdk/a11y';
 import * as i18_2 from '@angular/cdk/overlay';
 import * as i26 from '@angular/forms';
 import * as i4 from '@angular/common';
-import * as i5_2 from '@angular/cdk/drag-drop';
+import * as i5_3 from '@angular/cdk/drag-drop';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
@@ -139,14 +139,14 @@ export class AppfxDatagridModule {
     // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point clr-addons-datagrid.d.ts
     // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point clr-addons-datagrid.d.ts
     // Warning: (ae-forgotten-export) The symbol "i19" needs to be exported by the entry point clr-addons-datagrid.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_2" needs to be exported by the entry point clr-addons-datagrid.d.ts
     // Warning: (ae-forgotten-export) The symbol "i21" needs to be exported by the entry point clr-addons-datagrid.d.ts
     // Warning: (ae-forgotten-export) The symbol "i22" needs to be exported by the entry point clr-addons-datagrid.d.ts
     // Warning: (ae-forgotten-export) The symbol "i23" needs to be exported by the entry point clr-addons-datagrid.d.ts
     // Warning: (ae-forgotten-export) The symbol "DatagridColumnsOrderModule" needs to be exported by the entry point clr-addons-datagrid.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective, typeof DatagridActionBarDropdownRepositionDirective, typeof DatagridCellContainerComponent, typeof DatagridColumnToggleComponent, typeof DatagridFilterContainerComponent, typeof ExportDatagridComponent, typeof IsRowSelectablePipe], [typeof i14.AppfxA11yModule, typeof i15.AppfxDatagridFiltersModule, typeof i16.A11yModule, typeof i5_2.DragDropModule, typeof i18_2.OverlayModule, typeof i19.ClrCheckboxModule, typeof i3.ClrDatagridModule, typeof i21.ClrDropdownModule, typeof i22.ClrIcon, typeof i19.ClrInputModule, typeof i23.ClrLoadingModule, typeof i4.CommonModule, typeof DatagridColumnsOrderModule, typeof i26.FormsModule], [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective, typeof DatagridActionBarDropdownRepositionDirective, typeof DatagridCellContainerComponent, typeof DatagridColumnToggleComponent, typeof DatagridFilterContainerComponent, typeof ExportDatagridComponent, typeof IsRowSelectablePipe], [typeof i14.AppfxA11yModule, typeof i15.AppfxDatagridFiltersModule, typeof i16.A11yModule, typeof i5_3.DragDropModule, typeof i18_2.OverlayModule, typeof i19.ClrCheckboxModule, typeof i3_2.ClrDatagridModule, typeof i21.ClrDropdownModule, typeof i22.ClrIcon, typeof i19.ClrInputModule, typeof i23.ClrLoadingModule, typeof i4.CommonModule, typeof DatagridColumnsOrderModule, typeof i26.FormsModule], [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective]>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "PersistDatagridSettingsService" needs to be exported by the entry point clr-addons-datagrid.d.ts

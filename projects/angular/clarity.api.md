@@ -41,7 +41,7 @@ import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i2 from '@angular/common';
 import * as i46 from '@angular/forms';
-import * as i6$1_2 from '@angular/router';
+import * as i6_4 from '@angular/router';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
@@ -786,7 +786,7 @@ export class ClarityModule {
     // Warning: (ae-forgotten-export) The symbol "i8_3" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i9" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i10" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i11_2" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i12_2" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i13" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point clr-angular.d.ts
@@ -794,7 +794,7 @@ export class ClarityModule {
     // Warning: (ae-forgotten-export) The symbol "i16" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, [typeof i1.ClrIcon], [typeof i2_2.ClrEmphasisModule, typeof i3_2.ClrDataModule, typeof i1.ClrIcon, typeof i1.ClrIconModule, typeof i4.ClrModalModule, typeof i5.ClrLoadingModule, typeof i5.ClrConditionalModule, typeof i5.ClrFocusOnViewInitModule, typeof i6_2.ClrButtonModule, typeof i7.ClrFormsModule, typeof i8_3.ClrLayoutModule, typeof i9.ClrPopoverModule, typeof i10.ClrWizardModule, typeof i4.ClrSidePanelModule, typeof i11.ClrAccordionModule, typeof i12_2.ClrStepperModule, typeof i13.ClrSpinnerModule, typeof i14.ClrProgressBarModule, typeof i15.ÇlrClrPopoverModuleNext, typeof i16.ClrTimelineModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, [typeof i1.ClrIcon], [typeof i2_2.ClrEmphasisModule, typeof i3_2.ClrDataModule, typeof i1.ClrIcon, typeof i1.ClrIconModule, typeof i4.ClrModalModule, typeof i5.ClrLoadingModule, typeof i5.ClrConditionalModule, typeof i5.ClrFocusOnViewInitModule, typeof i6_2.ClrButtonModule, typeof i7.ClrFormsModule, typeof i8_3.ClrLayoutModule, typeof i9.ClrPopoverModule, typeof i10.ClrWizardModule, typeof i4.ClrSidePanelModule, typeof i11_2.ClrAccordionModule, typeof i12_2.ClrStepperModule, typeof i13.ClrSpinnerModule, typeof i14.ClrProgressBarModule, typeof i15.ÇlrClrPopoverModuleNext, typeof i16.ClrTimelineModule]>;
 }
 
 // @public (undocumented)
@@ -1294,7 +1294,7 @@ export class ClrBreadcrumbsModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrBreadcrumbsModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBreadcrumbsModule, [typeof ClrBreadcrumbs, typeof ClrBreadcrumbItem], [typeof i2.CommonModule, typeof i1.ClrIcon, typeof i5.ClrHostWrappingModule, typeof i6$1_2.RouterModule], [typeof ClrBreadcrumbs, typeof i1.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBreadcrumbsModule, [typeof ClrBreadcrumbs, typeof ClrBreadcrumbItem], [typeof i2.CommonModule, typeof i1.ClrIcon, typeof i5.ClrHostWrappingModule, typeof i6_4.RouterModule], [typeof ClrBreadcrumbs, typeof i1.ClrIcon]>;
 }
 
 // @public (undocumented)
@@ -1346,9 +1346,8 @@ export class ClrButton implements LoadingListener {
 
 // @public (undocumented)
 export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverService_2" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "ButtonGroupFocusHandler" needs to be exported by the entry point clr-angular.d.ts
-    constructor(buttonGroupNewService: ButtonInGroupService, popoverService: ClrPopoverService_2, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
+    constructor(buttonGroupNewService: ButtonInGroupService, popoverService: ClrPopoverService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
     // (undocumented)
     buttonGroupNewService: ButtonInGroupService;
     // (undocumented)
@@ -1370,11 +1369,9 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     menu: ElementRef<HTMLElement>;
     // (undocumented)
     menuButtons: ClrButton[];
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverPosition_2" needs to be exported by the entry point clr-angular.d.ts
-    //
     // (undocumented)
-    get menuPosition(): ClrPopoverPosition_2;
-    set menuPosition(pos: ClrPopoverPosition_2 | string);
+    get menuPosition(): ClrPopoverPosition;
+    set menuPosition(pos: ClrPopoverPosition | string);
     // (undocumented)
     menuToggle: ElementRef<HTMLElement>;
     ngAfterContentInit(): void;
@@ -1386,10 +1383,8 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     openMenu(event: Event, initialFocus: InitialFocus): void;
     // (undocumented)
     popoverId: string;
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverType_2" needs to be exported by the entry point clr-angular.d.ts
-    //
     // (undocumented)
-    protected popoverType: ClrPopoverType_2;
+    protected popoverType: ClrPopoverType;
     rearrangeButton(button: ClrButton): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, { "clrToggleButtonAriaLabel": { "alias": "clrToggleButtonAriaLabel"; "required": false; }; "menuPosition": { "alias": "clrMenuPosition"; "required": false; }; }, {}, ["buttons"], never, false, [{ directive: typeof i15.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
@@ -1425,7 +1420,7 @@ export class ClrCalendar implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "DatepickerFocusService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "DateIOService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "DateFormControlService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _dateIOService: DateIOService, _elRef: ElementRef<HTMLElement>, _dateFormControlService: DateFormControlService, _popoverService: ClrPopoverService_2);
+    constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _dateIOService: DateIOService, _elRef: ElementRef<HTMLElement>, _dateFormControlService: DateFormControlService, _popoverService: ClrPopoverService);
     // Warning: (ae-forgotten-export) The symbol "CalendarModel" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
@@ -1455,10 +1450,8 @@ export class ClrCalendar implements OnDestroy {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCalendar, never>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "WrappedFormControl_2" needs to be exported by the entry point clr-angular.d.ts
-//
 // @public
-export class ClrCheckbox extends WrappedFormControl_2<ClrCheckboxWrapper> {
+export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, toggle: string);
     // (undocumented)
     get controlDisabled(): boolean;
@@ -1472,11 +1465,9 @@ export class ClrCheckbox extends WrappedFormControl_2<ClrCheckboxWrapper> {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckbox, [null, null, { optional: true; self: true; }, null, null, { attribute: "clrToggle"; }]>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "ClrAbstractContainer_2" needs to be exported by the entry point clr-angular.d.ts
-//
 // @public (undocumented)
-export class ClrCheckboxContainer extends ClrAbstractContainer_2 implements AfterContentInit {
-    constructor(layoutService: LayoutService_2, controlClassService: ControlClassService_2, ngControlService: NgControlService_2);
+export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     // (undocumented)
     protected get allCheckboxesDisabled(): boolean;
     // (undocumented)
@@ -1484,20 +1475,14 @@ export class ClrCheckboxContainer extends ClrAbstractContainer_2 implements Afte
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
-    // Warning: (ae-forgotten-export) The symbol "ControlClassService_2" needs to be exported by the entry point clr-angular.d.ts
-    //
     // (undocumented)
-    protected controlClassService: ControlClassService_2;
-    // Warning: (ae-forgotten-export) The symbol "LayoutService_2" needs to be exported by the entry point clr-angular.d.ts
-    //
+    protected controlClassService: ControlClassService;
     // (undocumented)
-    protected layoutService: LayoutService_2;
+    protected layoutService: LayoutService;
     // (undocumented)
     ngAfterContentInit(): void;
-    // Warning: (ae-forgotten-export) The symbol "NgControlService_2" needs to be exported by the entry point clr-angular.d.ts
-    //
     // (undocumented)
-    protected ngControlService: NgControlService_2;
+    protected ngControlService: NgControlService;
     // (undocumented)
     role: string;
     // (undocumented)
@@ -1524,10 +1509,8 @@ export class ClrCheckboxWrapper implements OnInit, OnDestroy {
     constructor(toggleService: BehaviorSubject<boolean>);
     // (undocumented)
     checkbox: ClrCheckbox;
-    // Warning: (ae-forgotten-export) The symbol "ClrControlLabel_2" needs to be exported by the entry point clr-angular.d.ts
-    //
     // (undocumented)
-    label: ClrControlLabel_2;
+    label: ClrControlLabel;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -1541,10 +1524,10 @@ export class ClrCheckboxWrapper implements OnInit, OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrCombobox<T> extends WrappedFormControl_2<ClrComboboxContainer> implements ControlValueAccessor, LoadingListener, AfterContentInit {
+export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> implements ControlValueAccessor, LoadingListener, AfterContentInit {
     // Warning: (ae-forgotten-export) The symbol "ComboboxContainerService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "ComboboxFocusHandler" needs to be exported by the entry point clr-angular.d.ts
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService_2, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
     // (undocumented)
     get ariaControls(): string;
     // (undocumented)
@@ -1617,9 +1600,9 @@ export class ClrCombobox<T> extends WrappedFormControl_2<ClrComboboxContainer> i
     // (undocumented)
     placeholder: string;
     // (undocumented)
-    popoverPosition: ClrPopoverPosition_2;
+    popoverPosition: ClrPopoverPosition;
     // (undocumented)
-    protected popoverType: ClrPopoverType_2;
+    protected popoverType: ClrPopoverType;
     // (undocumented)
     registerOnChange(onChange: any): void;
     // (undocumented)
@@ -1646,8 +1629,8 @@ export class ClrCombobox<T> extends WrappedFormControl_2<ClrComboboxContainer> i
 }
 
 // @public (undocumented)
-export class ClrComboboxContainer extends ClrAbstractContainer_2 implements AfterContentInit, AfterViewInit {
-    constructor(layoutService: LayoutService_2, controlClassService: ControlClassService_2, ngControlService: NgControlService_2, containerService: ComboboxContainerService, el: ElementRef<HTMLElement>);
+export class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, containerService: ComboboxContainerService, el: ElementRef<HTMLElement>);
     // (undocumented)
     controlContainer: ElementRef<HTMLElement>;
     // (undocumented)
@@ -1879,10 +1862,10 @@ export class ClrControlContainer extends ClrAbstractContainer {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlContainer, never>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "ClrAbstractControl_2" needs to be exported by the entry point clr-angular.d.ts
+// Warning: (ae-forgotten-export) The symbol "ClrAbstractControl" needs to be exported by the entry point clr-angular.d.ts
 //
 // @public (undocumented)
-export class ClrControlError extends ClrAbstractControl_2 {
+export class ClrControlError extends ClrAbstractControl {
     constructor(controlIdService: ControlIdService, containerIdService: ContainerIdService);
     // (undocumented)
     protected containerIdService: ContainerIdService;
@@ -1897,7 +1880,7 @@ export class ClrControlError extends ClrAbstractControl_2 {
 }
 
 // @public (undocumented)
-export class ClrControlHelper extends ClrAbstractControl_2 {
+export class ClrControlHelper extends ClrAbstractControl {
     constructor(controlIdService: ControlIdService, containerIdService: ContainerIdService);
     // (undocumented)
     protected containerIdService: ContainerIdService;
@@ -1935,7 +1918,7 @@ export class ClrControlLabel implements OnInit, OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrControlSuccess extends ClrAbstractControl_2 {
+export class ClrControlSuccess extends ClrAbstractControl {
     constructor(controlIdService: ControlIdService, containerIdService: ContainerIdService);
     // (undocumented)
     protected containerIdService: ContainerIdService;
@@ -1951,15 +1934,15 @@ export class ClrControlSuccess extends ClrAbstractControl_2 {
 
 // @public (undocumented)
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy, DoCheck {
-    // Warning: (ae-forgotten-export) The symbol "DatagridRenderOrganizer_2" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "StateProvider_2" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "DisplayModeService_2" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "Page_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(organizer: DatagridRenderOrganizer_2, items: Items_2<T>, expandableRows: ExpandableRowsCount_2, selection: Selection_2<T>, rowActionService: RowActionService_2, stateProvider: StateProvider_2<T>, displayMode: DisplayModeService_2, renderer: Renderer2, detailService: DetailService_2, document: any, el: ElementRef<HTMLElement>, page: Page_2, commonStrings: ClrCommonStringsService, keyNavigation: KeyNavigationGridController_2, zone: NgZone);
-    // Warning: (ae-forgotten-export) The symbol "CellCoordinates_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DatagridRenderOrganizer" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "StateProvider" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DisplayModeService" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "Page" needs to be exported by the entry point clr-angular.d.ts
+    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
+    // Warning: (ae-forgotten-export) The symbol "CellCoordinates" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    activeCellCoords: CellCoordinates_2;
+    activeCellCoords: CellCoordinates;
     get allSelected(): boolean;
     set allSelected(value: boolean);
     // (undocumented)
@@ -1989,31 +1972,31 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     datagridHeader: ElementRef<HTMLElement>;
     // (undocumented)
     datagridTable: ElementRef<HTMLElement>;
-    // Warning: (ae-forgotten-export) The symbol "DetailService_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DetailService" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    detailService: DetailService_2;
+    detailService: DetailService;
     // (undocumented)
     _displayedRows: ViewContainerRef;
     // (undocumented)
     el: ElementRef<HTMLElement>;
-    // Warning: (ae-forgotten-export) The symbol "ExpandableRowsCount_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ExpandableRowsCount" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    expandableRows: ExpandableRowsCount_2;
+    expandableRows: ExpandableRowsCount;
     // (undocumented)
     _fixedColumnTemplate: TemplateRef<any>;
     // (undocumented)
     set identityFn(value: ClrDatagridItemsIdentityFunction<T>);
-    // Warning: (ae-forgotten-export) The symbol "Items_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "Items" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    items: Items_2<T>;
+    items: Items<T>;
     iterator: ClrDatagridItems<T>;
-    // Warning: (ae-forgotten-export) The symbol "KeyNavigationGridController_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "KeyNavigationGridController" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    keyNavigation: KeyNavigationGridController_2;
+    keyNavigation: KeyNavigationGridController;
     get loading(): boolean;
     set loading(value: boolean);
     // (undocumented)
@@ -2035,10 +2018,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     refresh: EventEmitter<ClrDatagridStateInterface<T>>;
     // (undocumented)
     resize(): void;
-    // Warning: (ae-forgotten-export) The symbol "RowActionService_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "RowActionService" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    rowActionService: RowActionService_2;
+    rowActionService: RowActionService;
     rows: QueryList<ClrDatagridRow<T>>;
     // @deprecated (undocumented)
     set rowSelectionMode(value: boolean);
@@ -2081,7 +2064,7 @@ export class ClrDatagridActionBar {
 
 // @public (undocumented)
 export class ClrDatagridActionOverflow implements OnDestroy {
-    constructor(rowActionService: RowActionService_2, commonStrings: ClrCommonStringsService, platformId: any, popoverService: ClrPopoverService_2);
+    constructor(rowActionService: RowActionService, commonStrings: ClrCommonStringsService, platformId: any, popoverService: ClrPopoverService);
     // (undocumented)
     buttonLabel: string;
     // (undocumented)
@@ -2100,7 +2083,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     // (undocumented)
     protected positions: _angular_cdk_overlay.ConnectedPosition[];
     // (undocumented)
-    smartPosition: ClrPopoverPosition_2;
+    smartPosition: ClrPopoverPosition;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "buttonLabel": { "alias": "clrDgActionOverflowButtonLabel"; "required": false; }; "open": { "alias": "clrDgActionOverflowOpen"; "required": false; }; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"], false, [{ directive: typeof i15.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
@@ -2122,8 +2105,7 @@ export class ClrDatagridCell implements OnInit {
     constructor(vcr: ViewContainerRef);
     // (undocumented)
     ngOnInit(): void;
-    // Warning: (ae-forgotten-export) The symbol "ClrSignpost_2" needs to be exported by the entry point clr-angular.d.ts
-    signpost: QueryList<ClrSignpost_2>;
+    signpost: QueryList<ClrSignpost>;
     // (undocumented)
     get _view(): any;
     // (undocumented)
@@ -2132,13 +2114,13 @@ export class ClrDatagridCell implements OnInit {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridCell, never>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "DatagridFilterRegistrar_2" needs to be exported by the entry point clr-angular.d.ts
+// Warning: (ae-forgotten-export) The symbol "DatagridFilterRegistrar" needs to be exported by the entry point clr-angular.d.ts
 //
 // @public (undocumented)
-export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar_2<T, ClrDatagridFilterInterface<T>> implements OnDestroy, OnInit, OnChanges {
-    // Warning: (ae-forgotten-export) The symbol "Sort_2" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "FiltersProvider_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(el: ElementRef<HTMLElement>, _sort: Sort_2<T>, filters: FiltersProvider_2<T>, vcr: ViewContainerRef, detailService: DetailService_2, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService);
+export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements OnDestroy, OnInit, OnChanges {
+    // Warning: (ae-forgotten-export) The symbol "Sort" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "FiltersProvider" needs to be exported by the entry point clr-angular.d.ts
+    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get ariaSort(): ClrDatagridAriaSortOrder;
     // (undocumented)
@@ -2201,9 +2183,9 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar_2<T, Clr
 
 // @public (undocumented)
 export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "ColumnResizerService_2" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "TableSizeService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(columnResizerService: ColumnResizerService_2, renderer: Renderer2, ngZone: NgZone, tableSizeService: TableSizeService_2, commonString: ClrCommonStringsService, document: any);
+    // Warning: (ae-forgotten-export) The symbol "ColumnResizerService" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "TableSizeService" needs to be exported by the entry point clr-angular.d.ts
+    constructor(columnResizerService: ColumnResizerService, renderer: Renderer2, ngZone: NgZone, tableSizeService: TableSizeService, commonString: ClrCommonStringsService, document: any);
     // (undocumented)
     columnSeparatorId: string;
     // (undocumented)
@@ -2228,8 +2210,8 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrDatagridColumnToggle implements OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "ColumnsService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService_2, popoverService: ClrPopoverService_2);
+    // Warning: (ae-forgotten-export) The symbol "ColumnsService" needs to be exported by the entry point clr-angular.d.ts
+    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, popoverService: ClrPopoverService);
     // (undocumented)
     allColumnsSelected(): void;
     // (undocumented)
@@ -2240,7 +2222,7 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     // (undocumented)
     get hasOnlyOneVisibleColumn(): boolean;
     // (undocumented)
-    get hideableColumnStates(): ColumnState_2[];
+    get hideableColumnStates(): ColumnState[];
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -2248,17 +2230,17 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     // (undocumented)
     popoverId: string;
     // (undocumented)
-    popoverPosition: ClrPopoverPosition_2;
+    popoverPosition: ClrPopoverPosition;
     // (undocumented)
-    popoverType: ClrPopoverType_2;
+    popoverType: ClrPopoverType;
     // (undocumented)
-    toggleColumnState(columnState: ColumnState_2, event: boolean): void;
+    toggleColumnState(columnState: ColumnState, event: boolean): void;
     // (undocumented)
     toggleSwitchPanel(): void;
-    // Warning: (ae-forgotten-export) The symbol "ColumnState_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ColumnState" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    readonly trackByFn: i0.TrackByFunction<ColumnState_2>;
+    readonly trackByFn: i0.TrackByFunction<ColumnState>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggle, "clr-dg-column-toggle", never, {}, {}, never, never, false, [{ directive: typeof i15.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
@@ -2267,7 +2249,7 @@ export class ClrDatagridColumnToggle implements OnDestroy {
 
 // @public (undocumented)
 export class ClrDatagridColumnToggleButton {
-    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService_2);
+    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService);
     // (undocumented)
     get allHideablesVisible(): boolean;
     // (undocumented)
@@ -2290,7 +2272,7 @@ export interface ClrDatagridComparatorInterface<T> {
 
 // @public (undocumented)
 export class ClrDatagridDetail {
-    constructor(detailService: DetailService_2, commonStrings: ClrCommonStringsService);
+    constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     ariaLabel: string;
     // (undocumented)
@@ -2300,7 +2282,7 @@ export class ClrDatagridDetail {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    detailService: DetailService_2;
+    detailService: DetailService;
     // (undocumented)
     header: ClrDatagridDetailHeader;
     // (undocumented)
@@ -2323,11 +2305,11 @@ export class ClrDatagridDetailBody {
 
 // @public (undocumented)
 export class ClrDatagridDetailHeader implements AfterViewInit {
-    constructor(detailService: DetailService_2, commonStrings: ClrCommonStringsService);
+    constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    detailService: DetailService_2;
+    detailService: DetailService;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -2340,11 +2322,11 @@ export class ClrDatagridDetailHeader implements AfterViewInit {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetailHeader, never>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "CustomFilter_2" needs to be exported by the entry point clr-angular.d.ts
+// Warning: (ae-forgotten-export) The symbol "CustomFilter" needs to be exported by the entry point clr-angular.d.ts
 //
 // @public
-export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar_2<T, ClrDatagridFilterInterface<T>> implements CustomFilter_2, OnDestroy {
-    constructor(_filters: FiltersProvider_2<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService_2, keyNavigation: KeyNavigationGridController_2);
+export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter, OnDestroy {
+    constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, keyNavigation: KeyNavigationGridController);
     get active(): boolean;
     // (undocumented)
     anchor: ElementRef<HTMLButtonElement>;
@@ -2352,10 +2334,10 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar_2<T, Clr
     ariaExpanded: boolean;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
-    // Warning: (ae-forgotten-export) The symbol "RegisteredFilter_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "RegisteredFilter" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter_2<T, ClrDatagridFilterInterface<T>>);
+    set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter<T, ClrDatagridFilterInterface<T>>);
     // (undocumented)
     static ngAcceptInputType_open: unknown;
     // (undocumented)
@@ -2368,9 +2350,9 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar_2<T, Clr
     // (undocumented)
     popoverId: string;
     // (undocumented)
-    popoverPosition: ClrPopoverPosition_2;
+    popoverPosition: ClrPopoverPosition;
     // (undocumented)
-    popoverType: ClrPopoverType_2;
+    popoverType: ClrPopoverType;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, { "open": { "alias": "clrDgFilterOpen"; "required": false; }; "customFilter": { "alias": "clrDgFilter"; "required": false; }; }, { "openChange": "clrDgFilterOpenChange"; }, never, ["*"], false, never>;
     // (undocumented)
@@ -2393,11 +2375,11 @@ export interface ClrDatagridFilterInterface<T, S = any> {
 
 // @public (undocumented)
 export class ClrDatagridFooter<T = any> {
-    constructor(selection: Selection_2<T>, detailService: DetailService_2, columnsService: ColumnsService_2, commonStrings: ClrCommonStringsService);
+    constructor(selection: Selection_2<T>, detailService: DetailService, columnsService: ColumnsService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    detailService: DetailService_2;
+    detailService: DetailService;
     // (undocumented)
     get hasHideableColumns(): boolean;
     // (undocumented)
@@ -2412,7 +2394,7 @@ export class ClrDatagridFooter<T = any> {
 
 // @public (undocumented)
 export class ClrDatagridHideableColumn implements OnDestroy {
-    constructor(titleTemplateRef: TemplateRef<any>, viewContainerRef: ViewContainerRef, columnsService: ColumnsService_2, columnState: BehaviorSubject<ColumnState_2>);
+    constructor(titleTemplateRef: TemplateRef<any>, viewContainerRef: ViewContainerRef, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
     // (undocumented)
     set clrDgHidden(hidden: boolean);
     set clrDgHideableColumn(value: {
@@ -2432,7 +2414,7 @@ export class ClrDatagridHideableColumn implements OnDestroy {
 
 // @public (undocumented)
 export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
-    constructor(template: TemplateRef<NgForOfContext<T>>, differs: IterableDiffers, items: Items_2, vcr: ViewContainerRef);
+    constructor(template: TemplateRef<NgForOfContext<T>>, differs: IterableDiffers, items: Items, vcr: ViewContainerRef);
     // (undocumented)
     ngDoCheck(): void;
     // (undocumented)
@@ -2478,13 +2460,13 @@ export interface ClrDatagridNumericFilterInterface<T> {
 
 // @public (undocumented)
 export class ClrDatagridPageSize {
-    constructor(page: Page_2);
+    constructor(page: Page);
     // (undocumented)
-    set label(label: ClrControlLabel_2);
+    set label(label: ClrControlLabel);
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    page: Page_2;
+    page: Page;
     // (undocumented)
     pageSizeOptions: number[];
     // (undocumented)
@@ -2497,7 +2479,7 @@ export class ClrDatagridPageSize {
 
 // @public (undocumented)
 export class ClrDatagridPagination implements OnDestroy, OnInit {
-    constructor(page: Page_2, commonStrings: ClrCommonStringsService, detailService: DetailService_2);
+    constructor(page: Page, commonStrings: ClrCommonStringsService, detailService: DetailService);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -2507,7 +2489,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     // (undocumented)
     currentPageInputRef: ElementRef<HTMLInputElement>;
     // (undocumented)
-    detailService: DetailService_2;
+    detailService: DetailService;
     // (undocumented)
     disableCurrentPageInput: boolean;
     get firstItem(): number;
@@ -2520,7 +2502,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     ngOnDestroy(): void;
     ngOnInit(): void;
     // (undocumented)
-    page: Page_2;
+    page: Page;
     get pageSize(): number;
     set pageSize(size: number);
     // (undocumented)
@@ -2539,7 +2521,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
 
 // @public (undocumented)
 export class ClrDatagridPlaceholder<T = any> {
-    constructor(items: Items_2<T>);
+    constructor(items: Items<T>);
     get emptyDatagrid(): boolean;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPlaceholder<any>, "clr-dg-placeholder", never, {}, {}, never, ["*"], false, never>;
@@ -2549,7 +2531,7 @@ export class ClrDatagridPlaceholder<T = any> {
 
 // @public (undocumented)
 export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
-    constructor(selection: Selection_2<T>, rowActionService: RowActionService_2, globalExpandable: ExpandableRowsCount_2, expand: DatagridIfExpandService_2, detailService: DetailService_2, displayMode: DisplayModeService_2, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items_2, document: any);
+    constructor(selection: Selection_2<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, document: any);
     // (undocumented)
     _calculatedCells: ViewContainerRef;
     // (undocumented)
@@ -2576,16 +2558,16 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     detailHidden: boolean;
     // (undocumented)
-    detailService: DetailService_2;
+    detailService: DetailService;
     dgCells: QueryList<ClrDatagridCell>;
     // (undocumented)
     displayCells: boolean;
     // (undocumented)
     el: ElementRef<HTMLElement>;
-    // Warning: (ae-forgotten-export) The symbol "DatagridIfExpandService_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DatagridIfExpandService" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    expand: DatagridIfExpandService_2;
+    expand: DatagridIfExpandService;
     // (undocumented)
     expandableId: string;
     // (undocumented)
@@ -2600,11 +2582,13 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     _fixedCellTemplate: TemplateRef<any>;
     // (undocumented)
-    globalExpandable: ExpandableRowsCount_2;
+    globalExpandable: ExpandableRowsCount;
     // (undocumented)
     id: string;
+    // Warning: (ae-forgotten-export) The symbol "i1_3" needs to be exported by the entry point clr-angular.d.ts
+    //
     // (undocumented)
-    get identifyBy(): i3_2.ClrDatagridItemsIdentityFunction<any>;
+    get identifyBy(): i1_3.ClrDatagridItemsIdentityFunction<any>;
     get item(): T;
     set item(item: T);
     // @internal (undocumented)
@@ -2622,7 +2606,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     replaced: boolean;
     // (undocumented)
-    rowActionService: RowActionService_2;
+    rowActionService: RowActionService;
     // (undocumented)
     _scrollableCells: ViewContainerRef;
     get selected(): boolean | string;
@@ -2653,7 +2637,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
 
 // @public
 export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
-    constructor(selection: Selection_2, rowActionService: RowActionService_2, expand: DatagridIfExpandService_2, expandableRows: ExpandableRowsCount_2, commonStrings: ClrCommonStringsService);
+    constructor(selection: Selection_2, rowActionService: RowActionService, expand: DatagridIfExpandService, expandableRows: ExpandableRowsCount, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get beginningOfExpandableContentAriaText(): string;
     // (undocumented)
@@ -2667,9 +2651,9 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     // (undocumented)
     _endOfExpandableContentAriaText: string;
     // (undocumented)
-    expand: DatagridIfExpandService_2;
+    expand: DatagridIfExpandService;
     // (undocumented)
-    expandableRows: ExpandableRowsCount_2;
+    expandableRows: ExpandableRowsCount;
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -2679,7 +2663,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     // (undocumented)
     replacedRow: boolean;
     // (undocumented)
-    rowActionService: RowActionService_2;
+    rowActionService: RowActionService;
     // (undocumented)
     selection: Selection_2;
     // (undocumented)
@@ -2752,9 +2736,8 @@ export class ClrDatalist implements AfterContentInit {
 }
 
 // @public (undocumented)
-export class ClrDatalistContainer extends ClrAbstractContainer_2 {
-    // Warning: (ae-forgotten-export) The symbol "FormsFocusService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(controlClassService: ControlClassService_2, layoutService: LayoutService_2, ngControlService: NgControlService_2, focusService: FormsFocusService_2);
+export class ClrDatalistContainer extends ClrAbstractContainer {
+    constructor(controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, focusService: FormsFocusService);
     // (undocumented)
     focus: boolean;
     // (undocumented)
@@ -2766,8 +2749,8 @@ export class ClrDatalistContainer extends ClrAbstractContainer_2 {
 }
 
 // @public (undocumented)
-export class ClrDatalistInput extends WrappedFormControl_2<ClrDatalistContainer> implements AfterContentInit {
-    constructor(focusService: FormsFocusService_2, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, datalistIdService: DatalistIdService);
+export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> implements AfterContentInit {
+    constructor(focusService: FormsFocusService, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, datalistIdService: DatalistIdService);
     // (undocumented)
     listValue: string;
     // (undocumented)
@@ -2799,7 +2782,6 @@ export class ClrDataModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDataModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDataModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_3" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_4" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3_3" needs to be exported by the entry point clr-angular.d.ts
     //
@@ -2808,18 +2790,18 @@ export class ClrDataModule {
 }
 
 // @public (undocumented)
-export class ClrDateContainer extends ClrAbstractContainer_2 implements AfterViewInit {
+export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "DatepickerEnabledService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "ViewManagerService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(renderer: Renderer2, elem: ElementRef, popoverService: ClrPopoverService_2, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FormsFocusService_2, viewManagerService: ViewManagerService, controlClassService: ControlClassService_2, layoutService: LayoutService_2, ngControlService: NgControlService_2);
+    constructor(renderer: Renderer2, elem: ElementRef, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FormsFocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService);
     // (undocumented)
     set actionButton(button: ElementRef<HTMLButtonElement>);
     // (undocumented)
-    set clrPosition(position: string | ClrPopoverPosition_2);
+    set clrPosition(position: string | ClrPopoverPosition);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    protected controlClassService: ControlClassService_2;
+    protected controlClassService: ControlClassService;
     // (undocumented)
     protected elem: ElementRef;
     // (undocumented)
@@ -2829,7 +2811,7 @@ export class ClrDateContainer extends ClrAbstractContainer_2 implements AfterVie
     // (undocumented)
     protected get isRangePicker(): boolean;
     // (undocumented)
-    protected layoutService: LayoutService_2;
+    protected layoutService: LayoutService;
     // (undocumented)
     set max(dateString: string);
     // (undocumented)
@@ -2837,13 +2819,13 @@ export class ClrDateContainer extends ClrAbstractContainer_2 implements AfterVie
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
-    protected ngControlService: NgControlService_2;
+    protected ngControlService: NgControlService;
     // (undocumented)
     get open(): boolean;
     // (undocumented)
-    get popoverPosition(): ClrPopoverPosition_2;
+    get popoverPosition(): ClrPopoverPosition;
     // (undocumented)
-    protected popoverType: ClrPopoverType_2;
+    protected popoverType: ClrPopoverType;
     // (undocumented)
     set rangeOptions(rangeOptions: any);
     // (undocumented)
@@ -2876,8 +2858,8 @@ export class ClrDateInput extends ClrDateInputBase {
 }
 
 // @public (undocumented)
-export abstract class ClrDateInputBase extends WrappedFormControl_2<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
-    constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef<HTMLInputElement>, renderer: Renderer2, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: any, focusService: FormsFocusService_2, datepickerFocusService: DatepickerFocusService);
+export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
+    constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef<HTMLInputElement>, renderer: Renderer2, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: any, focusService: FormsFocusService, datepickerFocusService: DatepickerFocusService);
     // (undocumented)
     protected control: NgControl;
     // (undocumented)
@@ -2944,7 +2926,7 @@ export class ClrDateInputValidator implements Validator {
 
 // @public (undocumented)
 export class ClrDatepickerActions {
-    constructor(commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService_2, dateNavigationService: DateNavigationService, dateFormControlService: DateFormControlService);
+    constructor(commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, dateFormControlService: DateFormControlService);
     // (undocumented)
     protected apply(): void;
     // (undocumented)
@@ -3050,24 +3032,22 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
 
 // @public (undocumented)
 export class ClrDropdown implements OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "RootDropdownService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(parent: ClrDropdown, popoverService: ClrPopoverService_2, focusHandler: DropdownFocusHandler_2, cdr: ChangeDetectorRef, dropdownService: RootDropdownService_2);
-    // Warning: (ae-forgotten-export) The symbol "DropdownFocusHandler_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "RootDropdownService" needs to be exported by the entry point clr-angular.d.ts
+    constructor(parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
+    // Warning: (ae-forgotten-export) The symbol "DropdownFocusHandler" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    focusHandler: DropdownFocusHandler_2;
+    focusHandler: DropdownFocusHandler;
     // (undocumented)
     isMenuClosable: boolean;
     // (undocumented)
     ngOnDestroy(): void;
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverPoint_2" needs to be exported by the entry point clr-angular.d.ts
-    //
     // (undocumented)
-    openAtPoint(point: ClrPopoverPoint_2): void;
+    openAtPoint(point: ClrPopoverPoint): void;
     // (undocumented)
     parent: ClrDropdown;
     // (undocumented)
-    popoverService: ClrPopoverService_2;
+    popoverService: ClrPopoverService;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": { "alias": "clrCloseMenuOnItemClick"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof i15.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
@@ -3076,7 +3056,7 @@ export class ClrDropdown implements OnDestroy {
 
 // @public (undocumented)
 export class ClrDropdownItem {
-    constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService_2, focusableItem: FocusableItem, el: ElementRef, renderer: Renderer2);
+    constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem, el: ElementRef, renderer: Renderer2);
     // (undocumented)
     get disabled(): boolean | string;
     set disabled(value: boolean | string);
@@ -3090,8 +3070,7 @@ export class ClrDropdownItem {
 
 // @public (undocumented)
 export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverContent_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(parentHost: ElementRef<HTMLElement>, nested: ClrDropdownMenu, focusHandler: DropdownFocusHandler_2, elementRef: ElementRef, popoverService: ClrPopoverService_2, popoverContent: ClrPopoverContent_2);
+    constructor(parentHost: ElementRef<HTMLElement>, nested: ClrDropdownMenu, focusHandler: DropdownFocusHandler, elementRef: ElementRef, popoverService: ClrPopoverService, popoverContent: ClrPopoverContent);
     // (undocumented)
     get isOffScreen(): boolean;
     // (undocumented)
@@ -3101,7 +3080,7 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    set position(position: string | ClrPopoverPosition_2);
+    set position(position: string | ClrPopoverPosition);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdownMenu, "clr-dropdown-menu", never, { "position": { "alias": "clrPosition"; "required": false; }; }, {}, ["items"], ["*"], false, [{ directive: typeof i15.ClrPopoverContent; inputs: {}; outputs: {}; }]>;
     // (undocumented)
@@ -3120,7 +3099,7 @@ export class ClrDropdownModule {
 
 // @public (undocumented)
 export class ClrDropdownTrigger {
-    constructor(dropdown: ClrDropdown, popoverService: ClrPopoverService_2, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler_2);
+    constructor(dropdown: ClrDropdown, popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler);
     // (undocumented)
     get active(): boolean;
     // (undocumented)
@@ -3253,7 +3232,7 @@ export class ClrFileInfo {
 }
 
 // @public (undocumented)
-export class ClrFileInput extends WrappedFormControl_2<ClrFileInputContainer> {
+export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
     // (undocumented)
     protected get disabled(): boolean;
@@ -3268,7 +3247,7 @@ export class ClrFileInput extends WrappedFormControl_2<ClrFileInputContainer> {
 }
 
 // @public (undocumented)
-export class ClrFileInputContainer extends ClrAbstractContainer_2 {
+export class ClrFileInputContainer extends ClrAbstractContainer {
     // (undocumented)
     protected get accept(): string;
     // (undocumented)
@@ -3496,16 +3475,16 @@ export class ClrFormsModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFormsModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrFormsModule>;
-    // Warning: (ae-forgotten-export) The symbol "i4$1" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i5$2" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i6$1" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i5_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i6_3" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i8_2" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i11$1" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i12" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i13_2" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i2.CommonModule], [typeof i6.ClrCommonFormsModule, typeof i43.ClrCheckboxModule, typeof i4$1.ClrComboboxModule, typeof i5$2.ClrDatepickerModule, typeof i6$1.ClrFileInputModule, typeof i41.ClrInputModule, typeof i8_2.ClrPasswordModule, typeof i42.ClrRadioModule, typeof i45.ClrSelectModule, typeof i11$1.ClrTextareaModule, typeof i12.ClrRangeModule, typeof i13_2.ClrDatalistModule, typeof i44.ClrNumberInputModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i2.CommonModule], [typeof i6.ClrCommonFormsModule, typeof i43.ClrCheckboxModule, typeof i4_2.ClrComboboxModule, typeof i5_2.ClrDatepickerModule, typeof i6_3.ClrFileInputModule, typeof i41.ClrInputModule, typeof i8_2.ClrPasswordModule, typeof i42.ClrRadioModule, typeof i45.ClrSelectModule, typeof i11.ClrTextareaModule, typeof i12.ClrRangeModule, typeof i13_2.ClrDatalistModule, typeof i44.ClrNumberInputModule]>;
 }
 
 // @public (undocumented)
@@ -3641,7 +3620,7 @@ export class ClrIfActive implements OnDestroy {
 
 // @public (undocumented)
 export class ClrIfDetail implements OnInit, OnDestroy {
-    constructor(templateRef: TemplateRef<any>, viewContainer: ViewContainerRef, detailService: DetailService_2);
+    constructor(templateRef: TemplateRef<any>, viewContainer: ViewContainerRef, detailService: DetailService);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -3665,10 +3644,10 @@ export class ClrIfError extends AbstractIfState {
     constructor(ngControlService: NgControlService, template: TemplateRef<any>, container: ViewContainerRef);
     // (undocumented)
     error: string;
-    // Warning: (ae-forgotten-export) The symbol "CONTROL_STATE_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "CONTROL_STATE" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    protected handleState(state: CONTROL_STATE_2): void;
+    protected handleState(state: CONTROL_STATE): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfError, "[clrIfError]", never, { "error": { "alias": "clrIfError"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
@@ -3714,7 +3693,7 @@ export class ClrIfOpen implements OnDestroy {
 export class ClrIfSuccess extends AbstractIfState {
     constructor(ngControlService: NgControlService, template: TemplateRef<any>, container: ViewContainerRef);
     // (undocumented)
-    protected handleState(state: CONTROL_STATE_2): void;
+    protected handleState(state: CONTROL_STATE): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfSuccess, "[clrIfSuccess]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -3722,7 +3701,7 @@ export class ClrIfSuccess extends AbstractIfState {
 }
 
 // @public (undocumented)
-export class ClrInput extends WrappedFormControl_2<ClrInputContainer> {
+export class ClrInput extends WrappedFormControl<ClrInputContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
     protected index: number;
@@ -3733,7 +3712,7 @@ export class ClrInput extends WrappedFormControl_2<ClrInputContainer> {
 }
 
 // @public (undocumented)
-export class ClrInputContainer extends ClrAbstractContainer_2 {
+export class ClrInputContainer extends ClrAbstractContainer {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrInputContainer, "clr-input-container", never, {}, {}, never, ["label", "[clrInputPrefix]", "[clrInput]", "[clrInputSuffix]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
@@ -3901,10 +3880,10 @@ export class ClrLayoutModule {
     // Warning: (ae-forgotten-export) The symbol "i1_4" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_5" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3_4" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i5_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i5_3" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLayoutModule, never, never, [typeof i1_4.ClrMainContainerModule, typeof i2_5.ClrNavigationModule, typeof i3_4.ClrTabsModule, typeof i18.ClrVerticalNavModule, typeof i5_2.ClrBreadcrumbsModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLayoutModule, never, never, [typeof i1_4.ClrMainContainerModule, typeof i2_5.ClrNavigationModule, typeof i3_4.ClrTabsModule, typeof i18.ClrVerticalNavModule, typeof i5_3.ClrBreadcrumbsModule]>;
 }
 
 // @public (undocumented)
@@ -3978,18 +3957,15 @@ export enum ClrLoadingState {
 
 // @public (undocumented)
 export class ClrMainContainer implements OnDestroy, OnInit {
-    // Warning: (ae-forgotten-export) The symbol "ResponsiveNavigationService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(elRef: ElementRef<HTMLElement>, responsiveNavService: ResponsiveNavigationService_2);
+    constructor(elRef: ElementRef<HTMLElement>, responsiveNavService: ResponsiveNavigationService);
     // (undocumented)
     controlNav(controlCode: string, navClass: string): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
-    // Warning: (ae-forgotten-export) The symbol "ResponsiveNavControlMessage_2" needs to be exported by the entry point clr-angular.d.ts
-    //
     // (undocumented)
-    processMessage(message: ResponsiveNavControlMessage_2): void;
+    processMessage(message: ResponsiveNavControlMessage): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrMainContainer, "clr-main-container", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -4199,8 +4175,8 @@ export class ClrNavLevel implements OnInit {
 }
 
 // @public (undocumented)
-export class ClrNumberInput extends WrappedFormControl_2<ClrNumberInputContainer> {
-    constructor(focusService: FormsFocusService_2, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> {
+    constructor(focusService: FormsFocusService, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
     dispatchBlur(): void;
     // (undocumented)
@@ -4224,8 +4200,8 @@ export class ClrNumberInput extends WrappedFormControl_2<ClrNumberInputContainer
 }
 
 // @public (undocumented)
-export class ClrNumberInputContainer extends ClrAbstractContainer_2 {
-    constructor(controlClassService: ControlClassService_2, layoutService: LayoutService_2, ngControlService: NgControlService_2, focusService: FormsFocusService_2);
+export class ClrNumberInputContainer extends ClrAbstractContainer {
+    constructor(controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, focusService: FormsFocusService);
     // (undocumented)
     focus: boolean;
     // (undocumented)
@@ -4319,7 +4295,7 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
 
 // @public (undocumented)
 export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
-    constructor(optionSelectionService: OptionSelectionService<T>, id: number, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, popoverService: ClrPopoverService_2, parentHost: ElementRef<HTMLElement>, document: any);
+    constructor(optionSelectionService: OptionSelectionService<T>, id: number, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, popoverService: ClrPopoverService, parentHost: ElementRef<HTMLElement>, document: any);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -4384,8 +4360,8 @@ export class ClrOutsideClickModule {
 }
 
 // @public (undocumented)
-export class ClrPassword extends WrappedFormControl_2<ClrPasswordContainer> implements OnInit, OnDestroy {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, focusService: FormsFocusService_2, toggleService: BehaviorSubject<boolean>);
+export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implements OnInit, OnDestroy {
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, focusService: FormsFocusService, toggleService: BehaviorSubject<boolean>);
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -4399,8 +4375,8 @@ export class ClrPassword extends WrappedFormControl_2<ClrPasswordContainer> impl
 }
 
 // @public (undocumented)
-export class ClrPasswordContainer extends ClrAbstractContainer_2 {
-    constructor(layoutService: LayoutService_2, controlClassService: ControlClassService_2, ngControlService: NgControlService_2, focusService: FormsFocusService_2, toggleService: BehaviorSubject<boolean>, commonStrings: ClrCommonStringsService);
+export class ClrPasswordContainer extends ClrAbstractContainer {
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, focusService: FormsFocusService, toggleService: BehaviorSubject<boolean>, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get clrToggle(): boolean;
     set clrToggle(state: boolean);
@@ -4409,7 +4385,7 @@ export class ClrPasswordContainer extends ClrAbstractContainer_2 {
     // (undocumented)
     focus: boolean;
     // (undocumented)
-    focusService: FormsFocusService_2;
+    focusService: FormsFocusService;
     // (undocumented)
     hidePasswordText(label: string): string;
     // (undocumented)
@@ -4691,7 +4667,7 @@ export class ClrProgressBarModule {
 }
 
 // @public (undocumented)
-export class ClrRadio extends WrappedFormControl_2<ClrRadioWrapper> {
+export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRadio, "[clrRadio]", never, {}, {}, never, never, false, never>;
@@ -4700,23 +4676,23 @@ export class ClrRadio extends WrappedFormControl_2<ClrRadioWrapper> {
 }
 
 // @public (undocumented)
-export class ClrRadioContainer extends ClrAbstractContainer_2 implements AfterContentInit {
-    constructor(layoutService: LayoutService_2, controlClassService: ControlClassService_2, ngControlService: NgControlService_2);
+export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     // (undocumented)
     ariaLabelledBy: string;
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
     // (undocumented)
-    protected controlClassService: ControlClassService_2;
+    protected controlClassService: ControlClassService;
     // (undocumented)
     groupLabel: ElementRef<HTMLElement>;
     // (undocumented)
-    protected layoutService: LayoutService_2;
+    protected layoutService: LayoutService;
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
-    protected ngControlService: NgControlService_2;
+    protected ngControlService: NgControlService;
     // (undocumented)
     radios: QueryList<ClrRadio>;
     // (undocumented)
@@ -4741,7 +4717,7 @@ export class ClrRadioModule {
 // @public (undocumented)
 export class ClrRadioWrapper implements OnInit {
     // (undocumented)
-    label: ClrControlLabel_2;
+    label: ClrControlLabel;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
@@ -4751,7 +4727,7 @@ export class ClrRadioWrapper implements OnInit {
 }
 
 // @public (undocumented)
-export class ClrRange extends WrappedFormControl_2<ClrRangeContainer> {
+export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRange, "[clrRange]", never, {}, {}, never, never, false, never>;
@@ -4760,9 +4736,8 @@ export class ClrRange extends WrappedFormControl_2<ClrRangeContainer> {
 }
 
 // @public (undocumented)
-export class ClrRangeContainer extends ClrAbstractContainer_2 {
-    // Warning: (ae-forgotten-export) The symbol "ControlIdService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(layoutService: LayoutService_2, controlClassService: ControlClassService_2, ngControlService: NgControlService_2, renderer: Renderer2, idService: ControlIdService_2);
+export class ClrRangeContainer extends ClrAbstractContainer {
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, renderer: Renderer2, idService: ControlIdService);
     // (undocumented)
     getRangeProgressFillWidth(): string;
     // (undocumented)
@@ -4787,12 +4762,12 @@ export class ClrRangeModule {
 
 // @public (undocumented)
 export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "TreeFeaturesService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(template: TemplateRef<ClrRecursiveForOfContext<T>>, featuresService: TreeFeaturesService_2<T>, cdr: ChangeDetectorRef);
-    // Warning: (ae-forgotten-export) The symbol "AsyncArray_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "TreeFeaturesService" needs to be exported by the entry point clr-angular.d.ts
+    constructor(template: TemplateRef<ClrRecursiveForOfContext<T>>, featuresService: TreeFeaturesService<T>, cdr: ChangeDetectorRef);
+    // Warning: (ae-forgotten-export) The symbol "AsyncArray" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    getChildren: (node: T) => AsyncArray_2<T>;
+    getChildren: (node: T) => AsyncArray<T>;
     // (undocumented)
     ngOnChanges(): void;
     // (undocumented)
@@ -4809,10 +4784,10 @@ export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
 export interface ClrRecursiveForOfContext<T> {
     // (undocumented)
     $implicit: T;
-    // Warning: (ae-forgotten-export) The symbol "TreeNodeModel_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "TreeNodeModel" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    clrModel: TreeNodeModel_2<T>;
+    clrModel: TreeNodeModel<T>;
 }
 
 // @public (undocumented)
@@ -4836,7 +4811,7 @@ export class ClrRovingTabindex extends ClrKeyFocus {
 }
 
 // @public (undocumented)
-export class ClrSelect extends WrappedFormControl_2<ClrSelectContainer> {
+export class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLSelectElement>);
     // (undocumented)
     protected index: number;
@@ -4847,16 +4822,16 @@ export class ClrSelect extends WrappedFormControl_2<ClrSelectContainer> {
 }
 
 // @public (undocumented)
-export class ClrSelectContainer extends ClrAbstractContainer_2 {
-    constructor(layoutService: LayoutService_2, controlClassService: ControlClassService_2, ngControlService: NgControlService_2);
+export class ClrSelectContainer extends ClrAbstractContainer {
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     // (undocumented)
-    protected controlClassService: ControlClassService_2;
+    protected controlClassService: ControlClassService;
     // (undocumented)
-    protected layoutService: LayoutService_2;
+    protected layoutService: LayoutService;
     // (undocumented)
     multiple: SelectMultipleControlValueAccessor;
     // (undocumented)
-    protected ngControlService: NgControlService_2;
+    protected ngControlService: NgControlService;
     // (undocumented)
     wrapperClass(): "clr-multiselect-wrapper" | "clr-select-wrapper";
     // (undocumented)
@@ -4955,13 +4930,13 @@ export class ClrSidePanelModule {
 
 // @public (undocumented)
 export class ClrSignpost {
-    constructor(commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService_2);
+    constructor(commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     set customTrigger(trigger: ClrSignpostTrigger);
     hideTrigger: boolean;
     // (undocumented)
-    openAtPoint(point: ClrPopoverPoint_2): void;
+    openAtPoint(point: ClrPopoverPoint): void;
     // (undocumented)
     get showDefaultTrigger(): boolean;
     // (undocumented)
@@ -4975,9 +4950,9 @@ export class ClrSignpost {
 
 // @public (undocumented)
 export class ClrSignpostContent implements OnDestroy, AfterViewInit {
-    // Warning: (ae-forgotten-export) The symbol "SignpostIdService_2" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "SignpostFocusManager_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(parentHost: ElementRef<HTMLElement>, element: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService_2, signpostFocusManager: SignpostFocusManager_2, platformId: any, document: Document, popoverService: ClrPopoverService_2, popoverContent: ClrPopoverContent_2);
+    // Warning: (ae-forgotten-export) The symbol "SignpostIdService" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "SignpostFocusManager" needs to be exported by the entry point clr-angular.d.ts
+    constructor(parentHost: ElementRef<HTMLElement>, element: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: Document, popoverService: ClrPopoverService, popoverContent: ClrPopoverContent);
     close(): void;
     // (undocumented)
     closeButton: ElementRef<HTMLButtonElement>;
@@ -4991,8 +4966,8 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     ngOnDestroy(): void;
     // (undocumented)
     onKeyDown(event: KeyboardEvent): void;
-    get position(): string | ClrPopoverPosition_2;
-    set position(position: string | ClrPopoverPosition_2);
+    get position(): string | ClrPopoverPosition;
+    set position(position: string | ClrPopoverPosition);
     // (undocumented)
     signpostCloseAriaLabel: string;
     // (undocumented)
@@ -5024,7 +4999,7 @@ export class ClrSignpostTitle {
 
 // @public (undocumented)
 export class ClrSignpostTrigger implements OnDestroy {
-    constructor(popoverService: ClrPopoverService_2, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService_2, signpostFocusManager: SignpostFocusManager_2, document: any, platformId: any);
+    constructor(popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
     // (undocumented)
     ariaControl: string;
     // (undocumented)
@@ -5388,8 +5363,8 @@ export class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrTab {
-    // Warning: (ae-forgotten-export) The symbol "TabsService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService_2);
+    // Warning: (ae-forgotten-export) The symbol "TabsService" needs to be exported by the entry point clr-angular.d.ts
+    constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService);
     // (undocumented)
     get active(): boolean;
     // (undocumented)
@@ -5418,7 +5393,7 @@ export class ClrTabAction {
 
 // @public (undocumented)
 export class ClrTabContent implements OnDestroy {
-    constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService_2);
+    constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService);
     // (undocumented)
     get active(): boolean;
     // (undocumented)
@@ -5439,7 +5414,7 @@ export class ClrTabContent implements OnDestroy {
 
 // @public (undocumented)
 export class ClrTabLink {
-    constructor(ifActiveService: IfActiveService, id: number, el: ElementRef<HTMLElement>, viewContainerRef: ViewContainerRef, tabsService: TabsService_2, tabsId: number);
+    constructor(ifActiveService: IfActiveService, id: number, el: ElementRef<HTMLElement>, viewContainerRef: ViewContainerRef, tabsService: TabsService, tabsId: number);
     // (undocumented)
     activate(): void;
     // (undocumented)
@@ -5481,7 +5456,7 @@ export class ClrTabOverflowContent {
 
 // @public (undocumented)
 export class ClrTabs implements AfterContentInit, OnDestroy {
-    constructor(ifActiveService: IfActiveService, popoverService: ClrPopoverService_2, tabsService: TabsService_2, tabsId: number, commonStrings: ClrCommonStringsService);
+    constructor(ifActiveService: IfActiveService, popoverService: ClrPopoverService, tabsService: TabsService, tabsId: number, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get activeTabInOverflow(): boolean;
     // (undocumented)
@@ -5502,11 +5477,11 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     get isVertical(): boolean;
     // (undocumented)
     keyFocus: ClrKeyFocus;
-    // Warning: (ae-forgotten-export) The symbol "TabsLayout_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "TabsLayout" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    get layout(): TabsLayout_2 | string;
-    set layout(layout: TabsLayout_2 | string);
+    get layout(): TabsLayout | string;
+    set layout(layout: TabsLayout | string);
     // (undocumented)
     _mousedown: boolean;
     // (undocumented)
@@ -5516,7 +5491,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     // (undocumented)
     openOverflowOnFocus(): void;
     // (undocumented)
-    popoverService: ClrPopoverService_2;
+    popoverService: ClrPopoverService;
     // (undocumented)
     resetKeyFocusCurrentToActive(event: FocusEvent): void;
     // (undocumented)
@@ -5530,7 +5505,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     // (undocumented)
     tabsId: number;
     // (undocumented)
-    tabsService: TabsService_2;
+    tabsService: TabsService;
     // (undocumented)
     toggleOverflowOnClick(): void;
     // (undocumented)
@@ -5576,7 +5551,7 @@ export class ClrTemplateRefModule {
 }
 
 // @public (undocumented)
-export class ClrTextarea extends WrappedFormControl_2<ClrTextareaContainer> {
+export class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLTextAreaElement>);
     // (undocumented)
     protected index: number;
@@ -5587,7 +5562,7 @@ export class ClrTextarea extends WrappedFormControl_2<ClrTextareaContainer> {
 }
 
 // @public (undocumented)
-export class ClrTextareaContainer extends ClrAbstractContainer_2 {
+export class ClrTextareaContainer extends ClrAbstractContainer {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTextareaContainer, "clr-textarea-container", never, {}, {}, never, ["label", "[clrTextarea]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
@@ -5710,9 +5685,9 @@ export class ClrTooltip {
 
 // @public (undocumented)
 export class ClrTooltipContent implements OnInit {
-    // Warning: (ae-forgotten-export) The symbol "TooltipIdService_2" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "TooltipMouseService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(parentHost: ElementRef<HTMLElement>, tooltipIdService: TooltipIdService_2, el: ElementRef, renderer: Renderer2, popoverService: ClrPopoverService_2, tooltipMouseService: TooltipMouseService_2, popoverContent: ClrPopoverContent_2);
+    // Warning: (ae-forgotten-export) The symbol "TooltipIdService" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "TooltipMouseService" needs to be exported by the entry point clr-angular.d.ts
+    constructor(parentHost: ElementRef<HTMLElement>, tooltipIdService: TooltipIdService, el: ElementRef, renderer: Renderer2, popoverService: ClrPopoverService, tooltipMouseService: TooltipMouseService, popoverContent: ClrPopoverContent);
     // (undocumented)
     el: ElementRef;
     // (undocumented)
@@ -5721,8 +5696,8 @@ export class ClrTooltipContent implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    get position(): string | ClrPopoverPosition_2;
-    set position(value: string | ClrPopoverPosition_2);
+    get position(): string | ClrPopoverPosition;
+    set position(value: string | ClrPopoverPosition);
     // (undocumented)
     get size(): string;
     set size(value: string);
@@ -5744,7 +5719,7 @@ export class ClrTooltipModule {
 
 // @public (undocumented)
 export class ClrTooltipTrigger {
-    constructor(popoverService: ClrPopoverService_2, tooltipIdService: TooltipIdService_2, tooltipMouseService: TooltipMouseService_2, element: ElementRef);
+    constructor(popoverService: ClrPopoverService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService, element: ElementRef);
     // (undocumented)
     ariaDescribedBy: string;
     // (undocumented)
@@ -5761,10 +5736,10 @@ export class ClrTooltipTrigger {
 
 // @public (undocumented)
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "TreeFocusManagerService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(featuresService: TreeFeaturesService_2<T>, focusManagerService: TreeFocusManagerService_2<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone);
+    // Warning: (ae-forgotten-export) The symbol "TreeFocusManagerService" needs to be exported by the entry point clr-angular.d.ts
+    constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone);
     // (undocumented)
-    featuresService: TreeFeaturesService_2<T>;
+    featuresService: TreeFeaturesService<T>;
     // (undocumented)
     get isMultiSelectable(): boolean;
     // (undocumented)
@@ -5781,7 +5756,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
-    constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService_2<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService_2<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
+    constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
     // (undocumented)
     get ariaSelected(): boolean;
     // (undocumented)
@@ -5805,7 +5780,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     expandService: IfExpandService;
     // (undocumented)
-    featuresService: TreeFeaturesService_2<T>;
+    featuresService: TreeFeaturesService<T>;
     // (undocumented)
     focusTreeNode(): void;
     // (undocumented)
@@ -5815,7 +5790,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     isSelectable(): boolean;
     // (undocumented)
-    _model: TreeNodeModel_2<T>;
+    _model: TreeNodeModel<T>;
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -5863,18 +5838,18 @@ export class ClrTreeViewModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeViewModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTreeViewModule>;
-    // Warning: (ae-forgotten-export) The symbol "RecursiveChildren_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "RecursiveChildren" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren_2], [typeof i2.CommonModule, typeof i1.ClrIcon, typeof i5.ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i2.CommonModule, typeof i1.ClrIcon, typeof i5.ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
 }
 
 // @public (undocumented)
 export class ClrVerticalNav implements OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "VerticalNavService_2" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "VerticalNavIconService_2" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupRegistrationService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(_navService: VerticalNavService_2, _navIconService: VerticalNavIconService_2, _navGroupRegistrationService: VerticalNavGroupRegistrationService_2, commonStrings: ClrCommonStringsService);
+    // Warning: (ae-forgotten-export) The symbol "VerticalNavService" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "VerticalNavIconService" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupRegistrationService" needs to be exported by the entry point clr-angular.d.ts
+    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get ariaExpanded(): string;
     // (undocumented)
@@ -5905,8 +5880,8 @@ export class ClrVerticalNav implements OnDestroy {
 
 // @public (undocumented)
 export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupService_2" needs to be exported by the entry point clr-angular.d.ts
-    constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService_2, navGroupService: VerticalNavGroupService_2, _navService: VerticalNavService_2, commonStrings: ClrCommonStringsService);
+    // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupService" needs to be exported by the entry point clr-angular.d.ts
+    constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     collapseGroup(): void;
     // (undocumented)
@@ -5947,7 +5922,7 @@ export class ClrVerticalNavGroupChildren {
 
 // @public (undocumented)
 export class ClrVerticalNavIcon implements OnDestroy {
-    constructor(_verticalNavIconService: VerticalNavIconService_2);
+    constructor(_verticalNavIconService: VerticalNavIconService);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -5958,7 +5933,7 @@ export class ClrVerticalNavIcon implements OnDestroy {
 
 // @public (undocumented)
 export class ClrVerticalNavLink implements OnDestroy {
-    constructor(host: ElementRef<HTMLElement>, ref: ChangeDetectorRef, navGroupService: VerticalNavGroupService_2 | null);
+    constructor(host: ElementRef<HTMLElement>, ref: ChangeDetectorRef, navGroupService: VerticalNavGroupService | null);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -6722,14 +6697,14 @@ export const dataClusterIcon: IconShapeTuple;
 // @public (undocumented)
 export const dataClusterIconName = "data-cluster";
 
-// Warning: (ae-forgotten-export) The symbol "DatagridNumericFilterImpl_2" needs to be exported by the entry point clr-angular.d.ts
+// Warning: (ae-forgotten-export) The symbol "DatagridNumericFilterImpl" needs to be exported by the entry point clr-angular.d.ts
 //
 // @public (undocumented)
-export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar_2<T, DatagridNumericFilterImpl_2<T>> implements CustomFilter_2, AfterViewInit {
-    constructor(filters: FiltersProvider_2<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService_2, ngZone: NgZone);
+export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>> implements CustomFilter, AfterViewInit {
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, ngZone: NgZone);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
-    set customNumericFilter(value: ClrDatagridNumericFilterInterface<T> | RegisteredFilter_2<T, DatagridNumericFilterImpl_2<T>>);
+    set customNumericFilter(value: ClrDatagridNumericFilterInterface<T> | RegisteredFilter<T, DatagridNumericFilterImpl<T>>);
     filterContainer: ClrDatagridFilter<T>;
     // (undocumented)
     filterValueChange: EventEmitter<any>;
@@ -6800,14 +6775,14 @@ export class DatagridPropertyStringFilter<T = any> implements ClrDatagridStringF
     prop: string;
 }
 
-// Warning: (ae-forgotten-export) The symbol "DatagridStringFilterImpl_2" needs to be exported by the entry point clr-angular.d.ts
+// Warning: (ae-forgotten-export) The symbol "DatagridStringFilterImpl" needs to be exported by the entry point clr-angular.d.ts
 //
 // @public (undocumented)
-export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar_2<T, DatagridStringFilterImpl_2<T>> implements CustomFilter_2, OnChanges, OnDestroy, AfterViewInit {
-    constructor(filters: FiltersProvider_2<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService_2, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, ngZone: NgZone);
+export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements CustomFilter, OnChanges, OnDestroy, AfterViewInit {
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, ngZone: NgZone);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
-    set customStringFilter(value: ClrDatagridStringFilterInterface<T> | RegisteredFilter_2<T, DatagridStringFilterImpl_2<T>>);
+    set customStringFilter(value: ClrDatagridStringFilterInterface<T> | RegisteredFilter<T, DatagridStringFilterImpl<T>>);
     filterContainer: ClrDatagridFilter<T>;
     // (undocumented)
     filterValueChange: EventEmitter<any>;
@@ -7604,10 +7579,8 @@ export class IfActiveService {
     static ɵprov: i0.ɵɵInjectableDeclaration<IfActiveService>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "LoadingListener_2" needs to be exported by the entry point clr-angular.d.ts
-//
 // @public (undocumented)
-export class IfExpandService implements LoadingListener_2 {
+export class IfExpandService implements LoadingListener {
     // (undocumented)
     expandable: number;
     // (undocumented)
@@ -7626,10 +7599,8 @@ export class IfExpandService implements LoadingListener_2 {
     set loading(value: boolean);
     // (undocumented)
     protected _loading: boolean;
-    // Warning: (ae-forgotten-export) The symbol "ClrLoadingState_2" needs to be exported by the entry point clr-angular.d.ts
-    //
     // (undocumented)
-    loadingStateChange(state: ClrLoadingState_2): void;
+    loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
     toggle(): void;
     // (undocumented)
@@ -8658,7 +8629,7 @@ export function selectFiles(fileInputElement: HTMLInputElement, files: File[] | 
 
 // @public (undocumented)
 class Selection_2<T = any> {
-    constructor(_items: Items_2<T>, filters: FiltersProvider_2<T>, differs: IterableDiffers);
+    constructor(_items: Items<T>, filters: FiltersProvider<T>, differs: IterableDiffers);
     // (undocumented)
     get change(): Observable<T[]>;
     // (undocumented)
@@ -9495,7 +9466,7 @@ export class ÇlrAccordionWillyWonka extends WillyWonka {
 
 // @public (undocumented)
 export class ÇlrActionableOompaLoompa extends OompaLoompa {
-    constructor(cdr: ChangeDetectorRef, willyWonka: ÇlrDatagridWillyWonka, rowActions: RowActionService_2);
+    constructor(cdr: ChangeDetectorRef, willyWonka: ÇlrDatagridWillyWonka, rowActions: RowActionService);
     // (undocumented)
     get flavor(): boolean;
     // (undocumented)
@@ -9559,15 +9530,15 @@ export class ÇlrClrPopoverOpenCloseButton implements OnDestroy {
 
 // @public (undocumented)
 export class ÇlrDatagridCellRenderer implements OnDestroy {
-    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer_2);
+    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    resetState(state: ColumnState_2): void;
+    resetState(state: ColumnState): void;
     // (undocumented)
-    setHidden(state: ColumnState_2): void;
+    setHidden(state: ColumnState): void;
     // (undocumented)
-    setWidth(state: ColumnState_2): void;
+    setWidth(state: ColumnState): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridCellRenderer, "clr-dg-cell", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -9576,7 +9547,7 @@ export class ÇlrDatagridCellRenderer implements OnDestroy {
 
 // @public (undocumented)
 export class ÇlrDatagridDetailRegisterer {
-    constructor(expandableRowsCount: ExpandableRowsCount_2);
+    constructor(expandableRowsCount: ExpandableRowsCount);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -9587,9 +9558,9 @@ export class ÇlrDatagridDetailRegisterer {
 
 // @public (undocumented)
 export class ÇlrDatagridHeaderRenderer implements OnDestroy {
-    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer_2, domAdapter: DomAdapter, columnResizerService: ColumnResizerService_2, columnsService: ColumnsService_2, columnState: BehaviorSubject<ColumnState_2>);
+    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter, columnResizerService: ColumnResizerService, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
     // (undocumented)
-    getColumnWidthState(): Partial<ColumnState_2>;
+    getColumnWidthState(): Partial<ColumnState>;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -9597,9 +9568,9 @@ export class ÇlrDatagridHeaderRenderer implements OnDestroy {
     // (undocumented)
     setColumnState(index: number): void;
     // (undocumented)
-    setHidden(state: ColumnState_2): void;
+    setHidden(state: ColumnState): void;
     // (undocumented)
-    setWidth(state: ColumnState_2): void;
+    setWidth(state: ColumnState): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridHeaderRenderer, "clr-dg-column", never, {}, { "resizeEmitter": "clrDgColumnResize"; }, never, never, false, never>;
     // (undocumented)
@@ -9608,7 +9579,7 @@ export class ÇlrDatagridHeaderRenderer implements OnDestroy {
 
 // @public (undocumented)
 export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
-    constructor(datagrid: ClrDatagrid, organizer: DatagridRenderOrganizer_2, items: Items_2, page: Page_2, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService_2, tableSizeService: TableSizeService_2, columnsService: ColumnsService_2, ngZone: NgZone, keyNavigation: KeyNavigationGridController_2, changeDetectorRef: ChangeDetectorRef);
+    constructor(datagrid: ClrDatagrid, organizer: DatagridRenderOrganizer, items: Items, page: Page, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController, changeDetectorRef: ChangeDetectorRef);
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -9629,7 +9600,7 @@ export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit
 
 // @public (undocumented)
 export class ÇlrDatagridRowDetailRenderer extends ÇlrDatagridRowRenderer implements OnDestroy {
-    constructor(parentRow: ÇlrDatagridRowRenderer, columnsService: ColumnsService_2);
+    constructor(parentRow: ÇlrDatagridRowRenderer, columnsService: ColumnsService);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -9640,7 +9611,7 @@ export class ÇlrDatagridRowDetailRenderer extends ÇlrDatagridRowRenderer imple
 
 // @public (undocumented)
 export class ÇlrDatagridRowRenderer implements AfterContentInit, OnDestroy {
-    constructor(columnsService: ColumnsService_2);
+    constructor(columnsService: ColumnsService);
     // (undocumented)
     cells: QueryList<ÇlrDatagridCellRenderer>;
     // (undocumented)
@@ -9693,34 +9664,34 @@ export class ÇlrDatagridSingleSelectionValueAccessor implements ControlValueAcc
 
 // @public (undocumented)
 export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
-    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items_2<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService_2, injector: EnvironmentInjector);
-    // Warning: (ae-forgotten-export) The symbol "CdkVirtualForInputs_2" needs to be exported by the entry point clr-angular.d.ts
+    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
+    // Warning: (ae-forgotten-export) The symbol "CdkVirtualForInputs" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    get cdkVirtualForOf(): CdkVirtualForInputs_2<T>["cdkVirtualForOf"];
-    set cdkVirtualForOf(value: CdkVirtualForInputs_2<T>['cdkVirtualForOf']);
+    get cdkVirtualForOf(): CdkVirtualForInputs<T>["cdkVirtualForOf"];
+    set cdkVirtualForOf(value: CdkVirtualForInputs<T>['cdkVirtualForOf']);
     // (undocumented)
-    get cdkVirtualForTemplate(): CdkVirtualForInputs_2<T>["cdkVirtualForTemplate"];
-    set cdkVirtualForTemplate(value: CdkVirtualForInputs_2<T>['cdkVirtualForTemplate']);
+    get cdkVirtualForTemplate(): CdkVirtualForInputs<T>["cdkVirtualForTemplate"];
+    set cdkVirtualForTemplate(value: CdkVirtualForInputs<T>['cdkVirtualForTemplate']);
     // (undocumented)
-    get cdkVirtualForTemplateCacheSize(): CdkVirtualForInputs_2<T>["cdkVirtualForTemplateCacheSize"];
-    set cdkVirtualForTemplateCacheSize(value: CdkVirtualForInputs_2<T>['cdkVirtualForTemplateCacheSize']);
+    get cdkVirtualForTemplateCacheSize(): CdkVirtualForInputs<T>["cdkVirtualForTemplateCacheSize"];
+    set cdkVirtualForTemplateCacheSize(value: CdkVirtualForInputs<T>['cdkVirtualForTemplateCacheSize']);
     // (undocumented)
-    get cdkVirtualForTrackBy(): CdkVirtualForInputs_2<T>["cdkVirtualForTrackBy"];
-    set cdkVirtualForTrackBy(value: CdkVirtualForInputs_2<T>['cdkVirtualForTrackBy']);
+    get cdkVirtualForTrackBy(): CdkVirtualForInputs<T>["cdkVirtualForTrackBy"];
+    set cdkVirtualForTrackBy(value: CdkVirtualForInputs<T>['cdkVirtualForTrackBy']);
     // (undocumented)
     set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>);
-    // Warning: (ae-forgotten-export) The symbol "CdkFixedSizeVirtualScrollInputs_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "CdkFixedSizeVirtualScrollInputs" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    get itemSize(): CdkFixedSizeVirtualScrollInputs_2["itemSize"];
-    set itemSize(value: CdkFixedSizeVirtualScrollInputs_2['itemSize']);
+    get itemSize(): CdkFixedSizeVirtualScrollInputs["itemSize"];
+    set itemSize(value: CdkFixedSizeVirtualScrollInputs['itemSize']);
     // (undocumented)
-    get maxBufferPx(): CdkFixedSizeVirtualScrollInputs_2["maxBufferPx"];
-    set maxBufferPx(value: CdkFixedSizeVirtualScrollInputs_2['maxBufferPx']);
+    get maxBufferPx(): CdkFixedSizeVirtualScrollInputs["maxBufferPx"];
+    set maxBufferPx(value: CdkFixedSizeVirtualScrollInputs['maxBufferPx']);
     // (undocumented)
-    get minBufferPx(): CdkFixedSizeVirtualScrollInputs_2["minBufferPx"];
-    set minBufferPx(value: CdkFixedSizeVirtualScrollInputs_2['minBufferPx']);
+    get minBufferPx(): CdkFixedSizeVirtualScrollInputs["minBufferPx"];
+    set minBufferPx(value: CdkFixedSizeVirtualScrollInputs['minBufferPx']);
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -9757,7 +9728,7 @@ export class ÇlrDatagridWillyWonka extends WillyWonka {
 
 // @public (undocumented)
 export class ÇlrExpandableOompaLoompa extends OompaLoompa {
-    constructor(cdr: ChangeDetectorRef, willyWonka: ÇlrDatagridWillyWonka, expandableCount: ExpandableRowsCount_2);
+    constructor(cdr: ChangeDetectorRef, willyWonka: ÇlrDatagridWillyWonka, expandableCount: ExpandableRowsCount);
     // (undocumented)
     get flavor(): boolean;
     // (undocumented)

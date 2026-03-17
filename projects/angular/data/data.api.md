@@ -79,15 +79,15 @@ export const CLR_TREE_VIEW_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy, DoCheck {
-    // Warning: (ae-forgotten-export) The symbol "DatagridRenderOrganizer_2" needs to be exported by the entry point clr-angular-data.d.ts
-    // Warning: (ae-forgotten-export) The symbol "StateProvider_2" needs to be exported by the entry point clr-angular-data.d.ts
-    // Warning: (ae-forgotten-export) The symbol "DisplayModeService_2" needs to be exported by the entry point clr-angular-data.d.ts
-    // Warning: (ae-forgotten-export) The symbol "Page_2" needs to be exported by the entry point clr-angular-data.d.ts
-    constructor(organizer: DatagridRenderOrganizer_2, items: Items_2<T>, expandableRows: ExpandableRowsCount_2, selection: Selection_2<T>, rowActionService: RowActionService_2, stateProvider: StateProvider_2<T>, displayMode: DisplayModeService_2, renderer: Renderer2, detailService: DetailService_2, document: any, el: ElementRef<HTMLElement>, page: Page_2, commonStrings: ClrCommonStringsService, keyNavigation: KeyNavigationGridController_2, zone: NgZone);
-    // Warning: (ae-forgotten-export) The symbol "CellCoordinates_2" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DatagridRenderOrganizer" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "StateProvider" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DisplayModeService" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "Page" needs to be exported by the entry point clr-angular-data.d.ts
+    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
+    // Warning: (ae-forgotten-export) The symbol "CellCoordinates" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    activeCellCoords: CellCoordinates_2;
+    activeCellCoords: CellCoordinates;
     get allSelected(): boolean;
     set allSelected(value: boolean);
     // (undocumented)
@@ -119,31 +119,31 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     datagridHeader: ElementRef<HTMLElement>;
     // (undocumented)
     datagridTable: ElementRef<HTMLElement>;
-    // Warning: (ae-forgotten-export) The symbol "DetailService_2" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DetailService" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    detailService: DetailService_2;
+    detailService: DetailService;
     // (undocumented)
     _displayedRows: ViewContainerRef;
     // (undocumented)
     el: ElementRef<HTMLElement>;
-    // Warning: (ae-forgotten-export) The symbol "ExpandableRowsCount_2" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ExpandableRowsCount" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    expandableRows: ExpandableRowsCount_2;
+    expandableRows: ExpandableRowsCount;
     // (undocumented)
     _fixedColumnTemplate: TemplateRef<any>;
     // (undocumented)
     set identityFn(value: ClrDatagridItemsIdentityFunction<T>);
-    // Warning: (ae-forgotten-export) The symbol "Items_2" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "Items" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    items: Items_2<T>;
+    items: Items<T>;
     iterator: ClrDatagridItems<T>;
-    // Warning: (ae-forgotten-export) The symbol "KeyNavigationGridController_2" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "KeyNavigationGridController" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    keyNavigation: KeyNavigationGridController_2;
+    keyNavigation: KeyNavigationGridController;
     get loading(): boolean;
     set loading(value: boolean);
     // (undocumented)
@@ -165,10 +165,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     refresh: EventEmitter<ClrDatagridStateInterface<T>>;
     // (undocumented)
     resize(): void;
-    // Warning: (ae-forgotten-export) The symbol "RowActionService_2" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "RowActionService" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    rowActionService: RowActionService_2;
+    rowActionService: RowActionService;
     rows: QueryList<ClrDatagridRow<T>>;
     // @deprecated (undocumented)
     set rowSelectionMode(value: boolean);
@@ -212,7 +212,7 @@ export class ClrDatagridActionBar {
 // @public (undocumented)
 export class ClrDatagridActionOverflow implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ClrPopoverService" needs to be exported by the entry point clr-angular-data.d.ts
-    constructor(rowActionService: RowActionService_2, commonStrings: ClrCommonStringsService, platformId: any, popoverService: ClrPopoverService);
+    constructor(rowActionService: RowActionService, commonStrings: ClrCommonStringsService, platformId: any, popoverService: ClrPopoverService);
     // (undocumented)
     buttonLabel: string;
     // (undocumented)
@@ -265,13 +265,13 @@ export class ClrDatagridCell implements OnInit {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridCell, never>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "DatagridFilterRegistrar_2" needs to be exported by the entry point clr-angular-data.d.ts
+// Warning: (ae-forgotten-export) The symbol "DatagridFilterRegistrar" needs to be exported by the entry point clr-angular-data.d.ts
 //
 // @public (undocumented)
-export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar_2<T, ClrDatagridFilterInterface<T>> implements OnDestroy, OnInit, OnChanges {
-    // Warning: (ae-forgotten-export) The symbol "Sort_2" needs to be exported by the entry point clr-angular-data.d.ts
-    // Warning: (ae-forgotten-export) The symbol "FiltersProvider_2" needs to be exported by the entry point clr-angular-data.d.ts
-    constructor(el: ElementRef<HTMLElement>, _sort: Sort_2<T>, filters: FiltersProvider_2<T>, vcr: ViewContainerRef, detailService: DetailService_2, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService);
+export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements OnDestroy, OnInit, OnChanges {
+    // Warning: (ae-forgotten-export) The symbol "Sort" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "FiltersProvider" needs to be exported by the entry point clr-angular-data.d.ts
+    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get ariaSort(): ClrDatagridAriaSortOrder;
     // (undocumented)
@@ -334,9 +334,9 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar_2<T, Clr
 
 // @public (undocumented)
 export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "ColumnResizerService_2" needs to be exported by the entry point clr-angular-data.d.ts
-    // Warning: (ae-forgotten-export) The symbol "TableSizeService_2" needs to be exported by the entry point clr-angular-data.d.ts
-    constructor(columnResizerService: ColumnResizerService_2, renderer: Renderer2, ngZone: NgZone, tableSizeService: TableSizeService_2, commonString: ClrCommonStringsService, document: any);
+    // Warning: (ae-forgotten-export) The symbol "ColumnResizerService" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "TableSizeService" needs to be exported by the entry point clr-angular-data.d.ts
+    constructor(columnResizerService: ColumnResizerService, renderer: Renderer2, ngZone: NgZone, tableSizeService: TableSizeService, commonString: ClrCommonStringsService, document: any);
     // (undocumented)
     columnSeparatorId: string;
     // (undocumented)
@@ -361,8 +361,8 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrDatagridColumnToggle implements OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "ColumnsService_2" needs to be exported by the entry point clr-angular-data.d.ts
-    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService_2, popoverService: ClrPopoverService);
+    // Warning: (ae-forgotten-export) The symbol "ColumnsService" needs to be exported by the entry point clr-angular-data.d.ts
+    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, popoverService: ClrPopoverService);
     // (undocumented)
     allColumnsSelected(): void;
     // (undocumented)
@@ -373,7 +373,7 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     // (undocumented)
     get hasOnlyOneVisibleColumn(): boolean;
     // (undocumented)
-    get hideableColumnStates(): ColumnState_2[];
+    get hideableColumnStates(): ColumnState[];
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -387,13 +387,13 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     // (undocumented)
     popoverType: ClrPopoverType;
     // (undocumented)
-    toggleColumnState(columnState: ColumnState_2, event: boolean): void;
+    toggleColumnState(columnState: ColumnState, event: boolean): void;
     // (undocumented)
     toggleSwitchPanel(): void;
-    // Warning: (ae-forgotten-export) The symbol "ColumnState_2" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ColumnState" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    readonly trackByFn: i0.TrackByFunction<ColumnState_2>;
+    readonly trackByFn: i0.TrackByFunction<ColumnState>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggle, "clr-dg-column-toggle", never, {}, {}, never, never, false, [{ directive: typeof i1_2.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
@@ -402,7 +402,7 @@ export class ClrDatagridColumnToggle implements OnDestroy {
 
 // @public (undocumented)
 export class ClrDatagridColumnToggleButton {
-    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService_2);
+    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService);
     // (undocumented)
     get allHideablesVisible(): boolean;
     // (undocumented)
@@ -425,7 +425,7 @@ export interface ClrDatagridComparatorInterface<T> {
 
 // @public (undocumented)
 export class ClrDatagridDetail {
-    constructor(detailService: DetailService_2, commonStrings: ClrCommonStringsService);
+    constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     ariaLabel: string;
     // (undocumented)
@@ -435,7 +435,7 @@ export class ClrDatagridDetail {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    detailService: DetailService_2;
+    detailService: DetailService;
     // (undocumented)
     header: ClrDatagridDetailHeader;
     // (undocumented)
@@ -458,11 +458,11 @@ export class ClrDatagridDetailBody {
 
 // @public (undocumented)
 export class ClrDatagridDetailHeader implements AfterViewInit {
-    constructor(detailService: DetailService_2, commonStrings: ClrCommonStringsService);
+    constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    detailService: DetailService_2;
+    detailService: DetailService;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -475,11 +475,11 @@ export class ClrDatagridDetailHeader implements AfterViewInit {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetailHeader, never>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "CustomFilter_2" needs to be exported by the entry point clr-angular-data.d.ts
+// Warning: (ae-forgotten-export) The symbol "CustomFilter" needs to be exported by the entry point clr-angular-data.d.ts
 //
 // @public
-export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar_2<T, ClrDatagridFilterInterface<T>> implements CustomFilter_2, OnDestroy {
-    constructor(_filters: FiltersProvider_2<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, keyNavigation: KeyNavigationGridController_2);
+export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter, OnDestroy {
+    constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, keyNavigation: KeyNavigationGridController);
     get active(): boolean;
     // (undocumented)
     anchor: ElementRef<HTMLButtonElement>;
@@ -487,10 +487,10 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar_2<T, Clr
     ariaExpanded: boolean;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
-    // Warning: (ae-forgotten-export) The symbol "RegisteredFilter_2" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "RegisteredFilter" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter_2<T, ClrDatagridFilterInterface<T>>);
+    set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter<T, ClrDatagridFilterInterface<T>>);
     // (undocumented)
     static ngAcceptInputType_open: unknown;
     // (undocumented)
@@ -528,11 +528,11 @@ export interface ClrDatagridFilterInterface<T, S = any> {
 
 // @public (undocumented)
 export class ClrDatagridFooter<T = any> {
-    constructor(selection: Selection_2<T>, detailService: DetailService_2, columnsService: ColumnsService_2, commonStrings: ClrCommonStringsService);
+    constructor(selection: Selection_2<T>, detailService: DetailService, columnsService: ColumnsService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    detailService: DetailService_2;
+    detailService: DetailService;
     // (undocumented)
     get hasHideableColumns(): boolean;
     // (undocumented)
@@ -547,7 +547,7 @@ export class ClrDatagridFooter<T = any> {
 
 // @public (undocumented)
 export class ClrDatagridHideableColumn implements OnDestroy {
-    constructor(titleTemplateRef: TemplateRef<any>, viewContainerRef: ViewContainerRef, columnsService: ColumnsService_2, columnState: BehaviorSubject<ColumnState_2>);
+    constructor(titleTemplateRef: TemplateRef<any>, viewContainerRef: ViewContainerRef, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
     // (undocumented)
     set clrDgHidden(hidden: boolean);
     set clrDgHideableColumn(value: {
@@ -567,7 +567,7 @@ export class ClrDatagridHideableColumn implements OnDestroy {
 
 // @public (undocumented)
 export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
-    constructor(template: TemplateRef<NgForOfContext<T>>, differs: IterableDiffers, items: Items_2, vcr: ViewContainerRef);
+    constructor(template: TemplateRef<NgForOfContext<T>>, differs: IterableDiffers, items: Items, vcr: ViewContainerRef);
     // (undocumented)
     ngDoCheck(): void;
     // (undocumented)
@@ -616,7 +616,7 @@ export interface ClrDatagridNumericFilterInterface<T> {
 
 // @public (undocumented)
 export class ClrDatagridPageSize {
-    constructor(page: Page_2);
+    constructor(page: Page);
     // Warning: (ae-forgotten-export) The symbol "ClrControlLabel" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
@@ -624,7 +624,7 @@ export class ClrDatagridPageSize {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    page: Page_2;
+    page: Page;
     // (undocumented)
     pageSizeOptions: number[];
     // (undocumented)
@@ -637,7 +637,7 @@ export class ClrDatagridPageSize {
 
 // @public (undocumented)
 export class ClrDatagridPagination implements OnDestroy, OnInit {
-    constructor(page: Page_2, commonStrings: ClrCommonStringsService, detailService: DetailService_2);
+    constructor(page: Page, commonStrings: ClrCommonStringsService, detailService: DetailService);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -647,7 +647,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     // (undocumented)
     currentPageInputRef: ElementRef<HTMLInputElement>;
     // (undocumented)
-    detailService: DetailService_2;
+    detailService: DetailService;
     // (undocumented)
     disableCurrentPageInput: boolean;
     get firstItem(): number;
@@ -660,7 +660,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     ngOnDestroy(): void;
     ngOnInit(): void;
     // (undocumented)
-    page: Page_2;
+    page: Page;
     get pageSize(): number;
     set pageSize(size: number);
     // (undocumented)
@@ -679,7 +679,7 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
 
 // @public (undocumented)
 export class ClrDatagridPlaceholder<T = any> {
-    constructor(items: Items_2<T>);
+    constructor(items: Items<T>);
     get emptyDatagrid(): boolean;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPlaceholder<any>, "clr-dg-placeholder", never, {}, {}, never, ["*"], false, never>;
@@ -689,7 +689,7 @@ export class ClrDatagridPlaceholder<T = any> {
 
 // @public (undocumented)
 export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
-    constructor(selection: Selection_2<T>, rowActionService: RowActionService_2, globalExpandable: ExpandableRowsCount_2, expand: DatagridIfExpandService_2, detailService: DetailService_2, displayMode: DisplayModeService_2, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items_2, document: any);
+    constructor(selection: Selection_2<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, document: any);
     // (undocumented)
     _calculatedCells: ViewContainerRef;
     // (undocumented)
@@ -716,16 +716,16 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     detailHidden: boolean;
     // (undocumented)
-    detailService: DetailService_2;
+    detailService: DetailService;
     dgCells: QueryList<ClrDatagridCell>;
     // (undocumented)
     displayCells: boolean;
     // (undocumented)
     el: ElementRef<HTMLElement>;
-    // Warning: (ae-forgotten-export) The symbol "DatagridIfExpandService_2" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DatagridIfExpandService" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    expand: DatagridIfExpandService_2;
+    expand: DatagridIfExpandService;
     // (undocumented)
     expandableId: string;
     // Warning: (ae-forgotten-export) The symbol "ClrExpandableAnimationDirective" needs to be exported by the entry point clr-angular-data.d.ts
@@ -742,13 +742,13 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     _fixedCellTemplate: TemplateRef<any>;
     // (undocumented)
-    globalExpandable: ExpandableRowsCount_2;
+    globalExpandable: ExpandableRowsCount;
     // (undocumented)
     id: string;
-    // Warning: (ae-forgotten-export) The symbol "_clr_angular_data" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    get identifyBy(): _clr_angular_data.ClrDatagridItemsIdentityFunction<any>;
+    get identifyBy(): i1.ClrDatagridItemsIdentityFunction<any>;
     get item(): T;
     set item(item: T);
     // @internal (undocumented)
@@ -766,7 +766,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     replaced: boolean;
     // (undocumented)
-    rowActionService: RowActionService_2;
+    rowActionService: RowActionService;
     // (undocumented)
     _scrollableCells: ViewContainerRef;
     get selected(): boolean | string;
@@ -797,7 +797,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
 
 // @public
 export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
-    constructor(selection: Selection_2, rowActionService: RowActionService_2, expand: DatagridIfExpandService_2, expandableRows: ExpandableRowsCount_2, commonStrings: ClrCommonStringsService);
+    constructor(selection: Selection_2, rowActionService: RowActionService, expand: DatagridIfExpandService, expandableRows: ExpandableRowsCount, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get beginningOfExpandableContentAriaText(): string;
     // (undocumented)
@@ -811,9 +811,9 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     // (undocumented)
     _endOfExpandableContentAriaText: string;
     // (undocumented)
-    expand: DatagridIfExpandService_2;
+    expand: DatagridIfExpandService;
     // (undocumented)
-    expandableRows: ExpandableRowsCount_2;
+    expandableRows: ExpandableRowsCount;
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -823,7 +823,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     // (undocumented)
     replacedRow: boolean;
     // (undocumented)
-    rowActionService: RowActionService_2;
+    rowActionService: RowActionService;
     // (undocumented)
     selection: Selection_2;
     // (undocumented)
@@ -884,7 +884,6 @@ export class ClrDataModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDataModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDataModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3" needs to be exported by the entry point clr-angular-data.d.ts
     //
@@ -894,7 +893,7 @@ export class ClrDataModule {
 
 // @public (undocumented)
 export class ClrIfDetail implements OnInit, OnDestroy {
-    constructor(templateRef: TemplateRef<any>, viewContainer: ViewContainerRef, detailService: DetailService_2);
+    constructor(templateRef: TemplateRef<any>, viewContainer: ViewContainerRef, detailService: DetailService);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -915,12 +914,12 @@ export class ClrIfDetail implements OnInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "TreeFeaturesService_2" needs to be exported by the entry point clr-angular-data.d.ts
-    constructor(template: TemplateRef<ClrRecursiveForOfContext<T>>, featuresService: TreeFeaturesService_2<T>, cdr: ChangeDetectorRef);
-    // Warning: (ae-forgotten-export) The symbol "AsyncArray_2" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "TreeFeaturesService" needs to be exported by the entry point clr-angular-data.d.ts
+    constructor(template: TemplateRef<ClrRecursiveForOfContext<T>>, featuresService: TreeFeaturesService<T>, cdr: ChangeDetectorRef);
+    // Warning: (ae-forgotten-export) The symbol "AsyncArray" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    getChildren: (node: T) => AsyncArray_2<T>;
+    getChildren: (node: T) => AsyncArray<T>;
     // (undocumented)
     ngOnChanges(): void;
     // (undocumented)
@@ -937,10 +936,10 @@ export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
 export interface ClrRecursiveForOfContext<T> {
     // (undocumented)
     $implicit: T;
-    // Warning: (ae-forgotten-export) The symbol "TreeNodeModel_2" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "TreeNodeModel" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    clrModel: TreeNodeModel_2<T>;
+    clrModel: TreeNodeModel<T>;
 }
 
 // @public (undocumented)
@@ -1068,10 +1067,10 @@ export class ClrStackViewModule {
 
 // @public (undocumented)
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "TreeFocusManagerService_2" needs to be exported by the entry point clr-angular-data.d.ts
-    constructor(featuresService: TreeFeaturesService_2<T>, focusManagerService: TreeFocusManagerService_2<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone);
+    // Warning: (ae-forgotten-export) The symbol "TreeFocusManagerService" needs to be exported by the entry point clr-angular-data.d.ts
+    constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone);
     // (undocumented)
-    featuresService: TreeFeaturesService_2<T>;
+    featuresService: TreeFeaturesService<T>;
     // (undocumented)
     get isMultiSelectable(): boolean;
     // (undocumented)
@@ -1088,7 +1087,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
-    constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService_2<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService_2<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
+    constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
     // (undocumented)
     get ariaSelected(): boolean;
     // (undocumented)
@@ -1114,7 +1113,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     expandService: IfExpandService;
     // (undocumented)
-    featuresService: TreeFeaturesService_2<T>;
+    featuresService: TreeFeaturesService<T>;
     // (undocumented)
     focusTreeNode(): void;
     // (undocumented)
@@ -1124,7 +1123,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     isSelectable(): boolean;
     // (undocumented)
-    _model: TreeNodeModel_2<T>;
+    _model: TreeNodeModel<T>;
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -1172,21 +1171,21 @@ export class ClrTreeViewModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeViewModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTreeViewModule>;
-    // Warning: (ae-forgotten-export) The symbol "RecursiveChildren_2" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "RecursiveChildren" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren_2], [typeof i38.CommonModule, typeof i40.ClrIcon, typeof i39.ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i38.CommonModule, typeof i40.ClrIcon, typeof i39.ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "DatagridNumericFilterImpl_2" needs to be exported by the entry point clr-angular-data.d.ts
+// Warning: (ae-forgotten-export) The symbol "DatagridNumericFilterImpl" needs to be exported by the entry point clr-angular-data.d.ts
 //
 // @public (undocumented)
-export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar_2<T, DatagridNumericFilterImpl_2<T>> implements CustomFilter_2, AfterViewInit {
+export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>> implements CustomFilter, AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "DomAdapter" needs to be exported by the entry point clr-angular-data.d.ts
-    constructor(filters: FiltersProvider_2<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, ngZone: NgZone);
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, ngZone: NgZone);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
-    set customNumericFilter(value: ClrDatagridNumericFilterInterface<T> | RegisteredFilter_2<T, DatagridNumericFilterImpl_2<T>>);
+    set customNumericFilter(value: ClrDatagridNumericFilterInterface<T> | RegisteredFilter<T, DatagridNumericFilterImpl<T>>);
     filterContainer: ClrDatagridFilter<T>;
     // (undocumented)
     filterValueChange: EventEmitter<any>;
@@ -1257,14 +1256,14 @@ export class DatagridPropertyStringFilter<T = any> implements ClrDatagridStringF
     prop: string;
 }
 
-// Warning: (ae-forgotten-export) The symbol "DatagridStringFilterImpl_2" needs to be exported by the entry point clr-angular-data.d.ts
+// Warning: (ae-forgotten-export) The symbol "DatagridStringFilterImpl" needs to be exported by the entry point clr-angular-data.d.ts
 //
 // @public (undocumented)
-export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar_2<T, DatagridStringFilterImpl_2<T>> implements CustomFilter_2, OnChanges, OnDestroy, AfterViewInit {
-    constructor(filters: FiltersProvider_2<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, ngZone: NgZone);
+export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements CustomFilter, OnChanges, OnDestroy, AfterViewInit {
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, ngZone: NgZone);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
-    set customStringFilter(value: ClrDatagridStringFilterInterface<T> | RegisteredFilter_2<T, DatagridStringFilterImpl_2<T>>);
+    set customStringFilter(value: ClrDatagridStringFilterInterface<T> | RegisteredFilter<T, DatagridStringFilterImpl<T>>);
     filterContainer: ClrDatagridFilter<T>;
     // (undocumented)
     filterValueChange: EventEmitter<any>;
@@ -1293,7 +1292,7 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar_2<T, 
 
 // @public (undocumented)
 class Selection_2<T = any> {
-    constructor(_items: Items_2<T>, filters: FiltersProvider_2<T>, differs: IterableDiffers);
+    constructor(_items: Items<T>, filters: FiltersProvider<T>, differs: IterableDiffers);
     // (undocumented)
     get change(): Observable<T[]>;
     // (undocumented)
@@ -1348,7 +1347,7 @@ export function selectionTypeAttribute(value: SelectionType | string): Selection
 //
 // @public (undocumented)
 export class ÇlrActionableOompaLoompa extends OompaLoompa {
-    constructor(cdr: ChangeDetectorRef, willyWonka: ÇlrDatagridWillyWonka, rowActions: RowActionService_2);
+    constructor(cdr: ChangeDetectorRef, willyWonka: ÇlrDatagridWillyWonka, rowActions: RowActionService);
     // (undocumented)
     get flavor(): boolean;
     // (undocumented)
@@ -1359,15 +1358,15 @@ export class ÇlrActionableOompaLoompa extends OompaLoompa {
 
 // @public (undocumented)
 export class ÇlrDatagridCellRenderer implements OnDestroy {
-    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer_2);
+    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    resetState(state: ColumnState_2): void;
+    resetState(state: ColumnState): void;
     // (undocumented)
-    setHidden(state: ColumnState_2): void;
+    setHidden(state: ColumnState): void;
     // (undocumented)
-    setWidth(state: ColumnState_2): void;
+    setWidth(state: ColumnState): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridCellRenderer, "clr-dg-cell", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -1376,7 +1375,7 @@ export class ÇlrDatagridCellRenderer implements OnDestroy {
 
 // @public (undocumented)
 export class ÇlrDatagridDetailRegisterer {
-    constructor(expandableRowsCount: ExpandableRowsCount_2);
+    constructor(expandableRowsCount: ExpandableRowsCount);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -1387,9 +1386,9 @@ export class ÇlrDatagridDetailRegisterer {
 
 // @public (undocumented)
 export class ÇlrDatagridHeaderRenderer implements OnDestroy {
-    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer_2, domAdapter: DomAdapter, columnResizerService: ColumnResizerService_2, columnsService: ColumnsService_2, columnState: BehaviorSubject<ColumnState_2>);
+    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter, columnResizerService: ColumnResizerService, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
     // (undocumented)
-    getColumnWidthState(): Partial<ColumnState_2>;
+    getColumnWidthState(): Partial<ColumnState>;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -1397,9 +1396,9 @@ export class ÇlrDatagridHeaderRenderer implements OnDestroy {
     // (undocumented)
     setColumnState(index: number): void;
     // (undocumented)
-    setHidden(state: ColumnState_2): void;
+    setHidden(state: ColumnState): void;
     // (undocumented)
-    setWidth(state: ColumnState_2): void;
+    setWidth(state: ColumnState): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridHeaderRenderer, "clr-dg-column", never, {}, { "resizeEmitter": "clrDgColumnResize"; }, never, never, false, never>;
     // (undocumented)
@@ -1408,7 +1407,7 @@ export class ÇlrDatagridHeaderRenderer implements OnDestroy {
 
 // @public (undocumented)
 export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
-    constructor(datagrid: ClrDatagrid, organizer: DatagridRenderOrganizer_2, items: Items_2, page: Page_2, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService_2, tableSizeService: TableSizeService_2, columnsService: ColumnsService_2, ngZone: NgZone, keyNavigation: KeyNavigationGridController_2, changeDetectorRef: ChangeDetectorRef);
+    constructor(datagrid: ClrDatagrid, organizer: DatagridRenderOrganizer, items: Items, page: Page, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController, changeDetectorRef: ChangeDetectorRef);
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -1429,7 +1428,7 @@ export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit
 
 // @public (undocumented)
 export class ÇlrDatagridRowDetailRenderer extends ÇlrDatagridRowRenderer implements OnDestroy {
-    constructor(parentRow: ÇlrDatagridRowRenderer, columnsService: ColumnsService_2);
+    constructor(parentRow: ÇlrDatagridRowRenderer, columnsService: ColumnsService);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -1440,7 +1439,7 @@ export class ÇlrDatagridRowDetailRenderer extends ÇlrDatagridRowRenderer imple
 
 // @public (undocumented)
 export class ÇlrDatagridRowRenderer implements AfterContentInit, OnDestroy {
-    constructor(columnsService: ColumnsService_2);
+    constructor(columnsService: ColumnsService);
     // (undocumented)
     cells: QueryList<ÇlrDatagridCellRenderer>;
     // (undocumented)
@@ -1493,34 +1492,34 @@ export class ÇlrDatagridSingleSelectionValueAccessor implements ControlValueAcc
 
 // @public (undocumented)
 export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
-    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items_2<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService_2, injector: EnvironmentInjector);
-    // Warning: (ae-forgotten-export) The symbol "CdkVirtualForInputs_2" needs to be exported by the entry point clr-angular-data.d.ts
+    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
+    // Warning: (ae-forgotten-export) The symbol "CdkVirtualForInputs" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    get cdkVirtualForOf(): CdkVirtualForInputs_2<T>["cdkVirtualForOf"];
-    set cdkVirtualForOf(value: CdkVirtualForInputs_2<T>['cdkVirtualForOf']);
+    get cdkVirtualForOf(): CdkVirtualForInputs<T>["cdkVirtualForOf"];
+    set cdkVirtualForOf(value: CdkVirtualForInputs<T>['cdkVirtualForOf']);
     // (undocumented)
-    get cdkVirtualForTemplate(): CdkVirtualForInputs_2<T>["cdkVirtualForTemplate"];
-    set cdkVirtualForTemplate(value: CdkVirtualForInputs_2<T>['cdkVirtualForTemplate']);
+    get cdkVirtualForTemplate(): CdkVirtualForInputs<T>["cdkVirtualForTemplate"];
+    set cdkVirtualForTemplate(value: CdkVirtualForInputs<T>['cdkVirtualForTemplate']);
     // (undocumented)
-    get cdkVirtualForTemplateCacheSize(): CdkVirtualForInputs_2<T>["cdkVirtualForTemplateCacheSize"];
-    set cdkVirtualForTemplateCacheSize(value: CdkVirtualForInputs_2<T>['cdkVirtualForTemplateCacheSize']);
+    get cdkVirtualForTemplateCacheSize(): CdkVirtualForInputs<T>["cdkVirtualForTemplateCacheSize"];
+    set cdkVirtualForTemplateCacheSize(value: CdkVirtualForInputs<T>['cdkVirtualForTemplateCacheSize']);
     // (undocumented)
-    get cdkVirtualForTrackBy(): CdkVirtualForInputs_2<T>["cdkVirtualForTrackBy"];
-    set cdkVirtualForTrackBy(value: CdkVirtualForInputs_2<T>['cdkVirtualForTrackBy']);
+    get cdkVirtualForTrackBy(): CdkVirtualForInputs<T>["cdkVirtualForTrackBy"];
+    set cdkVirtualForTrackBy(value: CdkVirtualForInputs<T>['cdkVirtualForTrackBy']);
     // (undocumented)
     set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>);
-    // Warning: (ae-forgotten-export) The symbol "CdkFixedSizeVirtualScrollInputs_2" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "CdkFixedSizeVirtualScrollInputs" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    get itemSize(): CdkFixedSizeVirtualScrollInputs_2["itemSize"];
-    set itemSize(value: CdkFixedSizeVirtualScrollInputs_2['itemSize']);
+    get itemSize(): CdkFixedSizeVirtualScrollInputs["itemSize"];
+    set itemSize(value: CdkFixedSizeVirtualScrollInputs['itemSize']);
     // (undocumented)
-    get maxBufferPx(): CdkFixedSizeVirtualScrollInputs_2["maxBufferPx"];
-    set maxBufferPx(value: CdkFixedSizeVirtualScrollInputs_2['maxBufferPx']);
+    get maxBufferPx(): CdkFixedSizeVirtualScrollInputs["maxBufferPx"];
+    set maxBufferPx(value: CdkFixedSizeVirtualScrollInputs['maxBufferPx']);
     // (undocumented)
-    get minBufferPx(): CdkFixedSizeVirtualScrollInputs_2["minBufferPx"];
-    set minBufferPx(value: CdkFixedSizeVirtualScrollInputs_2['minBufferPx']);
+    get minBufferPx(): CdkFixedSizeVirtualScrollInputs["minBufferPx"];
+    set minBufferPx(value: CdkFixedSizeVirtualScrollInputs['minBufferPx']);
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -1559,7 +1558,7 @@ export class ÇlrDatagridWillyWonka extends WillyWonka {
 
 // @public (undocumented)
 export class ÇlrExpandableOompaLoompa extends OompaLoompa {
-    constructor(cdr: ChangeDetectorRef, willyWonka: ÇlrDatagridWillyWonka, expandableCount: ExpandableRowsCount_2);
+    constructor(cdr: ChangeDetectorRef, willyWonka: ÇlrDatagridWillyWonka, expandableCount: ExpandableRowsCount);
     // (undocumented)
     get flavor(): boolean;
     // (undocumented)
@@ -1618,7 +1617,7 @@ export class ÇlrWrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data.d.ts:1094:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1085:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 
