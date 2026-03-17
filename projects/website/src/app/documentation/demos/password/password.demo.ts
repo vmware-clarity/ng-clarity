@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormsModule, NgModel } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ClrCommonFormsModule, ClrIcon, ClrIconModule, ClrPasswordModule } from '@clr/angular';
 
@@ -87,7 +87,18 @@ export class PasswordDemo extends ClarityDocComponent {
   exampleOne = '';
   exampleTwo = '';
 
+  @ViewChild('successPassword') successPassword: NgModel;
+  successPasswordModel = '*********';
+
+  @ViewChild('errorPassword') errorPassword: NgModel;
+  errorPasswordModel = '*********';
+
   constructor() {
     super('password');
+  }
+
+  ngAfterViewInit() {
+    this.errorPassword.control.markAsTouched();
+    this.successPassword.control.markAsTouched();
   }
 }
