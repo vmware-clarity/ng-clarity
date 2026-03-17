@@ -512,13 +512,20 @@
     <div class="clr-row">
       <div class="clr-col-6">
         <div class="component-box-container clr-mt-32px">
-          <app-themed-image
-            [lightSrc]="'/assets/images/documentation/toggles/light-theme/error_state.svg'"
-            [darkSrc]="'/assets/images/documentation/toggles/dark-theme/error_state.svg'"
-            [imageAlt]="'toggle with red error icon and error message'"
-            [imageStyle]="'max-width: 100%'"
-          >
-          </app-themed-image>
+          <div class="clr-control-container">
+            <div class="clr-toggle-wrapper">
+              <input type="checkbox" id="toggle-error-wf" name="toggle-full" value="Wi-Fi" class="clr-toggle" checked />
+              <label for="toggle-error-wf" class="clr-control-label">Wi-Fi</label>
+            </div>
+            <div class="clr-toggle-wrapper">
+              <input type="checkbox" id="toggle-error-bt" name="toggle-full" value="Bluetooth" class="clr-toggle" />
+              <label for="toggle-error-bt" class="clr-control-label">Bluetooth</label>
+            </div>
+            <div class="clr-subtext-wrapper">
+              <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+              <span class="clr-subtext error">Unable to turn on bluetooth</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="clr-col-6">
@@ -533,13 +540,27 @@
     <div class="clr-row">
       <div class="clr-col-6">
         <div class="component-box-container clr-mt-32px">
-          <app-themed-image
-            [lightSrc]="'/assets/images/documentation/toggles/light-theme/success_state.svg'"
-            [darkSrc]="'/assets/images/documentation/toggles/dark-theme/success_state.svg'"
-            [imageAlt]="'toggle with green success icon and success message'"
-            [imageStyle]="'max-width: 100%'"
-          >
-          </app-themed-image>
+          <div class="clr-control-container">
+            <div class="clr-toggle-wrapper">
+              <input
+                type="checkbox"
+                id="toggle-success-wf"
+                name="toggle-full"
+                value="Wi-Fi"
+                class="clr-toggle"
+                checked
+              />
+              <label for="toggle-success-wf" class="clr-control-label">Wi-Fi</label>
+            </div>
+            <div class="clr-toggle-wrapper">
+              <input type="checkbox" id="toggle-success-bt" name="toggle-full" value="Bluetooth" class="clr-toggle" />
+              <label for="toggle-success-bt" class="clr-control-label">Bluetooth</label>
+            </div>
+            <div class="clr-subtext-wrapper">
+              <cds-icon class="clr-validate-icon" shape="success-standard" status="success"></cds-icon>
+              <span class="clr-subtext success">Settings updated</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="clr-col-6">
