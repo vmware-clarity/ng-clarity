@@ -263,8 +263,7 @@ export class ClrNavLevel implements OnInit {
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
-    // (undocumented)
-    onMouseClick(target: any): void;
+    onMouseClick(target: HTMLElement): void;
     // (undocumented)
     onResize(event: Event): void;
     // (undocumented)
@@ -684,7 +683,7 @@ export class ÇlrTabsWillyWonka extends WillyWonka {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-layout.d.ts:280:194 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-layout.d.ts
+// dist/clr-angular/types/clr-angular-layout.d.ts:285:194 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-layout.d.ts
 
 // (No @packageDocumentation comment for this package)
 
