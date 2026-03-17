@@ -292,7 +292,7 @@
 
     <div class="clrweb-DoxVersusBox clr-mt-16px">
       <div class="clrweb-DoxVersusBox-items clrweb-DoxVersusBox-vsContent">
-        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+        <div class="clrweb-DoxVersusBox-itemWrapper align-box-items clr-col-12 clr-col-sm-6">
           <div class="clrweb-DoxVersusBox-item">
             <form class="clr-form">
               <div class="clr-form-control">
@@ -315,7 +315,7 @@
             [imageStyle]="'margin: 0 auto;width: 72px;'"
           ></app-themed-image>
         </div>
-        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+        <div class="clrweb-DoxVersusBox-itemWrapper align-box-items clr-col-12 clr-col-sm-6">
           <div class="clrweb-DoxVersusBox-item">
             <form class="clr-form">
               <div class="clr-form-control">
@@ -352,13 +352,19 @@
     <p class="clr-mt-16px" cds-text="body">
       Use when selected by a user with an input method, such as mouse or keyboard.
     </p>
-    <div class="clr-input-margin">
-      <app-themed-image
-        [lightSrc]="'/assets/images/documentation/input-fields/light-theme/input-active.svg'"
-        [darkSrc]="'/assets/images/documentation/input-fields/dark-theme/input-active.svg'"
-        [imageAlt]="'active state for input field'"
-        [imageStyle]="'max-width: 100%'"
-      ></app-themed-image>
+    <div class="clr-form-control clr-input-margin">
+      <label for="input-active" class="clr-control-label">Username</label>
+      <div class="clr-control-container">
+        <div class="clr-input-wrapper">
+          <input
+            type="text"
+            id="input-active"
+            placeholder="Placeholder"
+            class="clr-input clr-focus"
+            value="Clarity_admin"
+          />
+        </div>
+      </div>
     </div>
 
     <h3 class="clr-mt-24px" cds-text="section" id="disabled">Disabled</h3>
@@ -386,26 +392,46 @@
       Use to communicate a user or system error. This validation can happen when the user moves away from the input or
       after attempting to submit a form.
     </p>
-    <div class="clr-input-margin">
-      <app-themed-image
-        [lightSrc]="'/assets/images/documentation/input-fields/light-theme/input-error.svg'"
-        [darkSrc]="'/assets/images/documentation/input-fields/dark-theme/input-error.svg'"
-        [imageAlt]="'error state for input field'"
-        [imageStyle]="'max-width: 100%'"
-      ></app-themed-image>
+    <div class="clr-form-control clr-input-margin">
+      <label for="input-error" class="clr-control-label">Username</label>
+      <div class="clr-control-container clr-error">
+        <div class="clr-input-wrapper">
+          <input
+            type="text"
+            id="input-error"
+            placeholder="Placeholder"
+            class="clr-input clr-focus"
+            value="Sample text"
+          />
+        </div>
+        <div class="clr-subtext-wrapper">
+          <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+          <span class="clr-subtext error">Username already exists</span>
+        </div>
+      </div>
     </div>
 
     <h3 class="clr-mt-24px" cds-text="section" id="success">Success</h3>
     <p class="clr-mt-16px" cds-text="body">
       Use to provide real-time feedback immediately after a user’s input. For example, if a new user name is available.
     </p>
-    <div class="clr-input-margin">
-      <app-themed-image
-        [lightSrc]="'/assets/images/documentation/input-fields/light-theme/input-success.svg'"
-        [darkSrc]="'/assets/images/documentation/input-fields/dark-theme/input-success.svg'"
-        [imageAlt]="'success state for input field'"
-        [imageStyle]="'max-width: 100%'"
-      ></app-themed-image>
+    <div class="clr-form-control clr-input-margin">
+      <label for="input-success" class="clr-control-label">Username</label>
+      <div class="clr-control-container clr-success">
+        <div class="clr-input-wrapper">
+          <input
+            type="text"
+            id="input-success"
+            placeholder="Placeholder"
+            class="clr-input clr-focus"
+            value="Sample text"
+          />
+        </div>
+        <div class="clr-subtext-wrapper">
+          <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+          <span class="clr-subtext success">Username available</span>
+        </div>
+      </div>
     </div>
 
     <h2 class="clr-mt-48px" cds-text="title" id="layouts">Layouts</h2>
@@ -452,14 +478,13 @@
     </form>
 
     <h3 class="clr-mt-24px" cds-text="section" id="controled-width">Controlled width</h3>
-    <div class="clr-input-margin">
-      <app-themed-image
-        [lightSrc]="'/assets/images/documentation/input-fields/light-theme/input-controlled-width.svg'"
-        [darkSrc]="'/assets/images/documentation/input-fields/dark-theme/input-controlled-width.svg'"
-        [imageAlt]="'controlled width for input field'"
-        [imageStyle]="'max-width: 100%'"
-      ></app-themed-image>
-    </div>
+    <form clrForm clrLayout="horizontal" class="clr-input-margin" clrLabelSize="1">
+      <clr-input-container>
+        <label>Label</label>
+        <input clrInput type="text" name="example" value="Sample text" />
+        <clr-control-helper>Message text</clr-control-helper>
+      </clr-input-container>
+    </form>
   </app-doc-tab>
 
   <app-doc-tab tab="api">
