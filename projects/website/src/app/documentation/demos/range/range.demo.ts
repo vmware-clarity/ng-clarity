@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormsModule, NgModel } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ClrCommonFormsModule, ClrRangeModule } from '@clr/angular';
 
@@ -58,7 +58,18 @@ export class RangeDemo extends ClarityDocComponent {
   exampleValue2 = 50;
   exampleValue3 = 50;
 
+  @ViewChild('successRange') successRange: NgModel;
+  successRangeModel: 50;
+
+  @ViewChild('errorRange') errorRange: NgModel;
+  errorRangeModel: 1;
+
   constructor() {
     super('range');
+  }
+
+  ngAfterViewInit() {
+    this.errorRange.control.markAsTouched();
+    this.successRange.control.markAsTouched();
   }
 }
