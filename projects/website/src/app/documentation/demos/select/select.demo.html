@@ -225,7 +225,7 @@
 
     <div class="clrweb-DoxVersusBox clr-mt-24px">
       <div class="clrweb-DoxVersusBox-items clrweb-DoxVersusBox-vsContent">
-        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6">
+        <div class="clrweb-DoxVersusBox-itemWrapper clr-col-12 clr-col-sm-6" style="align-items: normal">
           <div class="clrweb-DoxVersusBox-item">
             <span>
               Select boxes present a list of options from which the user can select and apply to an input field.
@@ -297,12 +297,22 @@
     </p>
     <div class="clr-row">
       <div class="clr-col-4 clr-mt-16px clr-ml-32px clr-mb-16px">
-        <app-themed-image
-          [lightSrc]="'/assets/images/documentation/selects/light-theme/select-error.svg'"
-          [darkSrc]="'/assets/images/documentation/selects/dark-theme/select-error.svg'"
-          [imageAlt]="'select with red error icon and error message'"
-          [imageStyle]="'max-width: 100%'"
-        ></app-themed-image>
+        <div class="clr-form-control">
+          <label for="select-error" class="clr-control-label">Select Color</label>
+          <div class="clr-control-container clr-error">
+            <div class="clr-select-wrapper">
+              <select id="select-error" class="clr-select">
+                <option value="Red">Red</option>
+                <option value="Green">Green</option>
+                <option value="Navi Blue">Navi Blue</option>
+              </select>
+            </div>
+            <div class="clr-subtext-wrapper">
+              <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+              <span class="clr-subtext error">Out of stock. Select another color</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -312,12 +322,22 @@
     </p>
     <div class="clr-row">
       <div class="clr-col-12 clr-mt-16px clr-ml-32px clr-mb-16px">
-        <app-themed-image
-          [lightSrc]="'/assets/images/documentation/selects/light-theme/select-success.svg'"
-          [darkSrc]="'/assets/images/documentation/selects/dark-theme/select-success.svg'"
-          [imageAlt]="'select with green success icon and success message'"
-          [imageStyle]="'max-width: 100%'"
-        ></app-themed-image>
+        <div class="clr-form-control">
+          <label for="select-success" class="clr-control-label">Select Color</label>
+          <div class="clr-control-container clr-success">
+            <div class="clr-select-wrapper">
+              <select id="select-success" class="clr-select">
+                <option value="Red">Red</option>
+                <option value="Green">Green</option>
+                <option value="Navi Blue">Navi Blue</option>
+              </select>
+            </div>
+            <div class="clr-subtext-wrapper">
+              <cds-icon class="clr-validate-icon" shape="success-standard" status="danger"></cds-icon>
+              <span class="clr-subtext success">Changes saved</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
