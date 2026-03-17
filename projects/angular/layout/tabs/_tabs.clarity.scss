@@ -75,13 +75,16 @@
         margin-left: 0;
         width: 100%;
 
+        @include tabs-mixins.nav-link-border-appearance('left');
+
         &.btn {
           margin-bottom: density.$clr-base-offset-0;
         }
 
-        &.active,
-        &:hover {
-          @include tabs-mixins.nav-link-border-appearance('left');
+        &.active {
+          &::before {
+            border-color: tokens.$cds-alias-object-interaction-background-highlight;
+          }
         }
       }
     }
