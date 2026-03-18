@@ -28,7 +28,9 @@ export default {
   },
   args: {},
   render: () => ({
-    template: `<storybook-header></storybook-header>`,
+    template: `
+      <storybook-header></storybook-header>
+    `,
   }),
 };
 
