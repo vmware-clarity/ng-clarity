@@ -6025,6 +6025,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     reset(): void;
     size: string;
     stepnavAriaLabel: string;
+    stepnavLayout: 'vertical' | 'horizontal';
     get stopCancel(): boolean;
     set stopCancel(value: boolean);
     // (undocumented)
@@ -6044,7 +6045,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     protected wizardTitle: ClrWizardTitle;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChange": "clrWizardCurrentPageChange"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "stepnavLayout": { "alias": "clrWizardStepnavLayout"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChange": "clrWizardCurrentPageChange"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["*", "clr-wizard-button", "clr-wizard-title", "clr-wizard-header-action"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
 }
@@ -6228,14 +6229,32 @@ export class ClrWizardPageTitle {
 }
 
 // @public (undocumented)
-export class ClrWizardStepnav {
-    constructor(pageService: PageCollectionService);
+export class ClrWizardStepnav implements AfterViewInit, OnChanges, OnDestroy {
+    constructor(pageService: PageCollectionService, elementRef: ElementRef<HTMLElement>);
     // (undocumented)
     label: string;
     // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnChanges(changes: SimpleChanges): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
     pageService: PageCollectionService;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, { "label": { "alias": "label"; "required": false; }; }, {}, never, never, false, never>;
+    protected scrollLeft(): void;
+    // (undocumented)
+    protected scrollRight(): void;
+    // (undocumented)
+    protected showScrollLeftButton: boolean;
+    // (undocumented)
+    protected showScrollRightButton: boolean;
+    // (undocumented)
+    stepnavLayout: 'vertical' | 'horizontal';
+    // (undocumented)
+    protected updateScrollButtons(): void;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, { "label": { "alias": "label"; "required": false; }; "stepnavLayout": { "alias": "stepnavLayout"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnav, never>;
 }
@@ -6249,6 +6268,8 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
     click(): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
+    // (undocumented)
+    readonly elementRef: ElementRef<HTMLElement>;
     // (undocumented)
     get hasError(): boolean;
     // (undocumented)

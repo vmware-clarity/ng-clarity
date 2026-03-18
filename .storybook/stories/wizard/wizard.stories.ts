@@ -21,6 +21,7 @@ export default {
     // inputs
     clrHeadingLevel: { control: { type: 'number', min: 1, max: 6 } },
     clrWizardSize: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
+    clrWizardStepnavLayout: { control: { type: 'inline-radio' }, options: ['vertical', 'horizontal'] },
     // outputs
     clrWizardOpenChange: { control: { disable: true } },
     clrWizardCurrentPageChange: { control: { disable: true } },
@@ -59,6 +60,7 @@ export default {
     clrWizardPreventDefaultNext: false,
     clrWizardPreventDefaultCancel: false,
     clrWizardStepnavAriaLabel: commonStringsDefault.wizardStepnavAriaLabel,
+    clrWizardStepnavLayout: 'vertical',
     // outputs
     clrWizardOpenChange: action('clrWizardOpenChange'),
     clrWizardCurrentPageChange: action('clrWizardCurrentPageChange'),
@@ -93,6 +95,7 @@ const WizardTemplate: StoryFn = args => ({
       [clrWizardPreventDefaultCancel]="clrWizardPreventDefaultCancel"
       [clrWizardSize]="clrWizardSize"
       [clrWizardStepnavAriaLabel]="clrWizardStepnavAriaLabel"
+      [clrWizardStepnavLayout]="clrWizardStepnavLayout"
       (clrWizardOpenChange)="clrWizardOpenChange($event)"
       (clrWizardCurrentPageChange)="clrWizardCurrentPageChange($event)"
       (clrWizardOnNext)="clrWizardOnNext($event)"
@@ -127,5 +130,13 @@ export const FullScreenWizard: StoryObj = {
   render: WizardTemplate,
   args: {
     clrWizardSize: 'full-screen',
+  },
+};
+
+export const HorizontalWizard: StoryObj = {
+  render: WizardTemplate,
+  args: {
+    clrWizardStepnavLayout: 'horizontal',
+    pageCount: 8,
   },
 };
