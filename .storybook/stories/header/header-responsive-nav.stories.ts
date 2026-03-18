@@ -33,15 +33,17 @@ export default {
 };
 
 export const Level1NavOpen: StoryObj = {
-  play({ canvasElement }) {
+  async play({ canvasElement, userEvent }) {
     const hamburger = canvasElement.querySelector<HTMLButtonElement>('.header-hamburger-trigger');
-    hamburger?.click();
+    await userEvent.click(hamburger);
+    canvasElement.focus();
   },
 };
 
 export const Level2NavOpen: StoryObj = {
-  play({ canvasElement }) {
+  async play({ canvasElement, userEvent }) {
     const overflow = canvasElement.querySelector<HTMLButtonElement>('.header-overflow-trigger');
-    overflow?.click();
+    await userEvent.click(overflow);
+    canvasElement.focus();
   },
 };
