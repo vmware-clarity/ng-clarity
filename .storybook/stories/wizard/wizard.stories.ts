@@ -140,3 +140,11 @@ export const HorizontalWizard: StoryObj = {
     pageCount: 8,
   },
 };
+
+export const HorizontalWizardOverflow: StoryObj = {
+  render: WizardTemplate,
+  args: {
+    clrWizardStepnavLayout: 'horizontal',
+    pageCount: 20,
+  },
+};
