@@ -39,6 +39,7 @@ const UiDisabled = require('raw-loader!./ui/disabled.html');
 const UiError = require('raw-loader!./ui/error.html');
 const UiFull = require('raw-loader!./ui/full.html');
 const UiInline = require('raw-loader!./ui/inline.html');
+const UiSuccess = require('raw-loader!./ui/success.html');
 
 const AngularTs = `
 import { Component } from '@angular/core';
@@ -119,6 +120,7 @@ export class CheckboxesDemo extends ClarityDocComponent {
   uiError: any = UiError;
   uiInline: any = UiInline;
   uiDisabled: any = UiDisabled;
+  uiSuccess: any = UiSuccess;
 
   ngBasic: any = NgBasic;
   ngLabel: any = NgLabel;

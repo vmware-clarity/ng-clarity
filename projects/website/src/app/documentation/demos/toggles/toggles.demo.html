@@ -289,6 +289,9 @@
           <input type="checkbox" id="checkbox6" name="checkbox-error" value="option3" class="clr-toggle" />
           <label for="checkbox6" class="clr-control-label">option 3</label>
         </div>
+        <div class="clr-subtext-wrapper">
+          <span class="clr-subtext">Helper Text</span>
+        </div>
         <div class="clr-subtext-wrapper error">
           <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
           <span class="clr-subtext">Error message</span>
@@ -298,6 +301,49 @@
 
     <div class="clr-mt-24px">
       <app-stackblitz-example name="Toggle CSS Error" [componentTemplate]="uiError"></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="success-state" cds-text="subsection" class="clr-mt-32px">Success state</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      To signify a success state, add the <code cds-text="code">.clr-success</code> class to the
+      <code cds-text="code">.clr-control-container</code> element. Then place the success message inside a
+      <code cds-text="code">.clr-subtext-wrapper</code> element with the <code cds-text="code">.success</code> class.
+      This wrapper is hidden by default and only becomes visible when the parent container has
+      <code cds-text="code">.clr-success</code>. Inside the wrapper, include a
+      <code cds-text="code">.clr-validate-icon</code> and a <code cds-text="code">.clr-subtext</code> element for the
+      success message — both will be styled in the success color automatically. Helper text placed in a plain
+      <code cds-text="code">.clr-subtext-wrapper</code> (without the <code cds-text="code">.error</code> or
+      <code cds-text="code">.success</code> class) remains visible regardless of the validation state.
+    </p>
+
+    <div class="clr-form-control clr-mt-24px">
+      <label class="clr-control-label">Success toggle</label>
+      <div class="clr-control-container clr-success">
+        <div class="clr-toggle-wrapper">
+          <input type="checkbox" id="checkbox13" name="checkbox-success" value="option1" class="clr-toggle" />
+          <label for="checkbox13" class="clr-control-label">option 1</label>
+        </div>
+        <div class="clr-toggle-wrapper">
+          <input type="checkbox" id="checkbox14" name="checkbox-success" value="option2" class="clr-toggle" />
+          <label for="checkbox14" class="clr-control-label">option 2</label>
+        </div>
+        <div class="clr-toggle-wrapper">
+          <input type="checkbox" id="checkbox15" name="checkbox-success" value="option3" class="clr-toggle" />
+          <label for="checkbox15" class="clr-control-label">option 3</label>
+        </div>
+        <div class="clr-subtext-wrapper">
+          <span class="clr-subtext">Helper Text</span>
+        </div>
+        <div class="clr-subtext-wrapper success">
+          <cds-icon class="clr-validate-icon" shape="success-standard" status="success"></cds-icon>
+          <span class="clr-subtext">Success message</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="clr-mt-24px">
+      <app-stackblitz-example name="Toggle CSS Success" [componentTemplate]="uiSuccess"></app-stackblitz-example>
     </div>
 
     <h3 data-toc-item id="inline-toggle" cds-text="subsection" class="clr-mt-32px">Inline toggle switches</h3>
