@@ -248,10 +248,14 @@
 
     <p class="clr-mt-16px" cds-text="body">
       To signify an error state, you need to add the <code cds-text="code">.clr-error</code> class to the
-      <code cds-text="code">.clr-control-container</code> element. This will show the
-      <code cds-text="code">.clr-validate-icon</code> and turn the <code cds-text="code">.clr-subtext</code> message to
-      red. If you have helper text that needs to change to error content, you'll have to handle the hiding and showing
-      of that content inside of the <code cds-text="code">.clr-subtext</code> element.
+      <code cds-text="code">.clr-control-container</code> element. Then place the error message inside a
+      <code cds-text="code">.clr-subtext-wrapper</code> element with the <code cds-text="code">.error</code> class. This
+      wrapper is hidden by default and only becomes visible when the parent container has
+      <code cds-text="code">.clr-error</code>. Inside the wrapper, you may include a
+      <code cds-text="code">.clr-validate-icon</code> and a <code cds-text="code">.clr-subtext</code> element for the
+      error message — both will be styled in the error color automatically. Helper text placed in a plain
+      <code cds-text="code">.clr-subtext-wrapper</code> (without the <code cds-text="code">.error</code> or
+      <code cds-text="code">.success</code> class) remains visible regardless of the validation state.
     </p>
 
     <div class="clr-mt-24px">

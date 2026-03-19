@@ -45,9 +45,9 @@ const FormInputTemplate: StoryFn = args => ({
           </div>
           <span class="clr-subtext">Helper Subtext</span>
           @if (isSuccess || isError) {
-            <div class="clr-subtext-wrapper">
+            <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
               <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'success-standard' : 'error-standard'"></cds-icon>
-              <span class="clr-subtext" [ngClass]="{ success: isSuccess, error: isError }">State Subtext</span>
+              <span class="clr-subtext">State Subtext</span>
             </div>
           }
         </div>
@@ -61,9 +61,9 @@ const FormInputTemplate: StoryFn = args => ({
           </div>
           <span class="clr-subtext">Helper Subtext</span>
           @if (isSuccess || isError) {
-            <div class="clr-subtext-wrapper">
+            <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
               <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'success-standard' : 'error-standard'"></cds-icon>
-              <span class="clr-subtext" [ngClass]="{ success: isSuccess, error: isError }">State Subtext</span>
+              <span class="clr-subtext">State Subtext</span>
             </div>
           }
         </div>
@@ -86,9 +86,9 @@ const FormInputTemplate: StoryFn = args => ({
           </div>
           <span class="clr-subtext">Helper Subtext</span>
           @if (isSuccess || isError) {
-            <div class="clr-subtext-wrapper">
+            <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
               <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'success-standard' : 'error-standard'"></cds-icon>
-              <span class="clr-subtext" [ngClass]="{ success: isSuccess, error: isError }">State Subtext</span>
+              <span class="clr-subtext">State Subtext</span>
             </div>
           }
         </div>
@@ -102,9 +102,9 @@ const FormInputTemplate: StoryFn = args => ({
           </div>
           <span class="clr-subtext">Helper Subtext</span>
           @if (isSuccess || isError) {
-            <div class="clr-subtext-wrapper">
+            <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
               <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'success-standard' : 'error-standard'"></cds-icon>
-              <span class="clr-subtext" [ngClass]="{ success: isSuccess, error: isError }">State Subtext</span>
+              <span class="clr-subtext">State Subtext</span>
             </div>
           }
         </div>
@@ -122,9 +122,9 @@ const FormInputTemplate: StoryFn = args => ({
           </div>
           <span class="clr-subtext">Helper Subtext</span>
           @if (isSuccess || isError) {
-            <div class="clr-subtext-wrapper">
+            <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
               <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'success-standard' : 'error-standard'"></cds-icon>
-              <span class="clr-subtext" [ngClass]="{ success: isSuccess, error: isError }">State Subtext</span>
+              <span class="clr-subtext">State Subtext</span>
             </div>
           }
         </div>
@@ -147,9 +147,9 @@ const FormInputTemplate: StoryFn = args => ({
           </div>
           <span class="clr-subtext">Helper Subtext</span>
           @if (isSuccess || isError) {
-            <div class="clr-subtext-wrapper">
+            <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
               <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'success-standard' : 'error-standard'"></cds-icon>
-              <span class="clr-subtext" [ngClass]="{ success: isSuccess, error: isError }">State Subtext</span>
+              <span class="clr-subtext">State Subtext</span>
             </div>
           }
         </div>
@@ -196,9 +196,9 @@ const FormInputTemplate: StoryFn = args => ({
           </div>
           <span class="clr-subtext">Helper Subtext</span>
           @if (isSuccess || isError) {
-            <div class="clr-subtext-wrapper">
+            <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
               <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'success-standard' : 'error-standard'"></cds-icon>
-              <span class="clr-subtext" [ngClass]="{ success: isSuccess, error: isError }">State Subtext</span>
+              <span class="clr-subtext">State Subtext</span>
             </div>
           }
         </div>
@@ -221,9 +221,9 @@ const FormInputTemplate: StoryFn = args => ({
           </div>
           <span class="clr-subtext">Helper Subtext</span>
           @if (isSuccess || isError) {
-            <div class="clr-subtext-wrapper">
+            <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
               <cds-icon class="clr-validate-icon" [shape]="isSuccess ? 'success-standard' : 'error-standard'"></cds-icon>
-              <span class="clr-subtext" [ngClass]="{ success: isSuccess, error: isError }">State Subtext</span>
+              <span class="clr-subtext">State Subtext</span>
             </div>
           }
         </div>
