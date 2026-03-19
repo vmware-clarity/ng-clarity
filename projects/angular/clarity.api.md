@@ -5935,16 +5935,16 @@ export class ClrVerticalNav implements OnDestroy {
 // @public (undocumented)
 export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupService_3" needs to be exported by the entry point clr-angular.d.ts
-    constructor(_itemExpand: IfExpandService_2, _navGroupRegistrationService: VerticalNavGroupRegistrationService_3, navGroupService: VerticalNavGroupService_3, _navService: VerticalNavService_3, commonStrings: ClrCommonStringsService_2);
+    constructor(_itemExpand: IfExpandService_2, _navGroupRegistrationService: VerticalNavGroupRegistrationService_3, _navGroupService: VerticalNavGroupService_3, _navService: VerticalNavService_3, commonStrings: ClrCommonStringsService_2);
     // (undocumented)
     collapseGroup(): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService_2;
+    // Warning: (ae-forgotten-export) The symbol "ExpandAnimationState_3" needs to be exported by the entry point clr-angular.d.ts
+    //
     // (undocumented)
-    expandAnimationDone($event: AnimationEvent_2): void;
-    // (undocumented)
-    get expandAnimationState(): string;
-    set expandAnimationState(value: string);
+    get expandAnimationState(): ExpandAnimationState_3;
+    set expandAnimationState(value: ExpandAnimationState_3);
     // (undocumented)
     get expanded(): boolean;
     set expanded(value: boolean);
@@ -5967,7 +5967,16 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrVerticalNavGroupChildren {
+export class ClrVerticalNavGroupChildren implements OnInit, OnDestroy {
+    constructor(navGroupService: VerticalNavGroupService_3, expandService: IfExpandService_2);
+    // (undocumented)
+    get expandAnimation(): ExpandAnimationState_3;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    onExpandAnimationDone(event: AnimationEvent_2): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroupChildren, "clr-vertical-nav-group-children", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)

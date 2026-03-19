@@ -135,13 +135,13 @@ export default function (): void {
         'does not contains the links if the nav group is not in ' + 'expanded state when clrIfExpanded is used',
         () => {
           expect(navGroup.expanded).toBe(false);
-          expect(compiled.querySelector('.nav-group-children').children.length).toBe(0);
+          expect(compiled.querySelector('.nav-group-children')).toBeNull();
         }
       );
 
       it('contains the links if the nav group is not in ' + 'expanded state when clrIfExpanded is used', () => {
         expect(navGroup.expanded).toBe(false);
-        expect(compiled.querySelector('.nav-group-children').children.length).toBe(0);
+        expect(compiled.querySelector('.nav-group-children')).toBeNull();
 
         navGroup.expanded = true;
         fixture.detectChanges();
