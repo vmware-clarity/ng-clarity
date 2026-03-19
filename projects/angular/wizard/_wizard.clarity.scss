@@ -546,6 +546,7 @@
 
     .modal-content {
       flex: 1;
+      border-radius: 0 0 wizard-variables.$clr-wizard-border-radius wizard-variables.$clr-wizard-border-radius;
     }
 
     .clr-wizard-stepnav-wrapper {
@@ -554,10 +555,17 @@
       max-width: unset;
       overflow: unset;
       border-right: 0;
+      border-bottom: tokens.$cds-global-space-1 solid wizard-variables.$clr-wizard-stepnav-border-color;
+      border-radius: wizard-variables.$clr-wizard-border-radius wizard-variables.$clr-wizard-border-radius 0 0;
 
       .clr-wizard-stepnav {
         display: flex;
-        padding: wizard-variables.$clr-wizard-vertical-space 0;
+        padding: 0;
+        width: 100%;
+      }
+
+      .clr-wizard-stepnav-nav {
+        width: 100%;
       }
 
       .clr-wizard-stepnav-nav--with-one-scroll-button {
@@ -577,9 +585,11 @@
         display: flex;
         flex-direction: row;
         overflow-x: hidden;
+        width: 100%;
       }
 
       .clr-wizard-stepnav-item {
+        flex: 1;
         border-left: 0;
         border-bottom-width: wizard-variables.$clr-wizard-stepnav-border-size;
         border-bottom-style: solid;
