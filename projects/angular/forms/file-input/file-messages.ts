@@ -33,7 +33,7 @@ export class ClrFileInfo {}
   template: `
     @if (context.success) {
       <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
-      <span class="clr-subtext success">
+      <span class="clr-subtext">
         <ng-content></ng-content>
       </span>
     }
@@ -41,6 +41,7 @@ export class ClrFileInfo {}
   host: {
     '[style.display]': 'context.success ? "flex" : "none"',
     '[class.clr-subtext-wrapper]': 'true',
+    '[class.success]': 'true',
   },
   standalone: false,
 })
@@ -53,12 +54,13 @@ export class ClrFileSuccess {
   // The host should have an `*ngIf` or `@if` that checks for the relevant error.
   template: `
     <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
-    <span class="clr-subtext error">
+    <span class="clr-subtext">
       <ng-content></ng-content>
     </span>
   `,
   host: {
     '[class.clr-subtext-wrapper]': 'true',
+    '[class.error]': 'true',
   },
   standalone: false,
 })
