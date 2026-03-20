@@ -42,6 +42,10 @@ export * from './built-in/filters/datagrid-property-string-filter';
 export * from './built-in/filters/datagrid-property-numeric-filter';
 export * from './built-in/comparators/datagrid-property-comparator';
 
+export * from './chocolate/expandable-oompa-loompa';
+export * from './chocolate/actionable-oompa-loompa';
+export * from './chocolate/datagrid-willy-wonka';
+
 export * from './datagrid.module';
 export * from './providers/selection'; // exported specifically for appfx datagrid;
 

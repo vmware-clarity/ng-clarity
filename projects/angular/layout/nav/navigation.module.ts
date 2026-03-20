@@ -11,10 +11,18 @@ import { ClrIcon } from '@clr/angular/icon';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 
 import { ClrAriaCurrentLink } from './aria-current-link';
+import { MainContainerWillyWonka } from './chocolate/main-container-willy-wonka';
+import { NavDetectionOompaLoompa } from './chocolate/nav-detection-oompa-loompa';
 import { ClrHeader } from './header';
 import { ClrNavLevel } from './nav-level';
 
-export const CLR_NAVIGATION_DIRECTIVES: Type<any>[] = [ClrHeader, ClrNavLevel, ClrAriaCurrentLink];
+export const CLR_NAVIGATION_DIRECTIVES: Type<any>[] = [
+  ClrHeader,
+  ClrNavLevel,
+  ClrAriaCurrentLink,
+  NavDetectionOompaLoompa,
+  MainContainerWillyWonka,
+];
 
 @NgModule({
   imports: [CommonModule, ClrIcon, ClrDropdownModule],

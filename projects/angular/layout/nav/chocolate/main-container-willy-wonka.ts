@@ -10,5 +10,6 @@ import { WillyWonka } from '@clr/angular/utils';
 
 @Directive({
   selector: 'clr-main-container',
+  standalone: false,
 })
 export class MainContainerWillyWonka extends WillyWonka {}

@@ -10,5 +10,6 @@ import { WillyWonka } from '@clr/angular/utils';
 
 @Directive({
   selector: 'clr-datagrid',
+  standalone: false,
 })
 export class DatagridWillyWonka extends WillyWonka {}

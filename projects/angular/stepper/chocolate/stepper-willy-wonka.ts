@@ -10,5 +10,6 @@ import { WillyWonka } from '@clr/angular/utils';
 
 @Directive({
   selector: 'form[clrStepper]',
+  standalone: false,
 })
 export class StepperWillyWonka extends WillyWonka {}

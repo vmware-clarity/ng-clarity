@@ -15,3 +15,5 @@ export * from './step-content';
 export * from './enums/stepper-panel-status.enum';
 export * from './models/stepper-panel.model';
 export * from './providers/stepper.service';
+export * from './chocolate/stepper-willy-wonka';
+export * from './chocolate/stepper-oompa-loompa';

@@ -10,5 +10,6 @@ import { WillyWonka } from '@clr/angular/utils';
 
 @Directive({
   selector: 'clr-accordion',
+  standalone: false,
 })
 export class AccordionWillyWonka extends WillyWonka {}

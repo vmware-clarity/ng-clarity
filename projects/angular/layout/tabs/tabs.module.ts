@@ -10,6 +10,8 @@ import { NgModule, Type } from '@angular/core';
 import { ClarityIcons, ClrIcon, ellipsisHorizontalIcon } from '@clr/angular/icon';
 import { ClrConditionalModule, ClrKeyFocusModule, ClrTemplateRefModule } from '@clr/angular/utils';
 
+import { ActiveOompaLoompa } from './chocolate/active-oompa-loompa';
+import { TabsWillyWonka } from './chocolate/tabs-willy-wonka';
 import { ClrTab } from './tab';
 import { ClrTabAction } from './tab-action.directive';
 import { ClrTabContent } from './tab-content';
@@ -26,6 +28,8 @@ export const CLR_TABS_DIRECTIVES: Type<any>[] = [
   ClrTabLink,
   ClrTabAction,
   ClrTabsActions,
+  TabsWillyWonka,
+  ActiveOompaLoompa,
 ];
 
 @NgModule({
