@@ -122,6 +122,7 @@ export class VirtualScrollGridDemoComponent {
   protected onSelectedItemsChange(selectedItems: VmItem[]): void {
     console.log('#onSelectedItemsChange emitted:', selectedItems);
     this.selectedVms = [...selectedItems];
+    this.cdr.markForCheck();
   }
 
   protected onExportDataEvent(exportStatus: any): void {

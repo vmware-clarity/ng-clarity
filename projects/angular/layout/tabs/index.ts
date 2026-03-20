@@ -13,7 +13,6 @@ export * from './tab-overflow-content';
 export * from './tab-link.directive';
 export * from './tab-action.directive';
 export * from './tabs.module';
-
-export { ClrTabsActionsPosition } from './tabs-actions';
-export { TabsWillyWonka as ÇlrTabsWillyWonka } from './chocolate/tabs-willy-wonka';
-export { ActiveOompaLoompa as ÇlrActiveOompaLoompa } from './chocolate/active-oompa-loompa';
+export * from './tabs-actions';
+export * from './chocolate/tabs-willy-wonka';
+export * from './chocolate/active-oompa-loompa';

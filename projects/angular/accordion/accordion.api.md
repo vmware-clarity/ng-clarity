@@ -35,6 +35,20 @@ export class AccordionModel extends CollapsiblePanelGroupModel {
     togglePanel(panelId: string, open?: boolean): void;
 }
 
+// Warning: (ae-forgotten-export) The symbol "OompaLoompa" needs to be exported by the entry point clr-angular-accordion.d.ts
+//
+// @public (undocumented)
+export class AccordionOompaLoompa extends OompaLoompa {
+    // Warning: (ae-forgotten-export) The symbol "IfExpandService" needs to be exported by the entry point clr-angular-accordion.d.ts
+    constructor(cdr: ChangeDetectorRef, willyWonka: AccordionWillyWonka, ifExpandService: IfExpandService);
+    // (undocumented)
+    get flavor(): boolean;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<AccordionOompaLoompa, "clr-accordion-panel", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<AccordionOompaLoompa, [null, { optional: true; }, null]>;
+}
+
 // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelService" needs to be exported by the entry point clr-angular-accordion.d.ts
 //
 // @public (undocumented)
@@ -53,6 +67,16 @@ export class AccordionService extends CollapsiblePanelService {
 export enum AccordionStrategy {
     Multi = "multi",
     Single = "single"
+}
+
+// Warning: (ae-forgotten-export) The symbol "WillyWonka" needs to be exported by the entry point clr-angular-accordion.d.ts
+//
+// @public (undocumented)
+export class AccordionWillyWonka extends WillyWonka {
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<AccordionWillyWonka, "clr-accordion", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<AccordionWillyWonka, never>;
 }
 
 // @public (undocumented)
@@ -102,7 +126,7 @@ export class ClrAccordionModule {
     // Warning: (ae-forgotten-export) The symbol "i9" needs to be exported by the entry point clr-angular-accordion.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAccordionModule, [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof ÇlrAccordionOompaLoompa, typeof ÇlrAccordionWillyWonka], [typeof i8.CommonModule, typeof i9.ClrIcon], [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof ÇlrAccordionOompaLoompa, typeof ÇlrAccordionWillyWonka]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAccordionModule, [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof AccordionOompaLoompa, typeof AccordionWillyWonka], [typeof i8.CommonModule, typeof i9.ClrIcon], [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof AccordionOompaLoompa, typeof AccordionWillyWonka]>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "CollapsiblePanel" needs to be exported by the entry point clr-angular-accordion.d.ts
@@ -141,30 +165,6 @@ export class ClrAccordionTitle {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionTitle, "clr-accordion-title", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionTitle, never>;
-}
-
-// Warning: (ae-forgotten-export) The symbol "OompaLoompa" needs to be exported by the entry point clr-angular-accordion.d.ts
-//
-// @public (undocumented)
-export class ÇlrAccordionOompaLoompa extends OompaLoompa {
-    // Warning: (ae-forgotten-export) The symbol "IfExpandService" needs to be exported by the entry point clr-angular-accordion.d.ts
-    constructor(cdr: ChangeDetectorRef, willyWonka: ÇlrAccordionWillyWonka, ifExpandService: IfExpandService);
-    // (undocumented)
-    get flavor(): boolean;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrAccordionOompaLoompa, "clr-accordion-panel", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrAccordionOompaLoompa, [null, { optional: true; }, null]>;
-}
-
-// Warning: (ae-forgotten-export) The symbol "WillyWonka" needs to be exported by the entry point clr-angular-accordion.d.ts
-//
-// @public (undocumented)
-export class ÇlrAccordionWillyWonka extends WillyWonka {
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrAccordionWillyWonka, "clr-accordion", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrAccordionWillyWonka, never>;
 }
 
 // (No @packageDocumentation comment for this package)

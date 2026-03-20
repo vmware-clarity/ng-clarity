@@ -27,7 +27,7 @@ import {
   viewColumnsIcon,
   windowCloseIcon,
 } from '@clr/angular/icon';
-import { ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import {
   CdkDragModule,
@@ -145,7 +145,7 @@ const CLR_DATAGRID_SHARED_DIRECTIVES = [ClrIfExpanded];
     ClrOutsideClickModule,
     ClrExpandableAnimationModule,
     ClrSpinnerModule,
-    ÇlrClrPopoverModuleNext,
+    ClrPopoverModuleNext,
     ClrKeyFocusModule,
     CLR_DATAGRID_STANDALONE_DIRECTIVES,
     CLR_DATAGRID_SHARED_DIRECTIVES,
