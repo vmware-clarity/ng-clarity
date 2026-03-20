@@ -164,6 +164,23 @@ export class ClrIfOpen implements OnDestroy {
 }
 
 // @public (undocumented)
+export class ClrPopoverCloseButton implements OnDestroy, AfterViewInit {
+    constructor(elementRef: ElementRef<HTMLButtonElement>, popoverService: ClrPopoverService);
+    // (undocumented)
+    closeChange: EventEmitter<void>;
+    // (undocumented)
+    handleClick(event: MouseEvent): void;
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverCloseButton, "[clrPopoverCloseButton]", never, {}, { "closeChange": "clrPopoverOnCloseChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverCloseButton, never>;
+}
+
+// @public (undocumented)
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     constructor(element: ElementRef, container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, parent: ClrPopoverContent, overlay: Overlay, popoverService: ClrPopoverService, zone: NgZone, platformId: any);
     // (undocumented)
@@ -213,6 +230,31 @@ export class ClrPopoverModule {
     //
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, never, [typeof i1.ClrDropdownModule, typeof i2.ClrSignpostModule, typeof i3.ClrTooltipModule]>;
+}
+
+// @public (undocumented)
+export class ClrPopoverModuleNext {
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverModuleNext, never>;
+    // (undocumented)
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModuleNext>;
+    // (undocumented)
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModuleNext, [typeof ClrPopoverOrigin, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton], [typeof ClrPopoverContent, typeof ClrIfOpen], [typeof ClrPopoverOrigin, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton, typeof ClrPopoverContent, typeof ClrIfOpen]>;
+}
+
+// @public (undocumented)
+export class ClrPopoverOpenCloseButton implements OnDestroy {
+    constructor(popoverService: ClrPopoverService);
+    // (undocumented)
+    handleClick(event: MouseEvent): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    openCloseChange: EventEmitter<boolean>;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverOpenCloseButton, "[clrPopoverOpenCloseButton]", never, {}, { "openCloseChange": "clrPopoverOpenCloseChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverOpenCloseButton, never>;
 }
 
 // @public (undocumented)
@@ -388,7 +430,7 @@ export class ClrSignpostModule {
     // Warning: (ae-forgotten-export) The symbol "i7" needs to be exported by the entry point clr-angular-popover.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i5.CommonModule, typeof i6.ClrIcon, typeof i7.ClrFocusOnViewInitModule, typeof i1_2.ÇlrClrPopoverModuleNext, typeof i1_2.ClrIfOpen], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof i1_2.ClrIfOpen]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i5.CommonModule, typeof i6.ClrIcon, typeof i7.ClrFocusOnViewInitModule, typeof i1_2.ClrPopoverModuleNext, typeof i1_2.ClrIfOpen], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof i1_2.ClrIfOpen]>;
 }
 
 // @public (undocumented)
@@ -473,7 +515,7 @@ export class ClrTooltipModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTooltipModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i5.CommonModule, typeof i6.ClrIcon, typeof i1_2.ÇlrClrPopoverModuleNext], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof i1_2.ClrIfOpen, typeof i6.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i5.CommonModule, typeof i6.ClrIcon, typeof i1_2.ClrPopoverModuleNext], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof i1_2.ClrIfOpen, typeof i6.ClrIcon]>;
 }
 
 // @public (undocumented)
@@ -521,48 +563,6 @@ export const SIGNPOST_POSITIONS: ClrPopoverPosition[];
 
 // @public (undocumented)
 export const TOOLTIP_POSITIONS: ClrPopoverPosition[];
-
-// @public (undocumented)
-export class ÇlrClrPopoverCloseButton implements OnDestroy, AfterViewInit {
-    constructor(elementRef: ElementRef<HTMLButtonElement>, popoverService: ClrPopoverService);
-    // (undocumented)
-    closeChange: EventEmitter<void>;
-    // (undocumented)
-    handleClick(event: MouseEvent): void;
-    // (undocumented)
-    ngAfterViewInit(): void;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrClrPopoverCloseButton, "[clrPopoverCloseButton]", never, {}, { "closeChange": "clrPopoverOnCloseChange"; }, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrClrPopoverCloseButton, never>;
-}
-
-// @public (undocumented)
-export class ÇlrClrPopoverModuleNext {
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrClrPopoverModuleNext, never>;
-    // (undocumented)
-    static ɵinj: i0.ɵɵInjectorDeclaration<ÇlrClrPopoverModuleNext>;
-    // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ÇlrClrPopoverModuleNext, [typeof ClrPopoverOrigin, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton], [typeof ClrPopoverContent, typeof ClrIfOpen], [typeof ClrPopoverOrigin, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton, typeof ClrPopoverContent, typeof ClrIfOpen]>;
-}
-
-// @public (undocumented)
-export class ÇlrClrPopoverOpenCloseButton implements OnDestroy {
-    constructor(popoverService: ClrPopoverService);
-    // (undocumented)
-    handleClick(event: MouseEvent): void;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    openCloseChange: EventEmitter<boolean>;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrClrPopoverOpenCloseButton, "[clrPopoverOpenCloseButton]", never, {}, { "openCloseChange": "clrPopoverOpenCloseChange"; }, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrClrPopoverOpenCloseButton, never>;
-}
 
 // Warnings were encountered during analysis:
 //

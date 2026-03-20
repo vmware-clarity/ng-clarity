@@ -36,8 +36,8 @@ import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i38 from '@angular/common';
-import * as i46 from '@angular/forms';
+import * as i35 from '@angular/common';
+import * as i43 from '@angular/forms';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
@@ -193,8 +193,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     toggleAllSelected($event: any): void;
     updateDetailState(): void;
     // (undocumented)
-    get virtualScroll(): ÇlrDatagridVirtualScrollDirective<any>;
-    _virtualScroll: QueryList<ÇlrDatagridVirtualScrollDirective<any>>;
+    get virtualScroll(): ClrDatagridVirtualScrollDirective<any>;
+    _virtualScroll: QueryList<ClrDatagridVirtualScrollDirective<any>>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": { "alias": "clrLoadingMoreItems"; "required": false; }; "clrDgSingleSelectionAriaLabel": { "alias": "clrDgSingleSelectionAriaLabel"; "required": false; }; "clrDgSingleActionableAriaLabel": { "alias": "clrDgSingleActionableAriaLabel"; "required": false; }; "clrDetailExpandableAriaLabel": { "alias": "clrDetailExpandableAriaLabel"; "required": false; }; "clrDgDisablePageFocus": { "alias": "clrDgDisablePageFocus"; "required": false; }; "customSelectAllEnabled": { "alias": "clrDgCustomSelectAllEnabled"; "required": false; }; "loading": { "alias": "clrDgLoading"; "required": false; }; "selectionType": { "alias": "clrDgSelectionType"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "clrDgPreserveSelection": { "alias": "clrDgPreserveSelection"; "required": false; }; "rowSelectionMode": { "alias": "clrDgRowSelection"; "required": false; }; "identityFn": { "alias": "clrDgItemsIdentityFn"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
     // (undocumented)
@@ -595,17 +595,17 @@ export class ClrDatagridModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatagridModule>;
+    // Warning: (ae-forgotten-export) The symbol "i36" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i37" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i38" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "i39" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "i40" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "i41" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "i42" needs to be exported by the entry point clr-angular-data.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i43" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "i44" needs to be exported by the entry point clr-angular-data.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i45" needs to be exported by the entry point clr-angular-data.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i47" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ÇlrDatagridSelectionCellDirective, typeof ÇlrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof ÇlrDatagridDetailRegisterer, typeof ÇlrWrappedCell, typeof ÇlrWrappedColumn, typeof ÇlrWrappedRow, typeof ÇlrDatagridCellRenderer, typeof ÇlrDatagridHeaderRenderer, typeof ÇlrDatagridMainRenderer, typeof ÇlrDatagridRowDetailRenderer, typeof ÇlrDatagridRowRenderer, typeof ÇlrActionableOompaLoompa, typeof ÇlrDatagridWillyWonka, typeof ÇlrExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i38.CommonModule, typeof i39.CdkDragModule, typeof i39.CdkTrapFocusModule, typeof i40.ClrIcon, typeof i41.ClrInputModule, typeof i42.ClrRadioModule, typeof i43.ClrCheckboxModule, typeof i44.ClrNumberInputModule, typeof i45.ClrSelectModule, typeof i46.FormsModule, typeof i39.ClrLoadingModule, typeof i39.ClrConditionalModule, typeof i39.ClrOutsideClickModule, typeof i39.ClrExpandableAnimationModule, typeof i47.ClrSpinnerModule, typeof i1_2.ÇlrClrPopoverModuleNext, typeof i39.ClrKeyFocusModule, typeof ÇlrDatagridSingleSelectionValueAccessor, typeof i39.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ÇlrDatagridSelectionCellDirective, typeof ÇlrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof ÇlrDatagridDetailRegisterer, typeof ÇlrWrappedCell, typeof ÇlrWrappedColumn, typeof ÇlrWrappedRow, typeof ÇlrDatagridCellRenderer, typeof ÇlrDatagridHeaderRenderer, typeof ÇlrDatagridMainRenderer, typeof ÇlrDatagridRowDetailRenderer, typeof ÇlrDatagridRowRenderer, typeof ÇlrActionableOompaLoompa, typeof ÇlrDatagridWillyWonka, typeof ÇlrExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ÇlrDatagridSingleSelectionValueAccessor, typeof i39.ClrIfExpanded]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i35.CommonModule, typeof i36.CdkDragModule, typeof i36.CdkTrapFocusModule, typeof i37.ClrIcon, typeof i38.ClrInputModule, typeof i39.ClrRadioModule, typeof i40.ClrCheckboxModule, typeof i41.ClrNumberInputModule, typeof i42.ClrSelectModule, typeof i43.FormsModule, typeof i36.ClrLoadingModule, typeof i36.ClrConditionalModule, typeof i36.ClrOutsideClickModule, typeof i36.ClrExpandableAnimationModule, typeof i44.ClrSpinnerModule, typeof i1_2.ClrPopoverModuleNext, typeof i36.ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor, typeof i36.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor, typeof i36.ClrIfExpanded]>;
 }
 
 // @public (undocumented)
@@ -834,6 +834,40 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRowDetail, never>;
 }
 
+// @public (undocumented)
+export class ClrDatagridSelectionCellDirective {
+    constructor(selection: Selection_2);
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridSelectionCellDirective, ".datagrid-select", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridSelectionCellDirective, never>;
+}
+
+// @public (undocumented)
+export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAccessor {
+    constructor(renderer: Renderer2, elementRef: ElementRef<HTMLInputElement>);
+    // (undocumented)
+    clrDgIdentityFn: (value: any) => unknown;
+    // (undocumented)
+    onChange: (value: any) => void;
+    // (undocumented)
+    onTouched: () => void;
+    // (undocumented)
+    registerOnChange(fn: (value: any) => void): void;
+    // (undocumented)
+    registerOnTouched(fn: () => void): void;
+    // (undocumented)
+    setDisabledState(isDisabled: boolean): void;
+    // (undocumented)
+    value: any;
+    // (undocumented)
+    writeValue(value: any): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridSingleSelectionValueAccessor, "input[type=radio][clrDgSingleSelectionRadio]", never, { "value": { "alias": "value"; "required": false; }; "clrDgIdentityFn": { "alias": "clrDgIdentityFn"; "required": false; }; }, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridSingleSelectionValueAccessor, never>;
+}
+
 // @public
 export enum ClrDatagridSortOrder {
     // (undocumented)
@@ -866,6 +900,62 @@ export interface ClrDatagridStateInterface<T = any> {
 export interface ClrDatagridStringFilterInterface<T> {
     // (undocumented)
     accepts(item: T, search: string): boolean;
+}
+
+// @public (undocumented)
+export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
+    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
+    // Warning: (ae-forgotten-export) The symbol "CdkVirtualForInputs" needs to be exported by the entry point clr-angular-data.d.ts
+    //
+    // (undocumented)
+    get cdkVirtualForOf(): CdkVirtualForInputs<T>["cdkVirtualForOf"];
+    set cdkVirtualForOf(value: CdkVirtualForInputs<T>['cdkVirtualForOf']);
+    // (undocumented)
+    get cdkVirtualForTemplate(): CdkVirtualForInputs<T>["cdkVirtualForTemplate"];
+    set cdkVirtualForTemplate(value: CdkVirtualForInputs<T>['cdkVirtualForTemplate']);
+    // (undocumented)
+    get cdkVirtualForTemplateCacheSize(): CdkVirtualForInputs<T>["cdkVirtualForTemplateCacheSize"];
+    set cdkVirtualForTemplateCacheSize(value: CdkVirtualForInputs<T>['cdkVirtualForTemplateCacheSize']);
+    // (undocumented)
+    get cdkVirtualForTrackBy(): CdkVirtualForInputs<T>["cdkVirtualForTrackBy"];
+    set cdkVirtualForTrackBy(value: CdkVirtualForInputs<T>['cdkVirtualForTrackBy']);
+    // (undocumented)
+    set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>);
+    // Warning: (ae-forgotten-export) The symbol "CdkFixedSizeVirtualScrollInputs" needs to be exported by the entry point clr-angular-data.d.ts
+    //
+    // (undocumented)
+    get itemSize(): CdkFixedSizeVirtualScrollInputs["itemSize"];
+    set itemSize(value: CdkFixedSizeVirtualScrollInputs['itemSize']);
+    // (undocumented)
+    get maxBufferPx(): CdkFixedSizeVirtualScrollInputs["maxBufferPx"];
+    set maxBufferPx(value: CdkFixedSizeVirtualScrollInputs['maxBufferPx']);
+    // (undocumented)
+    get minBufferPx(): CdkFixedSizeVirtualScrollInputs["minBufferPx"];
+    set minBufferPx(value: CdkFixedSizeVirtualScrollInputs['minBufferPx']);
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngDoCheck(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    persistItems: boolean;
+    // (undocumented)
+    renderedRangeChange: EventEmitter<ListRange>;
+    // (undocumented)
+    scrollDown(offset: number, behavior?: ScrollBehavior): void;
+    // (undocumented)
+    scrollToIndex(index: number, behavior?: ScrollBehavior): void;
+    // (undocumented)
+    scrollUp(offset: number, behavior?: ScrollBehavior): void;
+    // (undocumented)
+    get totalContentHeight(): string;
+    // (undocumented)
+    get totalItems(): number;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, { "persistItems": { "alias": "clrVirtualPersistItems"; "required": false; }; "cdkVirtualForOf": { "alias": "clrVirtualRowsOf"; "required": false; }; "cdkVirtualForTrackBy": { "alias": "clrVirtualRowsTrackBy"; "required": false; }; "cdkVirtualForTemplate": { "alias": "clrVirtualRowsTemplate"; "required": false; }; "cdkVirtualForTemplateCacheSize": { "alias": "clrVirtualRowsTemplateCacheSize"; "required": false; }; "itemSize": { "alias": "clrVirtualRowsItemSize"; "required": false; }; "minBufferPx": { "alias": "clrVirtualRowsMinBufferPx"; "required": false; }; "maxBufferPx": { "alias": "clrVirtualRowsMaxBufferPx"; "required": false; }; "dataRange": { "alias": "clrVirtualDataRange"; "required": false; }; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridVirtualScrollDirective<any>, never>;
 }
 
 // @public (undocumented)
@@ -1062,7 +1152,7 @@ export class ClrStackViewModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStackViewModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags], [typeof i38.CommonModule, typeof i46.FormsModule, typeof i40.ClrIcon, typeof i39.ClrExpandableAnimationModule], [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags], [typeof i35.CommonModule, typeof i43.FormsModule, typeof i37.ClrIcon, typeof i36.ClrExpandableAnimationModule], [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags]>;
 }
 
 // @public (undocumented)
@@ -1174,14 +1264,84 @@ export class ClrTreeViewModule {
     // Warning: (ae-forgotten-export) The symbol "RecursiveChildren" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i38.CommonModule, typeof i40.ClrIcon, typeof i39.ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i35.CommonModule, typeof i37.ClrIcon, typeof i36.ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
+}
+
+// @public (undocumented)
+export class DatagridCellRenderer implements OnDestroy {
+    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer);
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    resetState(state: ColumnState): void;
+    // (undocumented)
+    setHidden(state: ColumnState): void;
+    // (undocumented)
+    setWidth(state: ColumnState): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridCellRenderer, "clr-dg-cell", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridCellRenderer, never>;
+}
+
+// @public (undocumented)
+export class DatagridDetailRegisterer {
+    constructor(expandableRowsCount: ExpandableRowsCount);
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridDetailRegisterer, "[clrIfExpanded]", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridDetailRegisterer, [{ optional: true; }]>;
+}
+
+// @public (undocumented)
+export class DatagridHeaderRenderer implements OnDestroy {
+    // Warning: (ae-forgotten-export) The symbol "DomAdapter" needs to be exported by the entry point clr-angular-data.d.ts
+    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter, columnResizerService: ColumnResizerService, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
+    // (undocumented)
+    getColumnWidthState(): Partial<ColumnState>;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    resizeEmitter: EventEmitter<number>;
+    // (undocumented)
+    setColumnState(index: number): void;
+    // (undocumented)
+    setHidden(state: ColumnState): void;
+    // (undocumented)
+    setWidth(state: ColumnState): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridHeaderRenderer, "clr-dg-column", never, {}, { "resizeEmitter": "clrDgColumnResize"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridHeaderRenderer, never>;
+}
+
+// @public (undocumented)
+export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
+    constructor(datagrid: ClrDatagrid, organizer: DatagridRenderOrganizer, items: Items, page: Page, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController, changeDetectorRef: ChangeDetectorRef);
+    // (undocumented)
+    ngAfterContentInit(): void;
+    // (undocumented)
+    ngAfterViewChecked(): void;
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    toggleDetailPane(state: boolean): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridMainRenderer, "clr-datagrid", never, {}, {}, ["headers", "rows"], never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridMainRenderer, never>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "DatagridNumericFilterImpl" needs to be exported by the entry point clr-angular-data.d.ts
 //
 // @public (undocumented)
 export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>> implements CustomFilter, AfterViewInit {
-    // Warning: (ae-forgotten-export) The symbol "DomAdapter" needs to be exported by the entry point clr-angular-data.d.ts
     constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, ngZone: NgZone);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
@@ -1254,6 +1414,36 @@ export class DatagridPropertyStringFilter<T = any> implements ClrDatagridStringF
     exact: boolean;
     // (undocumented)
     prop: string;
+}
+
+// @public (undocumented)
+export class DatagridRowDetailRenderer extends DatagridRowRenderer implements OnDestroy {
+    constructor(parentRow: DatagridRowRenderer, columnsService: ColumnsService);
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridRowDetailRenderer, "clr-dg-row-detail", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridRowDetailRenderer, never>;
+}
+
+// @public (undocumented)
+export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
+    constructor(columnsService: ColumnsService);
+    // (undocumented)
+    cells: QueryList<DatagridCellRenderer>;
+    // (undocumented)
+    expandableRows: DatagridRowDetailRenderer[];
+    // (undocumented)
+    ngAfterContentInit(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    setCellsState(): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridRowRenderer, "clr-dg-row", never, {}, {}, ["cells"], never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridRowRenderer, never>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "DatagridStringFilterImpl" needs to be exported by the entry point clr-angular-data.d.ts
@@ -1343,232 +1533,8 @@ export enum SelectionType {
 // @public (undocumented)
 export function selectionTypeAttribute(value: SelectionType | string): SelectionType;
 
-// Warning: (ae-forgotten-export) The symbol "OompaLoompa" needs to be exported by the entry point clr-angular-data.d.ts
-//
 // @public (undocumented)
-export class ÇlrActionableOompaLoompa extends OompaLoompa {
-    constructor(cdr: ChangeDetectorRef, willyWonka: ÇlrDatagridWillyWonka, rowActions: RowActionService);
-    // (undocumented)
-    get flavor(): boolean;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrActionableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrActionableOompaLoompa, [null, { optional: true; }, null]>;
-}
-
-// @public (undocumented)
-export class ÇlrDatagridCellRenderer implements OnDestroy {
-    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer);
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    resetState(state: ColumnState): void;
-    // (undocumented)
-    setHidden(state: ColumnState): void;
-    // (undocumented)
-    setWidth(state: ColumnState): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridCellRenderer, "clr-dg-cell", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridCellRenderer, never>;
-}
-
-// @public (undocumented)
-export class ÇlrDatagridDetailRegisterer {
-    constructor(expandableRowsCount: ExpandableRowsCount);
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridDetailRegisterer, "[clrIfExpanded]", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridDetailRegisterer, [{ optional: true; }]>;
-}
-
-// @public (undocumented)
-export class ÇlrDatagridHeaderRenderer implements OnDestroy {
-    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter, columnResizerService: ColumnResizerService, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
-    // (undocumented)
-    getColumnWidthState(): Partial<ColumnState>;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    resizeEmitter: EventEmitter<number>;
-    // (undocumented)
-    setColumnState(index: number): void;
-    // (undocumented)
-    setHidden(state: ColumnState): void;
-    // (undocumented)
-    setWidth(state: ColumnState): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridHeaderRenderer, "clr-dg-column", never, {}, { "resizeEmitter": "clrDgColumnResize"; }, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridHeaderRenderer, never>;
-}
-
-// @public (undocumented)
-export class ÇlrDatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
-    constructor(datagrid: ClrDatagrid, organizer: DatagridRenderOrganizer, items: Items, page: Page, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController, changeDetectorRef: ChangeDetectorRef);
-    // (undocumented)
-    ngAfterContentInit(): void;
-    // (undocumented)
-    ngAfterViewChecked(): void;
-    // (undocumented)
-    ngAfterViewInit(): void;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    ngOnInit(): void;
-    // (undocumented)
-    toggleDetailPane(state: boolean): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridMainRenderer, "clr-datagrid", never, {}, {}, ["headers", "rows"], never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridMainRenderer, never>;
-}
-
-// @public (undocumented)
-export class ÇlrDatagridRowDetailRenderer extends ÇlrDatagridRowRenderer implements OnDestroy {
-    constructor(parentRow: ÇlrDatagridRowRenderer, columnsService: ColumnsService);
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridRowDetailRenderer, "clr-dg-row-detail", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridRowDetailRenderer, never>;
-}
-
-// @public (undocumented)
-export class ÇlrDatagridRowRenderer implements AfterContentInit, OnDestroy {
-    constructor(columnsService: ColumnsService);
-    // (undocumented)
-    cells: QueryList<ÇlrDatagridCellRenderer>;
-    // (undocumented)
-    expandableRows: ÇlrDatagridRowDetailRenderer[];
-    // (undocumented)
-    ngAfterContentInit(): void;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    setCellsState(): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridRowRenderer, "clr-dg-row", never, {}, {}, ["cells"], never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridRowRenderer, never>;
-}
-
-// @public (undocumented)
-export class ÇlrDatagridSelectionCellDirective {
-    constructor(selection: Selection_2);
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridSelectionCellDirective, ".datagrid-select", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridSelectionCellDirective, never>;
-}
-
-// @public (undocumented)
-export class ÇlrDatagridSingleSelectionValueAccessor implements ControlValueAccessor {
-    constructor(renderer: Renderer2, elementRef: ElementRef<HTMLInputElement>);
-    // (undocumented)
-    clrDgIdentityFn: (value: any) => unknown;
-    // (undocumented)
-    onChange: (value: any) => void;
-    // (undocumented)
-    onTouched: () => void;
-    // (undocumented)
-    registerOnChange(fn: (value: any) => void): void;
-    // (undocumented)
-    registerOnTouched(fn: () => void): void;
-    // (undocumented)
-    setDisabledState(isDisabled: boolean): void;
-    // (undocumented)
-    value: any;
-    // (undocumented)
-    writeValue(value: any): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridSingleSelectionValueAccessor, "input[type=radio][clrDgSingleSelectionRadio]", never, { "value": { "alias": "value"; "required": false; }; "clrDgIdentityFn": { "alias": "clrDgIdentityFn"; "required": false; }; }, {}, never, never, true, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridSingleSelectionValueAccessor, never>;
-}
-
-// @public (undocumented)
-export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
-    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
-    // Warning: (ae-forgotten-export) The symbol "CdkVirtualForInputs" needs to be exported by the entry point clr-angular-data.d.ts
-    //
-    // (undocumented)
-    get cdkVirtualForOf(): CdkVirtualForInputs<T>["cdkVirtualForOf"];
-    set cdkVirtualForOf(value: CdkVirtualForInputs<T>['cdkVirtualForOf']);
-    // (undocumented)
-    get cdkVirtualForTemplate(): CdkVirtualForInputs<T>["cdkVirtualForTemplate"];
-    set cdkVirtualForTemplate(value: CdkVirtualForInputs<T>['cdkVirtualForTemplate']);
-    // (undocumented)
-    get cdkVirtualForTemplateCacheSize(): CdkVirtualForInputs<T>["cdkVirtualForTemplateCacheSize"];
-    set cdkVirtualForTemplateCacheSize(value: CdkVirtualForInputs<T>['cdkVirtualForTemplateCacheSize']);
-    // (undocumented)
-    get cdkVirtualForTrackBy(): CdkVirtualForInputs<T>["cdkVirtualForTrackBy"];
-    set cdkVirtualForTrackBy(value: CdkVirtualForInputs<T>['cdkVirtualForTrackBy']);
-    // (undocumented)
-    set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>);
-    // Warning: (ae-forgotten-export) The symbol "CdkFixedSizeVirtualScrollInputs" needs to be exported by the entry point clr-angular-data.d.ts
-    //
-    // (undocumented)
-    get itemSize(): CdkFixedSizeVirtualScrollInputs["itemSize"];
-    set itemSize(value: CdkFixedSizeVirtualScrollInputs['itemSize']);
-    // (undocumented)
-    get maxBufferPx(): CdkFixedSizeVirtualScrollInputs["maxBufferPx"];
-    set maxBufferPx(value: CdkFixedSizeVirtualScrollInputs['maxBufferPx']);
-    // (undocumented)
-    get minBufferPx(): CdkFixedSizeVirtualScrollInputs["minBufferPx"];
-    set minBufferPx(value: CdkFixedSizeVirtualScrollInputs['minBufferPx']);
-    // (undocumented)
-    ngAfterViewInit(): void;
-    // (undocumented)
-    ngDoCheck(): void;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    persistItems: boolean;
-    // (undocumented)
-    renderedRangeChange: EventEmitter<ListRange>;
-    // (undocumented)
-    scrollDown(offset: number, behavior?: ScrollBehavior): void;
-    // (undocumented)
-    scrollToIndex(index: number, behavior?: ScrollBehavior): void;
-    // (undocumented)
-    scrollUp(offset: number, behavior?: ScrollBehavior): void;
-    // (undocumented)
-    get totalContentHeight(): string;
-    // (undocumented)
-    get totalItems(): number;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, { "persistItems": { "alias": "clrVirtualPersistItems"; "required": false; }; "cdkVirtualForOf": { "alias": "clrVirtualRowsOf"; "required": false; }; "cdkVirtualForTrackBy": { "alias": "clrVirtualRowsTrackBy"; "required": false; }; "cdkVirtualForTemplate": { "alias": "clrVirtualRowsTemplate"; "required": false; }; "cdkVirtualForTemplateCacheSize": { "alias": "clrVirtualRowsTemplateCacheSize"; "required": false; }; "itemSize": { "alias": "clrVirtualRowsItemSize"; "required": false; }; "minBufferPx": { "alias": "clrVirtualRowsMinBufferPx"; "required": false; }; "maxBufferPx": { "alias": "clrVirtualRowsMaxBufferPx"; "required": false; }; "dataRange": { "alias": "clrVirtualDataRange"; "required": false; }; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridVirtualScrollDirective<any>, never>;
-}
-
-// Warning: (ae-forgotten-export) The symbol "WillyWonka" needs to be exported by the entry point clr-angular-data.d.ts
-//
-// @public (undocumented)
-export class ÇlrDatagridWillyWonka extends WillyWonka {
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrDatagridWillyWonka, "clr-datagrid", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrDatagridWillyWonka, never>;
-}
-
-// @public (undocumented)
-export class ÇlrExpandableOompaLoompa extends OompaLoompa {
-    constructor(cdr: ChangeDetectorRef, willyWonka: ÇlrDatagridWillyWonka, expandableCount: ExpandableRowsCount);
-    // (undocumented)
-    get flavor(): boolean;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrExpandableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrExpandableOompaLoompa, [null, { optional: true; }, null]>;
-}
-
-// @public (undocumented)
-export class ÇlrWrappedCell implements AfterViewInit, OnDestroy {
+export class WrappedCell implements AfterViewInit, OnDestroy {
     // (undocumented)
     cellView: EmbeddedViewRef<void>;
     // (undocumented)
@@ -1578,13 +1544,13 @@ export class ÇlrWrappedCell implements AfterViewInit, OnDestroy {
     // (undocumented)
     templateRef: TemplateRef<void>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ÇlrWrappedCell, "dg-wrapped-cell", never, {}, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<WrappedCell, "dg-wrapped-cell", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrWrappedCell, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<WrappedCell, never>;
 }
 
 // @public (undocumented)
-export class ÇlrWrappedColumn implements AfterViewInit, OnDestroy {
+export class WrappedColumn implements AfterViewInit, OnDestroy {
     // (undocumented)
     columnView: EmbeddedViewRef<void>;
     // (undocumented)
@@ -1594,13 +1560,13 @@ export class ÇlrWrappedColumn implements AfterViewInit, OnDestroy {
     // (undocumented)
     templateRef: TemplateRef<void>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ÇlrWrappedColumn, "dg-wrapped-column", never, {}, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<WrappedColumn, "dg-wrapped-column", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrWrappedColumn, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<WrappedColumn, never>;
 }
 
 // @public (undocumented)
-export class ÇlrWrappedRow implements AfterViewInit, OnDestroy {
+export class WrappedRow implements AfterViewInit, OnDestroy {
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -1610,9 +1576,9 @@ export class ÇlrWrappedRow implements AfterViewInit, OnDestroy {
     // (undocumented)
     templateRef: TemplateRef<void>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ÇlrWrappedRow, "dg-wrapped-row", never, {}, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<WrappedRow, "dg-wrapped-row", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrWrappedRow, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<WrappedRow, never>;
 }
 
 // Warnings were encountered during analysis:

@@ -4,8 +4,6 @@
 
 ```ts
 
-import { AfterContentChecked } from '@angular/core';
-import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import * as _angular_forms from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
@@ -16,7 +14,7 @@ import { EventEmitter } from '@angular/core';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i9 from '@angular/common';
+import * as i7 from '@angular/common';
 import { NgForm } from '@angular/forms';
 import { NgModelGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -105,10 +103,10 @@ export class ClrStepperModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStepperModule>;
-    // Warning: (ae-forgotten-export) The symbol "i10" needs to be exported by the entry point clr-angular-stepper.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i8" needs to be exported by the entry point clr-angular-stepper.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka], [typeof i9.CommonModule, typeof i10.ClrIcon], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof ÇlrStepperOompaLoompa, typeof ÇlrStepperWillyWonka, typeof i10.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel], [typeof i7.CommonModule, typeof i8.ClrIcon], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof i8.ClrIcon]>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "CollapsiblePanel" needs to be exported by the entry point clr-angular-stepper.d.ts
@@ -217,29 +215,6 @@ export class StepperService extends CollapsiblePanelService {
     static ɵfac: i0.ɵɵFactoryDeclaration<StepperService, never>;
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<StepperService>;
-}
-
-// Warning: (ae-forgotten-export) The symbol "OompaLoompa" needs to be exported by the entry point clr-angular-stepper.d.ts
-//
-// @public (undocumented)
-export class ÇlrStepperOompaLoompa extends OompaLoompa {
-    constructor(cdr: ChangeDetectorRef, willyWonka: ÇlrStepperWillyWonka, ifExpandService: IfExpandService);
-    // (undocumented)
-    get flavor(): boolean;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrStepperOompaLoompa, "clr-stepper-panel, [clrStepButton]", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrStepperOompaLoompa, [null, { optional: true; }, null]>;
-}
-
-// Warning: (ae-forgotten-export) The symbol "WillyWonka" needs to be exported by the entry point clr-angular-stepper.d.ts
-//
-// @public (undocumented)
-export class ÇlrStepperWillyWonka extends WillyWonka {
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrStepperWillyWonka, "form[clrStepper]", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrStepperWillyWonka, never>;
 }
 
 // (No @packageDocumentation comment for this package)
