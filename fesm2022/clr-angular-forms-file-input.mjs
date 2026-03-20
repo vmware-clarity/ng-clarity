@@ -68,10 +68,10 @@ class ClrFileSuccess {
         this.context = inject(CLR_FILE_MESSAGES_TEMPLATE_CONTEXT);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileSuccess, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrFileSuccess, isStandalone: false, selector: "clr-file-success", host: { properties: { "style.display": "context.success ? \"flex\" : \"none\"", "class.clr-subtext-wrapper": "true" } }, ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrFileSuccess, isStandalone: false, selector: "clr-file-success", host: { properties: { "style.display": "context.success ? \"flex\" : \"none\"", "class.clr-subtext-wrapper": "true", "class.success": "true" } }, ngImport: i0, template: `
     @if (context.success) {
       <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
-      <span class="clr-subtext success">
+      <span class="clr-subtext">
         <ng-content></ng-content>
       </span>
     }
@@ -85,7 +85,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     template: `
     @if (context.success) {
       <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
-      <span class="clr-subtext success">
+      <span class="clr-subtext">
         <ng-content></ng-content>
       </span>
     }
@@ -93,15 +93,16 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     host: {
                         '[style.display]': 'context.success ? "flex" : "none"',
                         '[class.clr-subtext-wrapper]': 'true',
+                        '[class.success]': 'true',
                     },
                     standalone: false,
                 }]
         }] });
 class ClrFileError {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileError, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileError, isStandalone: false, selector: "clr-file-error", host: { properties: { "class.clr-subtext-wrapper": "true" } }, ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileError, isStandalone: false, selector: "clr-file-error", host: { properties: { "class.clr-subtext-wrapper": "true", "class.error": "true" } }, ngImport: i0, template: `
     <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
-    <span class="clr-subtext error">
+    <span class="clr-subtext">
       <ng-content></ng-content>
     </span>
   `, isInline: true, dependencies: [{ kind: "component", type: i1.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
@@ -113,12 +114,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     // The host should have an `*ngIf` or `@if` that checks for the relevant error.
                     template: `
     <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
-    <span class="clr-subtext error">
+    <span class="clr-subtext">
       <ng-content></ng-content>
     </span>
   `,
                     host: {
                         '[class.clr-subtext-wrapper]': 'true',
+                        '[class.error]': 'true',
                     },
                     standalone: false,
                 }]
