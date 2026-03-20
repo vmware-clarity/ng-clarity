@@ -166,7 +166,10 @@ export const alarmOffIcon: IconShapeTuple;
 export const alarmOffIconName = "alarm-off";
 
 // @public (undocumented)
-export const ALERT_TYPES: string[];
+export const ALERT_TYPES: AlertType[];
+
+// @public (undocumented)
+export type AlertType = 'info' | 'warning' | 'danger' | 'success' | 'neutral' | 'unknown' | 'loading';
 
 // @public (undocumented)
 export const alignBottomIcon: IconShapeTuple;
@@ -1064,8 +1067,8 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     set alertIconShape(value: string);
     // (undocumented)
-    get alertType(): string;
-    set alertType(val: string);
+    get alertType(): AlertType;
+    set alertType(val: AlertType);
     // (undocumented)
     closable: boolean;
     // (undocumented)
@@ -1079,7 +1082,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     clrCloseButtonAriaLabel: string;
     // (undocumented)
-    configAlertType(val: string): void;
+    configAlertType(val: AlertType): void;
     // (undocumented)
     get hidden(): boolean;
     set hidden(value: boolean);
@@ -1142,7 +1145,7 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
     // (undocumented)
     currentAlertIndexChange: EventEmitter<number>;
     // (undocumented)
-    get currentAlertType(): string;
+    get currentAlertType(): AlertType | '';
     set _inputCurrentIndex(index: number);
     // (undocumented)
     multiAlertService: MultiAlertService;
