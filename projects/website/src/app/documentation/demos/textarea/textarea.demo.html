@@ -37,13 +37,14 @@
       Use when selected by a user with an input method, such as mouse or keyboard.
     </p>
     <div class="clr-mt-24px">
-      <label class="clr-control-label" cds-layout="m-b:xs">Comments</label>
-      <app-themed-image
-        [lightSrc]="'/assets/images/documentation/textarea/light-theme/textarea-active.svg'"
-        [darkSrc]="'/assets/images/documentation/textarea/dark-theme/textarea-active.svg'"
-        [imageAlt]="'textarea with active state'"
-        [imageStyle]="'max-width: 100%'"
-      ></app-themed-image>
+      <div class="clr-form-control">
+        <label for="textarea-basic" class="clr-control-label">Comments</label>
+        <div class="clr-control-container">
+          <div class="clr-textarea-wrapper">
+            <textarea id="textarea-basic" class="clr-textarea clr-focus"></textarea>
+          </div>
+        </div>
+      </div>
     </div>
 
     <h3 class="clr-mt-24px" cds-text="section" id="disabled">Disabled</h3>
@@ -67,25 +68,35 @@
       after attempting to submit a form.
     </p>
     <div class="clr-mt-24px">
-      <label class="clr-control-label" cds-layout="m-b:xs">Comments</label>
-      <app-themed-image
-        [lightSrc]="'/assets/images/documentation/textarea/light-theme/textarea-error.svg'"
-        [darkSrc]="'/assets/images/documentation/textarea/dark-theme/textarea-error.svg'"
-        [imageAlt]="'textarea with error icon and error message'"
-        [imageStyle]="'max-width: 100%'"
-      ></app-themed-image>
+      <div class="clr-form-control">
+        <label for="textarea-error" class="clr-control-label">Comments</label>
+        <div class="clr-control-container">
+          <div class="clr-textarea-wrapper clr-error">
+            <textarea id="textarea-error" class="clr-textarea"></textarea>
+          </div>
+          <div class="clr-subtext-wrapper error">
+            <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+            <span class="clr-subtext">Error message</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <h3 class="clr-mt-24px" cds-text="section" id="success">Success</h3>
     <p class="clr-mt-16px" cds-text="body">Use to provide real-time feedback immediately after a user’s input.</p>
     <div class="clr-mt-24px">
-      <label class="clr-control-label" cds-layout="m-b:xs">Comments</label>
-      <app-themed-image
-        [lightSrc]="'/assets/images/documentation/textarea/light-theme/textarea-success.svg'"
-        [darkSrc]="'/assets/images/documentation/textarea/dark-theme/textarea-success.svg'"
-        [imageAlt]="'textarea with success icon and success message'"
-        [imageStyle]="'max-width: 100%'"
-      ></app-themed-image>
+      <div class="clr-form-control">
+        <label for="textarea-success" class="clr-control-label">Comments</label>
+        <div class="clr-control-container">
+          <div class="clr-textarea-wrapper clr-success">
+            <textarea id="textarea-success" class="clr-textarea"></textarea>
+          </div>
+          <div class="clr-subtext-wrapper success">
+            <cds-icon class="clr-validate-icon" shape="success-standard" status="success"></cds-icon>
+            <span class="clr-subtext">Success message</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <h2 id="layouts" class="clr-mt-48px" cds-text="title">Layouts</h2>
@@ -196,7 +207,6 @@
         <div class="clr-control-container">
           <div class="clr-textarea-wrapper">
             <textarea id="textarea-helper" class="clr-textarea"></textarea>
-            <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
           </div>
           <span class="clr-subtext">Please provide a description.</span>
         </div>
@@ -213,9 +223,11 @@
         <div class="clr-control-container clr-error">
           <div class="clr-textarea-wrapper">
             <textarea id="textarea-error" class="clr-textarea"></textarea>
-            <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
           </div>
-          <span class="clr-subtext">You must provide a description!</span>
+          <div class="clr-subtext-wrapper error">
+            <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+            <span class="clr-subtext">You must provide a description!</span>
+          </div>
         </div>
       </div>
     </form>

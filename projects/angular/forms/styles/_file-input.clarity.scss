@@ -73,6 +73,16 @@
       &:first-of-type {
         margin-top: density.$clr-base-gap-s;
       }
+
+      &.clr-success .clr-validate-icon {
+        color: forms-variables.$clr-forms-valid-color;
+        fill: forms-variables.$clr-forms-valid-color;
+      }
+
+      &.clr-error .clr-validate-icon {
+        color: forms-variables.$clr-forms-invalid-color;
+        fill: forms-variables.$clr-forms-invalid-color;
+      }
     }
 
     .clr-file-label-and-status-icon {

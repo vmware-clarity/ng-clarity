@@ -19,7 +19,7 @@
       and layout features in forms.
     </p>
 
-    <h3 data-toc-item id="basic-checkbox" cds-text="subsection" class="clr-mt-32px">Basic checkbox button</h3>
+    <h3 data-toc-item id="basic-checkbox" cds-text="subsection" class="clr-mt-32px">Basic toggle switch</h3>
 
     <p cds-text="body" class="clr-mt-16px">
       While it is possible to create a toggle switch without a label, the cases are rare. However, it is possible by
@@ -251,7 +251,6 @@
           <label for="checkbox3" class="clr-control-label">option 3</label>
         </div>
         <div class="clr-subtext-wrapper">
-          <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
           <span class="clr-subtext">Helper Text</span>
         </div>
       </div>
@@ -265,14 +264,18 @@
 
     <p cds-text="body" class="clr-mt-16px">
       To signify an error state, you need to add the <code cds-text="code">.clr-error</code> class to the
-      <code cds-text="code">.clr-control-container</code> element. This will show the
-      <code cds-text="code">.clr-validate-icon</code> and turn the <code cds-text="code">.clr-subtext</code> message to
-      red. If you have helper text that needs to change to error content, you'll have to handle the hiding and showing
-      of that content inside of the <code cds-text="code">.clr-subtext</code> element.
+      <code cds-text="code">.clr-control-container</code> element. Then place the error message inside a
+      <code cds-text="code">.clr-subtext-wrapper</code> element with the <code cds-text="code">.error</code> class. This
+      wrapper is hidden by default and only becomes visible when the parent container has
+      <code cds-text="code">.clr-error</code>. Inside the wrapper, you may include a
+      <code cds-text="code">.clr-validate-icon</code> and a <code cds-text="code">.clr-subtext</code> element for the
+      error message — both will be styled in the error color automatically. Helper text placed in a plain
+      <code cds-text="code">.clr-subtext-wrapper</code> (without the <code cds-text="code">.error</code> or
+      <code cds-text="code">.success</code> class) remains visible regardless of the validation state.
     </p>
 
     <div class="clr-form-control clr-mt-24px">
-      <label class="clr-control-label">Error checkbox</label>
+      <label class="clr-control-label">Error toggle</label>
       <div class="clr-control-container clr-error">
         <div class="clr-toggle-wrapper">
           <input type="checkbox" id="checkbox4" name="checkbox-error" value="option1" class="clr-toggle" />
@@ -287,7 +290,10 @@
           <label for="checkbox6" class="clr-control-label">option 3</label>
         </div>
         <div class="clr-subtext-wrapper">
-          <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+          <span class="clr-subtext">Helper Text</span>
+        </div>
+        <div class="clr-subtext-wrapper error">
+          <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
           <span class="clr-subtext">Error message</span>
         </div>
       </div>
@@ -295,6 +301,49 @@
 
     <div class="clr-mt-24px">
       <app-stackblitz-example name="Toggle CSS Error" [componentTemplate]="uiError"></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="success-state" cds-text="subsection" class="clr-mt-32px">Success state</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      To signify a success state, add the <code cds-text="code">.clr-success</code> class to the
+      <code cds-text="code">.clr-control-container</code> element. Then place the success message inside a
+      <code cds-text="code">.clr-subtext-wrapper</code> element with the <code cds-text="code">.success</code> class.
+      This wrapper is hidden by default and only becomes visible when the parent container has
+      <code cds-text="code">.clr-success</code>. Inside the wrapper, include a
+      <code cds-text="code">.clr-validate-icon</code> and a <code cds-text="code">.clr-subtext</code> element for the
+      success message — both will be styled in the success color automatically. Helper text placed in a plain
+      <code cds-text="code">.clr-subtext-wrapper</code> (without the <code cds-text="code">.error</code> or
+      <code cds-text="code">.success</code> class) remains visible regardless of the validation state.
+    </p>
+
+    <div class="clr-form-control clr-mt-24px">
+      <label class="clr-control-label">Success toggle</label>
+      <div class="clr-control-container clr-success">
+        <div class="clr-toggle-wrapper">
+          <input type="checkbox" id="checkbox13" name="checkbox-success" value="option1" class="clr-toggle" />
+          <label for="checkbox13" class="clr-control-label">option 1</label>
+        </div>
+        <div class="clr-toggle-wrapper">
+          <input type="checkbox" id="checkbox14" name="checkbox-success" value="option2" class="clr-toggle" />
+          <label for="checkbox14" class="clr-control-label">option 2</label>
+        </div>
+        <div class="clr-toggle-wrapper">
+          <input type="checkbox" id="checkbox15" name="checkbox-success" value="option3" class="clr-toggle" />
+          <label for="checkbox15" class="clr-control-label">option 3</label>
+        </div>
+        <div class="clr-subtext-wrapper">
+          <span class="clr-subtext">Helper Text</span>
+        </div>
+        <div class="clr-subtext-wrapper success">
+          <cds-icon class="clr-validate-icon" shape="success-standard" status="success"></cds-icon>
+          <span class="clr-subtext">Success message</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="clr-mt-24px">
+      <app-stackblitz-example name="Toggle CSS Success" [componentTemplate]="uiSuccess"></app-stackblitz-example>
     </div>
 
     <h3 data-toc-item id="inline-toggle" cds-text="subsection" class="clr-mt-32px">Inline toggle switches</h3>
@@ -327,8 +376,7 @@
           <label for="checkbox9" class="clr-control-label">option 3</label>
         </div>
         <div class="clr-subtext-wrapper">
-          <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
-          <span class="clr-subtext">Helper text</span>
+          <span class="clr-subtext">Helper Text</span>
         </div>
       </div>
     </div>
@@ -362,7 +410,6 @@
           <label for="toggle35" class="clr-control-label">option 3</label>
         </div>
         <div class="clr-subtext-wrapper">
-          <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
           <span class="clr-subtext">Helper Text</span>
         </div>
       </div>
@@ -397,8 +444,7 @@
           <label for="checkbox12" class="clr-control-label">option 3</label>
         </div>
         <div class="clr-subtext-wrapper">
-          <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
-          <span class="clr-subtext">Helper text</span>
+          <span class="clr-subtext">Helper Text</span>
         </div>
       </div>
     </div>
@@ -512,13 +558,20 @@
     <div class="clr-row">
       <div class="clr-col-6">
         <div class="component-box-container clr-mt-32px">
-          <app-themed-image
-            [lightSrc]="'/assets/images/documentation/toggles/light-theme/error_state.svg'"
-            [darkSrc]="'/assets/images/documentation/toggles/dark-theme/error_state.svg'"
-            [imageAlt]="'toggle with red error icon and error message'"
-            [imageStyle]="'max-width: 100%'"
-          >
-          </app-themed-image>
+          <div class="clr-control-container">
+            <div class="clr-toggle-wrapper">
+              <input type="checkbox" id="toggle-error-wf" name="toggle-full" value="Wi-Fi" class="clr-toggle" checked />
+              <label for="toggle-error-wf" class="clr-control-label">Wi-Fi</label>
+            </div>
+            <div class="clr-toggle-wrapper">
+              <input type="checkbox" id="toggle-error-bt" name="toggle-full" value="Bluetooth" class="clr-toggle" />
+              <label for="toggle-error-bt" class="clr-control-label">Bluetooth</label>
+            </div>
+            <div class="clr-subtext-wrapper error">
+              <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+              <span class="clr-subtext">Unable to turn on blue tooth</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="clr-col-6">
@@ -533,13 +586,27 @@
     <div class="clr-row">
       <div class="clr-col-6">
         <div class="component-box-container clr-mt-32px">
-          <app-themed-image
-            [lightSrc]="'/assets/images/documentation/toggles/light-theme/success_state.svg'"
-            [darkSrc]="'/assets/images/documentation/toggles/dark-theme/success_state.svg'"
-            [imageAlt]="'toggle with green success icon and success message'"
-            [imageStyle]="'max-width: 100%'"
-          >
-          </app-themed-image>
+          <div class="clr-control-container">
+            <div class="clr-toggle-wrapper">
+              <input
+                type="checkbox"
+                id="toggle-success-wf"
+                name="toggle-full"
+                value="Wi-Fi"
+                class="clr-toggle"
+                checked
+              />
+              <label for="toggle-success-wf" class="clr-control-label">Wi-Fi</label>
+            </div>
+            <div class="clr-toggle-wrapper">
+              <input type="checkbox" id="toggle-success-bt" name="toggle-full" value="Bluetooth" class="clr-toggle" />
+              <label for="toggle-success-bt" class="clr-control-label">Bluetooth</label>
+            </div>
+            <div class="clr-subtext-wrapper success">
+              <cds-icon class="clr-validate-icon" shape="success-standard" status="success"></cds-icon>
+              <span class="clr-subtext">Settings updated</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="clr-col-6">

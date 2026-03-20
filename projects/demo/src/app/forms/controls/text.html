@@ -13,7 +13,6 @@
     <div class="clr-control-container">
       <div class="clr-input-wrapper">
         <input type="text" id="basic" placeholder="Enter value here" class="clr-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
@@ -23,9 +22,12 @@
     <div class="clr-control-container clr-error">
       <div class="clr-input-wrapper">
         <input type="text" id="error" placeholder="Enter value here" class="clr-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
+      </div>
     </div>
   </div>
   <div class="clr-form-control clr-form-control-disabled">
@@ -33,7 +35,6 @@
     <div class="clr-control-container">
       <div class="clr-input-wrapper">
         <input type="text" id="disabled" disabled placeholder="Enter value here" class="clr-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
@@ -43,7 +44,6 @@
     <div class="clr-control-container">
       <div class="clr-input-wrapper">
         <input type="text" id="readonly" readonly placeholder="Enter value here" class="clr-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
