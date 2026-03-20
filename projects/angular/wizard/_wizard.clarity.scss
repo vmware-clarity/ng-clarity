@@ -137,7 +137,6 @@
       max-width: 34%;
       display: flex;
       flex-direction: column;
-      order: -1;
       overflow: hidden;
       border-right: tokens.$cds-global-space-1 solid wizard-variables.$clr-wizard-stepnav-border-color;
       background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
@@ -168,8 +167,9 @@
 
     .clr-wizard-stepnav-item {
       display: block;
-      border-left: wizard-variables.$clr-wizard-stepnav-border-size solid
-        wizard-variables.$clr-wizard-stepnav-item-border-color;
+      border-left-width: wizard-variables.$clr-wizard-stepnav-border-size;
+      border-left-style: solid;
+      border-color: wizard-variables.$clr-wizard-stepnav-item-border-color;
       color: wizard-variables.$clr-wizard-stepnav-text;
       background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
 
@@ -187,7 +187,7 @@
       &.active {
         color: wizard-variables.$clr-wizard-stepnav-text-selected;
         background-color: wizard-variables.$clr-wizard-stepnav-selected-bgcolor;
-        border-left-color: wizard-variables.$clr-wizard-stepnav-selected-border-color;
+        border-color: wizard-variables.$clr-wizard-stepnav-selected-border-color;
 
         &:hover {
           background-color: wizard-variables.$clr-wizard-stepnav-selected-hover-bgcolor;
@@ -218,7 +218,6 @@
 
       &.complete {
         border-color: wizard-variables.$clr-wizard-stepnav-item-complete-border-color;
-        transition: border-color 0.2s ease-in;
 
         .clr-wizard-stepnav-link-icon {
           cds-icon,
@@ -230,7 +229,6 @@
 
       &.error {
         border-color: wizard-variables.$clr-wizard-stepnav-item-error-border-color;
-        transition: border-color 0.2s ease-in;
 
         &.active:not(:active, :hover) {
           background-color: wizard-variables.$clr-wizard-stepnav-selected-error-bgcolor;
@@ -298,11 +296,6 @@
       @include mixins.equilateral(100%);
       // firefox fix
       max-height: 100%;
-
-      // edge fix, related to the firefox fix above
-      .modal-nav {
-        height: auto;
-      }
     }
 
     .clr-wizard-footer-buttons {
@@ -527,6 +520,99 @@
 
     .clr-wizard-stepnav {
       padding-top: density.$clr-base-vertical-offset-2xl;
+    }
+  }
+
+  .clr-wizard.wizard-horizontal {
+    > clr-modal > .modal > .modal-dialog > .modal-content-wrapper {
+      flex-direction: column;
+
+      > .clr-wizard-title-wrapper {
+        display: flex;
+        align-items: center;
+        gap: density.$clr-base-gap-s;
+        padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space;
+
+        .clr-wizard-title {
+          flex: 1;
+          padding: 0;
+        }
+      }
+
+      > .modal-content,
+      > .clr-wizard-stepnav-wrapper {
+        width: 100%;
+      }
+
+      > .clr-wizard-stepnav-wrapper {
+        flex: 0;
+        height: unset;
+        max-width: unset;
+        overflow: unset;
+        border-right: 0;
+        border-bottom: tokens.$cds-global-space-1 solid wizard-variables.$clr-wizard-stepnav-border-color;
+        border-radius: wizard-variables.$clr-wizard-border-radius wizard-variables.$clr-wizard-border-radius 0 0;
+
+        > .clr-wizard-stepnav {
+          display: flex;
+          position: relative;
+          padding: 0 wizard-variables.$clr-wizard-horizontal-space;
+
+          > .clr-wizard-stepnav-nav {
+            width: 100%;
+
+            > .clr-wizard-stepnav-list {
+              display: flex;
+              flex-direction: row;
+              overflow-x: hidden;
+
+              > .clr-wizard-stepnav-item {
+                flex: 1 0 auto;
+                border-left: 0;
+                border-bottom-width: wizard-variables.$clr-wizard-stepnav-border-size;
+                border-bottom-style: solid;
+
+                .clr-wizard-stepnav-link {
+                  padding: density.$clr-base-horizontal-offset-m density.$clr-base-horizontal-offset-2xl
+                    density.$clr-base-horizontal-offset-m density.$clr-base-horizontal-offset-m;
+                }
+
+                &:not(.complete, .error) {
+                  .clr-wizard-stepnav-link {
+                    padding-left: density.$clr-base-horizontal-offset-m;
+                  }
+                }
+              }
+            }
+          }
+
+          > .clr-wizard-stepnav-scroll-button-left,
+          > .clr-wizard-stepnav-scroll-button-right {
+            position: absolute;
+            padding: 0 density.$clr-base-horizontal-offset-s;
+            background-color: tokens.$cds-alias-object-container-background;
+            height: 100%;
+            margin: 0;
+            z-index: 1;
+
+            &:active {
+              background-color: tokens.$cds-alias-object-interaction-background-active;
+            }
+
+            &:hover {
+              background-color: tokens.$cds-alias-object-interaction-background-hover;
+            }
+          }
+
+          > .clr-wizard-stepnav-scroll-button-left {
+            left: density.$clr-base-horizontal-offset-xs;
+          }
+
+          > .clr-wizard-stepnav-scroll-button-right {
+            right: density.$clr-base-horizontal-offset-xs;
+          }
+        }
+      }
     }
   }
 

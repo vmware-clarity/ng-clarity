@@ -7,7 +7,7 @@
 
 import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
-import { startWith, Subscription, tap } from 'rxjs';
+import { debounceTime, startWith, Subscription, tap } from 'rxjs';
 
 import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
@@ -55,6 +55,7 @@ import { ClrWizardPage } from './wizard-page';
     '[class.no-click]': '!canNavigate',
     '[class.complete]': 'isComplete',
     '[class.error]': 'hasError',
+    '(focusin)': 'scrollIntoView()',
   },
   standalone: false,
 })
@@ -72,7 +73,7 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
     public navService: WizardNavigationService,
     public pageCollection: PageCollectionService,
     public commonStrings: ClrCommonStringsService,
-    private readonly elementRef: ElementRef<HTMLElement>
+    readonly elementRef: ElementRef<HTMLElement>
   ) {}
 
   get id(): string {
@@ -133,7 +134,7 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
   }
 
   protected get icon(): { shape: string; label: string } | null {
-    if (this.isCurrent) {
+    if (this.isCurrent && this.navService.stepnavLayout !== 'horizontal') {
       return {
         shape: 'dot-circle',
         label: this.commonStrings.keys.wizardStepCurrent || this.commonStrings.keys.timelineStepCurrent,
@@ -173,6 +174,10 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
     this.navService.goTo(this.page);
   }
 
+  protected scrollIntoView() {
+    this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+  }
+
   private pageGuard(): void {
     if (!this.page) {
       throw new Error('Wizard stepnav item is not associated with a wizard page.');
@@ -186,6 +191,7 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
 
     return this.navService.currentPageChange.pipe(
       startWith(this.navService.currentPage),
+      debounceTime(1),
       tap(currentPage => {
         if (!this.skipNextScroll && currentPage === this.page) {
           this.elementRef.nativeElement.scrollIntoView({ behavior: scrollBehavior, block: 'center', inline: 'center' });
