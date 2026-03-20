@@ -6401,14 +6401,12 @@ export class ClrWizardPageTitle {
 }
 
 // @public (undocumented)
-export class ClrWizardStepnav implements AfterViewInit, OnChanges, OnDestroy {
-    constructor(pageService: PageCollectionService, elementRef: ElementRef<HTMLElement>);
+export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
+    constructor(pageService: PageCollectionService, navService: WizardNavigationService, elementRef: ElementRef<HTMLElement>);
     // (undocumented)
     label: string;
     // (undocumented)
     ngAfterViewInit(): void;
-    // (undocumented)
-    ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -6422,11 +6420,9 @@ export class ClrWizardStepnav implements AfterViewInit, OnChanges, OnDestroy {
     // (undocumented)
     protected showScrollRightButton: boolean;
     // (undocumented)
-    stepnavLayout: 'vertical' | 'horizontal';
+    protected get stepnavLayout(): "vertical" | "horizontal";
     // (undocumented)
-    protected updateScrollButtons(): void;
-    // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, { "label": { "alias": "label"; "required": false; }; "stepnavLayout": { "alias": "stepnavLayout"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, { "label": { "alias": "label"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnav, never>;
 }
@@ -6469,6 +6465,8 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
     page: ClrWizardPage;
     // (undocumented)
     pageCollection: PageCollectionService;
+    // (undocumented)
+    protected scrollIntoView(): void;
     // (undocumented)
     get stepAriaCurrent(): string;
     // (undocumented)
