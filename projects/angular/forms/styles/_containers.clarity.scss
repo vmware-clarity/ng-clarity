@@ -97,19 +97,35 @@
 
     &.error {
       color: forms-variables.$clr-forms-invalid-text-color;
+
+      .clr-validate-icon {
+        display: inline-block;
+        color: forms-variables.$clr-forms-invalid-color;
+        fill: forms-variables.$clr-forms-invalid-color;
+      }
     }
 
     &.success {
       color: forms-variables.$clr-forms-valid-text-color;
+
+      .clr-validate-icon {
+        display: inline-block;
+        color: forms-variables.$clr-forms-valid-color;
+        fill: forms-variables.$clr-forms-valid-color;
+      }
     }
   }
 
   .clr-subtext-wrapper {
     flex-basis: 100%;
-    display: flex;
+    display: none;
     align-items: flex-start;
     gap: density.$clr-base-gap-xs;
     margin-top: density.$clr-base-gap-xs;
+
+    &:not(.success, .error) {
+      display: flex;
+    }
 
     .clr-subtext {
       margin: 0;
@@ -119,12 +135,17 @@
   .clr-validate-icon {
     @include mixins.min-equilateral(forms-variables.$clr-forms-icon-size);
 
-    color: forms-variables.$clr-forms-invalid-color;
-    fill: forms-variables.$clr-forms-invalid-color;
     display: none;
   }
 
-  .clr-success {
+  .clr-success .clr-subtext-wrapper.success {
+    display: flex;
+
+    &,
+    .clr-subtext {
+      color: forms-variables.$clr-forms-valid-text-color;
+    }
+
     .clr-validate-icon {
       display: inline-block;
       color: forms-variables.$clr-forms-valid-color;
@@ -132,9 +153,18 @@
     }
   }
 
-  .clr-error {
+  .clr-error .clr-subtext-wrapper.error {
+    display: flex;
+
+    &,
+    .clr-subtext {
+      color: forms-variables.$clr-forms-invalid-text-color;
+    }
+
     .clr-validate-icon {
       display: inline-block;
+      color: forms-variables.$clr-forms-invalid-color;
+      fill: forms-variables.$clr-forms-invalid-color;
     }
   }
 

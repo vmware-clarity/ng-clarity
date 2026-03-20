@@ -37,6 +37,7 @@ const NgPrefixSuffix = require('raw-loader!./ng/prefix.html');
 const UiBasic = require('raw-loader!./ui/basic.html');
 const UiError = require('raw-loader!./ui/error.html');
 const UiFull = require('raw-loader!./ui/full.html');
+const UiSuccess = require('raw-loader!./ui/success.html');
 
 const code = `
 import { Component } from '@angular/core';
@@ -98,6 +99,7 @@ export class InputDemo extends ClarityDocComponent {
   uiBasic: any = UiBasic;
   uiFull: any = UiFull;
   uiError: any = UiError;
+  uiSuccess: any = UiSuccess;
 
   ngBasic: any = NgBasic;
   ngBasicCode = code;

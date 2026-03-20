@@ -15,12 +15,13 @@ import { ControlIdService } from '../providers/control-id.service';
   selector: 'clr-control-success',
   template: `
     <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
-    <span class="clr-subtext success">
+    <span class="clr-subtext">
       <ng-content></ng-content>
     </span>
   `,
   host: {
     '[class.clr-subtext-wrapper]': 'true',
+    '[class.success]': 'true',
     '[attr.id]': 'id',
   },
   standalone: false,

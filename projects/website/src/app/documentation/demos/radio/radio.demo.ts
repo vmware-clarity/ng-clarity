@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormsModule, NgModel } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ClrCommonFormsModule, ClrIcon, ClrIconModule, ClrRadioModule, ClrSelectModule } from '@clr/angular';
 
@@ -30,6 +30,7 @@ const UiDisabled = require('raw-loader!./ui/disabled.html');
 const UiError = require('raw-loader!./ui/error.html');
 const UiFull = require('raw-loader!./ui/full.html');
 const UiInline = require('raw-loader!./ui/inline.html');
+const UiSuccess = require('raw-loader!./ui/success.html');
 
 const AngularTs = `
 import { Component } from '@angular/core';
@@ -92,6 +93,7 @@ export class RadioDemo extends ClarityDocComponent {
   uiError: any = UiError;
   uiInline: any = UiInline;
   uiDisabled: any = UiDisabled;
+  uiSuccess: any = UiSuccess;
 
   ngBasic: any = NgBasic;
   ngLabel: any = NgLabel;
@@ -101,8 +103,19 @@ export class RadioDemo extends ClarityDocComponent {
 
   angularTs = AngularTs;
 
+  @ViewChild('successRadio') successRadio: NgModel;
+  successRadioModel = 'Large';
+
+  @ViewChild('errorRadio') errorRadio: NgModel;
+  errorRadioModel = '';
+
   constructor() {
     super('radio');
+  }
+
+  ngAfterViewInit() {
+    this.errorRadio.control.markAsTouched();
+    this.successRadio.control.markAsTouched();
   }
 
   selectNothing() {
