@@ -150,6 +150,11 @@ export class WizardNavigationService implements OnDestroy {
   wizardDisableStepnav = false;
 
   /**
+   * The layout of the wizard stepnav, either 'vertical' or 'horizontal'.
+   */
+  stepnavLayout: 'vertical' | 'horizontal' = 'vertical';
+
+  /**
    * @memberof WizardNavigationService
    */
   private _currentPage: ClrWizardPage;
