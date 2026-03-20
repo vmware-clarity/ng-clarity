@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormsModule, NgModel } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ClrCommonFormsModule, ClrDatalistModule, ClrIcon, ClrIconModule } from '@clr/angular';
+import { ClrCommonFormsModule, ClrDatalistModule, ClrIcon, ClrIconModule, ClrSelectModule } from '@clr/angular';
 
 import { DatalistBasicDemo } from './datalist-basic.demo';
 import { DatalistReactiveValidationDemo } from './datalist-reactive-validation.demo';
@@ -44,6 +44,7 @@ import { formsPatternLink } from '../pattern-links';
     DatalistTemplateValidationDemo,
     DatalistReactiveValidationDemo,
     NestingTableComponent,
+    ClrSelectModule,
   ],
 })
 export class DatalistDemo extends ClarityDocComponent {
@@ -65,7 +66,18 @@ export class DatalistDemo extends ClarityDocComponent {
   item6 = '';
   item7 = '';
 
+  @ViewChild('errorDatalist') errorDatalist: NgModel;
+  errorDatalistModel = '';
+
+  @ViewChild('successDatalist') successDatalist: NgModel;
+  successDatalistModel = 'Cherry';
+
   constructor() {
     super('datalist');
+  }
+
+  ngAfterViewInit() {
+    this.errorDatalist.control.markAsTouched();
+    this.successDatalist.control.markAsTouched();
   }
 }

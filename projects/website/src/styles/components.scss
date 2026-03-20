@@ -196,6 +196,11 @@ app-root:not(.layout-home) {
     flex: 1 1 auto;
     padding: tokens.$cds-global-space-9;
     @include clrwebMakeFlexbox(center);
+
+    &.align-box-items {
+      align-items: flex-start;
+      padding-top: 0;
+    }
   }
 
   &-vs {

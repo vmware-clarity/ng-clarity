@@ -48,12 +48,11 @@
       after attempting to submit a form.
     </p>
     <div class="clr-mt-24px clr-mb-24px clr-ml-32px">
-      <app-themed-image
-        [lightSrc]="'/assets/images/documentation/range/light-theme/range-error.svg'"
-        [darkSrc]="'/assets/images/documentation/range/dark-theme/range-error.svg'"
-        [imageAlt]="'range with red error icon and error message'"
-        [imageStyle]="'max-width: 100%'"
-      ></app-themed-image>
+      <clr-range-container [clrRangeHasProgress]="true">
+        <label>Volume</label>
+        <input type="range" clrRange required [(ngModel)]="errorRangeModel" #errorRange="ngModel" />
+        <clr-control-error *clrIfError="'required'">System error</clr-control-error>
+      </clr-range-container>
     </div>
 
     <h3 class="clr-mt-24px" cds-text="section" id="success">Success</h3>
@@ -62,12 +61,11 @@
       application.
     </p>
     <div class="clr-mt-24px clr-mb-24px clr-ml-32px">
-      <app-themed-image
-        [lightSrc]="'/assets/images/documentation/range/light-theme/range-success.svg'"
-        [darkSrc]="'/assets/images/documentation/range/dark-theme/range-success.svg'"
-        [imageAlt]="'range with green success icon and success message'"
-        [imageStyle]="'max-width: 100%'"
-      ></app-themed-image>
+      <clr-range-container [clrRangeHasProgress]="true">
+        <label>Volume</label>
+        <input type="range" clrRange [(ngModel)]="successRangeModel" #successRange="ngModel" />
+        <clr-control-success>Changes saved</clr-control-success>
+      </clr-range-container>
     </div>
 
     <h2 class="clr-mt-48px" cds-text="title" id="layouts">Layouts</h2>

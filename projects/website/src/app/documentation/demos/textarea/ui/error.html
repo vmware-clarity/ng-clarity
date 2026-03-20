@@ -10,9 +10,11 @@
     <div class="clr-control-container clr-error">
       <div class="clr-textarea-wrapper">
         <textarea id="textarea-error" class="clr-textarea"></textarea>
-        <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
       </div>
-      <span class="clr-subtext">You must provide a description!</span>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">You must provide a description!</span>
+      </div>
     </div>
   </div>
 </form>
