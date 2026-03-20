@@ -97,4 +97,8 @@ $contentTopMargin: calc(2 * tokens.$cds-global-space-15);
       }
     }
   }
+
+  ul > li > a {
+    padding-left: density.$clr-base-layout-space-xl;
+  }
 }
