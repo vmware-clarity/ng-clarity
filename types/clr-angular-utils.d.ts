@@ -1,12 +1,13 @@
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
-import { OnDestroy, EventEmitter, ElementRef, Renderer2, NgZone, Type, TemplateRef, Injector, ViewContainerRef, InjectionToken, OnChanges, SimpleChanges, OnInit, AfterViewInit, QueryList, FactoryProvider, ChangeDetectorRef, AfterViewChecked, AfterContentChecked } from '@angular/core';
+import { OnDestroy, EventEmitter, ElementRef, Renderer2, NgZone, Type, TemplateRef, Injector, ViewContainerRef, InjectionToken, OnChanges, SimpleChanges, AfterViewInit, QueryList, FactoryProvider, ChangeDetectorRef, AfterViewChecked, AfterContentChecked } from '@angular/core';
 import * as i2 from '@angular/common';
 import * as _angular_animations from '@angular/animations';
 import { AnimationMetadata, AnimationEvent, AnimationBuilder } from '@angular/animations';
-import { Observable, Subject, Subscription, Observer } from 'rxjs';
-import { LoadingListener as LoadingListener$1, ClrLoadingState as ClrLoadingState$1 } from '@clr/angular/utils/loading';
+export * from '@clr/angular/utils/loading';
+export * from '@clr/angular/utils/conditional';
 import { CdkTrapFocus, FocusTrapFactory } from '@angular/cdk/a11y';
+import { Subscription, Observable, Observer, Subject } from 'rxjs';
 import { Directionality } from '@angular/cdk/bidi';
 import { CdkDrag, DragDropConfig, DragDrop } from '@angular/cdk/drag-drop';
 
@@ -171,164 +172,6 @@ declare function fade(opacity?: number): AnimationMetadata[];
 declare function fadeSlide(direction: string): AnimationMetadata[];
 
 declare function slide(direction: string): AnimationMetadata[];
-
-/**
- * This is an abstract class because we need it to still be a valid token for dependency injection after transpiling.
- * This does not mean you should extend it, simply implementing it is fine.
- */
-declare abstract class LoadingListener {
-    abstract loadingStateChange(state: ClrLoadingState | string): void;
-}
-
-declare enum ClrLoadingState {
-    DEFAULT = 0,
-    LOADING = 1,
-    SUCCESS = 2,
-    ERROR = 3
-}
-declare class ClrLoading implements OnDestroy {
-    private listener;
-    static ngAcceptInputType_loadingState: boolean | ClrLoadingState | null | string;
-    private _loadingState;
-    constructor(listener: LoadingListener);
-    get loadingState(): boolean | string | ClrLoadingState;
-    set loadingState(value: boolean | string | ClrLoadingState);
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoading, [{ optional: true; }]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLoading, "[clrLoading]", never, { "loadingState": { "alias": "clrLoading"; "required": false; }; }, {}, never, never, false, never>;
-}
-
-declare const CLR_LOADING_DIRECTIVES: Type<any>[];
-declare class ClrLoadingModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLoadingModule, [typeof ClrLoading], [typeof i2.CommonModule], [typeof ClrLoading]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrLoadingModule>;
-}
-
-declare const IF_ACTIVE_ID: InjectionToken<number>;
-declare function tokenFactory(): number;
-declare const IF_ACTIVE_ID_PROVIDER: {
-    provide: InjectionToken<number>;
-    useFactory: typeof tokenFactory;
-};
-declare class IfActiveService {
-    /********
-     * @property _currentChange
-     *
-     * @description
-     * A RXJS Subject that updates and provides subscriptions to for the current current state of a component template
-     * implemting the IfActive structural directive.
-     *
-     */
-    private _currentChange;
-    /*********
-     * @property _current
-     *
-     * @description
-     * A property holding the current value for current/closed state of an IfActive structural directive.
-     */
-    private _current;
-    /*********
-     *
-     * @description
-     * A getter function that provides an observable for the _current Subject.
-     *
-     */
-    get currentChange(): Observable<number>;
-    /*********
-     *
-     * @description
-     * A property that gets/sets the current state of _current for this instance of IfActive structural directive.
-     * And, broadcasts the new value to all subscribers.
-     *
-     */
-    get current(): number;
-    set current(value: number);
-    static ɵfac: i0.ɵɵFactoryDeclaration<IfActiveService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<IfActiveService>;
-}
-
-declare class ClrIfActive implements OnDestroy {
-    private ifActiveService;
-    private id;
-    private template;
-    private container;
-    /**********
-     * @property activeChange
-     *
-     * @description
-     * An event emitter that emits when the active property is set to allow for 2way binding when the directive is
-     * used with de-structured / de-sugared syntax.
-     *
-     */
-    activeChange: EventEmitter<boolean>;
-    private subscription;
-    private wasActive;
-    constructor(ifActiveService: IfActiveService, id: number, template: TemplateRef<any>, container: ViewContainerRef);
-    /**
-     * @description
-     * A property that gets/sets IfActiveService.active with value.
-     *
-     */
-    get active(): boolean | string;
-    set active(value: boolean | string);
-    ngOnDestroy(): void;
-    /**
-     * @description
-     * Function that takes a any value and either created an embedded view for the associated ViewContainerRef or,
-     * Clears all views from the ViewContainerRef
-     */
-    updateView(value: boolean): void;
-    private checkAndUpdateView;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfActive, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfActive, "[clrIfActive]", never, { "active": { "alias": "clrIfActive"; "required": false; }; }, { "activeChange": "clrIfActiveChange"; }, never, never, true, never>;
-}
-
-declare class IfExpandService implements LoadingListener$1 {
-    expandable: number;
-    hasExpandTemplate: boolean;
-    protected _loading: boolean;
-    protected _expanded: boolean;
-    protected _expandChange: Subject<boolean>;
-    get loading(): boolean;
-    set loading(value: boolean);
-    get expanded(): boolean;
-    set expanded(value: boolean);
-    get expandChange(): Observable<boolean>;
-    toggle(): void;
-    loadingStateChange(state: ClrLoadingState$1): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<IfExpandService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<IfExpandService>;
-}
-
-declare class ClrIfExpanded implements OnInit, OnDestroy {
-    private template;
-    private container;
-    private el;
-    private renderer;
-    private expand;
-    expandedChange: EventEmitter<boolean>;
-    private _expanded;
-    /**
-     * Subscriptions to all the services and queries changes
-     */
-    private _subscriptions;
-    constructor(template: TemplateRef<any>, container: ViewContainerRef, el: ElementRef<HTMLElement>, renderer: Renderer2, expand: IfExpandService);
-    get expanded(): boolean | string;
-    set expanded(value: boolean | string);
-    ngOnInit(): void;
-    ngOnDestroy(): void;
-    private updateView;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfExpanded, [{ optional: true; }, null, null, null, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfExpanded, "[clrIfExpanded]", never, { "expanded": { "alias": "clrIfExpanded"; "required": false; }; }, { "expandedChange": "clrIfExpandedChange"; }, never, never, true, never>;
-}
-
-declare const CONDITIONAL_DIRECTIVES: Type<any>[];
-declare class ClrConditionalModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrConditionalModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrConditionalModule, never, [typeof i2.CommonModule, typeof ClrIfActive, typeof ClrIfExpanded], [typeof ClrIfActive, typeof ClrIfExpanded]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrConditionalModule>;
-}
 
 interface ClrCommonStrings {
     /**
@@ -1061,5 +904,5 @@ declare abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
     static ɵdir: i0.ɵɵDirectiveDeclaration<OompaLoompa, never, never, {}, {}, never, never, true, never>;
 }
 
-export { ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CLR_LOADING_DIRECTIVES, CONDITIONAL_DIRECTIVES, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, ClrCommonStringsService, ClrConditionalModule, ClrDestroyService, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrHostWrappingModule, ClrIfActive, ClrIfExpanded, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrLoading, ClrLoadingModule, ClrLoadingState, ClrOutsideClickModule, ClrPosition, ClrRovingTabindex, ClrStandaloneCdkTrapFocus, ClrTemplateRefModule, DATEPICKER_ENABLE_BREAKPOINT, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, HostWrapper, IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IfActiveService, IfExpandService, Keys, LARGE_BREAKPOINT, Linkers, LoadingListener, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter, MockFocusableItem, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, SMALL_BREAKPOINT, ScrollingService, TemplateRefContainer, WillyWonka, assertNever, clrFocusServiceFactory, collapse, commonStringsDefault, customFocusableItemProvider, defaultAnimationTiming, defaultExpandAnimation, fade, fadeSlide, isBooleanAttributeSet, isKeyEitherLetterOrNumber, preventArrowKeyScroll, slide, tokenFactory, triggerAllFormControlValidation, uniqueIdFactory, wrapObservable };
+export { ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, ClrCommonStringsService, ClrDestroyService, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrHostWrappingModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrOutsideClickModule, ClrPosition, ClrRovingTabindex, ClrStandaloneCdkTrapFocus, ClrTemplateRefModule, DATEPICKER_ENABLE_BREAKPOINT, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, HostWrapper, Keys, LARGE_BREAKPOINT, Linkers, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter, MockFocusableItem, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, SMALL_BREAKPOINT, ScrollingService, TemplateRefContainer, WillyWonka, assertNever, clrFocusServiceFactory, collapse, commonStringsDefault, customFocusableItemProvider, defaultAnimationTiming, defaultExpandAnimation, fade, fadeSlide, isBooleanAttributeSet, isKeyEitherLetterOrNumber, preventArrowKeyScroll, slide, triggerAllFormControlValidation, uniqueIdFactory, wrapObservable };
 export type { ClrCommonStrings, HeadingLevel };
