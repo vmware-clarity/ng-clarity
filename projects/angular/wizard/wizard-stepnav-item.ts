@@ -55,6 +55,7 @@ import { ClrWizardPage } from './wizard-page';
     '[class.no-click]': '!canNavigate',
     '[class.complete]': 'isComplete',
     '[class.error]': 'hasError',
+    '(focusin)': 'scrollIntoView()',
   },
   standalone: false,
 })
@@ -133,7 +134,7 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
   }
 
   protected get icon(): { shape: string; label: string } | null {
-    if (this.isCurrent) {
+    if (this.isCurrent && this.navService.stepnavLayout !== 'horizontal') {
       return {
         shape: 'dot-circle',
         label: this.commonStrings.keys.wizardStepCurrent || this.commonStrings.keys.timelineStepCurrent,
@@ -171,6 +172,10 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
 
     this.skipNextScroll = true;
     this.navService.goTo(this.page);
+  }
+
+  protected scrollIntoView() {
+    this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
   }
 
   private pageGuard(): void {

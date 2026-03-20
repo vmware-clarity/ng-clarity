@@ -10,16 +10,15 @@ import {
   Component,
   ElementRef,
   Input,
-  OnChanges,
   OnDestroy,
   QueryList,
-  SimpleChanges,
   ViewChild,
   ViewChildren,
 } from '@angular/core';
 import { debounceTime, startWith, Subscription } from 'rxjs';
 
 import { PageCollectionService } from './providers/page-collection.service';
+import { WizardNavigationService } from './providers/wizard-navigation.service';
 import { ClrWizardStepnavItem } from './wizard-stepnav-item';
 
 @Component({
@@ -31,6 +30,7 @@ import { ClrWizardStepnavItem } from './wizard-stepnav-item';
         type="button"
         class="btn btn-icon clr-wizard-stepnav-scroll-button"
         (click)="scrollLeft()"
+        tabindex="-1"
       >
         <cds-icon shape="angle" direction="left"></cds-icon>
       </button>
@@ -59,6 +59,7 @@ import { ClrWizardStepnavItem } from './wizard-stepnav-item';
         type="button"
         class="btn btn-icon clr-wizard-stepnav-scroll-button"
         (click)="scrollRight()"
+        tabindex="-1"
       >
         <cds-icon shape="angle" direction="right"></cds-icon>
       </button>
@@ -67,9 +68,8 @@ import { ClrWizardStepnavItem } from './wizard-stepnav-item';
   host: { class: 'clr-wizard-stepnav' },
   standalone: false,
 })
-export class ClrWizardStepnav implements AfterViewInit, OnChanges, OnDestroy {
+export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
   @Input() label: string;
-  @Input() stepnavLayout: 'vertical' | 'horizontal';
 
   protected showScrollLeftButton = false;
   protected showScrollRightButton = false;
@@ -82,8 +82,13 @@ export class ClrWizardStepnav implements AfterViewInit, OnChanges, OnDestroy {
 
   constructor(
     public pageService: PageCollectionService,
+    private navService: WizardNavigationService,
     private elementRef: ElementRef<HTMLElement>
   ) {}
+
+  protected get stepnavLayout() {
+    return this.navService.stepnavLayout;
+  }
 
   ngAfterViewInit() {
     if (this.stepnavLayout === 'horizontal') {
@@ -91,12 +96,6 @@ export class ClrWizardStepnav implements AfterViewInit, OnChanges, OnDestroy {
       this.subscription = this.stepnavItems.changes.pipe(startWith(undefined), debounceTime(0)).subscribe(() => {
         this.updateScrollButtons();
       });
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['stepnavLayout']?.currentValue === 'horizontal') {
-      this.updateScrollButtons();
     }
   }
 

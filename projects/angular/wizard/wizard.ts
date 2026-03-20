@@ -301,6 +301,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   }
 
   ngAfterContentInit(): void {
+    this.navService.stepnavLayout = this.stepnavLayout;
     this.pageCollection.pages = this.pages;
     this.headerActionService.wizardHeaderActions = this.headerActions;
 
