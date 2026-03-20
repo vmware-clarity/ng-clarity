@@ -58,6 +58,3 @@ export { DatagridHeaderRenderer } from './render/header-renderer';
 export { DatagridCellRenderer } from './render/cell-renderer';
 export { DatagridRowRenderer } from './render/row-renderer';
 export { DatagridRowDetailRenderer } from './render/row-detail-renderer';
-export { ExpandableOompaLoompa } from './chocolate/expandable-oompa-loompa';
-export { ActionableOompaLoompa } from './chocolate/actionable-oompa-loompa';
-export { DatagridWillyWonka } from './chocolate/datagrid-willy-wonka';

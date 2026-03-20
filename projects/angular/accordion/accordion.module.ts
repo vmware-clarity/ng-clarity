@@ -14,18 +14,8 @@ import { ClrAccordionContent } from './accordion-content';
 import { ClrAccordionDescription } from './accordion-description';
 import { ClrAccordionPanel } from './accordion-panel';
 import { ClrAccordionTitle } from './accordion-title';
-import { AccordionOompaLoompa } from './chocolate/accordion-oompa-loompa';
-import { AccordionWillyWonka } from './chocolate/accordion-willy-wonka';
 
-const declarations = [
-  ClrAccordion,
-  ClrAccordionPanel,
-  ClrAccordionTitle,
-  ClrAccordionDescription,
-  ClrAccordionContent,
-  AccordionOompaLoompa,
-  AccordionWillyWonka,
-];
+const declarations = [ClrAccordion, ClrAccordionPanel, ClrAccordionTitle, ClrAccordionDescription, ClrAccordionContent];
 
 @NgModule({
   imports: [CommonModule, ClrIcon],

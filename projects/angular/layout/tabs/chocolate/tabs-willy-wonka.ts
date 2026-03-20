@@ -10,6 +10,5 @@ import { WillyWonka } from '@clr/angular/utils';
 
 @Directive({
   selector: 'clr-tabs',
-  standalone: false,
 })
 export class TabsWillyWonka extends WillyWonka {}

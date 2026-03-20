@@ -13,7 +13,6 @@ import { ResponsiveNavigationService } from '../providers/responsive-navigation.
 
 @Directive({
   selector: 'clr-header',
-  standalone: false,
 })
 export class NavDetectionOompaLoompa extends OompaLoompa {
   private responsiveNavService: ResponsiveNavigationService;

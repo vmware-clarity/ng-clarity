@@ -13,7 +13,6 @@ import { RowActionService } from '../providers/row-action-service';
 
 @Directive({
   selector: 'clr-datagrid, clr-dg-row',
-  standalone: false,
 })
 export class ActionableOompaLoompa extends OompaLoompa {
   private rowActions: RowActionService;
