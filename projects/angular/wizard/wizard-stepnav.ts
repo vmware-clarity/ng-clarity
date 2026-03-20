@@ -5,17 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-} from '@angular/core';
-import { debounceTime, startWith, Subscription } from 'rxjs';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { startWith, Subscription } from 'rxjs';
 
 import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
@@ -26,9 +17,8 @@ import { ClrWizardStepnavItem } from './wizard-stepnav-item';
   template: `
     @if (showScrollLeftButton && stepnavLayout === 'horizontal') {
       <button
-        #scrollLeftButton
         type="button"
-        class="btn btn-icon clr-wizard-stepnav-scroll-button"
+        class="btn btn-sm btn-icon clr-wizard-stepnav-scroll-button-left"
         (click)="scrollLeft()"
         tabindex="-1"
       >
@@ -44,7 +34,7 @@ import { ClrWizardStepnavItem } from './wizard-stepnav-item';
       }"
       [attr.aria-label]="label"
     >
-      <ol class="clr-wizard-stepnav-list" (scrollend)="updateScrollButtons()">
+      <ol class="clr-wizard-stepnav-list">
         @for (page of pageService.pages; track page; let i = $index) {
           <li clr-wizard-stepnav-item [page]="page" class="clr-wizard-stepnav-item">
             {{ i + 1 }}
@@ -55,9 +45,8 @@ import { ClrWizardStepnavItem } from './wizard-stepnav-item';
 
     @if (showScrollRightButton && stepnavLayout === 'horizontal') {
       <button
-        #scrollRightButton
         type="button"
-        class="btn btn-icon clr-wizard-stepnav-scroll-button"
+        class="btn btn-sm btn-icon clr-wizard-stepnav-scroll-button-right"
         (click)="scrollRight()"
         tabindex="-1"
       >
@@ -74,11 +63,12 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
   protected showScrollLeftButton = false;
   protected showScrollRightButton = false;
 
-  private subscription: Subscription;
-
-  @ViewChild('scrollLeftButton') private readonly scrollLeftButtonElementRef: ElementRef<HTMLButtonElement>;
-  @ViewChild('scrollRightButton') private readonly scrollRightButtonElementRef: ElementRef<HTMLButtonElement>;
   @ViewChildren(ClrWizardStepnavItem) private readonly stepnavItems: QueryList<ClrWizardStepnavItem>;
+
+  private subscription: Subscription;
+  private intersectionObserver: IntersectionObserver;
+  private firstItemVisible = true;
+  private lastItemVisible = true;
 
   constructor(
     public pageService: PageCollectionService,
@@ -92,25 +82,18 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     if (this.stepnavLayout === 'horizontal') {
+      this.setupIntersectionObserver();
+
       this.stepnavItems.notifyOnChanges();
-      this.subscription = this.stepnavItems.changes.pipe(startWith(undefined), debounceTime(0)).subscribe(() => {
-        this.updateScrollButtons();
+      this.subscription = this.stepnavItems.changes.pipe(startWith(undefined)).subscribe(() => {
+        this.observeEdgeItems();
       });
     }
   }
 
   ngOnDestroy() {
     this.subscription?.unsubscribe();
-  }
-
-  protected updateScrollButtons() {
-    if (this.stepnavItems && this.stepnavLayout === 'horizontal') {
-      const firstStepnavItem = this.stepnavItems.first;
-      const lastStepnavItem = this.stepnavItems.last;
-
-      this.showScrollLeftButton = !this.stepnavItemIsVisibleHorizontally(firstStepnavItem);
-      this.showScrollRightButton = !this.stepnavItemIsVisibleHorizontally(lastStepnavItem);
-    }
+    this.intersectionObserver?.disconnect();
   }
 
   protected scrollLeft() {
@@ -121,38 +104,51 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
     this.scroll('right');
   }
 
-  private scroll(direction: 'left' | 'right') {
-    const stepnavItems = this.stepnavItems.toArray();
+  private setupIntersectionObserver() {
+    const scrollContainer = this.elementRef.nativeElement.querySelector('.clr-wizard-stepnav-list');
 
-    if (direction === 'left') {
-      stepnavItems.reverse();
-    }
+    this.intersectionObserver = new IntersectionObserver(
+      entries => {
+        for (const entry of entries) {
+          const target = entry.target as HTMLElement;
+          const isFirst = target === this.stepnavItems.first?.elementRef.nativeElement;
+          const isLast = target === this.stepnavItems.last?.elementRef.nativeElement;
 
-    // The element to scroll into view is the first not-visible element after the first visible element.
-    let visibleFound = false;
-    let stepnavItemToScrollIntoView: ClrWizardStepnavItem;
+          if (isFirst) {
+            this.firstItemVisible = entry.isIntersecting;
+          }
+          if (isLast) {
+            this.lastItemVisible = entry.isIntersecting;
+          }
+        }
 
-    for (const stepnavItem of stepnavItems) {
-      const visible = this.stepnavItemIsVisibleHorizontally(stepnavItem);
-
-      if (visible) {
-        visibleFound = true;
-      } else if (visibleFound) {
-        stepnavItemToScrollIntoView = stepnavItem;
-        break;
-      }
-    }
-
-    stepnavItemToScrollIntoView?.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+        this.showScrollLeftButton = !this.firstItemVisible;
+        this.showScrollRightButton = !this.lastItemVisible;
+      },
+      { root: scrollContainer, threshold: 0.99 }
+    );
   }
 
-  private stepnavItemIsVisibleHorizontally(stepnavItem: ClrWizardStepnavItem) {
-    const containerRect = this.elementRef.nativeElement.getBoundingClientRect();
-    const itemRect = stepnavItem.elementRef.nativeElement.getBoundingClientRect();
+  private observeEdgeItems() {
+    this.intersectionObserver.disconnect();
+    this.firstItemVisible = true;
+    this.lastItemVisible = true;
 
-    const leftOffset = this.scrollLeftButtonElementRef?.nativeElement.clientWidth || 0;
-    const rightOffset = this.scrollRightButtonElementRef?.nativeElement.clientWidth || 0;
+    const first = this.stepnavItems.first;
+    const last = this.stepnavItems.last;
 
-    return itemRect.left >= containerRect.left + leftOffset && itemRect.right <= containerRect.right - rightOffset;
+    if (first) {
+      this.intersectionObserver.observe(first.elementRef.nativeElement);
+    }
+    if (last && last !== first) {
+      this.intersectionObserver.observe(last.elementRef.nativeElement);
+    }
+  }
+
+  private scroll(direction: 'left' | 'right') {
+    const scrollContainer = this.elementRef.nativeElement.querySelector('.clr-wizard-stepnav-list');
+    const scrollAmount = scrollContainer.clientWidth * 0.5;
+
+    scrollContainer.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
   }
 }
