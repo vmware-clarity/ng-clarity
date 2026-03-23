@@ -6420,7 +6420,7 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
     // (undocumented)
     protected showScrollRightButton: boolean;
     // (undocumented)
-    protected get stepnavLayout(): "vertical" | "horizontal";
+    protected get stepnavLayout(): "horizontal" | "vertical";
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, { "label": { "alias": "label"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
