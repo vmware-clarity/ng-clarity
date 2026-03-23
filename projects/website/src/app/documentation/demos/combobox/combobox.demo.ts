@@ -12,6 +12,7 @@ import { ClarityIcons, homeIcon, sunIcon, worldIcon } from '@clr/angular';
 import { ComboboxAsyncDemo } from './combobox-async.demo';
 import { ComboboxGroupingDemo } from './combobox-grouping.demo';
 import { ComboboxIdentityFnDemo } from './combobox-identity-fn.demo';
+import { ComboboxMultiIdentityFnDemo } from './combobox-multi-identity-fn.demo';
 import { ComboboxMultiDemo } from './combobox-multi.demo';
 import { ComboboxSingleDemo } from './combobox-single.demo';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
@@ -41,6 +42,7 @@ import { formsPatternLink } from '../pattern-links';
     ComboboxAsyncDemo,
     ComboboxGroupingDemo,
     ComboboxIdentityFnDemo,
+    ComboboxMultiIdentityFnDemo,
     StyleDocsComponent,
     NestingTableComponent,
   ],

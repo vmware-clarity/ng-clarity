@@ -6,20 +6,20 @@
   -->
 
 <clr-combobox-container>
-  <label>Single Selection</label>
-  <clr-combobox [(ngModel)]="selection" name="user" required [clrComboboxIdentityFn]="identityFn">
+  <label>Multiple Selection</label>
+  <clr-combobox [(ngModel)]="selection" name="users" required clrMulti="true" [clrComboboxIdentityFn]="identityFn">
     <ng-container *clrOptionSelected="let selected"> {{ selected?.name }} </ng-container>
     <clr-options>
       <clr-option *clrOptionItems="let user of users; field: 'name'" [clrValue]="user">
         {{ user.name }}
-        <span>(ID: {{ user.id }})</span>
+        <span class="clr-combobox-secondary-text">(ID: {{ user.id }})</span>
       </clr-option>
     </clr-options>
   </clr-combobox>
 </clr-combobox-container>
 
 <app-stackblitz-example
-  name="identity function combobox"
+  name="multiple selection identity function combobox"
   [componentTemplate]="basicHTML"
   [componentClass]="basicComponent"
 ></app-stackblitz-example>

@@ -14,15 +14,21 @@ import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/s
 
 const basicHTML = `
 <clr-combobox-container>
-  <label>Single Selection</label>
-  <clr-combobox [(ngModel)]="selection" name="user" required [clrComboboxIdentityFn]="identityFn">
+  <label>Multiple Selection</label>
+  <clr-combobox
+    [(ngModel)]="selection"
+    name="users"
+    required
+    clrMulti="true"
+    [clrComboboxIdentityFn]="identityFn"
+  >
     <ng-container *clrOptionSelected="let selected">
       {{ selected?.name }}
     </ng-container>
     <clr-options>
       <clr-option *clrOptionItems="let user of users; field: 'name'" [clrValue]="user">
         {{ user.name }}
-        <span>(ID: {{ user.id }})</span>
+        <span class="clr-combobox-secondary-text">(ID: {{ user.id }})</span>
       </clr-option>
     </clr-options>
   </clr-combobox>
@@ -48,7 +54,10 @@ export class ExampleComponent {
     { id: 4, name: 'Dave' },
   ];
 
-  selection = { id: 2, name: 'Bob' };
+  selection = [
+    { id: 2, name: 'Bob' },
+    { id: 4, name: 'Dave' },
+  ];
 
   identityFn = (item: any) => {
     return item ? item.id : null;
@@ -57,11 +66,11 @@ export class ExampleComponent {
 `;
 
 @Component({
-  selector: 'clr-combobox-identity-fn-demo',
-  templateUrl: './combobox-identity-fn.demo.html',
+  selector: 'clr-combobox-multi-identity-fn-demo',
+  templateUrl: './combobox-multi-identity-fn.demo.html',
   imports: [CommonModule, FormsModule, ClrComboboxModule, StackblitzExampleComponent],
 })
-export class ComboboxIdentityFnDemo {
+export class ComboboxMultiIdentityFnDemo {
   basicHTML = basicHTML;
   basicComponent = basicComponent;
 
@@ -72,7 +81,10 @@ export class ComboboxIdentityFnDemo {
     { id: 4, name: 'Dave' },
   ];
 
-  selection = { id: 2, name: 'Bob' };
+  selection = [
+    { id: 2, name: 'Bob' },
+    { id: 4, name: 'Dave' },
+  ];
 
   identityFn = (item: any) => {
     return item ? item.id : null;
