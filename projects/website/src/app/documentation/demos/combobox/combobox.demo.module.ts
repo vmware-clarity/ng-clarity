@@ -13,6 +13,8 @@ import { ClarityModule } from '@clr/angular';
 
 import { ComboboxAsyncDemo } from './combobox-async.demo';
 import { ComboboxGroupingDemo } from './combobox-grouping.demo';
+import { ComboboxIdentityFnDemo } from './combobox-identity-fn.demo';
+import { ComboboxMultiIdentityFnDemo } from './combobox-multi-identity-fn.demo';
 import { ComboboxMultiDemo } from './combobox-multi.demo';
 import { ComboboxSingleDemo } from './combobox-single.demo';
 import { ComboboxDemo } from './combobox.demo';
@@ -41,6 +43,8 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     ComboboxMultiDemo,
     ComboboxAsyncDemo,
     ComboboxGroupingDemo,
+    ComboboxIdentityFnDemo,
+    ComboboxMultiIdentityFnDemo,
   ],
   exports: [ComboboxDemo],
 })
