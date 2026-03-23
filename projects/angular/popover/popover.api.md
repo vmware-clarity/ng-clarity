@@ -64,7 +64,7 @@ export const CLR_TOOLTIP_DIRECTIVES: Type<any>[];
 // @public (undocumented)
 export class ClrDropdown implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "RootDropdownService" needs to be exported by the entry point clr-angular-popover.d.ts
-    constructor(parent: ClrDropdown, popoverService: ClrPopoverService_2, focusHandler: DropdownFocusHandler, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
+    constructor(parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
     // Warning: (ae-forgotten-export) The symbol "DropdownFocusHandler" needs to be exported by the entry point clr-angular-popover.d.ts
     //
     // (undocumented)
@@ -73,18 +73,14 @@ export class ClrDropdown implements OnDestroy {
     isMenuClosable: boolean;
     // (undocumented)
     ngOnDestroy(): void;
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverPoint_2" needs to be exported by the entry point clr-angular-popover.d.ts
-    //
     // (undocumented)
-    openAtPoint(point: ClrPopoverPoint_2): void;
+    openAtPoint(point: ClrPopoverPoint): void;
     // (undocumented)
     parent: ClrDropdown;
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverService_2" needs to be exported by the entry point clr-angular-popover.d.ts
-    //
     // (undocumented)
-    popoverService: ClrPopoverService_2;
+    popoverService: ClrPopoverService;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": { "alias": "clrCloseMenuOnItemClick"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdown, "clr-dropdown", never, { "isMenuClosable": { "alias": "clrCloseMenuOnItemClick"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof i1_2.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdown, [{ optional: true; skipSelf: true; }, null, null, null, null]>;
 }
@@ -106,8 +102,7 @@ export class ClrDropdownItem {
 
 // @public (undocumented)
 export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverContent_2" needs to be exported by the entry point clr-angular-popover.d.ts
-    constructor(parentHost: ElementRef<HTMLElement>, nested: ClrDropdownMenu, focusHandler: DropdownFocusHandler, elementRef: ElementRef, popoverService: ClrPopoverService_2, popoverContent: ClrPopoverContent_2);
+    constructor(parentHost: ElementRef<HTMLElement>, nested: ClrDropdownMenu, focusHandler: DropdownFocusHandler, elementRef: ElementRef, popoverService: ClrPopoverService, popoverContent: ClrPopoverContent);
     // (undocumented)
     get isOffScreen(): boolean;
     // (undocumented)
@@ -116,12 +111,10 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     ngAfterContentInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverPosition_2" needs to be exported by the entry point clr-angular-popover.d.ts
-    //
     // (undocumented)
-    set position(position: string | ClrPopoverPosition_2);
+    set position(position: string | ClrPopoverPosition);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdownMenu, "clr-dropdown-menu", never, { "position": { "alias": "clrPosition"; "required": false; }; }, {}, ["items"], ["*"], false, [{ directive: typeof i1.ClrPopoverContent; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdownMenu, "clr-dropdown-menu", never, { "position": { "alias": "clrPosition"; "required": false; }; }, {}, ["items"], ["*"], false, [{ directive: typeof i1_2.ClrPopoverContent; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownMenu, [{ optional: true; }, { optional: true; skipSelf: true; }, null, null, null, null]>;
 }
@@ -135,12 +128,12 @@ export class ClrDropdownModule {
     // Warning: (ae-forgotten-export) The symbol "i6" needs to be exported by the entry point clr-angular-popover.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDropdownModule, [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem], [typeof i5.CommonModule, typeof i6.ClrIcon, typeof i1.ClrIfOpen], [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem, typeof i1.ClrIfOpen, typeof i6.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDropdownModule, [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem], [typeof i5.CommonModule, typeof i6.ClrIcon, typeof i1_2.ClrIfOpen], [typeof ClrDropdown, typeof ClrDropdownMenu, typeof ClrDropdownTrigger, typeof ClrDropdownItem, typeof i1_2.ClrIfOpen, typeof i6.ClrIcon]>;
 }
 
 // @public (undocumented)
 export class ClrDropdownTrigger {
-    constructor(dropdown: ClrDropdown, popoverService: ClrPopoverService_2, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler);
+    constructor(dropdown: ClrDropdown, popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, focusHandler: DropdownFocusHandler);
     // (undocumented)
     get active(): boolean;
     // (undocumented)
@@ -168,6 +161,23 @@ export class ClrIfOpen implements OnDestroy {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfOpen, "[clrIfOpen]", never, { "open": { "alias": "clrIfOpen"; "required": false; }; }, { "openChange": "clrIfOpenChange"; }, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfOpen, never>;
+}
+
+// @public (undocumented)
+export class ClrPopoverCloseButton implements OnDestroy, AfterViewInit {
+    constructor(elementRef: ElementRef<HTMLButtonElement>, popoverService: ClrPopoverService);
+    // (undocumented)
+    closeChange: EventEmitter<void>;
+    // (undocumented)
+    handleClick(event: MouseEvent): void;
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverCloseButton, "[clrPopoverCloseButton]", never, {}, { "closeChange": "clrPopoverOnCloseChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverCloseButton, never>;
 }
 
 // @public (undocumented)
@@ -214,12 +224,37 @@ export class ClrPopoverModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1$1" needs to be exported by the entry point clr-angular-popover.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-popover.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point clr-angular-popover.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3" needs to be exported by the entry point clr-angular-popover.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, never, [typeof i1$1.ClrDropdownModule, typeof i2.ClrSignpostModule, typeof i3.ClrTooltipModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModule, never, never, [typeof i1.ClrDropdownModule, typeof i2.ClrSignpostModule, typeof i3.ClrTooltipModule]>;
+}
+
+// @public (undocumented)
+export class ClrPopoverModuleNext {
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverModuleNext, never>;
+    // (undocumented)
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrPopoverModuleNext>;
+    // (undocumented)
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPopoverModuleNext, [typeof ClrPopoverOrigin, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton], [typeof ClrPopoverContent, typeof ClrIfOpen], [typeof ClrPopoverOrigin, typeof ClrPopoverCloseButton, typeof ClrPopoverOpenCloseButton, typeof ClrPopoverContent, typeof ClrIfOpen]>;
+}
+
+// @public (undocumented)
+export class ClrPopoverOpenCloseButton implements OnDestroy {
+    constructor(popoverService: ClrPopoverService);
+    // (undocumented)
+    handleClick(event: MouseEvent): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    openCloseChange: EventEmitter<boolean>;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPopoverOpenCloseButton, "[clrPopoverOpenCloseButton]", never, {}, { "openCloseChange": "clrPopoverOpenCloseChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverOpenCloseButton, never>;
 }
 
 // @public (undocumented)
@@ -335,7 +370,7 @@ export enum ClrPopoverType {
 
 // @public (undocumented)
 export class ClrSignpost {
-    constructor(commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService_2);
+    constructor(commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService);
     // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService" needs to be exported by the entry point clr-angular-popover.d.ts
     //
     // (undocumented)
@@ -343,23 +378,23 @@ export class ClrSignpost {
     set customTrigger(trigger: ClrSignpostTrigger);
     hideTrigger: boolean;
     // (undocumented)
-    openAtPoint(point: ClrPopoverPoint_2): void;
+    openAtPoint(point: ClrPopoverPoint): void;
     // (undocumented)
     get showDefaultTrigger(): boolean;
     // (undocumented)
     signpostTriggerAriaLabel: string;
     useCustomTrigger: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; "hideTrigger": { "alias": "clrSignpostHideTrigger"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; "hideTrigger": { "alias": "clrSignpostHideTrigger"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i1_2.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpost, never>;
 }
 
 // @public (undocumented)
 export class ClrSignpostContent implements OnDestroy, AfterViewInit {
-    // Warning: (ae-forgotten-export) The symbol "SignpostIdService_2" needs to be exported by the entry point clr-angular-popover.d.ts
-    // Warning: (ae-forgotten-export) The symbol "SignpostFocusManager_2" needs to be exported by the entry point clr-angular-popover.d.ts
-    constructor(parentHost: ElementRef<HTMLElement>, element: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService_2, signpostFocusManager: SignpostFocusManager_2, platformId: any, document: Document, popoverService: ClrPopoverService_2, popoverContent: ClrPopoverContent_2);
+    // Warning: (ae-forgotten-export) The symbol "SignpostIdService" needs to be exported by the entry point clr-angular-popover.d.ts
+    // Warning: (ae-forgotten-export) The symbol "SignpostFocusManager" needs to be exported by the entry point clr-angular-popover.d.ts
+    constructor(parentHost: ElementRef<HTMLElement>, element: ElementRef, commonStrings: ClrCommonStringsService, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, platformId: any, document: Document, popoverService: ClrPopoverService, popoverContent: ClrPopoverContent);
     close(): void;
     // (undocumented)
     closeButton: ElementRef<HTMLButtonElement>;
@@ -373,14 +408,14 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     ngOnDestroy(): void;
     // (undocumented)
     onKeyDown(event: KeyboardEvent): void;
-    get position(): string | ClrPopoverPosition_2;
-    set position(position: string | ClrPopoverPosition_2);
+    get position(): string | ClrPopoverPosition;
+    set position(position: string | ClrPopoverPosition);
     // (undocumented)
     signpostCloseAriaLabel: string;
     // (undocumented)
     signpostContentId: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "signpostCloseAriaLabel": { "alias": "clrSignpostCloseAriaLabel"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; }, {}, never, ["clr-signpost-title", "*"], false, [{ directive: typeof i1.ClrPopoverContent; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpostContent, "clr-signpost-content", never, { "signpostCloseAriaLabel": { "alias": "clrSignpostCloseAriaLabel"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; }, {}, never, ["clr-signpost-title", "*"], false, [{ directive: typeof i1_2.ClrPopoverContent; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostContent, [{ optional: true; }, null, null, null, null, null, null, null, null]>;
 }
@@ -395,7 +430,7 @@ export class ClrSignpostModule {
     // Warning: (ae-forgotten-export) The symbol "i7" needs to be exported by the entry point clr-angular-popover.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i5.CommonModule, typeof i6.ClrIcon, typeof i7.ClrFocusOnViewInitModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i1.ClrIfOpen], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof i1.ClrIfOpen]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i5.CommonModule, typeof i6.ClrIcon, typeof i7.ClrFocusOnViewInitModule, typeof i1_2.ClrPopoverModuleNext, typeof i1_2.ClrIfOpen], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof i1_2.ClrIfOpen]>;
 }
 
 // @public (undocumented)
@@ -408,7 +443,7 @@ export class ClrSignpostTitle {
 
 // @public (undocumented)
 export class ClrSignpostTrigger implements OnDestroy {
-    constructor(popoverService: ClrPopoverService_2, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService_2, signpostFocusManager: SignpostFocusManager_2, document: any, platformId: any);
+    constructor(popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
     // (undocumented)
     ariaControl: string;
     // (undocumented)
@@ -444,16 +479,16 @@ export class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
 // @public (undocumented)
 export class ClrTooltip {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltip, "clr-tooltip", never, {}, {}, never, ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltip, "clr-tooltip", never, {}, {}, never, ["*"], false, [{ directive: typeof i1_2.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltip, never>;
 }
 
 // @public (undocumented)
 export class ClrTooltipContent implements OnInit {
-    // Warning: (ae-forgotten-export) The symbol "TooltipIdService_2" needs to be exported by the entry point clr-angular-popover.d.ts
-    // Warning: (ae-forgotten-export) The symbol "TooltipMouseService_2" needs to be exported by the entry point clr-angular-popover.d.ts
-    constructor(parentHost: ElementRef<HTMLElement>, tooltipIdService: TooltipIdService_2, el: ElementRef, renderer: Renderer2, popoverService: ClrPopoverService_2, tooltipMouseService: TooltipMouseService_2, popoverContent: ClrPopoverContent_2);
+    // Warning: (ae-forgotten-export) The symbol "TooltipIdService" needs to be exported by the entry point clr-angular-popover.d.ts
+    // Warning: (ae-forgotten-export) The symbol "TooltipMouseService" needs to be exported by the entry point clr-angular-popover.d.ts
+    constructor(parentHost: ElementRef<HTMLElement>, tooltipIdService: TooltipIdService, el: ElementRef, renderer: Renderer2, popoverService: ClrPopoverService, tooltipMouseService: TooltipMouseService, popoverContent: ClrPopoverContent);
     // (undocumented)
     el: ElementRef;
     // (undocumented)
@@ -462,13 +497,13 @@ export class ClrTooltipContent implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    get position(): string | ClrPopoverPosition_2;
-    set position(value: string | ClrPopoverPosition_2);
+    get position(): string | ClrPopoverPosition;
+    set position(value: string | ClrPopoverPosition);
     // (undocumented)
     get size(): string;
     set size(value: string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltipContent, "clr-tooltip-content", never, { "id": { "alias": "id"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; "size": { "alias": "clrSize"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof i1.ClrPopoverContent; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTooltipContent, "clr-tooltip-content", never, { "id": { "alias": "id"; "required": false; }; "position": { "alias": "clrPosition"; "required": false; }; "size": { "alias": "clrSize"; "required": false; }; }, {}, never, ["*"], false, [{ directive: typeof i1_2.ClrPopoverContent; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipContent, [{ optional: true; }, null, null, null, null, null, null]>;
 }
@@ -480,12 +515,12 @@ export class ClrTooltipModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTooltipModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i5.CommonModule, typeof i6.ClrIcon, typeof i1.ÇlrClrPopoverModuleNext], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof i1.ClrIfOpen, typeof i6.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i5.CommonModule, typeof i6.ClrIcon, typeof i1_2.ClrPopoverModuleNext], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof i1_2.ClrIfOpen, typeof i6.ClrIcon]>;
 }
 
 // @public (undocumented)
 export class ClrTooltipTrigger {
-    constructor(popoverService: ClrPopoverService_2, tooltipIdService: TooltipIdService_2, tooltipMouseService: TooltipMouseService_2, element: ElementRef);
+    constructor(popoverService: ClrPopoverService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService, element: ElementRef);
     // (undocumented)
     ariaDescribedBy: string;
     // (undocumented)
@@ -529,51 +564,9 @@ export const SIGNPOST_POSITIONS: ClrPopoverPosition[];
 // @public (undocumented)
 export const TOOLTIP_POSITIONS: ClrPopoverPosition[];
 
-// @public (undocumented)
-export class ÇlrClrPopoverCloseButton implements OnDestroy, AfterViewInit {
-    constructor(elementRef: ElementRef<HTMLButtonElement>, popoverService: ClrPopoverService);
-    // (undocumented)
-    closeChange: EventEmitter<void>;
-    // (undocumented)
-    handleClick(event: MouseEvent): void;
-    // (undocumented)
-    ngAfterViewInit(): void;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrClrPopoverCloseButton, "[clrPopoverCloseButton]", never, {}, { "closeChange": "clrPopoverOnCloseChange"; }, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrClrPopoverCloseButton, never>;
-}
-
-// @public (undocumented)
-export class ÇlrClrPopoverModuleNext {
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrClrPopoverModuleNext, never>;
-    // (undocumented)
-    static ɵinj: i0.ɵɵInjectorDeclaration<ÇlrClrPopoverModuleNext>;
-    // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ÇlrClrPopoverModuleNext, [typeof ClrPopoverOrigin, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton], [typeof ClrPopoverContent, typeof ClrIfOpen], [typeof ClrPopoverOrigin, typeof ÇlrClrPopoverCloseButton, typeof ÇlrClrPopoverOpenCloseButton, typeof ClrPopoverContent, typeof ClrIfOpen]>;
-}
-
-// @public (undocumented)
-export class ÇlrClrPopoverOpenCloseButton implements OnDestroy {
-    constructor(popoverService: ClrPopoverService);
-    // (undocumented)
-    handleClick(event: MouseEvent): void;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    openCloseChange: EventEmitter<boolean>;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrClrPopoverOpenCloseButton, "[clrPopoverOpenCloseButton]", never, {}, { "openCloseChange": "clrPopoverOpenCloseChange"; }, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrClrPopoverOpenCloseButton, never>;
-}
-
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-popover.d.ts:68:191 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-popover.d.ts
+// dist/clr-angular/types/clr-angular-popover-dropdown.d.ts:63:191 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-popover.d.ts
 
 // (No @packageDocumentation comment for this package)
 

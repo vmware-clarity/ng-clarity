@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { ClarityIcons, ClrIcon, infoCircleIcon, windowCloseIcon } from '@clr/angular/icon';
-import { ClrIfOpen, ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrIfOpen, ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrFocusOnViewInitModule } from '@clr/angular/utils';
 
 import { ClrSignpost } from './signpost';
@@ -24,7 +24,7 @@ export const CLR_SIGNPOST_DIRECTIVES: Type<any>[] = [
 ];
 
 @NgModule({
-  imports: [CommonModule, ClrIcon, ClrFocusOnViewInitModule, ÇlrClrPopoverModuleNext, ClrIfOpen],
+  imports: [CommonModule, ClrIcon, ClrFocusOnViewInitModule, ClrPopoverModuleNext, ClrIfOpen],
   declarations: [CLR_SIGNPOST_DIRECTIVES],
   exports: [CLR_SIGNPOST_DIRECTIVES, ClrIfOpen],
 })

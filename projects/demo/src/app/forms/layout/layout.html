@@ -19,7 +19,6 @@
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}">
       <div class="clr-input-wrapper">
         <input type="text" [id]="layout + 'basic'" placeholder="Enter value here" class="clr-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
@@ -43,7 +42,6 @@
           value="test value"
           disabled
         />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
@@ -63,9 +61,12 @@
     >
       <div class="clr-input-wrapper">
         <input type="text" [id]="layout + 'basic-error'" placeholder="Enter value here" class="clr-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
+      </div>
     </div>
   </div>
 
@@ -89,7 +90,6 @@
     >
       <div class="clr-input-wrapper">
         <input type="text" [id]="layout + 'long'" placeholder="Enter value here" class="clr-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">
         This is the song that doesn't end. It goes on and on my friend. Some people started singing it not knowing what
@@ -98,6 +98,10 @@
         just because.. This is the song that doesn't end. It goes on and on my friend. Some people started singing it
         not knowing what it was, and they'll continue singing it forever just because..
       </span>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
+      </div>
     </div>
   </div>
 
@@ -137,7 +141,6 @@
         <label [for]="layout + 'checkbox3'" class="clr-control-label">option 3</label>
       </div>
       <div class="clr-subtext-wrapper">
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
         <span class="clr-subtext">Helper Text</span>
       </div>
     </div>
@@ -163,7 +166,6 @@
         <label [for]="layout + 'checkbox7'" class="clr-control-label">option 1</label>
       </div>
       <div class="clr-subtext-wrapper">
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
         <span class="clr-subtext">Helper Text</span>
       </div>
     </div>
@@ -179,7 +181,6 @@
         <label [for]="layout + 'checkbox8'" class="clr-control-label">option 2</label>
       </div>
       <div class="clr-subtext-wrapper">
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
         <span class="clr-subtext">Helper Text</span>
       </div>
     </div>
@@ -195,7 +196,6 @@
         <label [for]="layout + 'checkbox9'" class="clr-control-label">option 3</label>
       </div>
       <div class="clr-subtext-wrapper">
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
         <span class="clr-subtext">Helper Text</span>
       </div>
     </div>
@@ -203,7 +203,7 @@
 
   <div class="clr-form-control" [ngClass]="{'clr-row': grid && layout !== 'vertical'}">
     <label class="clr-control-label" [ngClass]="{'clr-col-12': grid, 'clr-col-md-2': grid && layout !== 'vertical'}">
-      Basic checbox, error
+      Basic checkbox, error
     </label>
     <div
       class="clr-control-container clr-error"
@@ -240,8 +240,11 @@
         <label [for]="layout + 'checkbox12'" class="clr-control-label">option 3</label>
       </div>
       <div class="clr-subtext-wrapper">
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
         <span class="clr-subtext">Helper Text</span>
+      </div>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
       </div>
     </div>
   </div>
@@ -285,7 +288,6 @@
         <label [for]="layout + 'checkbox15'" class="clr-control-label">option 3</label>
       </div>
       <div class="clr-subtext-wrapper">
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
         <span class="clr-subtext">Helper Text</span>
       </div>
     </div>
@@ -309,7 +311,6 @@
         <label [for]="layout + 'radio3'" class="clr-control-label">option 3</label>
       </div>
       <div class="clr-subtext-wrapper">
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
         <span class="clr-subtext">Helper Text</span>
       </div>
     </div>
@@ -336,8 +337,11 @@
         <label [for]="layout + 'radio6'" class="clr-control-label">option 3</label>
       </div>
       <div class="clr-subtext-wrapper">
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
         <span class="clr-subtext">Helper Text</span>
+      </div>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
       </div>
     </div>
   </div>
@@ -363,7 +367,6 @@
         <label [for]="layout + 'radio9'" class="clr-control-label">option 3</label>
       </div>
       <div class="clr-subtext-wrapper">
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
         <span class="clr-subtext">Helper Text</span>
       </div>
     </div>
@@ -380,7 +383,6 @@
           <option>Option 2</option>
           <option>Option 3</option>
         </select>
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
@@ -400,9 +402,12 @@
           <option>Option 2</option>
           <option>Option 3</option>
         </select>
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
+      </div>
     </div>
   </div>
 
@@ -417,7 +422,6 @@
           <option>Option 2</option>
           <option>Option 3</option>
         </select>
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
@@ -437,9 +441,12 @@
           <option>Option 2</option>
           <option>Option 3</option>
         </select>
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
+      </div>
     </div>
   </div>
 
@@ -457,12 +464,13 @@
         <input #fileInput type="file" [id]="layout + 'file'" placeholder="Enter value here" class="clr-file" />
       </div>
       <!-- IMPORTANT DIFFERENCE IN STRUCTURE! ICON IS NOT PART OF THE INPUT WRAPPER -->
-      <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
-      @if (!fileInput.value) {
-      <span class="clr-subtext">Helper Text</span>
-      } @if (fileInput.value) {
-      <span class="clr-subtext">{{fileInput.value}}</span>
-      }
+      <div class="clr-subtext-wrapper">
+        @if (!fileInput.value) {
+        <span class="clr-subtext">Helper Text</span>
+        } @if (fileInput.value) {
+        <span class="clr-subtext">{{fileInput.value}}</span>
+        }
+      </div>
     </div>
   </div>
 
@@ -483,8 +491,13 @@
         <input type="file" [id]="layout + 'file2'" placeholder="Enter value here" class="clr-file" />
       </div>
       <!-- IMPORTANT DIFFERENCE IN STRUCTURE! ICON IS NOT PART OF THE INPUT WRAPPER -->
-      <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
-      <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper">
+        <span class="clr-subtext">Helper Text</span>
+      </div>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
+      </div>
     </div>
   </div>
 
@@ -501,8 +514,9 @@
         <input type="file" [id]="layout + 'file'" placeholder="Enter value here" />
       </div>
       <!-- IMPORTANT DIFFERENCE IN STRUCTURE! ICON IS NOT PART OF THE INPUT WRAPPER -->
-      <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
-      <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper">
+        <span class="clr-subtext">Helper Text</span>
+      </div>
     </div>
   </div>
 
@@ -522,8 +536,13 @@
         <input type="file" [id]="layout + 'file2'" placeholder="Enter value here" />
       </div>
       <!-- IMPORTANT DIFFERENCE IN STRUCTURE! ICON IS NOT PART OF THE INPUT WRAPPER -->
-      <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
-      <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper">
+        <span class="clr-subtext">Helper Text</span>
+      </div>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
+      </div>
     </div>
   </div>
 
@@ -538,7 +557,6 @@
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}">
       <div class="clr-input-wrapper">
         <input type="text" [id]="layout + 'basic'" placeholder="Enter value here" class="clr-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">
         Helper Text
@@ -565,7 +583,6 @@
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}">
       <div class="clr-input-wrapper">
         <input type="text" [id]="layout + 'nolabel'" placeholder="No label" class="clr-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
@@ -582,7 +599,6 @@
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-10': grid && layout !== 'vertical'}">
       <div class="clr-input-wrapper">
         <input type="text" [id]="layout + 'nosubtext'" placeholder="Enter value here" class="clr-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
     </div>
   </div>
@@ -615,21 +631,18 @@
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-3': grid}">
       <div class="clr-input-wrapper">
         <input type="text" [id]="layout + 'multiple'" placeholder="Enter value here" class="clr-input" size="100" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-3': grid}">
       <div class="clr-input-wrapper">
         <input type="text" [id]="layout + 'multiple'" placeholder="Enter value here" class="clr-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-3': grid}">
       <div class="clr-input-wrapper">
         <input type="text" [id]="layout + 'multiple'" placeholder="Enter value here" class="clr-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
@@ -650,23 +663,26 @@
     <div class="clr-control-container clr-error" [ngClass]="{'clr-col-12': grid, 'clr-col-md-3': grid}">
       <div class="clr-input-wrapper">
         <input type="text" [id]="layout + 'multiple-error'" placeholder="Enter value here" class="clr-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
-      <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
+      </div>
     </div>
     <div class="clr-control-container" [ngClass]="{'clr-col-12': grid, 'clr-col-md-3': grid}">
       <div class="clr-input-wrapper">
         <input type="text" [id]="layout + 'multiple-error'" placeholder="Enter value here" class="clr-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
     <div class="clr-control-container clr-error" [ngClass]="{'clr-col-12': grid, 'clr-col-md-3': grid}">
       <div class="clr-input-wrapper">
         <input type="text" [id]="layout + 'multiple-error'" placeholder="Enter value here" class="clr-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
-      <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
+      </div>
     </div>
   </div>
 
@@ -686,7 +702,6 @@
           placeholder="Enter value here"
           class="clr-textarea"
         ></textarea>
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
     </div>
@@ -711,9 +726,12 @@
           placeholder="Enter value here"
           class="clr-textarea"
         ></textarea>
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
       <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
+      </div>
     </div>
   </div>
 </form>

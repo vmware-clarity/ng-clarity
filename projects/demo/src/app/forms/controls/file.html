@@ -107,7 +107,9 @@
         </label>
         <input type="file" id="basic" placeholder="Enter value here" class="clr-file-input" />
       </div>
-      <span class="clr-subtext">Helper text</span>
+      <div class="clr-subtext-wrapper">
+        <span class="clr-subtext">Helper Text</span>
+      </div>
     </div>
   </div>
 
@@ -122,10 +124,14 @@
           </span>
         </label>
         <input type="file" id="error" placeholder="Enter value here" class="clr-file-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
-      <span class="clr-subtext">Helper text</span>
-      <span class="clr-subtext error">Error message</span>
+      <div class="clr-subtext-wrapper">
+        <span class="clr-subtext">Helper Text</span>
+      </div>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Helper Text</span>
+      </div>
     </div>
   </div>
 
@@ -140,10 +146,14 @@
           </span>
         </label>
         <input type="file" id="error" placeholder="Enter value here" class="clr-file-input" />
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
       </div>
-      <span class="clr-subtext">Helper text</span>
-      <span class="clr-subtext success">Success message</span>
+      <div class="clr-subtext-wrapper">
+        <span class="clr-subtext">Helper Text</span>
+      </div>
+      <div class="clr-subtext-wrapper success">
+        <cds-icon class="clr-validate-icon" shape="succcess-standard" status="success"></cds-icon>
+        <span class="clr-subtext">Success message</span>
+      </div>
     </div>
   </div>
 
@@ -157,7 +167,9 @@
         </button>
         <input type="file" id="disaled" disabled placeholder="Enter value here" class="clr-file-input" />
       </div>
-      <span class="clr-subtext">Helper text</span>
+      <div class="clr-subtext-wrapper">
+        <span class="clr-subtext">Helper Text</span>
+      </div>
     </div>
   </div>
 </form>
@@ -173,8 +185,9 @@
         <input type="file" id="basic" placeholder="Enter value here" class="clr-file" />
       </div>
       <!-- IMPORTANT DIFFERENCE IN STRUCTURE! ICON IS NOT PART OF THE INPUT WRAPPER -->
-      <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
-      <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper">
+        <span class="clr-subtext">Helper Text</span>
+      </div>
     </div>
   </div>
 
@@ -185,8 +198,9 @@
         <input type="file" id="basic-default" placeholder="Enter value here" />
       </div>
       <!-- IMPORTANT DIFFERENCE IN STRUCTURE! ICON IS NOT PART OF THE INPUT WRAPPER -->
-      <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
-      <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper">
+        <span class="clr-subtext">Helper Text</span>
+      </div>
     </div>
   </div>
 
@@ -198,8 +212,10 @@
         <input type="file" id="error" placeholder="Enter value here" class="clr-file" />
       </div>
       <!-- IMPORTANT DIFFERENCE IN STRUCTURE! ICON IS NOT PART OF THE INPUT WRAPPER -->
-      <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
-      <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
+      </div>
     </div>
   </div>
 
@@ -210,8 +226,10 @@
         <input type="file" id="error-default" placeholder="Enter value here" />
       </div>
       <!-- IMPORTANT DIFFERENCE IN STRUCTURE! ICON IS NOT PART OF THE INPUT WRAPPER -->
-      <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
-      <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
+      </div>
     </div>
   </div>
 
@@ -223,8 +241,10 @@
         <input type="file" id="disaled" disabled placeholder="Enter value here" class="clr-file" />
       </div>
       <!-- IMPORTANT DIFFERENCE IN STRUCTURE! ICON IS NOT PART OF THE INPUT WRAPPER -->
-      <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
-      <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
+      </div>
     </div>
   </div>
 
@@ -235,8 +255,10 @@
         <input type="file" id="disabled-default" disabled placeholder="Enter value here" />
       </div>
       <!-- IMPORTANT DIFFERENCE IN STRUCTURE! ICON IS NOT PART OF THE INPUT WRAPPER -->
-      <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger"></cds-icon>
-      <span class="clr-subtext">Helper Text</span>
+      <div class="clr-subtext-wrapper error">
+        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <span class="clr-subtext">Error Text</span>
+      </div>
     </div>
   </div>
 </form>

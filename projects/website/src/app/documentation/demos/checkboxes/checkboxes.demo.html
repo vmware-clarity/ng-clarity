@@ -152,30 +152,39 @@
 
     <div class="clr-row clr-mt-32px">
       <div class="clr-col-6">
-        <app-themed-image
-          [lightSrc]="'/assets/images/documentation/checkboxes/light-theme/checkbox-indeterminate.svg'"
-          [darkSrc]="'/assets/images/documentation/checkboxes/dark-theme/checkbox-indeterminate.svg'"
-          [imageAlt]="'Parent and child checkboxes with indeterminate state'"
-          [imageStyle]="'max-width: 100%'"
-        ></app-themed-image>
+        <div class="component-box-container">
+          <clr-small-selection-tree-demo></clr-small-selection-tree-demo>
+        </div>
       </div>
       <div class="clr-col-6">
         <h3 cds-text="section" id="indeterminate">Indeterminate</h3>
         <p cds-text="body" class="clr-mt-16px">
           Use in a checkbox tree, showing the parent checkbox item has a mix of selected and unselected children. The
-          indeterminate state is programmatically set by the application for specific conditions.
+          indeterminate state is programmatically set by the application for specific conditions. More about checkbox
+          tree <a routerLink="/documentation/tree-view#checkbox-tree">here</a>.
         </p>
       </div>
     </div>
 
     <div class="clr-row clr-mt-32px">
       <div class="clr-col-6">
-        <app-themed-image
-          [lightSrc]="'/assets/images/documentation/checkboxes/light-theme/checkbox-error.svg'"
-          [darkSrc]="'/assets/images/documentation/checkboxes/dark-theme/checkbox-error.svg'"
-          [imageAlt]="'checkbox with red error icon and error message'"
-          [imageStyle]="'max-width: 100%'"
-        ></app-themed-image>
+        <div class="component-box-container">
+          <clr-checkbox-container class="clr-mt-0px">
+            <clr-checkbox-wrapper>
+              <input
+                type="checkbox"
+                clrCheckbox
+                value="agree-to-terms-error"
+                name="agree-to-terms-error"
+                required
+                [(ngModel)]="errorCheckboxModel"
+                #errorCheckbox="ngModel"
+              />
+              <label>I agree to terms and conditions</label>
+            </clr-checkbox-wrapper>
+            <clr-control-error *clrIfError="'required'">Please agree to proceed</clr-control-error>
+          </clr-checkbox-container>
+        </div>
       </div>
       <div class="clr-col-6">
         <h3 cds-text="section" id="error">Error</h3>
@@ -190,12 +199,33 @@
 
     <div class="clr-row clr-mt-32px">
       <div class="clr-col-6">
-        <app-themed-image
-          [lightSrc]="'/assets/images/documentation/checkboxes/light-theme/checkbox-success.svg'"
-          [darkSrc]="'/assets/images/documentation/checkboxes/dark-theme/checkbox-success.svg'"
-          [imageAlt]="'multiple checkboxes with green success icon and success message'"
-          [imageStyle]="'max-width: 100%'"
-        ></app-themed-image>
+        <div class="component-box-container">
+          <clr-checkbox-container class="clr-mt-0px">
+            <label>Notifications</label>
+            <clr-checkbox-wrapper>
+              <input
+                type="checkbox"
+                clrCheckbox
+                value="new-email-success"
+                name="new-email-success"
+                [(ngModel)]="successCheckboxModel.newEmail"
+              />
+              <label>New email</label>
+            </clr-checkbox-wrapper>
+            <clr-checkbox-wrapper>
+              <input
+                type="checkbox"
+                clrCheckbox
+                value="meeting-reminder-success"
+                name="meeting-reminder-success"
+                [(ngModel)]="successCheckboxModel.meetingReminder"
+                #successCheckbox="ngModel"
+              />
+              <label>Meeting reminder</label>
+            </clr-checkbox-wrapper>
+            <clr-control-success>Settings updated</clr-control-success>
+          </clr-checkbox-container>
+        </div>
       </div>
       <div class="clr-col-6">
         <h3 cds-text="section" id="success">Success</h3>
@@ -559,7 +589,6 @@
           <label for="vertical-checkbox3" class="clr-control-label">option 3</label>
         </div>
         <div class="clr-subtext-wrapper">
-          <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
           <span class="clr-subtext">Helper Text</span>
         </div>
       </div>
@@ -570,11 +599,15 @@
     <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="error-state">Error state</h3>
 
     <p class="clr-mt-16px" cds-text="body">
-      To signify an error state, you need to add the <code class="clr-code">.clr-error</code> class to the
-      <code class="clr-code">.clr-control-container</code> element. This will show the
-      <code class="clr-code">.clr-validate-icon</code> and turn the <code class="clr-code">.clr-subtext</code> message
-      to red. If you have helper text that needs to change to error content, you'll have to handle the hiding and
-      showing of that content inside of the <code class="clr-code">.clr-subtext</code> element.
+      To signify an error state, you need to add the <code cds-text="code">.clr-error</code> class to the
+      <code cds-text="code">.clr-control-container</code> element. Then place the error message inside a
+      <code cds-text="code">.clr-subtext-wrapper</code> element with the <code cds-text="code">.error</code> class. This
+      wrapper is hidden by default and only becomes visible when the parent container has
+      <code cds-text="code">.clr-error</code>. Inside the wrapper, you may include a
+      <code cds-text="code">.clr-validate-icon</code> and a <code cds-text="code">.clr-subtext</code> element for the
+      error message — both will be styled in the error color automatically. Helper text placed in a plain
+      <code cds-text="code">.clr-subtext-wrapper</code> (without the <code cds-text="code">.error</code> or
+      <code cds-text="code">.success</code> class) remains visible regardless of the validation state.
     </p>
 
     <div class="clr-form-control">
@@ -592,14 +625,73 @@
           <input type="checkbox" id="error-checkbox3" name="checkbox-error-3" value="option3" class="clr-checkbox" />
           <label for="error-checkbox3" class="clr-control-label">option 3</label>
         </div>
-        <div class="clr-subtext-wrapper">
+        <div class="clr-subtext-wrapper error">
           <cds-icon class="clr-validate-icon" shape="error-standard"></cds-icon>
-          <span class="clr-subtext error">Error message</span>
+          <span class="clr-subtext">Error message</span>
         </div>
       </div>
     </div>
 
     <app-stackblitz-example name="checkbox ui error" [componentTemplate]="uiError.default"></app-stackblitz-example>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="success-state">Success state</h3>
+
+    <p class="clr-mt-16px" cds-text="body">
+      To signify a success state, add the <code cds-text="code">.clr-success</code> class to the
+      <code cds-text="code">.clr-control-container</code> element. Then place the success message inside a
+      <code cds-text="code">.clr-subtext-wrapper</code> element with the <code cds-text="code">.success</code> class.
+      This wrapper is hidden by default and only becomes visible when the parent container has
+      <code cds-text="code">.clr-success</code>. Inside the wrapper, include a
+      <code cds-text="code">.clr-validate-icon</code> and a <code cds-text="code">.clr-subtext</code> element for the
+      success message — both will be styled in the success color automatically. Helper text placed in a plain
+      <code cds-text="code">.clr-subtext-wrapper</code> (without the <code cds-text="code">.error</code> or
+      <code cds-text="code">.success</code> class) remains visible regardless of the validation state.
+    </p>
+
+    <div class="clr-form-control">
+      <label class="clr-control-label">Success checkbox</label>
+      <div class="clr-control-container clr-success">
+        <div class="clr-checkbox-wrapper">
+          <input
+            type="checkbox"
+            id="success-checkbox1"
+            name="checkbox-success-1"
+            value="option1"
+            class="clr-checkbox"
+          />
+          <label for="success-checkbox1" class="clr-control-label">option 1</label>
+        </div>
+        <div class="clr-checkbox-wrapper">
+          <input
+            type="checkbox"
+            id="success-checkbox2"
+            name="checkbox-success-2"
+            value="option2"
+            class="clr-checkbox"
+          />
+          <label for="success-checkbox2" class="clr-control-label">option 2</label>
+        </div>
+        <div class="clr-checkbox-wrapper">
+          <input
+            type="checkbox"
+            id="success-checkbox3"
+            name="checkbox-success-3"
+            value="option3"
+            class="clr-checkbox"
+          />
+          <label for="success-checkbox3" class="clr-control-label">option 3</label>
+        </div>
+        <div class="clr-subtext-wrapper">
+          <span class="clr-subtext">Helper Text</span>
+        </div>
+        <div class="clr-subtext-wrapper success">
+          <cds-icon class="clr-validate-icon" shape="success-standard" status="success"></cds-icon>
+          <span class="clr-subtext">Success message</span>
+        </div>
+      </div>
+    </div>
+
+    <app-stackblitz-example name="checkbox ui success" [componentTemplate]="uiSuccess.default"></app-stackblitz-example>
 
     <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="inline-checkbox">Inline checkbox</h3>
 
@@ -682,7 +774,6 @@
           <label for="checkbox12" class="clr-control-label">option 3</label>
         </div>
         <div class="clr-subtext-wrapper">
-          <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
           <span class="clr-subtext">Helper text</span>
         </div>
       </div>

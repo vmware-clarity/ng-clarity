@@ -31,8 +31,8 @@ import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i3 from '@angular/common';
-import * as i4 from '@angular/forms';
+import * as i1 from '@angular/common';
+import * as i9 from '@angular/forms';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
@@ -188,10 +188,8 @@ export class ClrCalendar implements OnDestroy {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCalendar, never>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "WrappedFormControl_2" needs to be exported by the entry point clr-angular-forms.d.ts
-//
 // @public
-export class ClrCheckbox extends WrappedFormControl_2<ClrCheckboxWrapper> {
+export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, toggle: string);
     // (undocumented)
     get controlDisabled(): boolean;
@@ -205,11 +203,9 @@ export class ClrCheckbox extends WrappedFormControl_2<ClrCheckboxWrapper> {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckbox, [null, null, { optional: true; self: true; }, null, null, { attribute: "clrToggle"; }]>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "ClrAbstractContainer_2" needs to be exported by the entry point clr-angular-forms.d.ts
-//
 // @public (undocumented)
-export class ClrCheckboxContainer extends ClrAbstractContainer_2 implements AfterContentInit {
-    constructor(layoutService: LayoutService_2, controlClassService: ControlClassService_2, ngControlService: NgControlService_2);
+export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     // (undocumented)
     protected get allCheckboxesDisabled(): boolean;
     // (undocumented)
@@ -217,20 +213,14 @@ export class ClrCheckboxContainer extends ClrAbstractContainer_2 implements Afte
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
-    // Warning: (ae-forgotten-export) The symbol "ControlClassService_2" needs to be exported by the entry point clr-angular-forms.d.ts
-    //
     // (undocumented)
-    protected controlClassService: ControlClassService_2;
-    // Warning: (ae-forgotten-export) The symbol "LayoutService_2" needs to be exported by the entry point clr-angular-forms.d.ts
-    //
+    protected controlClassService: ControlClassService;
     // (undocumented)
-    protected layoutService: LayoutService_2;
+    protected layoutService: LayoutService;
     // (undocumented)
     ngAfterContentInit(): void;
-    // Warning: (ae-forgotten-export) The symbol "NgControlService_2" needs to be exported by the entry point clr-angular-forms.d.ts
-    //
     // (undocumented)
-    protected ngControlService: NgControlService_2;
+    protected ngControlService: NgControlService;
     // (undocumented)
     role: string;
     // (undocumented)
@@ -246,12 +236,12 @@ export class ClrCheckboxModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckboxModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrCheckboxModule>;
-    // Warning: (ae-forgotten-export) The symbol "i5" needs to be exported by the entry point clr-angular-forms.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i6" needs to be exported by the entry point clr-angular-forms.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i12" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i7" needs to be exported by the entry point clr-angular-forms.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCheckboxModule, [typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper], [typeof i3.CommonModule, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule, typeof i11.ClrHostWrappingModule], [typeof i6.ClrCommonFormsModule, typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCheckboxModule, [typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper], [typeof i1.CommonModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule, typeof i7.ClrHostWrappingModule], [typeof i2.ClrCommonFormsModule, typeof ClrCheckbox, typeof ClrCheckboxContainer, typeof ClrCheckboxWrapper]>;
 }
 
 // @public (undocumented)
@@ -259,10 +249,8 @@ export class ClrCheckboxWrapper implements OnInit, OnDestroy {
     constructor(toggleService: BehaviorSubject<boolean>);
     // (undocumented)
     checkbox: ClrCheckbox;
-    // Warning: (ae-forgotten-export) The symbol "ClrControlLabel_2" needs to be exported by the entry point clr-angular-forms.d.ts
-    //
     // (undocumented)
-    label: ClrControlLabel_2;
+    label: ClrControlLabel;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -275,10 +263,10 @@ export class ClrCheckboxWrapper implements OnInit, OnDestroy {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckboxWrapper, never>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "LoadingListener_2" needs to be exported by the entry point clr-angular-forms.d.ts
+// Warning: (ae-forgotten-export) The symbol "LoadingListener" needs to be exported by the entry point clr-angular-forms.d.ts
 //
 // @public (undocumented)
-export class ClrCombobox<T> extends WrappedFormControl_2<ClrComboboxContainer> implements ControlValueAccessor, LoadingListener_2, AfterContentInit {
+export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> implements ControlValueAccessor, LoadingListener, AfterContentInit {
     // Warning: (ae-forgotten-export) The symbol "ComboboxContainerService" needs to be exported by the entry point clr-angular-forms.d.ts
     // Warning: (ae-forgotten-export) The symbol "ComboboxFocusHandler" needs to be exported by the entry point clr-angular-forms.d.ts
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
@@ -324,10 +312,10 @@ export class ClrCombobox<T> extends WrappedFormControl_2<ClrComboboxContainer> i
     protected index: number;
     // (undocumented)
     inputId(): string;
-    // Warning: (ae-forgotten-export) The symbol "ClrLoadingState_2" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ClrLoadingState" needs to be exported by the entry point clr-angular-forms.d.ts
     //
     // (undocumented)
-    loadingStateChange(state: ClrLoadingState_2): void;
+    loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
     get multiSelect(): boolean | string;
     set multiSelect(value: boolean | string);
@@ -385,14 +373,14 @@ export class ClrCombobox<T> extends WrappedFormControl_2<ClrComboboxContainer> i
     // (undocumented)
     writeValue(value: T | T[]): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "identityFn": { "alias": "clrComboboxIdentityFn"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "identityFn": { "alias": "clrComboboxIdentityFn"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof i1_2.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, { optional: true; }, null, null, null]>;
 }
 
 // @public (undocumented)
-export class ClrComboboxContainer extends ClrAbstractContainer_2 implements AfterContentInit, AfterViewInit {
-    constructor(layoutService: LayoutService_2, controlClassService: ControlClassService_2, ngControlService: NgControlService_2, containerService: ComboboxContainerService, el: ElementRef<HTMLElement>);
+export class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, containerService: ComboboxContainerService, el: ElementRef<HTMLElement>);
     // (undocumented)
     controlContainer: ElementRef<HTMLElement>;
     // (undocumented)
@@ -418,7 +406,7 @@ export class ClrComboboxModule {
     // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point clr-angular-forms.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof ClrOptionItems], [typeof i3.CommonModule, typeof i4.FormsModule, typeof i5.ClrIcon, typeof i11.ClrKeyFocusModule, typeof i6.ClrCommonFormsModule, typeof i11.ClrConditionalModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i14.ClrSpinnerModule], [typeof i6.ClrCommonFormsModule, typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof i11.ClrConditionalModule, typeof ClrOptionItems]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof ClrOptionItems], [typeof i1.CommonModule, typeof i9.FormsModule, typeof i12.ClrIcon, typeof i7.ClrKeyFocusModule, typeof i2.ClrCommonFormsModule, typeof i7.ClrConditionalModule, typeof i1_2.ClrPopoverModuleNext, typeof i14.ClrSpinnerModule], [typeof i2.ClrCommonFormsModule, typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof i7.ClrConditionalModule, typeof ClrOptionItems]>;
 }
 
 // @public (undocumented)
@@ -429,7 +417,7 @@ export class ClrCommonFormsModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrCommonFormsModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCommonFormsModule, [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl], [typeof i3.CommonModule, typeof i5.ClrIcon], [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl, typeof i5.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCommonFormsModule, [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl], [typeof i1.CommonModule, typeof i12.ClrIcon], [typeof ClrControlLabel, typeof ClrControlError, typeof ClrControlSuccess, typeof ClrControlHelper, typeof ClrIfError, typeof ClrIfSuccess, typeof ClrForm, typeof ClrLayout, typeof ClrControlContainer, typeof ClrControl, typeof i12.ClrIcon]>;
 }
 
 // @public (undocumented)
@@ -539,9 +527,8 @@ export class ClrDatalist implements AfterContentInit {
 }
 
 // @public (undocumented)
-export class ClrDatalistContainer extends ClrAbstractContainer_2 {
-    // Warning: (ae-forgotten-export) The symbol "FormsFocusService_2" needs to be exported by the entry point clr-angular-forms.d.ts
-    constructor(controlClassService: ControlClassService_2, layoutService: LayoutService_2, ngControlService: NgControlService_2, focusService: FormsFocusService_2);
+export class ClrDatalistContainer extends ClrAbstractContainer {
+    constructor(controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, focusService: FormsFocusService);
     // (undocumented)
     focus: boolean;
     // (undocumented)
@@ -553,8 +540,8 @@ export class ClrDatalistContainer extends ClrAbstractContainer_2 {
 }
 
 // @public (undocumented)
-export class ClrDatalistInput extends WrappedFormControl_2<ClrDatalistContainer> implements AfterContentInit {
-    constructor(focusService: FormsFocusService_2, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, datalistIdService: DatalistIdService);
+export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> implements AfterContentInit {
+    constructor(focusService: FormsFocusService, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, datalistIdService: DatalistIdService);
     // (undocumented)
     listValue: string;
     // (undocumented)
@@ -576,17 +563,17 @@ export class ClrDatalistModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalistModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatalistModule>;
-    // Warning: (ae-forgotten-export) The symbol "i5$1" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i7_2" needs to be exported by the entry point clr-angular-forms.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatalistModule, [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer], [typeof i3.CommonModule, typeof i5$1.ClrInputModule, typeof i5.ClrIcon], [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatalistModule, [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer], [typeof i1.CommonModule, typeof i7_2.ClrInputModule, typeof i12.ClrIcon], [typeof ClrDatalist, typeof ClrDatalistInput, typeof ClrDatalistContainer]>;
 }
 
 // @public (undocumented)
-export class ClrDateContainer extends ClrAbstractContainer_2 implements AfterViewInit {
+export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "DatepickerEnabledService" needs to be exported by the entry point clr-angular-forms.d.ts
     // Warning: (ae-forgotten-export) The symbol "ViewManagerService" needs to be exported by the entry point clr-angular-forms.d.ts
-    constructor(renderer: Renderer2, elem: ElementRef, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FormsFocusService_2, viewManagerService: ViewManagerService, controlClassService: ControlClassService_2, layoutService: LayoutService_2, ngControlService: NgControlService_2);
+    constructor(renderer: Renderer2, elem: ElementRef, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FormsFocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService);
     // (undocumented)
     set actionButton(button: ElementRef<HTMLButtonElement>);
     // (undocumented)
@@ -594,7 +581,7 @@ export class ClrDateContainer extends ClrAbstractContainer_2 implements AfterVie
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    protected controlClassService: ControlClassService_2;
+    protected controlClassService: ControlClassService;
     // (undocumented)
     protected elem: ElementRef;
     // (undocumented)
@@ -604,7 +591,7 @@ export class ClrDateContainer extends ClrAbstractContainer_2 implements AfterVie
     // (undocumented)
     protected get isRangePicker(): boolean;
     // (undocumented)
-    protected layoutService: LayoutService_2;
+    protected layoutService: LayoutService;
     // (undocumented)
     set max(dateString: string);
     // (undocumented)
@@ -612,7 +599,7 @@ export class ClrDateContainer extends ClrAbstractContainer_2 implements AfterVie
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
-    protected ngControlService: NgControlService_2;
+    protected ngControlService: NgControlService;
     // (undocumented)
     get open(): boolean;
     // (undocumented)
@@ -625,7 +612,7 @@ export class ClrDateContainer extends ClrAbstractContainer_2 implements AfterVie
     protected renderer: Renderer2;
     set showActionButtons(flag: boolean);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container, clr-date-range-container", never, { "showActionButtons": { "alias": "showActionButtons"; "required": false; }; "clrPosition": { "alias": "clrPosition"; "required": false; }; "rangeOptions": { "alias": "rangeOptions"; "required": false; }; "min": { "alias": "min"; "required": false; }; "max": { "alias": "max"; "required": false; }; }, {}, never, ["label", "[clrStartDate]", "[clrEndDate]", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container, clr-date-range-container", never, { "showActionButtons": { "alias": "showActionButtons"; "required": false; }; "clrPosition": { "alias": "clrPosition"; "required": false; }; "rangeOptions": { "alias": "rangeOptions"; "required": false; }; "min": { "alias": "min"; "required": false; }; "max": { "alias": "max"; "required": false; }; }, {}, never, ["label", "[clrStartDate]", "[clrEndDate]", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1_2.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, null, { optional: true; }, null]>;
 }
@@ -651,8 +638,8 @@ export class ClrDateInput extends ClrDateInputBase {
 }
 
 // @public (undocumented)
-export abstract class ClrDateInputBase extends WrappedFormControl_2<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
-    constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef<HTMLInputElement>, renderer: Renderer2, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: any, focusService: FormsFocusService_2, datepickerFocusService: DatepickerFocusService);
+export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContainer> implements OnInit, AfterViewInit, OnDestroy {
+    constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef<HTMLInputElement>, renderer: Renderer2, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: any, focusService: FormsFocusService, datepickerFocusService: DatepickerFocusService);
     // (undocumented)
     protected control: NgControl;
     // (undocumented)
@@ -742,7 +729,7 @@ export class ClrDatepickerModule {
     // Warning: (ae-forgotten-export) The symbol "i18" needs to be exported by the entry point clr-angular-forms.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions], [typeof i3.CommonModule, typeof i11.CdkTrapFocusModule, typeof i11.ClrHostWrappingModule, typeof i11.ClrConditionalModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule, typeof i18.ClrVerticalNavModule], [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions], [typeof i1.CommonModule, typeof i7.CdkTrapFocusModule, typeof i7.ClrHostWrappingModule, typeof i7.ClrConditionalModule, typeof i1_2.ClrPopoverModuleNext, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule, typeof i18.ClrVerticalNavModule], [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions]>;
 }
 
 // @public (undocumented)
@@ -871,7 +858,7 @@ export class ClrFileInfo {
 }
 
 // @public (undocumented)
-export class ClrFileInput extends WrappedFormControl_2<ClrFileInputContainer> {
+export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
     // (undocumented)
     protected get disabled(): boolean;
@@ -886,7 +873,7 @@ export class ClrFileInput extends WrappedFormControl_2<ClrFileInputContainer> {
 }
 
 // @public (undocumented)
-export class ClrFileInputContainer extends ClrAbstractContainer_2 {
+export class ClrFileInputContainer extends ClrAbstractContainer {
     // (undocumented)
     protected get accept(): string;
     // (undocumented)
@@ -929,7 +916,7 @@ export class ClrFileInputModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrFileInputModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFileInputModule, [typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError], [typeof i3.CommonModule, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFileInputModule, [typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError], [typeof i1.CommonModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError]>;
 }
 
 // @public (undocumented)
@@ -1086,20 +1073,20 @@ export class ClrFormsModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFormsModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrFormsModule>;
-    // Warning: (ae-forgotten-export) The symbol "i3$1" needs to be exported by the entry point clr-angular-forms.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4$1" needs to be exported by the entry point clr-angular-forms.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i5$2" needs to be exported by the entry point clr-angular-forms.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i6$1" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i5" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i6" needs to be exported by the entry point clr-angular-forms.d.ts
     // Warning: (ae-forgotten-export) The symbol "i8" needs to be exported by the entry point clr-angular-forms.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i9" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i9_2" needs to be exported by the entry point clr-angular-forms.d.ts
     // Warning: (ae-forgotten-export) The symbol "i10" needs to be exported by the entry point clr-angular-forms.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i11$1" needs to be exported by the entry point clr-angular-forms.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i12" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i12_2" needs to be exported by the entry point clr-angular-forms.d.ts
     // Warning: (ae-forgotten-export) The symbol "i13" needs to be exported by the entry point clr-angular-forms.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i14$1" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i14_2" needs to be exported by the entry point clr-angular-forms.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i3.CommonModule], [typeof i6.ClrCommonFormsModule, typeof i3$1.ClrCheckboxModule, typeof i4$1.ClrComboboxModule, typeof i5$2.ClrDatepickerModule, typeof i6$1.ClrFileInputModule, typeof i5$1.ClrInputModule, typeof i8.ClrPasswordModule, typeof i9.ClrRadioModule, typeof i10.ClrSelectModule, typeof i11$1.ClrTextareaModule, typeof i12.ClrRangeModule, typeof i13.ClrDatalistModule, typeof i14$1.ClrNumberInputModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i1.CommonModule], [typeof i2.ClrCommonFormsModule, typeof i3.ClrCheckboxModule, typeof i4.ClrComboboxModule, typeof i5.ClrDatepickerModule, typeof i6.ClrFileInputModule, typeof i7_2.ClrInputModule, typeof i8.ClrPasswordModule, typeof i9_2.ClrRadioModule, typeof i10.ClrSelectModule, typeof i11.ClrTextareaModule, typeof i12_2.ClrRangeModule, typeof i13.ClrDatalistModule, typeof i14_2.ClrNumberInputModule]>;
 }
 
 // @public (undocumented)
@@ -1107,10 +1094,10 @@ export class ClrIfError extends AbstractIfState {
     constructor(ngControlService: NgControlService, template: TemplateRef<any>, container: ViewContainerRef);
     // (undocumented)
     error: string;
-    // Warning: (ae-forgotten-export) The symbol "CONTROL_STATE_2" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "CONTROL_STATE" needs to be exported by the entry point clr-angular-forms.d.ts
     //
     // (undocumented)
-    protected handleState(state: CONTROL_STATE_2): void;
+    protected handleState(state: CONTROL_STATE): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfError, "[clrIfError]", never, { "error": { "alias": "clrIfError"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
@@ -1121,7 +1108,7 @@ export class ClrIfError extends AbstractIfState {
 export class ClrIfSuccess extends AbstractIfState {
     constructor(ngControlService: NgControlService, template: TemplateRef<any>, container: ViewContainerRef);
     // (undocumented)
-    protected handleState(state: CONTROL_STATE_2): void;
+    protected handleState(state: CONTROL_STATE): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfSuccess, "[clrIfSuccess]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -1129,7 +1116,7 @@ export class ClrIfSuccess extends AbstractIfState {
 }
 
 // @public (undocumented)
-export class ClrInput extends WrappedFormControl_2<ClrInputContainer> {
+export class ClrInput extends WrappedFormControl<ClrInputContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
     protected index: number;
@@ -1140,7 +1127,7 @@ export class ClrInput extends WrappedFormControl_2<ClrInputContainer> {
 }
 
 // @public (undocumented)
-export class ClrInputContainer extends ClrAbstractContainer_2 {
+export class ClrInputContainer extends ClrAbstractContainer {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrInputContainer, "clr-input-container", never, {}, {}, never, ["label", "[clrInputPrefix]", "[clrInput]", "[clrInputSuffix]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
@@ -1155,7 +1142,7 @@ export class ClrInputModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrInputModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof ClrInput, typeof ClrInputContainer], [typeof i3.CommonModule, typeof i4.FormsModule, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrInput, typeof ClrInputContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof ClrInput, typeof ClrInputContainer], [typeof i1.CommonModule, typeof i9.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrInput, typeof ClrInputContainer]>;
 }
 
 // @public (undocumented)
@@ -1211,8 +1198,8 @@ export class ClrMonthpicker implements AfterViewInit {
 }
 
 // @public (undocumented)
-export class ClrNumberInput extends WrappedFormControl_2<ClrNumberInputContainer> {
-    constructor(focusService: FormsFocusService_2, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> {
+    constructor(focusService: FormsFocusService, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
     dispatchBlur(): void;
     // (undocumented)
@@ -1236,8 +1223,8 @@ export class ClrNumberInput extends WrappedFormControl_2<ClrNumberInputContainer
 }
 
 // @public (undocumented)
-export class ClrNumberInputContainer extends ClrAbstractContainer_2 {
-    constructor(controlClassService: ControlClassService_2, layoutService: LayoutService_2, ngControlService: NgControlService_2, focusService: FormsFocusService_2);
+export class ClrNumberInputContainer extends ClrAbstractContainer {
+    constructor(controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, focusService: FormsFocusService);
     // (undocumented)
     focus: boolean;
     // (undocumented)
@@ -1258,7 +1245,7 @@ export class ClrNumberInputModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrNumberInputModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNumberInputModule, [typeof ClrNumberInput, typeof ClrNumberInputContainer], [typeof i3.CommonModule, typeof i4.FormsModule, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrNumberInput, typeof ClrNumberInputContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNumberInputModule, [typeof ClrNumberInput, typeof ClrNumberInputContainer], [typeof i1.CommonModule, typeof i9.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrNumberInput, typeof ClrNumberInputContainer]>;
 }
 
 // @public (undocumented)
@@ -1330,7 +1317,7 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrOptions<T> implements AfterViewInit, LoadingListener_2, OnDestroy {
+export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
     constructor(optionSelectionService: OptionSelectionService<T>, id: number, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, popoverService: ClrPopoverService, parentHost: ElementRef<HTMLElement>, document: any);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
@@ -1349,7 +1336,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener_2, OnDestro
     // (undocumented)
     loading: boolean;
     // (undocumented)
-    loadingStateChange(state: ClrLoadingState_2): void;
+    loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -1386,8 +1373,8 @@ export class ClrOptionSelected<T> {
 }
 
 // @public (undocumented)
-export class ClrPassword extends WrappedFormControl_2<ClrPasswordContainer> implements OnInit, OnDestroy {
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, focusService: FormsFocusService_2, toggleService: BehaviorSubject<boolean>);
+export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implements OnInit, OnDestroy {
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, focusService: FormsFocusService, toggleService: BehaviorSubject<boolean>);
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -1401,8 +1388,8 @@ export class ClrPassword extends WrappedFormControl_2<ClrPasswordContainer> impl
 }
 
 // @public (undocumented)
-export class ClrPasswordContainer extends ClrAbstractContainer_2 {
-    constructor(layoutService: LayoutService_2, controlClassService: ControlClassService_2, ngControlService: NgControlService_2, focusService: FormsFocusService_2, toggleService: BehaviorSubject<boolean>, commonStrings: ClrCommonStringsService);
+export class ClrPasswordContainer extends ClrAbstractContainer {
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, focusService: FormsFocusService, toggleService: BehaviorSubject<boolean>, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get clrToggle(): boolean;
     set clrToggle(state: boolean);
@@ -1411,7 +1398,7 @@ export class ClrPasswordContainer extends ClrAbstractContainer_2 {
     // (undocumented)
     focus: boolean;
     // (undocumented)
-    focusService: FormsFocusService_2;
+    focusService: FormsFocusService;
     // (undocumented)
     hidePasswordText(label: string): string;
     // (undocumented)
@@ -1434,11 +1421,11 @@ export class ClrPasswordModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPasswordModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof ClrPassword, typeof ClrPasswordContainer], [typeof i3.CommonModule, typeof i4.FormsModule, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrPassword, typeof ClrPasswordContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof ClrPassword, typeof ClrPasswordContainer], [typeof i1.CommonModule, typeof i9.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrPassword, typeof ClrPasswordContainer]>;
 }
 
 // @public (undocumented)
-export class ClrRadio extends WrappedFormControl_2<ClrRadioWrapper> {
+export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRadio, "[clrRadio]", never, {}, {}, never, never, false, never>;
@@ -1447,23 +1434,23 @@ export class ClrRadio extends WrappedFormControl_2<ClrRadioWrapper> {
 }
 
 // @public (undocumented)
-export class ClrRadioContainer extends ClrAbstractContainer_2 implements AfterContentInit {
-    constructor(layoutService: LayoutService_2, controlClassService: ControlClassService_2, ngControlService: NgControlService_2);
+export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     // (undocumented)
     ariaLabelledBy: string;
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
     // (undocumented)
-    protected controlClassService: ControlClassService_2;
+    protected controlClassService: ControlClassService;
     // (undocumented)
     groupLabel: ElementRef<HTMLElement>;
     // (undocumented)
-    protected layoutService: LayoutService_2;
+    protected layoutService: LayoutService;
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
-    protected ngControlService: NgControlService_2;
+    protected ngControlService: NgControlService;
     // (undocumented)
     radios: QueryList<ClrRadio>;
     // (undocumented)
@@ -1482,13 +1469,13 @@ export class ClrRadioModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrRadioModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRadioModule, [typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper], [typeof i3.CommonModule, typeof i6.ClrCommonFormsModule, typeof i11.ClrHostWrappingModule, typeof i5.ClrIcon], [typeof i6.ClrCommonFormsModule, typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRadioModule, [typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper], [typeof i1.CommonModule, typeof i2.ClrCommonFormsModule, typeof i7.ClrHostWrappingModule, typeof i12.ClrIcon], [typeof i2.ClrCommonFormsModule, typeof ClrRadio, typeof ClrRadioContainer, typeof ClrRadioWrapper]>;
 }
 
 // @public (undocumented)
 export class ClrRadioWrapper implements OnInit {
     // (undocumented)
-    label: ClrControlLabel_2;
+    label: ClrControlLabel;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
@@ -1498,7 +1485,7 @@ export class ClrRadioWrapper implements OnInit {
 }
 
 // @public (undocumented)
-export class ClrRange extends WrappedFormControl_2<ClrRangeContainer> {
+export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRange, "[clrRange]", never, {}, {}, never, never, false, never>;
@@ -1507,9 +1494,8 @@ export class ClrRange extends WrappedFormControl_2<ClrRangeContainer> {
 }
 
 // @public (undocumented)
-export class ClrRangeContainer extends ClrAbstractContainer_2 {
-    // Warning: (ae-forgotten-export) The symbol "ControlIdService_2" needs to be exported by the entry point clr-angular-forms.d.ts
-    constructor(layoutService: LayoutService_2, controlClassService: ControlClassService_2, ngControlService: NgControlService_2, renderer: Renderer2, idService: ControlIdService_2);
+export class ClrRangeContainer extends ClrAbstractContainer {
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, renderer: Renderer2, idService: ControlIdService);
     // (undocumented)
     getRangeProgressFillWidth(): string;
     // (undocumented)
@@ -1529,11 +1515,11 @@ export class ClrRangeModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrRangeModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRangeModule, [typeof ClrRange, typeof ClrRangeContainer], [typeof i3.CommonModule, typeof i6.ClrCommonFormsModule, typeof i11.ClrHostWrappingModule, typeof i5.ClrIcon], [typeof i6.ClrCommonFormsModule, typeof ClrRange, typeof ClrRangeContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrRangeModule, [typeof ClrRange, typeof ClrRangeContainer], [typeof i1.CommonModule, typeof i2.ClrCommonFormsModule, typeof i7.ClrHostWrappingModule, typeof i12.ClrIcon], [typeof i2.ClrCommonFormsModule, typeof ClrRange, typeof ClrRangeContainer]>;
 }
 
 // @public (undocumented)
-export class ClrSelect extends WrappedFormControl_2<ClrSelectContainer> {
+export class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLSelectElement>);
     // (undocumented)
     protected index: number;
@@ -1544,16 +1530,16 @@ export class ClrSelect extends WrappedFormControl_2<ClrSelectContainer> {
 }
 
 // @public (undocumented)
-export class ClrSelectContainer extends ClrAbstractContainer_2 {
-    constructor(layoutService: LayoutService_2, controlClassService: ControlClassService_2, ngControlService: NgControlService_2);
+export class ClrSelectContainer extends ClrAbstractContainer {
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     // (undocumented)
-    protected controlClassService: ControlClassService_2;
+    protected controlClassService: ControlClassService;
     // (undocumented)
-    protected layoutService: LayoutService_2;
+    protected layoutService: LayoutService;
     // (undocumented)
     multiple: SelectMultipleControlValueAccessor;
     // (undocumented)
-    protected ngControlService: NgControlService_2;
+    protected ngControlService: NgControlService;
     // (undocumented)
     wrapperClass(): "clr-multiselect-wrapper" | "clr-select-wrapper";
     // (undocumented)
@@ -1570,7 +1556,7 @@ export class ClrSelectModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSelectModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSelectModule, [typeof ClrSelect, typeof ClrSelectContainer], [typeof i3.CommonModule, typeof i4.FormsModule, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrSelect, typeof ClrSelectContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSelectModule, [typeof ClrSelect, typeof ClrSelectContainer], [typeof i1.CommonModule, typeof i9.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrSelect, typeof ClrSelectContainer]>;
 }
 
 // @public (undocumented)
@@ -1617,7 +1603,7 @@ export class ClrStartDateInputValidator implements Validator {
 }
 
 // @public (undocumented)
-export class ClrTextarea extends WrappedFormControl_2<ClrTextareaContainer> {
+export class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLTextAreaElement>);
     // (undocumented)
     protected index: number;
@@ -1628,7 +1614,7 @@ export class ClrTextarea extends WrappedFormControl_2<ClrTextareaContainer> {
 }
 
 // @public (undocumented)
-export class ClrTextareaContainer extends ClrAbstractContainer_2 {
+export class ClrTextareaContainer extends ClrAbstractContainer {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTextareaContainer, "clr-textarea-container", never, {}, {}, never, ["label", "[clrTextarea]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
@@ -1643,7 +1629,7 @@ export class ClrTextareaModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTextareaModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTextareaModule, [typeof ClrTextarea, typeof ClrTextareaContainer], [typeof i3.CommonModule, typeof i4.FormsModule, typeof i5.ClrIcon, typeof i6.ClrCommonFormsModule], [typeof i6.ClrCommonFormsModule, typeof ClrTextarea, typeof ClrTextareaContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTextareaModule, [typeof ClrTextarea, typeof ClrTextareaContainer], [typeof i1.CommonModule, typeof i9.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrTextarea, typeof ClrTextareaContainer]>;
 }
 
 // @public (undocumented)
@@ -1889,7 +1875,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-forms.d.ts:613:512 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-forms.d.ts
+// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:215:512 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
 
 // (No @packageDocumentation comment for this package)
 

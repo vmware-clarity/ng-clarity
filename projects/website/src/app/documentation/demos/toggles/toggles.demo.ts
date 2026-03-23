@@ -50,6 +50,7 @@ const UiError = require('raw-loader!./ui/error.html').default;
 const UiFull = require('raw-loader!./ui/full.html').default;
 const UiInline = require('raw-loader!./ui/inline.html').default;
 const UiRight = require('raw-loader!./ui/right.html').default;
+const UiSuccess = require('raw-loader!./ui/success.html').default;
 
 @Component({
   templateUrl: './toggles.demo.html',
@@ -98,6 +99,7 @@ export class TogglesDemo extends ClarityDocComponent {
   uiInline: any = UiInline;
   uiRight: any = UiRight;
   uiDisabled: any = UiDisabled;
+  uiSuccess: any = UiSuccess;
 
   ngBasic: any = NgBasic;
   ngLabel: any = NgLabel;
