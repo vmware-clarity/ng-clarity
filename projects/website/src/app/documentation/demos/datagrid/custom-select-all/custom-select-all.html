@@ -1,0 +1,139 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2 class="clr-mt-48px" cds-text="title">Custom Select All</h2>
+
+<p class="clr-mt-16px" cds-text="body">
+  By default, the "select all" checkbox in the datagrid header selects or deselects all currently displayed items using
+  the built-in selection logic. However, in some scenarios you may need full control over what happens when the user
+  clicks the "select all" checkbox. The <code cds-text="code">clrDgCustomSelectAll</code> feature lets you override the
+  default behavior and implement your own select-all logic.
+</p>
+
+<h3 class="clr-mt-32px" cds-text="section">When to use</h3>
+
+<p class="clr-mt-16px" cds-text="body">Custom select all is particularly useful in the following scenarios:</p>
+<ul class="list list-spacer">
+  <li>
+    <strong>Virtual scroll datagrids</strong> &mdash; In a virtual scroll datagrid, only a subset of rows are rendered
+    in the DOM at any given time. The default select-all behavior only toggles selection for rendered rows. With custom
+    select all, you can select items from the entire dataset, including rows that are not currently rendered.
+  </li>
+  <li>
+    <strong>Server-driven selection</strong> &mdash; When your data is fetched from a server and you want the select-all
+    action to trigger a server-side operation (e.g., marking all records as selected in the backend).
+  </li>
+  <li>
+    <strong>Conditional selection</strong> &mdash; When you want to apply custom filtering logic to determine which
+    items should be selected (e.g., select only items matching certain criteria).
+  </li>
+</ul>
+
+<h3 class="clr-mt-32px" cds-text="section">Basic usage</h3>
+
+<p class="clr-mt-16px" cds-text="body">
+  To enable custom select all, set <code cds-text="code">[clrDgCustomSelectAllEnabled]</code> to
+  <code cds-text="code">true</code> on the <code cds-text="code">&lt;clr-datagrid&gt;</code> component and listen to the
+  <code cds-text="code">(clrDgCustomSelectAll)</code> output event. When the user clicks the "select all" checkbox, the
+  datagrid will emit a <code cds-text="code">boolean</code> value through this event instead of modifying the selection
+  internally.
+</p>
+
+<p class="clr-mt-16px clr-mb-16px" cds-text="body">
+  The emitted value is <code cds-text="code">true</code> when the checkbox is being checked (select all) and
+  <code cds-text="code">false</code> when it is being unchecked (deselect all).
+</p>
+
+<app-code-snippet [code]="examples.basicUsage" language="html"></app-code-snippet>
+
+<p class="clr-mt-16px clr-mb-16px" cds-text="body">
+  In your component, handle the event to apply your own selection logic:
+</p>
+
+<app-code-snippet [code]="handlerExample" language="typescript"></app-code-snippet>
+
+<clr-alert [clrAlertType]="'info'" [clrAlertClosable]="false">
+  <clr-alert-item>
+    <span class="alert-text">
+      When <code cds-text="code">[clrDgCustomSelectAllEnabled]</code> is <code cds-text="code">true</code>, the datagrid
+      will <strong>not</strong> modify the selection internally when the "select all" checkbox is clicked. You are fully
+      responsible for updating the <code cds-text="code">[(clrDgSelected)]</code> binding in your event handler.
+    </span>
+  </clr-alert-item>
+</clr-alert>
+
+<h3 class="clr-mt-32px" cds-text="section">Example</h3>
+
+<p class="clr-mt-16px clr-mb-16px" cds-text="body">
+  In the following example, clicking the "select all" checkbox triggers custom logic that selects all users. The
+  selected user names are displayed above the datagrid.
+</p>
+
+<div class="card card-block">
+  <p class="card-text username-list">
+    Selected users: @if (selected.length == 0) {
+    <em>No user selected.</em>
+    } @for (user of selected; track user) {
+    <span class="username">{{ user.name }}</span>
+    }
+  </p>
+</div>
+
+<clr-datagrid
+  [(clrDgSelected)]="selected"
+  [clrDgSelectionType]="'multi'"
+  [clrDgItemsIdentityFn]="trackUserItemById"
+  [clrDgCustomSelectAllEnabled]="true"
+  (clrDgCustomSelectAll)="onCustomSelectAll($event)"
+>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>Favorite color</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Custom Select All"
+  [componentTemplate]="examples.main"
+  [componentClass]="examples.componentTS"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>
+
+{{examples}}
+
+<h3 class="clr-mt-32px" cds-text="section">Usage with virtual scroll</h3>
+
+<p class="clr-mt-16px" cds-text="body">
+  Custom select all is especially important when using virtual scroll. In a virtual scroll datagrid, only the rows
+  visible in the viewport (plus a small buffer) are rendered in the DOM. The default select-all behavior would only
+  toggle selection for those rendered rows, which is typically not what users expect.
+</p>
+
+<p class="clr-mt-16px clr-mb-16px" cds-text="body">
+  By enabling custom select all, you can ensure that clicking "select all" selects every item in the full dataset:
+</p>
+
+<app-code-snippet [code]="examples.virtualScrollExample" language="html"></app-code-snippet>
+
+<p class="clr-mt-16px clr-mb-16px" cds-text="body">
+  The handler for virtual scroll should account for items that may already be selected:
+</p>
+
+<app-code-snippet [code]="virtualScrollHandlerExample" language="typescript"></app-code-snippet>

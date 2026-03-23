@@ -18,7 +18,11 @@ const main = `
   </p>
 </div>
 
-<clr-datagrid [(clrDgSelected)]="selected" [clrDgItemsIdentityFn]="trackUserItemById">
+<clr-datagrid
+  [(clrDgSelected)]="selected"
+  [clrDgSelectionType]="'multi'"
+  [clrDgItemsIdentityFn]="trackUserItemById"
+>
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -42,12 +46,6 @@ const singleRow = `
   <!-- ... -->
 </clr-dg-row>
 `;
-/*
- * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 
 const rowSelection = `
 <clr-datagrid
@@ -74,7 +72,11 @@ const rowSelection = `
 `;
 
 const selectionChangeEvent = `
-<clr-datagrid [clrDgSelected]="selected" (clrDgSelectedChange)="selectionChanged($event)">
+<clr-datagrid
+  [clrDgSelected]="selected"
+  [clrDgSelectionType]="'multi'"
+  (clrDgSelectedChange)="selectionChanged($event)"
+>
   <!-- ... -->
 </clr-datagrid>
 `;
