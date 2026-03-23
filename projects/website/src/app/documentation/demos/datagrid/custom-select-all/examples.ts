@@ -125,6 +125,5 @@ export const EXAMPLES = {
   basicUsage,
   main,
   componentTS,
-  handlerExample,
   virtualScrollExample,
 };
