@@ -200,6 +200,19 @@
     </p>
 
     <clr-combobox-grouping-demo></clr-combobox-grouping-demo>
+
+    <h3 data-toc-item id="identity-fn-combobox" cds-text="section" class="clr-mt-32px">Identity Function</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      By default, combobox options are compared by reference. If you need to use a custom comparison logic, you can
+      provide an identity function using the <code cds-text="code">[clrComboboxIdentityFn]</code> input. This function
+      should take an item and return a unique identifier for it. This is useful when working with objects that have
+      unique IDs but may be different instances.
+    </p>
+
+    <clr-combobox-identity-fn-demo></clr-combobox-identity-fn-demo>
+
+    <clr-combobox-multi-identity-fn-demo class="clr-mt-lg"></clr-combobox-multi-identity-fn-demo>
   </app-doc-tab>
 
   <app-doc-tab tab="api">
@@ -235,6 +248,16 @@
           <td class="left clr-hidden-xs-down">boolean</td>
           <td class="left clr-hidden-xs-down">false</td>
           <td class="left">whether not this is a mutli-select combobox</td>
+        </tr>
+        <tr>
+          <td class="left">
+            [clrComboboxIdentityFn]
+            <div class="clr-hidden-sm-up">Type: (item: T) => any</div>
+            <div class="clr-hidden-sm-up">Default: (item: T) => item</div>
+          </td>
+          <td class="left clr-hidden-xs-down">(item: T) => any</td>
+          <td class="left clr-hidden-xs-down">(item: T) => item</td>
+          <td class="left">A function that returns a unique identifier for an item. Default is the item reference</td>
         </tr>
         <tr>
           <td class="left">
