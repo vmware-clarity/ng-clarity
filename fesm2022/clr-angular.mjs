@@ -18,7 +18,7 @@ import { ClrModalModule, ClrSidePanelModule } from '@clr/angular/modal';
 export * from '@clr/angular/modal';
 import { ClrPopoverModule } from '@clr/angular/popover';
 export * from '@clr/angular/popover';
-import { ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrProgressBarModule } from '@clr/angular/progress/progress-bars';
 export * from '@clr/angular/progress/progress-bars';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
@@ -59,7 +59,7 @@ class ClarityModule {
             ClrStepperModule,
             ClrSpinnerModule,
             ClrProgressBarModule,
-            _lrClrPopoverModuleNext,
+            ClrPopoverModuleNext,
             ClrTimelineModule] }); }
     static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClarityModule, imports: [ClrIcon, ClrEmphasisModule,
             ClrDataModule,
@@ -78,7 +78,7 @@ class ClarityModule {
             ClrStepperModule,
             ClrSpinnerModule,
             ClrProgressBarModule,
-            _lrClrPopoverModuleNext,
+            ClrPopoverModuleNext,
             ClrTimelineModule] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClarityModule, decorators: [{
@@ -104,7 +104,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                         ClrStepperModule,
                         ClrSpinnerModule,
                         ClrProgressBarModule,
-                        _lrClrPopoverModuleNext,
+                        ClrPopoverModuleNext,
                         ClrTimelineModule,
                     ],
                 }]

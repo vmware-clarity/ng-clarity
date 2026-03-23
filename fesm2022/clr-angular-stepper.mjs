@@ -684,5 +684,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { ClrStepButton, ClrStepButtonType, ClrStepContent, ClrStepDescription, ClrStepTitle, ClrStepper, ClrStepperModule, ClrStepperPanel, StepperPanelModel, StepperPanelStatus, StepperService, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka };
+export { ClrStepButton, ClrStepButtonType, ClrStepContent, ClrStepDescription, ClrStepTitle, ClrStepper, ClrStepperModule, ClrStepperPanel, StepperOompaLoompa, StepperPanelModel, StepperPanelStatus, StepperService, StepperWillyWonka };
 //# sourceMappingURL=clr-angular-stepper.mjs.map

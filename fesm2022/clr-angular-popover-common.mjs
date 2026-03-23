@@ -1089,5 +1089,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { ClrIfOpen, ClrPopoverContent, ClrPopoverHostDirective, ClrPopoverOrigin, ClrPopoverPosition, ClrPopoverService, ClrPopoverType, ClrStopEscapePropagationDirective, DROPDOWN_POSITIONS, POPOVER_HOST_ORIGIN, SIGNPOST_POSITIONS, TOOLTIP_POSITIONS, getConnectedPositions, getContentPosition, getOriginPosition, getPositionsArray, mapPopoverKeyToPosition, ClrPopoverCloseButton as ÇlrClrPopoverCloseButton, ClrPopoverModuleNext as ÇlrClrPopoverModuleNext, ClrPopoverOpenCloseButton as ÇlrClrPopoverOpenCloseButton };
+export { ClrIfOpen, ClrPopoverCloseButton, ClrPopoverContent, ClrPopoverHostDirective, ClrPopoverModuleNext, ClrPopoverOpenCloseButton, ClrPopoverOrigin, ClrPopoverPosition, ClrPopoverService, ClrPopoverType, ClrStopEscapePropagationDirective, DROPDOWN_POSITIONS, POPOVER_HOST_ORIGIN, SIGNPOST_POSITIONS, TOOLTIP_POSITIONS, getConnectedPositions, getContentPosition, getOriginPosition, getPositionsArray, mapPopoverKeyToPosition };
 //# sourceMappingURL=clr-angular-popover-common.mjs.map

@@ -76,7 +76,7 @@ declare class ClrTooltipContent implements OnInit {
 declare const CLR_TOOLTIP_DIRECTIVES: Type<any>[];
 declare class ClrTooltipModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTooltipModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i4.CommonModule, typeof i5.ClrIcon, typeof i1.ÇlrClrPopoverModuleNext], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof i1.ClrIfOpen, typeof i5.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTooltipModule, [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent], [typeof i4.CommonModule, typeof i5.ClrIcon, typeof i1.ClrPopoverModuleNext], [typeof ClrTooltip, typeof ClrTooltipTrigger, typeof ClrTooltipContent, typeof i1.ClrIfOpen, typeof i5.ClrIcon]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTooltipModule>;
 }
 

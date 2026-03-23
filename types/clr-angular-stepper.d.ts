@@ -176,4 +176,4 @@ declare class ClrStepperModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStepperModule>;
 }
 
-export { ClrStepButton, ClrStepButtonType, ClrStepContent, ClrStepDescription, ClrStepTitle, ClrStepper, ClrStepperModule, ClrStepperPanel, StepperPanelModel, StepperPanelStatus, StepperService, StepperOompaLoompa as ÇlrStepperOompaLoompa, StepperWillyWonka as ÇlrStepperWillyWonka };
+export { ClrStepButton, ClrStepButtonType, ClrStepContent, ClrStepDescription, ClrStepTitle, ClrStepper, ClrStepperModule, ClrStepperPanel, StepperOompaLoompa, StepperPanelModel, StepperPanelStatus, StepperService, StepperWillyWonka };

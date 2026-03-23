@@ -150,7 +150,7 @@ declare const CLR_SIGNPOST_DIRECTIVES: Type<any>[];
 declare class ClrSignpostModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i5.CommonModule, typeof i6.ClrIcon, typeof i7.ClrFocusOnViewInitModule, typeof i8.ÇlrClrPopoverModuleNext, typeof i8.ClrIfOpen], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof i8.ClrIfOpen]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i5.CommonModule, typeof i6.ClrIcon, typeof i7.ClrFocusOnViewInitModule, typeof i8.ClrPopoverModuleNext, typeof i8.ClrIfOpen], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof i8.ClrIfOpen]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSignpostModule>;
 }
 
