@@ -51,6 +51,20 @@ import { TemplateRef } from '@angular/core';
 import { Type } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
 
+// Warning: (ae-forgotten-export) The symbol "OompaLoompa" needs to be exported by the entry point clr-angular-layout.d.ts
+//
+// @public (undocumented)
+export class ActiveOompaLoompa extends OompaLoompa {
+    // Warning: (ae-forgotten-export) The symbol "IfActiveService" needs to be exported by the entry point clr-angular-layout.d.ts
+    constructor(cdr: ChangeDetectorRef, willyWonka: TabsWillyWonka, id: number, ifActive: IfActiveService);
+    // (undocumented)
+    get flavor(): boolean;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ActiveOompaLoompa, "[clrTabLink], clr-tab-content", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ActiveOompaLoompa, [null, { optional: true; }, null, null]>;
+}
+
 // @public (undocumented)
 export interface BreadcrumbItem {
     // (undocumented)
@@ -286,8 +300,6 @@ export class ClrTab {
     get active(): boolean;
     // (undocumented)
     id: number;
-    // Warning: (ae-forgotten-export) The symbol "IfActiveService" needs to be exported by the entry point clr-angular-layout.d.ts
-    //
     // (undocumented)
     ifActiveService: IfActiveService;
     // (undocumented)
@@ -462,7 +474,7 @@ export class ClrTabsModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTabsModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa], [typeof i2.CommonModule, typeof i1_2.ClrConditionalModule, typeof i3.ClrIcon, typeof i1_2.ClrTemplateRefModule, typeof i1_2.ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa, typeof i1_2.ClrConditionalModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa], [typeof i2.CommonModule, typeof i1_2.ClrConditionalModule, typeof i3.ClrIcon, typeof i1_2.ClrTemplateRefModule, typeof i1_2.ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa, typeof i1_2.ClrConditionalModule]>;
 }
 
 // @public (undocumented)
@@ -585,8 +597,6 @@ export class MainContainerWillyWonka extends WillyWonka {
     static ɵfac: i0.ɵɵFactoryDeclaration<MainContainerWillyWonka, never>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "OompaLoompa" needs to be exported by the entry point clr-angular-layout.d.ts
-//
 // @public (undocumented)
 export class NavDetectionOompaLoompa extends OompaLoompa {
     constructor(cdr: ChangeDetectorRef, willyWonka: MainContainerWillyWonka, responsiveNavService: ResponsiveNavigationService);
@@ -661,22 +671,11 @@ export class ResponsiveNavigationService {
 }
 
 // @public (undocumented)
-export class ÇlrActiveOompaLoompa extends OompaLoompa {
-    constructor(cdr: ChangeDetectorRef, willyWonka: ÇlrTabsWillyWonka, id: number, ifActive: IfActiveService);
+export class TabsWillyWonka extends WillyWonka {
     // (undocumented)
-    get flavor(): boolean;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<TabsWillyWonka, "clr-tabs", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrActiveOompaLoompa, "[clrTabLink], clr-tab-content", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrActiveOompaLoompa, [null, { optional: true; }, null, null]>;
-}
-
-// @public (undocumented)
-export class ÇlrTabsWillyWonka extends WillyWonka {
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrTabsWillyWonka, "clr-tabs", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrTabsWillyWonka, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TabsWillyWonka, never>;
 }
 
 // Warnings were encountered during analysis:

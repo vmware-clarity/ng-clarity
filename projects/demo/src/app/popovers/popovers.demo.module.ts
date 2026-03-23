@@ -9,7 +9,7 @@ import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClarityModule, ClrPopoverService, ÇlrClrPopoverModuleNext } from '@clr/angular';
+import { ClarityModule, ClrPopoverModuleNext, ClrPopoverService } from '@clr/angular';
 
 import { DatagridContextMenuDemo } from './datagrid-context-menu.demo';
 import { DropdownContextMenuDemo } from './dropdown-context-menu.demo';
@@ -23,7 +23,7 @@ import { SignpostContextMenuDemo } from './signpost-context-menu.demo';
     CommonModule,
     ClarityModule,
     CdkTrapFocus,
-    ÇlrClrPopoverModuleNext,
+    ClrPopoverModuleNext,
     ROUTING,
     FormsModule,
     ReactiveFormsModule,

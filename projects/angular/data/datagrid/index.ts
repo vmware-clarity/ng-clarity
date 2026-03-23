@@ -42,22 +42,23 @@ export * from './built-in/filters/datagrid-property-string-filter';
 export * from './built-in/filters/datagrid-property-numeric-filter';
 export * from './built-in/comparators/datagrid-property-comparator';
 
+export * from './chocolate/expandable-oompa-loompa';
+export * from './chocolate/actionable-oompa-loompa';
+export * from './chocolate/datagrid-willy-wonka';
+
 export * from './datagrid.module';
 export * from './providers/selection'; // exported specifically for appfx datagrid;
 
 export { ClrDatagridItemsIdentityFunction } from './providers/items';
-export { ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
-export { ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
-export { ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor } from './datagrid-single-selection.directive';
-export { DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer } from './datagrid-detail-registerer';
-export { WrappedCell as ÇlrWrappedCell } from './wrapped-cell';
-export { WrappedColumn as ÇlrWrappedColumn } from './wrapped-column';
-export { WrappedRow as ÇlrWrappedRow } from './wrapped-row';
-export { DatagridMainRenderer as ÇlrDatagridMainRenderer } from './render/main-renderer';
-export { DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer } from './render/header-renderer';
-export { DatagridCellRenderer as ÇlrDatagridCellRenderer } from './render/cell-renderer';
-export { DatagridRowRenderer as ÇlrDatagridRowRenderer } from './render/row-renderer';
-export { DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer } from './render/row-detail-renderer';
-export { ExpandableOompaLoompa as ÇlrExpandableOompaLoompa } from './chocolate/expandable-oompa-loompa';
-export { ActionableOompaLoompa as ÇlrActionableOompaLoompa } from './chocolate/actionable-oompa-loompa';
-export { DatagridWillyWonka as ÇlrDatagridWillyWonka } from './chocolate/datagrid-willy-wonka';
+export { ClrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
+export { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
+export { ClrDatagridSingleSelectionValueAccessor } from './datagrid-single-selection.directive';
+export { DatagridDetailRegisterer } from './datagrid-detail-registerer';
+export { WrappedCell } from './wrapped-cell';
+export { WrappedColumn } from './wrapped-column';
+export { WrappedRow } from './wrapped-row';
+export { DatagridMainRenderer } from './render/main-renderer';
+export { DatagridHeaderRenderer } from './render/header-renderer';
+export { DatagridCellRenderer } from './render/cell-renderer';
+export { DatagridRowRenderer } from './render/row-renderer';
+export { DatagridRowDetailRenderer } from './render/row-detail-renderer';

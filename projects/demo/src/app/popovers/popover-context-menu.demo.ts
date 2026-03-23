@@ -6,12 +6,12 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrPopoverService, ÇlrClrPopoverModuleNext } from '@clr/angular';
+import { ClrPopoverModuleNext, ClrPopoverService } from '@clr/angular';
 
 @Component({
   selector: 'clr-popover-context-menu-demo',
   standalone: true,
-  imports: [ÇlrClrPopoverModuleNext],
+  imports: [ClrPopoverModuleNext],
   providers: [ClrPopoverService],
   styleUrls: ['./popovers.demo.scss'],
   template: `

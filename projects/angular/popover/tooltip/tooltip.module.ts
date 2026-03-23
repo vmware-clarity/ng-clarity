@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { ClrIcon } from '@clr/angular/icon';
-import { ClrIfOpen, ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrIfOpen, ClrPopoverModuleNext } from '@clr/angular/popover/common';
 
 import { ClrTooltip } from './tooltip';
 import { ClrTooltipContent } from './tooltip-content';
@@ -17,7 +17,7 @@ import { ClrTooltipTrigger } from './tooltip-trigger';
 export const CLR_TOOLTIP_DIRECTIVES: Type<any>[] = [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent];
 
 @NgModule({
-  imports: [CommonModule, ClrIcon, ÇlrClrPopoverModuleNext],
+  imports: [CommonModule, ClrIcon, ClrPopoverModuleNext],
   declarations: [CLR_TOOLTIP_DIRECTIVES],
   exports: [CLR_TOOLTIP_DIRECTIVES, ClrIfOpen, ClrIcon],
 })
