@@ -61,12 +61,6 @@ $clr-accordion-content-color: var(
   #{panel-variables.$clr-collapsible-panel-content-color}
 ) !default;
 
-// @Deprecated in v17
-$clr-accordion-content-font-size: var(
-  --clr-accordion-content-font-size,
-  #{panel-variables.$clr-collapsible-panel-content-font-size}
-) !default;
-
 $clr-accordion-responsive-breakpoint: panel-variables.$clr-collapsible-panel-responsive-breakpoint !default;
 
 $clr-accordion-border-color: var(
