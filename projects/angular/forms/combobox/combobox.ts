@@ -46,7 +46,7 @@ import {
   Keys,
   LoadingListener,
 } from '@clr/angular/utils';
-import { debounceTime, Subject, tap } from 'rxjs';
+import { debounceTime, Subject } from 'rxjs';
 
 import { ClrComboboxContainer } from './combobox-container';
 import { ClrComboboxIdentityFunction, ComboboxModel } from './model/combobox.model';
@@ -98,7 +98,6 @@ export class ClrCombobox<T>
   @ViewChild('wrapper', { static: true }) wrapper: ElementRef;
   @ViewChildren('pill') calculationPills: QueryList<ElementRef<HTMLElement>>;
 
-  invalid = false;
   focused = false;
 
   popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
@@ -258,10 +257,10 @@ export class ClrCombobox<T>
   }
 
   get isTotalSelection() {
-    if (!this.multiSelect || (this.multiSelectModel && !this.multiSelectModel.length)) {
+    if (!this.multiSelect || !this.multiSelectModel?.length || !this.options?.items?.length) {
       return false;
     }
-    return this.multiSelectModel?.length === this.options?.items.length;
+    return this.optionSelectionService.containsAll(this.options.items.map(option => option.value));
   }
 
   private get disabled() {
@@ -435,7 +434,7 @@ export class ClrCombobox<T>
           const entryWidth = entry.contentRect.width;
           switch (entry.target) {
             case container:
-              if ((this.containerWidth = entryWidth)) {
+              if (this.containerWidth !== entryWidth) {
                 this.containerWidth = entryWidth;
                 this.containerWidthChange.next(entryWidth);
               }
@@ -526,16 +525,11 @@ export class ClrCombobox<T>
           this.searchText = this.getDisplayNames(this.optionSelectionService.selectionModel.model)[0] || '';
         }
       }),
-      this.containerWidthChange
-        .pipe(
-          debounceTime(0),
-          tap(() => {
-            if (!this.selectionExpanded && !this.isTotalSelection) {
-              this.calculateLimit();
-            }
-          })
-        )
-        .subscribe()
+      this.containerWidthChange.pipe(debounceTime(0)).subscribe(() => {
+        if (!this.selectionExpanded && !this.isTotalSelection) {
+          this.calculateLimit();
+        }
+      })
     );
   }
 

@@ -22,7 +22,6 @@ import { ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/com
 import { ClrCommonStringsService, ClrLoadingState, IF_ACTIVE_ID, LoadingListener } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
-import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { ClrOption } from './option';
 import { ComboboxFocusHandler, OptionData } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
@@ -30,7 +29,6 @@ import { OptionSelectionService } from './providers/option-selection.service';
 let nbOptionsComponents = 0;
 
 export const SELECT_ALL_ID = 'select-all-id';
-export const SELECT_ALL_VALUE = 'SELECT_ALL';
 
 @Component({
   selector: 'clr-options',
@@ -90,7 +88,6 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
   _items: QueryList<ClrOption<T>>;
 
   private subscriptions: Subscription[] = [];
-  private _selectAllBtn: ElementRef;
   private _selectAllOption: OptionData<T>;
 
   constructor(
@@ -116,9 +113,12 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
 
   @ViewChild('selectAllBtn')
   set selectAllBtn(value: ElementRef) {
-    this._selectAllBtn = value;
-    this._selectAllOption = new OptionData<T>(SELECT_ALL_ID, { __action: SELECT_ALL_VALUE } as any);
-    this._selectAllOption.el = value?.nativeElement;
+    if (value) {
+      this._selectAllOption = new OptionData<T>(SELECT_ALL_ID, null);
+      this._selectAllOption.el = value.nativeElement;
+    } else {
+      this._selectAllOption = null;
+    }
     this.updateFocusableItems();
   }
 
@@ -156,19 +156,17 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
   }
 
   get allVisibleSelected(): boolean {
-    if ((!this.optionSelectionService.multiselectable && !this.items) || (this.items && this.items.length === 0)) {
+    if (!this.items || this.items.length === 0) {
       return false;
     }
-    return (
-      this.items.length === (this.optionSelectionService.selectionModel as MultiSelectComboboxModel<T>).model?.length
-    );
+    return this.optionSelectionService.containsAll(this.items.map(option => option.value));
   }
 
   get isSelectAllFocused() {
     return this.focusHandler.pseudoFocus.model?.id === SELECT_ALL_ID;
   }
 
-  toggleSelectAll(event = null) {
+  toggleSelectAll(event: Event = null) {
     if (event) {
       event.stopPropagation();
       this.focusHandler.focusInput();
@@ -216,7 +214,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
   private updateFocusableItems() {
     const focusList: OptionData<T>[] = [];
 
-    if (this._selectAllBtn) {
+    if (this._selectAllOption) {
       focusList.push(this._selectAllOption);
     }
 

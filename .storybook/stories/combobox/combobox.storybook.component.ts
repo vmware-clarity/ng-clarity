@@ -27,6 +27,7 @@ interface OptionGroup {
       <clr-combobox
         [clrEditable]="clrEditable"
         [clrMulti]="clrMulti"
+        [showSelectAll]="showSelectAll"
         [placeholder]="placeholder"
         [id]="id"
         [clrLoading]="clrLoading"
@@ -109,6 +110,7 @@ export class StorybookComboboxComponent {
   @Input() multiLineItems = false;
   @Input() objectValues = false;
   @Input() useIdentityFn = false;
+  @Input() showSelectAll = false;
 
   /**
    * If true, expects `elements` as array of strings (flat list).

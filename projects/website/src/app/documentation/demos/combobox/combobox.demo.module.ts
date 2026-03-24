@@ -16,6 +16,7 @@ import { ComboboxGroupingDemo } from './combobox-grouping.demo';
 import { ComboboxIdentityFnDemo } from './combobox-identity-fn.demo';
 import { ComboboxMultiIdentityFnDemo } from './combobox-multi-identity-fn.demo';
 import { ComboboxMultiDemo } from './combobox-multi.demo';
+import { ComboboxSelectAllDemo } from './combobox-select-all.demo';
 import { ComboboxSingleDemo } from './combobox-single.demo';
 import { ComboboxDemo } from './combobox.demo';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
@@ -45,6 +46,7 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     ComboboxGroupingDemo,
     ComboboxIdentityFnDemo,
     ComboboxMultiIdentityFnDemo,
+    ComboboxSelectAllDemo,
   ],
   exports: [ComboboxDemo],
 })
