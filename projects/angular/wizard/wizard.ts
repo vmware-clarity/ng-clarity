@@ -23,7 +23,6 @@ import {
   QueryList,
   ViewChild,
 } from '@angular/core';
-import { ClrModal } from '@clr/angular/modal';
 import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -32,6 +31,7 @@ import { ButtonHubService } from './providers/button-hub.service';
 import { HeaderActionService } from './providers/header-actions.service';
 import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
+import { ClrWizardButton } from './wizard-button';
 import { ClrWizardHeaderAction } from './wizard-header-action';
 import { ClrWizardPage } from './wizard-page';
 import { ClrWizardTitle } from './wizard-title';
@@ -77,6 +77,12 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * If you can't use this option, you will likely need to provide custom CSS to set the wizard's height and margins.
    */
   @Input('clrWizardInPageFillContentArea') inPageFillContentArea = false;
+
+  /**
+   * Hide the wizard footer entirely. Set using `[clrWizardHideFooter]` input.
+   * Useful when a nested wizard or stepper handles its own navigation.
+   */
+  @Input('clrWizardHideFooter') hideFooter = false;
 
   /**
    * Tells the modal part of the wizard whether it should have a close "X"
@@ -136,7 +142,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   @Output('clrWizardOnPrevious') onMovePrevious = new EventEmitter<any>(false);
 
   @ViewChild('pageTitle') pageTitle: ElementRef<HTMLElement>;
-  @ContentChildren(ClrWizardPage, { descendants: true }) pages: QueryList<ClrWizardPage>;
+  @ContentChildren(ClrWizardPage) pages: QueryList<ClrWizardPage>;
+  @ContentChildren(ClrWizardButton, { descendants: false }) wizardButtons: QueryList<ClrWizardButton>;
   @ContentChildren(ClrWizardHeaderAction) headerActions: QueryList<ClrWizardHeaderAction>;
 
   _open = false;
@@ -153,8 +160,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   private _disableStepnav = false;
   private differ: any; // for marking when the collection of wizard pages has been added to or deleted from
   private subscriptions: Subscription[] = [];
-
-  @ViewChild(ClrModal) private readonly modal: ClrModal;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -183,8 +188,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   }
   set title(title: ElementRef<HTMLElement>) {
     this._title = title;
-
-    this.modal.title = title;
   }
 
   /**
@@ -294,6 +297,17 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
 
   get isInline(): boolean {
     return this.elementRef.nativeElement.classList.contains('clr-wizard--inline');
+  }
+
+  get showHeader(): boolean {
+    return (
+      !!this.navService.currentPage?.pageTitle ||
+      (this.stepnavLayout === 'vertical' && this.headerActionService.displayHeaderActionsWrapper)
+    );
+  }
+
+  get showFooter(): boolean {
+    return !this.hideFooter && (this.navService.currentPage?.hasButtons || this.wizardButtons?.length > 0);
   }
 
   get stopModalAnimations(): boolean {
