@@ -27,6 +27,7 @@ import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+import { ClrWizardStepnavLayout } from './interfaces/wizard-stepnav-layout';
 import { ButtonHubService } from './providers/button-hub.service';
 import { HeaderActionService } from './providers/header-actions.service';
 import { PageCollectionService } from './providers/page-collection.service';
@@ -60,7 +61,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   /**
    * Set the wizard stepnav layout to 'vertical' (default) or 'horizontal'. Set using `[clrWizardStepnavLayout]` input.
    */
-  @Input('clrWizardStepnavLayout') stepnavLayout: 'vertical' | 'horizontal' = 'vertical';
+  @Input('clrWizardStepnavLayout') stepnavLayout: ClrWizardStepnavLayout = 'vertical';
 
   /**
    * Set the modal size of the wizard. Set using `[clrWizardSize]` input.
