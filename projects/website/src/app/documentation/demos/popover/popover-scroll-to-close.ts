@@ -6,7 +6,7 @@
  */
 
 import { Component, ViewEncapsulation } from '@angular/core';
-import { ClrIcon, ClrPopoverContent, ClrPopoverService, ÇlrClrPopoverModuleNext } from '@clr/angular';
+import { ClrIcon, ClrPopoverContent, ClrPopoverModuleNext, ClrPopoverService } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -22,7 +22,7 @@ const HTML = `
 >
   <p>Scroll down inside this container while the popover is open.</p>
   <div style="margin-top: 16px; display: flex; justify-content: center">
-    <button class="btn btn-outline" clrPopoverOpenCloseButton clrPopoverAnchor>Open Popover</button>
+    <button class="btn btn-outline" clrPopoverOpenCloseButton clrPopoverOrigin>Open Popover</button>
     <div
       role="dialog"
       cdkTrapFocus
@@ -39,13 +39,13 @@ const HTML = `
 
 const CODE = `
 import { Component } from '@angular/core';
-import { ClrPopoverService, ÇlrClrPopoverModuleNext } from '@clr/angular';
+import { ClrPopoverService, ClrPopoverModuleNext } from '@clr/angular';
 
 @Component({
   selector: 'app-popover-scroll',
   templateUrl: './popover-scroll.component.html',
   providers: [ClrPopoverService],
-  imports: [ÇlrClrPopoverModuleNext],
+  imports: [ClrPopoverModuleNext],
 })
 export class PopoverScrollComponent {
   open = false;
@@ -58,7 +58,7 @@ export class PopoverScrollComponent {
   styleUrl: './popover.demo.scss',
   encapsulation: ViewEncapsulation.None,
   providers: [ClrPopoverService],
-  imports: [ClrPopoverContent, ClrIcon, ÇlrClrPopoverModuleNext, StackblitzExampleComponent],
+  imports: [ClrPopoverContent, ClrIcon, ClrPopoverModuleNext, StackblitzExampleComponent],
 })
 export class PopoverScrollToCloseDemo {
   open = false;

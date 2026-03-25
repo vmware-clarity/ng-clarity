@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 
 import { PopoverBasicDemo } from './popover-basic';
+import { PopoverContextMenuDemo } from './popover-context-menu';
 import { PopoverFallbackPositionsDemo } from './popover-fallback-positions';
 import { PopoverPositionsDemo } from './popover-positions';
 import { PopoverScrollToCloseDemo } from './popover-scroll-to-close';
@@ -29,6 +30,7 @@ import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/s
     PopoverPositionsDemo,
     PopoverFallbackPositionsDemo,
     PopoverScrollToCloseDemo,
+    PopoverContextMenuDemo,
     PopoverDemo,
   ],
   exports: [PopoverDemo],

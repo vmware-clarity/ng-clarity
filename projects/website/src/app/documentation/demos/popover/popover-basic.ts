@@ -6,12 +6,12 @@
  */
 
 import { Component, ViewEncapsulation } from '@angular/core';
-import { ClrIcon, ClrPopoverContent, ClrPopoverService, ÇlrClrPopoverModuleNext } from '@clr/angular';
+import { ClrIcon, ClrPopoverContent, ClrPopoverModuleNext, ClrPopoverService } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const EXAMPLE = `
-<button class="btn btn-outline" clrPopoverOpenCloseButton clrPopoverAnchor>
+<button class="btn btn-outline" clrPopoverOpenCloseButton clrPopoverOrigin>
   <cds-icon shape="home"></cds-icon>
   Open Popover
 </button>
@@ -46,14 +46,14 @@ import {
   ClrPopoverService,
   homeIcon,
   timesIcon,
-  ÇlrClrPopoverModuleNext,
+  ClrPopoverModuleNext,
 } from '@clr/angular';
 
 @Component({
   selector: 'app-popover-example',
   templateUrl: './popover-example.component.html',
   providers: [ClrPopoverService],
-  imports: [ÇlrClrPopoverModuleNext],
+  imports: [ClrPopoverModuleNext],
 })
 export class PopoverExampleComponent {
   open = false;
@@ -70,7 +70,7 @@ export class PopoverExampleComponent {
   styleUrl: './popover.demo.scss',
   encapsulation: ViewEncapsulation.None,
   providers: [ClrPopoverService],
-  imports: [ClrPopoverContent, ClrIcon, ÇlrClrPopoverModuleNext, StackblitzExampleComponent],
+  imports: [ClrPopoverContent, ClrIcon, ClrPopoverModuleNext, StackblitzExampleComponent],
 })
 export class PopoverBasicDemo {
   open = false;

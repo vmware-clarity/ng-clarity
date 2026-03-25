@@ -7,12 +7,12 @@
 
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { Component, ViewEncapsulation } from '@angular/core';
-import { ClrIcon, ClrPopoverContent, ClrPopoverService, ÇlrClrPopoverModuleNext } from '@clr/angular';
+import { ClrIcon, ClrPopoverContent, ClrPopoverModuleNext, ClrPopoverService } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const HTML = `
-<button class="btn btn-outline" clrPopoverOpenCloseButton clrPopoverAnchor>
+<button class="btn btn-outline" clrPopoverOpenCloseButton clrPopoverOrigin>
   Open (prefers top-right)
 </button>
 <div
@@ -38,13 +38,13 @@ const HTML = `
 const CODE = `
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { Component } from '@angular/core';
-import { ClrPopoverService, ÇlrClrPopoverModuleNext } from '@clr/angular';
+import { ClrPopoverService, ClrPopoverModuleNext } from '@clr/angular';
 
 @Component({
   selector: 'app-popover-fallback',
   templateUrl: './popover-fallback.component.html',
   providers: [ClrPopoverService],
-  imports: [ÇlrClrPopoverModuleNext],
+  imports: [ClrPopoverModuleNext],
 })
 export class PopoverFallbackComponent {
   open = false;
@@ -67,7 +67,7 @@ export class PopoverFallbackComponent {
   styleUrl: './popover.demo.scss',
   encapsulation: ViewEncapsulation.None,
   providers: [ClrPopoverService],
-  imports: [ClrPopoverContent, ClrIcon, ÇlrClrPopoverModuleNext, StackblitzExampleComponent],
+  imports: [ClrPopoverContent, ClrIcon, ClrPopoverModuleNext, StackblitzExampleComponent],
 })
 export class PopoverFallbackPositionsDemo {
   open = false;

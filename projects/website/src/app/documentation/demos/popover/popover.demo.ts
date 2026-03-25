@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 import { ClarityIcons, homeIcon, timesIcon } from '@clr/angular';
 
 import { PopoverBasicDemo } from './popover-basic';
+import { PopoverContextMenuDemo } from './popover-context-menu';
 import { PopoverFallbackPositionsDemo } from './popover-fallback-positions';
 import { PopoverPositionsDemo } from './popover-positions';
 import { PopoverScrollToCloseDemo } from './popover-scroll-to-close';
@@ -30,6 +31,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     PopoverPositionsDemo,
     PopoverFallbackPositionsDemo,
     PopoverScrollToCloseDemo,
+    PopoverContextMenuDemo,
   ],
 })
 export class PopoverDemo extends ClarityDocComponent {

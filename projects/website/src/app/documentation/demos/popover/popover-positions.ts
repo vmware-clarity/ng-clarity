@@ -12,15 +12,15 @@ import {
   ClrFormsModule,
   ClrIcon,
   ClrPopoverContent,
+  ClrPopoverModuleNext,
   ClrPopoverPosition,
   ClrPopoverService,
-  ÇlrClrPopoverModuleNext,
 } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const HTML = `
-<button class="btn btn-outline" clrPopoverOpenCloseButton clrPopoverAnchor>Open Popover</button>
+<button class="btn btn-outline" clrPopoverOpenCloseButton clrPopoverOrigin>Open Popover</button>
 <div role="dialog" cdkTrapFocus *clrPopoverContent="open; at: position; outsideClickToClose: true">
   <h4 style="margin-top: 0">Popover Content</h4>
   <p>
@@ -33,13 +33,13 @@ const HTML = `
 
 const CODE = `
 import { Component } from '@angular/core';
-import { ClrPopoverPosition, ClrPopoverService, ÇlrClrPopoverModuleNext } from '@clr/angular';
+import { ClrPopoverPosition, ClrPopoverService, ClrPopoverModuleNext } from '@clr/angular';
 
 @Component({
   selector: 'app-popover-positions',
   templateUrl: './popover-positions.component.html',
   providers: [ClrPopoverService],
-  imports: [ÇlrClrPopoverModuleNext],
+  imports: [ClrPopoverModuleNext],
 })
 export class PopoverPositionsComponent {
   open = false;
@@ -59,7 +59,7 @@ export class PopoverPositionsComponent {
     ClrCommonFormsModule,
     ClrFormsModule,
     FormsModule,
-    ÇlrClrPopoverModuleNext,
+    ClrPopoverModuleNext,
     StackblitzExampleComponent,
   ],
 })
