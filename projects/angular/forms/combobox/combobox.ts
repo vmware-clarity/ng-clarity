@@ -110,6 +110,7 @@ export class ClrCombobox<T>
   protected selectionExpanded = false;
   protected calculatedLimit: number | undefined;
   protected shouldCalculate = true;
+  protected isTotalSelection = false;
 
   private resizeObserver: ResizeObserver;
   private containerWidthChange = new Subject();
@@ -256,11 +257,14 @@ export class ClrCombobox<T>
     return this.calculatedLimit;
   }
 
-  get isTotalSelection() {
-    if (!this.multiSelect || !this.multiSelectModel?.length || !this.options?.items?.length) {
-      return false;
-    }
-    return this.optionSelectionService.containsAll(this.options.items.map(option => option.value));
+  get showIndividualPills(): boolean {
+    return !this.isTotalSelection || this.selectionExpanded;
+  }
+
+  get showTruncationToggle(): boolean {
+    return (
+      this.isTotalSelection || (this.calculatedLimit !== null && this.calculatedLimit < this.multiSelectModel.length)
+    );
   }
 
   private get disabled() {
@@ -488,6 +492,19 @@ export class ClrCombobox<T>
     });
   }
 
+  private updateTotalSelection() {
+    if (!this.multiSelect || !this.multiSelectModel?.length) {
+      this.isTotalSelection = false;
+      return;
+    }
+    // Skip recalculation when items are filtered to zero (e.g. "no results")
+    // to prevent pills from flashing while typing in the search input.
+    if (!this.options?.items?.length) {
+      return;
+    }
+    this.isTotalSelection = this.optionSelectionService.containsAll(this.options.items.map(option => option.value));
+  }
+
   private initializeSubscriptions(): void {
     this.subscriptions.push(
       this.optionSelectionService.selectionChanged.subscribe((newSelection: ComboboxModel<T>) => {
@@ -496,6 +513,7 @@ export class ClrCombobox<T>
           this.popoverService.open = false;
         }
         this.updateControlValue();
+        this.updateTotalSelection();
 
         if (this.multiSelect) {
           setTimeout(() => {

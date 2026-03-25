@@ -26,7 +26,34 @@ width of the component, after being wrapped to a new line -->
     [attr.aria-disabled]="control?.disabled? true: null"
     class="clr-combobox-pills"
   >
-    @if (isTotalSelection && !selectionExpanded) {
+    <ng-template #pillTemplate let-item let-i="index">
+      <span class="label label-combobox-pill" role="row">
+        <span role="gridcell">
+          <span class="clr-combobox-pill-content" clrKeyFocusItem>
+            @if (optionSelected) {
+            <ng-container
+              [ngTemplateOutlet]="optionSelected.template"
+              [ngTemplateOutletContext]="{$implicit: item}"
+            ></ng-container>
+            }
+          </span>
+        </span>
+        <span role="gridcell">
+          <button
+            clrKeyFocusItem
+            type="button"
+            class="clr-combobox-remove-btn"
+            [disabled]="control?.disabled ? true : null"
+            [attr.aria-label]="commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)"
+            (click)="unselect(item)"
+          >
+            <cds-icon shape="window-close" size="12"></cds-icon>
+          </button>
+        </span>
+      </span>
+    </ng-template>
+
+    @if (showSelectAll) { @if (isTotalSelection && !selectionExpanded) {
     <span class="label label-combobox-pill" role="row">
       <span role="gridcell">
         <span class="clr-combobox-pill-content" clrKeyFocusItem>{{ allSelectedText }}</span>
@@ -43,33 +70,12 @@ width of the component, after being wrapped to a new line -->
         </button>
       </span>
     </span>
-    } @if (isTotalSelection && selectionExpanded || !isTotalSelection) { @for (item of multiSelectModel |
-    slice:0:visibleLimit; track item; let i = $index) {
-    <span class="label label-combobox-pill" role="row">
-      <span role="gridcell">
-        <span class="clr-combobox-pill-content" clrKeyFocusItem>
-          @if (optionSelected) {
-          <ng-container
-            [ngTemplateOutlet]="optionSelected.template"
-            [ngTemplateOutletContext]="{$implicit: item}"
-          ></ng-container>
-          }
-        </span>
-      </span>
-      <span role="gridcell">
-        <button
-          clrKeyFocusItem
-          type="button"
-          class="clr-combobox-remove-btn"
-          [disabled]="control?.disabled? true: null"
-          [attr.aria-label]="commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)"
-          (click)="unselect(item)"
-        >
-          <cds-icon shape="window-close" size="12"></cds-icon>
-        </button>
-      </span>
-    </span>
-    } } @if (isTotalSelection || (calculatedLimit !== null && calculatedLimit < multiSelectModel.length)) {
+    } @if (showIndividualPills) { @for (item of multiSelectModel | slice:0:visibleLimit; track item; let i = $index) {
+    <ng-container
+      [ngTemplateOutlet]="pillTemplate"
+      [ngTemplateOutletContext]="{$implicit: item, index: i}"
+    ></ng-container>
+    } } @if (showTruncationToggle) {
     <span role="row" class="label label-combobox-pill clr-combobox-truncation-row">
       <span role="gridcell" class="clr-combobox-truncation-cell">
         <span class="clr-combobox-pill-content">
@@ -82,15 +88,20 @@ width of the component, after being wrapped to a new line -->
             [attr.aria-expanded]="selectionExpanded"
             [attr.aria-controls]="'expanded-selection-' + id"
           >
-            @if (!selectionExpanded) { {{showAllText}} } @else { {{commonStrings.keys.comboboxShowLess}} }
+            @if (!selectionExpanded) { {{ showAllText }} } @else { {{ commonStrings.keys.comboboxShowLess }} }
           </button>
         </span>
       </span>
     </span>
-    }
+    } } @else { @for (item of multiSelectModel; track item; let i = $index) {
+    <ng-container
+      [ngTemplateOutlet]="pillTemplate"
+      [ngTemplateOutletContext]="{$implicit: item, index: i}"
+    ></ng-container>
+    } }
   </span>
 
-  @if (shouldCalculate) {
+  @if (showSelectAll && shouldCalculate) {
   <span class="clr-combobox-pills-calculation" aria-hidden="true">
     @for (item of multiSelectModel; track item) {
     <span class="label label-combobox-pill" #pill>

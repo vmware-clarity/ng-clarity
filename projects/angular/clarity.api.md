@@ -1622,7 +1622,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     inputId(): string;
     // (undocumented)
-    get isTotalSelection(): boolean;
+    protected isTotalSelection: boolean;
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
@@ -1680,8 +1680,12 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     get showAllText(): string;
     // (undocumented)
+    get showIndividualPills(): boolean;
+    // (undocumented)
     get showSelectAll(): boolean;
     set showSelectAll(value: boolean);
+    // (undocumented)
+    get showTruncationToggle(): boolean;
     // (undocumented)
     textbox: ElementRef<HTMLInputElement>;
     // (undocumented)
