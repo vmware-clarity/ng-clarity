@@ -6138,6 +6138,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     close(): void;
     set clrWizardOpen(open: boolean);
     // (undocumented)
+    protected ClrWizardStepnavLayout: typeof ClrWizardStepnavLayout;
+    // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     get currentPage(): ClrWizardPage;
@@ -6173,6 +6175,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     navService: WizardNavigationService;
     next(skipChecksAndEmits?: boolean): void;
     // (undocumented)
+    static ngAcceptInputType_stepnavLayout: ClrWizardStepnavLayout | string;
+    // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
     ngDoCheck(): void;
@@ -6202,7 +6206,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     get showHeader(): boolean;
     size: string;
     stepnavAriaLabel: string;
-    // Warning: (ae-forgotten-export) The symbol "ClrWizardStepnavLayout" needs to be exported by the entry point clr-angular.d.ts
     stepnavLayout: ClrWizardStepnavLayout;
     get stopCancel(): boolean;
     set stopCancel(value: boolean);
@@ -6428,7 +6431,7 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
     // (undocumented)
     protected showScrollRightButton: boolean;
     // (undocumented)
-    protected get stepnavLayout(): "vertical" | "horizontal";
+    protected get stepnavLayout(): ClrWizardStepnavLayout;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, { "label": { "alias": "label"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
@@ -6489,6 +6492,14 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnavItem, "[clr-wizard-stepnav-item]", never, { "page": { "alias": "page"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnavItem, never>;
+}
+
+// @public (undocumented)
+export enum ClrWizardStepnavLayout {
+    // (undocumented)
+    HORIZONTAL = "horizontal",
+    // (undocumented)
+    VERTICAL = "vertical"
 }
 
 // @public (undocumented)
@@ -9114,6 +9125,9 @@ export const stepForwardIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const stepForwardIconName = "step-forward";
+
+// @public (undocumented)
+export function stepnavLayoutAttribute(value: ClrWizardStepnavLayout | string): ClrWizardStepnavLayout;
 
 // @public (undocumented)
 export class StepperOompaLoompa extends OompaLoompa {

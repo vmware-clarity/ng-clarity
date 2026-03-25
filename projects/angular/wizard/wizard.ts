@@ -27,7 +27,7 @@ import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { ClrWizardStepnavLayout } from './interfaces/wizard-stepnav-layout';
+import { ClrWizardStepnavLayout, stepnavLayoutAttribute } from './interfaces/wizard-stepnav-layout';
 import { ButtonHubService } from './providers/button-hub.service';
 import { HeaderActionService } from './providers/header-actions.service';
 import { PageCollectionService } from './providers/page-collection.service';
@@ -48,7 +48,7 @@ import { ClrWizardTitle } from './wizard-title';
     '[class.wizard-xl]': "size == 'xl'",
     '[class.wizard-in-page]': 'inPage',
     '[class.wizard-in-page--fill-content-area]': 'inPage && inPageFillContentArea',
-    '[class.wizard-horizontal]': "stepnavLayout === 'horizontal'",
+    '[class.wizard-horizontal]': 'stepnavLayout === ClrWizardStepnavLayout.HORIZONTAL',
   },
   standalone: false,
 })
@@ -61,7 +61,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   /**
    * Set the wizard stepnav layout to 'vertical' (default) or 'horizontal'. Set using `[clrWizardStepnavLayout]` input.
    */
-  @Input('clrWizardStepnavLayout') stepnavLayout: ClrWizardStepnavLayout = 'vertical';
+  @Input({ alias: 'clrWizardStepnavLayout', transform: stepnavLayoutAttribute }) stepnavLayout =
+    ClrWizardStepnavLayout.VERTICAL;
 
   /**
    * Set the modal size of the wizard. Set using `[clrWizardSize]` input.
@@ -151,6 +152,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   wizardId = uniqueIdFactory();
 
   @ContentChild(ClrWizardTitle) protected wizardTitle: ClrWizardTitle;
+  protected ClrWizardStepnavLayout = ClrWizardStepnavLayout;
+
   @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
 
   private _title: ElementRef<HTMLElement>;
@@ -303,7 +306,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   get showHeader(): boolean {
     return (
       !!this.navService.currentPage?.pageTitle ||
-      (this.stepnavLayout === 'vertical' && this.headerActionService.displayHeaderActionsWrapper)
+      (this.stepnavLayout === ClrWizardStepnavLayout.VERTICAL && this.headerActionService.displayHeaderActionsWrapper)
     );
   }
 

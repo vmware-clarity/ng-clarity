@@ -67,6 +67,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     closable: boolean;
     close(): void;
     set clrWizardOpen(open: boolean);
+    // (undocumented)
+    protected ClrWizardStepnavLayout: typeof ClrWizardStepnavLayout;
     // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService" needs to be exported by the entry point clr-angular-wizard.d.ts
     //
     // (undocumented)
@@ -105,6 +107,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     navService: WizardNavigationService;
     next(skipChecksAndEmits?: boolean): void;
     // (undocumented)
+    static ngAcceptInputType_stepnavLayout: ClrWizardStepnavLayout | string;
+    // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
     ngDoCheck(): void;
@@ -134,7 +138,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     get showHeader(): boolean;
     size: string;
     stepnavAriaLabel: string;
-    // Warning: (ae-forgotten-export) The symbol "ClrWizardStepnavLayout" needs to be exported by the entry point clr-angular-wizard.d.ts
     stepnavLayout: ClrWizardStepnavLayout;
     get stopCancel(): boolean;
     set stopCancel(value: boolean);
@@ -366,7 +369,7 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
     // (undocumented)
     protected showScrollRightButton: boolean;
     // (undocumented)
-    protected get stepnavLayout(): "vertical" | "horizontal";
+    protected get stepnavLayout(): ClrWizardStepnavLayout;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, { "label": { "alias": "label"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
@@ -430,6 +433,14 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
 }
 
 // @public (undocumented)
+export enum ClrWizardStepnavLayout {
+    // (undocumented)
+    HORIZONTAL = "horizontal",
+    // (undocumented)
+    VERTICAL = "vertical"
+}
+
+// @public (undocumented)
 export class ClrWizardTitle {
     // (undocumented)
     headingLevel: HeadingLevel;
@@ -444,6 +455,9 @@ export const CUSTOM_BUTTON_TYPES: any;
 
 // @public (undocumented)
 export const DEFAULT_BUTTON_TYPES: any;
+
+// @public (undocumented)
+export function stepnavLayoutAttribute(value: ClrWizardStepnavLayout | string): ClrWizardStepnavLayout;
 
 // (No @packageDocumentation comment for this package)
 

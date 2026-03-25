@@ -6,7 +6,7 @@
   -->
 <ng-template #coreWizardContent>
   <div class="clr-wizard-content-wrapper">
-    @if (stepnavLayout === 'horizontal') {
+    @if (stepnavLayout === ClrWizardStepnavLayout.HORIZONTAL) {
     <div class="clr-wizard-title-wrapper">
       <ng-container [ngTemplateOutlet]="wizardTitleTemplate"></ng-container>
       <ng-container [ngTemplateOutlet]="wizardActionsTemplate"></ng-container>
@@ -14,7 +14,7 @@
     }
 
     <div class="clr-wizard-stepnav-wrapper" role="region">
-      @if (stepnavLayout === 'vertical') {
+      @if (stepnavLayout === ClrWizardStepnavLayout.VERTICAL) {
       <ng-container [ngTemplateOutlet]="wizardTitleTemplate"></ng-container>
       }
       <clr-wizard-stepnav [label]="stepnavAriaLabel"></clr-wizard-stepnav>
@@ -35,7 +35,7 @@
             </span>
           </div>
         </div>
-        } @if (stepnavLayout === 'vertical') {
+        } @if (stepnavLayout === ClrWizardStepnavLayout.VERTICAL) {
         <ng-container [ngTemplateOutlet]="wizardActionsTemplate"></ng-container>
         }
       </div>

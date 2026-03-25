@@ -9,6 +9,7 @@ import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 import { debounceTime, startWith, Subscription, tap } from 'rxjs';
 
+import { ClrWizardStepnavLayout } from './interfaces/wizard-stepnav-layout';
 import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
 import { ClrWizardPage } from './wizard-page';
@@ -134,7 +135,7 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
   }
 
   protected get icon(): { shape: string; label: string } | null {
-    if (this.isCurrent && this.navService.stepnavLayout !== 'horizontal') {
+    if (this.isCurrent && this.navService.stepnavLayout !== ClrWizardStepnavLayout.HORIZONTAL) {
       return {
         shape: 'dot-circle',
         label: this.commonStrings.keys.wizardStepCurrent || this.commonStrings.keys.timelineStepCurrent,

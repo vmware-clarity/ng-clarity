@@ -8,6 +8,7 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { startWith, Subscription } from 'rxjs';
 
+import { ClrWizardStepnavLayout } from './interfaces/wizard-stepnav-layout';
 import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
 import { ClrWizardStepnavItem } from './wizard-stepnav-item';
@@ -81,7 +82,7 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (this.stepnavLayout === 'horizontal') {
+    if (this.stepnavLayout === ClrWizardStepnavLayout.HORIZONTAL) {
       this.setupIntersectionObserver();
 
       this.stepnavItems.notifyOnChanges();
