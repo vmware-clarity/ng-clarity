@@ -4264,7 +4264,7 @@ export class ClrNavigationModule {
 
 // @public (undocumented)
 export class ClrNavLevel implements OnInit {
-    constructor(platformId: any, cdkTrapFocus: ClrStandaloneCdkTrapFocus, responsiveNavService: ResponsiveNavigationService, elementRef: ElementRef<HTMLElement>, renderer: Renderer2, injector: Injector);
+    constructor(platformId: any, cdkTrapFocus: ClrStandaloneCdkTrapFocus, responsiveNavService: ResponsiveNavigationService, elementRef: ElementRef<HTMLElement>, renderer: Renderer2, injector: Injector, environmentInjector: EnvironmentInjector, appRef: ApplicationRef);
     // (undocumented)
     addNavClass(level: number): void;
     // (undocumented)
@@ -6401,10 +6401,16 @@ export class ClrWizardPageTitle {
 }
 
 // @public (undocumented)
-export class ClrWizardStepnav {
-    constructor(pageService: PageCollectionService);
+export class ClrWizardStepnav implements AfterViewInit, OnChanges, OnDestroy {
+    constructor(pageService: PageCollectionService, elementRef: ElementRef<HTMLElement>);
     // (undocumented)
     label: string;
+    // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnChanges(changes: SimpleChanges): void;
+    // (undocumented)
+    ngOnDestroy(): void;
     // (undocumented)
     pageService: PageCollectionService;
     // (undocumented)
