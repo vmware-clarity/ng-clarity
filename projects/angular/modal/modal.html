@@ -55,7 +55,13 @@
   </div>
   <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   @if (backdrop) {
-  <div [@fade] class="modal-backdrop" aria-hidden="true" (click)="backdropClick()"></div>
+  <div
+    [@fade]
+    class="modal-backdrop"
+    [class.static]="staticBackdrop"
+    aria-hidden="true"
+    (click)="backdropClick()"
+  ></div>
   }
 </div>
 }

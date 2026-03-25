@@ -353,6 +353,7 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
       flex-direction: column;
       flex-grow: 1;
       width: 100%;
+      overflow: hidden auto;
     }
 
     > .clr-wizard-stepnav-wrapper {
