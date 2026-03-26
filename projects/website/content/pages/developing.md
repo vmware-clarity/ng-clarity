@@ -49,6 +49,8 @@ Alternatively, you can load the styles using the `npm unpkg` content delivery ne
 ```html
 <!-- Load the latest version -->
 <link rel="stylesheet" href="https://unpkg.com/@clr/ui/clr-ui.min.css" />
+<!-- Or load a specific version, recommended -->
+<link rel="stylesheet" href="https://unpkg.com/@clr/ui@18.0.0/clr-ui.min.css" />
 ```
 
 ### Step 3: Set the Theme
