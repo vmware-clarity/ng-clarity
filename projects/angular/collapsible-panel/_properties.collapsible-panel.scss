@@ -15,7 +15,6 @@
     [clr-density] {
       --clr-collapsible-panel-border-radius: #{density.$clr-base-border-radius-s};
       --clr-collapsible-panel-title-min-width: #{density.$clr-base-layout-space-4xl};
-      --clr-collapsible-panel-content-font-size: #{density.$clr-base-typography-font-size-inline};
     }
 
     &,
