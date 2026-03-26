@@ -7,9 +7,12 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import {
+  ApplicationRef,
+  createComponent,
   Directive,
   DOCUMENT,
   ElementRef,
+  EnvironmentInjector,
   HostListener,
   Inject,
   Injector,
@@ -18,34 +21,13 @@ import {
   PLATFORM_ID,
   Renderer2,
 } from '@angular/core';
-import { ClarityIcons, timesIcon } from '@clr/angular/icon';
+import { ClarityIcons, ClrIcon, timesIcon } from '@clr/angular/icon';
 import { ClrStandaloneCdkTrapFocus, commonStringsDefault, LARGE_BREAKPOINT } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
-
-const createCloseButton = (document: Document, ariaLabel: string) => {
-  ClarityIcons.addIcons(timesIcon);
-
-  const closeButton = document.createElement('button');
-  closeButton.setAttribute('aria-label', ariaLabel);
-  closeButton.setAttribute('aria-hidden', 'true');
-  closeButton.innerHTML = `
-    <cds-icon
-      inner-offset="1"
-      shape="times"
-      size="32"
-    ></cds-icon>
-  `;
-  /**
-   * The button is hidden by default based on our Desktop-first approach.
-   */
-  closeButton.setAttribute('hidden', 'true');
-  closeButton.className = 'clr-nav-close';
-  return closeButton;
-};
 
 @Directive({
   selector: '[clr-nav-level]',
@@ -66,7 +48,9 @@ export class ClrNavLevel implements OnInit {
     private responsiveNavService: ResponsiveNavigationService,
     private elementRef: ElementRef<HTMLElement>,
     private renderer: Renderer2,
-    injector: Injector
+    private injector: Injector,
+    private environmentInjector: EnvironmentInjector,
+    private appRef: ApplicationRef
   ) {
     if (isPlatformBrowser(platformId)) {
       this._document = injector.get(DOCUMENT);
@@ -129,9 +113,9 @@ export class ClrNavLevel implements OnInit {
   }
 
   ngAfterViewInit() {
-    const closeButton = createCloseButton(this._document, this.closeButtonAriaLabel);
+    const closeButton = this.createCloseButton();
     this.renderer.listen(closeButton, 'click', this.close.bind(this));
-    this.renderer.insertBefore(this.elementRef.nativeElement, closeButton, this.elementRef.nativeElement.firstChild); // Adding the button at the top of the nav
+    this.renderer.insertBefore(this.elementRef.nativeElement, closeButton, this.elementRef.nativeElement.firstChild);
 
     if (this._document.body.clientWidth < LARGE_BREAKPOINT) {
       /**
@@ -226,5 +210,27 @@ export class ClrNavLevel implements OnInit {
   protected showCloseButton() {
     this.renderer.setAttribute(this.elementRef.nativeElement.querySelector('.clr-nav-close'), 'aria-hidden', 'false');
     this.renderer.removeAttribute(this.elementRef.nativeElement.querySelector('.clr-nav-close'), 'hidden');
+  }
+
+  private createCloseButton(): HTMLButtonElement {
+    ClarityIcons.addIcons(timesIcon);
+
+    const closeButton = this._document.createElement('button');
+    closeButton.setAttribute('aria-label', this.closeButtonAriaLabel);
+    closeButton.setAttribute('aria-hidden', 'true');
+    closeButton.setAttribute('hidden', 'true');
+    closeButton.className = 'clr-nav-close';
+
+    const iconRef = createComponent(ClrIcon, {
+      hostElement: this._document.createElement('cds-icon'),
+      environmentInjector: this.environmentInjector,
+      elementInjector: this.injector,
+    });
+    iconRef.instance.shape = 'times';
+    iconRef.instance.size = '32';
+    this.appRef.attachView(iconRef.hostView);
+    closeButton.appendChild(iconRef.location.nativeElement);
+
+    return closeButton;
   }
 }

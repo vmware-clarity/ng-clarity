@@ -49,6 +49,14 @@ export const screenshotOptions: ScreenshotOptions = {
   'header--collapsed': {
     viewport: { width: 500, height: 300 },
   },
+  'header-responsive-nav--level-1-nav-open': {
+    viewport: { width: 500, height: 400 },
+    fullPageScreenshot: true,
+  },
+  'header-responsive-nav--level-2-nav-open': {
+    viewport: { width: 500, height: 400 },
+    fullPageScreenshot: true,
+  },
   'application--default': {
     exclude: true,
   },
