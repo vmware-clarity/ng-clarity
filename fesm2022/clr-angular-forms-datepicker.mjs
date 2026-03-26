@@ -8,7 +8,7 @@ import * as i4 from '@clr/angular/utils';
 import { DATEPICKER_ENABLE_BREAKPOINT, Keys, isBooleanAttributeSet, CdkTrapFocusModule, ClrHostWrappingModule, ClrConditionalModule } from '@clr/angular/utils';
 import { first, filter, startWith } from 'rxjs/operators';
 import * as i1 from '@clr/angular/popover/common';
-import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS, ClrPopoverHostDirective, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS, ClrPopoverHostDirective, ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { Subject, tap } from 'rxjs';
 import * as i5 from '@clr/angular/icon';
 import { ClarityIcons, successStandardIcon, errorStandardIcon, angleIcon, eventIcon, calendarIcon, ClrIcon } from '@clr/angular/icon';
@@ -2487,7 +2487,7 @@ class ClrDateContainer extends ClrAbstractContainer {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i5$1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i4.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: i1.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i1.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i1.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i7.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: ClrDatepickerViewManager, selector: "clr-datepicker-view-manager" }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i5$1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i4.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: i1.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i1.ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i1.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i7.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: ClrDatepickerViewManager, selector: "clr-datepicker-view-manager" }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDateContainer, decorators: [{
             type: Component,
@@ -3163,7 +3163,7 @@ class ClrDatepickerModule {
             CdkTrapFocusModule,
             ClrHostWrappingModule,
             ClrConditionalModule,
-            _lrClrPopoverModuleNext,
+            ClrPopoverModuleNext,
             ClrIcon,
             ClrCommonFormsModule,
             ClrVerticalNavModule], exports: [ClrDateInput,
@@ -3184,7 +3184,7 @@ class ClrDatepickerModule {
             CdkTrapFocusModule,
             ClrHostWrappingModule,
             ClrConditionalModule,
-            _lrClrPopoverModuleNext,
+            ClrPopoverModuleNext,
             ClrIcon,
             ClrCommonFormsModule,
             ClrVerticalNavModule] }); }
@@ -3197,7 +3197,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                         CdkTrapFocusModule,
                         ClrHostWrappingModule,
                         ClrConditionalModule,
-                        _lrClrPopoverModuleNext,
+                        ClrPopoverModuleNext,
                         ClrIcon,
                         ClrCommonFormsModule,
                         ClrVerticalNavModule,

@@ -299,7 +299,7 @@ declare class ClrOptionGroup<T> {
 declare class ClrComboboxModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrComboboxModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof ClrOptionItems], [typeof i8.CommonModule, typeof i9.FormsModule, typeof i10.ClrIcon, typeof i11.ClrKeyFocusModule, typeof i12.ClrCommonFormsModule, typeof i11.ClrConditionalModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i14.ClrSpinnerModule], [typeof i12.ClrCommonFormsModule, typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof i11.ClrConditionalModule, typeof ClrOptionItems]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof ClrOptionItems], [typeof i8.CommonModule, typeof i9.FormsModule, typeof i10.ClrIcon, typeof i11.ClrKeyFocusModule, typeof i12.ClrCommonFormsModule, typeof i11.ClrConditionalModule, typeof i1.ClrPopoverModuleNext, typeof i14.ClrSpinnerModule], [typeof i12.ClrCommonFormsModule, typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof i11.ClrConditionalModule, typeof ClrOptionItems]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrComboboxModule>;
 }
 

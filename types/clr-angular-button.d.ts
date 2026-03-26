@@ -155,7 +155,7 @@ declare class ClrButtonGroup implements AfterContentInit, AfterViewInit {
 declare const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[];
 declare class ClrButtonGroupModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonGroupModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonGroupModule, [typeof ClrButton, typeof ClrButtonGroup], [typeof i2.CommonModule, typeof i4.ClrIcon, typeof i1.ÇlrClrPopoverModuleNext], [typeof ClrButton, typeof ClrButtonGroup]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrButtonGroupModule, [typeof ClrButton, typeof ClrButtonGroup], [typeof i2.CommonModule, typeof i4.ClrIcon, typeof i1.ClrPopoverModuleNext], [typeof ClrButton, typeof ClrButtonGroup]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrButtonGroupModule>;
 }
 

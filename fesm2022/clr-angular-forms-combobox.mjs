@@ -9,7 +9,7 @@ import { ClrAbstractContainer, NgControlService, ControlIdService, ControlClassS
 import * as i8 from '@clr/angular/icon';
 import { ClarityIcons, successStandardIcon, errorStandardIcon, angleIcon, windowCloseIcon, ClrIcon } from '@clr/angular/icon';
 import * as i4 from '@clr/angular/popover/common';
-import { POPOVER_HOST_ORIGIN, ClrPopoverPosition, ClrPopoverType, ClrPopoverHostDirective, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { POPOVER_HOST_ORIGIN, ClrPopoverPosition, ClrPopoverType, ClrPopoverHostDirective, ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import * as i5 from '@clr/angular/progress/spinner';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import * as i3$1 from '@clr/angular/utils';
@@ -1407,7 +1407,7 @@ class ClrComboboxModule {
             ClrKeyFocusModule,
             ClrCommonFormsModule,
             ClrConditionalModule,
-            _lrClrPopoverModuleNext,
+            ClrPopoverModuleNext,
             ClrSpinnerModule], exports: [ClrCommonFormsModule,
             ClrCombobox,
             ClrComboboxContainer,
@@ -1423,7 +1423,7 @@ class ClrComboboxModule {
             ClrKeyFocusModule,
             ClrCommonFormsModule,
             ClrConditionalModule,
-            _lrClrPopoverModuleNext,
+            ClrPopoverModuleNext,
             ClrSpinnerModule, ClrCommonFormsModule,
             ClrConditionalModule] }); }
 }
@@ -1437,7 +1437,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                         ClrKeyFocusModule,
                         ClrCommonFormsModule,
                         ClrConditionalModule,
-                        _lrClrPopoverModuleNext,
+                        ClrPopoverModuleNext,
                         ClrSpinnerModule,
                     ],
                     declarations: [

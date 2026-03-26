@@ -1,7 +1,7 @@
 import * as i0 from '@angular/core';
 import { Injectable, DOCUMENT, PLATFORM_ID, HostListener, Inject, Directive, ContentChild, Input, Component, ElementRef, HostBinding, ViewChild, Optional, NgModule } from '@angular/core';
 import * as i4 from '@clr/angular/popover/common';
-import { ClrPopoverHostDirective, ClrPopoverPosition, ClrPopoverType, SIGNPOST_POSITIONS, POPOVER_HOST_ORIGIN, ClrPopoverContent, ClrIfOpen, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrPopoverHostDirective, ClrPopoverPosition, ClrPopoverType, SIGNPOST_POSITIONS, POPOVER_HOST_ORIGIN, ClrPopoverContent, ClrIfOpen, ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { Subject } from 'rxjs';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import * as i1 from '@clr/angular/utils';
@@ -463,16 +463,16 @@ class ClrSignpostModule {
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpostModule, declarations: [ClrSignpost,
             ClrSignpostContent,
             ClrSignpostTrigger,
-            ClrSignpostTitle], imports: [CommonModule, ClrIcon, ClrFocusOnViewInitModule, _lrClrPopoverModuleNext, ClrIfOpen], exports: [ClrSignpost,
+            ClrSignpostTitle], imports: [CommonModule, ClrIcon, ClrFocusOnViewInitModule, ClrPopoverModuleNext, ClrIfOpen], exports: [ClrSignpost,
             ClrSignpostContent,
             ClrSignpostTrigger,
             ClrSignpostTitle, ClrIfOpen] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpostModule, imports: [CommonModule, ClrIcon, ClrFocusOnViewInitModule, _lrClrPopoverModuleNext] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpostModule, imports: [CommonModule, ClrIcon, ClrFocusOnViewInitModule, ClrPopoverModuleNext] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpostModule, decorators: [{
             type: NgModule,
             args: [{
-                    imports: [CommonModule, ClrIcon, ClrFocusOnViewInitModule, _lrClrPopoverModuleNext, ClrIfOpen],
+                    imports: [CommonModule, ClrIcon, ClrFocusOnViewInitModule, ClrPopoverModuleNext, ClrIfOpen],
                     declarations: [CLR_SIGNPOST_DIRECTIVES],
                     exports: [CLR_SIGNPOST_DIRECTIVES, ClrIfOpen],
                 }]

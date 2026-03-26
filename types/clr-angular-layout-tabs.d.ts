@@ -154,5 +154,5 @@ declare class ClrTabsModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTabsModule>;
 }
 
-export { CLR_TABS_DIRECTIVES, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, ActiveOompaLoompa as ÇlrActiveOompaLoompa, TabsWillyWonka as ÇlrTabsWillyWonka };
+export { ActiveOompaLoompa, CLR_TABS_DIRECTIVES, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, TabsWillyWonka };
 export type { ClrTabsActionsPosition };

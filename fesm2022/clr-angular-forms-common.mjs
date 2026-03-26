@@ -137,9 +137,9 @@ class ClrControlError extends ClrAbstractControl {
         this.controlIdSuffix = CONTROL_SUFFIX.ERROR;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlError, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlError, isStandalone: false, selector: "clr-control-error", host: { properties: { "class.clr-subtext-wrapper": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlError, isStandalone: false, selector: "clr-control-error", host: { properties: { "class.clr-subtext-wrapper": "true", "class.error": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `
     <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
-    <span class="clr-subtext error">
+    <span class="clr-subtext">
       <ng-content></ng-content>
     </span>
   `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
@@ -150,12 +150,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     selector: 'clr-control-error',
                     template: `
     <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
-    <span class="clr-subtext error">
+    <span class="clr-subtext">
       <ng-content></ng-content>
     </span>
   `,
                     host: {
                         '[class.clr-subtext-wrapper]': 'true',
+                        '[class.error]': 'true',
                         '[attr.id]': 'id',
                     },
                     standalone: false,
@@ -213,9 +214,9 @@ class ClrControlSuccess extends ClrAbstractControl {
         this.controlIdSuffix = CONTROL_SUFFIX.SUCCESS;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrControlSuccess, deps: [{ token: ControlIdService, optional: true }, { token: ContainerIdService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlSuccess, isStandalone: false, selector: "clr-control-success", host: { properties: { "class.clr-subtext-wrapper": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrControlSuccess, isStandalone: false, selector: "clr-control-success", host: { properties: { "class.clr-subtext-wrapper": "true", "class.success": "true", "attr.id": "id" } }, usesInheritance: true, ngImport: i0, template: `
     <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
-    <span class="clr-subtext success">
+    <span class="clr-subtext">
       <ng-content></ng-content>
     </span>
   `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }] }); }
@@ -226,12 +227,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     selector: 'clr-control-success',
                     template: `
     <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
-    <span class="clr-subtext success">
+    <span class="clr-subtext">
       <ng-content></ng-content>
     </span>
   `,
                     host: {
                         '[class.clr-subtext-wrapper]': 'true',
+                        '[class.success]': 'true',
                         '[attr.id]': 'id',
                     },
                     standalone: false,
