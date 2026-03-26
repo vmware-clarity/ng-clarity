@@ -11,7 +11,6 @@
 | --clr-accordion-panel-disabled-color                | Text color of the accordion header when disabled.                 |
 | --clr-accordion-content-background-color            | Background color of the accordion content area.                   |
 | --clr-accordion-content-color                       | Color of the text in the accordion content area.                  |
-| --clr-accordion-content-font-size                   | DEPRECATED Font size of the text in the accordion content area.   |
 | --clr-accordion-header-background-color             | Background color of the accordion header.                         |
 | --clr-accordion-header-disabled-background-color    | Background color of the accordion header when disabled.           |
 | --clr-accordion-header-hover-background-color       | Background color of the accordion header on hover.                |
@@ -622,7 +621,6 @@
 | --clr-collapsible-panel-panel-disabled-color                | Text color of the panel header when disabled.                   |
 | --clr-collapsible-panel-content-background-color            | Background color of the panel content area.                     |
 | --clr-collapsible-panel-content-color                       | Text color of the panel content area.                           |
-| --clr-collapsible-panel-content-font-size                   | Font size of the text in the panel content area.                |
 | --clr-collapsible-panel-header-background-color             | Background color of the panel header.                           |
 | --clr-collapsible-panel-header-disabled-background-color    | Background color of the panel header when disabled.             |
 | --clr-collapsible-panel-header-hover-background-color       | Background color of the panel header on hover.                  |
@@ -704,59 +702,52 @@
 
 ## CSS Properties
 
-| Property Name                                        | Description                                                                             |
-| ---------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| --clr-datagrid-font-color                            | Not used.                                                                               |
-| --clr-datagrid-default-border-color                  | Default border color for datagrid detail pane.                                          |
-| --clr-datagrid-icon-color                            | Default color for expandable, detail caret icons and action toggle icon.                |
-| --clr-datagrid-row-hover-color                       | Background color for datagrid row on hover and active action items.                     |
-| --clr-datagrid-row-hover-font-color                  | Font color for active action items. (unused, remove in v18)                             |
-| --clr-datagrid-action-toggle-color                   | Datagrid action toggle icon color when active.                                          |
-| --clr-datagrid-pagination-btn-color                  | Color for pagination buttons.                                                           |
-| --clr-datagrid-pagination-btn-disabled-color         | Color for disabled pagination buttons.                                                  |
-| --clr-datagrid-pagination-btn-disabled-opacity       | Opacity for disabled pagination buttons.                                                |
-| --clr-datagrid-pagination-input-border-color         | Border color for the pagination input field.                                            |
-| --clr-datagrid-pagination-input-border-focus-color   | Border color for the pagination input field when focused.                               |
-| --clr-datagrid-popover-bg-color                      | Background color for popovers within the datagrid.                                      |
-| --clr-datagrid-popover-border-color                  | Border color for popovers within the datagrid.                                          |
-| --clr-datagrid-action-popover-hover-color            | Background color of action items on hover and focus. (unused, remove in v18)            |
-| --clr-datagrid-row-selected                          | Font color for selected rows.                                                           |
-| --clr-datagrid-row-selected-background-color         | Background color for selected rows.                                                     |
-| --clr-datagrid-row-selected-active-background-color  | Background color for active on selected rows.                                           |
-| --clr-datagrid-row-selected-hover-background-color   | Background color for hover on selected rows.                                            |
-| --clr-datagrid-column-switch-header-font-color       | Font color for column switch header button icons.                                       |
-| --clr-datagrid-column-switch-header-font-hover-color | Font color for column switch button icons on hover.                                     |
-| --clr-datagrid-detail-caret-icon-open-bg-color       | Background color for opened detail caret button.                                        |
-| --clr-datagrid-detail-caret-icon-open-icon-color     | Color of opened detail caret icon.                                                      |
-| --clr-datagrid-loading-background                    | Background color for the loading state of the datagrid.                                 |
-| --clr-datagrid-column-toggle-border-color            | Border color for column toggle buttons.                                                 |
-| --clr-datagrid-column-toggle-fill-color              | Background color for column toggle buttons.                                             |
-| --clr-datagrid-column-toggle-text-color              | Text color for column toggle buttons.                                                   |
-| --clr-datagrid-column-toggle-border-hover-color      | Border color for column toggle buttons when hovered.                                    |
-| --clr-datagrid-column-toggle-fill-hover-color        | Background color for column toggle buttons when hovered.                                |
-| --clr-datagrid-column-toggle-text-hover-color        | Text color for column toggle buttons when hovered.                                      |
-| --clr-datagrid-column-toggle-border-active-color     | Border color for active column toggle buttons.                                          |
-| --clr-datagrid-column-toggle-fill-active-color       | Background color for active column toggle buttons.                                      |
-| --clr-datagrid-column-toggle-text-active-color       | Text color for active column toggle buttons.                                            |
-| --clr-datagrid-popovers-box-shadow-color             | Not used.                                                                               |
-| --clr-datagrid-popover-font-color                    | Font color for popovers.                                                                |
-| --clr-datagrid-detail-pane-content-padding           | Padding for detail panel content                                                        |
-| --clr-datagrid-detail-pane-close-icon-size           | Width and Height for detail close icon                                                  |
-| --clr-datagrid-detail-body-text-color                | Font color for detail body                                                              |
-| --clr-datagrid-detail-header-title-color             | Font color for detail header title                                                      |
-| --clr-datagrid-detail-pane-bg-color                  | Background color for detail panel                                                       |
-| --clr-datagrid-detail-pane-open-row-bg-color         | Background color for the row associated with the open detail panel.                     |
-| --clr-datagrid-detail-pane-border-color              | Border color for detail panel                                                           |
-| --clr-datagrid-placeholder-color                     | Deprecated in v17 and will be removed in v18.Font color for empty datagrid placeholder. |
-| --clr-datagrid-placeholder-font-size                 | Deprecated in v17 and will be removed in v18. Font size for empty datagrid placeholder. |
-| --clr-datagrid-placeholder-font-weight               | Deprecated in v17 and will be removed in v18. Font weight for placeholder               |
-| --clr-datagrid-placeholder-line-height               | Deprecated in v17 and will be removed in v18. Line height for placeholder               |
-| --clr-datagrid-placeholder-letter-spacing            | Deprecated in v17 and will be removed in v18. Letter spacing for placeholder            |
-| --clr-datagrid-placeholder-background-color          | Background color for placeholder                                                        |
-| --clr-datagrid-column-separator-height               | Height for column separator                                                             |
-| --clr-datagrid-filter-toggle-size                    | Width and Height for filter toggle button                                               |
-| --clr-datagrid-row-active-color                      | Background color for active state on rows                                               |
-| --clr-datagrid-fixed-column-size                     | Size for fixed columns inside datagrid                                                  |
+| Property Name                                        | Description                                                              |
+| ---------------------------------------------------- | ------------------------------------------------------------------------ |
+| --clr-datagrid-font-color                            | Not used.                                                                |
+| --clr-datagrid-default-border-color                  | Default border color for datagrid detail pane.                           |
+| --clr-datagrid-icon-color                            | Default color for expandable, detail caret icons and action toggle icon. |
+| --clr-datagrid-row-hover-color                       | Background color for datagrid row on hover and active action items.      |
+| --clr-datagrid-action-toggle-color                   | Datagrid action toggle icon color when active.                           |
+| --clr-datagrid-pagination-btn-color                  | Color for pagination buttons.                                            |
+| --clr-datagrid-pagination-btn-disabled-color         | Color for disabled pagination buttons.                                   |
+| --clr-datagrid-pagination-btn-disabled-opacity       | Opacity for disabled pagination buttons.                                 |
+| --clr-datagrid-pagination-input-border-color         | Border color for the pagination input field.                             |
+| --clr-datagrid-pagination-input-border-focus-color   | Border color for the pagination input field when focused.                |
+| --clr-datagrid-popover-bg-color                      | Background color for popovers within the datagrid.                       |
+| --clr-datagrid-popover-border-color                  | Border color for popovers within the datagrid.                           |
+| --clr-datagrid-row-selected                          | Font color for selected rows.                                            |
+| --clr-datagrid-row-selected-background-color         | Background color for selected rows.                                      |
+| --clr-datagrid-row-selected-active-background-color  | Background color for active on selected rows.                            |
+| --clr-datagrid-row-selected-hover-background-color   | Background color for hover on selected rows.                             |
+| --clr-datagrid-column-switch-header-font-color       | Font color for column switch header button icons.                        |
+| --clr-datagrid-column-switch-header-font-hover-color | Font color for column switch button icons on hover.                      |
+| --clr-datagrid-detail-caret-icon-open-bg-color       | Background color for opened detail caret button.                         |
+| --clr-datagrid-detail-caret-icon-open-icon-color     | Color of opened detail caret icon.                                       |
+| --clr-datagrid-loading-background                    | Background color for the loading state of the datagrid.                  |
+| --clr-datagrid-column-toggle-border-color            | Border color for column toggle buttons.                                  |
+| --clr-datagrid-column-toggle-fill-color              | Background color for column toggle buttons.                              |
+| --clr-datagrid-column-toggle-text-color              | Text color for column toggle buttons.                                    |
+| --clr-datagrid-column-toggle-border-hover-color      | Border color for column toggle buttons when hovered.                     |
+| --clr-datagrid-column-toggle-fill-hover-color        | Background color for column toggle buttons when hovered.                 |
+| --clr-datagrid-column-toggle-text-hover-color        | Text color for column toggle buttons when hovered.                       |
+| --clr-datagrid-column-toggle-border-active-color     | Border color for active column toggle buttons.                           |
+| --clr-datagrid-column-toggle-fill-active-color       | Background color for active column toggle buttons.                       |
+| --clr-datagrid-column-toggle-text-active-color       | Text color for active column toggle buttons.                             |
+| --clr-datagrid-popovers-box-shadow-color             | Not used.                                                                |
+| --clr-datagrid-popover-font-color                    | Font color for popovers.                                                 |
+| --clr-datagrid-detail-pane-content-padding           | Padding for detail panel content                                         |
+| --clr-datagrid-detail-pane-close-icon-size           | Width and Height for detail close icon                                   |
+| --clr-datagrid-detail-body-text-color                | Font color for detail body                                               |
+| --clr-datagrid-detail-header-title-color             | Font color for detail header title                                       |
+| --clr-datagrid-detail-pane-bg-color                  | Background color for detail panel                                        |
+| --clr-datagrid-detail-pane-open-row-bg-color         | Background color for the row associated with the open detail panel.      |
+| --clr-datagrid-detail-pane-border-color              | Border color for detail panel                                            |
+| --clr-datagrid-placeholder-background-color          | Background color for placeholder                                         |
+| --clr-datagrid-column-separator-height               | Height for column separator                                              |
+| --clr-datagrid-filter-toggle-size                    | Width and Height for filter toggle button                                |
+| --clr-datagrid-row-active-color                      | Background color for active state on rows                                |
+| --clr-datagrid-fixed-column-size                     | Size for fixed columns inside datagrid                                   |
 
 ## CSS Classes
 
@@ -873,32 +864,30 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                          | Description                                                    |
-| -------------------------------------------- | -------------------------------------------------------------- |
-| --clr-dropdown-active-text-color             | The text color of the active dropdown item.                    |
-| --clr-dropdown-bg-color                      | The background color of the dropdown menu.                     |
-| --clr-dropdown-border-color                  | The border color of the dropdown.                              |
-| --clr-dropdown-divider-color                 | The color of the divider between dropdown items.               |
-| --clr-dropdown-divider-border-width          | Width of the dropdown items separator.                         |
-| --clr-dropdown-child-border-color            | The border color of child dropdown items.                      |
-| --clr-dropdown-bg-hover-color                | Deprecated in favor of `--clr-dropdown-item-hover-bg-color`.   |
-| --clr-dropdown-selection-color               | eprecated in favor of `--clr-dropdown-item-selected-bg-color`. |
-| --clr-dropdown-text-color                    | The text color of the dropdown.                                |
-| --clr-dropdown-header-color                  | The color of the dropdown menu header.                         |
-| --clr-dropdown-header-font-weight            | Dropdown menu header font weight                               |
-| --clr-dropdown-item-font-weight              | Dropdown menu item font weight                                 |
-| --clr-dropdown-item-color                    | Text color of the dropdown item.                               |
-| --clr-dropdown-item-bg-color                 | Background color of the dropdown item.                         |
-| --clr-dropdown-item-hover-color              | Text `:hover` color of the dropdown item.                      |
-| --clr-dropdown-item-hover-bg-color           | Background `:hover` color of the dropdown item.                |
-| --clr-dropdown-item-active-color             | Text `:active` color of the dropdown item.                     |
-| --clr-dropdown-item-active-bg-color          | Background `:active` color of the dropdown item.               |
-| --clr-dropdown-item-selected-color           | Text `selected` color of the dropdown item.                    |
-| --clr-dropdown-item-selected-bg-color        | Background `selected` color of the dropdown item.              |
-| --clr-dropdown-item-selected-hover-bg-color  | Background `:hover` color of selected dropdown item.           |
-| --clr-dropdown-item-selected-active-bg-color | Background `:active` color of selected dropdown item.          |
-| --clr-dropdown-item-disabled-color           | Text color of `disabled` dropdown item.                        |
-| --clr-dropdown-item-disabled-bg-color        | Background color of `disabled` dropdown item.                  |
+| CSS Custom Property                          | Description                                           |
+| -------------------------------------------- | ----------------------------------------------------- |
+| --clr-dropdown-active-text-color             | The text color of the active dropdown item.           |
+| --clr-dropdown-bg-color                      | The background color of the dropdown menu.            |
+| --clr-dropdown-border-color                  | The border color of the dropdown.                     |
+| --clr-dropdown-divider-color                 | The color of the divider between dropdown items.      |
+| --clr-dropdown-divider-border-width          | Width of the dropdown items separator.                |
+| --clr-dropdown-child-border-color            | The border color of child dropdown items.             |
+| --clr-dropdown-text-color                    | The text color of the dropdown.                       |
+| --clr-dropdown-header-color                  | The color of the dropdown menu header.                |
+| --clr-dropdown-header-font-weight            | Dropdown menu header font weight                      |
+| --clr-dropdown-item-font-weight              | Dropdown menu item font weight                        |
+| --clr-dropdown-item-color                    | Text color of the dropdown item.                      |
+| --clr-dropdown-item-bg-color                 | Background color of the dropdown item.                |
+| --clr-dropdown-item-hover-color              | Text `:hover` color of the dropdown item.             |
+| --clr-dropdown-item-hover-bg-color           | Background `:hover` color of the dropdown item.       |
+| --clr-dropdown-item-active-color             | Text `:active` color of the dropdown item.            |
+| --clr-dropdown-item-active-bg-color          | Background `:active` color of the dropdown item.      |
+| --clr-dropdown-item-selected-color           | Text `selected` color of the dropdown item.           |
+| --clr-dropdown-item-selected-bg-color        | Background `selected` color of the dropdown item.     |
+| --clr-dropdown-item-selected-hover-bg-color  | Background `:hover` color of selected dropdown item.  |
+| --clr-dropdown-item-selected-active-bg-color | Background `:active` color of selected dropdown item. |
+| --clr-dropdown-item-disabled-color           | Text color of `disabled` dropdown item.               |
+| --clr-dropdown-item-disabled-bg-color        | Background color of `disabled` dropdown item.         |
 
 ## CSS Classes
 
@@ -1221,26 +1210,21 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                  | Description                              |
-| ------------------------------------ | ---------------------------------------- |
-| --clr-login-title-color              | Color of the title                       |
-| --clr-login-background-color         | Background color                         |
-| --clr-login-background               | Background image                         |
-| --clr-login-error-background-color   | Error message background color           |
-| --clr-login-error-border-radius      | Error message border radius              |
-| --clr-login-panel-line-color         | Color of the divider line                |
-| --clr-login-panel-line-opacity       | Opacity to the divider line              |
-| --clr-login-hint-color               | Font color of the hint                   |
-| --clr-login-footer-gap               | Gap size for the footer                  |
-| --clr-login-copyright-color          | Font color for the copyright thumbnail   |
-| --clr-login-welcome-color            | Font color for welcome                   |
-| --clr-login-error-icon-color         | Color for error icon                     |
-| --clr-login-logo-color               | Color of VMware logo                     |
-| --clr-login-trademark-color          | DEPRECATED in v17. to be removed in v18. |
-| --clr-login-trademark-font-weight    | DEPRECATED in v17. to be removed in v18. |
-| --clr-login-trademark-font-family    | DEPRECATED in v17. to be removed in v18. |
-| --clr-login-trademark-font-size      | DEPRECATED in v17. to be removed in v18. |
-| --clr-login-trademark-letter-spacing | DEPRECATED in v17. to be removed in v18. |
+| CSS Custom Property                | Description                            |
+| ---------------------------------- | -------------------------------------- |
+| --clr-login-title-color            | Color of the title                     |
+| --clr-login-background-color       | Background color                       |
+| --clr-login-background             | Background image                       |
+| --clr-login-error-background-color | Error message background color         |
+| --clr-login-error-border-radius    | Error message border radius            |
+| --clr-login-panel-line-color       | Color of the divider line              |
+| --clr-login-panel-line-opacity     | Opacity to the divider line            |
+| --clr-login-hint-color             | Font color of the hint                 |
+| --clr-login-footer-gap             | Gap size for the footer                |
+| --clr-login-copyright-color        | Font color for the copyright thumbnail |
+| --clr-login-welcome-color          | Font color for welcome                 |
+| --clr-login-error-icon-color       | Color for error icon                   |
+| --clr-login-logo-color             | Color of VMware logo                   |
 
 ## CSS Classes
 
@@ -1260,8 +1244,6 @@
 | login-group   | Contains the login form controls                                                 |
 | error         | Error messageThe error message is hidden by default                              |
 | active        | Adding the `active` class to the `.error` element makes the error message appear |
-| trademark     | DEPRECATED in v17. To be removed in v18.                                         |
-| subtitle      | DEPRECATED in v17. To be removed in v18.                                         |
 
 # Modal
 
@@ -1417,19 +1399,18 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                     | Description                                                   |
-| --------------------------------------- | ------------------------------------------------------------- |
-| --clr-signpost-content-color            | Signpost content color.                                       |
-| --clr-signpost-content-bg-color         | Signpost content background color.                            |
-| --clr-signpost-content-border-color     | Signpost content border color.                                |
-| --clr-signpost-content-border-color     | Signpost content border color.                                |
-| --clr-signpost-action-color             | Signpost action color.                                        |
-| --clr-signpost-action-hover-color       | Signpost action hover color.                                  |
-| --clr-signpost-action-active-color      | Signpost action active color.                                 |
-| --clr-signpost-pointer-border           | Signpost pointer border.                                      |
-| --clr-signpost-pointer-invisible-border | Signpost pointer invisible border.                            |
-| --clr-signpost-pointer-psuedo-border    | Deprecated in favor of `--clr-signpost-pointer-pseudo-border` |
-| --clr-signpost-pointer-pseudo-border    | Signpost pointer pseudo border.                               |
+| CSS Custom Property                     | Description                        |
+| --------------------------------------- | ---------------------------------- |
+| --clr-signpost-content-color            | Signpost content color.            |
+| --clr-signpost-content-bg-color         | Signpost content background color. |
+| --clr-signpost-content-border-color     | Signpost content border color.     |
+| --clr-signpost-content-border-color     | Signpost content border color.     |
+| --clr-signpost-action-color             | Signpost action color.             |
+| --clr-signpost-action-hover-color       | Signpost action hover color.       |
+| --clr-signpost-action-active-color      | Signpost action active color.      |
+| --clr-signpost-pointer-border           | Signpost pointer border.           |
+| --clr-signpost-pointer-invisible-border | Signpost pointer invisible border. |
+| --clr-signpost-pointer-pseudo-border    | Signpost pointer pseudo border.    |
 
 ## CSS Classes
 
@@ -1477,49 +1458,29 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                                                    | Description                                                     |
-| ---------------------------------------------------------------------- | --------------------------------------------------------------- |
-| --clr-stack-view-border-width                                          | Stack view border width                                         |
-| --clr-stack-view-border-radius                                         | Border radius of stack view                                     |
-| --clr-stack-view-border-color                                          | Border color of stack view                                      |
-| --clr-stack-block-changed-border-top-color                             | Changed stack block border top color                            |
-| --clr-stack-view-title-color                                           | Stack view title color                                          |
-| --clr-stack-view-row-color                                             | Text and caret color of not expandable stack view row           |
-| --clr-stack-view-row-bg-color                                          | Background color of not expandable stack view row               |
-| --clr-stack-view-expandable-row-color                                  | Text and caret color of expandable stack view row               |
-| --clr-stack-view-expandable-row-bg-color                               | Background color of expandable stack view row                   |
-| --clr-stack-view-expandable-row-hover                                  | Text and caret `:hover` color of expandable stack view row      |
-| --clr-stack-view-expandable-row-bg-hover                               | Background `:hover` color of expandable stack view row          |
-| --clr-stack-view-expandable-row-active                                 | Text and caret` :active` color of expandable stack view row     |
-| --clr-stack-view-expandable-row-bg-active                              | Background `:active` color of expandable stack view row         |
-| --clr-stack-view-expanded-row-color                                    | Text and caret color of expanded stack view row                 |
-| --clr-stack-view-expanded-row-bg-color                                 | Background color of expanded stack view row                     |
-| --clr-stack-view-expanded-hover-row-bg-color                           | Background color of hover on expanded stack view row            |
-| --clr-stack-view-expanded-active-row-bg-color                          | Background color of active on expanded stack view row           |
-| --clr-stack-view-row-font-size                                         | Font size for stack view row                                    |
-| --clr-stack-view-row-font-weight                                       | Font weight for stack view row                                  |
-| --clr-stack-view-row-line-height                                       | Line height for stack view row                                  |
-| --clr-stack-view-row-letter-spacing                                    | Letter spacing for stack view row                               |
-| --clr-stack-view-stack-block-border-bottom                             | Deprecated. Use `--clr-stack-view-border-color` instead         |
-| --clr-stack-view-stack-children-stack-block-border-bottom-color        | Deprecated. Use `--clr-stack-view-border-color` instead         |
-| --clr-stack-view-stack-block-label-font-size                           | Deprecated in favor of `--clr-stack-view-row-font-size`         |
-| --clr-stack-view-stack-block-label-font-weight                         | Deprecated in favor of `--clr-stack-view-row-font-weight`       |
-| --clr-stack-view-stack-block-label-line-height                         | Deprecated in favor of `--clr-stack-view-row-line-height`       |
-| --clr-stack-view-stack-block-label-letter-spacing                      | Deprecated in favor of `--clr-stack-view-row-letter-spacing`    |
-| --clr-stack-view-color                                                 | Deprecated in favor of `--clr-stack-view-row-color`             |
-| --clr-stack-view-bg-color                                              | Deprecated in favor of `--clr-stack-view-row-bg-color`          |
-| --clr-stack-view-stack-block-label-text-color                          | DELETED. Replaced with `--clr-stack-view-row-color`             |
-| --clr-stack-view-stack-block-label-and-content-bg-color                | DELETED. Replaced with `--clr-stack-view-row-bg-color`          |
-| --clr-stack-view-stack-children-stack-block-label-and-content-bg-color | Deprecated in favor of `--clr-stack-view-row-bg-color`          |
-| --clr-stack-view-stack-block-caret-color                               | Deprecated in favor of `--clr-stack-view-expandable-row-color`  |
-| --clr-stack-view-stack-block-expanded-bg-color                         | Deprecated in favor of `--clr-stack-view-expanded-row-bg-color` |
-| --clr-stack-view-stack-block-expandable-hover                          | Deprecated in favor of `--clr-stack-view-expandable-row-hover`  |
-| --clr-stack-view-stack-block-content-text-color                        | DELETED. Replaced with `--clr-stack-view-row-color`             |
-| --clr-stack-view-stack-block-expanded-text-color                       | Deprecated in favor of `--clr-stack-view-expanded-row-color`    |
-| --clr-stack-view-font-size                                             | DELETED. Replaced with `--clr-stack-view-row-font-size`         |
-| --clr-stack-view-font-weight                                           | DELETED. Replaced with `--clr-stack-view-row-font-weight`       |
-| --clr-stack-view-line-height                                           | DELETED. Replaced with `--clr-stack-view-row-line-height`       |
-| --clr-stack-view-letter-spacing                                        | DELETED. Replaced with `--clr-stack-view-row-letter-spacing`    |
+| CSS Custom Property                           | Description                                                 |
+| --------------------------------------------- | ----------------------------------------------------------- |
+| --clr-stack-view-border-width                 | Stack view border width                                     |
+| --clr-stack-view-border-radius                | Border radius of stack view                                 |
+| --clr-stack-view-border-color                 | Border color of stack view                                  |
+| --clr-stack-block-changed-border-top-color    | Changed stack block border top color                        |
+| --clr-stack-view-title-color                  | Stack view title color                                      |
+| --clr-stack-view-row-color                    | Text and caret color of not expandable stack view row       |
+| --clr-stack-view-row-bg-color                 | Background color of not expandable stack view row           |
+| --clr-stack-view-expandable-row-color         | Text and caret color of expandable stack view row           |
+| --clr-stack-view-expandable-row-bg-color      | Background color of expandable stack view row               |
+| --clr-stack-view-expandable-row-hover         | Text and caret `:hover` color of expandable stack view row  |
+| --clr-stack-view-expandable-row-bg-hover      | Background `:hover` color of expandable stack view row      |
+| --clr-stack-view-expandable-row-active        | Text and caret` :active` color of expandable stack view row |
+| --clr-stack-view-expandable-row-bg-active     | Background `:active` color of expandable stack view row     |
+| --clr-stack-view-expanded-row-color           | Text and caret color of expanded stack view row             |
+| --clr-stack-view-expanded-row-bg-color        | Background color of expanded stack view row                 |
+| --clr-stack-view-expanded-row-bg-color-hover  | Background color of hover on expanded stack view row        |
+| --clr-stack-view-expanded-row-bg-color-active | Background color of active on expanded stack view row       |
+| --clr-stack-view-row-font-size                | Font size for stack view row                                |
+| --clr-stack-view-row-font-weight              | Font weight for stack view row                              |
+| --clr-stack-view-row-line-height              | Line height for stack view row                              |
+| --clr-stack-view-row-letter-spacing           | Letter spacing for stack view row                           |
 
 ## CSS Classes
 
@@ -1688,30 +1649,24 @@ All other table classes like `table, thead, tbody, th, td` are not specific to C
 
 ## CSS Custom Properties
 
-| CSS Custom Property                              | Description                                                               |
-| ------------------------------------------------ | ------------------------------------------------------------------------- |
-| --clr-tree-border-radius                         | Tree node content border radius                                           |
-| --clr-tree-node-caret-link-hover-color           | Deprecated in v17 in favor of `--clr-tree-node-caret-hover-color`         |
-| --clr-tree-node-caret-link-active-color          | Deprecated in v17 in favor of `--clr-tree-node-caret-active-color`        |
-| --clr-tree-node-caret-link-disabled-color        | Deprecated in v17 in favor of `--clr-tree-node-caret-disabled-color`      |
-| --clr-tree-link-hover-color                      | Deprecated in v17 in favor of `--clr-tree-node-content-bg-hover-color`    |
-| --clr-tree-link-selection-color                  | Deprecated in v17 in favor of `--clr-tree-node-content-bg-selected-color` |
-| --clr-tree-link-text-color                       | Deprecated in v17 in favor of `--clr-tree-node-content-color`             |
-| --clr-tree-node-caret-color                      | Tree node caret color                                                     |
-| --clr-tree-node-caret-hover-color                | Tree node caret hover color                                               |
-| --clr-tree-node-caret-active-color               | Tree node caret active color                                              |
-| --clr-tree-node-caret-disabled-color             | Tree node caret disabled color                                            |
-| --clr-tree-node-content-text-only-color          | Tree node content text only color                                         |
-| --clr-tree-node-content-color                    | Tree node content color                                                   |
-| --clr-tree-node-content-bg-color                 | Tree node content background color                                        |
-| --clr-tree-node-content-hover-color              | Tree node content hover color                                             |
-| --clr-tree-node-content-bg-hover-color           | Tree node content background hover color                                  |
-| --clr-tree-node-content-color                    | Tree node content selected color                                          |
-| --clr-tree-node-content-bg-selected-color        | Tree node content background selected color                               |
-| --clr-tree-node-content-bg-selected-hover-color  | Tree node content background hover color on selected                      |
-| --clr-tree-node-content-bg-selected-active-color | Tree node content background active color on selected                     |
-| --clr-tree-node-content-disabled-color           | Tree node content disabled color                                          |
-| --clr-tree-node-content-bg-disabled-color        | Tree node content background disabled color                               |
+| CSS Custom Property                              | Description                                           |
+| ------------------------------------------------ | ----------------------------------------------------- |
+| --clr-tree-border-radius                         | Tree node content border radius                       |
+| --clr-tree-node-caret-color                      | Tree node caret color                                 |
+| --clr-tree-node-caret-hover-color                | Tree node caret hover color                           |
+| --clr-tree-node-caret-active-color               | Tree node caret active color                          |
+| --clr-tree-node-caret-disabled-color             | Tree node caret disabled color                        |
+| --clr-tree-node-content-text-only-color          | Tree node content text only color                     |
+| --clr-tree-node-content-color                    | Tree node content color                               |
+| --clr-tree-node-content-bg-color                 | Tree node content background color                    |
+| --clr-tree-node-content-hover-color              | Tree node content hover color                         |
+| --clr-tree-node-content-bg-hover-color           | Tree node content background hover color              |
+| --clr-tree-node-content-color                    | Tree node content selected color                      |
+| --clr-tree-node-content-bg-selected-color        | Tree node content background selected color           |
+| --clr-tree-node-content-bg-selected-hover-color  | Tree node content background hover color on selected  |
+| --clr-tree-node-content-bg-selected-active-color | Tree node content background active color on selected |
+| --clr-tree-node-content-disabled-color           | Tree node content disabled color                      |
+| --clr-tree-node-content-bg-disabled-color        | Tree node content background disabled color           |
 
 ## CSS Classes
 
