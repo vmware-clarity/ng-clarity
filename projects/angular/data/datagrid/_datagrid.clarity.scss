@@ -708,17 +708,7 @@
         gap: density.$clr-base-gap-m;
         padding: density.$clr-base-vertical-offset-2xl density.$clr-base-horizontal-offset-2xl;
 
-        @include mixins.generate-typography-token(
-          'BODY-14-SB-STD',
-          (
-            font-size: datagrid-variables.$clr-datagrid-placeholder-font-size,
-            font-weight: datagrid-variables.$clr-datagrid-placeholder-font-weight,
-            line-height: datagrid-variables.$clr-datagrid-placeholder-line-height,
-            letter-spacing: datagrid-variables.$clr-datagrid-placeholder-letter-spacing,
-          )
-        );
-
-        color: datagrid-variables.$clr-datagrid-placeholder-color;
+        @include mixins.generate-typography-token('BODY-14-SB-STD');
       }
 
       .datagrid-placeholder-image {

@@ -59,12 +59,7 @@
         );
       color: accordion-variables.$clr-accordion-content-color;
 
-      @include mixins.generate-typography-token(
-        'SECONDARY-13-RG-STD',
-        (
-          font-size: accordion-variables.$clr-accordion-content-font-size,
-        )
-      );
+      @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
     }
 
     .clr-accordion-panel-disabled .clr-accordion-inner-content {

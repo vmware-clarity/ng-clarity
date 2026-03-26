@@ -10,7 +10,6 @@
 | --clr-collapsible-panel-panel-disabled-color                | Text color of the panel header when disabled.                   |
 | --clr-collapsible-panel-content-background-color            | Background color of the panel content area.                     |
 | --clr-collapsible-panel-content-color                       | Text color of the panel content area.                           |
-| --clr-collapsible-panel-content-font-size                   | Font size of the text in the panel content area.                |
 | --clr-collapsible-panel-header-background-color             | Background color of the panel header.                           |
 | --clr-collapsible-panel-header-disabled-background-color    | Background color of the panel header when disabled.             |
 | --clr-collapsible-panel-header-hover-background-color       | Background color of the panel header on hover.                  |

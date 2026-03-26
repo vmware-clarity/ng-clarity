@@ -32,7 +32,6 @@ $clr-collapsible-panel-header-open-hover-background-color: var(
 ) !default;
 
 $clr-collapsible-panel-content-color: var(--clr-collapsible-panel-content-color) !default;
-$clr-collapsible-panel-content-font-size: var(--clr-collapsible-panel-content-font-size) !default;
 
 $clr-collapsible-panel-responsive-breakpoint: map.get(variables.$clr-grid-breakpoints, sm) !default;
 
