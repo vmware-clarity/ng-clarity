@@ -170,6 +170,8 @@ export class CompositeFiltersComponent implements OnInit {
     // (undocumented)
     onPropertyChange(): void;
     // (undocumented)
+    presetFilters: PropertyFilter[];
+    // (undocumented)
     propertyFilters: PropertyFilter[];
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
@@ -195,7 +197,7 @@ export class CompositeFiltersComponent implements OnInit {
     // (undocumented)
     readonly userPropertyType: PropertyType;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; }, { "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; }, { "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CompositeFiltersComponent, never>;
 }
@@ -225,6 +227,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     onSearchInputKeyPress(event: KeyboardEvent): void;
     // (undocumented)
     onSearchTermChanged(searchTerm: string): void;
+    presetFilters: PropertyFilter[];
     // (undocumented)
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
@@ -235,7 +238,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     // (undocumented)
     selectedFilterMode: FilterMode;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DataGridFiltersComponent, never>;
 }
@@ -394,6 +397,8 @@ export class DatagridFiltersStrings {
 // @public
 export class DatagridFiltersUserService {
     // (undocumented)
+    formatUser(user: string, _domain?: string): string;
+    // (undocumented)
     getDomains(): Observable<string[]>;
     // (undocumented)
     searchUsers(searchTerm: string, domain: string): Observable<string[]>;
@@ -413,9 +418,8 @@ export class DateTimePropertyDefinition extends FilterablePropertyDefinition {
 
 // @public (undocumented)
 export class EnumPropertyDefinition extends FilterablePropertyDefinition {
-    constructor(displayName: string, property: string, values: Map<string, string>, singleSelect?: boolean, searchable?: boolean, showKeyInParentheses?: boolean, allowNotInOperator?: boolean);
+    constructor(displayName: string, property: string, values: Map<string, string>, singleSelect?: boolean, searchable?: boolean, allowNotInOperator?: boolean);
     searchable: boolean;
-    showKeyInParentheses: boolean;
     singleSelect: boolean;
     values: Map<string, string>;
 }

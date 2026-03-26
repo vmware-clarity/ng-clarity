@@ -6401,16 +6401,10 @@ export class ClrWizardPageTitle {
 }
 
 // @public (undocumented)
-export class ClrWizardStepnav implements AfterViewInit, OnChanges, OnDestroy {
-    constructor(pageService: PageCollectionService, elementRef: ElementRef<HTMLElement>);
+export class ClrWizardStepnav {
+    constructor(pageService: PageCollectionService);
     // (undocumented)
     label: string;
-    // (undocumented)
-    ngAfterViewInit(): void;
-    // (undocumented)
-    ngOnChanges(changes: SimpleChanges): void;
-    // (undocumented)
-    ngOnDestroy(): void;
     // (undocumented)
     pageService: PageCollectionService;
     // (undocumented)
