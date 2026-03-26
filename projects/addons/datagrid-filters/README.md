@@ -20,6 +20,7 @@ Advanced modes allow users to build and manage complex filtering queries. Quick 
 | ----------------------- | ------------ | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `filterMode`            | Input        | `FilterMode`                     | Enum parameter with three options.<br/>FilterMode.Quick - only quick filter is activated.<br/>FilterMode.Advanced - both quick and advanced filters are activated.<br/>FilterMode.AdvancedOnly - Only advanced filter is activated. |
 | `filterableProperties`  | Input        | `FilterablePropertyDefinition[]` | Array of properties, which are used for advanced filtering.<br/>Supported types: StringPropertyDefinition, NumericPropertyDefinition, EnumPropertyDefinition, DateTimePropertyDefinition                                            |
+| `presetFilters`         | Input        | `PropertyFilter[]`               | Array of pre-selected filters.                                                                                                                                                                                                      |
 | `searchTermChange`      | Output       | `EventEmitter<string>`           | Emits when the quick filter changes. Triggered on `Enter` key press and/or automatically on every 2 sec when the user is typing in the search input.                                                                                |
 | `propertyFiltersChange` | Output       | `EventEmitter<PropertyFilter[]>` | Emits when the advanced filter changes.                                                                                                                                                                                             |
 
@@ -57,10 +58,12 @@ Default supported operators:
 
 Extends FilterablePropertyDefinition.
 
-| Property       | Type                  | Description                                                                                       |
-| -------------- | --------------------- | ------------------------------------------------------------------------------------------------- |
-| `values`       | `Map<string, string>` | Enumeration key/value data to be used in the filter selection.                                    |
-| `singleSelect` | `boolean`             | Optional. Indicates that the property should be used for single select filtering. Default: false. |
+| Property             | Type                  | Description                                                                                                                     |
+| -------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `values`             | `Map<string, string>` | Enumeration key/value data to be used in the filter selection.                                                                  |
+| `singleSelect`       | `boolean`             | Optional. Indicates that the property should be used for single select filtering. Default: false.                               |
+| `searchable`         | `boolean`             | Optional. Indicates that the property should provide a searching interface. Default: false.                                     |
+| `allowNotInOperator` | `boolean`             | Optional. Enables the "NOT IN" operator for the selected values, allowing users to exclude specific enum items. Default: false. |
 
 #### NumericPropertyDefinition
 
@@ -125,6 +128,7 @@ datagrid-filters-demo.component.html
 <appfx-datagrid-filters
   [filterMode]="filterMode"
   [filterableProperties]="filterableProperties"
+  [presetFilters]="presetFilters"
   (searchTermChange)="onAdvancedSearchTermChange($event)"
   (propertyFiltersChange)="onAdvancedFilterCriteriaChange($event)"
 >
