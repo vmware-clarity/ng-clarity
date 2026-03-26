@@ -20,7 +20,7 @@ export class UseDontUseComponent {
   readonly heading = input('');
 
   constructor() {
-    // We can't use the 'check-circle' and 'times-circle' icons from @cds/core because the circles are not the same size.
+    // Custom icons because the standard 'check-circle' and 'times-circle' icons have differently sized circles.
     ClarityIcons.addIcons(
       [
         'UseDontUseComponent:use',

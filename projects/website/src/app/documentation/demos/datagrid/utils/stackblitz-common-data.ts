@@ -32,7 +32,7 @@ export class ExampleComponent {
 `;
 
 const exampleCss = `
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/ui/styles/core/tokens/variables.tokens' as tokens;
 
 .color-square {
   display: inline-block;

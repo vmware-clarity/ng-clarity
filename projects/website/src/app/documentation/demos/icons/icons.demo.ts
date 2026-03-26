@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ClrIcon, ClrIconModule } from '@clr/angular';
+import { ClrIcon } from '@clr/angular/icon';
 
 import { IconShapesComponent } from './icon-shapes/icon-shapes.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
@@ -16,7 +16,7 @@ import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ClarityDocComponent } from '../clarity-doc';
 
 const ICONS_IMPORT_EXAMPLE = `
-import '@cds/core/icon/register.js';
+import { ClarityIcons, userIcon } from '@clr/angular/icon';
 
 ClarityIcons.addIcons(userIcon);
 `;
@@ -56,15 +56,7 @@ const STATUS_OR_INDICATOR_ICONS_EXAMPLE = `
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
-  imports: [
-    DocTabsComponent,
-    DocTabComponent,
-    RouterLink,
-    CodeSnippetComponent,
-    ClrIcon,
-    ClrIconModule,
-    IconShapesComponent,
-  ],
+  imports: [DocTabsComponent, DocTabComponent, RouterLink, CodeSnippetComponent, ClrIcon, IconShapesComponent],
 })
 export class IconsDemo extends ClarityDocComponent {
   iconsImportExample = ICONS_IMPORT_EXAMPLE;
