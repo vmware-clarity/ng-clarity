@@ -180,11 +180,8 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   formatUser(user: string): string {
-    if (user.includes('@')) {
-      return user;
-    }
     const domain = this.usersSelectionForm.get('domain')?.value;
-    return user + (domain ? '@' + domain : '');
+    return this.userService.formatUser(user, domain);
   }
 
   onCancelButtonClick() {

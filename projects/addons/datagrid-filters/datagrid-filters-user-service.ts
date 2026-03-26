@@ -31,4 +31,8 @@ export class DatagridFiltersUserService {
   searchUsers(searchTerm: string, domain: string): Observable<string[]> {
     return of([]);
   }
+
+  formatUser(user: string, _domain?: string): string {
+    return user;
+  }
 }

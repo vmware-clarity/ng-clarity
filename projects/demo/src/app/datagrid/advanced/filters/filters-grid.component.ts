@@ -266,7 +266,6 @@ export class FiltersGridComponent {
       new Map(Object.entries(CATEGORY_ENUM_VALUES)),
       false,
       true,
-      true,
       true
     );
 

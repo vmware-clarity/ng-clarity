@@ -11,9 +11,8 @@
 }
 
 :host-context(.no-zoom) {
-  .enum-options {
-    overflow-y: auto;
-    max-height: 8.8rem;
+  .enum-filter-wrapper {
+    max-height: 12.5rem;
   }
 }
 

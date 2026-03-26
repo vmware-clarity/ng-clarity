@@ -74,7 +74,6 @@
           />
           <label>
             {{ item.data.value }}
-            {{ filterProperty.showKeyInParentheses ? '(' + item.data.key + ')' : '' }}
           </label>
         </clr-checkbox-wrapper>
       </clr-checkbox-container>
@@ -84,7 +83,6 @@
           <input type="radio" clrRadio formControlName="singleSelectOption" [value]="option.data.key" />
           <label>
             {{ option.data.value }}
-            {{ filterProperty.showKeyInParentheses ? '(' + option.data.key + ')' : '' }}
           </label>
         </clr-radio-wrapper>
       </clr-radio-container>

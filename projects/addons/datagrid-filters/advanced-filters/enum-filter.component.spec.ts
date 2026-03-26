@@ -35,7 +35,6 @@ const enumPropertySmall: EnumPropertyDefinition = new EnumPropertyDefinition(
   new Map(Object.entries(smallValues)),
   false, // singleSelect
   true, // searchable
-  false, // showKeyInParentheses
   true // allowNotInOperator (triggers additionalOperators getter)
 );
 
@@ -113,7 +112,7 @@ describe('EnumFilterComponent', () => {
       expect(component.optionsData.length).toBe(3);
       expect(component.filteredOptions.length).toBe(3);
       expect(component.enumFilterForm).toBeDefined();
-      expect(component.enumFilterForm.get('enumOperator')?.value).toBe(ComparisonOperator.Equals);
+      expect(component.enumFilterForm.get('enumOperator')?.value).toBe(ComparisonOperator.DoesNotEqual);
       expect(component.additionalOperators).toBeTrue(); // Because allowNotInOperator is true
     }));
 
@@ -128,8 +127,8 @@ describe('EnumFilterComponent', () => {
 
       expect(redControl.value).toBeTrue();
       expect(greenControl.value).toBeFalse();
-      // Operator sync check
-      expect(component.enumFilterForm.get('enumOperator')?.value).toBe(ComparisonOperator.Equals);
+      // Operator sync check: Or maps to first operator in list (DoesNotEqual when allowNotInOperator)
+      expect(component.enumFilterForm.get('enumOperator')?.value).toBe(ComparisonOperator.DoesNotEqual);
     }));
 
     it('should sync "DoesNotEqual" operator correctly from PropertyFilter', fakeAsync(() => {

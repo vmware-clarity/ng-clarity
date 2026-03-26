@@ -58,7 +58,7 @@ export class EnumFilterComponent implements OnInit, OnChanges {
   enumFilterForm: FormGroup;
   optionsData: EnumPropertyData[] = [];
   filteredOptions: { data: EnumPropertyData; index: number }[] = [];
-  enumOperators = [ComparisonOperator.Equals, ComparisonOperator.DoesNotEqual];
+  enumOperators: ComparisonOperator[] = [ComparisonOperator.Equals, ComparisonOperator.DoesNotEqual];
   isProcessing = false;
   searchResultsLen = 0;
   selectedCount = 0;
@@ -195,14 +195,16 @@ export class EnumFilterComponent implements OnInit, OnChanges {
   }
 
   private initializeFilter(): void {
+    if (this.filterProperty.supportedOperators?.length) {
+      this.enumOperators = this.filterProperty.supportedOperators;
+    }
+
     this.updateData();
     this.updateForm();
     this.performSearch('');
 
     const initialOp =
-      this.propertyFilter?.operator === LogicalOperator.And
-        ? ComparisonOperator.DoesNotEqual
-        : ComparisonOperator.Equals;
+      this.propertyFilter?.operator === LogicalOperator.And ? ComparisonOperator.DoesNotEqual : this.enumOperators[0];
     this.enumFilterForm.controls.enumOperator.setValue(initialOp, { emitEvent: false });
 
     this.updateSelectedCount();
@@ -250,9 +252,7 @@ export class EnumFilterComponent implements OnInit, OnChanges {
       this.optionsData.push({ key: k, value: v });
     });
     this.enumFilterForm?.controls.enumOperator.setValue(
-      this.propertyFilter?.operator === LogicalOperator.And
-        ? ComparisonOperator.DoesNotEqual
-        : ComparisonOperator.Equals
+      this.propertyFilter?.operator === LogicalOperator.And ? ComparisonOperator.DoesNotEqual : this.enumOperators[0]
     );
   }
 
