@@ -16,7 +16,7 @@ import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ClarityDocComponent } from '../clarity-doc';
 
 const ICONS_IMPORT_EXAMPLE = `
-import '@cds/core/icon/register.js';
+import { ClarityIcons, userIcon } from '@clr/angular';
 
 ClarityIcons.addIcons(userIcon);
 `;
