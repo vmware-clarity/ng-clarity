@@ -18,6 +18,7 @@ import { DatagridBindingPropertiesDemo } from './binding-properties/binding-prop
 import { DatagridBuiltInFiltersDemo } from './built-in-filters/built-in-filters';
 import { DatagridCompactDemo } from './compact/compact';
 import { DatagridCustomRenderingDemo } from './custom-rendering/custom-rendering';
+import { DatagridCustomSelectAllDemo } from './custom-select-all/custom-select-all';
 import { DatagridDemo } from './datagrid.demo';
 import { DatagridDetailPaneDemo } from './detail/detail';
 import { DatagridExpandableRowsDemo } from './expandable-rows/expandable-rows';
@@ -119,6 +120,13 @@ const routes: Routes = [
         component: DatagridSelectionSingleDemo,
         data: {
           demoName: 'Single Selection',
+        },
+      },
+      {
+        path: 'custom-select-all',
+        component: DatagridCustomSelectAllDemo,
+        data: {
+          demoName: 'Custom Select All',
         },
       },
       {
@@ -226,6 +234,7 @@ const routes: Routes = [
     DatagridBindingPropertiesDemo,
     DatagridCompactDemo,
     DatagridCustomRenderingDemo,
+    DatagridCustomSelectAllDemo,
     DatagridFilteringDemo,
     DatagridFullDemo,
     DatagridPaginationDemo,

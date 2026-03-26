@@ -162,6 +162,20 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           description:
             'Set to true to preserve selected rows between data changes. E.g - page changes or filter changes.',
         },
+        {
+          name: '[clrDgCustomSelectAllEnabled]',
+          type: 'boolean',
+          defaultValue: 'false',
+          description:
+            'When true, the "select all" checkbox emits a custom event instead of using the built-in check-all logic. Use with (clrDgCustomSelectAll) to implement custom select-all behavior.',
+        },
+        {
+          name: '(clrDgCustomSelectAll)',
+          type: 'boolean',
+          defaultValue: 'n/a',
+          description:
+            'Emits when the "select all" checkbox is clicked and [clrDgCustomSelectAllEnabled] is true. Emits true for select all and false for deselect all.',
+        },
       ],
     },
     {
