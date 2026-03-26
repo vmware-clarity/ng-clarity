@@ -41,6 +41,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { BreadcrumbItem, ClarityIcons, ClarityModule, ClrBreadcrumbsModule, cogIcon } from '@clr/angular';
 import { filter, map, Observable, startWith } from 'rxjs';
 
 @Component({

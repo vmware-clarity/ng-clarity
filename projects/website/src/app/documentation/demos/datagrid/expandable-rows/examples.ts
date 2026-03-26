@@ -73,6 +73,7 @@ export class ExampleComponent {
 const lazyLoadingDetailComponent = `
 import { JsonPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { ClrLoading } from '@clr/angular';
 import { User } from './inventory/user';
 
 @Component({

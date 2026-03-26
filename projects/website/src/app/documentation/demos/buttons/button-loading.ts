@@ -12,6 +12,7 @@ import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/s
 
 const MAIN_TS_EXAMPLE = `
 import { Component } from '@angular/core';
+import { ClrButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

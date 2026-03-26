@@ -37,6 +37,7 @@ const EXAMPLE_HTML = `
 
 const EXAMPLE_TS = `
 import { Component } from '@angular/core';
+import { ClrIcon, ClrTreeViewModule } from '@clr/angular';
 import { organization } from './organization';
 
 @Component({

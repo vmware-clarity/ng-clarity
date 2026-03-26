@@ -18,6 +18,7 @@ import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/s
 
 const code = `
 import { Component } from '@angular/core';
+import { ClrSignpostModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

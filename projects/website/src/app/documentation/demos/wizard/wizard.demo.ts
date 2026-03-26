@@ -37,6 +37,8 @@ import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.compon
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 
 const WIZARD_EXAMPLE_TYPESCRIPT = `
+import { ClrWizard } from '@clr/angular';
+
 @Component({
   // ...
 })
@@ -54,6 +56,8 @@ const WIZARD_EXAMPLE_TEMPLATE = `
 `;
 
 const WIZARD_PAGE_EXAMPLE_TYPESCRIPT = `
+import { ClrWizardPage } from '@clr/angular';
+
 @Component({
   // ...
 })

@@ -63,6 +63,7 @@ import { timer, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { states, State } from './states';
+import { ClrComboboxModule, ClrFormsModule, ClrIcon, ClrLoadingModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

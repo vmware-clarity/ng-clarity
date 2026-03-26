@@ -50,6 +50,7 @@ const rangeChangeHTML = `
 const CODE1 = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClarityModule } from '@clr/angular';
 @Component({
   selector: 'app-example',
   templateUrl: './example.component.html',
@@ -69,6 +70,7 @@ export class ExampleComponent {
 const CODE2 = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClarityModule } from '@clr/angular';
 @Component({
   selector: 'app-example',
   templateUrl: './example.component.html',

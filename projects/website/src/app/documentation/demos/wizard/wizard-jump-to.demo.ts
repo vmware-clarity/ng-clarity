@@ -13,6 +13,7 @@ import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/s
 const code = `
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
+import { ClrWizard, ClrWizardModule, ClrWizardPage } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

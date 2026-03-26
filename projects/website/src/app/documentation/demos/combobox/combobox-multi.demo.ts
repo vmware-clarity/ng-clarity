@@ -45,6 +45,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { states, State } from './states';
+import { ClrComboboxModule, ClrFormsModule, ClrIcon } from '@clr/angular';
 
 @Component({
   selector: 'app-example',
