@@ -25,12 +25,7 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["src/assets"],
-            "styles": [
-              "@cds/core/global.min.css",
-              "@cds/core/styles/theme.dark.min.css",
-              "@clr/ui/clr-ui.min.css",
-              "src/styles.scss"
-            ],
+            "styles": ["@clr/ui/clr-ui.min.css", "src/styles.scss"],
             "stylePreprocessorOptions": {
               "includePaths": ["node_modules/"]
             },
