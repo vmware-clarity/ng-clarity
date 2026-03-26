@@ -43,6 +43,9 @@ export class CompositeFiltersComponent implements OnInit {
   // Array of filterable properties
   @Input() filterableProperties: FilterablePropertyDefinition[];
 
+  // Array of pre-selected filters specified
+  @Input() presetFilters: PropertyFilter[];
+
   /**
    * Event emitter to tell hosting view that the filtering conditions have changed
    */
@@ -78,6 +81,9 @@ export class CompositeFiltersComponent implements OnInit {
     if (this.filterableProperties && this.filterableProperties.length > 0) {
       this.selectedFilterableProperty = this.filterableProperties[0];
       this.onPropertyChange();
+    }
+    if (this.presetFilters) {
+      this.propertyFilters.push(...this.presetFilters);
     }
   }
 

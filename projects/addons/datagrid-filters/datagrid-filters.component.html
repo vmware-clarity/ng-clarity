@@ -35,6 +35,7 @@
     *ngIf="selectedFilterMode === advancedMode || mode === advancedOnlyMode"
     class="filter-contents"
     [filterableProperties]="filterableProperties"
+    [presetFilters]="presetFilters"
     (propertyFiltersChange)="onFilterCriteriaChange($event)"
   >
   </appfx-composite-filter>
