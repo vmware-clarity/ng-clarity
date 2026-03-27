@@ -236,7 +236,7 @@ describe('Side Panel', () => {
   });
 
   it('renders the title before the close button', async () => {
-    const modalHeader = compiled.querySelector('.modal-header--accessible');
+    const modalHeader = compiled.querySelector('.modal-header');
     expect(modalHeader.children.length).toBeGreaterThanOrEqual(2);
 
     const maybeTitleWrapper = modalHeader.children[0];
