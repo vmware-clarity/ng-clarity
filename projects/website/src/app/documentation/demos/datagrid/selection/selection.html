@@ -22,6 +22,10 @@
     list of currently selected items. Note that by adding items to this list yourself, you can dynamically select
     elements if you need to.
   </li>
+  <li>
+    Add a <code cds-text="code">[clrDgSelectionType]="'multi'"</code> on the datagrid itself, to specify the selection
+    type.
+  </li>
 </ul>
 
 <p class="clr-mt-16px" cds-text="body">
@@ -44,7 +48,7 @@
   </p>
 </div>
 
-<clr-datagrid [(clrDgSelected)]="selected" [clrDgItemsIdentityFn]="trackUserItemById">
+<clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'" [clrDgItemsIdentityFn]="trackUserItemById">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -93,7 +97,7 @@
   </clr-alert-item>
 </clr-alert>
 
-<clr-datagrid [(clrDgSelected)]="rowSelected" [clrDgRowSelection]="true">
+<clr-datagrid [(clrDgSelected)]="rowSelected" [clrDgSelectionType]="'multi'" [clrDgRowSelection]="true">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>
@@ -145,7 +149,7 @@
 <button class="btn btn-primary" (click)="lockRows()">Lock Rows</button>
 <button class="btn btn-primary" (click)="unlockRows()">Unlock Rows</button>
 
-<clr-datagrid [(clrDgSelected)]="selected">
+<clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Creation date</clr-dg-column>

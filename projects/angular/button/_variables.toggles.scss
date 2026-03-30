@@ -14,9 +14,7 @@ $clr-toggle-height: #{density.$clr-base-row-height-s} !default;
 $clr-toggle-switch-base-height: #{tokens.$cds-global-space-7} !default;
 $clr-toggle-switch-base-width: #{tokens.$cds-global-space-10} !default;
 
-// @deprecated in v17 in favor of clr-toggle-dot-diameter
-$clr-toggle-switch-height: #{$clr-toggle-switch-base-height} !default;
-$clr-toggle-dot-diameter: #{$clr-toggle-switch-height} !default;
+$clr-toggle-dot-diameter: #{$clr-toggle-switch-base-height} !default;
 
 $clr-toggle-transition-time: 0.15s !default;
 $clr-toggle-transition-animation: ease-in !default;

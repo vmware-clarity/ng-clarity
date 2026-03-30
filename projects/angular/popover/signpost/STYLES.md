@@ -2,19 +2,18 @@
 
 ## CSS Custom Properties
 
-| CSS Custom Property                     | Description                                                   |
-| --------------------------------------- | ------------------------------------------------------------- |
-| --clr-signpost-content-color            | Signpost content color.                                       |
-| --clr-signpost-content-bg-color         | Signpost content background color.                            |
-| --clr-signpost-content-border-color     | Signpost content border color.                                |
-| --clr-signpost-content-border-color     | Signpost content border color.                                |
-| --clr-signpost-action-color             | Signpost action color.                                        |
-| --clr-signpost-action-hover-color       | Signpost action hover color.                                  |
-| --clr-signpost-action-active-color      | Signpost action active color.                                 |
-| --clr-signpost-pointer-border           | Signpost pointer border.                                      |
-| --clr-signpost-pointer-invisible-border | Signpost pointer invisible border.                            |
-| --clr-signpost-pointer-psuedo-border    | Deprecated in favor of `--clr-signpost-pointer-pseudo-border` |
-| --clr-signpost-pointer-pseudo-border    | Signpost pointer pseudo border.                               |
+| CSS Custom Property                     | Description                        |
+| --------------------------------------- | ---------------------------------- |
+| --clr-signpost-content-color            | Signpost content color.            |
+| --clr-signpost-content-bg-color         | Signpost content background color. |
+| --clr-signpost-content-border-color     | Signpost content border color.     |
+| --clr-signpost-content-border-color     | Signpost content border color.     |
+| --clr-signpost-action-color             | Signpost action color.             |
+| --clr-signpost-action-hover-color       | Signpost action hover color.       |
+| --clr-signpost-action-active-color      | Signpost action active color.      |
+| --clr-signpost-pointer-border           | Signpost pointer border.           |
+| --clr-signpost-pointer-invisible-border | Signpost pointer invisible border. |
+| --clr-signpost-pointer-pseudo-border    | Signpost pointer pseudo border.    |
 
 ## CSS Classes
 
