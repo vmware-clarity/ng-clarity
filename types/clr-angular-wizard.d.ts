@@ -1,11 +1,23 @@
 import * as i0 from '@angular/core';
-import { EventEmitter, QueryList, TemplateRef, OnInit, OnDestroy, AfterContentInit, DoCheck, ElementRef, IterableDiffers } from '@angular/core';
+import { EventEmitter, QueryList, TemplateRef, OnInit, OnDestroy, AfterContentInit, DoCheck, ElementRef, IterableDiffers, AfterViewInit } from '@angular/core';
 import { HeadingLevel, ClrCommonStringsService } from '@clr/angular/utils';
 import { Observable, Subscription } from 'rxjs';
 import * as i12 from '@angular/common';
 import * as i13 from '@clr/angular/icon';
 import * as i14 from '@clr/angular/modal';
 import * as i15 from '@clr/angular/emphasis/alert';
+
+declare enum ClrWizardFooterAlign {
+    START = "start",
+    END = "end"
+}
+declare function footerAlignAttribute(value: ClrWizardFooterAlign | string): ClrWizardFooterAlign;
+
+declare enum ClrWizardStepnavLayout {
+    VERTICAL = "vertical",
+    HORIZONTAL = "horizontal"
+}
+declare function stepnavLayoutAttribute(value: ClrWizardStepnavLayout | string): ClrWizardStepnavLayout;
 
 declare class ButtonHubService {
     buttonsReady: boolean;
@@ -871,6 +883,10 @@ declare class WizardNavigationService implements OnDestroy {
      */
     wizardDisableStepnav: boolean;
     /**
+     * The layout of the wizard stepnav, either 'vertical' or 'horizontal'.
+     */
+    stepnavLayout: ClrWizardStepnavLayout;
+    /**
      * @memberof WizardNavigationService
      */
     private _currentPage;
@@ -1117,6 +1133,31 @@ declare class HeaderActionService {
     static ɵprov: i0.ɵɵInjectableDeclaration<HeaderActionService>;
 }
 
+declare const DEFAULT_BUTTON_TYPES: any;
+declare const CUSTOM_BUTTON_TYPES: any;
+declare class ClrWizardButton {
+    navService: WizardNavigationService;
+    buttonService: ButtonHubService;
+    type: string;
+    disabled: boolean;
+    hidden: boolean;
+    wasClicked: EventEmitter<string>;
+    constructor(navService: WizardNavigationService, buttonService: ButtonHubService);
+    get isCancel(): boolean;
+    get isNext(): boolean;
+    get isPrevious(): boolean;
+    get isFinish(): boolean;
+    get isDanger(): boolean;
+    get isPrimaryAction(): boolean;
+    get _disabledAttribute(): string | null;
+    get isDisabled(): boolean;
+    get isHidden(): boolean;
+    click(): void;
+    private checkDefaultAndCustomType;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardButton, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardButton, "clr-wizard-button", never, { "type": { "alias": "type"; "required": false; }; "disabled": { "alias": "clrWizardButtonDisabled"; "required": false; }; "hidden": { "alias": "clrWizardButtonHidden"; "required": false; }; }, { "wasClicked": "clrWizardButtonClicked"; }, never, ["*"], false, never>;
+}
+
 declare class ClrWizardTitle {
     headingLevel: HeadingLevel;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardTitle, never>;
@@ -1136,6 +1177,10 @@ declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
      */
     stepnavAriaLabel: string;
     /**
+     * Set the wizard stepnav layout to 'vertical' (default) or 'horizontal'. Set using `[clrWizardStepnavLayout]` input.
+     */
+    stepnavLayout: ClrWizardStepnavLayout;
+    /**
      * Set the modal size of the wizard. Set using `[clrWizardSize]` input.
      */
     size: string;
@@ -1148,6 +1193,18 @@ declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
      * If you can't use this option, you will likely need to provide custom CSS to set the wizard's height and margins.
      */
     inPageFillContentArea: boolean;
+    /**
+     * Hide the wizard footer entirely. Set using `[clrWizardHideFooter]` input.
+     * Useful when a nested wizard or stepper handles its own navigation.
+     */
+    hideFooter: boolean;
+    /**
+     * Align the footer buttons to 'start' (left) or 'end' (right).
+     * By default, modal wizards align to 'end' and in-page wizards align to 'start'.
+     * Nested wizards inherit the default unless this input is explicitly set.
+     * Set using `[clrWizardFooterAlign]` input.
+     */
+    _footerAlign: ClrWizardFooterAlign | null;
     /**
      * Tells the modal part of the wizard whether it should have a close "X"
      * in the top right corner. Set using `[clrWizardClosable]` input.
@@ -1198,12 +1255,14 @@ declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     onMovePrevious: EventEmitter<any>;
     pageTitle: ElementRef<HTMLElement>;
     pages: QueryList<ClrWizardPage>;
+    wizardButtons: QueryList<ClrWizardButton>;
     headerActions: QueryList<ClrWizardHeaderAction>;
     _open: boolean;
     wizardId: string;
     protected wizardTitle: ClrWizardTitle;
+    protected ClrWizardFooterAlign: typeof ClrWizardFooterAlign;
+    protected ClrWizardStepnavLayout: typeof ClrWizardStepnavLayout;
     private readonly bodyElementRef;
-    private _title;
     private _forceForward;
     private _stopNext;
     private _stopCancel;
@@ -1211,10 +1270,7 @@ declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     private _disableStepnav;
     private differ;
     private subscriptions;
-    private readonly modal;
     constructor(platformId: any, commonStrings: ClrCommonStringsService, navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService, headerActionService: HeaderActionService, elementRef: ElementRef<HTMLElement>, differs: IterableDiffers);
-    get title(): ElementRef<HTMLElement>;
-    set title(title: ElementRef<HTMLElement>);
     /**
      * Resets page completed states when navigating backwards.
      * Set using `[clrWizardForceForwardNavigation]` input.
@@ -1268,6 +1324,9 @@ declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     get isLast(): boolean;
     get isFirst(): boolean;
     get isInline(): boolean;
+    get showHeader(): boolean;
+    get showFooter(): boolean;
+    get footerAlign(): ClrWizardFooterAlign;
     get stopModalAnimations(): boolean;
     ngAfterContentInit(): void;
     ngDoCheck(): void;
@@ -1370,13 +1429,32 @@ declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     private initializeButtons;
     private emitWizardFinished;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChange": "clrWizardCurrentPageChange"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "stepnavLayout": { "alias": "clrWizardStepnavLayout"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "hideFooter": { "alias": "clrWizardHideFooter"; "required": false; }; "_footerAlign": { "alias": "clrWizardFooterAlign"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChange": "clrWizardCurrentPageChange"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "wizardButtons", "headerActions"], ["*", "clr-wizard-button", "clr-wizard-title", "clr-wizard-header-action"], false, never>;
+    static ngAcceptInputType_stepnavLayout: ClrWizardStepnavLayout | string;
+    static ngAcceptInputType__footerAlign: ClrWizardFooterAlign | string;
 }
 
-declare class ClrWizardStepnav {
+declare class ClrWizardStepnav implements AfterViewInit, OnDestroy {
     pageService: PageCollectionService;
+    private navService;
+    private elementRef;
     label: string;
-    constructor(pageService: PageCollectionService);
+    protected showScrollLeftButton: boolean;
+    protected showScrollRightButton: boolean;
+    private readonly stepnavItems;
+    private subscription;
+    private intersectionObserver;
+    private firstItemVisible;
+    private lastItemVisible;
+    constructor(pageService: PageCollectionService, navService: WizardNavigationService, elementRef: ElementRef<HTMLElement>);
+    protected get stepnavLayout(): ClrWizardStepnavLayout;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    protected scrollLeft(): void;
+    protected scrollRight(): void;
+    private setupIntersectionObserver;
+    private observeEdgeItems;
+    private scroll;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnav, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, { "label": { "alias": "label"; "required": false; }; }, {}, never, never, false, never>;
 }
@@ -1385,7 +1463,7 @@ declare class ClrWizardStepnavItem implements OnInit, OnDestroy {
     navService: WizardNavigationService;
     pageCollection: PageCollectionService;
     commonStrings: ClrCommonStringsService;
-    private readonly elementRef;
+    readonly elementRef: ElementRef<HTMLElement>;
     page: ClrWizardPage;
     private subscription;
     /**
@@ -1412,35 +1490,11 @@ declare class ClrWizardStepnavItem implements OnInit, OnDestroy {
     ngOnInit(): void;
     ngOnDestroy(): void;
     click(): void;
+    protected scrollIntoView(): void;
     private pageGuard;
     private ensureCurrentStepIsScrolledIntoView;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnavItem, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnavItem, "[clr-wizard-stepnav-item]", never, { "page": { "alias": "page"; "required": false; }; }, {}, never, ["*"], false, never>;
-}
-
-declare const DEFAULT_BUTTON_TYPES: any;
-declare const CUSTOM_BUTTON_TYPES: any;
-declare class ClrWizardButton {
-    navService: WizardNavigationService;
-    buttonService: ButtonHubService;
-    type: string;
-    disabled: boolean;
-    hidden: boolean;
-    wasClicked: EventEmitter<string>;
-    constructor(navService: WizardNavigationService, buttonService: ButtonHubService);
-    get isCancel(): boolean;
-    get isNext(): boolean;
-    get isPrevious(): boolean;
-    get isFinish(): boolean;
-    get isDanger(): boolean;
-    get isPrimaryAction(): boolean;
-    get _disabledAttribute(): string | null;
-    get isDisabled(): boolean;
-    get isHidden(): boolean;
-    click(): void;
-    private checkDefaultAndCustomType;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardButton, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardButton, "clr-wizard-button", never, { "type": { "alias": "type"; "required": false; }; "disabled": { "alias": "clrWizardButtonDisabled"; "required": false; }; "hidden": { "alias": "clrWizardButtonHidden"; "required": false; }; }, { "wasClicked": "clrWizardButtonClicked"; }, never, ["*"], false, never>;
 }
 
 declare const CLR_WIZARD_DIRECTIVES: any[];
@@ -1451,4 +1505,4 @@ declare class ClrWizardModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrWizardModule>;
 }
 
-export { CLR_WIZARD_DIRECTIVES, CUSTOM_BUTTON_TYPES, ClrWizard, ClrWizardButton, ClrWizardHeaderAction, ClrWizardModule, ClrWizardPage, ClrWizardPageButtons, ClrWizardPageHeaderActions, ClrWizardPageNavTitle, ClrWizardPageTitle, ClrWizardStepnav, ClrWizardStepnavItem, ClrWizardTitle, DEFAULT_BUTTON_TYPES };
+export { CLR_WIZARD_DIRECTIVES, CUSTOM_BUTTON_TYPES, ClrWizard, ClrWizardButton, ClrWizardFooterAlign, ClrWizardHeaderAction, ClrWizardModule, ClrWizardPage, ClrWizardPageButtons, ClrWizardPageHeaderActions, ClrWizardPageNavTitle, ClrWizardPageTitle, ClrWizardStepnav, ClrWizardStepnavItem, ClrWizardStepnavLayout, ClrWizardTitle, DEFAULT_BUTTON_TYPES, footerAlignAttribute, stepnavLayoutAttribute };
