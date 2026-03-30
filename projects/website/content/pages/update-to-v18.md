@@ -290,14 +290,6 @@ All IE11 and legacy (pre-Chromium) Edge workarounds have been removed. The follo
 | `normalizeKey()` function                  | Use `event.key` directly                               |
 | `$clr-use-custom-properties` SCSS variable | Removed — CSS custom properties are now always emitted |
 
-### Label
-
-Obsolete font-color tokens have been removed from the Label component.
-
-### Links
-
-Static typography styles have been removed from links.
-
 ### SCSS
 
 Mixin files have been separated from rule files. Review your custom SCSS imports if you were importing specific internal
