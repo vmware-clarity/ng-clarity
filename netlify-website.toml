@@ -1,0 +1,38 @@
+# Default build settings
+[build]
+  publish = "dist/website"
+  environment = { CI = "true" }
+
+[[redirects]]
+  from = "https://angular.clarity.design/*"
+  to = "https://clarity.design/:splat"
+  status = 302
+  force = true
+
+# admin interface has its own index.html file
+[[redirects]]
+  from = "/admin/"
+  to = "/admin/index.html"
+  status = 200
+
+# With this, the app has full control over the routing logic
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Allow versions.json for all clarity.design subdomains.
+# For use with the version switcher.
+[[headers]]
+  for = "/versions.json"
+    [headers.values]
+    Access-Control-Allow-Origin = "*"
+    # Replace with the following after all subdomain switchers are deployed.
+    # Need the * wildcard while testing and developing.
+    # Access-Control-Allow-Origin = "*.clarity.design"
+
+# Allow placeholder images in StackBlitz examples.
+[[headers]]
+  for = "/assets/images/documentation/cards/placeholder_*.png"
+    [headers.values]
+    Access-Control-Allow-Origin = "*"
