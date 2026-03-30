@@ -68,7 +68,6 @@
     --clr-base-row-height-m: #{tokens.$cds-global-space-10};
     --clr-base-row-height-l: #{tokens.$cds-global-space-11};
     --clr-base-row-height-20: #{mixins.baselinePx(20)};
-    --clr-base-app-level-alert-row-height: #{tokens.$cds-global-space-11};
     --clr-base-dg-row-height: #{tokens.$cds-global-space-10};
     --clr-base-dg-compact-row-height: #{tokens.$cds-global-space-9};
 
@@ -174,7 +173,6 @@
     --clr-base-row-height-m: #{tokens.$cds-global-space-9};
     --clr-base-row-height-l: #{mixins.baselinePx(28)};
     --clr-base-row-height-20: #{tokens.$cds-global-space-7};
-    --clr-base-app-level-alert-row-height: #{mixins.baselinePx(28)};
     --clr-base-dg-row-height: #{tokens.$cds-global-space-9};
     --clr-base-dg-compact-row-height: #{mixins.baselinePx(20)};
     --clr-base-gap-xs: #{tokens.$cds-global-space-2};

@@ -7,12 +7,7 @@
 
 import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
-import {
-  ClrAlertModule,
-  ClrDatagridModule,
-  ClrPopoverHostDirective,
-  ClrStopEscapePropagationDirective,
-} from '@clr/angular';
+import { ClrAlertModule, ClrDatagridModule } from '@clr/angular';
 
 import { EXAMPLES } from './examples';
 import { CodeSnippetComponent } from '../../../../shared/code-snippet/code-snippet.component';
@@ -26,15 +21,7 @@ import { CommonFiles } from '../utils/stackblitz-common-data';
   providers: [Inventory],
   templateUrl: 'selection.html',
   styleUrl: '../datagrid.demo.scss',
-  imports: [
-    ClrDatagridModule,
-    ClrStopEscapePropagationDirective,
-    ClrPopoverHostDirective,
-    StackblitzExampleComponent,
-    ClrAlertModule,
-    CodeSnippetComponent,
-    DatePipe,
-  ],
+  imports: [ClrDatagridModule, StackblitzExampleComponent, ClrAlertModule, CodeSnippetComponent, DatePipe],
 })
 export class DatagridSelectionDemo {
   commonFiles = CommonFiles;

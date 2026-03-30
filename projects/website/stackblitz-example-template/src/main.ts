@@ -19,7 +19,7 @@ import {
   loadTechnologyIconSet,
   loadTextEditIconSet,
   loadTravelIconSet,
-} from '@cds/core/icon';
+} from '@clr/angular/icon';
 
 import { AppComponent } from './app/app.component';
 import { appRoutes } from './app/app.routes';

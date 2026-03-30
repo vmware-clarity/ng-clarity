@@ -9,6 +9,8 @@
 @use '../../styles/variables/variables.density' as density;
 
 @mixin nav-link-border-appearance($position, $left-inset: false) {
+  position: relative;
+
   &::before {
     content: '';
     position: absolute;
@@ -17,8 +19,7 @@
     left: 0;
     width: 100%;
     border: none;
-    border-#{$position}: tokens.$cds-alias-object-border-width-300 solid
-      tokens.$cds-alias-object-interaction-background-highlight;
+    border-#{$position}: tokens.$cds-alias-object-border-width-300 solid transparent;
     transition: border-#{$position} tokens.$cds-global-animation-duration-quick
       tokens.$cds-global-animation-easing-in-out;
 
@@ -29,6 +30,12 @@
       width: tokens.$cds-alias-object-border-width-100;
       border-width: tokens.$cds-alias-object-border-width-400;
       border-radius: tokens.$cds-alias-object-border-radius-100;
+    }
+  }
+
+  &:hover {
+    &::before {
+      border-color: tokens.$cds-alias-object-interaction-background-highlight;
     }
   }
 }

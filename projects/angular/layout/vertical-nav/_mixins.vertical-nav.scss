@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+@use '../../styles/core/tokens/variables.tokens' as tokens;
 @use 'variables.vertical-nav' as vertical-nav-variables;
 @use '../tabs/mixins.tabs' as tabs-mixins;
 
@@ -15,12 +16,15 @@
 @mixin vertical-nav-link-colors() {
   color: vertical-nav-variables.$clr-vertical-nav-item-color;
 
+  @include tabs-mixins.nav-link-border-appearance('left', true);
+
   &.active {
     color: vertical-nav-variables.$clr-vertical-nav-item-active-color;
     background-color: vertical-nav-variables.$clr-vertical-nav-selected-bg-color;
-    position: relative;
 
-    @include tabs-mixins.nav-link-border-appearance('left', true);
+    &::before {
+      border-color: tokens.$cds-alias-object-interaction-background-highlight;
+    }
 
     .nav-icon {
       fill: vertical-nav-variables.$clr-vertical-nav-icon-active-color;

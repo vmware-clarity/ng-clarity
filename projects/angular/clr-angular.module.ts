@@ -15,7 +15,7 @@ import { ClrIcon, ClrIconModule } from '@clr/angular/icon';
 import { ClrLayoutModule } from '@clr/angular/layout';
 import { ClrModalModule, ClrSidePanelModule } from '@clr/angular/modal';
 import { ClrPopoverModule } from '@clr/angular/popover';
-import { ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrProgressBarModule } from '@clr/angular/progress/progress-bars';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import { ClrStepperModule } from '@clr/angular/stepper';
@@ -44,7 +44,7 @@ import { ClrWizardModule } from '@clr/angular/wizard';
     ClrStepperModule,
     ClrSpinnerModule,
     ClrProgressBarModule,
-    ÇlrClrPopoverModuleNext,
+    ClrPopoverModuleNext,
     ClrTimelineModule,
   ],
 })

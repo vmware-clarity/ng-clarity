@@ -792,10 +792,8 @@ export class IfActiveService {
     static ɵprov: i0.ɵɵInjectableDeclaration<IfActiveService>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "LoadingListener_2" needs to be exported by the entry point clr-angular-utils.d.ts
-//
 // @public (undocumented)
-export class IfExpandService implements LoadingListener_2 {
+export class IfExpandService implements LoadingListener {
     // (undocumented)
     expandable: number;
     // (undocumented)
@@ -814,10 +812,8 @@ export class IfExpandService implements LoadingListener_2 {
     set loading(value: boolean);
     // (undocumented)
     protected _loading: boolean;
-    // Warning: (ae-forgotten-export) The symbol "ClrLoadingState_2" needs to be exported by the entry point clr-angular-utils.d.ts
-    //
     // (undocumented)
-    loadingStateChange(state: ClrLoadingState_2): void;
+    loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
     toggle(): void;
     // (undocumented)

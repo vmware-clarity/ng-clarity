@@ -115,11 +115,12 @@
     .dropdown-item {
       @include menu-mixins.generate-dropdown-item();
       @include mixins.overflow-ellipsis(true);
+      @include tabs-mixins.nav-link-border-appearance('left');
 
       &.active {
-        position: relative;
-
-        @include tabs-mixins.nav-link-border-appearance('left');
+        &::before {
+          border-color: tokens.$cds-alias-object-interaction-background-highlight;
+        }
       }
 
       &.expandable {

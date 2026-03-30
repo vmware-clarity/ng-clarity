@@ -6,6 +6,6 @@
  */
 
 export * from './emphasis.module';
-export * from './alert/index';
-export * from './badge/index';
-export * from './label/index';
+export * from '@clr/angular/emphasis/alert';
+export * from '@clr/angular/emphasis/badge';
+export * from '@clr/angular/emphasis/label';

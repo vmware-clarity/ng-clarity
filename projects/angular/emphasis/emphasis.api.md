@@ -26,14 +26,14 @@ import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { TemplateRef } from '@angular/core';
-import { Type } from '@angular/core';
+import { Type as Type_2 } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
 
 // @public (undocumented)
 export const ALERT_TYPES: string[];
 
 // @public (undocumented)
-export const CLR_ALERT_DIRECTIVES: Type<any>[];
+export const CLR_ALERT_DIRECTIVES: Type_2<any>[];
 
 // @public (undocumented)
 export class ClrAlert implements OnInit, OnDestroy {
@@ -189,10 +189,10 @@ export class ClrBadge {
     get colorClass(): string;
     // (undocumented)
     get isOutlined(): boolean;
-    // Warning: (ae-forgotten-export) The symbol "Type_2" needs to be exported by the entry point clr-angular-emphasis.d.ts
+    // Warning: (ae-forgotten-export) The symbol "Type" needs to be exported by the entry point clr-angular-emphasis.d.ts
     //
     // (undocumented)
-    type: Type_2 | string;
+    type: Type | string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, { "color": { "alias": "clrColor"; "required": false; }; "type": { "alias": "clrType"; "required": false; }; }, {}, never, ["*"], true, never>;
     // (undocumented)
@@ -229,12 +229,12 @@ export class ClrEmphasisModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrEmphasisModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrEmphasisModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-emphasis.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-emphasis.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point clr-angular-emphasis.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3" needs to be exported by the entry point clr-angular-emphasis.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, [typeof i1_2.ClrBadge, typeof i2.ClrLabel], [typeof i3.ClrAlertModule, typeof i1_2.ClrBadge, typeof i2.ClrLabel]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrEmphasisModule, never, [typeof i1.ClrBadge, typeof i2.ClrLabel], [typeof i3.ClrAlertModule, typeof i1.ClrBadge, typeof i2.ClrLabel]>;
 }
 
 // @public (undocumented)
@@ -254,7 +254,7 @@ export class ClrLabel {
     // (undocumented)
     textContent: string;
     // (undocumented)
-    type: Type_2 | string;
+    type: Type | string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeText": { "alias": "clrBadgeText"; "required": false; }; "textContent": { "alias": "clrText"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "type": { "alias": "clrType"; "required": false; }; }, {}, never, ["*"], true, never>;
     // (undocumented)

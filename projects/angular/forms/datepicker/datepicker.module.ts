@@ -18,7 +18,7 @@ import {
   successStandardIcon,
 } from '@clr/angular/icon';
 import { ClrVerticalNavModule } from '@clr/angular/layout/vertical-nav';
-import { ÇlrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { CdkTrapFocusModule, ClrConditionalModule, ClrHostWrappingModule } from '@clr/angular/utils';
 
 import { ClrCalendar } from './calendar';
@@ -57,7 +57,7 @@ export const CLR_DATEPICKER_DIRECTIVES: Type<any>[] = [
     CdkTrapFocusModule,
     ClrHostWrappingModule,
     ClrConditionalModule,
-    ÇlrClrPopoverModuleNext,
+    ClrPopoverModuleNext,
     ClrIcon,
     ClrCommonFormsModule,
     ClrVerticalNavModule,

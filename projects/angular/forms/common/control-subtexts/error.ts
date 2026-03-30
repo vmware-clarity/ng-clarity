@@ -15,12 +15,13 @@ import { ControlIdService } from '../providers/control-id.service';
   selector: 'clr-control-error',
   template: `
     <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
-    <span class="clr-subtext error">
+    <span class="clr-subtext">
       <ng-content></ng-content>
     </span>
   `,
   host: {
     '[class.clr-subtext-wrapper]': 'true',
+    '[class.error]': 'true',
     '[attr.id]': 'id',
   },
   standalone: false,

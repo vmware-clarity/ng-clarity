@@ -12,6 +12,7 @@ import * as _angular_animations from '@angular/animations';
 import { AnimationBuilder } from '@angular/animations';
 import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
 import { AnimationMetadata } from '@angular/animations';
+import { ApplicationRef } from '@angular/core';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { ChangeDetectorRef } from '@angular/core';
@@ -21,14 +22,15 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { DragDrop } from '@angular/cdk/drag-drop';
 import { DragDropConfig } from '@angular/cdk/drag-drop';
 import { ElementRef } from '@angular/core';
+import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i6$1 from '@angular/router';
-import * as i6 from '@angular/common';
+import * as i2 from '@angular/common';
+import * as i6 from '@angular/router';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { NgZone } from '@angular/core';
@@ -50,6 +52,20 @@ import { Subscription } from 'rxjs';
 import { TemplateRef } from '@angular/core';
 import { Type } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
+
+// Warning: (ae-forgotten-export) The symbol "OompaLoompa" needs to be exported by the entry point clr-angular-layout.d.ts
+//
+// @public (undocumented)
+export class ActiveOompaLoompa extends OompaLoompa {
+    // Warning: (ae-forgotten-export) The symbol "IfActiveService" needs to be exported by the entry point clr-angular-layout.d.ts
+    constructor(cdr: ChangeDetectorRef, willyWonka: TabsWillyWonka, id: number, ifActive: IfActiveService);
+    // (undocumented)
+    get flavor(): boolean;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ActiveOompaLoompa, "[clrTabLink], clr-tab-content", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ActiveOompaLoompa, [null, { optional: true; }, null, null]>;
+}
 
 // @public (undocumented)
 export interface BreadcrumbItem {
@@ -135,11 +151,11 @@ export class ClrBreadcrumbsModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbsModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrBreadcrumbsModule>;
-    // Warning: (ae-forgotten-export) The symbol "i7" needs to be exported by the entry point clr-angular-layout.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point clr-angular-layout.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3" needs to be exported by the entry point clr-angular-layout.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-layout.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBreadcrumbsModule, [typeof ClrBreadcrumbs, typeof ClrBreadcrumbItem], [typeof i6.CommonModule, typeof i7.ClrIcon, typeof i11.ClrHostWrappingModule, typeof i6$1.RouterModule], [typeof ClrBreadcrumbs, typeof i7.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrBreadcrumbsModule, [typeof ClrBreadcrumbs, typeof ClrBreadcrumbItem], [typeof i2.CommonModule, typeof i3.ClrIcon, typeof i1_2.ClrHostWrappingModule, typeof i6.RouterModule], [typeof ClrBreadcrumbs, typeof i3.ClrIcon]>;
 }
 
 // @public (undocumented)
@@ -186,29 +202,26 @@ export class ClrLayoutModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrLayoutModule>;
     // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-layout.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point clr-angular-layout.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3" needs to be exported by the entry point clr-angular-layout.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_2" needs to be exported by the entry point clr-angular-layout.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3_2" needs to be exported by the entry point clr-angular-layout.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4" needs to be exported by the entry point clr-angular-layout.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5" needs to be exported by the entry point clr-angular-layout.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLayoutModule, never, never, [typeof i1.ClrMainContainerModule, typeof i2.ClrNavigationModule, typeof i3.ClrTabsModule, typeof i4.ClrVerticalNavModule, typeof i5.ClrBreadcrumbsModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrLayoutModule, never, never, [typeof i1.ClrMainContainerModule, typeof i2_2.ClrNavigationModule, typeof i3_2.ClrTabsModule, typeof i4.ClrVerticalNavModule, typeof i5.ClrBreadcrumbsModule]>;
 }
 
 // @public (undocumented)
 export class ClrMainContainer implements OnDestroy, OnInit {
-    // Warning: (ae-forgotten-export) The symbol "ResponsiveNavigationService_2" needs to be exported by the entry point clr-angular-layout.d.ts
-    constructor(elRef: ElementRef<HTMLElement>, responsiveNavService: ResponsiveNavigationService_2);
+    constructor(elRef: ElementRef<HTMLElement>, responsiveNavService: ResponsiveNavigationService);
     // (undocumented)
     controlNav(controlCode: string, navClass: string): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
-    // Warning: (ae-forgotten-export) The symbol "ResponsiveNavControlMessage_2" needs to be exported by the entry point clr-angular-layout.d.ts
-    //
     // (undocumented)
-    processMessage(message: ResponsiveNavControlMessage_2): void;
+    processMessage(message: ResponsiveNavControlMessage): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrMainContainer, "clr-main-container", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -222,7 +235,7 @@ export class ClrMainContainerModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrMainContainerModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrMainContainerModule, [typeof ClrMainContainer], [typeof i6.CommonModule, typeof i7.ClrIcon], [typeof ClrMainContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrMainContainerModule, [typeof ClrMainContainer], [typeof i2.CommonModule, typeof i3.ClrIcon], [typeof ClrMainContainer]>;
 }
 
 // @public (undocumented)
@@ -234,13 +247,13 @@ export class ClrNavigationModule {
     // Warning: (ae-forgotten-export) The symbol "i8" needs to be exported by the entry point clr-angular-layout.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka], [typeof i6.CommonModule, typeof i7.ClrIcon, typeof i8.ClrDropdownModule], [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka], [typeof i2.CommonModule, typeof i3.ClrIcon, typeof i8.ClrDropdownModule], [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka]>;
 }
 
 // @public (undocumented)
 export class ClrNavLevel implements OnInit {
     // Warning: (ae-forgotten-export) The symbol "ClrStandaloneCdkTrapFocus" needs to be exported by the entry point clr-angular-layout.d.ts
-    constructor(platformId: any, cdkTrapFocus: ClrStandaloneCdkTrapFocus, responsiveNavService: ResponsiveNavigationService, elementRef: ElementRef<HTMLElement>, renderer: Renderer2, injector: Injector);
+    constructor(platformId: any, cdkTrapFocus: ClrStandaloneCdkTrapFocus, responsiveNavService: ResponsiveNavigationService, elementRef: ElementRef<HTMLElement>, renderer: Renderer2, injector: Injector, environmentInjector: EnvironmentInjector, appRef: ApplicationRef);
     // (undocumented)
     addNavClass(level: number): void;
     // (undocumented)
@@ -276,21 +289,19 @@ export class ClrNavLevel implements OnInit {
     // (undocumented)
     protected showNavigation(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, { "_level": { "alias": "clr-nav-level"; "required": false; }; "closeButtonAriaLabel": { "alias": "closeAriaLabel"; "required": false; }; }, {}, never, never, false, [{ directive: typeof i11.ClrStandaloneCdkTrapFocus; inputs: {}; outputs: {}; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, { "_level": { "alias": "clr-nav-level"; "required": false; }; "closeButtonAriaLabel": { "alias": "closeAriaLabel"; "required": false; }; }, {}, never, never, false, [{ directive: typeof i1_2.ClrStandaloneCdkTrapFocus; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
 }
 
 // @public (undocumented)
 export class ClrTab {
-    // Warning: (ae-forgotten-export) The symbol "TabsService_2" needs to be exported by the entry point clr-angular-layout.d.ts
-    constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService_2);
+    // Warning: (ae-forgotten-export) The symbol "TabsService" needs to be exported by the entry point clr-angular-layout.d.ts
+    constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService);
     // (undocumented)
     get active(): boolean;
     // (undocumented)
     id: number;
-    // Warning: (ae-forgotten-export) The symbol "IfActiveService" needs to be exported by the entry point clr-angular-layout.d.ts
-    //
     // (undocumented)
     ifActiveService: IfActiveService;
     // (undocumented)
@@ -315,7 +326,7 @@ export class ClrTabAction {
 
 // @public (undocumented)
 export class ClrTabContent implements OnDestroy {
-    constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService_2);
+    constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService);
     // (undocumented)
     get active(): boolean;
     // (undocumented)
@@ -336,7 +347,7 @@ export class ClrTabContent implements OnDestroy {
 
 // @public (undocumented)
 export class ClrTabLink {
-    constructor(ifActiveService: IfActiveService, id: number, el: ElementRef<HTMLElement>, viewContainerRef: ViewContainerRef, tabsService: TabsService_2, tabsId: number);
+    constructor(ifActiveService: IfActiveService, id: number, el: ElementRef<HTMLElement>, viewContainerRef: ViewContainerRef, tabsService: TabsService, tabsId: number);
     // (undocumented)
     activate(): void;
     // (undocumented)
@@ -380,7 +391,7 @@ export class ClrTabOverflowContent {
 
 // @public (undocumented)
 export class ClrTabs implements AfterContentInit, OnDestroy {
-    constructor(ifActiveService: IfActiveService, popoverService: ClrPopoverService, tabsService: TabsService_2, tabsId: number, commonStrings: ClrCommonStringsService);
+    constructor(ifActiveService: IfActiveService, popoverService: ClrPopoverService, tabsService: TabsService, tabsId: number, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get activeTabInOverflow(): boolean;
     // (undocumented)
@@ -403,11 +414,11 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     //
     // (undocumented)
     keyFocus: ClrKeyFocus;
-    // Warning: (ae-forgotten-export) The symbol "TabsLayout_2" needs to be exported by the entry point clr-angular-layout.d.ts
+    // Warning: (ae-forgotten-export) The symbol "TabsLayout" needs to be exported by the entry point clr-angular-layout.d.ts
     //
     // (undocumented)
-    get layout(): TabsLayout_2 | string;
-    set layout(layout: TabsLayout_2 | string);
+    get layout(): TabsLayout | string;
+    set layout(layout: TabsLayout | string);
     // (undocumented)
     _mousedown: boolean;
     // (undocumented)
@@ -433,13 +444,13 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     // (undocumented)
     tabsId: number;
     // (undocumented)
-    tabsService: TabsService_2;
+    tabsService: TabsService;
     // (undocumented)
     toggleOverflowOnClick(): void;
     // (undocumented)
     toggleOverflowOnPosition(position: number): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabs, "clr-tabs", never, { "layout": { "alias": "clrLayout"; "required": false; }; }, {}, ["tabsActions", "tabs"], ["clr-tabs-actions"], false, [{ directive: typeof i1_2.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabs, "clr-tabs", never, { "layout": { "alias": "clrLayout"; "required": false; }; }, {}, ["tabsActions", "tabs"], ["clr-tabs-actions"], false, [{ directive: typeof i1_3.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabs, never>;
 }
@@ -465,15 +476,15 @@ export class ClrTabsModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTabsModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa], [typeof i6.CommonModule, typeof i11.ClrConditionalModule, typeof i7.ClrIcon, typeof i11.ClrTemplateRefModule, typeof i11.ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof ÇlrTabsWillyWonka, typeof ÇlrActiveOompaLoompa, typeof i11.ClrConditionalModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa], [typeof i2.CommonModule, typeof i1_2.ClrConditionalModule, typeof i3.ClrIcon, typeof i1_2.ClrTemplateRefModule, typeof i1_2.ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa, typeof i1_2.ClrConditionalModule]>;
 }
 
 // @public (undocumented)
 export class ClrVerticalNav implements OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "VerticalNavService_2" needs to be exported by the entry point clr-angular-layout.d.ts
-    // Warning: (ae-forgotten-export) The symbol "VerticalNavIconService_2" needs to be exported by the entry point clr-angular-layout.d.ts
-    // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupRegistrationService_2" needs to be exported by the entry point clr-angular-layout.d.ts
-    constructor(_navService: VerticalNavService_2, _navIconService: VerticalNavIconService_2, _navGroupRegistrationService: VerticalNavGroupRegistrationService_2, commonStrings: ClrCommonStringsService);
+    // Warning: (ae-forgotten-export) The symbol "VerticalNavService" needs to be exported by the entry point clr-angular-layout.d.ts
+    // Warning: (ae-forgotten-export) The symbol "VerticalNavIconService" needs to be exported by the entry point clr-angular-layout.d.ts
+    // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupRegistrationService" needs to be exported by the entry point clr-angular-layout.d.ts
+    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get ariaExpanded(): string;
     // (undocumented)
@@ -505,8 +516,8 @@ export class ClrVerticalNav implements OnDestroy {
 // @public (undocumented)
 export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "IfExpandService" needs to be exported by the entry point clr-angular-layout.d.ts
-    // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupService_2" needs to be exported by the entry point clr-angular-layout.d.ts
-    constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService_2, navGroupService: VerticalNavGroupService_2, _navService: VerticalNavService_2, commonStrings: ClrCommonStringsService);
+    // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupService" needs to be exported by the entry point clr-angular-layout.d.ts
+    constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     collapseGroup(): void;
     // (undocumented)
@@ -547,7 +558,7 @@ export class ClrVerticalNavGroupChildren {
 
 // @public (undocumented)
 export class ClrVerticalNavIcon implements OnDestroy {
-    constructor(_verticalNavIconService: VerticalNavIconService_2);
+    constructor(_verticalNavIconService: VerticalNavIconService);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -558,7 +569,7 @@ export class ClrVerticalNavIcon implements OnDestroy {
 
 // @public (undocumented)
 export class ClrVerticalNavLink implements OnDestroy {
-    constructor(host: ElementRef<HTMLElement>, ref: ChangeDetectorRef, navGroupService: VerticalNavGroupService_2 | null);
+    constructor(host: ElementRef<HTMLElement>, ref: ChangeDetectorRef, navGroupService: VerticalNavGroupService | null);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -575,7 +586,7 @@ export class ClrVerticalNavModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrVerticalNavModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrVerticalNavModule, [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon], [typeof i6.CommonModule, typeof i7.ClrIcon, typeof i11.ClrConditionalModule, typeof i11.ClrFocusOnViewInitModule], [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon, typeof i11.ClrConditionalModule, typeof i7.ClrIcon, typeof i11.ClrFocusOnViewInitModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrVerticalNavModule, [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon], [typeof i2.CommonModule, typeof i3.ClrIcon, typeof i1_2.ClrConditionalModule, typeof i1_2.ClrFocusOnViewInitModule], [typeof ClrVerticalNav, typeof ClrVerticalNavLink, typeof ClrVerticalNavGroup, typeof ClrVerticalNavGroupChildren, typeof ClrVerticalNavIcon, typeof i1_2.ClrConditionalModule, typeof i3.ClrIcon, typeof i1_2.ClrFocusOnViewInitModule]>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "WillyWonka" needs to be exported by the entry point clr-angular-layout.d.ts
@@ -588,8 +599,6 @@ export class MainContainerWillyWonka extends WillyWonka {
     static ɵfac: i0.ɵɵFactoryDeclaration<MainContainerWillyWonka, never>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "OompaLoompa" needs to be exported by the entry point clr-angular-layout.d.ts
-//
 // @public (undocumented)
 export class NavDetectionOompaLoompa extends OompaLoompa {
     constructor(cdr: ChangeDetectorRef, willyWonka: MainContainerWillyWonka, responsiveNavService: ResponsiveNavigationService);
@@ -664,27 +673,16 @@ export class ResponsiveNavigationService {
 }
 
 // @public (undocumented)
-export class ÇlrActiveOompaLoompa extends OompaLoompa {
-    constructor(cdr: ChangeDetectorRef, willyWonka: ÇlrTabsWillyWonka, id: number, ifActive: IfActiveService);
+export class TabsWillyWonka extends WillyWonka {
     // (undocumented)
-    get flavor(): boolean;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<TabsWillyWonka, "clr-tabs", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrActiveOompaLoompa, "[clrTabLink], clr-tab-content", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrActiveOompaLoompa, [null, { optional: true; }, null, null]>;
-}
-
-// @public (undocumented)
-export class ÇlrTabsWillyWonka extends WillyWonka {
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ÇlrTabsWillyWonka, "clr-tabs", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ÇlrTabsWillyWonka, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TabsWillyWonka, never>;
 }
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-layout.d.ts:280:194 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-layout.d.ts
+// dist/clr-angular/types/clr-angular-layout-tabs.d.ts:115:194 - (ae-forgotten-export) The symbol "i1_3" needs to be exported by the entry point clr-angular-layout.d.ts
 
 // (No @packageDocumentation comment for this package)
 
