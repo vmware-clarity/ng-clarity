@@ -23,8 +23,8 @@ import { ClarityModule } from '@clr/angular';
 import { Observable, throwError, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import { CATEGORY_ENUM_VALUES } from './assets/category-enum-values';
 import { Inventory, VmItem } from '../inventory/inventory';
+import { CATEGORY_ENUM_VALUES } from './assets/category-enum-values';
 
 @Injectable()
 export class CustomUserService extends DatagridFiltersUserService {

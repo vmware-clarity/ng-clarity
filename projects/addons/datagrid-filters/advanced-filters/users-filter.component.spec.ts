@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
  * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
@@ -22,10 +22,10 @@ import { of, throwError } from 'rxjs';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { DatagridFiltersUserService } from '../datagrid-filters-user-service';
-import { FilterFormComponent } from './filter-form.component';
-import { ErrorType, UsersFilterComponent } from './users-filter.component';
 import { ComparisonOperator, LogicalOperator } from '../model/datagrid-filters.enums';
 import { PropertyFilter, PropertyPredicate, UserPropertyDefinition } from '../model/datagrid-filters.interfaces';
+import { FilterFormComponent } from './filter-form.component';
+import { ErrorType, UsersFilterComponent } from './users-filter.component';
 
 describe('UsersFilterComponent', () => {
   let component: UsersFilterComponent;

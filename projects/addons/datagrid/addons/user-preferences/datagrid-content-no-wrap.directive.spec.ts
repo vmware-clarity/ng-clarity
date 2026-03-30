@@ -15,16 +15,16 @@ import { MockDatagridColumnToggleComponent } from '@clr/addons/testing';
 import { ClrDatagridModule } from '@clr/angular';
 import { of } from 'rxjs';
 
-import { appfxDatagridUserPreferencesToken } from './appfx-datagrid-user-preferences.token';
-import { DatagridContentNoWrapDirective } from './datagrid-content-no-wrap.directive';
-import { DatagridUserPreferencesService } from './datagrid-user-preferences.interfaces';
 import { DatagridComponent } from '../../datagrid.component';
 import { AppfxDatagridModule } from '../../datagrid.module';
 import { DatagridStrings } from '../../i18n/datagrid-strings.service';
 import { CsvHelperService } from '../export/csv-helper.service';
 import { ExportProviderService } from '../export/export-provider.service';
 import { appfxDatagridUserPreferencesToken } from './appfx-datagrid-user-preferences.token';
+import { appfxDatagridUserPreferencesToken } from './appfx-datagrid-user-preferences.token';
 import { DatagridContentNoWrapDirective } from './datagrid-content-no-wrap.directive';
+import { DatagridContentNoWrapDirective } from './datagrid-content-no-wrap.directive';
+import { DatagridUserPreferencesService } from './datagrid-user-preferences.interfaces';
 import { DatagridUserPreferencesService } from './datagrid-user-preferences.interfaces';
 
 import Spy = jasmine.Spy;
