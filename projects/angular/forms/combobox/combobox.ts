@@ -250,20 +250,15 @@ export class ClrCombobox<T>
     });
   }
 
-  get visibleLimit() {
-    if (this.selectionExpanded) {
-      return this.multiSelectModel.length;
-    }
-    return this.calculatedLimit;
-  }
-
   get showIndividualPills(): boolean {
     return !this.isTotalSelection || this.selectionExpanded;
   }
 
   get showTruncationToggle(): boolean {
     return (
-      this.isTotalSelection || (this.calculatedLimit !== null && this.calculatedLimit < this.multiSelectModel.length)
+      this.selectionExpanded ||
+      this.isTotalSelection ||
+      (this.calculatedLimit !== null && this.calculatedLimit < this.multiSelectModel.length)
     );
   }
 
@@ -424,7 +419,9 @@ export class ClrCombobox<T>
 
   toggleSelectionExpand() {
     this.selectionExpanded = !this.selectionExpanded;
-    if (!this.selectionExpanded) {
+    if (this.selectionExpanded) {
+      this.applyLimit(this.multiSelectModel.length);
+    } else {
       this.containerWidthChange.next(this.containerWidth);
     }
   }
@@ -480,7 +477,6 @@ export class ClrCombobox<T>
       }
       fitCount++;
     }
-
     this.applyLimit(fitCount);
   }
 
@@ -509,11 +505,22 @@ export class ClrCombobox<T>
     this.subscriptions.push(
       this.optionSelectionService.selectionChanged.subscribe((newSelection: ComboboxModel<T>) => {
         this.updateInputValue(newSelection);
-        if (!this.multiSelect && newSelection && !newSelection.isEmpty()) {
-          this.popoverService.open = false;
+        if (newSelection.isEmpty()) {
+          this.selectionExpanded = false;
+          this.isTotalSelection = false;
+        } else {
+          if (!this.multiSelect) {
+            this.popoverService.open = false;
+          }
+          this.updateTotalSelection();
         }
+
         this.updateControlValue();
-        this.updateTotalSelection();
+        if (this.selectionExpanded) {
+          this.applyLimit(this.multiSelectModel.length);
+        } else {
+          this.calculateLimit();
+        }
 
         if (this.multiSelect) {
           setTimeout(() => {

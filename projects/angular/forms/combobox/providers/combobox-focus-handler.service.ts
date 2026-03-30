@@ -147,10 +147,12 @@ export class ComboboxFocusHandler<T> {
       switch (key) {
         case Keys.Enter:
           if (this.popoverService.open && this.pseudoFocus.model) {
-            if (this.pseudoFocus.model.id === SELECT_ALL_ID) {
-              this.selectionService.requestSelectAll();
-            } else if (this.selectionService.multiselectable) {
-              this.selectionService.toggle(this.pseudoFocus.model.value);
+            if (this.selectionService.multiselectable) {
+              if (this.pseudoFocus.model.id === SELECT_ALL_ID) {
+                this.selectionService.requestSelectAll();
+              } else {
+                this.selectionService.toggle(this.pseudoFocus.model.value);
+              }
             } else {
               this.selectionService.select(this.pseudoFocus.model.value);
             }
