@@ -86,6 +86,7 @@ export class CompositeFiltersComponent implements OnInit {
     }
     if (this.presetFilters) {
       this.propertyFilters.push(...this.presetFilters);
+      this.preselectFirstProperty();
     }
   }
 
