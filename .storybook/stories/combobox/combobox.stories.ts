@@ -118,6 +118,26 @@ export const SingleSelectionEditableWithObjectValues: StoryObj = {
   },
 };
 
+export const SingleSelectionEditableWithIdentityFnAndResolver: StoryObj = {
+  args: {
+    clrEditable: true,
+    objectValues: true,
+    useIdentityFn: true,
+  },
+  render: (args: StorybookComboboxComponent) => {
+    const transformedArgs = args;
+    transformedArgs.singleModel = transformedArgs.objectValues
+      ? { name: 'Americium', symbol: 'Am', number: 95, electronegativity: 1.3 }
+      : ('Am' as any);
+    return {
+      props: transformedArgs,
+      template: `
+        <storybook-combobox ${argsToTemplate(transformedArgs)}></storybook-combobox>
+      `,
+    };
+  },
+};
+
 export const SingleSelectionWithIdentityFn: StoryObj = {
   args: {
     objectValues: true,
@@ -192,6 +212,35 @@ export const MultiSelectionEditableWithObjectValues: StoryObj = {
       },
       template: `
         <storybook-combobox ${argsToTemplate(args)}></storybook-combobox>
+      `,
+    };
+  },
+};
+
+export const MultiSelectionEditableWithIdentityFnAndResolver: StoryObj = {
+  args: {
+    clrMulti: true,
+    clrEditable: true,
+    objectValues: true,
+    useIdentityFn: true,
+    multiModel: [
+      { name: 'Americium', symbol: 'Am', number: 95, electronegativity: 1.3 },
+      { name: 'Berkelium', symbol: 'Bk', number: 97, electronegativity: 1.3 },
+    ],
+  },
+  render: (args: StorybookComboboxComponent) => {
+    const transformedArgs = args;
+    transformedArgs.multiModel = transformedArgs.objectValues
+      ? [
+          { name: 'Americium', symbol: 'Am', number: 95, electronegativity: 1.3 },
+          { name: 'Berkelium', symbol: 'Bk', number: 97, electronegativity: 1.3 },
+          { name: 'Chlorine', symbol: 'Cl', number: 17, electronegativity: 3.16 },
+        ]
+      : (['Am', 'As', 'Ba'] as any);
+    return {
+      props: transformedArgs,
+      template: `
+        <storybook-combobox ${argsToTemplate(transformedArgs)}></storybook-combobox>
       `,
     };
   },

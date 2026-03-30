@@ -11,7 +11,10 @@ export class SingleSelectComboboxModel<T> extends ComboboxModel<T> {
   override model: T;
 
   containsItem(item: T): boolean {
-    return this.model !== null && this.identityFn(this.model) === this.identityFn(item);
+    if (!this.model) {
+      return false;
+    }
+    return this.identityFn(this.model) === this.identityFn(item);
   }
 
   select(item: T): void {

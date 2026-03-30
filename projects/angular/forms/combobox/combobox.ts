@@ -163,6 +163,11 @@ export class ClrCombobox<T>
     this.optionSelectionService.editable = value;
   }
 
+  @Input('clrEditableResolver')
+  set editableResolver(value: ((input: string) => T) | undefined) {
+    this.optionSelectionService.editableResolver = value;
+  }
+
   @Input('clrComboboxIdentityFn')
   set identityFn(value: ClrComboboxIdentityFunction<T>) {
     this.optionSelectionService.identityFn = value;

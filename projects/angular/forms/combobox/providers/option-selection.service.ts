@@ -18,6 +18,7 @@ export class OptionSelectionService<T> {
   showSelectAll = false;
   selectionModel: ComboboxModel<T>;
   inputChanged: Observable<string>;
+  editableResolver: ((value: string) => T) | undefined;
 
   // Display all options on first open, even if filter text exists.
   // https://github.com/vmware-clarity/ng-clarity/issues/386
@@ -168,6 +169,9 @@ export class OptionSelectionService<T> {
   }
 
   parseStringToModel(value: string): T {
+    if (this.editableResolver) {
+      return this.editableResolver(value);
+    }
     if (this.displayField) {
       return {
         [this.displayField]: value,

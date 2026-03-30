@@ -258,6 +258,21 @@ export default function (): void {
       });
     });
 
+    describe('clrEditableResolver', () => {
+      it('sets the editableResolver on the optionSelectionService', () => {
+        const resolver = (input: string) => input;
+        clarityDirective.editableResolver = resolver;
+        expect(selectionService.editableResolver).toBe(resolver);
+      });
+
+      it('uses resolver in parseStringToModel when provided', () => {
+        const resolver = (input: string) => ({ value: input, id: 42 }) as any;
+        clarityDirective.editableResolver = resolver;
+        const result = selectionService.parseStringToModel('test');
+        expect(result).toEqual({ value: 'test', id: 42 } as any);
+      });
+    });
+
     describe('clrComboboxIdentityFn', () => {
       interface Item {
         id: number;

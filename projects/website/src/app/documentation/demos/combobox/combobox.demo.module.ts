@@ -12,6 +12,8 @@ import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 
 import { ComboboxAsyncDemo } from './combobox-async.demo';
+import { ComboboxEditableMultiDemo } from './combobox-editable-multi.demo';
+import { ComboboxEditableDemo } from './combobox-editable.demo';
 import { ComboboxGroupingDemo } from './combobox-grouping.demo';
 import { ComboboxIdentityFnDemo } from './combobox-identity-fn.demo';
 import { ComboboxMultiIdentityFnDemo } from './combobox-multi-identity-fn.demo';
@@ -47,6 +49,8 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     ComboboxIdentityFnDemo,
     ComboboxMultiIdentityFnDemo,
     ComboboxSelectAllDemo,
+    ComboboxEditableDemo,
+    ComboboxEditableMultiDemo,
   ],
   exports: [ComboboxDemo],
 })

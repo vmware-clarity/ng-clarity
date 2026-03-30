@@ -142,6 +142,56 @@ export default function () {
       expect(emitCount).toBe(2);
     });
 
+    describe('parseStringToModel', () => {
+      it('returns string as-is when no displayField or resolver is set', () => {
+        expect(optionSelectionService.parseStringToModel('test')).toBe('test');
+      });
+
+      it('creates object with displayField when displayField is set', () => {
+        optionSelectionService.displayField = 'name';
+        const result = optionSelectionService.parseStringToModel('test');
+        expect(result).toEqual({ name: 'test' } as any);
+      });
+
+      it('uses editableResolver when provided, ignoring displayField', () => {
+        type Item = { id: number; label: string };
+        const service = new OptionSelectionService<Item>();
+        service.selectionModel = new SingleSelectComboboxModel<Item>();
+        service.displayField = 'label';
+        let nextId = 100;
+        service.editableResolver = (input: string) => ({ id: nextId++, label: input });
+
+        const result = service.parseStringToModel('custom');
+        expect(result).toEqual({ id: 100, label: 'custom' });
+      });
+
+      it('resolver creates objects compatible with identityFn', () => {
+        type Item = { id: number; label: string };
+        const service = new OptionSelectionService<Item>();
+        service.selectionModel = new SingleSelectComboboxModel<Item>();
+        service.identityFn = (item: Item) => item.id;
+
+        let nextId = 200;
+        service.editableResolver = (input: string) => ({ id: nextId++, label: input });
+
+        const item = service.parseStringToModel('custom');
+        service.select(item);
+        expect(service.selectionModel.containsItem({ id: 200, label: 'custom' })).toBeTrue();
+        expect(service.selectionModel.containsItem({ id: 999, label: 'custom' })).toBeFalse();
+      });
+
+      it('allows different entries in multi-select editable with displayField', () => {
+        type Item = { symbol: string };
+        const service = new OptionSelectionService<Item>();
+        service.selectionModel = new MultiSelectComboboxModel<Item>();
+        service.displayField = 'symbol';
+
+        service.select(service.parseStringToModel('abc'));
+        service.select(service.parseStringToModel('def'));
+        expect((service.selectionModel.model as Item[]).length).toBe(2);
+      });
+    });
+
     it('should correctly handle falsy values like 0', () => {
       const service = new OptionSelectionService<number>();
       service.selectionModel = new SingleSelectComboboxModel<number>();

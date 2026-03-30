@@ -1,0 +1,34 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<clr-combobox-container>
+  <label>Visited States</label>
+  <clr-combobox
+    [(ngModel)]="selection"
+    name="visitedStates"
+    clrMulti="true"
+    [clrEditable]="true"
+    [clrEditableResolver]="stateResolver"
+    [clrComboboxIdentityFn]="identityFn"
+  >
+    <ng-container *clrOptionSelected="let selected"> {{ selected?.name }} </ng-container>
+    <clr-options>
+      <clr-option *clrOptionItems="let state of states; field: 'name'" [clrValue]="state">
+        {{ state.name }}
+        <span class="clr-combobox-secondary-text">({{ state.abbreviation }})</span>
+      </clr-option>
+    </clr-options>
+  </clr-combobox>
+  <clr-control-helper>Pick from the list or type a custom state and press Enter</clr-control-helper>
+</clr-combobox-container>
+
+<app-stackblitz-example
+  name="editable multi-select combobox with resolver"
+  [componentTemplate]="basicHTML"
+  [componentClass]="basicComponent"
+  [additionalFiles]="additionalFiles"
+></app-stackblitz-example>

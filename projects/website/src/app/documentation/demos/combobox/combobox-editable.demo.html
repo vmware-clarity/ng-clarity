@@ -1,0 +1,25 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<clr-combobox-container>
+  <label>My State</label>
+  <clr-combobox [(ngModel)]="selection" name="myState" [clrEditable]="true">
+    <clr-options>
+      <clr-option *clrOptionItems="let state of states; field: 'name'" [clrValue]="state">
+        {{ state.name }}
+      </clr-option>
+    </clr-options>
+  </clr-combobox>
+  <clr-control-helper>Select from the list or type a custom value</clr-control-helper>
+</clr-combobox-container>
+
+<app-stackblitz-example
+  name="editable combobox"
+  [componentTemplate]="basicHTML"
+  [componentClass]="basicComponent"
+  [additionalFiles]="additionalFiles"
+></app-stackblitz-example>
