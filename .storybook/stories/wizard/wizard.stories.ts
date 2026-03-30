@@ -173,6 +173,7 @@ const NestedWizardTemplate: StoryFn = args => ({
       <clr-wizard-button type="finish">Finish</clr-wizard-button>
 
       <clr-wizard-page [clrWizardPageNextDisabled]="!nestedWizardComplete">
+        <ng-template clrPageNavTitle>Configuration</ng-template>
         <clr-wizard
           [clrWizardInPage]="true"
           [clrWizardInPageFillContentArea]="true"
@@ -181,10 +182,9 @@ const NestedWizardTemplate: StoryFn = args => ({
         >
           <clr-wizard-title>Nested Wizard</clr-wizard-title>
 
-          <clr-wizard-button type="previous">Previous</clr-wizard-button>
+          <clr-wizard-button type="previous">Back</clr-wizard-button>
           <clr-wizard-button type="next">Next</clr-wizard-button>
           <clr-wizard-button type="finish">Continue</clr-wizard-button>
-
           <clr-wizard-page>
             <ng-template clrPageTitle>Nested Step 1</ng-template>
             <p>Content for nested step 1.</p>
@@ -248,7 +248,7 @@ const NestedStepperTemplate: StoryFn = args => ({
       <clr-wizard-button type="finish">Finish</clr-wizard-button>
 
       <clr-wizard-page [clrWizardPageNextDisabled]="!stepperComplete">
-        <ng-template clrPageTitle>Configuration</ng-template>
+        <ng-template clrPageNavTitle>Configuration</ng-template>
 
         <form clrStepper [formGroup]="stepperForm" (ngSubmit)="stepperComplete = true; parentWizard.forceNext()">
           <clr-stepper-panel formGroupName="name">
