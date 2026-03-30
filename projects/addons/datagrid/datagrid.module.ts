@@ -11,7 +11,7 @@ import { OverlayModule as CdkOverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule, Optional, SkipSelf, Type } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ClarityIcons, dragHandleIcon } from '@cds/core/icon';
+import { angleIcon, banIcon, ClarityIcons, dragHandleIcon, plusIcon } from '@cds/core/icon';
 import { AppfxA11yModule } from '@clr/addons/a11y';
 import { AppfxDatagridFiltersModule } from '@clr/addons/datagrid-filters';
 import {
@@ -96,7 +96,7 @@ const exportedDirectives: Array<Type<any>> = [
 })
 export class AppfxDatagridModule {
   constructor() {
-    ClarityIcons.addIcons(dragHandleIcon);
+    ClarityIcons.addIcons(angleIcon, banIcon, dragHandleIcon, plusIcon);
   }
 
   static forRoot(errorNotifiableService: Type<ErrorNotifiable>): ModuleWithProviders<AppfxDatagridModule> {

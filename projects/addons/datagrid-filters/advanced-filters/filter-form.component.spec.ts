@@ -15,13 +15,13 @@ import { AppfxDatagridFiltersModule } from '../datagrid-filters.module';
 
 @Component({
   selector: 'appfx-filter-form-host-component',
+  standalone: true,
   imports: [AppfxDatagridFiltersModule],
   template: `
     <appfx-filter-form [valid]="isFormValid" (cancel)="onCancelButtonClick()" (apply)="onApplyButtonClick()">
       <div></div>
     </appfx-filter-form>
   `,
-  standalone: true,
 })
 class FilterFormHostComponent {
   isFormValid = false;
@@ -42,7 +42,6 @@ describe('FilterFormComponent', () => {
   beforeEach(function (this: ThisTest) {
     TestBed.configureTestingModule({
       imports: [CommonModule, FormsModule, ReactiveFormsModule, FilterFormHostComponent],
-      declarations: [],
       providers: [DatagridFiltersStrings],
     });
     this.fixture = TestBed.createComponent(FilterFormHostComponent);

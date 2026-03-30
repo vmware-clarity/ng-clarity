@@ -243,14 +243,55 @@
       [selectedItemsCount]="selectedItemsCount"
       [filteredItemsCount]="filteredItemsCount"
       (exportEventEmitter)="onExportEvent($event)"
-      class="export-link"
+      class="footer-actions"
     >
     </appfx-dg-export>
-    <div *ngIf="showDeselectAll" class="column-switch-wrapper export-link">
-      <button class="btn btn-sm column-toggle--action" [disabled]="deselectAllDisabled" (click)="onDeselectAllClick()">
+    <div *ngIf="showDeselectAll" class="column-switch-wrapper footer-actions">
+      <button class="btn btn-sm column-toggle-action" [disabled]="deselectAllDisabled" (click)="onDeselectAllClick()">
         {{ dgStrings.deselectAll }}
       </button>
     </div>
+    <!-- Custom footer actions -->
+    <ng-container *ngIf="gridFooterModel?.footerActions">
+      <div *ngFor="let action of gridFooterModel.footerActions" class="footer-actions column-switch-wrapper">
+        <ng-container *ngIf="action.children; else singleAction">
+          <clr-dropdown>
+            <button
+              class="btn btn-sm column-toggle-action"
+              clrDropdownTrigger
+              [disabled]="!action.enabled"
+              [attr.aria-label]="action.ariaLabel"
+            >
+              {{ action.label }}
+              <cds-icon shape="angle" direction="up"></cds-icon>
+            </button>
+            <clr-dropdown-menu clrPosition="top-left" *clrIfOpen>
+              <button
+                *ngFor="let childAction of action.children"
+                type="button"
+                [disabled]="!childAction.enabled"
+                [attr.aria-label]="childAction.ariaLabel"
+                clrDropdownItem
+                (click)="onActionClick(childAction)"
+              >
+                {{ childAction.label }}
+              </button>
+            </clr-dropdown-menu>
+          </clr-dropdown>
+        </ng-container>
+        <ng-template #singleAction>
+          <button
+            type="button"
+            class="column-toggle-action btn btn-sm"
+            [attr.aria-label]="action.ariaLabel"
+            [disabled]="!action.enabled"
+            (click)="onActionClick(action)"
+          >
+            {{ action.label }}
+          </button>
+        </ng-template>
+      </div>
+    </ng-container>
     <ng-content select=".custom-footer-content"></ng-content>
     <ng-container *ngIf="pageSize > 0; else missingPageConfig" ngProjectAs="clr-dg-pagination">
       <clr-dg-pagination #pagination [clrDgPageSize]="pageSize" [clrDgTotalItems]="totalItems">
@@ -315,6 +356,8 @@
 </ng-template>
 
 <ng-template #draggableGhostContent let-item>
+  <cds-icon class="drop-status drop-status-valid" shape="plus" size="18"></cds-icon>
+  <cds-icon class="drop-status drop-status-invalid" shape="ban" size="18"></cds-icon>
   <i class="{{ item.primaryIconId }}"></i>
   <span>{{ item[dragConfig.fieldName] }}</span>
 </ng-template>

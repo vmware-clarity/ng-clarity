@@ -299,6 +299,24 @@ export class GridHelper {
     return matched >= 0 ? menuItems[matched] : undefined;
   }
 
+  findFooterButton(label: string): HTMLButtonElement | undefined {
+    const buttons = this.gridElement.querySelectorAll<HTMLButtonElement>('clr-dg-footer button');
+
+    const matched = Array.from(buttons)
+      .map(e => (e.textContent ? e.textContent.trim() : ''))
+      .indexOf(label);
+    return matched >= 0 ? buttons[matched] : undefined;
+  }
+
+  findFooterDropdownChildButton(label: string): HTMLButtonElement | undefined {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('clr-dropdown-menu button');
+
+    const matched = Array.from(buttons)
+      .map(e => (e.textContent ? e.textContent.trim() : ''))
+      .indexOf(label);
+    return matched >= 0 ? buttons[matched] : undefined;
+  }
+
   /**
    * handle string and array-based i18n bundle-key structures
    */

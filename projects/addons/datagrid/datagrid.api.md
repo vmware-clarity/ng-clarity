@@ -40,7 +40,7 @@ import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i16_3 from '@angular/cdk/a11y';
+import * as i16 from '@angular/cdk/a11y';
 import * as i17_3 from '@angular/cdk/drag-drop';
 import * as i18_3 from '@angular/cdk/overlay';
 import * as i20 from '@angular/common';
@@ -145,7 +145,7 @@ export class AppfxDatagridModule {
     // Warning: (ae-forgotten-export) The symbol "i21_2" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof i1.DatagridComponent, typeof i2.DatagridActionBarComponent, typeof i3.DatagridFilterComponent, typeof i4.DatagridPageDirective, typeof i5.DatagridPersistSettingsDirective, typeof i6.DatagridPreserveSelectionDirective, typeof i7.DatagridContentNoWrapDirective, typeof i8.DatagridActionBarDropdownRepositionDirective, typeof i9.DatagridCellContainerComponent, typeof i10.DatagridColumnToggleComponent, typeof i11.DatagridFilterContainerComponent, typeof i12.ExportDatagridComponent, typeof i13.IsRowSelectablePipe], [typeof i14.AppfxA11yModule, typeof i15.AppfxDatagridFiltersModule, typeof i16_3.A11yModule, typeof i17_3.DragDropModule, typeof i18_3.OverlayModule, typeof i19.ClrCheckboxModule, typeof i19.ClrDatagridModule, typeof i19.ClrDropdownModule, typeof i19.ClrIconModule, typeof i19.ClrInputModule, typeof i19.ClrLoadingModule, typeof i20.CommonModule, typeof i21_2.DatagridColumnsOrderModule, typeof i22_2.FormsModule], [typeof i1.DatagridComponent, typeof i2.DatagridActionBarComponent, typeof i3.DatagridFilterComponent, typeof i4.DatagridPageDirective, typeof i5.DatagridPersistSettingsDirective, typeof i6.DatagridPreserveSelectionDirective, typeof i7.DatagridContentNoWrapDirective]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof i1.DatagridComponent, typeof i2.DatagridActionBarComponent, typeof i3.DatagridFilterComponent, typeof i4.DatagridPageDirective, typeof i5.DatagridPersistSettingsDirective, typeof i6.DatagridPreserveSelectionDirective, typeof i7.DatagridContentNoWrapDirective, typeof i8.DatagridActionBarDropdownRepositionDirective, typeof i9.DatagridCellContainerComponent, typeof i10.DatagridColumnToggleComponent, typeof i11.DatagridFilterContainerComponent, typeof i12.ExportDatagridComponent, typeof i13.IsRowSelectablePipe], [typeof i14.AppfxA11yModule, typeof i15.AppfxDatagridFiltersModule, typeof i16.A11yModule, typeof i17_3.DragDropModule, typeof i18_3.OverlayModule, typeof i19.ClrCheckboxModule, typeof i19.ClrDatagridModule, typeof i19.ClrDropdownModule, typeof i19.ClrIconModule, typeof i19.ClrInputModule, typeof i19.ClrLoadingModule, typeof i20.CommonModule, typeof i21_2.DatagridColumnsOrderModule, typeof i22_2.FormsModule], [typeof i1.DatagridComponent, typeof i2.DatagridActionBarComponent, typeof i3.DatagridFilterComponent, typeof i4.DatagridPageDirective, typeof i5.DatagridPersistSettingsDirective, typeof i6.DatagridPreserveSelectionDirective, typeof i7.DatagridContentNoWrapDirective]>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "PersistDatagridSettingsService" needs to be exported by the entry point index.d.ts
@@ -729,6 +729,7 @@ export class FieldComparator<T> implements ClrDatagridComparatorInterface<T> {
 export interface GridFooterModel {
     clientSideExportConfig?: ClientSideExportConfig;
     enableCustomExport?: boolean;
+    footerActions?: ActionDefinition[];
     hideColumnToggle?: boolean;
     showFooter?: boolean;
 }

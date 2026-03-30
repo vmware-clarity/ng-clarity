@@ -5,8 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { ComparisonOperator, LogicalOperator } from '../model/datagrid-filters.enums';
@@ -47,28 +57,104 @@ export class EnumFilterComponent implements OnInit, OnChanges {
 
   enumFilterForm: FormGroup;
   optionsData: EnumPropertyData[] = [];
+  filteredOptions: { data: EnumPropertyData; index: number }[] = [];
+  enumOperators: ComparisonOperator[] = [ComparisonOperator.Equals, ComparisonOperator.DoesNotEqual];
+  isProcessing = false;
+  searchResultsLen = 0;
+  selectedCount = 0;
 
-  private selectedFilterCriteria: PropertyFilter = new PropertyFilter();
+  readonly #maxInitiallyShownItems = 50;
+  readonly #loadingTimeoutDelayMs = 50;
+  #maxShownItems = this.#maxInitiallyShownItems;
+  #selectedFilterCriteria = new PropertyFilter();
 
-  constructor(private formBuilder: FormBuilder, public filterStrings: DatagridFiltersStrings) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    public filterStrings: DatagridFiltersStrings,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  get additionalOperators(): boolean {
+    return this.filterProperty.supportedOperators?.length === 2;
+  }
 
   get optionsFormArray(): FormArray {
-    return this.enumFilterForm.controls.options as FormArray;
+    return this.enumFilterForm?.controls.options as FormArray;
   }
 
   ngOnInit() {
     this.enumFilterForm = this.formBuilder.group({
+      enumOperator: [ComparisonOperator.Equals],
+      searchTerm: [''],
       selectAll: false,
       options: new FormArray([], this.selectedOptionsValidator()),
-      singleSelectOption: [this.propertyFilter?.criteria[0]?.value || this.filterProperty.values.keys().next().value],
+      singleSelectOption: [],
     });
-    this.updateForm();
-    this.selectedFilterCriteria.operator = LogicalOperator.Or;
+
+    this.enumFilterForm.get('enumOperator')?.valueChanges.subscribe((op: ComparisonOperator) => {
+      this.#selectedFilterCriteria.operator =
+        op === ComparisonOperator.Equals ? LogicalOperator.Or : LogicalOperator.And;
+    });
+
+    this.enumFilterForm
+      .get('searchTerm')
+      ?.valueChanges.pipe(debounceTime(200), distinctUntilChanged())
+      .subscribe((term: string) => {
+        this.runAsyncOperation(() => this.performSearch(term));
+      });
+
+    this.runAsyncOperation(() => this.initializeFilter());
   }
 
   ngOnChanges() {
-    this.updateData();
-    this.updateForm();
+    if (this.enumFilterForm) {
+      this.runAsyncOperation(() => {
+        this.initializeFilter();
+        this.enumFilterForm.get('searchTerm')?.setValue('', { emitEvent: false });
+        this.performSearch('');
+      });
+    }
+  }
+
+  loadMore(): void {
+    this.runAsyncOperation(() => {
+      this.#maxShownItems += 100;
+      this.performSearch(this.enumFilterForm.get('searchTerm')?.value);
+    });
+  }
+
+  onSelectAllChange(): void {
+    this.runAsyncOperation(() => {
+      const selectAllValue = this.enumFilterForm.get('selectAll')?.value;
+      const visibleIndices = new Set(this.filteredOptions.map(opt => opt.index));
+      const searching = this.searchResultsLen === this.optionsData.length;
+
+      this.optionsFormArray.controls.forEach((control: AbstractControl, index: number) => {
+        if ((searching || visibleIndices.has(index)) && control.value !== selectAllValue) {
+          control.setValue(selectAllValue, { emitEvent: false });
+        }
+      });
+
+      this.updateSelectedCount();
+      this.enumFilterForm.controls.options.updateValueAndValidity();
+    });
+  }
+
+  onOptionChange(): void {
+    this.updateSelectedCount();
+
+    const allSelected = this.selectedCount === this.optionsFormArray.length;
+    const selectAllControl = this.enumFilterForm.get('selectAll');
+
+    if (selectAllControl?.value !== allSelected) {
+      selectAllControl?.setValue(allSelected, { emitEvent: false });
+    }
+
+    this.enumFilterForm.controls.options.updateValueAndValidity();
+  }
+
+  clearSearch() {
+    this.enumFilterForm.get('searchTerm')?.setValue('');
   }
 
   onApplyButtonClick(): void {
@@ -83,42 +169,74 @@ export class EnumFilterComponent implements OnInit, OnChanges {
         propertyPredicates.push(this.createEnumPropertyPredicate(value));
       });
     }
-    this.selectedFilterCriteria.criteria = propertyPredicates;
-    this.filterCriteriaChange.emit(this.selectedFilterCriteria);
+    this.#selectedFilterCriteria.criteria = propertyPredicates;
+    this.filterCriteriaChange.emit(this.#selectedFilterCriteria);
   }
 
   onCancelButtonClick(): void {
     this.filterCriteriaChange.emit();
   }
 
-  onSelectAllChange(): void {
-    const selectAllValue = this.enumFilterForm.get('selectAll')?.value;
-    this.optionsFormArray.controls.forEach(c => {
-      c.setValue(selectAllValue);
-    });
-  }
+  private runAsyncOperation(action: () => void): void {
+    const isHeavyLoad = this.optionsData.length > this.#maxInitiallyShownItems;
 
-  onOptionChange(event: any): void {
-    if (!event.target.checked) {
-      this.selectAll(false);
+    if (isHeavyLoad) {
+      this.isProcessing = true;
+      this.cdr.markForCheck();
+
+      setTimeout(() => {
+        action();
+        this.isProcessing = false;
+        this.cdr.markForCheck();
+      }, this.#loadingTimeoutDelayMs);
     } else {
-      const totalSelected = this.optionsFormArray.controls
-        .map(c => c.value)
-        .reduce((prev, next) => (next ? prev + next : prev), 0);
-      if (totalSelected === this.optionsFormArray.length) {
-        this.selectAll(true);
-      }
+      action();
     }
   }
 
+  private initializeFilter(): void {
+    if (this.filterProperty.supportedOperators?.length) {
+      this.enumOperators = this.filterProperty.supportedOperators;
+    }
+
+    this.updateData();
+    this.updateForm();
+    this.performSearch('');
+
+    const initialOp =
+      this.propertyFilter?.operator === LogicalOperator.And ? ComparisonOperator.DoesNotEqual : this.enumOperators[0];
+    this.enumFilterForm.controls.enumOperator.setValue(initialOp, { emitEvent: false });
+
+    this.updateSelectedCount();
+  }
+
+  private performSearch(term = ''): void {
+    const normalizedTerm = term.toLowerCase();
+
+    const allMatches = this.optionsData
+      .map((data, index) => ({ data, index }))
+      .filter(
+        item =>
+          !normalizedTerm ||
+          item.data.value.toLowerCase().includes(normalizedTerm) ||
+          item.data.key.toLowerCase().includes(normalizedTerm)
+      );
+
+    this.searchResultsLen = allMatches.length;
+    this.filteredOptions = allMatches.slice(0, this.#maxShownItems);
+    this.cdr.markForCheck();
+  }
+
+  private updateSelectedCount(): void {
+    this.selectedCount = this.optionsFormArray.controls.reduce(
+      (acc: number, control: AbstractControl) => acc + (control.value ? 1 : 0),
+      0
+    );
+  }
+
   private selectedOptionsValidator(): ValidatorFn {
-    const validator: ValidatorFn = (control: AbstractControl) => {
-      const formArray = control as FormArray;
-      const totalSelected = formArray.controls
-        .map((c: AbstractControl) => c.value)
-        .reduce((prev, next) => (next ? prev + next : prev), 0);
-      return this.filterProperty.singleSelect || totalSelected > 0 ? null : { required: true };
-    };
+    const validator: ValidatorFn = () =>
+      this.filterProperty.singleSelect || this.selectedCount > 0 ? null : { required: true };
     return validator;
   }
 
@@ -126,7 +244,6 @@ export class EnumFilterComponent implements OnInit, OnChanges {
     this.optionsData = [];
     let enumValues: Map<string, string>;
     if (this.propertyFilter && this.propertyFilter.criteria.length) {
-      // Edit mode
       enumValues = (this.propertyFilter.criteria[0].filterableProperty as EnumPropertyDefinition).values;
     } else {
       enumValues = this.filterProperty.values;
@@ -134,6 +251,9 @@ export class EnumFilterComponent implements OnInit, OnChanges {
     enumValues.forEach((v, k) => {
       this.optionsData.push({ key: k, value: v });
     });
+    this.enumFilterForm?.controls.enumOperator.setValue(
+      this.propertyFilter?.operator === LogicalOperator.And ? ComparisonOperator.DoesNotEqual : this.enumOperators[0]
+    );
   }
 
   private updateForm(): void {
@@ -152,6 +272,14 @@ export class EnumFilterComponent implements OnInit, OnChanges {
       if (selectedOptions.length === this.optionsData.length) {
         this.selectAll(true);
       }
+      if (this.filterProperty.singleSelect) {
+        const singleSelectForm = this.enumFilterForm.get('singleSelectOption');
+        if (this.propertyFilter) {
+          singleSelectForm?.setValue(this.propertyFilter.criteria[0].value);
+        } else {
+          singleSelectForm?.setValue(this.filterProperty.values.keys().next().value);
+        }
+      }
     }
   }
 
@@ -164,7 +292,7 @@ export class EnumFilterComponent implements OnInit, OnChanges {
   private createEnumPropertyPredicate(value: string): PropertyPredicate {
     const predicate = new PropertyPredicate();
     predicate.filterableProperty = this.filterProperty;
-    predicate.operator = ComparisonOperator.Equals;
+    predicate.operator = this.enumFilterForm.controls.enumOperator.value;
     predicate.value = value;
     return predicate;
   }

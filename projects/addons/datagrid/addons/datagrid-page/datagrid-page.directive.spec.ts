@@ -218,6 +218,7 @@ describe('datagridPage directive', () => {
 
 @Component({
   selector: 'appfx-datagrid-client-side-host-component',
+  standalone: true,
   imports: [AppfxDatagridModule, DatagridColumnsOrderModule, DragDropModule, FormsModule, OverlayModule],
   template: `
     <appfx-datagrid
@@ -230,7 +231,6 @@ describe('datagridPage directive', () => {
       [columns]="columnsDefs"
     ></appfx-datagrid>
   `,
-  standalone: true,
 })
 class DatagridForClientSideGridHostComponent {
   @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent: DatagridComponent<unknown>;
@@ -250,6 +250,7 @@ class DatagridForClientSideGridHostComponent {
 
 @Component({
   selector: 'appfx-datagrid-server-side-host-component',
+  standalone: true,
   imports: [AppfxDatagridModule, DatagridColumnsOrderModule, DragDropModule, FormsModule, OverlayModule],
   template: `
     <appfx-datagrid
@@ -264,7 +265,6 @@ class DatagridForClientSideGridHostComponent {
       (refreshGridData)="refreshData($event)"
     ></appfx-datagrid>
   `,
-  standalone: true,
 })
 class DatagridForServerSideGridHostComponent {
   @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent: DatagridComponent<unknown>;

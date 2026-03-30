@@ -204,6 +204,7 @@ class TestDirective {
 
 @Component({
   selector: 'clr-datagrid-host-component',
+  standalone: true,
   imports: [ClrDatagridModule, CommonModule, DatagridColumnsOrderModule, DragDropModule, TestDirective],
   template: `
     <clr-datagrid cdkDropList appfxDgColumnsOrder [dgColumnsOrderColumns]="columns" testDirectives>
@@ -223,7 +224,6 @@ class TestDirective {
       </clr-dg-row>
     </clr-datagrid>
   `,
-  standalone: true,
 })
 class TestClrDatagridHostComponent {
   @ViewChild(TestDirective) content: TestDirective;

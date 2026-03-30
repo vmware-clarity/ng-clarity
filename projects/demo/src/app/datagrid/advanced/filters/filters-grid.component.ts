@@ -5,26 +5,129 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, Inject, Injectable } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxDatagridModule, ColumnDefinition, SelectionType } from '@clr/addons/datagrid';
 import {
   ComparisonOperator,
+  DatagridFiltersUserService,
   EnumPropertyDefinition,
   FilterablePropertyDefinition,
   FilterMode,
   PropertyFilter,
   StringPropertyDefinition,
+  UserPropertyDefinition,
 } from '@clr/addons/datagrid-filters';
-import { ClrSelectModule } from '@clr/angular';
+import { ClarityModule } from '@clr/angular';
+import { Observable, throwError, timer } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { Inventory, VmItem } from '../inventory/inventory';
+import { CATEGORY_ENUM_VALUES } from './assets/category-enum-values';
+
+@Injectable()
+export class CustomUserService extends DatagridFiltersUserService {
+  errorRetrievingDomains = false;
+  errorRetrievingUsers = false;
+
+  private readonly error = new HttpErrorResponse({
+    error: 'Internal Server Error',
+    status: 500,
+    statusText: 'Server Error',
+  });
+
+  private readonly domainUsers: Record<string, string[]> = {
+    'CORP.EXAMPLE': this.generateUsers('CORP.EXAMPLE', [
+      'admin',
+      'john.doe',
+      'svc-backup',
+      'svc-deploy',
+      'alice.wong',
+      'bob.martin',
+      'carol.jones',
+      'david.lee',
+      'emma.clark',
+      'frank.miller',
+      'grace.kim',
+      'henry.chen',
+      'iris.patel',
+      'jack.brown',
+      'karen.davis',
+      'leo.garcia',
+      'mia.wilson',
+      'noah.taylor',
+      'olivia.moore',
+      'peter.white',
+      'quinn.hall',
+      'rachel.allen',
+      'sam.young',
+      'tina.king',
+      'uma.scott',
+      'victor.hill',
+    ]),
+    'CLOUD.EXAMPLE': this.generateUsers('CLOUD.EXAMPLE', [
+      'jane.smith',
+      'admin',
+      'ops-monitor',
+      'root',
+      'deploy-bot',
+      'ci-runner',
+      'diana.ross',
+      'eric.johnson',
+      'fiona.li',
+      'george.harris',
+      'hannah.wright',
+      'ian.lopez',
+      'julia.robinson',
+      'kevin.walker',
+      'laura.martinez',
+      'mike.anderson',
+      'nina.thomas',
+      'oscar.jackson',
+    ]),
+    'DEV.EXAMPLE': this.generateUsers('DEV.EXAMPLE', [
+      'svc-audit',
+      'developer',
+      'qa-lead',
+      'devops',
+      'intern.alex',
+      'intern.jamie',
+      'tech-lead',
+      'pm.sarah',
+      'designer.max',
+      'analyst.riya',
+      'support.tom',
+      'docs.writer',
+    ]),
+  };
+
+  getDomains(): Observable<string[]> {
+    if (this.errorRetrievingDomains) {
+      return timer(1000).pipe(switchMap(() => throwError(() => this.error)));
+    }
+    return timer(1000).pipe(map(() => Object.keys(this.domainUsers)));
+  }
+
+  searchUsers(searchTerm: string, domain: string): Observable<string[]> {
+    if (this.errorRetrievingUsers) {
+      return timer(1000).pipe(switchMap(() => throwError(() => this.error)));
+    }
+    const users = this.domainUsers[domain] || [];
+    const lower = searchTerm.toLowerCase();
+    return timer(500).pipe(map(() => users.filter(u => u.toLowerCase().includes(lower))));
+  }
+
+  private generateUsers(domain: string, names: string[]): string[] {
+    return names.map(n => `${n}@${domain}`);
+  }
+}
 
 @Component({
-  imports: [AppfxDatagridModule, ClrSelectModule, FormsModule],
+  imports: [AppfxDatagridModule, ClarityModule, FormsModule],
   standalone: true,
   templateUrl: 'filters-grid.component.html',
-  providers: [Inventory],
+  providers: [Inventory, { provide: DatagridFiltersUserService, useClass: CustomUserService }],
 })
 export class FiltersGridComponent {
   protected readonly selectionType = SelectionType.None;
@@ -45,6 +148,14 @@ export class FiltersGridComponent {
       displayName: 'Used space',
       field: 'usedSpace',
     },
+    {
+      displayName: 'Category',
+      field: 'event',
+    },
+    {
+      displayName: 'User',
+      field: 'user',
+    },
   ];
 
   protected filteredItems: VmItem[] = [];
@@ -52,12 +163,35 @@ export class FiltersGridComponent {
   protected filterableProperties: FilterablePropertyDefinition[] = [];
   protected readonly FilterMode = FilterMode;
   protected selectedFilterMode: FilterMode = FilterMode.AdvancedOnly;
+  protected errorRetrievingDomains = false;
+  protected errorRetrievingUsers = false;
 
-  constructor(private inventory: Inventory) {
+  constructor(
+    private inventory: Inventory,
+    @Inject(DatagridFiltersUserService) private userService: CustomUserService
+  ) {
     inventory.reset();
     this.allItems = inventory.allItems;
     this.filteredItems = this.allItems;
     this.initFilterableProperties();
+  }
+
+  protected get isErrorRetrievingDomains(): boolean {
+    return this.errorRetrievingDomains;
+  }
+
+  protected set isErrorRetrievingDomains(value: boolean) {
+    this.errorRetrievingDomains = value;
+    this.userService.errorRetrievingDomains = value;
+  }
+
+  protected get isErrorRetrievingUsers(): boolean {
+    return this.errorRetrievingUsers;
+  }
+
+  protected set isErrorRetrievingUsers(value: boolean) {
+    this.errorRetrievingUsers = value;
+    this.userService.errorRetrievingUsers = value;
   }
 
   onAdvancedFilterChange(filterCriteria: PropertyFilter[]): void {
@@ -113,24 +247,37 @@ export class FiltersGridComponent {
   }
 
   private initFilterableProperties(): void {
-    const stringNameProperty: StringPropertyDefinition = new StringPropertyDefinition('VM Name', 'name');
-    const stateEnumMap: Map<string, string> = new Map<string, string>();
+    const stringNameProperty = new StringPropertyDefinition('VM Name', 'name');
+
+    const stateEnumMap = new Map<string, string>();
     stateEnumMap.set('Powered On', 'Powered On');
     stateEnumMap.set('Powered Off', 'Powered Off');
-    const singleSelectStateProperty: EnumPropertyDefinition = new EnumPropertyDefinition(
-      'State',
-      'state',
-      stateEnumMap,
-      true
-    );
+    const singleSelectStateProperty = new EnumPropertyDefinition('State', 'state', stateEnumMap, true);
 
-    const enumStatusMap: Map<string, string> = new Map<string, string>();
+    const enumStatusMap = new Map<string, string>();
     enumStatusMap.set('Normal', 'Normal');
     enumStatusMap.set('Warning', 'Warning');
     enumStatusMap.set('Alert', 'Alert');
-    const enumProperty: EnumPropertyDefinition = new EnumPropertyDefinition('Status', 'status', enumStatusMap);
+    const enumProperty = new EnumPropertyDefinition('Status', 'status', enumStatusMap);
 
-    this.filterableProperties.push(stringNameProperty, singleSelectStateProperty, enumProperty);
+    const categoryEnumProp = new EnumPropertyDefinition(
+      'Category',
+      'event',
+      new Map(Object.entries(CATEGORY_ENUM_VALUES)),
+      false,
+      true,
+      true
+    );
+
+    const userProp = new UserPropertyDefinition('User', 'user');
+
+    this.filterableProperties.push(
+      stringNameProperty,
+      singleSelectStateProperty,
+      enumProperty,
+      categoryEnumProp,
+      userProp
+    );
   }
 
   private applyOperatorFilter(item: string, predicateValue: string, operator: ComparisonOperator): boolean {

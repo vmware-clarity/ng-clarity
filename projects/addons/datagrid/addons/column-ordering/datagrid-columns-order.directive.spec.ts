@@ -258,6 +258,7 @@ describe('DatagridColumnsOrderDirective', () => {
 
 @Component({
   selector: 'clr-datagrid-host-component',
+  standalone: true,
   imports: [ClrDatagridModule, CommonModule, DatagridColumnsOrderModule, DragDropModule],
   template: `
     <clr-datagrid
@@ -282,7 +283,6 @@ describe('DatagridColumnsOrderDirective', () => {
       </clr-dg-row>
     </clr-datagrid>
   `,
-  standalone: true,
 })
 class TestClrDatagridHostComponent {
   @ViewChild(DatagridColumnsOrderDirective) dgColumnsOrderDirective: DatagridColumnsOrderDirective;

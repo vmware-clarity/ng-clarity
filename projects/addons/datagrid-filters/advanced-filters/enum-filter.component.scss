@@ -11,11 +11,16 @@
 }
 
 :host-context(.no-zoom) {
-  .enum-options {
-    overflow-y: auto;
-    max-height: 8.8rem;
+  .enum-filter-wrapper {
+    max-height: 12.5rem;
   }
 }
+
+.enum-filter-wrapper {
+  max-height: 18rem;
+  overflow: auto;
+}
+
 :host {
   ::ng-deep .clr-control-container {
     margin-left: 0.2rem;
@@ -26,4 +31,10 @@ clr-checkbox-container:not(.clr-default-style) {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
   min-height: auto !important;
+}
+
+.selection-counter {
+  .clr-subtext {
+    color: var(--clr-info-color, #0072a3);
+  }
 }

@@ -38,6 +38,10 @@ export class FilterPopoverRepositionDirective implements AfterViewInit {
     const translateY = matrix.m42;
 
     const parentElement = this.elementRef.nativeElement.closest(this.filterContainerSelector);
+    if (!parentElement) {
+      return;
+    }
+
     const popoverOriginalEndX = originalTranslateX + this.elementRef.nativeElement.offsetWidth;
 
     // If the popover is within the datagrid boundaries, do nothing.

@@ -24,6 +24,7 @@ import {
   NumericPropertyDefinition,
   PropertyFilter,
   StringPropertyDefinition,
+  UserPropertyDefinition,
 } from './model/datagrid-filters.interfaces';
 
 /**
@@ -42,6 +43,9 @@ export class CompositeFiltersComponent implements OnInit {
   // Array of filterable properties
   @Input() filterableProperties: FilterablePropertyDefinition[];
 
+  // Array of pre-selected filters specified
+  @Input() presetFilters: PropertyFilter[];
+
   /**
    * Event emitter to tell hosting view that the filtering conditions have changed
    */
@@ -51,6 +55,7 @@ export class CompositeFiltersComponent implements OnInit {
   readonly enumPropertyType: PropertyType = PropertyType.Enum;
   readonly numericPropertyType: PropertyType = PropertyType.Numeric;
   readonly dateTimePropertyType: PropertyType = PropertyType.DateTime;
+  readonly userPropertyType: PropertyType = PropertyType.User;
 
   signPostOpened = false;
   selectedFilterableProperty: FilterablePropertyDefinition;
@@ -59,6 +64,7 @@ export class CompositeFiltersComponent implements OnInit {
   enumProperty: EnumPropertyDefinition;
   numericProperty: NumericPropertyDefinition;
   dateTimeProperty: DateTimePropertyDefinition;
+  userProperty: UserPropertyDefinition;
   // List of active filters to be sent to the hosting view
   propertyFilters: PropertyFilter[] = [];
   collapsedFilters = false;
@@ -76,6 +82,10 @@ export class CompositeFiltersComponent implements OnInit {
       this.selectedFilterableProperty = this.filterableProperties[0];
       this.onPropertyChange();
     }
+    if (this.presetFilters) {
+      this.propertyFilters.push(...this.presetFilters);
+      this.preselectFirstProperty();
+    }
   }
 
   onPropertyChange() {
@@ -91,6 +101,9 @@ export class CompositeFiltersComponent implements OnInit {
     } else if (this.isDateTimeProperty(this.selectedFilterableProperty)) {
       this.propertyType = PropertyType.DateTime;
       this.dateTimeProperty = this.castDateTimeProperty();
+    } else if (this.isUserProperty(this.selectedFilterableProperty)) {
+      this.propertyType = PropertyType.User;
+      this.userProperty = this.castUserProperty();
     }
   }
 
@@ -206,6 +219,10 @@ export class CompositeFiltersComponent implements OnInit {
     return property instanceof DateTimePropertyDefinition;
   }
 
+  private isUserProperty(property: FilterablePropertyDefinition): property is UserPropertyDefinition {
+    return property instanceof UserPropertyDefinition;
+  }
+
   private castStringProperty(): StringPropertyDefinition {
     return this.selectedFilterableProperty as StringPropertyDefinition;
   }
@@ -220,5 +237,9 @@ export class CompositeFiltersComponent implements OnInit {
 
   private castDateTimeProperty(): DateTimePropertyDefinition {
     return this.selectedFilterableProperty as DateTimePropertyDefinition;
+  }
+
+  private castUserProperty(): UserPropertyDefinition {
+    return this.selectedFilterableProperty as UserPropertyDefinition;
   }
 }

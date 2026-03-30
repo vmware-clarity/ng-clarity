@@ -33,12 +33,9 @@ const unmericPatternRegex = '^-?[0-9]+$';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GeneralFilterComponent implements OnInit, OnChanges {
-  /**
-   * Property used for filtering
-   */
-  #filterProperty: StringPropertyDefinition | NumericPropertyDefinition;
   readonly logicalOperators: LogicalOperator[];
   readonly isEmptyOperator: ComparisonOperator = ComparisonOperator.IsEmpty;
+
   generalFilterForm: FormGroup;
   comparisonOperators: ComparisonOperator[];
   units: Unit[] = [];
@@ -46,6 +43,11 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   additionalPredicate = false;
   isEmptyPrimaryPredicate = false;
   isEmptySecondaryPredicate = false;
+
+  /**
+   * Property used for filtering
+   */
+  #filterProperty: StringPropertyDefinition | NumericPropertyDefinition;
 
   /**
    * In case the component is used for filter editing

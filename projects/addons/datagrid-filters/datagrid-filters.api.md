@@ -37,8 +37,9 @@ import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i12 from '@angular/common';
-import * as i13_2 from '@angular/forms';
+import * as i12 from '@angular/cdk/a11y';
+import * as i14 from '@angular/common';
+import * as i15_3 from '@angular/forms';
 import * as i6_10 from '@angular/router';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
@@ -91,9 +92,10 @@ class AppfxDatagridFiltersModule {
     // Warning: (ae-forgotten-export) The symbol "i9" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i10" needs to be exported by the entry point index.d.ts
     // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i13" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof i1.CompositeFiltersComponent, typeof i2.DataGridFiltersComponent, typeof i3.DateTimeFilterComponent, typeof i4.DismissableDirective, typeof i5.EnumFilterComponent, typeof i6.FilterFormComponent, typeof i7.FilterPopoverRepositionDirective, typeof i8.GeneralFilterComponent, typeof i9.ManageFilterComponent, typeof i10.SkipFiltersPipe], [typeof i11.ClrCheckboxModule, typeof i11.ClrIconModule, typeof i11.ClrInputModule, typeof i11.ClrRadioModule, typeof i11.ClrSelectModule, typeof i11.ClrSignpostModule, typeof i12.CommonModule, typeof i13_2.FormsModule, typeof i13_2.ReactiveFormsModule], [typeof i1.CompositeFiltersComponent, typeof i2.DataGridFiltersComponent, typeof i6.FilterFormComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof i1.CompositeFiltersComponent, typeof i2.DataGridFiltersComponent, typeof i3.DateTimeFilterComponent, typeof i4.DismissableDirective, typeof i5.EnumFilterComponent, typeof i6.FilterFormComponent, typeof i7.FilterPopoverRepositionDirective, typeof i8.GeneralFilterComponent, typeof i9.ManageFilterComponent, typeof i10.SkipFiltersPipe, typeof i11.UsersFilterComponent], [typeof i12.A11yModule, typeof i13.ClrCheckboxModule, typeof i13.ClrIconModule, typeof i13.ClrInputModule, typeof i13.ClrRadioModule, typeof i13.ClrSelectModule, typeof i13.ClrSignpostModule, typeof i13.ClrSpinnerModule, typeof i14.CommonModule, typeof i15_3.FormsModule, typeof i15_3.ReactiveFormsModule], [typeof i1.CompositeFiltersComponent, typeof i2.DataGridFiltersComponent, typeof i6.FilterFormComponent]>;
 }
 export { AppfxDatagridFiltersModule }
 export { AppfxDatagridFiltersModule as DatagridFiltersModule }
@@ -175,6 +177,8 @@ export class CompositeFiltersComponent implements OnInit {
     // (undocumented)
     onPropertyChange(): void;
     // (undocumented)
+    presetFilters: PropertyFilter[];
+    // (undocumented)
     propertyFilters: PropertyFilter[];
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
@@ -193,12 +197,14 @@ export class CompositeFiltersComponent implements OnInit {
     signPostOpened: boolean;
     // (undocumented)
     stringProperty: StringPropertyDefinition;
-    // Warning: (ae-forgotten-export) The symbol "PropertyType" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     readonly stringPropertyType: PropertyType;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": "filterableProperties"; }, { "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    userProperty: UserPropertyDefinition;
+    // (undocumented)
+    readonly userPropertyType: PropertyType;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": "filterableProperties"; "presetFilters": "presetFilters"; }, { "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CompositeFiltersComponent, never>;
 }
@@ -228,6 +234,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     onSearchInputKeyPress(event: KeyboardEvent): void;
     // (undocumented)
     onSearchTermChanged(searchTerm: string): void;
+    presetFilters: PropertyFilter[];
     // (undocumented)
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
@@ -238,7 +245,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     // (undocumented)
     selectedFilterMode: FilterMode;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": "filterableProperties"; "filterMode": "filterMode"; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": "filterableProperties"; "presetFilters": "presetFilters"; "filterMode": "filterMode"; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DataGridFiltersComponent, never>;
 }
@@ -250,6 +257,8 @@ export class DatagridFiltersStrings {
     readonly addNewAriaLabel: string;
     readonly addTimeFilter: string;
     readonly advancedFilter: string;
+    // (undocumented)
+    readonly allSearchResults: string;
     readonly appliedText: string;
     readonly apply: string;
     readonly cancel: string;
@@ -260,13 +269,26 @@ export class DatagridFiltersStrings {
     readonly dateFormat: string;
     readonly dateValidatorMessage: string;
     // (undocumented)
+    readonly domain: string;
+    // (undocumented)
     readonly editFilterText: string;
+    // (undocumented)
+    readonly elementsSelectedFormat: string;
+    // (undocumented)
+    readonly emptyUsersError: string;
     readonly enterValue: string;
+    // (undocumented)
+    readonly errorLoadingDomains: string;
+    // (undocumented)
+    readonly errorSearchingUsers: string;
     readonly filterLabel: string;
     // (undocumented)
     readonly filtersText: string;
     // (undocumented)
     readonly filterText: string;
+    readonly filterType: string;
+    // (undocumented)
+    formatString(stringFormat: string, args: string[]): string;
     // (undocumented)
     readonly fromLabel: string;
     // (undocumented)
@@ -284,10 +306,16 @@ export class DatagridFiltersStrings {
     // (undocumented)
     readonly hideButtonLabel: string;
     readonly integerValidatorMessage: string;
+    // (undocumented)
+    readonly loading: string;
+    // (undocumented)
+    readonly loadMore: string;
     readonly logicalOperator: {
         and: string;
         or: string;
     };
+    // (undocumented)
+    readonly noValuesFound: string;
     readonly operator: {
         after: string;
         afterOrEqualTo: string;
@@ -318,9 +346,15 @@ export class DatagridFiltersStrings {
     readonly removeFilterText: string;
     readonly removeTimeFilterAriaLabel: string;
     readonly requiredValidatorMessage: string;
+    // (undocumented)
+    readonly searchOptions: string;
+    // (undocumented)
+    readonly searchPlaceholder: string;
     readonly selectAll: string;
     // (undocumented)
     readonly showButtonLabel: string;
+    // (undocumented)
+    readonly showingFormat: string;
     readonly timeFormat: string;
     // (undocumented)
     readonly timeSpan: {
@@ -358,6 +392,8 @@ export class DatagridFiltersStrings {
         gbitps: string;
     };
     readonly unitAriaLabel: string;
+    // (undocumented)
+    readonly user: string;
     readonly valueLabel: string;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridFiltersStrings, never>;
@@ -365,16 +401,32 @@ export class DatagridFiltersStrings {
     static ɵprov: i0.ɵɵInjectableDeclaration<DatagridFiltersStrings>;
 }
 
+// @public
+export class DatagridFiltersUserService {
+    // (undocumented)
+    formatUser(user: string, _domain?: string): string;
+    // (undocumented)
+    getDomains(): Observable<string[]>;
+    // (undocumented)
+    searchUsers(searchTerm: string, domain: string): Observable<string[]>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridFiltersUserService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<DatagridFiltersUserService>;
+}
+
 // @public (undocumented)
 export class DateTimePropertyDefinition extends FilterablePropertyDefinition {
-    constructor(displayName: string, property: string, operators?: ComparisonOperator[]);
+    constructor(displayName: string, property: string, operators?: ComparisonOperator[], includeSeconds?: boolean);
     // (undocumented)
     getOperators(): ComparisonOperator[];
+    includeSeconds: boolean;
 }
 
 // @public (undocumented)
 export class EnumPropertyDefinition extends FilterablePropertyDefinition {
-    constructor(displayName: string, property: string, values: Map<string, string>, singleSelect?: boolean);
+    constructor(displayName: string, property: string, values: Map<string, string>, singleSelect?: boolean, searchable?: boolean, allowNotInOperator?: boolean);
+    searchable: boolean;
     singleSelect: boolean;
     values: Map<string, string>;
 }
@@ -448,6 +500,20 @@ export class PropertyPredicate {
 }
 
 // @public (undocumented)
+export enum PropertyType {
+    // (undocumented)
+    DateTime = 3,
+    // (undocumented)
+    Enum = 1,
+    // (undocumented)
+    Numeric = 2,
+    // (undocumented)
+    String = 0,
+    // (undocumented)
+    User = 4
+}
+
+// @public (undocumented)
 export class StringPropertyDefinition extends FilterablePropertyDefinition {
     constructor(displayName: string, property: string, operators?: ComparisonOperator[], singleCondition?: boolean, logicalOperator?: LogicalOperator);
     // (undocumented)
@@ -492,6 +558,11 @@ export enum Unit {
     MHZ = 7,
     // (undocumented)
     TB = 4
+}
+
+// @public (undocumented)
+export class UserPropertyDefinition extends FilterablePropertyDefinition {
+    constructor(displayName: string, property: string);
 }
 
 // (No @packageDocumentation comment for this package)

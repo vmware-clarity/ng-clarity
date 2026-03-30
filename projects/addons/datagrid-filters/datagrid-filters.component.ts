@@ -51,6 +51,11 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
   @Input() filterableProperties: FilterablePropertyDefinition[];
 
   /**
+   * Array of pre-selected filters
+   */
+  @Input() presetFilters: PropertyFilter[];
+
+  /**
    * Event emitter to tell hosting view that search term, used for filtering
    * has changed.
    */
