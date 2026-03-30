@@ -1,0 +1,68 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<button class="btn btn-primary" (click)="parentWizard.open()">Wizard with Nested Wizard</button>
+
+<clr-wizard
+  #parentWizard
+  [(clrWizardOpen)]="_open"
+  clrWizardStepnavLayout="horizontal"
+  [clrWizardHideFooter]="parentWizard.currentPage?.id == parentWizard.pages?.first?.id"
+>
+  <clr-wizard-title>Outer Wizard</clr-wizard-title>
+
+  <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+  <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+  <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+  <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+
+  <clr-wizard-page [clrWizardPageNextDisabled]="!nestedWizardComplete">
+    <clr-wizard
+      [clrWizardInPage]="true"
+      [clrWizardInPageFillContentArea]="true"
+      [clrWizardClosable]="false"
+      (clrWizardOnFinish)="onNestedWizardFinish()"
+    >
+      <clr-wizard-title>Nested Wizard</clr-wizard-title>
+
+      <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+      <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+      <clr-wizard-button [type]="'finish'">Continue</clr-wizard-button>
+
+      <clr-wizard-page>
+        <ng-template clrPageTitle>Nested Step 1</ng-template>
+        <p>Content for nested step 1.</p>
+      </clr-wizard-page>
+
+      <clr-wizard-page>
+        <ng-template clrPageTitle>Nested Step 2</ng-template>
+        <p>Content for nested step 2.</p>
+      </clr-wizard-page>
+
+      <clr-wizard-page>
+        <ng-template clrPageTitle>Nested Step 3</ng-template>
+        <p>Content for nested step 3.</p>
+      </clr-wizard-page>
+    </clr-wizard>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Review</ng-template>
+    <p>Review the data from the nested wizard.</p>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Summary</ng-template>
+    <p>All done.</p>
+  </clr-wizard-page>
+</clr-wizard>
+
+<app-stackblitz-example
+  name="Wizard with Nested Wizard"
+  [componentTemplate]="html"
+  [componentClass]="code"
+></app-stackblitz-example>

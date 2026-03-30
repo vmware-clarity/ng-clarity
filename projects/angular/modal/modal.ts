@@ -131,7 +131,6 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   backdropClick(): void {
     if (this.staticBackdrop) {
-      this.title.nativeElement.focus();
       return;
     }
 

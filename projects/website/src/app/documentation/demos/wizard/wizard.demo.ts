@@ -23,8 +23,11 @@ import { WizardDesignSizeDemo } from './wizard-design-size.demo';
 import { WizardDesignDemo } from './wizard-design.demo';
 import { WizardForceForwardDemo } from './wizard-force-forward.demo';
 import { WizardFormValidation } from './wizard-form-validation.demo';
+import { WizardHorizontalDemo } from './wizard-horizontal.demo';
 import { WizardJumpToDemo } from './wizard-jump-to.demo';
 import { WizardNestedDirectiveDemo } from './wizard-nested-directives.demo';
+import { WizardNestedStepperDemo } from './wizard-nested-stepper.demo';
+import { WizardNestedWizardDemo } from './wizard-nested-wizard.demo';
 import { WizardNoCancel } from './wizard-no-cancel.demo';
 import { WizardNotClosable } from './wizard-not-closable.demo';
 import { WizardResetDemo } from './wizard-reset.demo';
@@ -111,6 +114,9 @@ const WIZARD_PAGE_EXAMPLE_TEMPLATE = `
     WizardNoCancel,
     WizardAltNextDemo,
     WizardNotClosable,
+    WizardHorizontalDemo,
+    WizardNestedWizardDemo,
+    WizardNestedStepperDemo,
     CodeSnippetComponent,
     StyleDocsComponent,
   ],

@@ -23,15 +23,17 @@ import {
   QueryList,
   ViewChild,
 } from '@angular/core';
-import { ClrModal } from '@clr/angular/modal';
 import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+import { ClrWizardFooterAlign, footerAlignAttribute } from './interfaces/wizard-footer-align';
+import { ClrWizardStepnavLayout, stepnavLayoutAttribute } from './interfaces/wizard-stepnav-layout';
 import { ButtonHubService } from './providers/button-hub.service';
 import { HeaderActionService } from './providers/header-actions.service';
 import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
+import { ClrWizardButton } from './wizard-button';
 import { ClrWizardHeaderAction } from './wizard-header-action';
 import { ClrWizardPage } from './wizard-page';
 import { ClrWizardTitle } from './wizard-title';
@@ -47,6 +49,7 @@ import { ClrWizardTitle } from './wizard-title';
     '[class.wizard-xl]': "size == 'xl'",
     '[class.wizard-in-page]': 'inPage',
     '[class.wizard-in-page--fill-content-area]': 'inPage && inPageFillContentArea',
+    '[class.wizard-horizontal]': 'stepnavLayout === ClrWizardStepnavLayout.HORIZONTAL',
   },
   standalone: false,
 })
@@ -55,6 +58,12 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * Set the aria-label for the stepnav section of the wizard. Set using `[clrWizardStepnavAriaLabel]` input.
    */
   @Input('clrWizardStepnavAriaLabel') stepnavAriaLabel = this.commonStrings.keys.wizardStepnavAriaLabel;
+
+  /**
+   * Set the wizard stepnav layout to 'vertical' (default) or 'horizontal'. Set using `[clrWizardStepnavLayout]` input.
+   */
+  @Input({ alias: 'clrWizardStepnavLayout', transform: stepnavLayoutAttribute }) stepnavLayout =
+    ClrWizardStepnavLayout.VERTICAL;
 
   /**
    * Set the modal size of the wizard. Set using `[clrWizardSize]` input.
@@ -71,6 +80,21 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * If you can't use this option, you will likely need to provide custom CSS to set the wizard's height and margins.
    */
   @Input('clrWizardInPageFillContentArea') inPageFillContentArea = false;
+
+  /**
+   * Hide the wizard footer entirely. Set using `[clrWizardHideFooter]` input.
+   * Useful when a nested wizard or stepper handles its own navigation.
+   */
+  @Input('clrWizardHideFooter') hideFooter = false;
+
+  /**
+   * Align the footer buttons to 'start' (left) or 'end' (right).
+   * By default, modal wizards align to 'end' and in-page wizards align to 'start'.
+   * Nested wizards inherit the default unless this input is explicitly set.
+   * Set using `[clrWizardFooterAlign]` input.
+   */
+  @Input({ alias: 'clrWizardFooterAlign', transform: footerAlignAttribute }) _footerAlign: ClrWizardFooterAlign | null =
+    null;
 
   /**
    * Tells the modal part of the wizard whether it should have a close "X"
@@ -130,16 +154,19 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   @Output('clrWizardOnPrevious') onMovePrevious = new EventEmitter<any>(false);
 
   @ViewChild('pageTitle') pageTitle: ElementRef<HTMLElement>;
-  @ContentChildren(ClrWizardPage, { descendants: true }) pages: QueryList<ClrWizardPage>;
+  @ContentChildren(ClrWizardPage) pages: QueryList<ClrWizardPage>;
+  @ContentChildren(ClrWizardButton, { descendants: false }) wizardButtons: QueryList<ClrWizardButton>;
   @ContentChildren(ClrWizardHeaderAction) headerActions: QueryList<ClrWizardHeaderAction>;
 
   _open = false;
   wizardId = uniqueIdFactory();
 
   @ContentChild(ClrWizardTitle) protected wizardTitle: ClrWizardTitle;
+  protected ClrWizardFooterAlign = ClrWizardFooterAlign;
+  protected ClrWizardStepnavLayout = ClrWizardStepnavLayout;
+
   @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
 
-  private _title: ElementRef<HTMLElement>;
   private _forceForward = false;
   private _stopNext = false;
   private _stopCancel = false;
@@ -147,8 +174,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   private _disableStepnav = false;
   private differ: any; // for marking when the collection of wizard pages has been added to or deleted from
   private subscriptions: Subscription[] = [];
-
-  @ViewChild(ClrModal) private readonly modal: ClrModal;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -169,16 +194,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     );
 
     this.differ = differs.find([]).create(null);
-  }
-
-  @ViewChild('title')
-  get title(): ElementRef<HTMLElement> {
-    return this._title;
-  }
-  set title(title: ElementRef<HTMLElement>) {
-    this._title = title;
-
-    this.modal.title = title;
   }
 
   /**
@@ -290,11 +305,30 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     return this.elementRef.nativeElement.classList.contains('clr-wizard--inline');
   }
 
+  get showHeader(): boolean {
+    return (
+      !!this.navService.currentPage?.pageTitle ||
+      (this.stepnavLayout === ClrWizardStepnavLayout.VERTICAL && this.headerActionService.displayHeaderActionsWrapper)
+    );
+  }
+
+  get showFooter(): boolean {
+    return !this.hideFooter && (this.navService.currentPage?.hasButtons || this.wizardButtons?.length > 0);
+  }
+
+  get footerAlign(): ClrWizardFooterAlign {
+    if (this._footerAlign !== null) {
+      return this._footerAlign;
+    }
+    return this.inPage ? ClrWizardFooterAlign.START : ClrWizardFooterAlign.END;
+  }
+
   get stopModalAnimations(): boolean {
     return this._stopModalAnimations;
   }
 
   ngAfterContentInit(): void {
+    this.navService.stepnavLayout = this.stepnavLayout;
     this.pageCollection.pages = this.pages;
     this.headerActionService.wizardHeaderActions = this.headerActions;
 
