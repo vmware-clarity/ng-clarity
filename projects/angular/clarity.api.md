@@ -1697,8 +1697,6 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     unselect(item: T): void;
     // (undocumented)
-    get visibleLimit(): number;
-    // (undocumented)
     wrapper: ElementRef;
     // (undocumented)
     writeValue(value: T | T[]): void;
