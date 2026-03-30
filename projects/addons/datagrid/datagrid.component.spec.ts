@@ -1908,7 +1908,6 @@ class StatusComparator implements ClrDatagridComparatorInterface<any> {
       <span>Test</span>
     </ng-template>
   `,
-  standalone: true,
 })
 class DatagridHostComponent {
   @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent: DatagridComponent<unknown>;
