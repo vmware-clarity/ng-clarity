@@ -102,12 +102,18 @@ export class EnumPropertyDefinition extends FilterablePropertyDefinition {
   searchable = false;
 
   /**
+   * Flag indicating whether to show the select all checkbox.
+   */
+  enableSelectAll = true;
+
+  /**
    * Creates an instance of EnumPropertyDefinition.
    * @param displayName - The human-readable name of the property shown in the UI.
    * @param property - The technical property name used for filtering logic.
    * @param values - A Map containing the enum keys and their corresponding display values.
    * @param singleSelect - Whether the filter restricts selection to a single item. Defaults to false.
    * @param searchable - Whether to enable a search input for the enum options. Defaults to false.
+   * @param enableSelectAll - Whether to display the select all checkbox. Defaults to true.
    * @param allowNotInOperator - Flag indicating whether to allow the use of the "NOT IN" operator
    *        for the selected values, enabling users to exclude specific enum items.
    */
@@ -117,6 +123,7 @@ export class EnumPropertyDefinition extends FilterablePropertyDefinition {
     values: Map<string, string>,
     singleSelect = false,
     searchable = false,
+    enableSelectAll = true,
     allowNotInOperator = false
   ) {
     super(
@@ -127,6 +134,7 @@ export class EnumPropertyDefinition extends FilterablePropertyDefinition {
     this.values = values;
     this.singleSelect = singleSelect;
     this.searchable = searchable;
+    this.enableSelectAll = enableSelectAll;
   }
 }
 
@@ -180,9 +188,8 @@ export class NumericPropertyDefinition extends FilterablePropertyDefinition {
 }
 
 export class UserPropertyDefinition extends FilterablePropertyDefinition {
-  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor(displayName: string, property: string) {
-    super(displayName, property);
+    super(displayName, property, [ComparisonOperator.Equals, ComparisonOperator.DoesNotEqual]);
   }
 }
 

@@ -58,7 +58,7 @@
 
     <div cds-layout="m-t:xs">
       <clr-checkbox-container class="enum-options" *ngIf="!filterProperty.singleSelect">
-        <clr-checkbox-wrapper cds-layout="m-b:xs">
+        <clr-checkbox-wrapper *ngIf="filterProperty.enableSelectAll" cds-layout="m-b:xs">
           <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />
           <label>
             {{ enumFilterForm.get('searchTerm')?.value ? filterStrings.allSearchResults : filterStrings.selectAll }}

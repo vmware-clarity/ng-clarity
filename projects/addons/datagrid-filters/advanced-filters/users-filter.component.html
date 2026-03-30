@@ -17,7 +17,7 @@
         {{ filterStrings.operatorLabel }}
       </label>
       <select clrSelect formControlName="userOperator">
-        <option *ngFor="let operator of userOperators" [ngValue]="operator">
+        <option *ngFor="let operator of filterProperty.supportedOperators" [ngValue]="operator">
           {{ filterStrings.getOperatorDisplayName(operator) }}
         </option>
       </select>

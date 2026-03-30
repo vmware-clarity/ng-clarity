@@ -49,7 +49,6 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() propertyFilter: PropertyFilter;
   @Output() filterCriteriaChange: EventEmitter<PropertyFilter> = new EventEmitter<PropertyFilter>();
 
-  userOperators = [ComparisonOperator.Equals, ComparisonOperator.DoesNotEqual];
   usersSelectionForm: FormGroup;
   isLoading = false;
   domains: string[] = [''];
@@ -179,11 +178,6 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.cdr.markForCheck();
   }
 
-  formatUser(user: string): string {
-    const domain = this.usersSelectionForm.get('domain')?.value;
-    return this.userService.formatUser(user, domain);
-  }
-
   onCancelButtonClick() {
     this.filterCriteriaChange.emit();
   }
@@ -212,7 +206,7 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
           this.fetchUsers(term).pipe(catchError((error: any) => this.handleError(error, ErrorType.USER_SEARCH)))
         ),
         tap((results: string[]) => {
-          this.allFetchedUsers = results.map(u => this.formatUser(u));
+          this.allFetchedUsers = results;
           this.resetPagination();
           this.rebuildCheckboxList();
           this.hideLoading();
