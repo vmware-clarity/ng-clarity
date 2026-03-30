@@ -258,6 +258,7 @@ describe('DatagridColumnsOrderDirective', () => {
 
 @Component({
   selector: 'clr-datagrid-host-component',
+  standalone: true,
   imports: [ClrDatagridModule, CommonModule, DatagridColumnsOrderModule, DragDropModule],
   template: `
     <clr-datagrid

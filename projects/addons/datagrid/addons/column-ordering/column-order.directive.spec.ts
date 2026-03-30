@@ -192,6 +192,7 @@ describe('ColumnOrderDirective', () => {
 
 @Directive({
   selector: 'clr-datagrid[testDirectives]',
+  standalone: true,
 })
 class TestDirective {
   @ContentChildren(ColumnOrderDirective) columnOrderDirectives: QueryList<ColumnOrderDirective>;
@@ -203,6 +204,7 @@ class TestDirective {
 
 @Component({
   selector: 'clr-datagrid-host-component',
+  standalone: true,
   imports: [ClrDatagridModule, CommonModule, DatagridColumnsOrderModule, DragDropModule, TestDirective],
   template: `
     <clr-datagrid cdkDropList appfxDgColumnsOrder [dgColumnsOrderColumns]="columns" testDirectives>

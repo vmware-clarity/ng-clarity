@@ -218,6 +218,7 @@ describe('datagridPage directive', () => {
 
 @Component({
   selector: 'appfx-datagrid-client-side-host-component',
+  standalone: true,
   imports: [AppfxDatagridModule, DatagridColumnsOrderModule, DragDropModule, FormsModule, OverlayModule],
   template: `
     <appfx-datagrid
@@ -249,6 +250,7 @@ class DatagridForClientSideGridHostComponent {
 
 @Component({
   selector: 'appfx-datagrid-server-side-host-component',
+  standalone: true,
   imports: [AppfxDatagridModule, DatagridColumnsOrderModule, DragDropModule, FormsModule, OverlayModule],
   template: `
     <appfx-datagrid

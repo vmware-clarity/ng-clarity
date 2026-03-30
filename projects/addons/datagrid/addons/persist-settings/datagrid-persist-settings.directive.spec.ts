@@ -337,6 +337,7 @@ describe('DatagridPersistSettingsDirective', () => {
 
 @Component({
   selector: 'appfx-datagrid-host-component',
+  standalone: true,
   imports: [AppfxDatagridModule, DragDropModule, FormsModule, OverlayModule],
   template: `
     <appfx-datagrid

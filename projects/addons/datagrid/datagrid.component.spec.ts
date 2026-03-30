@@ -1863,6 +1863,7 @@ class StatusComparator implements ClrDatagridComparatorInterface<any> {
 
 @Component({
   selector: 'appfx-datagrid-host-component',
+  standalone: true,
   imports: [AppfxDatagridModule, CdkA11yModule, DatagridColumnsOrderModule, DragDropModule, FormsModule, OverlayModule],
   template: `
     <appfx-datagrid
