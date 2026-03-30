@@ -87,13 +87,16 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Inject, Injectable, OnInit, Output } from '@angular/core';
 
 import {
+  ComparisonOperator,
   DatagridFiltersUserService,
   DateTimePropertyDefinition,
   EnumPropertyDefinition,
   FilterablePropertyDefinition,
   FilterMode,
+  LogicalOperator,
   NumericPropertyDefinition,
   PropertyFilter,
+  PropertyPredicate,
   StringPropertyDefinition,
   Unit,
   UserPropertyDefinition,
@@ -129,6 +132,7 @@ export class DatagridFiltersDemoComponent implements OnInit {
   @Output()
   public advancedFilterChange: EventEmitter<PropertyFilter[]> = new EventEmitter<PropertyFilter[]>();
 
+  public presetFilters: PropertyFilter[];
   public filterMode: FilterMode = FilterMode.Advanced;
   public filterableProperties: FilterablePropertyDefinition[] = [];
 
@@ -173,6 +177,16 @@ export class DatagridFiltersDemoComponent implements OnInit {
       true, // enableSelectAll
       true // allowNotInOperator
     );
+
+    const preSelectedFilter = new PropertyFilter();
+    preSelectedFilter.operator = LogicalOperator.And;
+    const predicate = new PropertyPredicate();
+    predicate.filterableProperty = categoryEnumProp;
+    predicate.operator = ComparisonOperator.DoesNotEqual;
+    predicate.value = [...categoryValues.keys()][0];
+    preSelectedFilter.criteria = [predicate];
+
+    this.presetFilters = [preSelectedFilter];
 
     // User filter — requires DatagridFiltersUserService
     const userProp = new UserPropertyDefinition('User', 'user');

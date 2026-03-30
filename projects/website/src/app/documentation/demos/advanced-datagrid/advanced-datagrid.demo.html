@@ -1286,6 +1286,12 @@ class DemoTextRendererComponent implements ColumnRenderer&lt;unknown&gt;, OnInit
           </td>
         </tr>
         <tr>
+          <td><code cds-text="code">presetFilters</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">PropertyFilter[]</code></td>
+          <td>Array of pre-selected filters.</td>
+        </tr>
+        <tr>
           <td><code cds-text="code">searchTermChange</code></td>
           <td>Output</td>
           <td><code cds-text="code">EventEmitter&lt;string&gt;</code></td>
@@ -1398,17 +1404,20 @@ class DemoTextRendererComponent implements ColumnRenderer&lt;unknown&gt;, OnInit
           </td>
         </tr>
         <tr>
-          <td><code cds-text="code">showSearch</code></td>
+          <td><code cds-text="code">enableSelectAll</code></td>
           <td><code cds-text="code">boolean</code></td>
           <td>
-            Optional. Shows the search input field within the filter popover. Default:
-            <code cds-text="code">false</code>.
+            Optional. Shows a "Select All" checkbox in the enum filter. Default:
+            <code cds-text="code">true</code>.
           </td>
         </tr>
         <tr>
-          <td><code cds-text="code">showSelectAll</code></td>
+          <td><code cds-text="code">allowNotInOperator</code></td>
           <td><code cds-text="code">boolean</code></td>
-          <td>Optional. Shows a "Select All" toggle option. Default: <code cds-text="code">false</code>.</td>
+          <td>
+            Optional. Enables the "Does Not Equal" operator for enum filters. Default:
+            <code cds-text="code">false</code>.
+          </td>
         </tr>
       </tbody>
     </table>
