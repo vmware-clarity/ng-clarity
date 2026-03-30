@@ -204,6 +204,14 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
       display: flex;
       flex-flow: row nowrap;
       gap: density.$clr-base-gap-l;
+
+      &.align-start {
+        justify-content: flex-start;
+      }
+
+      &.align-end {
+        justify-content: flex-end;
+      }
     }
 
     .clr-wizard-btn-wrapper {
@@ -234,20 +242,6 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
       left: calc(50% + #{mixins.baselinePx(115)});
       position: absolute;
       top: 40%;
-    }
-
-    &.wizard-footer {
-      &-align-start {
-        .clr-wizard-footer-buttons-wrapper {
-          justify-content: flex-start;
-        }
-      }
-
-      &-align-end {
-        .clr-wizard-footer-buttons-wrapper {
-          justify-content: flex-end;
-        }
-      }
     }
   }
 

@@ -50,8 +50,6 @@ import { ClrWizardTitle } from './wizard-title';
     '[class.wizard-in-page]': 'inPage',
     '[class.wizard-in-page--fill-content-area]': 'inPage && inPageFillContentArea',
     '[class.wizard-horizontal]': 'stepnavLayout === ClrWizardStepnavLayout.HORIZONTAL',
-    '[class.wizard-footer-align-start]': 'footerAlign === ClrWizardFooterAlign.START',
-    '[class.wizard-footer-align-end]': 'footerAlign === ClrWizardFooterAlign.END',
   },
   standalone: false,
 })

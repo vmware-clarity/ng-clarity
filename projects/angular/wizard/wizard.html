@@ -52,7 +52,10 @@
       @if (showFooter) {
       <div class="clr-wizard-footer">
         <div class="clr-wizard-footer-buttons">
-          <div class="clr-wizard-footer-buttons-wrapper">
+          <div
+            class="clr-wizard-footer-buttons-wrapper"
+            [ngClass]="{'align-start': footerAlign === ClrWizardFooterAlign.START, 'align-end': footerAlign === ClrWizardFooterAlign.END}"
+          >
             @if (navService.currentPage?.hasButtons) {
             <ng-template [ngTemplateOutlet]="navService.currentPage.buttons"></ng-template>
             } @else {
