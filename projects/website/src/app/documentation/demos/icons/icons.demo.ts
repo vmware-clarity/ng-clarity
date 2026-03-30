@@ -204,12 +204,12 @@ const CUSTOM_ALIASES_TEMPLATE = `
 
 const CUSTOM_ALIASES_CLASS = `
 import { Component } from '@angular/core';
-import { ClarityIcons, ClrIconModule, homeIcon, userIcon } from '@clr/angular';
+import { ClarityIcons, ClrIcon, homeIcon, userIcon } from '@clr/angular';
 
 @Component({
   selector: 'app-example',
   templateUrl: './example.component.html',
-  imports: [ClrIconModule],
+  imports: [ClrIcon],
 })
 export class ExampleComponent {
   constructor() {
