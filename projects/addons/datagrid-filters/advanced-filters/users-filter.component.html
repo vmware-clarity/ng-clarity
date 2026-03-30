@@ -61,9 +61,7 @@
         <clr-checkbox-wrapper *ngIf="visibleUsers.length > 0" cds-layout="m-b:xs">
           <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />
           <label>
-            {{
-              usersSelectionForm.get('searchTerm')?.value ? filterStrings.allSearchResults : filterStrings.selectAll
-            }}
+            {{ usersSelectionForm.get('searchTerm')?.value ? filterStrings.allSearchResults : filterStrings.selectAll }}
           </label>
         </clr-checkbox-wrapper>
 
