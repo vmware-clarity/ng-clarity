@@ -405,10 +405,6 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
   // Sizing — all selectors use either direct child or the full modal path
   // to avoid leaking into nested wizard instances.
   .clr-wizard {
-    > clr-modal > .modal > .modal-dialog {
-      height: 75vh;
-    }
-
     &.wizard-md {
       > clr-modal > .modal > .modal-dialog {
         min-height: wizard-variables.$clr-wizard-all-dialog-min-height;
