@@ -182,7 +182,7 @@ const NestedWizardTemplate: StoryFn = args => ({
         >
           <clr-wizard-title>Nested Wizard</clr-wizard-title>
 
-          <clr-wizard-button type="previous">Back</clr-wizard-button>
+          <clr-wizard-button type="previous">Previous</clr-wizard-button>
           <clr-wizard-button type="next">Next</clr-wizard-button>
           <clr-wizard-button type="finish">Continue</clr-wizard-button>
           <clr-wizard-page>
