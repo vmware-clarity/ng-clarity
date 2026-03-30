@@ -129,7 +129,7 @@ describe('UsersFilterComponent', () => {
       // Verify it emits both the original and the newly added predicate
       expect(emittedFilter?.criteria.length).toBe(2);
       expect(emittedFilter?.criteria[0].value).toBe('existing_user@broadcom.com');
-      expect(emittedFilter?.criteria[1].value).toBe('bob@broadcom.com');
+      expect(emittedFilter?.criteria[1].value).toBe('bob');
       expect(emittedFilter?.operator).toBe(LogicalOperator.Or);
       expect(emittedFilter?.criteria[0].operator).toBe(ComparisonOperator.Equals);
       expect(emittedFilter?.criteria[1].operator).toBe(ComparisonOperator.Equals);
@@ -175,7 +175,7 @@ describe('UsersFilterComponent', () => {
       expect(emittedFilter?.criteria[0].operator).toBe(ComparisonOperator.DoesNotEqual);
       expect(emittedFilter?.criteria[1].value).toBe('user2@broadcom.com');
       expect(emittedFilter?.criteria[1].operator).toBe(ComparisonOperator.DoesNotEqual);
-      expect(emittedFilter?.criteria[2].value).toBe('alice@broadcom.com');
+      expect(emittedFilter?.criteria[2].value).toBe('alice');
       expect(emittedFilter?.criteria[2].operator).toBe(ComparisonOperator.DoesNotEqual);
     });
 
@@ -210,7 +210,7 @@ describe('UsersFilterComponent', () => {
       tick(200); // Wait for debounce
 
       expect(userServiceMock.searchUsers).toHaveBeenCalledWith(searchTerm, broadcomDomain);
-      expect(component.allFetchedUsers).toEqual([alice, 'bob@broadcom.com', 'charlie@broadcom.com']);
+      expect(component.allFetchedUsers).toEqual(['alice', 'bob', 'charlie']);
       expect(component.visibleUsers.length).toBe(4); // incldue al
     }));
 
@@ -223,8 +223,8 @@ describe('UsersFilterComponent', () => {
 
       expect(component.errorSearchingUsers).toBe(datagridFiltersStrings.errorSearchingUsers);
       // The catchError logic returns of([searchTerm]) if searchTerm exists
-      expect(component.allFetchedUsers).toEqual([component.formatUser(searchTerm)]);
-      expect(component.visibleUsers).toContain(component.formatUser(searchTerm));
+      expect(component.allFetchedUsers).toEqual([searchTerm]);
+      expect(component.visibleUsers).toContain(searchTerm);
     }));
 
     it('should clear search term when clearSearch is called', () => {
@@ -258,12 +258,12 @@ describe('UsersFilterComponent', () => {
       checkboxCtrl.setValue(true);
       component.onOptionChange(index);
 
-      expect(component.selectedValues.has(alice)).toBeTrue();
+      expect(component.selectedValues.has('alice')).toBeTrue();
     });
 
     it('should remove user from selectedValues when unchecked', () => {
       // First select
-      component.selectedValues.add(alice);
+      component.selectedValues.add('alice');
       component.usersSelectionForm.get('searchTerm')?.setValue('');
 
       const index = 0;
@@ -273,7 +273,7 @@ describe('UsersFilterComponent', () => {
       checkboxCtrl.setValue(false);
       component.onOptionChange(index);
 
-      expect(component.selectedValues.has(alice)).toBeFalse();
+      expect(component.selectedValues.has('alice')).toBeFalse();
     });
 
     it('should handle Select All toggling', () => {
@@ -354,7 +354,7 @@ describe('UsersFilterComponent', () => {
       component.usersSelectionForm.get('searchTerm')?.setValue(term);
       tick(200);
 
-      const occurrences = component.visibleUsers.filter(u => u === alice).length;
+      const occurrences = component.visibleUsers.filter(u => u === 'alice').length;
       expect(occurrences).toBe(1);
     }));
   });
@@ -401,18 +401,6 @@ describe('UsersFilterComponent', () => {
       expect(component.errorRetrievingDomains).toBe(datagridFiltersStrings.errorLoadingDomains);
       expect(component.isLoading).toBeFalse();
     }));
-  });
-
-  describe('Formatting', () => {
-    it('should append domain if user does not have @', () => {
-      component.usersSelectionForm.get('domain')?.setValue('test.com');
-      expect(component.formatUser('john')).toBe('john@test.com');
-    });
-
-    it('should NOT append domain if user already has @', () => {
-      component.usersSelectionForm.get('domain')?.setValue('test.com');
-      expect(component.formatUser('john@other.com')).toBe('john@other.com');
-    });
   });
 
   describe('Coverage: Edge Cases & Missing Branches', () => {

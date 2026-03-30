@@ -169,9 +169,9 @@ export class DatagridFiltersDemoComponent implements OnInit {
       'category',
       categoryValues,
       false, // multi-select
-      true,  // searchable
-      true,  // show search
-      true   // show select all
+      true, // searchable
+      true, // enableSelectAll
+      true // allowNotInOperator
     );
 
     // User filter — requires DatagridFiltersUserService
