@@ -9,59 +9,53 @@ import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
+import * as _angular_animations from '@angular/animations';
 import { AnimationBuilder } from '@angular/animations';
 import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
 import { AnimationMetadata } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDrag } from '@angular/cdk/drag-drop';
-import { CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
-import { CdkVirtualForOf } from '@angular/cdk/scrolling';
-import { CdkVirtualForOfContext } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';
-import { ComponentFactoryResolver } from '@angular/core';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ControlValueAccessor } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Directionality } from '@angular/cdk/bidi';
 import { DoCheck } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { DragDrop } from '@angular/cdk/drag-drop';
 import { DragDropConfig } from '@angular/cdk/drag-drop';
 import { ElementRef } from '@angular/core';
-import { EmbeddedViewRef } from '@angular/core';
-import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { FactoryProvider } from '@angular/core';
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormArray } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
-import { FormGroupDirective } from '@angular/forms';
-import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i12 from '@angular/common';
-import * as i13_2 from '@angular/forms';
-import * as i6_10 from '@angular/router';
+import * as i12 from '@angular/cdk/a11y';
+import * as i17 from '@angular/common';
+import * as i18 from '@angular/forms';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
-import { ListRange } from '@angular/cdk/collections';
 import { NgControl } from '@angular/forms';
-import { NgForm } from '@angular/forms';
 import { NgForOfContext } from '@angular/common';
-import { NgModelGroup } from '@angular/forms';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Observer } from 'rxjs';
 import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
+import { Overlay } from '@angular/cdk/overlay';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { RendererFactory2 } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
-import { RouterLinkActive } from '@angular/router';
-import { ScrollDispatcher } from '@angular/cdk/scrolling';
+import * as rxjs from 'rxjs';
+import { SafeHtml } from '@angular/platform-browser';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
-import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Subscription } from 'rxjs';
@@ -71,7 +65,6 @@ import { Type } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { Validator } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
-import { ViewportRuler } from '@angular/cdk/scrolling';
 
 // @public (undocumented)
 class AppfxDatagridFiltersModule {
@@ -80,20 +73,21 @@ class AppfxDatagridFiltersModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<AppfxDatagridFiltersModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<AppfxDatagridFiltersModule>;
-    // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i3" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i5" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i6" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i7" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i8" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i9" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i10" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DateTimeFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DismissableDirective" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "EnumFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "FilterPopoverRepositionDirective" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "GeneralFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ManageFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "SkipFiltersPipe" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "UsersFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i13" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i16" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof i1.CompositeFiltersComponent, typeof i2.DataGridFiltersComponent, typeof i3.DateTimeFilterComponent, typeof i4.DismissableDirective, typeof i5.EnumFilterComponent, typeof i6.FilterFormComponent, typeof i7.FilterPopoverRepositionDirective, typeof i8.GeneralFilterComponent, typeof i9.ManageFilterComponent, typeof i10.SkipFiltersPipe], [typeof i11.ClrCheckboxModule, typeof i11.ClrIconModule, typeof i11.ClrInputModule, typeof i11.ClrRadioModule, typeof i11.ClrSelectModule, typeof i11.ClrSignpostModule, typeof i12.CommonModule, typeof i13_2.FormsModule, typeof i13_2.ReactiveFormsModule], [typeof i1.CompositeFiltersComponent, typeof i2.DataGridFiltersComponent, typeof i6.FilterFormComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof DismissableDirective, typeof EnumFilterComponent, typeof FilterFormComponent, typeof FilterPopoverRepositionDirective, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof SkipFiltersPipe, typeof UsersFilterComponent], [typeof i12.A11yModule, typeof i13.ClrCheckboxModule, typeof i14.ClrIcon, typeof i13.ClrInputModule, typeof i13.ClrRadioModule, typeof i13.ClrSelectModule, typeof i15.ClrSignpostModule, typeof i16.ClrSpinnerModule, typeof i17.CommonModule, typeof i18.FormsModule, typeof i18.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
 }
 export { AppfxDatagridFiltersModule }
 export { AppfxDatagridFiltersModule as DatagridFiltersModule }
@@ -193,12 +187,14 @@ export class CompositeFiltersComponent implements OnInit {
     signPostOpened: boolean;
     // (undocumented)
     stringProperty: StringPropertyDefinition;
-    // Warning: (ae-forgotten-export) The symbol "PropertyType" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     readonly stringPropertyType: PropertyType;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": "filterableProperties"; }, { "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    userProperty: UserPropertyDefinition;
+    // (undocumented)
+    readonly userPropertyType: PropertyType;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; }, { "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CompositeFiltersComponent, never>;
 }
@@ -238,7 +234,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     // (undocumented)
     selectedFilterMode: FilterMode;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": "filterableProperties"; "filterMode": "filterMode"; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DataGridFiltersComponent, never>;
 }
@@ -250,6 +246,8 @@ export class DatagridFiltersStrings {
     readonly addNewAriaLabel: string;
     readonly addTimeFilter: string;
     readonly advancedFilter: string;
+    // (undocumented)
+    readonly allSearchResults: string;
     readonly appliedText: string;
     readonly apply: string;
     readonly cancel: string;
@@ -260,20 +258,33 @@ export class DatagridFiltersStrings {
     readonly dateFormat: string;
     readonly dateValidatorMessage: string;
     // (undocumented)
+    readonly domain: string;
+    // (undocumented)
     readonly editFilterText: string;
+    // (undocumented)
+    readonly elementsSelectedFormat: string;
+    // (undocumented)
+    readonly emptyUsersError: string;
     readonly enterValue: string;
+    // (undocumented)
+    readonly errorLoadingDomains: string;
+    // (undocumented)
+    readonly errorSearchingUsers: string;
     readonly filterLabel: string;
     // (undocumented)
     readonly filtersText: string;
     // (undocumented)
     readonly filterText: string;
+    readonly filterType: string;
+    // (undocumented)
+    formatString(stringFormat: string, args: string[]): string;
     // (undocumented)
     readonly fromLabel: string;
     // (undocumented)
     getConjoinerDisplayName(conjoiner: LogicalOperator): string;
     // (undocumented)
     getOperatorDisplayName(operator: ComparisonOperator): string;
-    // Warning: (ae-forgotten-export) The symbol "TimeSpan" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "TimeSpan" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     //
     // (undocumented)
     getTimeSpanDisplayName(timeSpan: TimeSpan): string;
@@ -284,10 +295,16 @@ export class DatagridFiltersStrings {
     // (undocumented)
     readonly hideButtonLabel: string;
     readonly integerValidatorMessage: string;
+    // (undocumented)
+    readonly loading: string;
+    // (undocumented)
+    readonly loadMore: string;
     readonly logicalOperator: {
         and: string;
         or: string;
     };
+    // (undocumented)
+    readonly noValuesFound: string;
     readonly operator: {
         after: string;
         afterOrEqualTo: string;
@@ -318,9 +335,15 @@ export class DatagridFiltersStrings {
     readonly removeFilterText: string;
     readonly removeTimeFilterAriaLabel: string;
     readonly requiredValidatorMessage: string;
+    // (undocumented)
+    readonly searchOptions: string;
+    // (undocumented)
+    readonly searchPlaceholder: string;
     readonly selectAll: string;
     // (undocumented)
     readonly showButtonLabel: string;
+    // (undocumented)
+    readonly showingFormat: string;
     readonly timeFormat: string;
     // (undocumented)
     readonly timeSpan: {
@@ -358,6 +381,8 @@ export class DatagridFiltersStrings {
         gbitps: string;
     };
     readonly unitAriaLabel: string;
+    // (undocumented)
+    readonly user: string;
     readonly valueLabel: string;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridFiltersStrings, never>;
@@ -365,16 +390,31 @@ export class DatagridFiltersStrings {
     static ɵprov: i0.ɵɵInjectableDeclaration<DatagridFiltersStrings>;
 }
 
+// @public
+export class DatagridFiltersUserService {
+    // (undocumented)
+    getDomains(): Observable<string[]>;
+    // (undocumented)
+    searchUsers(searchTerm: string, domain: string): Observable<string[]>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridFiltersUserService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<DatagridFiltersUserService>;
+}
+
 // @public (undocumented)
 export class DateTimePropertyDefinition extends FilterablePropertyDefinition {
-    constructor(displayName: string, property: string, operators?: ComparisonOperator[]);
+    constructor(displayName: string, property: string, operators?: ComparisonOperator[], includeSeconds?: boolean);
     // (undocumented)
     getOperators(): ComparisonOperator[];
+    includeSeconds: boolean;
 }
 
 // @public (undocumented)
 export class EnumPropertyDefinition extends FilterablePropertyDefinition {
-    constructor(displayName: string, property: string, values: Map<string, string>, singleSelect?: boolean);
+    constructor(displayName: string, property: string, values: Map<string, string>, singleSelect?: boolean, searchable?: boolean, showKeyInParentheses?: boolean, allowNotInOperator?: boolean);
+    searchable: boolean;
+    showKeyInParentheses: boolean;
     singleSelect: boolean;
     values: Map<string, string>;
 }
@@ -401,7 +441,7 @@ export class FilterFormComponent {
     onCancelButtonClick(): void;
     valid: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<FilterFormComponent, "appfx-filter-form", never, { "valid": "valid"; }, { "cancel": "cancel"; "apply": "apply"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<FilterFormComponent, "appfx-filter-form", never, { "valid": { "alias": "valid"; "required": false; }; }, { "cancel": "cancel"; "apply": "apply"; }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<FilterFormComponent, never>;
 }
@@ -445,6 +485,20 @@ export class PropertyPredicate {
     filterableProperty: FilterablePropertyDefinition;
     operator: ComparisonOperator;
     value: any;
+}
+
+// @public (undocumented)
+export enum PropertyType {
+    // (undocumented)
+    DateTime = 3,
+    // (undocumented)
+    Enum = 1,
+    // (undocumented)
+    Numeric = 2,
+    // (undocumented)
+    String = 0,
+    // (undocumented)
+    User = 4
 }
 
 // @public (undocumented)
@@ -492,6 +546,11 @@ export enum Unit {
     MHZ = 7,
     // (undocumented)
     TB = 4
+}
+
+// @public (undocumented)
+export class UserPropertyDefinition extends FilterablePropertyDefinition {
+    constructor(displayName: string, property: string);
 }
 
 // (No @packageDocumentation comment for this package)

@@ -33,12 +33,9 @@ const unmericPatternRegex = '^-?[0-9]+$';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GeneralFilterComponent implements OnInit, OnChanges {
-  /**
-   * Property used for filtering
-   */
-  #filterProperty: StringPropertyDefinition | NumericPropertyDefinition;
   readonly logicalOperators: LogicalOperator[];
   readonly isEmptyOperator: ComparisonOperator = ComparisonOperator.IsEmpty;
+
   generalFilterForm: FormGroup;
   comparisonOperators: ComparisonOperator[];
   units: Unit[] = [];
@@ -62,6 +59,10 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   private selectedFilterCriteria: PropertyFilter = new PropertyFilter();
   private primaryPredicate: PropertyPredicate = new PropertyPredicate();
   private secondaryPredicate: PropertyPredicate = new PropertyPredicate();
+  /**
+   * Property used for filtering
+   */
+  #filterProperty: StringPropertyDefinition | NumericPropertyDefinition;
 
   constructor(private formBuilder: FormBuilder, public filterStrings: DatagridFiltersStrings) {
     this.logicalOperators = [LogicalOperator.And, LogicalOperator.Or];

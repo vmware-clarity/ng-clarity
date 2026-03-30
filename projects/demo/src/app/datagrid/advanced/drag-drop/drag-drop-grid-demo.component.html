@@ -1,16 +1,28 @@
-<div
-  cdkDropList
-  [cdkDropListData]="receivedItems"
-  (cdkDropListDropped)="drop($event)"
-  class="dropzone"
-  [cdkDropListConnectedTo]="dropGroup(dragConfig.dragGroup)"
->
-  <h4 *ngIf="receivedItems.length === 0">Drop VM items here</h4>
-  <div *ngFor="let item of receivedItems" cdkDrag class="draggable-item">
-    {{ item }}
+<div style="display: flex; gap: 20px; margin-bottom: 20px">
+  <div
+    cdkDropList
+    [cdkDropListData]="receivedItems"
+    (cdkDropListDropped)="drop($event)"
+    (cdkDropListEntered)="dropListEnter()"
+    class="dropzone"
+    [cdkDropListConnectedTo]="dropGroup(dragConfig.dragGroup)"
+  >
+    <h4 *ngIf="receivedItems.length === 0">Drop VM items here</h4>
+    <div *ngFor="let item of receivedItems" cdkDrag class="draggable-item">
+      {{ item }}
+    </div>
+  </div>
+  <div
+    cdkDropList
+    [cdkDropListData]="receivedItems"
+    (cdkDropListDropped)="dropInInvalidList()"
+    (cdkDropListEntered)="dropEnterInInvalidList()"
+    class="dropzone"
+    [cdkDropListConnectedTo]="dropGroup(dragConfig.dragGroup)"
+  >
+    <h4>Not valid drop container, drop VM item here</h4>
   </div>
 </div>
-
 <button class="btn btn-primary" (click)="receivedItems = []">Reset</button>
 
 <hr />

@@ -96,12 +96,48 @@ export class EnumPropertyDefinition extends FilterablePropertyDefinition {
    */
   singleSelect = false;
 
-  constructor(displayName: string, property: string, values: Map<string, string>, singleSelect?: boolean) {
-    super(displayName, property);
+  /**
+   * Indicates that the enumeration should be searchable in the filter UI.
+   */
+  searchable = false;
+
+  /**
+   * Flag indicating whether to show the key (after the value) of the enum
+   * in parentheses. This is useful when users want to search values by key
+   * where the key represents an identifier (e.g., eventTypeId) and the
+   * value is a human-readable description.
+   */
+  showKeyInParentheses = false;
+
+  /**
+   * Creates an instance of EnumPropertyDefinition.
+   * @param displayName - The human-readable name of the property shown in the UI.
+   * @param property - The technical property name used for filtering logic.
+   * @param values - A Map containing the enum keys and their corresponding display values.
+   * @param singleSelect - Whether the filter restricts selection to a single item. Defaults to false.
+   * @param searchable - Whether to enable a search input for the enum options. Defaults to false.
+   * @param showKeyInParentheses - Whether to display keys next to values in the UI. Defaults to false.
+   * @param allowNotInOperator - Flag indicating whether to allow the use of the "NOT IN" operator
+   *        for the selected values, enabling users to exclude specific enum items.
+   */
+  constructor(
+    displayName: string,
+    property: string,
+    values: Map<string, string>,
+    singleSelect = false,
+    searchable = false,
+    showKeyInParentheses = false,
+    allowNotInOperator = false
+  ) {
+    super(
+      displayName,
+      property,
+      allowNotInOperator ? [ComparisonOperator.Equals, ComparisonOperator.DoesNotEqual] : undefined
+    );
     this.values = values;
-    if (singleSelect) {
-      this.singleSelect = singleSelect;
-    }
+    this.singleSelect = singleSelect;
+    this.searchable = searchable;
+    this.showKeyInParentheses = showKeyInParentheses;
   }
 }
 
@@ -154,7 +190,19 @@ export class NumericPropertyDefinition extends FilterablePropertyDefinition {
   }
 }
 
+export class UserPropertyDefinition extends FilterablePropertyDefinition {
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+  constructor(displayName: string, property: string) {
+    super(displayName, property);
+  }
+}
+
 export class DateTimePropertyDefinition extends FilterablePropertyDefinition {
+  /**
+   * Flag indicating whether to include seconds in the time selector for the DateTime filter.
+   */
+  includeSeconds: boolean;
+
   private readonly defaultOperators: ComparisonOperator[] = [
     ComparisonOperator.Equals,
     ComparisonOperator.Before,
@@ -170,9 +218,9 @@ export class DateTimePropertyDefinition extends FilterablePropertyDefinition {
     ComparisonOperator.TimeSpan,
   ];
 
-  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
-  constructor(displayName: string, property: string, operators?: ComparisonOperator[]) {
+  constructor(displayName: string, property: string, operators?: ComparisonOperator[], includeSeconds?: boolean) {
     super(displayName, property, operators);
+    this.includeSeconds = includeSeconds ? includeSeconds : false;
   }
 
   getOperators(): ComparisonOperator[] {

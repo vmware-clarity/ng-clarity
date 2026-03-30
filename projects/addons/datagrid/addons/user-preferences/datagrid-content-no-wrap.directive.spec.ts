@@ -15,9 +15,13 @@ import { MockDatagridColumnToggleComponent } from '@clr/addons/testing';
 import { ClrDatagridModule } from '@clr/angular';
 import { of } from 'rxjs';
 
+import { appfxDatagridUserPreferencesToken } from './appfx-datagrid-user-preferences.token';
+import { DatagridContentNoWrapDirective } from './datagrid-content-no-wrap.directive';
+import { DatagridUserPreferencesService } from './datagrid-user-preferences.interfaces';
 import { DatagridComponent } from '../../datagrid.component';
 import { AppfxDatagridModule } from '../../datagrid.module';
 import { DatagridStrings } from '../../i18n/datagrid-strings.service';
+import { CsvHelperService } from '../export/csv-helper.service';
 import { ExportProviderService } from '../export/export-provider.service';
 import { appfxDatagridUserPreferencesToken } from './appfx-datagrid-user-preferences.token';
 import { DatagridContentNoWrapDirective } from './datagrid-content-no-wrap.directive';
@@ -34,7 +38,7 @@ describe('DatagridContentNoWrapDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrDatagridModule, FormsModule, NoopAnimationsModule, DragDropModule, OverlayModule],
-      declarations: [MockDatagridColumnToggleComponent],
+      declarations: [DatagridContentNoWrapDirective, MockDatagridColumnToggleComponent],
       providers: [
         {
           provide: appfxDatagridUserPreferencesToken,
@@ -44,6 +48,7 @@ describe('DatagridContentNoWrapDirective', () => {
           provide: DatagridStrings,
           useClass: DatagridStrings,
         },
+        CsvHelperService,
       ],
     }).overrideProvider(ExportProviderService, {
       useValue: {
@@ -83,7 +88,6 @@ describe('DatagridContentNoWrapDirective', () => {
   selector: 'appfx-datagrid-host-component',
   imports: [AppfxDatagridModule, DragDropModule, FormsModule, OverlayModule],
   template: `<appfx-datagrid></appfx-datagrid>`,
-  standalone: true,
 })
 class DatagridHostComponent {
   @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent: DatagridComponent<unknown>;

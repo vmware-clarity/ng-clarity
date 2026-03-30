@@ -192,7 +192,6 @@ describe('ColumnOrderDirective', () => {
 
 @Directive({
   selector: 'clr-datagrid[testDirectives]',
-  standalone: true,
 })
 class TestDirective {
   @ContentChildren(ColumnOrderDirective) columnOrderDirectives: QueryList<ColumnOrderDirective>;
@@ -223,7 +222,6 @@ class TestDirective {
       </clr-dg-row>
     </clr-datagrid>
   `,
-  standalone: true,
 })
 class TestClrDatagridHostComponent {
   @ViewChild(TestDirective) content: TestDirective;

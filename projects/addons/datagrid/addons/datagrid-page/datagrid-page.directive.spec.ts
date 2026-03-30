@@ -230,7 +230,6 @@ describe('datagridPage directive', () => {
       [columns]="columnsDefs"
     ></appfx-datagrid>
   `,
-  standalone: true,
 })
 class DatagridForClientSideGridHostComponent {
   @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent: DatagridComponent<unknown>;
@@ -264,7 +263,6 @@ class DatagridForClientSideGridHostComponent {
       (refreshGridData)="refreshData($event)"
     ></appfx-datagrid>
   `,
-  standalone: true,
 })
 class DatagridForServerSideGridHostComponent {
   @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent: DatagridComponent<unknown>;

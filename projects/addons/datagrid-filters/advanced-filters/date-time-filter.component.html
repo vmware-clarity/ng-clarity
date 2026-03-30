@@ -40,7 +40,8 @@
     <clr-input-container>
       <input
         type="time"
-        pattern="^(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9])$"
+        [step]="includeSeconds ? 1 : 60"
+        pattern="^(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):?([0-5][0-9])?$"
         formControlName="timeValue"
         placeholder="{{ filterStrings.timeFormat }}"
         clrInput
@@ -87,7 +88,8 @@
     <clr-input-container>
       <input
         type="time"
-        pattern="^(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9])$"
+        [step]="includeSeconds ? 1 : 60"
+        pattern="^(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):?([0-5][0-9])?$"
         formControlName="timeValueTo"
         placeholder="{{ filterStrings.timeFormat }}"
         clrInput

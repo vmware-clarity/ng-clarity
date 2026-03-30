@@ -12,7 +12,13 @@
       {{ filterStrings.addNew }}
     </button>
     <ng-template [(clrIfOpen)]="signPostOpened">
-      <clr-signpost-content [clrPosition]="'bottom-middle'" [ngSwitch]="propertyType" filterPopoverReposition>
+      <clr-signpost-content
+        cdkTrapFocus
+        [cdkTrapFocusAutoCapture]="true"
+        [clrPosition]="'bottom-middle'"
+        [ngSwitch]="propertyType"
+        filterPopoverReposition
+      >
         <clr-select-container class="mt-0">
           <label class="clr-control-label"> {{ filterStrings.filterLabel }} </label>
           <select clrSelect [(ngModel)]="selectedFilterableProperty" (ngModelChange)="onPropertyChange()">
@@ -45,6 +51,12 @@
           (filterCriteriaChange)="onFilterCriteriaChange($event)"
         >
         </appfx-datetime-filter>
+        <appfx-users-filter
+          *ngSwitchCase="userPropertyType"
+          [filterProperty]="userProperty"
+          (filterCriteriaChange)="onFilterCriteriaChange($event)"
+        >
+        </appfx-users-filter>
       </clr-signpost-content>
     </ng-template>
   </clr-signpost>
@@ -62,7 +74,7 @@
       [attr.aria-label]="showHideFiltersAriaLabel"
       (click)="showHideAllFilters()"
     >
-      <cds-icon shape="angle" class="is-solid" [attr.direction]="showHideFiltersArrowDir"></cds-icon>
+      <cds-icon shape="angle" class="is-solid" [direction]="showHideFiltersArrowDir"></cds-icon>
       {{ showHideFiltersLabel }}
     </button>
     <button

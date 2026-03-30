@@ -729,6 +729,7 @@ export class FieldComparator<T> implements ClrDatagridComparatorInterface<T> {
 export interface GridFooterModel {
     clientSideExportConfig?: ClientSideExportConfig;
     enableCustomExport?: boolean;
+    footerActions?: ActionDefinition[];
     hideColumnToggle?: boolean;
     showFooter?: boolean;
 }

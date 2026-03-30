@@ -5,23 +5,93 @@
   (cancel)="onCancelButtonClick()"
   (apply)="onApplyButtonClick()"
 >
-  <label class="clr-control-label text-left mt-compact">
-    {{ filterStrings.valueLabel }}
-  </label>
-  <clr-checkbox-container *ngIf="!filterProperty.singleSelect" class="enum-options">
-    <clr-checkbox-wrapper>
-      <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />
-      <label> {{ filterStrings.selectAll }} </label>
-    </clr-checkbox-wrapper>
-    <clr-checkbox-wrapper formArrayName="options" *ngFor="let option of optionsFormArray.controls; let i = index">
-      <input type="checkbox" clrCheckbox [formControlName]="i" (change)="onOptionChange($event)" />
-      <label> {{ optionsData[i].value }} </label>
-    </clr-checkbox-wrapper>
-  </clr-checkbox-container>
-  <clr-radio-container *ngIf="filterProperty.singleSelect" class="enum-options">
-    <clr-radio-wrapper *ngFor="let option of optionsFormArray.controls; let j = index">
-      <input type="radio" clrRadio formControlName="singleSelectOption" [value]="optionsData[j].key" />
-      <label> {{ optionsData[j].value }} </label>
-    </clr-radio-wrapper>
-  </clr-radio-container>
+  <div class="enum-filter-wrapper">
+    <clr-select-container class="mt-compact" *ngIf="additionalOperators">
+      <label class="clr-control-label">
+        {{ filterStrings.operatorLabel }}
+      </label>
+      <select clrSelect formControlName="enumOperator">
+        <option *ngFor="let operator of enumOperators" [ngValue]="operator">
+          {{ filterStrings.getOperatorDisplayName(operator) }}
+        </option>
+      </select>
+    </clr-select-container>
+
+    <label class="clr-control-label text-left mt-compact">
+      {{ filterStrings.valueLabel }}
+    </label>
+
+    <clr-input-container cds-layout="m-t:xs" *ngIf="filterProperty.searchable">
+      <label class="clr-sr-only">{{ filterStrings.searchOptions }}</label>
+      <input clrInput type="text" [placeholder]="filterStrings.searchPlaceholder" formControlName="searchTerm" />
+      <cds-icon shape="search" clrInputPrefix></cds-icon>
+      <cds-icon
+        *ngIf="enumFilterForm.get('searchTerm')?.value"
+        shape="window-close"
+        clrInputSuffix
+        (click)="clearSearch()"
+      ></cds-icon>
+      <clr-control-helper *ngIf="filteredOptions.length">
+        {{
+          filterStrings.formatString(filterStrings.showingFormat, [
+            filteredOptions.length.toString(),
+            searchResultsLen.toString()
+          ])
+        }}
+      </clr-control-helper>
+      <clr-control-helper *ngIf="filteredOptions.length === 0 && enumFilterForm.get('searchTerm')?.value">
+        {{ filterStrings.noValuesFound }}
+      </clr-control-helper>
+    </clr-input-container>
+
+    <div cds-layout="m-t:xs m-l:xxs" class="selection-counter" *ngIf="filteredOptions.length">
+      <span class="clr-subtext" cds-text="body medium" *ngIf="!filterProperty.singleSelect">
+        {{ filterStrings.formatString(filterStrings.elementsSelectedFormat, [selectedCount.toString()]) }}
+      </span>
+    </div>
+
+    <div class="loading-overlay" *ngIf="isProcessing">
+      <div class="loading-content">
+        <clr-spinner clrMedium>{{ filterStrings.loading }}</clr-spinner>
+      </div>
+    </div>
+
+    <div cds-layout="m-t:xs">
+      <clr-checkbox-container class="enum-options" *ngIf="!filterProperty.singleSelect">
+        <clr-checkbox-wrapper cds-layout="m-b:xs">
+          <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />
+          <label>
+            {{ enumFilterForm.get('searchTerm')?.value ? filterStrings.allSearchResults : filterStrings.selectAll }}
+          </label>
+        </clr-checkbox-wrapper>
+
+        <clr-checkbox-wrapper *ngFor="let item of filteredOptions">
+          <input
+            type="checkbox"
+            clrCheckbox
+            [formControl]="$any(this.optionsFormArray.at(item.index))"
+            (change)="onOptionChange()"
+          />
+          <label>
+            {{ item.data.value }}
+            {{ filterProperty.showKeyInParentheses ? '(' + item.data.key + ')' : '' }}
+          </label>
+        </clr-checkbox-wrapper>
+      </clr-checkbox-container>
+
+      <clr-radio-container class="enum-options" *ngIf="filterProperty.singleSelect">
+        <clr-radio-wrapper *ngFor="let option of filteredOptions">
+          <input type="radio" clrRadio formControlName="singleSelectOption" [value]="option.data.key" />
+          <label>
+            {{ option.data.value }}
+            {{ filterProperty.showKeyInParentheses ? '(' + option.data.key + ')' : '' }}
+          </label>
+        </clr-radio-wrapper>
+      </clr-radio-container>
+    </div>
+
+    <button class="btn btn-link" (click)="loadMore()" *ngIf="filteredOptions.length < searchResultsLen">
+      {{ filterStrings.loadMore }}
+    </button>
+  </div>
 </appfx-filter-form>

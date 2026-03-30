@@ -1,0 +1,96 @@
+<!-- Copyright 2023 Broadcom. All rights reserved. -->
+<appfx-filter-form
+  [formGroup]="usersSelectionForm"
+  [valid]="usersSelectionForm.valid"
+  (cancel)="onCancelButtonClick()"
+  (apply)="onApplyButtonClick()"
+>
+  <div class="user-filter-wrapper" cds-layout="p-b:xxxs">
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="loading-content">
+        <clr-spinner clrMedium>{{ filterStrings.loading }}</clr-spinner>
+      </div>
+    </div>
+    <!-- Operator -->
+    <clr-select-container class="mt-compact">
+      <label class="clr-control-label">
+        {{ filterStrings.operatorLabel }}
+      </label>
+      <select clrSelect formControlName="userOperator">
+        <option *ngFor="let operator of userOperators" [ngValue]="operator">
+          {{ filterStrings.getOperatorDisplayName(operator) }}
+        </option>
+      </select>
+    </clr-select-container>
+
+    <!-- Domain -->
+    <clr-select-container *ngIf="domains && domains.length > 0">
+      <label>{{ filterStrings.domain }}</label>
+      <select clrSelect name="domain" formControlName="domain">
+        <option *ngFor="let domain of domains" [value]="domain">
+          {{ domain }}
+        </option>
+      </select>
+    </clr-select-container>
+
+    <!-- User -->
+    <label class="clr-control-label text-left mt-compact">
+      {{ filterStrings.user }}
+    </label>
+
+    <clr-input-container cds-layout="m-t:xs">
+      <label class="clr-sr-only">{{ filterStrings.searchPlaceholder }}</label>
+      <input clrInput type="text" [placeholder]="filterStrings.searchPlaceholder" formControlName="searchTerm" />
+      <cds-icon shape="search" clrInputPrefix></cds-icon>
+      <cds-icon
+        *ngIf="usersSelectionForm.get('searchTerm')?.value"
+        shape="window-close"
+        clrInputSuffix
+        (click)="clearSearch()"
+      ></cds-icon>
+    </clr-input-container>
+
+    <div cds-layout="m-t:xs m-l:xxs" class="selection-counter">
+      <span *ngIf="selectedValues.size > 0" class="clr-subtext" cds-text="body medium">
+        {{ filterStrings.formatString(filterStrings.elementsSelectedFormat, [selectedValues.size.toString()]) }}
+      </span>
+    </div>
+
+    <div cds-layout="m-t:xs">
+      <clr-checkbox-container class="enum-options">
+        <clr-checkbox-wrapper *ngIf="visibleUsers.length > 0" cds-layout="m-b:xs">
+          <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />
+          <label>
+            {{
+              usersSelectionForm.get('searchTerm')?.value ? filterStrings.allSearchResults : filterStrings.selectAll
+            }}
+          </label>
+        </clr-checkbox-wrapper>
+
+        <clr-checkbox-wrapper *ngFor="let user of visibleUsers; let i = index">
+          <input
+            type="checkbox"
+            clrCheckbox
+            [formControl]="$any(optionsFormArray.at(i))"
+            (change)="onOptionChange(i)"
+          />
+          <label>
+            {{ user }}
+          </label>
+        </clr-checkbox-wrapper>
+      </clr-checkbox-container>
+
+      <div *ngIf="errorSearchingUsers" class="clr-subtext clr-error error">
+        {{ errorSearchingUsers }}
+      </div>
+
+      <div *ngIf="errorRetrievingDomains" class="clr-subtext clr-error error">
+        {{ errorRetrievingDomains }}
+      </div>
+    </div>
+
+    <button *ngIf="hasMoreItems" class="btn btn-link" (click)="loadMore($event)">
+      {{ filterStrings.loadMore }}
+    </button>
+  </div>
+</appfx-filter-form>

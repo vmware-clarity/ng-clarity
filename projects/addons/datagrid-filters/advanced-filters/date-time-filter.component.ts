@@ -52,6 +52,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   isRelativePredicate = false;
   isTimeSpanPredicate = false;
   timePredicate = false;
+  includeSeconds = false;
   /**
    * In case the component is used for filter editing
    */
@@ -130,6 +131,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.comparisonOperators = this.filterProperty.getOperators();
+    this.includeSeconds = this.filterProperty.includeSeconds;
   }
 
   onInputKeyPress(event: KeyboardEvent): void {
@@ -403,7 +405,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
     fromPredicate.operator = ComparisonOperator.GreaterThanOrEqualTo;
     let fromValue: string = this.dateTimeFilterForm.value.dateValue;
     if (this.timePredicate) {
-      fromValue += 'T' + this.dateTimeFilterForm.value.timeValue + ':00';
+      fromValue += 'T' + this.dateTimeFilterForm.value.timeValue + (this.includeSeconds ? '' : ':00');
       if (adjustTime) {
         fromValue = this.getCustomDate(fromValue, oneMinuteMs);
       }
@@ -422,7 +424,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
     toPredicate.operator = ComparisonOperator.LessThan;
     let toValue: string = this.dateTimeFilterForm.value.dateValueTo;
     if (this.timePredicate) {
-      toValue += 'T' + this.dateTimeFilterForm.value.timeValueTo + ':00';
+      toValue += 'T' + this.dateTimeFilterForm.value.timeValueTo + (this.includeSeconds ? '' : ':00');
       toValue = this.getCustomDate(toValue, oneMinuteMs);
     } else {
       toValue += 'T00:00:00';

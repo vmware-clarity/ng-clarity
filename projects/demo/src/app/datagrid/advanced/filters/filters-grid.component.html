@@ -26,3 +26,15 @@
   (advancedFilterChange)="onAdvancedFilterChange($event)"
 >
 </appfx-datagrid>
+
+<clr-toggle-container cds-layout="m-l:xxs m-t:md">
+  <label>User Filter Error Simulation</label>
+  <clr-toggle-wrapper>
+    <input type="checkbox" clrToggle [(ngModel)]="isErrorRetrievingDomains" />
+    <label>Simulate error in retrieving domains for the Users advanced filter.</label>
+  </clr-toggle-wrapper>
+  <clr-toggle-wrapper>
+    <input type="checkbox" clrToggle [(ngModel)]="isErrorRetrievingUsers" />
+    <label>Simulate error in searching users for the Users advanced filter.</label>
+  </clr-toggle-wrapper>
+</clr-toggle-container>
