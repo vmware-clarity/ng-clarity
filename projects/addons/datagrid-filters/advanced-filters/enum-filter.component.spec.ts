@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -114,6 +114,7 @@ describe('EnumFilterComponent', () => {
       expect(component.enumFilterForm).toBeDefined();
       expect(component.enumFilterForm.get('enumOperator')?.value).toBe(ComparisonOperator.DoesNotEqual);
       expect(component.additionalOperators).toBeTrue(); // Because allowNotInOperator is true
+      flush();
     }));
 
     it('should initialize in Edit Mode (pre-selected values)', fakeAsync(() => {
@@ -129,6 +130,7 @@ describe('EnumFilterComponent', () => {
       expect(greenControl.value).toBeFalse();
       // Operator sync check: Or maps to first operator in list (DoesNotEqual when allowNotInOperator)
       expect(component.enumFilterForm.get('enumOperator')?.value).toBe(ComparisonOperator.DoesNotEqual);
+      flush();
     }));
 
     it('should sync "DoesNotEqual" operator correctly from PropertyFilter', fakeAsync(() => {

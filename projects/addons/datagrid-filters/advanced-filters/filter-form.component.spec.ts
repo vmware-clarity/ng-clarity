@@ -15,6 +15,7 @@ import { AppfxDatagridFiltersModule } from '../datagrid-filters.module';
 
 @Component({
   selector: 'appfx-filter-form-host-component',
+  standalone: true,
   imports: [AppfxDatagridFiltersModule],
   template: `
     <appfx-filter-form [valid]="isFormValid" (cancel)="onCancelButtonClick()" (apply)="onApplyButtonClick()">

@@ -52,6 +52,12 @@ describe('UsersFilterComponent', () => {
     userServiceMock = {
       getDomains: jasmine.createSpy('getDomains').and.returnValue(of(mockDomains)),
       searchUsers: jasmine.createSpy('searchUsers').and.returnValue(of(mockUsers)),
+      formatUser: jasmine.createSpy('formatUser').and.callFake((user: string, domain?: string) => {
+        if (user.includes('@')) {
+          return user;
+        }
+        return user + (domain ? '@' + domain : '');
+      }),
     };
 
     cdrMock = jasmine.createSpyObj('ChangeDetectorRef', ['markForCheck']);
