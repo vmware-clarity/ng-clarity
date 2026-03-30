@@ -8,6 +8,7 @@
 import { Injectable, OnDestroy, TemplateRef } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 
+import { ClrWizardStepnavLayout } from '../interfaces/wizard-stepnav-layout';
 import { ClrWizardPage } from '../wizard-page';
 import { ButtonHubService } from './button-hub.service';
 import { PageCollectionService } from './page-collection.service';
@@ -148,6 +149,11 @@ export class WizardNavigationService implements OnDestroy {
    * @memberof WizardNavigationService
    */
   wizardDisableStepnav = false;
+
+  /**
+   * The layout of the wizard stepnav, either 'vertical' or 'horizontal'.
+   */
+  stepnavLayout: ClrWizardStepnavLayout = ClrWizardStepnavLayout.VERTICAL;
 
   /**
    * @memberof WizardNavigationService
