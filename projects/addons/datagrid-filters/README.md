@@ -63,6 +63,7 @@ Extends FilterablePropertyDefinition.
 | `values`             | `Map<string, string>` | Enumeration key/value data to be used in the filter selection.                                                                  |
 | `singleSelect`       | `boolean`             | Optional. Indicates that the property should be used for single select filtering. Default: false.                               |
 | `searchable`         | `boolean`             | Optional. Indicates that the property should provide a searching interface. Default: false.                                     |
+| `enableSelectAll`    | `boolean`             | Optional. Indicates that a select all checkbox is shown. Default: true.                                                         |
 | `allowNotInOperator` | `boolean`             | Optional. Enables the "NOT IN" operator for the selected values, allowing users to exclude specific enum items. Default: false. |
 
 #### NumericPropertyDefinition

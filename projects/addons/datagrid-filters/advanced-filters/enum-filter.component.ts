@@ -58,7 +58,7 @@ export class EnumFilterComponent implements OnInit, OnChanges {
   enumFilterForm: FormGroup;
   optionsData: EnumPropertyData[] = [];
   filteredOptions: { data: EnumPropertyData; index: number }[] = [];
-  enumOperators: ComparisonOperator[] = [ComparisonOperator.Equals, ComparisonOperator.DoesNotEqual];
+  enumOperators: ComparisonOperator[] = [ComparisonOperator.DoesNotEqual, ComparisonOperator.Equals];
   isProcessing = false;
   searchResultsLen = 0;
   selectedCount = 0;
@@ -84,7 +84,7 @@ export class EnumFilterComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.enumFilterForm = this.formBuilder.group({
-      enumOperator: [ComparisonOperator.Equals],
+      enumOperator: [this.additionalOperators ? ComparisonOperator.DoesNotEqual : ComparisonOperator.Equals],
       searchTerm: [''],
       selectAll: false,
       options: new FormArray([], this.selectedOptionsValidator()),
@@ -203,8 +203,15 @@ export class EnumFilterComponent implements OnInit, OnChanges {
     this.updateForm();
     this.performSearch('');
 
-    const initialOp =
-      this.propertyFilter?.operator === LogicalOperator.And ? ComparisonOperator.DoesNotEqual : this.enumOperators[0];
+    let initialOp: ComparisonOperator;
+    if (this.propertyFilter) {
+      initialOp =
+        this.propertyFilter.operator === LogicalOperator.And
+          ? ComparisonOperator.DoesNotEqual
+          : ComparisonOperator.Equals;
+    } else {
+      initialOp = this.additionalOperators ? ComparisonOperator.DoesNotEqual : ComparisonOperator.Equals;
+    }
     this.enumFilterForm.controls.enumOperator.setValue(initialOp, { emitEvent: false });
 
     this.updateSelectedCount();
@@ -251,9 +258,16 @@ export class EnumFilterComponent implements OnInit, OnChanges {
     enumValues.forEach((v, k) => {
       this.optionsData.push({ key: k, value: v });
     });
-    this.enumFilterForm?.controls.enumOperator.setValue(
-      this.propertyFilter?.operator === LogicalOperator.And ? ComparisonOperator.DoesNotEqual : this.enumOperators[0]
-    );
+    let updateOp: ComparisonOperator;
+    if (this.propertyFilter) {
+      updateOp =
+        this.propertyFilter.operator === LogicalOperator.And
+          ? ComparisonOperator.DoesNotEqual
+          : ComparisonOperator.Equals;
+    } else {
+      updateOp = this.additionalOperators ? ComparisonOperator.DoesNotEqual : ComparisonOperator.Equals;
+    }
+    this.enumFilterForm?.controls.enumOperator.setValue(updateOp);
   }
 
   private updateForm(): void {
