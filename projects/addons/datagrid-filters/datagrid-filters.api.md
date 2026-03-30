@@ -425,7 +425,8 @@ export class DateTimePropertyDefinition extends FilterablePropertyDefinition {
 
 // @public (undocumented)
 export class EnumPropertyDefinition extends FilterablePropertyDefinition {
-    constructor(displayName: string, property: string, values: Map<string, string>, singleSelect?: boolean, searchable?: boolean, allowNotInOperator?: boolean);
+    constructor(displayName: string, property: string, values: Map<string, string>, singleSelect?: boolean, searchable?: boolean, enableSelectAll?: boolean, allowNotInOperator?: boolean);
+    enableSelectAll: boolean;
     searchable: boolean;
     singleSelect: boolean;
     values: Map<string, string>;
