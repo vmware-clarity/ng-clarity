@@ -16,5 +16,6 @@ export * from './wizard-page-title';
 export * from './wizard-page-navtitle';
 export * from './wizard-page-buttons';
 export * from './wizard-page-header-actions';
+export * from './interfaces/wizard-footer-align';
 export * from './interfaces/wizard-stepnav-layout';
 export * from './wizard.module';

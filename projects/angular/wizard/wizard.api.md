@@ -66,6 +66,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     checkAndCancel(): void;
     closable: boolean;
     close(): void;
+    // (undocumented)
+    protected ClrWizardFooterAlign: typeof ClrWizardFooterAlign;
     set clrWizardOpen(open: boolean);
     // (undocumented)
     protected ClrWizardStepnavLayout: typeof ClrWizardStepnavLayout;
@@ -80,6 +82,9 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     get disableStepnav(): boolean;
     set disableStepnav(value: boolean);
     finish(skipChecksAndEmits?: boolean): void;
+    // (undocumented)
+    get footerAlign(): ClrWizardFooterAlign;
+    _footerAlign: ClrWizardFooterAlign | null;
     forceFinish(): void;
     get forceForward(): boolean;
     set forceForward(value: boolean);
@@ -106,6 +111,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     navService: WizardNavigationService;
     next(skipChecksAndEmits?: boolean): void;
+    // (undocumented)
+    static ngAcceptInputType__footerAlign: ClrWizardFooterAlign | string;
     // (undocumented)
     static ngAcceptInputType_stepnavLayout: ClrWizardStepnavLayout | string;
     // (undocumented)
@@ -148,9 +155,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     set stopNavigation(value: boolean);
     get stopNext(): boolean;
     set stopNext(value: boolean);
-    // (undocumented)
-    get title(): ElementRef<HTMLElement>;
-    set title(title: ElementRef<HTMLElement>);
     toggle(open: boolean): void;
     // (undocumented)
     wizardButtons: QueryList<ClrWizardButton>;
@@ -160,7 +164,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     protected wizardTitle: ClrWizardTitle;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "stepnavLayout": { "alias": "clrWizardStepnavLayout"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "hideFooter": { "alias": "clrWizardHideFooter"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChange": "clrWizardCurrentPageChange"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "wizardButtons", "headerActions"], ["*", "clr-wizard-button", "clr-wizard-title", "clr-wizard-header-action"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "stepnavLayout": { "alias": "clrWizardStepnavLayout"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "hideFooter": { "alias": "clrWizardHideFooter"; "required": false; }; "_footerAlign": { "alias": "clrWizardFooterAlign"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChange": "clrWizardCurrentPageChange"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "wizardButtons", "headerActions"], ["*", "clr-wizard-button", "clr-wizard-title", "clr-wizard-header-action"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
 }
@@ -204,6 +208,14 @@ export class ClrWizardButton {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardButton, "clr-wizard-button", never, { "type": { "alias": "type"; "required": false; }; "disabled": { "alias": "clrWizardButtonDisabled"; "required": false; }; "hidden": { "alias": "clrWizardButtonHidden"; "required": false; }; }, { "wasClicked": "clrWizardButtonClicked"; }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardButton, never>;
+}
+
+// @public (undocumented)
+export enum ClrWizardFooterAlign {
+    // (undocumented)
+    END = "end",
+    // (undocumented)
+    START = "start"
 }
 
 // @public (undocumented)
@@ -455,6 +467,9 @@ export const CUSTOM_BUTTON_TYPES: any;
 
 // @public (undocumented)
 export const DEFAULT_BUTTON_TYPES: any;
+
+// @public (undocumented)
+export function footerAlignAttribute(value: ClrWizardFooterAlign | string): ClrWizardFooterAlign;
 
 // @public (undocumented)
 export function stepnavLayoutAttribute(value: ClrWizardStepnavLayout | string): ClrWizardStepnavLayout;

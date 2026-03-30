@@ -272,8 +272,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  // prettier-ignore
-  @ContentChild(ClrWizardPageHeaderActions, { static: true, descendants: false }) _headerActions: ClrWizardPageHeaderActions;
+  @ContentChild(ClrWizardPageHeaderActions, { static: true }) _headerActions: ClrWizardPageHeaderActions;
 
   /**
    *

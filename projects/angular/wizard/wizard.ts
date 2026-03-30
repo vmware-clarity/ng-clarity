@@ -27,6 +27,7 @@ import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+import { ClrWizardFooterAlign, footerAlignAttribute } from './interfaces/wizard-footer-align';
 import { ClrWizardStepnavLayout, stepnavLayoutAttribute } from './interfaces/wizard-stepnav-layout';
 import { ButtonHubService } from './providers/button-hub.service';
 import { HeaderActionService } from './providers/header-actions.service';
@@ -49,6 +50,8 @@ import { ClrWizardTitle } from './wizard-title';
     '[class.wizard-in-page]': 'inPage',
     '[class.wizard-in-page--fill-content-area]': 'inPage && inPageFillContentArea',
     '[class.wizard-horizontal]': 'stepnavLayout === ClrWizardStepnavLayout.HORIZONTAL',
+    '[class.wizard-footer-align-start]': 'footerAlign === ClrWizardFooterAlign.START',
+    '[class.wizard-footer-align-end]': 'footerAlign === ClrWizardFooterAlign.END',
   },
   standalone: false,
 })
@@ -85,6 +88,15 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    * Useful when a nested wizard or stepper handles its own navigation.
    */
   @Input('clrWizardHideFooter') hideFooter = false;
+
+  /**
+   * Align the footer buttons to 'start' (left) or 'end' (right).
+   * By default, modal wizards align to 'end' and in-page wizards align to 'start'.
+   * Nested wizards inherit the default unless this input is explicitly set.
+   * Set using `[clrWizardFooterAlign]` input.
+   */
+  @Input({ alias: 'clrWizardFooterAlign', transform: footerAlignAttribute }) _footerAlign: ClrWizardFooterAlign | null =
+    null;
 
   /**
    * Tells the modal part of the wizard whether it should have a close "X"
@@ -152,11 +164,11 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   wizardId = uniqueIdFactory();
 
   @ContentChild(ClrWizardTitle) protected wizardTitle: ClrWizardTitle;
+  protected ClrWizardFooterAlign = ClrWizardFooterAlign;
   protected ClrWizardStepnavLayout = ClrWizardStepnavLayout;
 
   @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
 
-  private _title: ElementRef<HTMLElement>;
   private _forceForward = false;
   private _stopNext = false;
   private _stopCancel = false;
@@ -184,14 +196,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     );
 
     this.differ = differs.find([]).create(null);
-  }
-
-  @ViewChild('title')
-  get title(): ElementRef<HTMLElement> {
-    return this._title;
-  }
-  set title(title: ElementRef<HTMLElement>) {
-    this._title = title;
   }
 
   /**
@@ -312,6 +316,13 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
 
   get showFooter(): boolean {
     return !this.hideFooter && (this.navService.currentPage?.hasButtons || this.wizardButtons?.length > 0);
+  }
+
+  get footerAlign(): ClrWizardFooterAlign {
+    if (this._footerAlign !== null) {
+      return this._footerAlign;
+    }
+    return this.inPage ? ClrWizardFooterAlign.START : ClrWizardFooterAlign.END;
   }
 
   get stopModalAnimations(): boolean {

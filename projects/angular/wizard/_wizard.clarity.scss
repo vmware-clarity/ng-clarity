@@ -203,7 +203,6 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
     .clr-wizard-footer-buttons-wrapper {
       display: flex;
       flex-flow: row nowrap;
-      justify-content: flex-end;
       gap: density.$clr-base-gap-l;
     }
 
@@ -235,6 +234,20 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
       left: calc(50% + #{mixins.baselinePx(115)});
       position: absolute;
       top: 40%;
+    }
+
+    &.wizard-footer {
+      &-align-start {
+        .clr-wizard-footer-buttons-wrapper {
+          justify-content: flex-start;
+        }
+      }
+
+      &-align-end {
+        .clr-wizard-footer-buttons-wrapper {
+          justify-content: flex-end;
+        }
+      }
     }
   }
 
@@ -674,10 +687,6 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
       flex: 1 1 auto;
       margin: calc(-1 * #{wizard-variables.$clr-wizard-vertical-space})
         calc(-1 * #{wizard-variables.$clr-wizard-horizontal-space});
-    }
-
-    .clr-wizard-footer-buttons-wrapper {
-      justify-content: flex-start;
     }
   }
 
