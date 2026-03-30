@@ -78,7 +78,7 @@ const UI_CDS_CUSTOM_TOKENS_EXAMPLE = `
 `;
 
 const UI_CDS_USE_SCSS_VARIABLES = `
-@use '@cds/core/tokens/tokens.scss';
+@use '@clr/ui/styles/core/tokens/variables.tokens' as tokens;
 
 .my-class {
   color: tokens.$cds-alias-status-info;

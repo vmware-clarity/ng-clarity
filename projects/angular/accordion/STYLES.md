@@ -11,7 +11,6 @@
 | --clr-accordion-panel-disabled-color                | Text color of the accordion header when disabled.                 |
 | --clr-accordion-content-background-color            | Background color of the accordion content area.                   |
 | --clr-accordion-content-color                       | Color of the text in the accordion content area.                  |
-| --clr-accordion-content-font-size                   | DEPRECATED Font size of the text in the accordion content area.   |
 | --clr-accordion-header-background-color             | Background color of the accordion header.                         |
 | --clr-accordion-header-disabled-background-color    | Background color of the accordion header when disabled.           |
 | --clr-accordion-header-hover-background-color       | Background color of the accordion header on hover.                |

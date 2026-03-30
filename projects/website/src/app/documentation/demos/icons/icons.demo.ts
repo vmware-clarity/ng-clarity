@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ClrIcon, ClrIconModule } from '@clr/angular';
+import { ClrIcon } from '@clr/angular/icon';
 
 import { IconShapesComponent } from './icon-shapes/icon-shapes.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
@@ -17,7 +17,7 @@ import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/s
 import { ClarityDocComponent } from '../clarity-doc';
 
 const ICONS_IMPORT_EXAMPLE = `
-import '@cds/core/icon/register.js';
+import { ClarityIcons, userIcon } from '@clr/angular/icon';
 
 ClarityIcons.addIcons(userIcon);
 `;
@@ -233,7 +233,6 @@ export class ExampleComponent {
     RouterLink,
     CodeSnippetComponent,
     ClrIcon,
-    ClrIconModule,
     IconShapesComponent,
     StackblitzExampleComponent,
   ],

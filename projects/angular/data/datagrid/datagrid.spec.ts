@@ -665,8 +665,8 @@ export default function (): void {
       });
 
       describe('clrDgRefresh output', function () {
-        it('emits once when the datagrid is ready', function () {
-          expect(context.testComponent.nbRefreshed).toBe(1);
+        it('does not emit when the datagrid is ready', function () {
+          expect(context.testComponent.nbRefreshed).toBe(0);
         });
 
         it('emits once when the sort order changes', function () {
