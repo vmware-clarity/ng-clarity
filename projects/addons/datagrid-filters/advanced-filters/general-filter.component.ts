@@ -45,6 +45,11 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   isEmptySecondaryPredicate = false;
 
   /**
+   * Property used for filtering
+   */
+  #filterProperty: StringPropertyDefinition | NumericPropertyDefinition;
+
+  /**
    * In case the component is used for filter editing
    */
   @Input() propertyFilter: PropertyFilter;
@@ -59,10 +64,6 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   private selectedFilterCriteria: PropertyFilter = new PropertyFilter();
   private primaryPredicate: PropertyPredicate = new PropertyPredicate();
   private secondaryPredicate: PropertyPredicate = new PropertyPredicate();
-  /**
-   * Property used for filtering
-   */
-  #filterProperty: StringPropertyDefinition | NumericPropertyDefinition;
 
   constructor(private formBuilder: FormBuilder, public filterStrings: DatagridFiltersStrings) {
     this.logicalOperators = [LogicalOperator.And, LogicalOperator.Or];
