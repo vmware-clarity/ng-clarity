@@ -65,7 +65,7 @@ export default {
     clrWizardPreventDefaultCancel: false,
     clrWizardStepnavAriaLabel: commonStringsDefault.wizardStepnavAriaLabel,
     clrWizardStepnavLayout: 'vertical',
-    clrWizardFooterAlign: undefined,
+    clrWizardFooterAlign: 'end',
     // outputs
     clrWizardOpenChange: action('clrWizardOpenChange'),
     clrWizardCurrentPageChange: action('clrWizardCurrentPageChange'),
@@ -175,6 +175,7 @@ const NestedWizardTemplate: StoryFn = args => ({
       <clr-wizard-page [clrWizardPageNextDisabled]="!nestedWizardComplete">
         <ng-template clrPageNavTitle>Configuration</ng-template>
         <clr-wizard
+          [clrWizardFooterAlign]="'end'"
           [clrWizardInPage]="true"
           [clrWizardInPageFillContentArea]="true"
           [clrWizardClosable]="false"
