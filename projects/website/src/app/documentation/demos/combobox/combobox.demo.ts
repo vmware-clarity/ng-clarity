@@ -14,6 +14,7 @@ import { ComboboxGroupingDemo } from './combobox-grouping.demo';
 import { ComboboxIdentityFnDemo } from './combobox-identity-fn.demo';
 import { ComboboxMultiIdentityFnDemo } from './combobox-multi-identity-fn.demo';
 import { ComboboxMultiDemo } from './combobox-multi.demo';
+import { ComboboxSelectAllDemo } from './combobox-select-all.demo';
 import { ComboboxSingleDemo } from './combobox-single.demo';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -43,6 +44,7 @@ import { formsPatternLink } from '../pattern-links';
     ComboboxGroupingDemo,
     ComboboxIdentityFnDemo,
     ComboboxMultiIdentityFnDemo,
+    ComboboxSelectAllDemo,
     StyleDocsComponent,
     NestingTableComponent,
   ],
