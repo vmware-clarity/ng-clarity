@@ -25,6 +25,7 @@ const COMPONENT_TEMPLATE = `
 const COMPONENT_CLASS = `
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ClrFileInputModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

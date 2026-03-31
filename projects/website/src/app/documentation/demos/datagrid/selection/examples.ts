@@ -88,7 +88,7 @@ const unselectableRow = `
 `;
 
 const componentTS = `
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { ClrDatagridModule } from '@clr/angular';
 import { Inventory } from './inventory/inventory';
@@ -179,6 +179,7 @@ import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
+import { ClrDatagridModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

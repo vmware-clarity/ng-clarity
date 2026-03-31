@@ -54,6 +54,7 @@ const templateExample = `
 const componentExample = `
 import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ClrFormsModule, ClrStepperModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

@@ -42,6 +42,7 @@ const EXAMPLE = `
 
 const EXAMPLE_TS = `
 import { Component } from '@angular/core';
+import { ClrSidePanelModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

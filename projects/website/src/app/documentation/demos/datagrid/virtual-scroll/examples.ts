@@ -536,7 +536,6 @@ import { ColorFilter } from './utils/color-filter';
   providers: [Inventory],
   imports: [
     DatePipe,
-    ClrDatagridItemsIdentityFunction,
     ClrDatagridModule,
     ClrRadioModule,
     ClrCheckboxModule,

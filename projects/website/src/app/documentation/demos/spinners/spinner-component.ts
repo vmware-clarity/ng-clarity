@@ -39,6 +39,7 @@ const EXAMPLE2 = `
 
 const CODE1 = `
 import { Component } from '@angular/core';
+import { ClrSpinnerModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',
@@ -58,6 +59,7 @@ export class ExampleComponent {
 
 const CODE2 = `
 import { Component } from '@angular/core';
+import { ClrSpinnerModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',
