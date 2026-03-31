@@ -441,6 +441,11 @@ interface ClrCommonStrings {
     comboboxSelected: string;
     comboboxNoResults: string;
     comboboxOpen: string;
+    comboboxSelectAll: string;
+    comboboxUnselectAll: string;
+    comboboxAllSelected: string;
+    comboboxShowAll: string;
+    comboboxShowLess: string;
     /**
      * Wizard: Screen-reader text for "step" (read before step number).
      */

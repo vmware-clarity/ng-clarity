@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { AfterContentInit, AfterViewInit, ElementRef, TemplateRef, RendererFactory2, Renderer2, EventEmitter, ViewContainerRef, Injector, ChangeDetectorRef, OnInit, OnDestroy, QueryList, DoCheck, IterableDiffers, TrackByFunction } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ElementRef, TemplateRef, RendererFactory2, Renderer2, EventEmitter, QueryList, ViewContainerRef, Injector, ChangeDetectorRef, NgZone, OnInit, OnDestroy, DoCheck, IterableDiffers, TrackByFunction } from '@angular/core';
 import * as rxjs from 'rxjs';
 import { Observable } from 'rxjs';
 import * as i9 from '@angular/forms';
@@ -24,7 +24,7 @@ declare class ComboboxContainerService {
 
 declare class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
     private containerService;
-    private el;
+    el: ElementRef<HTMLElement>;
     controlContainer: ElementRef<HTMLElement>;
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, containerService: ComboboxContainerService, el: ElementRef<HTMLElement>);
     ngAfterContentInit(): void;
@@ -61,7 +61,7 @@ declare class ClrOptionSelected<T> {
 declare class OptionSelectionService<T> {
     loading: boolean;
     editable: boolean;
-    filtering: boolean;
+    showSelectAll: boolean;
     selectionModel: ComboboxModel<T>;
     inputChanged: Observable<string>;
     showAllOptions: boolean;
@@ -69,6 +69,7 @@ declare class OptionSelectionService<T> {
     private _displayField;
     private _inputChanged;
     private _selectionChanged;
+    private _selectAllRequested;
     constructor();
     get displayField(): string;
     set displayField(value: string);
@@ -78,9 +79,17 @@ declare class OptionSelectionService<T> {
     get multiselectable(): boolean;
     get identityFn(): ClrComboboxIdentityFunction<T>;
     set identityFn(value: ClrComboboxIdentityFunction<T>);
+    get selectAllRequested(): Observable<void>;
+    requestSelectAll(): void;
     select(item: T): void;
     toggle(item: T): void;
+    selectMany(items: T[]): void;
+    unselectMany(items: T[]): void;
     unselect(item: T): void;
+    /**
+     * Checks whether all given items are currently selected, using identityFn for comparison.
+     */
+    containsAll(items: T[]): boolean;
     setSelectionValue(value: T | T[]): void;
     parseStringToModel(value: string): T;
     private _identityFn;
@@ -125,6 +134,7 @@ declare class ComboboxFocusHandler<T> {
     focusInput(): void;
     focusFirstActive(): void;
     addOptionValues(options: OptionData<T>[]): void;
+    focusOption(option: OptionData<T>): void;
     private handleFocusSubscription;
     private moveFocusTo;
     private openAndMoveTo;
@@ -155,6 +165,8 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     private platformId;
     private focusHandler;
     private cdr;
+    private zone;
+    private container;
     placeholder: string;
     clrInputChange: EventEmitter<string>;
     clrOpenChange: rxjs.Observable<boolean>;
@@ -165,15 +177,27 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     textbox: ElementRef<HTMLInputElement>;
     trigger: ElementRef<HTMLButtonElement>;
     optionSelected: ClrOptionSelected<T>;
+    truncationButton: ElementRef;
+    wrapper: ElementRef;
+    calculationPills: QueryList<ElementRef<HTMLElement>>;
     focused: boolean;
     popoverPosition: ClrPopoverPosition;
     protected index: number;
     protected popoverType: ClrPopoverType;
+    protected containerWidth: any;
+    protected selectionExpanded: boolean;
+    protected calculatedLimit: number | undefined;
+    protected shouldCalculate: boolean;
+    protected isTotalSelection: boolean;
+    private resizeObserver;
+    private containerWidthChange;
     private options;
     private _searchText;
     private onTouchedCallback;
     private onChangeCallback;
-    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef);
+    constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef, zone: NgZone, container: ClrComboboxContainer);
+    get showSelectAll(): boolean;
+    set showSelectAll(value: boolean);
     get editable(): boolean;
     set editable(value: boolean);
     set identityFn(value: ClrComboboxIdentityFunction<T>);
@@ -189,9 +213,15 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     get ariaOwns(): string;
     get ariaDescribedBySelection(): string;
     get displayField(): string;
+    get showAllText(): string;
+    get allSelectedText(): string;
+    get showIndividualPills(): boolean;
+    get showTruncationToggle(): boolean;
     private get disabled();
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    clearSelection(): void;
     onKeyUp(event: KeyboardEvent): void;
     inputId(): string;
     loadingStateChange(state: ClrLoadingState): void;
@@ -207,12 +237,18 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     getActiveDescendant(): string;
     setDisabledState(): void;
     onWrapperClick(event: any): void;
+    toggleSelectionExpand(): void;
+    private initialiseObserver;
+    private calculateLimit;
+    private applyLimit;
+    private updateTotalSelection;
     private initializeSubscriptions;
     private updateInputValue;
     private updateControlValue;
     private getDisplayNames;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, { optional: true; }, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "identityFn": { "alias": "clrComboboxIdentityFn"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, { optional: true; }, null, null, null, null, { optional: true; host: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "showSelectAll": { "alias": "showSelectAll"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "identityFn": { "alias": "clrComboboxIdentityFn"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ngAcceptInputType_showSelectAll: unknown;
 }
 
 declare class ClrOption<T> implements OnInit {
@@ -236,6 +272,7 @@ declare class ClrOption<T> implements OnInit {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrOption<any>, "clr-option", never, { "optionId": { "alias": "id"; "required": false; }; "value": { "alias": "clrValue"; "required": false; }; }, {}, never, ["*"], false, never>;
 }
 
+declare const SELECT_ALL_ID = "select-all-id";
 declare class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
     optionSelectionService: OptionSelectionService<T>;
     id: number;
@@ -248,7 +285,9 @@ declare class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy
     loading: boolean;
     _items: QueryList<ClrOption<T>>;
     private subscriptions;
+    private _selectAllOption;
     constructor(optionSelectionService: OptionSelectionService<T>, id: number, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, focusHandler: ComboboxFocusHandler<T>, popoverService: ClrPopoverService, parentHost: ElementRef<HTMLElement>, document: any);
+    set selectAllBtn(value: ElementRef);
     get items(): QueryList<ClrOption<T>>;
     set items(items: QueryList<ClrOption<T>>);
     /**
@@ -257,10 +296,15 @@ declare class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy
     get emptyOptions(): boolean;
     get editable(): boolean;
     get noResultsElementId(): string;
+    get showSelectAll(): boolean;
+    get allVisibleSelected(): boolean;
+    get isSelectAllFocused(): boolean;
+    toggleSelectAll(event?: Event): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
     searchText(input: string): string;
     loadingStateChange(state: ClrLoadingState): void;
+    private updateFocusableItems;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrOptions<any>, [null, null, null, null, null, null, { optional: true; }, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrOptions<any>, "clr-options", never, { "optionsId": { "alias": "id"; "required": false; }; }, {}, ["items"], ["*"], false, never>;
 }
@@ -303,5 +347,5 @@ declare class ClrComboboxModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrComboboxModule>;
 }
 
-export { ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions };
+export { ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions, SELECT_ALL_ID };
 export type { ClrComboboxIdentityFunction };
