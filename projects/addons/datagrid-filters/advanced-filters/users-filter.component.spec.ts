@@ -29,10 +29,9 @@ describe('UsersFilterComponent', () => {
   let cdrMock: any;
   let datagridFiltersStrings: DatagridFiltersStrings;
 
-  const broadcomDomain = 'broadcom.com';
   const exampleDomain = 'example.com';
-  const alice = 'alice@broadcom.com';
-  const mockDomains = [broadcomDomain, exampleDomain];
+  const alice = 'alice@example.com';
+  const mockDomains = [exampleDomain];
   const mockUsers = ['alice', 'bob', 'charlie'];
   const mockFilterProperty: UserPropertyDefinition = {
     id: 'owner',
@@ -105,7 +104,7 @@ describe('UsersFilterComponent', () => {
       const existingFilter = new PropertyFilter();
       existingFilter.operator = LogicalOperator.Or; // Corresponds to Equals
       const p1 = new PropertyPredicate();
-      p1.value = 'existing_user@broadcom.com';
+      p1.value = 'existing_user@example.com';
       p1.operator = ComparisonOperator.Equals;
       existingFilter.criteria = [p1];
 
@@ -128,7 +127,7 @@ describe('UsersFilterComponent', () => {
 
       // Verify it emits both the original and the newly added predicate
       expect(emittedFilter?.criteria.length).toBe(2);
-      expect(emittedFilter?.criteria[0].value).toBe('existing_user@broadcom.com');
+      expect(emittedFilter?.criteria[0].value).toBe('existing_user@example.com');
       expect(emittedFilter?.criteria[1].value).toBe('bob');
       expect(emittedFilter?.operator).toBe(LogicalOperator.Or);
       expect(emittedFilter?.criteria[0].operator).toBe(ComparisonOperator.Equals);
@@ -140,11 +139,11 @@ describe('UsersFilterComponent', () => {
       const existingFilter = new PropertyFilter();
       existingFilter.operator = LogicalOperator.Or;
       const p1 = new PropertyPredicate();
-      p1.value = 'user1@broadcom.com';
+      p1.value = 'user1@example.com';
       p1.operator = ComparisonOperator.Equals;
       const p2 = new PropertyPredicate();
       p2.operator = ComparisonOperator.Equals;
-      p2.value = 'user2@broadcom.com';
+      p2.value = 'user2@example.com';
 
       existingFilter.criteria = [p1, p2];
 
@@ -171,9 +170,9 @@ describe('UsersFilterComponent', () => {
 
       // Verify criteria updated to 3 elements, all matching the new operator
       expect(emittedFilter?.criteria.length).toBe(3);
-      expect(emittedFilter?.criteria[0].value).toBe('user1@broadcom.com');
+      expect(emittedFilter?.criteria[0].value).toBe('user1@example.com');
       expect(emittedFilter?.criteria[0].operator).toBe(ComparisonOperator.DoesNotEqual);
-      expect(emittedFilter?.criteria[1].value).toBe('user2@broadcom.com');
+      expect(emittedFilter?.criteria[1].value).toBe('user2@example.com');
       expect(emittedFilter?.criteria[1].operator).toBe(ComparisonOperator.DoesNotEqual);
       expect(emittedFilter?.criteria[2].value).toBe('alice');
       expect(emittedFilter?.criteria[2].operator).toBe(ComparisonOperator.DoesNotEqual);
@@ -183,7 +182,7 @@ describe('UsersFilterComponent', () => {
       const existingFilter = new PropertyFilter();
       existingFilter.operator = LogicalOperator.And; // Means "Does Not Equal" UI state
       const p1 = new PropertyPredicate();
-      p1.value = 'dave@broadcom.com';
+      p1.value = 'dave@example.com';
       existingFilter.criteria = [p1];
 
       // Manually trigger ngOnChanges behavior or re-create component logic
@@ -194,7 +193,7 @@ describe('UsersFilterComponent', () => {
       });
 
       expect(component.usersSelectionForm.get('userOperator')?.value).toBe(ComparisonOperator.DoesNotEqual);
-      expect(component.selectedValues.has('dave@broadcom.com')).toBeTrue();
+      expect(component.selectedValues.has('dave@example.com')).toBeTrue();
     });
   });
 
