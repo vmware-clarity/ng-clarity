@@ -345,12 +345,9 @@ declare class EnumPropertyDefinition extends FilterablePropertyDefinition {
      */
     searchable: boolean;
     /**
-     * Flag indicating whether to show the key (after the value) of the enum
-     * in parentheses. This is useful when users want to search values by key
-     * where the key represents an identifier (e.g., eventTypeId) and the
-     * value is a human-readable description.
+     * Flag indicating whether to show the select all checkbox.
      */
-    showKeyInParentheses: boolean;
+    enableSelectAll: boolean;
     /**
      * Creates an instance of EnumPropertyDefinition.
      * @param displayName - The human-readable name of the property shown in the UI.
@@ -358,11 +355,11 @@ declare class EnumPropertyDefinition extends FilterablePropertyDefinition {
      * @param values - A Map containing the enum keys and their corresponding display values.
      * @param singleSelect - Whether the filter restricts selection to a single item. Defaults to false.
      * @param searchable - Whether to enable a search input for the enum options. Defaults to false.
-     * @param showKeyInParentheses - Whether to display keys next to values in the UI. Defaults to false.
+     * @param enableSelectAll - Whether to display the select all checkbox. Defaults to true.
      * @param allowNotInOperator - Flag indicating whether to allow the use of the "NOT IN" operator
      *        for the selected values, enabling users to exclude specific enum items.
      */
-    constructor(displayName: string, property: string, values: Map<string, string>, singleSelect?: boolean, searchable?: boolean, showKeyInParentheses?: boolean, allowNotInOperator?: boolean);
+    constructor(displayName: string, property: string, values: Map<string, string>, singleSelect?: boolean, searchable?: boolean, enableSelectAll?: boolean, allowNotInOperator?: boolean);
 }
 declare class NumericPropertyDefinition extends FilterablePropertyDefinition {
     /**
@@ -430,6 +427,7 @@ declare class CompositeFiltersComponent implements OnInit {
     filterStrings: DatagridFiltersStrings;
     private cdr;
     filterableProperties: FilterablePropertyDefinition[];
+    presetFilters: PropertyFilter[];
     /**
      * Event emitter to tell hosting view that the filtering conditions have changed
      */
@@ -479,7 +477,7 @@ declare class CompositeFiltersComponent implements OnInit {
     private castDateTimeProperty;
     private castUserProperty;
     static ɵfac: i0.ɵɵFactoryDeclaration<CompositeFiltersComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; }, { "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; }, { "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
 }
 
 /**
@@ -498,6 +496,10 @@ declare class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
      * Array of filterable properties
      */
     filterableProperties: FilterablePropertyDefinition[];
+    /**
+     * Array of pre-selected filters
+     */
+    presetFilters: PropertyFilter[];
     /**
      * Event emitter to tell hosting view that search term, used for filtering
      * has changed.
@@ -521,7 +523,7 @@ declare class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     onSearchTermChanged(searchTerm: string): void;
     private doSearch;
     static ɵfac: i0.ɵɵFactoryDeclaration<DataGridFiltersComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
 }
 
 /**
@@ -853,7 +855,6 @@ declare class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
     filterProperty: UserPropertyDefinition;
     propertyFilter: PropertyFilter;
     filterCriteriaChange: EventEmitter<PropertyFilter>;
-    userOperators: ComparisonOperator[];
     usersSelectionForm: FormGroup;
     isLoading: boolean;
     domains: string[];
@@ -877,7 +878,6 @@ declare class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
     handleError(error: any, errorType: ErrorType): Observable<string[]>;
     showLoading(): void;
     hideLoading(): void;
-    formatUser(user: string): string;
     onCancelButtonClick(): void;
     onApplyButtonClick(): void;
     private setupListeners;
