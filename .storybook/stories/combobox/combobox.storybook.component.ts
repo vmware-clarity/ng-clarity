@@ -22,8 +22,6 @@ interface OptionGroup {
   standalone: true,
   imports: [CommonModule, FormsModule, ClrComboboxModule, ClrLoadingModule],
   template: `
-    <p>multiModel: {{ multiModel | json }}</p>
-    <p>singleModel: {{ singleModel | json }}</p>
     <clr-combobox-container>
       <label [for]="id">{{ label }}</label>
       <clr-combobox
