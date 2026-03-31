@@ -56,6 +56,7 @@ const EXAMPLE = `
 
 const CODE = `
 import { Component } from '@angular/core';
+import { ClrTabsModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

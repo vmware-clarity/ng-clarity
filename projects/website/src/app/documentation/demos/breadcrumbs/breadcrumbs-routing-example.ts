@@ -14,6 +14,7 @@ const HTML_EXAMPLE = `<clr-breadcrumbs [items]="breadcrumbs"></clr-breadcrumbs>`
 
 const TS_EXAMPLE = `
 import { Component } from '@angular/core';
+import { ClrBreadcrumbsModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

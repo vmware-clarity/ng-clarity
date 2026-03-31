@@ -81,6 +81,7 @@ const templateExample = `
 const componentExample = `
 import { Component } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ClrFormsModule, ClrStepperModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

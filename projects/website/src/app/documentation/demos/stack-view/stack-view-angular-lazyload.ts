@@ -54,6 +54,7 @@ const EXAMPLE = `
 const CODE = `
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClrModalModule, ClrSpinnerModule, ClrStackBlock, ClrStackViewModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

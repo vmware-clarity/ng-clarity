@@ -27,6 +27,7 @@ const EXAMPLE_HTML = `
 const EXAMPLE_TS = `
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { ClrTreeViewModule } from '@clr/angular';
 
 import { File, files } from './files';
 

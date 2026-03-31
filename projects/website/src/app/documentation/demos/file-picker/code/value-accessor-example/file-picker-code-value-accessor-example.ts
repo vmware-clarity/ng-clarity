@@ -29,6 +29,7 @@ const COMPONENT_CLASS = `
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ClrFileInputModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

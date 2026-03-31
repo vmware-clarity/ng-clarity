@@ -128,6 +128,7 @@ import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
+import { ClrDatagridModule, ClrDropdownModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

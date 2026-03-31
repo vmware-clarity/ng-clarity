@@ -31,6 +31,7 @@ const reactiveHTML = `
 const reactiveTS = `
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ClrFormsModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

@@ -44,6 +44,7 @@ const UiSuccess = require('raw-loader!./ui/success.html');
 const AngularTs = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClrCheckboxModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',
@@ -63,6 +64,7 @@ export class ExampleComponent {
 const IndeterminateTs = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClrCheckboxModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

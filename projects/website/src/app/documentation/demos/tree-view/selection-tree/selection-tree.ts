@@ -30,6 +30,7 @@ const EXAMPLE_HTML = `
 
 const EXAMPLE_TS = `
 import { Component } from '@angular/core';
+import { ClrSelectedState, ClrTreeViewModule } from '@clr/angular';
 import { groceries } from './groceries';
 
 @Component({

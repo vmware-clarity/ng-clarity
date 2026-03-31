@@ -33,6 +33,7 @@ const EXAMPLE = `
 const EXAMPLE_TS = `
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ClrSidePanelModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',
