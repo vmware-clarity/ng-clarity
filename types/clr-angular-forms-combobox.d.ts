@@ -34,6 +34,7 @@ declare class ClrComboboxContainer extends ClrAbstractContainer implements After
 }
 
 type ClrComboboxIdentityFunction<T> = (item: T) => any;
+type ClrComboboxResolverFunction<T> = (input: string) => T;
 declare abstract class ComboboxModel<T> {
     model: T | T[];
     displayField?: string;
@@ -81,6 +82,7 @@ declare class OptionSelectionService<T> {
     set identityFn(value: ClrComboboxIdentityFunction<T>);
     get selectAllRequested(): Observable<void>;
     requestSelectAll(): void;
+    editableResolver: ClrComboboxResolverFunction<T>;
     select(item: T): void;
     toggle(item: T): void;
     selectMany(items: T[]): void;
@@ -91,7 +93,6 @@ declare class OptionSelectionService<T> {
      */
     containsAll(items: T[]): boolean;
     setSelectionValue(value: T | T[]): void;
-    parseStringToModel(value: string): T;
     private _identityFn;
     private valuesEqualByIdentity;
     static ɵfac: i0.ɵɵFactoryDeclaration<OptionSelectionService<any>, never>;
@@ -200,6 +201,7 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     set showSelectAll(value: boolean);
     get editable(): boolean;
     set editable(value: boolean);
+    set editableResolver(value: ClrComboboxResolverFunction<T> | undefined);
     set identityFn(value: ClrComboboxIdentityFunction<T>);
     get multiSelect(): boolean | string;
     set multiSelect(value: boolean | string);
@@ -247,7 +249,7 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     private updateControlValue;
     private getDisplayNames;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, { optional: true; }, null, null, null, null, { optional: true; host: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "showSelectAll": { "alias": "showSelectAll"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "identityFn": { "alias": "clrComboboxIdentityFn"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "showSelectAll": { "alias": "showSelectAll"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "editableResolver": { "alias": "clrEditableResolverFn"; "required": false; }; "identityFn": { "alias": "clrComboboxIdentityFn"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     static ngAcceptInputType_showSelectAll: unknown;
 }
 
@@ -348,4 +350,4 @@ declare class ClrComboboxModule {
 }
 
 export { ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions, SELECT_ALL_ID };
-export type { ClrComboboxIdentityFunction };
+export type { ClrComboboxIdentityFunction, ClrComboboxResolverFunction };

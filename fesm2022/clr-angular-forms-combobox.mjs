@@ -133,7 +133,7 @@ class ComboboxModel {
  */
 class MultiSelectComboboxModel extends ComboboxModel {
     containsItem(item) {
-        if (!this.model) {
+        if (this.model === null || this.model === undefined) {
             return false;
         }
         return this.model.some(m => this.identityFn(m) === this.identityFn(item));
@@ -218,7 +218,10 @@ class MultiSelectComboboxModel extends ComboboxModel {
  */
 class SingleSelectComboboxModel extends ComboboxModel {
     containsItem(item) {
-        return this.model !== null && this.identityFn(this.model) === this.identityFn(item);
+        if (this.model === null || this.model === undefined) {
+            return false;
+        }
+        return this.identityFn(this.model) === this.identityFn(item);
     }
     select(item) {
         this.model = item;
@@ -313,6 +316,7 @@ class OptionSelectionService {
         this._inputChanged = new BehaviorSubject('');
         this._selectionChanged = new ReplaySubject(1);
         this._selectAllRequested = new Subject();
+        this.editableResolver = (input) => input;
         this._identityFn = (item) => item;
         this.inputChanged = this._inputChanged.asObservable();
     }
@@ -431,14 +435,6 @@ class OptionSelectionService {
         }
         this.selectionModel.model = value;
         this._selectionChanged.next(this.selectionModel);
-    }
-    parseStringToModel(value) {
-        if (this.displayField) {
-            return {
-                [this.displayField]: value,
-            };
-        }
-        return value;
     }
     valuesEqualByIdentity(current, value) {
         if (current === value) {
@@ -1084,6 +1080,9 @@ class ClrCombobox extends WrappedFormControl {
     set editable(value) {
         this.optionSelectionService.editable = value;
     }
+    set editableResolver(value) {
+        this.optionSelectionService.editableResolver = value;
+    }
     set identityFn(value) {
         this.optionSelectionService.identityFn = value;
     }
@@ -1214,7 +1213,7 @@ class ClrCombobox extends WrappedFormControl {
                     break;
                 case Keys.Enter:
                     if (this.editable && this._searchText.length > 0 && this.options.emptyOptions) {
-                        const parsedInput = this.optionSelectionService.parseStringToModel(this._searchText);
+                        const parsedInput = this.optionSelectionService.editableResolver(this._searchText);
                         this.control?.control.markAsTouched();
                         this.optionSelectionService.select(parsedInput);
                         this.searchText = '';
@@ -1255,7 +1254,7 @@ class ClrCombobox extends WrappedFormControl {
     }
     onChange() {
         if (this.editable && !this.multiSelect && this.options.emptyOptions) {
-            const parsedInput = this.optionSelectionService.parseStringToModel(this._searchText);
+            const parsedInput = this.optionSelectionService.editableResolver(this._searchText);
             this.optionSelectionService.setSelectionValue(parsedInput);
         }
     }
@@ -1448,7 +1447,7 @@ class ClrCombobox extends WrappedFormControl {
         return [this.optionSelectionService.selectionModel.model];
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCombobox, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: OptionSelectionService }, { token: i3.ClrCommonStringsService }, { token: i4.ClrPopoverService }, { token: ComboboxContainerService, optional: true }, { token: PLATFORM_ID }, { token: ComboboxFocusHandler }, { token: i0.ChangeDetectorRef }, { token: i0.NgZone }, { token: ClrComboboxContainer, host: true, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrCombobox, isStandalone: false, selector: "clr-combobox", inputs: { placeholder: "placeholder", showSelectAll: ["showSelectAll", "showSelectAll", booleanAttribute], editable: ["clrEditable", "editable"], identityFn: ["clrComboboxIdentityFn", "identityFn"], multiSelect: ["clrMulti", "multiSelect"] }, outputs: { clrInputChange: "clrInputChange", clrOpenChange: "clrOpenChange", clrSelectionChange: "clrSelectionChange" }, host: { listeners: { "keydown": "onKeyUp($event)" }, properties: { "class.aria-required": "true", "class.clr-combobox": "true", "class.clr-combobox-disabled": "control?.disabled" } }, providers: [
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrCombobox, isStandalone: false, selector: "clr-combobox", inputs: { placeholder: "placeholder", showSelectAll: ["showSelectAll", "showSelectAll", booleanAttribute], editable: ["clrEditable", "editable"], editableResolver: ["clrEditableResolverFn", "editableResolver"], identityFn: ["clrComboboxIdentityFn", "identityFn"], multiSelect: ["clrMulti", "multiSelect"] }, outputs: { clrInputChange: "clrInputChange", clrOpenChange: "clrOpenChange", clrSelectionChange: "clrSelectionChange" }, host: { listeners: { "keydown": "onKeyUp($event)" }, properties: { "class.aria-required": "true", "class.clr-combobox": "true", "class.clr-combobox-disabled": "control?.disabled" } }, providers: [
             OptionSelectionService,
             { provide: LoadingListener, useExisting: ClrCombobox },
             IF_ACTIVE_ID_PROVIDER,
@@ -1521,6 +1520,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], editable: [{
                 type: Input,
                 args: ['clrEditable']
+            }], editableResolver: [{
+                type: Input,
+                args: ['clrEditableResolverFn']
             }], identityFn: [{
                 type: Input,
                 args: ['clrComboboxIdentityFn']
