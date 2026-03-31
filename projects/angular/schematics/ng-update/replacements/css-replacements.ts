@@ -76,3 +76,12 @@ export const CSS_ATTRIBUTE_REPLACEMENTS: readonly CssReplacement[] = [
   { old: "[cds-text*='heading']", new: "[cds-text*='headline']" },
   { old: '[cds-text*="heading"]', new: '[cds-text*="headline"]' },
 ];
+
+/**
+ * SCSS/Sass mixin names that have been removed in v18.
+ * Any `@include <name>(...)` call will be commented out with a TODO note.
+ */
+export const REMOVED_SCSS_MIXINS: readonly string[] = [
+  // #2253 - IE/Edge range input mixin removed (beta.2)
+  'range-track-style',
+];

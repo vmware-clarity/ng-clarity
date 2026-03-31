@@ -35,6 +35,10 @@ export const TEMPLATE_ATTRIBUTE_REPLACEMENTS: readonly TemplateReplacement[] = [
   { old: '[attr.inverse]', new: '[inverse]', context: 'cds-icon' },
   { old: '[attr.badge]', new: '[badge]', context: 'cds-icon' },
   { old: '[attr.solid]', new: '[solid]', context: 'cds-icon' },
+
+  // #2267 - Popover anchor directive selector rename (beta.2)
+  // Matches bare attribute: clrPopoverAnchor and bound: [clrPopoverAnchor]
+  { old: 'clrPopoverAnchor', new: 'clrPopoverOrigin', context: 'popover-anchor-origin' },
 ];
 
 export const TEMPLATE_INPUT_REPLACEMENTS: readonly TemplateReplacement[] = [

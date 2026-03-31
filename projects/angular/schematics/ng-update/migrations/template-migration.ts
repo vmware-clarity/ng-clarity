@@ -16,6 +16,75 @@ import {
 } from '../replacements/template-replacements';
 import { visitFiles } from '../utils/file-visitor';
 
+// ---------------------------------------------------------------------------
+// Pre-compiled regex arrays — built once at module load, not per-file
+// ---------------------------------------------------------------------------
+
+const COMPILED_OUTPUT_REGEXES = TEMPLATE_OUTPUT_REPLACEMENTS.map(r => ({
+  old: r.old,
+  new: r.new,
+  regex: new RegExp(`\\(${escapeRegExp(r.old)}\\)`, 'g'),
+}));
+
+const COMPILED_INPUT_BOUND_REGEXES = TEMPLATE_INPUT_REPLACEMENTS.map(r => ({
+  old: r.old,
+  new: r.new,
+  boundRegex: new RegExp(`\\[${escapeRegExp(r.old)}\\]`, 'g'),
+  bareRegex: new RegExp(`(?<=\\s)${escapeRegExp(r.old)}(?==)`, 'g'),
+}));
+
+const COMPILED_ATTR_REGEXES = TEMPLATE_ATTRIBUTE_REPLACEMENTS.map(r => ({
+  old: r.old,
+  new: r.new,
+  regex: new RegExp(escapeRegExp(r.old), 'g'),
+}));
+
+const COMPILED_HEADER_REGEXES = HEADER_CLASS_REPLACEMENTS.map(r => ({
+  old: r.old,
+  new: r.new,
+  regex: new RegExp(`\\b${escapeRegExp(r.old)}\\b`, 'g'),
+}));
+
+const COMPILED_CDS_TEXT_REGEXES = CSS_ATTRIBUTE_REPLACEMENTS.map(r => ({
+  old: r.old,
+  new: r.new,
+  regex: new RegExp(escapeRegExp(r.old), 'g'),
+}));
+
+// ---------------------------------------------------------------------------
+// Fast-path candidate strings
+// ---------------------------------------------------------------------------
+
+export const TEMPLATE_MIGRATION_HTML_CANDIDATES: readonly string[] = [
+  ...TEMPLATE_OUTPUT_REPLACEMENTS.map(r => r.old),
+  ...TEMPLATE_INPUT_REPLACEMENTS.map(r => r.old),
+  ...TEMPLATE_ATTRIBUTE_REPLACEMENTS.map(r => r.old),
+  ...HEADER_CLASS_REPLACEMENTS.map(r => r.old),
+  ...CSS_ATTRIBUTE_REPLACEMENTS.map(r => r.old),
+];
+
+export const TEMPLATE_MIGRATION_INLINE_CANDIDATES = TEMPLATE_MIGRATION_HTML_CANDIDATES;
+
+// ---------------------------------------------------------------------------
+// Public pure transforms — used by the unified .ts pass in index.ts
+// ---------------------------------------------------------------------------
+
+export function transformInlineTemplates(text: string): string {
+  const templateRegex = /template\s*:\s*(`[\s\S]*?`|'[\s\S]*?')/g;
+
+  return text.replace(templateRegex, (match, templateContent: string) => {
+    if (!TEMPLATE_MIGRATION_INLINE_CANDIDATES.some(c => templateContent.includes(c))) {
+      return match;
+    }
+    const updated = applyHtmlTransforms(templateContent);
+    return updated !== templateContent ? match.replace(templateContent, updated) : match;
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Schematic Rule — visits .html files; .ts inline templates handled in unified pass
+// ---------------------------------------------------------------------------
+
 export function migrateTemplates(): Rule {
   return (tree: Tree, context: SchematicContext) => {
     context.logger.info('  Migrating HTML templates...');
@@ -29,17 +98,14 @@ export function migrateTemplates(): Rule {
         return;
       }
 
-      let text = content.toString('utf-8');
-      const original = text;
+      const original = content.toString('utf-8');
+      if (!TEMPLATE_MIGRATION_HTML_CANDIDATES.some(c => original.includes(c))) {
+        return;
+      }
 
-      text = migrateOutputBindings(text);
-      text = migrateInputBindings(text);
-      text = migrateCdsIconAttributes(text);
-      text = migrateHeaderClasses(text);
-      text = migrateCdsTextAttributes(text);
-
-      if (text !== original) {
-        tree.overwrite(filePath, text);
+      const updated = applyHtmlTransforms(original);
+      if (updated !== original) {
+        tree.overwrite(filePath, updated);
         htmlFileCount++;
       }
     });
@@ -50,13 +116,14 @@ export function migrateTemplates(): Rule {
         return;
       }
 
-      let text = content.toString('utf-8');
-      const original = text;
+      const original = content.toString('utf-8');
+      if (!TEMPLATE_MIGRATION_INLINE_CANDIDATES.some(c => original.includes(c))) {
+        return;
+      }
 
-      text = migrateInlineTemplates(text);
-
-      if (text !== original) {
-        tree.overwrite(filePath, text);
+      const updated = transformInlineTemplates(original);
+      if (updated !== original) {
+        tree.overwrite(filePath, updated);
         tsFileCount++;
       }
     });
@@ -65,64 +132,74 @@ export function migrateTemplates(): Rule {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Private helpers
+// ---------------------------------------------------------------------------
+
+function applyHtmlTransforms(text: string): string {
+  text = migrateOutputBindings(text);
+  text = migrateInputBindings(text);
+  text = migrateCdsIconAttributes(text);
+  text = migrateHeaderClasses(text);
+  text = migrateCdsTextAttributes(text);
+  return text;
+}
+
 function migrateOutputBindings(text: string): string {
-  for (const replacement of TEMPLATE_OUTPUT_REPLACEMENTS) {
-    // Match (outputName)="..." format
-    text = text.replace(new RegExp(`\\(${escapeRegExp(replacement.old)}\\)`, 'g'), `(${replacement.new})`);
+  for (const r of COMPILED_OUTPUT_REGEXES) {
+    if (!text.includes(r.old)) {
+      continue;
+    }
+    r.regex.lastIndex = 0;
+    text = text.replace(r.regex, `(${r.new})`);
   }
   return text;
 }
 
 function migrateInputBindings(text: string): string {
-  for (const replacement of TEMPLATE_INPUT_REPLACEMENTS) {
-    // Match [inputName]="..." and inputName="..." formats
-    text = text.replace(new RegExp(`\\[${escapeRegExp(replacement.old)}\\]`, 'g'), `[${replacement.new}]`);
-    text = text.replace(new RegExp(`(?<=\\s)${escapeRegExp(replacement.old)}(?==)`, 'g'), replacement.new);
+  for (const r of COMPILED_INPUT_BOUND_REGEXES) {
+    if (!text.includes(r.old)) {
+      continue;
+    }
+    r.boundRegex.lastIndex = 0;
+    r.bareRegex.lastIndex = 0;
+    text = text.replace(r.boundRegex, `[${r.new}]`);
+    text = text.replace(r.bareRegex, r.new);
   }
   return text;
 }
 
 function migrateCdsIconAttributes(text: string): string {
-  for (const replacement of TEMPLATE_ATTRIBUTE_REPLACEMENTS) {
-    text = text.replace(new RegExp(escapeRegExp(replacement.old), 'g'), replacement.new);
+  for (const r of COMPILED_ATTR_REGEXES) {
+    if (!text.includes(r.old)) {
+      continue;
+    }
+    r.regex.lastIndex = 0;
+    text = text.replace(r.regex, r.new);
   }
   return text;
 }
 
 function migrateHeaderClasses(text: string): string {
-  for (const replacement of HEADER_CLASS_REPLACEMENTS) {
-    // Match class="...header-N..." — only replace the specific header class
-    text = text.replace(new RegExp(`\\b${escapeRegExp(replacement.old)}\\b`, 'g'), replacement.new);
+  for (const r of COMPILED_HEADER_REGEXES) {
+    if (!text.includes(r.old)) {
+      continue;
+    }
+    r.regex.lastIndex = 0;
+    text = text.replace(r.regex, r.new);
   }
   return text;
 }
 
 function migrateCdsTextAttributes(text: string): string {
-  for (const replacement of CSS_ATTRIBUTE_REPLACEMENTS) {
-    text = text.replace(new RegExp(escapeRegExp(replacement.old), 'g'), replacement.new);
+  for (const r of COMPILED_CDS_TEXT_REGEXES) {
+    if (!text.includes(r.old)) {
+      continue;
+    }
+    r.regex.lastIndex = 0;
+    text = text.replace(r.regex, r.new);
   }
   return text;
-}
-
-function migrateInlineTemplates(text: string): string {
-  // Match template: `...` or template: '...' in @Component decorators
-  const templateRegex = /template\s*:\s*(`[\s\S]*?`|'[\s\S]*?')/g;
-
-  return text.replace(templateRegex, (match, templateContent: string) => {
-    let content = templateContent;
-    const original = content;
-
-    content = migrateOutputBindings(content);
-    content = migrateInputBindings(content);
-    content = migrateCdsIconAttributes(content);
-    content = migrateHeaderClasses(content);
-    content = migrateCdsTextAttributes(content);
-
-    if (content !== original) {
-      return match.replace(original, content);
-    }
-    return match;
-  });
 }
 
 function escapeRegExp(str: string): string {

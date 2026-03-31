@@ -10,7 +10,7 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   test: {
     root: 'projects/angular/schematics',
-    include: ['**/*.spec.ts'],
+    include: ['**/*.vitest.ts'],
     globals: true,
   },
 });

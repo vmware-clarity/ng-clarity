@@ -7,15 +7,24 @@
 
 import { Tree } from '@angular-devkit/schematics';
 
+const EXCLUDED_DIRS = ['/node_modules/', '/.git/', '/dist/', '/coverage/', '/.angular/', '/.nx/', '/.cache/'];
+
 /**
  * Visits all files in the tree matching a glob-like pattern.
  * Supports simple extension matching: '**\/*.ts', '**\/*.html', '**\/*.{css,scss,sass,less}'
+ *
+ * Skips generated/build directories and .d.ts declaration files for performance.
  */
 export function visitFiles(tree: Tree, pattern: string, callback: (filePath: string) => void): void {
   const extensions = parseExtensions(pattern);
 
   tree.visit(filePath => {
-    if (filePath.includes('/node_modules/') || filePath.includes('/.git/')) {
+    if (EXCLUDED_DIRS.some(d => filePath.includes(d))) {
+      return;
+    }
+
+    // Skip TypeScript declaration files — they are generated, never user-edited
+    if (filePath.endsWith('.d.ts')) {
       return;
     }
 

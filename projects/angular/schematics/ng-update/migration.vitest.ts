@@ -9,9 +9,9 @@ import { logging } from '@angular-devkit/core';
 import { HostTree, SchematicContext } from '@angular-devkit/schematics';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { migrateCssProperties } from './migrations/css-migration';
-import { migrateImports } from './migrations/import-migration';
-import { migrateTemplates } from './migrations/template-migration';
+import { migrateCssProperties, transformInlineStyles } from './migrations/css-migration';
+import { migrateImports, transformImports } from './migrations/import-migration';
+import { migrateTemplates, transformInlineTemplates } from './migrations/template-migration';
 
 function runMigrations(tree: HostTree): HostTree {
   const context = {
@@ -23,6 +23,17 @@ function runMigrations(tree: HostTree): HostTree {
   migrateCssProperties()(tree, context);
 
   return tree;
+}
+
+/**
+ * Simulates the unified single-pass TypeScript migration from index.ts
+ * without needing to invoke the full schematic runner.
+ */
+function applyTsTransforms(text: string): string {
+  text = transformImports(text);
+  text = transformInlineTemplates(text);
+  text = transformInlineStyles(text);
+  return text;
 }
 
 describe('ng-update v18 migration', () => {
@@ -163,6 +174,118 @@ const svc: ClrPopoverToggleService = inject(ClrPopoverToggleService);`
       expect(content).toContain('ClrPopoverService');
       expect(content).not.toContain('ClrPopoverToggleService');
     });
+
+    it('should rename ClrPopoverAnchor to ClrPopoverOrigin', () => {
+      tree.create(
+        '/app.ts',
+        `import { ClrPopoverAnchor } from '@clr/angular/popover/common';
+const anchor: ClrPopoverAnchor = new ClrPopoverAnchor();`
+      );
+
+      runMigrations(tree);
+      const content = tree.readText('/app.ts');
+
+      expect(content).toContain('ClrPopoverOrigin');
+      expect(content).not.toContain('ClrPopoverAnchor');
+    });
+
+    it('should rename POPOVER_HOST_ANCHOR to POPOVER_HOST_ORIGIN', () => {
+      tree.create(
+        '/app.ts',
+        `import { POPOVER_HOST_ANCHOR } from '@clr/angular/popover/common';
+providers: [{ provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef }]`
+      );
+
+      runMigrations(tree);
+      const content = tree.readText('/app.ts');
+
+      expect(content).toContain('POPOVER_HOST_ORIGIN');
+      expect(content).not.toContain('POPOVER_HOST_ANCHOR');
+    });
+
+    it('should rename focusAnchor to focusOrigin', () => {
+      tree.create(
+        '/app.ts',
+        `import { ClrPopoverService } from '@clr/angular/popover/common';
+service.focusAnchor();`
+      );
+
+      runMigrations(tree);
+      const content = tree.readText('/app.ts');
+
+      expect(content).toContain('focusOrigin');
+      expect(content).not.toContain('focusAnchor');
+    });
+
+    it('should rename getAnchorPosition to getOriginPosition', () => {
+      tree.create(
+        '/app.ts',
+        `import { ClrPopoverService } from '@clr/angular/popover/common';
+const pos = getAnchorPosition(key);`
+      );
+
+      runMigrations(tree);
+      const content = tree.readText('/app.ts');
+
+      expect(content).toContain('getOriginPosition');
+      expect(content).not.toContain('getAnchorPosition');
+    });
+
+    it('should rename Ç-prefixed popover symbols', () => {
+      tree.create(
+        '/app.ts',
+        `import { ÇlrClrPopoverModuleNext, ÇlrClrPopoverCloseButton, ÇlrClrPopoverOpenCloseButton } from '@clr/angular/popover/common';
+const imports = [ÇlrClrPopoverModuleNext];`
+      );
+
+      runMigrations(tree);
+      const content = tree.readText('/app.ts');
+
+      expect(content).toContain('ClrPopoverModuleNext');
+      expect(content).toContain('ClrPopoverCloseButton');
+      expect(content).toContain('ClrPopoverOpenCloseButton');
+      expect(content).not.toContain('ÇlrClrPopoverModuleNext');
+      expect(content).not.toContain('ÇlrClrPopoverCloseButton');
+      expect(content).not.toContain('ÇlrClrPopoverOpenCloseButton');
+    });
+
+    it('should rename Ç-prefixed accordion/stepper symbols', () => {
+      tree.create(
+        '/app.ts',
+        `import { ÇlrAccordionWillyWonka, ÇlrAccordionOompaLoompa, ÇlrStepperWillyWonka, ÇlrStepperOompaLoompa } from '@clr/angular';
+const a = ÇlrAccordionWillyWonka;`
+      );
+
+      runMigrations(tree);
+      const content = tree.readText('/app.ts');
+
+      expect(content).toContain('AccordionWillyWonka');
+      expect(content).toContain('AccordionOompaLoompa');
+      expect(content).toContain('StepperWillyWonka');
+      expect(content).toContain('StepperOompaLoompa');
+      expect(content).not.toContain('ÇlrAccordionWillyWonka');
+      expect(content).not.toContain('ÇlrStepperWillyWonka');
+    });
+
+    it('should rename Ç-prefixed datagrid symbols', () => {
+      tree.create(
+        '/app.ts',
+        `import { ÇlrDatagridVirtualScrollDirective, ÇlrDatagridWillyWonka, ÇlrWrappedCell, ÇlrDatagridDetailRegisterer } from '@clr/angular/data';
+const d = ÇlrDatagridWillyWonka;`
+      );
+
+      runMigrations(tree);
+      const content = tree.readText('/app.ts');
+
+      expect(content).toContain('ClrDatagridVirtualScrollDirective');
+      expect(content).toContain('DatagridWillyWonka');
+      expect(content).toContain('WrappedCell');
+      expect(content).toContain('DatagridDetailRegisterer');
+      expect(content).not.toContain('ÇlrDatagridVirtualScrollDirective');
+      expect(content).not.toContain('ÇlrDatagridWillyWonka');
+      expect(content).not.toContain('ÇlrWrappedCell');
+      expect(content).not.toContain('ÇlrDatagridDetailRegisterer');
+    });
   });
 
   describe('template migrations', () => {
@@ -239,20 +362,48 @@ const svc: ClrPopoverToggleService = inject(ClrPopoverToggleService);`
       expect(content).not.toContain('clrBadgeColor');
     });
 
+    it('should rename clrPopoverAnchor attribute to clrPopoverOrigin in HTML templates', () => {
+      tree.create('/app.component.html', `<button clrPopoverAnchor clrPopoverOpenCloseButton>Trigger</button>`);
+
+      runMigrations(tree);
+      const content = tree.readText('/app.component.html');
+
+      expect(content).toContain('clrPopoverOrigin');
+      expect(content).not.toContain('clrPopoverAnchor');
+    });
+
     it('should migrate inline templates in .ts files', () => {
-      tree.create(
-        '/app.component.ts',
-        `${'@'}Component({
-  template: \`<clr-wizard (clrWizardCurrentPageChanged)="onPage()"></clr-wizard>\`
-})
-class AppComponent {}`
+      const source = `
+class AppComponent {}
+`.replace(
+        'class',
+        `${'@'}Component({ template: \`<clr-wizard (clrWizardCurrentPageChanged)="onPage()"></clr-wizard>\` })\nclass`
       );
+
+      tree.create('/app.component.ts', source);
 
       runMigrations(tree);
       const content = tree.readText('/app.component.ts');
 
       expect(content).toContain('clrWizardCurrentPageChange');
       expect(content).not.toContain('clrWizardCurrentPageChanged');
+    });
+
+    it('should rename clrPopoverAnchor attribute in inline templates', () => {
+      const source = `
+class PopoverComponent {}
+`.replace(
+        'class',
+        `${'@'}Component({ template: \`<button clrPopoverAnchor clrPopoverOpenCloseButton>Open</button>\` })\nclass`
+      );
+
+      tree.create('/popover.component.ts', source);
+
+      runMigrations(tree);
+      const content = tree.readText('/popover.component.ts');
+
+      expect(content).toContain('clrPopoverOrigin');
+      expect(content).not.toContain('clrPopoverAnchor');
     });
   });
 
@@ -334,18 +485,34 @@ class AppComponent {}`
       expect(content).toContain('[cds-text*="headline"]');
     });
 
-    it('should migrate inline styles in TypeScript files', () => {
+    it('should comment out removed range-track-style SCSS mixin', () => {
       tree.create(
-        '/app.component.ts',
-        `${'@'}Component({
-  styles: [\`
-    :host {
-      --clr-wizard-stepnav-text--active: red;
-    }
-  \`]
-})
-class AppComponent {}`
+        '/styles.scss',
+        `input[type='range'] {
+  @include range-track-style(#000, #fff, 4px);
+}`
       );
+
+      runMigrations(tree);
+      const content = tree.readText('/styles.scss');
+
+      expect(content).toContain('TODO(v18 migration)');
+      expect(content).toContain('range-track-style');
+      // The mixin call must be inside a comment, not executable
+      expect(content).not.toMatch(/^\s*@include range-track-style/m);
+    });
+
+    it('should migrate inline styles in TypeScript files', () => {
+      const source = `
+class AppComponent {}
+`.replace(
+        'class',
+        `${'@'}Component({ styles: [\`
+    :host { --clr-wizard-stepnav-text--active: red; }
+  \`] })\nclass`
+      );
+
+      tree.create('/app.component.ts', source);
 
       runMigrations(tree);
       const content = tree.readText('/app.component.ts');
@@ -361,6 +528,15 @@ class AppComponent {}`
       const content = tree.readText('/unrelated.scss');
 
       expect(content).toBe(original);
+    });
+
+    it('should not modify .ts files that contain no Clarity-related content (fast-path)', () => {
+      const original = `export function helper() { return 42; }`;
+
+      // Test via the pure transform directly (no schematics overhead needed)
+      const result = applyTsTransforms(original);
+
+      expect(result).toBe(original);
     });
   });
 });
