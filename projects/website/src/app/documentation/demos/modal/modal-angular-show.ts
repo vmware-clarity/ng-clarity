@@ -28,6 +28,7 @@ const EXAMPLE = `
 const EXAMPLE_TS = `
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { ClrModalModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

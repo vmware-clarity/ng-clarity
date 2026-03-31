@@ -32,6 +32,7 @@ const TS_EXAMPLE = `
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClrFormsModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

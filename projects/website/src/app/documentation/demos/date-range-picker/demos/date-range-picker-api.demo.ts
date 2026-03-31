@@ -65,6 +65,7 @@ const MIN_MAX_EXAMPLE = `
 const COMMON_EXAMPLE_TS = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClrFormsModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',
@@ -95,6 +96,7 @@ const PREDEFINED_RANGE_OPTIONS_TS = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DateRangeOption } from '@clr/angular/forms/datepicker/interfaces/date-range.interface';
+import { ClrFormsModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',
@@ -107,7 +109,7 @@ export class ExampleComponent {
   startDate: string | undefined;
   endDate: string | undefined;
 
-  dateRangeOptions: DateRangeOption = [
+  dateRangeOptions: DateRangeOption[] = [
     { label: 'Today', value: [new Date(), new Date()] },
     { label: 'Last 7 Days', value: [this.addDays(new Date(), -7), this.addDays(new Date(), -1)] },
     { label: 'Last 14 Days', value: [this.addDays(new Date(), -14), this.addDays(new Date(), -1)] },

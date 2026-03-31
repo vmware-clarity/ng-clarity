@@ -17,8 +17,8 @@
       Use a combobox when you need to have a list of options that has search and filtering capabilities. This is a
       common pattern in web UI and is similar to the native datalist. In contrast to the datalist, a combobox supports
       making multiple selections and providing a richer UI for each option in the list, including images and styling.
-      Adding free text input that is not part of the predefined list is not supported in the combobox. Do not confuse a
-      combobox element with the datalist or select controls.
+      The combobox also supports an <strong>editable</strong> mode that allows users to enter free text values that are
+      not part of the predefined list. Do not confuse a combobox element with the datalist or select controls.
       <a routerLink="/documentation/datalist">Datalist</a> elements are good for simple values to search quickly. A
       <a routerLink="/documentation/select">select</a> input is useful when you want to use the browser’s native select
       control because you don’t need more complex searching and filtering capabilities.
@@ -225,6 +225,31 @@
     <clr-combobox-identity-fn-demo></clr-combobox-identity-fn-demo>
 
     <clr-combobox-multi-identity-fn-demo class="clr-mt-lg"></clr-combobox-multi-identity-fn-demo>
+
+    <h3 data-toc-item id="editable-combobox" cds-text="section" class="clr-mt-32px">Editable Combobox</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The editable combobox allows users to type free text values in addition to selecting from the predefined options.
+      Enable this with the <code cds-text="code">[clrEditable]="true"</code> input. In single-select mode, changing the
+      input text will set the model directly when no matching options remain. In multi-select mode, the user can press
+      <strong>Enter</strong> to add the typed text as a new value when no matching options are found.
+    </p>
+
+    <clr-combobox-editable-demo></clr-combobox-editable-demo>
+
+    <h3 data-toc-item id="editable-combobox-resolver" cds-text="section" class="clr-mt-32px">
+      Editable Combobox with Resolver
+    </h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      When using the editable combobox with object values, the component needs to know how to create a model object from
+      free text. By default, it creates a minimal object using the <code cds-text="code">displayField</code>. For richer
+      objects, provide a <code cds-text="code">[clrEditableResolverFn]</code> function that takes the input string and
+      returns a properly formed model object. When combined with <code cds-text="code">[clrComboboxIdentityFn]</code>,
+      the resolver ensures that duplicate detection and selection comparison work correctly for user-entered values.
+    </p>
+
+    <clr-combobox-editable-multi-demo></clr-combobox-editable-multi-demo>
   </app-doc-tab>
 
   <app-doc-tab tab="api">
@@ -283,6 +308,31 @@
           <td class="left clr-hidden-xs-down">(item: T) => any</td>
           <td class="left clr-hidden-xs-down">(item: T) => item</td>
           <td class="left">A function that returns a unique identifier for an item. Default is the item reference</td>
+        </tr>
+        <tr>
+          <td class="left">
+            [clrEditable]
+            <div class="clr-hidden-sm-up">Type: boolean</div>
+            <div class="clr-hidden-sm-up">Default: false</div>
+          </td>
+          <td class="left clr-hidden-xs-down">boolean</td>
+          <td class="left clr-hidden-xs-down">false</td>
+          <td class="left">
+            Whether the combobox allows free text input. When true, users can type values not in the predefined list
+          </td>
+        </tr>
+        <tr>
+          <td class="left">
+            [clrEditableResolverFn]
+            <div class="clr-hidden-sm-up">Type: (input: string) =&gt; T</div>
+            <div class="clr-hidden-sm-up">Default: undefined</div>
+          </td>
+          <td class="left clr-hidden-xs-down">(input: string) =&gt; T</td>
+          <td class="left clr-hidden-xs-down">undefined</td>
+          <td class="left">
+            A function that creates a model object from free text input. Use this when working with object values in
+            editable mode to produce properly formed model objects
+          </td>
         </tr>
         <tr>
           <td class="left">

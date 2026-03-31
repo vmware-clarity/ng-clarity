@@ -42,6 +42,7 @@ const UiSuccess = require('raw-loader!./ui/success.html');
 const code = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClrFormsModule, ClrLayoutModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

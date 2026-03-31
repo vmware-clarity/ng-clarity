@@ -8,7 +8,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
 
-import { ClrComboboxIdentityFunction, ComboboxModel } from '../model/combobox.model';
+import { ClrComboboxIdentityFunction, ClrComboboxResolverFunction, ComboboxModel } from '../model/combobox.model';
 import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 
 @Injectable()
@@ -18,7 +18,6 @@ export class OptionSelectionService<T> {
   showSelectAll = false;
   selectionModel: ComboboxModel<T>;
   inputChanged: Observable<string>;
-
   // Display all options on first open, even if filter text exists.
   // https://github.com/vmware-clarity/ng-clarity/issues/386
   showAllOptions = true;
@@ -83,6 +82,8 @@ export class OptionSelectionService<T> {
   requestSelectAll() {
     this._selectAllRequested.next();
   }
+
+  editableResolver: ClrComboboxResolverFunction<T> = (input: string) => input as T;
 
   select(item: T) {
     if (item === null || item === undefined || this.selectionModel.containsItem(item)) {
@@ -165,15 +166,6 @@ export class OptionSelectionService<T> {
 
     this.selectionModel.model = value;
     this._selectionChanged.next(this.selectionModel);
-  }
-
-  parseStringToModel(value: string): T {
-    if (this.displayField) {
-      return {
-        [this.displayField]: value,
-      } as T;
-    }
-    return value as T;
   }
 
   private _identityFn: ClrComboboxIdentityFunction<T> = (item: T) => item;

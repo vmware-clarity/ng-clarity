@@ -22,6 +22,7 @@ import { formsPatternLink } from '../pattern-links';
 const ExampleTs = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClrCheckboxModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

@@ -12,7 +12,7 @@ export class MultiSelectComboboxModel<T> extends ComboboxModel<T> {
   override displayField: string;
 
   containsItem(item: T): boolean {
-    if (!this.model) {
+    if (this.model === null || this.model === undefined) {
       return false;
     }
     return this.model.some(m => this.identityFn(m) === this.identityFn(item));

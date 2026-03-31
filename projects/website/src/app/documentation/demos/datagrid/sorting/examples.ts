@@ -84,6 +84,7 @@ const sortingHTML = `
 const preSortTS = `
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { ClrDatagridModule, ClrDatagridSortOrder } from '@clr/angular';
 import { Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
 

@@ -43,6 +43,7 @@ const EXAMPLE = `
 
 const EXAMPLE_TS = `
 import { Component } from '@angular/core';
+import { ClarityModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

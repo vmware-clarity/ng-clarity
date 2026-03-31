@@ -10,6 +10,8 @@ import { RouterLink } from '@angular/router';
 import { ClarityIcons, homeIcon, sunIcon, worldIcon } from '@clr/angular';
 
 import { ComboboxAsyncDemo } from './combobox-async.demo';
+import { ComboboxEditableMultiDemo } from './combobox-editable-multi.demo';
+import { ComboboxEditableDemo } from './combobox-editable.demo';
 import { ComboboxGroupingDemo } from './combobox-grouping.demo';
 import { ComboboxIdentityFnDemo } from './combobox-identity-fn.demo';
 import { ComboboxMultiIdentityFnDemo } from './combobox-multi-identity-fn.demo';
@@ -45,6 +47,8 @@ import { formsPatternLink } from '../pattern-links';
     ComboboxIdentityFnDemo,
     ComboboxMultiIdentityFnDemo,
     ComboboxSelectAllDemo,
+    ComboboxEditableDemo,
+    ComboboxEditableMultiDemo,
     StyleDocsComponent,
     NestingTableComponent,
   ],

@@ -30,6 +30,7 @@ const EXAMPLE_HTML = `
 const EXAMPLE_TS = `
 import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
+import { ClrConditionalModule, ClrLoadingModule, ClrTreeViewModule } from '@clr/angular';
 import { Observable } from 'rxjs';
 
 import { GroceryItemsComponent } from './grocery-items.component';

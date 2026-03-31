@@ -32,6 +32,7 @@ const EXAMPLE = `
 const EXAMPLE_TS = `
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
+import { ClrModal, ClrModalModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

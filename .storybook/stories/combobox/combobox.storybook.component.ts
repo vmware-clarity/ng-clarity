@@ -26,6 +26,7 @@ interface OptionGroup {
       <label [for]="id">{{ label }}</label>
       <clr-combobox
         [clrEditable]="clrEditable"
+        [clrEditableResolverFn]="clrEditable && objectValues ? elementResolver : undefined"
         [clrMulti]="clrMulti"
         [showSelectAll]="showSelectAll"
         [placeholder]="placeholder"
@@ -140,6 +141,13 @@ export class StorybookComboboxComponent {
     }, []);
 
   identityBySymbol = (item: { symbol?: string }) => item?.symbol;
+
+  elementResolver = (input: string) => ({
+    name: input,
+    symbol: input,
+    number: 0,
+    electronegativity: 0,
+  });
 
   onModelChange(value: string | string[]) {
     if (this.clrMulti) {

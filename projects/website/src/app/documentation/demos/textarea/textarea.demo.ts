@@ -29,6 +29,7 @@ const UiHelper = require('raw-loader!./ui/helper.html');
 const code = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClrTextareaModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

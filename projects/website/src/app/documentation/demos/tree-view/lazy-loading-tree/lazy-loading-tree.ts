@@ -37,6 +37,7 @@ const EXAMPLE_HTML = `
 const EXAMPLE_TS = `
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { ClrConditionalModule, ClrIcon, ClrLoadingModule, ClrTreeViewModule } from '@clr/angular';
 import { Observable, timer } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 

@@ -41,6 +41,7 @@ const html = `
 const code = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClrSelectModule, ClrSignpostModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',
