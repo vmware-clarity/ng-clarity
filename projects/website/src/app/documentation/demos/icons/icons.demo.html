@@ -351,6 +351,393 @@
     </div>
   </app-doc-tab>
 
+  <app-doc-tab tab="code">
+    <h2 class="clr-mt-48px" cds-text="title" id="basic-icons-example">Basic Icon Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Before exploring aliases, here is a quick refresher on basic icon usage. You register individual icon shapes with
+      <code>ClarityIcons.addIcons()</code> and reference them via the <code>shape</code> attribute.
+    </p>
+    <div class="clr-mt-16px">
+      <app-stackblitz-example
+        name="basic icon usage"
+        [componentTemplate]="basicIconsTemplate"
+        [componentClass]="basicIconsClass"
+      ></app-stackblitz-example>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="icon-aliases">Icon Aliases</h2>
+    <p class="component-summary">
+      Icon aliases allow you to reference the same icon SVG shape by an alternative name. This is useful when you want
+      more descriptive or domain-specific names in your templates. Clarity provides many built-in aliases out of the
+      box, and you can also create your own custom aliases.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      An alias maps an alternative name to an existing icon in the registry. When you use an alias name in
+      <code>shape</code>, the component renders the same SVG as the original icon. This means a single icon graphic can
+      be referenced by multiple names &mdash; its canonical name and any number of aliases.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      The alias type is defined as a tuple: <code>[OriginalIconName, AliasNames[]]</code>. For example,
+      <code>['home', ['house']]</code> makes it possible to use <code>&lt;clr-icon shape="house"&gt;</code> to render
+      the <em>home</em> icon.
+    </p>
+
+    <h3 data-toc-item class="clr-mt-48px" cds-text="title" id="builtin-aliases">Built-in Aliases</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      When you load an icon collection (for example, by calling <code>loadCoreIconSet()</code>), all the built-in
+      aliases for that collection are automatically registered. You can then use the alias name in your templates
+      exactly like the original name.
+    </p>
+
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="builtin-aliases-reference">
+      Built-in Alias Reference
+    </h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Below is a comprehensive list of built-in aliases organized by icon collection.
+    </p>
+
+    <h4 class="clr-mt-16px" cds-text="subsection">Core Collection</h4>
+    <table class="table clr-mt-8px" cds-text="body">
+      <thead>
+        <tr>
+          <th class="left" style="width: 400px">Original Icon</th>
+          <th class="left">Alias</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">home</td>
+          <td class="left">house</td>
+        </tr>
+        <tr>
+          <td class="left">cog</td>
+          <td class="left">settings</td>
+        </tr>
+        <tr>
+          <td class="left">check</td>
+          <td class="left">success</td>
+        </tr>
+        <tr>
+          <td class="left">times</td>
+          <td class="left">close</td>
+        </tr>
+        <tr>
+          <td class="left">exclamation-triangle</td>
+          <td class="left">warning</td>
+        </tr>
+        <tr>
+          <td class="left">exclamation-circle</td>
+          <td class="left">error</td>
+        </tr>
+        <tr>
+          <td class="left">info-circle</td>
+          <td class="left">info</td>
+        </tr>
+        <tr>
+          <td class="left">bars</td>
+          <td class="left">menu</td>
+        </tr>
+        <tr>
+          <td class="left">user</td>
+          <td class="left">avatar</td>
+        </tr>
+        <tr>
+          <td class="left">angle</td>
+          <td class="left">caret</td>
+        </tr>
+        <tr>
+          <td class="left">folder</td>
+          <td class="left">directory</td>
+        </tr>
+        <tr>
+          <td class="left">bell</td>
+          <td class="left">notification</td>
+        </tr>
+        <tr>
+          <td class="left">angle-double</td>
+          <td class="left">collapse</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 class="clr-mt-16px" cds-text="subsection">Essential Collection</h4>
+    <table class="table clr-mt-8px" cds-text="body">
+      <thead>
+        <tr>
+          <th class="left" style="width: 400px">Original Icon</th>
+          <th class="left">Alias</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">pencil</td>
+          <td class="left">edit</td>
+        </tr>
+        <tr>
+          <td class="left">note</td>
+          <td class="left">note-edit</td>
+        </tr>
+        <tr>
+          <td class="left">users</td>
+          <td class="left">group</td>
+        </tr>
+        <tr>
+          <td class="left">file</td>
+          <td class="left">document</td>
+        </tr>
+        <tr>
+          <td class="left">plus</td>
+          <td class="left">add</td>
+        </tr>
+        <tr>
+          <td class="left">ban</td>
+          <td class="left">cancel</td>
+        </tr>
+        <tr>
+          <td class="left">times-circle</td>
+          <td class="left">remove</td>
+        </tr>
+        <tr>
+          <td class="left">login</td>
+          <td class="left">sign-in</td>
+        </tr>
+        <tr>
+          <td class="left">logout</td>
+          <td class="left">sign-out</td>
+        </tr>
+        <tr>
+          <td class="left">bolt</td>
+          <td class="left">lightning</td>
+        </tr>
+        <tr>
+          <td class="left">organization</td>
+          <td class="left">flow-chart</td>
+        </tr>
+        <tr>
+          <td class="left">bubble-exclamation</td>
+          <td class="left">alert</td>
+        </tr>
+        <tr>
+          <td class="left">pinboard</td>
+          <td class="left">pinned</td>
+        </tr>
+        <tr>
+          <td class="left">paperclip</td>
+          <td class="left">attachment</td>
+        </tr>
+        <tr>
+          <td class="left">shrink</td>
+          <td class="left">resize-down</td>
+        </tr>
+        <tr>
+          <td class="left">resize</td>
+          <td class="left">resize-up</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 class="clr-mt-16px" cds-text="subsection">Commerce Collection</h4>
+    <table class="table clr-mt-8px" cds-text="body">
+      <thead>
+        <tr>
+          <th class="left" style="width: 400px">Original Icon</th>
+          <th class="left">Alias</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">piggy-bank</td>
+          <td class="left">savings</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 class="clr-mt-16px" cds-text="subsection">Social Collection</h4>
+    <table class="table clr-mt-8px" cds-text="body">
+      <thead>
+        <tr>
+          <th class="left" style="width: 400px">Original Icon</th>
+          <th class="left">Alias</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">star</td>
+          <td class="left">favorite</td>
+        </tr>
+        <tr>
+          <td class="left">envelope</td>
+          <td class="left">email</td>
+        </tr>
+        <tr>
+          <td class="left">calendar</td>
+          <td class="left">date</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 class="clr-mt-16px" cds-text="subsection">Travel Collection</h4>
+    <table class="table clr-mt-8px" cds-text="body">
+      <thead>
+        <tr>
+          <th class="left" style="width: 400px">Original Icon</th>
+          <th class="left">Alias</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">airplane</td>
+          <td class="left">plane</td>
+        </tr>
+        <tr>
+          <td class="left">caravan</td>
+          <td class="left">auto</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 class="clr-mt-16px" cds-text="subsection">Technology Collection</h4>
+    <table class="table clr-mt-8px" cds-text="body">
+      <thead>
+        <tr>
+          <th class="left" style="width: 400px">Original Icon</th>
+          <th class="left">Alias</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">host</td>
+          <td class="left">server</td>
+        </tr>
+        <tr>
+          <td class="left">terminal</td>
+          <td class="left">command</td>
+        </tr>
+        <tr>
+          <td class="left">mobile</td>
+          <td class="left">mobile-phone</td>
+        </tr>
+        <tr>
+          <td class="left">certificate</td>
+          <td class="left">license</td>
+        </tr>
+        <tr>
+          <td class="left">no-wifi</td>
+          <td class="left">disconnected</td>
+        </tr>
+        <tr>
+          <td class="left">phone-handset</td>
+          <td class="left">receiver</td>
+        </tr>
+        <tr>
+          <td class="left">ruler-pencil</td>
+          <td class="left">design</td>
+        </tr>
+        <tr>
+          <td class="left">helix</td>
+          <td class="left">dna</td>
+        </tr>
+        <tr>
+          <td class="left">file-share</td>
+          <td class="left">folder-share</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 class="clr-mt-16px" cds-text="subsection">Chart Collection</h4>
+    <table class="table clr-mt-8px" cds-text="body">
+      <thead>
+        <tr>
+          <th class="left" style="width: 400px">Original Icon</th>
+          <th class="left">Alias</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">line-chart</td>
+          <td class="left">analytics</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="clr-mt-16px" cds-text="body">
+      <strong>Note:</strong> The Media and Text Edit collections do not currently define any built-in aliases.
+    </p>
+
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="builtin-aliases-example">
+      Example: Using Built-in Aliases
+    </h3>
+    <p class="clr-mt-16px" cds-text="body">
+      After loading a collection set, you can use either the original name or the alias interchangeably. Both produce
+      identical icons.
+    </p>
+    <div class="clr-mt-16px">
+      <app-stackblitz-example
+        name="built-in icon aliases"
+        [componentTemplate]="builtinAliasesTemplate"
+        [componentClass]="builtinAliasesClass"
+      ></app-stackblitz-example>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="custom-aliases">Creating Custom Aliases</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      You can create custom aliases for any icon that is already registered using
+      <code>ClarityIcons.addAliases()</code>. This allows you to use names that match your application's domain
+      language.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      Each alias is defined as a tuple of the form <code>[originalIconName, [aliasName1, aliasName2, ...]]</code>. The
+      original icon <strong>must already be registered</strong> before you create an alias for it.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet
+        [code]="'ClarityIcons.addAliases(\n  [\'home\', [\'homepage\', \'dashboard\']],\n  [\'user\', [\'profile\', \'account\']],\n);'"
+        language="typescript"
+      ></app-code-snippet>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="custom-aliases-example">
+      Example: Custom Aliases in Action
+    </h3>
+    <p class="clr-mt-16px" cds-text="body">
+      The example below registers two icons and then creates custom aliases for each. You can then use the alias names
+      in your templates just like the original icon name.
+    </p>
+    <div class="clr-mt-16px">
+      <app-stackblitz-example
+        name="custom icon aliases"
+        [componentTemplate]="customAliasesTemplate"
+        [componentClass]="customAliasesClass"
+      ></app-stackblitz-example>
+    </div>
+
+    <h2 data-toc-item class="clr-mt-48px" cds-text="title" id="aliases-best-practices">Best Practices</h2>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg m-b:md">
+      <li>
+        <strong>Register icons before aliasing:</strong> Always call <code>ClarityIcons.addIcons()</code> or load a
+        collection set before calling <code>ClarityIcons.addAliases()</code>. Aliases for unregistered icons are
+        silently ignored.
+      </li>
+      <li>
+        <strong>Prefer built-in aliases:</strong> Check the built-in alias reference above before creating custom
+        aliases. Using the built-in aliases keeps your code consistent with the broader Clarity ecosystem.
+      </li>
+      <li>
+        <strong>Use collection loaders for convenience:</strong> Functions like <code>loadCoreIconSet()</code>,
+        <code>loadEssentialIconSet()</code>, etc. register both the icons <em>and</em> their built-in aliases in one
+        call.
+      </li>
+      <li>
+        <strong>Avoid alias name collisions:</strong> If you create a custom alias with the same name as an existing
+        icon, the alias will overwrite the existing registry entry. Choose unique alias names.
+      </li>
+      <li>
+        <strong>Keep aliases meaningful:</strong> Use aliases that reflect your application's domain language (e.g.,
+        "profile" for a user settings page) to make templates more readable.
+      </li>
+    </ul>
+  </app-doc-tab>
+
   <app-doc-tab tab="shapes">
     <app-icon-shapes></app-icon-shapes>
   </app-doc-tab>
