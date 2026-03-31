@@ -83,7 +83,7 @@ export class OptionSelectionService<T> {
     this._selectAllRequested.next();
   }
 
-  editableResolver: ClrComboboxResolverFunction<T> | undefined = (input: string) => input as T;
+  editableResolver: ClrComboboxResolverFunction<T> = (input: string) => input as T;
 
   select(item: T) {
     if (item === null || item === undefined || this.selectionModel.containsItem(item)) {
