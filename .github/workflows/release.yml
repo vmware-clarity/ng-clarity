@@ -41,8 +41,7 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
         run: |
-          cp netlify-storybook.toml netlify.toml
-          npx netlify-cli@23.6.0 deploy --no-build --dir dist/docs --site ${{secrets.NETLIFY_SITE_NAME}} $([[ $GITHUB_REF_NAME == "main" ]] && echo "--prod")
+          npx netlify-cli@23.6.0 deploy --no-build --context storybook --dir dist/docs --site ${{secrets.NETLIFY_SITE_NAME}} $([[ $GITHUB_REF_NAME == "main" ]] && echo "--prod")
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
       - name: Generate Website Sitemap
@@ -54,7 +53,6 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
         run: |
-          cp netlify-website.toml netlify.toml
-          npx netlify-cli@23.6.0 deploy --no-build --dir dist/website \
-            --site ${{secrets.NETLIFY_WEBSITE_SITE_NAME}} \
-            $([[ $GITHUB_REF_NAME == "main" ]] && echo "--prod" || echo "--alias v${GITHUB_REF_NAME%%.*}")
+          npx netlify-cli@23.6.0 deploy --no-build --context website --dir dist/website \
+          --site ${{secrets.NETLIFY_WEBSITE_SITE_NAME}} \
+          $([[ $GITHUB_REF_NAME == "main" ]] && echo "--prod" || echo "--alias v${GITHUB_REF_NAME%%.*}")
