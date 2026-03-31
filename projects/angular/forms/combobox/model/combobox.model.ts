@@ -7,6 +7,8 @@
 
 export type ClrComboboxIdentityFunction<T> = (item: T) => any;
 
+export type ClrComboboxResolverFunction<T> = (input: string) => T;
+
 export abstract class ComboboxModel<T> {
   model: T | T[];
   displayField?: string;

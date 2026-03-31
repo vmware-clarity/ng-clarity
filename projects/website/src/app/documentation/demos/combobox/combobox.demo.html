@@ -244,7 +244,7 @@
     <p cds-text="body" class="clr-mt-16px">
       When using the editable combobox with object values, the component needs to know how to create a model object from
       free text. By default, it creates a minimal object using the <code cds-text="code">displayField</code>. For richer
-      objects, provide a <code cds-text="code">[clrEditableResolver]</code> function that takes the input string and
+      objects, provide a <code cds-text="code">[clrEditableResolverFn]</code> function that takes the input string and
       returns a properly formed model object. When combined with <code cds-text="code">[clrComboboxIdentityFn]</code>,
       the resolver ensures that duplicate detection and selection comparison work correctly for user-entered values.
     </p>
@@ -323,7 +323,7 @@
         </tr>
         <tr>
           <td class="left">
-            [clrEditableResolver]
+            [clrEditableResolverFn]
             <div class="clr-hidden-sm-up">Type: (input: string) =&gt; T</div>
             <div class="clr-hidden-sm-up">Default: undefined</div>
           </td>

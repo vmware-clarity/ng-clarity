@@ -258,7 +258,7 @@ export default function (): void {
       });
     });
 
-    describe('clrEditableResolver', () => {
+    describe('clrEditableResolverFn', () => {
       it('sets the editableResolver on the optionSelectionService', () => {
         const resolver = (input: string) => input;
         clarityDirective.editableResolver = resolver;

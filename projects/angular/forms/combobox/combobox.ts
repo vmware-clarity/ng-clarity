@@ -49,7 +49,7 @@ import {
 import { debounceTime, Subject } from 'rxjs';
 
 import { ClrComboboxContainer } from './combobox-container';
-import { ClrComboboxIdentityFunction, ComboboxModel } from './model/combobox.model';
+import { ClrComboboxIdentityFunction, ClrComboboxResolverFunction, ComboboxModel } from './model/combobox.model';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
 import { ClrOptionSelected } from './option-selected.directive';
@@ -163,8 +163,8 @@ export class ClrCombobox<T>
     this.optionSelectionService.editable = value;
   }
 
-  @Input('clrEditableResolver')
-  set editableResolver(value: ((input: string) => T) | undefined) {
+  @Input('clrEditableResolverFn')
+  set editableResolver(value: ClrComboboxResolverFunction<T> | undefined) {
     this.optionSelectionService.editableResolver = value;
   }
 

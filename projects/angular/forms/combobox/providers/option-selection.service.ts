@@ -172,11 +172,6 @@ export class OptionSelectionService<T> {
     if (this.editableResolver) {
       return this.editableResolver(value);
     }
-    if (this.displayField) {
-      return {
-        [this.displayField]: value,
-      } as T;
-    }
     return value as T;
   }
 

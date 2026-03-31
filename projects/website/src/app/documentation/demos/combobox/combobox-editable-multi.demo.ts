@@ -21,7 +21,7 @@ const basicHTML = `
     name="visitedStates"
     clrMulti="true"
     [clrEditable]="true"
-    [clrEditableResolver]="stateResolver"
+    [clrEditableResolverFn]="stateResolver"
     [clrComboboxIdentityFn]="identityFn"
   >
     <ng-container *clrOptionSelected="let selected">
