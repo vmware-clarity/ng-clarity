@@ -19,6 +19,10 @@
 @use '../styles/variables/variables.density' as density;
 @use '../styles/core/tokens/variables.tokens' as tokens;
 
+// Path from the wizard host to the content-wrapper when going through the modal.
+// Used to scope styles so they don't leak into nested wizard instances.
+$_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrapper';
+
 @include meta.load-css('properties.wizard');
 @include mixins.exports('wizard.clarity') {
   .clr-wizard {
@@ -31,72 +35,10 @@
       max-height: 100%;
     }
 
-    .modal-content {
-      border-radius: 0 wizard-variables.$clr-wizard-border-radius wizard-variables.$clr-wizard-border-radius 0;
-      box-shadow: none;
-      padding: 0;
-      flex: 2 2 auto;
-      width: 66%;
-      height: initial;
-      overflow: hidden;
-      display: flex;
-      align-items: flex-start;
-      flex-direction: column;
-    }
-
-    .modal-header--accessible {
-      flex: 0 0 auto;
-      width: 100%;
-      gap: density.$clr-base-gap-s;
-      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space 0;
-    }
-
-    .modal-title {
-      color: wizard-variables.$clr-wizard-title-text;
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-    }
-
-    .modal-body {
-      flex: 1 1 auto;
-      color: wizard-variables.$clr-wizard-main-text-color;
-      width: 100%;
-      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space;
-    }
-
-    .modal-footer {
-      display: block;
-      width: 100%;
-      flex: 0 0 wizard-variables.$clr-wizard-footer-height;
-      height: wizard-variables.$clr-wizard-footer-height;
-      min-height: wizard-variables.$clr-wizard-footer-height;
-      max-height: wizard-variables.$clr-wizard-footer-height;
-      padding: wizard-variables.$clr-wizard-footer-vertical-space wizard-variables.$clr-wizard-horizontal-space;
-      border-top: tokens.$cds-global-space-1 solid wizard-variables.$clr-wizard-stepnav-border-color;
-    }
-
     .clr-wizard-btn {
       margin: 0;
       max-width: 100%;
       display: block;
-    }
-
-    .modal-title-text {
-      display: inline-block;
-      flex: 0 1 auto;
-      width: 100%;
-      outline: none;
-    }
-
-    .modal-title-wrapper {
-      width: 100%;
-    }
-
-    .modal-header-actions-wrapper {
-      height: density.$clr-base-row-height-s;
-      padding-left: density.$clr-base-horizontal-offset-l;
-      padding-right: density.$clr-base-horizontal-offset-xs;
     }
 
     .clr-wizard-header-action-wrapper {
@@ -130,29 +72,6 @@
       }
     }
 
-    .clr-wizard-stepnav-wrapper {
-      flex: 1 1 auto;
-      height: 100%;
-      width: 34%;
-      max-width: 34%;
-      display: flex;
-      flex-direction: column;
-      order: -1;
-      overflow: hidden;
-      border-right: tokens.$cds-global-space-1 solid wizard-variables.$clr-wizard-stepnav-border-color;
-      background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
-      border-radius: wizard-variables.$clr-wizard-border-radius 0 0 wizard-variables.$clr-wizard-border-radius;
-    }
-
-    .clr-wizard-stepnav {
-      padding-left: wizard-variables.$clr-wizard-horizontal-space;
-      display: block;
-      color: wizard-variables.$clr-wizard-stepnav-text;
-      width: 100%;
-      flex: 1 1 auto;
-      overflow-y: auto;
-    }
-
     .clr-wizard-stepnav-list {
       display: flex;
       flex-direction: column;
@@ -168,12 +87,12 @@
 
     .clr-wizard-stepnav-item {
       display: block;
-      border-left: wizard-variables.$clr-wizard-stepnav-border-size solid
-        wizard-variables.$clr-wizard-stepnav-item-border-color;
+      border-left-width: wizard-variables.$clr-wizard-stepnav-border-size;
+      border-left-style: solid;
+      border-color: wizard-variables.$clr-wizard-stepnav-item-border-color;
       color: wizard-variables.$clr-wizard-stepnav-text;
       background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
 
-      // prevent button colors from "leaking" into the stepnav items
       button.clr-wizard-stepnav-link {
         color: inherit;
         background-color: inherit;
@@ -183,11 +102,10 @@
         color: wizard-variables.$clr-wizard-stepnav-text-disabled;
       }
 
-      // active class actually means "selected"
       &.active {
         color: wizard-variables.$clr-wizard-stepnav-text-selected;
         background-color: wizard-variables.$clr-wizard-stepnav-selected-bgcolor;
-        border-left-color: wizard-variables.$clr-wizard-stepnav-selected-border-color;
+        border-color: wizard-variables.$clr-wizard-stepnav-selected-border-color;
 
         &:hover {
           background-color: wizard-variables.$clr-wizard-stepnav-selected-hover-bgcolor;
@@ -218,7 +136,6 @@
 
       &.complete {
         border-color: wizard-variables.$clr-wizard-stepnav-item-complete-border-color;
-        transition: border-color 0.2s ease-in;
 
         .clr-wizard-stepnav-link-icon {
           cds-icon,
@@ -230,7 +147,6 @@
 
       &.error {
         border-color: wizard-variables.$clr-wizard-stepnav-item-error-border-color;
-        transition: border-color 0.2s ease-in;
 
         &.active:not(:active, :hover) {
           background-color: wizard-variables.$clr-wizard-stepnav-selected-error-bgcolor;
@@ -266,7 +182,7 @@
       @include mixins.generate-typography-token('BODY-14-MD-STD');
 
       .clr-wizard-stepnav-link-icon {
-        display: flex; // this vertically centers the icon
+        display: flex;
       }
 
       .clr-wizard-stepnav-link-icon,
@@ -279,32 +195,6 @@
       }
     }
 
-    .clr-wizard-title {
-      margin-top: 0;
-      flex: 0 0 auto;
-      color: wizard-variables.$clr-wizard-title-text;
-      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space;
-
-      @include mixins.generate-typography-token('SECTION-20-STD');
-    }
-
-    // normal modal ignores this. wizard needs it so the nav and content
-    // will take up the full height of the modal...
-    .modal-content-wrapper {
-      display: flex;
-      flex-direction: row;
-      flex: 1 1 100%;
-
-      @include mixins.equilateral(100%);
-      // firefox fix
-      max-height: 100%;
-
-      // edge fix, related to the firefox fix above
-      .modal-nav {
-        height: auto;
-      }
-    }
-
     .clr-wizard-footer-buttons {
       text-align: right;
       margin: 0;
@@ -313,8 +203,15 @@
     .clr-wizard-footer-buttons-wrapper {
       display: flex;
       flex-flow: row nowrap;
-      justify-content: flex-end;
       gap: density.$clr-base-gap-l;
+
+      &.align-start {
+        justify-content: flex-start;
+      }
+
+      &.align-end {
+        justify-content: flex-end;
+      }
     }
 
     .clr-wizard-btn-wrapper {
@@ -326,85 +223,233 @@
     }
 
     .clr-wizard-btn.btn-link {
-      // extra padding around flat buttons in wizard is not necessary
       padding: 0;
     }
 
     .clr-wizard-content {
-      display: block;
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
     }
 
     .clr-wizard-page:not([aria-hidden='true']) {
-      display: block;
-    }
-  }
-
-  .clr-wizard {
-    // sizing stuff is here
-    .modal-dialog {
-      height: 75vh;
-    }
-
-    .modal-body-wrapper {
-      // overriding forced style on .modal
-      max-height: 100%;
       display: flex;
-      flex-grow: 1;
-      width: 100%;
-    }
-
-    &.wizard-md {
-      .modal-dialog {
-        min-height: wizard-variables.$clr-wizard-all-dialog-min-height;
-        max-height: wizard-variables.$clr-wizard-md-dialog-max-height;
-      }
-
-      .modal-content,
-      .clr-wizard-stepnav-wrapper {
-        max-height: wizard-variables.$clr-wizard-md-dialog-max-height;
-      }
-
-      .clr-wizard-stepnav-wrapper {
-        min-width: wizard-variables.$clr-wizard-md-nav-min-width;
-        max-width: wizard-variables.$clr-wizard-md-nav-max-width;
-      }
-    }
-
-    &.wizard-lg {
-      .modal-dialog {
-        min-height: wizard-variables.$clr-wizard-all-dialog-min-height;
-        max-height: wizard-variables.$clr-wizard-lg-dialog-max-height;
-      }
-
-      .modal-content,
-      .clr-wizard-stepnav-wrapper {
-        max-height: wizard-variables.$clr-wizard-lg-dialog-max-height;
-      }
-
-      .nav-panel,
-      .clr-wizard-stepnav-wrapper {
-        min-width: wizard-variables.$clr-wizard-lg-nav-min-width;
-        max-width: wizard-variables.$clr-wizard-lg-nav-max-width;
-      }
-    }
-
-    &.wizard-xl {
-      .modal-dialog {
-        height: wizard-variables.$clr-wizard-xl-dialog-max-height;
-        max-height: none;
-      }
-
-      .nav-panel,
-      .clr-wizard-stepnav-wrapper {
-        min-width: wizard-variables.$clr-wizard-xl-nav-min-width;
-        max-width: wizard-variables.$clr-wizard-xl-nav-max-width;
-      }
+      flex-direction: column;
+      flex: 1 1 auto;
     }
 
     .spinner:not(.spinner-inline, .clr-treenode-spinner) {
       left: calc(50% + #{mixins.baselinePx(115)});
       position: absolute;
       top: 40%;
+    }
+  }
+
+  // Structural layout styles scoped to the content-wrapper to prevent
+  // leaking into nested wizard instances.
+  .clr-wizard-content-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 100%;
+
+    @include mixins.equilateral(100%);
+    // firefox fix
+    max-height: 100%;
+
+    > .clr-wizard-main-content {
+      border-radius: 0 wizard-variables.$clr-wizard-border-radius wizard-variables.$clr-wizard-border-radius 0;
+      box-shadow: none;
+      padding: 0;
+      flex: 2 2 auto;
+      width: 66%;
+      height: initial;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    > .clr-wizard-main-content > .clr-wizard-header {
+      flex: 0 0 auto;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: none;
+      gap: density.$clr-base-gap-s;
+      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space 0;
+    }
+
+    > .clr-wizard-main-content .clr-wizard-page-title {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      margin: 0;
+
+      @include mixins.generate-typography-token('SECTION-20-STD');
+    }
+
+    > .clr-wizard-main-content .clr-wizard-page-title-text {
+      display: inline-block;
+      flex: 0 1 auto;
+      width: 100%;
+      outline: none;
+    }
+
+    > .clr-wizard-main-content .clr-wizard-page-title-wrapper {
+      width: 100%;
+    }
+
+    > .clr-wizard-main-content .clr-wizard-header-actions-wrapper {
+      height: density.$clr-base-row-height-s;
+      padding-left: density.$clr-base-horizontal-offset-l;
+      padding-right: density.$clr-base-horizontal-offset-xs;
+    }
+
+    .close {
+      font-size: initial;
+      line-height: initial;
+
+      cds-icon,
+      clr-icon {
+        fill: modal-variables.$clr-modal-close-color;
+
+        &:not([size]) {
+          @include mixins.equilateral(modal-variables.$clr-modal-icon-size);
+        }
+      }
+
+      &:hover {
+        cds-icon,
+        clr-icon {
+          fill: variables.$clr-close-color-hover;
+        }
+
+        &:active {
+          cds-icon,
+          clr-icon {
+            fill: variables.$clr-close-color-active;
+          }
+        }
+      }
+    }
+
+    > .clr-wizard-main-content .clr-wizard-body {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      color: wizard-variables.$clr-wizard-main-text-color;
+      width: 100%;
+      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space;
+    }
+
+    > .clr-wizard-main-content > .clr-wizard-footer {
+      display: block;
+      width: 100%;
+      flex: 0 0 wizard-variables.$clr-wizard-footer-height;
+      height: wizard-variables.$clr-wizard-footer-height;
+      min-height: wizard-variables.$clr-wizard-footer-height;
+      max-height: wizard-variables.$clr-wizard-footer-height;
+      padding: wizard-variables.$clr-wizard-footer-vertical-space wizard-variables.$clr-wizard-horizontal-space;
+      border-top: tokens.$cds-global-space-1 solid wizard-variables.$clr-wizard-stepnav-border-color;
+    }
+
+    > .clr-wizard-main-content > .clr-wizard-body-wrapper {
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      width: 100%;
+      overflow: hidden auto;
+    }
+
+    > .clr-wizard-stepnav-wrapper {
+      flex: 1 1 auto;
+      height: 100%;
+      width: 34%;
+      max-width: 34%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-right: tokens.$cds-global-space-1 solid wizard-variables.$clr-wizard-stepnav-border-color;
+      background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
+      border-radius: wizard-variables.$clr-wizard-border-radius 0 0 wizard-variables.$clr-wizard-border-radius;
+    }
+
+    > .clr-wizard-stepnav-wrapper > .clr-wizard-stepnav {
+      padding-left: wizard-variables.$clr-wizard-horizontal-space;
+      display: block;
+      color: wizard-variables.$clr-wizard-stepnav-text;
+      width: 100%;
+      flex: 1 1 auto;
+      overflow-y: auto;
+    }
+
+    > .clr-wizard-stepnav-wrapper > .clr-wizard-title,
+    > .clr-wizard-title-wrapper .clr-wizard-title {
+      margin-top: 0;
+      flex: 0 0 auto;
+      color: wizard-variables.$clr-wizard-title-text;
+      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space;
+
+      @include mixins.generate-typography-token('SECTION-20-STD');
+    }
+  }
+
+  // Sizing — all selectors use either direct child or the full modal path
+  // to avoid leaking into nested wizard instances.
+  .clr-wizard {
+    &.wizard-md {
+      > clr-modal > .modal > .modal-dialog {
+        min-height: wizard-variables.$clr-wizard-all-dialog-min-height;
+        max-height: wizard-variables.$clr-wizard-md-dialog-max-height;
+      }
+
+      #{$_modal-path} > .clr-wizard-main-content,
+      #{$_modal-path} > .clr-wizard-stepnav-wrapper,
+      > .clr-wizard-content-wrapper > .clr-wizard-main-content,
+      > .clr-wizard-content-wrapper > .clr-wizard-stepnav-wrapper {
+        max-height: wizard-variables.$clr-wizard-md-dialog-max-height;
+      }
+
+      #{$_modal-path} > .clr-wizard-stepnav-wrapper,
+      > .clr-wizard-content-wrapper > .clr-wizard-stepnav-wrapper {
+        min-width: wizard-variables.$clr-wizard-md-nav-min-width;
+        max-width: wizard-variables.$clr-wizard-md-nav-max-width;
+      }
+    }
+
+    &.wizard-lg {
+      > clr-modal > .modal > .modal-dialog {
+        min-height: wizard-variables.$clr-wizard-all-dialog-min-height;
+        max-height: wizard-variables.$clr-wizard-lg-dialog-max-height;
+      }
+
+      #{$_modal-path} > .clr-wizard-main-content,
+      #{$_modal-path} > .clr-wizard-stepnav-wrapper,
+      > .clr-wizard-content-wrapper > .clr-wizard-main-content,
+      > .clr-wizard-content-wrapper > .clr-wizard-stepnav-wrapper {
+        max-height: wizard-variables.$clr-wizard-lg-dialog-max-height;
+      }
+
+      #{$_modal-path} > .clr-wizard-stepnav-wrapper,
+      > .clr-wizard-content-wrapper > .clr-wizard-stepnav-wrapper {
+        min-width: wizard-variables.$clr-wizard-lg-nav-min-width;
+        max-width: wizard-variables.$clr-wizard-lg-nav-max-width;
+      }
+    }
+
+    &.wizard-xl {
+      > clr-modal > .modal > .modal-dialog {
+        height: wizard-variables.$clr-wizard-xl-dialog-max-height;
+        max-height: none;
+      }
+
+      #{$_modal-path} > .clr-wizard-stepnav-wrapper,
+      > .clr-wizard-content-wrapper > .clr-wizard-stepnav-wrapper {
+        min-width: wizard-variables.$clr-wizard-xl-nav-min-width;
+        max-width: wizard-variables.$clr-wizard-xl-nav-max-width;
+      }
     }
   }
 
@@ -430,13 +475,8 @@
   .clr-wizard--inline {
     display: block;
     width: 100%;
-    // you will want to set a fixed width and height for these static wizards
-    // otherwise, you'll get some minor jumping along the right edge when it is
-    // closed...
 
     & > clr-modal > .modal:focus {
-      // need to remove the outline style or trap-focus directive will make
-      // outline appear in Safari and Microsoft browsers
       outline-style: none;
       outline-color: transparent;
     }
@@ -461,10 +501,6 @@
         }
       }
 
-      .modal-content {
-        box-shadow: none;
-      }
-
       .modal-dialog {
         min-height: 100%;
 
@@ -474,20 +510,16 @@
       }
     }
 
-    .modal-body-wrapper {
+    #{$_modal-path} > .clr-wizard-main-content > .clr-wizard-body-wrapper {
       height: 100%;
     }
 
-    .modal-header .close {
+    .close {
       display: none;
     }
 
     .nav.navList {
       padding-top: 0;
-    }
-
-    .modal-dialog .modal-content .modal-body .content-area {
-      overflow-y: auto;
     }
 
     .modal-backdrop {
@@ -496,13 +528,13 @@
       display: none;
     }
 
-    .modal-content-wrapper {
+    #{$_modal-path} {
       align-items: stretch;
       height: 100%;
     }
 
-    .clr-wizard-stepnav-wrapper,
-    &.clr-wizard .modal-content {
+    #{$_modal-path} > .clr-wizard-stepnav-wrapper,
+    #{$_modal-path} > .clr-wizard-main-content {
       min-height: 100%;
       height: auto;
       max-height: 100%;
@@ -514,36 +546,137 @@
   }
 
   .clr-wizard--no-shadow {
-    .modal-content-wrapper,
-    .modal-dialog {
+    > .clr-wizard-content-wrapper,
+    #{$_modal-path},
+    > clr-modal > .modal > .modal-dialog {
       box-shadow: none;
     }
   }
 
   .clr-wizard--no-title {
-    .clr-wizard-title {
+    > .clr-wizard-content-wrapper .clr-wizard-title,
+    #{$_modal-path} .clr-wizard-title {
       display: none;
     }
 
-    .clr-wizard-stepnav {
+    > .clr-wizard-content-wrapper .clr-wizard-stepnav,
+    #{$_modal-path} .clr-wizard-stepnav {
       padding-top: density.$clr-base-vertical-offset-2xl;
     }
   }
 
+  .clr-wizard.wizard-horizontal {
+    > .clr-wizard-content-wrapper,
+    #{$_modal-path} {
+      flex-direction: column;
+
+      > .clr-wizard-title-wrapper {
+        display: flex;
+        align-items: center;
+        gap: density.$clr-base-gap-s;
+        padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space;
+
+        .clr-wizard-title {
+          flex: 1;
+          padding: 0;
+        }
+      }
+
+      > .clr-wizard-main-content,
+      > .clr-wizard-stepnav-wrapper {
+        width: 100%;
+      }
+
+      > .clr-wizard-stepnav-wrapper {
+        flex: 0;
+        height: unset;
+        max-width: unset;
+        overflow: unset;
+        border-right: 0;
+        border-bottom: tokens.$cds-global-space-1 solid wizard-variables.$clr-wizard-stepnav-border-color;
+        border-radius: wizard-variables.$clr-wizard-border-radius wizard-variables.$clr-wizard-border-radius 0 0;
+
+        .clr-wizard-stepnav {
+          display: flex;
+          position: relative;
+          padding: 0 wizard-variables.$clr-wizard-horizontal-space;
+        }
+
+        .clr-wizard-stepnav-nav {
+          width: 100%;
+        }
+
+        .clr-wizard-stepnav-list {
+          display: flex;
+          flex-direction: row;
+          overflow-x: hidden;
+        }
+
+        .clr-wizard-stepnav-item {
+          flex: 1 0 auto;
+          border-left: 0;
+          border-bottom-width: wizard-variables.$clr-wizard-stepnav-border-size;
+          border-bottom-style: solid;
+
+          .clr-wizard-stepnav-link {
+            padding: density.$clr-base-horizontal-offset-m density.$clr-base-horizontal-offset-2xl
+              density.$clr-base-horizontal-offset-m density.$clr-base-horizontal-offset-m;
+          }
+
+          &:not(.complete, .error) {
+            .clr-wizard-stepnav-link {
+              padding-left: density.$clr-base-horizontal-offset-m;
+            }
+          }
+        }
+
+        .clr-wizard-stepnav-scroll-button-left,
+        .clr-wizard-stepnav-scroll-button-right {
+          position: absolute;
+          padding: 0 density.$clr-base-horizontal-offset-s;
+          background-color: tokens.$cds-alias-object-container-background;
+          height: 100%;
+          margin: 0;
+          z-index: 1;
+
+          &:active {
+            background-color: tokens.$cds-alias-object-interaction-background-active;
+          }
+
+          &:hover {
+            background-color: tokens.$cds-alias-object-interaction-background-hover;
+          }
+        }
+
+        .clr-wizard-stepnav-scroll-button-left {
+          left: density.$clr-base-horizontal-offset-xs;
+        }
+
+        .clr-wizard-stepnav-scroll-button-right {
+          right: density.$clr-base-horizontal-offset-xs;
+        }
+      }
+    }
+  }
+
   .wizard-in-page {
-    // extra specificity is needed here to override the following default style without using !important:
-    // .main-container .content-container .content-area > :first-child { margin-top: 0px; }
+    height: 100%;
 
     @at-root .main-container .content-container .content-area &.wizard-in-page--fill-content-area {
       display: block;
       height: calc(100% + #{variables.$clr-content-area-padding-top} + #{variables.$clr-content-area-padding-bottom});
-
-      // offset content area padding
-      margin: -#{variables.$clr-content-area-padding-top} -#{variables.$clr-content-area-padding-right} -#{variables.$clr-content-area-padding-bottom} -#{variables.$clr-content-area-padding-left};
+      margin: calc(-1 * #{variables.$clr-content-area-padding-top})
+        calc(-1 * #{variables.$clr-content-area-padding-right}) calc(-1 * #{variables.$clr-content-area-padding-bottom})
+        calc(-1 * #{variables.$clr-content-area-padding-left});
+      padding: 0;
     }
 
-    .clr-wizard-footer-buttons-wrapper {
-      justify-content: flex-start;
+    &.wizard-in-page--fill-content-area {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      margin: calc(-1 * #{wizard-variables.$clr-wizard-vertical-space})
+        calc(-1 * #{wizard-variables.$clr-wizard-horizontal-space});
     }
   }
 

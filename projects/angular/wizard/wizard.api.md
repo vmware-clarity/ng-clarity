@@ -66,7 +66,11 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     checkAndCancel(): void;
     closable: boolean;
     close(): void;
+    // (undocumented)
+    protected ClrWizardFooterAlign: typeof ClrWizardFooterAlign;
     set clrWizardOpen(open: boolean);
+    // (undocumented)
+    protected ClrWizardStepnavLayout: typeof ClrWizardStepnavLayout;
     // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService" needs to be exported by the entry point clr-angular-wizard.d.ts
     //
     // (undocumented)
@@ -78,6 +82,9 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     get disableStepnav(): boolean;
     set disableStepnav(value: boolean);
     finish(skipChecksAndEmits?: boolean): void;
+    // (undocumented)
+    get footerAlign(): ClrWizardFooterAlign;
+    _footerAlign: ClrWizardFooterAlign | null;
     forceFinish(): void;
     get forceForward(): boolean;
     set forceForward(value: boolean);
@@ -89,6 +96,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     //
     // (undocumented)
     headerActionService: HeaderActionService;
+    hideFooter: boolean;
     inPage: boolean;
     inPageFillContentArea: boolean;
     // (undocumented)
@@ -103,6 +111,10 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     navService: WizardNavigationService;
     next(skipChecksAndEmits?: boolean): void;
+    // (undocumented)
+    static ngAcceptInputType__footerAlign: ClrWizardFooterAlign | string;
+    // (undocumented)
+    static ngAcceptInputType_stepnavLayout: ClrWizardStepnavLayout | string;
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -127,8 +139,13 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     pageTitle: ElementRef<HTMLElement>;
     previous(): void;
     reset(): void;
+    // (undocumented)
+    get showFooter(): boolean;
+    // (undocumented)
+    get showHeader(): boolean;
     size: string;
     stepnavAriaLabel: string;
+    stepnavLayout: ClrWizardStepnavLayout;
     get stopCancel(): boolean;
     set stopCancel(value: boolean);
     // (undocumented)
@@ -138,17 +155,16 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     set stopNavigation(value: boolean);
     get stopNext(): boolean;
     set stopNext(value: boolean);
-    // (undocumented)
-    get title(): ElementRef<HTMLElement>;
-    set title(title: ElementRef<HTMLElement>);
     toggle(open: boolean): void;
+    // (undocumented)
+    wizardButtons: QueryList<ClrWizardButton>;
     wizardFinished: EventEmitter<any>;
     // (undocumented)
     wizardId: string;
     // (undocumented)
     protected wizardTitle: ClrWizardTitle;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChange": "clrWizardCurrentPageChange"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "headerActions"], ["clr-wizard-title", "clr-wizard-header-action", "*", "clr-wizard-button"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "stepnavLayout": { "alias": "clrWizardStepnavLayout"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "hideFooter": { "alias": "clrWizardHideFooter"; "required": false; }; "_footerAlign": { "alias": "clrWizardFooterAlign"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChange": "clrWizardCurrentPageChange"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "wizardButtons", "headerActions"], ["*", "clr-wizard-button", "clr-wizard-title", "clr-wizard-header-action"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
 }
@@ -192,6 +208,14 @@ export class ClrWizardButton {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardButton, "clr-wizard-button", never, { "type": { "alias": "type"; "required": false; }; "disabled": { "alias": "clrWizardButtonDisabled"; "required": false; }; "hidden": { "alias": "clrWizardButtonHidden"; "required": false; }; }, { "wasClicked": "clrWizardButtonClicked"; }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardButton, never>;
+}
+
+// @public (undocumented)
+export enum ClrWizardFooterAlign {
+    // (undocumented)
+    END = "end",
+    // (undocumented)
+    START = "start"
 }
 
 // @public (undocumented)
@@ -338,12 +362,26 @@ export class ClrWizardPageTitle {
 }
 
 // @public (undocumented)
-export class ClrWizardStepnav {
-    constructor(pageService: PageCollectionService);
+export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
+    constructor(pageService: PageCollectionService, navService: WizardNavigationService, elementRef: ElementRef<HTMLElement>);
     // (undocumented)
     label: string;
     // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
     pageService: PageCollectionService;
+    // (undocumented)
+    protected scrollLeft(): void;
+    // (undocumented)
+    protected scrollRight(): void;
+    // (undocumented)
+    protected showScrollLeftButton: boolean;
+    // (undocumented)
+    protected showScrollRightButton: boolean;
+    // (undocumented)
+    protected get stepnavLayout(): ClrWizardStepnavLayout;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, { "label": { "alias": "label"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
@@ -359,6 +397,8 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
     click(): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
+    // (undocumented)
+    readonly elementRef: ElementRef<HTMLElement>;
     // (undocumented)
     get hasError(): boolean;
     // (undocumented)
@@ -387,6 +427,8 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
     // (undocumented)
     pageCollection: PageCollectionService;
     // (undocumented)
+    protected scrollIntoView(): void;
+    // (undocumented)
     get stepAriaCurrent(): string;
     // (undocumented)
     protected get stepIconId(): string;
@@ -400,6 +442,14 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnavItem, "[clr-wizard-stepnav-item]", never, { "page": { "alias": "page"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnavItem, never>;
+}
+
+// @public (undocumented)
+export enum ClrWizardStepnavLayout {
+    // (undocumented)
+    HORIZONTAL = "horizontal",
+    // (undocumented)
+    VERTICAL = "vertical"
 }
 
 // @public (undocumented)
@@ -417,6 +467,12 @@ export const CUSTOM_BUTTON_TYPES: any;
 
 // @public (undocumented)
 export const DEFAULT_BUTTON_TYPES: any;
+
+// @public (undocumented)
+export function footerAlignAttribute(value: ClrWizardFooterAlign | string): ClrWizardFooterAlign;
+
+// @public (undocumented)
+export function stepnavLayoutAttribute(value: ClrWizardStepnavLayout | string): ClrWizardStepnavLayout;
 
 // (No @packageDocumentation comment for this package)
 

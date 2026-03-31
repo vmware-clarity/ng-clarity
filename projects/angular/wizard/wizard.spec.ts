@@ -320,7 +320,7 @@ export default function (): void {
         });
 
         it('wizard page title has default heading level', () => {
-          const pageTitleElement = context.testElement.querySelector('.modal-title');
+          const pageTitleElement = context.testElement.querySelector('.clr-wizard-page-title');
           expect(pageTitleElement.getAttribute('role')).toBe('heading');
           expect(pageTitleElement.getAttribute('aria-level')).toBe('2');
         });
@@ -329,7 +329,7 @@ export default function (): void {
           context.testComponent.pageTitleHeadingLevel = 3;
           context.detectChanges();
 
-          const pageTitleElement = context.testElement.querySelector('.modal-title');
+          const pageTitleElement = context.testElement.querySelector('.clr-wizard-page-title');
           expect(pageTitleElement.getAttribute('role')).toBe('heading');
           expect(pageTitleElement.getAttribute('aria-level')).toBe('3');
         });
@@ -340,19 +340,19 @@ export default function (): void {
         });
 
         it('content title should reflect current page and changes with it', () => {
-          let val = context.testElement.querySelector('.modal-title-text').textContent.trim();
+          let val = context.testElement.querySelector('.clr-wizard-page-title-text').textContent.trim();
           expect(val).toBe('Longer Title for Page 1', 'inits as expected');
 
           wizard.next();
           context.detectChanges();
 
-          val = context.testElement.querySelector('.modal-title-text').textContent.trim();
+          val = context.testElement.querySelector('.clr-wizard-page-title-text').textContent.trim();
           expect(val).toBe(context.testComponent.projectedPageTitle, 'projects as expected');
 
           context.testComponent.projectedPageTitle = 'OHAI';
           context.detectChanges();
 
-          val = context.testElement.querySelector('.modal-title-text').textContent.trim();
+          val = context.testElement.querySelector('.clr-wizard-page-title-text').textContent.trim();
           expect(val).toBe('OHAI', 'updates as expected');
         });
 
@@ -796,7 +796,7 @@ export default function (): void {
         it('should be placed on the page title after page change', () => {
           wizard.pageCollection.lastPage.makeCurrent();
           context.detectChanges();
-          const titleString = context.testElement.querySelector('.modal-title').textContent.trim();
+          const titleString = context.testElement.querySelector('.clr-wizard-page-title').textContent.trim();
           expect(document.activeElement.textContent.trim()).toBe(titleString);
         });
       });

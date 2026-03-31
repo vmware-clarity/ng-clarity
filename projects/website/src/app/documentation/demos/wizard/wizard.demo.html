@@ -261,6 +261,52 @@
 
     <clr-wizard-basic></clr-wizard-basic>
 
+    <h3 data-toc-item id="horizontal-wizard" cds-text="section" class="clr-mt-32px">Horizontal Wizard</h3>
+
+    <p cds-text="body" class="clr-mt-16px" cds-layout="m-b:sm">
+      By default, the wizard uses a vertical stepnav layout. You can switch to a horizontal stepnav by setting
+      <code cds-text="code">clrWizardStepnavLayout</code> to <code cds-text="code">"horizontal"</code>. The horizontal
+      layout displays the steps in a top bar instead of a sidebar.
+    </p>
+
+    <clr-wizard-horizontal></clr-wizard-horizontal>
+
+    <h3 data-toc-item id="nested-wizard" cds-text="section" class="clr-mt-32px">Nested Wizard</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      A wizard page can contain a nested in-page wizard. This is useful for complex configuration flows where a single
+      step has its own multi-step sub-process. Set <code cds-text="code">clrWizardInPage</code> to
+      <code cds-text="code">true</code> on the nested wizard and use
+      <code cds-text="code">clrWizardInPageFillContentArea</code> to make it fill the parent page's content area.
+    </p>
+    <p cds-text="body" class="clr-mt-24px">
+      Use <code cds-text="code">[clrWizardPageNextDisabled]</code> on the parent page to prevent advancing until the
+      nested wizard is complete. When the nested wizard finishes, call
+      <code cds-text="code">parentWizard.forceNext()</code> to automatically advance to the next step.
+    </p>
+    <p cds-text="body" class="clr-mt-24px" cds-layout="m-b:sm">
+      The example below demonstrates a horizontal wizard whose first page contains a nested wizard with its own steps.
+    </p>
+
+    <clr-wizard-nested-wizard></clr-wizard-nested-wizard>
+
+    <h3 data-toc-item id="nested-stepper" cds-text="section" class="clr-mt-32px">Nested Stepper</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Instead of a nested wizard, you can embed a stepper (accordion-style form) inside a wizard page. This is ideal
+      when the sub-steps within a wizard page are form-driven and benefit from validation at each step.
+    </p>
+    <p cds-text="body" class="clr-mt-24px">
+      Use a <code cds-text="code">clrStepper</code> form with <code cds-text="code">(ngSubmit)</code> to advance the
+      parent wizard when all stepper panels are completed. The last stepper panel's submit button triggers the form
+      submission, which then calls <code cds-text="code">parentWizard.forceNext()</code>.
+    </p>
+    <p cds-text="body" class="clr-mt-24px" cds-layout="m-b:sm">
+      The example below shows a horizontal wizard with a stepper embedded in the first page.
+    </p>
+
+    <clr-wizard-nested-stepper></clr-wizard-nested-stepper>
+
     <h3 data-toc-item id="skipping-and-unskipping-steps" cds-text="section" class="clr-mt-32px">
       Skipping and Unskipping Steps
     </h3>
@@ -751,6 +797,12 @@
       <li>
         <code cds-text="code">clrWizardDisableStepnav</code> (boolean) disables the links in the stepnav when set to
         true.
+      </li>
+      <li>
+        <code cds-text="code">clrWizardFooterAlign</code> (<code cds-text="code">"start"</code> |
+        <code cds-text="code">"end"</code>) aligns the footer buttons to the left (<code cds-text="code">"start"</code>)
+        or right (<code cds-text="code">"end"</code>). By default, modal wizards align to
+        <code cds-text="code">"end"</code> and in-page wizards align to <code cds-text="code">"start"</code>.
       </li>
     </ul>
 
