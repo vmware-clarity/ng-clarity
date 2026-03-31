@@ -265,11 +265,9 @@ export default function (): void {
         expect(selectionService.editableResolver).toBe(resolver);
       });
 
-      it('uses resolver in parseStringToModel when provided', () => {
-        const resolver = (input: string) => ({ value: input, id: 42 }) as any;
-        clarityDirective.editableResolver = resolver;
-        const result = selectionService.parseStringToModel('test');
-        expect(result).toEqual({ value: 'test', id: 42 } as any);
+      it('returns the same item by default when no resolver is provided', () => {
+        const result = selectionService.editableResolver('test');
+        expect(result).toEqual('test');
       });
     });
 

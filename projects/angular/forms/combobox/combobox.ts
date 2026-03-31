@@ -323,7 +323,7 @@ export class ClrCombobox<T>
           break;
         case Keys.Enter:
           if (this.editable && this._searchText.length > 0 && this.options.emptyOptions) {
-            const parsedInput = this.optionSelectionService.parseStringToModel(this._searchText);
+            const parsedInput = this.optionSelectionService.editableResolver(this._searchText);
             this.control?.control.markAsTouched();
             this.optionSelectionService.select(parsedInput);
             this.searchText = '';
@@ -372,7 +372,7 @@ export class ClrCombobox<T>
 
   onChange() {
     if (this.editable && !this.multiSelect && this.options.emptyOptions) {
-      const parsedInput = this.optionSelectionService.parseStringToModel(this._searchText);
+      const parsedInput = this.optionSelectionService.editableResolver(this._searchText);
       this.optionSelectionService.setSelectionValue(parsedInput);
     }
   }

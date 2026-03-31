@@ -142,27 +142,16 @@ export default function () {
       expect(emitCount).toBe(2);
     });
 
-    describe('parseStringToModel', () => {
-      it('returns string as-is when no displayField or resolver is set', () => {
-        expect(optionSelectionService.parseStringToModel('test')).toBe('test');
+    describe('editableResolverFn', () => {
+      it('returns string as-is by default', () => {
+        expect(optionSelectionService.editableResolver('test')).toBe('test');
       });
 
-      it('creates object with displayField when displayField is set', () => {
-        optionSelectionService.displayField = 'name';
-        const result = optionSelectionService.parseStringToModel('test');
-        expect(result).toEqual({ name: 'test' } as any);
-      });
-
-      it('uses editableResolver when provided, ignoring displayField', () => {
+      it('returns expected item when resolver is provided', () => {
         type Item = { id: number; label: string };
         const service = new OptionSelectionService<Item>();
-        service.selectionModel = new SingleSelectComboboxModel<Item>();
-        service.displayField = 'label';
-        let nextId = 100;
-        service.editableResolver = (input: string) => ({ id: nextId++, label: input });
-
-        const result = service.parseStringToModel('custom');
-        expect(result).toEqual({ id: 100, label: 'custom' });
+        service.editableResolver = (input: string) => ({ id: 1, label: input });
+        expect(service.editableResolver('test')).toEqual({ id: 1, label: 'test' });
       });
 
       it('resolver creates objects compatible with identityFn', () => {
@@ -174,21 +163,10 @@ export default function () {
         let nextId = 200;
         service.editableResolver = (input: string) => ({ id: nextId++, label: input });
 
-        const item = service.parseStringToModel('custom');
+        const item = service.editableResolver('custom');
         service.select(item);
         expect(service.selectionModel.containsItem({ id: 200, label: 'custom' })).toBeTrue();
         expect(service.selectionModel.containsItem({ id: 999, label: 'custom' })).toBeFalse();
-      });
-
-      it('allows different entries in multi-select editable with displayField', () => {
-        type Item = { symbol: string };
-        const service = new OptionSelectionService<Item>();
-        service.selectionModel = new MultiSelectComboboxModel<Item>();
-        service.displayField = 'symbol';
-
-        service.select(service.parseStringToModel('abc'));
-        service.select(service.parseStringToModel('def'));
-        expect((service.selectionModel.model as Item[]).length).toBe(2);
       });
     });
 
