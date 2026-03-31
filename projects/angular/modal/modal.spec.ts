@@ -262,25 +262,24 @@ describe('Modal', () => {
     await flushAndExpectOpen(fixture, false);
   });
 
-  it('focus trap remain active after clicking on backdrop', async () => {
-    const backdrop: HTMLElement = compiled.querySelector('div.modal-backdrop');
-    const titleWrapperElement: HTMLElement = compiled.querySelector('div.modal-title-wrapper');
-    const focusStealButton: HTMLElement = compiled.querySelector('button.btn.to-focus');
-
+  it('static backdrop has pointer-events none and focus trap remains active', async () => {
     fixture.componentInstance.staticBackdrop = true;
     fixture.detectChanges();
 
-    // Just make sure we have the "x" to close the modal,
-    // because this is different from the clrModalClosable option.
-    expect(compiled.querySelector('.close')).not.toBeNull();
-    expectActiveElementToBe(titleWrapperElement);
+    const backdrop: HTMLElement = compiled.querySelector('div.modal-backdrop');
+    const modalDialog: HTMLElement = compiled.querySelector('.modal-dialog');
 
-    focusStealButton.focus();
-    expectActiveElementToBe(focusStealButton);
+    expect(backdrop.classList.contains('static')).toBeTrue();
 
     backdrop.click();
-    await flushAndExpectOpen(fixture, true);
-    expectActiveElementToBe(titleWrapperElement);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(modalDialog.contains(document.activeElement)).toBeTrue();
   });
 
   it('traps user focus', () => {

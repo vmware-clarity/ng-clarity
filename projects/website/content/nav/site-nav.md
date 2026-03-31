@@ -53,6 +53,8 @@ groups:
   - label: Addons
   - label: Updating
     links:
+      - label: Update v17 to v18
+        url: /pages/update-to-v18
       - label: Update v16 to v17
         url: /pages/update-to-v17
       - label: Update v15 to v16
