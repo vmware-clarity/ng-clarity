@@ -5,54 +5,57 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 <ng-template #coreWizardContent>
-  <div class="modal-content-wrapper">
-    <div class="modal-nav clr-wizard-stepnav-wrapper" role="region">
-      <div class="clr-wizard-title" [id]="wizardId" role="heading" [attr.aria-level]="wizardTitle?.headingLevel || 1">
-        <ng-content select="clr-wizard-title"></ng-content>
-      </div>
+  <div class="clr-wizard-content-wrapper">
+    @if (stepnavLayout === ClrWizardStepnavLayout.HORIZONTAL) {
+    <div class="clr-wizard-title-wrapper">
+      <ng-container [ngTemplateOutlet]="wizardTitleTemplate"></ng-container>
+      <ng-container [ngTemplateOutlet]="wizardActionsTemplate"></ng-container>
+    </div>
+    }
+
+    <div class="clr-wizard-stepnav-wrapper" role="region">
+      @if (stepnavLayout === ClrWizardStepnavLayout.VERTICAL) {
+      <ng-container [ngTemplateOutlet]="wizardTitleTemplate"></ng-container>
+      }
       <clr-wizard-stepnav [label]="stepnavAriaLabel"></clr-wizard-stepnav>
     </div>
 
-    <div class="modal-content">
-      <div class="modal-header--accessible">
-        <div class="modal-title-wrapper" #title cdkFocusInitial tabindex="-1">
+    <div class="clr-wizard-main-content">
+      @if (showHeader) {
+      <div class="clr-wizard-header">
+        @if (navService.currentPage?.pageTitle) {
+        <div class="clr-wizard-page-title-wrapper" cdkFocusInitial tabindex="-1">
           <div
-            class="modal-title"
+            class="clr-wizard-page-title"
             role="heading"
             [attr.aria-level]="navService.currentPage?.pageTitle?.headingLevel || 2"
           >
-            <span tabindex="-1" #pageTitle class="modal-title-text">
+            <span tabindex="-1" #pageTitle class="clr-wizard-page-title-text">
               <ng-template [ngTemplateOutlet]="navService.currentPageTitle"></ng-template>
             </span>
           </div>
         </div>
-
-        @if (headerActionService.displayHeaderActionsWrapper) {
-        <div class="modal-header-actions-wrapper">
-          @if (headerActionService.showWizardHeaderActions) {
-          <ng-content select="clr-wizard-header-action"></ng-content>
-          } @if (headerActionService.currentPageHasHeaderActions) {
-          <ng-template [ngTemplateOutlet]="navService.currentPage?.headerActions"></ng-template>
-          }
-        </div>
-        } @if (closable && !inPage) {
-        <button type="button" class="close" [attr.aria-label]="commonStrings.keys.close" (click)="modalCancel()">
-          <cds-icon shape="window-close"></cds-icon>
-        </button>
+        } @if (stepnavLayout === ClrWizardStepnavLayout.VERTICAL) {
+        <ng-container [ngTemplateOutlet]="wizardActionsTemplate"></ng-container>
         }
       </div>
+      }
 
-      <div #body class="modal-body-wrapper">
-        <div class="modal-body">
+      <div #body class="clr-wizard-body-wrapper">
+        <div class="clr-wizard-body">
           <main clr-wizard-pages-wrapper class="clr-wizard-content">
             <ng-content></ng-content>
           </main>
         </div>
       </div>
 
-      <div class="modal-footer clr-wizard-footer">
+      @if (showFooter) {
+      <div class="clr-wizard-footer">
         <div class="clr-wizard-footer-buttons">
-          <div class="clr-wizard-footer-buttons-wrapper">
+          <div
+            class="clr-wizard-footer-buttons-wrapper"
+            [ngClass]="{'align-start': footerAlign === ClrWizardFooterAlign.START, 'align-end': footerAlign === ClrWizardFooterAlign.END}"
+          >
             @if (navService.currentPage?.hasButtons) {
             <ng-template [ngTemplateOutlet]="navService.currentPage.buttons"></ng-template>
             } @else {
@@ -61,8 +64,31 @@
           </div>
         </div>
       </div>
+      }
     </div>
   </div>
+</ng-template>
+
+<ng-template #wizardTitleTemplate>
+  <div class="clr-wizard-title" [id]="wizardId" role="heading" [attr.aria-level]="wizardTitle?.headingLevel || 1">
+    <ng-content select="clr-wizard-title"></ng-content>
+  </div>
+</ng-template>
+
+<ng-template #wizardActionsTemplate>
+  @if (headerActionService.displayHeaderActionsWrapper) {
+  <div class="clr-wizard-header-actions-wrapper">
+    @if (headerActionService.showWizardHeaderActions) {
+    <ng-content select="clr-wizard-header-action"></ng-content>
+    } @if (headerActionService.currentPageHasHeaderActions) {
+    <ng-template [ngTemplateOutlet]="navService.currentPage?.headerActions"></ng-template>
+    }
+  </div>
+  } @if (closable && !inPage) {
+  <button type="button" class="close" [attr.aria-label]="commonStrings.keys.close" (click)="modalCancel()">
+    <cds-icon shape="window-close"></cds-icon>
+  </button>
+  }
 </ng-template>
 
 @if (inPage) {

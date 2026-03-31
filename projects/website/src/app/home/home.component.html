@@ -96,43 +96,44 @@
       </section>
 
       <div class="home-panel" cds-layout="m-t:lg m-t@lg:xl">
-        <h2 cds-text="title">New: Version 17.0.0 Release</h2>
+        <h2 cds-text="title">New: Version 18.0.0 Release</h2>
 
         <div class="home-list" cds-layout="m-t:xl">
           <div class="list-item">
-            <h3 cds-text="headline section" cds-layout="m-b:xs">Tokens Integration</h3>
-            Design system tokens are now fully integrated into Clarity Angular components. Tokens align the CSS
-            architecture and naming conventions needed to more efficiently express the VMware brand experience, and to
-            help ensure consistency across products.
+            <h3 cds-text="headline section" cds-layout="m-b:xs">Dropped <code>&#64;cds/core</code> Dependency</h3>
+            Icons, CSS tokens, and layout utilities (<code>cds-icon</code>, <code>cds-layout</code>,
+            <code>cds-text</code>) are now shipped directly inside <code>&#64;clr/angular</code> and
+            <code>&#64;clr/ui</code>, eliminating the external <code>&#64;cds/core</code> dependency and simplifying
+            installation.
           </div>
           <div class="list-item">
-            <h3 cds-text="headline section" cds-layout="m-b:xs">Themes</h3>
-            We've introduced an accessible Dark UI Theme to ensure inclusivity and compliance with WCAG guidelines, in
-            addition to supporting an accessible Light UI Theme. Teams can extend the theme capabilities, as well, to
-            support unique needs.
+            <h3 cds-text="headline section" cds-layout="m-b:xs">Clarity Addons</h3>
+            A new <code>&#64;clr/angular/addons</code> package provides additional components and utilities that
+            complement the core library while keeping the main bundle lean.
           </div>
           <div class="list-item">
-            <h3 cds-text="headline section" cds-layout="m-b:xs">Updated Design Language</h3>
-            Our design language has been updated to align with the latest Clarity design standards and accessibility
-            guidance, providing a more inclusive user experience.
+            <h3 cds-text="headline section" cds-layout="m-b:xs">Component Improvements</h3>
+            New Angular Badge and Label components with outline and solid variants, an editable Combobox state, Datagrid
+            unsort capability, simplified Datagrid selection logic, and decoupled Accordion &amp; Stepper via a shared
+            CollapsiblePanel abstraction.
           </div>
         </div>
       </div>
 
       <div class="home-panel" cds-layout="m-t:lg m-t@lg:xl">
-        <h2 cds-text="title">Why Update to v17?</h2>
+        <h2 cds-text="title">Why Update to v18?</h2>
         <div class="home-list" cds-layout="m-t:xl">
           <div class="list-item">
-            <h3 cds-text="headline section" cds-layout="m-b:xs">Design Tokens Ease Future Work</h3>
-            With v17, references to design tokens are now mandatory. By updating to and leveraging this new tokens
-            system, components and their surrounding UI's should update more easily and stay consistently aligned with
-            the system in the future.
+            <h3 cds-text="headline section" cds-layout="m-b:xs">Angular 21 &amp; CDK Popovers</h3>
+            Clarity 18 upgrades to Angular 21 and introduces secondary entry points for all modules, enabling
+            fine-grained tree-shakable imports. All popover-based components &mdash; Dropdown, Signpost, Tooltip, and
+            Datagrid overlays &mdash; now use Angular CDK overlays for positioning, with a new point-based origin API
+            for advanced placement scenarios.
           </div>
           <div class="list-item">
-            <h3 cds-text="headline section" cds-layout="m-b:xs">Future Flexibility</h3>
-            Design tokens are now foundational in design system technology. They can be used to create additional themes
-            to support wide screens, high contrast, colorblind corrections, and even data-dense themes, so that teams
-            could offer their customers new choices for the displays they prefer.
+            <h3 cds-text="headline section" cds-layout="m-b:xs">Smaller Bundles &amp; Faster Builds</h3>
+            Secondary entry points and the removal of <code>&#64;cds/core</code> reduce bundle sizes, while dropping IE
+            11 and legacy Edge workarounds removes dead code and simplifies the CSS output.
           </div>
         </div>
       </div>

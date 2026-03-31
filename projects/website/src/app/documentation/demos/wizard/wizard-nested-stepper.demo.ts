@@ -1,0 +1,133 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component, viewChild } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ClrInputModule, ClrStepperModule, ClrWizard, ClrWizardModule } from '@clr/angular';
+
+import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
+
+const code = `
+import { Component, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-example',
+  templateUrl: './example.component.html',
+  styleUrl: './example.component.scss',
+
+  imports: [ReactiveFormsModule, ClrWizardModule, ClrStepperModule, ClrInputModule],
+})
+export class ExampleComponent {
+  @ViewChild('parentWizard') parentWizard: ClrWizard | undefined;
+
+  _open = false;
+  stepperComplete = false;
+
+  stepperForm = new FormGroup({
+    name: new FormGroup({ value: new FormControl('') }),
+    description: new FormGroup({ value: new FormControl('') }),
+    details: new FormGroup({ value: new FormControl('') }),
+  });
+
+  onStepperSubmit() {
+    this.stepperComplete = true;
+    this.parentWizard?.forceNext();
+  }
+}
+`;
+
+const html = `
+<button class="btn btn-primary" (click)="_open = true">Wizard with Nested Stepper</button>
+
+<clr-wizard #parentWizard [(clrWizardOpen)]="_open" clrWizardStepnavLayout="horizontal">
+  <clr-wizard-title>Wizard with Stepper</clr-wizard-title>
+
+  <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+  <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+  <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+  <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+
+  <clr-wizard-page [clrWizardPageNextDisabled]="!stepperComplete">
+    <ng-template clrPageTitle>Configuration</ng-template>
+
+    <form clrStepper [formGroup]="stepperForm" (ngSubmit)="onStepperSubmit()">
+      <clr-stepper-panel formGroupName="name">
+        <clr-step-title>Name</clr-step-title>
+        <clr-step-description>Provide a name.</clr-step-description>
+        <clr-step-content>
+          <clr-input-container>
+            <label>Name</label>
+            <input clrInput formControlName="value" />
+          </clr-input-container>
+          <button clrStepButton="next">Next</button>
+        </clr-step-content>
+      </clr-stepper-panel>
+
+      <clr-stepper-panel formGroupName="description">
+        <clr-step-title>Description</clr-step-title>
+        <clr-step-description>Add a description.</clr-step-description>
+        <clr-step-content>
+          <clr-input-container>
+            <label>Description</label>
+            <input clrInput formControlName="value" />
+          </clr-input-container>
+          <button clrStepButton="next">Next</button>
+        </clr-step-content>
+      </clr-stepper-panel>
+
+      <clr-stepper-panel formGroupName="details">
+        <clr-step-title>Details</clr-step-title>
+        <clr-step-description>Final details.</clr-step-description>
+        <clr-step-content>
+          <clr-input-container>
+            <label>Details</label>
+            <input clrInput formControlName="value" />
+          </clr-input-container>
+          <button clrStepButton="submit">Continue</button>
+        </clr-step-content>
+      </clr-stepper-panel>
+    </form>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Review</ng-template>
+    <p>Review the stepper data.</p>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Summary</ng-template>
+    <p>All done.</p>
+  </clr-wizard-page>
+</clr-wizard>
+`;
+
+@Component({
+  selector: 'clr-wizard-nested-stepper',
+  templateUrl: './wizard-nested-stepper.demo.html',
+  imports: [ReactiveFormsModule, ClrWizardModule, ClrStepperModule, ClrInputModule, StackblitzExampleComponent],
+})
+export class WizardNestedStepperDemo {
+  readonly parentWizard = viewChild<ClrWizard>('parentWizard');
+
+  _open = false;
+  stepperComplete = false;
+
+  stepperForm = new FormGroup({
+    name: new FormGroup({ value: new FormControl('') }),
+    description: new FormGroup({ value: new FormControl('') }),
+    details: new FormGroup({ value: new FormControl('') }),
+  });
+
+  code = code;
+  html = html;
+
+  onStepperSubmit() {
+    this.stepperComplete = true;
+    this.parentWizard()?.forceNext();
+  }
+}

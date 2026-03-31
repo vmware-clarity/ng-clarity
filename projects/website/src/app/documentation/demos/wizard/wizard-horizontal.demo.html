@@ -1,0 +1,43 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<button class="btn btn-primary" (click)="wizard.open()">Horizontal Wizard</button>
+
+<clr-wizard #wizard [(clrWizardOpen)]="_open" clrWizardStepnavLayout="horizontal">
+  <clr-wizard-title>Horizontal Wizard</clr-wizard-title>
+
+  <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+  <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+  <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+  <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Page 1</ng-template>
+    <p>Content for step 1</p>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Page 2</ng-template>
+    <p>Content for step 2</p>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Page 3</ng-template>
+    <p>Content for step 3</p>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Page 4</ng-template>
+    <p>Content for step 4</p>
+  </clr-wizard-page>
+</clr-wizard>
+
+<app-stackblitz-example
+  name="Wizard Horizontal"
+  [componentTemplate]="html"
+  [componentClass]="code"
+></app-stackblitz-example>
