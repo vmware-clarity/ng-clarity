@@ -13,6 +13,7 @@ import { take } from 'rxjs/operators';
 
 import { OptionSelectionService } from './option-selection.service';
 import { PseudoFocusModel } from '../model/pseudo-focus.model';
+import { SELECT_ALL_ID } from '../options';
 
 @Injectable()
 export class ComboboxFocusHandler<T> {
@@ -94,6 +95,10 @@ export class ComboboxFocusHandler<T> {
     this.optionData = options;
   }
 
+  focusOption(option: OptionData<T>) {
+    this.pseudoFocus.select(option);
+  }
+
   private handleFocusSubscription() {
     this.popoverService.openChange.subscribe(open => {
       if (!open) {
@@ -143,7 +148,11 @@ export class ComboboxFocusHandler<T> {
         case Keys.Enter:
           if (this.popoverService.open && this.pseudoFocus.model) {
             if (this.selectionService.multiselectable) {
-              this.selectionService.toggle(this.pseudoFocus.model.value);
+              if (this.pseudoFocus.model.id === SELECT_ALL_ID) {
+                this.selectionService.requestSelectAll();
+              } else {
+                this.selectionService.toggle(this.pseudoFocus.model.value);
+              }
             } else {
               this.selectionService.select(this.pseudoFocus.model.value);
             }

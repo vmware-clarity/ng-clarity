@@ -6,7 +6,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
 
 import { ClrComboboxIdentityFunction, ComboboxModel } from '../model/combobox.model';
 import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
@@ -15,7 +15,7 @@ import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 export class OptionSelectionService<T> {
   loading = false;
   editable = false;
-  filtering = true;
+  showSelectAll = false;
   selectionModel: ComboboxModel<T>;
   inputChanged: Observable<string>;
 
@@ -27,6 +27,7 @@ export class OptionSelectionService<T> {
   private _displayField: string;
   private _inputChanged = new BehaviorSubject('');
   private _selectionChanged = new ReplaySubject<ComboboxModel<T>>(1);
+  private _selectAllRequested = new Subject<void>();
 
   constructor() {
     this.inputChanged = this._inputChanged.asObservable();
@@ -75,6 +76,14 @@ export class OptionSelectionService<T> {
     }
   }
 
+  get selectAllRequested(): Observable<void> {
+    return this._selectAllRequested.asObservable();
+  }
+
+  requestSelectAll() {
+    this._selectAllRequested.next();
+  }
+
   select(item: T) {
     if (item === null || item === undefined || this.selectionModel.containsItem(item)) {
       return;
@@ -95,12 +104,53 @@ export class OptionSelectionService<T> {
     this._selectionChanged.next(this.selectionModel);
   }
 
+  selectMany(items: T[]) {
+    let changed = false;
+    for (const item of items) {
+      if (!this.selectionModel.containsItem(item)) {
+        this.selectionModel.select(item);
+        changed = true;
+      }
+    }
+    if (changed) {
+      this._selectionChanged.next(this.selectionModel);
+    }
+  }
+
+  unselectMany(items: T[]) {
+    if (!this.selectionModel || this.selectionModel.isEmpty()) {
+      return;
+    }
+
+    let changed = false;
+    for (const item of items) {
+      if (this.selectionModel.containsItem(item)) {
+        this.selectionModel.unselect(item);
+        changed = true;
+      }
+    }
+
+    if (changed) {
+      this._selectionChanged.next(this.selectionModel);
+    }
+  }
+
   unselect(item: T) {
     if (item === null || item === undefined || !this.selectionModel.containsItem(item)) {
       return;
     }
     this.selectionModel.unselect(item);
     this._selectionChanged.next(this.selectionModel);
+  }
+
+  /**
+   * Checks whether all given items are currently selected, using identityFn for comparison.
+   */
+  containsAll(items: T[]): boolean {
+    if (!items.length || this.selectionModel.isEmpty()) {
+      return false;
+    }
+    return items.every(item => this.selectionModel.containsItem(item));
   }
 
   setSelectionValue(value: T | T[]): void {

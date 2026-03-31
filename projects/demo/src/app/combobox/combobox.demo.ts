@@ -305,6 +305,8 @@ export class ComboboxDemo {
     five: [this.states[5], this.states[8], this.states[10], this.states[15]],
   };
 
+  selectAllModel = [];
+
   validateOnBlur: string;
 
   asyncStates$: Observable<any>;

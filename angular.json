@@ -165,6 +165,7 @@
               "browser": ""
             },
             "index": "projects/website/src/index.html",
+            "polyfills": ["projects/website/src/polyfills.ts"],
             "browser": "projects/website/src/main.ts",
             "tsConfig": "projects/website/tsconfig.app.json",
             "allowedCommonJsDependencies": ["prismjs"],
