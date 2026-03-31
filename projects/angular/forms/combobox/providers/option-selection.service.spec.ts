@@ -142,6 +142,34 @@ export default function () {
       expect(emitCount).toBe(2);
     });
 
+    describe('editableResolverFn', () => {
+      it('returns string as-is by default', () => {
+        expect(optionSelectionService.editableResolver('test')).toBe('test');
+      });
+
+      it('returns expected item when resolver is provided', () => {
+        type Item = { id: number; label: string };
+        const service = new OptionSelectionService<Item>();
+        service.editableResolver = (input: string) => ({ id: 1, label: input });
+        expect(service.editableResolver('test')).toEqual({ id: 1, label: 'test' });
+      });
+
+      it('resolver creates objects compatible with identityFn', () => {
+        type Item = { id: number; label: string };
+        const service = new OptionSelectionService<Item>();
+        service.selectionModel = new SingleSelectComboboxModel<Item>();
+        service.identityFn = (item: Item) => item.id;
+
+        let nextId = 200;
+        service.editableResolver = (input: string) => ({ id: nextId++, label: input });
+
+        const item = service.editableResolver('custom');
+        service.select(item);
+        expect(service.selectionModel.containsItem({ id: 200, label: 'custom' })).toBeTrue();
+        expect(service.selectionModel.containsItem({ id: 999, label: 'custom' })).toBeFalse();
+      });
+    });
+
     it('should correctly handle falsy values like 0', () => {
       const service = new OptionSelectionService<number>();
       service.selectionModel = new SingleSelectComboboxModel<number>();

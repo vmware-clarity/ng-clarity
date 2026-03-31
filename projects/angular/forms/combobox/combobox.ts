@@ -49,7 +49,7 @@ import {
 import { debounceTime, Subject } from 'rxjs';
 
 import { ClrComboboxContainer } from './combobox-container';
-import { ClrComboboxIdentityFunction, ComboboxModel } from './model/combobox.model';
+import { ClrComboboxIdentityFunction, ClrComboboxResolverFunction, ComboboxModel } from './model/combobox.model';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
 import { ClrOptionSelected } from './option-selected.directive';
@@ -161,6 +161,11 @@ export class ClrCombobox<T>
   }
   set editable(value: boolean) {
     this.optionSelectionService.editable = value;
+  }
+
+  @Input('clrEditableResolverFn')
+  set editableResolver(value: ClrComboboxResolverFunction<T> | undefined) {
+    this.optionSelectionService.editableResolver = value;
   }
 
   @Input('clrComboboxIdentityFn')
@@ -318,7 +323,7 @@ export class ClrCombobox<T>
           break;
         case Keys.Enter:
           if (this.editable && this._searchText.length > 0 && this.options.emptyOptions) {
-            const parsedInput = this.optionSelectionService.parseStringToModel(this._searchText);
+            const parsedInput = this.optionSelectionService.editableResolver(this._searchText);
             this.control?.control.markAsTouched();
             this.optionSelectionService.select(parsedInput);
             this.searchText = '';
@@ -367,7 +372,7 @@ export class ClrCombobox<T>
 
   onChange() {
     if (this.editable && !this.multiSelect && this.options.emptyOptions) {
-      const parsedInput = this.optionSelectionService.parseStringToModel(this._searchText);
+      const parsedInput = this.optionSelectionService.editableResolver(this._searchText);
       this.optionSelectionService.setSelectionValue(parsedInput);
     }
   }

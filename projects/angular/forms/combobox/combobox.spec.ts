@@ -258,6 +258,19 @@ export default function (): void {
       });
     });
 
+    describe('clrEditableResolverFn', () => {
+      it('sets the editableResolver on the optionSelectionService', () => {
+        const resolver = (input: string) => input;
+        clarityDirective.editableResolver = resolver;
+        expect(selectionService.editableResolver).toBe(resolver);
+      });
+
+      it('returns the same item by default when no resolver is provided', () => {
+        const result = selectionService.editableResolver('test');
+        expect(result).toEqual('test');
+      });
+    });
+
     describe('clrComboboxIdentityFn', () => {
       interface Item {
         id: number;
