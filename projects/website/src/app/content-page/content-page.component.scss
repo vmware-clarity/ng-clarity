@@ -15,6 +15,15 @@
     }
   }
 
+  .table {
+    table-layout: fixed;
+
+    th,
+    td {
+      overflow-wrap: break-word;
+    }
+  }
+
   pre {
     margin-top: tokens.$cds-global-layout-space-md;
     padding: tokens.$cds-global-layout-space-sm;
