@@ -77,12 +77,14 @@
     <div cds-layout="m-t:xs">
       @if (!filterProperty.singleSelect) {
         <clr-checkbox-container class="enum-options">
-          <clr-checkbox-wrapper cds-layout="m-b:xs">
-            <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />
-            <label>
-              {{ enumFilterForm.get('searchTerm')?.value ? filterStrings.allSearchResults : filterStrings.selectAll }}
-            </label>
-          </clr-checkbox-wrapper>
+          @if (filterProperty.enableSelectAll) {
+            <clr-checkbox-wrapper cds-layout="m-b:xs">
+              <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />
+              <label>
+                {{ enumFilterForm.get('searchTerm')?.value ? filterStrings.allSearchResults : filterStrings.selectAll }}
+              </label>
+            </clr-checkbox-wrapper>
+          }
 
           @for (item of filteredOptions; track item) {
             <clr-checkbox-wrapper>
@@ -94,7 +96,6 @@
               />
               <label>
                 {{ item.data.value }}
-                {{ filterProperty.showKeyInParentheses ? '(' + item.data.key + ')' : '' }}
               </label>
             </clr-checkbox-wrapper>
           }
@@ -108,7 +109,6 @@
               <input type="radio" clrRadio formControlName="singleSelectOption" [value]="option.data.key" />
               <label>
                 {{ option.data.value }}
-                {{ filterProperty.showKeyInParentheses ? '(' + option.data.key + ')' : '' }}
               </label>
             </clr-radio-wrapper>
           }
