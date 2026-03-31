@@ -52,6 +52,7 @@ export default {
   args: {
     clrEditable: false,
     clrMulti: false,
+    showSelectAll: false,
     placeholder: 'Placeholder text',
     id: '',
     label: 'Combobox',
@@ -219,6 +220,44 @@ export const MultiSelectionWithIdentityFn: StoryObj = {
       props: transformedArgs,
       template: `
         <storybook-combobox ${argsToTemplate(transformedArgs)}></storybook-combobox>
+      `,
+    };
+  },
+};
+
+export const MultiSelectionWithSelectAll: StoryObj = {
+  args: {
+    clrMulti: true,
+    showSelectAll: true,
+  },
+};
+
+export const MultiSelectionWithSelectAll_Opened: StoryObj = {
+  args: {
+    clrMulti: true,
+    showSelectAll: true,
+  },
+  play({ canvasElement }) {
+    (canvasElement.querySelector('.clr-combobox-trigger') as HTMLElement).click();
+  },
+};
+
+export const MultiSelectionWithSelectAllAndIdentityFn: StoryObj = {
+  args: {
+    clrMulti: true,
+    showSelectAll: true,
+    objectValues: true,
+    useIdentityFn: true,
+    multiModel: [
+      { name: 'Americium', symbol: 'Am', number: 95, electronegativity: 1.3 },
+      { name: 'Berkelium', symbol: 'Bk', number: 97, electronegativity: 1.3 },
+    ],
+  },
+  render: (args: StorybookComboboxComponent) => {
+    return {
+      props: args,
+      template: `
+        <storybook-combobox ${argsToTemplate(args)}></storybook-combobox>
       `,
     };
   },

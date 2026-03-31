@@ -201,6 +201,18 @@
 
     <clr-combobox-grouping-demo></clr-combobox-grouping-demo>
 
+    <h3 data-toc-item id="select-all-combobox" cds-text="section" class="clr-mt-32px">Select All</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      The multi-selection combobox supports a "Select All" button that appears at the top of the dropdown. Enable it
+      with the <code cds-text="code">[showSelectAll]</code> input. When clicked, it selects all currently visible
+      (filtered) options. If all visible options are already selected, it unselects them instead. The button label
+      automatically toggles between "Select All" and "Unselect All". The select-all action can also be triggered via
+      keyboard by focusing the button with arrow keys and pressing Enter.
+    </p>
+
+    <clr-combobox-select-all-demo></clr-combobox-select-all-demo>
+
     <h3 data-toc-item id="identity-fn-combobox" cds-text="section" class="clr-mt-32px">Identity Function</h3>
 
     <p cds-text="body" class="clr-mt-16px">
@@ -248,6 +260,19 @@
           <td class="left clr-hidden-xs-down">boolean</td>
           <td class="left clr-hidden-xs-down">false</td>
           <td class="left">whether not this is a mutli-select combobox</td>
+        </tr>
+        <tr>
+          <td class="left">
+            [showSelectAll]
+            <div class="clr-hidden-sm-up">Type: boolean</div>
+            <div class="clr-hidden-sm-up">Default: false</div>
+          </td>
+          <td class="left clr-hidden-xs-down">boolean</td>
+          <td class="left clr-hidden-xs-down">false</td>
+          <td class="left">
+            Shows a "Select All" / "Unselect All" button at the top of the dropdown in multi-select mode. Selects or
+            unselects all currently visible (filtered) options.
+          </td>
         </tr>
         <tr>
           <td class="left">

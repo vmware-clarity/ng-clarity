@@ -166,6 +166,8 @@ export interface ClrCommonStrings {
     columnSeparatorAriaLabel: string;
     columnSeparatorDescription: string;
     // (undocumented)
+    comboboxAllSelected: string;
+    // (undocumented)
     comboboxDelete: string;
     // (undocumented)
     comboboxNoResults: string;
@@ -173,9 +175,17 @@ export interface ClrCommonStrings {
     comboboxOpen: string;
     comboboxSearching: string;
     // (undocumented)
+    comboboxSelectAll: string;
+    // (undocumented)
     comboboxSelected: string;
     // (undocumented)
     comboboxSelection: string;
+    // (undocumented)
+    comboboxShowAll: string;
+    // (undocumented)
+    comboboxShowLess: string;
+    // (undocumented)
+    comboboxUnselectAll: string;
     current: string;
     currentPage: string;
     danger: string;
