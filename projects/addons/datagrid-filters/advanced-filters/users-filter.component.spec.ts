@@ -208,7 +208,7 @@ describe('UsersFilterComponent', () => {
 
       tick(200); // Wait for debounce
 
-      expect(userServiceMock.searchUsers).toHaveBeenCalledWith(searchTerm, broadcomDomain);
+      expect(userServiceMock.searchUsers).toHaveBeenCalledWith(searchTerm, exampleDomain);
       expect(component.allFetchedUsers).toEqual(['alice', 'bob', 'charlie']);
       expect(component.visibleUsers.length).toBe(4); // incldue al
     }));
