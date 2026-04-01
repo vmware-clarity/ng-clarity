@@ -3,5 +3,6 @@
   "dest": "../../dist/clr-angular",
   "lib": {
     "entryFile": "index.ts"
-  }
+  },
+  "assets": ["./schematics/collection.json"]
 }

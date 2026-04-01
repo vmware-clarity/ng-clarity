@@ -12,5 +12,5 @@
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true
   },
-  "exclude": ["test.ts", "**/*.spec.ts", "**/*.stories.ts"]
+  "exclude": ["test.ts", "**/*.spec.ts", "**/*.stories.ts", "schematics/**"]
 }
