@@ -48,11 +48,6 @@ const routes: Routes = [
     component: DatagridDemo,
     children: [
       {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'structure',
-      },
-      {
         path: 'structure',
         component: DatagridBasicStructureDemo,
         data: {

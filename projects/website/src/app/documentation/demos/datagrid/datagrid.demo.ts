@@ -567,7 +567,7 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
   ngOnInit() {
     const tempArr = this.route.routeConfig?.children as DemoRoute[] | undefined;
     if (tempArr && tempArr.length > 1) {
-      this.childRoutes = tempArr.slice(1);
+      this.childRoutes = tempArr;
     }
     this._subscriptions.push(
       this.router.events.subscribe((change: any) => {
