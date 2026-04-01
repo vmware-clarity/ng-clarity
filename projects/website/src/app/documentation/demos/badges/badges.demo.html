@@ -98,7 +98,23 @@
   </app-doc-tab>
 
   <app-doc-tab tab="code">
-    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
+    <h2 id="angular-component" cds-text="title" class="clr-mt-48px">Angular Examples</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      The <code cds-text="code">&lt;clr-badge&gt;</code> component abstracts the internal CSS logic and provides a
+      simpler API for Angular applications.
+    </p>
+
+    <h3 data-toc-item id="angular-badge-colors" cds-text="section" class="clr-mt-32px">
+      Angular Badge (Color Options)
+    </h3>
+
+    <clr-badge-angular-colors-demo></clr-badge-angular-colors-demo>
+
+    <h3 data-toc-item id="angular-badge-outlined" cds-text="section" class="clr-mt-32px">Angular Badge (Outlined)</h3>
+
+    <clr-badge-angular-outlined-demo></clr-badge-angular-outlined-demo>
+
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">CSS Examples</h2>
     <p cds-text="body" class="clr-mt-16px">
       A badge overlays a count of items on another component, such as a menu or label.
     </p>
@@ -117,6 +133,45 @@
   </app-doc-tab>
 
   <app-doc-tab tab="api">
+    <h2 cds-text="title" class="clr-mt-32px">Angular Components</h2>
+
+    <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">&lt;clr-badge&gt;</code> component</h3>
+    <table class="table clr-mt-24px" cds-text="body">
+      <thead>
+        <tr>
+          <th class="left">Input</th>
+          <th class="left clr-hidden-xs-down">Type</th>
+          <th class="left" style="width: 330px">Values</th>
+          <th class="left clr-hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrColor]</b>
+            <div class="clr-hidden-sm-up">Type: string | ClrBadgeColors</div>
+            <div class="clr-hidden-sm-up">Default: 'none'</div>
+          </td>
+          <td class="left clr-hidden-xs-down">string | ClrBadgeColors</td>
+          <td class="left">"info", "warning", "danger", "success", "gray", "blue", "light-blue", "orange", "purple"</td>
+          <td class="left clr-hidden-xs-down">'none'</td>
+          <td class="left">Sets the badge color.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrType]</b>
+            <div class="clr-hidden-sm-up">Type: Type | string</div>
+            <div class="clr-hidden-sm-up">Default: 'solid'</div>
+          </td>
+          <td class="left clr-hidden-xs-down">Type | string</td>
+          <td class="left">'solid', 'outlined'</td>
+          <td class="left clr-hidden-xs-down">'solid'</td>
+          <td class="left">Sets the badge variant.</td>
+        </tr>
+      </tbody>
+    </table>
+
     <app-style-docs styleDocsKey="Badge"></app-style-docs>
   </app-doc-tab>
 

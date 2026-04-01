@@ -10,6 +10,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 
+import { BadgeAngularColorsDemo } from './badge-angular-colors';
+import { BadgeAngularOutlinedDemo } from './badge-angular-outlined';
 import { BadgeColorsDemo } from './badge-colors';
 import { BadgeStatusesDemo } from './badge-statuses';
 import { BadgesDemo } from './badges.demo';
@@ -29,6 +31,8 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     NestingTableComponent,
     StackblitzExampleComponent,
     RouterModule.forChild([{ path: '', component: BadgesDemo }]),
+    BadgeAngularColorsDemo,
+    BadgeAngularOutlinedDemo,
     BadgeColorsDemo,
     BadgeStatusesDemo,
     BadgesDemo,
