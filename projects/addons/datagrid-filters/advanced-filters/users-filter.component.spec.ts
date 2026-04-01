@@ -29,10 +29,9 @@ describe('UsersFilterComponent', () => {
   let cdrMock: any;
   let datagridFiltersStrings: DatagridFiltersStrings;
 
-  const broadcomDomain = 'broadcom.com';
   const exampleDomain = 'example.com';
-  const alice = 'alice@broadcom.com';
-  const mockDomains = [broadcomDomain, exampleDomain];
+  const alice = 'alice@example.com';
+  const mockDomains = [exampleDomain];
   const mockUsers = ['alice', 'bob', 'charlie'];
   const mockFilterProperty: UserPropertyDefinition = {
     id: 'owner',
@@ -105,7 +104,7 @@ describe('UsersFilterComponent', () => {
       const existingFilter = new PropertyFilter();
       existingFilter.operator = LogicalOperator.Or; // Corresponds to Equals
       const p1 = new PropertyPredicate();
-      p1.value = 'existing_user@broadcom.com';
+      p1.value = 'existing_user@example.com';
       p1.operator = ComparisonOperator.Equals;
       existingFilter.criteria = [p1];
 
@@ -128,8 +127,8 @@ describe('UsersFilterComponent', () => {
 
       // Verify it emits both the original and the newly added predicate
       expect(emittedFilter?.criteria.length).toBe(2);
-      expect(emittedFilter?.criteria[0].value).toBe('existing_user@broadcom.com');
-      expect(emittedFilter?.criteria[1].value).toBe('bob@broadcom.com');
+      expect(emittedFilter?.criteria[0].value).toBe('existing_user@example.com');
+      expect(emittedFilter?.criteria[1].value).toBe('bob');
       expect(emittedFilter?.operator).toBe(LogicalOperator.Or);
       expect(emittedFilter?.criteria[0].operator).toBe(ComparisonOperator.Equals);
       expect(emittedFilter?.criteria[1].operator).toBe(ComparisonOperator.Equals);
@@ -140,11 +139,11 @@ describe('UsersFilterComponent', () => {
       const existingFilter = new PropertyFilter();
       existingFilter.operator = LogicalOperator.Or;
       const p1 = new PropertyPredicate();
-      p1.value = 'user1@broadcom.com';
+      p1.value = 'user1@example.com';
       p1.operator = ComparisonOperator.Equals;
       const p2 = new PropertyPredicate();
       p2.operator = ComparisonOperator.Equals;
-      p2.value = 'user2@broadcom.com';
+      p2.value = 'user2@example.com';
 
       existingFilter.criteria = [p1, p2];
 
@@ -171,11 +170,11 @@ describe('UsersFilterComponent', () => {
 
       // Verify criteria updated to 3 elements, all matching the new operator
       expect(emittedFilter?.criteria.length).toBe(3);
-      expect(emittedFilter?.criteria[0].value).toBe('user1@broadcom.com');
+      expect(emittedFilter?.criteria[0].value).toBe('user1@example.com');
       expect(emittedFilter?.criteria[0].operator).toBe(ComparisonOperator.DoesNotEqual);
-      expect(emittedFilter?.criteria[1].value).toBe('user2@broadcom.com');
+      expect(emittedFilter?.criteria[1].value).toBe('user2@example.com');
       expect(emittedFilter?.criteria[1].operator).toBe(ComparisonOperator.DoesNotEqual);
-      expect(emittedFilter?.criteria[2].value).toBe('alice@broadcom.com');
+      expect(emittedFilter?.criteria[2].value).toBe('alice');
       expect(emittedFilter?.criteria[2].operator).toBe(ComparisonOperator.DoesNotEqual);
     });
 
@@ -183,7 +182,7 @@ describe('UsersFilterComponent', () => {
       const existingFilter = new PropertyFilter();
       existingFilter.operator = LogicalOperator.And; // Means "Does Not Equal" UI state
       const p1 = new PropertyPredicate();
-      p1.value = 'dave@broadcom.com';
+      p1.value = 'dave@example.com';
       existingFilter.criteria = [p1];
 
       // Manually trigger ngOnChanges behavior or re-create component logic
@@ -194,7 +193,7 @@ describe('UsersFilterComponent', () => {
       });
 
       expect(component.usersSelectionForm.get('userOperator')?.value).toBe(ComparisonOperator.DoesNotEqual);
-      expect(component.selectedValues.has('dave@broadcom.com')).toBeTrue();
+      expect(component.selectedValues.has('dave@example.com')).toBeTrue();
     });
   });
 
@@ -209,8 +208,8 @@ describe('UsersFilterComponent', () => {
 
       tick(200); // Wait for debounce
 
-      expect(userServiceMock.searchUsers).toHaveBeenCalledWith(searchTerm, broadcomDomain);
-      expect(component.allFetchedUsers).toEqual([alice, 'bob@broadcom.com', 'charlie@broadcom.com']);
+      expect(userServiceMock.searchUsers).toHaveBeenCalledWith(searchTerm, exampleDomain);
+      expect(component.allFetchedUsers).toEqual(['alice', 'bob', 'charlie']);
       expect(component.visibleUsers.length).toBe(4); // incldue al
     }));
 
@@ -223,8 +222,8 @@ describe('UsersFilterComponent', () => {
 
       expect(component.errorSearchingUsers).toBe(datagridFiltersStrings.errorSearchingUsers);
       // The catchError logic returns of([searchTerm]) if searchTerm exists
-      expect(component.allFetchedUsers).toEqual([component.formatUser(searchTerm)]);
-      expect(component.visibleUsers).toContain(component.formatUser(searchTerm));
+      expect(component.allFetchedUsers).toEqual([searchTerm]);
+      expect(component.visibleUsers).toContain(searchTerm);
     }));
 
     it('should clear search term when clearSearch is called', () => {
@@ -258,12 +257,12 @@ describe('UsersFilterComponent', () => {
       checkboxCtrl.setValue(true);
       component.onOptionChange(index);
 
-      expect(component.selectedValues.has(alice)).toBeTrue();
+      expect(component.selectedValues.has('alice')).toBeTrue();
     });
 
     it('should remove user from selectedValues when unchecked', () => {
       // First select
-      component.selectedValues.add(alice);
+      component.selectedValues.add('alice');
       component.usersSelectionForm.get('searchTerm')?.setValue('');
 
       const index = 0;
@@ -273,7 +272,7 @@ describe('UsersFilterComponent', () => {
       checkboxCtrl.setValue(false);
       component.onOptionChange(index);
 
-      expect(component.selectedValues.has(alice)).toBeFalse();
+      expect(component.selectedValues.has('alice')).toBeFalse();
     });
 
     it('should handle Select All toggling', () => {
@@ -354,7 +353,7 @@ describe('UsersFilterComponent', () => {
       component.usersSelectionForm.get('searchTerm')?.setValue(term);
       tick(200);
 
-      const occurrences = component.visibleUsers.filter(u => u === alice).length;
+      const occurrences = component.visibleUsers.filter(u => u === 'alice').length;
       expect(occurrences).toBe(1);
     }));
   });
@@ -401,18 +400,6 @@ describe('UsersFilterComponent', () => {
       expect(component.errorRetrievingDomains).toBe(datagridFiltersStrings.errorLoadingDomains);
       expect(component.isLoading).toBeFalse();
     }));
-  });
-
-  describe('Formatting', () => {
-    it('should append domain if user does not have @', () => {
-      component.usersSelectionForm.get('domain')?.setValue('test.com');
-      expect(component.formatUser('john')).toBe('john@test.com');
-    });
-
-    it('should NOT append domain if user already has @', () => {
-      component.usersSelectionForm.get('domain')?.setValue('test.com');
-      expect(component.formatUser('john@other.com')).toBe('john@other.com');
-    });
   });
 
   describe('Coverage: Edge Cases & Missing Branches', () => {

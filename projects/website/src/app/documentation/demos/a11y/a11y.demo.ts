@@ -40,6 +40,7 @@ const ZoomLevelScss = require('!raw-loader!./ng/zoom-level.scss').default;
 const ZoomLevelTs = require('!raw-loader!./ng/zoom-level.ts').default;
 
 const ModuleImportExample = `
+import { NgModule } from '@angular/core';
 import { AppfxA11yModule } from '@vmw/appfx/a11y';
 
 @NgModule({

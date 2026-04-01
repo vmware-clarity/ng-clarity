@@ -36,6 +36,7 @@ const EXAMPLE = `
 const EXAMLPE_TS = `
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { ClrModalModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

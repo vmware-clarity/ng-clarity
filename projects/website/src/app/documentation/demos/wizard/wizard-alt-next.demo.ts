@@ -21,6 +21,7 @@ import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/s
 const code = `
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClrAlertModule, ClrFormsModule, ClrWizard, ClrWizardModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

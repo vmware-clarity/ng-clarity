@@ -102,12 +102,9 @@ export class EnumPropertyDefinition extends FilterablePropertyDefinition {
   searchable = false;
 
   /**
-   * Flag indicating whether to show the key (after the value) of the enum
-   * in parentheses. This is useful when users want to search values by key
-   * where the key represents an identifier (e.g., eventTypeId) and the
-   * value is a human-readable description.
+   * Flag indicating whether to show the select all checkbox.
    */
-  showKeyInParentheses = false;
+  enableSelectAll = true;
 
   /**
    * Creates an instance of EnumPropertyDefinition.
@@ -116,7 +113,7 @@ export class EnumPropertyDefinition extends FilterablePropertyDefinition {
    * @param values - A Map containing the enum keys and their corresponding display values.
    * @param singleSelect - Whether the filter restricts selection to a single item. Defaults to false.
    * @param searchable - Whether to enable a search input for the enum options. Defaults to false.
-   * @param showKeyInParentheses - Whether to display keys next to values in the UI. Defaults to false.
+   * @param enableSelectAll - Whether to display the select all checkbox. Defaults to true.
    * @param allowNotInOperator - Flag indicating whether to allow the use of the "NOT IN" operator
    *        for the selected values, enabling users to exclude specific enum items.
    */
@@ -126,18 +123,18 @@ export class EnumPropertyDefinition extends FilterablePropertyDefinition {
     values: Map<string, string>,
     singleSelect = false,
     searchable = false,
-    showKeyInParentheses = false,
+    enableSelectAll = true,
     allowNotInOperator = false
   ) {
     super(
       displayName,
       property,
-      allowNotInOperator ? [ComparisonOperator.Equals, ComparisonOperator.DoesNotEqual] : undefined
+      allowNotInOperator ? [ComparisonOperator.DoesNotEqual, ComparisonOperator.Equals] : undefined
     );
     this.values = values;
     this.singleSelect = singleSelect;
     this.searchable = searchable;
-    this.showKeyInParentheses = showKeyInParentheses;
+    this.enableSelectAll = enableSelectAll;
   }
 }
 
@@ -191,9 +188,8 @@ export class NumericPropertyDefinition extends FilterablePropertyDefinition {
 }
 
 export class UserPropertyDefinition extends FilterablePropertyDefinition {
-  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor(displayName: string, property: string) {
-    super(displayName, property);
+    super(displayName, property, [ComparisonOperator.Equals, ComparisonOperator.DoesNotEqual]);
   }
 }
 

@@ -21,6 +21,7 @@ const HTML_EXAMPLE = `
 
 const TS_EXAMPLE = `
 import { Component } from '@angular/core';
+import { ClrAlertModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

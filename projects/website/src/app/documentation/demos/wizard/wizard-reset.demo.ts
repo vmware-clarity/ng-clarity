@@ -22,6 +22,7 @@ const code = `
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClrFormsModule, ClrWizard, ClrWizardModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

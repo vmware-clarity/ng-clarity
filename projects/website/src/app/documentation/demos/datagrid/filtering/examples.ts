@@ -124,6 +124,7 @@ import { Component } from '@angular/core';
 import { ColorFilter } from './utils/color-filter';
 import { Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
+import { ClrDatagridModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',
@@ -178,6 +179,7 @@ import { Component } from '@angular/core';
 import { ColorFilter } from './utils/color-filter';
 import { Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
+import { ClrDatagridModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',
@@ -260,6 +262,7 @@ import { Component } from '@angular/core';
 import { Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
 import { PokemonFilter } from './utils/pokemon-filter';
+import { ClrDatagridModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

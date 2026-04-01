@@ -26,7 +26,9 @@ interface OptionGroup {
       <label [for]="id">{{ label }}</label>
       <clr-combobox
         [clrEditable]="clrEditable"
+        [clrEditableResolverFn]="clrEditable && objectValues ? elementResolver : undefined"
         [clrMulti]="clrMulti"
+        [showSelectAll]="showSelectAll"
         [placeholder]="placeholder"
         [id]="id"
         [clrLoading]="clrLoading"
@@ -65,7 +67,7 @@ interface OptionGroup {
             <ng-template
               clrOptionItems
               [clrOptionItemsOf]="elements"
-              [clrOptionItemsField]="objectValues ? 'symbol' : undefined"
+              [clrOptionItemsField]="objectValues ? 'name' : undefined"
               let-element
             >
               <clr-option [clrValue]="objectValues ? element : element.symbol">
@@ -109,6 +111,7 @@ export class StorybookComboboxComponent {
   @Input() multiLineItems = false;
   @Input() objectValues = false;
   @Input() useIdentityFn = false;
+  @Input() showSelectAll = false;
 
   /**
    * If true, expects `elements` as array of strings (flat list).
@@ -138,6 +141,13 @@ export class StorybookComboboxComponent {
     }, []);
 
   identityBySymbol = (item: { symbol?: string }) => item?.symbol;
+
+  elementResolver = (input: string) => ({
+    name: input,
+    symbol: input,
+    number: 0,
+    electronegativity: 0,
+  });
 
   onModelChange(value: string | string[]) {
     if (this.clrMulti) {

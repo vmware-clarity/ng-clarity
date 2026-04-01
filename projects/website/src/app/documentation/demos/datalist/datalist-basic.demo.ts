@@ -27,6 +27,7 @@ const basicHTML = `
 const basicTS = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClrFormsModule } from '@clr/angular';
 
 @Component({
   selector: 'app-example',

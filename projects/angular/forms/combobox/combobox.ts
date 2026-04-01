@@ -8,21 +8,26 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
+  booleanAttribute,
   ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
   EventEmitter,
+  Host,
   HostListener,
   Inject,
   Injector,
   Input,
+  NgZone,
   Optional,
   Output,
   PLATFORM_ID,
+  QueryList,
   Renderer2,
   Self,
   ViewChild,
+  ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
@@ -41,9 +46,10 @@ import {
   Keys,
   LoadingListener,
 } from '@clr/angular/utils';
+import { debounceTime, Subject } from 'rxjs';
 
 import { ClrComboboxContainer } from './combobox-container';
-import { ClrComboboxIdentityFunction, ComboboxModel } from './model/combobox.model';
+import { ClrComboboxIdentityFunction, ClrComboboxResolverFunction, ComboboxModel } from './model/combobox.model';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
 import { ClrOptionSelected } from './option-selected.directive';
@@ -88,6 +94,10 @@ export class ClrCombobox<T>
   @ViewChild('trigger') trigger: ElementRef<HTMLButtonElement>;
   @ContentChild(ClrOptionSelected) optionSelected: ClrOptionSelected<T>;
 
+  @ViewChild('truncationButton') truncationButton: ElementRef;
+  @ViewChild('wrapper', { static: true }) wrapper: ElementRef;
+  @ViewChildren('pill') calculationPills: QueryList<ElementRef<HTMLElement>>;
+
   focused = false;
 
   popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
@@ -96,6 +106,14 @@ export class ClrCombobox<T>
 
   protected popoverType = ClrPopoverType.DROPDOWN;
 
+  protected containerWidth = null;
+  protected selectionExpanded = false;
+  protected calculatedLimit: number | undefined;
+  protected shouldCalculate = true;
+  protected isTotalSelection = false;
+
+  private resizeObserver: ResizeObserver;
+  private containerWidthChange = new Subject();
   @ContentChild(ClrOptions) private options: ClrOptions<T>;
 
   private _searchText = '';
@@ -116,7 +134,9 @@ export class ClrCombobox<T>
     @Optional() private containerService: ComboboxContainerService,
     @Inject(PLATFORM_ID) private platformId: any,
     private focusHandler: ComboboxFocusHandler<T>,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private zone: NgZone,
+    @Optional() @Host() private container: ClrComboboxContainer
   ) {
     super(vcr, ClrComboboxContainer, injector, control, renderer, el);
     if (control) {
@@ -127,12 +147,25 @@ export class ClrCombobox<T>
     this.multiSelect = false;
   }
 
+  @Input({ alias: 'showSelectAll', transform: booleanAttribute })
+  get showSelectAll() {
+    return this.optionSelectionService.showSelectAll;
+  }
+  set showSelectAll(value: boolean) {
+    this.optionSelectionService.showSelectAll = value;
+  }
+
   @Input('clrEditable')
   get editable() {
     return this.optionSelectionService.editable;
   }
   set editable(value: boolean) {
     this.optionSelectionService.editable = value;
+  }
+
+  @Input('clrEditableResolverFn')
+  set editableResolver(value: ClrComboboxResolverFunction<T> | undefined) {
+    this.optionSelectionService.editableResolver = value;
   }
 
   @Input('clrComboboxIdentityFn')
@@ -210,6 +243,30 @@ export class ClrCombobox<T>
     return this.optionSelectionService.displayField;
   }
 
+  get showAllText() {
+    return this.commonStrings.parse(this.commonStrings.keys.comboboxShowAll, {
+      ITEMS: this.multiSelectModel?.length.toString(),
+    });
+  }
+
+  get allSelectedText() {
+    return this.commonStrings.parse(this.commonStrings.keys.comboboxAllSelected, {
+      ITEMS: this.multiSelectModel?.length.toString(),
+    });
+  }
+
+  get showIndividualPills(): boolean {
+    return !this.isTotalSelection || this.selectionExpanded;
+  }
+
+  get showTruncationToggle(): boolean {
+    return (
+      this.selectionExpanded ||
+      this.isTotalSelection ||
+      (this.calculatedLimit !== null && this.calculatedLimit < this.multiSelectModel.length)
+    );
+  }
+
   private get disabled() {
     return this.control?.disabled;
   }
@@ -229,7 +286,24 @@ export class ClrCombobox<T>
     // The text input is the actual element we are wrapping
     // This assignment is needed by the wrapper, so it can set
     // the aria properties on the input element, not on the component.
+
+    // We calculate on the initial load to prevent flickering
     this.el = this.textbox;
+    if (this.multiSelect && this.multiSelectModel?.length > 0) {
+      this.calculateLimit();
+    }
+    this.initialiseObserver();
+  }
+
+  override ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this.resizeObserver.disconnect();
+  }
+
+  clearSelection() {
+    this.focusHandler.focusInput();
+    // Clear the array model directly
+    this.optionSelectionService.setSelectionValue([]);
   }
 
   @HostListener('keydown', ['$event'])
@@ -249,7 +323,7 @@ export class ClrCombobox<T>
           break;
         case Keys.Enter:
           if (this.editable && this._searchText.length > 0 && this.options.emptyOptions) {
-            const parsedInput = this.optionSelectionService.parseStringToModel(this._searchText);
+            const parsedInput = this.optionSelectionService.editableResolver(this._searchText);
             this.control?.control.markAsTouched();
             this.optionSelectionService.select(parsedInput);
             this.searchText = '';
@@ -298,7 +372,7 @@ export class ClrCombobox<T>
 
   onChange() {
     if (this.editable && !this.multiSelect && this.options.emptyOptions) {
-      const parsedInput = this.optionSelectionService.parseStringToModel(this._searchText);
+      const parsedInput = this.optionSelectionService.editableResolver(this._searchText);
       this.optionSelectionService.setSelectionValue(parsedInput);
     }
   }
@@ -348,14 +422,110 @@ export class ClrCombobox<T>
     }
   }
 
+  toggleSelectionExpand() {
+    this.selectionExpanded = !this.selectionExpanded;
+    if (this.selectionExpanded) {
+      this.applyLimit(this.multiSelectModel.length);
+    } else {
+      this.containerWidthChange.next(this.containerWidth);
+    }
+  }
+
+  private initialiseObserver() {
+    const container = this.container ? this.container.el.nativeElement : this.el.nativeElement.parentElement;
+    this.containerWidth = container.offsetWidth;
+    this.resizeObserver = new ResizeObserver(entries => {
+      this.zone.runOutsideAngular(() => {
+        entries.forEach(entry => {
+          const entryWidth = entry.contentRect.width;
+          switch (entry.target) {
+            case container:
+              if (this.containerWidth !== entryWidth) {
+                this.containerWidth = entryWidth;
+                this.containerWidthChange.next(entryWidth);
+              }
+              break;
+            case this.wrapper.nativeElement:
+              this.containerWidthChange.next(null);
+              break;
+          }
+        });
+      });
+    });
+    this.resizeObserver.observe(container);
+    this.resizeObserver.observe(this.wrapper.nativeElement);
+  }
+
+  private calculateLimit() {
+    this.shouldCalculate = true;
+    this.cdr.detectChanges();
+    if (!this.calculationPills || this.calculationPills.length === 0) {
+      this.applyLimit();
+      return;
+    }
+    const pillDimensions = this.calculationPills.map(p => ({
+      top: p.nativeElement.offsetTop,
+      width: p.nativeElement.offsetWidth,
+      left: p.nativeElement.offsetLeft,
+    }));
+
+    const firstPill = pillDimensions[0];
+    const buttonWidth = this.truncationButton?.nativeElement?.offsetWidth || 100;
+    const textboxWidth = this.textbox.nativeElement.offsetWidth;
+    const expectedWidth = this.containerWidth - textboxWidth - buttonWidth;
+
+    let fitCount = 0;
+
+    for (const pill of pillDimensions) {
+      if (pill.top > firstPill.top || pill.left + pill.width > expectedWidth) {
+        break;
+      }
+      fitCount++;
+    }
+    this.applyLimit(fitCount);
+  }
+
+  private applyLimit(limit = undefined) {
+    this.zone.run(() => {
+      this.calculatedLimit = limit === 0 ? 1 : limit;
+      this.shouldCalculate = false;
+      this.cdr.markForCheck();
+    });
+  }
+
+  private updateTotalSelection() {
+    if (!this.multiSelect || !this.multiSelectModel?.length) {
+      this.isTotalSelection = false;
+      return;
+    }
+    // Skip recalculation when items are filtered to zero (e.g. "no results")
+    // to prevent pills from flashing while typing in the search input.
+    if (!this.options?.items?.length) {
+      return;
+    }
+    this.isTotalSelection = this.optionSelectionService.containsAll(this.options.items.map(option => option.value));
+  }
+
   private initializeSubscriptions(): void {
     this.subscriptions.push(
       this.optionSelectionService.selectionChanged.subscribe((newSelection: ComboboxModel<T>) => {
         this.updateInputValue(newSelection);
-        if (!this.multiSelect && newSelection && !newSelection.isEmpty()) {
-          this.popoverService.open = false;
+        if (newSelection.isEmpty()) {
+          this.selectionExpanded = false;
+          this.isTotalSelection = false;
+        } else {
+          if (!this.multiSelect) {
+            this.popoverService.open = false;
+          }
+          this.updateTotalSelection();
         }
+
         this.updateControlValue();
+        if (this.selectionExpanded) {
+          this.applyLimit(this.multiSelectModel.length);
+        } else {
+          this.calculateLimit();
+        }
 
         if (this.multiSelect) {
           setTimeout(() => {
@@ -383,6 +553,11 @@ export class ClrCombobox<T>
           this.searchText = '';
         } else {
           this.searchText = this.getDisplayNames(this.optionSelectionService.selectionModel.model)[0] || '';
+        }
+      }),
+      this.containerWidthChange.pipe(debounceTime(0)).subscribe(() => {
+        if (!this.selectionExpanded && !this.isTotalSelection) {
+          this.calculateLimit();
         }
       })
     );
