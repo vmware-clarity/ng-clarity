@@ -118,6 +118,11 @@ export const documentationRoutes: Routes = [
       },
       {
         matcher: documentationRouteMatcher,
+        data: { routePath: 'divider/:tab?' },
+        loadChildren: () => import('./demos/divider/divider.demo.module').then(m => m.DividerDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
         data: { routePath: 'dropdown/:tab?' },
         loadChildren: () => import('./demos/dropdown/dropdown.demo.module').then(m => m.DropdownDemoModule),
       },
@@ -155,6 +160,12 @@ export const documentationRoutes: Routes = [
         matcher: documentationRouteMatcher,
         data: { routePath: 'internationalization/:tab?' },
         loadChildren: () => import('./demos/i18n/i18n.demo.module').then(m => m.I18nDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'layout-utilities/:tab?' },
+        loadChildren: () =>
+          import('./demos/layout-utilities/layout-utilities.demo.module').then(m => m.LayoutUtilitiesDemoModule),
       },
       {
         matcher: documentationRouteMatcher,

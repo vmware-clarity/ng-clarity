@@ -17,12 +17,16 @@ groups:
         url: /pages/accessibility
       - label: Color
         url: /documentation/color
+      - label: Divider
+        url: /documentation/divider
       - label: Grid
         url: /documentation/grid
       - label: Icons
         url: /documentation/icons
       - label: Internationalization
         url: /documentation/internationalization
+      - label: Layout Utilities
+        url: /documentation/layout-utilities
       - label: Layouts
         url: /documentation/app-layout
       - label: Navigation

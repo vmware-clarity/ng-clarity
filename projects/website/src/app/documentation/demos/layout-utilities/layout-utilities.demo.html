@@ -1,0 +1,286 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      <code cds-text="code">cds-layout</code> is a CSS attribute utility for building flexible, consistent layouts using
+      Clarity's spacing tokens. It provides a declarative API for controlling flex direction, alignment, gaps, padding,
+      margin, and container widths directly in HTML — without writing custom CSS.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="usage">Usage</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Add the <code cds-text="code">cds-layout</code> attribute to any HTML element. The attribute value is a
+      space-separated list of tokens. No import or module registration is required — the styles are applied via the
+      global Clarity stylesheet.
+    </p>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="layout-types">Layout Types</h2>
+
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="horizontal">Horizontal Layout</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      A horizontal layout arranges children in a row using flex. Items wrap to the next row by default when they
+      overflow the container.
+    </p>
+    <div class="layout-demo clr-mt-16px">
+      <div cds-layout="horizontal gap:md">
+        <span class="layout-demo__block">1</span>
+        <span class="layout-demo__block">2</span>
+        <span class="layout-demo__block">3</span>
+        <span class="layout-demo__block">4</span>
+      </div>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="vertical">Vertical Layout</h3>
+    <p class="clr-mt-16px" cds-text="body">A vertical layout arranges children in a column using flex.</p>
+    <div class="layout-demo clr-mt-16px" style="max-width: 160px">
+      <div cds-layout="vertical gap:md">
+        <span class="layout-demo__block">1</span>
+        <span class="layout-demo__block">2</span>
+        <span class="layout-demo__block">3</span>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="alignment">Alignment</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Use <code cds-text="code">align:&lt;value&gt;</code> to control how children are positioned inside the layout
+      container. Multiple alignment tokens may be combined.
+    </p>
+
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th class="left">Token</th>
+          <th class="left">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (a of alignValues; track a.value) {
+        <tr>
+          <td class="left"><code cds-text="code">align:{{ a.value }}</code></td>
+          <td class="left">{{ a.description }}</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+
+    <h4 class="clr-mt-24px" cds-text="subsection">Right-aligned actions</h4>
+    <div class="layout-demo clr-mt-16px" style="width: 100%">
+      <div cds-layout="horizontal gap:sm align:right" style="width: 100%">
+        <button class="btn btn-outline btn-sm">Cancel</button>
+        <button class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </div>
+
+    <h4 class="clr-mt-16px" cds-text="subsection">Centered content</h4>
+    <div class="layout-demo clr-mt-16px layout-demo--tall" style="width: 100%">
+      <div cds-layout="vertical gap:sm align:center" style="width: 100%; height: 100%">
+        <cds-icon shape="info-circle" size="xl"></cds-icon>
+        <p cds-text="body">No items found.</p>
+      </div>
+    </div>
+
+    <h4 class="clr-mt-16px" cds-text="subsection">Fill (equal width children)</h4>
+    <div class="layout-demo clr-mt-16px" style="width: 100%">
+      <div cds-layout="horizontal gap:sm align:fill" style="width: 100%">
+        <button class="btn btn-outline btn-sm">First</button>
+        <button class="btn btn-outline btn-sm">Second</button>
+        <button class="btn btn-outline btn-sm">Third</button>
+      </div>
+    </div>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="gap">Gap</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Use <code cds-text="code">gap:&lt;size&gt;</code> to control space between children. Values map to Clarity's
+      layout space tokens.
+    </p>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th class="left">Token</th>
+          <th class="left">Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (g of gapValues; track g) {
+        <tr>
+          <td class="left"><code cds-text="code">gap:{{ g }}</code></td>
+          <td class="left">
+            <div cds-layout="horizontal" [attr.cds-layout]="'horizontal gap:' + g">
+              <span class="layout-demo__block">A</span>
+              <span class="layout-demo__block">B</span>
+              <span class="layout-demo__block">C</span>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="spacing">Padding &amp; Margin</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Padding and margin shorthand tokens follow the same size scale as <code cds-text="code">gap</code>. All accept the
+      same size values: <code cds-text="code">none | xxs | xs | sm | md | lg | xl | xxl</code>.
+    </p>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th class="left">Token</th>
+          <th class="left">Applies to</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left"><code cds-text="code">p:md</code></td>
+          <td class="left">All four sides</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">p-x:md</code></td>
+          <td class="left">Left and right (inline axis)</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">p-y:md</code></td>
+          <td class="left">Top and bottom (block axis)</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">p-t:md</code></td>
+          <td class="left">Top only</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">p-r:md</code></td>
+          <td class="left">Right only</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">p-b:md</code></td>
+          <td class="left">Bottom only</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">p-l:md</code></td>
+          <td class="left">Left only</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">m:md</code> &nbsp; <code cds-text="code">m-x:md</code> …</td>
+          <td class="left">Same pattern applies for margin</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="containers">Container Widths</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Use <code cds-text="code">container:&lt;size&gt;</code> to constrain the max-width of a section to a standard
+      breakpoint. Add <code cds-text="code">container:center</code> to center it horizontally.
+    </p>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th class="left">Token</th>
+          <th class="left">Max-width</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left"><code cds-text="code">container:sm</code></td>
+          <td class="left">576px</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">container:md</code></td>
+          <td class="left">768px</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">container:lg</code></td>
+          <td class="left">992px</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">container:xl</code></td>
+          <td class="left">1200px</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">container:center</code></td>
+          <td class="left">Centers the container using <code cds-text="code">margin-inline: auto</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="clr-mt-48px" cds-text="title" id="wrap">Wrap Control</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      By default, a horizontal layout wraps items to the next row when the container overflows. Use
+      <code cds-text="code">wrap:none</code> to disable wrapping (e.g., for toolbars).
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 class="clr-mt-48px" cds-text="title" id="code-examples">Code Examples</h2>
+
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="code-horizontal">Horizontal Layout</h3>
+    <div cds-layout="horizontal gap:md clr-mt-24px">
+      <span class="layout-demo__block">1</span>
+      <span class="layout-demo__block">2</span>
+      <span class="layout-demo__block">3</span>
+    </div>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="horizontalExample" language="html"></app-code-snippet>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="code-vertical">Vertical Layout</h3>
+    <div style="max-width: 120px" class="clr-mt-16px">
+      <div cds-layout="vertical gap:md">
+        <span class="layout-demo__block">1</span>
+        <span class="layout-demo__block">2</span>
+        <span class="layout-demo__block">3</span>
+      </div>
+    </div>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="verticalExample" language="html"></app-code-snippet>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="code-alignment">Alignment</h3>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="alignmentExample" language="html"></app-code-snippet>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="code-gap">Gap Sizes</h3>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="gapExample" language="html"></app-code-snippet>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="code-spacing">Padding &amp; Margin</h3>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="spacingExample" language="html"></app-code-snippet>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="code-container">Container Widths</h3>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="containerExample" language="html"></app-code-snippet>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="code-wrap">Wrap Control</h3>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="wrapExample" language="html"></app-code-snippet>
+    </div>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="code-combined">Combined Example</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Tokens can be combined in a single <code cds-text="code">cds-layout</code> attribute value.
+    </p>
+    <div
+      class="clr-mt-16px"
+      style="
+        border: 1px solid var(--cds-alias-object-border-color);
+        border-radius: var(--cds-alias-object-border-radius-100);
+      "
+    >
+      <footer cds-layout="horizontal gap:sm align:right p:md">
+        <button class="btn btn-outline btn-sm">Cancel</button>
+        <button class="btn btn-primary btn-sm">Submit</button>
+      </footer>
+    </div>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="combinedExample" language="html"></app-code-snippet>
+    </div>
+  </app-doc-tab>
+</app-doc-tabs>
