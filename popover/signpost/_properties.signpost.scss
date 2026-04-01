@@ -15,9 +15,6 @@
     & [clr-density] {
       --clr-signpost-border-radius: #{density.$clr-base-border-radius-s};
       --clr-signpost-pointer-size: #{density.$clr-base-layout-space-s};
-
-      // @deprecated in v17 to be removed in v18 in favor of --clr-signpost-pointer-size
-      --clr-signpost-border-size: var(--clr-signpost-pointer-size);
     }
 
     &,
@@ -32,9 +29,6 @@
       --clr-signpost-pointer-border: var(--clr-signpost-pointer-size) solid var(--clr-signpost-content-border-color);
       --clr-signpost-pointer-invisible-border: var(--clr-signpost-pointer-size) solid transparent;
       --clr-signpost-pointer-pseudo-border: var(--clr-signpost-pointer-size) solid var(--clr-signpost-content-bg-color);
-
-      // @deprecated in v17 to be removed in v18 in favor of --clr-signpost-pointer-pseudo-border
-      --clr-signpost-pointer-psuedo-border: var(--clr-signpost-pointer-pseudo-border);
     }
   }
 }

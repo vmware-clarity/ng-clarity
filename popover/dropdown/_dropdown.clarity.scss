@@ -160,7 +160,7 @@
       }
 
       &:focus {
-        outline-offset: calc(-1 * tokens.$cds-global-space-2);
+        @include menu-mixins.dropdown-item-outline();
       }
     }
 
