@@ -16,14 +16,12 @@ import {
   ClrDatagridSortOrder,
   ClrDatagridStringFilterInterface,
   ClrIcon,
-  ClrIconModule,
   ClrIfExpanded,
   ClrLoadingModule,
-  ClrPopoverHostDirective,
-  ClrStopEscapePropagationDirective,
   infoCircleIcon,
   pencilIcon,
   plusIcon,
+  trashIcon,
   userIcon,
 } from '@clr/angular';
 import { Subscription } from 'rxjs';
@@ -62,13 +60,10 @@ type DemoRoute = Route & { data: { demoName: string } };
     DocTabComponent,
     RouterLink,
     ClrDatagridModule,
-    ClrStopEscapePropagationDirective,
-    ClrPopoverHostDirective,
     ColorFilter,
     ClrIfExpanded,
     ClrLoadingModule,
     ClrIcon,
-    ClrIconModule,
     RouterOutlet,
     ClrAccordionModule,
     StyleDocsComponent,
@@ -566,7 +561,7 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
     this.selected.push(this.exampleData4[0]);
     this.selected.push(this.exampleData4[1]);
 
-    ClarityIcons.addIcons(angleIcon, plusIcon, pencilIcon, userIcon, infoCircleIcon);
+    ClarityIcons.addIcons(angleIcon, plusIcon, pencilIcon, userIcon, infoCircleIcon, trashIcon);
   }
 
   ngOnInit() {
