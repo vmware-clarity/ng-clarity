@@ -17,6 +17,10 @@
   "bugs": {
     "url": "https://github.com/vmware-clarity/ng-clarity/issues"
   },
+  "schematics": "./schematics/collection.json",
+  "ng-update": {
+    "migrations": "./schematics/collection.json"
+  },
   "peerDependencies": {
     "@angular/cdk": "^21",
     "@angular/common": "^21",
@@ -222,8 +226,9 @@
     }
   },
   "sideEffects": false,
+  "type": "module",
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "version": "0.0.0-preview.6c4001b"
+  "version": "0.0.0-preview.ff35d87"
 }

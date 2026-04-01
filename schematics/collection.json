@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "ng-update": {
+      "version": "18.0.0",
+      "description": "Migrates @clr/angular from v17 to v18",
+      "factory": "./ng-update/index#migrate"
+    }
+  }
+}

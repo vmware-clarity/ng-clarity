@@ -5072,8 +5072,14 @@ class ClrDatagrid {
     ngAfterViewInit() {
         this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
         this.updateDetailState();
-        // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
-        this.refresh.emit(this.stateProvider.state);
+        // Emit the state only if it is not an empty object.
+        // Default state of `ClrDatagridStateInterface` is an empty object.
+        // The refresh emit is needed in Server-driven datagrid when pagination is set, but the data is still not requested.
+        // The refresh emit should trigger the data request based on the state provided.
+        // Alternately because pagination might not be set on initialization emit an empty state will trigger a refresh.
+        if (Object.keys(this.stateProvider.state).length > 0) {
+            this.refresh.emit(this.stateProvider.state);
+        }
         this._subscriptions.push(this.stickyHeaders.changes.subscribe(() => this.resize()), this.stateProvider.change.subscribe(state => this.refresh.emit(state)), this.selection.change.subscribe(selection => {
             if (this.selection.selectable) {
                 this.selectedChanged.emit(selection);
