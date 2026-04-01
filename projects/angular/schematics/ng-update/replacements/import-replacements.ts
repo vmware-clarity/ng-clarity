@@ -112,10 +112,4 @@ export const IMPORT_REPLACEMENTS: readonly ImportReplacement[] = [
     oldSymbol: '*',
     newSymbol: '*',
   },
-  {
-    oldModule: '@cds/core',
-    newModule: '@clr/angular/icon',
-    oldSymbol: '*',
-    newSymbol: '*',
-  },
 ];

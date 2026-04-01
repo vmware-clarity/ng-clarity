@@ -220,7 +220,7 @@ service.focusAnchor();`
     it('should rename getAnchorPosition to getOriginPosition', () => {
       tree.create(
         '/app.ts',
-        `import { ClrPopoverService } from '@clr/angular/popover/common';
+        `import { ClrPopoverService, getAnchorPosition } from '@clr/angular/popover/common';
 const pos = getAnchorPosition(key);`
       );
 
