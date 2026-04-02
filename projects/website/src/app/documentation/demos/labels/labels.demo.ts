@@ -9,9 +9,9 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ClarityIcons, ClrIcon, timesIcon } from '@clr/angular';
 
+import { LabelAngularClickableDemo } from './label-angular-clickable';
 import { LabelAngularColorsDemo } from './label-angular-colors';
-import { LabelAngularSolidDemo } from './label-angular-solid';
-import { LabelAngularStatusDemo } from './label-angular-solid-with-badges';
+import { LabelAngularStatusDemo } from './label-angular-status';
 import { LabelAngularWithBadgesDemo } from './label-angular-with-badges';
 import { LabelsClickableDemo } from './labels-clickable';
 import { LabelsColorOptionsDemo } from './labels-color-options';
@@ -39,7 +39,6 @@ import { ClarityDocComponent } from '../clarity-doc';
     ClrIcon,
     RouterLink,
     LabelAngularColorsDemo,
-    LabelAngularSolidDemo,
     LabelAngularStatusDemo,
     LabelAngularWithBadgesDemo,
     LabelsDefaultDemo,
@@ -48,6 +47,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     LabelsStatusDemo,
     LabelsWithBadgesDemo,
     StyleDocsComponent,
+    LabelAngularClickableDemo,
   ],
 })
 export class LabelsDemo extends ClarityDocComponent {

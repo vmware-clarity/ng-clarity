@@ -11,17 +11,20 @@ import { ClrLabel } from '@clr/angular';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const HTML_EXAMPLE = `
+<h6>Outlined</h6>
 <clr-label clrText="Seattle (Default color)"></clr-label>
 <clr-label clrText="Austin" clrColor="purple"></clr-label>
 <clr-label clrText="New York" clrColor="blue"></clr-label>
 <clr-label clrText="Palo Alto" clrColor="orange"></clr-label>
 <clr-label clrText="San Francisco" clrColor="light-blue"></clr-label>
 <clr-label clrText="Sofia" clrColor="gray"></clr-label>
-<div>Status Colors</div>
-<clr-label clrColor="danger" clrText="Austin"></clr-label>
-<clr-label clrColor="info" clrText="New York"></clr-label>
-<clr-label clrColor="success" clrText="Palo Alto"></clr-label>
-<clr-label clrColor="warning" clrText="San Francisco"></clr-label>
+<h6>Solid</h6>
+<clr-label clrType="solid" clrText="Seattle (Default color)"></clr-label>
+<clr-label clrType="solid" clrText="Austin" clrColor="purple"></clr-label>
+<clr-label clrType="solid" clrText="New York" clrColor="blue"></clr-label>
+<clr-label clrType="solid" clrText="Palo Alto" clrColor="orange"></clr-label>
+<clr-label clrType="solid" clrText="San Francisco" clrColor="light-blue"></clr-label>
+<clr-label clrType="solid" clrText="Sofia" clrColor="gray"></clr-label>
 `;
 
 @Component({

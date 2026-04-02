@@ -11,6 +11,7 @@ import { ClrLabel } from '@clr/angular';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const HTML_EXAMPLE = `
+<h6>Outlined</h6>
 <clr-label clrText="Austin" clrColor="purple" clrBadgeText="1" [clrClickable]="true"></clr-label>
 <clr-label clrText="New York" clrColor="blue" clrBadgeText="2" [clrClickable]="true"></clr-label>
 <clr-label clrText="Palo Alto" clrColor="orange" clrBadgeText="3" [clrClickable]="true"></clr-label>
@@ -21,15 +22,43 @@ const HTML_EXAMPLE = `
   [clrClickable]="true"
 ></clr-label>
 <clr-label clrText="Seattle" clrBadgeText="15" [clrClickable]="true"></clr-label>
-<div>Status Colors</div>
-<clr-label clrColor="danger" clrText="Austin" clrBadgeText="15" [clrClickable]="true"></clr-label>
-<clr-label clrColor="info" clrText="New York" clrBadgeText="33" [clrClickable]="true"></clr-label>
-<clr-label clrColor="success" clrText="Palo Alto" clrBadgeText="99+" [clrClickable]="true"></clr-label>
+<clr-label clrText="Disabled" clrBadgeText="15" [clrClickable]="true" [clrDisabled]="true"></clr-label>
+<h6>Solid</h6>
 <clr-label
-  clrColor="warning"
-  clrText="San Francisco"
-  clrBadgeText="67"
+  clrText="Austin"
+  clrColor="purple"
+  clrBadgeText="1"
+  [clrType]="'solid'"
   [clrClickable]="true"
+></clr-label>
+<clr-label
+  clrText="New York"
+  clrColor="blue"
+  clrBadgeText="2"
+  [clrType]="'solid'"
+  [clrClickable]="true"
+></clr-label>
+<clr-label
+  clrText="Palo Alto"
+  clrColor="orange"
+  clrBadgeText="3"
+  [clrType]="'solid'"
+  [clrClickable]="true"
+></clr-label>
+<clr-label
+  clrText="San Francisco"
+  clrColor="light-blue"
+  clrBadgeText="12"
+  [clrType]="'solid'"
+  [clrClickable]="true"
+></clr-label>
+<clr-label clrText="Seattle" clrBadgeText="15" [clrType]="'solid'" [clrClickable]="true"></clr-label>
+<clr-label
+  clrText="Disabled"
+  clrBadgeText="15"
+  [clrType]="'solid'"
+  [clrClickable]="true"
+  [clrDisabled]="true"
 ></clr-label>
 `;
 
