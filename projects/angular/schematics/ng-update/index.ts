@@ -40,11 +40,14 @@ const TS_CANDIDATES: readonly string[] = [
  */
 function migrateTypeScriptFiles(): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    context.logger.info('  Migrating TypeScript files (imports, inline templates, inline styles)...');
+    context.logger.info('  Migrating TypeScript files (imports, inline templates, inline styles)');
 
-    let fileCount = 0;
+    let scanCount = 0;
+    let updateCount = 0;
 
     visitFiles(tree, '**/*.ts', filePath => {
+      scanCount++;
+
       const content = tree.read(filePath);
       if (!content) {
         return;
@@ -64,18 +67,19 @@ function migrateTypeScriptFiles(): Rule {
 
       if (text !== original) {
         tree.overwrite(filePath, text);
-        fileCount++;
+        updateCount++;
+        context.logger.info(`    UPDATE ${filePath}`);
       }
     });
 
-    context.logger.info(`    Updated ${fileCount} TypeScript file(s).`);
+    context.logger.info(`  ${updateCount} of ${scanCount} file(s) updated.`);
   };
 }
 
 export function migrate(): Rule {
   return (tree: Tree, context: SchematicContext) => {
     context.logger.info('');
-    context.logger.info('Running @clr/angular v18 migration schematics...');
+    context.logger.info('Running @clr/angular v18 migration...');
     context.logger.info('');
 
     return chain([migrateTypeScriptFiles(), migrateTemplates(), migrateCssProperties()])(tree, context);
