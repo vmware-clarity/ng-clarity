@@ -9,7 +9,7 @@ import { TitleCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ClarityIcons, ClrDropdownModule, ClrIcon, landscapeIcon } from '@clr/angular';
 
-type DensityType = '' | 'regular' | 'compact';
+type DensityType = '' | 'compact';
 
 const densityLocalStorageKey = 'density';
 
@@ -68,7 +68,7 @@ const densityLocalStorageKey = 'density';
 export class DensityToggleComponent implements OnInit {
   protected density = getPreferredDensity();
   protected themeIconInverse = true;
-  protected densityOptions: DensityType[] = ['', 'regular', 'compact'];
+  protected densityOptions: DensityType[] = ['', 'compact'];
 
   constructor() {
     ClarityIcons.addIcons(landscapeIcon);

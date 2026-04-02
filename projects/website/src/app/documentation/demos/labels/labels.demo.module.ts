@@ -10,6 +10,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 
+import { LabelAngularClickableDemo } from './label-angular-clickable';
+import { LabelAngularColorsDemo } from './label-angular-colors';
+import { LabelAngularStatusDemo } from './label-angular-status';
+import { LabelAngularWithBadgesDemo } from './label-angular-with-badges';
 import { LabelsClickableDemo } from './labels-clickable';
 import { LabelsColorOptionsDemo } from './labels-color-options';
 import { LabelsDefaultDemo } from './labels-default';
@@ -30,6 +34,10 @@ import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.compon
     DoDontComponent,
     StyleDocsComponent,
     StackblitzExampleComponent,
+    LabelAngularColorsDemo,
+    LabelAngularClickableDemo,
+    LabelAngularStatusDemo,
+    LabelAngularWithBadgesDemo,
     LabelsWithBadgesDemo,
     LabelsStatusDemo,
     LabelsClickableDemo,

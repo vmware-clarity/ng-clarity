@@ -16,11 +16,11 @@
 ></div>
 <div class="clr-row clr-mt-8px">
   <div class="clr-col-1">
-    <clr-icon
+    <cds-icon
       [ngClass]="'icon-' + type()"
-      attr.shape="{{ type() === 'do' ? 'check' : type() == 'dont' ? 'times' : 'warning-standard' }}"
+      [shape]="type() === 'do' ? 'check' : type() == 'dont' ? 'times' : 'warning-standard'"
       size="md"
-    ></clr-icon>
+    ></cds-icon>
   </div>
   <div class="clr-col-10" cds-text="secondary bold" [ngClass]="'text-' + type()">
     {{ typeDisplayText[type()] }}

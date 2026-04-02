@@ -10,11 +10,20 @@ import { Component } from '@angular/core';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const EXAMPLE = `
+<h6>Outlined</h6>
 <span class="label">Seattle</span>
 <span class="label label-purple">Austin</span>
 <span class="label label-blue">New York</span>
 <span class="label label-orange">Palo Alto</span>
 <span class="label label-light-blue">San Francisco</span>
+<span class="label disabled">Disabled</span>
+<h6>Solid</h6>
+<span class="label solid">Seattle</span>
+<span class="label solid label-purple">Austin</span>
+<span class="label solid label-blue">New York</span>
+<span class="label solid label-orange">Palo Alto</span>
+<span class="label solid label-light-blue">San Francisco</span>
+<span class="label solid disabled">Disabled</span>
 `;
 
 @Component({

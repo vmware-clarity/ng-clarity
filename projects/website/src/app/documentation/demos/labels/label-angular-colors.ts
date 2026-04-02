@@ -1,0 +1,37 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+import { ClrLabel } from '@clr/angular';
+
+import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
+
+const HTML_EXAMPLE = `
+<h6>Outlined</h6>
+<clr-label clrText="Seattle (Default color)"></clr-label>
+<clr-label clrText="Austin" clrColor="purple"></clr-label>
+<clr-label clrText="New York" clrColor="blue"></clr-label>
+<clr-label clrText="Palo Alto" clrColor="orange"></clr-label>
+<clr-label clrText="San Francisco" clrColor="light-blue"></clr-label>
+<clr-label clrText="Sofia" clrColor="gray"></clr-label>
+<h6>Solid</h6>
+<clr-label clrType="solid" clrText="Seattle (Default color)"></clr-label>
+<clr-label clrType="solid" clrText="Austin" clrColor="purple"></clr-label>
+<clr-label clrType="solid" clrText="New York" clrColor="blue"></clr-label>
+<clr-label clrType="solid" clrText="Palo Alto" clrColor="orange"></clr-label>
+<clr-label clrType="solid" clrText="San Francisco" clrColor="light-blue"></clr-label>
+<clr-label clrType="solid" clrText="Sofia" clrColor="gray"></clr-label>
+`;
+
+@Component({
+  selector: 'clr-label-angular-colors-demo',
+  templateUrl: './label-angular-colors.demo.html',
+  imports: [ClrLabel, StackblitzExampleComponent],
+})
+export class LabelAngularColorsDemo {
+  htmlExample = HTML_EXAMPLE;
+}

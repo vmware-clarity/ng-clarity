@@ -7,8 +7,12 @@
 
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ClrIcon, ClrIconModule } from '@clr/angular';
+import { ClarityIcons, ClrIcon, timesIcon } from '@clr/angular';
 
+import { LabelAngularClickableDemo } from './label-angular-clickable';
+import { LabelAngularColorsDemo } from './label-angular-colors';
+import { LabelAngularStatusDemo } from './label-angular-status';
+import { LabelAngularWithBadgesDemo } from './label-angular-with-badges';
 import { LabelsClickableDemo } from './labels-clickable';
 import { LabelsColorOptionsDemo } from './labels-color-options';
 import { LabelsDefaultDemo } from './labels-default';
@@ -33,14 +37,17 @@ import { ClarityDocComponent } from '../clarity-doc';
     DocTabComponent,
     DoDontComponent,
     ClrIcon,
-    ClrIconModule,
     RouterLink,
+    LabelAngularColorsDemo,
+    LabelAngularStatusDemo,
+    LabelAngularWithBadgesDemo,
     LabelsDefaultDemo,
     LabelsColorOptionsDemo,
     LabelsClickableDemo,
     LabelsStatusDemo,
     LabelsWithBadgesDemo,
     StyleDocsComponent,
+    LabelAngularClickableDemo,
   ],
 })
 export class LabelsDemo extends ClarityDocComponent {
@@ -49,5 +56,7 @@ export class LabelsDemo extends ClarityDocComponent {
 
   constructor() {
     super('label');
+
+    ClarityIcons.addIcons(timesIcon);
   }
 }
