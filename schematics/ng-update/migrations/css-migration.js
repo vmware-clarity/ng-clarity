@@ -9,33 +9,38 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CSS_MIGRATION_INLINE_CANDIDATES = exports.CSS_MIGRATION_CANDIDATES = void 0;
 exports.transformInlineStyles = transformInlineStyles;
 exports.migrateCssProperties = migrateCssProperties;
+exports.applyStyleTransforms = applyStyleTransforms;
 const css_replacements_1 = require("../replacements/css-replacements");
 const file_visitor_1 = require("../utils/file-visitor");
+const regexp_utils_1 = require("../utils/regexp-utils");
 // ---------------------------------------------------------------------------
 // Pre-compiled regex arrays — built once at module load, not per-file
 // ---------------------------------------------------------------------------
+// Negative lookahead (?![-\w]) ensures a CSS custom property name that is a
+// prefix of a longer one (e.g. --clr-foo--active inside --clr-foo--active-extra)
+// is NOT matched, preventing false-positive renames.
 const COMPILED_PROPERTY_RENAME_REGEXES = css_replacements_1.CSS_PROPERTY_REPLACEMENTS.filter(r => r.new).map(r => ({
     old: r.old,
     new: r.new,
-    regex: new RegExp(escapeRegExp(r.old), 'g'),
+    regex: (0, regexp_utils_1.prefixNegativeLookaheadRegex)(r.old),
 }));
 const COMPILED_PROPERTY_REMOVE_REGEXES = css_replacements_1.CSS_PROPERTY_REPLACEMENTS.filter(r => !r.new).map(r => ({
     old: r.old,
-    regex: new RegExp(`(\\s*)(${escapeRegExp(r.old)}\\s*:[^;]*;)`, 'g'),
+    regex: new RegExp(`(\\s*)(${(0, regexp_utils_1.escapeRegExp)(r.old)}(?![-\\w])\\s*:[^;]*;)`, 'g'),
 }));
 const COMPILED_SELECTOR_REGEXES = css_replacements_1.CSS_SELECTOR_REPLACEMENTS.map(r => ({
     old: r.old,
     new: r.new,
-    regex: new RegExp(`\\b${escapeRegExp(r.old)}\\b`, 'g'),
+    regex: (0, regexp_utils_1.wordBoundaryRegex)(r.old),
 }));
 const COMPILED_ATTRIBUTE_REGEXES = css_replacements_1.CSS_ATTRIBUTE_REPLACEMENTS.map(r => ({
     old: r.old,
     new: r.new,
-    regex: new RegExp(escapeRegExp(r.old), 'g'),
+    regex: new RegExp((0, regexp_utils_1.escapeRegExp)(r.old), 'g'),
 }));
 const COMPILED_MIXIN_REGEXES = css_replacements_1.REMOVED_SCSS_MIXINS.map(name => ({
     name,
-    regex: new RegExp(`@include\\s+${escapeRegExp(name)}\\s*\\([^)]*\\)\\s*;`, 'g'),
+    regex: new RegExp(`@include\\s+${(0, regexp_utils_1.escapeRegExp)(name)}\\s*\\([^)]*\\)\\s*;`, 'g'),
 }));
 // ---------------------------------------------------------------------------
 // Fast-path candidate strings
@@ -65,10 +70,13 @@ function transformInlineStyles(text) {
 // ---------------------------------------------------------------------------
 function migrateCssProperties() {
     return (tree, context) => {
-        context.logger.info('  Migrating CSS custom properties and selectors...');
-        let styleFileCount = 0;
-        let tsFileCount = 0;
+        context.logger.info('  Migrating style files (CSS, SCSS, Sass, Less)');
+        let styleScanCount = 0;
+        let styleUpdateCount = 0;
+        let tsScanCount = 0;
+        let tsUpdateCount = 0;
         (0, file_visitor_1.visitFiles)(tree, '**/*.{css,scss,sass,less}', filePath => {
+            styleScanCount++;
             const content = tree.read(filePath);
             if (!content) {
                 return;
@@ -80,10 +88,12 @@ function migrateCssProperties() {
             const updated = applyStyleTransforms(original, filePath);
             if (updated !== original) {
                 tree.overwrite(filePath, updated);
-                styleFileCount++;
+                styleUpdateCount++;
+                context.logger.info(`    UPDATE ${filePath}`);
             }
         });
         (0, file_visitor_1.visitFiles)(tree, '**/*.ts', filePath => {
+            tsScanCount++;
             const content = tree.read(filePath);
             if (!content) {
                 return;
@@ -95,14 +105,17 @@ function migrateCssProperties() {
             const updated = transformInlineStyles(original);
             if (updated !== original) {
                 tree.overwrite(filePath, updated);
-                tsFileCount++;
+                tsUpdateCount++;
+                context.logger.info(`    UPDATE ${filePath}`);
             }
         });
-        context.logger.info(`    Updated ${styleFileCount} style file(s) and ${tsFileCount} inline style(s).`);
+        const totalScanned = styleScanCount + tsScanCount;
+        const totalUpdated = styleUpdateCount + tsUpdateCount;
+        context.logger.info(`  ${totalUpdated} of ${totalScanned} file(s) updated.`);
     };
 }
 // ---------------------------------------------------------------------------
-// Private helpers
+// Helpers — exported for direct testing; not part of the public schematic API
 // ---------------------------------------------------------------------------
 function applyStyleTransforms(text, filePath) {
     text = replaceCssProperties(text);
@@ -160,8 +173,5 @@ function replaceScssMixins(text) {
         text = text.replace(r.regex, `/* TODO(v18 migration): '@include ${r.name}(...)' has been removed. */`);
     }
     return text;
-}
-function escapeRegExp(str) {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 //# sourceMappingURL=css-migration.js.map

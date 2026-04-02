@@ -12,35 +12,46 @@ exports.migrateImports = migrateImports;
 const import_replacements_1 = require("../replacements/import-replacements");
 const symbol_replacements_1 = require("../replacements/symbol-replacements");
 const file_visitor_1 = require("../utils/file-visitor");
+const regexp_utils_1 = require("../utils/regexp-utils");
 // ---------------------------------------------------------------------------
 // Pre-compiled regex arrays — built once at module load, not per-file
 // ---------------------------------------------------------------------------
 // Sort import replacements by path length descending so more-specific paths
 // (e.g. '@clr/angular/src/accordion/stepper') match before shorter prefixes.
 const SORTED_IMPORT_REPLACEMENTS = [...import_replacements_1.IMPORT_REPLACEMENTS].sort((a, b) => b.oldModule.length - a.oldModule.length);
-const COMPILED_IMPORT_REPLACEMENTS = SORTED_IMPORT_REPLACEMENTS.map(r => ({
-    ...r,
-    regex: r.oldSymbol === '*'
-        ? new RegExp(`(from\\s+['"])${escapeRegExp(r.oldModule)}(?=[/'"])`, 'g')
-        : new RegExp(`(import\\s*\\{[^}]*\\b)${escapeRegExp(r.oldSymbol)}(\\b[^}]*\\}\\s*from\\s*['"])${escapeRegExp(r.oldModule)}(['"])`, 'g'),
+// Wildcard replacements: change the whole module path for all symbols.
+const COMPILED_WILDCARD_IMPORT_REGEXES = SORTED_IMPORT_REPLACEMENTS.filter(r => r.oldSymbol === '*').map(r => ({
+    oldModule: r.oldModule,
+    newModule: r.newModule,
+    regex: new RegExp(`(from\\s+['"])${(0, regexp_utils_1.escapeRegExp)(r.oldModule)}(?=[/'"])`, 'g'),
+}));
+// Symbol-specific replacements: only the named symbol moves to the new module.
+// Kept as plain data — splitSymbolImport() handles them at runtime to avoid
+// the false positive where sibling symbols in the same import are dragged to
+// the wrong module path.
+const SYMBOL_SPECIFIC_IMPORTS = SORTED_IMPORT_REPLACEMENTS.filter(r => r.oldSymbol !== '*').map(r => ({
+    oldModule: r.oldModule,
+    newModule: r.newModule,
+    oldSymbol: r.oldSymbol,
+    newSymbol: r.newSymbol,
 }));
 // Only symbols with a non-empty new name are renamed here; removed symbols handled separately.
 const COMPILED_SYMBOL_REPLACEMENTS = symbol_replacements_1.SYMBOL_REPLACEMENTS.filter(r => r.new).map(r => ({
     ...r,
     // Ç (U+00C7) is not an ASCII word character so \b doesn't delimit it.
-    // Use lookahead/lookbehind to avoid partial matches.
+    // Use explicit lookahead/lookbehind to avoid partial matches.
     regex: r.old.startsWith('Ç')
-        ? new RegExp(`(?<![A-Za-z0-9_$Ç])${escapeRegExp(r.old)}(?![A-Za-z0-9_$])`, 'g')
-        : new RegExp(`\\b${escapeRegExp(r.old)}\\b`, 'g'),
+        ? new RegExp(`(?<![A-Za-z0-9_$Ç])${(0, regexp_utils_1.escapeRegExp)(r.old)}(?![A-Za-z0-9_$])`, 'g')
+        : (0, regexp_utils_1.wordBoundaryRegex)(r.old),
 }));
 const REMOVED_SYMBOLS = symbol_replacements_1.SYMBOL_REPLACEMENTS.filter(r => r.new === '').map(r => r.old);
-const REMOVED_SYMBOL_SOLE_IMPORT_REGEXES = REMOVED_SYMBOLS.map(sym => new RegExp(`^\\s*import\\s*\\{\\s*${escapeRegExp(sym)}\\s*\\}\\s*from\\s*['"][^'"]+['"]\\s*;?\\s*$`, 'gm'));
-const REMOVED_SYMBOL_LEADING_COMMA_REGEXES = REMOVED_SYMBOLS.map(sym => new RegExp(`\\b${escapeRegExp(sym)}\\b\\s*,\\s*`, 'g'));
-const REMOVED_SYMBOL_TRAILING_COMMA_REGEXES = REMOVED_SYMBOLS.map(sym => new RegExp(`\\s*,\\s*${escapeRegExp(sym)}\\b`, 'g'));
+const REMOVED_SYMBOL_SOLE_IMPORT_REGEXES = REMOVED_SYMBOLS.map(sym => new RegExp(`^\\s*import\\s*\\{\\s*${(0, regexp_utils_1.escapeRegExp)(sym)}\\s*\\}\\s*from\\s*['"][^'"]+['"]\\s*;?\\s*$`, 'gm'));
+const REMOVED_SYMBOL_LEADING_COMMA_REGEXES = REMOVED_SYMBOLS.map(sym => new RegExp(`\\b${(0, regexp_utils_1.escapeRegExp)(sym)}\\b\\s*,\\s*`, 'g'));
+const REMOVED_SYMBOL_TRAILING_COMMA_REGEXES = REMOVED_SYMBOLS.map(sym => new RegExp(`\\s*,\\s*${(0, regexp_utils_1.escapeRegExp)(sym)}\\b`, 'g'));
 const REMOVED_SYMBOL_USAGE_REGEXES = REMOVED_SYMBOLS.map(sym => ({
     sym,
-    test: new RegExp(`\\b${escapeRegExp(sym)}\\b`),
-    replace: new RegExp(`\\b${escapeRegExp(sym)}\\b`, 'g'),
+    test: new RegExp(`\\b${(0, regexp_utils_1.escapeRegExp)(sym)}\\b`),
+    replace: new RegExp(`\\b${(0, regexp_utils_1.escapeRegExp)(sym)}\\b`, 'g'),
 }));
 // ---------------------------------------------------------------------------
 // Fast-path candidate strings — if none present, skip the file entirely
@@ -68,9 +79,11 @@ function transformImports(text) {
 // ---------------------------------------------------------------------------
 function migrateImports() {
     return (tree, context) => {
-        context.logger.info('  Migrating TypeScript imports and symbols...');
+        context.logger.info('  Migrating TypeScript imports and symbols');
+        let scanCount = 0;
         let fileCount = 0;
         (0, file_visitor_1.visitFiles)(tree, '**/*.ts', filePath => {
+            scanCount++;
             const content = tree.read(filePath);
             if (!content) {
                 return;
@@ -80,28 +93,69 @@ function migrateImports() {
             if (updated !== original) {
                 tree.overwrite(filePath, updated);
                 fileCount++;
+                context.logger.info(`    UPDATE ${filePath}`);
             }
         });
-        context.logger.info(`    Updated ${fileCount} TypeScript file(s).`);
+        context.logger.info(`  ${fileCount} of ${scanCount} file(s) updated.`);
     };
 }
 // ---------------------------------------------------------------------------
 // Private helpers
 // ---------------------------------------------------------------------------
 function replaceImportPaths(text) {
-    for (const r of COMPILED_IMPORT_REPLACEMENTS) {
+    // Wildcard replacements: move all symbols from oldModule to newModule.
+    for (const r of COMPILED_WILDCARD_IMPORT_REGEXES) {
         if (!text.includes(r.oldModule)) {
             continue;
         }
         r.regex.lastIndex = 0;
-        if (r.oldSymbol === '*') {
-            text = text.replace(r.regex, `$1${r.newModule}`);
+        text = text.replace(r.regex, `$1${r.newModule}`);
+    }
+    // Symbol-specific replacements: extract one symbol to a new module, leaving
+    // any sibling symbols on the original module to prevent false positives.
+    for (const r of SYMBOL_SPECIFIC_IMPORTS) {
+        if (!text.includes(r.oldModule) || !text.includes(r.oldSymbol)) {
+            continue;
         }
-        else {
-            text = text.replace(r.regex, `$1${r.newSymbol}$2${r.newModule}$3`);
-        }
+        text = splitSymbolImport(text, r.oldSymbol, r.newSymbol, r.oldModule, r.newModule);
     }
     return text;
+}
+/**
+ * Extracts a single named symbol from an import and moves it to a new module.
+ *
+ * When the import contains sibling symbols, a second import for the remaining
+ * symbols on the original module is emitted. This prevents the false positive
+ * where all siblings are silently moved to the wrong module.
+ *
+ * Example (multi-symbol):
+ *   import { FocusService, ClrFormsModule } from '@clr/angular/forms';
+ *   →
+ *   import { FormsFocusService } from '@clr/angular/forms/common';
+ *   import { ClrFormsModule } from '@clr/angular/forms';
+ */
+function splitSymbolImport(text, oldSymbol, newSymbol, oldModule, newModule) {
+    const modEsc = (0, regexp_utils_1.escapeRegExp)(oldModule);
+    const symEsc = (0, regexp_utils_1.escapeRegExp)(oldSymbol);
+    // Compiled once per call, not inside the replace callback.
+    const symInListRe = new RegExp(`(?:^|,)\\s*${symEsc}\\s*(?:,|$)`);
+    const importRe = new RegExp(`([ \\t]*)import\\s*\\{([^}]*)\\}\\s*from\\s*(['"])${modEsc}\\3(\\s*;?)`, 'gm');
+    return text.replace(importRe, (match, indent, symbolList, quote, semi) => {
+        if (!symInListRe.test(symbolList)) {
+            return match;
+        }
+        const semiStr = semi.trim() || ';';
+        const remaining = symbolList
+            .split(',')
+            .map(s => s.trim())
+            .filter(s => s && s !== oldSymbol);
+        if (remaining.length === 0) {
+            return `${indent}import { ${newSymbol} } from ${quote}${newModule}${quote}${semiStr}`;
+        }
+        const newLine = `${indent}import { ${newSymbol} } from ${quote}${newModule}${quote}${semiStr}`;
+        const oldLine = `${indent}import { ${remaining.join(', ')} } from ${quote}${oldModule}${quote}${semiStr}`;
+        return `${newLine}\n${oldLine}`;
+    });
 }
 function replaceSymbols(text) {
     for (const r of COMPILED_SYMBOL_REPLACEMENTS) {
@@ -129,8 +183,5 @@ function removeDeletedImports(text) {
         }
     }
     return text;
-}
-function escapeRegExp(str) {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 //# sourceMappingURL=import-migration.js.map
