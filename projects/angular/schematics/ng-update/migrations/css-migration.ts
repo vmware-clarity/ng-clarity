@@ -141,10 +141,10 @@ export function migrateCssProperties(): Rule {
 }
 
 // ---------------------------------------------------------------------------
-// Private helpers
+// Helpers — exported for direct testing; not part of the public schematic API
 // ---------------------------------------------------------------------------
 
-function applyStyleTransforms(text: string, filePath: string | null): string {
+export function applyStyleTransforms(text: string, filePath: string | null): string {
   text = replaceCssProperties(text);
   text = replaceCssSelectors(text);
   text = replaceCssAttributes(text);

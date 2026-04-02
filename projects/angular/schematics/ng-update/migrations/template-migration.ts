@@ -153,10 +153,10 @@ export function migrateTemplates(): Rule {
 }
 
 // ---------------------------------------------------------------------------
-// Private helpers
+// Helpers — exported for direct testing; not part of the public schematic API
 // ---------------------------------------------------------------------------
 
-function applyHtmlTransforms(text: string): string {
+export function applyHtmlTransforms(text: string): string {
   text = migrateOutputBindings(text);
   text = migrateInputBindings(text);
   text = migrateCdsIconAttributes(text);
