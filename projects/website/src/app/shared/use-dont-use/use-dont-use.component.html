@@ -13,7 +13,7 @@
 >
   <div class="clr-row">
     <div class="clr-col-1 heading__icon">
-      <clr-icon size="md" [shape]="'UseDontUseComponent:' + type()"></clr-icon>
+      <cds-icon size="md" [shape]="type() === 'use' ? 'success-standard' : 'times-circle'"></cds-icon>
     </div>
     <div class="clr-col-8 heading__text" cds-text="secondary bold">
       {{ heading() }}
