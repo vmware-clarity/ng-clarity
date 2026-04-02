@@ -15,6 +15,7 @@ import {
   TEMPLATE_OUTPUT_REPLACEMENTS,
 } from '../replacements/template-replacements';
 import { visitFiles } from '../utils/file-visitor';
+import { escapeRegExp, wordBoundaryRegex } from '../utils/regexp-utils';
 
 // ---------------------------------------------------------------------------
 // Pre-compiled regex arrays — built once at module load, not per-file
@@ -42,7 +43,7 @@ const COMPILED_CDS_ICON_ATTR_ENTRIES = TEMPLATE_ATTRIBUTE_REPLACEMENTS.filter(r 
 const COMPILED_GLOBAL_ATTR_REGEXES = TEMPLATE_ATTRIBUTE_REPLACEMENTS.filter(r => r.context !== 'cds-icon').map(r => ({
   old: r.old,
   new: r.new,
-  regex: new RegExp(`\\b${escapeRegExp(r.old)}\\b`, 'g'),
+  regex: wordBoundaryRegex(r.old),
 }));
 
 // Quote-aware regex that matches a complete <cds-icon …> or <cds-icon … /> opening tag.
@@ -52,7 +53,7 @@ const CDS_ICON_TAG_RE = /<cds-icon\b(?:[^"'/>]|"[^"]*"|'[^']*')*(?:\/?>)/g;
 const COMPILED_HEADER_REGEXES = HEADER_CLASS_REPLACEMENTS.map(r => ({
   old: r.old,
   new: r.new,
-  regex: new RegExp(`\\b${escapeRegExp(r.old)}\\b`, 'g'),
+  regex: wordBoundaryRegex(r.old),
 }));
 
 const COMPILED_CDS_TEXT_REGEXES = CSS_ATTRIBUTE_REPLACEMENTS.map(r => ({
@@ -235,8 +236,4 @@ function migrateCdsTextAttributes(text: string): string {
     text = text.replace(r.regex, r.new);
   }
   return text;
-}
-
-function escapeRegExp(str: string): string {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

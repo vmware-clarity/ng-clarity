@@ -10,6 +10,7 @@ import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
 import { IMPORT_REPLACEMENTS } from '../replacements/import-replacements';
 import { SYMBOL_REPLACEMENTS } from '../replacements/symbol-replacements';
 import { visitFiles } from '../utils/file-visitor';
+import { escapeRegExp, wordBoundaryRegex } from '../utils/regexp-utils';
 
 // ---------------------------------------------------------------------------
 // Pre-compiled regex arrays — built once at module load, not per-file
@@ -48,10 +49,10 @@ interface CompiledSymbolReplacement {
 const COMPILED_SYMBOL_REPLACEMENTS: CompiledSymbolReplacement[] = SYMBOL_REPLACEMENTS.filter(r => r.new).map(r => ({
   ...r,
   // Ç (U+00C7) is not an ASCII word character so \b doesn't delimit it.
-  // Use lookahead/lookbehind to avoid partial matches.
+  // Use explicit lookahead/lookbehind to avoid partial matches.
   regex: r.old.startsWith('Ç')
     ? new RegExp(`(?<![A-Za-z0-9_$Ç])${escapeRegExp(r.old)}(?![A-Za-z0-9_$])`, 'g')
-    : new RegExp(`\\b${escapeRegExp(r.old)}\\b`, 'g'),
+    : wordBoundaryRegex(r.old),
 }));
 
 const REMOVED_SYMBOLS = SYMBOL_REPLACEMENTS.filter(r => r.new === '').map(r => r.old);
@@ -238,8 +239,4 @@ function removeDeletedImports(text: string): string {
     }
   }
   return text;
-}
-
-function escapeRegExp(str: string): string {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

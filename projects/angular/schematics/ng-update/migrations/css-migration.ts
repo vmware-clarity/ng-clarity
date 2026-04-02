@@ -14,6 +14,7 @@ import {
   REMOVED_SCSS_MIXINS,
 } from '../replacements/css-replacements';
 import { visitFiles } from '../utils/file-visitor';
+import { escapeRegExp, prefixNegativeLookaheadRegex, wordBoundaryRegex } from '../utils/regexp-utils';
 
 // ---------------------------------------------------------------------------
 // Pre-compiled regex arrays — built once at module load, not per-file
@@ -25,7 +26,7 @@ import { visitFiles } from '../utils/file-visitor';
 const COMPILED_PROPERTY_RENAME_REGEXES = CSS_PROPERTY_REPLACEMENTS.filter(r => r.new).map(r => ({
   old: r.old,
   new: r.new,
-  regex: new RegExp(`${escapeRegExp(r.old)}(?![-\\w])`, 'g'),
+  regex: prefixNegativeLookaheadRegex(r.old),
 }));
 
 const COMPILED_PROPERTY_REMOVE_REGEXES = CSS_PROPERTY_REPLACEMENTS.filter(r => !r.new).map(r => ({
@@ -36,7 +37,7 @@ const COMPILED_PROPERTY_REMOVE_REGEXES = CSS_PROPERTY_REPLACEMENTS.filter(r => !
 const COMPILED_SELECTOR_REGEXES = CSS_SELECTOR_REPLACEMENTS.map(r => ({
   old: r.old,
   new: r.new,
-  regex: new RegExp(`\\b${escapeRegExp(r.old)}\\b`, 'g'),
+  regex: wordBoundaryRegex(r.old),
 }));
 
 const COMPILED_ATTRIBUTE_REGEXES = CSS_ATTRIBUTE_REPLACEMENTS.map(r => ({
@@ -206,8 +207,4 @@ function replaceScssMixins(text: string): string {
     text = text.replace(r.regex, `/* TODO(v18 migration): '@include ${r.name}(...)' has been removed. */`);
   }
   return text;
-}
-
-function escapeRegExp(str: string): string {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

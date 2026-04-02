@@ -13,7 +13,7 @@ import { migrateImports, transformImports } from '../migrations/import-migration
 import { migrateTemplates, transformInlineTemplates } from '../migrations/template-migration';
 
 export function createContext(): SchematicContext {
-  return { logger: new logging.NullLogger() } as SchematicContext;
+  return { logger: new logging.NullLogger() } as unknown as SchematicContext;
 }
 
 /** Runs all three migration phases against an in-memory tree (mirrors index.ts). */
