@@ -31,9 +31,11 @@ const TS_CANDIDATES = [
  */
 function migrateTypeScriptFiles() {
     return (tree, context) => {
-        context.logger.info('  Migrating TypeScript files (imports, inline templates, inline styles)...');
-        let fileCount = 0;
+        context.logger.info('  Migrating TypeScript files (imports, inline templates, inline styles)');
+        let scanCount = 0;
+        let updateCount = 0;
         (0, file_visitor_1.visitFiles)(tree, '**/*.ts', filePath => {
+            scanCount++;
             const content = tree.read(filePath);
             if (!content) {
                 return;
@@ -49,16 +51,17 @@ function migrateTypeScriptFiles() {
             text = (0, css_migration_1.transformInlineStyles)(text);
             if (text !== original) {
                 tree.overwrite(filePath, text);
-                fileCount++;
+                updateCount++;
+                context.logger.info(`    UPDATE ${filePath}`);
             }
         });
-        context.logger.info(`    Updated ${fileCount} TypeScript file(s).`);
+        context.logger.info(`  ${updateCount} of ${scanCount} file(s) updated.`);
     };
 }
 function migrate() {
     return (tree, context) => {
         context.logger.info('');
-        context.logger.info('Running @clr/angular v18 migration schematics...');
+        context.logger.info('Running @clr/angular v18 migration...');
         context.logger.info('');
         return (0, schematics_1.chain)([migrateTypeScriptFiles(), (0, template_migration_1.migrateTemplates)(), (0, css_migration_1.migrateCssProperties)()])(tree, context);
     };
