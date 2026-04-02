@@ -11,13 +11,12 @@ import { ClrBadge } from '@clr/angular';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const HTML_EXAMPLE = `
-<clr-badge clrType="outlined">1</clr-badge>
-<clr-badge clrType="outlined" clrColor="purple">15</clr-badge>
-<clr-badge clrType="outlined" clrColor="blue">2</clr-badge>
-<clr-badge clrType="outlined" clrColor="orange">3</clr-badge>
-<clr-badge clrType="outlined" clrColor="light-blue">12</clr-badge>
-<clr-badge clrType="outlined" clrColor="gray">8</clr-badge>
-<br />
+<h6>Solid</h6>
+<clr-badge clrColor="info">15</clr-badge>
+<clr-badge clrColor="success">2</clr-badge>
+<clr-badge clrColor="warning">3</clr-badge>
+<clr-badge clrColor="danger">12</clr-badge>
+<h6>Outlined</h6>
 <clr-badge clrType="outlined" clrColor="info">15</clr-badge>
 <clr-badge clrType="outlined" clrColor="success">2</clr-badge>
 <clr-badge clrType="outlined" clrColor="warning">3</clr-badge>
@@ -25,10 +24,10 @@ const HTML_EXAMPLE = `
 `;
 
 @Component({
-  selector: 'clr-badge-angular-outlined-demo',
-  templateUrl: './badge-angular-outlined.demo.html',
+  selector: 'clr-badge-angular-status-demo',
+  templateUrl: './badge-angular-status.demo.html',
   imports: [ClrBadge, StackblitzExampleComponent],
 })
-export class BadgeAngularOutlinedDemo {
+export class BadgeAngularStatusDemo {
   htmlExample = HTML_EXAMPLE;
 }

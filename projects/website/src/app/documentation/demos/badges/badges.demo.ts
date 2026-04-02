@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { BadgeAngularColorsDemo } from './badge-angular-colors';
-import { BadgeAngularOutlinedDemo } from './badge-angular-outlined';
+import { BadgeAngularStatusDemo } from './badge-angular-status';
 import { BadgeColorsDemo } from './badge-colors';
 import { BadgeStatusesDemo } from './badge-statuses';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
@@ -33,7 +33,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     ThemedImageComponent,
     RouterLink,
     BadgeAngularColorsDemo,
-    BadgeAngularOutlinedDemo,
+    BadgeAngularStatusDemo,
     BadgeColorsDemo,
     BadgeStatusesDemo,
     StyleDocsComponent,
