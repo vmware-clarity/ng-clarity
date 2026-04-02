@@ -19,23 +19,22 @@ import { visitFiles } from '../utils/file-visitor';
 // (e.g. '@clr/angular/src/accordion/stepper') match before shorter prefixes.
 const SORTED_IMPORT_REPLACEMENTS = [...IMPORT_REPLACEMENTS].sort((a, b) => b.oldModule.length - a.oldModule.length);
 
-interface CompiledImportReplacement {
-  readonly oldModule: string;
-  readonly newModule: string;
-  readonly oldSymbol: string;
-  readonly newSymbol: string;
-  readonly regex: RegExp;
-}
+// Wildcard replacements: change the whole module path for all symbols.
+const COMPILED_WILDCARD_IMPORT_REGEXES = SORTED_IMPORT_REPLACEMENTS.filter(r => r.oldSymbol === '*').map(r => ({
+  oldModule: r.oldModule,
+  newModule: r.newModule,
+  regex: new RegExp(`(from\\s+['"])${escapeRegExp(r.oldModule)}(?=[/'"])`, 'g'),
+}));
 
-const COMPILED_IMPORT_REPLACEMENTS: CompiledImportReplacement[] = SORTED_IMPORT_REPLACEMENTS.map(r => ({
-  ...r,
-  regex:
-    r.oldSymbol === '*'
-      ? new RegExp(`(from\\s+['"])${escapeRegExp(r.oldModule)}(?=[/'"])`, 'g')
-      : new RegExp(
-          `(import\\s*\\{[^}]*\\b)${escapeRegExp(r.oldSymbol)}(\\b[^}]*\\}\\s*from\\s*['"])${escapeRegExp(r.oldModule)}(['"])`,
-          'g'
-        ),
+// Symbol-specific replacements: only the named symbol moves to the new module.
+// Kept as plain data — splitSymbolImport() handles them at runtime to avoid
+// the false positive where sibling symbols in the same import are dragged to
+// the wrong module path.
+const SYMBOL_SPECIFIC_IMPORTS = SORTED_IMPORT_REPLACEMENTS.filter(r => r.oldSymbol !== '*').map(r => ({
+  oldModule: r.oldModule,
+  newModule: r.newModule,
+  oldSymbol: r.oldSymbol,
+  newSymbol: r.newSymbol,
 }));
 
 interface CompiledSymbolReplacement {
@@ -107,11 +106,14 @@ export function transformImports(text: string): string {
 
 export function migrateImports(): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    context.logger.info('  Migrating TypeScript imports and symbols...');
+    context.logger.info('  Migrating TypeScript imports and symbols');
 
+    let scanCount = 0;
     let fileCount = 0;
 
     visitFiles(tree, '**/*.ts', filePath => {
+      scanCount++;
+
       const content = tree.read(filePath);
       if (!content) {
         return;
@@ -123,10 +125,11 @@ export function migrateImports(): Rule {
       if (updated !== original) {
         tree.overwrite(filePath, updated);
         fileCount++;
+        context.logger.info(`    UPDATE ${filePath}`);
       }
     });
 
-    context.logger.info(`    Updated ${fileCount} TypeScript file(s).`);
+    context.logger.info(`  ${fileCount} of ${scanCount} file(s) updated.`);
   };
 }
 
@@ -135,18 +138,72 @@ export function migrateImports(): Rule {
 // ---------------------------------------------------------------------------
 
 function replaceImportPaths(text: string): string {
-  for (const r of COMPILED_IMPORT_REPLACEMENTS) {
+  // Wildcard replacements: move all symbols from oldModule to newModule.
+  for (const r of COMPILED_WILDCARD_IMPORT_REGEXES) {
     if (!text.includes(r.oldModule)) {
       continue;
     }
     r.regex.lastIndex = 0;
-    if (r.oldSymbol === '*') {
-      text = text.replace(r.regex, `$1${r.newModule}`);
-    } else {
-      text = text.replace(r.regex, `$1${r.newSymbol}$2${r.newModule}$3`);
-    }
+    text = text.replace(r.regex, `$1${r.newModule}`);
   }
+
+  // Symbol-specific replacements: extract one symbol to a new module, leaving
+  // any sibling symbols on the original module to prevent false positives.
+  for (const r of SYMBOL_SPECIFIC_IMPORTS) {
+    if (!text.includes(r.oldModule) || !text.includes(r.oldSymbol)) {
+      continue;
+    }
+    text = splitSymbolImport(text, r.oldSymbol, r.newSymbol, r.oldModule, r.newModule);
+  }
+
   return text;
+}
+
+/**
+ * Extracts a single named symbol from an import and moves it to a new module.
+ *
+ * When the import contains sibling symbols, a second import for the remaining
+ * symbols on the original module is emitted. This prevents the false positive
+ * where all siblings are silently moved to the wrong module.
+ *
+ * Example (multi-symbol):
+ *   import { FocusService, ClrFormsModule } from '@clr/angular/forms';
+ *   →
+ *   import { FormsFocusService } from '@clr/angular/forms/common';
+ *   import { ClrFormsModule } from '@clr/angular/forms';
+ */
+function splitSymbolImport(
+  text: string,
+  oldSymbol: string,
+  newSymbol: string,
+  oldModule: string,
+  newModule: string
+): string {
+  const modEsc = escapeRegExp(oldModule);
+  const symEsc = escapeRegExp(oldSymbol);
+  // Compiled once per call, not inside the replace callback.
+  const symInListRe = new RegExp(`(?:^|,)\\s*${symEsc}\\s*(?:,|$)`);
+  const importRe = new RegExp(`([ \\t]*)import\\s*\\{([^}]*)\\}\\s*from\\s*(['"])${modEsc}\\3(\\s*;?)`, 'gm');
+
+  return text.replace(importRe, (match, indent: string, symbolList: string, quote: string, semi: string) => {
+    if (!symInListRe.test(symbolList)) {
+      return match;
+    }
+
+    const semiStr = semi.trim() || ';';
+    const remaining = symbolList
+      .split(',')
+      .map(s => s.trim())
+      .filter(s => s && s !== oldSymbol);
+
+    if (remaining.length === 0) {
+      return `${indent}import { ${newSymbol} } from ${quote}${newModule}${quote}${semiStr}`;
+    }
+
+    const newLine = `${indent}import { ${newSymbol} } from ${quote}${newModule}${quote}${semiStr}`;
+    const oldLine = `${indent}import { ${remaining.join(', ')} } from ${quote}${oldModule}${quote}${semiStr}`;
+    return `${newLine}\n${oldLine}`;
+  });
 }
 
 function replaceSymbols(text: string): string {

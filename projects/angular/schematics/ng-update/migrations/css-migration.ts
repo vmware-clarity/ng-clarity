@@ -19,15 +19,18 @@ import { visitFiles } from '../utils/file-visitor';
 // Pre-compiled regex arrays — built once at module load, not per-file
 // ---------------------------------------------------------------------------
 
+// Negative lookahead (?![-\w]) ensures a CSS custom property name that is a
+// prefix of a longer one (e.g. --clr-foo--active inside --clr-foo--active-extra)
+// is NOT matched, preventing false-positive renames.
 const COMPILED_PROPERTY_RENAME_REGEXES = CSS_PROPERTY_REPLACEMENTS.filter(r => r.new).map(r => ({
   old: r.old,
   new: r.new,
-  regex: new RegExp(escapeRegExp(r.old), 'g'),
+  regex: new RegExp(`${escapeRegExp(r.old)}(?![-\\w])`, 'g'),
 }));
 
 const COMPILED_PROPERTY_REMOVE_REGEXES = CSS_PROPERTY_REPLACEMENTS.filter(r => !r.new).map(r => ({
   old: r.old,
-  regex: new RegExp(`(\\s*)(${escapeRegExp(r.old)}\\s*:[^;]*;)`, 'g'),
+  regex: new RegExp(`(\\s*)(${escapeRegExp(r.old)}(?![-\\w])\\s*:[^;]*;)`, 'g'),
 }));
 
 const COMPILED_SELECTOR_REGEXES = CSS_SELECTOR_REPLACEMENTS.map(r => ({
@@ -82,12 +85,16 @@ export function transformInlineStyles(text: string): string {
 
 export function migrateCssProperties(): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    context.logger.info('  Migrating CSS custom properties and selectors...');
+    context.logger.info('  Migrating style files (CSS, SCSS, Sass, Less)');
 
-    let styleFileCount = 0;
-    let tsFileCount = 0;
+    let styleScanCount = 0;
+    let styleUpdateCount = 0;
+    let tsScanCount = 0;
+    let tsUpdateCount = 0;
 
     visitFiles(tree, '**/*.{css,scss,sass,less}', filePath => {
+      styleScanCount++;
+
       const content = tree.read(filePath);
       if (!content) {
         return;
@@ -101,11 +108,14 @@ export function migrateCssProperties(): Rule {
       const updated = applyStyleTransforms(original, filePath);
       if (updated !== original) {
         tree.overwrite(filePath, updated);
-        styleFileCount++;
+        styleUpdateCount++;
+        context.logger.info(`    UPDATE ${filePath}`);
       }
     });
 
     visitFiles(tree, '**/*.ts', filePath => {
+      tsScanCount++;
+
       const content = tree.read(filePath);
       if (!content) {
         return;
@@ -119,11 +129,14 @@ export function migrateCssProperties(): Rule {
       const updated = transformInlineStyles(original);
       if (updated !== original) {
         tree.overwrite(filePath, updated);
-        tsFileCount++;
+        tsUpdateCount++;
+        context.logger.info(`    UPDATE ${filePath}`);
       }
     });
 
-    context.logger.info(`    Updated ${styleFileCount} style file(s) and ${tsFileCount} inline style(s).`);
+    const totalScanned = styleScanCount + tsScanCount;
+    const totalUpdated = styleUpdateCount + tsUpdateCount;
+    context.logger.info(`  ${totalUpdated} of ${totalScanned} file(s) updated.`);
   };
 }
 

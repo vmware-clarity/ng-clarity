@@ -33,11 +33,21 @@ const COMPILED_INPUT_BOUND_REGEXES = TEMPLATE_INPUT_REPLACEMENTS.map(r => ({
   bareRegex: new RegExp(`(?<=\\s)${escapeRegExp(r.old)}(?==)`, 'g'),
 }));
 
-const COMPILED_ATTR_REGEXES = TEMPLATE_ATTRIBUTE_REPLACEMENTS.map(r => ({
+// cds-icon [attr.*] replacements: applied only within <cds-icon> opening tags to
+// avoid false positives on native elements like <input [attr.size]="x">.
+const COMPILED_CDS_ICON_ATTR_ENTRIES = TEMPLATE_ATTRIBUTE_REPLACEMENTS.filter(r => r.context === 'cds-icon');
+
+// Non-scoped attribute replacements: applied globally (e.g. clrPopoverAnchor).
+// Word boundaries (\b) prevent matching inside longer identifiers such as clrPopoverAnchorClose.
+const COMPILED_GLOBAL_ATTR_REGEXES = TEMPLATE_ATTRIBUTE_REPLACEMENTS.filter(r => r.context !== 'cds-icon').map(r => ({
   old: r.old,
   new: r.new,
-  regex: new RegExp(escapeRegExp(r.old), 'g'),
+  regex: new RegExp(`\\b${escapeRegExp(r.old)}\\b`, 'g'),
 }));
+
+// Quote-aware regex that matches a complete <cds-icon …> or <cds-icon … /> opening tag.
+// Handles attribute values that contain > (e.g. [attr.size]="size > 0 ? 'lg' : 'md'").
+const CDS_ICON_TAG_RE = /<cds-icon\b(?:[^"'/>]|"[^"]*"|'[^']*')*(?:\/?>)/g;
 
 const COMPILED_HEADER_REGEXES = HEADER_CLASS_REPLACEMENTS.map(r => ({
   old: r.old,
@@ -87,12 +97,16 @@ export function transformInlineTemplates(text: string): string {
 
 export function migrateTemplates(): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    context.logger.info('  Migrating HTML templates...');
+    context.logger.info('  Migrating HTML templates');
 
-    let htmlFileCount = 0;
-    let tsFileCount = 0;
+    let htmlScanCount = 0;
+    let htmlUpdateCount = 0;
+    let tsScanCount = 0;
+    let tsUpdateCount = 0;
 
     visitFiles(tree, '**/*.html', filePath => {
+      htmlScanCount++;
+
       const content = tree.read(filePath);
       if (!content) {
         return;
@@ -106,11 +120,14 @@ export function migrateTemplates(): Rule {
       const updated = applyHtmlTransforms(original);
       if (updated !== original) {
         tree.overwrite(filePath, updated);
-        htmlFileCount++;
+        htmlUpdateCount++;
+        context.logger.info(`    UPDATE ${filePath}`);
       }
     });
 
     visitFiles(tree, '**/*.ts', filePath => {
+      tsScanCount++;
+
       const content = tree.read(filePath);
       if (!content) {
         return;
@@ -124,11 +141,14 @@ export function migrateTemplates(): Rule {
       const updated = transformInlineTemplates(original);
       if (updated !== original) {
         tree.overwrite(filePath, updated);
-        tsFileCount++;
+        tsUpdateCount++;
+        context.logger.info(`    UPDATE ${filePath}`);
       }
     });
 
-    context.logger.info(`    Updated ${htmlFileCount} HTML template(s) and ${tsFileCount} inline template(s).`);
+    const totalScanned = htmlScanCount + tsScanCount;
+    const totalUpdated = htmlUpdateCount + tsUpdateCount;
+    context.logger.info(`  ${totalUpdated} of ${totalScanned} file(s) updated.`);
   };
 }
 
@@ -170,13 +190,28 @@ function migrateInputBindings(text: string): string {
 }
 
 function migrateCdsIconAttributes(text: string): string {
-  for (const r of COMPILED_ATTR_REGEXES) {
+  // Scoped pass: only touch [attr.*] inside <cds-icon> opening tags.
+  if (COMPILED_CDS_ICON_ATTR_ENTRIES.some(r => text.includes(r.old))) {
+    CDS_ICON_TAG_RE.lastIndex = 0;
+    text = text.replace(CDS_ICON_TAG_RE, tagMatch => {
+      for (const { old: oldStr, new: newStr } of COMPILED_CDS_ICON_ATTR_ENTRIES) {
+        if (tagMatch.includes(oldStr)) {
+          tagMatch = tagMatch.split(oldStr).join(newStr);
+        }
+      }
+      return tagMatch;
+    });
+  }
+
+  // Global pass: non-scoped attribute replacements.
+  for (const r of COMPILED_GLOBAL_ATTR_REGEXES) {
     if (!text.includes(r.old)) {
       continue;
     }
     r.regex.lastIndex = 0;
     text = text.replace(r.regex, r.new);
   }
+
   return text;
 }
 
