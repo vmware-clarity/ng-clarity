@@ -18,7 +18,7 @@
   <div class="clr-col-1">
     <cds-icon
       [ngClass]="'icon-' + type()"
-      shape="{{ type() === 'do' ? 'check' : type() == 'dont' ? 'times' : 'warning-standard' }}"
+      [shape]="type() === 'do' ? 'check' : type() == 'dont' ? 'times' : 'warning-standard'"
       size="md"
     ></cds-icon>
   </div>
