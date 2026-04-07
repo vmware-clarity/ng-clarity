@@ -1038,8 +1038,6 @@ export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
 export interface ClrRecursiveForOfContext<T> {
     // (undocumented)
     $implicit: T;
-    // Warning: (ae-forgotten-export) The symbol "TreeNodeModel" needs to be exported by the entry point clr-angular-data.d.ts
-    //
     // (undocumented)
     clrModel: TreeNodeModel<T>;
 }
@@ -1503,6 +1501,21 @@ export class DatagridWillyWonka extends WillyWonka {
 }
 
 // @public (undocumented)
+export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
+    constructor(parent: DeclarativeTreeNodeModel<T> | null);
+    // (undocumented)
+    _addChild(child: DeclarativeTreeNodeModel<T>): void;
+    // (undocumented)
+    children: DeclarativeTreeNodeModel<T>[];
+    // (undocumented)
+    destroy(): void;
+    // (undocumented)
+    parent: DeclarativeTreeNodeModel<T> | null;
+    // (undocumented)
+    _removeChild(child: DeclarativeTreeNodeModel<T>): void;
+}
+
+// @public (undocumented)
 export class ExpandableOompaLoompa extends OompaLoompa {
     constructor(cdr: ChangeDetectorRef, willyWonka: DatagridWillyWonka, expandableCount: ExpandableRowsCount);
     // (undocumented)
@@ -1511,6 +1524,22 @@ export class ExpandableOompaLoompa extends OompaLoompa {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ExpandableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ExpandableOompaLoompa, [null, { optional: true; }, null]>;
+}
+
+// @public (undocumented)
+export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
+    constructor(model: T, parent: RecursiveTreeNodeModel<T> | null, getChildren: (node: T) => AsyncArray<T> | undefined, featuresService: TreeFeaturesService<T> | undefined);
+    // (undocumented)
+    get children(): RecursiveTreeNodeModel<T>[];
+    set children(value: RecursiveTreeNodeModel<T>[]);
+    // (undocumented)
+    clearChildren(): void;
+    // (undocumented)
+    destroy(): void;
+    // (undocumented)
+    fetchChildren(): void;
+    // (undocumented)
+    parent: RecursiveTreeNodeModel<T> | null;
 }
 
 // @public (undocumented)
@@ -1565,6 +1594,40 @@ export enum SelectionType {
 
 // @public (undocumented)
 export function selectionTypeAttribute(value: SelectionType | string): SelectionType;
+
+// @public (undocumented)
+export abstract class TreeNodeModel<T> {
+    // (undocumented)
+    abstract children: TreeNodeModel<T>[];
+    // (undocumented)
+    destroy(): void;
+    // (undocumented)
+    get disabled(): boolean;
+    set disabled(value: boolean);
+    // (undocumented)
+    expanded: boolean;
+    // (undocumented)
+    loading$: BehaviorSubject<boolean>;
+    // (undocumented)
+    get loading(): boolean;
+    set loading(isLoading: boolean);
+    // (undocumented)
+    model: T | null;
+    // (undocumented)
+    nodeId: string;
+    // (undocumented)
+    abstract parent: TreeNodeModel<T> | null;
+    // (undocumented)
+    selected: BehaviorSubject<ClrSelectedState>;
+    // (undocumented)
+    setSelected(state: ClrSelectedState, propagateUp: boolean, propagateDown: boolean): void;
+    // (undocumented)
+    textContent: string;
+    // (undocumented)
+    toggleSelection(propagate: boolean): void;
+    // (undocumented)
+    _updateSelectionFromChildren(): void;
+}
 
 // @public (undocumented)
 export class WrappedCell implements AfterViewInit, OnDestroy {
