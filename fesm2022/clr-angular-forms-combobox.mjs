@@ -1183,14 +1183,18 @@ class ClrCombobox extends WrappedFormControl {
         // the aria properties on the input element, not on the component.
         // We calculate on the initial load to prevent flickering
         this.el = this.textbox;
-        if (this.multiSelect && this.multiSelectModel?.length > 0) {
-            this.calculateLimit();
+        if (this.showSelectAll) {
+            if (this.multiSelect && this.multiSelectModel?.length > 0) {
+                this.calculateLimit();
+            }
+            this.initialiseObserver();
         }
-        this.initialiseObserver();
     }
     ngOnDestroy() {
         super.ngOnDestroy();
-        this.resizeObserver.disconnect();
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect();
+        }
     }
     clearSelection() {
         this.focusHandler.focusInput();
