@@ -1929,6 +1929,7 @@ class DatagridHostComponent {
   selectionType = SelectionType.Single;
   selectedItems: any[];
   loading: boolean;
+  loadingMoreItems: boolean;
   isRowSelectionMode = true; // default
   datagridLabels = { noItemsFound: 'No items found' };
   noItemsFoundPlaceholder?: string = 'No items found';
