@@ -149,8 +149,6 @@ export class AppfxDatagridModule {
     static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective, typeof DatagridActionBarDropdownRepositionDirective, typeof DatagridCellContainerComponent, typeof DatagridColumnToggleComponent, typeof DatagridFilterContainerComponent, typeof ExportDatagridComponent, typeof IsRowSelectablePipe], [typeof i14.AppfxA11yModule, typeof i15.AppfxDatagridFiltersModule, typeof i16.A11yModule, typeof i5_3.DragDropModule, typeof i18_2.OverlayModule, typeof i19.ClrCheckboxModule, typeof i3_2.ClrDatagridModule, typeof i21.ClrDropdownModule, typeof i22.ClrIcon, typeof i19.ClrInputModule, typeof i23.ClrLoadingModule, typeof i4.CommonModule, typeof DatagridColumnsOrderModule, typeof i26.FormsModule], [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective]>;
 }
 
-// Warning: (ae-forgotten-export) The symbol "PersistDatagridSettingsService" needs to be exported by the entry point clr-addons-datagrid.d.ts
-//
 // @public (undocumented)
 export const appfxDatagridPersistSettingsToken: InjectionToken<PersistDatagridSettingsService>;
 
@@ -748,6 +746,14 @@ export class ListComparator<T> implements ClrDatagridComparatorInterface<T> {
     compare(a: any, b: any): number;
     // (undocumented)
     field: string;
+}
+
+// @public (undocumented)
+export interface PersistDatagridSettingsService {
+    // (undocumented)
+    getUserDataSync: (key: string) => any;
+    // (undocumented)
+    setUserData: (key: string, data: any) => void;
 }
 
 // @public (undocumented)
