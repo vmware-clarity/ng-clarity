@@ -289,15 +289,19 @@ export class ClrCombobox<T>
 
     // We calculate on the initial load to prevent flickering
     this.el = this.textbox;
-    if (this.multiSelect && this.multiSelectModel?.length > 0) {
-      this.calculateLimit();
+    if (this.showSelectAll) {
+      if (this.multiSelect && this.multiSelectModel?.length > 0) {
+        this.calculateLimit();
+      }
+      this.initialiseObserver();
     }
-    this.initialiseObserver();
   }
 
   override ngOnDestroy(): void {
     super.ngOnDestroy();
-    this.resizeObserver.disconnect();
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
   }
 
   clearSelection() {
