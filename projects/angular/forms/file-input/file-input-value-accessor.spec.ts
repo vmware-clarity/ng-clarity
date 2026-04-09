@@ -115,6 +115,16 @@ function fileInputValueAccessorSpec(testComponent: Type<TestComponent>) {
     fixture.detectChanges();
   });
 
+  it('should sync disabled state to the native input when the control is toggled', () => {
+    fixture.componentInstance.control.disable();
+    fixture.detectChanges();
+    expect(fileInputElement.disabled).toBeTrue();
+
+    fixture.componentInstance.control.enable();
+    fixture.detectChanges();
+    expect(fileInputElement.disabled).toBeFalse();
+  });
+
   it('should mark the control touched when a file is selected', () => {
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'file.txt')]);
     fixture.detectChanges();
