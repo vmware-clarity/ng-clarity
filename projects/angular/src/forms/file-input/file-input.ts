@@ -8,7 +8,6 @@
 import {
   Directive,
   ElementRef,
-  HostBinding,
   HostListener,
   Injector,
   Optional,
@@ -48,11 +47,6 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     private readonly commonStrings: ClrCommonStringsService
   ) {
     super(viewContainerRef, ClrFileInputContainer, injector, control, renderer, elementRef);
-  }
-
-  @HostBinding('disabled')
-  protected get disabled() {
-    return this.elementRef.nativeElement.disabled || (this.control && this.control.disabled);
   }
 
   @HostListener('change')
