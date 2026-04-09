@@ -47,8 +47,8 @@ export * from './chocolate/actionable-oompa-loompa';
 export * from './chocolate/datagrid-willy-wonka';
 
 export * from './datagrid.module';
-export * from './providers/selection'; // exported specifically for appfx datagrid;
 
+export { Selection } from './providers/selection'; // exported specifically for appfx datagrid;
 export { ClrDatagridItemsIdentityFunction } from './providers/items';
 export { ClrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
 export { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
