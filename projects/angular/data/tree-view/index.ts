@@ -11,3 +11,6 @@ export * from './tree-node';
 export * from './recursive-for-of';
 export * from './tree-view.module';
 export * from './tree-node-link';
+export * from './models/tree-node.model';
+export * from './models/declarative-tree-node.model';
+export * from './models/recursive-tree-node.model';

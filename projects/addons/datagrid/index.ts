@@ -49,3 +49,4 @@ export {
 export { ActionBarLayout, ActionDefinition } from './shared/action/action-definition';
 export { ActionClickEvent, SingleRowActionOpen } from './shared/action/actions-event-types';
 export { ColumnDefinition, ColumnRenderer } from './shared/column/column-definitions';
+export { PersistDatagridSettingsService } from './addons/persist-settings/datagrid-persist-settings.interfaces';
