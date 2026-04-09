@@ -9,9 +9,9 @@ import { Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { ClrIcon } from '@clr/angular/icon';
 
 import { ClrCommonFormsModule } from '../common';
+import { ClrIconModule } from '../../icon/icon.module';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 import { ClrFileInput } from './file-input';
 import { ClrFileInputContainer } from './file-input-container';
@@ -105,7 +105,7 @@ describe('ClrFileInputContainer', () => {
       beforeEach(() => {
         TestBed.resetTestingModule();
         TestBed.configureTestingModule({
-          imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrIcon],
+          imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrIconModule],
           declarations: [ClrFileInputContainer, ClrFileInput, ClrFileInputValueAccessor, ReactiveTest],
         });
 
@@ -148,7 +148,7 @@ describe('ClrFileInputContainer', () => {
       beforeEach(() => {
         TestBed.resetTestingModule();
         TestBed.configureTestingModule({
-          imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrIcon],
+          imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrIconModule],
           declarations: [ClrFileInputContainer, ClrFileInput, ClrFileInputValueAccessor, TemplateDrivenTest],
         });
 
@@ -189,7 +189,7 @@ describe('ClrFileInputContainer', () => {
     beforeEach(() => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
-        imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrIcon],
+        imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrIconModule],
         declarations: [ClrFileInputContainer, ClrFileInput, ClrFileInputValueAccessor, NoNgControlTest],
       });
 
@@ -217,7 +217,7 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrIcon],
+      imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrIconModule],
       declarations: [ClrFileInputContainer, ClrFileInput, ClrFileInputValueAccessor, testComponent],
     });
 
