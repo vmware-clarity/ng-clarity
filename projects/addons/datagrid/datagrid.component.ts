@@ -242,6 +242,13 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   @Input() loading = false;
 
   /**
+   * Indicates if additional records are currently being fetched during infinite scrolling.
+   * When `true`, a loading indicator is appended to the end of the datagrid rows.
+   * @default false
+   */
+  @Input() loadingMoreItems = false;
+
+  /**
    * When set to `true`, automatically selects the first item in the datagrid upon initialization.
    * Defaults to `false`.
    */
