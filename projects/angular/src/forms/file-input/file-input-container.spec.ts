@@ -10,8 +10,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { ClrCommonFormsModule } from '../common';
 import { ClrIconModule } from '../../icon/icon.module';
+import { ClrCommonFormsModule } from '../common';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
 import { ClrFileInput } from './file-input';
 import { ClrFileInputContainer } from './file-input-container';

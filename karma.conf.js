@@ -5,7 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-const isWatch = require('yargs').strict(false).option('watch', { type: 'boolean', default: false }).argv.watch;
+const { hideBin } = require('yargs/helpers');
+const yargs = require('yargs/yargs');
+const isWatch = yargs(hideBin(process.argv)).option('watch', { type: 'boolean', default: false }).argv.watch;
 const cpusAvailable = require('os').cpus().length;
 const executors = isWatch ? 1 : Math.min(cpusAvailable - 1, 8);
 const browser = isWatch ? 'Chrome' : 'ChromeHeadless';
