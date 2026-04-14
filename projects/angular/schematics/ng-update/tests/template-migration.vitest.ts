@@ -52,12 +52,26 @@ describe('template migration', () => {
   });
 
   describe('input bindings', () => {
-    it('should rename clrDgItemsTrackBy to clrDgItemsIdentityFn in templates', () => {
+    it('should keep clrDgItemsTrackBy on clr-dg-items (only clr-datagrid uses clrDgItemsIdentityFn)', () => {
       tree.create('/app.component.html', `<clr-dg-items [clrDgItemsTrackBy]="trackFn"></clr-dg-items>`);
 
       runMigrations(tree);
 
-      expect(tree.readText('/app.component.html')).toContain('clrDgItemsIdentityFn');
+      expect(tree.readText('/app.component.html')).toContain('[clrDgItemsTrackBy]');
+      expect(tree.readText('/app.component.html')).not.toContain('clrDgItemsIdentityFn');
+    });
+
+    it('should rename clrDgItemsTrackBy to clrDgItemsIdentityFn on clr-datagrid only', () => {
+      tree.create(
+        '/app.component.html',
+        `<clr-datagrid [clrDgItemsTrackBy]="dgTrack" [clrDgSelectionType]="'multi'"></clr-datagrid>`
+      );
+
+      runMigrations(tree);
+
+      const content = tree.readText('/app.component.html');
+      expect(content).toContain('[clrDgItemsIdentityFn]');
+      expect(content).not.toContain('[clrDgItemsTrackBy]');
     });
 
     it('should rename clrBadgeColor to clrColor', () => {
@@ -76,6 +90,39 @@ describe('template migration', () => {
       runMigrations(tree);
 
       expect(tree.readText('/app.component.html')).toContain('clrBadgeColor');
+    });
+  });
+
+  describe('datagrid selection API (#2203)', () => {
+    it('should migrate clrDgSingleSelectedChange to clrDgSelectedChange and add clrDgSelectionType single', () => {
+      tree.create('/dg.component.html', `<clr-datagrid (clrDgSingleSelectedChange)="onOne($event)"></clr-datagrid>`);
+
+      runMigrations(tree);
+
+      const content = tree.readText('/dg.component.html');
+      expect(content).toContain('(clrDgSelectedChange)');
+      expect(content).not.toContain('clrDgSingleSelectedChange');
+      expect(content).toContain('clrDgSelectionType="single"');
+    });
+
+    it('should migrate two-way clrDgSingleSelected to clrDgSelected and add clrDgSelectionType single', () => {
+      tree.create('/dg.component.html', `<clr-datagrid [(clrDgSingleSelected)]="user"></clr-datagrid>`);
+
+      runMigrations(tree);
+
+      const content = tree.readText('/dg.component.html');
+      expect(content).toContain('[(clrDgSelected)]');
+      expect(content).toContain('clrDgSelectionType="single"');
+      expect(content).not.toContain('clrDgSingleSelected');
+    });
+
+    it('should add clrDgSelectionType multi when clrDgSelected is used without clrDgSelectionType', () => {
+      tree.create('/dg.component.html', `<clr-datagrid [(clrDgSelected)]="rows"></clr-datagrid>`);
+
+      runMigrations(tree);
+
+      const content = tree.readText('/dg.component.html');
+      expect(content).toContain('clrDgSelectionType="multi"');
     });
   });
 
