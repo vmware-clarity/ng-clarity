@@ -178,6 +178,11 @@
       "storybookPath": "forms-reactive"
     },
     {
+      "url": "popover",
+      "text": "Popover",
+      "type": "component"
+    },
+    {
       "url": "progress",
       "text": "Progress Bar",
       "type": "component"
@@ -207,6 +212,12 @@
       "url": "signpost",
       "text": "Signpost",
       "type": "component"
+    },
+    {
+      "url": "layout-utilities",
+      "text": "Layout Utilities",
+      "type": "pattern",
+      "storybookPath": "layout-cds-layout"
     },
     {
       "url": "spacing",
