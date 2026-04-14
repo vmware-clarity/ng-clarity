@@ -97,5 +97,12 @@ exports.IMPORT_REPLACEMENTS = [
         oldSymbol: '*',
         newSymbol: '*',
     },
+    // #2203 - Datagrid SelectionType enum: addons re-export removed; use @clr/angular/data/datagrid
+    {
+        oldModule: '@clr/addons/datagrid',
+        newModule: '@clr/angular/data/datagrid',
+        oldSymbol: 'SelectionType',
+        newSymbol: 'SelectionType',
+    },
 ];
 //# sourceMappingURL=import-replacements.js.map

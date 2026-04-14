@@ -10,8 +10,7 @@ exports.SYMBOL_REPLACEMENTS = void 0;
 exports.SYMBOL_REPLACEMENTS = [
     // #2023 - ClrLabel → ClrControlLabel (form directive)
     { old: 'ClrLabel', new: 'ClrControlLabel', context: 'form-label-directive' },
-    // #2007 - clrDgItemsTrackBy → clrDgItemsIdentityFn
-    { old: 'clrDgItemsTrackBy', new: 'clrDgItemsIdentityFn', context: 'datagrid' },
+    // #2007 — clrDgItemsTrackBy → clrDgItemsIdentityFn is template-scoped to <clr-datagrid> only (see template-migration).
     // #2107 - FocusService → FormsFocusService
     { old: 'FocusService', new: 'FormsFocusService', context: 'forms' },
     // #2062 - Removed popover services/enums/interfaces
