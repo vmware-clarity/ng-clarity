@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { InjectionToken, Component, inject, TemplateRef, Directive, Injector, ContentChild, ViewChild, forwardRef, Input, HostListener, HostBinding, Self, Optional, NgModule } from '@angular/core';
+import { InjectionToken, Component, inject, TemplateRef, Directive, Injector, ContentChild, ViewChild, forwardRef, Input, HostListener, Self, Optional, NgModule } from '@angular/core';
 import * as i3 from '@clr/angular/forms/common';
 import { NgControlService, ClrAbstractContainer, ControlIdService, ControlClassService, WrappedFormControl, ClrCommonFormsModule } from '@clr/angular/forms/common';
 import * as i2 from '@clr/angular/utils';
@@ -322,7 +322,7 @@ class ClrFileInputContainer extends ClrAbstractContainer {
         return this.fileInput.elementRef.nativeElement.multiple;
     }
     get disabled() {
-        return this.fileInput.elementRef.nativeElement.disabled || (this.control && this.control.disabled);
+        return this.control ? this.control.disabled : this.fileInput.elementRef.nativeElement.disabled;
     }
     get browseButtonText() {
         const selectionButtonLabel = this.fileList ? undefined : this.fileInput?.selection?.buttonLabel;
@@ -541,9 +541,6 @@ class ClrFileInput extends WrappedFormControl {
         this.commonStrings = commonStrings;
         this.selection = undefined;
     }
-    get disabled() {
-        return this.elementRef.nativeElement.disabled || (this.control && this.control.disabled);
-    }
     handleChange() {
         this.updateSelection();
     }
@@ -574,7 +571,7 @@ class ClrFileInput extends WrappedFormControl {
         };
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInput, deps: [{ token: i0.Injector }, { token: i0.Renderer2 }, { token: i0.ViewContainerRef }, { token: i0.ElementRef }, { token: i1$2.NgControl, optional: true, self: true }, { token: i2.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileInput, isStandalone: false, selector: "input[type=\"file\"][clrFileInput]", host: { attributes: { "tabindex": "-1", "aria-hidden": "true" }, listeners: { "change": "handleChange()" }, properties: { "class.clr-file-input": "true", "disabled": "this.disabled" } }, usesInheritance: true, ngImport: i0 }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrFileInput, isStandalone: false, selector: "input[type=\"file\"][clrFileInput]", host: { attributes: { "tabindex": "-1", "aria-hidden": "true" }, listeners: { "change": "handleChange()" }, properties: { "class.clr-file-input": "true" } }, usesInheritance: true, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFileInput, decorators: [{
             type: Directive,
@@ -591,10 +588,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     type: Self
                 }, {
                     type: Optional
-                }] }, { type: i2.ClrCommonStringsService }], propDecorators: { disabled: [{
-                type: HostBinding,
-                args: ['disabled']
-            }], handleChange: [{
+                }] }, { type: i2.ClrCommonStringsService }], propDecorators: { handleChange: [{
                 type: HostListener,
                 args: ['change']
             }] } });
@@ -733,6 +727,9 @@ class ClrFileInputValueAccessor {
     }
     registerOnTouched(fn) {
         this.onTouched = fn;
+    }
+    setDisabledState(isDisabled) {
+        this.elementRef.nativeElement.disabled = isDisabled;
     }
     handleChange() {
         this.onTouched();
