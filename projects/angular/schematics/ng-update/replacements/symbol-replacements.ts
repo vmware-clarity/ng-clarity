@@ -21,8 +21,7 @@ export const SYMBOL_REPLACEMENTS: readonly SymbolReplacement[] = [
   // #2023 - ClrLabel → ClrControlLabel (form directive)
   { old: 'ClrLabel', new: 'ClrControlLabel', context: 'form-label-directive' },
 
-  // #2007 - clrDgItemsTrackBy → clrDgItemsIdentityFn
-  { old: 'clrDgItemsTrackBy', new: 'clrDgItemsIdentityFn', context: 'datagrid' },
+  // #2007 — clrDgItemsTrackBy → clrDgItemsIdentityFn is template-scoped to <clr-datagrid> only (see template-migration).
 
   // #2107 - FocusService → FormsFocusService
   { old: 'FocusService', new: 'FormsFocusService', context: 'forms' },

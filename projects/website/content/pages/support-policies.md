@@ -55,7 +55,8 @@ released.
 
 | Version | Status             | Released           | Support Ends                   |
 | ------- | ------------------ | ------------------ | ------------------------------ |
-| v17     | Actively Supported | February 15, 2024  | 6 months after v18 is released |
+| v18     | Actively Supported | April 14, 2026     | 6 months after v19 is released |
+| v17     | Out of support     | February 15, 2024  | April 14, 2026                 |
 | v16     | Out of support     | September 28, 2023 | August 15, 2024                |
 | v15     | Out of support     | February 21, 2023  | March 28, 2024                 |
 | v13     | Out of support     | January 14, 2022   | August 21, 2023                |
@@ -70,7 +71,8 @@ released.
 
 | Clarity Version | Angular Version | Status             |
 | --------------- | --------------- | ------------------ |
-| v17             | v15 - v19\*     | Actively supported |
+| v18             | v21             | Actively supported |
+| v17             | v15 - v19\*     | Out of support     |
 | v16             | v15 - v17\*     | Out of support     |
 | v15             | v15 - v16       | Out of support     |
 | v13             | v13 - v16       | Out of support     |

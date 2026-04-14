@@ -116,7 +116,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
   }
 
   protected get disabled() {
-    return this.fileInput.elementRef.nativeElement.disabled || (this.control && this.control.disabled);
+    return this.control ? this.control.disabled : this.fileInput.elementRef.nativeElement.disabled;
   }
 
   protected get browseButtonText() {
