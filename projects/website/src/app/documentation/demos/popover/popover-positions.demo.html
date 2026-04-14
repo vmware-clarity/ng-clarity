@@ -1,0 +1,46 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div>
+  <div class="popover-positions-controls">
+    <clr-select-container>
+      <label>Select a position:</label>
+      <select clrSelect name="position" [(ngModel)]="selectedPosition">
+        @for (pos of positions; track pos) {
+        <option [value]="pos">{{ pos }}</option>
+        }
+      </select>
+    </clr-select-container>
+  </div>
+
+  <div class="clr-example popover-positions-area">
+    <button class="btn btn-outline" clrPopoverOpenCloseButton clrPopoverOrigin>
+      <cds-icon shape="home"></cds-icon> {{ selectedPosition }}
+    </button>
+    <div
+      class="popover-panel"
+      role="dialog"
+      cdkTrapFocus
+      *clrPopoverContent="open; at: selectedPosition; outsideClickToClose: true; scrollToClose: false"
+    >
+      <h4 cds-text="section">Position: {{ selectedPosition }}</h4>
+      <p cds-text="body" class="clr-mt-8px">
+        The overlay is positioned at
+        <code cds-text="code">{{ selectedPosition }}</code>
+        relative to the anchor button.
+      </p>
+      <button class="btn btn-sm btn-outline clr-mt-8px" clrPopoverCloseButton>
+        Close <cds-icon shape="times"></cds-icon>
+      </button>
+    </div>
+  </div>
+
+  <app-stackblitz-example
+    name="popover positions"
+    [componentTemplate]="html"
+    [componentClass]="code"
+  ></app-stackblitz-example>
+</div>

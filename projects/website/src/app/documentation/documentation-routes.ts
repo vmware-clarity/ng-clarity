@@ -223,6 +223,11 @@ export const documentationRoutes: Routes = [
       },
       {
         matcher: documentationRouteMatcher,
+        data: { routePath: 'popover/:tab?' },
+        loadChildren: () => import('./demos/popover/popover.demo.module').then(m => m.PopoverDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
         data: { routePath: 'progress/:tab?' },
         loadChildren: () =>
           import('./demos/progress-bars/progress-bars.demo.module').then(m => m.ProgressBarsDemoModule),
