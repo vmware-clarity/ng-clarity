@@ -38,6 +38,10 @@ export class ClrFileInputValueAccessor implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
+  setDisabledState(isDisabled: boolean): void {
+    this.elementRef.nativeElement.disabled = isDisabled;
+  }
+
   @HostListener('change')
   private handleChange() {
     this.onTouched();
