@@ -1,0 +1,42 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+.popover-panel {
+  background: var(--cds-alias-object-container-background);
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+  border-radius: var(--cds-alias-object-border-radius-100);
+  padding: var(--cds-global-space-7);
+  box-shadow: var(--cds-alias-object-shadow-300);
+  min-width: 220px;
+  max-width: 320px;
+}
+
+.popover-positions-controls {
+  margin-bottom: var(--cds-global-space-6);
+}
+
+.popover-positions-area,
+.popover-centered-area {
+  display: flex;
+  justify-content: center;
+  min-height: 200px;
+  align-items: center;
+}
+
+.popover-scroll-container {
+  height: 180px;
+  overflow-y: auto;
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+  border-radius: var(--cds-alias-object-border-radius-100);
+  padding: var(--cds-global-space-7);
+}
+
+.popover-scroll-content {
+  .popover-scroll-spacer {
+    height: 400px;
+  }
+}
