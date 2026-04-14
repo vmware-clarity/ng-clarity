@@ -66,6 +66,17 @@ export class GlobalStateService {
     };
   }
 
+  static resetCDSGlobal() {
+    window.CDS = {
+      _isStateProxied: false,
+      _state: {
+        iconRegistry: {},
+      },
+      getDetails: this.getDetails,
+      logDetails: this.logDetails,
+    };
+  }
+
   static intializeCDSStateProxy() {
     if (!window.CDS._isStateProxied) {
       window.CDS._isStateProxied = true;
