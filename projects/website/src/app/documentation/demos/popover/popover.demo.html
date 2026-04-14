@@ -70,15 +70,15 @@
 
     <h3 id="point-origin" class="clr-mt-32px" cds-text="section">Point-based Origin (Context Menus)</h3>
     <p class="clr-mt-16px" cds-text="body">
-      Popovers can also be opened at an arbitrary <code cds-text="code">{ x, y }</code> screen coordinate instead of an
-      element. This is useful for context menus triggered by right-click, where the overlay should appear at the cursor
-      position rather than anchored to a specific element.
+      Popovers can also be opened at an arbitrary <code cds-text="code">&#123; x, y &#125;</code> screen coordinate
+      instead of an element. This is useful for context menus triggered by right-click, where the overlay should appear
+      at the cursor position rather than anchored to a specific element.
     </p>
     <p class="clr-mt-16px" cds-text="body">
-      Call <code cds-text="code">openAtPoint({ x, y })</code> on the <code cds-text="code">ClrPopoverService</code> to
-      open the popover at a specific point. Point-based origins automatically close on any scroll event and delay
-      outside-click detection by 500 ms to prevent the initial right-click mouseup from immediately dismissing the
-      popover.
+      Call <code cds-text="code">openAtPoint(&#123; x, y &#125;)</code> on the
+      <code cds-text="code">ClrPopoverService</code> to open the popover at a specific point. Point-based origins
+      automatically close on any scroll event and delay outside-click detection by 500 ms to prevent the initial
+      right-click mouseup from immediately dismissing the popover.
     </p>
 
     <h2 id="behavior" class="clr-mt-48px" cds-text="title">Behavior</h2>
@@ -276,7 +276,7 @@
             The positioning origin for the overlay. Can be an <code cds-text="code">ElementRef</code> (set automatically
             by <code cds-text="code">[clrPopoverOrigin]</code>) or a <code cds-text="code">ClrPopoverPoint</code> (<code
               cds-text="code"
-              >{ x, y }</code
+              >&#123; x, y &#125;</code
             >) for point-based positioning.
           </td>
         </tr>
@@ -298,7 +298,7 @@
           </td>
           <td class="left hidden-xs-down">ClrPopoverPoint | null</td>
           <td class="left">
-            Returns the origin as a <code cds-text="code">{ x, y }</code> point when point-based, or
+            Returns the origin as a <code cds-text="code">&#123; x, y &#125;</code> point when point-based, or
             <code cds-text="code">null</code> for element-based origins.
           </td>
         </tr>
@@ -320,9 +320,9 @@
           </td>
           <td class="left hidden-xs-down">void</td>
           <td class="left">
-            Opens the popover at a specific <code cds-text="code">{ x, y }</code> screen coordinate. Sets the origin to
-            the given point and opens the overlay. If the popover is already open, it closes first and reopens at the
-            new point.
+            Opens the popover at a specific <code cds-text="code">&#123; x, y &#125;</code> screen coordinate. Sets the
+            origin to the given point and opens the overlay. If the popover is already open, it closes first and reopens
+            at the new point.
           </td>
         </tr>
         <tr>
@@ -341,8 +341,9 @@
 
     <h3 class="clr-mt-32px" cds-text="section"><code cds-text="code">ClrPopoverPoint</code> &mdash; interface</h3>
     <p class="clr-mt-16px" cds-text="body">
-      A simple interface representing a screen coordinate: <code cds-text="code">{ x: number; y: number }</code>. Used
-      with <code cds-text="code">openAtPoint()</code> to position the popover at an arbitrary point.
+      A simple interface representing a screen coordinate:
+      <code cds-text="code">&#123; x: number; y: number &#125;</code>. Used with
+      <code cds-text="code">openAtPoint()</code> to position the popover at an arbitrary point.
     </p>
 
     <h3 class="clr-mt-32px" cds-text="section">
@@ -411,7 +412,7 @@
           <td class="left">
             Overrides the positioning origin for this content. Accepts an
             <code cds-text="code">ElementRef</code>, an <code cds-text="code">HTMLElement</code>, or a
-            <code cds-text="code">{ x, y }</code> point. When set, this takes precedence over the
+            <code cds-text="code">&#123; x, y &#125;</code> point. When set, this takes precedence over the
             <code cds-text="code">[clrPopoverOrigin]</code> directive.
           </td>
         </tr>
