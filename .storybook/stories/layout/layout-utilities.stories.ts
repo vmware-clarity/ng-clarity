@@ -31,7 +31,7 @@ const PLACEHOLDER_STYLES = `
 `;
 
 export default {
-  title: 'Layout/cds-layout',
+  title: 'Layout/Spacing',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules],
@@ -222,67 +222,6 @@ const AlignmentTemplate: StoryFn = () => ({
 });
 
 export const Alignment: StoryObj = { render: AlignmentTemplate };
-
-// ─── Gap Sizes ───────────────────────────────────────────────────────────────
-
-const GapSizesTemplate: StoryFn = () => ({
-  template: `
-    ${PLACEHOLDER_STYLES}
-    <div cds-layout="vertical gap:xs">
-      <div class="cds-demo">
-        <div cds-layout="horizontal gap:xxs">
-          <span class="cds-placeholder" style="min-width: 80px">gap:xxs</span>
-          <span class="cds-placeholder"></span>
-          <span class="cds-placeholder"></span>
-        </div>
-      </div>
-      <div class="cds-demo">
-        <div cds-layout="horizontal gap:xs">
-          <span class="cds-placeholder" style="min-width: 80px">gap:xs</span>
-          <span class="cds-placeholder"></span>
-          <span class="cds-placeholder"></span>
-        </div>
-      </div>
-      <div class="cds-demo">
-        <div cds-layout="horizontal gap:sm">
-          <span class="cds-placeholder" style="min-width: 80px">gap:sm</span>
-          <span class="cds-placeholder"></span>
-          <span class="cds-placeholder"></span>
-        </div>
-      </div>
-      <div class="cds-demo">
-        <div cds-layout="horizontal gap:md">
-          <span class="cds-placeholder" style="min-width: 80px">gap:md</span>
-          <span class="cds-placeholder"></span>
-          <span class="cds-placeholder"></span>
-        </div>
-      </div>
-      <div class="cds-demo">
-        <div cds-layout="horizontal gap:lg">
-          <span class="cds-placeholder" style="min-width: 80px">gap:lg</span>
-          <span class="cds-placeholder"></span>
-          <span class="cds-placeholder"></span>
-        </div>
-      </div>
-      <div class="cds-demo">
-        <div cds-layout="horizontal gap:xl">
-          <span class="cds-placeholder" style="min-width: 80px">gap:xl</span>
-          <span class="cds-placeholder"></span>
-          <span class="cds-placeholder"></span>
-        </div>
-      </div>
-      <div class="cds-demo">
-        <div cds-layout="horizontal gap:xxl">
-          <span class="cds-placeholder" style="min-width: 80px">gap:xxl</span>
-          <span class="cds-placeholder"></span>
-          <span class="cds-placeholder"></span>
-        </div>
-      </div>
-    </div>
-  `,
-});
-
-export const GapSizes: StoryObj = { render: GapSizesTemplate };
 
 // ─── Container Widths ─────────────────────────────────────────────────────────
 

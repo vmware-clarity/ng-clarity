@@ -8,7 +8,6 @@
 import { arrowIcon, ClarityIcons, ClrIcon, homeIcon, imageIcon, userIcon } from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import { AllCollectionsStorybookComponent, AllIconsStorybookComponent } from './icon.storybook.component';
 import { CommonModules } from '../../helpers/common';
 
 ClarityIcons.addIcons(userIcon, imageIcon, homeIcon, arrowIcon);
@@ -363,68 +362,3 @@ const CustomStylesTemplate: StoryFn = () => ({
 });
 
 export const CustomStyles: StoryObj = { render: CustomStylesTemplate };
-
-// ─── Dark Theme ───────────────────────────────────────────────────────────────
-
-const DarkThemeTemplate: StoryFn = () => ({
-  template: `
-    <div cds-layout="vertical gap:md" cds-theme="dark" cds-layout="p:lg">
-      <div cds-layout="horizontal gap:md align:vertical-center">
-        <cds-icon shape="user" size="lg" badge="info"></cds-icon>
-        <cds-icon shape="user" size="lg" badge="success"></cds-icon>
-        <cds-icon shape="user" size="lg" badge="danger"></cds-icon>
-        <cds-icon shape="user" size="lg" badge="warning"></cds-icon>
-        <cds-icon shape="user" size="lg" badge="neutral"></cds-icon>
-        <cds-icon shape="user" size="lg" badge="warning-triangle"></cds-icon>
-      </div>
-      <div cds-layout="horizontal gap:md align:vertical-center">
-        <cds-icon shape="user" size="lg"></cds-icon>
-        <cds-icon shape="user" status="info" size="lg"></cds-icon>
-        <cds-icon shape="user" status="success" size="lg"></cds-icon>
-        <cds-icon shape="user" status="warning" size="lg"></cds-icon>
-        <cds-icon shape="user" status="danger" size="lg"></cds-icon>
-        <cds-icon shape="user" status="neutral" size="lg"></cds-icon>
-      </div>
-      <div cds-layout="horizontal gap:md align:vertical-center">
-        <cds-icon shape="user" size="lg" solid></cds-icon>
-        <cds-icon shape="user" status="info" size="lg" solid></cds-icon>
-        <cds-icon shape="user" status="success" size="lg" solid></cds-icon>
-        <cds-icon shape="user" status="warning" size="lg" solid></cds-icon>
-        <cds-icon shape="user" status="danger" size="lg" solid></cds-icon>
-        <cds-icon shape="user" status="neutral" size="lg" solid></cds-icon>
-      </div>
-    </div>
-  `,
-});
-
-export const DarkTheme: StoryObj = { render: DarkThemeTemplate };
-
-// ─── All Icons ────────────────────────────────────────────────────────────────
-
-export const AllIcons: StoryObj = {
-  decorators: [
-    moduleMetadata({
-      imports: [AllIconsStorybookComponent, ...CommonModules],
-    }),
-  ],
-  render: () => ({
-    template: `
-      <storybook-all-icons></storybook-all-icons>
-    `,
-  }),
-};
-
-// ─── Collections ─────────────────────────────────────────────────────────────
-
-export const Collections: StoryObj = {
-  decorators: [
-    moduleMetadata({
-      imports: [AllCollectionsStorybookComponent, ...CommonModules],
-    }),
-  ],
-  render: () => ({
-    template: `
-      <storybook-all-collections></storybook-all-collections>
-    `,
-  }),
-};

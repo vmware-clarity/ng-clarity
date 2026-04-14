@@ -217,10 +217,12 @@
     <h2 class="clr-mt-48px" cds-text="title" id="code-examples">Code Examples</h2>
 
     <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="code-horizontal">Horizontal Layout</h3>
-    <div cds-layout="horizontal gap:md clr-mt-24px">
-      <span class="layout-demo__block">1</span>
-      <span class="layout-demo__block">2</span>
-      <span class="layout-demo__block">3</span>
+    <div class="clr-mt-16px">
+      <div cds-layout="horizontal gap:md">
+        <span class="layout-demo__block">1</span>
+        <span class="layout-demo__block">2</span>
+        <span class="layout-demo__block">3</span>
+      </div>
     </div>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="horizontalExample" language="html"></app-code-snippet>

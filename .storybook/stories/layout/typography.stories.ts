@@ -234,29 +234,3 @@ const LegacyParagraphsTemplate: StoryFn = () => ({
 });
 
 export const LegacyParagraphs: StoryObj = { render: LegacyParagraphsTemplate };
-
-// ─── Dark Theme ───────────────────────────────────────────────────────────────
-
-const DarkThemeTemplate: StoryFn = () => ({
-  template: `
-    <div cds-layout="vertical gap:lg p:lg" cds-theme="dark">
-      <div cds-layout="vertical gap:sm">
-        <p cds-text="display">The five boxing wizards jump quickly (display)</p>
-        <p cds-text="headline">The five boxing wizards jump quickly (headline)</p>
-        <p cds-text="title">The five boxing wizards jump quickly (title)</p>
-        <p cds-text="section">The five boxing wizards jump quickly (section)</p>
-        <p cds-text="subsection">The five boxing wizards jump quickly (subsection)</p>
-      </div>
-      <hr cds-divider />
-      <div cds-layout="vertical gap:sm">
-        <p cds-text="body">The quick brown fox jumps over the lazy dog. (body)</p>
-        <p cds-text="message">The quick brown fox jumps over the lazy dog. (message)</p>
-        <p cds-text="secondary">The quick brown fox jumps over the lazy dog. (secondary)</p>
-        <p cds-text="caption">The quick brown fox jumps over the lazy dog. (caption)</p>
-        <p cds-text="smallcaption">The quick brown fox jumps over the lazy dog. (smallcaption)</p>
-      </div>
-    </div>
-  `,
-});
-
-export const DarkTheme: StoryObj = { render: DarkThemeTemplate };

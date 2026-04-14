@@ -10,7 +10,7 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 import { CommonModules } from '../../helpers/common';
 
 export default {
-  title: 'Utilities/Divider',
+  title: 'Layout/Divider',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules],
@@ -69,47 +69,6 @@ const VerticalFillTemplate: StoryFn = () => ({
 });
 
 export const VerticalFill: StoryObj = { render: VerticalFillTemplate };
-
-// ─── Custom ───────────────────────────────────────────────────────────────────
-
-const CustomTemplate: StoryFn = () => ({
-  template: `
-    <style>
-      hr.divider-red {
-        --color: red;
-        --size: 2px;
-      }
-      hr.divider-purple {
-        --color: purple;
-        --size: 3px;
-      }
-    </style>
-    <div cds-layout="vertical gap:lg" style="max-width: 500px">
-      <div cds-layout="vertical gap:xs">
-        <p cds-text="caption">Default</p>
-        <hr cds-divider />
-      </div>
-      <div cds-layout="vertical gap:xs">
-        <p cds-text="caption">
-          Custom red, 2px (
-          <code cds-text="code">--color: red; --size: 2px</code>
-          )
-        </p>
-        <hr cds-divider class="divider-red" />
-      </div>
-      <div cds-layout="vertical gap:xs">
-        <p cds-text="caption">
-          Custom purple, 3px (
-          <code cds-text="code">--color: purple; --size: 3px</code>
-          )
-        </p>
-        <hr cds-divider class="divider-purple" />
-      </div>
-    </div>
-  `,
-});
-
-export const Custom: StoryObj = { render: CustomTemplate };
 
 // ─── In Context ───────────────────────────────────────────────────────────────
 
