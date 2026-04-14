@@ -8,10 +8,23 @@ addLevel3HeadingsToToc: true
 The Clarity v18 release is a major update that migrates away from `@cds/core`, introduces Angular CDK-based popovers,
 upgrades to Angular 21, adds secondary entrypoints for all modules, and decouples the Accordion and Stepper components.
 
-Full list of breaking changes, see the detailed changelogs:
-[beta.1](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.1),
-[beta.2](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.2),
-[beta.3](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.3).
+Detailed release notes and changelogs for each v18 prerelease tag on GitHub:
+
+| Tag                                                                                                     | Published                                                                                         |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| [v18.0.0-beta.1](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.1) (2026-02-26) | Initial v18 prerelease                                                                            |
+| [v18.0.0-beta.2](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.2) (2026-03-13) | Popover anchor → origin rename, wizard / IE / forms breaking changes                              |
+| [v18.0.0-beta.3](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.3) (2026-03-26) | `Ç` export prefix removal                                                                         |
+| [v18.0.0-beta.4](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.4) (2026-04-01) | Schematics, combobox, datagrid filters, wizard CSS class renames, deprecated token removal        |
+| [v18.0.0-beta.5](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.5) (2026-04-02) | Schematics migration reliability fixes                                                            |
+| [v18.0.0-beta.6](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.6) (2026-04-07) | Public API exports (tree models, datagrid selection, persist settings), schematics/tsconfig fixes |
+| [v18.0.0-beta.7](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.7) (2026-04-08) | Combobox select-all observer fix; appfx datagrid `loadingMoreItems` proxy                         |
+
+When **v18.0.0** (GA) is published, its tag will appear on the same [releases](https://github.com/vmware-clarity/ng-clarity/releases) page—use that tag for the final GA notes.
+
+### Migration tooling
+
+After aligning package versions, run `ng update @clr/angular`. Migration schematics landed in **beta.4** (imports, symbol renames, templates, many CSS custom properties) and were refined in **beta.5**. Items that still need manual follow-up include wizard `modal-*` → `clr-wizard-*` selectors, addons datagrid filter API changes, and any custom logic not covered by static transforms—compare with the beta.4 release notes.
 
 ## Angular Support
 
@@ -210,11 +223,28 @@ The template output `(clrWizardCurrentPageChanged)` is now `(clrWizardCurrentPag
 
 ```html
 <!-- Before -->
-<clr-wizard (clrWizardCurrentPageChanged)="onPageChange($event)">
-  <!-- After -->
-  <clr-wizard (clrWizardCurrentPageChange)="onPageChange($event)"></clr-wizard
-></clr-wizard>
+<clr-wizard (clrWizardCurrentPageChanged)="onPageChange($event)"></clr-wizard>
+<!-- After -->
+<clr-wizard (clrWizardCurrentPageChange)="onPageChange($event)"></clr-wizard>
 ```
+
+**Wizard template CSS classes (beta.4):** Modal-inherited class names inside `clr-wizard` were replaced with wizard-specific names. Update any custom SCSS or tests that targeted the old classes:
+
+| Old class                      | New class                             |
+| ------------------------------ | ------------------------------------- |
+| `modal-content-wrapper`        | `clr-wizard-content-wrapper`          |
+| `modal-nav`                    | _(removed — class no longer applied)_ |
+| `modal-content`                | `clr-wizard-main-content`             |
+| `modal-header--accessible`     | `clr-wizard-header`                   |
+| `modal-title-wrapper`          | `clr-wizard-page-title-wrapper`       |
+| `modal-title`                  | `clr-wizard-page-title`               |
+| `modal-title-text`             | `clr-wizard-page-title-text`          |
+| `modal-header-actions-wrapper` | `clr-wizard-header-actions-wrapper`   |
+| `modal-body-wrapper`           | `clr-wizard-body-wrapper`             |
+| `modal-body`                   | `clr-wizard-body`                     |
+| `modal-footer`                 | _(removed — class no longer applied)_ |
+
+**Wizard layout (beta.4):** A horizontal step navigation layout was added; internal wizard CSS classes were renamed as part of that work (see release notes for details).
 
 ### Stack View
 
@@ -264,6 +294,11 @@ Wizard CSS custom properties have been renamed. Update any custom theme override
 | `--clr-wizard-stepnav-link-active-bg-color`      | `--clr-wizard-stepnav-active-bgcolor`             |
 
 ### Removed CSS and Sass Variables
+
+**v17 deprecations removed in beta.4:** Additional deprecated `--clr-*` / `$clr-*` tokens (accordion content typography,
+datagrid placeholder typography, dropdown hover/selection, signpost pointer, tree link colors, stack view, tables, header,
+progress, toggle, login, and more) were removed. For the full replacement tables, see the
+[v18.0.0-beta.4](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.4) release notes.
 
 All deprecated `clr` color-based CSS and Sass properties/variables have been removed in favor of `--cds-*` tokens. This
 includes:
