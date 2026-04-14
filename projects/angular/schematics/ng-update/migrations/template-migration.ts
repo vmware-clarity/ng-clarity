@@ -11,6 +11,7 @@ import { CSS_ATTRIBUTE_REPLACEMENTS } from '../replacements/css-replacements';
 import {
   HEADER_CLASS_REPLACEMENTS,
   TEMPLATE_ATTRIBUTE_REPLACEMENTS,
+  TEMPLATE_DATAGRID_MIGRATION_CANDIDATES,
   TEMPLATE_INPUT_REPLACEMENTS,
   TEMPLATE_OUTPUT_REPLACEMENTS,
 } from '../replacements/template-replacements';
@@ -50,6 +51,12 @@ const COMPILED_GLOBAL_ATTR_REGEXES = TEMPLATE_ATTRIBUTE_REPLACEMENTS.filter(r =>
 // Handles attribute values that contain > (e.g. [attr.size]="size > 0 ? 'lg' : 'md'").
 const CDS_ICON_TAG_RE = /<cds-icon\b(?:[^"'/>]|"[^"]*"|'[^']*')*(?:\/?>)/g;
 
+// Opening tag of clr-datagrid only (not clr-dg-* children).
+const CLR_DATAGRID_OPEN_TAG_RE = /<clr-datagrid\b(?:[^"'/>]|"[^"]*"|'[^']*')*(?:\/?>)/g;
+
+// Bare attribute form: clrDgItemsTrackBy="..." (clr-datagrid host only; applied in datagrid pass).
+const BARE_CLR_DG_ITEMS_TRACK_BY_RE = /(?<=\s)clrDgItemsTrackBy(?==)/g;
+
 const COMPILED_HEADER_REGEXES = HEADER_CLASS_REPLACEMENTS.map(r => ({
   old: r.old,
   new: r.new,
@@ -69,6 +76,7 @@ const COMPILED_CDS_TEXT_REGEXES = CSS_ATTRIBUTE_REPLACEMENTS.map(r => ({
 export const TEMPLATE_MIGRATION_HTML_CANDIDATES: readonly string[] = [
   ...TEMPLATE_OUTPUT_REPLACEMENTS.map(r => r.old),
   ...TEMPLATE_INPUT_REPLACEMENTS.map(r => r.old),
+  ...TEMPLATE_DATAGRID_MIGRATION_CANDIDATES,
   ...TEMPLATE_ATTRIBUTE_REPLACEMENTS.map(r => r.old),
   ...HEADER_CLASS_REPLACEMENTS.map(r => r.old),
   ...CSS_ATTRIBUTE_REPLACEMENTS.map(r => r.old),
@@ -158,6 +166,9 @@ export function migrateTemplates(): Rule {
 // ---------------------------------------------------------------------------
 
 export function applyHtmlTransforms(text: string): string {
+  // Datagrid must run before migrateOutputBindings so `(clrDgSingleSelectedChange)` is still in the
+  // source; `hadLegacySingleSelection` uses substring `clrDgSingleSelected` (matches that output name too).
+  text = migrateClrDatagridOpeningTags(text);
   text = migrateOutputBindings(text);
   text = migrateInputBindings(text);
   text = migrateCdsIconAttributes(text);
@@ -175,6 +186,67 @@ function migrateOutputBindings(text: string): string {
     text = text.replace(r.regex, `(${r.new})`);
   }
   return text;
+}
+
+// --- clr-datagrid (#2007 identity input, #2203 selection API) ----------------------------
+
+function migrateClrDatagridOpeningTags(html: string): string {
+  if (!html.includes('<clr-datagrid')) {
+    return html;
+  }
+
+  CLR_DATAGRID_OPEN_TAG_RE.lastIndex = 0;
+  return html.replace(CLR_DATAGRID_OPEN_TAG_RE, transformClrDatagridOpeningTag);
+}
+
+function transformClrDatagridOpeningTag(openingTag: string): string {
+  const hadLegacySingleSelection = openingTag.includes('clrDgSingleSelected');
+
+  let tag = openingTag;
+  tag = renameLegacyDatagridSingleOutputs(tag);
+  tag = renameLegacyDatagridSingleInputs(tag);
+  tag = renameDatagridHostIdentityFn(tag);
+  tag = addExplicitSelectionTypeIfMissing(tag, hadLegacySingleSelection);
+
+  return tag;
+}
+
+function renameLegacyDatagridSingleOutputs(openingTag: string): string {
+  return openingTag.split('(clrDgSingleSelectedChange)').join('(clrDgSelectedChange)');
+}
+
+function renameLegacyDatagridSingleInputs(openingTag: string): string {
+  return openingTag
+    .split('[(clrDgSingleSelected)]')
+    .join('[(clrDgSelected)]')
+    .replace(/\[clrDgSingleSelected\]/g, '[clrDgSelected]');
+}
+
+/** Host-only: `clr-dg-items` keeps `clrDgItemsTrackBy`; this runs only on `<clr-datagrid>` tags. */
+function renameDatagridHostIdentityFn(openingTag: string): string {
+  BARE_CLR_DG_ITEMS_TRACK_BY_RE.lastIndex = 0;
+  return openingTag
+    .split('[clrDgItemsTrackBy]')
+    .join('[clrDgItemsIdentityFn]')
+    .replace(BARE_CLR_DG_ITEMS_TRACK_BY_RE, 'clrDgItemsIdentityFn');
+}
+
+/** `tag` is the opening tag after legacy single renames (so implicit multi can see `clrDgSelected`). */
+function addExplicitSelectionTypeIfMissing(tag: string, hadLegacySingleSelection: boolean): string {
+  if (tag.includes('clrDgSelectionType')) {
+    return tag;
+  }
+  if (hadLegacySingleSelection) {
+    return appendAttributeBeforeTagClose(tag, 'clrDgSelectionType="single"');
+  }
+  if (tag.includes('clrDgSelected')) {
+    return appendAttributeBeforeTagClose(tag, 'clrDgSelectionType="multi"');
+  }
+  return tag;
+}
+
+function appendAttributeBeforeTagClose(openingTag: string, attribute: string): string {
+  return openingTag.replace(/\s*(\/?>)\s*$/, ` ${attribute}$1`);
 }
 
 function migrateInputBindings(text: string): string {

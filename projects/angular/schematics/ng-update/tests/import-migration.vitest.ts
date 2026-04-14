@@ -66,6 +66,15 @@ import { ClrFormsModule } from '@clr/angular/src/forms';`
       expect(tree.readText('/app.ts')).toContain("from '@clr/angular/icon'");
     });
 
+    it('should move SelectionType import from @clr/addons/datagrid to @clr/angular/data/datagrid', () => {
+      tree.create('/grid.ts', `import { SelectionType } from '@clr/addons/datagrid';`);
+
+      runMigrations(tree);
+
+      expect(tree.readText('/grid.ts')).toContain("from '@clr/angular/data/datagrid'");
+      expect(tree.readText('/grid.ts')).not.toContain('@clr/addons/datagrid');
+    });
+
     it('should not alter a local ./src/ import path that resembles a Clarity deep import', () => {
       tree.create('/app.ts', `import { MyService } from './src/accordion';`);
 
