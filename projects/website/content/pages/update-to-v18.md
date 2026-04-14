@@ -35,7 +35,7 @@ Clarity v18 upgrades to Angular 21. This is the minimum supported Angular versio
 ### Drop `@cds/core`
 
 `@clr/angular` no longer depends on `@cds/core`. All supported features have been migrated into `@clr/angular`
-directly, including `cds-icon`, CSS tokens, and CSS utilities (`cds-layout`, `cds-list`, `cds-text`, `cds-divider`).
+directly, including `cds-icon`, CSS tokens, and CSS utilities (`cds-layout`, `cds-list`, `cds-text`).
 
 - Remove `@cds/core` from your dependencies.
 - Change icon imports from `@cds/core/icon` to `@clr/angular/icon`.

@@ -222,14 +222,6 @@ body[cds-text*='body'] {
   font-family: monospace;
 }
 
-// hr
-[cds-divider] {
-  display: block;
-  height: tokens.$cds-alias-object-border-width-100;
-  overflow: hidden;
-  box-shadow: tokens.$cds-alias-object-border-color 0 0 0 tokens.$cds-alias-object-border-width-100 inset;
-}
-
 // font-weight
 
 [cds-text~='extrabold'] {

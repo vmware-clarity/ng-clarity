@@ -158,6 +158,12 @@ export const documentationRoutes: Routes = [
       },
       {
         matcher: documentationRouteMatcher,
+        data: { routePath: 'layout-utilities/:tab?' },
+        loadChildren: () =>
+          import('./demos/layout-utilities/layout-utilities.demo.module').then(m => m.LayoutUtilitiesDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
         data: { routePath: 'label/:tab?' },
         loadChildren: () => import('./demos/labels/labels.demo.module').then(m => m.LabelsDemoModule),
       },

@@ -23,6 +23,8 @@ groups:
         url: /documentation/icons
       - label: Internationalization
         url: /documentation/internationalization
+      - label: Layout Utilities
+        url: /documentation/layout-utilities
       - label: Layouts
         url: /documentation/app-layout
       - label: Navigation
