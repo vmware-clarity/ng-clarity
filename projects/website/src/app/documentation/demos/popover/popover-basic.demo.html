@@ -1,0 +1,29 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div class="clr-example">
+  <button class="btn btn-outline" clrPopoverOpenCloseButton clrPopoverOrigin>
+    <cds-icon shape="home"></cds-icon> Open Popover
+  </button>
+  <div
+    class="popover-panel"
+    role="dialog"
+    cdkTrapFocus
+    *clrPopoverContent="open; at: 'bottom-left'; outsideClickToClose: true; scrollToClose: false"
+  >
+    <h4 cds-text="section">Server Details</h4>
+    <p cds-text="body" class="clr-mt-8px">
+      <b>Host:</b> prod-web-01.example.com<br />
+      <b>Status:</b> Running<br />
+      <b>Uptime:</b> 14 days
+    </p>
+    <button class="btn btn-sm btn-outline clr-mt-8px" clrPopoverCloseButton>
+      Close <cds-icon shape="times"></cds-icon>
+    </button>
+  </div>
+</div>
+<app-stackblitz-example name="popover basic" [componentTemplate]="example" [componentClass]="exampleTs">
+</app-stackblitz-example>
