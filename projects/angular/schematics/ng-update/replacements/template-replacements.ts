@@ -48,13 +48,17 @@ export const TEMPLATE_INPUT_REPLACEMENTS: readonly TemplateReplacement[] = [
     new: 'clrColor',
     context: 'badge',
   },
+];
 
-  // #2007 - Datagrid identity function rename (input, not output)
-  {
-    old: 'clrDgItemsTrackBy',
-    new: 'clrDgItemsIdentityFn',
-    context: 'datagrid',
-  },
+/**
+ * Substrings that trigger the clr-datagrid–scoped migration pass (see template-migration).
+ * `clrDgItemsTrackBy` alone can appear on clr-dg-items (unchanged); the pass no-ops without `<clr-datagrid`.
+ */
+export const TEMPLATE_DATAGRID_MIGRATION_CANDIDATES: readonly string[] = [
+  '<clr-datagrid',
+  'clrDgSingleSelected',
+  'clrDgSingleSelectedChange',
+  'clrDgItemsTrackBy',
 ];
 
 export const HEADER_CLASS_REPLACEMENTS: readonly TemplateReplacement[] = [
