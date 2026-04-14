@@ -17,8 +17,6 @@ groups:
         url: /pages/accessibility
       - label: Color
         url: /documentation/color
-      - label: Divider
-        url: /documentation/divider
       - label: Grid
         url: /documentation/grid
       - label: Icons

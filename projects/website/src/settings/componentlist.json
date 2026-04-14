@@ -214,12 +214,6 @@
       "type": "component"
     },
     {
-      "url": "divider",
-      "text": "Divider",
-      "type": "pattern",
-      "storybookPath": "utilities-divider"
-    },
-    {
       "url": "layout-utilities",
       "text": "Layout Utilities",
       "type": "pattern",

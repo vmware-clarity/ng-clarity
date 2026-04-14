@@ -59,7 +59,7 @@ const SizesTemplate: StoryFn = () => ({
         <span cds-text="caption">4xl</span>
       </div>
     </div>
-    <hr cds-divider cds-layout="m-y:lg" />
+    <div cds-layout="m-y:lg"></div>
     <p cds-text="body" cds-layout="m-b:sm">Custom pixel sizes:</p>
     <div cds-layout="horizontal gap:lg align:vertical-bottom">
       <div cds-layout="vertical gap:xs align:center">
@@ -111,7 +111,7 @@ const StatusTemplate: StoryFn = () => ({
         <span cds-text="caption">neutral</span>
       </div>
     </div>
-    <hr cds-divider cds-layout="m-y:md" />
+    <div cds-layout="m-y:md"></div>
     <p cds-text="section" cds-layout="m-b:sm">Solid</p>
     <div cds-layout="horizontal gap:lg align:vertical-center">
       <div cds-layout="vertical gap:xs align:center">

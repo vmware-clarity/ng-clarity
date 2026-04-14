@@ -118,11 +118,6 @@ export const documentationRoutes: Routes = [
       },
       {
         matcher: documentationRouteMatcher,
-        data: { routePath: 'divider/:tab?' },
-        loadChildren: () => import('./demos/divider/divider.demo.module').then(m => m.DividerDemoModule),
-      },
-      {
-        matcher: documentationRouteMatcher,
         data: { routePath: 'dropdown/:tab?' },
         loadChildren: () => import('./demos/dropdown/dropdown.demo.module').then(m => m.DropdownDemoModule),
       },
