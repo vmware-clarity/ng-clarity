@@ -55,12 +55,36 @@ export const Content: StoryObj = { render: ContentTemplate };
 const WeightsTemplate: StoryFn = () => ({
   template: `
     <div cds-layout="vertical gap:md">
-      <p cds-text="body light">The quick brown foxes <em>lightly</em> jump over the lazy dog. (light)</p>
-      <p cds-text="body regular">The quick brown foxes <em>regularly</em> jump over the lazy dog. (regular)</p>
-      <p cds-text="body medium">The quick brown foxes <em>mediumly</em> jump over the lazy dog. (medium)</p>
-      <p cds-text="body semibold">The quick brown foxes <em>semi-boldly</em> jump over the lazy dog. (semibold)</p>
-      <p cds-text="body bold">The quick brown foxes <em>boldly</em> jump over the lazy dog. (bold)</p>
-      <p cds-text="body extrabold">The quick brown foxes <em>extra-boldly</em> jump over the lazy dog. (extrabold)</p>
+      <p cds-text="body light">
+        The quick brown foxes
+        <em>lightly</em>
+        jump over the lazy dog. (light)
+      </p>
+      <p cds-text="body regular">
+        The quick brown foxes
+        <em>regularly</em>
+        jump over the lazy dog. (regular)
+      </p>
+      <p cds-text="body medium">
+        The quick brown foxes
+        <em>mediumly</em>
+        jump over the lazy dog. (medium)
+      </p>
+      <p cds-text="body semibold">
+        The quick brown foxes
+        <em>semi-boldly</em>
+        jump over the lazy dog. (semibold)
+      </p>
+      <p cds-text="body bold">
+        The quick brown foxes
+        <em>boldly</em>
+        jump over the lazy dog. (bold)
+      </p>
+      <p cds-text="body extrabold">
+        The quick brown foxes
+        <em>extra-boldly</em>
+        jump over the lazy dog. (extrabold)
+      </p>
     </div>
   `,
 });
@@ -76,8 +100,7 @@ const AlignmentTemplate: StoryFn = () => ({
       <p cds-text="body right">Text Right (right)</p>
       <p cds-text="body center">Text Center (center)</p>
       <p cds-text="body justify">
-        Text Justify: The quick brown fox jumps over the lazy dog.
-        The quick brown fox jumps over the lazy dog. (justify)
+        Text Justify: The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. (justify)
       </p>
     </div>
   `,
@@ -108,13 +131,19 @@ const LinksTemplate: StoryFn = () => ({
   template: `
     <div cds-layout="vertical gap:md">
       <p cds-text="body">
-        The <a href="#" cds-text="link">quick brown fox</a> jumps over the lazy dog. (link)
+        The
+        <a href="#" cds-text="link">quick brown fox</a>
+        jumps over the lazy dog. (link)
       </p>
       <p cds-text="body">
-        The <a href="#" cds-text="link visited">quick brown fox</a> jumps over the lazy dog. (link visited)
+        The
+        <a href="#" cds-text="link visited">quick brown fox</a>
+        jumps over the lazy dog. (link visited)
       </p>
       <p cds-text="body">
-        The <a href="#" cds-text="link static">quick brown fox</a> jumps over the lazy dog. (link static – no hover state)
+        The
+        <a href="#" cds-text="link static">quick brown fox</a>
+        jumps over the lazy dog. (link static – no hover state)
       </p>
     </div>
   `,
@@ -128,13 +157,18 @@ const CodeTemplate: StoryFn = () => ({
   template: `
     <div cds-layout="vertical gap:md">
       <p cds-text="body">
-        The <code cds-text="code">quick brown fox</code> jumps over the lazy dog. (code)
+        The
+        <code cds-text="code">quick brown fox</code>
+        jumps over the lazy dog. (code)
       </p>
       <p cds-text="body">
-        Use <code cds-text="code">cds-text="body bold"</code> to apply bold weight to body text.
+        Use
+        <code cds-text="code">cds-text="body bold"</code>
+        to apply bold weight to body text.
       </p>
       <p cds-text="body">
-        Monospace: <span cds-text="body monospace">const x = { value: 42 };</span>
+        Monospace:
+        <span cds-text="body monospace">const x = 42;</span>
       </p>
     </div>
   `,
@@ -148,13 +182,17 @@ const InlineTemplate: StoryFn = () => ({
   template: `
     <div>
       <span cds-text="display inline">We</span>
-      <span cds-text="body inline"> should </span>
-      <span cds-text="title inline"> all </span>
-      <span cds-text="caption inline"> be </span>
-      <span cds-text="section inline"> inline!</span>
+      <span cds-text="body inline">should</span>
+      <span cds-text="title inline">all</span>
+      <span cds-text="caption inline">be</span>
+      <span cds-text="section inline">inline!</span>
     </div>
     <p cds-text="secondary" cds-layout="m-t:sm">
-      Add <code cds-text="code">inline</code> to any <code cds-text="code">cds-text</code> value to render the element inline.
+      Add
+      <code cds-text="code">inline</code>
+      to any
+      <code cds-text="code">cds-text</code>
+      value to render the element inline.
     </p>
   `,
 });
