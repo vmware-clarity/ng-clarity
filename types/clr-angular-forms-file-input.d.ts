@@ -131,7 +131,6 @@ declare class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     private readonly commonStrings;
     selection: ClrFileInputSelection;
     constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
-    protected get disabled(): boolean;
     private handleChange;
     private updateSelection;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInput, [null, null, null, null, { optional: true; self: true; }, null]>;
@@ -156,6 +155,7 @@ declare class ClrFileInputValueAccessor implements ControlValueAccessor {
     writeValue(value: FileList): void;
     registerOnChange(fn: (value: FileList) => void): void;
     registerOnTouched(fn: () => void): void;
+    setDisabledState(isDisabled: boolean): void;
     private handleChange;
     private onChange;
     private onTouched;

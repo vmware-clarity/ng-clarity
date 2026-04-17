@@ -6,7 +6,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HEADER_CLASS_REPLACEMENTS = exports.TEMPLATE_INPUT_REPLACEMENTS = exports.TEMPLATE_ATTRIBUTE_REPLACEMENTS = exports.TEMPLATE_OUTPUT_REPLACEMENTS = void 0;
+exports.HEADER_CLASS_REPLACEMENTS = exports.TEMPLATE_DATAGRID_MIGRATION_CANDIDATES = exports.TEMPLATE_INPUT_REPLACEMENTS = exports.TEMPLATE_ATTRIBUTE_REPLACEMENTS = exports.TEMPLATE_OUTPUT_REPLACEMENTS = void 0;
 exports.TEMPLATE_OUTPUT_REPLACEMENTS = [
     // #2249 - Wizard currentPageChanged → currentPageChange
     {
@@ -36,12 +36,16 @@ exports.TEMPLATE_INPUT_REPLACEMENTS = [
         new: 'clrColor',
         context: 'badge',
     },
-    // #2007 - Datagrid identity function rename (input, not output)
-    {
-        old: 'clrDgItemsTrackBy',
-        new: 'clrDgItemsIdentityFn',
-        context: 'datagrid',
-    },
+];
+/**
+ * Substrings that trigger the clr-datagrid–scoped migration pass (see template-migration).
+ * `clrDgItemsTrackBy` alone can appear on clr-dg-items (unchanged); the pass no-ops without `<clr-datagrid`.
+ */
+exports.TEMPLATE_DATAGRID_MIGRATION_CANDIDATES = [
+    '<clr-datagrid',
+    'clrDgSingleSelected',
+    'clrDgSingleSelectedChange',
+    'clrDgItemsTrackBy',
 ];
 exports.HEADER_CLASS_REPLACEMENTS = [
     // #2180 - Header variant removals
