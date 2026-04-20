@@ -1857,6 +1857,8 @@ describe('DatagridComponent', () => {
   describe('toggleAll', () => {
     it('should toggle the allSelected property of clrDatagrid', function (this: any) {
       this.component.selectionType = SelectionType.Multi;
+      this.component.data = this.data;
+      this.component.columnsDefs = this.columnsDefs;
       this.fixture.detectChanges();
 
       const datagridComponent = this.component.appfxDatagridComponent;
