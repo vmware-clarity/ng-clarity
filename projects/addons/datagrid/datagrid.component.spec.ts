@@ -1853,6 +1853,27 @@ describe('DatagridComponent', () => {
       });
     });
   });
+
+  describe('toggleAll', () => {
+    it('should toggle the allSelected property of clrDatagrid', function (this: any) {
+      this.component.selectionType = SelectionType.Multi;
+      this.fixture.detectChanges();
+
+      const datagridComponent = this.component.appfxDatagridComponent;
+
+      expect((datagridComponent as any).clrDatagrid.allSelected).toBeFalsy();
+
+      datagridComponent.toggleAll();
+      this.fixture.detectChanges();
+
+      expect((datagridComponent as any).clrDatagrid.allSelected).toBeTruthy();
+
+      datagridComponent.toggleAll();
+      this.fixture.detectChanges();
+
+      expect((datagridComponent as any).clrDatagrid.allSelected).toBeFalsy();
+    });
+  });
 });
 
 class StatusComparator implements ClrDatagridComparatorInterface<any> {
