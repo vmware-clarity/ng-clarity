@@ -96,7 +96,7 @@
     "@stackblitz/sdk": "1.11.0",
     "@storybook/addon-a11y": "10.2.14",
     "@storybook/addon-docs": "10.2.8",
-    "@storybook/angular": "10.2.8",
+    "@storybook/angular": "10.3.5",
     "@textlint/markdown-to-ast": "15.5.2",
     "@types/jasmine": "6.0.0",
     "@types/node-static": "0.7.12",
