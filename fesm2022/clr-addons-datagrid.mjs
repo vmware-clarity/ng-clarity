@@ -2015,6 +2015,11 @@ class DatagridComponent {
         }
         return footer;
     }
+    toggleAll() {
+        if (this.clrDatagrid) {
+            this.clrDatagrid.allSelected = !this.clrDatagrid.allSelected;
+        }
+    }
     getExpandDetailsLabel(item) {
         if (!this.hasExpandableRows(item)) {
             return '';
