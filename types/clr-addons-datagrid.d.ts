@@ -1058,6 +1058,7 @@ declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, 
      * - Else -> {1} - {2} of {0} items
      */
     getFooterMessage(totalItems: number, pageSize?: number, firstItem?: number, lastItem?: number): string;
+    toggleAll(): void;
     protected getExpandDetailsLabel(item: T): string;
     protected getCollapseDetailsLabel(item: T): string;
     protected onColumnResize(columnSize: number, column: ColumnDefinition<T>): void;
