@@ -31,29 +31,27 @@
   (dgColumnsOrderChange)="onColumnOrderChange($event)"
   (clrDgSelectedChange)="onSelectedItemsChange($event)"
 >
-  @if (enableToolBar) {
-    <clr-dg-action-bar>
-      @if (!!actionBarActions.length) {
-        <div class="appfx-datagrid-actions-container">
-          <appfx-datagrid-action-bar
-            class="action-bar"
-            (invokeAction)="onActionClick($event)"
-            [actions]="actionBarActions"
-          >
-          </appfx-datagrid-action-bar>
-        </div>
-      }
-      @if (filterMode !== undefined && filterMode !== null) {
-        <appfx-datagrid-filters
-          [filterMode]="filterMode"
-          [filterableProperties]="filterableProperties"
-          (searchTermChange)="onAdvancedSearchTermChange($event)"
-          (propertyFiltersChange)="onAdvancedFilterCriteriaChange($event)"
+  <clr-dg-action-bar *ngIf="enableToolBar">
+    @if (!!actionBarActions.length) {
+      <div class="appfx-datagrid-actions-container">
+        <appfx-datagrid-action-bar
+          class="action-bar"
+          (invokeAction)="onActionClick($event)"
+          [actions]="actionBarActions"
         >
-        </appfx-datagrid-filters>
-      }
-    </clr-dg-action-bar>
-  }
+        </appfx-datagrid-action-bar>
+      </div>
+    }
+    @if (filterMode !== undefined && filterMode !== null) {
+      <appfx-datagrid-filters
+        [filterMode]="filterMode"
+        [filterableProperties]="filterableProperties"
+        (searchTermChange)="onAdvancedSearchTermChange($event)"
+        (propertyFiltersChange)="onAdvancedFilterCriteriaChange($event)"
+      >
+      </appfx-datagrid-filters>
+    }
+  </clr-dg-action-bar>
   @if (dragConfig) {
     <clr-dg-column class="draggableCell" style="width: 20px"></clr-dg-column>
   }
