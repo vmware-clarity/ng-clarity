@@ -481,6 +481,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     // (undocumented)
     protected get showDeselectAll(): boolean;
     singleRowActions: ActionDefinition[] | null;
+    // (undocumented)
+    toggleAll(): void;
     totalItems: number;
     // (undocumented)
     trackByColumnId(index: number, column: ColumnDefinition<T>): string;
