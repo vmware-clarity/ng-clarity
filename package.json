@@ -22,9 +22,9 @@
     "migrations": "./schematics/collection.json"
   },
   "peerDependencies": {
-    "@angular/cdk": "^21",
-    "@angular/common": "^21",
-    "@angular/core": "^21"
+    "@angular/cdk": ">= 21.1.0",
+    "@angular/common": ">= 21.1.0",
+    "@angular/core": ">= 21.1.0"
   },
   "module": "fesm2022/clr-angular.mjs",
   "typings": "types/clr-angular.d.ts",
@@ -230,5 +230,5 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "version": "0.0.0-preview.8d163fe"
+  "version": "0.0.0-preview.f82736d"
 }
