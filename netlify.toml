@@ -1,7 +1,20 @@
-# Default build settings
-[build]
+[context.website]
   publish = "dist/website"
   environment = { CI = "true" }
+
+[context.storybook]
+  publish = "./dist/docs"
+
+[[redirects]]
+  from = "https://storybook.angular.clarity.design/*"
+  to = "https://storybook.clarity.design/:splat"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/demo/*"
+  to = "/demo/index.html"
+  status = 200
 
 [[redirects]]
   from = "https://angular.clarity.design/*"
@@ -9,11 +22,6 @@
   status = 302
   force = true
 
-# admin interface has its own index.html file
-[[redirects]]
-  from = "/admin/"
-  to = "/admin/index.html"
-  status = 200
 
 # With this, the app has full control over the routing logic
 [[redirects]]
