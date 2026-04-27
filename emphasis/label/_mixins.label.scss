@@ -1,0 +1,76 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:map';
+@use '../badge/variables.badges' as badges-variables;
+@use 'variables.label' as label-variables;
+
+@mixin buildLabelStyles($colors, $badge-colors) {
+  background-color: map.get($colors, bg-color);
+  border: label-variables.$clr-label-borderwidth solid map.get($colors, border-color);
+  color: map.get($colors, color);
+
+  & > .badge {
+    border-color: map.get($badge-colors, border-color);
+    background-color: map.get($badge-colors, bg-color);
+    color: map.get($badge-colors, color);
+  }
+
+  cds-icon,
+  clr-icon {
+    color: map.get($colors, color);
+  }
+
+  &.clickable:not(.disabled):hover,
+  &.clickable:not(.disabled):active {
+    border-color: map.get($colors, border-color);
+
+    & > .badge {
+      border-color: map.get($badge-colors, border-color);
+      background-color: map.get($badge-colors, bg-color);
+      color: map.get($badge-colors, color);
+    }
+  }
+
+  &.solid {
+    border-color: map.get($colors, solid-border-color);
+    background-color: map.get($colors, solid-bg-color);
+    color: map.get($colors, solid-color);
+
+    &.clickable:not(.disabled, :active, :hover) > .badge {
+      border-color: map.get($badge-colors, outline-border-color);
+      background-color: map.get($badge-colors, outline-bg-color);
+      color: map.get($badge-colors, outline-color);
+    }
+
+    &.clickable:active > .badge,
+    &.clickable:hover > .badge {
+      border-color: map.get($badge-colors, border-color);
+      background-color: map.get($badge-colors, bg-color);
+      color: map.get($badge-colors, color);
+    }
+
+    cds-icon,
+    clr-icon {
+      color: map.get($colors, solid-color);
+    }
+  }
+}
+@mixin generateLabelStyles($color: gray, $alias: null) {
+  $colors: map.get(label-variables.$label-colors, $color);
+  $badge-colors: map.get(badges-variables.$badge-colors, $color);
+
+  &.label-#{'' + $color} {
+    @include buildLabelStyles($colors, $badge-colors);
+  }
+
+  @if ($alias) {
+    &.label-#{$alias} {
+      @include buildLabelStyles($colors, $badge-colors);
+    }
+  }
+}

@@ -1,0 +1,374 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:meta';
+@use '../styles/mixins';
+@use 'mixins.buttons' as button-mixins;
+@use 'variables.buttons' as buttons-variables;
+@use '../styles/variables/variables.density' as density;
+@use '../styles/core/tokens/variables.tokens' as tokens;
+
+@include meta.load-css('properties.buttons');
+@include mixins.exports('buttons.clarity') {
+  .btn {
+    @include button-mixins.generateButton();
+    @include button-mixins.populateButtonProperties(default);
+    @include mixins.generate-typography-token('BUTTON-12');
+
+    height: buttons-variables.$clr-btn-appearance-form-height;
+    padding: buttons-variables.$clr-btn-appearance-form-padding;
+
+    .clr-loading-btn-content {
+      display: flex;
+      gap: buttons-variables.$clr-btn-gap;
+      align-items: center;
+    }
+  }
+
+  a.btn,
+  .btn.btn-secondary,
+  .btn-secondary .btn {
+    @include button-mixins.populateButtonProperties(default);
+  }
+
+  .btn.btn-info,
+  .btn-info .btn,
+  .btn.btn-primary,
+  .btn-primary .btn {
+    @include button-mixins.populateButtonProperties(primary);
+  }
+
+  .btn.btn-success,
+  .btn-success .btn {
+    @include button-mixins.populateButtonProperties(success);
+  }
+
+  .btn.btn-warning,
+  .btn-warning .btn {
+    @include button-mixins.populateButtonProperties(warning);
+  }
+
+  .btn.btn-danger,
+  .btn-danger .btn {
+    @include button-mixins.populateButtonProperties(danger);
+  }
+
+  .btn.btn-neutral,
+  .btn-neutral .btn {
+    @include button-mixins.populateButtonProperties(neutral);
+  }
+
+  .btn.btn-outline,
+  .btn.btn-outline .btn,
+  .btn.btn-secondary-outline,
+  .btn.btn-outline-secondary,
+  .btn-secondary-outline .btn,
+  .btn-outline-secondary .btn,
+  .btn-outline .btn {
+    @include button-mixins.populateButtonProperties(default-outline);
+  }
+
+  .btn.btn-primary-outline,
+  .btn-outline-info .btn,
+  .btn-info-outline .btn,
+  .btn-primary-outline .btn,
+  .btn-outline-primary .btn,
+  .btn.btn-outline-primary,
+  .btn.btn-outline-info,
+  .btn.btn-info-outline,
+  .btn.btn-info-outline {
+    @include button-mixins.populateButtonProperties(primary-outline);
+  }
+
+  .btn.btn-success-outline,
+  .btn.btn-outline-success,
+  .btn-success-outline .btn,
+  .btn-outline-success .btn {
+    @include button-mixins.populateButtonProperties(success-outline);
+  }
+
+  .btn.btn-warning-outline,
+  .btn.btn-outline-warning,
+  .btn-warning-outline .btn,
+  .btn-outline-warning .btn {
+    @include button-mixins.populateButtonProperties(warning-outline);
+  }
+
+  .btn.btn-danger-outline,
+  .btn.btn-outline-danger,
+  .btn-danger-outline .btn,
+  .btn-outline-danger .btn {
+    @include button-mixins.populateButtonProperties(danger-outline);
+  }
+
+  .btn.btn-neutral-outline,
+  .btn.btn-outline-neutral,
+  .btn-neutral-outline .btn,
+  .btn-outline-neutral .btn {
+    @include button-mixins.populateButtonProperties(neutral-outline);
+  }
+
+  .btn.btn-link,
+  .btn-link .btn {
+    @include button-mixins.populateButtonProperties(link);
+
+    //To override the visited state of anchor links styled as buttons
+    &:visited {
+      @include button-mixins.button-css-var(link, color, visited-color);
+
+      cds-icon,
+      clr-icon {
+        @include button-mixins.button-css-var(link, color, visited-color);
+      }
+
+      &:hover {
+        @include button-mixins.button-css-var(link, color, visited-hover-color);
+
+        cds-icon,
+        clr-icon {
+          @include button-mixins.button-css-var(link, color, visited-hover-color);
+        }
+      }
+    }
+  }
+
+  .btn.btn-link-primary,
+  .btn-link-primary .btn {
+    @include button-mixins.populateButtonProperties(link-primary);
+  }
+
+  .btn.btn-link-success,
+  .btn-link-success .btn {
+    @include button-mixins.populateButtonProperties(link-success);
+  }
+
+  .btn.btn-link-warning,
+  .btn-link-warning .btn {
+    @include button-mixins.populateButtonProperties(link-warning);
+  }
+
+  .btn.btn-link-danger,
+  .btn-link-danger .btn {
+    @include button-mixins.populateButtonProperties(link-danger);
+  }
+
+  .btn.btn-link-neutral,
+  .btn-link-neutral .btn {
+    @include button-mixins.populateButtonProperties(link-neutral);
+  }
+
+  .btn.btn-inverse,
+  .btn-inverse .btn {
+    @include button-mixins.populateButtonProperties(inverse);
+  }
+
+  .btn.btn-sm,
+  .btn-sm .btn {
+    @include button-mixins.btn-sm-appearance();
+  }
+
+  .btn-block {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .btn {
+    margin: buttons-variables.$clr-btn-vertical-margin buttons-variables.$clr-btn-horizontal-margin
+      buttons-variables.$clr-btn-vertical-margin 0;
+
+    &.btn-link {
+      margin-right: 0;
+    }
+
+    &.btn-link.btn-inverse {
+      border-color: transparent;
+    }
+  }
+
+  //Small Icon Button
+  .btn-sm:not(.btn-link) {
+    cds-icon,
+    clr-icon {
+      &:not([size]) {
+        height: buttons-variables.$clr-btn-appearance-standard-icon-size;
+        width: buttons-variables.$clr-btn-appearance-standard-icon-size;
+      }
+    }
+  }
+
+  .btn-icon {
+    min-width: 0;
+  }
+
+  //Overflow
+  .btn-group {
+    &.btn-link .dropdown-toggle {
+      @include button-mixins.populateButtonProperties(link);
+    }
+
+    &.btn-sm .btn-group-overflow > .dropdown-toggle {
+      @include button-mixins.btn-sm-appearance();
+    }
+  }
+
+  //Checkboxes styled as Buttons
+  //Radio Buttons styled as Buttons
+  .checkbox.btn,
+  .checkbox-inline.btn,
+  .radio.btn,
+  .radio-inline.btn {
+    padding: 0;
+
+    label {
+      @include button-mixins.btn-appearance();
+
+      padding: 0 density.$clr-base-horizontal-offset-l;
+    }
+
+    &.disabled label,
+    &:disabled label {
+      cursor: not-allowed;
+    }
+  }
+
+  .checkbox.btn,
+  .checkbox-inline.btn {
+    input[type='checkbox'] + label::before,
+    input[type='checkbox'] + label::after {
+      content: none;
+    }
+  }
+
+  .radio.btn,
+  .radio-inline.btn {
+    input[type='radio'] + label::before,
+    input[type='radio'] + label::after {
+      content: none;
+    }
+  }
+
+  .checkbox.btn,
+  .checkbox-inline.btn {
+    @include button-mixins.btn-checked-styles();
+
+    label {
+      width: 100%;
+    }
+
+    &.btn-secondary,
+    &.btn-info,
+    &.btn-outline,
+    &.btn-primary-outline,
+    &.btn-secondary-outline,
+    &.btn-outline-primary,
+    &.btn-outline-secondary,
+    &.btn-info-outline,
+    &.btn-outline-info {
+      @include button-mixins.btn-checked-styles();
+    }
+
+    &.btn-primary {
+      @include button-mixins.btn-checked-styles(primary);
+    }
+
+    &.btn-success {
+      @include button-mixins.btn-checked-styles(success);
+    }
+
+    &.btn-warning {
+      @include button-mixins.btn-checked-styles(warning);
+    }
+
+    &.btn-danger {
+      @include button-mixins.btn-checked-styles(danger);
+    }
+
+    &.btn-success-outline,
+    &.btn-outline-success {
+      @include button-mixins.btn-checked-styles(outline-success);
+    }
+
+    &.btn-danger-outline,
+    &.btn-outline-danger {
+      @include button-mixins.btn-checked-styles(outline-danger);
+    }
+
+    &.btn-warning-outline,
+    &.btn-outline-warning {
+      @include button-mixins.btn-checked-styles(outline-warning);
+    }
+
+    &.btn-link {
+      @include button-mixins.btn-checked-styles(link);
+    }
+
+    &.btn-inverse {
+      @include button-mixins.btn-checked-styles(inverse);
+    }
+  }
+
+  .radio.btn,
+  .radio.btn {
+    @include button-mixins.btn-checked-styles(default, radio);
+
+    label {
+      width: 100%;
+    }
+
+    &.btn-secondary,
+    &.btn-info,
+    &.btn-outline,
+    &.btn-primary-outline,
+    &.btn-secondary-outline,
+    &.btn-outline-primary,
+    &.btn-outline-secondary,
+    &.btn-info-outline,
+    &.btn-outline-info {
+      @include button-mixins.btn-checked-styles(default, radio);
+    }
+
+    &.btn-primary {
+      @include button-mixins.btn-checked-styles(primary, radio);
+    }
+
+    &.btn-success {
+      @include button-mixins.btn-checked-styles(success, radio);
+    }
+
+    &.btn-warning {
+      @include button-mixins.btn-checked-styles(warning, radio);
+    }
+
+    &.btn-danger {
+      @include button-mixins.btn-checked-styles(danger, radio);
+    }
+
+    &.btn-success-outline,
+    &.btn-outline-success {
+      @include button-mixins.btn-checked-styles(success-outline, radio);
+    }
+
+    &.btn-warning-outline,
+    &.btn-outline-warning {
+      @include button-mixins.btn-checked-styles(warning-outline, radio);
+    }
+
+    &.btn-danger-outline,
+    &.btn-outline-danger {
+      @include button-mixins.btn-checked-styles(danger-outline, radio);
+    }
+
+    &.btn-link {
+      @include button-mixins.btn-checked-styles(link, radio);
+    }
+
+    &.btn-inverse {
+      @include button-mixins.btn-checked-styles(inverse, radio);
+    }
+  }
+}
