@@ -4,7 +4,7 @@
 
 ## Getting Started
 
-Clarity Angular is published as two npm packages:
+Clarity Angular is published as two npm packages.:
 
 - [![npm version ui](https://img.shields.io/npm/v/@clr/ui/latest?label=%40clr%2Fui&style=flat-square)](https://www.npmjs.com/package/@clr/ui) Contains the static
   styles for building HTML components.
