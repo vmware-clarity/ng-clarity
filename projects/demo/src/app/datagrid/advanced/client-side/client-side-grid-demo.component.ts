@@ -7,6 +7,7 @@
 
 import { Component } from '@angular/core';
 import {
+  ActionDefinition,
   AppfxDatagridModule,
   ClientSideExportConfig,
   ColumnDefinition,
@@ -29,6 +30,57 @@ export class ClientSideDatagridDemoComponent {
   selectedVms: VmItem[] = [];
   filteredVms: VmItem[];
   SelectionType = SelectionType;
+
+  actions = [
+    {
+      id: 'com.domain.a1',
+      label: 'Action 1',
+      enabled: true,
+      isVisible: true,
+    },
+    {
+      id: 'com.domain.a2',
+      label: 'Action 2',
+      enabled: true,
+      isVisible: true,
+    },
+    {
+      id: 'com.domain.a3',
+      label: 'Action 3',
+      enabled: true,
+      isVisible: true,
+    },
+    {
+      id: 'com.domain.a4',
+      label: 'Action 4',
+      enabled: true,
+      isVisible: true,
+    },
+    {
+      id: 'com.domain.a5',
+      label: 'Action 5',
+      enabled: true,
+      isVisible: true,
+    },
+    {
+      id: 'com.domain.a6',
+      label: 'Action 6',
+      enabled: true,
+      isVisible: true,
+    },
+    {
+      id: 'com.domain.a7',
+      label: 'Action 7',
+      enabled: true,
+      isVisible: true,
+    },
+    {
+      id: 'com.domain.a8',
+      label: 'Action 8',
+      enabled: true,
+      isVisible: true,
+    },
+  ];
 
   protected options: GridConfigDemoOptions = {
     totalItems: 100,
@@ -82,6 +134,10 @@ export class ClientSideDatagridDemoComponent {
   constructor(private inventory: Inventory) {
     this.reset();
     this.exportConfig = this.getExportProperties();
+  }
+
+  onActionClick(action: ActionDefinition): void {
+    console.log(action);
   }
 
   onSearchTermChange(searchTerm: string): void {
