@@ -82,6 +82,14 @@ export class EnumFilterComponent implements OnInit, OnChanges {
     return this.enumFilterForm?.controls.options as FormArray;
   }
 
+  trackByFilteredOption(_index: number, item: { data: EnumPropertyData; index: number }): number {
+    return item.index;
+  }
+
+  trackByOperator(_index: number, operator: ComparisonOperator): ComparisonOperator {
+    return operator;
+  }
+
   ngOnInit() {
     this.enumFilterForm = this.formBuilder.group({
       enumOperator: [this.additionalOperators ? ComparisonOperator.DoesNotEqual : ComparisonOperator.Equals],
