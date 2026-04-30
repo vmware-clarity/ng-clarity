@@ -17,6 +17,14 @@ module.exports = {
       '@amanda-mitchell/semantic-release-npm-multiple',
       {
         registries: {
+          angular: {
+            npmPublish: true,
+            pkgRoot: './dist/clr-angular',
+          },
+          ui: {
+            npmPublish: true,
+            pkgRoot: './dist/clr-ui',
+          },
           addons: {
             npmPublish: true,
             pkgRoot: './dist/clr-addons',
