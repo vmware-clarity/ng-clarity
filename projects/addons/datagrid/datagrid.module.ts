@@ -19,7 +19,6 @@ import { angleIcon, banIcon, ClarityIcons, ClrIcon, dragHandleIcon, plusIcon } f
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 import { ClrLoadingModule } from '@clr/angular/utils/loading';
 
-import { DatagridActionBarDropdownRepositionDirective } from './addons/action-bar/datagrid-action-bar-dropdown-reposition.directive';
 import { DatagridActionBarComponent } from './addons/action-bar/datagrid-action-bar.component';
 import { DatagridColumnsOrderModule } from './addons/column-ordering/datagrid-columns-order.module';
 import { DatagridColumnToggleComponent } from './addons/column-toggle/datagrid-column-toggle.component';
@@ -55,7 +54,6 @@ const exportedDirectives: Array<Type<any>> = [
   declarations: [
     ...exportedComponents,
     ...exportedDirectives,
-    DatagridActionBarDropdownRepositionDirective,
     DatagridCellContainerComponent,
     DatagridColumnToggleComponent,
     DatagridFilterContainerComponent,
