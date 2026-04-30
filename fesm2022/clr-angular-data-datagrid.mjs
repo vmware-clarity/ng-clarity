@@ -3436,6 +3436,11 @@ class Selection {
                     let newSingle;
                     let selectionUpdated = false;
                     updatedItems.forEach(item => {
+                        if (item === null || item === undefined) {
+                            // Virtual scroll may emit a dense array of undefined slot placeholders. Those must
+                            // never match the empty single-selection ref (see virtual-scroll + Single).
+                            return;
+                        }
                         const ref = _items.identifyBy(item);
                         // If one of the updated items is the previously selectedSingle, set it as the new one
                         if (this.currentSelectionRefs[0] === ref) {
@@ -3460,6 +3465,9 @@ class Selection {
                     //
                     // The both loops below that goes over updatedItems could be combined into one.
                     updatedItems.forEach(item => {
+                        if (item === null || item === undefined) {
+                            return;
+                        }
                         const ref = _items.identifyBy(item);
                         if (this.lockedRefs.indexOf(ref) > -1) {
                             updateLockedRef.push(ref);
@@ -3470,6 +3478,9 @@ class Selection {
                     // the if statement below results in broken behavior.
                     if (leftOver.length > 0) {
                         updatedItems.forEach(item => {
+                            if (item === null || item === undefined) {
+                                return;
+                            }
                             const ref = _items.identifyBy(item);
                             // Look in current selected refs array if item is selected, and update actual value
                             const selectedIndex = this.currentSelectionRefs.indexOf(ref);
@@ -3840,6 +3851,13 @@ class ClrDatagridSingleSelectionValueAccessor {
         return value;
     }
     updateChecked() {
+        // Never mark the radio as checked when there is no real selection (state is null/undefined)
+        // or the row item itself is a virtual-scroll placeholder slot (value is null/undefined).
+        // Otherwise keyOf(undefined) === keyOf(undefined) would falsely check the radio.
+        if (this.state === null || this.state === undefined || this.value === null || this.value === undefined) {
+            this.renderer.setProperty(this.elementRef.nativeElement, 'checked', false);
+            return;
+        }
         const state = this.keyOf(this.state);
         const value = this.keyOf(this.value);
         this.renderer.setProperty(this.elementRef.nativeElement, 'checked', state === value);
