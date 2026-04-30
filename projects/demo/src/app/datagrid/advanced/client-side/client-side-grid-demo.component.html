@@ -27,6 +27,7 @@
 
 @if (!resetting) {
   <appfx-datagrid
+    [actionBarActions]="actions"
     [gridItems]="filteredVms"
     [selectedItems]="selectedVms"
     [columns]="columns"
