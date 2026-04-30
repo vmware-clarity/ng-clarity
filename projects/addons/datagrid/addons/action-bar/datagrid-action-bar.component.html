@@ -59,7 +59,7 @@
         <cds-icon shape="ellipsis-horizontal"></cds-icon>
       </button>
       <ng-template [(clrIfOpen)]="isDropdownOpened">
-        <clr-dropdown-menu clrPosition="bottom-right" dropdownMenuReposition>
+        <clr-dropdown-menu clrPosition="bottom-right">
           @for (action of getDropdownActions(); track action) {
             <!-- Action has children - show a nested dropdown -->
             @if (action.children) {
