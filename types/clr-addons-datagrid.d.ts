@@ -2,26 +2,26 @@ import * as rxjs from 'rxjs';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import * as i0 from '@angular/core';
 import { OnInit, OnChanges, AfterViewInit, OnDestroy, QueryList, ElementRef, EventEmitter, ChangeDetectorRef, SimpleChanges, Type, InjectionToken, Renderer2, TrackByFunction, TemplateRef, ViewContainerRef, PipeTransform, ModuleWithProviders } from '@angular/core';
-import * as i14 from '@clr/addons/a11y';
+import * as i13 from '@clr/addons/a11y';
 import { ElementResizeService, ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { ListRange } from '@angular/cdk/collections';
 import * as i5 from '@angular/cdk/drag-drop';
 import { CdkDropList, CdkDrag } from '@angular/cdk/drag-drop';
-import * as i15 from '@clr/addons/datagrid-filters';
+import * as i14 from '@clr/addons/datagrid-filters';
 import { FilterablePropertyDefinition, FilterMode, PropertyFilter } from '@clr/addons/datagrid-filters';
 import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
 import * as i3 from '@clr/angular/data/datagrid';
 import { ClrDatagridFilterInterface, ClrDatagridStringFilterInterface, ClrDatagridComparatorInterface, ClrDatagridSortOrder, SelectionType, ClrDatagridPagination, ClrDatagridVirtualScrollRangeInterface, ClrDatagridStateInterface, ClrDatagridFilter, ClrDatagrid } from '@clr/angular/data/datagrid';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import * as i18 from '@angular/cdk/overlay';
+import * as i17 from '@angular/cdk/overlay';
 import { ConnectionPositionPair, CdkConnectedOverlay } from '@angular/cdk/overlay';
-import * as i16 from '@angular/cdk/a11y';
-import * as i19 from '@clr/angular/forms';
-import * as i21 from '@clr/angular/popover/dropdown';
-import * as i22 from '@clr/angular/icon';
-import * as i23 from '@clr/angular/utils/loading';
+import * as i15 from '@angular/cdk/a11y';
+import * as i18 from '@clr/angular/forms';
+import * as i20 from '@clr/angular/popover/dropdown';
+import * as i21 from '@clr/angular/icon';
+import * as i22 from '@clr/angular/utils/loading';
 import * as i4 from '@angular/common';
-import * as i26 from '@angular/forms';
+import * as i25 from '@angular/forms';
 
 /**
  * Expose most common datagrid actionbar layout styles.
@@ -1262,15 +1262,6 @@ declare class DatagridFilterComponent implements ClrDatagridFilterInterface<any>
     static ɵcmp: i0.ɵɵComponentDeclaration<DatagridFilterComponent, "appfx-datagrid-filter", never, { "filterValue": { "alias": "filterValue"; "required": false; }; "stringFilterType": { "alias": "stringFilterType"; "required": false; }; "fieldName": { "alias": "fieldName"; "required": false; }; }, { "filterValueChange": "filterValueChange"; }, never, never, false, never>;
 }
 
-declare class DatagridActionBarDropdownRepositionDirective implements AfterViewInit {
-    private elementRef;
-    private readonly menuMinTranslateX;
-    constructor(elementRef: ElementRef);
-    ngAfterViewInit(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridActionBarDropdownRepositionDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridActionBarDropdownRepositionDirective, "[dropdownMenuReposition]", never, {}, {}, never, never, false, never>;
-}
-
 declare class DatagridCellContainerComponent implements OnInit, OnDestroy, OnChanges {
     container: ViewContainerRef;
     column: ColumnDefinition<any>;
@@ -1472,7 +1463,7 @@ declare class AppfxDatagridModule {
     constructor();
     static forRoot(errorNotifiableService: Type<ErrorNotifiable>): ModuleWithProviders<AppfxDatagridModule>;
     static ɵfac: i0.ɵɵFactoryDeclaration<AppfxDatagridModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective, typeof DatagridActionBarDropdownRepositionDirective, typeof DatagridCellContainerComponent, typeof DatagridColumnToggleComponent, typeof DatagridFilterContainerComponent, typeof ExportDatagridComponent, typeof IsRowSelectablePipe], [typeof i14.AppfxA11yModule, typeof i15.AppfxDatagridFiltersModule, typeof i16.A11yModule, typeof i5.DragDropModule, typeof i18.OverlayModule, typeof i19.ClrCheckboxModule, typeof i3.ClrDatagridModule, typeof i21.ClrDropdownModule, typeof i22.ClrIcon, typeof i19.ClrInputModule, typeof i23.ClrLoadingModule, typeof i4.CommonModule, typeof DatagridColumnsOrderModule, typeof i26.FormsModule], [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective, typeof DatagridCellContainerComponent, typeof DatagridColumnToggleComponent, typeof DatagridFilterContainerComponent, typeof ExportDatagridComponent, typeof IsRowSelectablePipe], [typeof i13.AppfxA11yModule, typeof i14.AppfxDatagridFiltersModule, typeof i15.A11yModule, typeof i5.DragDropModule, typeof i17.OverlayModule, typeof i18.ClrCheckboxModule, typeof i3.ClrDatagridModule, typeof i20.ClrDropdownModule, typeof i21.ClrIcon, typeof i18.ClrInputModule, typeof i22.ClrLoadingModule, typeof i4.CommonModule, typeof DatagridColumnsOrderModule, typeof i25.FormsModule], [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<AppfxDatagridModule>;
 }
 
