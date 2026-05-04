@@ -62,6 +62,13 @@ export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAcce
   }
 
   private updateChecked(): void {
+    // Never mark the radio as checked when there is no real selection (state is null/undefined)
+    // or the row item itself is a virtual-scroll placeholder slot (value is null/undefined).
+    // Otherwise keyOf(undefined) === keyOf(undefined) would falsely check the radio.
+    if (this.state === null || this.state === undefined || this.value === null || this.value === undefined) {
+      this.renderer.setProperty(this.elementRef.nativeElement, 'checked', false);
+      return;
+    }
     const state = this.keyOf(this.state);
     const value = this.keyOf(this.value);
     this.renderer.setProperty(this.elementRef.nativeElement, 'checked', state === value);
