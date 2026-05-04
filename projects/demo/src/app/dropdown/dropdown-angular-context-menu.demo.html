@@ -5,11 +5,11 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 <div class="clr-example">
+  <div class="context-menu-area" (contextmenu)="onContextMenu($event)">
+    <span>Right-click here to open context menu</span>
+  </div>
   <clr-dropdown #contextDropdown>
-    <div class="context-menu-area" (contextmenu)="onContextMenu($event)">
-      <span>Right-click here to open context menu</span>
-    </div>
-    <clr-dropdown-menu>
+    <clr-dropdown-menu style="height: 150px">
       <button type="button" clrDropdownItem>Cut</button>
       <button type="button" clrDropdownItem>Copy</button>
       <button type="button" clrDropdownItem>Paste</button>

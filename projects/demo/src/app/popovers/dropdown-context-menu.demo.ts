@@ -53,6 +53,6 @@ export class DropdownContextMenuDemo {
 
   onContextMenu(event: MouseEvent) {
     event.preventDefault();
-    this.dropdown.openAtPoint({ x: event.clientX, y: event.clientY });
+    this.dropdown.openAtPoint({ x: event.clientX, y: event.clientY }, event.target as HTMLElement);
   }
 }

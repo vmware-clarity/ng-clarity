@@ -55,7 +55,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
   private _availablePositions: ConnectedPosition[] = [];
   private _position = ClrPopoverPosition.BOTTOM_LEFT;
-  private scrollableParents: (HTMLDocument | HTMLElement)[] = [];
 
   private subscriptions: Subscription[] = [];
   private openCloseSubscription: Subscription;
@@ -376,6 +375,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     const overflowScrollKeys = ['auto', 'scroll', 'clip'];
     const scrollableParents: (HTMLDocument | HTMLElement)[] = [window.document];
 
+    console.log(node);
+
     while (parent && !(parent instanceof HTMLHtmlElement)) {
       if (parent instanceof ShadowRoot) {
         parent = parent.host as HTMLElement;
@@ -422,27 +423,15 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    if (this.popoverService.originPoint) {
-      this.listenToScrollForPointOrigin();
-    } else {
-      this.listenToScrollForElementOrigin();
-    }
-  }
+    const originEl = this.popoverService.originPoint
+      ? this.popoverService.pointTargetElement
+      : this.getRootPopover(this)?.popoverService?.originElement?.nativeElement;
 
-  // Point origins have no scrollable parent chain — close on any scroll.
-  private listenToScrollForPointOrigin() {
-    this.zone.runOutsideAngular(() => {
-      this.subscriptions.push(
-        fromEvent(window, 'scroll', { passive: true, capture: true }).subscribe(() => {
-          this.zone.run(() => this.closePopover());
-        })
-      );
-    });
+    this.listenToScrollForElementOrigin(originEl);
   }
 
   // Element origins track ancestor scroll containers to reposition or close.
-  private listenToScrollForElementOrigin() {
-    const originEl = this.getRootPopover(this)?.popoverService?.originElement?.nativeElement;
+  private listenToScrollForElementOrigin(originEl: HTMLElement) {
     const scrollableParents = this.getScrollableParents(originEl);
 
     this.zone.runOutsideAngular(() => {

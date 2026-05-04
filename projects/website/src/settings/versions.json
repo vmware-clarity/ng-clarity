@@ -7,25 +7,5 @@
     "label": "v18 (latest)",
     "url": "https://clarity.design",
     "latest": true
-  },
-  {
-    "label": "v17",
-    "url": "https://v17.clarity.design"
-  },
-  {
-    "label": "v16",
-    "url": "https://v16.clarity.design"
-  },
-  {
-    "label": "v15",
-    "url": "https://v15.clarity.design"
-  },
-  {
-    "label": "v13",
-    "url": "https://v13.clarity.design"
-  },
-  {
-    "label": "v12",
-    "url": "https://v12.clarity.design"
   }
 ]
