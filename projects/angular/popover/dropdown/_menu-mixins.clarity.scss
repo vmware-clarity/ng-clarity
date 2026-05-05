@@ -43,7 +43,7 @@
     )
   );
 
-  min-height: 24px;
+  min-height: density.$clr-base-row-height-s;
   color: dropdown-variables.$clr-dropdown-item-color;
   background-color: dropdown-variables.$clr-dropdown-item-bg-color;
   border: 0;

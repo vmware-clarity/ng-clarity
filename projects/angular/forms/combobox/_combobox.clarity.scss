@@ -235,7 +235,7 @@
     max-height: mixins.baselinePx(240);
     visibility: visible;
 
-    &-multi {
+    &-multi:has(> .clr-combobox-select-all) {
       padding-top: 0;
     }
 

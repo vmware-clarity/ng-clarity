@@ -90,7 +90,7 @@
     @include menu-mixins.generate-dropdown-menu();
 
     .dropdown-header {
-      min-height: 24px;
+      min-height: density.$clr-base-row-height-s;
       @include menu-mixins.generate-dropdown-header();
 
       & ~ .dropdown-item,
