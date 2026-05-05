@@ -42,7 +42,10 @@ export class PopoverContextMenuComponent {
     event.preventDefault();
     this.clickX = event.clientX;
     this.clickY = event.clientY;
-    this.popoverService.openAtPoint({ x: event.clientX, y: event.clientY });
+    this.popoverService.openAtPoint(
+      { x: event.clientX, y: event.clientY },
+      event.target as HTMLElement
+    );
   }
 }
 `;
@@ -82,6 +85,6 @@ export class PopoverContextMenuDemo {
     event.preventDefault();
     this.clickX = event.clientX;
     this.clickY = event.clientY;
-    this.popoverService.openAtPoint({ x: event.clientX, y: event.clientY });
+    this.popoverService.openAtPoint({ x: event.clientX, y: event.clientY }, event.target as HTMLElement);
   }
 }

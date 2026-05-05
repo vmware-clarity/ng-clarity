@@ -19,6 +19,7 @@ export interface ClrPopoverPoint {
 
 @Injectable()
 export class ClrPopoverService {
+  pointTargetElement: HTMLElement | undefined;
   origin: FlexibleConnectedPositionStrategyOrigin;
   closeButtonRef: ElementRef;
   panelClass: string[] = [];
@@ -102,13 +103,14 @@ export class ClrPopoverService {
    * Opens the popover at a specific screen coordinate.
    * Useful for context menus where the popover should appear at the cursor position.
    */
-  openAtPoint(point: ClrPopoverPoint) {
+  openAtPoint(point: ClrPopoverPoint, targetElement?: HTMLElement) {
     if (this._open) {
       this._open = false;
       this._openChange.next(false);
     }
 
     this.origin = point;
+    this.pointTargetElement = targetElement;
     this.open = true;
   }
 
