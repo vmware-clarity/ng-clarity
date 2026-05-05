@@ -76,7 +76,7 @@ declare class ClrSignpost {
      */
     set customTrigger(trigger: ClrSignpostTrigger);
     get showDefaultTrigger(): boolean;
-    openAtPoint(point: ClrPopoverPoint): void;
+    openAtPoint(point: ClrPopoverPoint, targetElement: HTMLElement): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpost, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; "hideTrigger": { "alias": "clrSignpostHideTrigger"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i8.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }

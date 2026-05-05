@@ -77,12 +77,13 @@ class ClrPopoverService {
      * Opens the popover at a specific screen coordinate.
      * Useful for context menus where the popover should appear at the cursor position.
      */
-    openAtPoint(point) {
+    openAtPoint(point, targetElement) {
         if (this._open) {
             this._open = false;
             this._openChange.next(false);
         }
         this.origin = point;
+        this.pointTargetElement = targetElement;
         this.open = true;
     }
     popoverVisibleEmit(visible) {
@@ -439,7 +440,6 @@ class ClrPopoverContent {
         this.popoverType = ClrPopoverType.DEFAULT;
         this._availablePositions = [];
         this._position = ClrPopoverPosition.BOTTOM_LEFT;
-        this.scrollableParents = [];
         this.subscriptions = [];
         this.preferredPositionIsSet = false;
         this.availablePositionsAreSet = false;
@@ -680,6 +680,7 @@ class ClrPopoverContent {
         let parent = node;
         const overflowScrollKeys = ['auto', 'scroll', 'clip'];
         const scrollableParents = [window.document];
+        console.log(node);
         while (parent && !(parent instanceof HTMLHtmlElement)) {
             if (parent instanceof ShadowRoot) {
                 parent = parent.host;
@@ -714,24 +715,13 @@ class ClrPopoverContent {
         if (!isPlatformBrowser(this.platformId)) {
             return;
         }
-        if (this.popoverService.originPoint) {
-            this.listenToScrollForPointOrigin();
-        }
-        else {
-            this.listenToScrollForElementOrigin();
-        }
-    }
-    // Point origins have no scrollable parent chain — close on any scroll.
-    listenToScrollForPointOrigin() {
-        this.zone.runOutsideAngular(() => {
-            this.subscriptions.push(fromEvent(window, 'scroll', { passive: true, capture: true }).subscribe(() => {
-                this.zone.run(() => this.closePopover());
-            }));
-        });
+        const originEl = this.popoverService.originPoint
+            ? this.popoverService.pointTargetElement
+            : this.getRootPopover(this)?.popoverService?.originElement?.nativeElement;
+        this.listenToScrollForElementOrigin(originEl);
     }
     // Element origins track ancestor scroll containers to reposition or close.
-    listenToScrollForElementOrigin() {
-        const originEl = this.getRootPopover(this)?.popoverService?.originElement?.nativeElement;
+    listenToScrollForElementOrigin(originEl) {
         const scrollableParents = this.getScrollableParents(originEl);
         this.zone.runOutsideAngular(() => {
             this.subscriptions.push(merge(...scrollableParents.map(parent => fromEvent(parent, 'scroll', { passive: true }))).subscribe(() => {

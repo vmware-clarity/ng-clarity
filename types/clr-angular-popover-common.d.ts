@@ -40,6 +40,7 @@ interface ClrPopoverPoint {
     y: number;
 }
 declare class ClrPopoverService {
+    pointTargetElement: HTMLElement | undefined;
     origin: FlexibleConnectedPositionStrategyOrigin;
     closeButtonRef: ElementRef;
     panelClass: string[];
@@ -73,7 +74,7 @@ declare class ClrPopoverService {
      * Opens the popover at a specific screen coordinate.
      * Useful for context menus where the popover should appear at the cursor position.
      */
-    openAtPoint(point: ClrPopoverPoint): void;
+    openAtPoint(point: ClrPopoverPoint, targetElement?: HTMLElement): void;
     popoverVisibleEmit(visible: boolean): void;
     resetPositions(): void;
     updatePosition(): void;
@@ -100,7 +101,6 @@ declare class ClrPopoverContent implements OnDestroy, AfterViewInit {
     private popoverType;
     private _availablePositions;
     private _position;
-    private scrollableParents;
     private subscriptions;
     private openCloseSubscription;
     private domPortal;
@@ -145,7 +145,6 @@ declare class ClrPopoverContent implements OnDestroy, AfterViewInit {
      */
     private setupIntersectionObserver;
     private listenToScrollEvents;
-    private listenToScrollForPointOrigin;
     private listenToScrollForElementOrigin;
     private getRootPopover;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPopoverContent, [null, null, { optional: true; }, null, { optional: true; skipSelf: true; }, null, null, null, null]>;
