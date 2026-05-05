@@ -184,8 +184,8 @@ class ClrDropdown {
         this.subscriptions.push(dropdownService.changes.subscribe(value => (popoverService.open = value)));
         this.subscriptions.push(popoverService.openChange.subscribe(() => cdr.markForCheck()));
     }
-    openAtPoint(point) {
-        this.popoverService.openAtPoint(point);
+    openAtPoint(point, targetElement) {
+        this.popoverService.openAtPoint(point, targetElement);
     }
     ngOnDestroy() {
         this.subscriptions.forEach(sub => sub.unsubscribe());
