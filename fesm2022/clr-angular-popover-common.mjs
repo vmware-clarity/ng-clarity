@@ -680,7 +680,6 @@ class ClrPopoverContent {
         let parent = node;
         const overflowScrollKeys = ['auto', 'scroll', 'clip'];
         const scrollableParents = [window.document];
-        console.log(node);
         while (parent && !(parent instanceof HTMLHtmlElement)) {
             if (parent instanceof ShadowRoot) {
                 parent = parent.host;
