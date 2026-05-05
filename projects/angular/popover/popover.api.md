@@ -74,7 +74,7 @@ export class ClrDropdown implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    openAtPoint(point: ClrPopoverPoint, targetElement: HTMLElement): void;
+    openAtPoint(point: ClrPopoverPoint, targetElement?: HTMLElement): void;
     // (undocumented)
     parent: ClrDropdown;
     // (undocumented)
@@ -380,7 +380,7 @@ export class ClrSignpost {
     set customTrigger(trigger: ClrSignpostTrigger);
     hideTrigger: boolean;
     // (undocumented)
-    openAtPoint(point: ClrPopoverPoint, targetElement: HTMLElement): void;
+    openAtPoint(point: ClrPopoverPoint, targetElement?: HTMLElement): void;
     // (undocumented)
     get showDefaultTrigger(): boolean;
     // (undocumented)
