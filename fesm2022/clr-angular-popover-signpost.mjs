@@ -186,8 +186,8 @@ class ClrSignpost {
     get showDefaultTrigger() {
         return !this.useCustomTrigger && !this.hideTrigger;
     }
-    openAtPoint(point) {
-        this.popoverService.openAtPoint(point);
+    openAtPoint(point, targetElement) {
+        this.popoverService.openAtPoint(point, targetElement);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrSignpost, deps: [{ token: i1.ClrCommonStringsService }, { token: i4.ClrPopoverService }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrSignpost, isStandalone: false, selector: "clr-signpost", inputs: { signpostTriggerAriaLabel: ["clrSignpostTriggerAriaLabel", "signpostTriggerAriaLabel"], hideTrigger: ["clrSignpostHideTrigger", "hideTrigger"] }, host: { properties: { "class.signpost": "true" } }, providers: [SignpostFocusManager, SignpostIdService], queries: [{ propertyName: "customTrigger", first: true, predicate: ClrSignpostTrigger, descendants: true }], hostDirectives: [{ directive: i4.ClrPopoverHostDirective }], ngImport: i0, template: `
