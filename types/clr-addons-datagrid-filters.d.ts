@@ -671,6 +671,11 @@ declare class EnumFilterComponent implements OnInit, OnChanges {
     constructor(formBuilder: FormBuilder, filterStrings: DatagridFiltersStrings, cdr: ChangeDetectorRef);
     get additionalOperators(): boolean;
     get optionsFormArray(): FormArray;
+    trackByFilteredOption(_index: number, item: {
+        data: EnumPropertyData;
+        index: number;
+    }): number;
+    trackByOperator(_index: number, operator: ComparisonOperator): ComparisonOperator;
     ngOnInit(): void;
     ngOnChanges(): void;
     loadMore(): void;
@@ -866,6 +871,8 @@ declare class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
     constructor(fb: FormBuilder, cdr: ChangeDetectorRef, filterStrings: DatagridFiltersStrings, userService: DatagridFiltersUserService);
     get optionsFormArray(): FormArray;
     get hasMoreItems(): boolean;
+    trackByOperator(_index: number, operator: ComparisonOperator): ComparisonOperator;
+    trackByDomain(_index: number, domain: string): string;
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;

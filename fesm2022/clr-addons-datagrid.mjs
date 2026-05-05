@@ -2876,52 +2876,6 @@ class SimpleNumericComparator {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-/**
- * A directive that fixes position of the clarity dropdown menu opened
- * when actions in appfx-datagrid-action-bar are collapsed and opened in a
- * menu. Since the dropdown trigger button could be center or left aligned -
- * depending on the available horizontal space and length of the action
- * names that are collapsed, sometimes the menu could go out of left
- * boundaries of its parent container. To prevent this the directive ensures
- * the dropdown menu does not get a negative `translateX` property for the
- * `transform` style.
- *
- * The directive requires ongoing maintenance and support as this peers deep in the Clarity tab internals
- */
-class DatagridActionBarDropdownRepositionDirective {
-    constructor(elementRef) {
-        this.elementRef = elementRef;
-        // minimal `translateX` property of transform style of the dropdown menu
-        // that ensures the dropdown menu is not opened out of left boundaries of
-        // its parent container
-        this.menuMinTranslateX = 10;
-    }
-    ngAfterViewInit() {
-        const computedStyle = getComputedStyle(this.elementRef.nativeElement);
-        const matrix = new DOMMatrix(computedStyle.transform);
-        const originalTranslateX = matrix.m41;
-        const translateY = matrix.m42;
-        const newTranslateX = Math.max(this.menuMinTranslateX, originalTranslateX);
-        // override default `translateX` property
-        this.elementRef.nativeElement.style.transform = `translateX(${newTranslateX}px) translateY(${translateY}px)`;
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridActionBarDropdownRepositionDirective, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: DatagridActionBarDropdownRepositionDirective, isStandalone: false, selector: "[dropdownMenuReposition]", ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridActionBarDropdownRepositionDirective, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: '[dropdownMenuReposition]',
-                    standalone: false,
-                }]
-        }], ctorParameters: () => [{ type: i0.ElementRef }] });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 class DatagridColumnsOrderModule {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridColumnsOrderModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: DatagridColumnsOrderModule, declarations: [ColumnOrderDirective, DatagridColumnsOrderDirective], imports: [ClrDatagridModule, CommonModule, DragDropModule], exports: [ColumnOrderDirective, DatagridColumnsOrderDirective] }); }
@@ -2966,8 +2920,7 @@ class AppfxDatagridModule {
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: AppfxDatagridModule, declarations: [DatagridComponent, DatagridActionBarComponent, DatagridFilterComponent, DatagridPageDirective,
             DatagridPersistSettingsDirective,
             DatagridPreserveSelectionDirective,
-            DatagridContentNoWrapDirective, DatagridActionBarDropdownRepositionDirective,
-            DatagridCellContainerComponent,
+            DatagridContentNoWrapDirective, DatagridCellContainerComponent,
             DatagridColumnToggleComponent,
             DatagridFilterContainerComponent,
             ExportDatagridComponent,
@@ -3018,7 +2971,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     declarations: [
                         ...exportedComponents,
                         ...exportedDirectives,
-                        DatagridActionBarDropdownRepositionDirective,
                         DatagridCellContainerComponent,
                         DatagridColumnToggleComponent,
                         DatagridFilterContainerComponent,
