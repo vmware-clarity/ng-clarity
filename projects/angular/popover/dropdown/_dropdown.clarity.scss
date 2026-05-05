@@ -90,7 +90,6 @@
     @include menu-mixins.generate-dropdown-menu();
 
     .dropdown-header {
-      min-height: density.$clr-base-row-height-s;
       @include menu-mixins.generate-dropdown-header();
 
       & ~ .dropdown-item,
@@ -312,5 +311,12 @@
   .clr-popover-content > .dropdown-menu {
     visibility: visible;
     position: static;
+    overflow-y: auto;
+
+    .dropdown-header,
+    .dropdown-item,
+    .dropdown > .dropdown-item {
+      min-height: density.$clr-base-row-height-s;
+    }
   }
 }
