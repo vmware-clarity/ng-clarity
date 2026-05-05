@@ -81,7 +81,7 @@ export class ClrSignpost {
     return !this.useCustomTrigger && !this.hideTrigger;
   }
 
-  openAtPoint(point: ClrPopoverPoint, targetElement: HTMLElement) {
+  openAtPoint(point: ClrPopoverPoint, targetElement?: HTMLElement) {
     this.popoverService.openAtPoint(point, targetElement);
   }
 }

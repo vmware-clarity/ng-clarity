@@ -375,8 +375,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     const overflowScrollKeys = ['auto', 'scroll', 'clip'];
     const scrollableParents: (HTMLDocument | HTMLElement)[] = [window.document];
 
-    console.log(node);
-
     while (parent && !(parent instanceof HTMLHtmlElement)) {
       if (parent instanceof ShadowRoot) {
         parent = parent.host as HTMLElement;

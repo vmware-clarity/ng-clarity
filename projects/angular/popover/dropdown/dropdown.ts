@@ -41,7 +41,7 @@ export class ClrDropdown implements OnDestroy {
     this.subscriptions.push(popoverService.openChange.subscribe(() => cdr.markForCheck()));
   }
 
-  openAtPoint(point: ClrPopoverPoint, targetElement: HTMLElement) {
+  openAtPoint(point: ClrPopoverPoint, targetElement?: HTMLElement) {
     this.popoverService.openAtPoint(point, targetElement);
   }
 
