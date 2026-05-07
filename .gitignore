@@ -60,3 +60,6 @@ projects/website/src/assets/clarity-icons.zip
 
 #Storybook
 debug-storybook.log
+
+# Generated PR description
+PR_DESCRIPTION.md
