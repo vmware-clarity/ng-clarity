@@ -10,21 +10,25 @@ upgrades to Angular 21, adds secondary entrypoints for all modules, and decouple
 
 Detailed release notes and changelogs for each v18 prerelease tag on GitHub:
 
-| Tag                                                                                                     | Published                                                                                         |
-| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| [v18.0.0-beta.1](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.1) (2026-02-26) | Initial v18 prerelease                                                                            |
-| [v18.0.0-beta.2](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.2) (2026-03-13) | Popover anchor → origin rename, wizard / IE / forms breaking changes                              |
-| [v18.0.0-beta.3](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.3) (2026-03-26) | `Ç` export prefix removal                                                                         |
-| [v18.0.0-beta.4](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.4) (2026-04-01) | Schematics, combobox, datagrid filters, wizard CSS class renames, deprecated token removal        |
-| [v18.0.0-beta.5](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.5) (2026-04-02) | Schematics migration reliability fixes                                                            |
-| [v18.0.0-beta.6](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.6) (2026-04-07) | Public API exports (tree models, datagrid selection, persist settings), schematics/tsconfig fixes |
-| [v18.0.0-beta.7](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.7) (2026-04-08) | Combobox select-all observer fix; appfx datagrid `loadingMoreItems` proxy                         |
-
-When **v18.0.0** (GA) is published, its tag will appear on the same [releases](https://github.com/vmware-clarity/ng-clarity/releases) page—use that tag for the final GA notes.
+| Tag                                                                                                       | Published                                                                                                                                                                |
+| --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [v18.0.0-beta.1](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.1) (2026-02-26)   | Initial v18 prerelease                                                                                                                                                   |
+| [v18.0.0-beta.2](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.2) (2026-03-13)   | Popover anchor → origin rename, wizard / IE / forms breaking changes                                                                                                     |
+| [v18.0.0-beta.3](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.3) (2026-03-26)   | `Ç` export prefix removal                                                                                                                                                |
+| [v18.0.0-beta.4](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.4) (2026-04-01)   | Schematics, combobox, datagrid filters, wizard CSS class renames, deprecated token removal                                                                               |
+| [v18.0.0-beta.5](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.5) (2026-04-02)   | Schematics migration reliability fixes                                                                                                                                   |
+| [v18.0.0-beta.6](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.6) (2026-04-07)   | Public API exports (tree models, datagrid selection, persist settings), schematics/tsconfig fixes                                                                        |
+| [v18.0.0-beta.7](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.7) (2026-04-08)   | Combobox select-all observer fix; appfx datagrid `loadingMoreItems` proxy                                                                                                |
+| [v18.0.0-beta.8](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.8) (2026-04-17)   | File-input reactive disable/enable restore; appfx datagrid `showFooter`/`missingPageConfig` fix; schematics datagrid migration (`migrate-v18`)                           |
+| [v18.0.0-beta.9](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.9) (2026-04-21)   | Appfx datagrid action bar appearance fix; expose `toggleAll()` on appfx datagrid                                                                                         |
+| [v18.0.0-beta.10](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.10) (2026-04-24) | Appfx datagrid detail pane appearance fix; peer dependencies relaxed to `>= 21.1.0`                                                                                      |
+| [v18.0.0-beta.11](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.11) (2026-04-30) | Appfx datagrid filters appearance, selection fix, `dropdownMenuReposition` directive removal                                                                             |
+| [v18.0.0-beta.12](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0-beta.12) (2026-05-05) | Popover: add trigger element to `openAtPoint` method                                                                                                                     |
+| [v18.0.0](https://github.com/vmware-clarity/ng-clarity/releases/tag/v18.0.0) (2026-05-11)                 | **GA release** — cumulative fixes across datagrid (selection, virtual scroll, filters, pagination), popovers, combobox, badge, button-group, forms, and appfx components |
 
 ### Migration tooling
 
-After aligning package versions, run `ng update @clr/angular`. Migration schematics landed in **beta.4** (imports, symbol renames, templates, many CSS custom properties) and were refined in **beta.5**. Items that still need manual follow-up include wizard `modal-*` → `clr-wizard-*` selectors, addons datagrid filter API changes, and any custom logic not covered by static transforms—compare with the beta.4 release notes.
+After aligning package versions, run `ng update @clr/angular`. Migration schematics landed in **beta.4** (imports, symbol renames, templates, many CSS custom properties), were refined in **beta.5**, and gained a dedicated datagrid migration (`migrate-v18` schematic) in **beta.8**. Items that still need manual follow-up include wizard `modal-*` → `clr-wizard-*` selectors, addons datagrid filter API changes, and any custom logic not covered by static transforms—compare with the individual release notes linked in the table above.
 
 ## Angular Support
 
