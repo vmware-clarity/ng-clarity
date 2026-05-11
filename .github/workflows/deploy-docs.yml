@@ -1,0 +1,42 @@
+name: Deploy Docs
+on:
+  workflow_dispatch:
+jobs:
+  deploy-docs:
+    name: Deploy Docs
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts
+      - name: Build
+        run: npm run build
+      - name: Deploy Docs
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
+        run: |
+          cp netlify-storybook.toml netlify.toml
+          npx netlify-cli@23.6.0 deploy --no-build --dir dist/docs --site ${{secrets.NETLIFY_SITE_NAME}} $([[ $GITHUB_REF_NAME == "main" ]] && echo "--prod")
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: Generate Website Sitemap
+        run: node ./projects/website/scripts/generate-sitemap.js
+      - name: Deploy Website
+        continue-on-error: true
+        if: ${{ hashFiles('dist/website/index.html') != '' }}
+        timeout-minutes: 5
+        env:
+          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
+        run: |
+          cp netlify-website.toml netlify.toml
+          npx netlify-cli@23.6.0 deploy --no-build --dir dist/website \
+            --site ${{secrets.NETLIFY_WEBSITE_SITE_NAME}} \
+            $([[ $GITHUB_REF_NAME == "main" ]] && echo "--prod" || echo "--alias v${GITHUB_REF_NAME%%.*}")
