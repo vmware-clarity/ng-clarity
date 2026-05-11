@@ -1072,14 +1072,16 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   protected trackByFn(index: number, gridItem: T): T {
     const trackByGridItemPropertySeparator = '.'; // rethink constant when properties have "."
     if (this.trackByGridItemProperty) {
-      let parseValid = false;
+      let parseValid = true;
       const observedPropertyValue = this.trackByGridItemProperty
         .split(trackByGridItemPropertySeparator)
-
-        .reduce(
-          (o, i) => (parseValid = Object.prototype.hasOwnProperty.call(o as object, i)) && (o as any)[i],
-          gridItem
-        );
+        .reduce((o: any, i: string) => {
+          if (o !== null && o !== undefined && typeof o === 'object' && i in o) {
+            return o[i];
+          }
+          parseValid = false;
+          return undefined;
+        }, gridItem);
 
       if (parseValid) {
         return observedPropertyValue;
@@ -1111,13 +1113,11 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
   private preselectDetail(): void {
     const isDetailEnabled: boolean = !!this.detailHeader || !!this.detailBody;
-    if (isDetailEnabled && this.detailState && this.trackByGridItemProperty) {
+    if (isDetailEnabled && this.detailState && (this.trackByGridItemProperty || this.trackByFunction)) {
       const gridItems: T[] = this.gridItems || [];
 
       const matchingItems: T[] = gridItems.filter((item: T): boolean => {
-        return (
-          (item as any)[this.trackByGridItemProperty] === (this.detailState as any)?.[this.trackByGridItemProperty]
-        );
+        return this.trackByFn(0, item) === this.trackByFn(0, this.detailState as T);
       });
       if (matchingItems.length === 0) {
         // Hide detail pane when item is no longer present in the dataset
