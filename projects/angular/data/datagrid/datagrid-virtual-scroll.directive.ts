@@ -291,6 +291,11 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         if (datagridState.filters) {
           this.scrollToIndex(0);
         }
+      }),
+      this.columnsService.columnsStateChange.subscribe(() => {
+        // Simply, there is no correct way to clear cached rows upon column resize from the view repeater.
+        // _viewRepeater is a private field and cdkVirtualFor doesn't provide a public API for it.
+        (this.cdkVirtualFor as any)._viewRepeater.detach();
       })
     );
   }
