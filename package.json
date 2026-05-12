@@ -25,7 +25,6 @@
     "start:website:compile-content": "nodemon --watch projects/website/content --watch projects/website/stackblitz-example-template --ext md,json,js,ts,css,scss,html --exec \"npm run prebuild:website:compile-content\"",
     "prebuild:website": "npm-run-all prebuild:website:*",
     "prebuild:website:compile-content": "node ./projects/website/scripts/compile-content.js",
-    "prebuild:website:generate-versions": "node ./projects/website/scripts/generate-versions.js",
     "test": "npm-run-all _test:angular _test:addons _test:schematics",
     "test:watch": "npm-run-all --parallel _test:angular:watch _test:addons:watch",
     "ts-node": "ts-node --project ./tsconfig-ts-node.json",
