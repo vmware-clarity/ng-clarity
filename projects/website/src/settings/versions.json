@@ -1,31 +1,31 @@
 [
   {
-    "label": "next",
+    "version": "next",
     "url": "https://next.clarity.design"
   },
   {
-    "label": "v18 (latest)",
+    "version": "18",
     "url": "https://clarity.design",
     "latest": true
   },
   {
-    "label": "v17",
+    "version": "17",
     "url": "https://v17.clarity.design"
   },
   {
-    "label": "v16",
+    "version": "16",
     "url": "https://v16.clarity.design"
   },
   {
-    "label": "v15",
+    "version": "15",
     "url": "https://v15.clarity.design"
   },
   {
-    "label": "v13",
+    "version": "13",
     "url": "https://v13.clarity.design"
   },
   {
-    "label": "v12",
+    "version": "12",
     "url": "https://v12.clarity.design"
   }
 ]
