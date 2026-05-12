@@ -31,7 +31,7 @@ interface Version {
         <div class="prevent-indent"><div class="dropdown-header">Switch to:</div></div>
         @for (version of versions | async; track version.url) {
           <a clrDropdownItem [href]="version.url">
-            v{{ version.version }} Documentation
+            {{ version.version === 'next' ? '' : 'v' }}{{ version.version }} Documentation
             @if (version.latest) {
               <span class="badge badge-success">
                 New
