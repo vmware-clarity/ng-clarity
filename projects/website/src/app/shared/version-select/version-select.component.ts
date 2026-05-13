@@ -9,12 +9,12 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ClrDropdownModule, ClrIcon } from '@clr/angular';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 
 interface Version {
-  label: string;
+  version: string;
   url: string;
   latest?: boolean;
 }
@@ -24,14 +24,20 @@ interface Version {
   template: `
     <clr-dropdown class="version-select">
       <button class="btn btn-sm btn-primary" clrDropdownTrigger>
-        v{{ currentVersion }}
+        Version {{ currentVersion }}
         <clr-icon shape="angle" direction="down"></clr-icon>
       </button>
       <clr-dropdown-menu clrPosition="bottom-left">
         <div class="prevent-indent"><div class="dropdown-header">Switch to:</div></div>
         @for (version of versions | async; track version.url) {
-          <a clrDropdownItem [href]="version.url">
-            {{ version.label }}
+          <a clrDropdownItem [href]="version.url" [class.active]="version.version === currentVersion">
+            {{ version.version === 'next' ? '' : 'v' }}{{ version.version }} Documentation
+            @if (version.latest) {
+              <span class="badge badge-success">
+                New
+                <span class="clr-sr-only">Latest version</span>
+              </span>
+            }
           </a>
         }
       </clr-dropdown-menu>
@@ -58,8 +64,6 @@ export class VersionSelectComponent {
   versions: Observable<Version[]>;
 
   constructor(httpClient: HttpClient) {
-    this.versions = httpClient
-      .get<Version[]>(environment.versions_url)
-      .pipe(map(versions => versions.filter(v => !v.latest)));
+    this.versions = httpClient.get<Version[]>(environment.versions_url);
   }
 }

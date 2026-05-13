@@ -31,29 +31,27 @@
   (dgColumnsOrderChange)="onColumnOrderChange($event)"
   (clrDgSelectedChange)="onSelectedItemsChange($event)"
 >
-  @if (enableToolBar) {
-    <clr-dg-action-bar>
-      @if (!!actionBarActions.length) {
-        <div class="appfx-datagrid-actions-container">
-          <appfx-datagrid-action-bar
-            class="action-bar"
-            (invokeAction)="onActionClick($event)"
-            [actions]="actionBarActions"
-          >
-          </appfx-datagrid-action-bar>
-        </div>
-      }
-      @if (filterMode !== undefined && filterMode !== null) {
-        <appfx-datagrid-filters
-          [filterMode]="filterMode"
-          [filterableProperties]="filterableProperties"
-          (searchTermChange)="onAdvancedSearchTermChange($event)"
-          (propertyFiltersChange)="onAdvancedFilterCriteriaChange($event)"
+  <clr-dg-action-bar *ngIf="enableToolBar">
+    @if (!!actionBarActions.length) {
+      <div class="appfx-datagrid-actions-container">
+        <appfx-datagrid-action-bar
+          class="action-bar"
+          (invokeAction)="onActionClick($event)"
+          [actions]="actionBarActions"
         >
-        </appfx-datagrid-filters>
-      }
-    </clr-dg-action-bar>
-  }
+        </appfx-datagrid-action-bar>
+      </div>
+    }
+    @if (filterMode !== undefined && filterMode !== null) {
+      <appfx-datagrid-filters
+        [filterMode]="filterMode"
+        [filterableProperties]="filterableProperties"
+        (searchTermChange)="onAdvancedSearchTermChange($event)"
+        (propertyFiltersChange)="onAdvancedFilterCriteriaChange($event)"
+      >
+      </appfx-datagrid-filters>
+    }
+  </clr-dg-action-bar>
   @if (dragConfig) {
     <clr-dg-column class="draggableCell" style="width: 20px"></clr-dg-column>
   }
@@ -147,22 +145,22 @@
         [clrDgRowSelectionLabel]="$any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1]"
         (contextmenu)="onContextMenu($event, item)"
       >
-        @if (enableSingleRowActions) {
-          <clr-dg-action-overflow
-            (clrDgActionOverflowOpenChange)="onRowActionOverflowOpen($event, singleRowActions, item)"
-          >
-            @for (action of singleRowActions; track action) {
-              <button
-                class="action-item"
-                (click)="onActionClick(action, item)"
-                [title]="action.tooltip"
-                [disabled]="!action.enabled"
-              >
-                {{ action.label }}
-              </button>
-            }
-          </clr-dg-action-overflow>
-        }
+        <clr-dg-action-overflow
+          *ngIf="enableSingleRowActions"
+          (clrDgActionOverflowOpenChange)="onRowActionOverflowOpen($event, singleRowActions, item)"
+        >
+          @for (action of singleRowActions; track action) {
+            <button
+              class="action-item"
+              (click)="onActionClick(action, item)"
+              [title]="action.tooltip"
+              [disabled]="!action.enabled"
+            >
+              {{ action.label }}
+            </button>
+          }
+        </clr-dg-action-overflow>
+
         @if (dragConfig) {
           <clr-dg-cell class="draggableCell" style="width: 20px">
             <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
@@ -173,21 +171,20 @@
             <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>
           </clr-dg-cell>
         }
-        @if (rowDetailContent) {
-          <ng-container ngProjectAs="clr-dg-row-detail">
-            @if ({ id: buildRowDetailContentId(i) }; as detailData) {
-              <clr-dg-row-detail
-                *clrIfExpanded="rowsExpandedByDefault"
-                tabindex="0"
-                [attr.aria-describedby]="detailData.id"
-              >
-                <div [id]="detailData.id" class="datagrid-row-flex">
-                  <ng-container *ngTemplateOutlet="rowDetailContent; context: { item: item }"> </ng-container>
-                </div>
-              </clr-dg-row-detail>
-            }
-          </ng-container>
-        }
+
+        <ng-container *ngIf="rowDetailContent" ngProjectAs="clr-dg-row-detail">
+          @if ({ id: buildRowDetailContentId(i) }; as detailData) {
+            <clr-dg-row-detail
+              *clrIfExpanded="rowsExpandedByDefault"
+              tabindex="0"
+              [attr.aria-describedby]="detailData.id"
+            >
+              <div [id]="detailData.id" class="datagrid-row-flex">
+                <ng-container *ngTemplateOutlet="rowDetailContent; context: { item: item }"> </ng-container>
+              </div>
+            </clr-dg-row-detail>
+          }
+        </ng-container>
       </clr-dg-row>
     }
   }
@@ -203,22 +200,22 @@
       [clrDgRowSelectionLabel]="$any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1]"
       (contextmenu)="onContextMenu($event, item)"
     >
-      @if (enableSingleRowActions) {
-        <clr-dg-action-overflow
-          (clrDgActionOverflowOpenChange)="onRowActionOverflowOpen($event, singleRowActions, item)"
-        >
-          @for (action of singleRowActions; track action) {
-            <button
-              class="action-item"
-              (click)="onActionClick(action, item)"
-              [title]="action.tooltip"
-              [disabled]="!action.enabled"
-            >
-              {{ action.label }}
-            </button>
-          }
-        </clr-dg-action-overflow>
-      }
+      <clr-dg-action-overflow
+        *ngIf="enableSingleRowActions"
+        (clrDgActionOverflowOpenChange)="onRowActionOverflowOpen($event, singleRowActions, item)"
+      >
+        @for (action of singleRowActions; track action) {
+          <button
+            class="action-item"
+            (click)="onActionClick(action, item)"
+            [title]="action.tooltip"
+            [disabled]="!action.enabled"
+          >
+            {{ action.label }}
+          </button>
+        }
+      </clr-dg-action-overflow>
+
       @if (dragConfig) {
         <clr-dg-cell class="draggableCell">
           <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
@@ -229,58 +226,56 @@
           <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>
         </clr-dg-cell>
       }
-      @if ($any(item).rowDetailRenderer) {
-        <ng-container ngProjectAs="clr-dg-row-detail">
-          @if ({ id: buildRowDetailContentId(i) }; as detailData) {
-            <clr-dg-row-detail *clrIfExpanded tabindex="0" [attr.aria-describedby]="detailData.id">
-              <appfx-dg-cell-container
-                [id]="detailData.id"
-                [column]="{
-                  displayName: '',
-                  field: '',
-                  columnRenderer: $any(item).rowDetailRenderer,
-                }"
-                [item]="item"
-              ></appfx-dg-cell-container>
-            </clr-dg-row-detail>
-          }
-        </ng-container>
-      }
-      @if (rowDetailContent) {
-        <ng-container ngProjectAs="clr-dg-row-detail">
-          @if ({ id: buildRowDetailContentId(i) }; as detailData) {
-            <clr-dg-row-detail
-              *clrIfExpanded="rowsExpandedByDefault"
-              tabindex="0"
-              [attr.aria-describedby]="detailData.id"
-            >
-              <div [id]="detailData.id" class="datagrid-row-flex">
-                <ng-container *ngTemplateOutlet="rowDetailContent; context: { item: item }"> </ng-container>
-              </div>
-            </clr-dg-row-detail>
-          }
-        </ng-container>
-      }
+
+      <ng-container *ngIf="$any(item).rowDetailRenderer" ngProjectAs="clr-dg-row-detail">
+        @if ({ id: buildRowDetailContentId(i) }; as detailData) {
+          <clr-dg-row-detail *clrIfExpanded tabindex="0" [attr.aria-describedby]="detailData.id">
+            <appfx-dg-cell-container
+              [id]="detailData.id"
+              [column]="{
+                displayName: '',
+                field: '',
+                columnRenderer: $any(item).rowDetailRenderer,
+              }"
+              [item]="item"
+            ></appfx-dg-cell-container>
+          </clr-dg-row-detail>
+        }
+      </ng-container>
+
+      <ng-container *ngIf="rowDetailContent" ngProjectAs="clr-dg-row-detail">
+        @if ({ id: buildRowDetailContentId(i) }; as detailData) {
+          <clr-dg-row-detail
+            *clrIfExpanded="rowsExpandedByDefault"
+            tabindex="0"
+            [attr.aria-describedby]="detailData.id"
+          >
+            <div [id]="detailData.id" class="datagrid-row-flex">
+              <ng-container *ngTemplateOutlet="rowDetailContent; context: { item: item }"> </ng-container>
+            </div>
+          </clr-dg-row-detail>
+        }
+      </ng-container>
     </clr-dg-row>
   }
-  @if (detailHeader || detailBody) {
-    <ng-container ngProjectAs="clr-dg-detail">
-      <ng-template [clrIfDetail]="detailState" (clrIfDetailChange)="onDetailStateChange($event)" let-detail>
-        <clr-dg-detail>
-          @if (detailHeader) {
-            <clr-dg-detail-header>
-              <ng-container *ngTemplateOutlet="detailHeader; context: { $implicit: detail }"></ng-container>
-            </clr-dg-detail-header>
-          }
-          @if (detailBody) {
-            <clr-dg-detail-body>
-              <ng-container *ngTemplateOutlet="detailBody; context: { $implicit: detail }"></ng-container>
-            </clr-dg-detail-body>
-          }
-        </clr-dg-detail>
-      </ng-template>
-    </ng-container>
-  }
+
+  <ng-container *ngIf="detailHeader || detailBody" ngProjectAs="clr-dg-detail">
+    <ng-template [clrIfDetail]="detailState" (clrIfDetailChange)="onDetailStateChange($event)" let-detail>
+      <clr-dg-detail>
+        @if (detailHeader) {
+          <clr-dg-detail-header>
+            <ng-container *ngTemplateOutlet="detailHeader; context: { $implicit: detail }"></ng-container>
+          </clr-dg-detail-header>
+        }
+        @if (detailBody) {
+          <clr-dg-detail-body>
+            <ng-container *ngTemplateOutlet="detailBody; context: { $implicit: detail }"></ng-container>
+          </clr-dg-detail-body>
+        }
+      </clr-dg-detail>
+    </ng-template>
+  </ng-container>
+
   <clr-dg-footer *ngIf="gridFooterModel.showFooter">
     @if (!gridFooterModel.hideColumnToggle) {
       <appfx-dg-column-toggle [(columns)]="columns" (columnHiddenStateChange)="onColumnHiddenStateChange($event)">

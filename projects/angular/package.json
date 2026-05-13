@@ -22,8 +22,8 @@
     "migrations": "./schematics/collection.json"
   },
   "peerDependencies": {
-    "@angular/cdk": "^21",
-    "@angular/common": "^21",
-    "@angular/core": "^21"
+    "@angular/cdk": ">= 21.1.0",
+    "@angular/common": ">= 21.1.0",
+    "@angular/core": ">= 21.1.0"
   }
 }
