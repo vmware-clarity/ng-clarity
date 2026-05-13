@@ -7,6 +7,6 @@
 
 export const environment = {
   production: true,
-  version: '18',
-  versions_url: '/versions.json',
+  version: 'next',
+  versions_url: 'https://clarity.design/versions.json',
 };
