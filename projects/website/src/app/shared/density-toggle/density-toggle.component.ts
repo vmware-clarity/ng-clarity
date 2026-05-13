@@ -15,8 +15,10 @@ const densityLocalStorageKey = 'density';
 @Component({
   selector: 'app-density-toggle',
   template: `
-    <button
-      class="btn btn-link nav-link"
+    <a
+      href="javascript://"
+      class="nav-link nav-text toggle-density"
+      [class.toggle-density-compacted]="density === 'compact'"
       [attr.aria-label]="'toggle to ' + (density === 'compact' ? 'Compact' : 'Default') + ' density'"
       (click)="toggleDensity()"
       (mouseenter)="iconInverse = false"
@@ -27,10 +29,10 @@ const densityLocalStorageKey = 'density';
         size="md"
         shape="landscape"
         direction="left"
-        [solid]="iconInverse"
+        [solid]="solidDensityIcon"
       ></clr-icon>
-      {{ density === 'compact' ? 'Compact' : 'Default' }}
-    </button>
+      <span>Compact</span>
+    </a>
   `,
   styles: [
     `
@@ -39,12 +41,9 @@ const densityLocalStorageKey = 'density';
         align-items: center;
         position: relative;
       }
-      button.btn-link {
-        &,
-        &:hover {
-          clr-icon.density-toggle-icon {
-            color: var(--clr-header-font-color);
-          }
+      a.toggle-density {
+        &.toggle-density-compacted {
+          font-weight: var(--cds-alias-typography-font-weight-semibold);
         }
       }
     `,
@@ -57,6 +56,13 @@ export class DensityToggleComponent implements OnInit {
 
   constructor() {
     ClarityIcons.addIcons(landscapeIcon);
+  }
+
+  protected get solidDensityIcon() {
+    const inCompactModeWithoutHover = this.density === 'compact' && !this.iconInverse;
+    const notInCompactModeWithHover = this.density !== 'compact' && this.iconInverse;
+
+    return inCompactModeWithoutHover || notInCompactModeWithHover;
   }
 
   ngOnInit() {
