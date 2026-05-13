@@ -151,7 +151,8 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   get totalContentHeight() {
-    return this.virtualScrollViewport?._totalContentHeight || '';
+    const h = this.virtualScrollViewport?._totalContentHeight as any;
+    return typeof h === 'function' ? h() : h || '';
   }
 
   @Input('clrVirtualRowsOf')
@@ -458,6 +459,22 @@ function createCdkVirtualScrollViewport(
   return viewPort;
 }
 
+/**
+ * Returns the injection token that `CdkVirtualForOf` uses to look up its parent viewport.
+ *
+ * CDK < 21:  CdkVirtualForOf injects `CdkVirtualScrollViewport` (the class itself as a token).
+ * CDK >= 21: CdkVirtualForOf injects `CDK_VIRTUAL_SCROLL_VIEWPORT` (a dedicated InjectionToken).
+ *
+ * We detect the CDK 21+ case at runtime by inspecting `CdkVirtualScrollViewport.ɵcmp.providers`:
+ * in CDK 21+ the component registers itself under `CDK_VIRTUAL_SCROLL_VIEWPORT` via `useExisting`,
+ * which is not present in earlier versions.
+ */
+function getViewportTokenForCdkVirtualForOf(): any {
+  const componentProviders: any[] = (CdkVirtualScrollViewport as any).ɵcmp?.providers ?? [];
+  const selfProvider = componentProviders.find((p: any) => p.useExisting === CdkVirtualScrollViewport);
+  return selfProvider?.provide ?? CdkVirtualScrollViewport;
+}
+
 function createCdkVirtualForOfDirective<T>(
   viewContainerRef: ViewContainerRef,
   templateRef: TemplateRef<CdkVirtualForOfContext<T>>,
@@ -476,9 +493,12 @@ function createCdkVirtualForOfDirective<T>(
       ngZone
     );
   } else {
+    // CDK 21+ uses CDK_VIRTUAL_SCROLL_VIEWPORT token; CDK 19–20 uses the class directly.
+    const viewportToken = getViewportTokenForCdkVirtualForOf();
+
     const virtualScrollViewportInjector = Injector.create({
       parent: inject(EnvironmentInjector),
-      providers: [{ provide: CdkVirtualScrollViewport, useValue: virtualScrollViewport }],
+      providers: [{ provide: viewportToken, useValue: virtualScrollViewport }],
     });
 
     const cdkVirtualForInjector = Injector.create({
@@ -487,6 +507,8 @@ function createCdkVirtualForOfDirective<T>(
         { provide: ViewContainerRef, useValue: viewContainerRef },
         { provide: TemplateRef, useValue: templateRef },
         { provide: IterableDiffers, useValue: iterableDiffers },
+        // _VIEW_REPEATER_STRATEGY is injected by CdkVirtualForOf in CDK 19–20;
+        // CDK 21+ creates its own strategy internally, so this provider is a no-op there.
         { provide: _VIEW_REPEATER_STRATEGY, useValue: viewRepeater },
         { provide: NgZone, useValue: ngZone },
         { provide: CdkVirtualForOf, useClass: CdkVirtualForOf },
