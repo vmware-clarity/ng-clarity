@@ -2837,7 +2837,7 @@ export interface ClrDatagridStringFilterInterface<T> {
 
 // @public (undocumented)
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
-    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
+    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, injector: EnvironmentInjector);
     // Warning: (ae-forgotten-export) The symbol "CdkVirtualForInputs" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
@@ -7132,7 +7132,7 @@ export class DatagridPropertyStringFilter<T = any> implements ClrDatagridStringF
 
 // @public (undocumented)
 export class DatagridRowDetailRenderer extends DatagridRowRenderer implements OnDestroy {
-    constructor(parentRow: DatagridRowRenderer, columnsService: ColumnsService);
+    constructor(parentRow: DatagridRowRenderer, columnsService: ColumnsService, el: ElementRef<HTMLElement>);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -7143,7 +7143,9 @@ export class DatagridRowDetailRenderer extends DatagridRowRenderer implements On
 
 // @public (undocumented)
 export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
-    constructor(columnsService: ColumnsService);
+    constructor(columnsService: ColumnsService, el: ElementRef<HTMLElement>);
+    // (undocumented)
+    afterNextRender(): void;
     // (undocumented)
     cells: QueryList<DatagridCellRenderer>;
     // (undocumented)

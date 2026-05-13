@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, ContentChildren, Directive, OnDestroy, QueryList } from '@angular/core';
+import {
+  AfterContentInit,
+  afterNextRender,
+  ContentChildren,
+  Directive,
+  ElementRef,
+  OnDestroy,
+  QueryList,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { DatagridCellRenderer } from './cell-renderer';
@@ -22,7 +30,12 @@ export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private columnsService: ColumnsService) {}
+  constructor(
+    private columnsService: ColumnsService,
+    private el: ElementRef<HTMLElement>
+  ) {
+    afterNextRender(() => this.afterNextRender());
+  }
 
   ngAfterContentInit() {
     this.setCellsState(); // case #3 and #4
@@ -35,6 +48,20 @@ export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
         // when this.cells.changes emits. Hence, we should quit earlier there. But this method will be called
         // right after again when this.headers.changes emits. By then, there will be the same number of column state
         // providers as column headers.
+      })
+    );
+  }
+
+  afterNextRender() {
+    this.subscriptions.push(
+      // Active rows are already handled by DatagridMainRenderer.columnStateChanged via @ContentChildren.
+      // Rows sitting in CDK virtual scroll's template cache for example are detached from the document
+      // (element.isConnected = false) and invisible to @ContentChildren, so they miss column state
+      // changes. This subscription self-updates the row only when it is detached state.
+      this.columnsService.columnsStateChange.subscribe(() => {
+        if (!this.el.nativeElement.isConnected) {
+          this.setCellsState();
+        }
       })
     );
   }

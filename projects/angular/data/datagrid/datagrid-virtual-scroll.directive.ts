@@ -49,7 +49,6 @@ import { Subscription } from 'rxjs';
 
 import { ClrDatagrid } from './datagrid';
 import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
-import { ColumnsService } from './providers/columns.service';
 import { Items } from './providers/items';
 
 type CdkVirtualForInputKey =
@@ -118,7 +117,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     private readonly scrollDispatcher: ScrollDispatcher,
     private readonly viewportRuler: ViewportRuler,
     @Inject(forwardRef(() => ClrDatagrid)) private readonly datagrid: ClrDatagrid,
-    private columnsService: ColumnsService,
     private readonly injector: EnvironmentInjector
   ) {
     items.smartenUp();
@@ -291,11 +289,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         if (datagridState.filters) {
           this.scrollToIndex(0);
         }
-      }),
-      this.columnsService.columnsStateChange.subscribe(() => {
-        // Simply, there is no correct way to clear cached rows upon column resize from the view repeater.
-        // _viewRepeater is a private field and cdkVirtualFor doesn't provide a public API for it.
-        (this.cdkVirtualFor as any)._viewRepeater.detach();
       })
     );
   }
