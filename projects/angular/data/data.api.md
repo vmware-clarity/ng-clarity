@@ -916,7 +916,7 @@ export interface ClrDatagridStringFilterInterface<T> {
 
 // @public (undocumented)
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
-    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
+    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, injector: EnvironmentInjector);
     // Warning: (ae-forgotten-export) The symbol "CdkVirtualForInputs" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
@@ -1428,7 +1428,7 @@ export class DatagridPropertyStringFilter<T = any> implements ClrDatagridStringF
 
 // @public (undocumented)
 export class DatagridRowDetailRenderer extends DatagridRowRenderer implements OnDestroy {
-    constructor(parentRow: DatagridRowRenderer, columnsService: ColumnsService);
+    constructor(parentRow: DatagridRowRenderer, columnsService: ColumnsService, el: ElementRef<HTMLElement>);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -1439,7 +1439,7 @@ export class DatagridRowDetailRenderer extends DatagridRowRenderer implements On
 
 // @public (undocumented)
 export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
-    constructor(columnsService: ColumnsService);
+    constructor(columnsService: ColumnsService, el: ElementRef<HTMLElement>);
     // (undocumented)
     cells: QueryList<DatagridCellRenderer>;
     // (undocumented)
@@ -1679,7 +1679,7 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1085:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1049:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 
