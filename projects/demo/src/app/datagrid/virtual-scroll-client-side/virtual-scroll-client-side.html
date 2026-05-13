@@ -34,8 +34,11 @@
   <div>Rows: {{totalRows}}, Cols: {{totalCols}}</div>
 </div>
 
-<button class="btn" (click)="selectionType = selectionType === 1 ? 2 : 1">
-  Toggle Selection {{selectionType === 1 ? 'Single' : 'Multi'}}
+<button
+  class="btn"
+  (click)="selectionType = selectionType === selectionTypes.Multi ? selectionTypes.Single : selectionTypes.Multi"
+>
+  Toggle Selection {{selectionType === selectionTypes.Single ? 'Single' : 'Multi'}}
 </button>
 
 <h3>Dynamic cols and rows</h3>
@@ -43,7 +46,7 @@
 <clr-datagrid
   #dynamicRowsDatagrid
   [(clrDgSelected)]="selectedRows"
-  [clrDgSelectionType]="'multi'"
+  [clrDgSelectionType]="selectionType"
   [clrDgItemsIdentityFn]="identifyRowByIndex"
   [clrDgCustomSelectAllEnabled]="true"
   (clrDgCustomSelectAll)="toggleSelectAllRows($event)"
@@ -132,7 +135,7 @@
 <clr-datagrid
   #usersDatagrid
   [(clrDgSelected)]="selectedUsers"
-  [clrDgSelectionType]="'multi'"
+  [clrDgSelectionType]="selectionType"
   [clrDgItemsIdentityFn]="identifyUserById"
   class="datagrid-compact"
   style="height: 30rem"
