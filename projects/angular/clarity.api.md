@@ -6051,7 +6051,7 @@ export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     // (undocumented)
     scrollUp(offset: number, behavior?: ScrollBehavior): void;
     // (undocumented)
-    get totalContentHeight(): string;
+    get totalContentHeight(): any;
     // (undocumented)
     get totalItems(): number;
     // (undocumented)
