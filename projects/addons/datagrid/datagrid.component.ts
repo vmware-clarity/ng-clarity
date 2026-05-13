@@ -37,7 +37,6 @@ import {
   ClrDatagridStateInterface,
   ClrDatagridVirtualScrollRangeInterface,
 } from '@clr/angular';
-import { Selection } from '@clr/angular/data/datagrid/providers/selection';
 import { Subject, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
@@ -1174,7 +1173,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
 
   private preserveSelectionWhenThereIsFilterDefine() {
-    const selection: Selection = this.clrDatagrid.selection;
+    const selection = this.clrDatagrid.selection;
     const filterSub: Subscription = (selection as any)['_filtersSub'];
     if (filterSub) {
       filterSub.unsubscribe();
