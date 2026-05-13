@@ -7145,8 +7145,6 @@ export class DatagridRowDetailRenderer extends DatagridRowRenderer implements On
 export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
     constructor(columnsService: ColumnsService, el: ElementRef<HTMLElement>);
     // (undocumented)
-    afterNextRender(): void;
-    // (undocumented)
     cells: QueryList<DatagridCellRenderer>;
     // (undocumented)
     expandableRows: DatagridRowDetailRenderer[];
