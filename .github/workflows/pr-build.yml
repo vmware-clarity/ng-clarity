@@ -38,6 +38,11 @@ jobs:
         if: ${{matrix.angular == 'Angular v19' || matrix.angular == 'Angular v20' || matrix.angular == 'Angular v21'}}
         run: |
           npx ng update @angular/core@19 @angular/common@19 @angular/cli@19 @angular/cdk@19 --allow-dirty --force
+      - name: Setup Node.js 20 for Angular v20+
+        if: ${{matrix.angular == 'Angular v20' || matrix.angular == 'Angular v21'}}
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
       - name: Update to Angular v20
         if: ${{matrix.angular == 'Angular v20' || matrix.angular == 'Angular v21'}}
         run: |
