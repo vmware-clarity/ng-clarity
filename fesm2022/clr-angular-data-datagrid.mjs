@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { Injectable, Directive, ViewChild, Component, PLATFORM_ID, Inject, DOCUMENT, EventEmitter, ElementRef, booleanAttribute, Input, Output, Optional, ContentChild, ChangeDetectionStrategy, ContentChildren, forwardRef, HostListener, ViewContainerRef, runInInjectionContext, Injector, ChangeDetectorRef, NgZone, Renderer2, inject, EnvironmentInjector, TemplateRef, IterableDiffers, ViewChildren, InjectionToken, NgModule } from '@angular/core';
+import { Injectable, Directive, ViewChild, Component, PLATFORM_ID, Inject, DOCUMENT, EventEmitter, ElementRef, booleanAttribute, Input, Output, Optional, ContentChild, ChangeDetectionStrategy, ContentChildren, forwardRef, HostListener, ViewContainerRef, runInInjectionContext, Injector, ChangeDetectorRef, NgZone, Renderer2, inject, EnvironmentInjector, TemplateRef, IterableDiffers, afterNextRender, ViewChildren, InjectionToken, NgModule } from '@angular/core';
 import * as i2 from '@clr/angular/utils';
 import { uniqueIdFactory, Keys, HostWrapper, IfExpandService, ClrLoadingState, ClrExpandableAnimationDirective, LoadingListener, WillyWonka, OompaLoompa, ClrKeyFocus, DomAdapter, ClrIfExpanded, CdkDragModule, CdkTrapFocusModule, ClrLoadingModule, ClrConditionalModule, ClrOutsideClickModule, ClrExpandableAnimationModule, ClrKeyFocusModule } from '@clr/angular/utils';
 import * as i2$2 from 'rxjs';
@@ -4275,83 +4275,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-var DatagridColumnChanges;
-(function (DatagridColumnChanges) {
-    DatagridColumnChanges[DatagridColumnChanges["WIDTH"] = 0] = "WIDTH";
-    DatagridColumnChanges[DatagridColumnChanges["HIDDEN"] = 1] = "HIDDEN";
-    DatagridColumnChanges[DatagridColumnChanges["INITIALIZE"] = 2] = "INITIALIZE";
-})(DatagridColumnChanges || (DatagridColumnChanges = {}));
-const ALL_COLUMN_CHANGES = Object.keys(DatagridColumnChanges)
-    .map(key => DatagridColumnChanges[key])
-    .filter(key => key === parseInt(key, 10) && key !== DatagridColumnChanges.INITIALIZE); // extracts only integer keys
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ColumnsService {
-    constructor() {
-        this.columns = [];
-        this.columnsStateChange = new BehaviorSubject(null);
-        this._cache = [];
-    }
-    get columnStates() {
-        return this.columns.map(column => column.value);
-    }
-    get hasHideableColumns() {
-        return this.columnStates.filter(state => state.hideable).length > 0;
-    }
-    get visibleColumns() {
-        return this.columnStates.filter(state => !state.hidden);
-    }
-    cache() {
-        this._cache = this.columns.map(subject => {
-            const value = { ...subject.value };
-            delete value.changes;
-            return value;
-        });
-    }
-    hasCache() {
-        return !!this._cache.length;
-    }
-    resetToLastCache() {
-        this._cache.forEach((state, index) => {
-            // Just emit the exact value from the cache
-            const cachedState = { ...state, changes: ALL_COLUMN_CHANGES };
-            this.columns[index].next(cachedState);
-            this.columnsStateChange.next(cachedState);
-        });
-        this._cache = [];
-    }
-    // Helper method to emit a change to a column only when there is an actual diff to process for that column
-    emitStateChangeAt(columnIndex, diff) {
-        if (!this.columns[columnIndex]) {
-            return;
-        }
-        this.emitStateChange(this.columns[columnIndex], diff);
-    }
-    emitStateChange(column, diff) {
-        const changedState = { ...column.value, ...diff };
-        column.next(changedState);
-        this.columnsStateChange.next(changedState);
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService, decorators: [{
-            type: Injectable
-        }] });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 class ClrDatagridVirtualScrollDirective {
-    constructor(changeDetectorRef, iterableDiffers, items, ngZone, renderer2, templateRef, viewContainerRef, directionality, scrollDispatcher, viewportRuler, datagrid, columnsService, injector) {
+    constructor(changeDetectorRef, iterableDiffers, items, ngZone, renderer2, templateRef, viewContainerRef, directionality, scrollDispatcher, viewportRuler, datagrid, injector) {
         this.changeDetectorRef = changeDetectorRef;
         this.iterableDiffers = iterableDiffers;
         this.items = items;
@@ -4363,7 +4288,6 @@ class ClrDatagridVirtualScrollDirective {
         this.scrollDispatcher = scrollDispatcher;
         this.viewportRuler = viewportRuler;
         this.datagrid = datagrid;
-        this.columnsService = columnsService;
         this.injector = injector;
         this.renderedRangeChange = new EventEmitter();
         this.persistItems = true;
@@ -4576,7 +4500,7 @@ class ClrDatagridVirtualScrollDirective {
         const virtualScrollViewport = createCdkVirtualScrollViewport(new ElementRef(datagridContentElement), new ElementRef(datagridRowsElement), changeDetectorRef, ngZone, renderer2, virtualScrollStrategy, directionality, scrollDispatcher, viewportRuler, null);
         return virtualScrollViewport;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridVirtualScrollDirective, deps: [{ token: i0.ChangeDetectorRef }, { token: i0.IterableDiffers }, { token: Items }, { token: i0.NgZone }, { token: i0.Renderer2 }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }, { token: i2$1.Directionality }, { token: i3$1.ScrollDispatcher }, { token: i3$1.ViewportRuler }, { token: forwardRef(() => ClrDatagrid) }, { token: ColumnsService }, { token: i0.EnvironmentInjector }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridVirtualScrollDirective, deps: [{ token: i0.ChangeDetectorRef }, { token: i0.IterableDiffers }, { token: Items }, { token: i0.NgZone }, { token: i0.Renderer2 }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }, { token: i2$1.Directionality }, { token: i3$1.ScrollDispatcher }, { token: i3$1.ViewportRuler }, { token: forwardRef(() => ClrDatagrid) }, { token: i0.EnvironmentInjector }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrDatagridVirtualScrollDirective, isStandalone: false, selector: "[clrVirtualScroll],[ClrVirtualScroll]", inputs: { persistItems: ["clrVirtualPersistItems", "persistItems"], cdkVirtualForOf: ["clrVirtualRowsOf", "cdkVirtualForOf"], cdkVirtualForTrackBy: ["clrVirtualRowsTrackBy", "cdkVirtualForTrackBy"], cdkVirtualForTemplate: ["clrVirtualRowsTemplate", "cdkVirtualForTemplate"], cdkVirtualForTemplateCacheSize: ["clrVirtualRowsTemplateCacheSize", "cdkVirtualForTemplateCacheSize"], itemSize: ["clrVirtualRowsItemSize", "itemSize"], minBufferPx: ["clrVirtualRowsMinBufferPx", "minBufferPx"], maxBufferPx: ["clrVirtualRowsMaxBufferPx", "maxBufferPx"], dataRange: ["clrVirtualDataRange", "dataRange"] }, outputs: { renderedRangeChange: "renderedRangeChange" }, providers: [Items], ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridVirtualScrollDirective, decorators: [{
@@ -4589,7 +4513,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
         }], ctorParameters: () => [{ type: i0.ChangeDetectorRef }, { type: i0.IterableDiffers }, { type: Items }, { type: i0.NgZone }, { type: i0.Renderer2 }, { type: i0.TemplateRef }, { type: i0.ViewContainerRef }, { type: i2$1.Directionality }, { type: i3$1.ScrollDispatcher }, { type: i3$1.ViewportRuler }, { type: ClrDatagrid, decorators: [{
                     type: Inject,
                     args: [forwardRef(() => ClrDatagrid)]
-                }] }, { type: ColumnsService }, { type: i0.EnvironmentInjector }], propDecorators: { renderedRangeChange: [{
+                }] }, { type: i0.EnvironmentInjector }], propDecorators: { renderedRangeChange: [{
                 type: Output
             }], persistItems: [{
                 type: Input,
@@ -4656,6 +4580,81 @@ function createCdkVirtualForOfDirective(viewContainerRef, templateRef, iterableD
     });
     return cdkVirtualForInjector.get(CdkVirtualForOf);
 }
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+var DatagridColumnChanges;
+(function (DatagridColumnChanges) {
+    DatagridColumnChanges[DatagridColumnChanges["WIDTH"] = 0] = "WIDTH";
+    DatagridColumnChanges[DatagridColumnChanges["HIDDEN"] = 1] = "HIDDEN";
+    DatagridColumnChanges[DatagridColumnChanges["INITIALIZE"] = 2] = "INITIALIZE";
+})(DatagridColumnChanges || (DatagridColumnChanges = {}));
+const ALL_COLUMN_CHANGES = Object.keys(DatagridColumnChanges)
+    .map(key => DatagridColumnChanges[key])
+    .filter(key => key === parseInt(key, 10) && key !== DatagridColumnChanges.INITIALIZE); // extracts only integer keys
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ColumnsService {
+    constructor() {
+        this.columns = [];
+        this.columnsStateChange = new BehaviorSubject(null);
+        this._cache = [];
+    }
+    get columnStates() {
+        return this.columns.map(column => column.value);
+    }
+    get hasHideableColumns() {
+        return this.columnStates.filter(state => state.hideable).length > 0;
+    }
+    get visibleColumns() {
+        return this.columnStates.filter(state => !state.hidden);
+    }
+    cache() {
+        this._cache = this.columns.map(subject => {
+            const value = { ...subject.value };
+            delete value.changes;
+            return value;
+        });
+    }
+    hasCache() {
+        return !!this._cache.length;
+    }
+    resetToLastCache() {
+        this._cache.forEach((state, index) => {
+            // Just emit the exact value from the cache
+            const cachedState = { ...state, changes: ALL_COLUMN_CHANGES };
+            this.columns[index].next(cachedState);
+            this.columnsStateChange.next(cachedState);
+        });
+        this._cache = [];
+    }
+    // Helper method to emit a change to a column only when there is an actual diff to process for that column
+    emitStateChangeAt(columnIndex, diff) {
+        if (!this.columns[columnIndex]) {
+            return;
+        }
+        this.emitStateChange(this.columns[columnIndex], diff);
+    }
+    emitStateChange(column, diff) {
+        const changedState = { ...column.value, ...diff };
+        column.next(changedState);
+        this.columnsStateChange.next(changedState);
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService, decorators: [{
+            type: Injectable
+        }] });
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -4786,10 +4785,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class DatagridRowRenderer {
-    constructor(columnsService) {
+    constructor(columnsService, el) {
         this.columnsService = columnsService;
+        this.el = el;
         this.expandableRows = [];
         this.subscriptions = [];
+        afterNextRender(() => this.addDetachedRowsColumnStateChangesListener());
     }
     ngAfterContentInit() {
         this.setCellsState(); // case #3 and #4
@@ -4824,7 +4825,19 @@ class DatagridRowRenderer {
             });
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridRowRenderer, deps: [{ token: ColumnsService }], target: i0.ɵɵFactoryTarget.Directive }); }
+    addDetachedRowsColumnStateChangesListener() {
+        this.subscriptions.push(
+        // Active rows are already handled by DatagridMainRenderer.columnStateChanged via @ContentChildren.
+        // Rows sitting in CDK virtual scroll's template cache for example are detached from the document
+        // (element.isConnected = false) and invisible to @ContentChildren, so they miss column state
+        // changes. This subscription self-updates the row only when it is detached state.
+        this.columnsService.columnsStateChange.subscribe(() => {
+            if (!this.el.nativeElement.isConnected) {
+                this.setCellsState();
+            }
+        }));
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridRowRenderer, deps: [{ token: ColumnsService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: DatagridRowRenderer, isStandalone: false, selector: "clr-dg-row", queries: [{ propertyName: "cells", predicate: DatagridCellRenderer }], ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridRowRenderer, decorators: [{
@@ -4833,7 +4846,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     selector: 'clr-dg-row',
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: ColumnsService }], propDecorators: { cells: [{
+        }], ctorParameters: () => [{ type: ColumnsService }, { type: i0.ElementRef }], propDecorators: { cells: [{
                 type: ContentChildren,
                 args: [DatagridCellRenderer]
             }] } });
@@ -7379,8 +7392,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class DatagridRowDetailRenderer extends DatagridRowRenderer {
-    constructor(parentRow, columnsService) {
-        super(columnsService);
+    constructor(parentRow, columnsService, el) {
+        super(columnsService, el);
         this.parentRow = parentRow;
         parentRow.expandableRows.push(this);
     }
@@ -7388,7 +7401,7 @@ class DatagridRowDetailRenderer extends DatagridRowRenderer {
         this.parentRow.expandableRows = [];
         super.ngOnDestroy();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridRowDetailRenderer, deps: [{ token: DatagridRowRenderer }, { token: ColumnsService }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridRowDetailRenderer, deps: [{ token: DatagridRowRenderer }, { token: ColumnsService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: DatagridRowDetailRenderer, isStandalone: false, selector: "clr-dg-row-detail", usesInheritance: true, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridRowDetailRenderer, decorators: [{
@@ -7397,7 +7410,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     selector: 'clr-dg-row-detail',
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: DatagridRowRenderer }, { type: ColumnsService }] });
+        }], ctorParameters: () => [{ type: DatagridRowRenderer }, { type: ColumnsService }, { type: i0.ElementRef }] });
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
