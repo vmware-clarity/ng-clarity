@@ -84,9 +84,7 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   // Provide raw modal content. This is used by the wizard so that the same template can be rendered with and without a modal.
   // static: true so the template ref is available on the first CD pass (avoids the two-pass delay that breaks Angular 21 tests)
-  // eslint-disable-next-line decorator-position/decorator-position
-  @ContentChild('clrInternalModalContentTemplate', { static: true }) 
-  protected readonly modalContentTemplate: TemplateRef<any>;
+  @ContentChild('clrInternalModalContentTemplate', { static: true }) protected readonly modalContentTemplate: TemplateRef<any>;
 
   @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
 
