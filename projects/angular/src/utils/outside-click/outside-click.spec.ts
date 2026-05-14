@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ApplicationRef, Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -54,8 +54,8 @@ describe('Outside click', () => {
   });
 
   it('should not run change detection if the click event happened on the host element', () => {
-    const appRef = TestBed.inject(ApplicationRef);
-    const spy = spyOn(appRef, 'tick').and.callThrough();
+    const ngZone = TestBed.inject(NgZone);
+    const spy = spyOn(ngZone, 'run').and.callThrough();
 
     host.click();
     host.click();

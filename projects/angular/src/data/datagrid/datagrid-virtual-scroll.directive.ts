@@ -7,7 +7,14 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
-import { _RecycleViewRepeaterStrategy, _VIEW_REPEATER_STRATEGY, ListRange } from '@angular/cdk/collections';
+import * as cdkCollections from '@angular/cdk/collections';
+import { _RecycleViewRepeaterStrategy, ListRange } from '@angular/cdk/collections';
+// _VIEW_REPEATER_STRATEGY was removed in CDK 21. Access dynamically so this file compiles
+// against both CDK 15–20 (where it exists) and CDK 21+ (where it is undefined at runtime).
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const _VIEW_REPEATER_STRATEGY = (cdkCollections as any)['_VIEW_REPEATER_STRATEGY'] as
+  | InjectionToken<unknown>
+  | undefined;
 import {
   CdkFixedSizeVirtualScroll,
   CdkVirtualForOf,
@@ -34,6 +41,7 @@ import {
   forwardRef,
   Inject,
   inject,
+  InjectionToken,
   Injector,
   Input,
   IterableDiffers,
@@ -508,8 +516,8 @@ function createCdkVirtualForOfDirective<T>(
         { provide: TemplateRef, useValue: templateRef },
         { provide: IterableDiffers, useValue: iterableDiffers },
         // _VIEW_REPEATER_STRATEGY is injected by CdkVirtualForOf in CDK 19–20;
-        // CDK 21+ creates its own strategy internally, so this provider is a no-op there.
-        { provide: _VIEW_REPEATER_STRATEGY, useValue: viewRepeater },
+        // CDK 21+ removed the token and creates its own strategy internally.
+        ...(_VIEW_REPEATER_STRATEGY ? [{ provide: _VIEW_REPEATER_STRATEGY, useValue: viewRepeater }] : []),
         { provide: NgZone, useValue: ngZone },
         { provide: CdkVirtualForOf, useClass: CdkVirtualForOf },
       ],
