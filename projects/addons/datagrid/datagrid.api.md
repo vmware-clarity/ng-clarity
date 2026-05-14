@@ -13,6 +13,7 @@ import { AnimationBuilder } from '@angular/animations';
 import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
 import { AnimationMetadata } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs';
+import * as cdkCollections from '@angular/cdk/collections';
 import { CdkConnectedOverlay } from '@angular/cdk/overlay';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkDropList } from '@angular/cdk/drag-drop';
