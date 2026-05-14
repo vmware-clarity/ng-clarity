@@ -9,6 +9,7 @@ import { Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import * as cdkCollections from '@angular/cdk/collections';
 import { _RecycleViewRepeaterStrategy, ListRange } from '@angular/cdk/collections';
+import * as cdkScrolling from '@angular/cdk/scrolling';
 // _VIEW_REPEATER_STRATEGY was removed in CDK 21. Spread the namespace into a plain object so
 // that webpack/esbuild cannot do static named-export existence checks on the property access.
 // At runtime the spread copy will have the property for CDK 15–20 and miss it for CDK 21+.
@@ -17,7 +18,6 @@ const _VIEW_REPEATER_STRATEGY = Object.assign({} as Record<string, unknown>, cdk
   '_VIEW_REPEATER_STRATEGY'
 ] as InjectionToken<unknown> | undefined;
 import {
-  CDK_VIRTUAL_SCROLL_VIEWPORT,
   CdkFixedSizeVirtualScroll,
   CdkVirtualForOf,
   CdkVirtualForOfContext,
@@ -30,6 +30,12 @@ import {
   VIRTUAL_SCROLL_STRATEGY,
   VirtualScrollStrategy,
 } from '@angular/cdk/scrolling';
+// CDK_VIRTUAL_SCROLL_VIEWPORT was added to @angular/cdk/scrolling after CDK 15.
+// Spread the namespace into a plain object so TypeScript and webpack/esbuild do not
+// perform a static named-export existence check (same technique as _VIEW_REPEATER_STRATEGY).
+const _CDK_VIRTUAL_SCROLL_VIEWPORT = Object.assign({} as Record<string, unknown>, cdkScrolling)[
+  'CDK_VIRTUAL_SCROLL_VIEWPORT'
+] as InjectionToken<unknown> | undefined;
 import {
   AfterViewInit,
   VERSION as ANGULAR_VERSION,
@@ -479,7 +485,9 @@ function createCdkVirtualScrollViewport(
  * InjectionToken in CDK 21, so we select based on the Angular major version.
  */
 function getViewportTokenForCdkVirtualForOf() {
-  return +ANGULAR_VERSION.major >= 21 ? CDK_VIRTUAL_SCROLL_VIEWPORT : CdkVirtualScrollViewport;
+  // CDK 21 changed CdkVirtualForOf to inject its parent viewport via CDK_VIRTUAL_SCROLL_VIEWPORT;
+  // CDK 15–20 use the CdkVirtualScrollViewport class itself as the DI token.
+  return +ANGULAR_VERSION.major >= 21 ? _CDK_VIRTUAL_SCROLL_VIEWPORT : CdkVirtualScrollViewport;
 }
 
 function createCdkVirtualForOfDirective<T>(
