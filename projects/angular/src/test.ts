@@ -28,7 +28,7 @@ getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDyn
 //
 // provideZoneChangeDetection was introduced in Angular 17; guard with a runtime feature
 // check so tests still pass for Angular 15–16 where the function does not exist.
-// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-explicit-any, @typescript-eslint/no-var-requires
 const _ngCore: Record<string, any> = require('@angular/core');
 const _provideZoneCD: (() => unknown) | undefined = _ngCore['provideZoneChangeDetection'];
 if (typeof _provideZoneCD === 'function') {
