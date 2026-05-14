@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import * as ngCore from '@angular/core';
 import { Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -17,6 +18,12 @@ import { ClrFileInput } from './file-input';
 import { ClrFileInputContainer } from './file-input-container';
 import { ClrFileInputValueAccessor } from './file-input-value-accessor';
 import { selectFiles } from './file-input.helpers';
+
+// provideZoneChangeDetection was introduced in Angular 17; guard with a runtime feature
+// check so tests still pass for Angular 15–16 where the function does not exist.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const _ngCore: Record<string, any> = ngCore;
+const _provideZoneCD: (() => unknown) | undefined = _ngCore['provideZoneChangeDetection'];
 
 interface TestComponent {
   buttonLabel: string;
@@ -107,6 +114,8 @@ describe('ClrFileInputContainer', () => {
         TestBed.configureTestingModule({
           imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrIconModule],
           declarations: [ClrFileInputContainer, ClrFileInput, ClrFileInputValueAccessor, ReactiveTest],
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          providers: typeof _provideZoneCD === 'function' ? [_provideZoneCD() as any] : [],
         });
 
         fixture = TestBed.createComponent(ReactiveTest);
@@ -150,6 +159,8 @@ describe('ClrFileInputContainer', () => {
         TestBed.configureTestingModule({
           imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrIconModule],
           declarations: [ClrFileInputContainer, ClrFileInput, ClrFileInputValueAccessor, TemplateDrivenTest],
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          providers: typeof _provideZoneCD === 'function' ? [_provideZoneCD() as any] : [],
         });
 
         fixture = TestBed.createComponent(TemplateDrivenTest);
@@ -188,14 +199,10 @@ describe('ClrFileInputContainer', () => {
 
     beforeEach(() => {
       TestBed.resetTestingModule();
-      // Re-add Zone.js-based CD after resetTestingModule() stripped it (Angular 17+).
-      // Without it Angular 21's zoneless verify pass throws NG0100 for the disabled HostBinding.
-      const _provideZoneCD: (() => unknown) | undefined = (require('@angular/core') as Record<string, any>)[
-        'provideZoneChangeDetection'
-      ];
       TestBed.configureTestingModule({
         imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrIconModule],
         declarations: [ClrFileInputContainer, ClrFileInput, ClrFileInputValueAccessor, NoNgControlTest],
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         providers: typeof _provideZoneCD === 'function' ? [_provideZoneCD() as any] : [],
       });
 
