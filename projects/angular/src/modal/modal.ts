@@ -83,7 +83,10 @@ export class ClrModal implements OnChanges, OnDestroy {
   @Input('clrModalOverrideScrollService') bypassScrollService = false;
 
   // Provide raw modal content. This is used by the wizard so that the same template can be rendered with and without a modal.
-  // static: true so the template ref is available on the first CD pass (avoids the two-pass delay that breaks Angular 21 tests)
+  // static: true so the template ref is available on the first CD pass (Angular 21 tests fail without it).
+  // Prettier forces the decorator onto its own line because it carries an object argument; suppress the
+  // conflicting ESLint rule that wants the decorator inline.
+  // eslint-disable-next-line decorator-position/decorator-position
   @ContentChild('clrInternalModalContentTemplate', { static: true })
   protected readonly modalContentTemplate: TemplateRef<any>;
 
