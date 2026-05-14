@@ -26,7 +26,7 @@
     @if (loadingFlag) {
     <clr-spinner> Loading </clr-spinner>
     }
-    <clr-alert [clrAlertType]="'alert-info'" [clrAlertClosable]="false" [clrCloseButtonAriaLabel]="'Close Wiki alert'">
+    <clr-alert [clrAlertType]="'info'" [clrAlertClosable]="false" [clrCloseButtonAriaLabel]="'Close Wiki alert'">
       <clr-alert-item>
         This
         <a href="https://en.wikipedia.org/wiki/42_(number)#The_Hitchhiker.27s_Guide_to_the_Galaxy" target="_blank">
@@ -36,7 +36,7 @@
       </clr-alert-item>
     </clr-alert>
     @if (errorFlag) {
-    <clr-alert [clrAlertType]="'alert-danger'" [clrCloseButtonAriaLabel]="'Close Answer alert'">
+    <clr-alert [clrAlertType]="'danger'" [clrCloseButtonAriaLabel]="'Close Answer alert'">
       <clr-alert-item> Your answer is incorrect. </clr-alert-item>
     </clr-alert>
     }
