@@ -17,6 +17,7 @@ const _VIEW_REPEATER_STRATEGY = Object.assign({} as Record<string, unknown>, cdk
   '_VIEW_REPEATER_STRATEGY'
 ] as InjectionToken<unknown> | undefined;
 import {
+  CDK_VIRTUAL_SCROLL_VIEWPORT,
   CdkFixedSizeVirtualScroll,
   CdkVirtualForOf,
   CdkVirtualForOfContext,
@@ -474,14 +475,11 @@ function createCdkVirtualScrollViewport(
  * CDK < 21:  CdkVirtualForOf injects `CdkVirtualScrollViewport` (the class itself as a token).
  * CDK >= 21: CdkVirtualForOf injects `CDK_VIRTUAL_SCROLL_VIEWPORT` (a dedicated InjectionToken).
  *
- * We detect the CDK 21+ case at runtime by inspecting `CdkVirtualScrollViewport.ɵcmp.providers`:
- * in CDK 21+ the component registers itself under `CDK_VIRTUAL_SCROLL_VIEWPORT` via `useExisting`,
- * which is not present in earlier versions.
+ * Both tokens exist in CDK 14.1+ but CdkVirtualForOf only switched to the dedicated
+ * InjectionToken in CDK 21, so we select based on the Angular major version.
  */
-function getViewportTokenForCdkVirtualForOf(): any {
-  const componentProviders: any[] = (CdkVirtualScrollViewport as any).ɵcmp?.providers ?? [];
-  const selfProvider = componentProviders.find((p: any) => p.useExisting === CdkVirtualScrollViewport);
-  return selfProvider?.provide ?? CdkVirtualScrollViewport;
+function getViewportTokenForCdkVirtualForOf() {
+  return +ANGULAR_VERSION.major >= 21 ? CDK_VIRTUAL_SCROLL_VIEWPORT : CdkVirtualScrollViewport;
 }
 
 function createCdkVirtualForOfDirective<T>(
