@@ -23,11 +23,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   `,
 })
 export class MockDatagridActionBarComponent {
-  @Input() actions: unknown[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  @Input() actions: any[];
 
-  @Output() invokeAction: EventEmitter<unknown> = new EventEmitter();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  @Output() invokeAction: EventEmitter<any> = new EventEmitter();
 
-  onActionClick(action: unknown): void {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onActionClick(action: any): void {
     this.invokeAction.emit(action);
   }
 }
