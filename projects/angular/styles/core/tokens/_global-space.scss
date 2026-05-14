@@ -18,15 +18,20 @@
   --cds-global-layout-width-md: 992px;
   --cds-global-layout-width-lg: 1200px;
   --cds-global-layout-width-xl: 1440px;
-  --cds-global-layout-space-xxxs: calc(2 * var(--cds-internal-scale-1));
-  --cds-global-layout-space-xxs: calc(4 * var(--cds-internal-scale-1));
-  --cds-global-layout-space-xs: calc(8 * var(--cds-internal-scale-1));
-  --cds-global-layout-space-sm: calc(12 * var(--cds-internal-scale-1));
-  --cds-global-layout-space-md: calc(16 * var(--cds-internal-scale-1));
-  --cds-global-layout-space-lg: calc(24 * var(--cds-internal-scale-1));
-  --cds-global-layout-space-xl: calc(32 * var(--cds-internal-scale-1));
-  --cds-global-layout-space-xxl: calc(48 * var(--cds-internal-scale-1));
-  --cds-global-layout-space-xxxl: calc(64 * var(--cds-internal-scale-1));
+
+  &,
+  & [clr-density] {
+    --cds-global-layout-space-xxxs: var(--δ1);
+    --cds-global-layout-space-xxs: var(--δ2);
+    --cds-global-layout-space-xs: var(--δ3);
+    --cds-global-layout-space-sm: var(--δ4);
+    --cds-global-layout-space-md: var(--δ5);
+    --cds-global-layout-space-lg: var(--δ6);
+    --cds-global-layout-space-xl: var(--δ7);
+    --cds-global-layout-space-xxl: var(--δ8);
+    --cds-global-layout-space-xxxl: var(--δ9);
+  }
+
   --cds-global-space-0: calc(0 * var(--cds-internal-scale-2));
   --cds-global-space-1: calc(1 * var(--cds-internal-scale-2));
   --cds-global-space-2: calc(2 * var(--cds-internal-scale-2));
