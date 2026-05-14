@@ -11,6 +11,7 @@ import '@cds/core/icon/register';
 import 'zone.js';
 import 'zone.js/testing';
 import 'jasmine-expect';
+import * as ngCore from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 
@@ -29,7 +30,7 @@ getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDyn
 // provideZoneChangeDetection was introduced in Angular 17; guard with a runtime feature
 // check so tests still pass for Angular 15–16 where the function does not exist.
 // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-explicit-any, @typescript-eslint/no-var-requires
-const _ngCore: Record<string, any> = require('@angular/core');
+const _ngCore: Record<string, any> = ngCore;
 const _provideZoneCD: (() => unknown) | undefined = _ngCore['provideZoneChangeDetection'];
 if (typeof _provideZoneCD === 'function') {
   beforeEach(() => {
