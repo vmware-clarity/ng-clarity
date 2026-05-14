@@ -23,10 +23,10 @@ import { DatalistIdService } from './providers/datalist-id.service';
     <label *ngIf="!label && addGrid()"></label>
     <div class="clr-control-container" [ngClass]="controlClass()">
       <div class="clr-input-wrapper">
-        <div class="clr-input-group" [class.clr-focus]="focus">
+        <div class="clr-input-group" [class.clr-focus]="focus" #datalist>
           <ng-content select="[clrDatalistInput]"></ng-content>
           <ng-content select="datalist"></ng-content>
-          <cds-icon shape="angle" class="clr-datalist-caret" direction="down"></cds-icon>
+          <cds-icon shape="angle" class="clr-datalist-caret" direction="down" (click)="showPicker(datalist)"></cds-icon>
         </div>
         <cds-icon
           *ngIf="showInvalid"
@@ -75,5 +75,13 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
     super(ifControlStateService, layoutService, controlClassService, ngControlService);
 
     this.subscriptions.push(focusService.focusChange.subscribe(state => (this.focus = state)));
+  }
+
+  showPicker(datalist: HTMLElement) {
+    const datalistInput = datalist.querySelector('input[clrDatalistInput]') as HTMLInputElement;
+    if (datalistInput) {
+      datalistInput.focus();
+      datalistInput.showPicker();
+    }
   }
 }
