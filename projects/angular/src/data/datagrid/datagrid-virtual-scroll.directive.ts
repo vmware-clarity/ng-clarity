@@ -9,12 +9,13 @@ import { Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import * as cdkCollections from '@angular/cdk/collections';
 import { _RecycleViewRepeaterStrategy, ListRange } from '@angular/cdk/collections';
-// _VIEW_REPEATER_STRATEGY was removed in CDK 21. Access dynamically so this file compiles
-// against both CDK 15–20 (where it exists) and CDK 21+ (where it is undefined at runtime).
+// _VIEW_REPEATER_STRATEGY was removed in CDK 21. Spread the namespace into a plain object so
+// that webpack/esbuild cannot do static named-export existence checks on the property access.
+// At runtime the spread copy will have the property for CDK 15–20 and miss it for CDK 21+.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const _VIEW_REPEATER_STRATEGY = (cdkCollections as any)['_VIEW_REPEATER_STRATEGY'] as
-  | InjectionToken<unknown>
-  | undefined;
+const _VIEW_REPEATER_STRATEGY = Object.assign({} as Record<string, unknown>, cdkCollections)[
+  '_VIEW_REPEATER_STRATEGY'
+] as InjectionToken<unknown> | undefined;
 import {
   CdkFixedSizeVirtualScroll,
   CdkVirtualForOf,
