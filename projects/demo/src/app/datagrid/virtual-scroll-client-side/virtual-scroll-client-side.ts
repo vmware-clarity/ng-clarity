@@ -7,7 +7,7 @@
 
 import { ListRange } from '@angular/cdk/collections';
 import { AfterViewChecked, ApplicationRef, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ClrDatagridItemsIdentityFunction, ClrDatagridSortOrder } from '@clr/angular';
+import { ClrDatagridItemsIdentityFunction, ClrDatagridSortOrder, SelectionType } from '@clr/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Column, DynamicData, Row } from '../inventory/dynamic-data';
@@ -28,7 +28,7 @@ class ChangeDetectionPerfRecord {
   standalone: false,
 })
 export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChecked {
-  selectionType = 2;
+  selectionType = SelectionType.Multi;
   range: ListRange;
   userRange: ListRange;
   totalRows = 10000;
@@ -44,6 +44,8 @@ export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChe
   globalFilter = '';
 
   pokemonComparator = new PokemonComparator();
+
+  protected selectionTypes = SelectionType;
 
   private allRows = new BehaviorSubject<Row[]>([]);
 
