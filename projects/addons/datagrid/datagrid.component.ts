@@ -62,6 +62,7 @@ import {
 import { ActionBarLayout, ActionDefinition } from './shared/action/action-definition';
 import { ActionClickEvent, SingleRowActionOpen } from './shared/action/actions-event-types';
 import { ColumnDefinition } from './shared/column/column-definitions';
+import { getNestedProperty } from './utils/property-resolver.util';
 
 /**
  * The GridLayoutModel interface defines configurable options for customizing
@@ -1070,21 +1071,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * The default Angular differ offered is slower since it does a complete object comparison.
    */
   protected trackByFn(index: number, gridItem: T): T {
-    const trackByGridItemPropertySeparator = '.'; // rethink constant when properties have "."
     if (this.trackByGridItemProperty) {
-      let parseValid = true;
-      const observedPropertyValue = this.trackByGridItemProperty
-        .split(trackByGridItemPropertySeparator)
-        .reduce((o: any, i: string) => {
-          if (o !== null && o !== undefined && typeof o === 'object' && i in o) {
-            return o[i];
-          }
-          parseValid = false;
-          return undefined;
-        }, gridItem);
-
-      if (parseValid) {
-        return observedPropertyValue;
+      const result = getNestedProperty(gridItem, this.trackByGridItemProperty);
+      if (result.isValid) {
+        return result.value;
       }
     }
 
@@ -1117,7 +1107,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
       const gridItems: T[] = this.gridItems || [];
 
       const matchingItems: T[] = gridItems.filter((item: T): boolean => {
-        return this.trackByFn(0, item) === this.trackByFn(0, this.detailState as T);
+        return this.trackByGridItemFn(item) === this.trackByGridItemFn(this.detailState as T);
       });
       if (matchingItems.length === 0) {
         // Hide detail pane when item is no longer present in the dataset

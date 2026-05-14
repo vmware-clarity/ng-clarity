@@ -20,6 +20,8 @@ import {
 import { SelectionType } from '@clr/angular/data/datagrid';
 import { Subscription } from 'rxjs';
 
+import { getNestedProperty } from '../utils/property-resolver.util';
+
 export interface PreselectableComponent {
   trackByGridItemProperty: string;
   trackByFunction: TrackByFunction<any>;
@@ -193,18 +195,7 @@ export class DatagridPreserveSelectionDirective implements AfterViewInit, OnDest
       return '';
     }
 
-    const propertyPath = this.selectBy as string;
-    const separator = '.';
-
-    let parseValid = true;
-    const value = propertyPath.split(separator).reduce((o: any, i: string) => {
-      if (o !== null && o !== undefined && typeof o === 'object' && i in o) {
-        return o[i];
-      }
-      parseValid = false;
-      return undefined;
-    }, item);
-
-    return parseValid ? value : '';
+    const result = getNestedProperty(item, this.selectBy as string);
+    return result.isValid ? result.value : '';
   }
 }
