@@ -188,9 +188,15 @@ describe('ClrFileInputContainer', () => {
 
     beforeEach(() => {
       TestBed.resetTestingModule();
+      // Re-add Zone.js-based CD after resetTestingModule() stripped it (Angular 17+).
+      // Without it Angular 21's zoneless verify pass throws NG0100 for the disabled HostBinding.
+      const _provideZoneCD: (() => unknown) | undefined = (require('@angular/core') as Record<string, any>)[
+        'provideZoneChangeDetection'
+      ];
       TestBed.configureTestingModule({
         imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrIconModule],
         declarations: [ClrFileInputContainer, ClrFileInput, ClrFileInputValueAccessor, NoNgControlTest],
+        providers: typeof _provideZoneCD === 'function' ? [_provideZoneCD() as any] : [],
       });
 
       fixture = TestBed.createComponent(NoNgControlTest);

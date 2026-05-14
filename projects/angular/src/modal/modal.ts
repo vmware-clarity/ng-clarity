@@ -83,7 +83,8 @@ export class ClrModal implements OnChanges, OnDestroy {
   @Input('clrModalOverrideScrollService') bypassScrollService = false;
 
   // Provide raw modal content. This is used by the wizard so that the same template can be rendered with and without a modal.
-  @ContentChild('clrInternalModalContentTemplate') protected readonly modalContentTemplate: TemplateRef<any>;
+  // static: true so the template ref is available on the first CD pass (avoids the two-pass delay that breaks Angular 21 tests)
+  @ContentChild('clrInternalModalContentTemplate', { static: true }) protected readonly modalContentTemplate: TemplateRef<any>;
 
   @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
 
