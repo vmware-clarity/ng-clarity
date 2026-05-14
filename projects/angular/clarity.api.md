@@ -13,6 +13,7 @@ import { AnimationBuilder } from '@angular/animations';
 import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
 import { AnimationMetadata } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs';
+import * as cdkCollections from '@angular/cdk/collections';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
@@ -40,7 +41,6 @@ import * as i6_10 from '@angular/router';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
-import { ListRange } from '@angular/cdk/collections';
 import { NgControl } from '@angular/forms';
 import { NgForm } from '@angular/forms';
 import { NgForOfContext } from '@angular/common';
@@ -6043,7 +6043,7 @@ export class ÇlrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     // (undocumented)
     persistItems: boolean;
     // (undocumented)
-    renderedRangeChange: EventEmitter<ListRange>;
+    renderedRangeChange: EventEmitter<cdkCollections.ListRange>;
     // (undocumented)
     scrollDown(offset: number, behavior?: ScrollBehavior): void;
     // (undocumented)
