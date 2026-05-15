@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, OnDestroy } from '@angular/core';
+import { Directive, ElementRef, OnDestroy } from '@angular/core';
 
 import { DatagridRowRenderer } from './row-renderer';
 import { ColumnsService } from '../providers/columns.service';
@@ -17,9 +17,11 @@ import { ColumnsService } from '../providers/columns.service';
 export class DatagridRowDetailRenderer extends DatagridRowRenderer implements OnDestroy {
   constructor(
     private parentRow: DatagridRowRenderer,
-    columnsService: ColumnsService
+    columnsService: ColumnsService,
+    el: ElementRef<HTMLElement>
   ) {
-    super(columnsService);
+    super(columnsService, el);
+
     parentRow.expandableRows.push(this);
   }
 
