@@ -62,6 +62,7 @@ import {
 import { ActionBarLayout, ActionDefinition } from './shared/action/action-definition';
 import { ActionClickEvent, SingleRowActionOpen } from './shared/action/actions-event-types';
 import { ColumnDefinition } from './shared/column/column-definitions';
+import { getNestedProperty } from './utils/property-resolver.util';
 
 /**
  * The GridLayoutModel interface defines configurable options for customizing
@@ -1070,19 +1071,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * The default Angular differ offered is slower since it does a complete object comparison.
    */
   protected trackByFn(index: number, gridItem: T): T {
-    const trackByGridItemPropertySeparator = '.'; // rethink constant when properties have "."
     if (this.trackByGridItemProperty) {
-      let parseValid = false;
-      const observedPropertyValue = this.trackByGridItemProperty
-        .split(trackByGridItemPropertySeparator)
-
-        .reduce(
-          (o, i) => (parseValid = Object.prototype.hasOwnProperty.call(o as object, i)) && (o as any)[i],
-          gridItem
-        );
-
-      if (parseValid) {
-        return observedPropertyValue;
+      const result = getNestedProperty(gridItem, this.trackByGridItemProperty);
+      if (result.isValid) {
+        return result.value;
       }
     }
 
@@ -1111,13 +1103,11 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
   private preselectDetail(): void {
     const isDetailEnabled: boolean = !!this.detailHeader || !!this.detailBody;
-    if (isDetailEnabled && this.detailState && this.trackByGridItemProperty) {
+    if (isDetailEnabled && this.detailState && (this.trackByGridItemProperty || this.trackByFunction)) {
       const gridItems: T[] = this.gridItems || [];
 
       const matchingItems: T[] = gridItems.filter((item: T): boolean => {
-        return (
-          (item as any)[this.trackByGridItemProperty] === (this.detailState as any)?.[this.trackByGridItemProperty]
-        );
+        return this.trackByGridItemFn(item) === this.trackByGridItemFn(this.detailState as T);
       });
       if (matchingItems.length === 0) {
         // Hide detail pane when item is no longer present in the dataset
