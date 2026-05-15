@@ -23,7 +23,13 @@
   >
     <div class="clr-sr-only">{{commonStrings.keys.modalContentStart}}</div>
     <!-- This wizard is tightly coupled to the modal styles, so changes here could require changes in the wizard. -->
-    <div *ngIf="!modalContentTemplate; else modalContentTemplate" class="modal-content-wrapper">
+    <!--
+      Use an explicit *ngTemplateOutlet when a content template is provided.
+      The `*ngIf-else` mechanism with a template ref subtly breaks content projection
+      through that template in Angular 21 (wizard <ng-content> slots resolve empty),
+      whereas a direct [ngTemplateOutlet] keeps the projection chain intact.
+    -->
+    <div *ngIf="!modalContentTemplate" class="modal-content-wrapper">
       <div class="modal-content">
         <div class="modal-header--accessible">
           <ng-content select=".leading-button"></ng-content>
@@ -46,6 +52,7 @@
         <ng-content select=".modal-footer"></ng-content>
       </div>
     </div>
+    <ng-template *ngIf="modalContentTemplate" [ngTemplateOutlet]="modalContentTemplate"></ng-template>
     <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   </div>
   <div [@fade] *ngIf="backdrop" class="modal-backdrop" aria-hidden="true" (click)="backdropClick()"></div>
