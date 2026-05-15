@@ -594,6 +594,10 @@ export class GridRowTestHelper {
     (expandElement as HTMLElement).click();
   }
 
+  isExpanded(): boolean {
+    return !!this.rowElement.querySelector('clr-dg-row-detail');
+  }
+
   isRowExpandable(): boolean {
     return (
       this.rowElement.querySelectorAll('.datagrid-expandable-caret > button.datagrid-expandable-caret-button').length >
