@@ -15,14 +15,13 @@ const densityLocalStorageKey = 'density';
 @Component({
   selector: 'app-density-toggle',
   template: `
-    <a
-      href="javascript://"
-      class="nav-link nav-text toggle-density"
-      [class.toggle-density-compacted]="density === 'compact'"
-      [attr.aria-label]="'toggle to ' + (density === 'compact' ? 'Compact' : 'Default') + ' density'"
+    <button
+      class="btn btn-link nav-link nav-text toggle-density"
+      [class.compact-density]="density === 'compact'"
+      [attr.aria-checked]="density === 'compact'"
       (click)="toggleDensity()"
-      (mouseenter)="iconInverse = false"
-      (mouseleave)="iconInverse = true"
+      (mouseenter)="densityIconInverse = true"
+      (mouseleave)="densityIconInverse = false"
     >
       <clr-icon
         class="density-toggle-icon"
@@ -32,7 +31,7 @@ const densityLocalStorageKey = 'density';
         [solid]="solidDensityIcon"
       ></clr-icon>
       <span>Compact</span>
-    </a>
+    </button>
   `,
   styles: [
     `
@@ -41,8 +40,15 @@ const densityLocalStorageKey = 'density';
         align-items: center;
         position: relative;
       }
-      a.toggle-density {
-        &.toggle-density-compacted {
+      button.toggle-density {
+        &,
+        &:hover {
+          clr-icon.density-toggle-icon {
+            color: var(--clr-header-font-color);
+          }
+        }
+
+        &.compact-density {
           font-weight: var(--cds-alias-typography-font-weight-semibold);
         }
       }
@@ -52,15 +58,15 @@ const densityLocalStorageKey = 'density';
 })
 export class DensityToggleComponent implements OnInit {
   protected density = getPreferredDensity();
-  protected iconInverse = true;
+  protected densityIconInverse = true;
 
   constructor() {
     ClarityIcons.addIcons(landscapeIcon);
   }
 
   protected get solidDensityIcon() {
-    const inCompactModeWithoutHover = this.density === 'compact' && !this.iconInverse;
-    const notInCompactModeWithHover = this.density !== 'compact' && this.iconInverse;
+    const inCompactModeWithoutHover = this.density === 'compact' && !this.densityIconInverse;
+    const notInCompactModeWithHover = this.density !== 'compact' && this.densityIconInverse;
 
     return inCompactModeWithoutHover || notInCompactModeWithHover;
   }
