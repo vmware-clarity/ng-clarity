@@ -5,9 +5,19 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<ng-container *ngIf="inPage; then wizardTemplate; else wizardModalTemplate"></ng-container>
+<!--
+  Use two independent *ngIf with [ngTemplateOutlet] instead of *ngIf-then-else.
+  The Angular 17+ control-flow migration (run as part of `ng update`) inlines the
+  `then` template's content into the @if body when it sees `*ngIf="cond; then T"`,
+  producing two copies of <ng-content select="..."> in the same component template.
+  In Angular 21 the projection resolver picks the wrong slot and leaves the
+  projected children un-rendered. Keeping a single wizardTemplate definition and
+  rendering it via ngTemplateOutlet in both branches avoids the duplication and
+  keeps content projection working in v15–v21.
+-->
+<ng-container *ngIf="inPage" [ngTemplateOutlet]="wizardTemplate"></ng-container>
 
-<ng-template #wizardModalTemplate>
+<ng-container *ngIf="!inPage">
   <clr-modal
     [clrModalOpen]="_open"
     [clrModalSize]="size"
@@ -23,7 +33,7 @@
       <ng-container [ngTemplateOutlet]="wizardTemplate"></ng-container>
     </ng-template>
   </clr-modal>
-</ng-template>
+</ng-container>
 
 <!-- This template is tightly coupled to the modal styles. -->
 <ng-template #wizardTemplate>
@@ -75,15 +85,6 @@
       </div>
       <div class="modal-footer clr-wizard-footer">
         <div class="clr-wizard-footer-buttons">
-          <!--
-            The default-buttons wrapper must be present on the very first CD pass so that
-            <ng-content select="clr-wizard-button"> registers as a projection slot before
-            Angular 21 finalises content children. The original condition
-            (`currentPage && !currentPage.hasButtons`) evaluated to false on the first pass
-            (currentPage is set later in ngAfterContentInit), which meant the slot was never
-            registered and the projected buttons stayed un-rendered.
-            Using `!currentPage?.hasButtons` evaluates to true on the first pass.
-          -->
           <div *ngIf="!navService.currentPage?.hasButtons" class="clr-wizard-footer-buttons-wrapper">
             <ng-content select="clr-wizard-button"></ng-content>
           </div>
