@@ -35,7 +35,11 @@ describe('DatagridContentNoWrapDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrDatagridModule, FormsModule, NoopAnimationsModule, DragDropModule, OverlayModule],
-      declarations: [DatagridContentNoWrapDirective, MockDatagridColumnToggleComponent],
+      // DatagridContentNoWrapDirective is already declared in AppfxDatagridModule which is
+      // imported transitively via the standalone DatagridHostComponent below. Declaring it
+      // here too causes "directive is part of 2 modules" when bundle ordering forces both
+      // modules into the same compilation context.
+      declarations: [MockDatagridColumnToggleComponent],
       providers: [
         {
           provide: appfxDatagridUserPreferencesToken,
