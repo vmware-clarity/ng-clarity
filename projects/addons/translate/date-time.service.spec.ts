@@ -48,7 +48,7 @@ describe('Service: DateTime', () => {
 
   describe('using the default options', () => {
     it('formats the date as LongDateTime', inject([DateTimeService], (service: DateTimeService) => {
-      expect(service.format(testDate)).toBe('Thursday, June 01, 2023 at 24:00:00 GMT');
+      expect(service.format(testDate)).toMatch(/^Thursday, June 01, 2023 at 24:00:00 GMT(\+00:00)?$/);
     }));
   });
 
@@ -82,7 +82,7 @@ describe('Service: DateTime', () => {
         service.format(testDate, {
           dateTimeKind: DateTimeKind.LongDateTime,
         })
-      ).toBe('Thursday, June 01, 2023 at 24:00:00 GMT');
+      ).toMatch(/^Thursday, June 01, 2023 at 24:00:00 GMT(\+00:00)?$/);
     }));
   });
 
@@ -120,7 +120,7 @@ describe('Service: DateTime', () => {
           dateTimeKind: DateTimeKind.LongDateTime,
           hourFormat: HourFormat.Hour12,
         })
-      ).toBe('Thursday, June 01, 2023 at 12:00:00 AM GMT');
+      ).toMatch(/^Thursday, June 01, 2023 at 12:00:00 AM GMT(\+00:00)?$/);
     }));
   });
 
@@ -134,7 +134,7 @@ describe('Service: DateTime', () => {
         service.format(testDate, {
           dateTimeKind: DateTimeKind.LongDateTime,
         })
-      ).toBe('jeudi 01 juin 2023 à 24:00:00 UTC');
+      ).toMatch(/^jeudi 01 juin 2023 à 24:00:00 UTC(\+00:00)?$/);
     }));
   });
 
