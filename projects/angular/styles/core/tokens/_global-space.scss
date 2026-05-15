@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+@use '../../variables/variables.density' as density;
 @use '../../mixins';
 
 @include mixins.root-or-host() {
@@ -21,15 +22,15 @@
 
   &,
   & [clr-density] {
-    --cds-global-layout-space-xxxs: var(--δ1);
-    --cds-global-layout-space-xxs: var(--δ2);
-    --cds-global-layout-space-xs: var(--δ3);
-    --cds-global-layout-space-sm: var(--δ4);
-    --cds-global-layout-space-md: var(--δ5);
-    --cds-global-layout-space-lg: var(--δ6);
-    --cds-global-layout-space-xl: var(--δ7);
-    --cds-global-layout-space-xxl: var(--δ8);
-    --cds-global-layout-space-xxxl: var(--δ9);
+    --cds-global-layout-space-xxxs: #{density.$clr-base-layout-space-3xs};
+    --cds-global-layout-space-xxs: #{density.$clr-base-layout-space-2xs};
+    --cds-global-layout-space-xs: #{density.$clr-base-layout-space-xs};
+    --cds-global-layout-space-sm: #{density.$clr-base-layout-space-s};
+    --cds-global-layout-space-md: #{density.$clr-base-layout-space-m};
+    --cds-global-layout-space-lg: #{density.$clr-base-layout-space-l};
+    --cds-global-layout-space-xl: #{density.$clr-base-layout-space-xl};
+    --cds-global-layout-space-xxl: #{density.$clr-base-layout-space-2xl};
+    --cds-global-layout-space-xxxl: #{density.$clr-base-layout-space-3xl};
   }
 
   --cds-global-space-0: calc(0 * var(--cds-internal-scale-2));
