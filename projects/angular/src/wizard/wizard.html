@@ -76,17 +76,18 @@
       <div class="modal-footer clr-wizard-footer">
         <div class="clr-wizard-footer-buttons">
           <!--
-            <ng-content select="clr-wizard-button"> must live in the wizard's main view
-            unconditionally so the projection slot exists at content-children resolution time.
-            In Angular 21, projection slots inside an *ngIf or *ngIf-else (where the else
-            template materializes an embedded view) fail to receive their projected children
-            because navService.currentPage is set later in ngAfterContentInit. Use [hidden]
-            to mute the default buttons when a page provides its own button template.
+            The default-buttons wrapper must be present on the very first CD pass so that
+            <ng-content select="clr-wizard-button"> registers as a projection slot before
+            Angular 21 finalises content children. The original condition
+            (`currentPage && !currentPage.hasButtons`) evaluated to false on the first pass
+            (currentPage is set later in ngAfterContentInit), which meant the slot was never
+            registered and the projected buttons stayed un-rendered.
+            Using `!currentPage?.hasButtons` evaluates to true on the first pass.
           -->
-          <div class="clr-wizard-footer-buttons-wrapper" [hidden]="navService.currentPage?.hasButtons">
+          <div *ngIf="!navService.currentPage?.hasButtons" class="clr-wizard-footer-buttons-wrapper">
             <ng-content select="clr-wizard-button"></ng-content>
           </div>
-          <div class="clr-wizard-footer-buttons-wrapper" *ngIf="navService.currentPage?.hasButtons">
+          <div *ngIf="navService.currentPage?.hasButtons" class="clr-wizard-footer-buttons-wrapper">
             <ng-template [ngTemplateOutlet]="navService.currentPage.buttons"></ng-template>
           </div>
         </div>
