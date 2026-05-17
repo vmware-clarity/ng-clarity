@@ -172,17 +172,8 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  // @TODO This method has a try/catch due to an unknown issue that came when building the clrToggle feature
-  // We need to figure out why this fails for the ClrToggle scenario but works for Date picker...
-  // To see the error, remove the try/catch here and run the ClrToggle suite to see issues getting the container
-  // injector in time, and this ONLY HAPPENS in tests and not in dev/prod mode.
   protected getProviderFromContainer<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T {
-    try {
-      return this._containerInjector.get(token, notFoundValue);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (e) {
-      return notFoundValue;
-    }
+    return this._containerInjector?.get(token, notFoundValue) ?? notFoundValue;
   }
 
   private injectControlClassService(injector: Injector) {
