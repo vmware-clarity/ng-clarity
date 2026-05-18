@@ -18,6 +18,7 @@ const successText = 'Step {STEP} complete';
 const dangerText = 'Error in step {STEP}';
 
 @Component({
+  standalone: true,
   imports: [AppfxA11yModule, ClrStepperModule, FormsModule, ReactiveFormsModule],
   template: `
     <form clrStepper [formGroup]="form">
@@ -27,7 +28,6 @@ const dangerText = 'Error in step {STEP}';
       </clr-stepper-panel>
     </form>
   `,
-  standalone: true,
 })
 export class TestClrStepperComponent {
   readonly form: UntypedFormGroup;

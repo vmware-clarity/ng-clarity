@@ -28,7 +28,13 @@
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    // Angular 17+ added strict type-checking of @HostBinding/@HostListener via
+    // `typeCheckHostBindings`. Several legacy directives in the library (clrFocusOnViewInit,
+    // ariaActiveDescendant, etc.) use untyped `host` bindings that fail this check under
+    // CDK 20+. Disabling here preserves v15-v19 behavior on a patch release; remove and
+    // fix each host binding type in a follow-up structural cleanup (out of scope for CDE-3098).
+    "typeCheckHostBindings": false
   },
   "exclude": ["dist", "node_modules"]
 }

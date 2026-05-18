@@ -209,7 +209,7 @@ class TestDirective {
   template: `
     <clr-datagrid cdkDropList appfxDgColumnsOrder [dgColumnsOrderColumns]="columns" testDirectives>
       <clr-dg-column
-        *ngFor="let column of columns; trackBy: trackByColumnId; let index = index"
+        *ngFor="let column of columns; let index = index; trackBy: trackByColumnId"
         cdkDrag
         [cdkDragLockAxis]="'x'"
         [cdkDragData]="column"

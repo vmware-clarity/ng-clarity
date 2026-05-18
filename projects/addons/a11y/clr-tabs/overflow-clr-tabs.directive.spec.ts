@@ -17,6 +17,7 @@ import { ElementResizeService } from '../resize/element-resize.service';
 import { resources } from './overflow-clr-tabs.directive';
 
 @Component({
+  standalone: true,
   imports: [AppfxA11yModule, ClrTabsModule, CommonModule],
   template: `
     <div [style.width]="width + 'px'">
@@ -53,7 +54,6 @@ import { resources } from './overflow-clr-tabs.directive';
       }
     `,
   ],
-  standalone: true,
 })
 export class ClrTabsHostComponent {
   // gap is set to 0 in styles to remove tabs gap and improve calculation of tests
@@ -73,6 +73,7 @@ export class ClrTabsHostComponent {
 }
 
 @Component({
+  standalone: true,
   imports: [ClrTabsModule],
   template: `
     <clr-tabs>
@@ -82,7 +83,6 @@ export class ClrTabsHostComponent {
       </clr-tab>
     </clr-tabs>
   `,
-  standalone: true,
 })
 export class ComponentWithoutDirective {
   @ViewChild(ClrTabs) tabs: ClrTabs;

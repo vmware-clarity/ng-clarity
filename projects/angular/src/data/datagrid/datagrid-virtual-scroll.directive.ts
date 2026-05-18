@@ -7,7 +7,9 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
-import { _RecycleViewRepeaterStrategy, _VIEW_REPEATER_STRATEGY, ListRange } from '@angular/cdk/collections';
+import * as cdkCollections from '@angular/cdk/collections';
+import { _RecycleViewRepeaterStrategy, ListRange } from '@angular/cdk/collections';
+import * as cdkScrolling from '@angular/cdk/scrolling';
 import {
   CdkFixedSizeVirtualScroll,
   CdkVirtualForOf,
@@ -34,6 +36,7 @@ import {
   forwardRef,
   Inject,
   inject,
+  type InjectionToken,
   Injector,
   Input,
   IterableDiffers,
@@ -50,6 +53,17 @@ import { ClrDatagrid } from './datagrid';
 import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
 import { ColumnsService } from './providers/columns.service';
 import { Items } from './providers/items';
+
+// Resolve internal CDK symbols at runtime via indexed access. Bundlers cannot perform
+// static named-export existence checks against an indexed property, so the same code
+// loads cleanly against CDK 15 (no `CDK_VIRTUAL_SCROLL_VIEWPORT` export) and CDK 21
+// (no `_VIEW_REPEATER_STRATEGY` export).
+const _VIEW_REPEATER_STRATEGY = (cdkCollections as Record<string, unknown>)['_VIEW_REPEATER_STRATEGY'] as
+  | InjectionToken<unknown>
+  | undefined;
+const _CDK_VIRTUAL_SCROLL_VIEWPORT = (cdkScrolling as Record<string, unknown>)['CDK_VIRTUAL_SCROLL_VIEWPORT'] as
+  | InjectionToken<unknown>
+  | undefined;
 
 type CdkVirtualForInputKey =
   | 'cdkVirtualForOf'
@@ -150,8 +164,14 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(this.itemSize, this.minBufferPx, this.maxBufferPx);
   }
 
-  get totalContentHeight() {
-    return this.virtualScrollViewport?._totalContentHeight || '';
+  get totalContentHeight(): string {
+    // CDK 15-19: `_totalContentHeight` is a `string`.
+    // CDK 20+:   `_totalContentHeight` is a `Signal<string>`. Calling it returns the value.
+    const h = this.virtualScrollViewport?._totalContentHeight as unknown;
+    if (typeof h === 'function') {
+      return (h as () => string)() || '';
+    }
+    return (h as string) || '';
   }
 
   @Input('clrVirtualRowsOf')
@@ -475,24 +495,38 @@ function createCdkVirtualForOfDirective<T>(
       virtualScrollViewport,
       ngZone
     );
-  } else {
-    const virtualScrollViewportInjector = Injector.create({
-      parent: inject(EnvironmentInjector),
-      providers: [{ provide: CdkVirtualScrollViewport, useValue: virtualScrollViewport }],
-    });
-
-    const cdkVirtualForInjector = Injector.create({
-      parent: virtualScrollViewportInjector,
-      providers: [
-        { provide: ViewContainerRef, useValue: viewContainerRef },
-        { provide: TemplateRef, useValue: templateRef },
-        { provide: IterableDiffers, useValue: iterableDiffers },
-        { provide: _VIEW_REPEATER_STRATEGY, useValue: viewRepeater },
-        { provide: NgZone, useValue: ngZone },
-        { provide: CdkVirtualForOf, useClass: CdkVirtualForOf },
-      ],
-    });
-
-    return cdkVirtualForInjector.get(CdkVirtualForOf);
   }
+
+  // Provide the viewport under BOTH the class token (used by CdkVirtualForOf in CDK 15-20)
+  // and the dedicated InjectionToken (used by CdkVirtualForOf in CDK 21+). The token is
+  // resolved at module load via indexed access, so absent on CDK 15 builds we simply skip it.
+  // This avoids tying the dispatch to ANGULAR_VERSION (which may diverge from CDK version
+  // in mixed installs permitted by our peerDependencies range).
+  const viewportProviders: { provide: unknown; useValue: CdkVirtualScrollViewport }[] = [
+    { provide: CdkVirtualScrollViewport, useValue: virtualScrollViewport },
+  ];
+  if (_CDK_VIRTUAL_SCROLL_VIEWPORT) {
+    viewportProviders.push({ provide: _CDK_VIRTUAL_SCROLL_VIEWPORT, useValue: virtualScrollViewport });
+  }
+
+  const virtualScrollViewportInjector = Injector.create({
+    parent: inject(EnvironmentInjector),
+    providers: viewportProviders as { provide: InjectionToken<unknown>; useValue: CdkVirtualScrollViewport }[],
+  });
+
+  const cdkVirtualForInjector = Injector.create({
+    parent: virtualScrollViewportInjector,
+    providers: [
+      { provide: ViewContainerRef, useValue: viewContainerRef },
+      { provide: TemplateRef, useValue: templateRef },
+      { provide: IterableDiffers, useValue: iterableDiffers },
+      // _VIEW_REPEATER_STRATEGY is injected by CdkVirtualForOf in CDK 19-20;
+      // CDK 21+ removed the token and creates its own strategy internally.
+      ...(_VIEW_REPEATER_STRATEGY ? [{ provide: _VIEW_REPEATER_STRATEGY, useValue: viewRepeater }] : []),
+      { provide: NgZone, useValue: ngZone },
+      { provide: CdkVirtualForOf, useClass: CdkVirtualForOf },
+    ],
+  });
+
+  return cdkVirtualForInjector.get(CdkVirtualForOf);
 }

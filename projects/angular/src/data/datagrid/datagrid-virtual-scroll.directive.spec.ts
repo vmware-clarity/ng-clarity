@@ -237,6 +237,26 @@ export default function (): void {
         fixture.destroy();
       });
 
+      it('exposes totalContentHeight as a string regardless of CDK version', function () {
+        fixture.detectChanges();
+
+        const directive = instance.virtualScroll;
+        const stringResult = directive.totalContentHeight;
+        expect(typeof stringResult).toBe('string');
+
+        // CDK 15-19 stores `_totalContentHeight` as a plain string.
+        (directive as any).virtualScrollViewport = { _totalContentHeight: '1200px' };
+        expect(directive.totalContentHeight).toBe('1200px');
+
+        // CDK 20+ stores `_totalContentHeight` as a `Signal<string>` (callable).
+        (directive as any).virtualScrollViewport = { _totalContentHeight: () => '2400px' };
+        expect(directive.totalContentHeight).toBe('2400px');
+
+        // Missing viewport must produce empty string, not undefined.
+        (directive as any).virtualScrollViewport = undefined;
+        expect(directive.totalContentHeight).toBe('');
+      });
+
       it('Spy on Scroll to index', function () {
         fixture.detectChanges();
         const spyVirtualScroll = spyOn(instance.virtualScroll, 'scrollToIndex');

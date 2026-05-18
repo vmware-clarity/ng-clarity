@@ -1766,16 +1766,18 @@ describe('DatagridComponent', () => {
       expect(detailPane).toBeTruthy();
     });
 
-    it('after hiding, "detailState" should be null in the hosting component', function (this: any) {
+    it('after hiding, "detailState" should be null in the hosting component', async function (this: any) {
       this.component.detailState = this.component.data[0];
       this.fixture.detectChanges(true);
       const detailPaneCloseBtn: DebugElement = this.fixture.debugElement.query(
         By.css('clr-datagrid clr-dg-detail clr-dg-detail-header button')
       );
       detailPaneCloseBtn.nativeElement.click();
-      this.fixture.whenStable().then(() => {
-        expect(this.component.detailState).toBeNull();
-      });
+      // Await fixture stability before the test ends — otherwise Jasmine moves on,
+      // afterEach nullifies this.component, and the queued .then() callback later
+      // dereferences null and surfaces as an unhandled error in Angular 21.
+      await this.fixture.whenStable();
+      expect(this.component.detailState).toBeNull();
     });
   });
 
@@ -1863,6 +1865,10 @@ class StatusComparator implements ClrDatagridComparatorInterface<any> {
 
 @Component({
   selector: 'appfx-datagrid-host-component',
+  // Must be explicitly standalone — the @Component decorator's `imports` field is only valid
+  // for standalone components. Without this flag, Angular 16 (where standalone defaulted to
+  // false) treats the host as a non-standalone directive, then rejects it from the test
+  // module's `imports` with 'Unexpected directive ... Please add an @NgModule annotation'.
   standalone: true,
   imports: [AppfxDatagridModule, CdkA11yModule, DatagridColumnsOrderModule, DragDropModule, FormsModule, OverlayModule],
   template: `

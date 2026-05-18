@@ -268,7 +268,7 @@ describe('DatagridColumnsOrderDirective', () => {
       (dgColumnsOrderChange)="onColumnOrderChange($event)"
     >
       <clr-dg-column
-        *ngFor="let column of visibleColumns; trackBy: trackByColumnId; let index = index"
+        *ngFor="let column of visibleColumns; let index = index; trackBy: trackByColumnId"
         cdkDrag
         [cdkDragLockAxis]="'x'"
         [cdkDragData]="column"
