@@ -836,6 +836,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     }
   }
 
+  /**
+   * Wrapper around trackByFn intended for identity comparison only.
+   * The index passed (0) is a dummy value and should not be relied upon.
+   */
   trackByGridItemFn = (item: T) => this.trackByFn(0, <T>(item || {}));
 
   trackByColumnId(index: number, column: ColumnDefinition<T>): string {
