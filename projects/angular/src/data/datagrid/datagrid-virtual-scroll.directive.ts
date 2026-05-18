@@ -54,14 +54,20 @@ import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scr
 import { ColumnsService } from './providers/columns.service';
 import { Items } from './providers/items';
 
-// Resolve internal CDK symbols at runtime via indexed access. Bundlers cannot perform
-// static named-export existence checks against an indexed property, so the same code
-// loads cleanly against CDK 15 (no `CDK_VIRTUAL_SCROLL_VIEWPORT` export) and CDK 21
-// (no `_VIEW_REPEATER_STRATEGY` export).
-const _VIEW_REPEATER_STRATEGY = (cdkCollections as Record<string, unknown>)['_VIEW_REPEATER_STRATEGY'] as
-  | InjectionToken<unknown>
-  | undefined;
-const _CDK_VIRTUAL_SCROLL_VIEWPORT = (cdkScrolling as Record<string, unknown>)['CDK_VIRTUAL_SCROLL_VIEWPORT'] as
+// Resolve internal CDK symbols at runtime. Webpack/esbuild emit a static "export not
+// found" error when a literal-string property is read directly off a namespace import,
+// which would fail the v16 build for `CDK_VIRTUAL_SCROLL_VIEWPORT` and the v21 build for
+// `_VIEW_REPEATER_STRATEGY`. Going through an intermediate `Record<string, any>` const
+// (same pattern as `projects/addons/test.ts` uses for `provideZoneChangeDetection`)
+// disconnects the access from the namespace identifier so the static analyzer leaves it
+// alone, while remaining correct at runtime because ES-module namespace objects are
+// enumerable.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const _cdkCollections: Record<string, any> = cdkCollections;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const _cdkScrolling: Record<string, any> = cdkScrolling;
+const _VIEW_REPEATER_STRATEGY = _cdkCollections['_VIEW_REPEATER_STRATEGY'] as InjectionToken<unknown> | undefined;
+const _CDK_VIRTUAL_SCROLL_VIEWPORT = _cdkScrolling['CDK_VIRTUAL_SCROLL_VIEWPORT'] as
   | InjectionToken<unknown>
   | undefined;
 
