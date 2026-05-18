@@ -23,7 +23,12 @@ const themeLocalStorageKey = 'theme';
       (mouseenter)="themeIconInverse = true"
       (mouseleave)="themeIconInverse = false"
     >
-      <clr-icon class="theme-toggle-icon" size="md" [shape]="theme === 'light' ? 'moon' : 'sun'"></clr-icon>
+      <clr-icon
+        class="theme-toggle-icon"
+        size="md"
+        [solid]="themeIconInverse"
+        [shape]="theme === 'light' ? 'moon' : 'sun'"
+      ></clr-icon>
       {{ theme === 'light' ? 'Dark' : 'Light' }}
     </button>
   `,
@@ -34,8 +39,13 @@ const themeLocalStorageKey = 'theme';
         align-items: center;
         position: relative;
       }
-      clr-icon.theme-toggle-icon {
-        color: var(--clr-header-font-color);
+      button.btn-link {
+        &,
+        &:hover {
+          clr-icon.theme-toggle-icon {
+            color: var(--clr-header-font-color);
+          }
+        }
       }
     `,
   ],
