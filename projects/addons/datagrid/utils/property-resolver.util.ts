@@ -8,10 +8,7 @@
 /**
  * Result of a nested property resolution.
  */
-export interface PropertyResolutionResult<T = any> {
-  value: T | undefined;
-  isValid: boolean;
-}
+export type PropertyResolutionResult<T = unknown> = { isValid: true; value: T } | { isValid: false };
 
 /**
  * Safely resolves a nested property path (e.g., "a.b.c") on an object.
@@ -20,9 +17,9 @@ export interface PropertyResolutionResult<T = any> {
  * @param propertyPath The dot-separated property path.
  * @returns An object containing the resolved value and a boolean indicating if the path was valid.
  */
-export function getNestedProperty<T = any>(item: any, propertyPath: string): PropertyResolutionResult<T> {
+export function getNestedProperty<T = unknown>(item: any, propertyPath: string): PropertyResolutionResult<T> {
   if (!item || !propertyPath) {
-    return { value: undefined, isValid: false };
+    return { isValid: false };
   }
 
   let isValid = true;
@@ -34,5 +31,5 @@ export function getNestedProperty<T = any>(item: any, propertyPath: string): Pro
     return undefined;
   }, item);
 
-  return { value, isValid };
+  return isValid ? { isValid: true, value: value as T } : { isValid: false };
 }

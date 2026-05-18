@@ -9,14 +9,14 @@ import { getNestedProperty } from './property-resolver.util';
 
 describe('getNestedProperty', () => {
   it('should return invalid for null/undefined item', () => {
-    expect(getNestedProperty(null, 'a.b')).toEqual({ value: undefined, isValid: false });
-    expect(getNestedProperty(undefined, 'a.b')).toEqual({ value: undefined, isValid: false });
+    expect(getNestedProperty(null, 'a.b')).toEqual({ isValid: false });
+    expect(getNestedProperty(undefined, 'a.b')).toEqual({ isValid: false });
   });
 
   it('should return invalid for empty/null propertyPath', () => {
     const item = { a: 1 };
-    expect(getNestedProperty(item, '')).toEqual({ value: undefined, isValid: false });
-    expect(getNestedProperty(item, null as any)).toEqual({ value: undefined, isValid: false });
+    expect(getNestedProperty(item, '')).toEqual({ isValid: false });
+    expect(getNestedProperty(item, null as any)).toEqual({ isValid: false });
   });
 
   it('should resolve a top-level property', () => {
@@ -46,26 +46,26 @@ describe('getNestedProperty', () => {
 
   it('should return invalid if a top-level property does not exist', () => {
     const item = { a: 1 };
-    expect(getNestedProperty(item, 'b')).toEqual({ value: undefined, isValid: false });
+    expect(getNestedProperty(item, 'b')).toEqual({ isValid: false });
   });
 
   it('should return invalid if a nested property does not exist', () => {
     const item = { a: { b: 1 } };
-    expect(getNestedProperty(item, 'a.c')).toEqual({ value: undefined, isValid: false });
-    expect(getNestedProperty(item, 'a.b.c')).toEqual({ value: undefined, isValid: false });
+    expect(getNestedProperty(item, 'a.c')).toEqual({ isValid: false });
+    expect(getNestedProperty(item, 'a.b.c')).toEqual({ isValid: false });
   });
 
   it('should return invalid if an intermediate property is null or undefined', () => {
     const item1 = { a: null };
-    expect(getNestedProperty(item1, 'a.b')).toEqual({ value: undefined, isValid: false });
+    expect(getNestedProperty(item1, 'a.b')).toEqual({ isValid: false });
 
     const item2 = { a: undefined };
-    expect(getNestedProperty(item2, 'a.b')).toEqual({ value: undefined, isValid: false });
+    expect(getNestedProperty(item2, 'a.b')).toEqual({ isValid: false });
   });
 
   it('should return invalid if an intermediate property is a primitive', () => {
     const item = { a: 'string' };
-    expect(getNestedProperty(item, 'a.b')).toEqual({ value: undefined, isValid: false });
+    expect(getNestedProperty(item, 'a.b')).toEqual({ isValid: false });
   });
 
   it('should resolve properties on the prototype chain', () => {

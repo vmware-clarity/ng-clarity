@@ -1072,9 +1072,9 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    */
   protected trackByFn(index: number, gridItem: T): T {
     if (this.trackByGridItemProperty) {
-      const result = getNestedProperty(gridItem, this.trackByGridItemProperty);
+      const result = getNestedProperty<T>(gridItem, this.trackByGridItemProperty);
       if (result.isValid) {
-        return result.value;
+        return result.value as T;
       }
     }
 

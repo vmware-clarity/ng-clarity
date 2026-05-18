@@ -191,11 +191,7 @@ export class DatagridPreserveSelectionDirective implements AfterViewInit, OnDest
       return (<any>this.selectBy)(0, item || {});
     }
 
-    if (!item || !this.selectBy) {
-      return '';
-    }
-
     const result = getNestedProperty(item, this.selectBy as string);
-    return result.isValid ? result.value : '';
+    return result.isValid ? String(result.value) : '';
   }
 }
