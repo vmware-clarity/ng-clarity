@@ -40,6 +40,7 @@ import DatagridPaginationSpecs from './datagrid-pagination.spec';
 import DatagridPlaceholderSpecs from './datagrid-placeholder.spec';
 import DatagridRowDetailSpecs from './datagrid-row-detail.spec';
 import DatagridRowSpecs from './datagrid-row.spec';
+import DatagridSingleSelectionDirectiveSpec from './datagrid-single-selection.directive.spec';
 import DatagridVirtualScrollSpec from './datagrid-virtual-scroll.directive.spec';
 import DatagridSpecs from './datagrid.spec';
 import ColumnResizerServiceSpecs from './providers/column-resizer.service.spec';
@@ -88,6 +89,7 @@ describe('Datagrid', function () {
     DatagridItemsSpecs();
     DatagridRowSpecs();
     DatagridRowDetailSpecs();
+    DatagridSingleSelectionDirectiveSpec();
     DatagridPageSizeSpecs();
     DatagridPaginationSpecs();
     DatagridPaginationIntegrationSpecs();

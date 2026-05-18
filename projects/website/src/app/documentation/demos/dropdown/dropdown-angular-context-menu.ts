@@ -55,7 +55,7 @@ export class ExampleComponent {
 
   onContextMenu(event: MouseEvent) {
     event.preventDefault();
-    this.dropdown.openAtPoint({ x: event.clientX, y: event.clientY });
+    this.dropdown.openAtPoint({ x: event.clientX, y: event.clientY }, event.target as HTMLElement);
   }
 }
 `;
@@ -95,6 +95,6 @@ export class DropdownAngularContextMenuDemo {
 
   onContextMenu(event: MouseEvent) {
     event.preventDefault();
-    this.dropdown.openAtPoint({ x: event.clientX, y: event.clientY });
+    this.dropdown.openAtPoint({ x: event.clientX, y: event.clientY }, event.target as HTMLElement);
   }
 }

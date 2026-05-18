@@ -9,6 +9,7 @@ import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DropdownAngularCloseItemFalseDemo } from './dropdown-angular-close-item-false';
+import { DropdownAngularContextMenuDemo } from './dropdown-angular-context-menu';
 import { DropdownAngularNestedDemo } from './dropdown-angular-nested';
 import { DropdownAngularPositioningDemo } from './dropdown-angular-positioning';
 import { DropdownAngularShadowRootDemo } from './dropdown-angular-shadow-root';
@@ -30,6 +31,7 @@ const ROUTES: Routes = [
       { path: 'icon-toggle', component: DropdownStaticIconToggleDemo },
       { path: 'buttonlink-toggle', component: DropdownStaticButtonLinkToggleDemo },
       { path: 'angular-positioning', component: DropdownAngularPositioningDemo },
+      { path: 'angular-context-menu', component: DropdownAngularContextMenuDemo },
       { path: 'angular-shadow-root', component: DropdownAngularShadowRootDemo },
       { path: 'angular-nested', component: DropdownAngularNestedDemo },
       { path: 'multi-click', component: DropdownAngularCloseItemFalseDemo },

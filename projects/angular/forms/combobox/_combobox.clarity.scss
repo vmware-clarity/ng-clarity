@@ -236,7 +236,7 @@
     overflow-y: auto;
     visibility: visible;
 
-    &-multi {
+    &-multi:has(> .clr-combobox-select-all) {
       padding-top: 0;
     }
 

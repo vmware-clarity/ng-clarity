@@ -2837,7 +2837,7 @@ export interface ClrDatagridStringFilterInterface<T> {
 
 // @public (undocumented)
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
-    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
+    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, injector: EnvironmentInjector);
     // Warning: (ae-forgotten-export) The symbol "CdkVirtualForInputs" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
@@ -3226,7 +3226,7 @@ export class ClrDropdown implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    openAtPoint(point: ClrPopoverPoint): void;
+    openAtPoint(point: ClrPopoverPoint, targetElement?: HTMLElement): void;
     // (undocumented)
     parent: ClrDropdown;
     // (undocumented)
@@ -4761,7 +4761,7 @@ export class ClrPopoverService {
     // (undocumented)
     get open(): boolean;
     set open(value: boolean);
-    openAtPoint(point: ClrPopoverPoint): void;
+    openAtPoint(point: ClrPopoverPoint, targetElement?: HTMLElement): void;
     // (undocumented)
     get openChange(): Observable<boolean>;
     // (undocumented)
@@ -4775,6 +4775,8 @@ export class ClrPopoverService {
     get originPoint(): ClrPopoverPoint | null;
     // (undocumented)
     panelClass: string[];
+    // (undocumented)
+    pointTargetElement: HTMLElement | undefined;
     // (undocumented)
     get popoverVisible(): Observable<boolean>;
     // (undocumented)
@@ -5169,7 +5171,7 @@ export class ClrSignpost {
     set customTrigger(trigger: ClrSignpostTrigger);
     hideTrigger: boolean;
     // (undocumented)
-    openAtPoint(point: ClrPopoverPoint): void;
+    openAtPoint(point: ClrPopoverPoint, targetElement?: HTMLElement): void;
     // (undocumented)
     get showDefaultTrigger(): boolean;
     // (undocumented)
@@ -7130,7 +7132,7 @@ export class DatagridPropertyStringFilter<T = any> implements ClrDatagridStringF
 
 // @public (undocumented)
 export class DatagridRowDetailRenderer extends DatagridRowRenderer implements OnDestroy {
-    constructor(parentRow: DatagridRowRenderer, columnsService: ColumnsService);
+    constructor(parentRow: DatagridRowRenderer, columnsService: ColumnsService, el: ElementRef<HTMLElement>);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -7141,7 +7143,7 @@ export class DatagridRowDetailRenderer extends DatagridRowRenderer implements On
 
 // @public (undocumented)
 export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
-    constructor(columnsService: ColumnsService);
+    constructor(columnsService: ColumnsService, el: ElementRef<HTMLElement>);
     // (undocumented)
     cells: QueryList<DatagridCellRenderer>;
     // (undocumented)

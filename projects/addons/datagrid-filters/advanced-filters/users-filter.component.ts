@@ -79,6 +79,14 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
     return this.visibleUsers.length < this.allFetchedUsers.length;
   }
 
+  trackByOperator(_index: number, operator: ComparisonOperator): ComparisonOperator {
+    return operator;
+  }
+
+  trackByDomain(_index: number, domain: string): string {
+    return domain;
+  }
+
   ngOnInit() {
     this.createUsersSelectionForm();
     this.setupListeners();

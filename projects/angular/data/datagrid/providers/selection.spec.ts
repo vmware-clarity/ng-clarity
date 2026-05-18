@@ -664,6 +664,14 @@ export default function (): void {
           });
         });
 
+        it('does not write undefined into current when items are virtual-scroll placeholder slots', async () => {
+          itemsInstance.identifyBy = item => item.id;
+          // Server-driven / virtual scroll can emit a dense array of undefined before real data loads.
+          itemsInstance.all = [undefined, undefined, undefined] as unknown as Item[];
+          await delay();
+          expect(selectionInstance.current).toEqual([]);
+        });
+
         it('should support toggleAll selection on page change', async () => {
           itemsInstance.identifyBy = item => item.id;
           itemsInstance.all = itemsA;
@@ -730,6 +738,15 @@ export default function (): void {
           expect(selectionInstance.isSelected(itemsA[0])).toBe(true);
           expect(selectionInstance.isSelected(itemsA[1])).toBe(false);
           expect(selectionInstance.isSelected(itemsA[2])).toBe(false);
+        });
+
+        it('does not set current to [undefined] when items are only virtual-scroll placeholder slots', async () => {
+          itemsInstance.identifyBy = item => item.id;
+          expect(selectionInstance.current).toEqual([]);
+          itemsInstance.all = [undefined, undefined, undefined] as unknown as Item[];
+          await delay();
+          expect(selectionInstance.current).toEqual([]);
+          expect(selectionInstance.currentSingle).toBeUndefined();
         });
       });
     });

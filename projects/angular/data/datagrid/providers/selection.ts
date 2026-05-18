@@ -92,6 +92,11 @@ export class Selection<T = any> {
             let selectionUpdated = false;
 
             updatedItems.forEach(item => {
+              if (item === null || item === undefined) {
+                // Virtual scroll may emit a dense array of undefined slot placeholders. Those must
+                // never match the empty single-selection ref (see virtual-scroll + Single).
+                return;
+              }
               const ref = _items.identifyBy(item);
               // If one of the updated items is the previously selectedSingle, set it as the new one
               if (this.currentSelectionRefs[0] === ref) {
@@ -119,6 +124,9 @@ export class Selection<T = any> {
             //
             // The both loops below that goes over updatedItems could be combined into one.
             updatedItems.forEach(item => {
+              if (item === null || item === undefined) {
+                return;
+              }
               const ref = _items.identifyBy(item);
               if (this.lockedRefs.indexOf(ref) > -1) {
                 updateLockedRef.push(ref);
@@ -130,6 +138,9 @@ export class Selection<T = any> {
             // the if statement below results in broken behavior.
             if (leftOver.length > 0) {
               updatedItems.forEach(item => {
+                if (item === null || item === undefined) {
+                  return;
+                }
                 const ref = _items.identifyBy(item);
                 // Look in current selected refs array if item is selected, and update actual value
                 const selectedIndex = this.currentSelectionRefs.indexOf(ref);

@@ -894,6 +894,12 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     return footer;
   }
 
+  toggleAll(): void {
+    if (this.clrDatagrid) {
+      this.clrDatagrid.allSelected = !this.clrDatagrid.allSelected;
+    }
+  }
+
   protected getExpandDetailsLabel(item: T): string {
     if (!this.hasExpandableRows(item)) {
       return '';

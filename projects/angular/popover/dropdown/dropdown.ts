@@ -41,8 +41,8 @@ export class ClrDropdown implements OnDestroy {
     this.subscriptions.push(popoverService.openChange.subscribe(() => cdr.markForCheck()));
   }
 
-  openAtPoint(point: ClrPopoverPoint) {
-    this.popoverService.openAtPoint(point);
+  openAtPoint(point: ClrPopoverPoint, targetElement?: HTMLElement) {
+    this.popoverService.openAtPoint(point, targetElement);
   }
 
   ngOnDestroy() {
