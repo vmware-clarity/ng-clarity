@@ -1306,13 +1306,9 @@
       width: 34%;
     }
 
-    .datagrid-placeholder-container,
-    .datagrid-row {
-      border-right: tokens.$cds-alias-object-border-width-100 solid tables-variables.$clr-table-border-color;
-    }
-
     .datagrid-footer {
       border-bottom-right-radius: 0;
+      border-right: none;
     }
 
     .pagination {
@@ -1346,7 +1342,6 @@
     border-width: tokens.$cds-alias-object-border-width-100;
     border-style: solid;
     border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
-    border-left: none;
     border-top-right-radius: density.$clr-base-border-radius-s;
     border-bottom-right-radius: density.$clr-base-border-radius-s;
     background: datagrid-variables.$clr-datagrid-detail-pane-bg-color;
