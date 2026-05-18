@@ -94,29 +94,29 @@ describe('Abstract Popover', function () {
     });
 
     it('should not run change detection when any button is pressed except ESC', () => {
-      // We assert that CD (`ApplicationRef.tick`) is not invoked by non-ESC keys. Angular 21
-      // moved the default scheduler to zoneless, where `tick` may be invoked by the runtime
-      // unrelated to our handlers. In that case fall back to asserting on the directive's
-      // user-visible state (the popover stays open) instead of the CD spy.
-      const isZoneless = +ANGULAR_VERSION.major >= 21;
+      // Angular 20 reworked the change-detection scheduler and v21 went zoneless by default,
+      // so `ApplicationRef.tick` is no longer the right proxy for "did the directive force
+      // CD?". Spy on it for v15-v19 (original invariant) and fall back to asserting the
+      // user-visible state (popover open/closed) for v20+.
+      const skipTickSpy = +ANGULAR_VERSION.major >= 20;
       const appRef = TestBed.inject(ApplicationRef);
       const tickSpy = spyOn(appRef, 'tick').and.callThrough();
 
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Shift' }));
-      if (!isZoneless) {
+      if (!skipTickSpy) {
         expect(tickSpy).not.toHaveBeenCalled();
       }
       expect(toggleService.open).toBe(true);
 
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
-      if (!isZoneless) {
+      if (!skipTickSpy) {
         expect(tickSpy).not.toHaveBeenCalled();
       }
       expect(toggleService.open).toBe(true);
 
       tickSpy.calls.reset();
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
-      if (!isZoneless) {
+      if (!skipTickSpy) {
         expect(tickSpy).toHaveBeenCalled();
       }
       expect(toggleService.open).toBe(false);

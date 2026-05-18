@@ -54,12 +54,11 @@ describe('Outside click', () => {
   });
 
   it('should not run change detection if the click event happened on the host element', () => {
-    // Angular 21 made TestBed zoneless by default. With zoneless CD, ApplicationRef.tick is
-    // invoked by the runtime on every microtask boundary irrespective of the directive's
-    // runOutsideAngular logic, so the original strict count cannot be asserted there.
-    // We preserve the strict invariant for v15-v20 and fall back to a behavioural assertion
-    // for v21+ (the directive must only forward outside clicks, not host clicks).
-    if (+ANGULAR_VERSION.major >= 21) {
+    // Angular 20 reworked the change-detection scheduler and v21 went zoneless by default,
+    // so `ApplicationRef.tick` is no longer the right proxy for "did the directive force
+    // CD?". Preserve the strict invariant for v15-v19 and fall back to a behavioural
+    // assertion for v20+ (the directive must only forward outside clicks, not host clicks).
+    if (+ANGULAR_VERSION.major >= 20) {
       host.click();
       host.click();
       host.click();
