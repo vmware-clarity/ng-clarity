@@ -6,6 +6,7 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ActionDefinition } from '@clr/addons/datagrid';
 
 @Component({
   selector: 'appfx-datagrid-action-bar',
@@ -23,11 +24,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   `,
 })
 export class MockDatagridActionBarComponent {
-  @Input() actions: unknown[];
+  @Input() actions: ActionDefinition[];
 
-  @Output() invokeAction: EventEmitter<unknown> = new EventEmitter();
+  @Output() invokeAction: EventEmitter<ActionDefinition> = new EventEmitter();
 
-  onActionClick(action: unknown): void {
+  onActionClick(action: ActionDefinition): void {
     this.invokeAction.emit(action);
   }
 }
