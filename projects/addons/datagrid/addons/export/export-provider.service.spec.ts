@@ -19,10 +19,10 @@ import { ClientSideExportConfig, ExportStatus } from './export.interface';
 
 @Component({
   selector: 'clr-datagrid-with-export-directive',
+  standalone: true,
   imports: [ClrDatagridModule, FormsModule],
   template: ` <clr-datagrid></clr-datagrid> `,
   providers: [ExportProviderService],
-  standalone: true,
 })
 class ClrDatagridHostComponent {
   @ViewChild(ClrDatagrid, { static: true }) clrDatagrid: ClrDatagrid;

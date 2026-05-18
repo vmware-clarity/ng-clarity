@@ -22,6 +22,7 @@ const last = (array: any[]) => array[array.length - 1];
 
 @Component({
   selector: 'test-container-component',
+  standalone: true,
   imports: [AppfxDatagridModule, ClrDropdownModule, ClrIconModule, ClrTooltipModule],
   template: `
     <appfx-datagrid-action-bar (invokeAction)="onActionClick($event)" [actions]="actions"> </appfx-datagrid-action-bar>
@@ -38,7 +39,6 @@ const last = (array: any[]) => array[array.length - 1];
       }
     `,
   ],
-  standalone: true,
 })
 class TestContainerComponent {
   readonly normalSize: string = '210px';

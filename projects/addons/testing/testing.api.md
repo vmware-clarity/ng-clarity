@@ -8,6 +8,7 @@ import { AfterContentInit } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import { AnimationBuilder } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs';
+import * as cdkCollections from '@angular/cdk/collections';
 import { CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
 import { CdkVirtualForOf } from '@angular/cdk/scrolling';
 import { CdkVirtualForOfContext } from '@angular/cdk/scrolling';
@@ -22,7 +23,6 @@ import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import * as i0 from '@angular/core';
 import { IterableDiffers } from '@angular/core';
-import { ListRange } from '@angular/cdk/collections';
 import { NgForOfContext } from '@angular/common';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -316,11 +316,11 @@ export class MockAppfxDatagridComponent {
 // @public (undocumented)
 export class MockDatagridActionBarComponent {
     // (undocumented)
-    actions: unknown[];
+    actions: any[];
     // (undocumented)
-    invokeAction: EventEmitter<unknown>;
+    invokeAction: EventEmitter<any>;
     // (undocumented)
-    onActionClick(action: unknown): void;
+    onActionClick(action: any): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridActionBarComponent, "appfx-datagrid-action-bar", never, { "actions": "actions"; }, { "invokeAction": "invokeAction"; }, never, never, false, never>;
     // (undocumented)

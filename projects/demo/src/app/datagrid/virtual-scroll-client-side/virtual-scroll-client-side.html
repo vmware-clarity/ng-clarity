@@ -44,7 +44,7 @@
   (clrDgCustomSelectAll)="toggleSelectAllRows($event)"
   style="height: 32rem"
 >
-  <clr-dg-column *ngFor="let col of cols trackBy: colByIndex">
+  <clr-dg-column *ngFor="let col of cols; trackBy: colByIndex">
     <ng-container>{{col.name}}</ng-container>
   </clr-dg-column>
 
@@ -57,7 +57,7 @@
     (renderedRangeChange)="renderRangeChange($event)"
   >
     <clr-dg-row [clrDgItem]="row">
-      <clr-dg-cell *ngFor="let col of cols trackBy: colByIndex">{{row.cells[col.name]}}</clr-dg-cell>
+      <clr-dg-cell *ngFor="let col of cols; trackBy: colByIndex">{{row.cells[col.name]}}</clr-dg-cell>
       <ng-container ngProjectAs="clr-dg-row-detail">
         <clr-dg-row-detail [clrIfExpanded]="row.expanded" (clrIfExpandedChange)="setExpanded($event, row)">
           {{row | json}}

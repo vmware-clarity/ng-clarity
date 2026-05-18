@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ApplicationRef, Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -54,18 +54,23 @@ describe('Outside click', () => {
   });
 
   it('should not run change detection if the click event happened on the host element', () => {
-    const appRef = TestBed.inject(ApplicationRef);
-    const spy = spyOn(appRef, 'tick').and.callThrough();
+    const ngZone = TestBed.inject(NgZone);
+    const spy = spyOn(ngZone, 'run').and.callThrough();
 
     host.click();
     host.click();
     host.click();
 
+    // Host clicks must not enter the Angular zone at all.
     expect(spy.calls.count()).toEqual(0);
 
+    spy.calls.reset();
     outside.click();
 
-    expect(spy.calls.count()).toEqual(1);
+    // Outside click must enter the Angular zone at least once (our explicit ngZone.run call).
+    // Angular versions 15-19 trigger an extra call via the Zone.js CD scheduler; v20+ does
+    // not, so we only assert "at least one" rather than an exact count.
+    expect(spy.calls.any()).toBeTrue();
     expect(testComponent.nbClicks).toEqual(1);
   });
 });

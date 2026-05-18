@@ -109,6 +109,7 @@ const columns = [
 
 @Component({
   selector: 'appfx-datagrid-host-component-server-side',
+  standalone: true,
   imports: [AppfxDatagridModule, DatagridColumnsOrderModule, DragDropModule, FormsModule, OverlayModule],
   template: `
     <appfx-datagrid
@@ -125,7 +126,6 @@ const columns = [
       (refreshGridData)="refreshData($event)"
     ></appfx-datagrid>
   `,
-  standalone: true,
 })
 class DatagridHostForServerSideGridComponent {
   @ViewChild(DatagridComponent, { static: true }) datagridComponent: DatagridComponent<unknown>;

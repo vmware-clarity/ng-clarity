@@ -30,10 +30,12 @@ export default function () {
         const dateIOServ: DateIOService = new DateIOService(localeHelperServ);
         expect(dateIOServ.cldrLocaleDateFormat).toBe('M/d/yy');
 
-        const localeHelperServ1: LocaleHelperService = new LocaleHelperService('ak');
-        const dateIOServ1: DateIOService = new DateIOService(localeHelperServ1);
-
-        expect(dateIOServ1.cldrLocaleDateFormat).toBe('yy/MM/dd');
+        // Use 'hr' (Croatian) instead of 'ak' — the 'ak' CLDR short-date format changed
+        // from 'yy/MM/dd' to 'M/d/yy' in Angular 21's updated CLDR data, making it
+        // indistinguishable from en-US. 'hr' has been stable across all supported versions.
+        const localeHelperServHR: LocaleHelperService = new LocaleHelperService('hr');
+        const dateIOServHR: DateIOService = new DateIOService(localeHelperServHR);
+        expect(dateIOServHR.cldrLocaleDateFormat).toBe('dd. MM. y.');
       });
 
       it('supports a method to convert a Date object to date string based on the locale', () => {
@@ -41,11 +43,6 @@ export default function () {
         const dateIOServ: DateIOService = new DateIOService(localeHelperServ);
 
         expect(dateIOServ.toLocaleDisplayFormatString(new Date(2015, 1, 1))).toBe('02/01/2015');
-
-        const localeHelperServAK: LocaleHelperService = new LocaleHelperService('ak');
-        const dateIOServAK: DateIOService = new DateIOService(localeHelperServAK);
-
-        expect(dateIOServAK.toLocaleDisplayFormatString(new Date(2015, 1, 1))).toBe('2015/02/01');
 
         const localeHelperServHR: LocaleHelperService = new LocaleHelperService('hr');
         const dateIOServHR: DateIOService = new DateIOService(localeHelperServHR);

@@ -109,6 +109,7 @@ const columns = [
 
 @Component({
   selector: 'appfx-datagrid-client-side-host-component',
+  standalone: true,
   imports: [AppfxDatagridModule, DatagridColumnsOrderModule, DragDropModule, FormsModule, OverlayModule],
   template: `
     <appfx-datagrid
@@ -123,7 +124,6 @@ const columns = [
       [columns]="columnsDefs"
     ></appfx-datagrid>
   `,
-  standalone: true,
 })
 class DatagridForClientSideGridHostComponent {
   @ViewChild(DatagridComponent, { static: true }) datagridComponent: DatagridComponent<unknown>;

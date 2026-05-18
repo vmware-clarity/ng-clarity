@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ApplicationRef, Component, ElementRef, Injector, Optional, ViewChild } from '@angular/core';
+import { Component, ElementRef, Injector, NgZone, Optional, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -86,17 +86,17 @@ describe('Abstract Popover', function () {
     });
 
     it('should not run change detection when any button is pressed except ESC', () => {
-      const appRef = TestBed.inject(ApplicationRef);
-      spyOn(appRef, 'tick').and.callThrough();
+      const ngZone = TestBed.inject(NgZone);
+      spyOn(ngZone, 'run').and.callThrough();
 
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Shift' }));
-      expect(appRef.tick).not.toHaveBeenCalled();
+      expect(ngZone.run).not.toHaveBeenCalled();
 
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
-      expect(appRef.tick).not.toHaveBeenCalled();
+      expect(ngZone.run).not.toHaveBeenCalled();
 
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
-      expect(appRef.tick).toHaveBeenCalled();
+      expect(ngZone.run).toHaveBeenCalled();
     });
   });
 
