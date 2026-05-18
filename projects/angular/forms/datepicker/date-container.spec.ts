@@ -21,6 +21,7 @@ import { ClrPopoverPosition, ClrPopoverService } from '@clr/angular/popover/comm
 import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 
 import { ClrDateContainer } from './date-container';
+import { ClrWeekday } from './interfaces/day-of-week.interface';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -231,6 +232,91 @@ export default function () {
       });
     });
   });
+
+  describe('Date Container with firstDayOfWeek', () => {
+    let context: TestContext<ClrDateContainer, TestComponentWithFirstDay>;
+    let localeHelperService: LocaleHelperService;
+    let dateNavigationService: DateNavigationService;
+
+    beforeEach(function () {
+      TestBed.configureTestingModule({
+        imports: [FormsModule, ClrCommonFormsModule],
+      });
+      TestBed.overrideComponent(ClrDateContainer, {
+        set: {
+          providers: [{ provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService }],
+        },
+      });
+
+      context = this.create(ClrDateContainer, TestComponentWithFirstDay, DATEPICKER_PROVIDERS);
+      localeHelperService = context.getClarityProvider(LocaleHelperService);
+      dateNavigationService = context.getClarityProvider(DateNavigationService);
+    });
+
+    afterEach(() => {
+      const viewManager = document.querySelector('clr-datepicker-view-manager');
+      if (viewManager) {
+        viewManager.remove();
+      }
+    });
+
+    it('overrides first day of week via the clrFirstDayOfWeek input', () => {
+      context.testComponent.firstDayOfWeek = ClrWeekday.Monday;
+      context.detectChanges();
+      expect(localeHelperService.firstDayOfWeek).toBe(ClrWeekday.Monday);
+    });
+
+    it('updates locale day headers when first day of week is overridden', () => {
+      expect(localeHelperService.localeDaysNarrow[0]).toBe('S');
+
+      context.testComponent.firstDayOfWeek = ClrWeekday.Monday;
+      context.detectChanges();
+
+      expect(localeHelperService.localeDaysNarrow[0]).toBe('M');
+      expect(localeHelperService.localeDaysNarrow[6]).toBe('S');
+    });
+
+    it('reverts to locale default when firstDayOfWeek is cleared', () => {
+      context.testComponent.firstDayOfWeek = ClrWeekday.Wednesday;
+      context.detectChanges();
+      expect(localeHelperService.firstDayOfWeek).toBe(ClrWeekday.Wednesday);
+
+      context.testComponent.firstDayOfWeek = null;
+      context.detectChanges();
+      expect(localeHelperService.firstDayOfWeek).toBe(ClrWeekday.Sunday);
+    });
+
+    it('triggers calendar refresh when first day of week changes', () => {
+      spyOn(dateNavigationService, 'refreshDisplayedCalendar');
+
+      context.testComponent.firstDayOfWeek = ClrWeekday.Monday;
+      context.detectChanges();
+      expect(dateNavigationService.refreshDisplayedCalendar).toHaveBeenCalledTimes(1);
+
+      context.testComponent.firstDayOfWeek = ClrWeekday.Friday;
+      context.detectChanges();
+      expect(dateNavigationService.refreshDisplayedCalendar).toHaveBeenCalledTimes(2);
+    });
+
+    it('does not trigger calendar refresh when the value does not change', () => {
+      context.testComponent.firstDayOfWeek = ClrWeekday.Tuesday;
+      context.detectChanges();
+
+      spyOn(dateNavigationService, 'refreshDisplayedCalendar');
+
+      context.testComponent.firstDayOfWeek = ClrWeekday.Tuesday;
+      context.detectChanges();
+      expect(dateNavigationService.refreshDisplayedCalendar).not.toHaveBeenCalled();
+    });
+
+    it('supports setting first day of week to ClrWeekday.Saturday', () => {
+      context.testComponent.firstDayOfWeek = ClrWeekday.Saturday;
+      context.detectChanges();
+      expect(localeHelperService.firstDayOfWeek).toBe(ClrWeekday.Saturday);
+      expect(localeHelperService.localeDaysNarrow[0]).toBe('S');
+      expect(localeHelperService.localeDaysNarrow[1]).toBe('S');
+    });
+  });
 }
 
 @Component({
@@ -247,4 +333,18 @@ class TestComponent {
   model = '';
   disabled = false;
   position: ClrPopoverPosition;
+}
+
+@Component({
+  template: `
+    <clr-date-container [clrFirstDayOfWeek]="firstDayOfWeek">
+      <input type="date" clrDate [(ngModel)]="model" autocomplete="off" />
+    </clr-date-container>
+  `,
+  providers: [FormsFocusService],
+  standalone: false,
+})
+class TestComponentWithFirstDay {
+  model = '';
+  firstDayOfWeek: ClrWeekday = null;
 }

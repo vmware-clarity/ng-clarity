@@ -251,6 +251,32 @@ export default function () {
         expect(count).toBe(1);
       });
 
+      it('emits displayedCalendarChange when refreshDisplayedCalendar is called', () => {
+        let count = 0;
+        sub = dateNavigationService.displayedCalendarChange.subscribe(() => {
+          count++;
+        });
+
+        expect(count).toBe(0);
+
+        dateNavigationService.refreshDisplayedCalendar();
+        expect(count).toBe(1);
+
+        dateNavigationService.refreshDisplayedCalendar();
+        expect(count).toBe(2);
+      });
+
+      it('does not change the displayed calendar month/year when refreshDisplayedCalendar is called', () => {
+        const originalMonth = dateNavigationService.displayedCalendar.month;
+        const originalYear = dateNavigationService.displayedCalendar.year;
+
+        sub = dateNavigationService.displayedCalendarChange.subscribe(() => {});
+        dateNavigationService.refreshDisplayedCalendar();
+
+        expect(dateNavigationService.displayedCalendar.month).toBe(originalMonth);
+        expect(dateNavigationService.displayedCalendar.year).toBe(originalYear);
+      });
+
       it('notifies the updated selectedDay', () => {
         let dayModel: DayModel;
         sub = dateNavigationService.selectedDayChange.subscribe((newDayModel: DayModel) => {

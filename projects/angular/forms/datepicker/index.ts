@@ -18,5 +18,6 @@ export * from './yearpicker';
 export * from './calendar';
 export * from './day';
 export * from './datepicker-action-buttons';
+export * from './interfaces/day-of-week.interface';
 
 export * from './datepicker.module';

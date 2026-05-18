@@ -11,8 +11,10 @@ import {
   ClrAlertModule,
   ClrCommonFormsModule,
   ClrDatepickerModule,
+  ClrNumberInputModule,
   ClrPopoverHostDirective,
   ClrStopEscapePropagationDirective,
+  ClrWeekday,
 } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
@@ -74,6 +76,35 @@ const WITH_ACTION_BUTTONS_EXAMPLE = `
 </form>
 `;
 
+const FIRST_DAY_OF_WEEK_EXAMPLE = `
+<form clrForm>
+  <clr-date-container [clrFirstDayOfWeek]="firstDayOfWeek">
+    <label>Pick a date</label>
+    <input type="date" autocomplete="off" clrDate name="firstDayDemo" [(ngModel)]="value" />
+  </clr-date-container>
+</form>
+`;
+
+const FIRST_DAY_OF_WEEK_EXAMPLE_TS = `
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ClrFormsModule, ClrWeekday } from '@clr/angular';
+
+@Component({
+  selector: 'app-example',
+  templateUrl: './example.component.html',
+  styleUrl: './example.component.scss',
+
+  imports: [FormsModule, ClrFormsModule],
+})
+export class ExampleComponent {
+  value: string | undefined;
+
+  // Force Monday to be the first day of the week regardless of locale.
+  firstDayOfWeek: ClrWeekday = ClrWeekday.Monday;
+}
+`;
+
 const COMMON_EXAMPLE_TS = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -100,6 +131,7 @@ export class ExampleComponent {
     ClrStopEscapePropagationDirective,
     ClrPopoverHostDirective,
     ClrDatepickerModule,
+    ClrNumberInputModule,
     StackblitzExampleComponent,
     ClrAlertModule,
   ],
@@ -120,9 +152,19 @@ export class DatepickerAPIDemo {
   withActionButtonsExample = WITH_ACTION_BUTTONS_EXAMPLE;
   withActionButtonsExampleTs = COMMON_EXAMPLE_TS;
 
+  firstDayOfWeekExample = FIRST_DAY_OF_WEEK_EXAMPLE;
+  firstDayOfWeekExampleTs = FIRST_DAY_OF_WEEK_EXAMPLE_TS;
+
   demo: string | undefined;
   minDemo: string | undefined;
   maxDemo: string | undefined;
   minMaxDemo: string | undefined;
   actionButtonsDemo: string | undefined;
+  firstDayDemo: string | undefined;
+
+  firstDayOfWeek: ClrWeekday = null;
+
+  onFirstDayChange(value: string): void {
+    this.firstDayOfWeek = value === '' ? null : (Number(value) as ClrWeekday);
+  }
 }

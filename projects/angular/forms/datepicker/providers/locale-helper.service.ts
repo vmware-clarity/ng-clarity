@@ -16,7 +16,7 @@ import {
 } from '@angular/common';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 
-import { ClrDayOfWeek } from '../interfaces/day-of-week.interface';
+import { ClrDayOfWeek, ClrWeekday } from '../interfaces/day-of-week.interface';
 
 /**
  * This service extracts the Angular CLDR data needed by the datepicker.
@@ -59,6 +59,24 @@ export class LocaleHelperService {
   }
 
   /**
+   * Overrides the first day of the week regardless of locale.
+   * Accepts a `ClrWeekday` value (Sunday=0 through Saturday=6), or null to revert to locale default.
+   * Incorrect values will revert to default value (Sunday).
+   */
+  overrideFirstDayOfWeek(day: ClrWeekday | null): void {
+    if (day !== null && (day < ClrWeekday.Sunday || day > ClrWeekday.Saturday)) {
+      //
+      if (this._firstDayOfWeek !== ClrWeekday.Sunday) {
+        this._firstDayOfWeek = ClrWeekday.Sunday;
+        this.initializeLocaleDays();
+      }
+      return;
+    }
+    this._firstDayOfWeek = day === null ? ClrWeekday.Sunday : day;
+    this.initializeLocaleDays();
+  }
+
+  /**
    * Initializes the locale data.
    */
   private initializeLocaleData(): void {
@@ -83,16 +101,17 @@ export class LocaleHelperService {
       FormStyle.Standalone,
       TranslationWidth.Narrow
     ).slice();
-    // Get first day of the week based on the locale
-    const firstDayOfWeek: number = this.firstDayOfWeek;
+
     for (let i = 0; i < 7; i++) {
       tempArr.push({ day: tempWideArr[i], narrow: tempNarrowArr[i] });
     }
-    // Rearrange the tempArr to start with the first day of the week based on the locale.
-    if (firstDayOfWeek > 0) {
-      const prevDays: { day: string; narrow: string }[] = tempArr.splice(0, firstDayOfWeek);
+
+    // Rearrange the tempArr to start with the first day of the week based on the locale (default or override).
+    if (this.firstDayOfWeek > ClrWeekday.Sunday) {
+      const prevDays: { day: string; narrow: string }[] = tempArr.splice(0, this.firstDayOfWeek);
       tempArr.push(...prevDays);
     }
+
     this._localeDays = tempArr;
   }
 
