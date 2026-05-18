@@ -315,12 +315,14 @@ export class MockAppfxDatagridComponent {
 
 // @public (undocumented)
 export class MockDatagridActionBarComponent {
+    // Warning: (ae-forgotten-export) The symbol "ActionDefinition" needs to be exported by the entry point index.d.ts
+    //
     // (undocumented)
-    actions: unknown[];
+    actions: ActionDefinition[];
     // (undocumented)
-    invokeAction: EventEmitter<unknown>;
+    invokeAction: EventEmitter<ActionDefinition>;
     // (undocumented)
-    onActionClick(action: unknown): void;
+    onActionClick(action: ActionDefinition): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridActionBarComponent, "appfx-datagrid-action-bar", never, { "actions": "actions"; }, { "invokeAction": "invokeAction"; }, never, never, false, never>;
     // (undocumented)
