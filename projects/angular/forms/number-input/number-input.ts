@@ -68,13 +68,11 @@ export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> 
   stepUp(): void {
     this.el.nativeElement.stepUp();
     this.dispatchStepChangeEvents();
-    this.control.control.markAllAsTouched();
   }
 
   stepDown(): void {
     this.el.nativeElement.stepDown();
     this.dispatchStepChangeEvents();
-    this.control.control.markAllAsTouched();
   }
 
   dispatchBlur() {
@@ -84,5 +82,7 @@ export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> 
   private dispatchStepChangeEvents() {
     this.el.nativeElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
     this.el.nativeElement.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+
+    this.triggerValidation();
   }
 }
