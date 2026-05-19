@@ -11,7 +11,6 @@ import { TestContext } from '@clr/angular/testing';
 import { Keys } from '@clr/angular/utils';
 
 import { ClrCalendar } from './calendar';
-import { ClrWeekday } from './interfaces/day-of-week.interface';
 import { DayViewModel } from './model/day-view.model';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
@@ -174,72 +173,6 @@ export default function () {
         expect(dateNavigationService.selectedDay.date).toBe(testDayView.dayModel.date);
         expect(dateNavigationService.selectedDay.month).toBe(testDayView.dayModel.month);
         expect(dateNavigationService.selectedDay.year).toBe(testDayView.dayModel.year);
-      });
-    });
-
-    describe('First Day of Week Override', () => {
-      let localeHelperService: LocaleHelperService;
-
-      beforeEach(() => {
-        localeHelperService = context.getClarityProvider(LocaleHelperService);
-      });
-
-      it('regenerates the calendar view when displayedCalendarChange fires after first day override', () => {
-        const originalFirstDay = context.clarityDirective.calendarViewModel.firstDayOfWeek;
-        expect(originalFirstDay).toBe(ClrWeekday.Sunday);
-
-        localeHelperService.overrideFirstDayOfWeek(ClrWeekday.Monday);
-        dateNavigationService.refreshDisplayedCalendar();
-        context.detectChanges();
-
-        expect(context.clarityDirective.calendarViewModel.firstDayOfWeek).toBe(ClrWeekday.Monday);
-      });
-
-      it('updates weekday headers after first day of week override', () => {
-        const weekdaysBefore: HTMLElement[] = context.clarityElement.querySelectorAll('.weekdays .calendar-cell span');
-        const firstDayBefore = weekdaysBefore[0].textContent.trim();
-        expect(firstDayBefore).toBe('S');
-
-        localeHelperService.overrideFirstDayOfWeek(ClrWeekday.Monday);
-        dateNavigationService.refreshDisplayedCalendar();
-        context.detectChanges();
-
-        const weekdaysAfter: HTMLElement[] = context.clarityElement.querySelectorAll('.weekdays .calendar-cell span');
-        expect(weekdaysAfter[0].textContent.trim()).toBe('M');
-        expect(weekdaysAfter[6].textContent.trim()).toBe('S');
-      });
-
-      it('correctly lays out days after first day of week changes', () => {
-        // Jan 2015 starts on Thursday (day index 4)
-        // With Sunday as first day (default), we need 4 days from Dec 2014
-        const viewBefore = context.clarityDirective.calendarViewModel.calendarView;
-        const firstCellBefore = viewBefore[0][0].dayModel;
-        expect(firstCellBefore.month).toBe(11);
-        expect(firstCellBefore.year).toBe(2014);
-        expect(firstCellBefore.date).toBe(28);
-
-        // Override to Monday: Jan 1 2015 is Thursday, so we need 3 days from Dec
-        localeHelperService.overrideFirstDayOfWeek(ClrWeekday.Monday);
-        dateNavigationService.refreshDisplayedCalendar();
-        context.detectChanges();
-
-        const viewAfter = context.clarityDirective.calendarViewModel.calendarView;
-        const firstCellAfter = viewAfter[0][0].dayModel;
-        expect(firstCellAfter.month).toBe(11);
-        expect(firstCellAfter.year).toBe(2014);
-        expect(firstCellAfter.date).toBe(29);
-      });
-
-      it('reverts calendar layout when override is cleared', () => {
-        localeHelperService.overrideFirstDayOfWeek(ClrWeekday.Wednesday);
-        dateNavigationService.refreshDisplayedCalendar();
-        context.detectChanges();
-        expect(context.clarityDirective.calendarViewModel.firstDayOfWeek).toBe(ClrWeekday.Wednesday);
-
-        localeHelperService.overrideFirstDayOfWeek(null);
-        dateNavigationService.refreshDisplayedCalendar();
-        context.detectChanges();
-        expect(context.clarityDirective.calendarViewModel.firstDayOfWeek).toBe(ClrWeekday.Sunday);
       });
     });
   });

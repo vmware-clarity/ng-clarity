@@ -184,14 +184,6 @@ export class DateNavigationService {
     this._focusOnCalendarChange.next();
   }
 
-  /**
-   * Forces a full calendar view regeneration without changing the displayed month.
-   * Used when layout-affecting settings (e.g. first day of week) change.
-   */
-  refreshDisplayedCalendar(): void {
-    this._displayedCalendarChange.next();
-  }
-
   resetSelectedDay() {
     this.selectedDay = this.persistedDate;
     this.selectedEndDay = this.persistedEndDate;

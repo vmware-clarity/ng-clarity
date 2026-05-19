@@ -16,7 +16,8 @@ import {
 } from '@angular/common';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 
-import { ClrDayOfWeek, ClrWeekday } from '../interfaces/day-of-week.interface';
+import { ClrWeekday } from '../enums/weekday.enum';
+import { ClrDayOfWeek } from '../interfaces/day-of-week.interface';
 
 /**
  * This service extracts the Angular CLDR data needed by the datepicker.
@@ -24,6 +25,7 @@ import { ClrDayOfWeek, ClrWeekday } from '../interfaces/day-of-week.interface';
 @Injectable()
 export class LocaleHelperService {
   private _firstDayOfWeek = 0;
+  private _localeFirstDayOfWeek = 0;
   private _localeDays: ReadonlyArray<ClrDayOfWeek>;
   private _localeMonthsAbbreviated: ReadonlyArray<string>;
   private _localeMonthsWide: ReadonlyArray<string>;
@@ -65,14 +67,14 @@ export class LocaleHelperService {
    */
   overrideFirstDayOfWeek(day: ClrWeekday | null): void {
     if (day !== null && (day < ClrWeekday.Sunday || day > ClrWeekday.Saturday)) {
-      //
-      if (this._firstDayOfWeek !== ClrWeekday.Sunday) {
-        this._firstDayOfWeek = ClrWeekday.Sunday;
+      if (this._firstDayOfWeek !== this._localeFirstDayOfWeek) {
+        this._firstDayOfWeek = this._localeFirstDayOfWeek;
         this.initializeLocaleDays();
       }
       return;
     }
-    this._firstDayOfWeek = day === null ? ClrWeekday.Sunday : day;
+
+    this._firstDayOfWeek = day === null ? this._localeFirstDayOfWeek : day;
     this.initializeLocaleDays();
   }
 
@@ -81,7 +83,8 @@ export class LocaleHelperService {
    */
   private initializeLocaleData(): void {
     // Order in which these functions is called is very important.
-    this.initializeFirstDayOfWeek();
+    this.initializeLocaleFirstDayOfWeek();
+    this._firstDayOfWeek = this._localeFirstDayOfWeek;
     this.initializeLocaleDateFormat();
     this.initializeLocaleMonthsAbbreviated();
     this.initializeLocaleMonthsWide();
@@ -138,8 +141,8 @@ export class LocaleHelperService {
   /**
    * Initializes the first day of the week based on the locale.
    */
-  private initializeFirstDayOfWeek(): void {
-    this._firstDayOfWeek = getLocaleFirstDayOfWeek(this.locale);
+  private initializeLocaleFirstDayOfWeek(): void {
+    this._localeFirstDayOfWeek = getLocaleFirstDayOfWeek(this.locale);
   }
 
   private initializeLocaleDateFormat(): void {

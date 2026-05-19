@@ -24,7 +24,7 @@ import {
 import { ClrCommonStringsService } from '@clr/angular/utils';
 import { startWith } from 'rxjs/operators';
 
-import { ClrWeekday } from './interfaces/day-of-week.interface';
+import { ClrWeekday } from './enums/weekday.enum';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -157,8 +157,6 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   @Input('clrFirstDayOfWeek')
   set firstDayOfWeek(value: ClrWeekday) {
     this.localeHelperService.overrideFirstDayOfWeek(value ?? null);
-
-    this.dateNavigationService.refreshDisplayedCalendar();
   }
 
   /**

@@ -10,7 +10,7 @@ import localeFr from '@angular/common/locales/fr';
 import localePl from '@angular/common/locales/pl';
 
 import { LocaleHelperService } from './locale-helper.service';
-import { ClrWeekday } from '../interfaces/day-of-week.interface';
+import { ClrWeekday } from '../enums/weekday.enum';
 
 registerLocaleData(localeFr);
 registerLocaleData(localePl);
