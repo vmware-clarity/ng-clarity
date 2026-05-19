@@ -1,0 +1,19 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+export class ResponsiveNavControlMessage {
+    constructor(_controlCode, _navLevel) {
+        this._controlCode = _controlCode;
+        this._navLevel = _navLevel;
+    }
+    get controlCode() {
+        return this._controlCode;
+    }
+    get navLevel() {
+        return this._navLevel;
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicmVzcG9uc2l2ZS1uYXYtY29udHJvbC1tZXNzYWdlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvYW5ndWxhci9zcmMvbGF5b3V0L25hdi9yZXNwb25zaXZlLW5hdi1jb250cm9sLW1lc3NhZ2UudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7O0dBS0c7QUFFSCxNQUFNLE9BQU8sMkJBQTJCO0lBQ3RDLFlBQW9CLFlBQW9CLEVBQVUsU0FBaUI7UUFBL0MsaUJBQVksR0FBWixZQUFZLENBQVE7UUFBVSxjQUFTLEdBQVQsU0FBUyxDQUFRO0lBQUcsQ0FBQztJQUV2RSxJQUFJLFdBQVc7UUFDYixPQUFPLElBQUksQ0FBQyxZQUFZLENBQUM7SUFDM0IsQ0FBQztJQUVELElBQUksUUFBUTtRQUNWLE9BQU8sSUFBSSxDQUFDLFNBQVMsQ0FBQztJQUN4QixDQUFDO0NBQ0YiLCJzb3VyY2VzQ29udGVudCI6WyIvKlxuICogQ29weXJpZ2h0IChjKSAyMDE2LTIwMjUgQnJvYWRjb20uIEFsbCBSaWdodHMgUmVzZXJ2ZWQuXG4gKiBUaGUgdGVybSBcIkJyb2FkY29tXCIgcmVmZXJzIHRvIEJyb2FkY29tIEluYy4gYW5kL29yIGl0cyBzdWJzaWRpYXJpZXMuXG4gKiBUaGlzIHNvZnR3YXJlIGlzIHJlbGVhc2VkIHVuZGVyIE1JVCBsaWNlbnNlLlxuICogVGhlIGZ1bGwgbGljZW5zZSBpbmZvcm1hdGlvbiBjYW4gYmUgZm91bmQgaW4gTElDRU5TRSBpbiB0aGUgcm9vdCBkaXJlY3Rvcnkgb2YgdGhpcyBwcm9qZWN0LlxuICovXG5cbmV4cG9ydCBjbGFzcyBSZXNwb25zaXZlTmF2Q29udHJvbE1lc3NhZ2Uge1xuICBjb25zdHJ1Y3Rvcihwcml2YXRlIF9jb250cm9sQ29kZTogc3RyaW5nLCBwcml2YXRlIF9uYXZMZXZlbDogbnVtYmVyKSB7fVxuXG4gIGdldCBjb250cm9sQ29kZSgpOiBzdHJpbmcge1xuICAgIHJldHVybiB0aGlzLl9jb250cm9sQ29kZTtcbiAgfVxuXG4gIGdldCBuYXZMZXZlbCgpOiBudW1iZXIge1xuICAgIHJldHVybiB0aGlzLl9uYXZMZXZlbDtcbiAgfVxufVxuIl19
