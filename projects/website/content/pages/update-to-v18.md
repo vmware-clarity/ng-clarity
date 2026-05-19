@@ -45,6 +45,7 @@ directly, including `cds-icon`, CSS tokens, and CSS utilities (`cds-layout`, `cd
 - Change icon imports from `@cds/core/icon` to `@clr/angular/icon`.
 - Remove style imports from `@cds/core`; `@clr/ui` now includes all necessary styles.
 - `cds-icon` is now an Angular component. Replace all `[attr.]` bindings with normal Angular bindings:
+- `cds-list` was not migrated to `@clr/angular` as this is the alternative for list in `@cds/core`, please migrate to using https://clarity.design/documentation/list/code
 
 ```html
 <!-- Before -->
