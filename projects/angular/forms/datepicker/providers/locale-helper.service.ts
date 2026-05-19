@@ -24,8 +24,7 @@ import { ClrDayOfWeek } from '../interfaces/day-of-week.interface';
  */
 @Injectable()
 export class LocaleHelperService {
-  private _firstDayOfWeek = 0;
-  private _localeFirstDayOfWeek = 0;
+  private _firstDayOfWeek: number = ClrWeekday.Sunday;
   private _localeDays: ReadonlyArray<ClrDayOfWeek>;
   private _localeMonthsAbbreviated: ReadonlyArray<string>;
   private _localeMonthsWide: ReadonlyArray<string>;
@@ -66,15 +65,15 @@ export class LocaleHelperService {
    * Incorrect values will revert to default value (Sunday).
    */
   overrideFirstDayOfWeek(day: ClrWeekday | null): void {
-    if (day !== null && (day < ClrWeekday.Sunday || day > ClrWeekday.Saturday)) {
-      if (this._firstDayOfWeek !== this._localeFirstDayOfWeek) {
-        this._firstDayOfWeek = this._localeFirstDayOfWeek;
-        this.initializeLocaleDays();
-      }
+    if (day === null || day < ClrWeekday.Sunday || day > ClrWeekday.Saturday) {
+      this.initializeLocaleFirstDayOfWeek();
+      this.initializeLocaleDays();
+
       return;
     }
 
-    this._firstDayOfWeek = day === null ? this._localeFirstDayOfWeek : day;
+    this._firstDayOfWeek = day;
+
     this.initializeLocaleDays();
   }
 
@@ -84,7 +83,6 @@ export class LocaleHelperService {
   private initializeLocaleData(): void {
     // Order in which these functions is called is very important.
     this.initializeLocaleFirstDayOfWeek();
-    this._firstDayOfWeek = this._localeFirstDayOfWeek;
     this.initializeLocaleDateFormat();
     this.initializeLocaleMonthsAbbreviated();
     this.initializeLocaleMonthsWide();
@@ -142,7 +140,7 @@ export class LocaleHelperService {
    * Initializes the first day of the week based on the locale.
    */
   private initializeLocaleFirstDayOfWeek(): void {
-    this._localeFirstDayOfWeek = getLocaleFirstDayOfWeek(this.locale);
+    this._firstDayOfWeek = getLocaleFirstDayOfWeek(this.locale);
   }
 
   private initializeLocaleDateFormat(): void {
