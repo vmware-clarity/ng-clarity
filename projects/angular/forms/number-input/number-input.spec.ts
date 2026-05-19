@@ -24,6 +24,16 @@ class InvalidUseTest {}
 @Component({
   template: `
     <clr-number-input-container>
+      <input clrNumberInput type="number" />
+    </clr-number-input-container>
+  `,
+  standalone: false,
+})
+class NoFormControlTest {}
+
+@Component({
+  template: `
+    <clr-number-input-container>
       <input clrNumberInput type="number" name="model" class="test-class" [(ngModel)]="model" />
     </clr-number-input-container>
   `,
@@ -65,6 +75,45 @@ export default function (): void {
     ReactiveSpec(ClrNumberInputContainer, ClrNumberInput, ReactiveTest, 'clr-number-input');
     inputSpec('tempate-driven', ClrNumberInputContainer, ClrNumberInput, TemplateDrivenTest);
     inputSpec('reactive', ClrNumberInputContainer, ClrNumberInput, ReactiveTest);
+
+    describe('without a form control', () => {
+      let fixture, control, clarityDirective: ClrNumberInput;
+
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          imports: [FormsModule, ClrCommonFormsModule, ReactiveFormsModule],
+          declarations: [ClrNumberInputContainer, ClrNumberInput, NoFormControlTest],
+        });
+        fixture = TestBed.createComponent(NoFormControlTest);
+        control = fixture.debugElement.query(By.directive(ClrNumberInput));
+        clarityDirective = control.injector.get(ClrNumberInput);
+        fixture.detectChanges();
+      });
+
+      it('should not throw when stepUp is called without an associated form control', () => {
+        expect(() => clarityDirective.stepUp()).not.toThrow();
+      });
+
+      it('should not throw when stepDown is called without an associated form control', () => {
+        expect(() => clarityDirective.stepDown()).not.toThrow();
+      });
+
+      it('should not throw when step buttons are clicked without an associated form control', () => {
+        const inputGroup = control.nativeElement.closest('.clr-input-group');
+        const stepDownButton = inputGroup.querySelector('button:has(cds-icon[shape="minus"])');
+        const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
+
+        expect(() => {
+          stepUpButton.click();
+          fixture.detectChanges();
+        }).not.toThrow();
+
+        expect(() => {
+          stepDownButton.click();
+          fixture.detectChanges();
+        }).not.toThrow();
+      });
+    });
   });
 }
 
@@ -147,6 +196,44 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       fixture.detectChanges();
 
       expect(control.nativeElement.onchange).toHaveBeenCalled();
+    });
+
+    it('should trigger validation when stepUp is called', () => {
+      spyOn(clarityDirective, 'triggerValidation').and.callThrough();
+
+      clarityDirective.stepUp();
+      fixture.detectChanges();
+
+      expect(clarityDirective.triggerValidation).toHaveBeenCalled();
+    });
+
+    it('should trigger validation when stepDown is called', () => {
+      spyOn(clarityDirective, 'triggerValidation').and.callThrough();
+
+      clarityDirective.stepDown();
+      fixture.detectChanges();
+
+      expect(clarityDirective.triggerValidation).toHaveBeenCalled();
+    });
+
+    it('should mark the control as touched after stepUp', () => {
+      const ngControl = control.injector.get(NgControl);
+      expect(ngControl.control.touched).toBeFalse();
+
+      clarityDirective.stepUp();
+      fixture.detectChanges();
+
+      expect(ngControl.control.touched).toBeTrue();
+    });
+
+    it('should mark the control as touched after stepDown', () => {
+      const ngControl = control.injector.get(NgControl);
+      expect(ngControl.control.touched).toBeFalse();
+
+      clarityDirective.stepDown();
+      fixture.detectChanges();
+
+      expect(ngControl.control.touched).toBeTrue();
     });
   });
 }
