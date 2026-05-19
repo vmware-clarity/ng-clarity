@@ -1,0 +1,25 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('tab.properties') {
+  @include mixins.root-or-host() {
+    &,
+    & [cds-theme] {
+      --clr-nav-box-shadow-color: #{tokens.$cds-alias-object-border-color};
+      --clr-nav-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
+      --clr-nav-selected-bg-color: #{tokens.$cds-alias-object-opacity-0};
+      --clr-nav-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      --clr-nav-selected-hover-background-color: var(--cds-alias-object-interaction-background-selected-hover);
+      --clr-nav-selected-active-background-color: var(--cds-alias-object-interaction-background-selected-active);
+
+      --clr-nav-link-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-nav-link-active-color: #{tokens.$cds-alias-object-interaction-color-active};
+    }
+  }
+}

@@ -1,0 +1,183 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../emphasis/alert/variables.alert' as alert-variables;
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use '../../utils/variables/variables.density' as density;
+@use 'mixins.forms' as forms-mixins;
+@use 'variables.forms' as forms-variables;
+
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('forms.checkbox') {
+  $mark-half-size: calc(#{forms-variables.$clr-forms-checkbox-mark-size} * 0.5);
+
+  //Remove the default checkbox appearance
+  %custom-checkbox {
+    @include mixins.clr-appearance-normal();
+  }
+
+  // @TODO un-nest the checkbox from the wrapper, after old forms are removed
+  .clr-checkbox-wrapper {
+    @include forms-mixins.form-flatten-validate-text();
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+
+    @include forms-mixins.checkbox-radio-toggle-control-group-gap();
+
+    .clr-control-label {
+      @include forms-mixins.checkbox-radio-label-styles(
+        forms-variables.$clr-forms-checkbox-label-height,
+        forms-variables.$clr-forms-checkbox-label-color,
+        'SECONDARY-13-RG-CPT'
+      );
+    }
+
+    //Hide the default checkbox behind the pseudo elements
+    //Opacity is set to 0 so that the input remains accessible
+    input[type='checkbox'] {
+      @include forms-mixins.checkbox-radio-input-styles(forms-variables.$clr-forms-checkbox-size);
+      @extend %custom-checkbox;
+      padding: density.$clr-base-vertical-offset-xs 0;
+
+      &:not(:disabled) {
+        cursor: pointer;
+      }
+
+      //Checkbox base
+      &::before {
+        @include forms-mixins.checkbox-radio-shared-inactive(
+          forms-variables.$clr-forms-checkbox-height,
+          forms-variables.$clr-forms-border-color
+        );
+
+        border-radius: forms-variables.$clr-forms-checkbox-border-radius;
+      }
+
+      //Checkmark
+      &::after {
+        position: absolute;
+        content: '';
+        display: none;
+        height: calc(#{$mark-half-size} + #{tokens.$cds-global-space-1});
+        width: forms-variables.$clr-forms-checkbox-mark-size;
+        border-left: forms-variables.$clr-forms-checkbox-mark-border-size solid
+          forms-variables.$clr-forms-checkbox-mark-color;
+        border-bottom: forms-variables.$clr-forms-checkbox-mark-border-size solid
+          forms-variables.$clr-forms-checkbox-mark-color;
+        left: $mark-half-size;
+        transform: translate(0, $mark-half-size) rotate(-45deg);
+      }
+
+      &:focus {
+        outline: none;
+        &::before {
+          @include mixins.include-outline-style-form-fields(mixins.baselinePx(3));
+        }
+      }
+
+      &:checked {
+        &::before {
+          background: forms-variables.$clr-forms-checkbox-background-color;
+          border: none;
+        }
+        &::after {
+          display: inline-block;
+        }
+      }
+
+      &.clr-indeterminate,
+      &:indeterminate {
+        &::before {
+          border: #{tokens.$cds-alias-object-border-width-100} solid forms-variables.$clr-forms-checkbox-indeterminate-border-color;
+        }
+        &::after {
+          border-left: none;
+          border-bottom-color: forms-variables.$clr-forms-checkbox-indeterminate-border-color;
+          display: inline-block;
+          transform: translate(0, $mark-half-size);
+        }
+      }
+
+      &:disabled {
+        + label {
+          cursor: not-allowed;
+          color: forms-variables.$clr-forms-label-disabled-color;
+        }
+        &::before {
+          background-color: forms-variables.$clr-forms-checkbox-disabled-background-color;
+          border-color: forms-variables.$clr-forms-checkbox-disabled-border-color;
+        }
+        &:checked {
+          &::before {
+            background-color: forms-variables.$clr-forms-checkbox-disabled-checked-background-color;
+            border: none;
+          }
+          &::after {
+            border-color: forms-variables.$clr-forms-checkbox-disabled-mark-color;
+          }
+        }
+
+        &.clr-indeterminate::after,
+        &:indeterminate::after {
+          border-color: forms-variables.$clr-forms-checkbox-disabled-indeterminate-color;
+          border-left: none;
+        }
+      }
+    }
+
+    &.clr-checkbox-inline {
+      @include forms-mixins.form-inline-input();
+    }
+  }
+
+  .clr-error .clr-checkbox-wrapper:not(.datagrid-select .clr-checkbox-wrapper) input[type='checkbox']::before {
+    border-color: forms-variables.$clr-forms-invalid-color;
+  }
+
+  .clr-form-control-disabled .clr-checkbox-wrapper,
+  .clr-checkbox-wrapper.clr-checkbox-wrapper-disabled {
+    .clr-control-label {
+      cursor: not-allowed;
+
+      color: forms-variables.$clr-forms-label-disabled-color;
+    }
+
+    input[type='checkbox']::before {
+      background-color: forms-variables.$clr-forms-checkbox-disabled-background-color;
+      border-color: forms-variables.$clr-forms-checkbox-disabled-border-color;
+    }
+
+    input[type='checkbox']:checked {
+      &::before {
+        background-color: forms-variables.$clr-forms-checkbox-disabled-checked-background-color;
+        border: none;
+      }
+      &::after {
+        border-color: forms-variables.$clr-forms-checkbox-disabled-mark-color;
+      }
+    }
+
+    input[type='checkbox'].clr-indeterminate::after,
+    input[type='checkbox']:indeterminate::after {
+      border-color: forms-variables.$clr-forms-checkbox-disabled-indeterminate-color;
+      border-left: none;
+    }
+  }
+
+  .clr-form-compact .clr-checkbox-wrapper {
+    padding-top: 0;
+
+    @include forms-mixins.form-flatten-compact-adjustments();
+    @include forms-mixins.form-inline-input();
+
+    .clr-control-label {
+      margin-top: 0;
+    }
+  }
+}

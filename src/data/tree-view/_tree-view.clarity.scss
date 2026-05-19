@@ -1,0 +1,272 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../../utils/mixins';
+@use 'variables.tree-view' as tree-view-variables;
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
+
+@include meta.load-css('properties.tree-view');
+
+@include mixins.exports('tree-view.clarity') {
+  .clr-tree-node {
+    //Display
+    display: block;
+
+    &.disabled .clr-tree-node-content-container {
+      cursor: not-allowed;
+
+      .clr-treenode-link {
+        pointer-events: none;
+      }
+
+      .clr-treenode-link,
+      .clr-treenode-content,
+      .clr-treenode-checkbox {
+        background-color: var(--clr-tree-node-content-bg-disabled-color);
+      }
+
+      .clr-treenode-link,
+      .clr-treenode-content,
+      .clr-treenode-checkbox input[type='checkbox'] + .clr-control-label {
+        color: var(--clr-tree-node-content-disabled-color);
+
+        cds-icon,
+        clr-icon {
+          fill: var(--clr-tree-node-caret-disabled-color);
+        }
+      }
+
+      .clr-treenode-caret {
+        cursor: not-allowed;
+
+        cds-icon,
+        clr-icon {
+          fill: var(--clr-tree-node-caret-disabled-color);
+        }
+      }
+    }
+  }
+
+  .clr-tree-node-content-container {
+    //Display
+    display: flex;
+    align-items: flex-start;
+
+    @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+
+    & > .clr-treenode-checkbox.clr-checkbox-wrapper {
+      width: 100%;
+
+      &:first-child {
+        margin-left: tree-view-variables.$clr-tree-node-touch-target;
+      }
+
+      .clr-control-label {
+        width: 100%;
+        padding: tree-view-variables.$clr-tree-node-content-padding;
+        padding-left: 0;
+
+        // Add touch area to label that covers the checkbox, so we don't need to resize the
+        // checkbox itself, which leads to undesired side effects.
+        &::before {
+          content: '';
+          position: absolute;
+          left: calc(-1 * tree-view-variables.$clr-tree-node-checkbox-input-size);
+          top: 0;
+          height: 100%;
+          width: tree-view-variables.$clr-tree-node-checkbox-input-size;
+        }
+      }
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+
+    &:focus > .clr-treenode-content,
+    &:focus > .clr-treenode-checkbox {
+      outline-offset: calc(-1 * tokens.$cds-alias-object-border-width-200);
+
+      @include mixins.include-slim-outline-style-form-fields(tokens.$cds-alias-object-border-width-200);
+    }
+  }
+
+  .clr-treenode-content {
+    //Display
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    gap: tree-view-variables.$clr-tree-node-content-gap;
+    color: tree-view-variables.$clr-tree-node-content-text-only-color;
+    background-color: tree-view-variables.$clr-tree-node-content-bg-color;
+
+    //Dimensions
+    &:first-child {
+      margin-left: tree-view-variables.$clr-tree-node-touch-target;
+    }
+
+    padding: tree-view-variables.$clr-tree-node-content-padding;
+
+    &:has(.clr-treenode-link) {
+      padding: 0;
+    }
+
+    //Others
+    border-radius: tree-view-variables.$clr-tree-border-radius;
+
+    cds-icon,
+    clr-icon {
+      &:not([size]) {
+        @include mixins.min-equilateral(tree-view-variables.$clr-tree-caret-size);
+      }
+      color: tree-view-variables.$clr-tree-node-content-text-only-color;
+      vertical-align: middle;
+    }
+  }
+
+  // selected
+  .clr-treenode-content:has(.clr-treenode-link.active),
+  .clr-treenode-checkbox:has(input[type='checkbox']:not(:disabled):checked) {
+    color: tree-view-variables.$clr-tree-node-content-selected-color;
+    background-color: tree-view-variables.$clr-tree-node-content-bg-selected-color;
+  }
+
+  .clr-treenode-content:has(.clr-treenode-link),
+  .clr-treenode-checkbox {
+    border-radius: tree-view-variables.$clr-tree-border-radius;
+    background-color: tree-view-variables.$clr-tree-node-content-bg-color;
+
+    &:hover {
+      background-color: tree-view-variables.$clr-tree-node-content-bg-hover-color;
+    }
+
+    &:active {
+      background-color: tree-view-variables.$clr-tree-node-content-bg-active-color;
+    }
+  }
+
+  .clr-treenode-checkbox input[type='checkbox'] {
+    @include mixins.min-equilateral(tree-view-variables.$clr-tree-checkbox-size);
+    padding: 0;
+    // Using margin instead of gap due to checkbox implementation specifics.
+    margin: density.$clr-base-vertical-offset-multi-row-inline-m tree-view-variables.$clr-tree-node-content-gap
+      density.$clr-base-vertical-offset-multi-row-inline-m tree-view-variables.$clr-tree-node-horizontal-offset;
+  }
+
+  .clr-treenode-content .clr-treenode-link,
+  .clr-treenode-checkbox input[type='checkbox'] + .clr-control-label {
+    color: tree-view-variables.$clr-tree-node-content-color;
+    background-color: tree-view-variables.$clr-tree-node-content-bg-color;
+    padding: tree-view-variables.$clr-tree-node-content-padding;
+
+    cds-icon,
+    clr-icon {
+      color: tree-view-variables.$clr-tree-node-content-color;
+    }
+
+    &:hover {
+      color: tree-view-variables.$clr-tree-node-content-hover-color;
+
+      cds-icon,
+      clr-icon {
+        color: tree-view-variables.$clr-tree-node-content-hover-color;
+      }
+    }
+
+    &:active {
+      color: tree-view-variables.$clr-tree-node-content-active-color;
+
+      cds-icon,
+      clr-icon {
+        color: tree-view-variables.$clr-tree-node-content-active-color;
+      }
+    }
+  }
+
+  // selected
+  .clr-treenode-content:has(.clr-treenode-link.active),
+  .clr-treenode-checkbox:has(input[type='checkbox']:not(:disabled):checked) {
+    &:hover {
+      background-color: tree-view-variables.$clr-tree-node-content-bg-selected-hover-color;
+    }
+
+    &:active {
+      background-color: tree-view-variables.$clr-tree-node-content-bg-selected-active-color;
+    }
+  }
+
+  .clr-treenode-caret {
+    //Display
+    flex: 0 0 tree-view-variables.$clr-tree-node-touch-target;
+
+    //Dimensions
+    margin: 0;
+    padding: 0;
+    @include mixins.min-equilateral(tree-view-variables.$clr-tree-node-touch-target);
+
+    //Others
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: tree-view-variables.$clr-tree-node-caret-color;
+
+    &:hover {
+      color: tree-view-variables.$clr-tree-node-caret-hover-color;
+    }
+
+    &:active {
+      color: tree-view-variables.$clr-tree-node-caret-active-color;
+    }
+  }
+
+  .clr-treenode-caret-icon {
+    //Dimensions
+    @include mixins.equilateral(tree-view-variables.$clr-tree-caret-size);
+
+    //Others
+    vertical-align: middle;
+  }
+
+  .clr-treenode-spinner-container {
+    //Dimensions
+    @include mixins.min-equilateral(tree-view-variables.$clr-tree-node-touch-target);
+    padding: tree-view-variables.$clr-tree-node-content-padding;
+  }
+
+  .clr-treenode-spinner {
+    //Dimensions
+    @include mixins.min-equilateral(tree-view-variables.$clr-tree-spinner-size);
+  }
+
+  .clr-treenode-children {
+    //Dimensions
+    margin-left: tree-view-variables.$clr-tree-node-children-margin;
+    will-change: height;
+    overflow-y: hidden;
+  }
+
+  .clr-treenode-link {
+    //Display
+    display: inline-block;
+
+    //Dimensions
+    @include mixins.equilateral(100%);
+    margin: 0;
+
+    //Others
+    border: 0;
+    cursor: pointer;
+    text-align: left;
+
+    //States
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+}

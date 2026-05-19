@@ -1,0 +1,363 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use 'sass:meta';
+@use '../utils/mixins';
+@use '../utils/variables/variables';
+@use 'variables.modal' as modal-variables;
+@use '@cds/core/tokens/tokens.scss';
+@use '../utils/variables/variables.density' as density;
+
+@include meta.load-css('properties.modal');
+
+@include mixins.exports('modal.clarity') {
+  .clr-side-panel-pinned-right-sm {
+    padding-right: modal-variables.$clr-modal-sm-width !important;
+  }
+
+  .clr-side-panel-pinned-right-md {
+    padding-right: modal-variables.$clr-modal-md-width !important;
+  }
+
+  .clr-side-panel-pinned-right-lg {
+    padding-right: modal-variables.$clr-modal-lg-width !important;
+  }
+
+  .clr-side-panel-pinned-right-xl {
+    padding-right: modal-variables.$clr-modal-xl-width !important;
+  }
+
+  $modal-height-width-ratio: 0.5;
+  // We need to be able to show at least title and buttons
+  $min-bottom-side-panel-height: calc(modal-variables.$clr-modal-sm-width * 0.6);
+
+  .clr-side-panel-pinned-bottom-sm {
+    padding-bottom: calc(modal-variables.$clr-modal-sm-width * $modal-height-width-ratio) !important;
+  }
+
+  .clr-side-panel-pinned-bottom-md {
+    padding-bottom: calc(modal-variables.$clr-modal-md-width * $modal-height-width-ratio) !important;
+  }
+
+  .clr-side-panel-pinned-bottom-lg {
+    padding-bottom: calc(modal-variables.$clr-modal-lg-width * $modal-height-width-ratio) !important;
+  }
+
+  .clr-side-panel-pinned-bottom-xl {
+    padding-bottom: calc(modal-variables.$clr-modal-xl-width * $modal-height-width-ratio) !important;
+  }
+
+  .clr-modal-host {
+    overflow: hidden;
+    position: relative;
+    .modal,
+    .modal-backdrop {
+      position: absolute;
+    }
+    .clr-modal-host-scrollable {
+      height: 100%;
+      overflow-y: auto;
+    }
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: map.get(variables.$clr-layers, modal);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: calc(modal-variables.$clr-modal-vertical-space * 2) calc(modal-variables.$clr-modal-horizontal-space * 2);
+    max-width: 100%;
+
+    @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
+      padding: calc(modal-variables.$clr-modal-vertical-space / 2) calc(modal-variables.$clr-modal-horizontal-space / 2);
+    }
+
+    .modal-body {
+      padding: modal-variables.$clr-modal-vertical-gap modal-variables.$clr-modal-horizontal-space;
+    }
+  }
+
+  .side-panel {
+    .modal {
+      left: initial;
+      padding: 0;
+
+      .modal-content-wrapper {
+        height: 100%;
+
+        .modal-content {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+      }
+
+      .modal-dialog {
+        border: none;
+        border-radius: 0;
+        height: 100%;
+      }
+
+      &.modal-full-screen {
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        padding: 0;
+      }
+
+      .modal-body-wrapper {
+        flex: 1 1;
+        max-height: 100%;
+      }
+    }
+
+    &.side-panel-bottom {
+      .modal:not(.modal-full-screen) {
+        top: initial;
+        width: 100%;
+        justify-content: end;
+        max-height: 100%;
+        min-height: $min-bottom-side-panel-height;
+
+        height: calc(modal-variables.$clr-modal-md-width * $modal-height-width-ratio);
+
+        &:has(.modal-sm) {
+          height: calc(modal-variables.$clr-modal-sm-width * $modal-height-width-ratio);
+        }
+
+        &:has(.modal-lg) {
+          height: calc(modal-variables.$clr-modal-lg-width * $modal-height-width-ratio);
+        }
+
+        &:has(.modal-xl) {
+          height: calc(modal-variables.$clr-modal-xl-width * $modal-height-width-ratio);
+        }
+      }
+      .modal-dialog {
+        max-height: 100%;
+        width: 100%;
+      }
+    }
+  }
+
+  .modal-dialog {
+    position: relative;
+    z-index: map.get(variables.$clr-layers, modal);
+    width: modal-variables.$clr-modal-md-width;
+    border-radius: modal-variables.$clr-modal-border-radius;
+    box-shadow: modal-variables.$clr-modal-content-box-shadow;
+    border: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-container-border-color;
+    background-color: modal-variables.$clr-modal-bg-color;
+    max-width: 100%;
+
+    &.modal-sm {
+      width: modal-variables.$clr-modal-sm-width;
+    }
+
+    &.modal-lg {
+      width: modal-variables.$clr-modal-lg-width;
+    }
+
+    &.modal-xl {
+      width: modal-variables.$clr-modal-xl-width;
+    }
+  }
+
+  .modal-header {
+    border-bottom: none;
+    padding: modal-variables.$clr-modal-vertical-space modal-variables.$clr-modal-horizontal-space 0;
+
+    & + .modal-footer {
+      padding-top: modal-variables.$clr-modal-vertical-gap;
+    }
+
+    // TODO: This class is used only in the clr-modal template.
+    // It should be merged this with `.modal-header` in a major version
+    // because this would be breaking for the static modals.
+    &--accessible {
+      @extend .modal-header;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .modal-title,
+    .side-panel-title {
+      color: modal-variables.$clr-modal-title-color;
+      margin: 0;
+
+      &:not([cds-text]) {
+        //cds-text do not have color, margin
+        font-family: modal-variables.$clr-modal-title-font-family; //TODO remove line and PI tokens in GA 17+
+        //TODO remove API tokens overrides in GA 17+
+        @include mixins.generate-typography-token(
+          'SECTION-20-STD',
+          (
+            font-size: modal-variables.$clr-modal-title-font-size,
+            font-weight: modal-variables.$clr-modal-title-font-weight,
+            line-height: modal-variables.$clr-modal-title-line-height,
+            letter-spacing: modal-variables.$clr-modal-title-letter-spacing,
+          )
+        );
+      }
+    }
+
+    .close,
+    .pinnable {
+      font-size: initial;
+      line-height: initial;
+
+      cds-icon,
+      clr-icon {
+        fill: modal-variables.$clr-modal-close-color;
+
+        &:not([size]) {
+          // per measurement, this results in an icon that is 24x24...
+          @include mixins.equilateral(modal-variables.$clr-modal-icon-size);
+        }
+      }
+
+      &:hover {
+        cds-icon,
+        clr-icon {
+          fill: variables.$clr-close-color-hover;
+        }
+
+        &:active {
+          cds-icon,
+          clr-icon {
+            fill: variables.$clr-close-color-active;
+          }
+        }
+      }
+    }
+
+    .pinnable {
+      padding: 0;
+      cursor: pointer;
+      background: transparent;
+      border: 0;
+      margin-right: modal-variables.$clr-modal-horizontal-gap;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+  }
+
+  .modal-title-wrapper {
+    flex: 1;
+
+    .modal-title,
+    .side-panel-title {
+      h3 {
+        margin-top: 0;
+      }
+    }
+  }
+
+  .modal-body-wrapper {
+    // This doesn't do much, but at least with several paragraphs in the content
+    // it doesn't mess up the modal's proportions.
+    max-height: 70vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    .modal-body,
+    .side-panel-body {
+      color: tokens.$cds-alias-typography-color-400;
+      @include mixins.generate-typography-token('BODY-14-RG-STD');
+    }
+
+    & > :first-child {
+      margin-top: 0;
+    }
+    & > :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .modal-footer {
+    padding: 0 modal-variables.$clr-modal-horizontal-space modal-variables.$clr-modal-vertical-space;
+  }
+
+  .modal-footer,
+  .side-panel-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: modal-variables.$clr-modal-horizontal-gap;
+
+    .btn {
+      //switched right margin to left because footer is right aligned
+      margin: 0;
+    }
+  }
+
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) and (orientation: landscape) {
+    .modal-body-wrapper {
+      max-height: 55vh;
+    }
+  }
+
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, sm)) {
+    .modal-body-wrapper {
+      max-height: 55vh;
+    }
+  }
+
+  .modal-backdrop {
+    position: fixed;
+    top: -100vh;
+    bottom: 0;
+    right: 0;
+    left: -100vw;
+    background-color: modal-variables.$clr-modal-backdrop-color;
+    z-index: map.get(variables.$clr-layers, modal-bg);
+  }
+
+  // modal-nav is only used in wizards
+  .modal .modal-nav {
+    display: none;
+  }
+
+  // full-screen modals
+  .modal.modal-full-screen {
+    padding: modal-variables.$clr-modal-vertical-space modal-variables.$clr-modal-horizontal-space;
+    height: 100%;
+
+    .modal-dialog {
+      display: flex;
+      width: 100%;
+      height: 100%;
+
+      .modal-content-wrapper {
+        display: flex;
+        flex-grow: 1;
+      }
+
+      // This cannot be nested inside `.modal-content-wrapper` because that class is not documented for static css-only modals.
+      .modal-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+
+      .modal-body-wrapper,
+      // This is needed because the `.modal-body-wrapper` class is not documented for static css-only modals.
+      .modal-body {
+        // Fill space to push footer to bottom.
+        flex-grow: 1;
+        max-height: 100%;
+      }
+    }
+  }
+}

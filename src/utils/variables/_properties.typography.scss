@@ -1,0 +1,180 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../mixins';
+@use '../../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('typography.properties') {
+  @include mixins.root-or-host() {
+    // Temporal internal use only. Should be removed once CDS token based family is available.
+    --clr-metropolis-font-family: Metropolis, 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
+
+    --clr-body-font: var(--clr-metropolis-font-family); // #{tokens.$cds-alias-typography-font-family};
+    --clr-font: var(--clr-body-font);
+    --clr-display-font: var(--clr-metropolis-font-family); //#{tokens.$cds-alias-typography-header-font-family};
+
+    --clr-font-weight-light: #{tokens.$cds-alias-typography-font-weight-light};
+    --clr-font-weight-regular: #{tokens.$cds-alias-typography-font-weight-regular};
+    --clr-font-weight-semibold: #{tokens.$cds-alias-typography-font-weight-semibold};
+    --clr-font-weight-bold: #{tokens.$cds-alias-typography-font-weight-bold};
+    --clr-font-weight-extrabold: #{tokens.$cds-alias-typography-font-weight-extrabold};
+
+    // Header styles
+    //H1 - login_productName
+    //'DISPLAY-40'
+    --clr-h1-font-weight: #{tokens.$cds-alias-typography-display-font-weight};
+    --clr-h1-font-family: var(--clr-display-font);
+    --clr-h1-letter-spacing: #{mixins.baselinePx(-0.5)};
+
+    //H2 - login_trademark, page_mainHeading
+    //'HEADLINE-32'
+    --clr-h2-font-family: var(--clr-display-font);
+    --clr-h2-font-weight: #{tokens.$cds-alias-typography-headline-font-weight};
+    --clr-h2-letter-spacing: #{mixins.baselinePx(-0.4)};
+
+    //H3 - login_subtitle, modal_header, page_secondaryHeading
+    //'TITLE-24-EXP'
+    --clr-h3-font-family: var(--clr-display-font);
+    --clr-h3-font-weight: #{tokens.$cds-alias-typography-title-font-weight};
+    --clr-h3-letter-spacing: #{mixins.baselinePx(-0.2)};
+
+    //H4 - card titles, page_tertiaryHeading
+    //'SECTION-20-STD'
+    --clr-h4-font-family: var(--clr-display-font);
+    --clr-h4-font-weight: #{tokens.$cds-alias-typography-section-font-weight};
+    --clr-h4-letter-spacing: #{mixins.baselinePx(-0.2)};
+
+    //H5 - dgrid placeholder, datagrid_column_toggle_title, form_block_label, nav_title, page_introParagraph, page_sectionHeader
+    //'SUBSECTION-16-EXP'
+    --clr-h5-font-family: var(--clr-display-font);
+    --clr-h5-font-weight: #{tokens.$cds-alias-typography-subsection-font-weight};
+    --clr-h5-letter-spacing: #{mixins.baselinePx(-0.2)};
+
+    //H6 - Heading
+    //'MESSAGE-16-EXP'
+    --clr-h6-font-family: var(--clr-display-font);
+    --clr-h6-font-weight: #{tokens.$cds-alias-typography-message-font-weight};
+    --clr-h6-letter-spacing: #{mixins.baselinePx(-0.2)};
+
+    // Non-header text styles
+    //P0 - Intro text
+    //'BODY-14-RG-STD'
+    --clr-p0-font-weight: #{tokens.$cds-alias-typography-body-font-weight};
+    --clr-p0-letter-spacing: #{mixins.baselinePx(-0.1)};
+
+    //P1 - card text, dropdown_text, page_bodyText, tab_text, toc_text
+    //'BODY-14-RG-STD'
+    --clr-p1-font-weight: #{tokens.$cds-alias-typography-body-font-weight};
+    --clr-p1-letter-spacing: #{mixins.baselinePx(-0.1)};
+
+    //P2 - form_label, stackview_header
+    //'SECONDARY-13-MD-EXP'
+    --clr-p2-font-weight: #{tokens.$cds-alias-typography-font-weight-medium};
+    --clr-p2-letter-spacing: #{mixins.baselinePx(-0.1)};
+
+    //P3 - alerts, form_group_fields, stackview_text, table_text, tooltip_text
+    //'SECONDARY-13-RG-EXP'
+    --clr-p3-font-weight: #{tokens.$cds-alias-typography-secondary-font-weight};
+    --clr-p3-letter-spacing: #{mixins.baselinePx(-0.1)};
+
+    //P4 - small alerts, dropdown_header, vertical_nav_header
+    //'SECONDARY-13-SB-STD'
+    --clr-p4-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
+    --clr-p4-letter-spacing: #{mixins.baselinePx(-0.1)};
+
+    //P5
+    //'SECONDARY-13-RG-EXP'
+    --clr-p5-font-weight: #{tokens.$cds-alias-typography-secondary-font-weight};
+    --clr-p5-letter-spacing: #{mixins.baselinePx(-0.1)};
+
+    //P6 - card link btns, form_subtext, table_header
+    //'CAPTION-LG-11-STD'
+    --clr-p6-font-weight: #{tokens.$cds-alias-typography-caption-font-weight};
+    --clr-p6-letter-spacing: #{mixins.baselinePx(0.2)};
+
+    //P7 - label_text
+    //'CAPTION-SM-10'
+    --clr-p7-font-weight: #{tokens.$cds-alias-typography-smallcaption-font-weight};
+    --clr-p7-letter-spacing: #{mixins.baselinePx(0.5)};
+
+    //P8
+    //'CAPTION-SM-10'
+    --clr-p8-font-weight: #{tokens.$cds-alias-typography-smallcaption-font-weight};
+    --clr-p8-letter-spacing: #{mixins.baselinePx(0.5)};
+
+    &,
+    & [clr-density] {
+      --clr-h1-font-size: #{density.$clr-base-typography-font-size-display};
+      --clr-h1-line-height: #{density.$clr-base-typography-line-height-44};
+
+      --clr-h2-font-size: #{density.$clr-base-typography-font-size-headline};
+      --clr-h2-line-height: #{density.$clr-base-typography-line-height-36};
+
+      --clr-h3-font-size: #{density.$clr-base-typography-font-size-heading};
+      --clr-h3-line-height: #{density.$clr-base-typography-line-height-32};
+
+      --clr-h4-font-size: #{density.$clr-base-typography-font-size-section};
+      --clr-h4-line-height: #{density.$clr-base-typography-line-height-24};
+
+      --clr-h5-font-size: #{density.$clr-base-typography-font-size-sub-section};
+      --clr-h5-line-height: #{density.$clr-base-typography-line-height-24};
+
+      --clr-h6-font-size: #{density.$clr-base-typography-font-size-sub-section};
+      --clr-h6-line-height: #{density.$clr-base-typography-line-height-24};
+
+      --clr-p0-font-size: #{density.$clr-base-typography-font-size-default};
+      --clr-p0-line-height: #{density.$clr-base-typography-line-height-20};
+
+      --clr-p1-font-size: #{density.$clr-base-typography-font-size-default};
+      --clr-p1-line-height: #{density.$clr-base-typography-line-height-20};
+
+      --clr-p2-font-size: #{density.$clr-base-typography-font-size-inline};
+      --clr-p2-line-height: #{density.$clr-base-typography-line-height-24};
+
+      --clr-p3-font-size: #{density.$clr-base-typography-font-size-inline};
+      --clr-p3-line-height: #{density.$clr-base-typography-line-height-24};
+
+      --clr-p4-font-size: #{density.$clr-base-typography-font-size-inline};
+      --clr-p4-line-height: #{density.$clr-base-typography-line-height-20};
+
+      --clr-p5-font-size: #{density.$clr-base-typography-font-size-inline};
+      --clr-p5-line-height: #{density.$clr-base-typography-line-height-24};
+
+      --clr-p6-font-size: #{density.$clr-base-typography-font-size-caption};
+      --clr-p6-line-height: #{density.$clr-base-typography-line-height-16};
+
+      --clr-p7-font-size: #{density.$clr-base-typography-font-size-caption-small};
+      --clr-p7-line-height: #{density.$clr-base-typography-line-height-12};
+
+      --clr-p8-font-size: #{density.$clr-base-typography-font-size-caption-small};
+      --clr-p8-line-height: #{density.$clr-base-typography-line-height-12};
+    }
+
+    &,
+    & [cds-theme] {
+      --clr-h1-color: #{tokens.$cds-alias-typography-color-300};
+      --clr-h2-color: #{tokens.$cds-alias-typography-color-300};
+      --clr-h3-color: #{tokens.$cds-alias-typography-color-300};
+      --clr-h4-color: #{tokens.$cds-alias-typography-color-300};
+      --clr-h5-color: #{tokens.$cds-alias-typography-color-300};
+      --clr-h6-color: #{tokens.$cds-alias-typography-color-300};
+
+      --clr-p0-color: #{tokens.$cds-alias-typography-color-450};
+      --clr-p1-color: #{tokens.$cds-alias-typography-color-450};
+      --clr-p2-color: #{tokens.$cds-alias-typography-color-450};
+      --clr-p3-color: #{tokens.$cds-alias-typography-color-450};
+      --clr-p4-color: #{tokens.$cds-alias-typography-color-450};
+      --clr-p5-color: #{tokens.$cds-alias-typography-color-450};
+      --clr-p6-color: #{tokens.$cds-alias-typography-color-450};
+      --clr-p7-color: #{tokens.$cds-alias-typography-color-450};
+      --clr-p8-color: #{tokens.$cds-alias-typography-color-450};
+
+      // List item li
+      --clr-list-item-color: #{tokens.$cds-alias-typography-color-400};
+    }
+  }
+}

@@ -1,0 +1,179 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use '../../image/icons.clarity';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use '../../utils/variables/variables.density' as density;
+@use 'mixins.forms' as forms-mixins;
+@use 'variables.forms' as forms-variables;
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('forms.select') {
+  .clr-select-wrapper,
+  .clr-multiselect-wrapper {
+    position: relative;
+    white-space: nowrap;
+
+    select {
+      @include forms-mixins.custom-inputs(forms-variables.$clr-forms-input-wrapper-height);
+      @include forms-mixins.form-fields-appearance();
+      @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
+
+      &:not([multiple]) {
+        @include forms-mixins.input-border-bottom-animation();
+      }
+      &[multiple]:focus {
+        @include mixins.include-slim-outline-style-form-fields();
+      }
+      position: relative;
+      padding: 0 density.$clr-base-icon-size-l 0 #{density.$clr-base-horizontal-offset-s};
+      cursor: pointer;
+
+      //Moves the :after pseudo element (arrow) to the back so that clicking over it activates
+      //the dropdown.
+      z-index: map.get(variables.$clr-layers, select-box);
+
+      &:hover,
+      &:active {
+        border-color: forms-variables.$clr-forms-select-hover-border-color;
+        background: forms-variables.$clr-forms-select-hover-background;
+
+        &:disabled {
+          cursor: not-allowed;
+          border-color: forms-variables.$clr-forms-select-disabled-border-color;
+        }
+      }
+
+      &:disabled option,
+      option:disabled {
+        color: forms-variables.$clr-forms-select-disabled-color;
+        cursor: not-allowed;
+      }
+
+      option {
+        color: forms-variables.$clr-forms-select-option-color;
+        background-color: forms-variables.$clr-forms-select-option-background-color;
+      }
+    }
+
+    //Remove default arrow from IE
+    select::-ms-expand {
+      display: none;
+    }
+  }
+
+  .clr-select-wrapper {
+    max-height: forms-variables.$clr-forms-input-wrapper-height;
+    display: inline-block;
+
+    &::after {
+      position: absolute;
+      content: '';
+      @include mixins.equilateral(forms-variables.$clr-forms-select-caret-size);
+      top: calc((100% - forms-variables.$clr-forms-select-caret-size) / 2);
+      right: density.$clr-base-horizontal-offset-s;
+      // Using mask instead of background-image so we can use the CSS properties
+      // and support both light / dark themes.
+      -webkit-mask: icons.generateCaretIcon();
+      mask: icons.generateCaretIcon();
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      background-color: forms-variables.$clr-forms-select-caret-color;
+    }
+
+    &:hover::after {
+      background-color: forms-variables.$clr-forms-select-caret-hover-color;
+    }
+  }
+
+  .clr-error .clr-select-wrapper::after,
+  .clr-success .clr-select-wrapper::after {
+    right: calc(#{forms-variables.$clr-forms-icon-size} + #{density.$clr-base-horizontal-offset-s});
+  }
+
+  .clr-multiselect-wrapper {
+    display: flex;
+
+    .clr-validate-icon {
+      margin-left: 0;
+    }
+  }
+
+  //Multiple Select
+  select[multiple],
+  select[size] {
+    padding: 0;
+    border: tokens.$cds-alias-object-border-width-100 solid forms-variables.$clr-forms-select-multiple-border-color;
+    background: forms-variables.$clr-forms-select-multiple-background-color;
+    border-radius: density.$clr-base-border-radius-s;
+    height: auto;
+    min-width: mixins.baselinePx(120);
+
+    &:hover,
+    &:active {
+      background: forms-variables.$clr-forms-select-multiple-background-color;
+      border-color: forms-variables.$clr-forms-select-multiple-border-color;
+    }
+
+    option {
+      @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+      padding: density.$clr-base-vertical-offset-xs density.$clr-base-horizontal-offset-2xl
+        density.$clr-base-vertical-offset-xs density.$clr-base-horizontal-offset-l;
+      color: forms-variables.$clr-forms-select-multiple-option-color;
+
+      &:checked {
+        background-color: forms-variables.$clr-forms-select-multiple-selected-option-background-color;
+      }
+    }
+  }
+
+  .clr-error select {
+    &:not([multiple]) {
+      border-bottom-color: forms-variables.$clr-forms-invalid-color;
+      @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-invalid-color);
+    }
+    &[multiple] {
+      border-color: forms-variables.$clr-forms-invalid-color;
+    }
+  }
+
+  .clr-success select {
+    &:not([multiple]) {
+      border-bottom-color: forms-variables.$clr-forms-valid-color;
+      @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-valid-color);
+    }
+    &[multiple] {
+      border-color: forms-variables.$clr-forms-valid-color;
+    }
+  }
+
+  .clr-form-control-disabled .clr-select {
+    &.disabled {
+      color: forms-variables.$clr-forms-select-disabled-color;
+      cursor: not-allowed;
+
+      &:hover::after {
+        color: forms-variables.$clr-forms-select-caret-color;
+      }
+    }
+
+    &.disabled > select,
+    select:disabled {
+      color: forms-variables.$clr-forms-select-disabled-color;
+      cursor: not-allowed;
+      &:hover {
+        background: none;
+        border-color: forms-variables.$clr-forms-border-color;
+      }
+    }
+  }
+
+  .clr-form-compact .clr-multiselect-wrapper {
+    margin-top: 0;
+  }
+}

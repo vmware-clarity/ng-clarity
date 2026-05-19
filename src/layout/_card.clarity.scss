@@ -1,0 +1,329 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use 'sass:meta';
+@use '../utils/mixins';
+@use '../utils/variables/variables';
+@use 'variables.card' as card-variables;
+@use '../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+@include meta.load-css('properties.card');
+
+@include mixins.exports('card.clarity') {
+  %card-border-appearance {
+    box-shadow: card-variables.$clr-card-box-shadow;
+    border-radius: card-variables.$clr-card-border-radius;
+    border: card-variables.$clr-card-border-width solid card-variables.$clr-card-border-color;
+  }
+
+  %clickable-card-transition {
+    box-shadow: card-variables.$clr-card-clickable-box-shadow;
+    border: tokens.$cds-alias-object-border-width-100 solid card-variables.$clr-card-clickable-border-color;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  %card-space-between {
+    margin-top: 0;
+    margin-bottom: density.$clr-base-gap-m;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  //Responsive Card Images
+  %card-image-appearance {
+    display: block;
+    height: auto;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  //TODO: Try to reduce the nesting in .card
+  .card {
+    position: relative;
+    display: block;
+    background-color: card-variables.$clr-card-bg-color;
+    width: 100%;
+    margin-top: density.$clr-base-vertical-offset-2xl;
+    @extend %card-border-appearance;
+
+    .alert {
+      margin: 0 0 #{density.$clr-base-gap-s} 0;
+    }
+
+    .btn-link {
+      min-width: 0;
+
+      //NOTE: Set left and right padding of link buttons to 0. aligning these buttons
+      //without removing the paddings is a huge task and leads to a brittle card css
+      //plus the alignment doesn't work in all the cases
+      padding: 0;
+    }
+
+    //Clickable Cards
+    &.clickable {
+      color: inherit;
+
+      &:hover {
+        @extend %clickable-card-transition;
+      }
+    }
+
+    .card-title,
+    .card-text,
+    .card-media-block,
+    .list,
+    .list-unstyled {
+      @extend %card-space-between;
+    }
+
+    //Clarity Lists
+    & > .list,
+    & > .list-unstyled {
+      padding: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-xl;
+    }
+
+    .list-group {
+      padding-left: 0;
+      margin-bottom: 0;
+      list-style: none;
+    }
+
+    .list-group-item {
+      @include mixins.generate-typography-token('BODY-14-RG-STD');
+      padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
+      background-color: card-variables.$clr-card-bg-color;
+      border-bottom: card-variables.$clr-card-border-width solid card-variables.$clr-card-border-color;
+    }
+
+    //Dropdowns
+
+    //NOTE: This is a fix just for dropdowns in Cards in Edge.
+    //TODO: Figure out why the caret sign is not aligned next to the dropdown toggle only in cards
+    @include mixins.fixForMsEdge() {
+      .dropdown > .dropdown-toggle::after {
+        display: inline-block;
+        margin-top: calc(-1 * density.$clr-base-vertical-offset-l);
+      }
+    }
+  }
+
+  .card-block {
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
+  }
+
+  .card-footer {
+    display: flex;
+    flex-direction: row;
+    gap: density.$clr-base-gap-s;
+    padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-xl;
+  }
+
+  h3.card-header,
+  .card-header {
+    @include mixins.generate-typography-token('SECTION-20-STD');
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
+    color: card-variables.$clr-card-header-title-color;
+  }
+
+  h4.card-title,
+  .card-title {
+    @include mixins.generate-typography-token('SUBSECTION-16-EXP');
+    color: card-variables.$clr-card-content-title-color;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    &.card-header,
+    &.card-title {
+      margin-top: 0; // removes default margin from clr-ui typography styles
+    }
+  }
+
+  .card-text {
+    @include mixins.generate-typography-token('BODY-14-RG-STD');
+    color: card-variables.$clr-card-text-color;
+  }
+
+  //Images
+  .card-img {
+    &:first-child > img {
+      border-radius: 0;
+      border-top-left-radius: card-variables.$clr-card-border-radius;
+      border-top-right-radius: card-variables.$clr-card-border-radius;
+    }
+
+    &:last-child > img {
+      border-radius: 0;
+      border-bottom-left-radius: card-variables.$clr-card-border-radius;
+      border-bottom-right-radius: card-variables.$clr-card-border-radius;
+    }
+
+    & > img {
+      @extend %card-image-appearance;
+    }
+  }
+
+  //Card with just an image
+  .card.card-img,
+  .card > .card-img:first-child:last-child {
+    & > img {
+      border-radius: card-variables.$clr-card-border-radius;
+      @extend %card-image-appearance;
+    }
+  }
+
+  .card-block,
+  .card-footer {
+    .btn,
+    .btn.btn-link,
+    .card-link {
+      margin: 0;
+    }
+
+    //Need this level of nesting for now.
+    //Adding a TODO to remove the nesting in a separate PR
+    //Don't want to create a PR which solves multiple different issues.
+    .btn-group .btn {
+      margin: 0;
+    }
+  }
+
+  .card-header,
+  .card-block {
+    border-bottom: card-variables.$clr-card-border-width solid card-variables.$clr-card-border-color;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  //Use border-bottom directly on card header and card block to simplify the layout
+  //Card dividers should only be used inside of a .card-block
+  .card-divider {
+    display: block;
+    border-bottom: card-variables.$clr-card-border-width solid card-variables.$clr-card-divider-color;
+  }
+
+  .card-block {
+    .card-divider {
+      @extend %card-space-between;
+      margin-left: calc(-1 * density.$clr-base-horizontal-offset-xl);
+      margin-right: calc(-1 * density.$clr-base-horizontal-offset-xl);
+      width: auto;
+    }
+  }
+
+  //Hide card dividers and just show the border bottom of card-header and card-block
+  .card-header,
+  .card-block {
+    & + .card-divider {
+      display: none;
+    }
+  }
+
+  //Card Media Block
+  .card-media-block {
+    display: flex;
+
+    .card-media-image {
+      display: inline-block; //to make sure IE11 respects the max-height and max-width
+      flex: 0 0 auto;
+      @include mixins.max-equilateral(density.$clr-base-icon-size-4xl);
+    }
+
+    .card-media-description {
+      @include mixins.generate-typography-token('BODY-14-RG-STD');
+      display: flex;
+      flex-direction: column;
+      color: card-variables.$clr-card-text-color;
+      margin-left: density.$clr-base-horizontal-offset-xl;
+    }
+
+    .card-media-title {
+      display: inline-block;
+    }
+
+    span,
+    .card-media-text {
+      display: inline-block;
+    }
+
+    &.wrap {
+      flex-direction: column;
+
+      .card-media-description {
+        margin-left: 0;
+        margin-top: density.$clr-base-vertical-offset-xl;
+      }
+    }
+  }
+
+  .card-block {
+    & > .list,
+    & > .list-unstyled {
+      padding: 0;
+    }
+  }
+
+  //Credit: Bootstrap 4 Card Masonry
+  //Added some fixes to avoid flickering in Clickable cards
+  //Added extra column classes to control the number of CSS columns
+  @media screen and (min-width: map.get(variables.$clr-grid-breakpoints, sm)) {
+    .card-columns {
+      column-count: 3;
+      column-gap: density.$clr-base-gap-m;
+      break-inside: avoid;
+      column-fill: balance;
+
+      //Note: Safari Bug Fix for CSS Columns
+      //http://stackoverflow.com/a/34998087/3538394
+      -webkit-perspective: 1;
+
+      &.card-columns-2 {
+        column-count: 2;
+      }
+
+      &.card-columns-4 {
+        column-count: 4;
+      }
+
+      .card {
+        display: inline-block; //For some weird reason stops the cards from getting cut off between 2 columns
+        margin: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-s;
+      }
+
+      .clickable {
+        //To fix the flickering issue with clickable card transition
+        //http://stackoverflow.com/questions/3461441/prevent-flicker-on-webkit-transition-of-webkit-transform
+        backface-visibility: hidden;
+      }
+    }
+  }
+
+  @include mixins.fixForMsEdge {
+    // Edge did NOT like using display inline-table for button-groups inside of cards...
+    .card {
+      .checkbox,
+      .checkbox-inline,
+      .radio,
+      .radio-inline {
+        &.btn label {
+          display: inline-block;
+        }
+      }
+    }
+  }
+}

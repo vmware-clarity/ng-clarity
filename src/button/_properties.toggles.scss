@@ -1,0 +1,34 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('toggle.properties') {
+  @include mixins.root-or-host() {
+    &,
+    [cds-theme] {
+      // colors
+      --clr-toggle-bg-color-off: #{tokens.$cds-alias-status-neutral};
+      --clr-toggle-bg-color-on: #{tokens.$cds-alias-status-success};
+      --clr-toggle-handle-bg-color: #{tokens.$cds-alias-object-interaction-background};
+      --clr-toggle-handle-border-color: var(--clr-toggle-bg-color-off);
+      --clr-toggle-handle-border-color-on: var(--clr-toggle-bg-color-on);
+
+      // disabled colors
+      --clr-toggle-disabled-default-border-color: #{tokens.$cds-alias-object-interaction-color-disabled};
+      --clr-toggle-disabled-default-handle-color: #{tokens.$cds-alias-object-interaction-background};
+      --clr-toggle-disabled-off-border-color: var(--clr-toggle-disabled-default-border-color);
+      --clr-toggle-disabled-off-bg-color: var(--clr-toggle-disabled-default-handle-color);
+
+      // Also sets disabled/on inner part of handle circle.
+      --clr-toggle-disabled-off-handle-border-color: var(--clr-toggle-disabled-default-border-color);
+      --clr-toggle-disabled-on-border-color: var(--clr-toggle-disabled-default-border-color);
+      --clr-toggle-disabled-on-bg-color: var(--clr-toggle-disabled-default-border-color);
+      --clr-toggle-disabled-on-handle-border-color: var(--clr-toggle-disabled-default-border-color);
+    }
+  }
+}

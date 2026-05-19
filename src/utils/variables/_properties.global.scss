@@ -1,0 +1,52 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../mixins';
+@use 'variables.global';
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('global.properties') {
+  @include mixins.root-or-host() {
+    --clr-basefont-size: #{variables.$clr-basefont-size};
+
+    // app borders
+    --clr-global-borderradius: #{tokens.$cds-alias-object-border-radius-100};
+    --clr-global-borderwidth: #{tokens.$cds-alias-object-border-width-100};
+
+    &,
+    & [cds-theme] {
+      // component close icon colors
+      --clr-close-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-close-color-hover: #{tokens.$cds-alias-object-interaction-color-hover};
+      --clr-close-color-active: #{tokens.$cds-alias-object-interaction-color-active};
+
+      // app background
+      --clr-global-app-background: #{tokens.$cds-alias-object-app-background};
+
+      // app selection colors
+      --clr-global-selection-color: #{tokens.$cds-alias-object-interaction-background-selected};
+      --clr-global-on-selection-color: #{tokens.$cds-alias-object-interaction-color-selected};
+
+      // app hover colors
+      --clr-global-hover-color: #{tokens.$cds-global-typography-link-color-hover};
+
+      // app font colors
+      --clr-global-content-header-font-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-global-font-color: #{tokens.$cds-alias-typography-color-500};
+
+      // app success/error colors
+      --clr-global-success-color: #{tokens.$cds-alias-status-success};
+      --clr-global-error-color: #{tokens.$cds-alias-status-danger};
+    }
+  }
+
+  @if variables.$clr-use-custom-properties == true {
+    @include mixins.root-or-host() {
+      // global box-shadows
+      --clr-popover-box-shadow-color: #{variables.$clr-popover-box-shadow-color};
+    }
+  }
+}

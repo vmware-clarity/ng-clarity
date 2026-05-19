@@ -1,0 +1,538 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use 'sass:meta';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
+@use 'variables.alert' as alert-variables;
+@use '../../button/buttons.clarity';
+@use '../../utils/variables/variables.density' as density;
+
+@use '@cds/core/tokens/tokens.scss';
+
+@include meta.load-css('properties.alert');
+
+@mixin generateAlertType($alertType: 'info') {
+  background: alert-variables.getAlertColor($alertType, bg-color);
+  color: alert-variables.getAlertColor($alertType, color);
+
+  & .alert-items .alert-item a:not(.dropdown-item, .badge, .label) {
+    color: alert-variables.getAlertColor($alertType, color);
+
+    cds-icon,
+    clr-icon {
+      fill: alert-variables.getAlertColor($alertType, color);
+    }
+  }
+
+  $border-prop: alert-variables.getAlertColor($alertType, border-color);
+  @if $border-prop != 'none' {
+    border: alert-variables.$clr-alert-borderwidth solid $border-prop;
+  } @else {
+    border: none;
+  }
+
+  .alert-icon {
+    color: alert-variables.getAlertColor($alertType, icon);
+  }
+
+  $myActionSassVar: alert-variables.getAlertColor($alertType, action);
+
+  .alert-actions .dropdown .dropdown-toggle {
+    color: $myActionSassVar;
+    border-color: alert-variables.getAlertColor($alertType, action-active);
+  }
+
+  .alert-action,
+  .dropdown-toggle {
+    color: $myActionSassVar;
+
+    &.btn {
+      border-color: $myActionSassVar;
+      color: $myActionSassVar;
+
+      cds-icon,
+      clr-icon {
+        color: $myActionSassVar;
+      }
+
+      &:active {
+        color: $myActionSassVar;
+        cds-icon,
+        clr-icon {
+          color: $myActionSassVar;
+        }
+      }
+    }
+  }
+
+  .close {
+    color: alert-variables.getAlertColor($alertType, close-icon);
+
+    cds-icon,
+    clr-icon {
+      fill: alert-variables.getAlertColor($alertType, close-icon);
+    }
+
+    &:focus,
+    &:hover,
+    &:active {
+      color: alert-variables.getAlertColor($alertType, close-icon-hover);
+
+      cds-icon,
+      clr-icon {
+        fill: alert-variables.getAlertColor($alertType, close-icon-hover);
+      }
+    }
+  }
+}
+
+@mixin generateLightweightAlertType($alertType: 'info') {
+  &.alert-#{$alertType} {
+    .alert-text {
+      color: alert-variables.getAlertColor('lightweight-#{$alertType}', color);
+    }
+    .alert-icon {
+      color: alert-variables.getAlertColor('lightweight-#{$alertType}', icon);
+    }
+  }
+}
+
+@include mixins.exports('alert.clarity') {
+  $alertTypes: info, warning, danger, success, neutral;
+
+  .alert-icon {
+    @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+  }
+
+  .alert-icon-wrapper {
+    display: inline-flex;
+    flex: 0 0 density.$clr-base-icon-size-l;
+  }
+
+  .alert-item {
+    flex: 1 1 auto;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: density.$clr-base-gap-s;
+    min-height: alert-variables.$clr-alert-item-min-height;
+  }
+
+  .alert-items {
+    flex: 1 1 auto;
+    flex-flow: column nowrap;
+    gap: density.$clr-base-gap-s;
+    display: flex;
+  }
+
+  .alert-item > span,
+  .alert-text {
+    flex: 1 1;
+    text-align: left;
+    align-self: center;
+  }
+
+  .alert {
+    @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    border-radius: alert-variables.$clr-alert-borderradius;
+    padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
+    gap: density.$clr-base-horizontal-offset-m;
+
+    // To be deleted with refactoring task
+    margin-top: alert-variables.$clr-alert-top-margin;
+
+    @include generateAlertType(info);
+
+    &.alert-info {
+      @include generateAlertType(info);
+    }
+
+    &.alert-success {
+      @include generateAlertType(success);
+    }
+
+    &.alert-warning {
+      @include generateAlertType(warning);
+    }
+
+    &.alert-danger {
+      @include generateAlertType(danger);
+    }
+
+    &.alert-neutral {
+      @include generateAlertType(neutral);
+    }
+
+    .alert-item {
+      > span,
+      .alert-text,
+      .alert-actions {
+        padding: density.$clr-base-vertical-offset-multi-row-inline-s 0;
+      }
+
+      .clr-icon {
+        @include mixins.equilateral(alert-variables.$clr-alert-icon-dimension-sm);
+        margin-right: alert-variables.$clr-icon-margin-right;
+      }
+
+      .clr-icon + .alert-text {
+        padding-left: 0;
+
+        &::before {
+          content: none;
+        }
+      }
+    }
+
+    .alert-actions {
+      flex: 0 0 auto;
+      white-space: nowrap;
+      display: flex;
+      gap: density.$clr-base-gap-s;
+
+      .dropdown-item {
+        color: dropdown-variables.$clr-dropdown-text-color;
+      }
+    }
+
+    .alert-action,
+    .dropdown-toggle {
+      text-decoration: underline;
+    }
+
+    .alert-action {
+      button.dropdown-toggle:not(.btn) {
+        background: transparent;
+        cursor: pointer;
+        color: dropdown-variables.$clr-dropdown-text-color;
+      }
+    }
+    .dropdown-toggle:not(.btn) {
+      background: transparent;
+      border: none;
+    }
+
+    .close {
+      order: 100;
+      flex: 0 0 density.$clr-base-icon-size-l;
+      @include mixins.equilateral(density.$clr-base-icon-size-l);
+
+      cds-icon:not([size]),
+      clr-icon {
+        @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+      }
+    }
+
+    .alert-spinner.spinner-inline {
+      @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+      margin: 0;
+
+      &::before,
+      &::after {
+        @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+      }
+    }
+
+    &.alert-lightweight {
+      background: none;
+      border: none;
+      padding-top: 0;
+      padding-bottom: 0;
+
+      .alert-items .alert-item {
+        margin: 0;
+
+        > span,
+        .alert-actions,
+        .alert-text {
+          padding: 0;
+          @include mixins.generate-typography-token('BODY-14-RG-STD');
+        }
+      }
+
+      .close {
+        display: none;
+      }
+
+      &:not(.alert-sm) .alert-icon {
+        margin: 0;
+      }
+
+      @include generateLightweightAlertType(info);
+      @include generateLightweightAlertType(warning);
+      @include generateLightweightAlertType(danger);
+      @include generateLightweightAlertType(success);
+      @include generateLightweightAlertType(neutral);
+    }
+  }
+
+  .alert-app-level {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    overflow-y: auto;
+    min-height: alert-variables.$clr-alert-min-height;
+    padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-m;
+
+    .alert-actions {
+      align-self: center;
+      align-items: center;
+    }
+
+    @include generateAlertType(app-info);
+
+    .alert-item .btn {
+      @extend .btn;
+      @extend .btn-sm;
+      margin: 0;
+    }
+
+    &.alert-info {
+      @include generateAlertType(app-info);
+
+      .alert-item .btn {
+        @extend .btn-info-outline;
+      }
+    }
+
+    &.alert-danger {
+      @include generateAlertType(app-danger);
+
+      .alert-item .btn {
+        @extend .btn-danger-outline;
+      }
+    }
+
+    &.alert-neutral {
+      @include generateAlertType(app-neutral);
+
+      .alert-item .btn {
+        @extend .btn-neutral-outline;
+      }
+    }
+
+    &.alert-warning {
+      @include generateAlertType(app-warning);
+
+      .alert-item .btn {
+        @extend .btn-warning-outline;
+      }
+    }
+
+    &.alert-success {
+      @include generateAlertType(app-success);
+
+      .alert-item .btn {
+        @extend .btn-success-outline;
+      }
+    }
+
+    .alert-items {
+      align-items: center;
+    }
+
+    .alert-item {
+      justify-content: center;
+      align-items: center;
+
+      > span,
+      .alert-text,
+      .alert-actions {
+        @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
+        padding: 0;
+      }
+    }
+  }
+
+  .alert-sm {
+    padding-top: density.$clr-base-vertical-offset-xs;
+    padding-bottom: density.$clr-base-vertical-offset-xs;
+
+    .alert-items {
+      gap: 0;
+
+      .alert-item {
+        min-height: density.$clr-base-row-height-xs;
+      }
+    }
+
+    .alert-icon-wrapper {
+      flex-basis: density.$clr-base-icon-size-s;
+      padding: density.$clr-base-vertical-offset-multi-row-inline-s 0;
+    }
+
+    .alert-icon {
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+    }
+
+    .alert-item > span,
+    .alert-item .alert-text,
+    .alert-item .alert-actions {
+      @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+    }
+
+    .alert-spinner.spinner-inline {
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+
+      &::before,
+      &::after {
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+      }
+    }
+
+    &.alert-lightweight {
+      background: none;
+      border: none;
+
+      .alert-items {
+        gap: density.$clr-base-gap-xs;
+
+        .alert-item {
+          align-items: center;
+          min-height: density.$clr-base-row-height-s;
+          gap: density.$clr-base-gap-xs;
+
+          > span,
+          .alert-actions,
+          .alert-text {
+            @include mixins.generate-typography-token('CAPTION-LG-11-STD');
+          }
+
+          .alert-icon-wrapper {
+            flex-basis: density.$clr-base-icon-size-s;
+            height: density.$clr-base-icon-size-s;
+            padding: 0;
+          }
+        }
+      }
+      .close {
+        display: none;
+      }
+    }
+  }
+
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) {
+    .alert {
+      .alert-item {
+        flex-wrap: wrap;
+
+        .alert-text {
+          //90% was just an estimate to distance the text from the
+          //close alert button on medium and smaller breakpoints.
+          max-width: 90%;
+          //needed for safari
+          width: 90%;
+          flex-basis: 90%;
+        }
+
+        .alert-actions {
+          flex: 1 0 100%;
+        }
+      }
+    }
+
+    .alert-app-level {
+      .alert-actions {
+        margin-left: density.$clr-base-horizontal-offset-2xl;
+      }
+    }
+  }
+
+  .alert-hidden {
+    display: none;
+  }
+
+  //alert padding/margin adjustments
+  //Multiple app level alerts
+  .alerts {
+    // To be deleted with refactoring task
+    .alert {
+      margin-top: 0;
+    }
+
+    .alerts-wrapper {
+      display: flex;
+      flex-direction: row;
+      clr-alert {
+        flex: 1 1 100%;
+      }
+    }
+
+    @each $alertType in $alertTypes {
+      &.alert-#{$alertType} {
+        background: var(--clr-app-alert-#{$alertType}-pager-bg-color);
+      }
+    }
+  }
+
+  .alerts-pager {
+    color: var(--clr-app-alert-pager-text-color);
+
+    @each $alertType in $alertTypes {
+      .alert-#{$alertType} & {
+        color: var(--clr-app-alert-#{$alertType}-pager-font-color);
+      }
+    }
+
+    min-height: alert-variables.$clr-alert-min-height;
+    flex: 1 0 var(--clr-app-alert-pager-width);
+    display: flex;
+    justify-content: center;
+  }
+
+  .alerts-pager-button {
+    @include mixins.clr-no-styles-button();
+    color: var(--clr-app-alert-pager-text-color);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    @include mixins.equilateral(density.$clr-base-icon-size-l);
+
+    cds-icon,
+    clr-icon {
+      color: var(--clr-app-alert-pager-text-color);
+
+      &:not([size]) {
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+      }
+
+      @each $alertType in $alertTypes {
+        .alert-#{$alertType} & {
+          color: var(--clr-app-alert-#{$alertType}-pager-font-color);
+        }
+      }
+    }
+  }
+
+  .alerts-pager-control {
+    display: flex;
+    white-space: nowrap;
+    height: 100%;
+    align-items: center;
+    text-align: center;
+    gap: density.$clr-base-gap-s;
+    justify-content: space-between;
+    padding: 0 density.$clr-base-horizontal-offset-l;
+
+    > .alerts-pager-text {
+      @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
+      min-width: mixins.baselinePx(40);
+    }
+
+    > * {
+      display: inline-flex;
+      justify-content: center;
+      flex: 0 1 auto;
+    }
+  }
+}

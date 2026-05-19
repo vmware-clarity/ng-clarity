@@ -1,0 +1,63 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+@use '../utils/variables/variables.density' as density;
+
+@include mixins.exports('wizard.properties') {
+  @include mixins.root-or-host() {
+    --clr-wizard-footer-height: auto;
+
+    &,
+    & [clr-density] {
+      --clr-wizard-footer-vertical-space: #{density.$clr-base-vertical-offset-xl};
+      --clr-wizard-stepnav-border-size: #{density.$clr-base-layout-space-2xs};
+      --clr-wizard-border-radius: #{density.$clr-base-border-radius-s};
+    }
+
+    &,
+    & [cds-theme] {
+      --clr-wizard-main-bgcolor: #{tokens.$cds-alias-object-overlay-background};
+      --clr-wizard-main-text-color: #{tokens.$cds-alias-typography-color-400};
+
+      --clr-wizard-stepnav-bgcolor: #{tokens.$cds-alias-object-interaction-background};
+      --clr-wizard-stepnav-text: #{tokens.$cds-alias-typography-color-400};
+      --clr-wizard-stepnav-text-active: #{tokens.$cds-alias-object-interaction-color-active};
+      --clr-wizard-stepnav-text-hover: #{tokens.$cds-alias-object-interaction-color-hover};
+      // @TODO v18 rename to --clr-wizard-stepnav-text-selected
+      --clr-wizard-stepnav-text--active: #{tokens.$cds-alias-object-interaction-color-selected};
+      --clr-wizard-stepnav-text-disabled: #{tokens.$cds-alias-typography-disabled};
+      --clr-wizard-stepnav-item-border-color: #{tokens.$cds-alias-status-neutral-tint};
+
+      // @TODO v18 rename to --clr-wizard-stepnav-item-complete-border-color
+      --clr-wizard-stepnav-item-border-color--active: #{tokens.$cds-alias-status-success};
+      --clr-wizard-stepnav-selected-border-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+      // @TODO v18 remove in favor of --clr-wizard-stepnav-selected-bgcolor
+      --clr-wizard-stepnav-active-bgcolor: #{tokens.$cds-alias-object-interaction-background-selected};
+      --clr-wizard-stepnav-selected-bgcolor: var(--clr-wizard-stepnav-active-bgcolor);
+      --clr-wizard-stepnav-selected-error-bgcolor: #{tokens.$cds-alias-object-interaction-danger-secondary-hover};
+      --clr-wizard-stepnav-selected-hover-bgcolor: var(--cds-alias-object-interaction-background-selected-hover);
+      --clr-wizard-stepnav-selected-active-bgcolor: var(--cds-alias-object-interaction-background-selected-active);
+      --clr-wizard-stepnav-link-error-icon-color: #{tokens.$cds-alias-status-danger};
+      --clr-wizard-stepnav-link-complete-icon-color: #{tokens.$cds-alias-status-success};
+
+      --clr-wizard-stepnav-border-color: #{tokens.$cds-alias-object-container-border-color};
+      // @TODO v18 rename to --clr-wizard-stepnav-hover-bgcolor
+      --clr-wizard-stepnav-link-hover-bg-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      // @TODO v18 rename to --clr-wizard-stepnav-active-bgcolor
+      --clr-wizard-stepnav-link-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
+      --clr-wizard-stepnav-item-error-border-color: #{tokens.$cds-alias-status-danger};
+
+      --clr-wizard-title-text: #{tokens.$cds-alias-typography-color-400};
+      --clr-wizard-header-action-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-wizard-header-action-color--hovered: #{tokens.$cds-alias-object-interaction-color-hover};
+      --clr-wizard-box-shadow: #{tokens.$cds-alias-object-shadow-300};
+
+      --clr-wizard-content-background-color: #{tokens.$cds-alias-object-container-background};
+    }
+  }
+}

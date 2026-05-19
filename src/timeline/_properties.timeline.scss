@@ -1,0 +1,38 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+@use '../utils/variables/variables.density' as density;
+
+@include mixins.exports('timeline.properties') {
+  @include mixins.root-or-host() {
+    // body (title)
+    --clr-timeline-step-title-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
+
+    &,
+    & [clr-density] {
+      --clr-timeline-icon-size: #{density.$clr-base-icon-size-3xl};
+
+      // internal property cannot be exposed
+      --clr-timeline-step-internal-spacing: #{density.$clr-base-vertical-offset-l};
+    }
+
+    &,
+    & [cds-theme] {
+      // colors
+      --clr-timeline-line-color: #{tokens.$cds-alias-object-interaction-border-color};
+      --clr-timeline-step-header-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-timeline-step-title-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-timeline-step-description-color: #{tokens.$cds-alias-typography-color-400};
+
+      --clr-timeline-incomplete-step-color: #{tokens.$cds-alias-object-interaction-border-color};
+      --clr-timeline-current-step-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+      --clr-timeline-success-step-color: #{tokens.$cds-alias-status-success};
+      --clr-timeline-error-step-color: #{tokens.$cds-alias-status-danger};
+    }
+  }
+}

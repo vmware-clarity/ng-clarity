@@ -1,0 +1,18 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('subnav.properties') {
+  @include mixins.root-or-host() {
+    &,
+    & [cds-theme] {
+      // Usage: ../layout/nav/_subnav.clarity.scss
+      --clr-subnav-bg-color: #{tokens.$cds-alias-object-container-background};
+    }
+  }
+}

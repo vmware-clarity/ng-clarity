@@ -1,0 +1,52 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
+
+@include mixins.exports('datepicker.properties') {
+  @include mixins.root-or-host() {
+    // Typography
+    --clr-calendar-today-date-cell-font-weight: #{tokens.$cds-global-typography-font-weight-semibold};
+    --clr-calendar-picker-btn-font-weight: #{tokens.$cds-global-typography-font-weight-medium};
+
+    &,
+    & [clr-density] {
+      --clr-calendar-weekday-font-size: #{density.$clr-base-typography-font-size-inline};
+
+      --clr-calendar-picker-btn-font-size: #{density.$clr-base-typography-font-size-section};
+    }
+
+    &,
+    & [cds-theme] {
+      --clr-calendar-background-color: #{tokens.$cds-alias-object-container-background};
+      --clr-calendar-border-color: #{tokens.$cds-alias-object-border-color};
+
+      --clr-calendar-option-text-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-calendar-active-option-border-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+      --clr-calendar-range-cell-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
+
+      --clr-calendar-btn-color: #{tokens.$cds-alias-object-interaction-color};
+
+      --clr-calendar-today-date-cell-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-calendar-today-date-cell-border-color: #{tokens.$cds-alias-object-interaction-border-color};
+
+      --clr-calendar-active-cell-background-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+      --clr-calendar-active-focus-cell-background-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+      --clr-calendar-active-cell-color: #{tokens.$cds-alias-typography-color-100};
+
+      --clr-calendar-btn-picker-trigger-color: #{tokens.$cds-alias-typography-link-color};
+      --clr-calendar-btn-picker-trigger-hover-color: #{tokens.$cds-alias-typography-link-color-hover};
+      --clr-calendar-btn-picker-trigger-active-color: #{tokens.$cds-alias-typography-link-color};
+
+      --clr-calendar-btn-hover-focus-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      --clr-calendar-btn-hover-focus-color-text: #{tokens.$cds-alias-object-interaction-color-hover};
+      --clr-calendar-btn-active-color: #{tokens.$cds-alias-object-interaction-color-active};
+      --clr-calendar-btn-active-color-bg: #{tokens.$cds-alias-object-interaction-background-active};
+    }
+  }
+}

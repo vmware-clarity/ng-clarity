@@ -1,0 +1,16 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../utils/variables/variables.color';
+
+// Usage: ../utils/_reboot.scss
+// Link colors
+$clr-link-active-color: var(--clr-link-active-color) !default;
+$clr-link-color: var(--clr-link-color) !default;
+$clr-link-hover-color: var(--clr-link-hover-color) !default;
+$clr-link-visited-color: var(--clr-link-visited-color) !default;
+$clr-link-visited-color-hover: var(--clr-link-visited-color-hover) !default;

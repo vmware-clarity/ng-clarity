@@ -1,0 +1,118 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+$clr-base-typography-font-size-caption-small: var(--clr-base-typography-font-size-caption-small);
+$clr-base-typography-font-size-caption: var(--clr-base-typography-font-size-caption);
+$clr-base-typography-font-size-button: var(--clr-base-typography-font-size-button);
+$clr-base-typography-font-size-inline: var(--clr-base-typography-font-size-inline);
+$clr-base-typography-font-size-default: var(--clr-base-typography-font-size-default);
+$clr-base-typography-font-size-sub-section: var(--clr-base-typography-font-size-sub-section);
+$clr-base-typography-font-size-section: var(--clr-base-typography-font-size-section);
+$clr-base-typography-font-size-heading: var(--clr-base-typography-font-size-heading);
+$clr-base-typography-font-size-headline: var(--clr-base-typography-font-size-headline);
+$clr-base-typography-font-size-display: var(--clr-base-typography-font-size-display);
+
+$clr-base-typography-line-height-12: var(--clr-base-typography-line-height-12);
+$clr-base-typography-line-height-16: var(--clr-base-typography-line-height-16);
+$clr-base-typography-line-height-20: var(--clr-base-typography-line-height-20);
+$clr-base-typography-line-height-24: var(--clr-base-typography-line-height-24);
+$clr-base-typography-line-height-32: var(--clr-base-typography-line-height-32);
+$clr-base-typography-line-height-36: var(--clr-base-typography-line-height-36);
+$clr-base-typography-line-height-44: var(--clr-base-typography-line-height-44);
+
+$clr-base-border-stroke: var(--clr-base-border-stroke);
+
+$clr-base-border-radius-xs: var(--clr-base-border-radius-xs);
+$clr-base-border-radius-s: var(--clr-base-border-radius-s);
+$clr-base-border-radius-m: var(--clr-base-border-radius-m);
+$clr-base-border-radius-l: var(--clr-base-border-radius-l);
+$clr-base-border-radius-xl: var(--clr-base-border-radius-xl);
+
+$clr-base-offset-0: var(--clr-base-offset-0);
+
+$clr-base-vertical-offset-2xs: var(--clr-base-vertical-offset-2xs);
+$clr-base-vertical-offset-xs: var(--clr-base-vertical-offset-xs);
+$clr-base-vertical-offset-s: var(--clr-base-vertical-offset-s);
+$clr-base-vertical-offset-m: var(--clr-base-vertical-offset-m);
+$clr-base-vertical-offset-l: var(--clr-base-vertical-offset-l);
+$clr-base-vertical-offset-xl: var(--clr-base-vertical-offset-xl);
+$clr-base-vertical-offset-2xl: var(--clr-base-vertical-offset-2xl);
+$clr-base-vertical-offset-3xl: var(--clr-base-vertical-offset-3xl);
+
+$clr-base-vertical-offset-multi-row-s: var(--clr-base-vertical-offset-multi-row-s);
+$clr-base-vertical-offset-multi-row-m: var(--clr-base-vertical-offset-multi-row-m);
+$clr-base-vertical-offset-multi-row-inline-s: var(--clr-base-vertical-offset-multi-row-inline-s);
+$clr-base-vertical-offset-multi-row-inline-m: var(--clr-base-vertical-offset-multi-row-inline-m);
+$clr-base-vertical-offset-multi-row-outline-s: var(--clr-base-vertical-offset-multi-row-outline-s);
+$clr-base-vertical-offset-multi-row-outline-m: var(--clr-base-vertical-offset-multi-row-outline-m);
+
+$clr-base-horizontal-offset-2xs: var(--clr-base-horizontal-offset-2xs);
+$clr-base-horizontal-offset-xs: var(--clr-base-horizontal-offset-xs);
+$clr-base-horizontal-offset-s: var(--clr-base-horizontal-offset-s);
+$clr-base-horizontal-offset-m: var(--clr-base-horizontal-offset-m);
+$clr-base-horizontal-offset-l: var(--clr-base-horizontal-offset-l);
+$clr-base-horizontal-offset-xl: var(--clr-base-horizontal-offset-xl);
+$clr-base-horizontal-offset-2xl: var(--clr-base-horizontal-offset-2xl);
+$clr-base-horizontal-offset-3xl: var(--clr-base-horizontal-offset-3xl);
+
+$clr-base-row-height-xs: var(--clr-base-row-height-xs);
+$clr-base-row-height-s: var(--clr-base-row-height-s);
+$clr-base-row-height-m: var(--clr-base-row-height-m);
+$clr-base-row-height-l: var(--clr-base-row-height-l);
+$clr-base-row-height-20: var(--clr-base-row-height-20);
+$clr-base-app-level-alert-row-height: var(
+  --clr-base-app-level-alert-row-height
+); // Will be replaced with row-height-l in v18
+$clr-base-dg-row-height: var(--clr-base-dg-row-height);
+$clr-base-dg-compact-row-height: var(--clr-base-dg-compact-row-height);
+
+$clr-base-gap-xs: var(--clr-base-gap-xs);
+$clr-base-gap-s: var(--clr-base-gap-s);
+$clr-base-gap-m: var(--clr-base-gap-m);
+$clr-base-gap-l: var(--clr-base-gap-l);
+$clr-base-gap-xl: var(--clr-base-gap-xl);
+$clr-base-gap-2xl: var(--clr-base-gap-2xl);
+
+$clr-base-icon-size-xs: var(--clr-base-icon-size-xs);
+$clr-base-icon-size-s: var(--clr-base-icon-size-s);
+$clr-base-icon-size-m: var(--clr-base-icon-size-m);
+$clr-base-icon-size-l: var(--clr-base-icon-size-l);
+$clr-base-icon-size-xl: var(--clr-base-icon-size-xl);
+$clr-base-icon-size-2xl: var(--clr-base-icon-size-2xl);
+$clr-base-icon-size-3xl: var(--clr-base-icon-size-3xl);
+$clr-base-icon-size-4xl: var(--clr-base-icon-size-4xl);
+
+$clr-base-layout-space-0: var(--clr-base-layout-space-0);
+$clr-base-layout-space-4xs: var(--clr-base-layout-space-4xs);
+$clr-base-layout-space-3xs: var(--clr-base-layout-space-3xs);
+$clr-base-layout-space-2xs: var(--clr-base-layout-space-2xs);
+$clr-base-layout-space-xs: var(--clr-base-layout-space-xs);
+$clr-base-layout-space-s: var(--clr-base-layout-space-s);
+$clr-base-layout-space-m: var(--clr-base-layout-space-m);
+$clr-base-layout-space-l: var(--clr-base-layout-space-l);
+$clr-base-layout-space-xl: var(--clr-base-layout-space-xl);
+$clr-base-layout-space-2xl: var(--clr-base-layout-space-2xl);
+$clr-base-layout-space-3xl: var(--clr-base-layout-space-3xl);
+$clr-base-layout-space-4xl: var(--clr-base-layout-space-4xl);
+$clr-base-layout-space-5xl: var(--clr-base-layout-space-5xl);
+
+$clr-base-icon-tooltip: var(--clr-base-icon-tooltip);
+
+$clr-base-spinner-s: var(--clr-base-spinner-s);
+$clr-base-spinner-m: var(--clr-base-spinner-m);
+$clr-base-spinner-l: var(--clr-base-spinner-l);
+
+$clr-base-spinner-stroke-s: var(--clr-base-spinner-stroke-s);
+$clr-base-spinner-stroke-m: var(--clr-base-spinner-stroke-m);
+$clr-base-spinner-stroke-l: var(--clr-base-spinner-stroke-l);
+
+$clr-base-header-height: var(--clr-base-header-height);
+$clr-base-tree-node-height: var(--clr-base-tree-node-height);
+
+$clr-base-progress-bar-height: var(--clr-base-progress-bar-height);
+
+$clr-base-control-group-gap: var(--clr-base-control-group-gap);

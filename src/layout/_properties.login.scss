@@ -1,0 +1,35 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../utils/mixins';
+@use '../utils/variables/variables';
+@use '@cds/core/tokens/tokens.scss';
+@use '../emphasis/alert/variables.alert' as alert-variables;
+@use '../utils/variables/variables.density' as density;
+
+@include mixins.exports('login.properties') {
+  @include mixins.root-or-host() {
+    [cds-theme] {
+      --clr-login-title-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-login-hint-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-login-footer-gap: #{density.$clr-base-gap-l};
+      --clr-login-copyright-color: #{tokens.$cds-alias-typography-link-color};
+      --clr-login-background-color: #{tokens.$cds-alias-object-container-background};
+      --clr-login-welcome-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-login-error-background-color: #{alert-variables.$clr-alert-danger-bg-color};
+      --clr-login-error-icon-color: #{alert-variables.$clr-alert-danger-icon-color};
+      --clr-login-logo-color: #717175; // Brand color from spec. Not a Clarity color.
+      --clr-login-trademark-color: #{variables.$clr-h2-color}; // @deprecated in v17. to be removed in v18
+      --clr-login-trademark-font-weight: #{variables.$clr-h2-font-weight}; // @deprecated in v17. to be removed in v18
+      --clr-login-trademark-font-family: #{variables.$clr-h2-font-family}; // @deprecated in v17. to be removed in v18
+      --clr-login-trademark-font-size: #{variables.$clr-h2-font-size}; // @deprecated in v17. to be removed in v18
+      --clr-login-trademark-letter-spacing: #{variables.$clr-h2-letter-spacing}; // @deprecated in v17. to be removed in v18
+    }
+    [cds-theme~='dark'] {
+      --clr-login-logo-color: #{tokens.$cds-global-color-white};
+    }
+  }
+}

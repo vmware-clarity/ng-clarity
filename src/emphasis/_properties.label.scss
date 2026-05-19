@@ -1,0 +1,68 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('label.properties') {
+  @include mixins.root-or-host() {
+    --clr-label-border-width: #{tokens.$cds-alias-object-border-width-100};
+
+    &,
+    & [cds-theme] {
+      // COLOR
+      --clr-label-font-color-light: #{tokens.$cds-alias-typography-color-500};
+      --clr-label-font-color-dark: var(--clr-color-neutral-1000);
+
+      --clr-label-default-border-color: #{tokens.$cds-alias-utility-gray};
+      --clr-label-default-bg-color: #{tokens.$cds-alias-object-opacity-0};
+
+      --clr-label-bg-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      --clr-label-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
+      --clr-label-bg-active-color: #{tokens.$cds-alias-object-interaction-background-active};
+      --clr-label-active-color: #{tokens.$cds-alias-object-interaction-color-active};
+      --clr-label-bg-disabled-color: #{tokens.$cds-alias-object-interaction-background-disabled};
+      --clr-label-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-label-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+
+      --clr-label-gray-bg-color: #{tokens.$cds-alias-object-opacity-0};
+      --clr-label-gray-border-color: #{tokens.$cds-alias-utility-gray};
+      --clr-label-gray-color: #{tokens.$cds-alias-typography-color-500};
+
+      --clr-label-purple-bg-color: #{tokens.$cds-alias-object-opacity-0};
+      --clr-label-purple-border-color: #{tokens.$cds-alias-utility-violet};
+      --clr-label-purple-color: #{tokens.$cds-alias-typography-color-500};
+
+      --clr-label-blue-bg-color: #{tokens.$cds-alias-object-opacity-0};
+      --clr-label-blue-border-color: #{tokens.$cds-alias-utility-dark-blue};
+      --clr-label-blue-color: #{tokens.$cds-alias-typography-color-500};
+
+      --clr-label-orange-bg-color: #{tokens.$cds-alias-object-opacity-0};
+      --clr-label-orange-border-color: #{tokens.$cds-alias-utility-tangerine};
+      --clr-label-orange-color: #{tokens.$cds-alias-typography-color-500};
+
+      --clr-label-light-blue-bg-color: #{tokens.$cds-alias-object-opacity-0};
+      --clr-label-light-blue-border-color: #{tokens.$cds-alias-utility-light-blue};
+      --clr-label-light-blue-color: #{tokens.$cds-alias-typography-color-500};
+
+      --clr-label-info-bg-color: #{tokens.$cds-alias-utility-blue-tint};
+      --clr-label-info-font-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-label-info-border-color: #{tokens.$cds-alias-utility-blue};
+
+      --clr-label-success-bg-color: #{tokens.$cds-alias-utility-green-tint};
+      --clr-label-success-font-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-label-success-border-color: #{tokens.$cds-alias-utility-green};
+
+      --clr-label-warning-bg-color: #{tokens.$cds-alias-utility-yellow-tint};
+      --clr-label-warning-font-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-label-warning-border-color: #{tokens.$cds-alias-utility-yellow};
+
+      --clr-label-danger-bg-color: #{tokens.$cds-alias-utility-red-tint};
+      --clr-label-danger-font-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-label-danger-border-color: #{tokens.$cds-alias-utility-red};
+    }
+  }
+}

@@ -1,0 +1,74 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use 'variables.nav' as nav-variables;
+
+@include mixins.exports('links.clarity') {
+  a {
+    /*
+      * Due to the higher specificity of `a:link` over `.btn`, `.nav-link`, `.dropdown-item`, `.label`, `.alert-action` and `badge`
+      * it overrides the styles of both which is not required.
+      * Also `.btn, .nav-link, .dropdown-item, .label, .alert-action, .badge` doesn't need these styles, so we don't add them in these cases.
+      */
+    &:not(.btn, .nav-link, .dropdown-item, .label, .alert-action, .badge, .clr-treenode-link) {
+      &:link {
+        color: nav-variables.$clr-link-color;
+        &:hover {
+          color: nav-variables.$clr-link-hover-color;
+          cds-icon,
+          clr-icon {
+            color: nav-variables.$clr-link-hover-color;
+          }
+        }
+      }
+      &:visited {
+        color: nav-variables.$clr-link-visited-color;
+        cds-icon,
+        clr-icon {
+          color: nav-variables.$clr-link-visited-color;
+        }
+        &:hover {
+          color: nav-variables.$clr-link-visited-color-hover;
+          cds-icon,
+          clr-icon {
+            color: nav-variables.$clr-link-visited-color-hover;
+          }
+        }
+      }
+      &:visited,
+      &:link {
+        &:active {
+          color: nav-variables.$clr-link-active-color;
+          cds-icon,
+          clr-icon {
+            color: nav-variables.$clr-link-active-color;
+          }
+        }
+      }
+    }
+  }
+
+  // only imported for demos. gives a static view of links in various states.
+  a.link-normal:link {
+    color: nav-variables.$clr-link-color;
+  }
+  a.link-hovered:link {
+    color: nav-variables.$clr-link-hover-color;
+  }
+
+  a.link-clicked:link {
+    color: nav-variables.$clr-link-active-color;
+  }
+
+  a.link-visited:link {
+    color: nav-variables.$clr-link-visited-color;
+  }
+
+  a.link-visited-hover:link {
+    color: nav-variables.$clr-link-visited-color-hover;
+  }
+}

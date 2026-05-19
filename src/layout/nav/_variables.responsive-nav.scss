@@ -1,0 +1,27 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use '@cds/core/tokens/tokens.scss';
+
+$clr-sliding-panel-text-color: var(--clr-sliding-panel-text-color) !default;
+
+$clr-responsive-nav-trigger-bg-color: var(--clr-responsive-nav-trigger-bg-color) !default;
+
+$clr-sliding-panel-width: mixins.baselinePx(360) !default;
+$clr-sliding-panel-width-sm: mixins.baselinePx(288) !default;
+$clr-trigger-position: calc(#{mixins.baselinePx(360)} + #{tokens.$cds-global-space-6}) !default;
+$clr-trigger-position-sm: calc(#{mixins.baselinePx(288)} + #{tokens.$cds-global-space-6}) !default;
+
+$clr-sliding-panel-z-index: map.get(variables.$clr-layers, sidepanel);
+$clr-sliding-panel-backdrop-z-index: map.get(variables.$clr-layers, sidepanel-bg) !default;
+$clr-sliding-transition-time: 0.3s !default;
+$clr-transition-style: ease !default;
+
+$clr-trigger-animation: transform (2 * $clr-sliding-transition-time) $clr-transition-style;
+$clr-sliding-panel-animation: transform $clr-sliding-transition-time $clr-transition-style;

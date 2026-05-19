@@ -1,0 +1,110 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use 'mixins.forms' as forms-mixins;
+@use 'variables.forms' as forms-variables;
+@use '../../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('forms.input-group') {
+  .clr-input-group {
+    @include forms-mixins.form-fields-appearance();
+    @include forms-mixins.input-border-bottom-animation();
+    position: relative;
+    max-width: 100%;
+    max-height: forms-variables.$clr-forms-input-wrapper-height;
+    padding-right: density.$clr-base-horizontal-offset-xs;
+
+    &.clr-focus {
+      width: auto;
+    }
+
+    .clr-input {
+      background: none;
+      border: none;
+      margin-right: 0;
+      max-width: 100%;
+
+      &:not([readonly]):focus {
+        background-size: 0;
+        border: 0;
+      }
+    }
+
+    /* handle case when select is used without clr-select-wrapper */
+    select {
+      border: none;
+    }
+
+    .clr-select-wrapper select,
+    .clr-multiselect-wrapper select {
+      border: none;
+    }
+
+    .clr-input-group-addon {
+      color: forms-variables.$clr-forms-subtext-color;
+    }
+
+    .clr-input-group-actions {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .clr-input-group-icon-action {
+      @include mixins.clr-no-styles-button();
+      padding: 0 density.$clr-base-horizontal-offset-s;
+      cursor: pointer;
+
+      cds-icon,
+      clr-icon {
+        fill: forms-variables.$clr-forms-icon-color;
+
+        &:not([size]) {
+          @include mixins.equilateral(var(--clr-forms-input-group-icon-action-size));
+        }
+      }
+    }
+  }
+
+  .clr-error .clr-input-group {
+    border-bottom-color: forms-variables.$clr-forms-invalid-color;
+    @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-invalid-color);
+  }
+
+  .clr-success .clr-input-group {
+    border-bottom-color: forms-variables.$clr-forms-valid-color;
+    @include forms-mixins.input-border-bottom-animation(forms-variables.$clr-forms-valid-color);
+  }
+
+  .clr-form-control-disabled {
+    .clr-input-group {
+      border-bottom-color: forms-variables.$clr-forms-border-disabled-color;
+    }
+    .clr-input-group-icon-action {
+      color: forms-variables.$clr-forms-text-disabled-color;
+      cursor: not-allowed;
+
+      cds-icon {
+        fill: forms-variables.$clr-forms-input-group-icon-disabled-color;
+      }
+    }
+  }
+
+  .clr-input-group:has(input[readonly]),
+  .clr-form-control-readonly .clr-input-group {
+    border: none;
+    background: transparent;
+    .clr-input-group-actions {
+      display: none;
+    }
+  }
+
+  .clr-form-horizontal .clr-input-group {
+    max-width: 100%;
+    padding-right: 0;
+  }
+}

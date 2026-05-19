@@ -1,0 +1,324 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use 'menu-mixins.clarity.scss' as menu-mixins;
+@use '../../button/variables.buttons' as button-variables;
+@use '../../image/icons.clarity';
+@use '../../image/images.clarity';
+@use '../../utils/mixins';
+@use 'variables.dropdown' as dropdown-variables;
+@use '@cds/core/tokens/tokens.scss';
+@use '../../layout/tabs/tabs.clarity' as tabs;
+@use '../../utils/variables/variables.density' as density;
+
+@include meta.load-css('properties.dropdown');
+
+@include mixins.exports('dropdown.clarity') {
+  .dropdown {
+    position: relative;
+    display: inline-block;
+
+    .dropdown-toggle {
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+      margin: 0;
+      white-space: nowrap;
+      cursor: pointer;
+
+      clr-icon[shape^='caret'],
+      clr-icon[shape^='angle'] {
+        color: inherit;
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+      }
+
+      // NOTE: cds-icon handles direction internally.
+      // No need to translate it.
+      // This results in a different top value.
+      cds-icon[shape^='caret'],
+      cds-icon[shape^='angle'] {
+        margin-top: unset;
+        color: inherit;
+
+        &:not([size]) {
+          @include mixins.equilateral(density.$clr-base-icon-size-s);
+        }
+      }
+
+      &.btn {
+        text-overflow: unset;
+
+        clr-icon {
+          /**
+           * The .btn applies some transform settings that we need to remove in here to align the icon correctly
+           */
+          transform: none;
+        }
+
+        cds-icon[shape^='caret'],
+        clr-icon[shape^='caret'],
+        cds-icon[shape^='angle'],
+        clr-icon[shape^='angle'] {
+          right: button-variables.$clr-btn-horizontal-padding;
+        }
+      }
+
+      &:not(.btn) {
+        padding: 0;
+        color: dropdown-variables.$clr-dropdown-active-text-color;
+
+        cds-icon[shape^='caret'],
+        clr-icon[shape^='caret'],
+        cds-icon[shape^='angle'],
+        clr-icon[shape^='angle'] {
+          right: 0;
+        }
+      }
+    }
+
+    button.dropdown-toggle:not(.btn) {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: dropdown-variables.$clr-dropdown-active-text-color;
+    }
+  }
+
+  //Dropdown Menu
+  .dropdown-menu > * {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .dropdown-menu {
+    @include menu-mixins.generate-dropdown-menu();
+
+    .dropdown-header {
+      @include menu-mixins.generate-dropdown-header();
+      & ~ .dropdown-item,
+      & ~ .dropdown > .dropdown-item {
+        padding-left: density.$clr-base-horizontal-offset-2xl;
+      }
+    }
+
+    .btn,
+    .btn-secondary,
+    .btn-info,
+    .btn-outline,
+    .btn-outline-primary,
+    .btn-outline-secondary,
+    .btn-outline-warning,
+    .btn-outline-danger,
+    .btn-outline-success,
+    .btn-danger,
+    .btn-primary,
+    .btn-warning,
+    .btn-success,
+    .btn-link,
+    .dropdown-item {
+      @include menu-mixins.generate-dropdown-item();
+      @include mixins.overflow-ellipsis(true);
+
+      &.active {
+        position: relative;
+        @include tabs.nav-link-border-appearence('left');
+      }
+
+      &.expandable {
+        padding-right: density.$clr-base-horizontal-offset-xs;
+        &:after {
+          content: '';
+          -webkit-mask: icons.generateCaretIcon("'none'");
+          mask: icons.generateCaretIcon("'none'");
+          -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+          -webkit-mask-size: cover;
+          mask-size: cover;
+          background-color: dropdown-variables.$clr-dropdown-item-color;
+          @include mixins.equilateral(density.$clr-base-icon-size-xs);
+          transform: rotate(-90deg);
+          margin-left: auto;
+        }
+
+        &.active:after {
+          background-color: dropdown-variables.$clr-dropdown-item-selected-color;
+        }
+
+        &:hover:after {
+          background-color: dropdown-variables.$clr-dropdown-item-hover-color;
+        }
+
+        &:active:after {
+          background-color: dropdown-variables.$clr-dropdown-item-active-color;
+        }
+
+        &.disabled,
+        &:disabled {
+          &:after {
+            background-color: dropdown-variables.$clr-dropdown-item-disabled-color;
+          }
+        }
+      }
+      &:focus {
+        outline-offset: calc(-1 * tokens.$cds-global-space-2);
+      }
+    }
+
+    .btn,
+    .dropdown-item {
+      @include menu-mixins.generate-dropdown-item-height();
+    }
+
+    a.dropdown-item {
+      text-decoration: none;
+    }
+
+    .dropdown-divider {
+      border-bottom-width: dropdown-variables.$clr-dropdown-divider-border-width;
+      border-bottom-style: solid;
+      border-bottom-color: dropdown-variables.$clr-dropdown-divider-color;
+      margin: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-l;
+    }
+  }
+
+  //Directions
+  .btn-group-overflow,
+  .tabs-overflow,
+  .dropdown {
+    $dropdown-menu-positional-nudge: density.$clr-base-vertical-offset-2xs;
+
+    &.open > .dropdown-menu,
+    &.open > .dropdown-menu-wrapper > .dropdown-menu {
+      visibility: visible;
+    }
+
+    &.bottom-left > .dropdown-menu,
+    &.bottom-right > .dropdown-menu {
+      top: 100%;
+      bottom: auto;
+      margin: $dropdown-menu-positional-nudge 0 0 0;
+    }
+
+    &.bottom-left > .dropdown-menu {
+      left: 0;
+      right: auto;
+    }
+
+    &.bottom-right > .dropdown-menu {
+      right: 0;
+      left: auto;
+    }
+
+    &.top-left > .dropdown-menu,
+    &.top-right > .dropdown-menu {
+      top: auto;
+      bottom: 100%;
+      margin: 0 0 $dropdown-menu-positional-nudge 0;
+    }
+
+    &.top-left > .dropdown-menu {
+      left: 0;
+      right: auto;
+    }
+
+    &.top-right > .dropdown-menu {
+      right: 0;
+      left: auto;
+    }
+
+    &.left-top > .dropdown-menu,
+    &.left-bottom > .dropdown-menu {
+      right: 100%;
+      left: auto;
+      margin: 0 $dropdown-menu-positional-nudge 0 0;
+    }
+
+    &.left-bottom > .dropdown-menu {
+      top: 0;
+      bottom: auto;
+    }
+
+    &.left-top > .dropdown-menu {
+      bottom: 0;
+      top: auto;
+    }
+
+    &.right-top > .dropdown-menu,
+    &.right-bottom > .dropdown-menu {
+      left: 100%;
+      right: auto;
+      margin: 0 0 0 $dropdown-menu-positional-nudge;
+    }
+
+    &.right-bottom > .dropdown-menu {
+      top: 0;
+      bottom: auto;
+    }
+
+    &.right-top > .dropdown-menu {
+      bottom: 0;
+      top: auto;
+    }
+
+    // nested dropdown (submenu)
+    .dropdown {
+      $clr-dropdown-submenu-overlap-margin: #{tokens.$cds-global-space-1};
+      $clr-dropdown-submenu-vertical-margin: calc(-1 * #{density.$clr-base-vertical-offset-2xl});
+      // -1 is to account for the border that shifts the menu down by 1 pixel
+
+      .dropdown-menu {
+        border-color: dropdown-variables.$clr-dropdown-child-border-color;
+        position: absolute;
+      }
+
+      &.left-top {
+        > .dropdown-menu,
+        > .dropdown-menu-wrapper > .dropdown-menu {
+          top: 0;
+          bottom: auto;
+          left: auto;
+          right: 100%;
+          margin-top: $clr-dropdown-submenu-vertical-margin;
+          margin-right: $clr-dropdown-submenu-overlap-margin;
+        }
+      }
+      &.right-top {
+        > .dropdown-menu,
+        > .dropdown-menu-wrapper > .dropdown-menu {
+          top: 0;
+          bottom: auto;
+          left: 100%;
+          right: auto;
+          margin-top: $clr-dropdown-submenu-vertical-margin;
+          margin-left: $clr-dropdown-submenu-overlap-margin;
+        }
+      }
+      &.left-bottom {
+        > .dropdown-menu,
+        > .dropdown-menu-wrapper > .dropdown-menu {
+          top: auto;
+          bottom: 0;
+          left: auto;
+          right: 100%;
+          margin-bottom: $clr-dropdown-submenu-vertical-margin;
+          margin-right: $clr-dropdown-submenu-overlap-margin;
+        }
+      }
+      &.right-bottom {
+        > .dropdown-menu,
+        > .dropdown-menu-wrapper > .dropdown-menu {
+          top: auto;
+          bottom: 0;
+          left: 100%;
+          right: auto;
+          margin-bottom: $clr-dropdown-submenu-vertical-margin;
+          margin-left: $clr-dropdown-submenu-overlap-margin;
+        }
+      }
+    }
+  }
+}

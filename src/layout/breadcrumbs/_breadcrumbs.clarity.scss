@@ -1,0 +1,58 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:meta';
+@use '../../utils/mixins';
+@use 'variables.breadcrumbs' as breadcrumb-variables;
+@use '../nav/variables.nav' as nav-variables;
+@use '../../utils/variables/variables.density' as density;
+@include meta.load-css('properties.breadcrumbs');
+
+@include mixins.exports('breadcrumbs.clarity') {
+  .clr-breadcrumb-menu {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    .clr-breadcrumb-item {
+      display: flex;
+      align-items: center;
+      height: density.$clr-base-row-height-s;
+      color: breadcrumb-variables.$clr-breadcrumb-active-color;
+      @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+
+      a {
+        text-decoration: none;
+        text-align: center;
+
+        &:visited {
+          color: nav-variables.$clr-link-color;
+
+          &:hover {
+            color: nav-variables.$clr-link-hover-color;
+          }
+
+          &:active {
+            color: nav-variables.$clr-link-active-color;
+          }
+        }
+      }
+
+      &:not(:last-child):after {
+        content: '/';
+        margin: 0 breadcrumb-variables.$clr-breadcrumb-item-space;
+      }
+    }
+
+    .clr-breadcrumb-expand {
+      @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+      margin: 0;
+      padding: 0;
+      gap: 0;
+    }
+  }
+}

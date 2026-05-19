@@ -1,0 +1,43 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+// Usage: ../button/_toggles.clarity.scss
+// Toggle
+$clr-toggle-height: #{density.$clr-base-row-height-s} !default;
+$clr-toggle-switch-base-height: #{tokens.$cds-global-space-7} !default;
+$clr-toggle-switch-base-width: #{tokens.$cds-global-space-10} !default;
+
+// @deprecated in v17 in favor of clr-toggle-dot-diameter
+$clr-toggle-switch-height: #{$clr-toggle-switch-base-height} !default;
+$clr-toggle-dot-diameter: #{$clr-toggle-switch-height} !default;
+
+$clr-toggle-transition-time: 0.15s !default;
+$clr-toggle-transition-animation: ease-in !default;
+
+// Usage: ../button/_toggles.clarity.scss
+// Colors (enabled)
+$clr-toggle-bg-color-off: var(--clr-toggle-bg-color-off) !default;
+$clr-toggle-bg-color-on: var(--clr-toggle-bg-color-on) !default;
+$clr-toggle-handle-bg-color: var(--clr-toggle-handle-bg-color) !default;
+$clr-toggle-handle-border-color: var(--clr-toggle-handle-border-color) !default;
+$clr-toggle-handle-border-color-on: var(--clr-toggle-handle-border-color-on) !default;
+
+// Usage: ../button/_toggles.clarity.scss
+// Colors (disabled)
+$clr-toggle-disabled-default-border-color: var(--clr-toggle-disabled-default-border-color) !default;
+$clr-toggle-disabled-default-handle-color: var(--clr-toggle-disabled-default-handle-color) !default;
+$clr-toggle-disabled-off-border-color: var(--clr-toggle-disabled-off-border-color) !default;
+$clr-toggle-disabled-off-bg-color: var(--clr-toggle-disabled-off-bg-color) !default;
+
+// Also sets disabled/on inner part of handle circle.
+$clr-toggle-disabled-off-handle-border-color: var(--clr-toggle-disabled-off-handle-border-color) !default;
+$clr-toggle-disabled-on-border-color: var(--clr-toggle-disabled-on-border-color) !default;
+$clr-toggle-disabled-on-bg-color: var(--clr-toggle-disabled-on-bg-color) !default;
+$clr-toggle-disabled-on-handle-border-color: var(--clr-toggle-disabled-on-handle-border-color) !default;

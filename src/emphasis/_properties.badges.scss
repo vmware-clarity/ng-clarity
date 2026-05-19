@@ -1,0 +1,38 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('badge.properties') {
+  @include mixins.root-or-host() {
+    &,
+    [cds-theme] {
+      --clr-badge-background-color: #{tokens.$cds-alias-utility-gray};
+      --clr-badge-color: #{tokens.$cds-alias-typography-color-100};
+
+      --clr-badge-info-bg-color: #{tokens.$cds-alias-utility-blue};
+      --clr-badge-info-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-badge-success-bg-color: #{tokens.$cds-alias-utility-green};
+      --clr-badge-success-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-badge-warning-bg-color: #{tokens.$cds-alias-utility-yellow};
+      --clr-badge-warning-color: #{tokens.$cds-global-color-black};
+      --clr-badge-danger-bg-color: #{tokens.$cds-alias-utility-red};
+      --clr-badge-danger-color: #{tokens.$cds-alias-typography-color-100};
+
+      --clr-badge-gray-bg-color: #{tokens.$cds-alias-utility-gray};
+      --clr-badge-gray-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-badge-purple-bg-color: #{tokens.$cds-alias-utility-violet};
+      --clr-badge-purple-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-badge-blue-bg-color: #{tokens.$cds-alias-utility-dark-blue};
+      --clr-badge-blue-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-badge-orange-bg-color: #{tokens.$cds-alias-utility-tangerine};
+      --clr-badge-orange-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-badge-light-blue-bg-color: #{tokens.$cds-alias-utility-light-blue};
+      --clr-badge-light-blue-color: #{tokens.$cds-alias-typography-color-500};
+    }
+  }
+}

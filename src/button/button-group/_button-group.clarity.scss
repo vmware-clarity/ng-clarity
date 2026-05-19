@@ -1,0 +1,196 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '../variables.buttons' as buttons-variables;
+@use '../../utils/variables/variables.density' as density;
+
+@mixin square-off-btngroup-btns($dir: left) {
+  border-top-#{$dir}-radius: 0;
+  border-bottom-#{$dir}-radius: 0;
+}
+
+@include mixins.exports('button-group.clarity') {
+  .btn-group {
+    display: inline-flex;
+    margin-right: buttons-variables.$clr-btn-horizontal-margin;
+
+    clr-dropdown {
+      display: inline-flex;
+
+      .dropdown-toggle {
+        @include square-off-btngroup-btns(left);
+        @include square-off-btngroup-btns(right);
+      }
+
+      &:last-child {
+        .dropdown-toggle {
+          border-top-right-radius: buttons-variables.$clr-btn-border-radius;
+          border-bottom-right-radius: buttons-variables.$clr-btn-border-radius;
+        }
+      }
+
+      &:first-child {
+        .dropdown-toggle {
+          border-top-left-radius: buttons-variables.$clr-btn-border-radius;
+          border-bottom-left-radius: buttons-variables.$clr-btn-border-radius;
+        }
+      }
+
+      &:not(:last-child) .dropdown-toggle {
+        border-right: 0;
+      }
+    }
+
+    .btn {
+      margin: 0;
+      overflow: hidden;
+
+      label {
+        height: 100%;
+      }
+
+      // ATM after token migration (alpha or beta v17)
+      // remove when detailed radio/checkbox groups are implemented
+      input[type='radio']:hover,
+      input[type='checkbox']:hover {
+        appearance: none;
+        opacity: 1;
+        top: 0;
+        @include mixins.equilateral(100%);
+        // using cds-alias-object-interaction-outline token will be better when focus state get implemented
+        border: Highlight solid 2px;
+
+        &::-ms-check {
+          display: none;
+        }
+      }
+    }
+
+    .btn {
+      &:not(:first-child) {
+        @include square-off-btngroup-btns(left);
+      }
+
+      &:not(:last-child) {
+        @include square-off-btngroup-btns(right);
+      }
+
+      &:disabled:not(:last-child) {
+        border-right: none;
+      }
+    }
+
+    .tooltip {
+      &:not(:first-child) .btn {
+        @include square-off-btngroup-btns(left);
+      }
+
+      &:not(:last-child) .btn {
+        @include square-off-btngroup-btns(right);
+      }
+    }
+
+    &.btn-primary,
+    &.btn-neutral,
+    &.btn-success,
+    &.btn-danger,
+    &.btn-warning {
+      .tooltip:not(:last-child) > .btn,
+      > .btn:not(:last-child) {
+        // apply only to direct .btn children
+        // special margin right based on button border width
+        margin: 0 buttons-variables.$clr-btn-border-width 0 0;
+      }
+    }
+
+    > .btn-group-overflow {
+      position: relative;
+    }
+
+    > .btn-group-overflow:last-child:not(:first-child) > .btn:first-child {
+      border-radius: 0 buttons-variables.$clr-btn-border-radius buttons-variables.$clr-btn-border-radius 0;
+    }
+
+    > .btn-group-overflow:last-child:first-child > .btn:first-child {
+      border-radius: buttons-variables.$clr-btn-border-radius;
+    }
+
+    //To avoid double borders
+    .btn:not([disabled]) + .btn,
+    .tooltip:not(:first-child) .btn,
+    .btn:not([disabled]) + .btn-group-overflow .btn,
+    .btn:not([disabled]) + .dropdown .dropdown-toggle {
+      border-left: none;
+    }
+
+    //Flat Buttons
+    &.btn-link .dropdown-toggle {
+      min-width: 0;
+    }
+
+    //Flat Icon Buttons
+    &.btn-icon-link {
+      &.btn-link .btn {
+        min-width: 0;
+      }
+    }
+
+    //Flat Icon Buttons All
+    &.btn-icon {
+      .btn {
+        min-width: 0;
+      }
+      .btn-group-overflow .dropdown-toggle {
+        padding: buttons-variables.$clr-btn-appearance-form-padding;
+      }
+    }
+
+    //Icons and their corresponding title
+    .clr-icon-title {
+      display: none;
+      text-transform: none;
+    }
+
+    .btn-group-overflow .dropdown-toggle {
+      display: block;
+      padding: 0 density.$clr-base-horizontal-offset-2xl;
+      min-width: unset;
+    }
+
+    .dropdown-menu {
+      cds-icon,
+      clr-icon {
+        display: none;
+      }
+
+      .clr-icon-title {
+        display: inline;
+      }
+    }
+  }
+
+  // @deprecated last of deprecated forms CSS to keep btn groups working
+  // should be removed when btn is revamped with clr- naming conventions
+  .checkbox,
+  .radio {
+    position: relative;
+
+    input[type='checkbox'],
+    input[type='radio'] {
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      left: 0;
+      @include mixins.equilateral(0);
+      opacity: 0;
+    }
+  }
+
+  .dropdown-menu.clr-button-group-menu {
+    visibility: visible;
+  }
+}

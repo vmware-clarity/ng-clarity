@@ -1,0 +1,127 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../../utils/mixins';
+@use 'variables.tabs' as tabs-variables;
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
+@include meta.load-css('properties.tabs');
+
+// TODO: Fix this typo
+@mixin nav-link-border-appearence($position) {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border: none;
+    border-#{$position}: tokens.$cds-alias-object-border-width-300 solid
+      tokens.$cds-alias-object-interaction-background-highlight;
+    transition: border-#{$position} 0.2s ease-in;
+  }
+}
+
+@include mixins.exports('tabs.clarity') {
+  @media screen {
+    section[aria-hidden='true'] {
+      display: none;
+    }
+  }
+
+  [data-hidden='true'] {
+    display: none;
+  }
+
+  button.nav-link {
+    border-radius: 0;
+    text-transform: capitalize;
+    min-width: 0;
+  }
+
+  .tabs-overflow {
+    position: relative;
+
+    .dropdown-menu {
+      padding: density.$clr-base-offset-0;
+      box-shadow: tokens.$cds-alias-object-shadow-100;
+      overflow: hidden;
+    }
+
+    .btn {
+      border-radius: tokens.$cds-global-space-0;
+    }
+  }
+
+  .tab-content {
+    display: inline;
+  }
+
+  @include mixins.fixForIE11AndUp {
+    .tab-content {
+      display: inline-block;
+      width: 100%;
+    }
+  }
+
+  .tabs-vertical {
+    display: flex;
+
+    // Must be direct child, so horizontal tabs can be nested in vertical tabs
+    & > .nav {
+      height: auto;
+      box-shadow: none;
+      flex-direction: column;
+      align-items: stretch;
+      margin-right: density.$clr-base-horizontal-offset-2xl;
+      overflow: auto;
+      flex-shrink: 0;
+      padding: density.$clr-base-vertical-offset-xs density.$clr-base-horizontal-offset-xs;
+      width: mixins.baselinePx(240);
+      min-width: tokens.$cds-global-space-12;
+      gap: density.$clr-base-gap-s;
+
+      .nav-link {
+        text-align: left;
+        padding-left: density.$clr-base-horizontal-offset-l;
+        justify-content: start;
+        border: none;
+        flex-shrink: 0;
+        margin-top: 0;
+        margin-left: 0;
+        width: 100%;
+
+        &.btn {
+          margin-bottom: density.$clr-base-offset-0;
+        }
+
+        &.active,
+        &:hover {
+          @include nav-link-border-appearence('left');
+        }
+      }
+    }
+  }
+
+  .tabs-actions {
+    display: inline-flex;
+    width: 100%;
+    height: 100%;
+
+    button {
+      margin: 0;
+    }
+
+    &[position~='left'] {
+      justify-content: start;
+    }
+    &[position~='right'] {
+      justify-content: end;
+    }
+  }
+}

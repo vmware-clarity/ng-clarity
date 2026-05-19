@@ -1,0 +1,228 @@
+@charset "UTF-8";
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/* stylelint-disable-next-line meowtec/no-px */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/* stylelint-disable */
+/* stylelint-enable */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+:where(:root, :host),
+:where(:root, :host) [cds-theme] {
+  --cds-global-typography-font-family: var(--clr-metropolis-font-family);
+  --cds-global-typography-header-font-family: var(--clr-metropolis-font-family);
+  --cds-alias-utility-gray: var(--cds-global-color-construction-600);
+  --cds-alias-typography-link-color: var(--cds-global-color-blue-800);
+  --cds-alias-typography-link-color-hover: var(--cds-global-color-blue-900);
+  --cds-alias-typography-link-color-visited: var(--cds-global-color-violet-700);
+  --cds-alias-typography-link-color-visited-hover: var(--cds-global-color-violet-1000);
+  --cds-alias-typography-link-color-active: var(--cds-global-color-red-700);
+  --cds-alias-object-container-backdrop-background: hsla(0, 0%, 100%, 0.6);
+  --cds-alias-object-interaction-background-hover: var(--cds-global-color-construction-50);
+  --cds-alias-object-interaction-background-active: var(--cds-global-color-construction-100);
+  --cds-alias-object-interaction-background-selected: var(--cds-global-color-blue-75);
+  --cds-alias-object-interaction-background-selected-hover: var(--cds-global-color-construction-100);
+  --cds-alias-object-interaction-background-selected-active: var(--cds-global-color-construction-200);
+  --cds-global-animation-skeleton-duration: 4s;
+  --cds-global-animation-easing-in-out: cubic-bezier(0.42, 0.01, 0.58, 1);
+  --cds-alias-object-skeleton-loading-gradient: linear-gradient(
+    90deg,
+    var(--cds-alias-object-interaction-background) 0%,
+    var(--cds-global-color-construction-200) 35%,
+    var(--cds-global-color-construction-300) 65%,
+    var(--cds-alias-object-interaction-background) 100%
+  );
+  --cds-alias-object-interaction-outline: Highlight auto 2px;
+  --cds-alias-object-interaction-info-selected: var(--cds-global-color-blue-900);
+  --cds-alias-object-interaction-info-active: var(--cds-alias-object-interaction-info-click);
+  --cds-alias-object-interaction-success-active: var(--cds-alias-object-interaction-success-click);
+  --cds-alias-object-interaction-warning-click: var(--cds-global-color-ochre-700);
+  --cds-alias-object-interaction-warning-active: var(--cds-global-color-ochre-700);
+  --cds-alias-object-interaction-danger-active: var(--cds-alias-object-interaction-danger-click);
+  --cds-alias-object-interaction-neutral-active: var(--cds-alias-object-interaction-neutral-click);
+  --cds-alias-object-interaction-inverse-active: var(--cds-alias-object-interaction-inverse-click);
+  --cds-alias-object-interaction-background-shade: var(--cds-global-color-construction-100);
+  --cds-alias-object-interaction-background-shade-hover: var(--cds-global-color-construction-200);
+  --cds-alias-object-interaction-background-shade-active: var(--cds-global-color-construction-300);
+  --cds-alias-object-interaction-background-shade-selected: var(--cds-global-color-white);
+  --cds-alias-object-interaction-background-shade-selected-hover: var(--cds-global-color-construction-200);
+  --cds-alias-object-interaction-background-shade-selected-active: var(--cds-global-color-construction-300);
+  --cds-alias-object-container-background-inverse: var(--cds-global-color-construction-600);
+  --cds-alias-object-container-background-inverse-tint: var(--cds-global-color-construction-800);
+  --cds-alias-object-container-background-inverse-shade: var(--cds-global-color-construction-500);
+  --δ1: var(--clr-base-layout-space-3xs);
+  --δ2: var(--clr-base-layout-space-2xs);
+  --δ3: var(--clr-base-layout-space-xs);
+  --δ4: var(--clr-base-layout-space-s);
+  --δ5: var(--clr-base-layout-space-m);
+  --δ6: var(--clr-base-layout-space-l);
+  --δ7: var(--clr-base-layout-space-xl);
+  --δ8: var(--clr-base-layout-space-2xl);
+  --δ9: var(--clr-base-layout-space-3xl);
+  --cds-global-layout-space-xxxs: var(--δ1);
+  --cds-global-layout-space-xxs: var(--δ2);
+  --cds-global-layout-space-xs: var(--δ3);
+  --cds-global-layout-space-sm: var(--δ4);
+  --cds-global-layout-space-md: var(--δ5);
+  --cds-global-layout-space-lg: var(--δ6);
+  --cds-global-layout-space-xl: var(--δ7);
+  --cds-global-layout-space-xxl: var(--δ8);
+  --cds-global-layout-space-xxxl: var(--δ9);
+  --cds-global-typography-body-font-size: var(--clr-base-typography-font-size-default);
+  --cds-global-typography-body-line-height: var(--clr-base-typography-line-height-20);
+  --cds-global-typography-display-font-size: var(--clr-base-typography-font-size-display);
+  --cds-global-typography-display-line-height: var(--clr-base-typography-line-height-44);
+  --cds-global-typography-heading-font-size: var(--clr-base-typography-font-size-heading);
+  --cds-global-typography-heading-line-height: var(--clr-base-typography-line-height-32);
+  --cds-global-typography-headline-font-size: var(--clr-base-typography-font-size-headline);
+  --cds-global-typography-headline-line-height: var(--clr-base-typography-line-height-36);
+  --cds-global-typography-title-font-size: var(--clr-base-typography-font-size-heading);
+  --cds-global-typography-title-line-height: var(--clr-base-typography-line-height-32);
+  --cds-global-typography-section-font-size: var(--clr-base-typography-font-size-section);
+  --cds-global-typography-section-line-height: var(--clr-base-typography-line-height-24);
+  --cds-global-typography-subsection-font-size: var(--clr-base-typography-font-size-sub-section);
+  --cds-global-typography-subsection-line-height: var(--clr-base-typography-line-height-24);
+  --cds-global-typography-message-font-size: var(--clr-base-typography-font-size-sub-section);
+  --cds-global-typography-message-line-height: var(--clr-base-typography-line-height-24);
+  --cds-global-typography-secondary-font-size: var(--clr-base-typography-font-size-inline);
+  --cds-global-typography-secondary-line-height: var(--clr-base-typography-line-height-16);
+  --cds-global-typography-caption-font-size: var(--clr-base-typography-font-size-caption);
+  --cds-global-typography-caption-line-height: var(--clr-base-typography-line-height-16);
+  --cds-global-typography-smallcaption-font-size: var(--clr-base-typography-font-size-caption-small);
+  --cds-global-typography-smallcaption-line-height: var(--clr-base-typography-line-height-12);
+}
+:where(:root, :host) [cds-theme~=dark] {
+  --cds-alias-utility-gray: var(--cds-global-color-construction-300);
+  --cds-alias-typography-link-color: var(--cds-global-color-blue-400);
+  --cds-alias-typography-link-color-hover: var(--cds-global-color-blue-200);
+  --cds-alias-typography-link-color-visited: var(--cds-global-color-violet-300);
+  --cds-alias-typography-link-color-visited-hover: var(--cds-global-color-violet-200);
+  --cds-alias-typography-link-color-active: var(--cds-global-color-red-600);
+  --cds-alias-status-warning-dark: var(--cds-global-color-ochre-600);
+  --cds-alias-status-warning-tint: var(--cds-global-color-ochre-900);
+  --cds-alias-status-danger-tint: var(--cds-global-color-red-900);
+  --cds-alias-object-container-backdrop-background: var(--cds-alias-object-opacity-300);
+  --cds-alias-object-interaction-background-hover: var(--cds-global-color-construction-800);
+  --cds-alias-object-interaction-background-active: var(--cds-global-color-construction-600);
+  --cds-alias-object-interaction-background-selected: var(--cds-global-color-blue-900);
+  --cds-alias-object-interaction-background-selected-active: var(--cds-global-color-construction-600);
+  --cds-alias-object-interaction-background-selected-hover: var(--cds-global-color-construction-700);
+  --cds-alias-object-skeleton-loading-gradient: linear-gradient(
+    90deg,
+    var(--cds-alias-object-interaction-background) 0%,
+    var(--cds-global-color-construction-500) 35%,
+    var(--cds-global-color-construction-400) 65%,
+    var(--cds-alias-object-interaction-background) 100%
+  );
+  --cds-alias-object-interaction-info-selected: var(--cds-global-color-blue-500);
+  --cds-alias-object-interaction-background-shade: var(--cds-global-color-construction-900);
+  --cds-alias-object-interaction-background-shade-hover: var(--cds-global-color-construction-800);
+  --cds-alias-object-interaction-background-shade-active: var(--cds-global-color-construction-600);
+  --cds-alias-object-interaction-background-shade-selected: var(--cds-global-color-blue-900);
+  --cds-alias-object-interaction-background-shade-selected-hover: var(--cds-global-color-construction-800);
+  --cds-alias-object-interaction-background-shade-selected-active: var(--cds-global-color-construction-600);
+  --cds-alias-object-container-background-inverse: var(--cds-global-color-construction-200);
+  --cds-alias-object-container-background-inverse-tint: var(--cds-global-color-construction-100);
+  --cds-alias-object-container-background-inverse-shade: var(--cds-global-color-construction-300);
+}
+
+cds-icon[size*=xs] {
+  height: var(--clr-base-icon-size-xs);
+  width: var(--clr-base-icon-size-xs);
+  min-height: var(--clr-base-icon-size-xs);
+  min-width: var(--clr-base-icon-size-xs);
+}
+
+cds-icon[size*=sm] {
+  height: var(--clr-base-icon-size-s);
+  width: var(--clr-base-icon-size-s);
+  min-height: var(--clr-base-icon-size-s);
+  min-width: var(--clr-base-icon-size-s);
+}
+
+cds-icon[size*=md] {
+  height: var(--clr-base-icon-size-m);
+  width: var(--clr-base-icon-size-m);
+  min-height: var(--clr-base-icon-size-m);
+  min-width: var(--clr-base-icon-size-m);
+}
+
+cds-icon[size*=lg] {
+  height: var(--clr-base-icon-size-l);
+  width: var(--clr-base-icon-size-l);
+  min-height: var(--clr-base-icon-size-l);
+  min-width: var(--clr-base-icon-size-l);
+}
+
+cds-icon[size*=xl] {
+  height: var(--clr-base-icon-size-xl);
+  width: var(--clr-base-icon-size-xl);
+  min-height: var(--clr-base-icon-size-xl);
+  min-width: var(--clr-base-icon-size-xl);
+}
+
+cds-icon[size*=xxl] {
+  height: var(--clr-base-icon-size-2xl);
+  width: var(--clr-base-icon-size-2xl);
+  min-height: var(--clr-base-icon-size-2xl);
+  min-width: var(--clr-base-icon-size-2xl);
+}
+
+cds-icon[size*="3xl"] {
+  height: var(--clr-base-icon-size-3xl);
+  width: var(--clr-base-icon-size-3xl);
+  min-height: var(--clr-base-icon-size-3xl);
+  min-width: var(--clr-base-icon-size-3xl);
+}
+
+cds-icon[size*="4xl"] {
+  height: var(--clr-base-icon-size-4xl);
+  width: var(--clr-base-icon-size-4xl);
+  min-height: var(--clr-base-icon-size-4xl);
+  min-width: var(--clr-base-icon-size-4xl);
+}
+
+/*# sourceMappingURL=temp-overrides.css.map */

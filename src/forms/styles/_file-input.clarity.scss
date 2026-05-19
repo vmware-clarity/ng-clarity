@@ -1,0 +1,120 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:map';
+
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use '../../utils/variables/variables.density' as density;
+@use 'variables.forms' as forms-variables;
+
+@include mixins.exports('forms.file-input') {
+  .clr-file-input-wrapper {
+    display: flex;
+    position: relative;
+    gap: density.$clr-base-gap-xs;
+
+    .clr-control-label {
+      padding: 0;
+    }
+
+    .clr-file-input {
+      @include mixins.equilateral(0);
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
+
+    .clr-file-input-browse-button,
+    .clr-file-input-clear-button {
+      margin: 0;
+    }
+
+    .clr-file-input-clear-button {
+      padding: 0;
+      min-width: unset;
+      border: 0;
+      cds-icon:not([size]) {
+        @include mixins.equilateral(density.$clr-base-icon-size-l);
+      }
+    }
+
+    .clr-file-input-browse-button-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .clr-form-compact .clr-file-input-wrapper {
+    margin-top: 0;
+  }
+
+  .clr-form-horizontal .clr-file-input-wrapper {
+    @media screen and (min-width: map.get(variables.$clr-grid-breakpoints, md)) {
+      margin-top: 0;
+    }
+  }
+
+  .clr-file-list {
+    display: flex;
+    flex-direction: column;
+    gap: density.$clr-base-gap-s;
+
+    .clr-file-list-item {
+      max-width: mixins.baselinePx(500);
+
+      &:first-of-type {
+        margin-top: density.$clr-base-gap-s;
+      }
+    }
+
+    .clr-file-label-and-status-icon {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .clr-file-label {
+      white-space: wrap;
+      padding-right: density.$clr-base-horizontal-offset-xs;
+      margin-bottom: 0;
+      margin-right: density.$clr-base-gap-xs;
+      border-radius: density.$clr-base-border-radius-l;
+    }
+
+    .clr-file-clear-button {
+      margin: 0;
+      padding: 0;
+      @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+
+      cds-icon {
+        margin: 0;
+      }
+    }
+  }
+
+  .clr-form-compact {
+    .clr-file-list-item {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: density.$clr-base-gap-xs;
+      max-width: unset;
+
+      .clr-subtext {
+        margin: 0;
+        align-self: unset;
+        padding: 0;
+      }
+    }
+
+    .clr-file-list-break {
+      flex-basis: 100%;
+      height: 0;
+    }
+  }
+}

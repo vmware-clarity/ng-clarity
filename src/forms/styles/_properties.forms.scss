@@ -1,0 +1,122 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
+
+@include mixins.exports('forms.properties') {
+  @include mixins.root-or-host() {
+    // Legacy CLR form base line (6px). Baked deeply in all form calculations.
+    // Don't change it unless you know exactly what you are doing.
+    --clr-forms-baseline: #{tokens.$cds-global-space-4};
+
+    --clr-forms-label-font-weight: #{tokens.$cds-alias-typography-font-weight-semibold};
+    --clr-forms-checkbox-height: #{tokens.$cds-global-space-7};
+
+    &,
+    & [clr-density] {
+      --clr-forms-icon-size: #{density.$clr-base-icon-size-l};
+
+      --clr-forms-input-group-icon-action-size: #{density.$clr-base-icon-size-s};
+      --clr-forms-checkbox-border-radius: #{density.$clr-base-border-radius-s};
+      --clr-forms-select-caret-size: #{density.$clr-base-icon-size-xs};
+      --clr-forms-textarea-border-radius: #{density.$clr-base-border-radius-s};
+      --clr-forms-datalist-caret-icon-size: #{density.$clr-base-icon-size-s};
+
+      // Input
+      --clr-forms-input-padding: 0 #{density.$clr-base-horizontal-offset-m};
+      --clr-forms-input-wrapper-height: #{density.$clr-base-row-height-s};
+
+      // Range
+      --clr-forms-range-thumb-height: #{density.$clr-base-icon-size-s};
+      --clr-forms-range-track-height: #{density.$clr-base-layout-space-2xs};
+      --clr-forms-range-track-border-radius: #{density.$clr-base-border-radius-s};
+    }
+
+    &,
+    & [cds-theme] {
+      --clr-form-disabled-background-color: #{tokens.$cds-alias-object-interaction-background};
+
+      // Generic
+      --clr-forms-label-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-forms-text-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-forms-invalid-color: #{tokens.$cds-alias-status-danger};
+      --clr-forms-invalid-text-color: #{tokens.$cds-alias-status-danger};
+      --clr-forms-valid-color: #{tokens.$cds-alias-status-success};
+      --clr-forms-valid-text-color: #{tokens.$cds-alias-status-success};
+      --clr-forms-subtext-color: #{tokens.$cds-alias-typography-color-300};
+      --clr-forms-placeholder-color: #{tokens.$cds-alias-typography-color-200};
+      --clr-forms-border-color: #{tokens.$cds-alias-object-interaction-border-color};
+      --clr-forms-focused-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+
+      --clr-forms-subtext-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-forms-border-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
+      --clr-forms-text-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-forms-label-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-forms-placeholder-disabled-color: #{tokens.$cds-alias-typography-disabled};
+
+      // Input group
+      --clr-forms-input-group-icon-disabled-color: #{tokens.$cds-alias-status-disabled};
+
+      // Checkbox
+      --clr-forms-checkbox-label-color: var(--clr-forms-label-color);
+      --clr-forms-checkbox-background-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+      --clr-forms-checkbox-indeterminate-border-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+      --clr-forms-checkbox-mark-color: #{tokens.$cds-alias-object-interaction-background};
+
+      --clr-forms-checkbox-disabled-label-color: var(--clr-forms-label-disabled-color);
+      --clr-forms-checkbox-disabled-background-color: var(--clr-form-disabled-background-color);
+      --clr-forms-checkbox-disabled-checked-background-color: #{tokens.$cds-alias-status-disabled};
+      --clr-forms-checkbox-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+      --clr-forms-checkbox-disabled-indeterminate-color: #{tokens.$cds-alias-status-disabled};
+      --clr-forms-checkbox-disabled-mark-color: #{tokens.$cds-alias-object-interaction-background};
+
+      // Radio
+      --clr-forms-radio-label-color: var(--clr-forms-label-color);
+      --clr-forms-radio-label-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-forms-radio-disabled-background-color: var(--clr-form-disabled-background-color);
+      --clr-forms-radio-disabled-mark-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-forms-radio-selected-shadow: inset 0 0 0 #{tokens.$cds-global-space-4} #{tokens.$cds-alias-object-interaction-background-highlight};
+      --clr-forms-radio-checked-disabled-shadow: inset 0 0 0 #{tokens.$cds-global-space-4} #{tokens.$cds-alias-object-interaction-color-disabled};
+
+      // Password
+      --clr-forms-password-eye-icon-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-forms-password-disabled-eye-icon-color: #{tokens.$cds-alias-status-disabled};
+
+      // Range
+      --clr-forms-range-progress-fill-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+      --clr-forms-range-track-color: #{tokens.$cds-alias-object-container-background-shade};
+      --clr-forms-range-track-border-color: #{tokens.$cds-alias-object-interaction-background-highlight};
+      --clr-forms-range-track-border-width: #{tokens.$cds-global-space-1};
+      --clr-forms-range-progress-fill-color-disabled: #{tokens.$cds-alias-object-interaction-color-disabled};
+      --clr-forms-range-track-color-disabled: #{tokens.$cds-alias-status-disabled-tint};
+      --clr-forms-range-track-border-color-disabled: #{tokens.$cds-alias-object-interaction-color-disabled};
+
+      // Select
+      --clr-forms-select-hover-background: transparent;
+      --clr-forms-select-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
+      --clr-forms-select-hover-border-color: #{tokens.$cds-alias-object-interaction-color-hover};
+      --clr-forms-select-disabled-border-color: #{tokens.$cds-alias-object-interaction-color-disabled};
+      --clr-forms-select-caret-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
+      --clr-forms-select-caret-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-forms-select-option-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-forms-select-option-background-color: #{tokens.$cds-alias-object-interaction-background};
+      --clr-forms-select-multiple-background-color: #{tokens.$cds-alias-object-container-background};
+      --clr-forms-select-multiple-border-color: #{tokens.$cds-alias-object-border-color};
+      --clr-forms-select-multiple-option-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-forms-select-multiple-selected-option-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
+
+      // Textarea
+      --clr-forms-textarea-background-color: #{tokens.$cds-alias-object-container-background};
+      --clr-forms-textarea-disabled-background: #{tokens.$cds-alias-object-container-background};
+
+      // Datalist
+      --clr-forms-datalist-caret-color: #{tokens.$cds-alias-status-neutral};
+      --clr-forms-datalist-caret-disabled-color: #{tokens.$cds-alias-status-disabled};
+    }
+  }
+}

@@ -1,0 +1,332 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use 'sass:map';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables.global';
+@use 'variables.datepicker' as datepicker-variables;
+@use '@cds/core/tokens/tokens.scss';
+@use '../../button/variables.buttons' as button-variables;
+@use '../../utils/variables/variables.density' as density;
+
+@include meta.load-css('properties.datepicker');
+
+@mixin generate-calendar-button(
+  $height: datepicker-variables.$clr-calendar-btn-size,
+  $padding: datepicker-variables.$clr-calendar-btn-horizontal-padding
+) {
+  //Dimensions
+  @include mixins.min-equilateral($height);
+  padding: 0 $padding;
+  margin: 0 !important; //Because stupid forms target buttons directly. We really need to refactor forms.
+
+  //Other Props
+  color: inherit;
+  border: none;
+  border-radius: density.$clr-base-border-radius-s;
+
+  background: none;
+  cursor: pointer;
+}
+
+@mixin generate-calendar-focus-style() {
+  &.in-range {
+    background: datepicker-variables.$clr-calendar-in-range-cell-background-color;
+    border-radius: 0;
+  }
+
+  &:hover {
+    background: datepicker-variables.$clr-calendar-btn-hover-focus-color;
+  }
+
+  &:focus {
+    //Only because we have defined a background color for focus above
+    // using cds-alias-object-interaction-outline token will be better when focus state get implemented
+    outline: tokens.$cds-global-color-blue-700 solid 2px;
+    outline-offset: calc(-1 * tokens.$cds-global-space-2);
+    background: tokens.$cds-alias-object-interaction-background-hover;
+  }
+
+  &:active {
+    background: datepicker-variables.$clr-calendar-btn-active-color-bg;
+  }
+}
+
+@mixin generate-current-date-style() {
+  &.is-today {
+    color: datepicker-variables.$clr-calendar-today-date-cell-color;
+    border: tokens.$cds-global-space-1 solid datepicker-variables.$clr-calendar-today-date-cell-border-color;
+    font-weight: datepicker-variables.$clr-calendar-today-date-cell-font-weight;
+  }
+}
+
+@mixin generate-selected-date-style() {
+  &.is-selected,
+  &.is-start-range,
+  &.is-end-range {
+    background: datepicker-variables.$clr-calendar-active-cell-background-color;
+    color: datepicker-variables.$clr-calendar-active-cell-color;
+  }
+  &.is-start-range:not(.is-end-range) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &.is-end-range:not(.is-start-range) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &.is-selected:focus {
+    background: datepicker-variables.$clr-calendar-active-focus-cell-background-color;
+  }
+}
+
+@mixin generate-calendar-hover-active-color-style() {
+  &:hover {
+    color: datepicker-variables.$clr-calendar-btn-hover-focus-color-text;
+  }
+
+  &:active {
+    color: datepicker-variables.$clr-calendar-btn-active-color;
+  }
+}
+
+@include mixins.exports('datepicker.clarity') {
+  .datepicker {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    //Dimensions
+    margin-top: datepicker-variables.$clr-calendar-margin-top;
+    padding: datepicker-variables.$clr-calendar-vertical-padding datepicker-variables.$clr-calendar-horizontal-padding;
+    gap: density.$clr-base-gap-m;
+    height: datepicker-variables.$clr-calendar-height;
+
+    //Other Props
+    background: datepicker-variables.$clr-calendar-background-color;
+    border: tokens.$cds-alias-object-border-width-100 solid datepicker-variables.$clr-calendar-border-color;
+    border-radius: density.$clr-base-border-radius-s;
+    box-shadow: tokens.$cds-alias-object-shadow-100;
+    z-index: map.get(variables.$clr-layers, dropdown-menu);
+
+    .datepicker-view-manager {
+      display: flex;
+      flex-direction: column;
+      place-content: space-between;
+      min-width: datepicker-variables.$clr-calendar-width;
+    }
+
+    &.has-action-buttons {
+      height: calc(
+        datepicker-variables.$clr-calendar-height + datepicker-variables.$clr-calendar-action-buttons-height +
+          density.$clr-base-gap-s
+      );
+    }
+
+    .datepicker-actions {
+      height: datepicker-variables.$clr-calendar-action-buttons-height;
+      display: flex;
+      border-top: tokens.$cds-global-space-1 solid tokens.$cds-alias-object-container-border-color;
+      justify-content: end;
+      padding-top: density.$clr-base-vertical-offset-xl;
+      gap: density.$clr-base-horizontal-offset-m;
+
+      button {
+        margin: 0;
+      }
+    }
+  }
+
+  .clr-date-range-picker-nav {
+    width: datepicker-variables.$clr-calendar-options-width;
+    border-radius: density.$clr-base-border-radius-s;
+    height: 100%;
+  }
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .calendar-switchers,
+  .year-switchers {
+    display: flex;
+  }
+
+  .year-switchers {
+    flex: 0 0 auto;
+    align-self: center;
+
+    // this width is pointless in flex situation
+    width: datepicker-variables.$clr-switcher-width;
+  }
+
+  .calendar-table {
+    // clr-calendar have dispaly: inline, preventing flex from having an effect.
+    flex: 1 1 auto;
+    border-spacing: 0 datepicker-variables.$clr-calendar-button-gap;
+    //Dimensions
+    width: 100%;
+  }
+
+  td.calendar-cell,
+  td.calendar-table .calendar-cell {
+    //Dimensions
+    @include mixins.min-equilateral(datepicker-variables.$clr-calendar-btn-size);
+    padding: 0;
+
+    //Other Props
+    text-align: center;
+  }
+
+  .day {
+    display: inline;
+  }
+
+  .weekdays {
+    flex: 0 0 datepicker-variables.$clr-calendar-btn-size;
+  }
+
+  .weekday {
+    @include mixins.generate-typography-token(
+      'SECONDARY-13-SB-CPT',
+      (
+        font-size: datepicker-variables.$clr-calendar-weekday-font-size,
+      )
+    );
+    padding: 0 density.$clr-base-horizontal-offset-m;
+  }
+
+  .calendar-btn {
+    @include generate-calendar-button();
+    @include generate-calendar-focus-style();
+
+    @include mixins.generate-typography-token(
+      'SECTION-20-STD',
+      (
+        font-size: datepicker-variables.$clr-calendar-picker-btn-font-size,
+        font-weight: datepicker-variables.$clr-calendar-picker-btn-font-weight,
+      )
+    );
+  }
+
+  .day-btn {
+    @include generate-calendar-button($padding: 0);
+    @include generate-calendar-focus-style();
+    @include generate-calendar-hover-active-color-style();
+    @include mixins.generate-typography-token('SECONDARY-13-RG-EXP');
+    @include generate-current-date-style();
+    @include generate-selected-date-style();
+
+    //Dimensions
+    width: 100%;
+
+    //Other Props
+    color: inherit;
+
+    &.is-excluded {
+      display: none;
+    }
+
+    &.is-disabled {
+      color: tokens.$cds-alias-object-interaction-color-disabled;
+      pointer-events: none;
+      background: none;
+    }
+  }
+
+  .calendar-pickers {
+    display: flex;
+  }
+
+  .switcher {
+    @include generate-calendar-hover-active-color-style();
+    color: datepicker-variables.$clr-calendar-btn-color;
+
+    cds-icon:not([size]),
+    clr-icon {
+      @include mixins.equilateral(density.$clr-base-icon-size-s);
+    }
+  }
+
+  .monthpicker-trigger,
+  .yearpicker-trigger {
+    //Dimensions
+    min-width: datepicker-variables.$clr-calendar-btn-picker-trigger-width;
+    width: datepicker-variables.$clr-calendar-btn-picker-trigger-width;
+    padding: 0 density.$clr-base-horizontal-offset-s;
+
+    //Other Props
+    color: datepicker-variables.$clr-calendar-btn-picker-trigger-color;
+    text-align: center;
+    @include mixins.overflow-ellipsis();
+
+    &.year-range {
+      width: calc(datepicker-variables.$clr-calendar-btn-picker-trigger-width * 2);
+    }
+  }
+
+  .monthpicker,
+  .yearpicker {
+    min-height: datepicker-variables.$clr-monthpicker-min-height;
+  }
+
+  .monthpicker,
+  .yearpicker,
+  .daypicker {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    row-gap: density.$clr-base-gap-s;
+  }
+
+  .years {
+    flex-direction: row;
+  }
+
+  .month,
+  .year {
+    @include generate-calendar-button($padding: datepicker-variables.$clr-calendar-month-cell-horizontal-padding);
+    @include generate-calendar-hover-active-color-style();
+    @include mixins.generate-typography-token('SECONDARY-13-RG-CPT');
+    @include generate-current-date-style();
+    @include generate-selected-date-style();
+
+    height: datepicker-variables.$clr-calendar-header-btn-height;
+    width: datepicker-variables.$clr-month-year-btn-width;
+
+    &.is-disabled {
+      color: tokens.$cds-alias-object-interaction-color-disabled;
+      pointer-events: none;
+      &:hover {
+        background: none;
+      }
+    }
+  }
+
+  .months,
+  .years {
+    row-gap: datepicker-variables.$clr-calendar-button-gap;
+    flex-wrap: wrap;
+    display: flex;
+    place-content: space-between;
+    width: datepicker-variables.$clr-calendar-width;
+  }
+
+  .month {
+    text-align: center;
+    @include mixins.overflow-ellipsis();
+  }
+
+  .year {
+    text-align: center;
+  }
+}

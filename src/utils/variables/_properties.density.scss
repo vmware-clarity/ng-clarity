@@ -1,0 +1,458 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/mixins';
+
+@include mixins.exports('density.properties') {
+  @include mixins.root-or-host() {
+    --clr-base-typography-font-size-caption-small: #{mixins.baselinePx(10)};
+    --clr-base-typography-font-size-caption: #{mixins.baselinePx(11)};
+    --clr-base-typography-font-size-button: #{tokens.$cds-global-space-6};
+    --clr-base-typography-font-size-inline: #{mixins.baselinePx(13)};
+    --clr-base-typography-font-size-default: #{mixins.baselinePx(14)};
+    --clr-base-typography-font-size-sub-section: #{tokens.$cds-global-space-7};
+    --clr-base-typography-font-size-section: #{mixins.baselinePx(20)};
+    --clr-base-typography-font-size-heading: #{tokens.$cds-global-space-9};
+    --clr-base-typography-font-size-headline: #{tokens.$cds-global-space-10};
+    --clr-base-typography-font-size-display: #{mixins.baselinePx(40)};
+
+    --clr-base-typography-line-height-12: #{tokens.$cds-global-space-6};
+    --clr-base-typography-line-height-16: #{tokens.$cds-global-space-7};
+    --clr-base-typography-line-height-20: #{mixins.baselinePx(20)};
+    --clr-base-typography-line-height-24: #{tokens.$cds-global-space-9};
+    --clr-base-typography-line-height-32: #{tokens.$cds-global-space-10};
+    --clr-base-typography-line-height-36: #{tokens.$cds-global-space-11};
+    --clr-base-typography-line-height-44: #{mixins.baselinePx(44)};
+
+    --clr-base-border-stroke: #{tokens.$cds-global-space-2};
+
+    --clr-base-border-radius-xs: #{tokens.$cds-global-space-2};
+    --clr-base-border-radius-s: #{tokens.$cds-global-space-3};
+    --clr-base-border-radius-m: #{tokens.$cds-global-space-3};
+    --clr-base-border-radius-l: #{tokens.$cds-global-space-4};
+    --clr-base-border-radius-xl: #{tokens.$cds-global-space-7};
+
+    --clr-base-offset-0: #{tokens.$cds-global-space-0};
+
+    --clr-base-vertical-offset-2xs: #{tokens.$cds-global-space-2};
+    --clr-base-vertical-offset-xs: #{tokens.$cds-global-space-3};
+    --clr-base-vertical-offset-s: #{tokens.$cds-global-space-4};
+    --clr-base-vertical-offset-m: #{tokens.$cds-global-space-5};
+    --clr-base-vertical-offset-l: #{tokens.$cds-global-space-6};
+    --clr-base-vertical-offset-xl: #{tokens.$cds-global-space-7};
+    --clr-base-vertical-offset-2xl: #{tokens.$cds-global-space-9};
+    --clr-base-vertical-offset-3xl: #{tokens.$cds-global-space-13}; // Temp token used for login only
+
+    --clr-base-vertical-offset-multi-row-s: #{tokens.$cds-global-space-4};
+    --clr-base-vertical-offset-multi-row-m: #{mixins.baselinePx(10)};
+    --clr-base-vertical-offset-multi-row-inline-s: #{tokens.$cds-global-space-3};
+    --clr-base-vertical-offset-multi-row-inline-m: #{tokens.$cds-global-space-5};
+    --clr-base-vertical-offset-multi-row-outline-s: #{tokens.$cds-global-space-5};
+    --clr-base-vertical-offset-multi-row-outline-m: #{tokens.$cds-global-space-6};
+
+    --clr-base-horizontal-offset-2xs: #{tokens.$cds-global-space-2};
+    --clr-base-horizontal-offset-xs: #{tokens.$cds-global-space-3};
+    --clr-base-horizontal-offset-s: #{tokens.$cds-global-space-4};
+    --clr-base-horizontal-offset-m: #{tokens.$cds-global-space-5};
+    --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-6};
+    --clr-base-horizontal-offset-xl: #{tokens.$cds-global-space-7};
+    --clr-base-horizontal-offset-2xl: #{tokens.$cds-global-space-9};
+    --clr-base-horizontal-offset-3xl: #{tokens.$cds-global-space-13}; // Temp token used for login only
+
+    --clr-base-row-height-xs: #{tokens.$cds-global-space-7};
+    --clr-base-row-height-s: #{tokens.$cds-global-space-9};
+    --clr-base-row-height-m: #{tokens.$cds-global-space-11};
+    --clr-base-row-height-l: #{mixins.baselinePx(40)};
+    --clr-base-row-height-20: #{mixins.baselinePx(20)};
+    --clr-base-app-level-alert-row-height: #{tokens.$cds-global-space-11};
+    --clr-base-dg-row-height: #{tokens.$cds-global-space-10};
+    --clr-base-dg-compact-row-height: #{tokens.$cds-global-space-9};
+
+    --clr-base-gap-xs: #{tokens.$cds-global-space-3};
+    --clr-base-gap-s: #{tokens.$cds-global-space-5};
+    --clr-base-gap-m: #{tokens.$cds-global-space-6};
+    --clr-base-gap-l: #{tokens.$cds-global-space-7};
+    --clr-base-gap-xl: #{tokens.$cds-global-space-9};
+    --clr-base-gap-2xl: #{tokens.$cds-global-space-10};
+
+    --clr-base-icon-size-xs: #{tokens.$cds-global-space-6};
+    --clr-base-icon-size-s: #{tokens.$cds-global-space-7};
+    --clr-base-icon-size-m: #{mixins.baselinePx(20)};
+    --clr-base-icon-size-l: #{tokens.$cds-global-space-9};
+    --clr-base-icon-size-xl: #{mixins.baselinePx(28)};
+    --clr-base-icon-size-2xl: #{tokens.$cds-global-space-10};
+    --clr-base-icon-size-3xl: #{tokens.$cds-global-space-11};
+    --clr-base-icon-size-4xl: #{tokens.$cds-global-space-13};
+
+    --clr-base-layout-space-0: #{tokens.$cds-global-space-0};
+    --clr-base-layout-space-4xs: #{tokens.$cds-global-space-1};
+    --clr-base-layout-space-3xs: #{tokens.$cds-global-space-2};
+    --clr-base-layout-space-2xs: #{tokens.$cds-global-space-3};
+    --clr-base-layout-space-xs: #{tokens.$cds-global-space-5};
+    --clr-base-layout-space-s: #{tokens.$cds-global-space-6};
+    --clr-base-layout-space-m: #{tokens.$cds-global-space-7};
+    --clr-base-layout-space-l: #{tokens.$cds-global-space-9};
+    --clr-base-layout-space-xl: #{tokens.$cds-global-space-11};
+    --clr-base-layout-space-2xl: #{mixins.baselinePx(40)};
+    --clr-base-layout-space-3xl: #{tokens.$cds-global-space-12};
+    --clr-base-layout-space-4xl: #{mixins.baselinePx(76)};
+    --clr-base-layout-space-5xl: #{mixins.baselinePx(112)};
+
+    --clr-base-icon-tooltip: #{tokens.$cds-global-space-9};
+
+    --clr-base-spinner-s: #{tokens.$cds-global-space-8};
+    --clr-base-spinner-m: #{tokens.$cds-global-space-11};
+    --clr-base-spinner-l: #{tokens.$cds-global-space-14}; // default
+
+    // density spinner strokes are only available in code since they are impossible to be applied in figma
+    --clr-base-spinner-stroke-s: #{tokens.$cds-alias-object-border-width-200};
+    --clr-base-spinner-stroke-m: #{tokens.$cds-alias-object-border-width-400};
+    --clr-base-spinner-stroke-l: #{tokens.$cds-global-space-4}; // default
+
+    --clr-base-header-height: #{mixins.baselinePx(60)};
+    --clr-base-tree-node-height: #{tokens.$cds-global-space-10};
+
+    --clr-base-progress-bar-height: #{tokens.$cds-global-space-6};
+
+    --clr-base-control-group-gap: #{tokens.$cds-global-space-0};
+  }
+
+  [clr-density='regular'] {
+    --clr-base-typography-font-size-caption-small: #{mixins.baselinePx(10)};
+    --clr-base-typography-font-size-caption: #{mixins.baselinePx(11)};
+    --clr-base-typography-font-size-button: #{tokens.$cds-global-space-6};
+    --clr-base-typography-font-size-inline: #{mixins.baselinePx(13)};
+    --clr-base-typography-font-size-default: #{mixins.baselinePx(14)};
+    --clr-base-typography-font-size-sub-section: #{tokens.$cds-global-space-7};
+    --clr-base-typography-font-size-section: #{mixins.baselinePx(20)};
+    --clr-base-typography-font-size-heading: #{tokens.$cds-global-space-9};
+    --clr-base-typography-font-size-headline: #{tokens.$cds-global-space-10};
+    --clr-base-typography-font-size-display: #{mixins.baselinePx(40)};
+
+    --clr-base-typography-line-height-12: #{tokens.$cds-global-space-6};
+    --clr-base-typography-line-height-16: #{tokens.$cds-global-space-7};
+    --clr-base-typography-line-height-20: #{mixins.baselinePx(20)};
+    --clr-base-typography-line-height-24: #{tokens.$cds-global-space-9};
+    --clr-base-typography-line-height-32: #{tokens.$cds-global-space-10};
+    --clr-base-typography-line-height-36: #{tokens.$cds-global-space-11};
+    --clr-base-typography-line-height-44: #{mixins.baselinePx(44)};
+
+    --clr-base-border-stroke: #{tokens.$cds-global-space-2};
+
+    --clr-base-border-radius-xs: #{tokens.$cds-global-space-2};
+    --clr-base-border-radius-s: #{tokens.$cds-global-space-3};
+    --clr-base-border-radius-m: #{tokens.$cds-global-space-5};
+    --clr-base-border-radius-l: #{tokens.$cds-global-space-6};
+    --clr-base-border-radius-xl: #{tokens.$cds-global-space-7};
+
+    --clr-base-offset-0: #{tokens.$cds-global-space-0};
+
+    --clr-base-vertical-offset-2xs: #{tokens.$cds-global-space-2};
+    --clr-base-vertical-offset-xs: #{tokens.$cds-global-space-3};
+    --clr-base-vertical-offset-s: #{tokens.$cds-global-space-3};
+    --clr-base-vertical-offset-m: #{tokens.$cds-global-space-4};
+    --clr-base-vertical-offset-l: #{tokens.$cds-global-space-6};
+    --clr-base-vertical-offset-xl: #{tokens.$cds-global-space-7};
+    --clr-base-vertical-offset-2xl: #{tokens.$cds-global-space-9};
+    --clr-base-vertical-offset-3xl: #{tokens.$cds-global-space-12};
+
+    --clr-base-vertical-offset-multi-row-s: #{tokens.$cds-global-space-3};
+    --clr-base-vertical-offset-multi-row-m: #{tokens.$cds-global-space-5};
+    --clr-base-vertical-offset-multi-row-inline-s: #{tokens.$cds-global-space-3};
+    --clr-base-vertical-offset-multi-row-inline-m: #{tokens.$cds-global-space-5};
+    --clr-base-vertical-offset-multi-row-outline-s: #{tokens.$cds-global-space-4};
+    --clr-base-vertical-offset-multi-row-outline-m: #{mixins.baselinePx(10)};
+
+    --clr-base-horizontal-offset-2xs: #{tokens.$cds-global-space-2};
+    --clr-base-horizontal-offset-xs: #{tokens.$cds-global-space-3};
+    --clr-base-horizontal-offset-s: #{tokens.$cds-global-space-3};
+    --clr-base-horizontal-offset-m: #{tokens.$cds-global-space-5};
+    --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-6};
+    --clr-base-horizontal-offset-xl: #{tokens.$cds-global-space-7};
+    --clr-base-horizontal-offset-2xl: #{tokens.$cds-global-space-9};
+    --clr-base-horizontal-offset-3xl: #{tokens.$cds-global-space-12};
+
+    --clr-base-row-height-xs: #{tokens.$cds-global-space-7};
+    --clr-base-row-height-s: #{tokens.$cds-global-space-9};
+    --clr-base-row-height-m: #{tokens.$cds-global-space-10};
+    --clr-base-row-height-l: #{tokens.$cds-global-space-11};
+    --clr-base-row-height-20: #{mixins.baselinePx(20)};
+    --clr-base-app-level-alert-row-height: #{tokens.$cds-global-space-11};
+    --clr-base-dg-row-height: #{tokens.$cds-global-space-10};
+    --clr-base-dg-compact-row-height: #{tokens.$cds-global-space-9};
+
+    --clr-base-gap-xs: #{tokens.$cds-global-space-3};
+    --clr-base-gap-s: #{tokens.$cds-global-space-5};
+    --clr-base-gap-m: #{tokens.$cds-global-space-6};
+    --clr-base-gap-l: #{tokens.$cds-global-space-7};
+    --clr-base-gap-xl: #{tokens.$cds-global-space-9};
+    --clr-base-gap-2xl: #{tokens.$cds-global-space-10};
+
+    --clr-base-icon-size-xs: #{tokens.$cds-global-space-6};
+    --clr-base-icon-size-s: #{tokens.$cds-global-space-7};
+    --clr-base-icon-size-m: #{mixins.baselinePx(20)};
+    --clr-base-icon-size-l: #{tokens.$cds-global-space-9};
+    --clr-base-icon-size-xl: #{mixins.baselinePx(28)};
+    --clr-base-icon-size-2xl: #{tokens.$cds-global-space-10};
+    --clr-base-icon-size-3xl: #{tokens.$cds-global-space-10};
+    --clr-base-icon-size-4xl: #{tokens.$cds-global-space-13};
+
+    --clr-base-layout-space-0: #{tokens.$cds-global-space-0};
+    --clr-base-layout-space-4xs: #{tokens.$cds-global-space-1};
+    --clr-base-layout-space-3xs: #{tokens.$cds-global-space-2};
+    --clr-base-layout-space-2xs: #{tokens.$cds-global-space-3};
+    --clr-base-layout-space-xs: #{tokens.$cds-global-space-5};
+    --clr-base-layout-space-s: #{tokens.$cds-global-space-6};
+    --clr-base-layout-space-m: #{tokens.$cds-global-space-7};
+    --clr-base-layout-space-l: #{tokens.$cds-global-space-9};
+    --clr-base-layout-space-xl: #{tokens.$cds-global-space-10};
+    --clr-base-layout-space-2xl: #{mixins.baselinePx(40)};
+    --clr-base-layout-space-3xl: #{tokens.$cds-global-space-12};
+    --clr-base-layout-space-4xl: #{tokens.$cds-global-space-13};
+    --clr-base-layout-space-5xl: #{tokens.$cds-global-space-15};
+
+    --clr-base-icon-tooltip: var(--clr-base-icon-size-s);
+
+    --clr-base-spinner-s: var(--clr-base-icon-size-s);
+    --clr-base-spinner-m: #{tokens.$cds-global-space-10};
+    --clr-base-spinner-l: var(--clr-base-layout-space-4xl); // default
+
+    // density spinner strokes are only available in code since they are impossible to be applied in figma
+    --clr-base-spinner-stroke-s: #{tokens.$cds-alias-object-border-width-200};
+    --clr-base-spinner-stroke-m: #{tokens.$cds-alias-object-border-width-400};
+    --clr-base-spinner-stroke-l: #{tokens.$cds-global-space-4}; // default
+
+    --clr-base-header-height: #{mixins.baselinePx(56)};
+    --clr-base-tree-node-height: #{tokens.$cds-global-space-10};
+
+    --clr-base-progress-bar-height: #{tokens.$cds-global-space-6};
+
+    --clr-base-control-group-gap: #{tokens.$cds-global-space-0};
+  }
+
+  [clr-density='compact'] {
+    --clr-base-typography-font-size-caption-small: #{mixins.baselinePx(10)};
+    --clr-base-typography-font-size-caption: #{mixins.baselinePx(11)};
+    --clr-base-typography-font-size-button: #{tokens.$cds-global-space-6};
+    --clr-base-typography-font-size-inline: #{tokens.$cds-global-space-6};
+    --clr-base-typography-font-size-default: #{mixins.baselinePx(13)};
+    --clr-base-typography-font-size-sub-section: #{mixins.baselinePx(14)};
+    --clr-base-typography-font-size-section: #{tokens.$cds-global-space-7};
+    --clr-base-typography-font-size-heading: #{tokens.$cds-global-space-9};
+    --clr-base-typography-font-size-headline: #{mixins.baselinePx(28)};
+    --clr-base-typography-font-size-display: #{tokens.$cds-global-space-11};
+
+    --clr-base-typography-line-height-12: #{tokens.$cds-global-space-6};
+    --clr-base-typography-line-height-16: #{tokens.$cds-global-space-7};
+    --clr-base-typography-line-height-20: #{tokens.$cds-global-space-8};
+    --clr-base-typography-line-height-24: #{mixins.baselinePx(20)};
+    --clr-base-typography-line-height-32: #{mixins.baselinePx(28)};
+    --clr-base-typography-line-height-36: #{tokens.$cds-global-space-10};
+    --clr-base-typography-line-height-44: #{tokens.$cds-global-space-10};
+
+    --clr-base-border-stroke: #{tokens.$cds-global-space-1};
+
+    --clr-base-border-radius-xs: #{tokens.$cds-global-space-2};
+    --clr-base-border-radius-s: #{tokens.$cds-global-space-2};
+    --clr-base-border-radius-m: #{tokens.$cds-global-space-3};
+    --clr-base-border-radius-l: #{tokens.$cds-global-space-5};
+    --clr-base-border-radius-xl: #{mixins.baselinePx(10)};
+
+    --clr-base-offset-0: #{tokens.$cds-global-space-0};
+
+    --clr-base-vertical-offset-2xs: #{tokens.$cds-global-space-1};
+    --clr-base-vertical-offset-xs: #{tokens.$cds-global-space-2};
+    --clr-base-vertical-offset-s: #{tokens.$cds-global-space-2};
+    --clr-base-vertical-offset-m: #{mixins.baselinePx(3)};
+    --clr-base-vertical-offset-l: #{tokens.$cds-global-space-5};
+    --clr-base-vertical-offset-xl: #{tokens.$cds-global-space-6};
+    --clr-base-vertical-offset-2xl: #{mixins.baselinePx(20)};
+    --clr-base-vertical-offset-3xl: #{tokens.$cds-global-space-11};
+
+    --clr-base-vertical-offset-multi-row-s: #{tokens.$cds-global-space-2};
+    --clr-base-vertical-offset-multi-row-m: #{tokens.$cds-global-space-3};
+    --clr-base-vertical-offset-multi-row-inline-s: #{tokens.$cds-global-space-2};
+    --clr-base-vertical-offset-multi-row-inline-m: #{tokens.$cds-global-space-3};
+    --clr-base-vertical-offset-multi-row-outline-s: #{tokens.$cds-global-space-3};
+    --clr-base-vertical-offset-multi-row-outline-m: #{tokens.$cds-global-space-4};
+
+    --clr-base-horizontal-offset-2xs: #{tokens.$cds-global-space-1};
+    --clr-base-horizontal-offset-xs: #{tokens.$cds-global-space-2};
+    --clr-base-horizontal-offset-s: #{tokens.$cds-global-space-2};
+    --clr-base-horizontal-offset-m: #{tokens.$cds-global-space-4};
+    --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-5};
+    --clr-base-horizontal-offset-xl: #{tokens.$cds-global-space-6};
+    --clr-base-horizontal-offset-2xl: #{mixins.baselinePx(20)};
+    --clr-base-horizontal-offset-3xl: #{tokens.$cds-global-space-11};
+
+    --clr-base-row-height-xs: #{tokens.$cds-global-space-7};
+    --clr-base-row-height-s: #{mixins.baselinePx(20)};
+    --clr-base-row-height-m: #{tokens.$cds-global-space-9};
+    --clr-base-row-height-l: #{mixins.baselinePx(28)};
+    --clr-base-row-height-20: #{tokens.$cds-global-space-7};
+    --clr-base-app-level-alert-row-height: #{mixins.baselinePx(28)};
+    --clr-base-dg-row-height: #{tokens.$cds-global-space-9};
+    --clr-base-dg-compact-row-height: #{mixins.baselinePx(20)};
+
+    --clr-base-gap-xs: #{tokens.$cds-global-space-2};
+    --clr-base-gap-s: #{tokens.$cds-global-space-4};
+    --clr-base-gap-m: #{mixins.baselinePx(10)};
+    --clr-base-gap-l: #{tokens.$cds-global-space-6};
+    --clr-base-gap-xl: #{mixins.baselinePx(20)};
+    --clr-base-gap-2xl: #{tokens.$cds-global-space-9};
+
+    --clr-base-icon-size-xs: #{tokens.$cds-global-space-6};
+    --clr-base-icon-size-s: #{tokens.$cds-global-space-7};
+    --clr-base-icon-size-m: #{tokens.$cds-global-space-8};
+    --clr-base-icon-size-l: #{mixins.baselinePx(20)};
+    --clr-base-icon-size-xl: #{tokens.$cds-global-space-9};
+    --clr-base-icon-size-2xl: #{mixins.baselinePx(28)};
+    --clr-base-icon-size-3xl: #{mixins.baselinePx(28)};
+    --clr-base-icon-size-4xl: #{mixins.baselinePx(60)};
+
+    --clr-base-layout-space-0: #{tokens.$cds-global-space-0};
+    --clr-base-layout-space-4xs: #{tokens.$cds-global-space-1};
+    --clr-base-layout-space-3xs: #{tokens.$cds-global-space-2};
+    --clr-base-layout-space-2xs: #{tokens.$cds-global-space-3};
+    --clr-base-layout-space-xs: #{tokens.$cds-global-space-4};
+    --clr-base-layout-space-s: #{tokens.$cds-global-space-6};
+    --clr-base-layout-space-m: #{tokens.$cds-global-space-7};
+    --clr-base-layout-space-l: #{mixins.baselinePx(20)};
+    --clr-base-layout-space-xl: #{tokens.$cds-global-space-9};
+    --clr-base-layout-space-2xl: #{tokens.$cds-global-space-10};
+    --clr-base-layout-space-3xl: #{mixins.baselinePx(40)};
+    --clr-base-layout-space-4xl: #{mixins.baselinePx(56)};
+    --clr-base-layout-space-5xl: #{mixins.baselinePx(80)};
+
+    --clr-base-icon-tooltip: var(--clr-base-icon-size-s);
+
+    --clr-base-spinner-s: var(--clr-base-icon-size-s);
+    --clr-base-spinner-m: #{mixins.baselinePx(28)};
+    --clr-base-spinner-l: var(--clr-base-layout-space-4xl); // default
+
+    // density spinner strokes are only available in code since they are impossible to be applied in figma
+    --clr-base-spinner-stroke-s: #{tokens.$cds-alias-object-border-width-200};
+    --clr-base-spinner-stroke-m: #{tokens.$cds-alias-object-border-width-300};
+    --clr-base-spinner-stroke-l: #{tokens.$cds-alias-object-border-width-400}; // default
+
+    --clr-base-header-height: #{tokens.$cds-global-space-12};
+    --clr-base-tree-node-height: #{tokens.$cds-global-space-9};
+
+    --clr-base-progress-bar-height: #{mixins.baselinePx(10)};
+
+    --clr-base-control-group-gap: #{tokens.$cds-global-space-2};
+
+    .datagrid .datagrid-cell:not(.datagrid-detail-caret, .datagrid-expandable-caret, .datagrid-row-actions) {
+      @include mixins.cell-children-aligment();
+    }
+  }
+
+  // NOT SUPPORTED AT THE MOMENT
+  // [clr-density='ultra-compact'] {
+  //   --clr-base-typography-font-size-caption-small: #{mixins.baselinePx(10)};
+  //   --clr-base-typography-font-size-caption: #{mixins.baselinePx(10)};
+  //   --clr-base-typography-font-size-button: #{mixins.baselinePx(11)};
+  //   --clr-base-typography-font-size-inline: #{tokens.$cds-global-space-6};
+  //   --clr-base-typography-font-size-default: #{tokens.$cds-global-space-6};
+  //   --clr-base-typography-font-size-sub-section: #{mixins.baselinePx(14)};
+  //   --clr-base-typography-font-size-section: #{tokens.$cds-global-space-8};
+  //   --clr-base-typography-font-size-heading: #{mixins.baselinePx(22)};
+  //   --clr-base-typography-font-size-headline: #{tokens.$cds-global-space-9};
+  //   --clr-base-typography-font-size-display: #{tokens.$cds-global-space-11};
+
+  //   --clr-base-typography-line-height-12: #{mixins.baselinePx(11)};
+  //   --clr-base-typography-line-height-16: #{tokens.$cds-global-space-6};
+  //   --clr-base-typography-line-height-20: #{tokens.$cds-global-space-7};
+  //   --clr-base-typography-line-height-24: #{mixins.baselinePx(20)};
+  //   --clr-base-typography-line-height-32: #{mixins.baselinePx(20)};
+  //   --clr-base-typography-line-height-36: #{tokens.$cds-global-space-10};
+  //   --clr-base-typography-line-height-44: #{tokens.$cds-global-space-10};
+
+  //   --clr-base-border-stroke: #{tokens.$cds-global-space-1};
+
+  //   --clr-base-border-radius-xs: #{tokens.$cds-global-space-2};
+  //   --clr-base-border-radius-s: #{tokens.$cds-global-space-2};
+  //   --clr-base-border-radius-m: #{tokens.$cds-global-space-3};
+  //   --clr-base-border-radius-l: #{tokens.$cds-global-space-5};
+  //   --clr-base-border-radius-xl: #{mixins.baselinePx(10)};
+
+  //   --clr-base-offset-0: #{tokens.$cds-global-space-0};
+
+  //   --clr-base-vertical-offset-2xs: #{tokens.$cds-global-space-0};
+  //   --clr-base-vertical-offset-xs: #{tokens.$cds-global-space-2};
+  //   --clr-base-vertical-offset-s: #{tokens.$cds-global-space-2};
+  //   --clr-base-vertical-offset-m: #{tokens.$cds-global-space-2};
+  //   --clr-base-vertical-offset-l: #{tokens.$cds-global-space-4};
+  //   --clr-base-vertical-offset-xl: #{mixins.baselinePx(10)};
+  //   --clr-base-vertical-offset-2xl: #{tokens.$cds-global-space-7};
+
+  //   --clr-base-vertical-offset-multi-row-s: #{tokens.$cds-global-space-2};
+  //   --clr-base-vertical-offset-multi-row-m: #{tokens.$cds-global-space-3};
+  //   --clr-base-vertical-offset-multi-row-inline-s: #{tokens.$cds-global-space-2};
+  //   --clr-base-vertical-offset-multi-row-inline-m: #{tokens.$cds-global-space-3};
+  //   --clr-base-vertical-offset-multi-row-outline-s: #{tokens.$cds-global-space-3};
+  //   --clr-base-vertical-offset-multi-row-outline-m: #{tokens.$cds-global-space-4};
+
+  //   --clr-base-horizontal-offset-2xs: #{tokens.$cds-global-space-0};
+  //   --clr-base-horizontal-offset-xs: #{tokens.$cds-global-space-2};
+  //   --clr-base-horizontal-offset-s: #{tokens.$cds-global-space-2};
+  //   --clr-base-horizontal-offset-m: #{tokens.$cds-global-space-3};
+  //   --clr-base-horizontal-offset-l: #{tokens.$cds-global-space-4};
+  //   --clr-base-horizontal-offset-xl: #{mixins.baselinePx(10)};
+  //   --clr-base-horizontal-offset-2xl: #{tokens.$cds-global-space-7};
+
+  //   --clr-base-row-height-xs: #{tokens.$cds-global-space-6};
+  //   --clr-base-row-height-s: #{tokens.$cds-global-space-7};
+  //   --clr-base-row-height-m: #{mixins.baselinePx(20)};
+  //   --clr-base-row-height-l: #{tokens.$cds-global-space-9};
+  //   --clr-base-row-height-20: #{tokens.$cds-global-space-7};
+  //   --clr-base-app-level-alert-row-height: #{tokens.$cds-global-space-9};
+  //   --clr-base-dg-row-height: #{mixins.baselinePx(20)};
+  //   --clr-base-dg-compact-row-height: #{mixins.baselinePx(20)};
+
+  //   --clr-base-gap-xs: #{tokens.$cds-global-space-2};
+  //   --clr-base-gap-s: #{tokens.$cds-global-space-3};
+  //   --clr-base-gap-m: #{tokens.$cds-global-space-5};
+  //   --clr-base-gap-l: #{mixins.baselinePx(10)};
+  //   --clr-base-gap-xl: #{tokens.$cds-global-space-7};
+  //   --clr-base-gap-2xl: #{mixins.baselinePx(20)};
+
+  //   --clr-base-icon-size-xs: #{tokens.$cds-global-space-6};
+  //   --clr-base-icon-size-s: #{tokens.$cds-global-space-6};
+  //   --clr-base-icon-size-m: #{tokens.$cds-global-space-7};
+  //   --clr-base-icon-size-l: #{tokens.$cds-global-space-7};
+  //   --clr-base-icon-size-xl: #{tokens.$cds-global-space-7};
+  //   --clr-base-icon-size-2xl: #{tokens.$cds-global-space-7};
+  //   --clr-base-icon-size-3xl: #{tokens.$cds-global-space-7};
+  //   --clr-base-icon-size-4xl: #{mixins.baselinePx(56)};
+
+  //   --clr-base-layout-space-0: #{tokens.$cds-global-space-0};
+  //   --clr-base-layout-space-4xs: #{tokens.$cds-global-space-1};
+  //   --clr-base-layout-space-3xs: #{tokens.$cds-global-space-2};
+  //   --clr-base-layout-space-2xs: #{tokens.$cds-global-space-3};
+  //   --clr-base-layout-space-xs: #{tokens.$cds-global-space-3};
+  //   --clr-base-layout-space-s: #{tokens.$cds-global-space-5};
+  //   --clr-base-layout-space-m: #{tokens.$cds-global-space-6};
+  //   --clr-base-layout-space-l: #{tokens.$cds-global-space-7};
+  //   --clr-base-layout-space-xl: #{mixins.baselinePx(20)};
+  //   --clr-base-layout-space-2xl: #{tokens.$cds-global-space-9};
+  //   --clr-base-layout-space-3xl: #{tokens.$cds-global-space-10};
+  //   --clr-base-layout-space-4xl: #{mixins.baselinePx(44)};
+  //   --clr-base-layout-space-5xl: #{tokens.$cds-global-space-13};
+
+  //   --clr-base-icon-tooltip: var(--clr-base-icon-size-xs);
+
+  //   --clr-base-spinner-s: var(--clr-base-icon-size-s);
+  //   --clr-base-spinner-m: #{tokens.$cds-global-space-7};
+  //   --clr-base-spinner-l: var(--clr-base-layout-space-4xl); // default
+
+  //   --clr-base-header-height: #{tokens.$cds-global-space-10};
+
+  //   --clr-base-progress-bar-height: #{tokens.$cds-global-space-5};
+  // }
+}

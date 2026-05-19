@@ -1,0 +1,965 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+// General
+// Usage: ./_buttons.clarity.scss
+// Usage: ../popover/tooltip/_tooltips.clarity.scss
+$clr-btn-vertical-margin: var(--clr-btn-vertical-margin) !default;
+
+// Usage: ./_buttons.clarity.scss
+// Usage: ../popover/tooltip/_tooltips.clarity.scss
+// Usage: ../layout/_card.clarity.scss
+$clr-btn-horizontal-margin: var(--clr-btn-horizontal-margin) !default;
+
+// Usage: ./_buttons.clarity.scss
+// Usage: ../popover/dropdown/_dropdown.clarity.scss
+$clr-btn-horizontal-padding: var(--clr-btn-horizontal-padding) !default;
+$clr-btn-vertical-padding: var(--clr-btn-vertical-padding) !default;
+$clr-btn-padding: var(--clr-btn-padding) !default;
+$clr-btn-gap: var(--clr-btn-gap) !default;
+
+$clr-btn-height: var(--clr-btn-height) !default;
+$clr-btn-height-sm: var(--clr-btn-height-sm) !default;
+
+$clr-btn-border-radius: var(--clr-btn-border-radius) !default;
+$clr-btn-border-width: var(--clr-btn-border-width) !default;
+
+// Usage: ./button-group/_button-group.clarity.scss
+$clr-btn-group-focus-outline: var(--clr-btn-group-focus-outline) !default;
+
+// standard appearance styles - overrideable but not advertised!
+$clr-btn-appearance-standard-height: var(--clr-btn-appearance-standard-height) !default;
+$clr-btn-appearance-standard-padding: var(--clr-btn-appearance-standard-padding) !default;
+$clr-btn-appearance-standard-icon-size: var(--clr-btn-appearance-standard-icon-size) !default;
+
+// form-style button appearance styles - overrideable but not advertised!
+$clr-btn-appearance-form-height: var(--clr-btn-appearance-form-height) !default;
+$clr-btn-appearance-form-padding: var(--clr-btn-appearance-form-padding) !default;
+
+// Default button colors
+$clr-btn-default-color: var(--clr-btn-default-color) !default;
+$clr-btn-default-border-color: var(--clr-btn-default-border-color) !default;
+$clr-btn-default-bg-color: var(--clr-btn-default-bg-color) !default;
+$clr-btn-default-hover-bg-color: var(--clr-btn-default-hover-bg-color) !default;
+$clr-btn-default-hover-color: var(--clr-btn-default-hover-color) !default;
+$clr-btn-default-active-color: var(--clr-btn-default-active-color) !default;
+$clr-btn-default-active-bg-color: var(--clr-btn-default-active-bg-color) !default;
+$clr-btn-default-disabled-color: var(--clr-btn-default-disabled-color) !default;
+$clr-btn-default-disabled-bg-color: var(--clr-btn-default-disabled-bg-color) !default;
+$clr-btn-default-disabled-border-color: var(--clr-btn-default-disabled-border-color) !default;
+
+$clr-btn-default-checked-color: var(--clr-btn-default-checked-color) !default;
+$clr-btn-default-checked-bg-color: var(--clr-btn-default-checked-bg-color) !default;
+$clr-btn-default-checked-hover-color: var(--clr-btn-default-checked-hover-color) !default;
+$clr-btn-default-checked-hover-bg-color: var(--clr-btn-default-checked-hover-bg-color) !default;
+$clr-btn-default-checked-active-color: var(--clr-btn-default-checked-active-color) !default;
+$clr-btn-default-checked-active-bg-color: var(--clr-btn-default-checked-active-bg-color) !default;
+$clr-btn-default-checked-disabled-color: var(--clr-btn-default-checked-disabled-color) !default;
+$clr-btn-default-checked-disabled-bg-color: var(--clr-btn-default-checked-disabled-bg-color) !default;
+
+@function lookupFromDefaultButtonColors($property: null) {
+  @if $property == color {
+    @return $clr-btn-default-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-btn-default-border-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-btn-default-bg-color;
+  }
+
+  @if $property == hover-bg-color {
+    @return $clr-btn-default-hover-bg-color;
+  }
+
+  @if $property == hover-color {
+    @return $clr-btn-default-hover-color;
+  }
+
+  @if $property == active-color {
+    @return $clr-btn-default-active-color;
+  }
+
+  @if $property == active-bg-color {
+    @return $clr-btn-default-active-bg-color;
+  }
+
+  @if $property == disabled-color {
+    @return $clr-btn-default-disabled-color;
+  }
+
+  @if $property == disabled-bg-color {
+    @return $clr-btn-default-disabled-bg-color;
+  }
+
+  @if $property == disabled-border-color {
+    @return $clr-btn-default-disabled-border-color;
+  }
+
+  @if $property == checked-bg-color {
+    @return $clr-btn-default-checked-bg-color;
+  }
+
+  @if $property == checked-color {
+    @return $clr-btn-default-checked-color;
+  }
+
+  @if $property == checked-hover-color {
+    @return $clr-btn-default-checked-hover-color;
+  }
+
+  @if $property == checked-hover-bg-color {
+    @return $clr-btn-default-checked-hover-bg-color;
+  }
+
+  @if $property == checked-active-color {
+    @return $clr-btn-default-checked-active-color;
+  }
+
+  @if $property == checked-active-bg-color {
+    @return $clr-btn-default-checked-active-bg-color;
+  }
+
+  @if $property == checked-disabled-color {
+    @return $clr-btn-default-checked-disabled-color;
+  }
+
+  @if $property == checked-disabled-bg-color {
+    @return $clr-btn-default-checked-disabled-bg-color;
+  }
+
+  @return null;
+}
+
+// Default outline button
+$clr-btn-default-outline-color: var(--clr-btn-default-outline-color) !default;
+$clr-btn-default-outline-border-color: var(--clr-btn-default-outline-border-color) !default;
+$clr-btn-default-outline-bg-color: var(--clr-btn-default-outline-bg-color) !default;
+$clr-btn-default-outline-hover-bg-color: var(--clr-btn-default-outline-hover-bg-color) !default;
+$clr-btn-default-outline-hover-color: var(--clr-btn-default-outline-hover-color) !default;
+$clr-btn-default-outline-active-color: var(--clr-btn-default-outline-active-color) !default;
+$clr-btn-default-outline-active-bg-color: var(--clr-btn-default-outline-active-bg-color) !default;
+$clr-btn-default-outline-disabled-color: var(--clr-btn-default-outline-disabled-color) !default;
+$clr-btn-default-outline-disabled-bg-color: var(--clr-btn-default-outline-disabled-bg-color) !default;
+$clr-btn-default-outline-disabled-border-color: var(--clr-btn-default-outline-disabled-border-color) !default;
+$clr-btn-default-outline-checked-color: var(--clr-btn-default-outline-checked-color) !default;
+$clr-btn-default-outline-checked-bg-color: var(--clr-btn-default-outline-checked-bg-color) !default;
+
+@function lookupFromDefaultOutlineButtonColors($property: null) {
+  @if $property == color {
+    @return $clr-btn-default-outline-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-btn-default-outline-border-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-btn-default-outline-bg-color;
+  }
+
+  @if $property == hover-bg-color {
+    @return $clr-btn-default-outline-hover-bg-color;
+  }
+
+  @if $property == hover-color {
+    @return $clr-btn-default-outline-hover-color;
+  }
+
+  @if $property == active-bg-color {
+    @return $clr-btn-default-outline-active-bg-color;
+  }
+
+  @if $property == active-color {
+    @return $clr-btn-default-outline-active-color;
+  }
+
+  @if $property == disabled-color {
+    @return $clr-btn-default-outline-disabled-color;
+  }
+
+  @if $property == disabled-bg-color {
+    @return $clr-btn-default-outline-disabled-bg-color;
+  }
+
+  @if $property == disabled-border-color {
+    @return $clr-btn-default-outline-disabled-border-color;
+  }
+
+  @if $property == checked-bg-color {
+    @return $clr-btn-default-outline-checked-bg-color;
+  }
+
+  @if $property == checked-color {
+    @return $clr-btn-default-outline-checked-color;
+  }
+
+  @return null;
+}
+
+// Primary button colors
+$clr-btn-primary-color: var(--clr-btn-primary-color) !default;
+$clr-btn-primary-bg-color: var(--clr-btn-primary-bg-color) !default;
+$clr-btn-primary-border-color: var(--clr-btn-primary-border-color) !default;
+$clr-btn-primary-hover-bg-color: var(--clr-btn-primary-hover-bg-color) !default;
+$clr-btn-primary-hover-color: var(--clr-btn-primary-hover-color) !default;
+$clr-btn-primary-active-bg-color: var(--clr-btn-primary-active-bg-color) !default;
+$clr-btn-primary-active-color: var(--clr-btn-primary-active-color) !default;
+$clr-btn-primary-disabled-color: var(--clr-btn-primary-disabled-color) !default;
+$clr-btn-primary-disabled-bg-color: var(--clr-btn-primary-disabled-bg-color) !default;
+$clr-btn-primary-disabled-border-color: var(--clr-btn-primary-disabled-border-color) !default;
+$clr-btn-primary-checked-bg-color: var(--clr-btn-primary-checked-bg-color) !default;
+$clr-btn-primary-checked-color: var(--clr-btn-primary-checked-color) !default;
+
+@function lookupFromPrimaryButtonColors($property: null) {
+  @if $property == color {
+    @return $clr-btn-primary-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-btn-primary-border-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-btn-primary-bg-color;
+  }
+
+  @if $property == hover-bg-color {
+    @return $clr-btn-primary-hover-bg-color;
+  }
+
+  @if $property == hover-color {
+    @return $clr-btn-primary-hover-color;
+  }
+
+  @if $property == active-color {
+    @return $clr-btn-primary-active-color;
+  }
+
+  @if $property == active-bg-color {
+    @return $clr-btn-primary-active-bg-color;
+  }
+
+  @if $property == disabled-color {
+    @return $clr-btn-primary-disabled-color;
+  }
+
+  @if $property == disabled-bg-color {
+    @return $clr-btn-primary-disabled-bg-color;
+  }
+
+  @if $property == disabled-border-color {
+    @return $clr-btn-primary-disabled-border-color;
+  }
+
+  @if $property == checked-bg-color {
+    @return $clr-btn-primary-checked-bg-color;
+  }
+
+  @if $property == checked-color {
+    @return $clr-btn-primary-checked-color;
+  }
+
+  @return null;
+}
+
+// Primary button colors
+$clr-btn-primary-outline: (
+  color: var(--clr-btn-primary-outline-color),
+  bg-color: var(--clr-btn-primary-outline-bg-color),
+  border-color: var(--clr-btn-primary-outline-border-color),
+  hover-color: var(--clr-btn-primary-outline-hover-color),
+  hover-bg-color: var(--clr-btn-primary-outline-hover-bg-color),
+  active-color: var(--clr-btn-primary-outline-active-color),
+  active-bg-color: var(--clr-btn-primary-outline-active-bg-color),
+  disabled-color: var(--clr-btn-primary-outline-disabled-color),
+  disabled-bg-color: var(--clr-btn-primary-outline-disabled-bg-color),
+  disabled-border-color: var(--clr-btn-primary-outline-disabled-border-color),
+  checked-color: var(--clr-btn-primary-outline-checked-color),
+  checked-bg-color: var(--clr-btn-primary-outline-checked-bg-color),
+) !default;
+
+@function lookupFromPrimaryOutlineButtonColors($property: null) {
+  @return map-get($clr-btn-primary-outline, $property);
+}
+
+// Success button colors
+$clr-btn-success-color: var(--clr-btn-success-color) !default;
+$clr-btn-success-bg-color: var(--clr-btn-success-bg-color) !default;
+$clr-btn-success-border-color: var(--clr-btn-success-border-color) !default;
+$clr-btn-success-hover-bg-color: var(--clr-btn-success-hover-bg-color) !default;
+$clr-btn-success-hover-color: var(--clr-btn-success-hover-color) !default;
+$clr-btn-success-active-color: var(--clr-btn-success-active-color) !default;
+$clr-btn-success-active-bg-color: var(--clr-btn-success-active-bg-color) !default;
+$clr-btn-success-disabled-color: var(--clr-btn-success-disabled-color) !default;
+$clr-btn-success-disabled-bg-color: var(--clr-btn-success-disabled-bg-color) !default;
+$clr-btn-success-disabled-border-color: var(--clr-btn-success-disabled-border-color) !default;
+$clr-btn-success-checked-bg-color: var(--clr-btn-success-checked-bg-color) !default;
+$clr-btn-success-checked-color: var(--clr-btn-success-checked-color) !default;
+
+@function lookupFromSuccessButtonColors($property: null) {
+  @if $property == color {
+    @return $clr-btn-success-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-btn-success-border-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-btn-success-bg-color;
+  }
+
+  @if $property == hover-bg-color {
+    @return $clr-btn-success-hover-bg-color;
+  }
+
+  @if $property == hover-color {
+    @return $clr-btn-success-hover-color;
+  }
+
+  @if $property == active-color {
+    @return $clr-btn-success-active-color;
+  }
+
+  @if $property == active-bg-color {
+    @return $clr-btn-success-active-bg-color;
+  }
+
+  @if $property == disabled-color {
+    @return $clr-btn-success-disabled-color;
+  }
+
+  @if $property == disabled-bg-color {
+    @return $clr-btn-success-disabled-bg-color;
+  }
+
+  @if $property == disabled-border-color {
+    @return $clr-btn-success-disabled-border-color;
+  }
+
+  @if $property == checked-bg-color {
+    @return $clr-btn-success-checked-bg-color;
+  }
+
+  @if $property == checked-color {
+    @return $clr-btn-success-checked-color;
+  }
+
+  @return null;
+}
+
+// Success outline button colors
+$clr-btn-success-outline-color: var(--clr-btn-success-outline-color) !default;
+$clr-btn-success-outline-bg-color: var(--clr-btn-success-outline-bg-color) !default;
+$clr-btn-success-outline-border-color: var(--clr-btn-success-outline-border-color) !default;
+$clr-btn-success-outline-hover-bg-color: var(--clr-btn-success-outline-hover-bg-color) !default;
+$clr-btn-success-outline-hover-color: var(--clr-btn-success-outline-hover-color) !default;
+$clr-btn-success-outline-active-color: var(--clr-btn-success-outline-active-color) !default;
+$clr-btn-success-outline-active-bg-color: var(--clr-btn-success-outline-active-bg-color) !default;
+$clr-btn-success-outline-disabled-color: var(--clr-btn-success-outline-disabled-color) !default;
+$clr-btn-success-outline-disabled-bg-color: var(--clr-btn-success-outline-disabled-bg-color) !default;
+$clr-btn-success-outline-disabled-border-color: var(--clr-btn-success-outline-disabled-border-color) !default;
+$clr-btn-success-outline-checked-bg-color: var(--clr-btn-success-outline-checked-bg-color) !default;
+$clr-btn-success-outline-checked-color: var(--clr-btn-success-outline-checked-color) !default;
+
+@function lookupFromSuccessOutlineButtonColors($property: null) {
+  @if $property == color {
+    @return $clr-btn-success-outline-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-btn-success-outline-border-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-btn-success-outline-bg-color;
+  }
+
+  @if $property == hover-bg-color {
+    @return $clr-btn-success-outline-hover-bg-color;
+  }
+
+  @if $property == hover-color {
+    @return $clr-btn-success-outline-hover-color;
+  }
+
+  @if $property == active-bg-color {
+    @return $clr-btn-success-outline-active-bg-color;
+  }
+  @if $property == active-color {
+    @return $clr-btn-success-outline-active-color;
+  }
+
+  @if $property == disabled-color {
+    @return $clr-btn-success-outline-disabled-color;
+  }
+
+  @if $property == disabled-bg-color {
+    @return $clr-btn-success-outline-disabled-bg-color;
+  }
+
+  @if $property == disabled-border-color {
+    @return $clr-btn-success-outline-disabled-border-color;
+  }
+
+  @if $property == checked-bg-color {
+    @return $clr-btn-success-outline-checked-bg-color;
+  }
+
+  @if $property == checked-color {
+    @return $clr-btn-success-outline-checked-color;
+  }
+
+  @return null;
+}
+
+// Danger button colors
+$clr-btn-danger-color: var(--clr-btn-danger-color) !default;
+$clr-btn-danger-bg-color: var(--clr-btn-danger-bg-color) !default;
+$clr-btn-danger-border-color: var(--clr-btn-danger-border-color) !default;
+$clr-btn-danger-hover-bg-color: var(--clr-btn-danger-hover-bg-color) !default;
+$clr-btn-danger-hover-color: var(--clr-btn-danger-hover-color) !default;
+$clr-btn-danger-active-bg-color: var(--clr-btn-danger-active-bg-color) !default;
+$clr-btn-danger-active-color: var(--clr-btn-danger-active-color) !default;
+$clr-btn-danger-disabled-color: var(--clr-btn-danger-disabled-color) !default;
+$clr-btn-danger-disabled-bg-color: var(--clr-btn-danger-disabled-bg-color) !default;
+$clr-btn-danger-disabled-border-color: var(--clr-btn-danger-disabled-border-color) !default;
+$clr-btn-danger-checked-bg-color: var(--clr-btn-danger-checked-bg-color) !default;
+$clr-btn-danger-checked-color: var(--clr-btn-danger-checked-color) !default;
+
+@function lookupFromDangerButtonColors($property: null) {
+  @if $property == color {
+    @return $clr-btn-danger-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-btn-danger-border-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-btn-danger-bg-color;
+  }
+
+  @if $property == hover-bg-color {
+    @return $clr-btn-danger-hover-bg-color;
+  }
+
+  @if $property == hover-color {
+    @return $clr-btn-danger-hover-color;
+  }
+
+  @if $property == active-bg-color {
+    @return $clr-btn-danger-active-bg-color;
+  }
+
+  @if $property == active-color {
+    @return $clr-btn-danger-active-color;
+  }
+
+  @if $property == disabled-color {
+    @return $clr-btn-danger-disabled-color;
+  }
+
+  @if $property == disabled-bg-color {
+    @return $clr-btn-danger-disabled-bg-color;
+  }
+
+  @if $property == disabled-border-color {
+    @return $clr-btn-danger-disabled-border-color;
+  }
+
+  @if $property == checked-bg-color {
+    @return $clr-btn-danger-checked-bg-color;
+  }
+
+  @if $property == checked-color {
+    @return $clr-btn-danger-checked-color;
+  }
+
+  @return null;
+}
+
+// Danger outline button colors
+$clr-btn-danger-outline-color: var(--clr-btn-danger-outline-color) !default;
+$clr-btn-danger-outline-bg-color: var(--clr-btn-danger-outline-bg-color) !default;
+$clr-btn-danger-outline-border-color: var(--clr-btn-danger-outline-border-color) !default;
+$clr-btn-danger-outline-hover-bg-color: var(--clr-btn-danger-outline-hover-bg-color) !default;
+$clr-btn-danger-outline-hover-color: var(--clr-btn-danger-outline-hover-color) !default;
+$clr-btn-danger-outline-active-bg-color: var(--clr-btn-danger-outline-active-bg-color) !default;
+$clr-btn-danger-outline-active-color: var(--clr-btn-danger-outline-active-color) !default;
+$clr-btn-danger-outline-disabled-color: var(--clr-btn-danger-outline-disabled-color) !default;
+$clr-btn-danger-outline-disabled-bg-color: var(--clr-btn-danger-outline-disabled-bg-color) !default;
+$clr-btn-danger-outline-disabled-border-color: var(--clr-btn-danger-outline-disabled-border-color) !default;
+$clr-btn-danger-outline-checked-bg-color: var(--clr-btn-danger-outline-checked-bg-color) !default;
+$clr-btn-danger-outline-checked-color: var(--clr-btn-danger-outline-checked-color) !default;
+
+@function lookupFromDangerOutlineButtonColors($property: null) {
+  @if $property == color {
+    @return $clr-btn-danger-outline-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-btn-danger-outline-border-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-btn-danger-outline-bg-color;
+  }
+
+  @if $property == hover-bg-color {
+    @return $clr-btn-danger-outline-hover-bg-color;
+  }
+
+  @if $property == hover-color {
+    @return $clr-btn-danger-outline-hover-color;
+  }
+
+  @if $property == active-bg-color {
+    @return $clr-btn-danger-outline-active-bg-color;
+  }
+
+  @if $property == active-color {
+    @return $clr-btn-danger-outline-active-color;
+  }
+
+  @if $property == disabled-color {
+    @return $clr-btn-danger-outline-disabled-color;
+  }
+
+  @if $property == disabled-bg-color {
+    @return $clr-btn-danger-outline-disabled-bg-color;
+  }
+
+  @if $property == disabled-border-color {
+    @return $clr-btn-danger-outline-disabled-border-color;
+  }
+
+  @if $property == checked-bg-color {
+    @return $clr-btn-danger-outline-checked-bg-color;
+  }
+
+  @if $property == checked-color {
+    @return $clr-btn-danger-outline-checked-color;
+  }
+
+  @return null;
+}
+
+// Warning button colors
+$clr-btn-warning-color: var(--clr-btn-warning-color) !default;
+$clr-btn-warning-bg-color: var(--clr-btn-warning-bg-color) !default;
+$clr-btn-warning-border-color: var(--clr-btn-warning-border-color) !default;
+$clr-btn-warning-hover-bg-color: var(--clr-btn-warning-hover-bg-color) !default;
+$clr-btn-warning-hover-color: var(--clr-btn-warning-hover-color) !default;
+$clr-btn-warning-active-bg-color: var(--clr-btn-warning-active-bg-color) !default;
+$clr-btn-warning-active-color: var(--clr-btn-warning-active-color) !default;
+$clr-btn-warning-disabled-color: var(--clr-btn-warning-disabled-color) !default;
+$clr-btn-warning-disabled-bg-color: var(--clr-btn-warning-disabled-bg-color) !default;
+$clr-btn-warning-disabled-border-color: var(--clr-btn-warning-disabled-border-color) !default;
+$clr-btn-warning-checked-bg-color: var(--clr-btn-warning-checked-bg-color) !default;
+$clr-btn-warning-checked-color: var(--clr-btn-warning-checked-color) !default;
+
+@function lookupFromWarningButtonColors($property: null) {
+  @if $property == color {
+    @return $clr-btn-warning-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-btn-warning-border-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-btn-warning-bg-color;
+  }
+
+  @if $property == hover-bg-color {
+    @return $clr-btn-warning-hover-bg-color;
+  }
+
+  @if $property == hover-color {
+    @return $clr-btn-warning-hover-color;
+  }
+
+  @if $property == active-bg-color {
+    @return $clr-btn-warning-active-bg-color;
+  }
+
+  @if $property == active-color {
+    @return $clr-btn-warning-active-color;
+  }
+
+  @if $property == disabled-color {
+    @return $clr-btn-warning-disabled-color;
+  }
+
+  @if $property == disabled-bg-color {
+    @return $clr-btn-warning-disabled-bg-color;
+  }
+
+  @if $property == disabled-border-color {
+    @return $clr-btn-warning-disabled-border-color;
+  }
+
+  @if $property == checked-bg-color {
+    @return $clr-btn-warning-checked-bg-color;
+  }
+
+  @if $property == checked-color {
+    @return $clr-btn-warning-checked-color;
+  }
+
+  @return null;
+}
+
+// Warning outline button colors
+$clr-btn-warning-outline-color: var(--clr-btn-warning-outline-color) !default;
+$clr-btn-warning-outline-bg-color: var(--clr-btn-warning-outline-bg-color) !default;
+$clr-btn-warning-outline-border-color: var(--clr-btn-warning-outline-border-color) !default;
+$clr-btn-warning-outline-hover-bg-color: var(--clr-btn-warning-outline-hover-bg-color) !default;
+$clr-btn-warning-outline-hover-color: var(--clr-btn-warning-outline-hover-color) !default;
+$clr-btn-warning-outline-active-bg-color: var(--clr-btn-warning-outline-active-bg-color) !default;
+$clr-btn-warning-outline-active-color: var(--clr-btn-warning-outline-active-color) !default;
+$clr-btn-warning-outline-disabled-color: var(--clr-btn-warning-outline-disabled-color) !default;
+$clr-btn-warning-outline-disabled-bg-color: var(--clr-btn-warning-outline-disabled-bg-color) !default;
+$clr-btn-warning-outline-disabled-border-color: var(--clr-btn-warning-outline-disabled-border-color) !default;
+$clr-btn-warning-outline-checked-bg-color: var(--clr-btn-warning-outline-checked-bg-color) !default;
+$clr-btn-warning-outline-checked-color: var(--clr-btn-warning-outline-checked-color) !default;
+
+@function lookupFromWarningOutlineButtonColors($property: null) {
+  @if $property == color {
+    @return $clr-btn-warning-outline-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-btn-warning-outline-border-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-btn-warning-outline-bg-color;
+  }
+
+  @if $property == hover-bg-color {
+    @return $clr-btn-warning-outline-hover-bg-color;
+  }
+
+  @if $property == hover-color {
+    @return $clr-btn-warning-outline-hover-color;
+  }
+
+  @if $property == active-bg-color {
+    @return $clr-btn-warning-outline-active-bg-color;
+  }
+
+  @if $property == active-color {
+    @return $clr-btn-warning-outline-active-color;
+  }
+
+  @if $property == disabled-color {
+    @return $clr-btn-warning-outline-disabled-color;
+  }
+
+  @if $property == disabled-bg-color {
+    @return $clr-btn-warning-outline-disabled-bg-color;
+  }
+
+  @if $property == disabled-border-color {
+    @return $clr-btn-warning-outline-disabled-border-color;
+  }
+
+  @if $property == checked-bg-color {
+    @return $clr-btn-warning-outline-checked-bg-color;
+  }
+
+  @if $property == checked-color {
+    @return $clr-btn-warning-outline-checked-color;
+  }
+
+  @return null;
+}
+
+// Neutral button colors
+$clr-btn-neutral: (
+  color: var(--clr-btn-neutral-color),
+  bg-color: var(--clr-btn-neutral-bg-color),
+  border-color: var(--clr-btn-neutral-border-color),
+  hover-color: var(--clr-btn-neutral-hover-color),
+  hover-bg-color: var(--clr-btn-neutral-hover-bg-color),
+  active-color: var(--clr-btn-neutral-active-color),
+  active-bg-color: var(--clr-btn-neutral-active-bg-color),
+  disabled-color: var(--clr-btn-neutral-disabled-color),
+  disabled-bg-color: var(--clr-btn-neutral-disabled-bg-color),
+  disabled-border-color: var(--clr-btn-neutral-disabled-border-color),
+  checked-bg-color: var(--clr-btn-neutral-checked-bg-color),
+  checked-color: var(--clr-btn-neutral-checked-color),
+) !default;
+@function lookupFromNeutralButtonColors($property: null) {
+  @return map-get($clr-btn-neutral, $property);
+}
+
+// Neutral outline button colors
+$clr-btn-neutral-outline: (
+  color: var(--clr-btn-neutral-outline-color),
+  bg-color: var(--clr-btn-neutral-outline-bg-color),
+  border-color: var(--clr-btn-neutral-outline-border-color),
+  hover-color: var(--clr-btn-neutral-outline-hover-color),
+  hover-bg-color: var(--clr-btn-neutral-outline-hover-bg-color),
+  active-color: var(--clr-btn-neutral-outline-active-color),
+  active-bg-color: var(--clr-btn-neutral-outline-active-bg-color),
+  disabled-color: var(--clr-btn-neutral-outline-disabled-color),
+  disabled-bg-color: var(--clr-btn-neutral-outline-disabled-bg-color),
+  disabled-border-color: var(--clr-btn-neutral-outline-disabled-border-color),
+  checked-bg-color: var(--clr-btn-neutral-outline-checked-bg-color),
+  checked-color: var(--clr-btn-neutral-outline-checked-color),
+) !default;
+@function lookupFromNeutralOutlineButtonColors($property: null) {
+  @return map-get($clr-btn-neutral-outline, $property);
+}
+
+// Link button colors
+$clr-btn-link-color: var(--clr-btn-link-color) !default;
+$clr-btn-link-bg-color: var(--clr-btn-link-bg-color) !default;
+$clr-btn-link-border-color: var(--clr-btn-link-border-color) !default;
+$clr-btn-link-hover-bg-color: var(--clr-btn-link-hover-bg-color) !default;
+$clr-btn-link-hover-color: var(--clr-btn-link-hover-color) !default;
+$clr-btn-link-active-color: var(--clr-btn-link-active-color) !default;
+$clr-btn-link-active-bg-color: var(--clr-btn-link-active-bg-color) !default;
+$clr-btn-link-disabled-color: var(--clr-btn-link-disabled-color) !default;
+$clr-btn-link-disabled-bg-color: var(--clr-btn-link-disabled-bg-color) !default;
+$clr-btn-link-disabled-border-color: var(--clr-btn-link-disabled-border-color) !default;
+$clr-btn-link-checked-bg-color: var(--clr-btn-link-checked-bg-color) !default;
+$clr-btn-link-checked-color: var(--clr-btn-link-checked-color) !default;
+
+@function lookupFromLinkButtonColors($property: null) {
+  @if $property == color {
+    @return $clr-btn-link-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-btn-link-border-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-btn-link-bg-color;
+  }
+
+  @if $property == hover-bg-color {
+    @return $clr-btn-link-hover-bg-color;
+  }
+
+  @if $property == hover-color {
+    @return $clr-btn-link-hover-color;
+  }
+
+  @if $property == active-color {
+    @return $clr-btn-link-active-color;
+  }
+
+  @if $property == active-bg-color {
+    @return $clr-btn-link-active-bg-color;
+  }
+
+  @if $property == disabled-color {
+    @return $clr-btn-link-disabled-color;
+  }
+
+  @if $property == disabled-bg-color {
+    @return $clr-btn-link-disabled-bg-color;
+  }
+
+  @if $property == disabled-border-color {
+    @return $clr-btn-link-disabled-border-color;
+  }
+
+  @if $property == checked-bg-color {
+    @return $clr-btn-link-checked-bg-color;
+  }
+
+  @if $property == checked-color {
+    @return $clr-btn-link-checked-color;
+  }
+
+  @return null;
+}
+
+// Link primary button colors using map
+$clr-btn-link-primary: (
+  color: var(--clr-btn-link-primary-color),
+  bg-color: var(--clr-btn-link-primary-bg-color),
+  border-color: var(--clr-btn-link-primary-border-color),
+  hover-bg-color: var(--clr-btn-link-primary-hover-bg-color),
+  hover-color: var(--clr-btn-link-primary-hover-color),
+  disabled-color: var(--clr-btn-link-primary-disabled-color),
+  active-color: var(--clr-btn-link-primary-active-color),
+  active-bg-color: var(--clr-btn-link-primary-active-bg-color),
+  disabled-bg-color: var(--clr-btn-link-primary-disabled-bg-color),
+  disabled-border-color: var(--clr-btn-link-primary-disabled-border-color),
+  checked-bg-color: var(--clr-btn-link-primary-checked-bg-color),
+  checked-color: var(--clr-btn-link-primary-checked-color),
+) !default;
+
+@function lookupFromLinkPrimaryButtonColors($property: null) {
+  @return map-get($clr-btn-link-primary, $property);
+}
+
+// Link success button colors using map
+$clr-btn-link-success: (
+  color: var(--clr-btn-link-success-color),
+  bg-color: var(--clr-btn-link-success-bg-color),
+  border-color: var(--clr-btn-link-success-border-color),
+  hover-bg-color: var(--clr-btn-link-success-hover-bg-color),
+  active-color: var(--clr-btn-link-success-active-color),
+  active-bg-color: var(--clr-btn-link-success-active-bg-color),
+  hover-color: var(--clr-btn-link-success-hover-color),
+  disabled-color: var(--clr-btn-link-success-disabled-color),
+  disabled-bg-color: var(--clr-btn-link-success-disabled-bg-color),
+  disabled-border-color: var(--clr-btn-link-success-disabled-border-color),
+  checked-bg-color: var(--clr-btn-link-success-checked-bg-color),
+  checked-color: var(--clr-btn-link-success-checked-color),
+) !default;
+
+@function lookupFromLinkSuccessButtonColors($property: null) {
+  @return map-get($clr-btn-link-success, $property);
+}
+
+// Link warning button colors using map
+$clr-btn-link-warning: (
+  color: var(--clr-btn-link-warning-color),
+  bg-color: var(--clr-btn-link-warning-bg-color),
+  border-color: var(--clr-btn-link-warning-border-color),
+  hover-bg-color: var(--clr-btn-link-warning-hover-bg-color),
+  active-color: var(--clr-btn-link-warning-active-color),
+  active-bg-color: var(--clr-btn-link-warning-active-bg-color),
+  hover-color: var(--clr-btn-link-warning-hover-color),
+  disabled-color: var(--clr-btn-link-warning-disabled-color),
+  disabled-bg-color: var(--clr-btn-link-warning-disabled-bg-color),
+  disabled-border-color: var(--clr-btn-link-warning-disabled-border-color),
+  checked-bg-color: var(--clr-btn-link-warning-checked-bg-color),
+  checked-color: var(--clr-btn-link-warning-checked-color),
+) !default;
+
+@function lookupFromLinkWarningButtonColors($property: null) {
+  @return map-get($clr-btn-link-warning, $property);
+}
+
+// Link danger button colors using map
+$clr-btn-link-danger: (
+  color: var(--clr-btn-link-danger-color),
+  bg-color: var(--clr-btn-link-danger-bg-color),
+  border-color: var(--clr-btn-link-danger-border-color),
+  hover-bg-color: var(--clr-btn-link-danger-hover-bg-color),
+  active-color: var(--clr-btn-link-danger-active-color),
+  active-bg-color: var(--clr-btn-link-danger-active-bg-color),
+  hover-color: var(--clr-btn-link-danger-hover-color),
+  disabled-color: var(--clr-btn-link-danger-disabled-color),
+  disabled-bg-color: var(--clr-btn-link-danger-disabled-bg-color),
+  disabled-border-color: var(--clr-btn-link-danger-disabled-border-color),
+  checked-bg-color: var(--clr-btn-link-danger-checked-bg-color),
+  checked-color: var(--clr-btn-link-danger-checked-color),
+) !default;
+
+@function lookupFromLinkDangerButtonColors($property: null) {
+  @return map-get($clr-btn-link-danger, $property);
+}
+
+// Link neutral button colors using map
+$clr-btn-link-neutral: (
+  color: var(--clr-btn-link-neutral-color),
+  bg-color: var(--clr-btn-link-neutral-bg-color),
+  border-color: var(--clr-btn-link-neutral-border-color),
+  hover-bg-color: var(--clr-btn-link-neutral-hover-bg-color),
+  active-color: var(--clr-btn-link-neutral-active-color),
+  active-bg-color: var(--clr-btn-link-neutral-active-bg-color),
+  hover-color: var(--clr-btn-link-neutral-hover-color),
+  disabled-color: var(--clr-btn-link-neutral-disabled-color),
+  disabled-bg-color: var(--clr-btn-link-neutral-disabled-bg-color),
+  disabled-border-color: var(--clr-btn-link-neutral-disabled-border-color),
+  checked-bg-color: var(--clr-btn-link-neutral-checked-bg-color),
+  checked-color: var(--clr-btn-link-neutral-checked-color),
+) !default;
+
+@function lookupFromLinkNeutralButtonColors($property: null) {
+  @return map-get($clr-btn-link-neutral, $property);
+}
+
+// Inverse button colors
+$clr-btn-inverse-color: var(--clr-btn-inverse-color) !default;
+$clr-btn-inverse-border-color: var(--clr-btn-inverse-border-color) !default;
+$clr-btn-inverse-bg-color: var(--clr-btn-inverse-bg-color) !default;
+$clr-btn-inverse-hover-bg-color: var(--clr-btn-inverse-hover-bg-color) !default;
+$clr-btn-inverse-hover-color: var(--clr-btn-inverse-hover-color) !default;
+$clr-btn-inverse-active-bg-color: var(--clr-btn-inverse-active-bg-color) !default;
+$clr-btn-inverse-active-color: var(--clr-btn-inverse-active-color) !default;
+$clr-btn-inverse-disabled-color: var(--clr-btn-inverse-disabled-color) !default;
+$clr-btn-inverse-disabled-bg-color: var(--clr-btn-inverse-disabled-bg-color) !default;
+$clr-btn-inverse-disabled-border-color: var(--clr-btn-inverse-disabled-border-color) !default;
+$clr-btn-inverse-checked-bg-color: var(--clr-btn-inverse-checked-bg-color) !default;
+$clr-btn-inverse-checked-color: var(--clr-btn-inverse-checked-color) !default;
+
+@function lookupFromInverseButtonColors($property: null) {
+  @if $property == color {
+    @return $clr-btn-inverse-color;
+  }
+
+  @if $property == border-color {
+    @return $clr-btn-inverse-border-color;
+  }
+
+  @if $property == bg-color {
+    @return $clr-btn-inverse-bg-color;
+  }
+
+  @if $property == hover-bg-color {
+    @return $clr-btn-inverse-hover-bg-color;
+  }
+
+  @if $property == hover-color {
+    @return $clr-btn-inverse-hover-color;
+  }
+
+  @if $property == active-bg-color {
+    @return $clr-btn-inverse-active-bg-color;
+  }
+
+  @if $property == active-color {
+    @return $clr-btn-inverse-active-color;
+  }
+
+  @if $property == disabled-color {
+    @return $clr-btn-inverse-disabled-color;
+  }
+
+  @if $property == disabled-bg-color {
+    @return $clr-btn-inverse-disabled-bg-color;
+  }
+
+  @if $property == disabled-border-color {
+    @return $clr-btn-inverse-disabled-border-color;
+  }
+
+  @if $property == checked-bg-color {
+    @return $clr-btn-inverse-checked-bg-color;
+  }
+
+  @if $property == checked-color {
+    @return $clr-btn-inverse-checked-color;
+  }
+
+  @return null;
+}
+
+// For theme-able icon button color
+$clr-btn-icon-disabled-color: var(--clr-btn-icon-disabled-color) !default;
+
+@function lookupFromIconButtonColors($property: null) {
+  @if $property == disabled-color {
+    @return $clr-btn-icon-disabled-color;
+  }
+
+  @return null;
+}

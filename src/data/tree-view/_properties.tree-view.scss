@@ -1,0 +1,59 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
+
+@include mixins.exports('tree.properties') {
+  @include mixins.root-or-host() {
+    &,
+    & [clr-density] {
+      // Usage: ../data/tree-view/_tree-view.clarity.scss
+      --clr-tree-border-radius: #{density.$clr-base-border-radius-s};
+    }
+
+    &,
+    & [cds-theme] {
+      // @deprecated in v17 in favor of clr-tree-node-content-bg-hover-color
+      --clr-tree-link-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      // @deprecated in v17 in favor of clr-tree-node-content-bg-selected-color
+      --clr-tree-link-selection-color: #{tokens.$cds-alias-object-interaction-background-selected};
+      // @deprecated in v17 in favor of clr-tree-node-content-color
+      --clr-tree-link-text-color: #{tokens.$cds-alias-object-interaction-color};
+      // @deprecated in v17 favor of clr-tree-node-caret-hover-color. Will be removed in v18.
+      --clr-tree-node-caret-link-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
+      // @deprecated in v17 favor of clr-tree-node-caret-active-color. Will be removed in v18.
+      --clr-tree-node-caret-link-active-color: #{tokens.$cds-alias-object-interaction-color-active};
+      // @deprecated in v17 favor of clr-tree-node-caret-disabled-color. Will be removed in v18.
+      --clr-tree-node-caret-link-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
+
+      --clr-tree-node-caret-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-tree-node-caret-hover-color: var(--clr-tree-node-caret-link-hover-color);
+      --clr-tree-node-caret-active-color: var(--clr-tree-node-caret-link-active-color);
+      --clr-tree-node-caret-disabled-color: var(--clr-tree-node-caret-link-disabled-color);
+
+      --clr-tree-node-content-text-only-color: #{tokens.$cds-alias-typography-color-400};
+
+      --clr-tree-node-content-color: var(--clr-tree-link-text-color);
+      --clr-tree-node-content-bg-color: #{tokens.$cds-alias-object-opacity-0};
+
+      --clr-tree-node-content-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
+      --clr-tree-node-content-bg-hover-color: var(--clr-tree-link-hover-color);
+
+      --clr-tree-node-content-active-color: #{tokens.$cds-alias-object-interaction-color-active};
+      --clr-tree-node-content-bg-active-color: #{tokens.$cds-alias-object-interaction-background-active};
+
+      --clr-tree-node-content-selected-color: #{tokens.$cds-alias-object-interaction-color-selected};
+      --clr-tree-node-content-bg-selected-color: var(--clr-tree-link-selection-color);
+      --clr-tree-node-content-bg-selected-hover-color: var(--cds-alias-object-interaction-background-selected-hover);
+      --clr-tree-node-content-bg-selected-active-color: var(--cds-alias-object-interaction-background-selected-active);
+
+      --clr-tree-node-content-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-tree-node-content-bg-disabled-color: #{tokens.$cds-alias-object-opacity-0};
+    }
+  }
+}

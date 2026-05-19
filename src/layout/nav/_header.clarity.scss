@@ -1,0 +1,373 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:map';
+@use 'sass:meta';
+@use '../../image/icons.clarity';
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use '../../utils/variables/variables.density' as density;
+@use '../main-container/variables.header' as header-variables;
+@use '@cds/core/tokens/tokens.scss';
+
+@mixin header-nav-link($horizontal-padding: density.$clr-base-horizontal-offset-xl) {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  gap: density.$clr-base-gap-s;
+  height: 100%;
+  padding: density.$clr-base-vertical-offset-m $horizontal-padding;
+
+  &:focus {
+    outline-offset: header-variables.$clr-header-outline-offset; // So that the outline styles aren't hidden because of the browser
+  }
+}
+
+@mixin header-section-divider() {
+  display: inline-block;
+  content: '';
+  background-color: header-variables.$clr-header-divider-color;
+  height: density.$clr-base-icon-size-3xl;
+  width: tokens.$cds-alias-object-border-width-100;
+  position: absolute;
+  left: 0;
+  top: calc((header-variables.$clr-header-height - density.$clr-base-icon-size-3xl) / 2);
+}
+
+@mixin header-nav-appearance() {
+  color: header-variables.$clr-header-font-color;
+
+  &:hover {
+    color: header-variables.$clr-header-font-color-hover;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+@mixin header-backgrounds() {
+  &.header-1 {
+    background-color: header-variables.$clr-header-bg-color;
+  }
+
+  &.header-2 {
+    background-color: header-variables.$clr-header-2-bg-color;
+  }
+
+  &.header-3 {
+    background-color: header-variables.$clr-header-3-bg-color;
+  }
+
+  &.header-4 {
+    background-color: header-variables.$clr-header-4-bg-color;
+  }
+
+  &.header-5 {
+    background-color: header-variables.$clr-header-5-bg-color;
+  }
+
+  &.header-6 {
+    background-color: header-variables.$clr-header-6-bg-color;
+  }
+
+  &.header-7 {
+    background-color: header-variables.$clr-header-7-bg-color;
+  }
+
+  // dark theme only header added by external team to workaround lack of header-7 in dark theme
+  &.header-8 {
+    background-color: header-variables.$clr-header-8-bg-color;
+  }
+}
+
+@mixin header-branding() {
+  .branding {
+    display: flex;
+    flex: 0 0 auto;
+    height: header-variables.$clr-header-height;
+    min-width: mixins.baselinePx(204);
+    padding: 0 density.$clr-base-horizontal-offset-xl;
+
+    & > a,
+    & > .nav-link {
+      @include header-nav-link(density.$clr-base-horizontal-offset-m);
+    }
+
+    .clr-icon,
+    cds-icon,
+    clr-icon {
+      flex-grow: 0;
+      flex-shrink: 0;
+
+      &:not([size]) {
+        @include mixins.equilateral(tokens.$cds-global-space-11);
+      }
+    }
+
+    .title {
+      color: header-variables.$clr-header-title-color;
+      font-family: header-variables.$clr-header-title-font-family;
+      @include mixins.generate-typography-token(
+        'SUBSECTION-16-EXP',
+        (
+          font-weight: header-variables.$clr-header-title-font-weight,
+        )
+      );
+      text-decoration: none;
+    }
+  }
+}
+
+@mixin header-links {
+  .settings, /* TODO: deprecated. Remove when the clarity css naming convention is implemented.*/
+  .header-nav,
+  .header-actions {
+    .nav-text {
+      @include mixins.generate-typography-token('BODY-14-RG-EXP');
+    }
+
+    clr-icon {
+      color: header-variables.$clr-header-font-color;
+    }
+
+    .nav-link {
+      @include header-nav-link();
+      @include header-nav-appearance();
+
+      position: relative;
+      text-align: center;
+
+      cds-icon:not([size]),
+      clr-icon {
+        @include mixins.equilateral(header-variables.$clr-header-clarity-icons-size);
+      }
+
+      &.nav-icon-text {
+        gap: density.$clr-base-gap-s;
+        cds-icon,
+        clr-icon {
+          transform: none;
+        }
+      }
+
+      // .nav-text acts like the alt attribute for screens where responsiveness kicks in.
+      // on smaller screens icons are hidden and only nav-text is shown
+      .nav-icon + .nav-text {
+        display: none;
+      }
+
+      &.active {
+        .nav-text {
+          @include mixins.generate-typography-token('BODY-14-SB-EXP');
+        }
+      }
+
+      &:focus {
+        // So that the outline styles aren't hidden because of the browser
+        outline-offset: header-variables.$clr-header-outline-offset;
+      }
+    }
+  }
+}
+
+@mixin header-nav {
+  .header-nav {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    position: relative;
+
+    &::before {
+      @include header-section-divider();
+    }
+
+    .nav-link {
+      &:first-of-type,
+      &:last-of-type {
+        position: relative;
+      }
+    }
+  }
+}
+
+@mixin header-actions {
+  .settings,
+  .header-actions {
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: flex-end;
+
+    & > *:not(.dropdown):before,
+    & > .dropdown > .dropdown-toggle:before {
+      @include header-section-divider();
+    }
+
+    // Reduce nesting from 5 to 3 at the most
+    & > .dropdown {
+      & > .dropdown-toggle {
+        position: relative;
+        @include header-nav-appearance();
+        @include header-nav-link();
+      }
+
+      .dropdown-toggle.nav-icon {
+        cds-icon:not([size], [shape^='angle']),
+        clr-icon:not([shape^='angle']) {
+          @include mixins.equilateral(header-variables.$clr-header-clarity-icons-size);
+        }
+      }
+
+      // Pull the dropdown menus of all dropdowns up to compensate for the height of the header.
+      .dropdown-menu {
+        margin-top: calc(-1 * tokens.$cds-global-space-5);
+        margin-right: tokens.$cds-global-space-5;
+        // TODO: As of 0.10.0 the dropdown-menu inside header without clrIfOpen directive (legacy)
+        // will create empty space beyond the .main-container if the right isn't set to zero.
+        // Re-evaluate later if we can come up with a better solution.
+        left: auto;
+        right: 0;
+      }
+    }
+  }
+}
+
+@mixin header-search() {
+  .search-box,
+  .search {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    max-width: mixins.baselinePx(288);
+    padding: 0;
+    position: relative;
+
+    @include header-nav-appearance();
+
+    &::before {
+      @include header-section-divider();
+    }
+
+    & > .nav-icon {
+      margin: 0 tokens.$cds-global-space-4 mixins.baselinePx(3) tokens.$cds-global-space-9;
+    }
+
+    label {
+      display: inline-block;
+      padding-left: header-variables.$clr-header-search-gap;
+      margin-left: header-variables.$clr-header-search-margin-left;
+      margin-right: header-variables.$clr-header-search-margin-right;
+      text-align: center;
+
+      &::before {
+        display: inline-block;
+        content: '';
+        background-image: icons.generateSearchIcon();
+        background-repeat: no-repeat;
+        background-size: contain;
+        cursor: pointer;
+        @include mixins.min-equilateral(header-variables.$clr-header-search-icon-size);
+        vertical-align: middle;
+        margin: 0;
+        margin-right: calc(
+          -1 * (header-variables.$clr-header-search-icon-size + header-variables.$clr-header-search-gap)
+        );
+      }
+
+      input {
+        line-height: tokens.$cds-global-space-9;
+        margin: auto;
+      }
+    }
+
+    input[type='text'] {
+      border: none;
+      background: none;
+      color: header-variables.$clr-header-search-input-font-color;
+      border-radius: density.$clr-base-border-radius-s;
+      height: tokens.$cds-global-space-11;
+
+      padding: 0 0 0 calc(header-variables.$clr-header-search-icon-size + 2 * header-variables.$clr-header-search-gap);
+
+      vertical-align: middle;
+
+      // Typography
+      @include mixins.generate-typography-token('BODY-14-SB-EXP');
+
+      // hacky fix for chrome autofill wrong colors. Better solution not found.
+      // set transition between current correct to inner wrong immutable colors to very long time.
+      &:-webkit-autofill,
+      &:-webkit-autofill:focus {
+        transition: background-color 0s 600000s, color 0s 600000s;
+      }
+
+      &::placeholder {
+        color: header-variables.$clr-header-search-placeholder-text-color;
+        @include mixins.generate-typography-token('BODY-14-RG-EXP');
+      }
+
+      &:hover {
+        border: header-variables.$clr-header-search-border-hover;
+      }
+
+      &:focus-visible {
+        outline: none;
+        border: header-variables.$clr-header-search-border-active;
+      }
+
+      &:focus,
+      &:active {
+        background: none;
+      }
+    }
+  }
+
+  .branding + .search,
+  .branding + .search-box {
+    position: relative;
+  }
+}
+
+@mixin header-search-md {
+  .search-box,
+  .search {
+    flex: 1 0 auto;
+    max-width: none;
+    display: none; // TODO: Waiting for UX to finish the search designs. CDE-1626
+
+    label {
+      padding: 0;
+    }
+  }
+}
+
+@include meta.load-css('../main-container/properties.header');
+
+@include mixins.exports('header.clarity') {
+  // TODO: rename to follow clr naming convention
+  header,
+  .header {
+    display: flex;
+    color: header-variables.$clr-header-font-color;
+    background-color: header-variables.$clr-header-bg-color;
+    height: header-variables.$clr-header-height;
+    white-space: nowrap;
+
+    @include header-backgrounds();
+    @include header-branding();
+    @include header-links();
+    @include header-nav();
+    @include header-actions();
+    @include header-search();
+  }
+
+  @media screen and (max-width: map.get(variables.$clr-grid-breakpoints, md)) {
+    header,
+    .header {
+      @include header-search-md();
+    }
+  }
+}

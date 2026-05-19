@@ -1,0 +1,57 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('dropdown.properties') {
+  @include mixins.root-or-host() {
+    --clr-dropdown-divider-border-width: #{tokens.$cds-global-space-1};
+    --clr-dropdown-header-font-weight: #{tokens.$cds-alias-typography-font-weight-medium};
+    --clr-dropdown-item-font-weight: #{tokens.$cds-alias-typography-secondary-font-weight};
+
+    &,
+    & [cds-theme] {
+      // Usage: ../popover/dropdown/_dropdown.clarity.scss
+      --clr-dropdown-active-text-color: #{tokens.$cds-alias-object-interaction-color-active};
+      --clr-dropdown-bg-color: #{tokens.$cds-alias-object-container-background};
+      --clr-dropdown-border-color: #{tokens.$cds-alias-object-border-color};
+      --clr-dropdown-divider-color: #{tokens.$cds-alias-object-border-color-tint};
+      --clr-dropdown-child-border-color: #{tokens.$cds-alias-object-border-color};
+      // @deprecated in favor of '--clr-dropdown-item-hover-bg-color'
+      --clr-dropdown-bg-hover-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      // @deprecated in favor of '--clr-dropdown-item-selected-bg-color'
+      --clr-dropdown-selection-color: #{tokens.$cds-alias-object-interaction-background-selected};
+
+      // Usage:  ../data/datagrid/_datagrid.clarity.scss
+      // Usage:  ../emphasis/alert/_alert.clarity.scss
+      --clr-dropdown-text-color: #{tokens.$cds-alias-object-interaction-color};
+
+      // Usage: ../popover/dropdown/_dropdown.clarity.scss
+      // Dropdown Header
+      --clr-dropdown-header-color: #{tokens.$cds-alias-typography-color-400};
+
+      // Usage: ../popover/dropdown/_menu-mixins.clarity.scss
+      // Dropdown Item
+      --clr-dropdown-item-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-dropdown-item-bg-color: transparent; // #{tokens.$cds-alias-object-interaction-background};
+      --clr-dropdown-item-hover-color: #{tokens.$cds-alias-object-interaction-color-hover};
+      --clr-dropdown-item-hover-bg-color: var(
+        --clr-dropdown-bg-hover-color
+      ); // #{tokens.$cds-alias-object-interaction-background-hover};
+      --clr-dropdown-item-active-color: #{tokens.$cds-alias-object-interaction-color-active};
+      --clr-dropdown-item-active-bg-color: #{tokens.$cds-alias-object-interaction-background-active};
+      --clr-dropdown-item-selected-color: #{tokens.$cds-alias-object-interaction-color-selected};
+      --clr-dropdown-item-selected-bg-color: var(
+        --clr-dropdown-selection-color
+      ); // #{tokens.$cds-alias-object-interaction-background-selected};
+      --clr-dropdown-item-selected-hover-bg-color: var(--cds-alias-object-interaction-background-selected-hover);
+      --clr-dropdown-item-selected-active-bg-color: var(--cds-alias-object-interaction-background-selected-active);
+      --clr-dropdown-item-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
+      --clr-dropdown-item-disabled-bg-color: transparent; // #{tokens.$cds-alias-object-interaction-background-disabled};
+    }
+  }
+}

@@ -1,0 +1,551 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+// NOTE THAT THE MIN-WIDTH OF THE BUTTONS WILL PUSH OUT THE DIALOG IF
+// SET UP IMPROPERLY. THIS IS A KNOWN ISSUE AND USERS SHOULD USE THEIR
+// BEST JUDGMENT WITH BUTTONS IN THE WIZARD. NO MORE THAN THREE...
+// IT'S AN ISSUE WITH THE NUMBER OF BUTTONS, NOT THE LENGTH OF THE TEXT
+// INSIDE THE BUTTONS
+
+@use 'sass:string';
+@use 'sass:meta';
+@use '../modal/variables.modal' as modal-variables;
+@use '../utils/mixins';
+@use '../utils/variables/variables.global';
+@use 'variables.wizard' as wizard-variables;
+@use '../utils/variables/variables.density' as density;
+
+@use '@cds/core/tokens/tokens.scss';
+
+@include meta.load-css('properties.wizard');
+
+@include mixins.exports('wizard.clarity') {
+  .clr-wizard {
+    .modal-dialog {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      // IE/OldEdge
+      box-shadow: wizard-variables.$clr-wizard-box-shadow;
+      height: 50%;
+      max-height: 100%;
+    }
+
+    .modal-content {
+      border-radius: 0 wizard-variables.$clr-wizard-border-radius wizard-variables.$clr-wizard-border-radius 0;
+      box-shadow: none;
+      padding: 0;
+      flex: 2 2 auto;
+      width: 66%;
+      height: initial;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .modal-header--accessible {
+      flex: 0 0 auto;
+      width: 100%;
+      gap: density.$clr-base-gap-s;
+      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space 0;
+    }
+
+    .modal-title {
+      color: wizard-variables.$clr-wizard-title-text;
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+    }
+
+    .modal-body {
+      flex: 1 1 auto;
+      color: wizard-variables.$clr-wizard-main-text-color;
+      width: 100%;
+      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space;
+    }
+
+    .modal-footer {
+      display: block;
+      width: 100%;
+      flex: 0 0 wizard-variables.$clr-wizard-footer-height;
+      height: wizard-variables.$clr-wizard-footer-height;
+      min-height: wizard-variables.$clr-wizard-footer-height;
+      max-height: wizard-variables.$clr-wizard-footer-height;
+      padding: wizard-variables.$clr-wizard-footer-vertical-space wizard-variables.$clr-wizard-horizontal-space;
+      border-top: variables.$clr-global-borderwidth solid wizard-variables.$clr-wizard-stepnav-border-color;
+    }
+
+    .clr-wizard-btn {
+      margin: 0;
+      max-width: 100%;
+      display: block;
+    }
+
+    .modal-title-text {
+      display: inline-block;
+      flex: 0 1 auto;
+      width: 100%;
+      outline: none;
+    }
+
+    .modal-title-wrapper {
+      width: 100%;
+    }
+
+    .modal-header-actions-wrapper {
+      height: density.$clr-base-row-height-s;
+      padding-left: density.$clr-base-horizontal-offset-l;
+      padding-right: density.$clr-base-horizontal-offset-xs;
+    }
+
+    .clr-wizard-header-action-wrapper {
+      display: inline-flex;
+    }
+
+    .clr-wizard-header-action {
+      @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+      border: 0;
+      padding: 0;
+      margin: 0;
+      line-height: density.$clr-base-icon-size-l;
+      font-size: density.$clr-base-icon-size-l;
+      color: wizard-variables.$clr-wizard-header-action-color;
+      transition: color linear 0.2s;
+
+      & a {
+        color: wizard-variables.$clr-wizard-header-action-color;
+      }
+
+      &:hover,
+      &:active,
+      &:focus {
+        color: wizard-variables.$clr-wizard-header-action-color--hovered;
+      }
+
+      cds-icon:not([size]),
+      clr-icon {
+        @include mixins.equilateral(density.$clr-base-icon-size-l);
+      }
+    }
+
+    .clr-wizard-stepnav-wrapper {
+      flex: 1 1 auto;
+      height: 100%;
+      width: 34%;
+      max-width: 34%;
+      display: flex;
+      flex-direction: column;
+      order: -1;
+      overflow: hidden;
+      border-right: variables.$clr-global-borderwidth solid wizard-variables.$clr-wizard-stepnav-border-color;
+      background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
+      border-radius: wizard-variables.$clr-wizard-border-radius 0 0 wizard-variables.$clr-wizard-border-radius;
+    }
+
+    .clr-wizard-stepnav {
+      padding-left: wizard-variables.$clr-wizard-horizontal-space;
+      display: block;
+      color: wizard-variables.$clr-wizard-stepnav-text;
+      width: 100%;
+      flex: 1 1 auto;
+      overflow-y: auto;
+    }
+
+    .clr-wizard-stepnav-list {
+      display: flex;
+      flex-direction: column;
+      box-shadow: none;
+      counter-reset: a;
+      white-space: nowrap;
+      height: auto;
+      list-style-type: none;
+      margin: 0;
+      width: 100%;
+      gap: tokens.$cds-global-space-1;
+    }
+
+    .clr-wizard-stepnav-item {
+      display: block;
+      border-left: wizard-variables.$clr-wizard-stepnav-border-size solid
+        wizard-variables.$clr-wizard-stepnav-item-border-color;
+      color: wizard-variables.$clr-wizard-stepnav-text;
+      background-color: wizard-variables.$clr-wizard-stepnav-bgcolor;
+
+      // prevent button colors from "leaking" into the stepnav items
+      button.clr-wizard-stepnav-link {
+        color: inherit;
+        background-color: inherit;
+      }
+
+      &.disabled {
+        color: wizard-variables.$clr-wizard-stepnav-text-disabled;
+      }
+
+      // active class actually means "selected"
+      &.active {
+        color: wizard-variables.$clr-wizard-stepnav-text--active;
+        background-color: wizard-variables.$clr-wizard-stepnav-selected-bgcolor;
+        border-left-color: wizard-variables.$clr-wizard-stepnav-selected-border-color;
+
+        &:hover {
+          background-color: wizard-variables.$clr-wizard-stepnav-selected-hover-bgcolor;
+        }
+
+        &:active {
+          background-color: wizard-variables.$clr-wizard-stepnav-selected-active-bgcolor;
+        }
+      }
+
+      &:not(.disabled):not(.active) {
+        &:hover {
+          color: wizard-variables.$clr-wizard-stepnav-text-hover;
+          background-color: wizard-variables.$clr-wizard-stepnav-link-hover-bg-color;
+        }
+
+        &:active {
+          color: wizard-variables.$clr-wizard-stepnav-text-active;
+          background-color: wizard-variables.$clr-wizard-stepnav-link-active-bg-color;
+        }
+      }
+
+      .clr-wizard-stepnav-link-title {
+        word-break: break-word;
+        white-space: normal;
+      }
+
+      &.complete {
+        border-color: wizard-variables.$clr-wizard-stepnav-item-border-color--active;
+        transition: border-color 0.2s ease-in;
+
+        .clr-wizard-stepnav-link-icon cds-icon {
+          --color: #{wizard-variables.$clr-wizard-stepnav-link-complete-icon-color};
+        }
+      }
+
+      &.error {
+        border-color: wizard-variables.$clr-wizard-stepnav-item-error-border-color;
+        transition: border-color 0.2s ease-in;
+
+        &.active:not(:active):not(:hover) {
+          background-color: wizard-variables.$clr-wizard-stepnav-selected-error-bgcolor;
+        }
+
+        .clr-wizard-stepnav-link-icon cds-icon {
+          --color: #{wizard-variables.$clr-wizard-stepnav-link-error-icon-color};
+        }
+      }
+
+      &.no-click button {
+        pointer-events: none;
+      }
+    }
+
+    .clr-wizard-stepnav-link {
+      width: 100%;
+      display: flex;
+      place-content: normal;
+      color: inherit;
+      align-items: center;
+      text-align: left;
+      text-transform: none;
+      margin: 0;
+      gap: density.$clr-base-gap-s;
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-m;
+      height: auto;
+      max-width: inherit;
+
+      @include mixins.generate-typography-token('BODY-14-MD-STD');
+
+      .clr-wizard-stepnav-link-icon {
+        display: flex; // this vertically centers the icon
+      }
+
+      .clr-wizard-stepnav-link-icon,
+      .clr-wizard-stepnav-link-page-number {
+        min-width: density.$clr-base-icon-size-s;
+      }
+
+      .clr-wizard-stepnav-link-page-number {
+        text-align: center;
+      }
+    }
+
+    .clr-wizard-title {
+      margin-top: 0;
+      flex: 0 0 auto;
+      color: wizard-variables.$clr-wizard-title-text;
+      padding: wizard-variables.$clr-wizard-vertical-space wizard-variables.$clr-wizard-horizontal-space;
+      @include mixins.generate-typography-token('SECTION-20-STD');
+    }
+
+    // normal modal ignores this. wizard needs it so the nav and content
+    // will take up the full height of the modal...
+    .modal-content-wrapper {
+      display: flex;
+      flex-direction: row;
+      flex: 1 1 100%;
+      @include mixins.equilateral(100%);
+      // firefox fix
+      max-height: 100%;
+
+      // edge fix, related to the firefox fix above
+      .modal-nav {
+        height: auto;
+      }
+    }
+
+    .clr-wizard-footer-buttons {
+      text-align: right;
+      margin: 0;
+    }
+
+    .clr-wizard-footer-buttons-wrapper {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-end;
+      gap: density.$clr-base-gap-l;
+    }
+
+    .clr-wizard-btn-wrapper {
+      flex: 0 1 auto;
+    }
+
+    .clr-wizard-btn-wrapper[aria-hidden='true'] {
+      display: none;
+    }
+
+    .clr-wizard-btn.btn-link {
+      // extra padding around flat buttons in wizard is not necessary
+      padding: 0;
+    }
+
+    .clr-wizard-content {
+      display: block;
+    }
+
+    .clr-wizard-page:not([aria-hidden='true']) {
+      display: block;
+    }
+  }
+
+  .clr-wizard {
+    // sizing stuff is here
+    .modal-dialog {
+      height: 75vh;
+    }
+
+    .modal-body-wrapper {
+      // overriding forced style on .modal
+      max-height: 100%;
+      display: flex;
+      flex-grow: 1;
+      width: 100%;
+    }
+
+    &.wizard-md {
+      .modal-dialog {
+        min-height: wizard-variables.$clr-wizard-all-dialog-min-height;
+        max-height: wizard-variables.$clr-wizard-md-dialog-max-height;
+      }
+
+      .modal-content,
+      .clr-wizard-stepnav-wrapper {
+        max-height: wizard-variables.$clr-wizard-md-dialog-max-height;
+      }
+
+      .clr-wizard-stepnav-wrapper {
+        min-width: wizard-variables.$clr-wizard-md-nav-min-width;
+        max-width: wizard-variables.$clr-wizard-md-nav-max-width;
+      }
+    }
+
+    &.wizard-lg {
+      .modal-dialog {
+        min-height: wizard-variables.$clr-wizard-all-dialog-min-height;
+        max-height: wizard-variables.$clr-wizard-lg-dialog-max-height;
+      }
+
+      .modal-content,
+      .clr-wizard-stepnav-wrapper {
+        max-height: wizard-variables.$clr-wizard-lg-dialog-max-height;
+      }
+
+      .nav-panel,
+      .clr-wizard-stepnav-wrapper {
+        min-width: wizard-variables.$clr-wizard-lg-nav-min-width;
+        max-width: wizard-variables.$clr-wizard-lg-nav-max-width;
+      }
+    }
+
+    &.wizard-xl {
+      .modal-dialog {
+        height: wizard-variables.$clr-wizard-xl-dialog-max-height;
+        max-height: none;
+      }
+
+      .nav-panel,
+      .clr-wizard-stepnav-wrapper {
+        min-width: wizard-variables.$clr-wizard-xl-nav-min-width;
+        max-width: wizard-variables.$clr-wizard-xl-nav-max-width;
+      }
+    }
+
+    .spinner:not(.spinner-inline):not(.clr-treenode-spinner) {
+      left: calc(50% + #{mixins.baselinePx(115)});
+      position: absolute;
+      top: 40%;
+    }
+  }
+
+  .clr-wizard-page {
+    & > *:first-child {
+      margin-top: 0;
+
+      & > *:first-child {
+        margin-top: 0;
+      }
+    }
+
+    & > form:first-child {
+      padding-top: 0;
+
+      & > .form-block:first-child {
+        margin-top: 0;
+      }
+    }
+  }
+
+  // Inline wizards are used by vSphere plugins to display a wizard inside an iframe that is inside a modal.
+  .clr-wizard--inline {
+    display: block;
+    width: 100%;
+    // you will want to set a fixed width and height for these static wizards
+    // otherwise, you'll get some minor jumping along the right edge when it is
+    // closed...
+
+    & > clr-modal > .modal:focus {
+      // need to remove the outline style or trap-focus directive will make
+      // outline appear in Safari and Microsoft browsers
+      outline-style: none;
+      outline-color: transparent;
+    }
+
+    clr-modal {
+      @include mixins.equilateral(100%);
+      display: block;
+    }
+
+    .modal {
+      padding: 0;
+      position: static;
+      height: 100%;
+      max-height: 100%;
+
+      .content-container {
+        height: 100%;
+
+        .nav-panel {
+          @include mixins.equilateral(99%);
+        }
+      }
+
+      .modal-content {
+        box-shadow: none;
+      }
+
+      .modal-dialog {
+        min-height: 100%;
+        @include mixins.equilateral(100%);
+        z-index: auto;
+      }
+    }
+
+    .modal-body-wrapper {
+      height: 100%;
+    }
+
+    .modal-header .close {
+      display: none;
+    }
+
+    .nav.navList {
+      padding-top: 0;
+    }
+
+    .modal-dialog .modal-content .modal-body .content-area {
+      overflow-y: auto;
+    }
+
+    .modal-backdrop {
+      @include mixins.equilateral(0);
+      display: none;
+    }
+
+    .modal-content-wrapper {
+      align-items: stretch;
+      height: 100%;
+    }
+
+    .clr-wizard-stepnav-wrapper,
+    &.clr-wizard .modal-content {
+      min-height: 100%;
+      height: auto;
+      max-height: 100%;
+
+      .clr-wizard-stepnav {
+        height: 100%;
+      }
+    }
+  }
+
+  .clr-wizard--no-shadow {
+    .modal-content-wrapper,
+    .modal-dialog {
+      box-shadow: none;
+    }
+  }
+
+  .clr-wizard--no-title {
+    .clr-wizard-title {
+      display: none;
+    }
+
+    .clr-wizard-stepnav {
+      padding-top: density.$clr-base-vertical-offset-2xl;
+    }
+  }
+
+  .wizard-in-page {
+    // extra specificity is needed here to override the following default style without using !important:
+    // .main-container .content-container .content-area > :first-child { margin-top: 0px; }
+    @at-root .main-container .content-container .content-area &.wizard-in-page--fill-content-area {
+      display: block;
+      height: calc(100% + #{variables.$clr-content-area-padding-top} + #{variables.$clr-content-area-padding-bottom});
+
+      // offset content area padding
+      margin: -#{variables.$clr-content-area-padding-top} -#{variables.$clr-content-area-padding-right} -#{variables.$clr-content-area-padding-bottom} -#{variables.$clr-content-area-padding-left};
+    }
+
+    .clr-wizard-footer-buttons-wrapper {
+      justify-content: flex-start;
+    }
+  }
+
+  @media screen {
+    .clr-wizard-page[aria-hidden='true'] {
+      display: none;
+    }
+  }
+}
+
+@include mixins.fixForMsEdge {
+  // Edge is pushing header actions down. This aligns them with the close btn.
+  .clr-wizard .clr-wizard-header-action {
+    margin-top: mixins.baselinePx(-3);
+  }
+}

@@ -1,0 +1,119 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../../utils/a11y';
+@use '../../utils/mixins';
+@use '../variables.accordion' as accordion-variables;
+@use '../../utils/variables/variables.density' as density;
+@include meta.load-css('../properties.accordion');
+
+@include mixins.exports('stepper.clarity') {
+  .clr-stepper-forms {
+    .clr-stepper-header > .clr-accordion-header-button {
+      align-items: center;
+      gap: density.$clr-base-gap-l;
+      min-height: density.$clr-base-dg-row-height;
+      padding: #{density.$clr-base-vertical-offset-xl} #{density.$clr-base-horizontal-offset-xl} #{density.$clr-base-vertical-offset-xl}
+        #{density.$clr-base-horizontal-offset-2xl};
+
+      > .clr-step-status {
+        display: inline-flex;
+        gap: density.$clr-base-gap-m;
+        align-items: center;
+
+        > .clr-step-status-icon {
+          @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+
+          > .clr-step-error-icon,
+          > .clr-step-complete-icon {
+            @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+            padding: 0;
+          }
+
+          > .clr-step-error-icon {
+            color: accordion-variables.$clr-accordion-error-color;
+          }
+
+          > .clr-step-complete-icon {
+            color: accordion-variables.$clr-accordion-complete-color;
+          }
+        }
+      }
+
+      > .clr-step-title-wrapper {
+        min-width: accordion-variables.$clr-accordion-step-title-min-width;
+        max-width: calc(264 * (1rem / var(--cds-global-base)));
+        width: 100%;
+        display: inline-flex;
+        gap: density.$clr-base-gap-xs;
+        align-items: center;
+
+        @include mixins.generate-typography-token('BODY-14-SB-EXP');
+
+        > .clr-step-number {
+          min-width: density.$clr-base-layout-space-l;
+        }
+
+        > .clr-accordion-title {
+          min-width: initial;
+          max-width: initial;
+          width: initial;
+          margin-left: 0;
+        }
+      }
+
+      > .clr-accordion-description,
+      > .clr-step-description {
+        margin-left: 0;
+        @include mixins.generate-typography-token('BODY-14-RG-EXP');
+      }
+
+      @media (max-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+        gap: density.$clr-base-gap-xs;
+
+        > .clr-step-status {
+          min-width: initial;
+          width: initial;
+        }
+
+        > .clr-step-title-wrapper {
+          width: initial;
+
+          > .clr-step-number {
+            min-width: initial;
+          }
+        }
+
+        > .clr-accordion-description,
+        > .clr-step-description {
+          margin-left: 0;
+        }
+      }
+    }
+
+    .clr-accordion-panel-inactive:not(.clr-accordion-panel-open) > .clr-stepper-header .clr-step-angle {
+      visibility: hidden;
+
+      @media (max-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+        display: none;
+      }
+    }
+
+    .clr-step-button {
+      margin-top: density.$clr-base-gap-l;
+      margin-right: density.$clr-base-gap-m;
+      margin-bottom: 0;
+    }
+  }
+
+  clr-stepper-panel .clr-accordion-inner-content {
+    padding: #{density.$clr-base-vertical-offset-2xl} #{density.$clr-base-layout-space-xl};
+    clr-step-content > :first-child {
+      margin-top: 0;
+    }
+  }
+}

@@ -1,0 +1,298 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../utils/a11y';
+@use '../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+@use 'variables.accordion' as accordion-variables;
+@use '../utils/variables/variables.density' as density;
+@include meta.load-css('properties.accordion');
+
+@include mixins.exports('accordion.clarity') {
+  .clr-accordion {
+    display: block;
+    margin-bottom: density.$clr-base-vertical-offset-xl;
+  }
+
+  .clr-accordion-panel {
+    display: block;
+  }
+
+  .clr-accordion-header {
+    color: accordion-variables.$clr-accordion-text-color;
+    box-shadow: accordion-variables.$clr-accordion-header-left-indicator;
+    background: accordion-variables.$clr-accordion-header-background-color;
+    transition: all 200ms ease-in-out;
+    border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
+    border-bottom-width: 0;
+    width: 100%;
+    @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
+
+    text-align: left;
+
+    &:hover {
+      color: accordion-variables.$clr-accordion-text-color-hover;
+      background-color: accordion-variables.$clr-accordion-header-hover-background-color;
+    }
+
+    &:active {
+      color: accordion-variables.$clr-accordion-text-color-active;
+      background-color: accordion-variables.$clr-accordion-header-active-background-color;
+    }
+
+    .clr-accordion-panel-disabled > div > & {
+      background-color: accordion-variables.$clr-accordion-header-background-color;
+
+      &:hover,
+      &:active {
+        background-color: accordion-variables.$clr-accordion-header-background-color;
+      }
+    }
+
+    .clr-accordion-panel-disabled > .clr-accordion-panel-open > & {
+      background-color: accordion-variables.$clr-accordion-header-disabled-background-color;
+
+      &:hover,
+      &:active {
+        background-color: accordion-variables.$clr-accordion-header-disabled-background-color;
+      }
+    }
+  }
+
+  .clr-accordion-panel:last-child {
+    .clr-accordion-content,
+    .clr-accordion-header {
+      border-bottom: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
+    }
+  }
+
+  .clr-accordion-header-button {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 1 0;
+    width: 100%;
+    border: 0;
+    padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    color: inherit;
+    gap: density.$clr-base-gap-s;
+    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+      flex-flow: row;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+
+      .clr-accordion-status,
+      .clr-accordion-title,
+      .clr-accordion-description {
+        color: accordion-variables.$clr-accordion-panel-disabled-color;
+      }
+    }
+  }
+
+  .clr-accordion-status {
+    width: density.$clr-base-layout-space-xl;
+    display: inline-flex;
+    vertical-align: top;
+  }
+
+  .clr-accordion-title {
+    display: inline-block;
+  }
+
+  .clr-accordion-header-has-description {
+    .clr-accordion-title {
+      min-width: accordion-variables.$clr-accordion-step-title-min-width;
+      max-width: mixins.baselinePx(264);
+      width: 100%;
+    }
+  }
+
+  .clr-accordion-description {
+    display: inline-block;
+    max-width: mixins.baselinePx(650);
+
+    @media (min-width: accordion-variables.$clr-accordion-responsive-breakpoint) {
+      margin-left: density.$clr-base-horizontal-offset-l;
+    }
+  }
+
+  .clr-accordion-content {
+    background: accordion-variables.$clr-accordion-content-background-color;
+    border: tokens.$cds-global-space-1 solid accordion-variables.$clr-accordion-border-color;
+    border-bottom: 0;
+    overflow: hidden;
+    display: none;
+
+    .clr-form {
+      padding: 0;
+    }
+  }
+
+  .clr-accordion-inner-content {
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
+  }
+
+  .clr-accordion-angle {
+    transition: all 200ms ease-in-out;
+    transform: rotate(90deg);
+  }
+
+  // panel states
+  .clr-accordion-panel-open {
+    > .clr-accordion-header {
+      box-shadow: accordion-variables.$clr-accordion-header-left-current-indicator;
+    }
+    .clr-accordion-panel-complete > .clr-accordion-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
+    }
+    .clr-accordion-panel-error > .clr-accordion-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
+    }
+
+    & > .clr-accordion-content-region .clr-accordion-content {
+      display: block;
+    }
+
+    & > .clr-accordion-header {
+      background: accordion-variables.$clr-accordion-header-open-background-color;
+
+      &:hover {
+        background-color: accordion-variables.$clr-accordion-header-open-hover-background-color;
+      }
+      &:active {
+        color: accordion-variables.$clr-accordion-text-color-active;
+        background-color: accordion-variables.$clr-accordion-header-open-active-background-color;
+      }
+
+      .clr-accordion-angle {
+        visibility: visible;
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .clr-accordion-panel-complete {
+    & > .clr-accordion-complete-icon {
+      display: inline-block;
+      color: accordion-variables.$clr-accordion-complete-color;
+    }
+
+    & > .clr-accordion-angle {
+      visibility: visible;
+    }
+
+    & > .clr-accordion-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-complete;
+    }
+
+    .ng-trigger.clr-accordion-content {
+      display: block;
+    }
+  }
+
+  .clr-accordion-panel-error {
+    & > .clr-accordion-header {
+      box-shadow: inset tokens.$cds-global-space-5 0 0 accordion-variables.$clr-accordion-border-left-color-error;
+    }
+
+    & > .clr-accordion-error-icon {
+      display: inline-block;
+      color: accordion-variables.$clr-accordion-error-color;
+    }
+  }
+
+  .clr-accordion-panel-error .clr-accordion-number,
+  .clr-accordion-panel-complete .clr-accordion-number {
+    @include a11y.screen-reader-only();
+  }
+
+  // temporary overrides to match stackview until stepper, accordion and stackview are aligned
+  // https://github.com/vmware/clarity/issues/3471
+  .clr-accordion:not(.clr-stepper-forms) {
+    .clr-accordion-header:not(.clr-stepper-header) {
+      box-shadow: none;
+    }
+
+    //Add borders to panel
+    .clr-accordion-panel .clr-accordion-header:not(.clr-stepper-header) {
+      border-radius: accordion-variables.$clr-accordion-border-radius;
+
+      // add borders to content
+      & + .clr-accordion-content-region > .clr-accordion-content {
+        border-bottom-left-radius: accordion-variables.$clr-accordion-border-radius;
+        border-bottom-right-radius: accordion-variables.$clr-accordion-border-radius;
+      }
+    }
+
+    // Remove borders from Middle panel
+    .clr-accordion-panel
+      + .clr-accordion-panel
+      > div[class*='clr-accordion-panel-']
+      > .clr-accordion-header:not(.clr-stepper-header) {
+      border-top-left-radius: unset;
+      border-top-right-radius: unset;
+    }
+
+    // if not last panel - note: last-child not quite working on classes
+    .clr-accordion-panel:not(:last-child)
+      > div[class*='clr-accordion-panel-']
+      > .clr-accordion-header:not(.clr-stepper-header) {
+      &,
+      & + .clr-accordion-content-region > .clr-accordion-content {
+        // if not last content element
+        border-bottom: none;
+        border-bottom-left-radius: unset;
+        border-bottom-right-radius: unset;
+      }
+    }
+
+    .clr-accordion-header-button {
+      align-items: center;
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
+    }
+
+    .clr-accordion-inner-content {
+      padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l
+        density.$clr-base-vertical-offset-m
+        calc(
+          density.$clr-base-horizontal-offset-l + density.$clr-base-icon-size-s + density.$clr-base-horizontal-offset-m
+        );
+      color: accordion-variables.$clr-accordion-content-color;
+      @include mixins.generate-typography-token(
+        'SECONDARY-13-RG-STD',
+        (
+          font-size: accordion-variables.$clr-accordion-content-font-size,
+        )
+      );
+    }
+
+    .clr-accordion-panel-disabled .clr-accordion-inner-content {
+      color: accordion-variables.$clr-accordion-panel-disabled-color;
+      cursor: not-allowed;
+    }
+
+    .clr-accordion-status {
+      width: auto;
+
+      cds-icon:not([size]),
+      clr-icon {
+        @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+      }
+    }
+  }
+
+  // override the border bottom style when last panel is open
+  .clr-accordion-panel-open > .clr-accordion-header {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-bottom: 0 !important;
+  }
+}

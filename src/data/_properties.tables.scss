@@ -1,0 +1,64 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../utils/mixins';
+@use '../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('table.properties') {
+  @include mixins.root-or-host() {
+    --clr-table-borderwidth: #{tokens.$cds-alias-object-border-width-100};
+    --clr-table-noborder-borderwidth: #{tokens.$cds-global-space-0};
+
+    // @deprecated ALL compact properties in favor of compact mode in density theme
+    --clr-table-compact-cell-height: #{tokens.$cds-global-space-9};
+    --clr-table-compact-row-height: calc(var(--clr-table-compact-cell-height) + var(--clr-table-borderwidth));
+    --clr-table-compact-vertical-padding: #{tokens.$cds-global-space-3};
+    --clr-table-compact-horizontal-padding: #{tokens.$cds-global-space-6};
+    --clr-table-cell-compact-padding: var(--clr-table-compact-vertical-padding)
+      var(--clr-table-compact-horizontal-padding);
+
+    &,
+    [clr-density] {
+      --clr-table-border-radius: #{density.$clr-base-border-radius-s};
+      --clr-table-cornercellradius: #{density.$clr-base-border-radius-s};
+      --clr-table-cell-horizontal-padding: #{density.$clr-base-horizontal-offset-xl};
+      --clr-table-cell-vertical-padding: #{density.$clr-base-vertical-offset-multi-row-inline-m};
+      --clr-table-cell-padding: var(--clr-table-cell-vertical-padding) var(--clr-table-cell-horizontal-padding);
+
+      --clr-table-margin: #{density.$clr-base-vertical-offset-2xl} 0 0 0;
+
+      --clr-table-fontsize: #{tokens.$cds-alias-typography-secondary-font-size};
+
+      --clr-table-cell-height: #{density.$clr-base-dg-row-height};
+      --clr-table-row-height: calc(var(--clr-table-cell-height) + var(--clr-table-borderwidth));
+    }
+
+    &,
+    [cds-theme] {
+      // Theme variables
+      // Usage: ./data/_tables.clarity.scss
+      // Usage: ./data/datagrid/_datagrid.clarity.scss
+      --clr-table-bgcolor: #{tokens.$cds-alias-object-container-background};
+      --clr-thead-bgcolor: #{tokens.$cds-alias-object-container-background-tint};
+
+      // Usage: ./data/datagrid/_datagrid.clarity.scss
+      --clr-table-header-border-bottom-color: #{tokens.$cds-alias-object-border-color};
+      --clr-table-footer-border-top-color: #{tokens.$cds-alias-object-border-color};
+      --clr-table-border-color: #{tokens.$cds-alias-object-border-color};
+
+      // Usage: ./data/_tables.clarity.scss
+      --clr-tablerow-bordercolor: #{tokens.$cds-alias-object-border-color};
+
+      // Usage: ./data/_tables.clarity.scss
+      // Usage: ./data/datagrid/_datagrid.clarity.scss
+      --clr-table-font-color: #{tokens.$cds-alias-typography-color-400};
+
+      // Table header styles
+      --clr-thead-color: #{tokens.$cds-alias-typography-color-400};
+    }
+  }
+}

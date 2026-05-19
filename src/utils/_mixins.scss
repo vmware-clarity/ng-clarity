@@ -1,0 +1,499 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:selector';
+@use 'sass:string';
+@use 'variables/variables';
+@use '../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+//Credit: Zurb Foundation for Apps https://github.com/zurb/foundation-apps/blob/master/scss/helpers/_functions.scss
+//Keep track of modules that have been imported, so we don't import more than once
+$imported-modules: () !default;
+@mixin exports($name) {
+  //check if they have been imported
+  @if (not list.index($imported-modules, $name)) {
+    $imported-modules: list.append($imported-modules, $name) !global;
+    @content;
+  }
+}
+
+//TODO: Should these mixins be moved into their own separate file?
+//Outline Styles
+$clr-outline-color: hsl(197, 68%, 65%) !default;
+$clr-outline-color-inverse: hsla(0, 0%, 100%, 0.09) !default;
+$clr-outline-blur: variables.$clr_baselineRem_2px;
+$clr-outline-spread: variables.$clr_baselineRem_2px;
+
+@mixin include-outline-style-form-fields($offset: tokens.$cds-alias-object-interaction-outline-offset) {
+  outline: tokens.$cds-alias-object-interaction-outline;
+  outline-color: -webkit-focus-ring-color;
+  outline-offset: $offset;
+}
+
+@mixin include-slim-outline-style-form-fields($width: tokens.$cds-global-space-2) {
+  outline-color: Highlight;
+  outline-color: -webkit-focus-ring-color;
+  outline-style: auto;
+  outline-width: $width;
+}
+
+@mixin include-outline-style-links() {
+  outline: 0;
+  text-decoration: underline;
+}
+
+@mixin include-outline-style-header-links($outline-color: $clr-outline-color-inverse) {
+  background: $outline-color;
+  outline: 0;
+  text-decoration: none;
+}
+@mixin overflow-ellipsis($leftAlignment: false) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @if $leftAlignment == true {
+    text-align: left;
+    justify-content: start;
+  }
+}
+
+@mixin off-screen-styles() {
+  position: fixed !important;
+  border: none !important;
+  height: 1px !important;
+  width: 1px !important;
+
+  left: 0 !important;
+  top: variables.$clr_baselineRem_-1px !important;
+
+  overflow: hidden !important;
+  visibility: hidden !important;
+
+  padding: 0 !important;
+  margin: 0 0 variables.$clr_baselineRem_-1px 0 !important;
+}
+
+@mixin focus-within() {
+  &:focus-within,
+  &.focus-within {
+    outline: variables.$clr_baselineRem_2px solid Highlight;
+  }
+
+  @media (-webkit-min-device-pixel-ratio: 0) {
+    &:focus-within,
+    &.focus-within {
+      outline: variables.$clr_baselineRem_5px auto -webkit-focus-ring-color;
+    }
+  }
+}
+
+@mixin equilateral($size: 1.2rem) {
+  height: $size;
+  width: $size;
+}
+
+@mixin min-equilateral($size: 1.2rem) {
+  @include equilateral($size);
+  min-height: $size;
+  min-width: $size;
+}
+
+@mixin max-equilateral($size: 1.2rem) {
+  @include equilateral($size);
+  max-height: $size;
+  max-width: $size;
+}
+
+@mixin clr-appearance-normal() {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+}
+
+@mixin clr-no-styles-button {
+  @include clr-appearance-normal();
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+
+  @at-root button#{&} {
+    cursor: pointer;
+  }
+}
+
+//Dropdowns & Tooltips
+$opp-directions: (
+  top: bottom,
+  bottom: top,
+  left: right,
+  right: left,
+);
+
+@mixin clr-container() {
+  & > :first-child {
+    margin-top: 0;
+  }
+
+  & > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+@mixin fixForFirefox() {
+  @-moz-document url-prefix() {
+    @content;
+  }
+}
+
+@mixin fixForMsEdge() {
+  @supports (-ms-ime-align: auto) {
+    @content;
+  }
+}
+
+@mixin fixForIE10AndUp() {
+  _:-ms-input-placeholder,
+  :root {
+    @content;
+  }
+}
+
+@mixin fixForIE11AndUp() {
+  _:-ms-fullscreen,
+  :root {
+    @content;
+  }
+}
+
+// Moves styles outside of any parent selector conditionally,
+// while allowing an additional selector to be appended.
+@mixin optional-at-root($selector) {
+  // Check if parent selector exists
+  @if & {
+    // Append the additional selector to the parent selector
+    @at-root #{selector.append(&, $selector)} {
+      @content;
+    }
+  } @else {
+    // Use the parent selector with the additional selector
+    @at-root #{$selector} {
+      @content;
+    }
+  }
+}
+
+// Declaring CSS in :root or :host depending which is available
+// Enabling tokens to work under Global DOM or Shadow DOM
+@mixin root-or-host() {
+  :where(:root, :host) {
+    @content;
+  }
+}
+
+// @TODO experimental functions to improve property declaration
+// @mixin self-and($descendant) {
+//   @if & {
+//     // & , & <descendant>
+//     @at-root #{&}, #{&} #{string.unquote($descendant)} {
+//       @content;
+//     }
+//   } @else {
+//     // :where(:root,:host) , :where(:root,:host) <descendant>
+//     :where(:root,:host), :where(:root,:host) #{string.unquote($descendant)} {
+//       @content;
+//     }
+//   }
+// }
+
+// @mixin set-properties($component, $properties, $descendant: '') {
+//   @include self-and($descendant) {
+//     @each $name, $value in $properties {
+//       --clr-#{$component}-#{$name}: #{$value};
+//     }
+//   }
+// }
+
+@mixin input-placeholder-wrapper() {
+  /* _normalize overwrite */
+  @include optional-at-root('::-webkit-input-placeholder') {
+    @content;
+  }
+  /* Internet Explorer 10-11 */
+  @include optional-at-root(':-ms-input-placeholder') {
+    @content;
+  }
+  /* Microsoft Edge */
+  @include optional-at-root('::-ms-input-placeholder') {
+    @content;
+  }
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  @include optional-at-root('::placeholder') {
+    @content;
+  }
+}
+
+@function baselinePx($pixels: 0) {
+  @return calc($pixels * (1rem / #{tokens.$cds-global-base}));
+}
+
+$typography-tokens: (
+  'DISPLAY-40': (
+    // H1, Login Header
+    font-size: #{density.$clr-base-typography-font-size-display},
+    font-weight: #{tokens.$cds-alias-typography-display-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-44},
+    letter-spacing: #{baselinePx(-0.5)},
+  ),
+  'HEADLINE-32': (
+    // H2, Page Header
+    font-size: #{density.$clr-base-typography-font-size-headline},
+    font-weight: #{tokens.$cds-alias-typography-headline-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-36},
+    letter-spacing: #{baselinePx(-0.4)},
+  ),
+  'TITLE-24-EXP': (
+    // H3, Modal, Wizard Heading
+    font-size: #{density.$clr-base-typography-font-size-heading},
+    font-weight: #{tokens.$cds-alias-typography-title-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-32},
+    letter-spacing: #{baselinePx(-0.2)},
+  ),
+  'SECTION-20-STD': (
+    // H4, Card, Signpost Heading, Wizard Sidenav Title
+    font-size: #{density.$clr-base-typography-font-size-section},
+    font-weight: #{tokens.$cds-alias-typography-section-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-24},
+    letter-spacing: #{baselinePx(-0.2)},
+  ),
+  'SECTION-12-SB-CPT': (
+    font-size: #{density.$clr-base-typography-font-size-button},
+    font-weight: #{tokens.$cds-global-typography-font-weight-semibold},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(-0.2)},
+  ),
+  'SUBSECTION-16-EXP': (
+    // H5, Stack View Heading
+    font-size: #{density.$clr-base-typography-font-size-sub-section},
+    font-weight: #{tokens.$cds-alias-typography-subsection-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-24},
+    letter-spacing: #{baselinePx(-0.2)},
+  ),
+  'SUBSECTION-16-SB': (
+    font-size: #{density.$clr-base-typography-font-size-sub-section},
+    font-weight: #{tokens.$cds-global-typography-font-weight-semibold},
+    line-height: #{density.$clr-base-typography-line-height-24},
+    letter-spacing: #{baselinePx(-0.2)},
+  ),
+  'MESSAGE-16-EXP': (
+    // H6, Heading
+    font-size: #{density.$clr-base-typography-font-size-sub-section},
+    font-weight: #{tokens.$cds-alias-typography-message-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-24},
+    letter-spacing: #{baselinePx(-0.2)},
+  ),
+  'BODY-14-SB-STD': (
+    // Not used yet
+    font-size: #{density.$clr-base-typography-font-size-default},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    line-height: #{density.$clr-base-typography-line-height-20},
+    letter-spacing: #{baselinePx(-0.1)},
+  ),
+  'BODY-14-MD-STD': (
+    // Wizard sidenav link
+    font-size: #{density.$clr-base-typography-font-size-default},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-medium},
+    line-height: #{density.$clr-base-typography-line-height-20},
+    letter-spacing: #{baselinePx(-0.1)},
+  ),
+  'BODY-14-RG-STD': (
+    // P0, P1, Body text
+    font-size: #{density.$clr-base-typography-font-size-default},
+    font-weight: #{tokens.$cds-alias-typography-body-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-20},
+    letter-spacing: #{baselinePx(-0.1)},
+  ),
+  'BODY-14-RG-CPT': (
+    font-size: #{density.$clr-base-typography-font-size-default},
+    font-weight: #{tokens.$cds-alias-typography-body-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(-0.1)},
+  ),
+  'BODY-14-RG-EXP': (
+    font-size: #{density.$clr-base-typography-font-size-default},
+    font-weight: #{tokens.$cds-alias-typography-body-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-24},
+    letter-spacing: #{baselinePx(-0.1)},
+  ),
+  'BODY-14-SB-EXP': (
+    font-size: #{density.$clr-base-typography-font-size-default},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    line-height: #{density.$clr-base-typography-line-height-24},
+    letter-spacing: #{baselinePx(-0.1)},
+  ),
+  'SECONDARY-14-RG-CPT': (
+    font-size: #{density.$clr-base-typography-font-size-default},
+    font-weight: #{tokens.$cds-global-typography-secondary-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(-0.1)},
+  ),
+  'SECONDARY-13-MD-EXP': (
+    // P2, Section Header
+    font-size: #{density.$clr-base-typography-font-size-inline},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-medium},
+    line-height: #{density.$clr-base-typography-line-height-24},
+    letter-spacing: #{baselinePx(-0.1)},
+  ),
+  'SECONDARY-13-RG-CPT': (
+    // Checkbox and radio labels, Spinner
+    font-size: #{density.$clr-base-typography-font-size-inline},
+    font-weight: #{tokens.$cds-alias-typography-secondary-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(-0.1)},
+  ),
+  'SECONDARY-13-RG-EXP': (
+    // P3, Form Labels and Column Headers
+    // P5, Table footer and chart data
+    font-size: #{density.$clr-base-typography-font-size-inline},
+    font-weight: #{tokens.$cds-alias-typography-secondary-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-24},
+    letter-spacing: #{baselinePx(-0.1)},
+  ),
+  'SECONDARY-13-RG-STD': (
+    font-size: #{density.$clr-base-typography-font-size-inline},
+    font-weight: #{tokens.$cds-alias-typography-secondary-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-20},
+    letter-spacing: #{baselinePx(-0.1)},
+  ),
+  'SECONDARY-13-SB-STD': (
+    // P4, Form Labels and Column Headers
+    font-size: #{density.$clr-base-typography-font-size-inline},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    line-height: #{density.$clr-base-typography-line-height-20},
+    letter-spacing: #{baselinePx(-0.1)},
+  ),
+  'SECONDARY-13-MD-CPT': (
+    font-size: #{density.$clr-base-typography-font-size-inline},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-medium},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(-0.1)},
+  ),
+  'SECONDARY-13-SB-CPT': (
+    font-size: #{density.$clr-base-typography-font-size-inline},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(-0.1)},
+  ),
+  'CAPTION-LG-11-STD': (
+    // P6, Small Headers
+    font-size: #{density.$clr-base-typography-font-size-caption},
+    font-weight: #{tokens.$cds-alias-typography-caption-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(0.2)},
+  ),
+  'CAPTION-LG-11-CPT': (
+    // Badges, Tag and Labels
+    font-size: #{density.$clr-base-typography-font-size-caption},
+    font-weight: #{tokens.$cds-alias-typography-caption-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-12},
+    letter-spacing: #{baselinePx(0.2)},
+  ),
+  'ColumnHeader-11-SB-CPT': (
+    font-size: #{density.$clr-base-typography-font-size-caption},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(0.2)},
+  ),
+  'CAPTION-SM-10': (
+    // P7, P8
+    font-size: #{density.$clr-base-typography-font-size-caption-small},
+    font-weight: #{tokens.$cds-alias-typography-smallcaption-font-weight},
+    line-height: #{density.$clr-base-typography-line-height-12},
+    letter-spacing: #{baselinePx(0.5)},
+  ),
+  'BUTTON-12': (
+    // Buttons
+    font-size: #{density.$clr-base-typography-font-size-button},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{tokens.$cds-global-space-1},
+    text-transform: uppercase,
+  ),
+  'BUTTON-11-SMALL': (
+    // Small Buttons
+    font-size: #{density.$clr-base-typography-font-size-caption},
+    font-weight: #{tokens.$cds-alias-typography-font-weight-semibold},
+    line-height: #{density.$clr-base-typography-line-height-16},
+    letter-spacing: #{baselinePx(0.2)},
+    text-transform: uppercase,
+  ),
+);
+
+@mixin setValue($key, $map: (), $value) {
+  @if (map.has-key($map, $key)) {
+    #{$key}: map.get($map, $key);
+  } @else {
+    #{$key}: $value;
+  }
+}
+
+@mixin generate-typography-header-token($name, $fallbacks: (), $addFontFamily: true, $addColor: true) {
+  @if ($addFontFamily) {
+    @include setValue(
+      font-family,
+      $fallbacks,
+      variables.$clr-font
+    ); // tokens.$cds-alias-typography-header-font-family);
+  }
+
+  @if ($addColor) {
+    @include setValue(color, $fallbacks, tokens.$cds-alias-typography-color-300);
+  }
+
+  @include generate-typography-token($name, $fallbacks);
+}
+
+@mixin generate-typography-body-token($name, $fallbacks: (), $addFontFamily: true, $addColor: true) {
+  @if ($addFontFamily) {
+    @include setValue(font-family, $fallbacks, variables.$clr-font); // tokens.$cds-alias-typography-font-family);
+  }
+
+  @if ($addColor) {
+    @include setValue(color, $fallbacks, tokens.$cds-alias-typography-color-450);
+  }
+
+  @include generate-typography-token($name, $fallbacks);
+}
+
+@mixin generate-typography-token($name, $fallbacks: ()) {
+  @each $key, $value in map.get($typography-tokens, $name) {
+    @include setValue($key, $fallbacks, $value);
+  }
+}
+
+@mixin cell-children-aligment() {
+  clr-icon {
+    margin-top: calc((-1 * tokens.$cds-global-space-3) - tokens.$cds-global-space-1);
+    margin-bottom: calc(-1 * tokens.$cds-global-space-3);
+    transform: translateY(calc(-1 * tokens.$cds-global-space-1));
+  }
+
+  cds-icon {
+    margin-top: calc((-1 * tokens.$cds-global-space-3) - tokens.$cds-global-space-1);
+    margin-bottom: calc(-1 * tokens.$cds-global-space-3);
+  }
+
+  .badge {
+    margin-top: calc(-1 * tokens.$cds-global-space-3);
+    margin-bottom: calc(-1 * tokens.$cds-global-space-1);
+  }
+}

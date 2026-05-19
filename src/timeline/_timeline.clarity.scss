@@ -1,0 +1,168 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../utils/mixins';
+@use 'variables.timeline' as timeline-variables;
+@use '../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+@include meta.load-css('properties.timeline');
+
+@include mixins.exports('timeline.clarity') {
+  .clr-timeline {
+    display: flex;
+    padding: timeline-variables.$clr-timeline-step-internal-spacing;
+  }
+
+  .clr-timeline-step {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: mixins.baselinePx(175);
+    gap: timeline-variables.$clr-timeline-step-internal-spacing;
+
+    > cds-icon:not([size]),
+    > clr-icon {
+      @include mixins.min-equilateral(timeline-variables.$clr-timeline-icon-size);
+    }
+
+    > cds-icon[shape='circle'],
+    > clr-icon[shape='circle'] {
+      color: timeline-variables.$clr-timeline-incomplete-step-color;
+    }
+
+    > cds-icon[shape='dot-circle'],
+    > clr-icon[shape='dot-circle'] {
+      color: timeline-variables.$clr-timeline-current-step-color;
+    }
+
+    > cds-icon[shape='success-standard'],
+    > clr-icon[shape='success-standard'] {
+      color: timeline-variables.$clr-timeline-success-step-color;
+    }
+
+    > cds-icon[shape='error-standard'],
+    > clr-icon[shape='error-standard'] {
+      color: timeline-variables.$clr-timeline-error-step-color;
+    }
+
+    > clr-spinner.spinner {
+      margin: tokens.$cds-global-space-2; // Simulates the padding in CDS-ICONs
+      &,
+      &::after,
+      &::before {
+        @include mixins.min-equilateral(timeline-variables.$clr-timeline-spinner-size);
+      }
+    }
+
+    // style for the connecting line between icons
+    &:not(:last-of-type) .clr-timeline-step-body::before {
+      content: '';
+      background: timeline-variables.$clr-timeline-line-color;
+      height: timeline-variables.$clr-timeline-line-thickness;
+      width: calc(100% - timeline-variables.$clr-timeline-icon-size);
+
+      transform: translate(
+        timeline-variables.$clr-timeline-icon-size,
+        calc(
+          -0.5 * ((timeline-variables.$clr-timeline-step-internal-spacing * 2) +
+                timeline-variables.$clr-timeline-line-thickness + timeline-variables.$clr-timeline-icon-size)
+        )
+      );
+    }
+  }
+
+  // Note: headers (timestamps) are unable to auto-adjust height based on their siblings' using pure CSS.
+  // Hence forcing them in one-line by using "nowrap".
+  .clr-timeline-step-header {
+    white-space: nowrap;
+    color: timeline-variables.$clr-timeline-step-header-color;
+
+    @include mixins.generate-typography-token('SECONDARY-13-MD-CPT');
+  }
+
+  .clr-timeline-step-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .clr-timeline-step-title {
+    color: timeline-variables.$clr-timeline-step-title-color;
+    margin-bottom: density.$clr-base-gap-xs;
+
+    @include mixins.generate-typography-token(
+      'SECONDARY-13-SB-CPT',
+      (
+        font-weight: timeline-variables.$clr-timeline-step-title-font-weight,
+      )
+    );
+  }
+
+  .clr-timeline-step-description {
+    color: timeline-variables.$clr-timeline-step-description-color;
+
+    @include mixins.generate-typography-token('CAPTION-LG-11-STD');
+
+    button {
+      display: block;
+      margin-top: density.$clr-base-gap-s;
+    }
+    img {
+      width: 100%;
+      margin-top: density.$clr-base-vertical-offset-m;
+    }
+  }
+
+  .clr-timeline.clr-timeline-vertical {
+    flex-direction: column;
+    min-width: mixins.baselinePx(320);
+
+    .clr-timeline-step {
+      flex-direction: row;
+      margin-left: 0;
+      position: relative; // required for vertical line to get 100% height of step body it belongs to
+
+      &:not(:last-of-type) {
+        margin-bottom: timeline-variables.$clr-timeline-step-internal-spacing;
+      }
+
+      // style for the connecting line between icons
+      &:not(:last-of-type) .clr-timeline-step-body::before {
+        position: absolute;
+        width: timeline-variables.$clr-timeline-line-thickness;
+        height: calc(
+          100% - (timeline-variables.$clr-timeline-icon-size - timeline-variables.$clr-timeline-step-internal-spacing)
+        );
+
+        transform: translate(
+          calc(
+            -0.5 * (timeline-variables.$clr-timeline-icon-size + timeline-variables.$clr-timeline-line-thickness) - timeline-variables.$clr-timeline-step-internal-spacing
+          ),
+          calc(
+            (-1 * timeline-variables.$clr-timeline-step-internal-spacing) + timeline-variables.$clr-timeline-icon-size
+          )
+        );
+      }
+    }
+
+    .clr-timeline-step-header {
+      text-align: right;
+      white-space: normal;
+      word-break: break-word;
+      width: mixins.baselinePx(60);
+      min-width: mixins.baselinePx(60);
+      margin: timeline-variables.$clr-timeline-step-internal-spacing 0 0 0;
+    }
+
+    .clr-timeline-step-body {
+      display: flex;
+      flex-direction: column;
+      min-width: mixins.baselinePx(178);
+      padding-top: timeline-variables.$clr-timeline-step-internal-spacing;
+    }
+  }
+}

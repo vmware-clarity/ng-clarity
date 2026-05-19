@@ -1,0 +1,39 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
+
+@include mixins.exports('spinner.properties') {
+  @include mixins.root-or-host() {
+    --clr-spinner-inside-button-stroke-width: #{tokens.$cds-alias-object-border-width-200};
+    --clr-spinner-inside-treeview-stroke-width: #{tokens.$cds-alias-object-border-width-200};
+
+    --clr-spinner-border-radius: #{tokens.$cds-alias-object-border-radius-300};
+
+    &,
+    & [clr-density] {
+      --clr-spinner-default-size: #{density.$clr-base-spinner-l};
+      --clr-spinner-medium-size: #{density.$clr-base-spinner-m};
+      --clr-spinner-small-size: #{density.$clr-base-spinner-s};
+
+      --clr-spinner-default-stroke-width: #{density.$clr-base-spinner-stroke-l};
+      --clr-spinner-medium-stroke-width: #{density.$clr-base-spinner-stroke-m};
+      --clr-spinner-small-stroke-width: #{density.$clr-base-spinner-stroke-s};
+
+      --clr-spinner-margin-right: #{density.$clr-base-horizontal-offset-l};
+    }
+
+    &,
+    & [cds-theme] {
+      --clr-spinner-fill-bg-color: #{tokens.$cds-alias-object-container-background-shade};
+      --clr-spinner-fill-inverse-bg-color: #{tokens.$cds-alias-object-container-background-inverse-tint};
+      --clr-spinner-fill-color: #{tokens.$cds-alias-status-info};
+      --clr-spinner-fill-inverse-color: #{tokens.$cds-alias-status-info-tint};
+    }
+  }
+}

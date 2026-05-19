@@ -1,0 +1,51 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
+
+@include mixins.exports('combobox.properties') {
+  @include mixins.root-or-host() {
+    --clr-combobox-min-width: #{mixins.baselinePx(168)};
+    --clr-combobox-multi-min-width: #{mixins.baselinePx(360)};
+
+    --clr-combobox-font-weight: #{tokens.$cds-global-typography-secondary-font-weight};
+
+    &,
+    & [clr-density] {
+      --clr-combobox-font-size: #{density.$clr-base-typography-font-size-inline};
+
+      --clr-combobox-border-radius: #{density.$clr-base-border-radius-s};
+      --clr-combobox-trigger-padding-left: #{density.$clr-base-horizontal-offset-m};
+      --clr-combobox-trigger-padding-right: #{density.$clr-base-horizontal-offset-m};
+
+      --clr-combobox-pill-padding: 0 #{density.$clr-base-horizontal-offset-xs};
+      --clr-combobox-pill-height: #{density.$clr-base-row-height-xs};
+
+      --clr-combobox-caret-icon-size: #{density.$clr-base-icon-size-s};
+      --clr-combobox-pill-border-radius: #{density.$clr-base-border-radius-s};
+    }
+
+    &,
+    & [cds-theme] {
+      --clr-combobox-border-color: #{tokens.$cds-alias-object-border-color};
+      --clr-combobox-input-background-color: #{tokens.$cds-alias-object-container-background-tint};
+      --clr-combobox-pill-background-color: #{tokens.$cds-alias-object-interaction-background};
+      --clr-combobox-pill-border-color: #{tokens.$cds-alias-object-border-color};
+      --clr-combobox-pill-font-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-combobox-filter-highlight: #{tokens.$cds-alias-object-interaction-background-highlight};
+
+      --clr-combobox-text-color: #{tokens.$cds-alias-typography-color-400};
+
+      --clr-combobox-trigger-font-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-combobox-hover-background-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      --clr-combobox-active-background-color: #{tokens.$cds-alias-object-interaction-background-active};
+
+      --clr-combobox-pill-remove-icon-color: #{tokens.$cds-alias-object-interaction-color};
+    }
+  }
+}

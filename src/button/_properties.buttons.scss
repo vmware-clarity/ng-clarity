@@ -1,0 +1,339 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../utils/mixins';
+@use '../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('button.properties') {
+  @include mixins.root-or-host() {
+    --clr-btn-group-focus-outline: #{tokens.$cds-alias-object-interaction-outline};
+
+    &,
+    [clr-density] {
+      // Spacing
+      --clr-btn-vertical-margin: #{density.$clr-base-vertical-offset-s};
+      --clr-btn-horizontal-margin: #{density.$clr-base-gap-m};
+      --clr-btn-horizontal-padding: #{density.$clr-base-horizontal-offset-l};
+      --clr-btn-vertical-padding: 0;
+      --clr-btn-padding: var(--clr-btn-vertical-padding) var(--clr-btn-horizontal-padding);
+      --clr-btn-gap: #{density.$clr-base-gap-s};
+
+      // Sizing
+      --clr-btn-height: #{density.$clr-base-row-height-m}; // this is standard height
+      --clr-btn-height-sm: #{density.$clr-base-row-height-s}; // this is btn-sm (small) height
+
+      // Borders
+      --clr-btn-border-radius: #{density.$clr-base-border-radius-s};
+      --clr-btn-border-width: #{tokens.$cds-global-space-1};
+
+      // Standard button appearance - overrideable but not advertised!
+      --clr-btn-appearance-standard-height: var(--clr-btn-height-sm);
+      --clr-btn-appearance-standard-padding: var(--clr-btn-padding);
+      --clr-btn-appearance-standard-icon-size: #{density.$clr-base-icon-size-s};
+
+      // form-style button appearance styles - overrideable but not advertised!
+      --clr-btn-appearance-form-height: var(--clr-btn-height);
+      --clr-btn-appearance-form-padding: var(--clr-btn-padding);
+    }
+
+    &,
+    [cds-theme] {
+      // Shared colors
+      --clr-btn-transparent-bg-color: #{tokens.$cds-alias-object-opacity-0};
+      --clr-btn-outline-bg-color: var(--clr-btn-transparent-bg-color);
+
+      // Default button colors
+      --clr-btn-default-color: #{tokens.$cds-alias-status-info};
+      --clr-btn-default-border-color: var(--clr-btn-default-color);
+      --clr-btn-default-bg-color: var(--clr-btn-outline-bg-color);
+      --clr-btn-default-hover-bg-color: #{tokens.$cds-alias-object-interaction-info-secondary-hover};
+      --clr-btn-default-hover-color: #{tokens.$cds-alias-typography-info-hover};
+      --clr-btn-default-active-color: var(--clr-btn-default-color);
+      --clr-btn-default-active-bg-color: var(--clr-btn-outline-bg-color);
+      --clr-btn-default-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-btn-default-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
+      --clr-btn-default-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+
+      --clr-btn-default-checked-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-btn-default-checked-bg-color: var(--clr-btn-default-color);
+      --clr-btn-default-checked-hover-color: var(--clr-btn-default-checked-color);
+      --clr-btn-default-checked-hover-bg-color: #{tokens.$cds-alias-object-interaction-info-hover};
+      --clr-btn-default-checked-active-color: var(--clr-btn-default-checked-color);
+      --clr-btn-default-checked-active-bg-color: var(--clr-btn-default-color);
+      --clr-btn-default-checked-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
+      --clr-btn-default-checked-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
+
+      // Default outline button
+      --clr-btn-default-outline-color: #{tokens.$cds-alias-status-info};
+      --clr-btn-default-outline-border-color: var(--clr-btn-primary-outline-color);
+      --clr-btn-default-outline-bg-color: var(--clr-btn-outline-bg-color);
+      --clr-btn-default-outline-hover-bg-color: #{tokens.$cds-alias-object-interaction-info-secondary-hover};
+      --clr-btn-default-outline-hover-color: #{tokens.$cds-alias-typography-info-hover};
+      --clr-btn-default-outline-active-color: var(--clr-btn-default-outline-color);
+      --clr-btn-default-outline-active-bg-color: var(--clr-btn-outline-bg-color);
+      --clr-btn-default-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-btn-default-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
+      --clr-btn-default-outline-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+
+      --clr-btn-default-outline-checked-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-btn-default-outline-checked-bg-color: var(--clr-btn-default-outline-bg-color);
+
+      // Primary button colors
+      --clr-btn-primary-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-btn-primary-bg-color: #{tokens.$cds-alias-status-info};
+      --clr-btn-primary-border-color: #{tokens.$cds-alias-status-info};
+      --clr-btn-primary-hover-bg-color: #{tokens.$cds-alias-object-interaction-info-hover};
+      --clr-btn-primary-hover-color: var(--clr-btn-primary-color);
+      --clr-btn-primary-active-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-btn-primary-active-bg-color: var(--cds-alias-object-interaction-info-active);
+
+      --clr-btn-primary-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
+      --clr-btn-primary-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-primary-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-primary-checked-bg-color: #{tokens.$cds-alias-status-info};
+      --clr-btn-primary-checked-color: #{tokens.$cds-alias-typography-color-100};
+
+      // Primary outline button
+      --clr-btn-primary-outline-color: #{tokens.$cds-alias-status-info};
+      --clr-btn-primary-outline-border-color: var(--clr-btn-primary-outline-color);
+      --clr-btn-primary-outline-bg-color: var(--clr-btn-outline-bg-color);
+      --clr-btn-primary-outline-hover-bg-color: #{tokens.$cds-alias-object-interaction-info-secondary-hover};
+      --clr-btn-primary-outline-hover-color: #{tokens.$cds-alias-typography-info-hover};
+      --clr-btn-primary-outline-active-bg-color: var(--clr-btn-outline-bg-color);
+      --clr-btn-primary-outline-active-color: var(--clr-btn-primary-outline-color);
+
+      --clr-btn-primary-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-btn-primary-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
+      --clr-btn-primary-outline-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-primary-outline-checked-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-btn-primary-outline-checked-bg-color: var(--clr-btn-default-outline-bg-color);
+
+      // Success button colors
+      --clr-btn-success-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-btn-success-bg-color: #{tokens.$cds-alias-status-success};
+      --clr-btn-success-border-color: var(--clr-btn-success-bg-color);
+      --clr-btn-success-hover-bg-color: #{tokens.$cds-alias-object-interaction-success-hover};
+      --clr-btn-success-hover-color: var(--clr-btn-success-color);
+      --clr-btn-success-active-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-btn-success-active-bg-color: var(--cds-alias-object-interaction-success-active);
+
+      --clr-btn-success-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
+      --clr-btn-success-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-success-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-success-checked-bg-color: var(--clr-btn-success-color);
+      --clr-btn-success-checked-color: var(--clr-btn-success-bg-color);
+
+      // Success outline button colors
+      --clr-btn-success-outline-color: #{tokens.$cds-alias-status-success};
+      --clr-btn-success-outline-bg-color: var(--clr-btn-outline-bg-color);
+      --clr-btn-success-outline-border-color: #{tokens.$cds-alias-status-success};
+      --clr-btn-success-outline-hover-bg-color: #{tokens.$cds-alias-object-interaction-success-secondary-hover};
+      --clr-btn-success-outline-hover-color: #{tokens.$cds-alias-typography-success-hover};
+      --clr-btn-success-outline-active-bg-color: var(--clr-btn-success-outline-bg-color);
+      --clr-btn-success-outline-active-color: var(--clr-btn-success-outline-color);
+
+      --clr-btn-success-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-btn-success-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
+      --clr-btn-success-outline-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-success-outline-checked-bg-color: var(--clr-btn-success-outline-bg-color);
+      --clr-btn-success-outline-checked-color: var(--clr-btn-success-outline-color);
+
+      // Danger button colors
+      --clr-btn-danger-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-btn-danger-bg-color: #{tokens.$cds-alias-status-danger};
+      --clr-btn-danger-border-color: var(--clr-btn-danger-bg-color);
+      --clr-btn-danger-hover-bg-color: #{tokens.$cds-alias-object-interaction-danger-hover};
+      --clr-btn-danger-hover-color: var(--clr-btn-danger-color);
+      --clr-btn-danger-active-bg-color: var(--cds-alias-object-interaction-danger-active);
+      --clr-btn-danger-active-color: #{tokens.$cds-alias-typography-color-100};
+
+      --clr-btn-danger-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
+      --clr-btn-danger-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-danger-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-danger-checked-bg-color: var(--clr-btn-danger-bg-color);
+      --clr-btn-danger-checked-color: var(--clr-btn-danger-color);
+
+      // Danger outline button colors
+      --clr-btn-danger-outline-color: #{tokens.$cds-alias-status-danger};
+      --clr-btn-danger-outline-bg-color: var(--clr-btn-outline-bg-color);
+      --clr-btn-danger-outline-border-color: #{tokens.$cds-alias-status-danger};
+      --clr-btn-danger-outline-hover-bg-color: #{tokens.$cds-alias-object-interaction-danger-secondary-hover};
+      --clr-btn-danger-outline-hover-color: #{tokens.$cds-alias-typography-danger-hover};
+      --clr-btn-danger-outline-active-bg-color: var(--clr-btn-danger-outline-bg-color);
+      --clr-btn-danger-outline-active-color: var(--clr-btn-danger-outline-color);
+
+      --clr-btn-danger-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-btn-danger-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
+      --clr-btn-danger-outline-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-danger-outline-checked-bg-color: var(--clr-btn-danger-outline-bg-color);
+      --clr-btn-danger-outline-checked-color: var(--clr-btn-danger-outline-color);
+
+      // Warning button colors
+      --clr-btn-warning-color: #{tokens.$cds-global-color-black};
+      --clr-btn-warning-bg-color: #{tokens.$cds-alias-status-warning};
+      --clr-btn-warning-border-color: var(--clr-btn-warning-bg-color);
+      --clr-btn-warning-hover-bg-color: #{tokens.$cds-alias-object-interaction-warning-hover};
+      --clr-btn-warning-hover-color: var(--clr-btn-warning-color);
+      --clr-btn-warning-active-bg-color: var(--cds-alias-object-interaction-warning-active);
+      --clr-btn-warning-active-color: var(--clr-btn-warning-color);
+
+      --clr-btn-warning-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
+      --clr-btn-warning-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-warning-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-warning-checked-bg-color: var(--clr-btn-warning-bg-color);
+      --clr-btn-warning-checked-color: var(--clr-btn-warning-color);
+
+      // Warning outline button colors
+      --clr-btn-warning-outline-color: #{tokens.$cds-alias-status-warning-dark};
+      --clr-btn-warning-outline-bg-color: var(--clr-btn-outline-bg-color);
+      --clr-btn-warning-outline-border-color: #{tokens.$cds-alias-status-warning-dark};
+      --clr-btn-warning-outline-hover-bg-color: #{tokens.$cds-alias-object-interaction-warning-secondary-hover};
+      --clr-btn-warning-outline-hover-color: #{tokens.$cds-alias-typography-warning-hover};
+      --clr-btn-warning-outline-active-bg-color: var(--clr-btn-warning-outline-bg-color);
+      --clr-btn-warning-outline-active-color: var(--clr-btn-warning-outline-color);
+
+      --clr-btn-warning-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-btn-warning-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
+      --clr-btn-warning-outline-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-warning-outline-checked-bg-color: var(--clr-btn-warning-outline-bg-color);
+      --clr-btn-warning-outline-checked-color: var(--clr-btn-warning-outline-color);
+
+      // Neutral button colors
+      --clr-btn-neutral-color: #{tokens.$cds-alias-typography-color-100};
+      --clr-btn-neutral-bg-color: #{tokens.$cds-alias-status-neutral};
+      --clr-btn-neutral-border-color: var(--clr-btn-neutral-bg-color);
+      --clr-btn-neutral-hover-bg-color: #{tokens.$cds-alias-object-interaction-neutral-hover};
+      --clr-btn-neutral-hover-color: var(--clr-btn-neutral-color);
+      --clr-btn-neutral-active-bg-color: var(--cds-alias-object-interaction-neutral-active);
+      --clr-btn-neutral-active-color: var(--clr-btn-neutral-color);
+
+      --clr-btn-neutral-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
+      --clr-btn-neutral-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-neutral-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-neutral-checked-bg-color: var(--clr-btn-neutral-bg-color);
+      --clr-btn-neutral-checked-color: var(--clr-btn-neutral-color);
+
+      // Neutral outline button colors
+      --clr-btn-neutral-outline-color: #{tokens.$cds-alias-status-neutral};
+      --clr-btn-neutral-outline-bg-color: #{tokens.$cds-alias-object-opacity-0};
+      --clr-btn-neutral-outline-border-color: var(--clr-btn-neutral-outline-color);
+      --clr-btn-neutral-outline-hover-color: #{tokens.$cds-alias-typography-neutral-hover};
+      --clr-btn-neutral-outline-hover-bg-color: #{tokens.$cds-alias-object-interaction-neutral-secondary-hover};
+      --clr-btn-neutral-outline-active-color: #{tokens.$cds-alias-status-neutral};
+      --clr-btn-neutral-outline-active-bg-color: #{tokens.$cds-alias-object-opacity-0};
+
+      --clr-btn-neutral-outline-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-btn-neutral-outline-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
+      --clr-btn-neutral-outline-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-neutral-outline-checked-bg-color: var(--clr-btn-neutral-outline-bg-color);
+      --clr-btn-neutral-outline-checked-color: var(--clr-btn-neutral-outline-color);
+
+      // Link button colors
+      --clr-btn-link-color: #{tokens.$cds-alias-status-info};
+      --clr-btn-link-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-active-color: var(--clr-btn-link-color);
+      --clr-btn-link-active-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-hover-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-hover-color: #{tokens.$cds-alias-typography-info-hover};
+
+      --clr-btn-link-visited-color: #{tokens.$cds-alias-typography-link-color-visited};
+      --clr-btn-link-visited-hover-color: #{tokens.$cds-alias-typography-link-color-visited-hover};
+
+      --clr-btn-link-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-btn-link-disabled-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-disabled-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-checked-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-checked-color: #{tokens.$cds-global-color-blue-800};
+
+      // Primary Link button colors
+      --clr-btn-link-primary-color: #{tokens.$cds-alias-status-info};
+      --clr-btn-link-primary-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-primary-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-primary-hover-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-primary-hover-color: #{tokens.$cds-alias-typography-info-hover};
+      --clr-btn-link-primary-active-color: var(--clr-btn-link-primary-color);
+      --clr-btn-link-primary-active-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-primary-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-btn-link-primary-disabled-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-primary-disabled-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-primary-checked-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-primary-checked-color: var(--clr-btn-link-primary-color);
+
+      // Success Link button colors
+      --clr-btn-link-success-color: #{tokens.$cds-alias-status-success};
+      --clr-btn-link-success-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-success-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-success-hover-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-success-hover-color: #{tokens.$cds-alias-typography-success-hover};
+      --clr-btn-link-success-active-color: var(--clr-btn-link-success-color);
+      --clr-btn-link-success-active-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-success-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-btn-link-success-disabled-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-success-disabled-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-success-checked-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-success-checked-color: var(--clr-btn-link-success-color);
+
+      // Warning Link button colors
+      --clr-btn-link-warning-color: #{tokens.$cds-alias-status-warning-dark};
+      --clr-btn-link-warning-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-warning-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-warning-hover-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-warning-hover-color: #{tokens.$cds-alias-typography-warning-hover};
+      --clr-btn-link-warning-active-color: var(--clr-btn-link-warning-color);
+      --clr-btn-link-warning-active-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-warning-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-btn-link-warning-disabled-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-warning-disabled-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-warning-checked-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-warning-checked-color: var(--clr-btn-link-warning-color);
+
+      // Danger Link button colors
+      --clr-btn-link-danger-color: #{tokens.$cds-alias-status-danger};
+      --clr-btn-link-danger-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-danger-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-danger-hover-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-danger-hover-color: #{tokens.$cds-alias-typography-danger-hover};
+      --clr-btn-link-danger-active-color: var(--clr-btn-link-danger-color);
+      --clr-btn-link-danger-active-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-danger-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-btn-link-danger-disabled-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-danger-disabled-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-danger-checked-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-danger-checked-color: var(--clr-btn-link-danger-color);
+
+      // Danger Link button colors
+      --clr-btn-link-neutral-color: #{tokens.$cds-alias-status-neutral};
+      --clr-btn-link-neutral-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-neutral-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-neutral-hover-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-neutral-hover-color: #{tokens.$cds-alias-typography-neutral-hover};
+      --clr-btn-link-neutral-active-color: var(--clr-btn-link-neutral-color);
+      --clr-btn-link-neutral-active-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-neutral-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-btn-link-neutral-disabled-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-neutral-disabled-border-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-neutral-checked-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-link-neutral-checked-color: var(--clr-btn-link-neutral-color);
+
+      // Inverse button colors
+      --clr-btn-inverse-color: #{tokens.$cds-global-color-white};
+      --clr-btn-inverse-border-color: #{tokens.$cds-global-color-white};
+      --clr-btn-inverse-bg-color: var(--clr-btn-transparent-bg-color);
+      --clr-btn-inverse-hover-bg-color: #{tokens.$cds-alias-object-interaction-inverse-hover};
+      --clr-btn-inverse-hover-color: var(--clr-btn-inverse-color); // var(--clr-color-neutral-0);
+      --clr-btn-inverse-active-bg-color: var(--cds-alias-object-interaction-inverse-active);
+      --clr-btn-inverse-active-color: #{tokens.$cds-global-color-white};
+
+      --clr-btn-inverse-disabled-color: #{tokens.$cds-alias-typography-disabled};
+      --clr-btn-inverse-disabled-bg-color: var(--clr-btn-default-outline-bg-color);
+      --clr-btn-inverse-disabled-border-color: #{tokens.$cds-alias-status-disabled};
+      --clr-btn-inverse-checked-bg-color: var(--clr-btn-inverse-bg-color);
+      --clr-btn-inverse-checked-color: var(--clr-btn-inverse-color);
+    }
+  }
+}

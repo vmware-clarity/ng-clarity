@@ -1,0 +1,59 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:string';
+@use 'mixins';
+@use 'variables/variables.global';
+
+@include mixins.exports('close.clarity') {
+  // scss-lint:disable QualifyingElement
+  button.close {
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+  }
+  // scss-lint:enable QualifyingElement
+
+  .close {
+    float: right;
+    font-size: variables.$clr_baselineRem_1_5;
+    transition: color linear 0.2s;
+    font-weight: 200;
+    text-shadow: none;
+    line-height: inherit;
+
+    color: variables.$clr-close-color;
+
+    cds-icon,
+    clr-icon {
+      fill: variables.$clr-close-color;
+    }
+
+    &:hover {
+      color: variables.$clr-close-color-hover;
+
+      cds-icon,
+      clr-icon {
+        fill: variables.$clr-close-color-hover;
+      }
+    }
+
+    &:active {
+      color: variables.$clr-close-color-active;
+
+      cds-icon,
+      clr-icon {
+        fill: variables.$clr-close-color-active;
+      }
+    }
+
+    &:focus {
+      @include mixins.include-outline-style-form-fields();
+    }
+  }
+}

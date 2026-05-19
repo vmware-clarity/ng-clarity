@@ -1,0 +1,226 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../utils/mixins';
+@use '../utils/variables/variables.global';
+@use 'variables.tables' as table-variables;
+@use '../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+// Mixin for basic table styles to be able to reuse them on non-table elements.
+@mixin basic-table($table, $thead, $tbody, $tr, $th, $td) {
+  #{$table} {
+    border-collapse: separate;
+    border: table-variables.$clr-table-borderwidth solid table-variables.$clr-table-border-color;
+    border-radius: table-variables.$clr-table-border-radius;
+
+    background-color: table-variables.$clr-table-bgcolor;
+    color: table-variables.$clr-table-font-color;
+    margin: table-variables.$clr-table-margin;
+    max-width: 100%;
+    width: 100%;
+
+    #{$th},
+    #{$td} {
+      border-top-style: solid;
+      border-top-width: table-variables.$clr-table-borderwidth;
+      border-top-color: table-variables.$clr-tablerow-bordercolor;
+      padding: table-variables.$clr-table-cell-padding;
+      text-align: center;
+      vertical-align: top;
+
+      &.left {
+        text-align: left;
+      }
+
+      &.right {
+        text-align: right;
+      }
+    }
+
+    #{$td} {
+      min-height: table-variables.$clr-table-cell-height;
+      @include mixins.generate-typography-token('BODY-14-RG-CPT');
+    }
+
+    #{$th} {
+      @include mixins.generate-typography-token('ColumnHeader-11-SB-CPT');
+      color: table-variables.$clr-thead-color;
+      background-color: table-variables.$clr-thead-bgcolor;
+      vertical-align: middle;
+      border-bottom-style: solid;
+      border-bottom-width: table-variables.$clr-table-borderwidth;
+      border-bottom-color: table-variables.$clr-table-border-color;
+      border-top: 0 none;
+    }
+
+    #{$tbody} #{$tr}:first-child #{$td} {
+      border-top: 0 none;
+    }
+
+    // in the rare event we have more than one tbody element.
+    #{$tbody} + #{$tbody} {
+      border-top-style: solid;
+      border-top-width: table-variables.$clr-table-borderwidth;
+      border-top-color: table-variables.$clr-table-border-color;
+    }
+
+    // Rounded corners on tables are a pain...
+    #{$thead} #{$th} {
+      &:first-child {
+        border-radius: 0;
+        border-top-left-radius: table-variables.$clr-table-cornercellradius;
+      }
+
+      &:last-child {
+        border-radius: 0;
+        border-top-right-radius: table-variables.$clr-table-cornercellradius;
+      }
+    }
+
+    #{$tbody}:last-child {
+      #{$tr}:last-child {
+        #{$td} {
+          &:first-child {
+            border-radius: 0;
+            border-bottom-left-radius: table-variables.$clr-table-cornercellradius;
+          }
+
+          &:last-child {
+            border-radius: 0;
+            border-bottom-right-radius: table-variables.$clr-table-cornercellradius;
+          }
+        }
+      }
+    }
+  }
+
+  // @deprecated CSS rule #{$table}-compact in favor of compact mode in density theme
+  #{$table}-compact {
+    --clr-table-margin: #{mixins.baselinePx(20)} 0 0 0;
+    --clr-table-cell-vertical-padding: #{table-variables.$clr-table-compact-vertical-padding};
+    #{$th},
+    #{$td} {
+      min-height: table-variables.$clr-table-compact-cell-height;
+      padding: table-variables.$clr-table-cell-compact-padding;
+    }
+    #{$td} {
+      font-size: mixins.baselinePx(13);
+      line-height: tokens.$cds-global-space-7;
+    }
+  }
+}
+
+@include meta.load-css('properties.tables');
+
+@include mixins.exports('tables.clarity') {
+  @include basic-table('.table', 'thead', 'tbody', 'tr', 'th', 'td');
+
+  .table.table-vertical {
+    thead th {
+      border: 0 none;
+      border-radius: 0;
+      display: none;
+    }
+
+    th {
+      border-bottom: 0;
+      border-top-style: solid;
+      border-top-width: table-variables.$clr-table-borderwidth;
+      border-top-color: table-variables.$clr-table-border-color;
+      vertical-align: top;
+    }
+
+    td,
+    th {
+      text-align: left;
+      border-color: table-variables.$clr-table-border-color;
+
+      &:first-child {
+        @include mixins.generate-typography-token('ColumnHeader-11-SB-CPT');
+        border-right-style: solid;
+        border-right-width: table-variables.$clr-table-borderwidth;
+        border-right-color: table-variables.$clr-table-border-color;
+        background-color: table-variables.$clr-thead-bgcolor;
+      }
+    }
+
+    tbody:first-of-type {
+      tr:first-child {
+        th,
+        td {
+          border-top: 0 none;
+
+          &:first-child {
+            border-radius: 0;
+            border-top-left-radius: table-variables.$clr-table-cornercellradius;
+          }
+
+          &:last-child {
+            border-radius: 0;
+            border-top-right-radius: table-variables.$clr-table-cornercellradius;
+          }
+        }
+      }
+    }
+
+    tbody:last-child {
+      tr:last-child {
+        th,
+        td {
+          &:first-child {
+            border-radius: 0;
+            border-bottom-left-radius: table-variables.$clr-table-cornercellradius;
+          }
+
+          &:last-child {
+            border-radius: 0;
+            border-bottom-right-radius: table-variables.$clr-table-cornercellradius;
+          }
+        }
+      }
+    }
+  }
+
+  .table.table-noborder {
+    border-radius: 0;
+    box-shadow: none;
+    background-color: transparent;
+    border-width: 0;
+
+    th {
+      border-bottom-color: transparent;
+      border-top: 0 none;
+
+      &:first-child {
+        // need this for vertical tables...
+        border-right: 0 none;
+      }
+    }
+
+    td {
+      border-top: 0 none;
+
+      &:first-child {
+        border-right: 0 none;
+      }
+    }
+
+    thead th {
+      &:first-child,
+      &:last-child {
+        border-radius: 0;
+      }
+    }
+
+    th,
+    td {
+      //  Very specific use of !important to avoid specificity inflation.
+      border-radius: 0 !important;
+    }
+  }
+}

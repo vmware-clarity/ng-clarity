@@ -1,0 +1,74 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../mixins';
+@use '../variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+/**
+ * TODO: figure out if we want to include animate.css or if we prefer sticking to a few,
+ * controlled animations that we write ourselves.
+ *
+ * At the moment, we rely on the fact that each ".foo" animation has the hidden styles by default,
+ * and ".foo.in" has the displayed styles. This will still be feasible by simply wrapping
+ * animate.css, if we want.
+ */
+
+$clr-animation-duration: 0.2s;
+$clr-animation-easing: ease-in-out;
+
+@keyframes clr-skeleton-loading {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -200%;
+  }
+}
+
+@mixin skeleton-loading() {
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    border-radius: density.$clr-base-border-radius-s;
+    background: var(--cds-alias-object-skeleton-loading-gradient);
+    animation: var(--cds-global-animation-skeleton-duration) clr-skeleton-loading
+      var(--cds-global-animation-easing-in-out) infinite;
+    background-size: 200% 100%;
+  }
+}
+
+@include mixins.exports('animations.clarity') {
+  .fade {
+    opacity: 0;
+    transition: opacity $clr-animation-duration $clr-animation-easing;
+    will-change: opacity;
+
+    &.in {
+      opacity: 1;
+    }
+  }
+
+  .fadeDown {
+    opacity: 0;
+    transform: translate(0, -25%);
+    transition: opacity $clr-animation-duration $clr-animation-easing,
+      transform $clr-animation-duration $clr-animation-easing;
+    will-change: opacity, transform;
+
+    &.in {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+  }
+
+  .skeleton-loading {
+    @include skeleton-loading();
+  }
+}

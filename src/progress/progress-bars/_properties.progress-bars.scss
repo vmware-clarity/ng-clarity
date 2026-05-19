@@ -1,0 +1,23 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('progress.properties') {
+  @include mixins.root-or-host() {
+    &,
+    & [cds-theme] {
+      // Usage: ../progress/progress-bars/_progress-bars.clarity.scss
+      --clr-progress-default-color: #{tokens.$cds-alias-status-info}; // blue
+      --clr-progress-alt-color-1: #{tokens.$cds-alias-status-success}; // green
+      --clr-progress-alt-color-2: #{tokens.$cds-alias-status-danger-shade}; // red
+      --clr-progress-alt-color-3: #{tokens.$cds-alias-status-warning}; // yellow
+      --clr-progress-bg-color: #{tokens.$cds-alias-object-container-background-shade};
+      --clr-progress-label-color: #{tokens.$cds-alias-typography-color-400};
+    }
+  }
+}

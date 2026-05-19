@@ -1,0 +1,22 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../mixins';
+@use '../../utils/variables/variables.density' as density;
+
+@include mixins.exports('layout.properties') {
+  @include mixins.root-or-host() {
+    &,
+    & [clr-density] {
+      --clr-grid-gutter-width: #{density.$clr-base-horizontal-offset-2xl};
+
+      --clr-grid-container-padding: calc(var(--clr-grid-gutter-width) * 0.5);
+      --clr-grid-column-padding: calc(var(--clr-grid-gutter-width) * 0.5);
+      --clr-grid-row-margin: calc(var(--clr-grid-gutter-width) * -0.5);
+    }
+  }
+}

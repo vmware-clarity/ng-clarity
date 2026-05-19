@@ -1,0 +1,262 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use 'sass:meta';
+@use '../../popover/dropdown/menu-mixins.clarity';
+@use '../../utils/mixins';
+@use '../styles/mixins.forms' as styles-mixins;
+@use '../styles/variables.forms' as forms-variables;
+@use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
+@use 'variables.combobox' as combobox-variables;
+@use '@cds/core/tokens/tokens.scss';
+@use '../../utils/variables/variables.density' as density;
+@include meta.load-css('properties.combobox');
+
+@include mixins.exports('combobox.clarity') {
+  // needed for the proper calculation of popover offset that we do to keep label always visible
+  .clr-combobox-form-control {
+    align-items: stretch;
+
+    .clr-error .clr-validate-icon {
+      margin-left: 0;
+    }
+  }
+
+  // Focus indicator, this is a custom implementation compared with other controls due to DOM structure and potential growth of height
+  .clr-focus-indicator {
+    background-color: forms-variables.$clr-forms-focused-color;
+    height: tokens.$cds-global-space-2;
+    width: 0;
+    transition: width 0.2s ease;
+    position: absolute;
+    bottom: calc(-1 * #{tokens.$cds-global-space-1});
+    left: 0;
+    border-bottom-left-radius: combobox-variables.$clr-combobox-border-radius;
+    border-bottom-right-radius: combobox-variables.$clr-combobox-border-radius;
+  }
+  .clr-focus {
+    width: 100%;
+  }
+  .clr-error .clr-focus-indicator {
+    background-color: forms-variables.$clr-forms-invalid-color;
+  }
+
+  .clr-combobox-wrapper {
+    position: relative;
+    flex-wrap: wrap;
+    gap: density.$clr-base-gap-xs;
+
+    //Dimensions
+    padding-top: calc(density.$clr-base-vertical-offset-xs - tokens.$cds-alias-object-border-width-100);
+    padding-bottom: calc(density.$clr-base-vertical-offset-xs - tokens.$cds-alias-object-border-width-100);
+    padding-left: combobox-variables.$clr-combobox-trigger-padding-left;
+    padding-right: calc(
+      combobox-variables.$clr-combobox-caret-icon-size + combobox-variables.$clr-combobox-trigger-padding-left +
+        combobox-variables.$clr-combobox-trigger-padding-right
+    );
+
+    min-width: combobox-variables.$clr-combobox-min-width;
+    .clr-input {
+      padding: 0;
+      max-height: density.$clr-base-row-height-xs;
+
+      &:not(:disabled) {
+        color: combobox-variables.$clr-combobox-text-color;
+      }
+    }
+    font-size: combobox-variables.$clr-combobox-font-size;
+    font-weight: combobox-variables.$clr-combobox-font-weight;
+
+    .clr-combobox-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: density.$clr-base-gap-xs;
+    }
+
+    &.multi {
+      min-width: calc(min(combobox-variables.$clr-combobox-multi-min-width, 100%));
+    }
+
+    //Mixins
+    @include styles-mixins.form-fields-appearance();
+
+    // override the above mixin for combobox-specific styles
+    background-color: combobox-variables.$clr-combobox-input-background-color;
+
+    border-width: tokens.$cds-alias-object-border-width-100;
+    border-style: solid;
+    border-color: combobox-variables.$clr-combobox-border-color;
+
+    border-radius: combobox-variables.$clr-combobox-border-radius;
+
+    // the border color is on the component; we don't want it on the input itself
+    .clr-input.clr-combobox-input:focus {
+      background: none;
+    }
+
+    &.invalid {
+      border-bottom-color: forms-variables.$clr-forms-invalid-color;
+    }
+
+    //Others
+    .clr-combobox-input {
+      background: none;
+      border-bottom: none;
+      vertical-align: middle;
+      height: density.$clr-base-row-height-xs;
+      line-height: density.$clr-base-typography-line-height-16;
+    }
+
+    .clr-combobox-remove-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      padding: 0;
+      color: combobox-variables.$clr-combobox-pill-remove-icon-color;
+    }
+
+    .label-combobox-pill {
+      min-height: combobox-variables.$clr-combobox-pill-height;
+      height: combobox-variables.$clr-combobox-pill-height;
+      margin: 0;
+      background-color: combobox-variables.$clr-combobox-pill-background-color;
+      border-width: tokens.$cds-alias-object-border-width-100;
+      border-style: solid;
+      align-items: center;
+
+      border-radius: combobox-variables.$clr-combobox-pill-border-radius;
+      border-color: combobox-variables.$clr-combobox-pill-border-color;
+
+      padding: combobox-variables.$clr-combobox-pill-padding;
+      gap: density.$clr-base-gap-xs;
+
+      .clr-combobox-pill-content {
+        @include mixins.generate-typography-token('CAPTION-LG-11-CPT');
+        color: combobox-variables.$clr-combobox-pill-font-color;
+        padding: 0;
+      }
+
+      cds-icon[shape='window-close'],
+      clr-icon[shape='window-close'] {
+        color: combobox-variables.$clr-combobox-pill-font-color;
+      }
+    }
+
+    &:not(.disabled):hover,
+    &:focus-within {
+      background-color: combobox-variables.$clr-combobox-hover-background-color;
+    }
+  }
+
+  .clr-combobox-trigger {
+    &:disabled {
+      color: tokens.$cds-alias-object-interaction-color-disabled;
+      cds-icon[shape='angle'],
+      clr-icon[shape='angle'] {
+        color: tokens.$cds-alias-object-interaction-color-disabled;
+      }
+    }
+    //Dimensions
+    padding-left: combobox-variables.$clr-combobox-trigger-padding-left;
+    padding-right: combobox-variables.$clr-combobox-trigger-padding-right;
+
+    margin: auto;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    right: 0;
+
+    //Other
+    background: none;
+    border: none;
+    color: currentColor;
+    cursor: pointer;
+    outline: none;
+
+    cds-icon[shape='angle'],
+    clr-icon[shape='angle'] {
+      color: combobox-variables.$clr-combobox-trigger-font-color;
+
+      &:not([size]) {
+        @include mixins.min-equilateral(combobox-variables.$clr-combobox-caret-icon-size);
+      }
+    }
+  }
+
+  .clr-combobox-options {
+    @include menu-mixins.generate-dropdown-menu();
+    position: static;
+
+    max-height: mixins.baselinePx(240);
+    overflow-y: auto;
+
+    visibility: visible;
+
+    .clr-combobox-options-loading {
+      padding: 0 density.$clr-base-horizontal-offset-m;
+      display: flex;
+      gap: density.$clr-base-gap-s;
+
+      .spinner.spinner-inline {
+        margin-right: 0;
+      }
+
+      .clr-combobox-options-text {
+        word-break: break-word;
+      }
+    }
+
+    .clr-combobox-options-empty-text {
+      padding: 0 density.$clr-base-horizontal-offset-l;
+    }
+
+    clr-option-group {
+      .clr-option-group-label {
+        @include menu-mixins.generate-dropdown-header();
+      }
+
+      & > .clr-combobox-option {
+        padding-left: density.$clr-base-horizontal-offset-2xl;
+      }
+    }
+  }
+
+  .clr-combobox-option {
+    @include menu-mixins.generate-dropdown-item();
+    // Manual pseudo focus handling
+    &.clr-focus {
+      background-color: combobox-variables.$clr-combobox-active-background-color;
+    }
+  }
+
+  //NOTE: Adjust the height of the option only when it's in the options menu
+  .clr-combobox-options .clr-combobox-option {
+    @include menu-mixins.generate-dropdown-item-height();
+  }
+
+  .clr-combobox-disabled {
+    @include styles-mixins.disabled-form-fields();
+
+    .clr-combobox-input,
+    .clr-combobox-remove-btn,
+    .clr-combobox-trigger {
+      cursor: not-allowed;
+    }
+
+    .label-combobox-pill .clr-combobox-pill-content,
+    .clr-combobox-remove-btn > cds-icon {
+      color: tokens.$cds-alias-typography-disabled;
+    }
+  }
+
+  .clr-filter-highlight b {
+    font-weight: tokens.$cds-global-typography-font-weight-semibold;
+    color: combobox-variables.$clr-combobox-filter-highlight;
+  }
+}

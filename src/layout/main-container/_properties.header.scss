@@ -1,0 +1,41 @@
+/*
+ * Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+@use '../../utils/mixins';
+@use '../../utils/variables/variables';
+@use '../../utils/variables/variables.density' as density;
+@use '@cds/core/tokens/tokens.scss';
+
+@include mixins.exports('header.properties') {
+  @include mixins.root-or-host() {
+    --clr-header-title-font-weight: #{tokens.$cds-global-typography-subsection-font-weight};
+    --clr-header-title-font-family: #{variables.$clr-font};
+    --clr-header-search-input-font-color: #{tokens.$cds-global-color-white};
+    --clr-header-search-placeholder-font-weight: #{tokens.$cds-global-typography-font-weight-regular};
+    --clr-header-search-placeholder-text-color: #{tokens.$cds-global-color-construction-400};
+    --clr-header-search-border-active: #{tokens.$cds-alias-object-border-width-100} solid Highlight;
+    --clr-header-search-border-hover: #{tokens.$cds-alias-object-border-width-100} solid #{tokens.$cds-global-color-construction-400};
+    --clr-header-divider-color: #{tokens.$cds-global-color-construction-600};
+    --clr-header-bg-color: #{tokens.$cds-global-color-cool-gray-1000};
+    --clr-header-2-bg-color: #{tokens.$cds-global-color-construction-800};
+    --clr-header-3-bg-color: #{tokens.$cds-global-color-azure-900};
+    --clr-header-4-bg-color: var(--clr-header-3-bg-color);
+    --clr-header-5-bg-color: var(--clr-header-3-bg-color);
+    --clr-header-6-bg-color: var(--clr-header-bg-color);
+    --clr-header-7-bg-color: var(--clr-header-2-bg-color);
+    --clr-header-font-color: #{tokens.$cds-global-color-construction-100};
+    --clr-header-font-color-hover: #{tokens.$cds-global-color-construction-50};
+
+    &,
+    & [clr-density] {
+      --clr-header-height: #{density.$clr-base-header-height};
+      --clr-header-search-icon-size: #{density.$clr-base-icon-size-l};
+      --clr-header-search-margin-left: #{density.$clr-base-horizontal-offset-m};
+      --clr-header-search-margin-right: #{density.$clr-base-horizontal-offset-l};
+      --clr-header-search-gap: #{density.$clr-base-gap-s};
+    }
+  }
+}
