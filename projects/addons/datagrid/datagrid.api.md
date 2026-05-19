@@ -487,7 +487,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     trackByColumnId(index: number, column: ColumnDefinition<T>): string;
     protected trackByFn(index: number, gridItem: T): T;
     trackByFunction: TrackByFunction<T>;
-    // (undocumented)
     trackByGridItemFn: (item: T) => T;
     trackByGridItemProperty: string;
     virtualScrolling: boolean;
