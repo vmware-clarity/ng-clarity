@@ -10,15 +10,15 @@
 
 $cds-layout-sizes: (
   'none': 0,
-  'xxxs': tokens.$cds-global-layout-space-xxxs,
-  'xxs': tokens.$cds-global-layout-space-xxs,
-  'xs': tokens.$cds-global-layout-space-xs,
-  'sm': tokens.$cds-global-layout-space-sm,
-  'md': tokens.$cds-global-layout-space-md,
-  'lg': tokens.$cds-global-layout-space-lg,
-  'xl': tokens.$cds-global-layout-space-xl,
-  'xxl': tokens.$cds-global-layout-space-xxl,
-  'xxxl': tokens.$cds-global-layout-space-xxxl,
+  'xxxs': optimize.$δ1,
+  'xxs': optimize.$δ2,
+  'xs': optimize.$δ3,
+  'sm': optimize.$δ4,
+  'md': optimize.$δ5,
+  'lg': optimize.$δ6,
+  'xl': optimize.$δ7,
+  'xxl': optimize.$δ8,
+  'xxxl': optimize.$δ9,
 );
 
 $cds-layout-breakpoints: (
