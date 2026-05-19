@@ -551,6 +551,34 @@ function uniqueIdFactory() {
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 /**
+ * Safely resolves a nested property path (e.g., "a.b.c") on an object.
+ *
+ * @param item The object to resolve the property on.
+ * @param propertyPath The dot-separated property path.
+ * @returns An object containing the resolved value and a boolean indicating if the path was valid.
+ */
+function getNestedProperty(item, propertyPath) {
+    if (!item || !propertyPath) {
+        return { isValid: false };
+    }
+    let isValid = true;
+    const value = propertyPath.split('.').reduce((o, i) => {
+        if (o !== null && o !== undefined && typeof o === 'object' && i in o) {
+            return o[i];
+        }
+        isValid = false;
+        return undefined;
+    }, item);
+    return isValid ? { isValid: true, value: value } : { isValid: false };
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/**
  * The problem we want to solve with the common interface and the token below:
  * We don't want this directive to enumerate all its host components by type
  * because we don't want to import and thus depend on components which might
@@ -675,7 +703,8 @@ class DatagridPreserveSelectionDirective {
         if (typeof this.selectBy === 'function') {
             return this.selectBy(0, item || {});
         }
-        return item ? item[this.selectBy] : '';
+        const result = getNestedProperty(item, this.selectBy);
+        return result.isValid ? String(result.value) : '';
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridPreserveSelectionDirective, deps: [{ token: appfxPreselectableComponentToken, host: true }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: DatagridPreserveSelectionDirective, isStandalone: false, selector: "[appfxPreserveSelection]", inputs: { preserveExistingSelection: "preserveExistingSelection" }, outputs: { selectedItemsUpdated: "selectedItemsUpdated" }, ngImport: i0 }); }
@@ -1655,6 +1684,10 @@ class DatagridComponent {
          */
         this.#hasAdvancedFilters = false;
         this.#wrapCellText = true;
+        /**
+         * Wrapper around trackByFn intended for identity comparison only.
+         * The index passed (0) is a dummy value and should not be relied upon.
+         */
         this.trackByGridItemFn = (item) => this.trackByFn(0, (item || {}));
         this.dgStrings = {
             ...datagridStrings,
@@ -2123,14 +2156,10 @@ class DatagridComponent {
      * The default Angular differ offered is slower since it does a complete object comparison.
      */
     trackByFn(index, gridItem) {
-        const trackByGridItemPropertySeparator = '.'; // rethink constant when properties have "."
         if (this.trackByGridItemProperty) {
-            let parseValid = false;
-            const observedPropertyValue = this.trackByGridItemProperty
-                .split(trackByGridItemPropertySeparator)
-                .reduce((o, i) => (parseValid = Object.prototype.hasOwnProperty.call(o, i)) && o[i], gridItem);
-            if (parseValid) {
-                return observedPropertyValue;
+            const result = getNestedProperty(gridItem, this.trackByGridItemProperty);
+            if (result.isValid) {
+                return result.value;
             }
         }
         if (this.trackByFunction) {
@@ -2154,10 +2183,10 @@ class DatagridComponent {
     }
     preselectDetail() {
         const isDetailEnabled = !!this.detailHeader || !!this.detailBody;
-        if (isDetailEnabled && this.detailState && this.trackByGridItemProperty) {
+        if (isDetailEnabled && this.detailState && (this.trackByGridItemProperty || this.trackByFunction)) {
             const gridItems = this.gridItems || [];
             const matchingItems = gridItems.filter((item) => {
-                return (item[this.trackByGridItemProperty] === this.detailState?.[this.trackByGridItemProperty]);
+                return this.trackByGridItemFn(item) === this.trackByGridItemFn(this.detailState);
             });
             if (matchingItems.length === 0) {
                 // Hide detail pane when item is no longer present in the dataset

@@ -211,6 +211,7 @@ declare class GridRowTestHelper {
     isSelectionAvailable(): boolean;
     isSelectionDisabled(): boolean;
     expand(): void;
+    isExpanded(): boolean;
     isRowExpandable(): boolean;
     getSingleRowActionMenuButton(): HTMLElement;
     openSingleRowActionMenu(): boolean;

@@ -820,6 +820,9 @@ class GridRowTestHelper {
         }
         expandElement.click();
     }
+    isExpanded() {
+        return !!this.rowElement.querySelector('clr-dg-row-detail');
+    }
     isRowExpandable() {
         return (this.rowElement.querySelectorAll('.datagrid-expandable-caret > button.datagrid-expandable-caret-button').length >
             0);

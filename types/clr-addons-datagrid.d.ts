@@ -1040,6 +1040,10 @@ declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, 
      */
     scrollToIndex(index: number, behavior?: ScrollBehavior): void;
     ngOnChanges(changes: SimpleChanges): void;
+    /**
+     * Wrapper around trackByFn intended for identity comparison only.
+     * The index passed (0) is a dummy value and should not be relied upon.
+     */
     trackByGridItemFn: (item: T) => T;
     trackByColumnId(index: number, column: ColumnDefinition<T>): string;
     buildRowDetailContentId(index: number): string;
