@@ -64,7 +64,7 @@ const exampleCss = `
   border-right: tokens.$cds-alias-object-border-color solid tokens.$cds-alias-object-border-width-100;
   padding: 0 tokens.$cds-global-space-5;
   margin: 0 tokens.$cds-global-space-5;
-  font-weight: tokens.$cds-global-typography-font-weight-semibold;
+  font-weight: tokens.$cds-alias-typography-font-weight-semibold;
 }
 
 .footer-button {
