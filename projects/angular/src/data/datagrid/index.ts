@@ -44,6 +44,7 @@ export * from './built-in/comparators/datagrid-property-comparator';
 export * from './datagrid.module';
 
 export { ClrDatagridItemsTrackByFunction } from './providers/items';
+export { Selection } from './providers/selection';
 
 export { ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
 export { ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';

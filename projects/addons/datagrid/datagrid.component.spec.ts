@@ -1865,10 +1865,6 @@ class StatusComparator implements ClrDatagridComparatorInterface<any> {
 
 @Component({
   selector: 'appfx-datagrid-host-component',
-  // Must be explicitly standalone — the @Component decorator's `imports` field is only valid
-  // for standalone components. Without this flag, Angular 16 (where standalone defaulted to
-  // false) treats the host as a non-standalone directive, then rejects it from the test
-  // module's `imports` with 'Unexpected directive ... Please add an @NgModule annotation'.
   standalone: true,
   imports: [AppfxDatagridModule, CdkA11yModule, DatagridColumnsOrderModule, DragDropModule, FormsModule, OverlayModule],
   template: `
