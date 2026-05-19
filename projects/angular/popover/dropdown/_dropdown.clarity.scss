@@ -159,6 +159,10 @@
         }
       }
 
+      &:focus-visible {
+        outline: none;
+      }
+
       &:focus {
         @include menu-mixins.dropdown-item-outline();
       }
