@@ -1831,6 +1831,63 @@ describe('DatagridComponent', () => {
       });
     });
 
+    it('should preserve detail state and not recreate row when items are updated by reference but trackByProperty matches', fakeAsync(function (
+      this: any
+    ) {
+      class TestItem {
+        constructor(
+          public name: string,
+          public status: string,
+          public powerState: string,
+          public host: string,
+          public rowDetailRenderer?: any
+        ) {}
+        get id() {
+          return `id-${this.name}`;
+        }
+      }
+
+      this.component.trackByProperty = 'id';
+      this.component.appfxDatagridComponent.rowDetailContent = this.component.rowDetailContent;
+
+      const allGridData = this.data.map(d => new TestItem(d.name, d.status, d.powerState, d.host));
+      allGridData[0].rowDetailRenderer = RowDetailRendererComponent;
+      this.component.data = allGridData;
+
+      this.fixture.detectChanges(true);
+      tick();
+
+      const gridHelper: GridHelper = new GridHelper(this.fixture.debugElement);
+      const rows: GridRowTestHelper[] = gridHelper.getRows();
+
+      // Expand the first row
+      rows[0].expand();
+      this.fixture.detectChanges();
+      tick();
+      this.fixture.detectChanges();
+
+      // Verify row is expanded
+      expect(rows[0].isExpanded()).toBe(true, 'Row should be expanded initially');
+      const originalRowElement = rows[0].getElement();
+
+      // Update data with new references but same 'id' values
+      const newData = allGridData.map(
+        item => new TestItem(item.name, item.status, item.powerState, item.host, item.rowDetailRenderer)
+      );
+      this.component.data = newData;
+      this.fixture.detectChanges();
+      tick();
+      this.fixture.detectChanges();
+
+      const updatedRows = gridHelper.getRows();
+
+      // Verify the first row is still expanded
+      expect(updatedRows[0].isExpanded()).toBe(true, 'Row should remain expanded after data refresh');
+
+      // Verify it's the exact same DOM element (not recreated)
+      expect(updatedRows[0].getElement()).toBe(originalRowElement, 'Row DOM element should not be recreated');
+    }));
+
     it('should have aria description', function (this: DatagridSpecContext) {
       this.component.rowsExpandedByDefault = true;
       this.component.appfxDatagridComponent.rowDetailContent = this.component.rowDetailContent;
