@@ -2986,7 +2986,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     protected controlClassService: ControlClassService;
     // (undocumented)
     protected elem: ElementRef;
-    set firstDayOfWeek(value: ClrWeekday);
+    set firstDayOfWeek(value: ClrWeekday | null);
     // (undocumented)
     focus: boolean;
     get isEnabled(): boolean;

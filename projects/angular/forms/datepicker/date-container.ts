@@ -155,7 +155,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
    * When not set, the first day of the week is determined by the Angular locale.
    */
   @Input('clrFirstDayOfWeek')
-  set firstDayOfWeek(value: ClrWeekday) {
+  set firstDayOfWeek(value: ClrWeekday | null) {
     this.localeHelperService.overrideFirstDayOfWeek(value ?? null);
   }
 
