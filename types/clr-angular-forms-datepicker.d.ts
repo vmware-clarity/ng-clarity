@@ -13,6 +13,20 @@ import * as i13 from '@angular/common';
 import * as i16 from '@clr/angular/icon';
 import * as i18 from '@clr/angular/layout/vertical-nav';
 
+/**
+ * Index of the day of the week, matching JavaScript's Date.getDay() convention.
+ * Used to override the locale-derived first day of the week in the date picker.
+ */
+declare enum ClrWeekday {
+    Sunday = 0,
+    Monday = 1,
+    Tuesday = 2,
+    Wednesday = 3,
+    Thursday = 4,
+    Friday = 5,
+    Saturday = 6
+}
+
 declare class DateFormControlService {
     disabled: boolean;
     private _touchedChange;
@@ -49,6 +63,12 @@ declare class LocaleHelperService {
     get localeMonthsWide(): ReadonlyArray<string>;
     get localeDateFormat(): string;
     /**
+     * Overrides the first day of the week regardless of locale.
+     * Accepts a `ClrWeekday` value (Sunday=0 through Saturday=6), or null to revert to locale default.
+     * Incorrect values will revert to default value (Sunday).
+     */
+    updateFirstDayOfWeek(day: ClrWeekday | null): void;
+    /**
      * Initializes the locale data.
      */
     private initializeLocaleData;
@@ -70,7 +90,7 @@ declare class LocaleHelperService {
     /**
      * Initializes the first day of the week based on the locale.
      */
-    private initializeFirstDayOfWeek;
+    private initializeLocaleFirstDayOfWeek;
     private initializeLocaleDateFormat;
     static ɵfac: i0.ɵɵFactoryDeclaration<LocaleHelperService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<LocaleHelperService>;
@@ -335,10 +355,17 @@ declare class ClrDateContainer extends ClrAbstractContainer implements AfterView
     protected controlClassService: ControlClassService;
     protected layoutService: LayoutService;
     protected ngControlService: NgControlService;
+    private localeHelperService;
     focus: boolean;
     protected popoverType: ClrPopoverType;
     private toggleButton;
-    constructor(renderer: Renderer2, elem: ElementRef, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FormsFocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService);
+    constructor(renderer: Renderer2, elem: ElementRef, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FormsFocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, localeHelperService: LocaleHelperService);
+    /**
+     * Overrides the locale-derived first day of the week for the calendar.
+     * Accepts a `ClrWeekday` value (Sunday=0 through Saturday=6).
+     * When not set, the first day of the week is determined by the Angular locale.
+     */
+    set firstDayOfWeek(value: ClrWeekday | null);
     /**
      * For date range picker actions buttons are shown by default
      */
@@ -371,8 +398,8 @@ declare class ClrDateContainer extends ClrAbstractContainer implements AfterView
      */
     private initializeCalendar;
     private dateRangeStructuralChecks;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, null, { optional: true; }, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container, clr-date-range-container", never, { "showActionButtons": { "alias": "showActionButtons"; "required": false; }; "clrPosition": { "alias": "clrPosition"; "required": false; }; "rangeOptions": { "alias": "rangeOptions"; "required": false; }; "min": { "alias": "min"; "required": false; }; "max": { "alias": "max"; "required": false; }; }, {}, never, ["label", "[clrStartDate]", "[clrEndDate]", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, null, { optional: true; }, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container, clr-date-range-container", never, { "firstDayOfWeek": { "alias": "clrFirstDayOfWeek"; "required": false; }; "showActionButtons": { "alias": "showActionButtons"; "required": false; }; "clrPosition": { "alias": "clrPosition"; "required": false; }; "rangeOptions": { "alias": "rangeOptions"; "required": false; }; "min": { "alias": "min"; "required": false; }; "max": { "alias": "max"; "required": false; }; }, {}, never, ["label", "[clrStartDate]", "[clrEndDate]", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
 /**
@@ -955,4 +982,5 @@ declare class ClrDatepickerModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatepickerModule>;
 }
 
-export { CLR_DATEPICKER_DIRECTIVES, ClrCalendar, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrEndDateInput, ClrEndDateInputValidator, ClrMonthpicker, ClrStartDateInput, ClrStartDateInputValidator, ClrYearpicker };
+export { CLR_DATEPICKER_DIRECTIVES, ClrCalendar, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrEndDateInput, ClrEndDateInputValidator, ClrMonthpicker, ClrStartDateInput, ClrStartDateInputValidator, ClrWeekday, ClrYearpicker };
+export type { ClrDayOfWeek };
