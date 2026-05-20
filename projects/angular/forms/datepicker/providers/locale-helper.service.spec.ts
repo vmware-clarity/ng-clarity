@@ -123,9 +123,9 @@ export default function () {
       expect(localeHelperServicePl.firstDayOfWeek).toBe(ClrWeekday.Monday);
     });
 
-    describe('overrideFirstDayOfWeek', () => {
+    describe('updateFirstDayOfWeek', () => {
       it('overrides the first day of the week using ClrWeekday enum', () => {
-        localeHelperServiceUS.overrideFirstDayOfWeek(ClrWeekday.Monday);
+        localeHelperServiceUS.updateFirstDayOfWeek(ClrWeekday.Monday);
         expect(localeHelperServiceUS.firstDayOfWeek).toBe(ClrWeekday.Monday);
 
         const days = localeHelperServiceUS.localeDaysNarrow;
@@ -134,10 +134,10 @@ export default function () {
       });
 
       it('reverts to locale default when override is set to null', () => {
-        localeHelperServiceUS.overrideFirstDayOfWeek(ClrWeekday.Monday);
+        localeHelperServiceUS.updateFirstDayOfWeek(ClrWeekday.Monday);
         expect(localeHelperServiceUS.firstDayOfWeek).toBe(ClrWeekday.Monday);
 
-        localeHelperServiceUS.overrideFirstDayOfWeek(null);
+        localeHelperServiceUS.updateFirstDayOfWeek(null);
         expect(localeHelperServiceUS.firstDayOfWeek).toBe(ClrWeekday.Sunday);
 
         const days = localeHelperServiceUS.localeDaysNarrow;
@@ -145,15 +145,15 @@ export default function () {
       });
 
       it('falls back to Sunday for invalid override values', () => {
-        localeHelperServiceUS.overrideFirstDayOfWeek(7 as ClrWeekday);
+        localeHelperServiceUS.updateFirstDayOfWeek(7 as ClrWeekday);
         expect(localeHelperServiceUS.firstDayOfWeek).toBe(ClrWeekday.Sunday);
 
-        localeHelperServiceUS.overrideFirstDayOfWeek(-1 as ClrWeekday);
+        localeHelperServiceUS.updateFirstDayOfWeek(-1 as ClrWeekday);
         expect(localeHelperServiceUS.firstDayOfWeek).toBe(ClrWeekday.Sunday);
       });
 
       it('allows override to ClrWeekday.Sunday explicitly', () => {
-        localeHelperServiceFr.overrideFirstDayOfWeek(ClrWeekday.Sunday);
+        localeHelperServiceFr.updateFirstDayOfWeek(ClrWeekday.Sunday);
         expect(localeHelperServiceFr.firstDayOfWeek).toBe(ClrWeekday.Sunday);
 
         const days = localeHelperServiceFr.localeDaysNarrow;
@@ -161,7 +161,7 @@ export default function () {
       });
 
       it('updates wide day names (localeDays) when overridden', () => {
-        localeHelperServiceUS.overrideFirstDayOfWeek(ClrWeekday.Monday);
+        localeHelperServiceUS.updateFirstDayOfWeek(ClrWeekday.Monday);
         const days = localeHelperServiceUS.localeDays;
         expect(days[0].day).toBe('Monday');
         expect(days[6].day).toBe('Sunday');
@@ -179,47 +179,47 @@ export default function () {
           ClrWeekday.Saturday,
         ];
         weekdays.forEach((weekday, i) => {
-          localeHelperServiceUS.overrideFirstDayOfWeek(weekday);
+          localeHelperServiceUS.updateFirstDayOfWeek(weekday);
           expect(localeHelperServiceUS.firstDayOfWeek).toBe(weekday);
           expect(localeHelperServiceUS.localeDaysNarrow[0]).toBe(expectedFirstNarrow[i]);
         });
       });
 
       it('allows switching between multiple override values', () => {
-        localeHelperServiceUS.overrideFirstDayOfWeek(ClrWeekday.Monday);
+        localeHelperServiceUS.updateFirstDayOfWeek(ClrWeekday.Monday);
         expect(localeHelperServiceUS.localeDaysNarrow[0]).toBe('M');
 
-        localeHelperServiceUS.overrideFirstDayOfWeek(ClrWeekday.Wednesday);
+        localeHelperServiceUS.updateFirstDayOfWeek(ClrWeekday.Wednesday);
         expect(localeHelperServiceUS.localeDaysNarrow[0]).toBe('W');
 
-        localeHelperServiceUS.overrideFirstDayOfWeek(ClrWeekday.Saturday);
+        localeHelperServiceUS.updateFirstDayOfWeek(ClrWeekday.Saturday);
         expect(localeHelperServiceUS.localeDaysNarrow[0]).toBe('S');
       });
 
       it('does not affect locale months when overriding first day', () => {
         const monthsBefore = localeHelperServiceUS.localeMonthsAbbreviated.slice();
-        localeHelperServiceUS.overrideFirstDayOfWeek(ClrWeekday.Wednesday);
+        localeHelperServiceUS.updateFirstDayOfWeek(ClrWeekday.Wednesday);
         expect(localeHelperServiceUS.localeMonthsAbbreviated).toEqual(monthsBefore);
       });
 
       it('does not affect locale date format when overriding first day', () => {
         const formatBefore = localeHelperServiceUS.localeDateFormat;
-        localeHelperServiceUS.overrideFirstDayOfWeek(ClrWeekday.Wednesday);
+        localeHelperServiceUS.updateFirstDayOfWeek(ClrWeekday.Wednesday);
         expect(localeHelperServiceUS.localeDateFormat).toBe(formatBefore);
       });
 
       it('resets to Sunday when an invalid value is provided after a valid one', () => {
-        localeHelperServiceUS.overrideFirstDayOfWeek(ClrWeekday.Tuesday);
+        localeHelperServiceUS.updateFirstDayOfWeek(ClrWeekday.Tuesday);
         expect(localeHelperServiceUS.firstDayOfWeek).toBe(ClrWeekday.Tuesday);
 
-        localeHelperServiceUS.overrideFirstDayOfWeek(10 as ClrWeekday);
+        localeHelperServiceUS.updateFirstDayOfWeek(10 as ClrWeekday);
         expect(localeHelperServiceUS.firstDayOfWeek).toBe(ClrWeekday.Sunday);
       });
 
       it('overrides fr locale from Monday to Sunday', () => {
         expect(localeHelperServiceFr.firstDayOfWeek).toBe(ClrWeekday.Monday);
 
-        localeHelperServiceFr.overrideFirstDayOfWeek(ClrWeekday.Sunday);
+        localeHelperServiceFr.updateFirstDayOfWeek(ClrWeekday.Sunday);
         expect(localeHelperServiceFr.firstDayOfWeek).toBe(ClrWeekday.Sunday);
 
         const narrowDays = localeHelperServiceFr.localeDaysNarrow;
@@ -238,7 +238,7 @@ export default function () {
           ClrWeekday.Saturday,
         ];
         weekdays.forEach(weekday => {
-          localeHelperServiceUS.overrideFirstDayOfWeek(weekday);
+          localeHelperServiceUS.updateFirstDayOfWeek(weekday);
           expect(localeHelperServiceUS.localeDays.length).toBe(7);
           expect(localeHelperServiceUS.localeDaysNarrow.length).toBe(7);
         });
