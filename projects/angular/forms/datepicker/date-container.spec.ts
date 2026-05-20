@@ -5,7 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+import { Component, LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import {
@@ -21,6 +23,7 @@ import { ClrPopoverPosition, ClrPopoverService } from '@clr/angular/popover/comm
 import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 
 import { ClrDateContainer } from './date-container';
+import { ClrWeekday } from './enums/weekday.enum';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -29,6 +32,8 @@ import { DatepickerEnabledService } from './providers/datepicker-enabled.service
 import { MockDatepickerEnabledService } from './providers/datepicker-enabled.service.mock';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
+
+registerLocaleData(localeDe);
 
 const DATEPICKER_PROVIDERS: any[] = [
   ClrPopoverService,
@@ -231,6 +236,86 @@ export default function () {
       });
     });
   });
+
+  describe('Date Container with firstDayOfWeek', () => {
+    let context: TestContext<ClrDateContainer, TestComponentWithFirstDay>;
+    let localeHelperService: LocaleHelperService;
+
+    beforeEach(function () {
+      TestBed.configureTestingModule({
+        imports: [FormsModule, ClrCommonFormsModule],
+      });
+      TestBed.overrideComponent(ClrDateContainer, {
+        set: {
+          providers: [{ provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService }],
+        },
+      });
+
+      context = this.create(ClrDateContainer, TestComponentWithFirstDay, DATEPICKER_PROVIDERS);
+      localeHelperService = context.getClarityProvider(LocaleHelperService);
+    });
+
+    it('overrides first day of week via the clrFirstDayOfWeek input', () => {
+      context.testComponent.firstDayOfWeek = ClrWeekday.Monday;
+      context.detectChanges();
+      expect(localeHelperService.firstDayOfWeek).toBe(ClrWeekday.Monday);
+    });
+
+    it('updates locale day headers when first day of week is overridden', () => {
+      expect(localeHelperService.localeDays[0].day).toBe('Sunday');
+
+      context.testComponent.firstDayOfWeek = ClrWeekday.Monday;
+      context.detectChanges();
+
+      expect(localeHelperService.localeDays[0].day).toBe('Monday');
+      expect(localeHelperService.localeDays[6].day).toBe('Sunday');
+    });
+
+    it('supports setting first day of week to ClrWeekday.Saturday', () => {
+      context.testComponent.firstDayOfWeek = ClrWeekday.Saturday;
+      context.detectChanges();
+      expect(localeHelperService.firstDayOfWeek).toBe(ClrWeekday.Saturday);
+      expect(localeHelperService.localeDays[0].day).toBe('Saturday');
+      expect(localeHelperService.localeDays[1].day).toBe('Sunday');
+    });
+  });
+
+  describe('Date Container with DE locale firstDayOfWeek', () => {
+    let context: TestContext<ClrDateContainer, TestComponentWithFirstDay>;
+    let localeHelperService: LocaleHelperService;
+
+    beforeEach(function () {
+      TestBed.configureTestingModule({
+        imports: [FormsModule, ClrCommonFormsModule],
+      });
+      TestBed.overrideComponent(ClrDateContainer, {
+        set: {
+          providers: [{ provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService }],
+        },
+      });
+
+      context = this.create(ClrDateContainer, TestComponentWithFirstDay, [
+        ...DATEPICKER_PROVIDERS,
+        { provide: LOCALE_ID, useValue: 'de' },
+      ]);
+      localeHelperService = context.getClarityProvider(LocaleHelperService);
+      context.detectChanges();
+    });
+
+    it('reverts to locale default when firstDayOfWeek is cleared', () => {
+      console.log(localeHelperService.firstDayOfWeek);
+
+      expect(localeHelperService.firstDayOfWeek).toBe(ClrWeekday.Monday);
+
+      context.testComponent.firstDayOfWeek = ClrWeekday.Wednesday;
+      context.detectChanges();
+      expect(localeHelperService.firstDayOfWeek).toBe(ClrWeekday.Wednesday);
+
+      context.testComponent.firstDayOfWeek = null;
+      context.detectChanges();
+      expect(localeHelperService.firstDayOfWeek).toBe(ClrWeekday.Monday);
+    });
+  });
 }
 
 @Component({
@@ -247,4 +332,18 @@ class TestComponent {
   model = '';
   disabled = false;
   position: ClrPopoverPosition;
+}
+
+@Component({
+  template: `
+    <clr-date-container [clrFirstDayOfWeek]="firstDayOfWeek">
+      <input type="date" clrDate [(ngModel)]="model" autocomplete="off" />
+    </clr-date-container>
+  `,
+  providers: [FormsFocusService],
+  standalone: false,
+})
+class TestComponentWithFirstDay {
+  model = '';
+  firstDayOfWeek: ClrWeekday = null;
 }
