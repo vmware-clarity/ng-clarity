@@ -64,7 +64,7 @@ export class LocaleHelperService {
    * Accepts a `ClrWeekday` value (Sunday=0 through Saturday=6), or null to revert to locale default.
    * Incorrect values will revert to default value (Sunday).
    */
-  overrideFirstDayOfWeek(day: ClrWeekday | null): void {
+  updateFirstDayOfWeek(day: ClrWeekday | null): void {
     if (day === null || day < ClrWeekday.Sunday || day > ClrWeekday.Saturday) {
       this.initializeLocaleFirstDayOfWeek();
       this.initializeLocaleDays();

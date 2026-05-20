@@ -11,8 +11,8 @@ import {
   ClrAlertModule,
   ClrCommonFormsModule,
   ClrDatepickerModule,
-  ClrNumberInputModule,
   ClrPopoverHostDirective,
+  ClrSelectModule,
   ClrStopEscapePropagationDirective,
   ClrWeekday,
 } from '@clr/angular';
@@ -131,7 +131,7 @@ export class ExampleComponent {
     ClrStopEscapePropagationDirective,
     ClrPopoverHostDirective,
     ClrDatepickerModule,
-    ClrNumberInputModule,
+    ClrSelectModule,
     StackblitzExampleComponent,
     ClrAlertModule,
   ],
@@ -155,6 +155,17 @@ export class DatepickerAPIDemo {
   firstDayOfWeekExample = FIRST_DAY_OF_WEEK_EXAMPLE;
   firstDayOfWeekExampleTs = FIRST_DAY_OF_WEEK_EXAMPLE_TS;
 
+  weekdayOptions: { label: string; value: ClrWeekday }[] = [
+    { label: 'Locale Default', value: null },
+    { label: ClrWeekday[0], value: ClrWeekday.Sunday },
+    { label: ClrWeekday[1], value: ClrWeekday.Monday },
+    { label: ClrWeekday[2], value: ClrWeekday.Tuesday },
+    { label: ClrWeekday[3], value: ClrWeekday.Wednesday },
+    { label: ClrWeekday[4], value: ClrWeekday.Thursday },
+    { label: ClrWeekday[5], value: ClrWeekday.Friday },
+    { label: ClrWeekday[6], value: ClrWeekday.Saturday },
+  ];
+
   demo: string | undefined;
   minDemo: string | undefined;
   maxDemo: string | undefined;
@@ -163,8 +174,4 @@ export class DatepickerAPIDemo {
   firstDayDemo: string | undefined;
 
   firstDayOfWeek: ClrWeekday = null;
-
-  onFirstDayChange(value: string): void {
-    this.firstDayOfWeek = value === '' ? null : (Number(value) as ClrWeekday);
-  }
 }

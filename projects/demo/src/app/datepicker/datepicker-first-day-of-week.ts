@@ -17,14 +17,21 @@ import { ClrWeekday } from '@clr/angular';
 export class DatepickerFirstDayOfWeekDemo {
   firstDayOfWeek: ClrWeekday = null;
 
+  weekdayOptions: { label: string; value: ClrWeekday }[] = [
+    { label: 'Locale Default', value: null },
+    { label: ClrWeekday[0], value: ClrWeekday.Sunday },
+    { label: ClrWeekday[1], value: ClrWeekday.Monday },
+    { label: ClrWeekday[2], value: ClrWeekday.Tuesday },
+    { label: ClrWeekday[3], value: ClrWeekday.Wednesday },
+    { label: ClrWeekday[4], value: ClrWeekday.Thursday },
+    { label: ClrWeekday[5], value: ClrWeekday.Friday },
+    { label: ClrWeekday[6], value: ClrWeekday.Saturday },
+  ];
+
   get firstDayLabel(): string {
     if (this.firstDayOfWeek === null) {
       return 'locale default';
     }
     return ClrWeekday[this.firstDayOfWeek];
-  }
-
-  onFirstDayChange(value: string) {
-    this.firstDayOfWeek = value === '' ? null : (Number(value) as ClrWeekday);
   }
 }

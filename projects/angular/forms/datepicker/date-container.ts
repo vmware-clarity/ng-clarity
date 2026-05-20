@@ -156,7 +156,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
    */
   @Input('clrFirstDayOfWeek')
   set firstDayOfWeek(value: ClrWeekday | null) {
-    this.localeHelperService.overrideFirstDayOfWeek(value ?? null);
+    this.localeHelperService.updateFirstDayOfWeek(value ?? null);
   }
 
   /**

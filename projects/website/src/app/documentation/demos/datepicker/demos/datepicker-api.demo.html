@@ -129,22 +129,17 @@
   of the user's locale.
 </p>
 <form clrForm clrLayout="vertical">
-  <clr-number-input-container>
+  <clr-select-container>
     <label>First day of week</label>
-    <input
-      clrNumberInput
-      type="number"
-      min="0"
-      max="6"
-      [value]="firstDayOfWeek ?? ''"
-      (input)="onFirstDayChange($any($event.target).value)"
-      placeholder="Locale default"
-      style="min-width: 150px"
-    />
+    <select clrSelect name="firstDayOfWeek" [(ngModel)]="firstDayOfWeek">
+      @for (option of weekdayOptions; track option.value) {
+      <option [ngValue]="option.value">{{ option.label }}</option>
+      }
+    </select>
     <clr-control-helper
-      >0 = Sunday, 1 = Monday, &hellip;, 6 = Saturday. Leave empty for locale default.</clr-control-helper
+      >Select &quot;Locale default&quot; to revert to the value derived from the Angular locale.</clr-control-helper
     >
-  </clr-number-input-container>
+  </clr-select-container>
   <clr-date-container [clrFirstDayOfWeek]="firstDayOfWeek">
     <label>Pick a date</label>
     <input type="date" autocomplete="off" clrDate name="firstDayDemo" [(ngModel)]="firstDayDemo" />
