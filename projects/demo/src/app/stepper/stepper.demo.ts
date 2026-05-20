@@ -34,6 +34,23 @@ export class StepperDemo {
   };
   loading = false;
 
+  // CDE-3088 demo form: required fields to observe whether typing in one incorrectly touches its siblings.
+  validateNoSiblingForm = new FormGroup({
+    person: new FormGroup({
+      firstName: new FormControl('', Validators.required),
+      lastName: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+    }),
+  });
+
+  get validateNoSiblingFormGroup(): FormGroup {
+    return this.validateNoSiblingForm.get('person') as FormGroup;
+  }
+
+  resetValidateNoSiblingForm() {
+    this.validateNoSiblingForm.reset();
+  }
+
   loadingDemo() {
     this.state = ClrLoadingState.LOADING;
     setTimeout(() => {

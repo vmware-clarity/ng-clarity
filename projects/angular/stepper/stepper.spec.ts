@@ -210,7 +210,7 @@ describe('ClrStepper', () => {
     });
   });
 
-  describe('CDE-3088: typing in a single touched control should not validate all sibling controls', () => {
+  describe('CDE-3088: typing in a single touched control should not validate sibling controls', () => {
     let fixture: ComponentFixture<MultiFieldReactiveFormsTestComponent>;
     let stepperService: StepperService;
 
@@ -225,24 +225,23 @@ describe('ClrStepper', () => {
       stepperService = fixture.debugElement.query(By.directive(ClrStepper)).injector.get(StepperService);
     });
 
-    it('should not call setPanelInvalid when typing in one touched control while siblings remain invalid', () => {
+    it('should not call setPanelInvalid when typing in one touched control while the form remains invalid', () => {
       spyOn(stepperService, 'setPanelInvalid');
       const group = fixture.componentInstance.form.controls.group as FormGroup;
 
-      // Simulate blur on firstName (touches it but does not fill in lastName)
+      // simulate blur of firstName (touches it but leaves lastName empty)
       group.controls.firstName.markAsTouched();
       fixture.detectChanges();
 
-      // Simulate typing a letter into firstName — form stays INVALID because lastName is still empty
+      // simulate typing a letter into firstName; the group stays INVALID because lastName is still empty
       group.controls.firstName.setValue('J');
       fixture.detectChanges();
 
-      // Only one control was touched; the panel should NOT be forced into an error state
-      // because the status did not actually transition (remained INVALID throughout)
+      // the panel status did not actually transition (INVALID -> INVALID), so setPanelInvalid must not fire
       expect(stepperService.setPanelInvalid).not.toHaveBeenCalled();
     });
 
-    it('should not mark sibling controls as touched when typing in one control', () => {
+    it('should not mark sibling controls as touched or dirty when typing in one control', () => {
       const group = fixture.componentInstance.form.controls.group as FormGroup;
 
       group.controls.firstName.markAsTouched();
@@ -250,6 +249,24 @@ describe('ClrStepper', () => {
       fixture.detectChanges();
 
       expect(group.controls.lastName.touched).toBe(false);
+      expect(group.controls.lastName.dirty).toBe(false);
+    });
+
+    it('should still call setPanelValid on a genuine INVALID -> VALID transition', () => {
+      spyOn(stepperService, 'setPanelValid');
+      const group = fixture.componentInstance.form.controls.group as FormGroup;
+
+      // touch + fill firstName
+      group.controls.firstName.markAsTouched();
+      group.controls.firstName.setValue('John');
+      fixture.detectChanges();
+
+      // touch + fill lastName -> form transitions from INVALID to VALID
+      group.controls.lastName.markAsTouched();
+      group.controls.lastName.setValue('Doe');
+      fixture.detectChanges();
+
+      expect(stepperService.setPanelValid).toHaveBeenCalledTimes(1);
     });
   });
 

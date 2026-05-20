@@ -24,7 +24,7 @@ import { FormGroupName, NgModelGroup } from '@angular/forms';
 import { CollapsiblePanel, collapsiblePanelAnimation } from '@clr/angular/collapsible-panel';
 import { ClrCommonStringsService, IfExpandService, triggerAllFormControlValidation } from '@clr/angular/utils';
 import { Observable, Subscription } from 'rxjs';
-import { distinctUntilChanged, filter, map, pairwise, startWith, tap } from 'rxjs/operators';
+import { filter, map, pairwise, startWith, tap } from 'rxjs/operators';
 
 import { StepperPanelStatus } from './enums/stepper-panel-status.enum';
 import { StepperPanelModel } from './models/stepper-panel.model';
@@ -112,8 +112,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
             startWith(this.formGroup.status),
             pairwise(),
             filter(([prev, curr]) => prev !== curr),
-            map(([, curr]) => curr),
-            distinctUntilChanged()
+            map(([, curr]) => curr)
           )
           .subscribe(status => {
             if (!this.formGroup.touched) {
