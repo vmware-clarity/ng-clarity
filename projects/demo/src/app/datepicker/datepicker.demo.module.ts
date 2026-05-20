@@ -16,6 +16,7 @@ import { DatepickerARDemo } from './datepicker-AR';
 import { DatepickerDateInputDemo } from './datepicker-date-input';
 import { DatepickerDateInputExplicitWrapperDemo } from './datepicker-date-input-explicit-wrapper';
 import { DatepickerDEDemo } from './datepicker-DE';
+import { DatepickerFirstDayOfWeekDemo } from './datepicker-first-day-of-week';
 import { DatepickerHIDemo } from './datepicker-HI';
 import { DatepickerHRDemo } from './datepicker-hr';
 import { DatepickerInReactiveForms } from './datepicker-in-reactive-forms';
@@ -55,6 +56,7 @@ import { NgModelExplicitWrapperDemo } from './ngmodel-wrapper-explicit-wrapper';
     DatepickerMinMaxDemo,
     DateRangePickerDemo,
     DatePickerWithActionButtonsDemo,
+    DatepickerFirstDayOfWeekDemo,
   ],
   exports: [
     DatepickerDemo,
@@ -77,6 +79,7 @@ import { NgModelExplicitWrapperDemo } from './ngmodel-wrapper-explicit-wrapper';
     DatepickerMinMaxDemo,
     DateRangePickerDemo,
     DatePickerWithActionButtonsDemo,
+    DatepickerFirstDayOfWeekDemo,
   ],
 })
 export class DatepickerDemoModule {}
