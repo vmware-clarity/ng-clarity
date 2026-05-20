@@ -24,7 +24,7 @@ import { FormGroupName, NgModelGroup } from '@angular/forms';
 import { CollapsiblePanel, collapsiblePanelAnimation } from '@clr/angular/collapsible-panel';
 import { ClrCommonStringsService, IfExpandService, triggerAllFormControlValidation } from '@clr/angular/utils';
 import { Observable, Subscription } from 'rxjs';
-import { distinctUntilChanged, filter, skipUntil, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, pairwise, startWith, tap } from 'rxjs/operators';
 
 import { StepperPanelStatus } from './enums/stepper-panel-status.enum';
 import { StepperPanelModel } from './models/stepper-panel.model';
@@ -100,21 +100,32 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
 
     // not all stepper panels are guaranteed to have a form (i.e. empty template-driven)
     if (this.formGroup) {
-      // set panel status on form status change only after the form becomes invalid
-      const invalidStatusTrigger = this.formGroup.statusChanges.pipe(filter(status => status === 'INVALID'));
-
+      // Only react to genuine status transitions (e.g. INVALID→VALID or VALID→INVALID).
+      // Using startWith to seed the stream with the current status so that repeated
+      // same-status emissions produced by Angular's updateValueAndValidity() calls
+      // (which always emit even when the status hasn't changed) are filtered out.
+      // This prevents a single blurred+typed control from triggering validation on
+      // all sibling controls in the group via triggerAllFormControlValidation.
       this.subscriptions.push(
-        this.formGroup.statusChanges.pipe(skipUntil(invalidStatusTrigger), distinctUntilChanged()).subscribe(status => {
-          if (!this.formGroup.touched) {
-            return;
-          }
+        this.formGroup.statusChanges
+          .pipe(
+            startWith(this.formGroup.status),
+            pairwise(),
+            filter(([prev, curr]) => prev !== curr),
+            map(([, curr]) => curr),
+            distinctUntilChanged()
+          )
+          .subscribe(status => {
+            if (!this.formGroup.touched) {
+              return;
+            }
 
-          if (status === 'VALID') {
-            this.stepperService.setPanelValid(this.id);
-          } else if (status === 'INVALID') {
-            this.stepperService.setPanelInvalid(this.id);
-          }
-        })
+            if (status === 'VALID') {
+              this.stepperService.setPanelValid(this.id);
+            } else if (status === 'INVALID') {
+              this.stepperService.setPanelInvalid(this.id);
+            }
+          })
       );
     }
   }
