@@ -12,7 +12,9 @@ import {
   ClrCommonFormsModule,
   ClrDatepickerModule,
   ClrPopoverHostDirective,
+  ClrSelectModule,
   ClrStopEscapePropagationDirective,
+  ClrWeekday,
 } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
@@ -74,6 +76,35 @@ const WITH_ACTION_BUTTONS_EXAMPLE = `
 </form>
 `;
 
+const FIRST_DAY_OF_WEEK_EXAMPLE = `
+<form clrForm>
+  <clr-date-container [clrFirstDayOfWeek]="firstDayOfWeek">
+    <label>Pick a date</label>
+    <input type="date" autocomplete="off" clrDate name="firstDayDemo" [(ngModel)]="value" />
+  </clr-date-container>
+</form>
+`;
+
+const FIRST_DAY_OF_WEEK_EXAMPLE_TS = `
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ClrFormsModule, ClrWeekday } from '@clr/angular';
+
+@Component({
+  selector: 'app-example',
+  templateUrl: './example.component.html',
+  styleUrl: './example.component.scss',
+
+  imports: [FormsModule, ClrFormsModule],
+})
+export class ExampleComponent {
+  value: string | undefined;
+
+  // Force Monday to be the first day of the week regardless of locale.
+  firstDayOfWeek: ClrWeekday = ClrWeekday.Monday;
+}
+`;
+
 const COMMON_EXAMPLE_TS = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -100,6 +131,7 @@ export class ExampleComponent {
     ClrStopEscapePropagationDirective,
     ClrPopoverHostDirective,
     ClrDatepickerModule,
+    ClrSelectModule,
     StackblitzExampleComponent,
     ClrAlertModule,
   ],
@@ -120,9 +152,26 @@ export class DatepickerAPIDemo {
   withActionButtonsExample = WITH_ACTION_BUTTONS_EXAMPLE;
   withActionButtonsExampleTs = COMMON_EXAMPLE_TS;
 
+  firstDayOfWeekExample = FIRST_DAY_OF_WEEK_EXAMPLE;
+  firstDayOfWeekExampleTs = FIRST_DAY_OF_WEEK_EXAMPLE_TS;
+
+  weekdayOptions: { label: string; value: ClrWeekday }[] = [
+    { label: 'Locale Default', value: null },
+    { label: ClrWeekday[0], value: ClrWeekday.Sunday },
+    { label: ClrWeekday[1], value: ClrWeekday.Monday },
+    { label: ClrWeekday[2], value: ClrWeekday.Tuesday },
+    { label: ClrWeekday[3], value: ClrWeekday.Wednesday },
+    { label: ClrWeekday[4], value: ClrWeekday.Thursday },
+    { label: ClrWeekday[5], value: ClrWeekday.Friday },
+    { label: ClrWeekday[6], value: ClrWeekday.Saturday },
+  ];
+
   demo: string | undefined;
   minDemo: string | undefined;
   maxDemo: string | undefined;
   minMaxDemo: string | undefined;
   actionButtonsDemo: string | undefined;
+  firstDayDemo: string | undefined;
+
+  firstDayOfWeek: ClrWeekday = null;
 }
