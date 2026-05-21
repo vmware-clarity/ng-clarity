@@ -7,6 +7,101 @@
 
 <h1>Stepper</h1>
 
+<!-- ─── CDE-3088 regression demo ─────────────────────────────────────────────
+     Bug: typing in one touched control triggered validation for ALL controls.
+     Expected: only the control that was actually interacted with shows errors.
+
+     How to reproduce the original bug (before the fix):
+       1. Click the "First Name" field.
+       2. Click outside it (blur) — it becomes touched.
+       3. Type a single letter inside it.
+       4. Click outside it (blur).
+       5. The status table below should NOT show lastName or email as touched/invalid.
+          If they appear invalid immediately, the bug is present.
+──────────────────────────────────────────────────────────────────────────── -->
+<h2>CDE-3088 – Single control change should not validate siblings</h2>
+<p>
+  Steps to verify:
+  <strong>1</strong> click "First Name" → <strong>2</strong> click outside (blur) → <strong>3</strong> type a letter →
+  <strong>4</strong> click outside (blur). Only "First Name" row should become touched; "Last Name" and "Email" must
+  stay <em>untouched</em> until you interact with them directly.
+</p>
+
+<button class="btn btn-sm btn-outline" (click)="resetValidateNoSiblingForm()">Reset</button>
+
+<form clrStepper [formGroup]="validateNoSiblingForm">
+  <clr-stepper-panel formGroupName="person">
+    <clr-step-title>Personal Details</clr-step-title>
+    <clr-step-description>All three fields are required — interact with only one at a time.</clr-step-description>
+    <clr-step-content *clrIfExpanded>
+      <clr-input-container>
+        <label>First Name</label>
+        <input clrInput formControlName="firstName" />
+        <clr-control-error *clrIfError="'required'">First Name is required</clr-control-error>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>Last Name</label>
+        <input clrInput formControlName="lastName" />
+        <clr-control-error *clrIfError="'required'">Last Name is required</clr-control-error>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>Email</label>
+        <input clrInput formControlName="email" />
+        <clr-control-error *clrIfError="'required'">Email is required</clr-control-error>
+        <clr-control-error *clrIfError="'email'">Must be a valid email</clr-control-error>
+      </clr-input-container>
+
+      <button clrStepButton="next">next</button>
+    </clr-step-content>
+  </clr-stepper-panel>
+</form>
+
+<!-- Live status table ──────────────────────────────────────────────────────── -->
+<h4>Control states (live)</h4>
+<table class="table table-compact">
+  <thead>
+    <tr>
+      <th>Control</th>
+      <th>touched</th>
+      <th>dirty</th>
+      <th>invalid</th>
+      <th>value</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (key of ['firstName', 'lastName', 'email']; track key) {
+    <tr [class.validate-no-sibling-row--touched]="validateNoSiblingFormGroup.get(key)?.touched">
+      <td><code>{{ key }}</code></td>
+      <td [class.validate-no-sibling-cell--active]="validateNoSiblingFormGroup.get(key)?.touched">
+        {{ validateNoSiblingFormGroup.get(key)?.touched }}
+      </td>
+      <td [class.validate-no-sibling-cell--active]="validateNoSiblingFormGroup.get(key)?.dirty">
+        {{ validateNoSiblingFormGroup.get(key)?.dirty }}
+      </td>
+      <td
+        [class.validate-no-sibling-cell--warn]="validateNoSiblingFormGroup.get(key)?.invalid && validateNoSiblingFormGroup.get(key)?.touched"
+      >
+        {{ validateNoSiblingFormGroup.get(key)?.invalid }}
+      </td>
+      <td><em>{{ validateNoSiblingFormGroup.get(key)?.value || '(empty)' }}</em></td>
+    </tr>
+    }
+    <tr class="validate-no-sibling-group-row">
+      <td><strong>group</strong></td>
+      <td [class.validate-no-sibling-cell--active]="validateNoSiblingFormGroup.touched">
+        {{ validateNoSiblingFormGroup.touched }}
+      </td>
+      <td [class.validate-no-sibling-cell--active]="validateNoSiblingFormGroup.dirty">
+        {{ validateNoSiblingFormGroup.dirty }}
+      </td>
+      <td>{{ validateNoSiblingFormGroup.invalid }}</td>
+      <td>—</td>
+    </tr>
+  </tbody>
+</table>
+
 <h2>Stepper with a nested Accordion inside it</h2>
 
 <form clrStepper clrForm [formGroup]="form">
