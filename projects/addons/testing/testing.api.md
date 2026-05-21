@@ -228,6 +228,8 @@ export class GridRowTestHelper {
     // (undocumented)
     getSingleRowActionMenuItem(menuItemName: string): HTMLButtonElement | undefined;
     // (undocumented)
+    isExpanded(): boolean;
+    // (undocumented)
     isRowClickable(): boolean;
     // (undocumented)
     isRowExpandable(): boolean;
