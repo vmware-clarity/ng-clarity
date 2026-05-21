@@ -16,6 +16,7 @@ import {
 } from '@angular/common';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 
+import { ClrWeekday } from '../enums/weekday.enum';
 import { ClrDayOfWeek } from '../interfaces/day-of-week.interface';
 
 /**
@@ -23,7 +24,7 @@ import { ClrDayOfWeek } from '../interfaces/day-of-week.interface';
  */
 @Injectable()
 export class LocaleHelperService {
-  private _firstDayOfWeek = 0;
+  private _firstDayOfWeek: number = ClrWeekday.Sunday;
   private _localeDays: ReadonlyArray<ClrDayOfWeek>;
   private _localeMonthsAbbreviated: ReadonlyArray<string>;
   private _localeMonthsWide: ReadonlyArray<string>;
@@ -59,11 +60,29 @@ export class LocaleHelperService {
   }
 
   /**
+   * Overrides the first day of the week regardless of locale.
+   * Accepts a `ClrWeekday` value (Sunday=0 through Saturday=6), or null to revert to locale default.
+   * Incorrect values will revert to default value (Sunday).
+   */
+  updateFirstDayOfWeek(day: ClrWeekday | null): void {
+    if (day === null || day < ClrWeekday.Sunday || day > ClrWeekday.Saturday) {
+      this.initializeLocaleFirstDayOfWeek();
+      this.initializeLocaleDays();
+
+      return;
+    }
+
+    this._firstDayOfWeek = day;
+
+    this.initializeLocaleDays();
+  }
+
+  /**
    * Initializes the locale data.
    */
   private initializeLocaleData(): void {
     // Order in which these functions is called is very important.
-    this.initializeFirstDayOfWeek();
+    this.initializeLocaleFirstDayOfWeek();
     this.initializeLocaleDateFormat();
     this.initializeLocaleMonthsAbbreviated();
     this.initializeLocaleMonthsWide();
@@ -83,16 +102,17 @@ export class LocaleHelperService {
       FormStyle.Standalone,
       TranslationWidth.Narrow
     ).slice();
-    // Get first day of the week based on the locale
-    const firstDayOfWeek: number = this.firstDayOfWeek;
+
     for (let i = 0; i < 7; i++) {
       tempArr.push({ day: tempWideArr[i], narrow: tempNarrowArr[i] });
     }
-    // Rearrange the tempArr to start with the first day of the week based on the locale.
-    if (firstDayOfWeek > 0) {
-      const prevDays: { day: string; narrow: string }[] = tempArr.splice(0, firstDayOfWeek);
+
+    // Rearrange the tempArr to start with the first day of the week based on the locale (default or override).
+    if (this.firstDayOfWeek > ClrWeekday.Sunday) {
+      const prevDays: { day: string; narrow: string }[] = tempArr.splice(0, this.firstDayOfWeek);
       tempArr.push(...prevDays);
     }
+
     this._localeDays = tempArr;
   }
 
@@ -119,7 +139,7 @@ export class LocaleHelperService {
   /**
    * Initializes the first day of the week based on the locale.
    */
-  private initializeFirstDayOfWeek(): void {
+  private initializeLocaleFirstDayOfWeek(): void {
     this._firstDayOfWeek = getLocaleFirstDayOfWeek(this.locale);
   }
 
