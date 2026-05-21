@@ -24,6 +24,7 @@ import {
 import { ClrCommonStringsService } from '@clr/angular/utils';
 import { startWith } from 'rxjs/operators';
 
+import { ClrWeekday } from './enums/weekday.enum';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -124,7 +125,8 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     private viewManagerService: ViewManagerService,
     protected override controlClassService: ControlClassService,
     @Optional() protected override layoutService: LayoutService,
-    protected override ngControlService: NgControlService
+    protected override ngControlService: NgControlService,
+    private localeHelperService: LocaleHelperService
   ) {
     super(layoutService, controlClassService, ngControlService);
 
@@ -145,6 +147,16 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
       dateNavigationService.hasActionButtons = dateNavigationService.isRangePicker =
         tagName === 'clr-date-range-container';
     }
+  }
+
+  /**
+   * Overrides the locale-derived first day of the week for the calendar.
+   * Accepts a `ClrWeekday` value (Sunday=0 through Saturday=6).
+   * When not set, the first day of the week is determined by the Angular locale.
+   */
+  @Input('clrFirstDayOfWeek')
+  set firstDayOfWeek(value: ClrWeekday | null) {
+    this.localeHelperService.updateFirstDayOfWeek(value ?? null);
   }
 
   /**
