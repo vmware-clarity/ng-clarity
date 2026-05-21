@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component, Injectable, PLATFORM_ID, HostBindin
 import { CollapsiblePanelModel, CollapsiblePanelGroupModel, CollapsiblePanelService, CollapsiblePanel, collapsiblePanelAnimation } from '@clr/angular/collapsible-panel';
 import * as i1 from '@clr/angular/utils';
 import { triggerAllFormControlValidation, IfExpandService, WillyWonka, OompaLoompa } from '@clr/angular/utils';
-import { map, distinctUntilChanged, tap, filter, skipUntil, startWith } from 'rxjs/operators';
+import { map, distinctUntilChanged, tap, startWith, pairwise, filter } from 'rxjs/operators';
 import * as i2 from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import * as i5 from '@clr/angular/icon';
@@ -320,9 +320,15 @@ class ClrStepperPanel extends CollapsiblePanel {
         this.listenToFocusChanges();
         // not all stepper panels are guaranteed to have a form (i.e. empty template-driven)
         if (this.formGroup) {
-            // set panel status on form status change only after the form becomes invalid
-            const invalidStatusTrigger = this.formGroup.statusChanges.pipe(filter(status => status === 'INVALID'));
-            this.subscriptions.push(this.formGroup.statusChanges.pipe(skipUntil(invalidStatusTrigger), distinctUntilChanged()).subscribe(status => {
+            // Only react to genuine status transitions (e.g. INVALID→VALID or VALID→INVALID).
+            // Using startWith to seed the stream with the current status so that repeated
+            // same-status emissions produced by Angular's updateValueAndValidity() calls
+            // (which always emit even when the status hasn't changed) are filtered out.
+            // This prevents a single blurred+typed control from triggering validation on
+            // all sibling controls in the group via triggerAllFormControlValidation.
+            this.subscriptions.push(this.formGroup.statusChanges
+                .pipe(startWith(this.formGroup.status), pairwise(), filter(([prev, curr]) => prev !== curr), map(([, curr]) => curr))
+                .subscribe(status => {
                 if (!this.formGroup.touched) {
                     return;
                 }
