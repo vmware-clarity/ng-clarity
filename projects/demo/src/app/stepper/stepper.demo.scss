@@ -7,3 +7,21 @@
 .clr-accordion {
   max-width: var(--cds-global-layout-width-md);
 }
+
+.validate-no-sibling-cell--active {
+  color: var(--cds-alias-status-success);
+  font-weight: 600;
+}
+
+.validate-no-sibling-cell--warn {
+  color: var(--cds-alias-status-danger);
+  font-weight: 600;
+}
+
+.validate-no-sibling-group-row td {
+  background-color: var(--cds-alias-object-container-background-tint);
+}
+
+.validate-no-sibling-row--touched {
+  background-color: var(--cds-alias-status-success-tint);
+}
