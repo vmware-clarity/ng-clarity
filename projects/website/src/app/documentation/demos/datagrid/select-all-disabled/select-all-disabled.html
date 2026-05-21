@@ -1,0 +1,96 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2 class="clr-mt-48px" cds-text="title">Disable Select All</h2>
+
+<p class="clr-mt-16px" cds-text="body">
+  The <code cds-text="code">clrDgSelectAllDisabled</code> input disables the "select all" checkbox in the datagrid
+  header, preventing users from selecting or deselecting all rows at once. Individual row checkboxes remain fully
+  functional.
+</p>
+
+<h3 class="clr-mt-32px" cds-text="section">When to use</h3>
+
+<p class="clr-mt-16px" cds-text="body">Disabling the "select all" checkbox is useful in the following scenarios:</p>
+<ul class="list list-spacer">
+  <li>
+    <strong>Loading state</strong> &mdash; While data is being fetched from the server, disable the checkbox to prevent
+    users from interacting with the selection before the data is ready.
+  </li>
+  <li>
+    <strong>Restricted bulk operations</strong> &mdash; When your application has business rules that prohibit bulk
+    selection (e.g., the user does not have permission to perform bulk actions, or the dataset is too large for bulk
+    selection).
+  </li>
+  <li>
+    <strong>Conditional availability</strong> &mdash; When the ability to select all rows depends on external state,
+    such as a workflow step or a feature flag.
+  </li>
+</ul>
+
+<h3 class="clr-mt-32px" cds-text="section">Basic usage</h3>
+
+<p class="clr-mt-16px" cds-text="body">
+  Set <code cds-text="code">[clrDgSelectAllDisabled]</code> to <code cds-text="code">true</code> on the
+  <code cds-text="code">&lt;clr-datagrid&gt;</code> component to disable the "select all" checkbox. The default value is
+  <code cds-text="code">false</code>.
+</p>
+
+<app-code-snippet [code]="examples.basicUsage" language="html"></app-code-snippet>
+
+<h3 class="clr-mt-32px" cds-text="section">Example</h3>
+
+<p class="clr-mt-16px clr-mb-16px" cds-text="body">
+  Toggle the checkbox below to enable or disable the "select all" checkbox in the datagrid header. Individual row
+  checkboxes are not affected.
+</p>
+
+<div class="card">
+  <p class="card-block" cds-layout="m-t:none">
+    <clr-checkbox-container cds-layout="m-t:none">
+      <label>Select all</label>
+      <clr-checkbox-wrapper>
+        <input clrToggle type="checkbox" [(ngModel)]="selectAllDisabled" />
+        <label>{{ selectAllDisabled ? 'Disabled' : 'Active' }}</label>
+      </clr-checkbox-wrapper>
+    </clr-checkbox-container>
+  </p>
+  <p class="card-block username-list" cds-layout="m-t:none">
+    Selected users: @if (selected.length == 0) {
+    <em>No user selected.</em>
+    } @for (user of selected; track user) {
+    <span class="username">{{ user.name }}</span>
+    }
+  </p>
+</div>
+
+<clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'" [clrDgSelectAllDisabled]="selectAllDisabled">
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>Favorite color</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Disable Select All"
+  [componentTemplate]="examples.main"
+  [componentClass]="examples.componentTS"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>
