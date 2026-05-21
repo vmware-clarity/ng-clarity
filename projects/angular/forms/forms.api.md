@@ -167,7 +167,6 @@ export class ClrCalendar implements OnDestroy {
     calendarViewModel: CalendarViewModel;
     // (undocumented)
     get focusedDay(): DayModel;
-    // Warning: (ae-forgotten-export) The symbol "ClrDayOfWeek" needs to be exported by the entry point clr-angular-forms.d.ts
     get localeDays(): ReadonlyArray<ClrDayOfWeek>;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
@@ -615,7 +614,7 @@ export class ClrDatalistModule {
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "DatepickerEnabledService" needs to be exported by the entry point clr-angular-forms.d.ts
     // Warning: (ae-forgotten-export) The symbol "ViewManagerService" needs to be exported by the entry point clr-angular-forms.d.ts
-    constructor(renderer: Renderer2, elem: ElementRef, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FormsFocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService);
+    constructor(renderer: Renderer2, elem: ElementRef, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FormsFocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, localeHelperService: LocaleHelperService);
     // (undocumented)
     set actionButton(button: ElementRef<HTMLButtonElement>);
     // (undocumented)
@@ -626,6 +625,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     protected controlClassService: ControlClassService;
     // (undocumented)
     protected elem: ElementRef;
+    set firstDayOfWeek(value: ClrWeekday | null);
     // (undocumented)
     focus: boolean;
     get isEnabled(): boolean;
@@ -654,9 +654,9 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     protected renderer: Renderer2;
     set showActionButtons(flag: boolean);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container, clr-date-range-container", never, { "showActionButtons": { "alias": "showActionButtons"; "required": false; }; "clrPosition": { "alias": "clrPosition"; "required": false; }; "rangeOptions": { "alias": "rangeOptions"; "required": false; }; "min": { "alias": "min"; "required": false; }; "max": { "alias": "max"; "required": false; }; }, {}, never, ["label", "[clrStartDate]", "[clrEndDate]", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1_2.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container, clr-date-range-container", never, { "firstDayOfWeek": { "alias": "clrFirstDayOfWeek"; "required": false; }; "showActionButtons": { "alias": "showActionButtons"; "required": false; }; "clrPosition": { "alias": "clrPosition"; "required": false; }; "rangeOptions": { "alias": "rangeOptions"; "required": false; }; "min": { "alias": "min"; "required": false; }; "max": { "alias": "max"; "required": false; }; }, {}, never, ["label", "[clrStartDate]", "[clrEndDate]", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1_2.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, null, { optional: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, null, { optional: true; }, null, null]>;
 }
 
 // @public (undocumented)
@@ -818,6 +818,14 @@ export class ClrDay {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDay, "clr-day", never, { "dayView": { "alias": "clrDayView"; "required": false; }; }, { "onSelectDay": "selectDay"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDay, never>;
+}
+
+// @public (undocumented)
+export interface ClrDayOfWeek {
+    // (undocumented)
+    readonly day: string;
+    // (undocumented)
+    readonly narrow: string;
 }
 
 // @public (undocumented)
@@ -1682,6 +1690,24 @@ export class ClrTextareaModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTextareaModule>;
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTextareaModule, [typeof ClrTextarea, typeof ClrTextareaContainer], [typeof i1.CommonModule, typeof i9.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrTextarea, typeof ClrTextareaContainer]>;
+}
+
+// @public
+export enum ClrWeekday {
+    // (undocumented)
+    Friday = 5,
+    // (undocumented)
+    Monday = 1,
+    // (undocumented)
+    Saturday = 6,
+    // (undocumented)
+    Sunday = 0,
+    // (undocumented)
+    Thursday = 4,
+    // (undocumented)
+    Tuesday = 2,
+    // (undocumented)
+    Wednesday = 3
 }
 
 // @public (undocumented)

@@ -1,0 +1,33 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h4>Configurable First Day of Week</h4>
+
+<p>Use the input below to override the first day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday).</p>
+
+<div class="clr-row">
+  <div class="clr-col-4">
+    <clr-select-container>
+      <label>First day of week</label>
+      <select clrSelect name="firstDayOfWeek" [(ngModel)]="firstDayOfWeek">
+        @for (option of weekdayOptions; track option.value) {
+        <option [ngValue]="option.value">{{ option.label }}</option>
+        }
+      </select>
+      <clr-control-helper
+        >Select &quot;Locale default&quot; to revert to the value derived from the Angular locale.</clr-control-helper
+      >
+    </clr-select-container>
+  </div>
+</div>
+
+<p>Calendar starts on: <strong>{{ firstDayLabel }}</strong></p>
+
+<clr-date-container [clrFirstDayOfWeek]="firstDayOfWeek">
+  <label>Pick a date</label>
+  <input type="text" clrDate />
+</clr-date-container>
