@@ -2,6 +2,7 @@
 **/node_modules
 /coverage
 /dist
+/DESIGN.md
 /projects/**/*.api.md
 /documentation.json
 /projects/website/src/compiled-content
