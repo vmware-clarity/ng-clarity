@@ -70,26 +70,25 @@
       [clrDgSortOrder]="column.defaultSortOrder || defaultUnsortedOrder"
       (clrDgSortOrderChange)="onSortOrderChange($event, column)"
     >
-      @if (column.stringFilter || column.sortAndFilterByField) {
-        <clr-dg-filter [clrDgFilter]="appfxDatagridStringFilter">
-          <appfx-datagrid-filter
-            #appfxDatagridStringFilter
-            [stringFilterType]="column.stringFilter"
-            [filterValue]="column.defaultFilterValue"
-            [fieldName]="column.sortAndFilterByField"
-            (filterValueChange)="onFilterChange($event, column)"
-          ></appfx-datagrid-filter>
-        </clr-dg-filter>
-      }
-      @if (column.filter) {
-        <clr-dg-filter>
-          <appfx-dg-filter-container
-            [filterType]="column.filter"
-            [filterValue]="column.defaultFilterValue"
-            (filterValueChange)="onFilterChange($event, column)"
-          ></appfx-dg-filter-container>
-        </clr-dg-filter>
-      }
+      <clr-dg-filter
+        *ngIf="column.stringFilter || column.sortAndFilterByField"
+        [clrDgFilter]="appfxDatagridStringFilter"
+      >
+        <appfx-datagrid-filter
+          #appfxDatagridStringFilter
+          [stringFilterType]="column.stringFilter"
+          [filterValue]="column.defaultFilterValue"
+          [fieldName]="column.sortAndFilterByField"
+          (filterValueChange)="onFilterChange($event, column)"
+        ></appfx-datagrid-filter>
+      </clr-dg-filter>
+      <clr-dg-filter *ngIf="column.filter">
+        <appfx-dg-filter-container
+          [filterType]="column.filter"
+          [filterValue]="column.defaultFilterValue"
+          (filterValueChange)="onFilterChange($event, column)"
+        ></appfx-dg-filter-container>
+      </clr-dg-filter>
       {{ column.displayName }}
     </clr-dg-column>
   }
