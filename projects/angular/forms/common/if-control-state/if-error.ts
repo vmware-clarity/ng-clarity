@@ -16,8 +16,7 @@ import { NgControlService } from '../providers/ng-control.service';
   standalone: false,
 })
 export class ClrIfError extends AbstractIfState {
-  @Input('clrIfError') error: string;
-
+  private _error: string;
   private embeddedViewRef: EmbeddedViewRef<any>;
 
   constructor(
@@ -31,6 +30,17 @@ export class ClrIfError extends AbstractIfState {
       throw new Error('clrIfError can only be used within a form control container element like clr-input-container');
     }
   }
+
+  @Input('clrIfError')
+  get error() {
+    return this._error;
+  }
+  set error(value: string) {
+    this._error = value;
+
+    this.ngControlService.emitControlsChange(this.controls);
+  }
+
   /**
    * @param state CONTROL_STATE
    */

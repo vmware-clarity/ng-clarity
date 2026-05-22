@@ -5,15 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 
 import { PasswordDemo } from './password.demo';
 import { ROUTING } from './password.demo.routing';
 
 @NgModule({
-  imports: [ClarityModule, FormsModule, ROUTING],
+  imports: [CommonModule, ClarityModule, FormsModule, ReactiveFormsModule, ROUTING],
   declarations: [PasswordDemo],
 })
 export class PasswordDemoModule {}
