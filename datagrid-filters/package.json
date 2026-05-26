@@ -1,0 +1,4 @@
+{
+  "module": "../fesm2022/clr-addons-datagrid-filters.mjs",
+  "typings": "../types/clr-addons-datagrid-filters.d.ts"
+}
