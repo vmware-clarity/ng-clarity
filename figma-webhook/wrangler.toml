@@ -1,0 +1,8 @@
+name = "clarity-figma-webhook"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# Route only to the /figma-webhook path on your custom domain (optional).
+# [[routes]]
+# pattern = "tokens.example.com/figma-webhook"
+# zone_name = "example.com"
