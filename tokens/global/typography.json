@@ -1,0 +1,178 @@
+{
+  "clr": {
+    "base": {
+      "typography": {
+        "font": {
+          "size": {
+            "caption": {
+              "$value": "11px",
+              "$type": "dimension"
+            },
+            "button": {
+              "$value": "12px",
+              "$type": "dimension"
+            },
+            "inline": {
+              "$value": "13px",
+              "$type": "dimension"
+            },
+            "default": {
+              "$value": "14px",
+              "$type": "dimension"
+            },
+            "sub": {
+              "section": {
+                "$value": "16px",
+                "$type": "dimension"
+              }
+            },
+            "section": {
+              "$value": "20px",
+              "$type": "dimension"
+            },
+            "heading": {
+              "$value": "24px",
+              "$type": "dimension"
+            },
+            "headline": {
+              "$value": "32px",
+              "$type": "dimension"
+            },
+            "display": {
+              "$value": "40px",
+              "$type": "dimension"
+            }
+          }
+        },
+        "line": {
+          "height": {
+            "12": {
+              "$value": "12px",
+              "$type": "dimension"
+            },
+            "16": {
+              "$value": "16px",
+              "$type": "dimension"
+            },
+            "20": {
+              "$value": "20px",
+              "$type": "dimension"
+            },
+            "24": {
+              "$value": "24px",
+              "$type": "dimension"
+            },
+            "32": {
+              "$value": "32px",
+              "$type": "dimension"
+            },
+            "36": {
+              "$value": "36px",
+              "$type": "dimension"
+            },
+            "44": {
+              "$value": "44px",
+              "$type": "dimension"
+            }
+          }
+        }
+      }
+    }
+  },
+  "cds": {
+    "alias": {
+      "typography": {
+        "font": {
+          "weight": {
+            "light": {
+              "$value": "300",
+              "$type": "fontWeight"
+            },
+            "regular": {
+              "$value": "400",
+              "$type": "fontWeight"
+            },
+            "medium": {
+              "$value": "500",
+              "$type": "fontWeight"
+            },
+            "semibold": {
+              "$value": "600",
+              "$type": "fontWeight"
+            },
+            "bold": {
+              "$value": "600",
+              "$type": "fontWeight"
+            },
+            "extrabold": {
+              "$value": "600",
+              "$type": "fontWeight"
+            }
+          },
+          "size": {
+            "0": {
+              "$value": "10px",
+              "$type": "dimension"
+            },
+            "1": {
+              "$value": "11px",
+              "$type": "dimension"
+            },
+            "2": {
+              "$value": "12px",
+              "$type": "dimension"
+            },
+            "3": {
+              "$value": "13px",
+              "$type": "dimension"
+            },
+            "4": {
+              "$value": "14px",
+              "$type": "dimension"
+            },
+            "5": {
+              "$value": "16px",
+              "$type": "dimension"
+            },
+            "6": {
+              "$value": "20px",
+              "$type": "dimension"
+            },
+            "7": {
+              "$value": "24px",
+              "$type": "dimension"
+            },
+            "8": {
+              "$value": "32px",
+              "$type": "dimension"
+            },
+            "9": {
+              "$value": "40px",
+              "$type": "dimension"
+            }
+          },
+          "family": {
+            "$value": "Metropolis",
+            "$type": "fontFamily"
+          }
+        },
+        "header": {
+          "font": {
+            "family": {
+              "$value": "Metropolis",
+              "$type": "fontFamily"
+            }
+          }
+        },
+        "monospace": {
+          "font": {
+            "family": {
+              "$value": "ui-monospace",
+              "$type": "fontFamily"
+            }
+          }
+        }
+      }
+    }
+  }
+}
