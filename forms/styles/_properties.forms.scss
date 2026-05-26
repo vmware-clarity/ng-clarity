@@ -19,7 +19,7 @@
 
     &,
     & [clr-density] {
-      --clr-forms-icon-size: #{density.$clr-base-icon-size-l};
+      --clr-forms-icon-size: #{density.$clr-base-icon-size-s};
       --clr-forms-input-group-icon-action-size: #{density.$clr-base-icon-size-s};
       --clr-forms-checkbox-border-radius: #{density.$clr-base-border-radius-s};
       --clr-forms-select-caret-size: #{density.$clr-base-icon-size-xs};

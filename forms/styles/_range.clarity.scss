@@ -121,47 +121,4 @@
       );
     }
   }
-
-  @include mixins.fixForMsEdge() {
-    .clr-range-wrapper {
-      .fill-input {
-        display: none;
-      }
-
-      &.progress-fill {
-        input[type='range']::-ms-fill-lower {
-          height: forms-variables.$clr-forms-range-track-height;
-          background-color: forms-variables.$clr-forms-range-progress-fill-color;
-        }
-      }
-    }
-
-    input[type='range'] {
-      border: 0;
-      margin: 0;
-      // TODO: Thumb?
-
-      @include forms-mixins.range-style(forms-variables.$clr-forms-range-thumb-height, transparent);
-
-      // TODO: Delete when getting rid of IE custom rules
-      &::-ms-track {
-        margin: 0;
-        border: 0;
-
-        @include forms-mixins.range-track-style(
-          forms-variables.$clr-forms-range-track-height,
-          forms-variables.$clr-forms-range-track-color
-        );
-      }
-
-      &::-ms-thumb {
-        border: 0;
-
-        @include forms-mixins.range-thumb-style(
-          forms-variables.$clr-forms-range-thumb-height,
-          forms-variables.$clr-forms-range-progress-fill-color
-        );
-      }
-    }
-  }
 }

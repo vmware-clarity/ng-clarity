@@ -91,9 +91,13 @@
         > .clr-step-status-icon {
           @include mixins.min-equilateral(density.$clr-base-icon-size-l);
 
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+
           > .clr-step-error-icon,
           > .clr-step-complete-icon {
-            @include mixins.min-equilateral(density.$clr-base-icon-size-l);
+            @include mixins.min-equilateral(density.$clr-base-icon-size-m);
 
             padding: 0;
           }

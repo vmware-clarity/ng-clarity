@@ -8,7 +8,6 @@
 @use 'sass:meta';
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 @use '../../styles/mixins';
-@use '../../styles/variables/variables';
 @use 'variables.subnav' as subnav-variables;
 
 @include meta.load-css('properties.subnav');
@@ -17,11 +16,7 @@
   .sub-nav,
   .subnav {
     display: flex;
-
-    @if variables.$clr-use-custom-properties == true {
-      box-shadow: 0 calc(-1 * #{tokens.$cds-global-space-1}) 0 var(--clr-nav-box-shadow-color) inset;
-    }
-
+    box-shadow: 0 calc(-1 * #{tokens.$cds-global-space-1}) 0 var(--clr-nav-box-shadow-color) inset;
     justify-content: space-between; //nav to the first and aside to the very right
     align-items: center;
     background-color: subnav-variables.$clr-subnav-bgColor;

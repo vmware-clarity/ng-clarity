@@ -44,10 +44,8 @@
     }
   }
 
-  @if variables.$clr-use-custom-properties == true {
-    @include mixins.root-or-host() {
-      // global box-shadows
-      --clr-popover-box-shadow-color: #{variables.$clr-popover-box-shadow-color};
-    }
+  @include mixins.root-or-host() {
+    // global box-shadows
+    --clr-popover-box-shadow-color: #{variables.$clr-popover-box-shadow-color};
   }
 }

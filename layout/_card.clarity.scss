@@ -49,7 +49,6 @@
     max-width: 100%;
   }
 
-  //TODO: Try to reduce the nesting in .card
   .card {
     position: relative;
     display: block;
@@ -89,7 +88,6 @@
       @extend %card-space-between;
     }
 
-    //Clarity Lists
     & > .list,
     & > .list-unstyled {
       padding: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-xl;
@@ -107,18 +105,6 @@
       padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
       background-color: card-variables.$clr-card-bg-color;
       border-bottom: card-variables.$clr-card-border-width solid card-variables.$clr-card-border-color;
-    }
-
-    //Dropdowns
-
-    //NOTE: This is a fix just for dropdowns in Cards in Edge.
-    //TODO: Figure out why the caret sign is not aligned next to the dropdown toggle only in cards
-
-    @include mixins.fixForMsEdge() {
-      .dropdown > .dropdown-toggle::after {
-        display: inline-block;
-        margin-top: calc(-1 * density.$clr-base-vertical-offset-l);
-      }
     }
   }
 
@@ -203,9 +189,6 @@
       margin: 0;
     }
 
-    //Need this level of nesting for now.
-    //Adding a TODO to remove the nesting in a separate PR
-    //Don't want to create a PR which solves multiple different issues.
     .btn-group .btn {
       margin: 0;
     }
@@ -250,7 +233,6 @@
     display: flex;
 
     .card-media-image {
-      display: inline-block; //to make sure IE11 respects the max-height and max-width
       flex: 0 0 auto;
 
       @include mixins.max-equilateral(density.$clr-base-icon-size-4xl);
@@ -323,20 +305,6 @@
         //To fix the flickering issue with clickable card transition
         //http://stackoverflow.com/questions/3461441/prevent-flicker-on-webkit-transition-of-webkit-transform
         backface-visibility: hidden;
-      }
-    }
-  }
-
-  @include mixins.fixForMsEdge {
-    // Edge did NOT like using display inline-table for button-groups inside of cards...
-    .card {
-      .checkbox,
-      .checkbox-inline,
-      .radio,
-      .radio-inline {
-        &.btn label {
-          display: inline-block;
-        }
       }
     }
   }

@@ -23,11 +23,6 @@
       --clr-login-error-background-color: #{alert-variables.$clr-alert-danger-bg-color};
       --clr-login-error-icon-color: #{alert-variables.$clr-alert-danger-icon-color};
       --clr-login-logo-color: #717175; // Brand color from spec. Not a Clarity color.
-      --clr-login-trademark-color: #{variables.$clr-h2-color}; // @deprecated in v17. to be removed in v18
-      --clr-login-trademark-font-weight: #{variables.$clr-h2-font-weight}; // @deprecated in v17. to be removed in v18
-      --clr-login-trademark-font-family: #{variables.$clr-h2-font-family}; // @deprecated in v17. to be removed in v18
-      --clr-login-trademark-font-size: #{variables.$clr-h2-font-size}; // @deprecated in v17. to be removed in v18
-      --clr-login-trademark-letter-spacing: #{variables.$clr-h2-letter-spacing}; // @deprecated in v17. to be removed in v18
     }
 
     [cds-theme~='dark'] {

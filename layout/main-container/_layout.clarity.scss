@@ -42,19 +42,12 @@
       display: flex;
       flex-direction: column;
       flex: 1 1 auto;
-      overflow: hidden; //IE 10 doesn't like it if we don't use this
+      overflow: hidden;
     }
 
     .content-container {
       display: flex;
       flex: 1 1 auto;
-
-      //needed for Firefox:
-      //http://stackoverflow.com/a/30580228/3538394
-      //http://stackoverflow.com/a/26916542/3538394
-      //min-height: 0px works in Firefox but not in IE. IE wants a positive value
-      //IE:
-      //http://stackoverflow.com/a/14964944/3538394
       min-height: tokens.$cds-global-space-1;
 
       .content-area {

@@ -10,15 +10,6 @@
 @use '../../styles/variables/variables.density' as density;
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 
-/**
- * TODO: figure out if we want to include animate.css or if we prefer sticking to a few,
- * controlled animations that we write ourselves.
- *
- * At the moment, we rely on the fact that each ".foo" animation has the hidden styles by default,
- * and ".foo.in" has the displayed styles. This will still be feasible by simply wrapping
- * animate.css, if we want.
- */
-
 $clr-animation-duration: #{tokens.$cds-global-animation-duration-quick};
 $clr-animation-easing: #{tokens.$cds-global-animation-easing-in-out};
 

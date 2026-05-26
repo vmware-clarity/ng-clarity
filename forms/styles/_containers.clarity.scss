@@ -17,11 +17,6 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-
-    input::-ms-reveal,
-    input::-ms-clear {
-      display: none;
-    }
   }
 
   .clr-form-control-disabled {
@@ -102,28 +97,55 @@
 
     &.error {
       color: forms-variables.$clr-forms-invalid-text-color;
+
+      .clr-validate-icon {
+        display: inline-block;
+        color: forms-variables.$clr-forms-invalid-color;
+        fill: forms-variables.$clr-forms-invalid-color;
+      }
     }
 
     &.success {
       color: forms-variables.$clr-forms-valid-text-color;
+
+      .clr-validate-icon {
+        display: inline-block;
+        color: forms-variables.$clr-forms-valid-color;
+        fill: forms-variables.$clr-forms-valid-color;
+      }
     }
   }
 
   .clr-subtext-wrapper {
     flex-basis: 100%;
-    display: flex;
+    display: none;
     align-items: flex-start;
+    gap: density.$clr-base-gap-xs;
+    margin-top: density.$clr-base-gap-xs;
+
+    &:not(.success, .error) {
+      display: flex;
+    }
+
+    .clr-subtext {
+      margin: 0;
+    }
   }
 
   .clr-validate-icon {
     @include mixins.min-equilateral(forms-variables.$clr-forms-icon-size);
 
-    color: forms-variables.$clr-forms-invalid-color;
-    fill: forms-variables.$clr-forms-invalid-color;
     display: none;
   }
 
-  .clr-success {
+  .clr-success .clr-subtext-wrapper.success {
+    display: flex;
+
+    &,
+    .clr-subtext {
+      color: forms-variables.$clr-forms-valid-text-color;
+    }
+
     .clr-validate-icon {
       display: inline-block;
       color: forms-variables.$clr-forms-valid-color;
@@ -131,9 +153,18 @@
     }
   }
 
-  .clr-error {
+  .clr-error .clr-subtext-wrapper.error {
+    display: flex;
+
+    &,
+    .clr-subtext {
+      color: forms-variables.$clr-forms-invalid-text-color;
+    }
+
     .clr-validate-icon {
       display: inline-block;
+      color: forms-variables.$clr-forms-invalid-color;
+      fill: forms-variables.$clr-forms-invalid-color;
     }
   }
 
@@ -151,15 +182,6 @@
     .clr-form-control {
       display: flex;
       flex-direction: row;
-    }
-  }
-
-  .clr-form:not(.clr-form-compact) .clr-control-container {
-    &.clr-error,
-    &.clr-success {
-      & > .clr-subtext-wrapper .clr-validate-icon {
-        margin-left: calc(-1 * #{density.$clr-base-horizontal-offset-xs});
-      }
     }
   }
 
@@ -189,28 +211,18 @@
     .clr-subtext {
       display: inline-block;
       align-self: flex-start;
-      padding: density.$clr-base-vertical-offset-xs 0;
-      margin-top: 0;
-
-      // special margin left based on --clr-forms-icon-size
-      // to align subtexts when error/success icon is missing.
-      margin-left: forms-variables.$clr-forms-icon-size;
-    }
-
-    .clr-error,
-    .clr-success {
-      .clr-subtext {
-        margin-left: density.$clr-base-gap-xs;
-      }
-
-      // Center the validation icon
-      .clr-validate-icon {
-        margin-left: 0;
-      }
+      margin-left: density.$clr-base-gap-s;
     }
 
     .clr-subtext-wrapper {
       flex-basis: auto;
+      flex-direction: row;
+      align-self: flex-start;
+      margin-left: density.$clr-base-gap-s;
+
+      .clr-subtext {
+        margin: 0;
+      }
     }
   }
 }

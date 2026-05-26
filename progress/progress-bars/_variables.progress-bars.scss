@@ -5,15 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 // Usage: ../progress/progress-bars/_progress-bars.clarity.scss
-// @deprecated in v17 in favor of $clr-progress-default-color
-$clr-progress-defaultBarColor: var(--clr-progress-default-color) !default;
-$clr-progress-default-color: $clr-progress-defaultBarColor !default;
+$clr-progress-default-color: var(--clr-progress-default-color) !default;
 $clr-progress-success-color: var(--clr-progress-alt-color-1) !default;
 $clr-progress-danger-color: var(--clr-progress-alt-color-2) !default;
 $clr-progress-warning-color: var(--clr-progress-alt-color-3) !default;
 
-// @deprecated in v17 in favor of $clr-progress-bg-color
-$clr-progress-bgColor: var(--clr-progress-bg-color) !default;
-$clr-progress-bg-color: $clr-progress-bgColor !default;
+$clr-progress-bg-color: var(--clr-progress-bg-color) !default;
 
 $clr-progress-label-color: var(--clr-progress-label-color) !default;

@@ -61,10 +61,6 @@
         @include mixins.equilateral(100%);
         // using cds-alias-object-interaction-outline token will be better when focus state get implemented
         border: Highlight solid 2px;
-
-        &::-ms-check {
-          display: none;
-        }
       }
     }
 

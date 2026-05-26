@@ -77,7 +77,6 @@
     // Overrides the table defaults so the new structure has correct corners
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
     overflow: auto;
     flex: 1 1 auto;
     margin-top: datagrid-variables.$clr-datagrid-margin-top;
@@ -573,7 +572,6 @@
         }
 
         .exceeded-max {
-          // TODO: CSS property here?
           border-right: tokens.$cds-alias-object-border-width-100 dotted tokens.$cds-alias-status-danger-dark;
         }
       }
@@ -606,8 +604,6 @@
       min-width: tokens.$cds-global-space-15;
       border: none;
 
-      // TODO can width/column classes be combined? width is added programetically as part of rendering, column is
-      //  class in template
       &.datagrid-fixed-width {
         flex: 0 0 auto;
       }
@@ -712,17 +708,7 @@
         gap: density.$clr-base-gap-m;
         padding: density.$clr-base-vertical-offset-2xl density.$clr-base-horizontal-offset-2xl;
 
-        @include mixins.generate-typography-token(
-          'BODY-14-SB-STD',
-          (
-            font-size: datagrid-variables.$clr-datagrid-placeholder-font-size,
-            font-weight: datagrid-variables.$clr-datagrid-placeholder-font-weight,
-            line-height: datagrid-variables.$clr-datagrid-placeholder-line-height,
-            letter-spacing: datagrid-variables.$clr-datagrid-placeholder-letter-spacing,
-          )
-        );
-
-        color: datagrid-variables.$clr-datagrid-placeholder-color;
+        @include mixins.generate-typography-token('BODY-14-SB-STD');
       }
 
       .datagrid-placeholder-image {
@@ -934,8 +920,13 @@
           .datagrid-detail-pane-close {
             flex-basis: mixins.baselinePx(20);
 
-            button cds-icon:not([size]) {
-              @include mixins.min-equilateral(mixins.baselinePx(20));
+            button {
+              cds-icon,
+              clr-icon {
+                &:not([size]) {
+                  @include mixins.min-equilateral(mixins.baselinePx(20));
+                }
+              }
             }
           }
         }
@@ -1059,6 +1050,7 @@
         [shape='error']
       ),
       clr-icon:not(
+        [size],
         [shape='info-circle'],
         [shape='exclamation-triangle'],
         [shape='exclamation-circle'],
@@ -1380,8 +1372,6 @@
 
   .datagrid-detail-header {
     flex: 0 0 auto;
-    //TODO Fix figma font sizes in next GA 17+
-
     @include mixins.generate-typography-token('SECTION-20-STD');
 
     margin-top: 0;
@@ -1409,7 +1399,8 @@
         padding: 0;
         border: 0;
 
-        cds-icon {
+        cds-icon,
+        clr-icon {
           @include mixins.min-equilateral(datagrid-variables.$clr-datagrid-detail-pane-close-icon-size);
 
           color: modal-variables.$clr-modal-close-color;
@@ -1448,8 +1439,13 @@
       @include mixins.clr-no-styles-button();
       @include datagrid-mixins.datagrid-action-button-styles();
 
-      &:disabled cds-icon.datagrid-detail-caret-icon {
-        --color: #{tokens.$cds-alias-object-interaction-color-disabled};
+      &:disabled {
+        cds-icon,
+        clr-icon {
+          &.datagrid-detail-caret-icon {
+            --color: #{tokens.$cds-alias-object-interaction-color-disabled};
+          }
+        }
       }
 
       &.is-open .datagrid-detail-caret-icon {
@@ -1543,7 +1539,8 @@
         margin: 0;
         padding: 0;
 
-        cds-icon {
+        cds-icon,
+        clr-icon {
           color: datagrid-variables.$clr-datagrid-column-switch-header-font-color;
 
           &:hover {
@@ -1563,7 +1560,7 @@
       gap: density.$clr-base-gap-xs;
       max-height: mixins.baselinePx(300);
       overflow-y: auto;
-      min-height: tables-variables.$clr-table-row-height; // prevents scrollbars in IE.
+      min-height: tables-variables.$clr-table-row-height;
 
       // Increase specificity
       &.list-unstyled {

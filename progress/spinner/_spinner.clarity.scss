@@ -78,8 +78,6 @@
     }
 
     &.spinner-inverse {
-      // TODO: get ux input on direction here
-
       @include spinner-mixins.spinner-color-before-after(
         spinner-variables.$clr-spinner-fill-inverse-color,
         spinner-variables.$clr-spinner-fill-inverse-bg-color

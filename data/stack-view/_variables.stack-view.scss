@@ -5,35 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-/// @DEPRECATED variables
-
-// @deprecated in v17. in favor of using $clr-stack-view-border-color in _stack-view.clarity.scss
-$clr-stack-view-stack-block-border-bottom: var(--clr-stack-view-stack-block-border-bottom) !default;
-
-// @deprecated in v17. in favor of using $clr-stack-view-border-color in _stack-view.clarity.scss
-$clr-stack-view-stack-children-stack-block-border-bottom-color: var(
-  --clr-stack-view-stack-children-stack-block-border-bottom-color
-) !default;
-
-// children of an expanded row
-// @deprecated in v17. in favor of using clr-stack-view-row-bg-color
-$clr-stack-view-stack-children-stack-block-label-and-content-bg-color: var(
-  --clr-stack-view-stack-children-stack-block-label-and-content-bg-color
-) !default;
-// @deprecated in v17. in favor of using clr-stack-view-expandable-row-color
-$clr-stack-view-stack-block-caret-color: var(--clr-stack-view-stack-block-caret-color) !default;
-
-// children of an expanded row
-$clr-stack-view-color: var(--clr-stack-view-color) !default;
-$clr-stack-view-bg-color: var(--clr-stack-view-bg-color) !default;
-$clr-stack-view-stack-block-expandable-hover: var(--clr-stack-view-stack-block-expandable-hover) !default;
-$clr-stack-view-stack-block-expanded-text-color: var(--clr-stack-view-stack-block-expanded-text-color) !default;
-$clr-stack-view-stack-block-expanded-bg-color: var(--clr-stack-view-stack-block-expanded-bg-color) !default;
-$clr-stack-view-expanded-hover-row-bg-color: var(--clr-stack-view-expanded-hover-row-bg-color) !default;
-$clr-stack-view-expanded-active-row-bg-color: var(--clr-stack-view-expanded-active-row-bg-color) !default;
-
-/// END DEPRECATED variables
-
 // Usage: ../stack-view/_stack-view.clarity.scss
 $clr-stack-view-border-width: var(--clr-stack-view-border-width) !default;
 $clr-stack-view-border-radius: var(--clr-stack-view-border-radius) !default;
@@ -45,15 +16,17 @@ $clr-stack-block-changed-border-top-color: var(--clr-stack-block-changed-border-
 $clr-stack-view-title-color: var(--clr-stack-view-title-color) !default;
 
 // non expandable row background and text/icon colors
-$clr-stack-view-row-color: $clr-stack-view-color !default;
-$clr-stack-view-row-bg-color: $clr-stack-view-bg-color !default;
+$clr-stack-view-row-color: var(--clr-stack-view-row-color) !default;
+$clr-stack-view-row-bg-color: var(--clr-stack-view-row-bg-color) !default;
 
 // expandable row background and text/icon colors
 $clr-stack-view-expandable-row-color: var(--clr-stack-view-expandable-row-color) !default;
 $clr-stack-view-expandable-row-bg-color: var(--clr-stack-view-expandable-row-bg-color) !default;
-$clr-stack-view-expandable-row-hover: $clr-stack-view-stack-block-expandable-hover !default;
+$clr-stack-view-expandable-row-hover: var(--clr-stack-view-expandable-row-hover) !default;
 $clr-stack-view-expandable-row-bg-hover: var(--clr-stack-view-expandable-row-bg-hover) !default;
 $clr-stack-view-expandable-row-active: var(--clr-stack-view-expandable-row-active) !default;
 $clr-stack-view-expandable-row-bg-active: var(--clr-stack-view-expandable-row-bg-active) !default;
-$clr-stack-view-expanded-row-color: $clr-stack-view-stack-block-expanded-text-color !default;
-$clr-stack-view-expanded-row-bg-color: $clr-stack-view-stack-block-expanded-bg-color !default;
+$clr-stack-view-expanded-row-color: var(--clr-stack-view-expanded-row-color) !default;
+$clr-stack-view-expanded-row-bg-color: var(--clr-stack-view-expanded-row-bg-color) !default;
+$clr-stack-view-expanded-row-bg-color-hover: var(--clr-stack-view-expanded-row-bg-color-hover) !default;
+$clr-stack-view-expanded-row-bg-color-active: var(--clr-stack-view-expanded-row-bg-color-active) !default;

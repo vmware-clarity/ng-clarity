@@ -317,6 +317,10 @@
     inset: -100vh 0 0 -100vw;
     background-color: modal-variables.$clr-modal-backdrop-color;
     z-index: map.get(variables.$clr-layers, modal-bg);
+
+    &.static {
+      pointer-events: none;
+    }
   }
 
   // modal-nav is only used in wizards

@@ -19,14 +19,6 @@
     font-weight: normal;
     display: block;
   }
-
-  & ~ .clr-validate-icon {
-    margin-left: 0;
-  }
-
-  & ~ .clr-subtext {
-    display: inline-block;
-  }
 }
 
 // Used to provide an inline set of labels for checkbox/radios
@@ -168,11 +160,6 @@
 @mixin range-border-style($border-color, $border-radius, $border-width) {
   border: $border-width solid $border-color;
   border-radius: $border-radius;
-}
-@mixin range-track-style($height, $background-color-fallback) {
-  height: $height;
-  cursor: pointer;
-  background-color: $background-color-fallback;
 }
 @mixin range-thumb-style($size, $background-color) {
   border-radius: 50%;

@@ -63,11 +63,6 @@
         background-color: forms-variables.$clr-forms-select-option-background-color;
       }
     }
-
-    //Remove default arrow from IE
-    select::-ms-expand {
-      display: none;
-    }
   }
 
   .clr-select-wrapper {
@@ -92,11 +87,6 @@
     &:hover::after {
       background-color: forms-variables.$clr-forms-select-caret-hover-color;
     }
-  }
-
-  .clr-error .clr-select-wrapper::after,
-  .clr-success .clr-select-wrapper::after {
-    right: calc(#{forms-variables.$clr-forms-icon-size} + #{density.$clr-base-horizontal-offset-s});
   }
 
   .clr-multiselect-wrapper {

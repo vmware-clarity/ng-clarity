@@ -149,7 +149,8 @@
       height: vertical-nav-variables.$clr-vertical-nav-item-height;
       padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-xl;
 
-      cds-icon {
+      cds-icon,
+      clr-icon {
         margin-right: 0;
 
         &:not([size]) {
@@ -158,7 +159,8 @@
       }
 
       &.on-collapse {
-        cds-icon {
+        cds-icon,
+        clr-icon {
           margin: 0;
         }
       }
@@ -418,17 +420,12 @@
         //Dims
         padding-left: 0;
 
-        clr-icon.nav-group-trigger-icon {
-          //Dims
-          height: vertical-nav-variables.$clr-vertical-nav-item-height;
-          width: density.$clr-base-icon-size-s;
-          margin-left: mixins.baselinePx(3);
-          margin-right: 0;
-        }
-
-        cds-icon.nav-group-trigger-icon {
-          width: density.$clr-base-icon-size-s;
-          margin: 0;
+        cds-icon,
+        clr-icon {
+          &.nav-group-trigger-icon {
+            width: density.$clr-base-icon-size-s;
+            margin: 0;
+          }
         }
       }
 

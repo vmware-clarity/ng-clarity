@@ -62,7 +62,7 @@
       flex-flow: row wrap;
       overflow-y: hidden;
       border-bottom: stack-view-variables.$clr-stack-view-border-width solid
-        stack-view-variables.$clr-stack-view-stack-block-border-bottom;
+        stack-view-variables.$clr-stack-view-border-color;
     }
 
     // We have to handle potential nested elements, typically for web components
@@ -119,7 +119,7 @@
 
       @include mixins.min-equilateral(density.$clr-base-icon-size-s);
 
-      --color: #{stack-view-variables.$clr-stack-view-stack-block-caret-color};
+      --color: #{stack-view-variables.$clr-stack-view-expandable-row-color};
 
       margin-right: density.$clr-base-horizontal-offset-m;
     }
@@ -137,7 +137,7 @@
       width: 100%;
 
       .stack-block {
-        border-bottom-color: stack-view-variables.$clr-stack-view-stack-children-stack-block-border-bottom-color;
+        border-bottom-color: stack-view-variables.$clr-stack-view-border-color;
       }
 
       > .stack-block:last-child,
@@ -150,7 +150,7 @@
 
       .stack-block-label,
       .stack-block-content {
-        background-color: stack-view-variables.$clr-stack-view-stack-children-stack-block-label-and-content-bg-color;
+        background-color: stack-view-variables.$clr-stack-view-row-bg-color;
       }
     }
 
@@ -204,7 +204,7 @@
 
       &.stack-block-expanded > .stack-block-label {
         border-bottom: stack-view-variables.$clr-stack-view-border-width solid
-          stack-view-variables.$clr-stack-view-stack-block-border-bottom;
+          stack-view-variables.$clr-stack-view-border-color;
         color: stack-view-variables.$clr-stack-view-expanded-row-color;
         background-color: stack-view-variables.$clr-stack-view-expanded-row-bg-color;
 
@@ -218,7 +218,7 @@
 
         &:hover {
           color: stack-view-variables.$clr-stack-view-expandable-row-hover;
-          background-color: stack-view-variables.$clr-stack-view-expanded-hover-row-bg-color;
+          background-color: stack-view-variables.$clr-stack-view-expanded-row-bg-color-hover;
 
           .stack-block-caret {
             fill: stack-view-variables.$clr-stack-view-expandable-row-hover;
@@ -226,7 +226,7 @@
 
           &:active {
             color: stack-view-variables.$clr-stack-view-expandable-row-active;
-            background-color: stack-view-variables.$clr-stack-view-expanded-active-row-bg-color;
+            background-color: stack-view-variables.$clr-stack-view-expanded-row-bg-color-active;
 
             .stack-block-caret {
               fill: stack-view-variables.$clr-stack-view-expandable-row-active;

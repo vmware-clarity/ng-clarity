@@ -21,8 +21,6 @@ $clr-datagrid-icon-color: var(--clr-datagrid-icon-color) !default;
 $clr-datagrid-row-hover-color: var(--clr-datagrid-row-hover-color) !default;
 $clr-datagrid-row-active-color: var(--clr-datagrid-row-active-color) !default;
 
-/* unused, remove in v18 */
-$clr-datagrid-row-hover-font-color: var(--clr-datagrid-row-hover-font-color) !default;
 $clr-datagrid-action-toggle-color: var(--clr-datagrid-action-toggle-color) !default;
 $clr-datagrid-pagination-btn-color: var(--clr-datagrid-pagination-btn-color) !default;
 $clr-datagrid-pagination-btn-disabled-color: var(--clr-datagrid-pagination-btn-disabled-color) !default;
@@ -32,8 +30,6 @@ $clr-datagrid-popover-bg-color: var(--clr-datagrid-popover-bg-color) !default;
 $clr-datagrid-popover-border-color: var(--clr-datagrid-popover-border-color) !default;
 $clr-datagrid-popover-font-color: var(--clr-datagrid-popover-font-color) !default;
 
-/* unused, remove in v18 */
-$clr-datagrid-action-popover-hover-color: var(--clr-datagrid-action-popover-hover-color) !default;
 $clr-datagrid-row-selected: var(--clr-datagrid-row-selected) !default;
 $clr-datagrid-row-selected-background-color: var(--clr-datagrid-row-selected-background-color) !default;
 $clr-datagrid-row-selected-active-background-color: var(--clr-datagrid-row-selected-active-background-color) !default;
@@ -47,8 +43,6 @@ $clr-datagrid-column-switch-header-font-active-color: var(
 
 $clr-datagrid-detail-caret-icon-open-bg-color: var(--clr-datagrid-detail-caret-icon-open-bg-color) !default;
 $clr-datagrid-detail-caret-icon-open-icon-color: var(--clr-datagrid-detail-caret-icon-open-icon-color) !default;
-
-$clr-datagrid-placeholder-color: var(--clr-datagrid-placeholder-color) !default;
 
 $clr-datagrid-loading-background: var(--clr-datagrid-loading-background) !default;
 
@@ -73,10 +67,6 @@ $clr-datagrid-detail-pane-bg-color: var(--clr-datagrid-detail-pane-bg-color) !de
 $clr-datagrid-detail-pane-open-row-bg-color: var(--clr-datagrid-detail-pane-open-row-bg-color) !default;
 $clr-datagrid-detail-pane-border-color: var(--clr-datagrid-detail-pane-border-color) !default;
 
-$clr-datagrid-placeholder-font-size: var(--clr-datagrid-placeholder-font-size) !default;
-$clr-datagrid-placeholder-font-weight: var(--clr-datagrid-placeholder-font-weight) !default;
-$clr-datagrid-placeholder-line-height: var(--clr-datagrid-placeholder-line-height) !default;
-$clr-datagrid-placeholder-letter-spacing: var(--clr-datagrid-placeholder-letter-spacing) !default;
 $clr-datagrid-placeholder-background-color: var(--clr-datagrid-placeholder-background-color) !default;
 $clr-datagrid-popovers-box-shadow: var(--clr-datagrid-popovers-box-shadow) !default;
 $clr-datagrid-column-separator-height: var(--clr-datagrid-column-separator-height) !default;

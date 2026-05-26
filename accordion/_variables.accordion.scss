@@ -23,10 +23,6 @@ $clr-accordion-panel-disabled-color: var(
   --clr-accordion-panel-disabled-color,
   #{panel-variables.$clr-collapsible-panel-panel-disabled-color}
 ) !default;
-$clr-accordion-active-background-color: var(
-  --clr-accordion-active-background-color,
-  #{panel-variables.$clr-collapsible-panel-active-background-color}
-) !default;
 $clr-accordion-content-background-color: var(
   --clr-accordion-content-background-color,
   #{panel-variables.$clr-collapsible-panel-content-background-color}
@@ -63,12 +59,6 @@ $clr-accordion-header-open-hover-background-color: var(
 $clr-accordion-content-color: var(
   --clr-accordion-content-color,
   #{panel-variables.$clr-collapsible-panel-content-color}
-) !default;
-
-// @Deprecated in v17
-$clr-accordion-content-font-size: var(
-  --clr-accordion-content-font-size,
-  #{panel-variables.$clr-collapsible-panel-content-font-size}
 ) !default;
 
 $clr-accordion-responsive-breakpoint: panel-variables.$clr-collapsible-panel-responsive-breakpoint !default;

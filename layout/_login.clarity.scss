@@ -90,22 +90,12 @@
           margin: 0 0 #{density.$clr-base-vertical-offset-m} 0;
         }
 
-        .subtitle, // @deprecated in v17
         .hint {
           @include mixins.generate-typography-token('SECTION-20-STD');
 
           color: login-variables.$clr-login-hint-color;
           margin: #{density.$clr-base-vertical-offset-m} 0 0 0;
         }
-      }
-
-      // @deprecated in v17. to be removed in v18
-      .trademark {
-        color: login-variables.$clr-login-trademark-color;
-        font-weight: login-variables.$clr-login-trademark-font-weight;
-        font-family: login-variables.$clr-login-trademark-font-family;
-        font-size: login-variables.$clr-login-trademark-font-size;
-        letter-spacing: login-variables.$clr-login-trademark-letter-spacing;
       }
 
       .login-group {

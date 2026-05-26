@@ -124,3 +124,9 @@
     padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-2xl;
   }
 }
+@mixin dropdown-item-outline() {
+  outline-color: Highlight;
+  outline-color: -webkit-focus-ring-color;
+  outline-style: auto;
+  outline-offset: calc(-1 * tokens.$cds-global-space-2);
+}

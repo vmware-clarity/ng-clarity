@@ -40,7 +40,8 @@
       min-width: unset;
       border: 0;
 
-      cds-icon:not([size]) {
+      cds-icon:not([size]),
+      clr-icon:not([size]) {
         @include mixins.equilateral(density.$clr-base-icon-size-l);
       }
     }
@@ -72,6 +73,16 @@
       &:first-of-type {
         margin-top: density.$clr-base-gap-s;
       }
+
+      &.clr-success .clr-validate-icon {
+        color: forms-variables.$clr-forms-valid-color;
+        fill: forms-variables.$clr-forms-valid-color;
+      }
+
+      &.clr-error .clr-validate-icon {
+        color: forms-variables.$clr-forms-invalid-color;
+        fill: forms-variables.$clr-forms-invalid-color;
+      }
     }
 
     .clr-file-label-and-status-icon {
@@ -93,7 +104,8 @@
 
       @include mixins.min-equilateral(density.$clr-base-icon-size-s);
 
-      cds-icon {
+      cds-icon,
+      clr-icon {
         margin: 0;
       }
     }
