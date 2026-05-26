@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { TemplateRef, ElementRef, Injector, Renderer2, ViewContainerRef, InjectionToken } from '@angular/core';
+import { TemplateRef, Injector, ElementRef, Renderer2, ViewContainerRef, InjectionToken } from '@angular/core';
 import { NgControl, Validator, AbstractControl, ValidationErrors, ControlValueAccessor } from '@angular/forms';
 import * as i10 from '@clr/angular/forms/common';
 import { ClrAbstractContainer, WrappedFormControl } from '@clr/angular/forms/common';
@@ -79,6 +79,8 @@ declare class ClrFileMessagesTemplate {
 
 declare class ClrFileList {
     protected readonly fileMessagesTemplate: ClrFileMessagesTemplate;
+    protected injectorCache: Map<File, Injector>;
+    private contextCache;
     private readonly injector;
     private readonly commonStrings;
     private readonly ngControlService;
@@ -88,7 +90,8 @@ declare class ClrFileList {
     protected getClearFileLabel(filename: string): string;
     protected clearFile(fileToRemove: File): void;
     protected createFileMessagesTemplateContext(file: File): ClrFileMessagesTemplateContext;
-    protected createFileMessagesTemplateInjector(fileMessagesTemplateContext: ClrFileMessagesTemplateContext): i0.DestroyableInjector;
+    private createFileMessagesTemplateInjector;
+    private errorsEqual;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileList, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileList, "clr-file-list", never, {}, {}, ["fileMessagesTemplate"], never, false, never>;
 }
@@ -128,7 +131,6 @@ declare class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     private readonly commonStrings;
     selection: ClrFileInputSelection;
     constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
-    protected get disabled(): boolean;
     private handleChange;
     private updateSelection;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInput, [null, null, null, null, { optional: true; self: true; }, null]>;
@@ -153,6 +155,7 @@ declare class ClrFileInputValueAccessor implements ControlValueAccessor {
     writeValue(value: FileList): void;
     registerOnChange(fn: (value: FileList) => void): void;
     registerOnTouched(fn: () => void): void;
+    setDisabledState(isDisabled: boolean): void;
     private handleChange;
     private onChange;
     private onTouched;

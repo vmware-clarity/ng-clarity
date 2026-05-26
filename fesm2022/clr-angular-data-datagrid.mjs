@@ -1,17 +1,17 @@
 import * as i0 from '@angular/core';
-import { Injectable, Directive, ViewChild, Component, PLATFORM_ID, Inject, DOCUMENT, EventEmitter, ElementRef, booleanAttribute, Input, Output, Optional, ContentChild, ChangeDetectionStrategy, ContentChildren, forwardRef, HostListener, ViewContainerRef, runInInjectionContext, Injector, ChangeDetectorRef, NgZone, Renderer2, inject, EnvironmentInjector, TemplateRef, IterableDiffers, ViewChildren, InjectionToken, NgModule } from '@angular/core';
+import { Injectable, Directive, ViewChild, Component, PLATFORM_ID, Inject, DOCUMENT, EventEmitter, ElementRef, booleanAttribute, Input, Output, Optional, ContentChild, ChangeDetectionStrategy, ContentChildren, forwardRef, HostListener, ViewContainerRef, runInInjectionContext, Injector, ChangeDetectorRef, NgZone, Renderer2, inject, EnvironmentInjector, TemplateRef, IterableDiffers, afterNextRender, ViewChildren, InjectionToken, NgModule } from '@angular/core';
 import * as i2 from '@clr/angular/utils';
-import { uniqueIdFactory, normalizeKey, Keys, HostWrapper, IfExpandService, ClrLoadingState, ClrExpandableAnimationDirective, LoadingListener, WillyWonka, OompaLoompa, ClrKeyFocus, DomAdapter, ClrIfExpanded, CdkDragModule, CdkTrapFocusModule, ClrLoadingModule, ClrConditionalModule, ClrOutsideClickModule, ClrExpandableAnimationModule, ClrKeyFocusModule } from '@clr/angular/utils';
+import { uniqueIdFactory, Keys, HostWrapper, IfExpandService, ClrLoadingState, ClrExpandableAnimationDirective, LoadingListener, WillyWonka, OompaLoompa, ClrKeyFocus, DomAdapter, ClrIfExpanded, CdkDragModule, CdkTrapFocusModule, ClrLoadingModule, ClrConditionalModule, ClrOutsideClickModule, ClrExpandableAnimationModule, ClrKeyFocusModule } from '@clr/angular/utils';
 import * as i2$2 from 'rxjs';
 import { Subject, BehaviorSubject, fromEvent, ReplaySubject, combineLatest, merge, of } from 'rxjs';
 import { filter, takeUntil, delay, debounceTime, map, switchMap } from 'rxjs/operators';
 import * as i3 from '@clr/angular/popover/common';
-import { ClrPopoverPosition, ClrPopoverType, ClrPopoverHostDirective, mapPopoverKeyToPosition, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrPopoverPosition, ClrPopoverType, ClrPopoverHostDirective, mapPopoverKeyToPosition, ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import * as i1 from '@clr/angular/modal';
 import * as i9 from '@angular/common';
 import { isPlatformBrowser, NgForOf, CommonModule } from '@angular/common';
 import * as i5 from '@clr/angular/icon';
-import { ClarityIcons, ellipsisVerticalIcon, viewColumnsIcon, windowCloseIcon, arrowIcon, timesIcon, stepForward2Icon, angleDoubleIcon, filterGridCircleIcon, filterGridIcon, ClrIcon } from '@clr/angular/icon';
+import { ClarityIcons, ellipsisVerticalIcon, viewColumnsIcon, windowCloseIcon, arrowIcon, timesIcon, twoWayArrowsIcon, stepForward2Icon, angleDoubleIcon, filterGridCircleIcon, filterGridIcon, ClrIcon } from '@clr/angular/icon';
 import * as i4 from '@clr/angular/forms/common';
 import { ClrControlLabel } from '@clr/angular/forms/common';
 import * as i5$1 from '@clr/angular/forms/number-input';
@@ -382,10 +382,6 @@ class CustomFilter {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-// @TODO The top two are not used now, which is probably a performance drag that was broken along the way.
-// There was a previous pattern to hide everything to do computation then display, for Firefox, needs revisiting.
-const NO_LAYOUT_CLASS = 'datagrid-no-layout';
-const COMPUTE_WIDTH_CLASS = 'datagrid-computing-columns-width';
 const STRICT_WIDTH_CLASS = 'datagrid-fixed-width';
 const HIDDEN_COLUMN_CLASS = 'datagrid-hidden-column';
 
@@ -1162,10 +1158,10 @@ class ClrDatagridColumnSeparator {
         }
     }
     isArrowLeftKeyEvent(event) {
-        return normalizeKey(event.key) === Keys.ArrowLeft;
+        return event.key === Keys.ArrowLeft;
     }
     isArrowRightKeyEvent(event) {
-        return normalizeKey(event.key) === Keys.ArrowRight;
+        return event.key === Keys.ArrowRight;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridColumnSeparator, deps: [{ token: ColumnResizerService }, { token: i0.Renderer2 }, { token: i0.NgZone }, { token: TableSizeService }, { token: i2.ClrCommonStringsService }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrDatagridColumnSeparator, isStandalone: false, selector: "clr-dg-column-separator", host: { properties: { "class.datagrid-column-separator": "true" } }, viewQueries: [{ propertyName: "resizeTrackerRef", first: true, predicate: ["resizeTracker"], descendants: true }, { propertyName: "columnHandleRef", first: true, predicate: ["columnHandle"], descendants: true }], ngImport: i0, template: `
@@ -1977,7 +1973,7 @@ class ClrDatagridFilter extends DatagridFilterRegistrar {
       #anchor
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="popoverId"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
       [class.datagrid-filter-open]="open"
       [class.datagrid-filtered]="active"
@@ -2005,7 +2001,7 @@ class ClrDatagridFilter extends DatagridFilterRegistrar {
 
       <ng-content></ng-content>
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i2.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i3.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i3.ÇlrClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: i3.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i2.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i3.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i3.ClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: i3.ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridFilter, decorators: [{
             type: Component,
@@ -2020,7 +2016,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
       #anchor
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="popoverId"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
       [class.datagrid-filter-open]="open"
       [class.datagrid-filtered]="active"
@@ -3440,6 +3436,11 @@ class Selection {
                     let newSingle;
                     let selectionUpdated = false;
                     updatedItems.forEach(item => {
+                        if (item === null || item === undefined) {
+                            // Virtual scroll may emit a dense array of undefined slot placeholders. Those must
+                            // never match the empty single-selection ref (see virtual-scroll + Single).
+                            return;
+                        }
                         const ref = _items.identifyBy(item);
                         // If one of the updated items is the previously selectedSingle, set it as the new one
                         if (this.currentSelectionRefs[0] === ref) {
@@ -3464,6 +3465,9 @@ class Selection {
                     //
                     // The both loops below that goes over updatedItems could be combined into one.
                     updatedItems.forEach(item => {
+                        if (item === null || item === undefined) {
+                            return;
+                        }
                         const ref = _items.identifyBy(item);
                         if (this.lockedRefs.indexOf(ref) > -1) {
                             updateLockedRef.push(ref);
@@ -3474,6 +3478,9 @@ class Selection {
                     // the if statement below results in broken behavior.
                     if (leftOver.length > 0) {
                         updatedItems.forEach(item => {
+                            if (item === null || item === undefined) {
+                                return;
+                            }
                             const ref = _items.identifyBy(item);
                             // Look in current selected refs array if item is selected, and update actual value
                             const selectedIndex = this.currentSelectionRefs.indexOf(ref);
@@ -3844,6 +3851,13 @@ class ClrDatagridSingleSelectionValueAccessor {
         return value;
     }
     updateChecked() {
+        // Never mark the radio as checked when there is no real selection (state is null/undefined)
+        // or the row item itself is a virtual-scroll placeholder slot (value is null/undefined).
+        // Otherwise keyOf(undefined) === keyOf(undefined) would falsely check the radio.
+        if (this.state === null || this.state === undefined || this.value === null || this.value === undefined) {
+            this.renderer.setProperty(this.elementRef.nativeElement, 'checked', false);
+            return;
+        }
         const state = this.keyOf(this.state);
         const value = this.keyOf(this.value);
         this.renderer.setProperty(this.elementRef.nativeElement, 'checked', state === value);
@@ -4261,83 +4275,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-var DatagridColumnChanges;
-(function (DatagridColumnChanges) {
-    DatagridColumnChanges[DatagridColumnChanges["WIDTH"] = 0] = "WIDTH";
-    DatagridColumnChanges[DatagridColumnChanges["HIDDEN"] = 1] = "HIDDEN";
-    DatagridColumnChanges[DatagridColumnChanges["INITIALIZE"] = 2] = "INITIALIZE";
-})(DatagridColumnChanges || (DatagridColumnChanges = {}));
-const ALL_COLUMN_CHANGES = Object.keys(DatagridColumnChanges)
-    .map(key => DatagridColumnChanges[key])
-    .filter(key => key === parseInt(key, 10) && key !== DatagridColumnChanges.INITIALIZE); // extracts only integer keys
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ColumnsService {
-    constructor() {
-        this.columns = [];
-        this.columnsStateChange = new BehaviorSubject(null);
-        this._cache = [];
-    }
-    get columnStates() {
-        return this.columns.map(column => column.value);
-    }
-    get hasHideableColumns() {
-        return this.columnStates.filter(state => state.hideable).length > 0;
-    }
-    get visibleColumns() {
-        return this.columnStates.filter(state => !state.hidden);
-    }
-    cache() {
-        this._cache = this.columns.map(subject => {
-            const value = { ...subject.value };
-            delete value.changes;
-            return value;
-        });
-    }
-    hasCache() {
-        return !!this._cache.length;
-    }
-    resetToLastCache() {
-        this._cache.forEach((state, index) => {
-            // Just emit the exact value from the cache
-            const cachedState = { ...state, changes: ALL_COLUMN_CHANGES };
-            this.columns[index].next(cachedState);
-            this.columnsStateChange.next(cachedState);
-        });
-        this._cache = [];
-    }
-    // Helper method to emit a change to a column only when there is an actual diff to process for that column
-    emitStateChangeAt(columnIndex, diff) {
-        if (!this.columns[columnIndex]) {
-            return;
-        }
-        this.emitStateChange(this.columns[columnIndex], diff);
-    }
-    emitStateChange(column, diff) {
-        const changedState = { ...column.value, ...diff };
-        column.next(changedState);
-        this.columnsStateChange.next(changedState);
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService, decorators: [{
-            type: Injectable
-        }] });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 class ClrDatagridVirtualScrollDirective {
-    constructor(changeDetectorRef, iterableDiffers, items, ngZone, renderer2, templateRef, viewContainerRef, directionality, scrollDispatcher, viewportRuler, datagrid, columnsService, injector) {
+    constructor(changeDetectorRef, iterableDiffers, items, ngZone, renderer2, templateRef, viewContainerRef, directionality, scrollDispatcher, viewportRuler, datagrid, injector) {
         this.changeDetectorRef = changeDetectorRef;
         this.iterableDiffers = iterableDiffers;
         this.items = items;
@@ -4349,7 +4288,6 @@ class ClrDatagridVirtualScrollDirective {
         this.scrollDispatcher = scrollDispatcher;
         this.viewportRuler = viewportRuler;
         this.datagrid = datagrid;
-        this.columnsService = columnsService;
         this.injector = injector;
         this.renderedRangeChange = new EventEmitter();
         this.persistItems = true;
@@ -4562,7 +4500,7 @@ class ClrDatagridVirtualScrollDirective {
         const virtualScrollViewport = createCdkVirtualScrollViewport(new ElementRef(datagridContentElement), new ElementRef(datagridRowsElement), changeDetectorRef, ngZone, renderer2, virtualScrollStrategy, directionality, scrollDispatcher, viewportRuler, null);
         return virtualScrollViewport;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridVirtualScrollDirective, deps: [{ token: i0.ChangeDetectorRef }, { token: i0.IterableDiffers }, { token: Items }, { token: i0.NgZone }, { token: i0.Renderer2 }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }, { token: i2$1.Directionality }, { token: i3$1.ScrollDispatcher }, { token: i3$1.ViewportRuler }, { token: forwardRef(() => ClrDatagrid) }, { token: ColumnsService }, { token: i0.EnvironmentInjector }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridVirtualScrollDirective, deps: [{ token: i0.ChangeDetectorRef }, { token: i0.IterableDiffers }, { token: Items }, { token: i0.NgZone }, { token: i0.Renderer2 }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }, { token: i2$1.Directionality }, { token: i3$1.ScrollDispatcher }, { token: i3$1.ViewportRuler }, { token: forwardRef(() => ClrDatagrid) }, { token: i0.EnvironmentInjector }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrDatagridVirtualScrollDirective, isStandalone: false, selector: "[clrVirtualScroll],[ClrVirtualScroll]", inputs: { persistItems: ["clrVirtualPersistItems", "persistItems"], cdkVirtualForOf: ["clrVirtualRowsOf", "cdkVirtualForOf"], cdkVirtualForTrackBy: ["clrVirtualRowsTrackBy", "cdkVirtualForTrackBy"], cdkVirtualForTemplate: ["clrVirtualRowsTemplate", "cdkVirtualForTemplate"], cdkVirtualForTemplateCacheSize: ["clrVirtualRowsTemplateCacheSize", "cdkVirtualForTemplateCacheSize"], itemSize: ["clrVirtualRowsItemSize", "itemSize"], minBufferPx: ["clrVirtualRowsMinBufferPx", "minBufferPx"], maxBufferPx: ["clrVirtualRowsMaxBufferPx", "maxBufferPx"], dataRange: ["clrVirtualDataRange", "dataRange"] }, outputs: { renderedRangeChange: "renderedRangeChange" }, providers: [Items], ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridVirtualScrollDirective, decorators: [{
@@ -4575,7 +4513,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
         }], ctorParameters: () => [{ type: i0.ChangeDetectorRef }, { type: i0.IterableDiffers }, { type: Items }, { type: i0.NgZone }, { type: i0.Renderer2 }, { type: i0.TemplateRef }, { type: i0.ViewContainerRef }, { type: i2$1.Directionality }, { type: i3$1.ScrollDispatcher }, { type: i3$1.ViewportRuler }, { type: ClrDatagrid, decorators: [{
                     type: Inject,
                     args: [forwardRef(() => ClrDatagrid)]
-                }] }, { type: ColumnsService }, { type: i0.EnvironmentInjector }], propDecorators: { renderedRangeChange: [{
+                }] }, { type: i0.EnvironmentInjector }], propDecorators: { renderedRangeChange: [{
                 type: Output
             }], persistItems: [{
                 type: Input,
@@ -4642,6 +4580,81 @@ function createCdkVirtualForOfDirective(viewContainerRef, templateRef, iterableD
     });
     return cdkVirtualForInjector.get(CdkVirtualForOf);
 }
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+var DatagridColumnChanges;
+(function (DatagridColumnChanges) {
+    DatagridColumnChanges[DatagridColumnChanges["WIDTH"] = 0] = "WIDTH";
+    DatagridColumnChanges[DatagridColumnChanges["HIDDEN"] = 1] = "HIDDEN";
+    DatagridColumnChanges[DatagridColumnChanges["INITIALIZE"] = 2] = "INITIALIZE";
+})(DatagridColumnChanges || (DatagridColumnChanges = {}));
+const ALL_COLUMN_CHANGES = Object.keys(DatagridColumnChanges)
+    .map(key => DatagridColumnChanges[key])
+    .filter(key => key === parseInt(key, 10) && key !== DatagridColumnChanges.INITIALIZE); // extracts only integer keys
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ColumnsService {
+    constructor() {
+        this.columns = [];
+        this.columnsStateChange = new BehaviorSubject(null);
+        this._cache = [];
+    }
+    get columnStates() {
+        return this.columns.map(column => column.value);
+    }
+    get hasHideableColumns() {
+        return this.columnStates.filter(state => state.hideable).length > 0;
+    }
+    get visibleColumns() {
+        return this.columnStates.filter(state => !state.hidden);
+    }
+    cache() {
+        this._cache = this.columns.map(subject => {
+            const value = { ...subject.value };
+            delete value.changes;
+            return value;
+        });
+    }
+    hasCache() {
+        return !!this._cache.length;
+    }
+    resetToLastCache() {
+        this._cache.forEach((state, index) => {
+            // Just emit the exact value from the cache
+            const cachedState = { ...state, changes: ALL_COLUMN_CHANGES };
+            this.columns[index].next(cachedState);
+            this.columnsStateChange.next(cachedState);
+        });
+        this._cache = [];
+    }
+    // Helper method to emit a change to a column only when there is an actual diff to process for that column
+    emitStateChangeAt(columnIndex, diff) {
+        if (!this.columns[columnIndex]) {
+            return;
+        }
+        this.emitStateChange(this.columns[columnIndex], diff);
+    }
+    emitStateChange(column, diff) {
+        const changedState = { ...column.value, ...diff };
+        column.next(changedState);
+        this.columnsStateChange.next(changedState);
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService, decorators: [{
+            type: Injectable
+        }] });
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -4772,10 +4785,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class DatagridRowRenderer {
-    constructor(columnsService) {
+    constructor(columnsService, el) {
         this.columnsService = columnsService;
+        this.el = el;
         this.expandableRows = [];
         this.subscriptions = [];
+        afterNextRender(() => this.addDetachedRowsColumnStateChangesListener());
     }
     ngAfterContentInit() {
         this.setCellsState(); // case #3 and #4
@@ -4810,7 +4825,19 @@ class DatagridRowRenderer {
             });
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridRowRenderer, deps: [{ token: ColumnsService }], target: i0.ɵɵFactoryTarget.Directive }); }
+    addDetachedRowsColumnStateChangesListener() {
+        this.subscriptions.push(
+        // Active rows are already handled by DatagridMainRenderer.columnStateChanged via @ContentChildren.
+        // Rows sitting in CDK virtual scroll's template cache for example are detached from the document
+        // (element.isConnected = false) and invisible to @ContentChildren, so they miss column state
+        // changes. This subscription self-updates the row only when it is detached state.
+        this.columnsService.columnsStateChange.subscribe(() => {
+            if (!this.el.nativeElement.isConnected) {
+                this.setCellsState();
+            }
+        }));
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridRowRenderer, deps: [{ token: ColumnsService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: DatagridRowRenderer, isStandalone: false, selector: "clr-dg-row", queries: [{ propertyName: "cells", predicate: DatagridCellRenderer }], ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridRowRenderer, decorators: [{
@@ -4819,7 +4846,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     selector: 'clr-dg-row',
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: ColumnsService }], propDecorators: { cells: [{
+        }], ctorParameters: () => [{ type: ColumnsService }, { type: i0.ElementRef }], propDecorators: { cells: [{
                 type: ContentChildren,
                 args: [DatagridCellRenderer]
             }] } });
@@ -5076,8 +5103,14 @@ class ClrDatagrid {
     ngAfterViewInit() {
         this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
         this.updateDetailState();
-        // TODO: determine if we can get rid of provider wiring in view init so that subscriptions can be done earlier
-        this.refresh.emit(this.stateProvider.state);
+        // Emit the state only if it is not an empty object.
+        // Default state of `ClrDatagridStateInterface` is an empty object.
+        // The refresh emit is needed in Server-driven datagrid when pagination is set, but the data is still not requested.
+        // The refresh emit should trigger the data request based on the state provided.
+        // Alternately because pagination might not be set on initialization emit an empty state will trigger a refresh.
+        if (Object.keys(this.stateProvider.state).length > 0) {
+            this.refresh.emit(this.stateProvider.state);
+        }
         this._subscriptions.push(this.stickyHeaders.changes.subscribe(() => this.resize()), this.stateProvider.change.subscribe(state => this.refresh.emit(state)), this.selection.change.subscribe(selection => {
             if (this.selection.selectable) {
                 this.selectedChanged.emit(selection);
@@ -5490,7 +5523,7 @@ class ClrDatagridActionOverflow {
       [attr.aria-controls]="popoverId"
       [attr.aria-expanded]="open"
       [attr.aria-label]="buttonLabel || commonStrings.keys.rowActions"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
     >
       <cds-icon shape="ellipsis-vertical" [attr.title]="buttonLabel || commonStrings.keys.rowActions"></cds-icon>
@@ -5514,7 +5547,7 @@ class ClrDatagridActionOverflow {
     >
       <ng-content></ng-content>
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i2.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i3.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i3.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }, { kind: "component", type: i2.ClrKeyFocus, selector: "[clrKeyFocus]", inputs: ["clrDirection", "clrFocusOnLoad", "clrKeyFocus"], outputs: ["clrFocusChange"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i2.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i3.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i3.ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }, { kind: "component", type: i2.ClrKeyFocus, selector: "[clrKeyFocus]", inputs: ["clrDirection", "clrFocusOnLoad", "clrKeyFocus"], outputs: ["clrFocusChange"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridActionOverflow, decorators: [{
             type: Component,
@@ -5532,7 +5565,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
       [attr.aria-controls]="popoverId"
       [attr.aria-expanded]="open"
       [attr.aria-label]="buttonLabel || commonStrings.keys.rowActions"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
     >
       <cds-icon shape="ellipsis-vertical" [attr.title]="buttonLabel || commonStrings.keys.rowActions"></cds-icon>
@@ -5702,7 +5735,7 @@ class ClrDatagridColumnToggle {
       role="button"
       type="button"
       class="btn btn-sm column-toggle-action"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
       [attr.aria-controls]="popoverId"
       [attr.aria-expanded]="openState"
@@ -5760,7 +5793,7 @@ class ClrDatagridColumnToggle {
         <clr-dg-column-toggle-button (clrAllSelected)="allColumnsSelected()"></clr-dg-column-toggle-button>
       </div>
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i9.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i2.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i7.ClrCheckbox, selector: "[clrCheckbox],[clrToggle]" }, { kind: "component", type: i7.ClrCheckboxWrapper, selector: "clr-checkbox-wrapper,clr-toggle-wrapper" }, { kind: "directive", type: i13.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i13.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i13.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "directive", type: i3.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i3.ÇlrClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: i3.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }, { kind: "component", type: ClrDatagridColumnToggleButton, selector: "clr-dg-column-toggle-button", outputs: ["clrAllSelected"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i9.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i2.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i7.ClrCheckbox, selector: "[clrCheckbox],[clrToggle]" }, { kind: "component", type: i7.ClrCheckboxWrapper, selector: "clr-checkbox-wrapper,clr-toggle-wrapper" }, { kind: "directive", type: i13.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i13.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i13.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "directive", type: i3.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i3.ClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: i3.ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }, { kind: "component", type: ClrDatagridColumnToggleButton, selector: "clr-dg-column-toggle-button", outputs: ["clrAllSelected"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridColumnToggle, decorators: [{
             type: Component,
@@ -5771,7 +5804,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
       role="button"
       type="button"
       class="btn btn-sm column-toggle-action"
-      clrPopoverAnchor
+      clrPopoverOrigin
       clrPopoverOpenCloseButton
       [attr.aria-controls]="popoverId"
       [attr.aria-expanded]="openState"
@@ -7223,16 +7256,6 @@ class DatagridMainRenderer {
         }
         return false;
     }
-    /**
-     * Computes the height of the datagrid.
-     *
-     * NOTE: We had to choose to set the height instead of the min-height because
-     * IE 11 requires the height on the parent for the children flex grow/shrink properties to work.
-     * When we used min-height, 1 1 auto doesn't used to work in IE11 :-(
-     * But this doesn't affect the fix. It works in both fixed & variable height datagrids.
-     *
-     * Refer: http://stackoverflow.com/questions/24396205/flex-grow-not-working-in-internet-explorer-11-0
-     */
     computeDatagridHeight() {
         const height = window.getComputedStyle(this.el.nativeElement).height;
         this.renderer.setStyle(this.el.nativeElement, 'height', height);
@@ -7369,8 +7392,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class DatagridRowDetailRenderer extends DatagridRowRenderer {
-    constructor(parentRow, columnsService) {
-        super(columnsService);
+    constructor(parentRow, columnsService, el) {
+        super(columnsService, el);
         this.parentRow = parentRow;
         parentRow.expandableRows.push(this);
     }
@@ -7378,7 +7401,7 @@ class DatagridRowDetailRenderer extends DatagridRowRenderer {
         this.parentRow.expandableRows = [];
         super.ngOnDestroy();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridRowDetailRenderer, deps: [{ token: DatagridRowRenderer }, { token: ColumnsService }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridRowDetailRenderer, deps: [{ token: DatagridRowRenderer }, { token: ColumnsService }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: DatagridRowDetailRenderer, isStandalone: false, selector: "clr-dg-row-detail", usesInheritance: true, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridRowDetailRenderer, decorators: [{
@@ -7387,7 +7410,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     selector: 'clr-dg-row-detail',
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: DatagridRowRenderer }, { type: ColumnsService }] });
+        }], ctorParameters: () => [{ type: DatagridRowRenderer }, { type: ColumnsService }, { type: i0.ElementRef }] });
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -7441,7 +7464,7 @@ const CLR_DATAGRID_STANDALONE_DIRECTIVES = [ClrDatagridSingleSelectionValueAcces
 const CLR_DATAGRID_SHARED_DIRECTIVES = [ClrIfExpanded];
 class ClrDatagridModule {
     constructor() {
-        ClarityIcons.addIcons(ellipsisVerticalIcon, viewColumnsIcon, windowCloseIcon, arrowIcon, timesIcon, stepForward2Icon, angleDoubleIcon, filterGridCircleIcon, filterGridIcon);
+        ClarityIcons.addIcons(ellipsisVerticalIcon, viewColumnsIcon, windowCloseIcon, arrowIcon, timesIcon, twoWayArrowsIcon, stepForward2Icon, angleDoubleIcon, filterGridCircleIcon, filterGridIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridModule, declarations: [
@@ -7498,7 +7521,7 @@ class ClrDatagridModule {
             ClrOutsideClickModule,
             ClrExpandableAnimationModule,
             ClrSpinnerModule,
-            _lrClrPopoverModuleNext,
+            ClrPopoverModuleNext,
             ClrKeyFocusModule, ClrDatagridSingleSelectionValueAccessor, ClrIfExpanded], exports: [
             // Core
             ClrDatagrid,
@@ -7554,7 +7577,7 @@ class ClrDatagridModule {
             ClrOutsideClickModule,
             ClrExpandableAnimationModule,
             ClrSpinnerModule,
-            _lrClrPopoverModuleNext,
+            ClrPopoverModuleNext,
             ClrKeyFocusModule] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridModule, decorators: [{
@@ -7576,7 +7599,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                         ClrOutsideClickModule,
                         ClrExpandableAnimationModule,
                         ClrSpinnerModule,
-                        _lrClrPopoverModuleNext,
+                        ClrPopoverModuleNext,
                         ClrKeyFocusModule,
                         CLR_DATAGRID_STANDALONE_DIRECTIVES,
                         CLR_DATAGRID_SHARED_DIRECTIVES,
@@ -7597,5 +7620,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { CLR_DATAGRID_DIRECTIVES, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSortOrder, ClrIfDetail, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridStringFilter, Selection, SelectionType, selectionTypeAttribute, ActionableOompaLoompa as ÇlrActionableOompaLoompa, DatagridCellRenderer as ÇlrDatagridCellRenderer, DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer, DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer, DatagridMainRenderer as ÇlrDatagridMainRenderer, DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer, DatagridRowRenderer as ÇlrDatagridRowRenderer, ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor, ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective, DatagridWillyWonka as ÇlrDatagridWillyWonka, ExpandableOompaLoompa as ÇlrExpandableOompaLoompa, WrappedCell as ÇlrWrappedCell, WrappedColumn as ÇlrWrappedColumn, WrappedRow as ÇlrWrappedRow };
+export { ActionableOompaLoompa, CLR_DATAGRID_DIRECTIVES, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor, ClrDatagridSortOrder, ClrDatagridVirtualScrollDirective, ClrIfDetail, DatagridCellRenderer, DatagridDetailRegisterer, DatagridHeaderRenderer, DatagridMainRenderer, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridRowDetailRenderer, DatagridRowRenderer, DatagridStringFilter, DatagridWillyWonka, ExpandableOompaLoompa, Selection, SelectionType, WrappedCell, WrappedColumn, WrappedRow, selectionTypeAttribute };
 //# sourceMappingURL=clr-angular-data-datagrid.mjs.map

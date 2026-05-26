@@ -13,6 +13,20 @@ import * as i13 from '@angular/common';
 import * as i16 from '@clr/angular/icon';
 import * as i18 from '@clr/angular/layout/vertical-nav';
 
+/**
+ * Index of the day of the week, matching JavaScript's Date.getDay() convention.
+ * Used to override the locale-derived first day of the week in the date picker.
+ */
+declare enum ClrWeekday {
+    Sunday = 0,
+    Monday = 1,
+    Tuesday = 2,
+    Wednesday = 3,
+    Thursday = 4,
+    Friday = 5,
+    Saturday = 6
+}
+
 declare class DateFormControlService {
     disabled: boolean;
     private _touchedChange;
@@ -49,6 +63,12 @@ declare class LocaleHelperService {
     get localeMonthsWide(): ReadonlyArray<string>;
     get localeDateFormat(): string;
     /**
+     * Overrides the first day of the week regardless of locale.
+     * Accepts a `ClrWeekday` value (Sunday=0 through Saturday=6), or null to revert to locale default.
+     * Incorrect values will revert to default value (Sunday).
+     */
+    updateFirstDayOfWeek(day: ClrWeekday | null): void;
+    /**
      * Initializes the locale data.
      */
     private initializeLocaleData;
@@ -70,7 +90,7 @@ declare class LocaleHelperService {
     /**
      * Initializes the first day of the week based on the locale.
      */
-    private initializeFirstDayOfWeek;
+    private initializeLocaleFirstDayOfWeek;
     private initializeLocaleDateFormat;
     static ɵfac: i0.ɵɵFactoryDeclaration<LocaleHelperService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<LocaleHelperService>;
@@ -121,6 +141,13 @@ interface DateRangeOption {
 }
 
 declare class DateIOService {
+    /**
+     * This is the default range. It approximates the beginning of time to the end of time.
+     * The disabled dates are the dates that are not allowed to be selected.
+     * The min date is the earliest date that can be selected.
+     * The max date is the latest date that can be selected.
+     * Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
+     */
     disabledDates: DateRange;
     cldrLocaleDateFormat: string;
     minDateChange: Subject<DayModel>;
@@ -328,10 +355,17 @@ declare class ClrDateContainer extends ClrAbstractContainer implements AfterView
     protected controlClassService: ControlClassService;
     protected layoutService: LayoutService;
     protected ngControlService: NgControlService;
+    private localeHelperService;
     focus: boolean;
     protected popoverType: ClrPopoverType;
     private toggleButton;
-    constructor(renderer: Renderer2, elem: ElementRef, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FormsFocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService);
+    constructor(renderer: Renderer2, elem: ElementRef, popoverService: ClrPopoverService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, dateIOService: DateIOService, commonStrings: ClrCommonStringsService, focusService: FormsFocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, localeHelperService: LocaleHelperService);
+    /**
+     * Overrides the locale-derived first day of the week for the calendar.
+     * Accepts a `ClrWeekday` value (Sunday=0 through Saturday=6).
+     * When not set, the first day of the week is determined by the Angular locale.
+     */
+    set firstDayOfWeek(value: ClrWeekday | null);
     /**
      * For date range picker actions buttons are shown by default
      */
@@ -364,8 +398,8 @@ declare class ClrDateContainer extends ClrAbstractContainer implements AfterView
      */
     private initializeCalendar;
     private dateRangeStructuralChecks;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, null, { optional: true; }, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container, clr-date-range-container", never, { "showActionButtons": { "alias": "showActionButtons"; "required": false; }; "clrPosition": { "alias": "clrPosition"; "required": false; }; "rangeOptions": { "alias": "rangeOptions"; "required": false; }; "min": { "alias": "min"; "required": false; }; "max": { "alias": "max"; "required": false; }; }, {}, never, ["label", "[clrStartDate]", "[clrEndDate]", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, null, { optional: true; }, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container, clr-date-range-container", never, { "firstDayOfWeek": { "alias": "clrFirstDayOfWeek"; "required": false; }; "showActionButtons": { "alias": "showActionButtons"; "required": false; }; "clrPosition": { "alias": "clrPosition"; "required": false; }; "rangeOptions": { "alias": "rangeOptions"; "required": false; }; "min": { "alias": "min"; "required": false; }; "max": { "alias": "max"; "required": false; }; }, {}, never, ["label", "[clrStartDate]", "[clrEndDate]", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
 /**
@@ -944,8 +978,9 @@ declare const CLR_DATEPICKER_DIRECTIVES: Type<any>[];
 declare class ClrDatepickerModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatepickerModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions], [typeof i13.CommonModule, typeof i14.CdkTrapFocusModule, typeof i14.ClrHostWrappingModule, typeof i14.ClrConditionalModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i16.ClrIcon, typeof i17.ClrCommonFormsModule, typeof i18.ClrVerticalNavModule], [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions], [typeof i13.CommonModule, typeof i14.CdkTrapFocusModule, typeof i14.ClrHostWrappingModule, typeof i14.ClrConditionalModule, typeof i1.ClrPopoverModuleNext, typeof i16.ClrIcon, typeof i17.ClrCommonFormsModule, typeof i18.ClrVerticalNavModule], [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatepickerModule>;
 }
 
-export { CLR_DATEPICKER_DIRECTIVES, ClrCalendar, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrEndDateInput, ClrEndDateInputValidator, ClrMonthpicker, ClrStartDateInput, ClrStartDateInputValidator, ClrYearpicker };
+export { CLR_DATEPICKER_DIRECTIVES, ClrCalendar, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrEndDateInput, ClrEndDateInputValidator, ClrMonthpicker, ClrStartDateInput, ClrStartDateInputValidator, ClrWeekday, ClrYearpicker };
+export type { ClrDayOfWeek };

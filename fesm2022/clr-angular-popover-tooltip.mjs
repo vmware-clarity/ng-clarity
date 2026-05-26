@@ -1,7 +1,7 @@
 import * as i0 from '@angular/core';
 import { Injectable, Component, HostListener, Directive, Input, Optional, Inject, NgModule } from '@angular/core';
 import * as i1 from '@clr/angular/popover/common';
-import { ClrPopoverHostDirective, ClrPopoverPosition, ClrPopoverType, TOOLTIP_POSITIONS, POPOVER_HOST_ANCHOR, ClrPopoverContent, ClrIfOpen, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrPopoverHostDirective, ClrPopoverPosition, ClrPopoverType, TOOLTIP_POSITIONS, POPOVER_HOST_ORIGIN, ClrPopoverContent, ClrIfOpen, ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { Subject } from 'rxjs';
 import { uniqueIdFactory } from '@clr/angular/utils';
 import { CommonModule } from '@angular/common';
@@ -109,7 +109,7 @@ class ClrTooltipTrigger {
         this.subs = [];
         // The aria-described by comes from the id of content. It
         this.subs.push(tooltipIdService.id.subscribe(tooltipId => (this.ariaDescribedBy = tooltipId)));
-        popoverService.anchorElementRef = element;
+        popoverService.origin = element;
     }
     ngOnDestroy() {
         this.subs.forEach(sub => sub.unsubscribe());
@@ -219,7 +219,7 @@ class ClrTooltipContent {
         this.renderer.removeClass(this.el.nativeElement, oldClass);
         this.renderer.addClass(this.el.nativeElement, newClass);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTooltipContent, deps: [{ token: POPOVER_HOST_ANCHOR, optional: true }, { token: TooltipIdService }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i1.ClrPopoverService }, { token: TooltipMouseService }, { token: i1.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTooltipContent, deps: [{ token: POPOVER_HOST_ORIGIN, optional: true }, { token: TooltipIdService }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i1.ClrPopoverService }, { token: TooltipMouseService }, { token: i1.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: ClrTooltipContent, isStandalone: false, selector: "clr-tooltip-content", inputs: { id: "id", position: ["clrPosition", "position"], size: ["clrSize", "size"] }, host: { listeners: { "mouseenter": "onMouseEnter()", "mouseleave": "onMouseLeave()" }, properties: { "class.tooltip-content": "true", "style.opacity": "1", "attr.role": "\"tooltip\"", "id": "id" } }, hostDirectives: [{ directive: i1.ClrPopoverContent }], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTooltipContent, decorators: [{
@@ -240,7 +240,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     type: Optional
                 }, {
                     type: Inject,
-                    args: [POPOVER_HOST_ANCHOR]
+                    args: [POPOVER_HOST_ORIGIN]
                 }] }, { type: TooltipIdService }, { type: i0.ElementRef }, { type: i0.Renderer2 }, { type: i1.ClrPopoverService }, { type: TooltipMouseService }, { type: i1.ClrPopoverContent }], propDecorators: { id: [{
                 type: Input
             }], position: [{
@@ -266,13 +266,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
 const CLR_TOOLTIP_DIRECTIVES = [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent];
 class ClrTooltipModule {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTooltipModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrTooltipModule, declarations: [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent], imports: [CommonModule, ClrIcon, _lrClrPopoverModuleNext], exports: [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, ClrIfOpen, ClrIcon] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTooltipModule, imports: [CommonModule, ClrIcon, _lrClrPopoverModuleNext] }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrTooltipModule, declarations: [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent], imports: [CommonModule, ClrIcon, ClrPopoverModuleNext], exports: [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent, ClrIfOpen, ClrIcon] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTooltipModule, imports: [CommonModule, ClrIcon, ClrPopoverModuleNext] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrTooltipModule, decorators: [{
             type: NgModule,
             args: [{
-                    imports: [CommonModule, ClrIcon, _lrClrPopoverModuleNext],
+                    imports: [CommonModule, ClrIcon, ClrPopoverModuleNext],
                     declarations: [CLR_TOOLTIP_DIRECTIVES],
                     exports: [CLR_TOOLTIP_DIRECTIVES, ClrIfOpen, ClrIcon],
                 }]

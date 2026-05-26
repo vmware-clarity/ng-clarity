@@ -17,10 +17,14 @@
   "bugs": {
     "url": "https://github.com/vmware-clarity/ng-clarity/issues"
   },
+  "schematics": "./schematics/collection.json",
+  "ng-update": {
+    "migrations": "./schematics/collection.json"
+  },
   "peerDependencies": {
-    "@angular/cdk": "^21",
-    "@angular/common": "^21",
-    "@angular/core": "^21"
+    "@angular/cdk": ">= 21.1.0",
+    "@angular/common": ">= 21.1.0",
+    "@angular/core": ">= 21.1.0"
   },
   "module": "fesm2022/clr-angular.mjs",
   "typings": "types/clr-angular.d.ts",
@@ -222,8 +226,9 @@
     }
   },
   "sideEffects": false,
+  "type": "module",
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "version": "0.0.0-preview.a373de6"
+  "version": "0.0.0-preview.c338efb"
 }

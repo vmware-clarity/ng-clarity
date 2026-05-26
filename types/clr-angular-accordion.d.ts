@@ -97,4 +97,4 @@ declare class ClrAccordionModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrAccordionModule>;
 }
 
-export { AccordionModel, AccordionService, AccordionStrategy, ClrAccordion, ClrAccordionContent, ClrAccordionDescription, ClrAccordionModule, ClrAccordionPanel, ClrAccordionTitle, AccordionOompaLoompa as ÇlrAccordionOompaLoompa, AccordionWillyWonka as ÇlrAccordionWillyWonka };
+export { AccordionModel, AccordionOompaLoompa, AccordionService, AccordionStrategy, AccordionWillyWonka, ClrAccordion, ClrAccordionContent, ClrAccordionDescription, ClrAccordionModule, ClrAccordionPanel, ClrAccordionTitle };

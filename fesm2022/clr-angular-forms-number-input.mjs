@@ -5,7 +5,7 @@ import { ClrAbstractContainer, FormsFocusService, NgControlService, ControlIdSer
 import * as i2 from '@angular/common';
 import { CommonModule } from '@angular/common';
 import * as i3 from '@clr/angular/icon';
-import { ClarityIcons, exclamationCircleIcon, checkCircleIcon, minusIcon, plusIcon, ClrIcon } from '@clr/angular/icon';
+import { ClarityIcons, successStandardIcon, errorStandardIcon, minusIcon, plusIcon, ClrIcon } from '@clr/angular/icon';
 import * as i2$1 from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
@@ -54,12 +54,6 @@ class ClrNumberInputContainer extends ClrAbstractContainer {
             </button>
           </div>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -106,12 +100,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             </button>
           </div>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -176,12 +164,10 @@ class ClrNumberInput extends WrappedFormControl {
     stepUp() {
         this.el.nativeElement.stepUp();
         this.dispatchStepChangeEvents();
-        this.control.control.markAllAsTouched();
     }
     stepDown() {
         this.el.nativeElement.stepDown();
         this.dispatchStepChangeEvents();
-        this.control.control.markAllAsTouched();
     }
     dispatchBlur() {
         this.el.nativeElement.dispatchEvent(new Event('blur', { bubbles: true, cancelable: true }));
@@ -189,6 +175,7 @@ class ClrNumberInput extends WrappedFormControl {
     dispatchStepChangeEvents() {
         this.el.nativeElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
         this.el.nativeElement.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+        this.triggerValidation();
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrNumberInput, deps: [{ token: i1.FormsFocusService, optional: true }, { token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i2$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrNumberInput, isStandalone: false, selector: "input[type=\"number\"][clrNumberInput]", host: { listeners: { "focus": "triggerFocus()" }, properties: { "class.clr-input": "true", "class.clr-number-input": "true" } }, usesInheritance: true, ngImport: i0 }); }
@@ -219,7 +206,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrNumberInputModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, minusIcon, plusIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon, minusIcon, plusIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrNumberInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrNumberInputModule, declarations: [ClrNumberInput, ClrNumberInputContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrNumberInput, ClrNumberInputContainer] }); }

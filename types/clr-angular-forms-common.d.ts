@@ -63,6 +63,15 @@ declare class ClrControlHelper extends ClrAbstractControl {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlHelper, "clr-control-helper", never, {}, {}, never, ["*"], false, never>;
 }
 
+declare class ClrControlSuccess extends ClrAbstractControl {
+    protected controlIdService: ControlIdService;
+    protected containerIdService: ContainerIdService;
+    controlIdSuffix: string;
+    constructor(controlIdService: ControlIdService, containerIdService: ContainerIdService);
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlSuccess, [{ optional: true; }, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlSuccess, "clr-control-success", never, {}, {}, never, ["*"], false, never>;
+}
+
 declare enum ClrFormLayout {
     VERTICAL = "vertical",
     HORIZONTAL = "horizontal",
@@ -141,15 +150,6 @@ declare class ControlClassService {
     initControlClass(renderer: Renderer2, element: HTMLElement): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ControlClassService, [{ optional: true; }]>;
     static ɵprov: i0.ɵɵInjectableDeclaration<ControlClassService>;
-}
-
-declare class ClrControlSuccess extends ClrAbstractControl {
-    protected controlIdService: ControlIdService;
-    protected containerIdService: ContainerIdService;
-    controlIdSuffix: string;
-    constructor(controlIdService: ControlIdService, containerIdService: ContainerIdService);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlSuccess, [{ optional: true; }, { optional: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlSuccess, "clr-control-success", never, {}, {}, never, ["*"], false, never>;
 }
 
 declare abstract class ClrAbstractContainer implements OnDestroy {

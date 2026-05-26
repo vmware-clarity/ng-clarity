@@ -1,13 +1,12 @@
 import * as i0 from '@angular/core';
 import { Component, Self, Optional, Directive, NgModule } from '@angular/core';
-import * as i3 from '@clr/angular/forms/common';
+import * as i2 from '@clr/angular/forms/common';
 import { ClrAbstractContainer, NgControlService, ControlIdService, ControlClassService, WrappedFormControl, ClrCommonFormsModule } from '@clr/angular/forms/common';
 import * as i1 from '@angular/common';
 import { CommonModule } from '@angular/common';
-import * as i2 from '@clr/angular/icon';
-import { ClarityIcons, exclamationCircleIcon, checkCircleIcon, ClrIcon } from '@clr/angular/icon';
 import * as i1$1 from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { ClarityIcons, successStandardIcon, errorStandardIcon, ClrIcon } from '@clr/angular/icon';
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -29,12 +28,6 @@ class ClrInputContainer extends ClrAbstractContainer {
           <ng-content select="[clrInput]"></ng-content>
           <ng-content select="[clrInputSuffix]"></ng-content>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -46,7 +39,7 @@ class ClrInputContainer extends ClrAbstractContainer {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i2.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i3.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i2.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrInputContainer, decorators: [{
             type: Component,
@@ -64,12 +57,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
           <ng-content select="[clrInput]"></ng-content>
           <ng-content select="[clrInputSuffix]"></ng-content>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -136,8 +123,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrInputModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon // caret
-        );
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrInputModule, declarations: [ClrInput, ClrInputContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrInput, ClrInputContainer] }); }

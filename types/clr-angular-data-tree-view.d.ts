@@ -216,5 +216,14 @@ declare class ClrTreeViewModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTreeViewModule>;
 }
 
-export { CLR_TREE_VIEW_DIRECTIVES, ClrRecursiveForOf, ClrSelectedState, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule };
+declare class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
+    parent: DeclarativeTreeNodeModel<T> | null;
+    children: DeclarativeTreeNodeModel<T>[];
+    constructor(parent: DeclarativeTreeNodeModel<T> | null);
+    destroy(): void;
+    _addChild(child: DeclarativeTreeNodeModel<T>): void;
+    _removeChild(child: DeclarativeTreeNodeModel<T>): void;
+}
+
+export { CLR_TREE_VIEW_DIRECTIVES, ClrRecursiveForOf, ClrSelectedState, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule, DeclarativeTreeNodeModel, RecursiveTreeNodeModel, TreeNodeModel };
 export type { ClrRecursiveForOfContext };

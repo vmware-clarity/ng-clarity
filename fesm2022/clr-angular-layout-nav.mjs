@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { Directive, Injectable, Optional, Input, HostBinding, Component, DOCUMENT, PLATFORM_ID, HostListener, Inject, NgModule } from '@angular/core';
+import { Directive, Injectable, Optional, Input, HostBinding, Component, DOCUMENT, createComponent, PLATFORM_ID, HostListener, Inject, NgModule } from '@angular/core';
 import * as i1 from '@clr/angular/utils';
 import { WillyWonka, OompaLoompa, commonStringsDefault, LARGE_BREAKPOINT, ClrStandaloneCdkTrapFocus } from '@clr/angular/utils';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -320,31 +320,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-const createCloseButton = (document, ariaLabel) => {
-    ClarityIcons.addIcons(timesIcon);
-    const closeButton = document.createElement('button');
-    closeButton.setAttribute('aria-label', ariaLabel);
-    closeButton.setAttribute('aria-hidden', 'true');
-    closeButton.innerHTML = `
-    <cds-icon
-      inner-offset="1"
-      shape="times"
-      size="32"
-    ></cds-icon>
-  `;
-    /**
-     * The button is hidden by default based on our Desktop-first approach.
-     */
-    closeButton.setAttribute('hidden', 'true');
-    closeButton.className = 'clr-nav-close';
-    return closeButton;
-};
 class ClrNavLevel {
-    constructor(platformId, cdkTrapFocus, responsiveNavService, elementRef, renderer, injector) {
+    constructor(platformId, cdkTrapFocus, responsiveNavService, elementRef, renderer, injector, environmentInjector, appRef) {
         this.cdkTrapFocus = cdkTrapFocus;
         this.responsiveNavService = responsiveNavService;
         this.elementRef = elementRef;
         this.renderer = renderer;
+        this.injector = injector;
+        this.environmentInjector = environmentInjector;
+        this.appRef = appRef;
         this._isOpen = false;
         if (isPlatformBrowser(platformId)) {
             this._document = injector.get(DOCUMENT);
@@ -389,9 +373,9 @@ class ClrNavLevel {
         this.addNavClass(this.level);
     }
     ngAfterViewInit() {
-        const closeButton = createCloseButton(this._document, this.closeButtonAriaLabel);
+        const closeButton = this.createCloseButton();
         this.renderer.listen(closeButton, 'click', this.close.bind(this));
-        this.renderer.insertBefore(this.elementRef.nativeElement, closeButton, this.elementRef.nativeElement.firstChild); // Adding the button at the top of the nav
+        this.renderer.insertBefore(this.elementRef.nativeElement, closeButton, this.elementRef.nativeElement.firstChild);
         if (this._document.body.clientWidth < LARGE_BREAKPOINT) {
             /**
              * Close if the document body is smaller than the large breakpoint for example:
@@ -473,7 +457,25 @@ class ClrNavLevel {
         this.renderer.setAttribute(this.elementRef.nativeElement.querySelector('.clr-nav-close'), 'aria-hidden', 'false');
         this.renderer.removeAttribute(this.elementRef.nativeElement.querySelector('.clr-nav-close'), 'hidden');
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrNavLevel, deps: [{ token: PLATFORM_ID }, { token: i1.ClrStandaloneCdkTrapFocus }, { token: ResponsiveNavigationService }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i0.Injector }], target: i0.ɵɵFactoryTarget.Directive }); }
+    createCloseButton() {
+        ClarityIcons.addIcons(timesIcon);
+        const closeButton = this._document.createElement('button');
+        closeButton.setAttribute('aria-label', this.closeButtonAriaLabel);
+        closeButton.setAttribute('aria-hidden', 'true');
+        closeButton.setAttribute('hidden', 'true');
+        closeButton.className = 'clr-nav-close';
+        const iconRef = createComponent(ClrIcon, {
+            hostElement: this._document.createElement('cds-icon'),
+            environmentInjector: this.environmentInjector,
+            elementInjector: this.injector,
+        });
+        iconRef.instance.shape = 'times';
+        iconRef.instance.size = '32';
+        this.appRef.attachView(iconRef.hostView);
+        closeButton.appendChild(iconRef.location.nativeElement);
+        return closeButton;
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrNavLevel, deps: [{ token: PLATFORM_ID }, { token: i1.ClrStandaloneCdkTrapFocus }, { token: ResponsiveNavigationService }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i0.Injector }, { token: i0.EnvironmentInjector }, { token: i0.ApplicationRef }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrNavLevel, isStandalone: false, selector: "[clr-nav-level]", inputs: { _level: ["clr-nav-level", "_level"], closeButtonAriaLabel: ["closeAriaLabel", "closeButtonAriaLabel"] }, host: { listeners: { "window:resize": "onResize($event)", "click": "onMouseClick($event.target)" } }, hostDirectives: [{ directive: i1.ClrStandaloneCdkTrapFocus }], ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrNavLevel, decorators: [{
@@ -486,7 +488,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
         }], ctorParameters: () => [{ type: undefined, decorators: [{
                     type: Inject,
                     args: [PLATFORM_ID]
-                }] }, { type: i1.ClrStandaloneCdkTrapFocus }, { type: ResponsiveNavigationService }, { type: i0.ElementRef }, { type: i0.Renderer2 }, { type: i0.Injector }], propDecorators: { _level: [{
+                }] }, { type: i1.ClrStandaloneCdkTrapFocus }, { type: ResponsiveNavigationService }, { type: i0.ElementRef }, { type: i0.Renderer2 }, { type: i0.Injector }, { type: i0.EnvironmentInjector }, { type: i0.ApplicationRef }], propDecorators: { _level: [{
                 type: Input,
                 args: ['clr-nav-level']
             }], closeButtonAriaLabel: [{

@@ -754,41 +754,6 @@ interface ClrDatagridVirtualScrollRangeInterface<T> {
     data: T[];
 }
 
-declare enum DatagridColumnChanges {
-    WIDTH = 0,
-    HIDDEN = 1,
-    INITIALIZE = 2
-}
-
-interface ColumnState {
-    columnIndex?: number;
-    changes?: DatagridColumnChanges[];
-    width?: number;
-    strictWidth?: number;
-    hideable?: boolean;
-    hidden?: boolean;
-    titleTemplateRef?: TemplateRef<any>;
-}
-interface ColumnStateDiff extends ColumnState {
-    changes: DatagridColumnChanges[];
-}
-
-declare class ColumnsService {
-    columns: BehaviorSubject<ColumnState>[];
-    columnsStateChange: BehaviorSubject<ColumnState>;
-    private _cache;
-    get columnStates(): ColumnState[];
-    get hasHideableColumns(): boolean;
-    get visibleColumns(): ColumnState[];
-    cache(): void;
-    hasCache(): boolean;
-    resetToLastCache(): void;
-    emitStateChangeAt(columnIndex: number, diff: ColumnStateDiff): void;
-    emitStateChange(column: BehaviorSubject<ColumnState>, diff: ColumnStateDiff): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ColumnsService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ColumnsService>;
-}
-
 type CdkVirtualForInputKey = 'cdkVirtualForOf' | 'cdkVirtualForTrackBy' | 'cdkVirtualForTemplate' | 'cdkVirtualForTemplateCacheSize';
 type CdkVirtualForInputs<T> = Partial<Pick<CdkVirtualForOf<T>, CdkVirtualForInputKey>>;
 type CdkFixedSizeVirtualScrollInputs = Pick<CdkFixedSizeVirtualScroll, 'itemSize' | 'minBufferPx' | 'maxBufferPx'>;
@@ -804,7 +769,6 @@ declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     private readonly scrollDispatcher;
     private readonly viewportRuler;
     private readonly datagrid;
-    private columnsService;
     private readonly injector;
     renderedRangeChange: EventEmitter<ListRange>;
     persistItems: boolean;
@@ -823,7 +787,7 @@ declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     private mutationChanges;
     private cdkVirtualForInputs;
     private _totalItems;
-    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, columnsService: ColumnsService, injector: EnvironmentInjector);
+    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, injector: EnvironmentInjector);
     get totalContentHeight(): string;
     get cdkVirtualForOf(): CdkVirtualForInputs<T>["cdkVirtualForOf"];
     set cdkVirtualForOf(value: CdkVirtualForInputs<T>['cdkVirtualForOf']);
@@ -1083,6 +1047,41 @@ declare class ClrDatagridActionOverflow implements OnDestroy {
     private initializeFocus;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridActionOverflow, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "buttonLabel": { "alias": "clrDgActionOverflowButtonLabel"; "required": false; }; "open": { "alias": "clrDgActionOverflowOpen"; "required": false; }; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+}
+
+declare enum DatagridColumnChanges {
+    WIDTH = 0,
+    HIDDEN = 1,
+    INITIALIZE = 2
+}
+
+interface ColumnState {
+    columnIndex?: number;
+    changes?: DatagridColumnChanges[];
+    width?: number;
+    strictWidth?: number;
+    hideable?: boolean;
+    hidden?: boolean;
+    titleTemplateRef?: TemplateRef<any>;
+}
+interface ColumnStateDiff extends ColumnState {
+    changes: DatagridColumnChanges[];
+}
+
+declare class ColumnsService {
+    columns: BehaviorSubject<ColumnState>[];
+    columnsStateChange: BehaviorSubject<ColumnState>;
+    private _cache;
+    get columnStates(): ColumnState[];
+    get hasHideableColumns(): boolean;
+    get visibleColumns(): ColumnState[];
+    cache(): void;
+    hasCache(): boolean;
+    resetToLastCache(): void;
+    emitStateChangeAt(columnIndex: number, diff: ColumnStateDiff): void;
+    emitStateChange(column: BehaviorSubject<ColumnState>, diff: ColumnStateDiff): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ColumnsService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ColumnsService>;
 }
 
 declare class ClrDatagridColumnToggle implements OnDestroy {
@@ -1633,6 +1632,27 @@ declare class DatagridPropertyComparator<T = any> implements ClrDatagridComparat
     compare(a: T, b: T): number;
 }
 
+declare class DatagridWillyWonka extends WillyWonka {
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridWillyWonka, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridWillyWonka, "clr-datagrid", never, {}, {}, never, never, false, never>;
+}
+
+declare class ExpandableOompaLoompa extends OompaLoompa {
+    private expandableCount;
+    constructor(cdr: ChangeDetectorRef, willyWonka: DatagridWillyWonka, expandableCount: ExpandableRowsCount);
+    get flavor(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ExpandableOompaLoompa, [null, { optional: true; }, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ExpandableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never, never, false, never>;
+}
+
+declare class ActionableOompaLoompa extends OompaLoompa {
+    private rowActions;
+    constructor(cdr: ChangeDetectorRef, willyWonka: DatagridWillyWonka, rowActions: RowActionService);
+    get flavor(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ActionableOompaLoompa, [null, { optional: true; }, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ActionableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never, never, false, never>;
+}
+
 declare class ClrDatagridSelectionCellDirective {
     private readonly selection;
     constructor(selection: Selection);
@@ -1751,16 +1771,6 @@ declare class DatagridMainRenderer implements AfterContentInit, AfterViewInit, A
     toggleDetailPane(state: boolean): void;
     private setupColumns;
     private shouldComputeHeight;
-    /**
-     * Computes the height of the datagrid.
-     *
-     * NOTE: We had to choose to set the height instead of the min-height because
-     * IE 11 requires the height on the parent for the children flex grow/shrink properties to work.
-     * When we used min-height, 1 1 auto doesn't used to work in IE11 :-(
-     * But this doesn't affect the fix. It works in both fixed & variable height datagrids.
-     *
-     * Refer: http://stackoverflow.com/questions/24396205/flex-grow-not-working-in-internet-explorer-11-0
-     */
     private computeDatagridHeight;
     private resetDatagridHeight;
     /**
@@ -1779,44 +1789,25 @@ declare class DatagridMainRenderer implements AfterContentInit, AfterViewInit, A
 
 declare class DatagridRowRenderer implements AfterContentInit, OnDestroy {
     private columnsService;
+    private el;
     cells: QueryList<DatagridCellRenderer>;
     expandableRows: DatagridRowDetailRenderer[];
     private subscriptions;
-    constructor(columnsService: ColumnsService);
+    constructor(columnsService: ColumnsService, el: ElementRef<HTMLElement>);
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
     setCellsState(): void;
+    private addDetachedRowsColumnStateChangesListener;
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridRowRenderer, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridRowRenderer, "clr-dg-row", never, {}, {}, ["cells"], never, false, never>;
 }
 
 declare class DatagridRowDetailRenderer extends DatagridRowRenderer implements OnDestroy {
     private parentRow;
-    constructor(parentRow: DatagridRowRenderer, columnsService: ColumnsService);
+    constructor(parentRow: DatagridRowRenderer, columnsService: ColumnsService, el: ElementRef<HTMLElement>);
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridRowDetailRenderer, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridRowDetailRenderer, "clr-dg-row-detail", never, {}, {}, never, never, false, never>;
-}
-
-declare class DatagridWillyWonka extends WillyWonka {
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridWillyWonka, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridWillyWonka, "clr-datagrid", never, {}, {}, never, never, false, never>;
-}
-
-declare class ActionableOompaLoompa extends OompaLoompa {
-    private rowActions;
-    constructor(cdr: ChangeDetectorRef, willyWonka: DatagridWillyWonka, rowActions: RowActionService);
-    get flavor(): boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ActionableOompaLoompa, [null, { optional: true; }, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ActionableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never, never, false, never>;
-}
-
-declare class ExpandableOompaLoompa extends OompaLoompa {
-    private expandableCount;
-    constructor(cdr: ChangeDetectorRef, willyWonka: DatagridWillyWonka, expandableCount: ExpandableRowsCount);
-    get flavor(): boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ExpandableOompaLoompa, [null, { optional: true; }, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ExpandableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never, never, false, never>;
 }
 
 declare class ClrDatagridSingleSelectionValueAccessor implements ControlValueAccessor {
@@ -1842,9 +1833,9 @@ declare const CLR_DATAGRID_DIRECTIVES: Type<any>[];
 declare class ClrDatagridModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i38.CommonModule, typeof i39.CdkDragModule, typeof i39.CdkTrapFocusModule, typeof i40.ClrIcon, typeof i41.ClrInputModule, typeof i42.ClrRadioModule, typeof i43.ClrCheckboxModule, typeof i44.ClrNumberInputModule, typeof i45.ClrSelectModule, typeof i46.FormsModule, typeof i39.ClrLoadingModule, typeof i39.ClrConditionalModule, typeof i39.ClrOutsideClickModule, typeof i39.ClrExpandableAnimationModule, typeof i47.ClrSpinnerModule, typeof i1.ÇlrClrPopoverModuleNext, typeof i39.ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor, typeof i39.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor, typeof i39.ClrIfExpanded]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i38.CommonModule, typeof i39.CdkDragModule, typeof i39.CdkTrapFocusModule, typeof i40.ClrIcon, typeof i41.ClrInputModule, typeof i42.ClrRadioModule, typeof i43.ClrCheckboxModule, typeof i44.ClrNumberInputModule, typeof i45.ClrSelectModule, typeof i46.FormsModule, typeof i39.ClrLoadingModule, typeof i39.ClrConditionalModule, typeof i39.ClrOutsideClickModule, typeof i39.ClrExpandableAnimationModule, typeof i47.ClrSpinnerModule, typeof i1.ClrPopoverModuleNext, typeof i39.ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor, typeof i39.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor, typeof i39.ClrIfExpanded]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatagridModule>;
 }
 
-export { CLR_DATAGRID_DIRECTIVES, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSortOrder, ClrIfDetail, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridStringFilter, Selection, SelectionType, selectionTypeAttribute, ActionableOompaLoompa as ÇlrActionableOompaLoompa, DatagridCellRenderer as ÇlrDatagridCellRenderer, DatagridDetailRegisterer as ÇlrDatagridDetailRegisterer, DatagridHeaderRenderer as ÇlrDatagridHeaderRenderer, DatagridMainRenderer as ÇlrDatagridMainRenderer, DatagridRowDetailRenderer as ÇlrDatagridRowDetailRenderer, DatagridRowRenderer as ÇlrDatagridRowRenderer, ClrDatagridSelectionCellDirective as ÇlrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor as ÇlrDatagridSingleSelectionValueAccessor, ClrDatagridVirtualScrollDirective as ÇlrDatagridVirtualScrollDirective, DatagridWillyWonka as ÇlrDatagridWillyWonka, ExpandableOompaLoompa as ÇlrExpandableOompaLoompa, WrappedCell as ÇlrWrappedCell, WrappedColumn as ÇlrWrappedColumn, WrappedRow as ÇlrWrappedRow };
+export { ActionableOompaLoompa, CLR_DATAGRID_DIRECTIVES, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor, ClrDatagridSortOrder, ClrDatagridVirtualScrollDirective, ClrIfDetail, DatagridCellRenderer, DatagridDetailRegisterer, DatagridHeaderRenderer, DatagridMainRenderer, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridRowDetailRenderer, DatagridRowRenderer, DatagridStringFilter, DatagridWillyWonka, ExpandableOompaLoompa, Selection, SelectionType, WrappedCell, WrappedColumn, WrappedRow, selectionTypeAttribute };
 export type { ClrDatagridComparatorInterface, ClrDatagridFilterInterface, ClrDatagridItemsIdentityFunction, ClrDatagridNumericFilterInterface, ClrDatagridStateInterface, ClrDatagridStringFilterInterface, ClrDatagridVirtualScrollRangeInterface };

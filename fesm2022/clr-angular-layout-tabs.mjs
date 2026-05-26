@@ -803,5 +803,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { CLR_TABS_DIRECTIVES, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, ActiveOompaLoompa as ÇlrActiveOompaLoompa, TabsWillyWonka as ÇlrTabsWillyWonka };
+export { ActiveOompaLoompa, CLR_TABS_DIRECTIVES, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, TabsWillyWonka };
 //# sourceMappingURL=clr-angular-layout-tabs.mjs.map

@@ -1,9 +1,9 @@
+import * as i8 from '@clr/angular/popover/common';
+import { ClrPopoverService, ClrPopoverPoint, ClrPopoverContent, ClrPopoverPosition } from '@clr/angular/popover/common';
 import * as i7 from '@clr/angular/utils';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 import * as i0 from '@angular/core';
 import { OnDestroy, ElementRef, AfterViewInit, Type } from '@angular/core';
-import * as i8 from '@clr/angular/popover/common';
-import { ClrPopoverService, ClrPopoverContent, ClrPopoverPosition } from '@clr/angular/popover/common';
 import { Observable } from 'rxjs';
 import * as i5 from '@angular/common';
 import * as i6 from '@clr/angular/icon';
@@ -51,6 +51,7 @@ declare class ClrSignpostTrigger implements OnDestroy {
 
 declare class ClrSignpost {
     commonStrings: ClrCommonStringsService;
+    private popoverService;
     /**********
      * @property useCustomTrigger
      *
@@ -60,7 +61,12 @@ declare class ClrSignpost {
      */
     useCustomTrigger: boolean;
     signpostTriggerAriaLabel: string;
-    constructor(commonStrings: ClrCommonStringsService);
+    /**
+     * Hides the default trigger button. Use when the signpost is opened
+     * programmatically via `openAtPoint()` and no trigger icon is needed.
+     */
+    hideTrigger: boolean;
+    constructor(commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService);
     /**********
      * @property signPostTrigger
      *
@@ -69,8 +75,10 @@ declare class ClrSignpost {
      *
      */
     set customTrigger(trigger: ClrSignpostTrigger);
+    get showDefaultTrigger(): boolean;
+    openAtPoint(point: ClrPopoverPoint, targetElement?: HTMLElement): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpost, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i8.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; "hideTrigger": { "alias": "clrSignpostHideTrigger"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i8.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
 declare class ClrSignpostContent implements OnDestroy, AfterViewInit {
@@ -90,8 +98,8 @@ declare class ClrSignpostContent implements OnDestroy, AfterViewInit {
      *
      * @description
      * A setter for the position of the ClrSignpostContent popover. This is a combination of the following:
-     * - anchorPoint - where on the trigger to anchor the ClrSignpostContent
-     * - popoverPoint - where on the ClrSignpostContent container to align with the anchorPoint
+     * - originPoint - where on the trigger to position the content
+     * - popoverPoint - where on the content container to align with the origin
      * - offsetY - where on the Y axis to align the ClrSignpostContent so it meets specs
      * - offsetX - where on the X axis to align the ClrSignpostContent so it meets specs
      * There are 12 possible positions to place a ClrSignpostContent container:
@@ -142,7 +150,7 @@ declare const CLR_SIGNPOST_DIRECTIVES: Type<any>[];
 declare class ClrSignpostModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSignpostModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i5.CommonModule, typeof i6.ClrIcon, typeof i7.ClrFocusOnViewInitModule, typeof i8.ÇlrClrPopoverModuleNext, typeof i8.ClrIfOpen], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof i8.ClrIfOpen]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSignpostModule, [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle], [typeof i5.CommonModule, typeof i6.ClrIcon, typeof i7.ClrFocusOnViewInitModule, typeof i8.ClrPopoverModuleNext, typeof i8.ClrIfOpen], [typeof ClrSignpost, typeof ClrSignpostContent, typeof ClrSignpostTrigger, typeof ClrSignpostTitle, typeof i8.ClrIfOpen]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSignpostModule>;
 }
 

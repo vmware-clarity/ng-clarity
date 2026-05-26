@@ -5,7 +5,7 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
 import * as i3 from '@angular/common';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import * as i2 from '@clr/angular/utils';
-import { uniqueIdFactory, preventArrowKeyScroll, normalizeKey, isKeyEitherLetterOrNumber, Keys, IfExpandService, LoadingListener, ClrLoadingModule } from '@clr/angular/utils';
+import { uniqueIdFactory, preventArrowKeyScroll, isKeyEitherLetterOrNumber, Keys, IfExpandService, LoadingListener, ClrLoadingModule } from '@clr/angular/utils';
 import { filter, debounceTime } from 'rxjs/operators';
 import * as i5 from '@clr/angular/icon';
 import { ClarityIcons, angleIcon, ClrIcon } from '@clr/angular/icon';
@@ -676,7 +676,7 @@ class ClrTreeNode {
         //    By default, pressing arrow key makes AT focus go into the nested content of the item.
         preventArrowKeyScroll(event);
         // https://www.w3.org/TR/wai-aria-practices-1.1/#keyboard-interaction-22
-        switch (normalizeKey(event.key)) {
+        switch (event.key) {
             case Keys.ArrowUp:
                 this.focusManager.focusNodeAbove(this._model);
                 break;
@@ -1102,5 +1102,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { CLR_TREE_VIEW_DIRECTIVES, ClrRecursiveForOf, ClrSelectedState, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule };
+export { CLR_TREE_VIEW_DIRECTIVES, ClrRecursiveForOf, ClrSelectedState, ClrTree, ClrTreeNode, ClrTreeNodeLink, ClrTreeViewModule, DeclarativeTreeNodeModel, RecursiveTreeNodeModel, TreeNodeModel };
 //# sourceMappingURL=clr-angular-data-tree-view.mjs.map

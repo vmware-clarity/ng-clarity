@@ -25,10 +25,12 @@ The service is responsible for:
   - **`toggleWithEvent(event: any)`**: A helper method used by triggers. It toggles the `open` state, stores the triggering event (to prevent conflicts like "click outside" closing immediately), and prevents default scrolling behavior for arrow keys.
   - **`openEvent`**: Stores the specific browser event that triggered the opening of the popover.
 
-- **Focus & Anchor Management**:
-  - **`anchorElementRef`**: Holds the `ElementRef` of the anchor/trigger element. This is used by the CDK to calculate where the overlay should appear.
+- **Focus & Origin Management**:
+  - **`origin`**: Holds the `FlexibleConnectedPositionStrategyOrigin` — either an `ElementRef` (trigger element) or a `ClrPopoverPoint` (`{ x, y }` coordinate). This is used by the CDK to calculate where the overlay should appear.
+  - **`originElement`**: Convenience getter that returns the origin as `ElementRef<HTMLElement>` when element-based, or `null` when point-based.
+  - **`originPoint`**: Convenience getter that returns the origin as `ClrPopoverPoint` when point-based, or `null` when element-based.
   - **`closeButtonRef`**: Holds the `ElementRef` of the internal close button (if applicable).
-  - **`focusAnchor()`**: A utility method to return focus to the anchor element (e.g., when the menu closes), ensuring accessibility compliance.
+  - **`focusOrigin()`**: A utility method to return focus to the origin element (e.g., when the menu closes), ensuring accessibility compliance. No-op for point-based origins.
   - **`focusCloseButton()`**: Moves focus to the close button inside the content when appropriate.
 
 - **Reactive Streams**:
@@ -38,10 +40,10 @@ The service is responsible for:
 
 ### Directives
 
-1.  **`[clrPopoverAnchor]`**:
+1.  **`[clrPopoverOrigin]`**:
 
-- Used on the element that serves as the reference point for positioning (the anchor).
-- Passes an `ElementRef` to the service, which is used for focus management and positioning calculations.
+- Used on the element that serves as the reference point for positioning.
+- Passes an `ElementRef` to the service as the `origin`, which is used for focus management and positioning calculations.
 
 2.  **`*clrPopoverContent`**:
 
@@ -52,7 +54,7 @@ The service is responsible for:
 3.  **`[clrPopoverCloseButton]`**:
 
 - Should only be used inside popover content containers.
-- Calls the toggle method on the service and restores focus to the anchor element.
+- Calls the toggle method on the service and restores focus to the origin element.
 
 4.  **`[clrPopoverOpenCloseButton]`**:
 
@@ -66,7 +68,7 @@ The `*clrPopoverContent` directive is the "workhorse" of the utility. It accepts
 - **`clrPopoverContent`** (boolean):
   - Controls the open/closed state of the popover. When true, the overlay is created and attached; when false, it is detached.
 - **`clrPopoverContentAt`** (`ClrPopoverPosition | ConnectedPosition`):
-  - Defines the preferred position of the content relative to the anchor (e.g., `top-right`, `bottom-left`). It sets the `preferredPosition` for the CDK overlay.
+  - Defines the preferred position of the content relative to the origin (e.g., `top-right`, `bottom-left`). It sets the `preferredPosition` for the CDK overlay.
 - **`clrPopoverContentAvailablePositions`** (`ConnectedPosition[]`):
   - A prioritized list of fallback positions the overlay can attempt to use if the preferred position does not fit within the viewport.
 - **`clrPopoverContentType`** (`ClrPopoverType`):
@@ -79,8 +81,8 @@ The `*clrPopoverContent` directive is the "workhorse" of the utility. It accepts
 ## Enums
 
 1.  **`ClrPopoverType`**: Describes the popover variation: `SIGNPOST`, `TOOLTIP`, `DROPDOWN`, and `DEFAULT`.
-2.  **`ClrPopoverPosition`**: Describes the popover position relative to the anchor (e.g., `top-left`, `bottom-right`).
-3.  **`ClrPosition`**: Describes the specific point of contact on both the anchor and content elements.
+2.  **`ClrPopoverPosition`**: Describes the popover position relative to the origin (e.g., `top-left`, `bottom-right`).
+3.  **`ClrPosition`**: Describes the specific point of contact on both the origin and content elements.
 
 ---
 
@@ -89,8 +91,8 @@ The `*clrPopoverContent` directive is the "workhorse" of the utility. It accepts
 To use the popover utility, a host component must provide the `ClrPopoverService`. Components generally provide a `ClrPopoverPosition` via the `at` input to describe the preferred content position.
 
 ```html
-<button class="btn" clrPopoverOpenCloseButton clrPopoverAnchor [attr.aria-owns]="popoverId">
-  <cds-icon shape="home"></cds-icon> Popover Anchor
+<button class="btn" clrPopoverOpenCloseButton clrPopoverOrigin [attr.aria-owns]="popoverId">
+  <cds-icon shape="home"></cds-icon> Popover Origin
 </button>
 <div
   [id]="popoverId"

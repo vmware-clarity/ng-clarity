@@ -1,7 +1,7 @@
 import * as i1 from '@clr/angular/utils';
 import { WillyWonka, OompaLoompa, ClrCommonStringsService, ClrStandaloneCdkTrapFocus } from '@clr/angular/utils';
 import * as i0 from '@angular/core';
-import { ChangeDetectorRef, OnDestroy, OnInit, ElementRef, Renderer2, Injector, Type } from '@angular/core';
+import { ChangeDetectorRef, OnDestroy, OnInit, ElementRef, Renderer2, Injector, EnvironmentInjector, ApplicationRef, Type } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RouterLinkActive } from '@angular/router';
 import * as i6 from '@angular/common';
@@ -92,12 +92,15 @@ declare class ClrNavLevel implements OnInit {
     private responsiveNavService;
     private elementRef;
     private renderer;
+    private injector;
+    private environmentInjector;
+    private appRef;
     _level: number;
     closeButtonAriaLabel: string;
     private _isOpen;
     private _document;
     private _subscription;
-    constructor(platformId: any, cdkTrapFocus: ClrStandaloneCdkTrapFocus, responsiveNavService: ResponsiveNavigationService, elementRef: ElementRef<HTMLElement>, renderer: Renderer2, injector: Injector);
+    constructor(platformId: any, cdkTrapFocus: ClrStandaloneCdkTrapFocus, responsiveNavService: ResponsiveNavigationService, elementRef: ElementRef<HTMLElement>, renderer: Renderer2, injector: Injector, environmentInjector: EnvironmentInjector, appRef: ApplicationRef);
     get level(): number;
     get responsiveNavCodes(): ResponsiveNavCodes;
     get isOpen(): boolean;
@@ -113,6 +116,7 @@ declare class ClrNavLevel implements OnInit {
     protected showNavigation(): void;
     protected hideCloseButton(): void;
     protected showCloseButton(): void;
+    private createCloseButton;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, { "_level": { "alias": "clr-nav-level"; "required": false; }; "closeButtonAriaLabel": { "alias": "closeAriaLabel"; "required": false; }; }, {}, never, never, false, [{ directive: typeof i1.ClrStandaloneCdkTrapFocus; inputs: {}; outputs: {}; }]>;
 }

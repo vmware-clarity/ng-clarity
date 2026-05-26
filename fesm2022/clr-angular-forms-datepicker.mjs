@@ -5,13 +5,13 @@ import { Injectable, LOCALE_ID, Inject, DOCUMENT, PLATFORM_ID, HostListener, Com
 import * as i7 from '@clr/angular/forms/common';
 import { ClrAbstractContainer, ControlIdService, ControlClassService, FormsFocusService, NgControlService, WrappedFormControl, ClrCommonFormsModule } from '@clr/angular/forms/common';
 import * as i4 from '@clr/angular/utils';
-import { DATEPICKER_ENABLE_BREAKPOINT, normalizeKey, Keys, isBooleanAttributeSet, CdkTrapFocusModule, ClrHostWrappingModule, ClrConditionalModule } from '@clr/angular/utils';
+import { DATEPICKER_ENABLE_BREAKPOINT, Keys, isBooleanAttributeSet, CdkTrapFocusModule, ClrHostWrappingModule, ClrConditionalModule } from '@clr/angular/utils';
 import { first, filter, startWith } from 'rxjs/operators';
 import * as i1 from '@clr/angular/popover/common';
-import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS, ClrPopoverHostDirective, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS, ClrPopoverHostDirective, ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { Subject, tap } from 'rxjs';
 import * as i5 from '@clr/angular/icon';
-import { ClarityIcons, exclamationCircleIcon, checkCircleIcon, angleIcon, eventIcon, calendarIcon, ClrIcon } from '@clr/angular/icon';
+import { ClarityIcons, successStandardIcon, errorStandardIcon, angleIcon, eventIcon, calendarIcon, ClrIcon } from '@clr/angular/icon';
 import * as i6 from '@clr/angular/layout/vertical-nav';
 import { ClrVerticalNavModule } from '@clr/angular/layout/vertical-nav';
 import * as i1$1 from '@angular/forms';
@@ -218,12 +218,33 @@ function datesAreEqual(date1, date2) {
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 /**
+ * Index of the day of the week, matching JavaScript's Date.getDay() convention.
+ * Used to override the locale-derived first day of the week in the date picker.
+ */
+var ClrWeekday;
+(function (ClrWeekday) {
+    ClrWeekday[ClrWeekday["Sunday"] = 0] = "Sunday";
+    ClrWeekday[ClrWeekday["Monday"] = 1] = "Monday";
+    ClrWeekday[ClrWeekday["Tuesday"] = 2] = "Tuesday";
+    ClrWeekday[ClrWeekday["Wednesday"] = 3] = "Wednesday";
+    ClrWeekday[ClrWeekday["Thursday"] = 4] = "Thursday";
+    ClrWeekday[ClrWeekday["Friday"] = 5] = "Friday";
+    ClrWeekday[ClrWeekday["Saturday"] = 6] = "Saturday";
+})(ClrWeekday || (ClrWeekday = {}));
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/**
  * This service extracts the Angular CLDR data needed by the datepicker.
  */
 class LocaleHelperService {
     constructor(locale) {
         this.locale = locale;
-        this._firstDayOfWeek = 0;
+        this._firstDayOfWeek = ClrWeekday.Sunday;
         this.initializeLocaleData();
     }
     get firstDayOfWeek() {
@@ -246,11 +267,25 @@ class LocaleHelperService {
         return this._localeDateFormat;
     }
     /**
+     * Overrides the first day of the week regardless of locale.
+     * Accepts a `ClrWeekday` value (Sunday=0 through Saturday=6), or null to revert to locale default.
+     * Incorrect values will revert to default value (Sunday).
+     */
+    updateFirstDayOfWeek(day) {
+        if (day === null || day < ClrWeekday.Sunday || day > ClrWeekday.Saturday) {
+            this.initializeLocaleFirstDayOfWeek();
+            this.initializeLocaleDays();
+            return;
+        }
+        this._firstDayOfWeek = day;
+        this.initializeLocaleDays();
+    }
+    /**
      * Initializes the locale data.
      */
     initializeLocaleData() {
         // Order in which these functions is called is very important.
-        this.initializeFirstDayOfWeek();
+        this.initializeLocaleFirstDayOfWeek();
         this.initializeLocaleDateFormat();
         this.initializeLocaleMonthsAbbreviated();
         this.initializeLocaleMonthsWide();
@@ -265,14 +300,12 @@ class LocaleHelperService {
         const tempArr = [];
         const tempWideArr = getLocaleDayNames(this.locale, FormStyle.Standalone, TranslationWidth.Wide).slice();
         const tempNarrowArr = getLocaleDayNames(this.locale, FormStyle.Standalone, TranslationWidth.Narrow).slice();
-        // Get first day of the week based on the locale
-        const firstDayOfWeek = this.firstDayOfWeek;
         for (let i = 0; i < 7; i++) {
             tempArr.push({ day: tempWideArr[i], narrow: tempNarrowArr[i] });
         }
-        // Rearrange the tempArr to start with the first day of the week based on the locale.
-        if (firstDayOfWeek > 0) {
-            const prevDays = tempArr.splice(0, firstDayOfWeek);
+        // Rearrange the tempArr to start with the first day of the week based on the locale (default or override).
+        if (this.firstDayOfWeek > ClrWeekday.Sunday) {
+            const prevDays = tempArr.splice(0, this.firstDayOfWeek);
             tempArr.push(...prevDays);
         }
         this._localeDays = tempArr;
@@ -294,7 +327,7 @@ class LocaleHelperService {
     /**
      * Initializes the first day of the week based on the locale.
      */
-    initializeFirstDayOfWeek() {
+    initializeLocaleFirstDayOfWeek() {
         this._firstDayOfWeek = getLocaleFirstDayOfWeek(this.locale);
     }
     initializeLocaleDateFormat() {
@@ -318,10 +351,14 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class DateIOService {
     constructor(localeHelperService) {
+        /**
+         * This is the default range. It approximates the beginning of time to the end of time.
+         * The disabled dates are the dates that are not allowed to be selected.
+         * The min date is the earliest date that can be selected.
+         * The max date is the latest date that can be selected.
+         * Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
+         */
         this.disabledDates = {
-            // This is the default range. It approximates the beginning of time to the end of time.
-            // Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
-            // TODO: turn this into an Array of min/max ranges that allow configuration of multiple ranges.
             minDate: new DayModel(0, 0, 1),
             maxDate: new DayModel(9999, 11, 31),
         };
@@ -976,7 +1013,7 @@ class ClrMonthpicker {
         // the logic is fairly simple and it didn't make sense for me
         // to create extra observables just to move this logic to the service.
         if (event) {
-            const key = normalizeKey(event.key);
+            const key = event.key;
             if (key === Keys.ArrowUp && this._focusedMonthIndex > 1) {
                 event.preventDefault();
                 this._focusedMonthIndex -= 2;
@@ -1323,7 +1360,7 @@ class ClrYearpicker {
         // the logic is fairly simple and it didn't make sense for me
         // to create extra observables just to move this logic to the service.
         if (event) {
-            const key = normalizeKey(event.key);
+            const key = event.key;
             if (key === Keys.ArrowUp) {
                 event.preventDefault();
                 this.incrementFocusYearBy(-2);
@@ -1970,7 +2007,7 @@ class ClrCalendar {
      */
     onKeyDown(event) {
         if (event && this.focusedDay) {
-            switch (normalizeKey(event.key)) {
+            switch (event.key) {
                 case Keys.ArrowUp:
                     event.preventDefault();
                     this._dateNavigationService.incrementFocusDay(-1 * NO_OF_DAYS_IN_A_WEEK);
@@ -2268,7 +2305,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrDateContainer extends ClrAbstractContainer {
-    constructor(renderer, elem, popoverService, dateNavigationService, datepickerEnabledService, dateFormControlService, dateIOService, commonStrings, focusService, viewManagerService, controlClassService, layoutService, ngControlService) {
+    constructor(renderer, elem, popoverService, dateNavigationService, datepickerEnabledService, dateFormControlService, dateIOService, commonStrings, focusService, viewManagerService, controlClassService, layoutService, ngControlService, localeHelperService) {
         super(layoutService, controlClassService, ngControlService);
         this.renderer = renderer;
         this.elem = elem;
@@ -2282,6 +2319,7 @@ class ClrDateContainer extends ClrAbstractContainer {
         this.controlClassService = controlClassService;
         this.layoutService = layoutService;
         this.ngControlService = ngControlService;
+        this.localeHelperService = localeHelperService;
         this.focus = false;
         this.popoverType = ClrPopoverType.DROPDOWN;
         this.subscriptions.push(focusService.focusChange.subscribe(state => {
@@ -2295,6 +2333,14 @@ class ClrDateContainer extends ClrAbstractContainer {
             dateNavigationService.hasActionButtons = dateNavigationService.isRangePicker =
                 tagName === 'clr-date-range-container';
         }
+    }
+    /**
+     * Overrides the locale-derived first day of the week for the calendar.
+     * Accepts a `ClrWeekday` value (Sunday=0 through Saturday=6).
+     * When not set, the first day of the week is determined by the Angular locale.
+     */
+    set firstDayOfWeek(value) {
+        this.localeHelperService.updateFirstDayOfWeek(value ?? null);
     }
     /**
      * For date range picker actions buttons are shown by default
@@ -2422,8 +2468,8 @@ class ClrDateContainer extends ClrAbstractContainer {
             }
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDateContainer, deps: [{ token: i0.Renderer2 }, { token: i0.ElementRef }, { token: i1.ClrPopoverService }, { token: DateNavigationService }, { token: DatepickerEnabledService }, { token: DateFormControlService }, { token: DateIOService }, { token: i4.ClrCommonStringsService }, { token: i7.FormsFocusService }, { token: ViewManagerService }, { token: i7.ControlClassService }, { token: i7.LayoutService, optional: true }, { token: i7.NgControlService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrDateContainer, isStandalone: false, selector: "clr-date-container, clr-date-range-container", inputs: { showActionButtons: "showActionButtons", clrPosition: "clrPosition", rangeOptions: "rangeOptions", min: "min", max: "max" }, host: { properties: { "class.clr-date-container": "true", "class.clr-form-control-disabled": "isInputDateDisabled", "class.clr-form-control": "true", "class.clr-row": "addGrid()" } }, providers: [
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDateContainer, deps: [{ token: i0.Renderer2 }, { token: i0.ElementRef }, { token: i1.ClrPopoverService }, { token: DateNavigationService }, { token: DatepickerEnabledService }, { token: DateFormControlService }, { token: DateIOService }, { token: i4.ClrCommonStringsService }, { token: i7.FormsFocusService }, { token: ViewManagerService }, { token: i7.ControlClassService }, { token: i7.LayoutService, optional: true }, { token: i7.NgControlService }, { token: LocaleHelperService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrDateContainer, isStandalone: false, selector: "clr-date-container, clr-date-range-container", inputs: { firstDayOfWeek: ["clrFirstDayOfWeek", "firstDayOfWeek"], showActionButtons: "showActionButtons", clrPosition: "clrPosition", rangeOptions: "rangeOptions", min: "min", max: "max" }, host: { properties: { "class.clr-date-container": "true", "class.clr-form-control-disabled": "isInputDateDisabled", "class.clr-form-control": "true", "class.clr-row": "addGrid()" } }, providers: [
             ControlIdService,
             LocaleHelperService,
             ControlClassService,
@@ -2440,7 +2486,7 @@ class ClrDateContainer extends ClrAbstractContainer {
       <label></label>
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
-      <div class="clr-input-wrapper" clrPopoverAnchor>
+      <div class="clr-input-wrapper" clrPopoverOrigin>
         <div class="clr-input-group" [class.clr-focus]="focus">
           <!-- render range inputs only if using clr-date-range-container -->
           @if (isRangePicker) {
@@ -2472,12 +2518,6 @@ class ClrDateContainer extends ClrAbstractContainer {
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -2489,7 +2529,7 @@ class ClrDateContainer extends ClrAbstractContainer {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i5$1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i4.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: i1.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i1.ÇlrClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i1.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i7.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: ClrDatepickerViewManager, selector: "clr-datepicker-view-manager" }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i5$1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i4.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "directive", type: i1.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i1.ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i1.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i7.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: ClrDatepickerViewManager, selector: "clr-datepicker-view-manager" }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDateContainer, decorators: [{
             type: Component,
@@ -2501,7 +2541,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
       <label></label>
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
-      <div class="clr-input-wrapper" clrPopoverAnchor>
+      <div class="clr-input-wrapper" clrPopoverOrigin>
         <div class="clr-input-group" [class.clr-focus]="focus">
           <!-- render range inputs only if using clr-date-range-container -->
           @if (isRangePicker) {
@@ -2533,12 +2573,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             cdkTrapFocus
           ></clr-datepicker-view-manager>
         </div>
-        @if (showInvalid) {
-          <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-        }
-        @if (showValid) {
-          <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-        }
       </div>
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
@@ -2574,7 +2608,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                 }]
         }], ctorParameters: () => [{ type: i0.Renderer2 }, { type: i0.ElementRef }, { type: i1.ClrPopoverService }, { type: DateNavigationService }, { type: DatepickerEnabledService }, { type: DateFormControlService }, { type: DateIOService }, { type: i4.ClrCommonStringsService }, { type: i7.FormsFocusService }, { type: ViewManagerService }, { type: i7.ControlClassService }, { type: i7.LayoutService, decorators: [{
                     type: Optional
-                }] }, { type: i7.NgControlService }], propDecorators: { showActionButtons: [{
+                }] }, { type: i7.NgControlService }, { type: LocaleHelperService }], propDecorators: { firstDayOfWeek: [{
+                type: Input,
+                args: ['clrFirstDayOfWeek']
+            }], showActionButtons: [{
                 type: Input,
                 args: ['showActionButtons']
             }], clrPosition: [{
@@ -3133,6 +3170,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 const CLR_DATEPICKER_DIRECTIVES = [
     ClrDateInput,
     ClrDay,
@@ -3151,7 +3195,7 @@ const CLR_DATEPICKER_DIRECTIVES = [
 ];
 class ClrDatepickerModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, angleIcon, eventIcon, calendarIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon, angleIcon, eventIcon, calendarIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatepickerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrDatepickerModule, declarations: [ClrDateInput,
@@ -3171,7 +3215,7 @@ class ClrDatepickerModule {
             CdkTrapFocusModule,
             ClrHostWrappingModule,
             ClrConditionalModule,
-            _lrClrPopoverModuleNext,
+            ClrPopoverModuleNext,
             ClrIcon,
             ClrCommonFormsModule,
             ClrVerticalNavModule], exports: [ClrDateInput,
@@ -3192,7 +3236,7 @@ class ClrDatepickerModule {
             CdkTrapFocusModule,
             ClrHostWrappingModule,
             ClrConditionalModule,
-            _lrClrPopoverModuleNext,
+            ClrPopoverModuleNext,
             ClrIcon,
             ClrCommonFormsModule,
             ClrVerticalNavModule] }); }
@@ -3205,7 +3249,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                         CdkTrapFocusModule,
                         ClrHostWrappingModule,
                         ClrConditionalModule,
-                        _lrClrPopoverModuleNext,
+                        ClrPopoverModuleNext,
                         ClrIcon,
                         ClrCommonFormsModule,
                         ClrVerticalNavModule,
@@ -3226,5 +3270,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { CLR_DATEPICKER_DIRECTIVES, ClrCalendar, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrEndDateInput, ClrEndDateInputValidator, ClrMonthpicker, ClrStartDateInput, ClrStartDateInputValidator, ClrYearpicker };
+export { CLR_DATEPICKER_DIRECTIVES, ClrCalendar, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrEndDateInput, ClrEndDateInputValidator, ClrMonthpicker, ClrStartDateInput, ClrStartDateInputValidator, ClrWeekday, ClrYearpicker };
 //# sourceMappingURL=clr-angular-forms-datepicker.mjs.map

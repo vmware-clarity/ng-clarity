@@ -1,21 +1,21 @@
-import * as i3 from '@angular/common';
+import * as i8 from '@angular/common';
 import { isPlatformBrowser, NgForOf, CommonModule } from '@angular/common';
 import * as i0 from '@angular/core';
-import { Injectable, ViewChild, Optional, Component, Input, Directive, PLATFORM_ID, Inject, HostListener, HostBinding, DOCUMENT, ContentChildren, EventEmitter, ContentChild, Output, Self, NgModule } from '@angular/core';
+import { Injectable, ViewChild, Optional, Component, Input, Directive, PLATFORM_ID, Inject, HostListener, HostBinding, DOCUMENT, ContentChildren, EventEmitter, booleanAttribute, ContentChild, ViewChildren, Output, Self, Host, NgModule } from '@angular/core';
 import * as i1$1 from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import * as i1 from '@clr/angular/forms/common';
 import { ClrAbstractContainer, NgControlService, ControlIdService, ControlClassService, WrappedFormControl, ClrCommonFormsModule } from '@clr/angular/forms/common';
-import * as i4 from '@clr/angular/icon';
-import { ClarityIcons, exclamationCircleIcon, checkCircleIcon, angleIcon, windowCloseIcon, ClrIcon } from '@clr/angular/icon';
-import * as i4$1 from '@clr/angular/popover/common';
-import { POPOVER_HOST_ANCHOR, ClrPopoverPosition, ClrPopoverType, ClrPopoverHostDirective, ÇlrClrPopoverModuleNext as _lrClrPopoverModuleNext } from '@clr/angular/popover/common';
+import * as i9 from '@clr/angular/icon';
+import { ClarityIcons, successStandardIcon, errorStandardIcon, angleIcon, windowCloseIcon, ClrIcon } from '@clr/angular/icon';
+import * as i4 from '@clr/angular/popover/common';
+import { POPOVER_HOST_ORIGIN, ClrPopoverPosition, ClrPopoverType, ClrPopoverHostDirective, ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import * as i5 from '@clr/angular/progress/spinner';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
-import * as i3$1 from '@clr/angular/utils';
-import { ArrowKeyDirection, normalizeKey, Keys, customFocusableItemProvider, uniqueIdFactory, ClrLoadingState, IF_ACTIVE_ID, LoadingListener, IF_ACTIVE_ID_PROVIDER, FOCUS_SERVICE_PROVIDER, ClrConditionalModule, ClrKeyFocusModule } from '@clr/angular/utils';
+import * as i3 from '@clr/angular/utils';
+import { ArrowKeyDirection, Keys, customFocusableItemProvider, uniqueIdFactory, ClrLoadingState, IF_ACTIVE_ID, LoadingListener, IF_ACTIVE_ID_PROVIDER, FOCUS_SERVICE_PROVIDER, ClrConditionalModule, ClrKeyFocusModule } from '@clr/angular/utils';
+import { BehaviorSubject, ReplaySubject, Subject, debounceTime } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { BehaviorSubject, ReplaySubject } from 'rxjs';
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -63,12 +63,6 @@ class ClrComboboxContainer extends ClrAbstractContainer {
     }
     <div class="clr-control-container" [ngClass]="controlClass()" #controlContainer>
       <ng-content select="clr-combobox"></ng-content>
-      @if (showInvalid) {
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-      }
-      @if (showValid) {
-        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-      }
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
       }
@@ -79,7 +73,7 @@ class ClrComboboxContainer extends ClrAbstractContainer {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i3.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i4.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i1.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i8.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrComboboxContainer, decorators: [{
             type: Component,
@@ -92,12 +86,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
     }
     <div class="clr-control-container" [ngClass]="controlClass()" #controlContainer>
       <ng-content select="clr-combobox"></ng-content>
-      @if (showInvalid) {
-        <cds-icon class="clr-validate-icon" shape="exclamation-circle" status="danger" aria-hidden="true"></cds-icon>
-      }
-      @if (showValid) {
-        <cds-icon class="clr-validate-icon" shape="check-circle" status="success" aria-hidden="true"></cds-icon>
-      }
       @if (showHelper) {
         <ng-content select="clr-control-helper"></ng-content>
       }
@@ -131,20 +119,24 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class MultiSelectComboboxModel {
+class ComboboxModel {
+    constructor() {
+        this.identityFn = (item) => item;
+    }
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class MultiSelectComboboxModel extends ComboboxModel {
     containsItem(item) {
-        if (this.model) {
-            if (this.displayField && typeof item === 'object') {
-                const includes = this.model.some(modelItem => {
-                    return modelItem[this.displayField] === item[this.displayField];
-                });
-                return includes;
-            }
-            else {
-                return this.model.includes(item);
-            }
+        if (this.model === null || this.model === undefined) {
+            return false;
         }
-        return false;
+        return this.model.some(m => this.identityFn(m) === this.identityFn(item));
     }
     select(item) {
         this.addItem(item);
@@ -207,7 +199,7 @@ class MultiSelectComboboxModel {
         if (this.model === null || this.model === undefined) {
             return;
         }
-        const index = this.model.indexOf(item);
+        const index = this.model.findIndex(m => this.identityFn(m) === this.identityFn(item));
         if (index > -1) {
             this.model.splice(index, 1);
         }
@@ -224,9 +216,12 @@ class MultiSelectComboboxModel {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class SingleSelectComboboxModel {
+class SingleSelectComboboxModel extends ComboboxModel {
     containsItem(item) {
-        return this.model === item;
+        if (this.model === null || this.model === undefined) {
+            return false;
+        }
+        return this.identityFn(this.model) === this.identityFn(item);
     }
     select(item) {
         this.model = item;
@@ -313,13 +308,16 @@ class OptionSelectionService {
     constructor() {
         this.loading = false;
         this.editable = false;
-        this.filtering = true;
+        this.showSelectAll = false;
         // Display all options on first open, even if filter text exists.
         // https://github.com/vmware-clarity/ng-clarity/issues/386
         this.showAllOptions = true;
         this._currentInput = '';
         this._inputChanged = new BehaviorSubject('');
         this._selectionChanged = new ReplaySubject(1);
+        this._selectAllRequested = new Subject();
+        this.editableResolver = (input) => input;
+        this._identityFn = (item) => item;
         this.inputChanged = this._inputChanged.asObservable();
     }
     get displayField() {
@@ -350,6 +348,21 @@ class OptionSelectionService {
     get multiselectable() {
         return this.selectionModel instanceof MultiSelectComboboxModel;
     }
+    get identityFn() {
+        return this._identityFn;
+    }
+    set identityFn(value) {
+        this._identityFn = value || ((item) => item);
+        if (this.selectionModel) {
+            this.selectionModel.identityFn = this._identityFn;
+        }
+    }
+    get selectAllRequested() {
+        return this._selectAllRequested.asObservable();
+    }
+    requestSelectAll() {
+        this._selectAllRequested.next();
+    }
     select(item) {
         if (item === null || item === undefined || this.selectionModel.containsItem(item)) {
             return;
@@ -369,6 +382,33 @@ class OptionSelectionService {
         }
         this._selectionChanged.next(this.selectionModel);
     }
+    selectMany(items) {
+        let changed = false;
+        for (const item of items) {
+            if (!this.selectionModel.containsItem(item)) {
+                this.selectionModel.select(item);
+                changed = true;
+            }
+        }
+        if (changed) {
+            this._selectionChanged.next(this.selectionModel);
+        }
+    }
+    unselectMany(items) {
+        if (!this.selectionModel || this.selectionModel.isEmpty()) {
+            return;
+        }
+        let changed = false;
+        for (const item of items) {
+            if (this.selectionModel.containsItem(item)) {
+                this.selectionModel.unselect(item);
+                changed = true;
+            }
+        }
+        if (changed) {
+            this._selectionChanged.next(this.selectionModel);
+        }
+    }
     unselect(item) {
         if (item === null || item === undefined || !this.selectionModel.containsItem(item)) {
             return;
@@ -376,25 +416,58 @@ class OptionSelectionService {
         this.selectionModel.unselect(item);
         this._selectionChanged.next(this.selectionModel);
     }
-    // TODO: Add support for trackBy and compareFn
+    /**
+     * Checks whether all given items are currently selected, using identityFn for comparison.
+     */
+    containsAll(items) {
+        if (!items.length || this.selectionModel.isEmpty()) {
+            return false;
+        }
+        return items.every(item => this.selectionModel.containsItem(item));
+    }
     setSelectionValue(value) {
-        // NOTE: Currently we assume that no 2 options will have the same value
-        // but Eudes and I discussed that this is a possibility but we will handle
-        // this later
-        // if selection is undefined, or its value hasn't changed, or changing from null <-> undefined, that's not really changing so we return
-        if (!this.selectionModel || this.selectionModel.model === value || (!this.selectionModel.model && !value)) {
+        if (!this.selectionModel) {
+            return;
+        }
+        const current = this.selectionModel.model;
+        if (this.valuesEqualByIdentity(current, value)) {
             return;
         }
         this.selectionModel.model = value;
         this._selectionChanged.next(this.selectionModel);
     }
-    parseStringToModel(value) {
-        if (this.displayField) {
-            return {
-                [this.displayField]: value,
-            };
+    valuesEqualByIdentity(current, value) {
+        if (current === value) {
+            return true;
         }
-        return value;
+        // Check if both are null or undefined or empty string.
+        if ((current === null || current === undefined || current === '') &&
+            (value === null || value === undefined || value === '')) {
+            return true;
+        }
+        // Check if one is null or undefined or empty string and the other is not.
+        if (current === null ||
+            current === undefined ||
+            current === '' ||
+            value === null ||
+            value === undefined ||
+            value === '') {
+            return false;
+        }
+        if (this.multiselectable) {
+            const cur = current;
+            const val = value;
+            if (cur.length !== val.length) {
+                return false;
+            }
+            // We only consider values equal if they are ordered the same way.
+            const curIds = cur.map(this._identityFn);
+            const valIds = val.map(this._identityFn);
+            return curIds.every((id, i) => id === valIds[i]);
+        }
+        else {
+            return this._identityFn(current) === this._identityFn(value);
+        }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: OptionSelectionService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
     static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: OptionSelectionService }); }
@@ -476,6 +549,9 @@ class ComboboxFocusHandler {
     addOptionValues(options) {
         this.optionData = options;
     }
+    focusOption(option) {
+        this.pseudoFocus.select(option);
+    }
     handleFocusSubscription() {
         this.popoverService.openChange.subscribe(open => {
             if (!open) {
@@ -520,13 +596,18 @@ class ComboboxFocusHandler {
     // this service is only interested in keys that may move the focus
     handleTextInput(event) {
         let preventDefault = false;
-        const key = normalizeKey(event.key);
+        const key = event.key;
         if (event) {
             switch (key) {
                 case Keys.Enter:
                     if (this.popoverService.open && this.pseudoFocus.model) {
                         if (this.selectionService.multiselectable) {
-                            this.selectionService.toggle(this.pseudoFocus.model.value);
+                            if (this.pseudoFocus.model.id === SELECT_ALL_ID) {
+                                this.selectionService.requestSelectAll();
+                            }
+                            else {
+                                this.selectionService.toggle(this.pseudoFocus.model.value);
+                            }
                         }
                         else {
                             this.selectionService.select(this.pseudoFocus.model.value);
@@ -577,26 +658,20 @@ class ComboboxFocusHandler {
             this.renderer.listen(el, 'blur', event => {
                 if (this.focusOutOfComponent(event)) {
                     this.popoverService.open = false;
-                    // Workaround for popover close-on-outside-click timing issues in Edge browser
-                    if (this.componentCdRef) {
-                        this.componentCdRef.detectChanges();
-                    }
                 }
             });
         }
     }
     focusOutOfComponent(event) {
-        // event.relatedTarget is null in IE11. In that case we use document.activeElement
-        // which points to the element that becomes active as the blur event occurs on the input.
-        const target = (event.relatedTarget || document.activeElement);
+        const target = event.relatedTarget;
         return !(this.textInput.contains(target) || this.trigger.contains(target) || this.listbox.contains(target));
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ComboboxFocusHandler, deps: [{ token: i0.RendererFactory2 }, { token: i4$1.ClrPopoverService }, { token: OptionSelectionService }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ComboboxFocusHandler, deps: [{ token: i0.RendererFactory2 }, { token: i4.ClrPopoverService }, { token: OptionSelectionService }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable }); }
     static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ComboboxFocusHandler }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ComboboxFocusHandler, decorators: [{
             type: Injectable
-        }], ctorParameters: () => [{ type: i0.RendererFactory2 }, { type: i4$1.ClrPopoverService }, { type: OptionSelectionService }, { type: undefined, decorators: [{
+        }], ctorParameters: () => [{ type: i0.RendererFactory2 }, { type: i4.ClrPopoverService }, { type: OptionSelectionService }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [PLATFORM_ID]
                 }] }] });
@@ -668,9 +743,10 @@ class ClrOption {
         // This way we achieve two things:
         // - do not lose focus
         // - we're still able to use onBlur for "outside-click" handling
+        this.focusHandler.focusOption(this.optionProxy);
         this.focusHandler.focusInput();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrOption, deps: [{ token: i0.ElementRef }, { token: i3$1.ClrCommonStringsService }, { token: ComboboxFocusHandler }, { token: OptionSelectionService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrOption, deps: [{ token: i0.ElementRef }, { token: i3.ClrCommonStringsService }, { token: ComboboxFocusHandler }, { token: OptionSelectionService }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrOption, isStandalone: false, selector: "clr-option", inputs: { optionId: ["id", "optionId"], value: ["clrValue", "value"] }, host: { listeners: { "click": "onClick($event)" }, properties: { "class.clr-combobox-option": "true", "attr.role": "\"option\"", "attr.tabindex": "-1", "attr.id": "optionId", "class.active": "this.selected", "class.clr-focus": "this.focusClass" } }, ngImport: i0, template: `
     <ng-content></ng-content>
     @if (selected) {
@@ -697,7 +773,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     },
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: i3$1.ClrCommonStringsService }, { type: ComboboxFocusHandler }, { type: OptionSelectionService }], propDecorators: { optionId: [{
+        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: i3.ClrCommonStringsService }, { type: ComboboxFocusHandler }, { type: OptionSelectionService }], propDecorators: { optionId: [{
                 type: Input,
                 args: ['id']
             }], value: [{
@@ -721,6 +797,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 let nbOptionsComponents = 0;
+const SELECT_ALL_ID = 'select-all-id';
 class ClrOptions {
     constructor(optionSelectionService, id, el, commonStrings, focusHandler, popoverService, parentHost, document) {
         this.optionSelectionService = optionSelectionService;
@@ -739,12 +816,22 @@ class ClrOptions {
             this.optionsId = 'clr-options-' + nbOptionsComponents++;
         }
     }
+    set selectAllBtn(value) {
+        if (value) {
+            this._selectAllOption = new OptionData(SELECT_ALL_ID, null);
+            this._selectAllOption.el = value.nativeElement;
+        }
+        else {
+            this._selectAllOption = null;
+        }
+        this.updateFocusableItems();
+    }
     get items() {
         return this._items;
     }
     set items(items) {
         this._items = items;
-        this.focusHandler.addOptionValues(this._items.map(option => option.optionProxy));
+        this.updateFocusableItems();
     }
     /**
      * Tests if the list of options is empty, meaning it doesn't contain any items
@@ -758,6 +845,34 @@ class ClrOptions {
     get noResultsElementId() {
         return `${this.optionsId}-no-results`;
     }
+    get showSelectAll() {
+        return (this.optionSelectionService.showSelectAll &&
+            this.optionSelectionService.multiselectable &&
+            !this.optionSelectionService.loading &&
+            this.items.length > 0);
+    }
+    get allVisibleSelected() {
+        if (!this.items || this.items.length === 0) {
+            return false;
+        }
+        return this.optionSelectionService.containsAll(this.items.map(option => option.value));
+    }
+    get isSelectAllFocused() {
+        return this.focusHandler.pseudoFocus.model?.id === SELECT_ALL_ID;
+    }
+    toggleSelectAll(event = null) {
+        if (event) {
+            event.stopPropagation();
+            this.focusHandler.focusInput();
+        }
+        const visibleValues = this.items.map(option => option.value);
+        if (this.allVisibleSelected) {
+            this.optionSelectionService.unselectMany(visibleValues);
+        }
+        else {
+            this.optionSelectionService.selectMany(visibleValues);
+        }
+    }
     ngAfterViewInit() {
         this.focusHandler.listbox = this.el.nativeElement;
         this.subscriptions.push(this.items.changes.subscribe(items => {
@@ -769,6 +884,8 @@ class ClrOptions {
             else {
                 this.focusHandler.pseudoFocus.pop();
             }
+        }), this.optionSelectionService.selectAllRequested.subscribe(() => {
+            this.toggleSelectAll();
         }));
     }
     ngOnDestroy() {
@@ -780,8 +897,19 @@ class ClrOptions {
     loadingStateChange(state) {
         this.loading = state === ClrLoadingState.LOADING;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrOptions, deps: [{ token: OptionSelectionService }, { token: IF_ACTIVE_ID }, { token: i0.ElementRef }, { token: i3$1.ClrCommonStringsService }, { token: ComboboxFocusHandler }, { token: i4$1.ClrPopoverService }, { token: POPOVER_HOST_ANCHOR, optional: true }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrOptions, isStandalone: false, selector: "clr-options", inputs: { optionsId: ["id", "optionsId"] }, host: { properties: { "class.clr-combobox-options": "true", "class.clr-combobox-options-hidden": "emptyOptions && editable", "attr.role": "\"listbox\"", "id": "optionsId" } }, providers: [{ provide: LoadingListener, useExisting: ClrOptions }], queries: [{ propertyName: "items", predicate: ClrOption, descendants: true }], ngImport: i0, template: `
+    updateFocusableItems() {
+        const focusList = [];
+        if (this._selectAllOption) {
+            focusList.push(this._selectAllOption);
+        }
+        if (this._items) {
+            const itemOptions = this._items.map(option => option.optionProxy);
+            focusList.push(...itemOptions);
+        }
+        this.focusHandler.addOptionValues(focusList);
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrOptions, deps: [{ token: OptionSelectionService }, { token: IF_ACTIVE_ID }, { token: i0.ElementRef }, { token: i3.ClrCommonStringsService }, { token: ComboboxFocusHandler }, { token: i4.ClrPopoverService }, { token: POPOVER_HOST_ORIGIN, optional: true }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrOptions, isStandalone: false, selector: "clr-options", inputs: { optionsId: ["id", "optionsId"] }, host: { properties: { "class.clr-combobox-options": "true", "class.clr-combobox-options-multi": "optionSelectionService.multiselectable", "class.clr-combobox-options-hidden": "emptyOptions && editable", "attr.role": "\"listbox\"", "id": "optionsId" } }, providers: [{ provide: LoadingListener, useExisting: ClrOptions }], queries: [{ propertyName: "items", predicate: ClrOption, descendants: true }], viewQueries: [{ propertyName: "selectAllBtn", first: true, predicate: ["selectAllBtn"], descendants: true }], ngImport: i0, template: `
     @if (optionSelectionService.loading) {
       <div class="clr-combobox-options-loading">
         <clr-spinner clrInline>
@@ -790,6 +918,21 @@ class ClrOptions {
         <span class="clr-combobox-options-text">
           {{ searchText(optionSelectionService.currentInput) }}
         </span>
+      </div>
+    }
+
+    @if (showSelectAll) {
+      <div class="clr-combobox-select-all">
+        <button
+          #selectAllBtn
+          type="button"
+          tabindex="-1"
+          class="btn btn-link clr-combobox-select-all-btn clr-combobox-option"
+          [class.clr-focus]="isSelectAllFocused"
+          (click)="toggleSelectAll($event)"
+        >
+          {{ allVisibleSelected ? commonStrings.keys.comboboxUnselectAll : commonStrings.keys.comboboxSelectAll }}
+        </button>
       </div>
     }
 
@@ -822,6 +965,21 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
       </div>
     }
 
+    @if (showSelectAll) {
+      <div class="clr-combobox-select-all">
+        <button
+          #selectAllBtn
+          type="button"
+          tabindex="-1"
+          class="btn btn-link clr-combobox-select-all-btn clr-combobox-option"
+          [class.clr-focus]="isSelectAllFocused"
+          (click)="toggleSelectAll($event)"
+        >
+          {{ allVisibleSelected ? commonStrings.keys.comboboxUnselectAll : commonStrings.keys.comboboxSelectAll }}
+        </button>
+      </div>
+    }
+
     <!-- Rendered if data set is empty -->
     @if (emptyOptions) {
       <div [id]="noResultsElementId" role="option">
@@ -837,6 +995,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     providers: [{ provide: LoadingListener, useExisting: ClrOptions }],
                     host: {
                         '[class.clr-combobox-options]': 'true',
+                        '[class.clr-combobox-options-multi]': 'optionSelectionService.multiselectable',
                         '[class.clr-combobox-options-hidden]': 'emptyOptions && editable',
                         '[attr.role]': '"listbox"',
                         '[id]': 'optionsId',
@@ -846,17 +1005,20 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
         }], ctorParameters: () => [{ type: OptionSelectionService }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [IF_ACTIVE_ID]
-                }] }, { type: i0.ElementRef }, { type: i3$1.ClrCommonStringsService }, { type: ComboboxFocusHandler }, { type: i4$1.ClrPopoverService }, { type: i0.ElementRef, decorators: [{
+                }] }, { type: i0.ElementRef }, { type: i3.ClrCommonStringsService }, { type: ComboboxFocusHandler }, { type: i4.ClrPopoverService }, { type: i0.ElementRef, decorators: [{
                     type: Optional
                 }, {
                     type: Inject,
-                    args: [POPOVER_HOST_ANCHOR]
+                    args: [POPOVER_HOST_ORIGIN]
                 }] }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [DOCUMENT]
                 }] }], propDecorators: { optionsId: [{
                 type: Input,
                 args: ['id']
+            }], selectAllBtn: [{
+                type: ViewChild,
+                args: ['selectAllBtn']
             }], items: [{
                 type: ContentChildren,
                 args: [ClrOption, { descendants: true }]
@@ -869,7 +1031,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrCombobox extends WrappedFormControl {
-    constructor(vcr, injector, control, renderer, el, optionSelectionService, commonStrings, popoverService, containerService, platformId, focusHandler, cdr) {
+    constructor(vcr, injector, control, renderer, el, optionSelectionService, commonStrings, popoverService, containerService, platformId, focusHandler, cdr, zone, container) {
         super(vcr, ClrComboboxContainer, injector, control, renderer, el);
         this.control = control;
         this.renderer = renderer;
@@ -881,6 +1043,8 @@ class ClrCombobox extends WrappedFormControl {
         this.platformId = platformId;
         this.focusHandler = focusHandler;
         this.cdr = cdr;
+        this.zone = zone;
+        this.container = container;
         this.placeholder = '';
         this.clrInputChange = new EventEmitter(false);
         this.clrOpenChange = this.popoverService.openChange;
@@ -892,19 +1056,35 @@ class ClrCombobox extends WrappedFormControl {
         this.popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
         this.index = 1;
         this.popoverType = ClrPopoverType.DROPDOWN;
+        this.containerWidth = null;
+        this.selectionExpanded = false;
+        this.shouldCalculate = true;
+        this.isTotalSelection = false;
+        this.containerWidthChange = new Subject();
         this._searchText = '';
         if (control) {
             control.valueAccessor = this;
         }
         // default to SingleSelectComboboxModel, in case the optional input [ClrMulti] isn't used
-        optionSelectionService.selectionModel = new SingleSelectComboboxModel();
-        this.updateControlValue();
+        this.multiSelect = false;
+    }
+    get showSelectAll() {
+        return this.optionSelectionService.showSelectAll;
+    }
+    set showSelectAll(value) {
+        this.optionSelectionService.showSelectAll = value;
     }
     get editable() {
         return this.optionSelectionService.editable;
     }
     set editable(value) {
         this.optionSelectionService.editable = value;
+    }
+    set editableResolver(value) {
+        this.optionSelectionService.editableResolver = value;
+    }
+    set identityFn(value) {
+        this.optionSelectionService.identityFn = value;
     }
     get multiSelect() {
         return this.optionSelectionService.multiselectable;
@@ -918,6 +1098,7 @@ class ClrCombobox extends WrappedFormControl {
             // since the initial call to writeValue (caused by [ngModel] input) should happen after this
             this.optionSelectionService.selectionModel = new SingleSelectComboboxModel();
         }
+        this.optionSelectionService.selectionModel.identityFn = this.optionSelectionService.identityFn;
         this.updateControlValue();
     }
     // Override the id of WrappedFormControl, as we want to move it to the embedded input.
@@ -966,6 +1147,24 @@ class ClrCombobox extends WrappedFormControl {
     get displayField() {
         return this.optionSelectionService.displayField;
     }
+    get showAllText() {
+        return this.commonStrings.parse(this.commonStrings.keys.comboboxShowAll, {
+            ITEMS: this.multiSelectModel?.length.toString(),
+        });
+    }
+    get allSelectedText() {
+        return this.commonStrings.parse(this.commonStrings.keys.comboboxAllSelected, {
+            ITEMS: this.multiSelectModel?.length.toString(),
+        });
+    }
+    get showIndividualPills() {
+        return !this.isTotalSelection || this.selectionExpanded;
+    }
+    get showTruncationToggle() {
+        return (this.selectionExpanded ||
+            this.isTotalSelection ||
+            (this.calculatedLimit !== null && this.calculatedLimit < this.multiSelectModel.length));
+    }
     get disabled() {
         return this.control?.disabled;
     }
@@ -977,13 +1176,30 @@ class ClrCombobox extends WrappedFormControl {
         }
     }
     ngAfterViewInit() {
-        this.focusHandler.componentCdRef = this.cdr;
         this.focusHandler.textInput = this.textbox.nativeElement;
         this.focusHandler.trigger = this.trigger.nativeElement;
         // The text input is the actual element we are wrapping
         // This assignment is needed by the wrapper, so it can set
         // the aria properties on the input element, not on the component.
+        // We calculate on the initial load to prevent flickering
         this.el = this.textbox;
+        if (this.showSelectAll) {
+            if (this.multiSelect && this.multiSelectModel?.length > 0) {
+                this.calculateLimit();
+            }
+            this.initialiseObserver();
+        }
+    }
+    ngOnDestroy() {
+        super.ngOnDestroy();
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect();
+        }
+    }
+    clearSelection() {
+        this.focusHandler.focusInput();
+        // Clear the array model directly
+        this.optionSelectionService.setSelectionValue([]);
     }
     onKeyUp(event) {
         // if BACKSPACE in multiselect mode, delete the last pill if text is empty
@@ -1001,7 +1217,7 @@ class ClrCombobox extends WrappedFormControl {
                     break;
                 case Keys.Enter:
                     if (this.editable && this._searchText.length > 0 && this.options.emptyOptions) {
-                        const parsedInput = this.optionSelectionService.parseStringToModel(this._searchText);
+                        const parsedInput = this.optionSelectionService.editableResolver(this._searchText);
                         this.control?.control.markAsTouched();
                         this.optionSelectionService.select(parsedInput);
                         this.searchText = '';
@@ -1042,7 +1258,7 @@ class ClrCombobox extends WrappedFormControl {
     }
     onChange() {
         if (this.editable && !this.multiSelect && this.options.emptyOptions) {
-            const parsedInput = this.optionSelectionService.parseStringToModel(this._searchText);
+            const parsedInput = this.optionSelectionService.editableResolver(this._searchText);
             this.optionSelectionService.setSelectionValue(parsedInput);
         }
     }
@@ -1083,13 +1299,103 @@ class ClrCombobox extends WrappedFormControl {
             this.popoverService.toggleWithEvent(event);
         }
     }
+    toggleSelectionExpand() {
+        this.selectionExpanded = !this.selectionExpanded;
+        if (this.selectionExpanded) {
+            this.applyLimit(this.multiSelectModel.length);
+        }
+        else {
+            this.containerWidthChange.next(this.containerWidth);
+        }
+    }
+    initialiseObserver() {
+        const container = this.container ? this.container.el.nativeElement : this.el.nativeElement.parentElement;
+        this.containerWidth = container.offsetWidth;
+        this.resizeObserver = new ResizeObserver(entries => {
+            this.zone.runOutsideAngular(() => {
+                entries.forEach(entry => {
+                    const entryWidth = entry.contentRect.width;
+                    switch (entry.target) {
+                        case container:
+                            if (this.containerWidth !== entryWidth) {
+                                this.containerWidth = entryWidth;
+                                this.containerWidthChange.next(entryWidth);
+                            }
+                            break;
+                        case this.wrapper.nativeElement:
+                            this.containerWidthChange.next(null);
+                            break;
+                    }
+                });
+            });
+        });
+        this.resizeObserver.observe(container);
+        this.resizeObserver.observe(this.wrapper.nativeElement);
+    }
+    calculateLimit() {
+        this.shouldCalculate = true;
+        this.cdr.detectChanges();
+        if (!this.calculationPills || this.calculationPills.length === 0) {
+            this.applyLimit();
+            return;
+        }
+        const pillDimensions = this.calculationPills.map(p => ({
+            top: p.nativeElement.offsetTop,
+            width: p.nativeElement.offsetWidth,
+            left: p.nativeElement.offsetLeft,
+        }));
+        const firstPill = pillDimensions[0];
+        const buttonWidth = this.truncationButton?.nativeElement?.offsetWidth || 100;
+        const textboxWidth = this.textbox.nativeElement.offsetWidth;
+        const expectedWidth = this.containerWidth - textboxWidth - buttonWidth;
+        let fitCount = 0;
+        for (const pill of pillDimensions) {
+            if (pill.top > firstPill.top || pill.left + pill.width > expectedWidth) {
+                break;
+            }
+            fitCount++;
+        }
+        this.applyLimit(fitCount);
+    }
+    applyLimit(limit = undefined) {
+        this.zone.run(() => {
+            this.calculatedLimit = limit === 0 ? 1 : limit;
+            this.shouldCalculate = false;
+            this.cdr.markForCheck();
+        });
+    }
+    updateTotalSelection() {
+        if (!this.multiSelect || !this.multiSelectModel?.length) {
+            this.isTotalSelection = false;
+            return;
+        }
+        // Skip recalculation when items are filtered to zero (e.g. "no results")
+        // to prevent pills from flashing while typing in the search input.
+        if (!this.options?.items?.length) {
+            return;
+        }
+        this.isTotalSelection = this.optionSelectionService.containsAll(this.options.items.map(option => option.value));
+    }
     initializeSubscriptions() {
         this.subscriptions.push(this.optionSelectionService.selectionChanged.subscribe((newSelection) => {
             this.updateInputValue(newSelection);
-            if (!this.multiSelect && newSelection && !newSelection.isEmpty()) {
-                this.popoverService.open = false;
+            if (newSelection.isEmpty()) {
+                this.selectionExpanded = false;
+                this.isTotalSelection = false;
+            }
+            else {
+                if (!this.multiSelect) {
+                    this.popoverService.open = false;
+                }
+                this.updateTotalSelection();
             }
             this.updateControlValue();
+            if (this.selectionExpanded) {
+                this.applyLimit(this.multiSelectModel.length);
+            }
+            else {
+                this.calculateLimit();
+            }
             if (this.multiSelect) {
                 setTimeout(() => {
                     this.popoverService?.updatePosition();
@@ -1116,6 +1422,10 @@ class ClrCombobox extends WrappedFormControl {
             else {
                 this.searchText = this.getDisplayNames(this.optionSelectionService.selectionModel.model)[0] || '';
             }
+        }), this.containerWidthChange.pipe(debounceTime(0)).subscribe(() => {
+            if (!this.selectionExpanded && !this.isTotalSelection) {
+                this.calculateLimit();
+            }
         }));
     }
     updateInputValue(model) {
@@ -1140,14 +1450,14 @@ class ClrCombobox extends WrappedFormControl {
         }
         return [this.optionSelectionService.selectionModel.model];
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCombobox, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: OptionSelectionService }, { token: i3$1.ClrCommonStringsService }, { token: i4$1.ClrPopoverService }, { token: ComboboxContainerService, optional: true }, { token: PLATFORM_ID }, { token: ComboboxFocusHandler }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrCombobox, isStandalone: false, selector: "clr-combobox", inputs: { placeholder: "placeholder", editable: ["clrEditable", "editable"], multiSelect: ["clrMulti", "multiSelect"] }, outputs: { clrInputChange: "clrInputChange", clrOpenChange: "clrOpenChange", clrSelectionChange: "clrSelectionChange" }, host: { listeners: { "keydown": "onKeyUp($event)" }, properties: { "class.aria-required": "true", "class.clr-combobox": "true", "class.clr-combobox-disabled": "control?.disabled" } }, providers: [
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCombobox, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: OptionSelectionService }, { token: i3.ClrCommonStringsService }, { token: i4.ClrPopoverService }, { token: ComboboxContainerService, optional: true }, { token: PLATFORM_ID }, { token: ComboboxFocusHandler }, { token: i0.ChangeDetectorRef }, { token: i0.NgZone }, { token: ClrComboboxContainer, host: true, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrCombobox, isStandalone: false, selector: "clr-combobox", inputs: { placeholder: "placeholder", showSelectAll: ["showSelectAll", "showSelectAll", booleanAttribute], editable: ["clrEditable", "editable"], editableResolver: ["clrEditableResolverFn", "editableResolver"], identityFn: ["clrComboboxIdentityFn", "identityFn"], multiSelect: ["clrMulti", "multiSelect"] }, outputs: { clrInputChange: "clrInputChange", clrOpenChange: "clrOpenChange", clrSelectionChange: "clrSelectionChange" }, host: { listeners: { "keydown": "onKeyUp($event)" }, properties: { "class.aria-required": "true", "class.clr-combobox": "true", "class.clr-combobox-disabled": "control?.disabled" } }, providers: [
             OptionSelectionService,
             { provide: LoadingListener, useExisting: ClrCombobox },
             IF_ACTIVE_ID_PROVIDER,
             FOCUS_SERVICE_PROVIDER,
             COMBOBOX_FOCUS_HANDLER_PROVIDER,
-        ], queries: [{ propertyName: "optionSelected", first: true, predicate: ClrOptionSelected, descendants: true }, { propertyName: "options", first: true, predicate: ClrOptions, descendants: true }], viewQueries: [{ propertyName: "textbox", first: true, predicate: ["textboxInput"], descendants: true }, { propertyName: "trigger", first: true, predicate: ["trigger"], descendants: true }], usesInheritance: true, hostDirectives: [{ directive: i4$1.ClrPopoverHostDirective }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  class=\"clr-combobox-wrapper\"\n  clrPopoverAnchor\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"(control?.control.touched && control?.invalid)\"\n  [class.disabled]=\"control?.disabled\"\n>\n  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    @for (item of multiSelectModel; track item; let i = $index) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n          @if (optionSelected) {\n          <ng-container\n            [ngTemplateOutlet]=\"optionSelected.template\"\n            [ngTemplateOutletContext]=\"{$implicit: optionSelectionService.selectionModel.model[i]}\"\n          ></ng-container>\n          }\n        </span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          [disabled]=\"control?.disabled? true: null\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n          (click)=\"unselect(item)\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    }\n  </span>\n  }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually due to issues in Edge browser.\nAdditionally 'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n", dependencies: [{ kind: "directive", type: i3.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1$1.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i1$1.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1$1.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: i4.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: i3$1.ClrRovingTabindex, selector: "[clrRovingTabindex]", inputs: ["clrRovingTabindex", "clrRovingTabindexDisabled"] }, { kind: "directive", type: i3$1.ClrKeyFocusItem, selector: "[clrKeyFocusItem]" }, { kind: "directive", type: i4$1.ClrPopoverAnchor, selector: "[clrPopoverAnchor]" }, { kind: "directive", type: i4$1.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose"] }] }); }
+        ], queries: [{ propertyName: "optionSelected", first: true, predicate: ClrOptionSelected, descendants: true }, { propertyName: "options", first: true, predicate: ClrOptions, descendants: true }], viewQueries: [{ propertyName: "textbox", first: true, predicate: ["textboxInput"], descendants: true }, { propertyName: "trigger", first: true, predicate: ["trigger"], descendants: true }, { propertyName: "truncationButton", first: true, predicate: ["truncationButton"], descendants: true }, { propertyName: "wrapper", first: true, predicate: ["wrapper"], descendants: true, static: true }, { propertyName: "calculationPills", predicate: ["pill"], descendants: true }], usesInheritance: true, hostDirectives: [{ directive: i4.ClrPopoverHostDirective }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  #wrapper\n  class=\"clr-combobox-wrapper\"\n  clrPopoverOrigin\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"(control?.control.touched && control?.invalid)\"\n  [class.disabled]=\"control?.disabled\"\n>\n  @if (multiSelect && multiSelectModel && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    <ng-template #pillTemplate let-item let-i=\"index\">\n      <span class=\"label label-combobox-pill\" role=\"row\">\n        <span role=\"gridcell\">\n          <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n            @if (optionSelected) {\n            <ng-container\n              [ngTemplateOutlet]=\"optionSelected.template\"\n              [ngTemplateOutletContext]=\"{$implicit: item}\"\n            ></ng-container>\n            }\n          </span>\n        </span>\n        <span role=\"gridcell\">\n          <button\n            clrKeyFocusItem\n            type=\"button\"\n            class=\"clr-combobox-remove-btn\"\n            [disabled]=\"control?.disabled ? true : null\"\n            [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n            (click)=\"unselect(item)\"\n          >\n            <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n          </button>\n        </span>\n      </span>\n    </ng-template>\n\n    @if (showSelectAll) { @if (isTotalSelection && !selectionExpanded) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>{{ allSelectedText }}</span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          (click)=\"clearSelection()\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxUnselectAll\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    } @if (showIndividualPills) { @for (item of multiSelectModel | slice:0:calculatedLimit; track item; let i = $index)\n    {\n    <ng-container\n      [ngTemplateOutlet]=\"pillTemplate\"\n      [ngTemplateOutletContext]=\"{$implicit: item, index: i}\"\n    ></ng-container>\n    } } @if (showTruncationToggle) {\n    <span role=\"row\" class=\"label label-combobox-pill clr-combobox-truncation-row\">\n      <span role=\"gridcell\" class=\"clr-combobox-truncation-cell\">\n        <span class=\"clr-combobox-pill-content\">\n          <button\n            #truncationButton\n            clrKeyFocusItem\n            type=\"button\"\n            class=\"btn btn-link clr-combobox-show-more-btn\"\n            (click)=\"toggleSelectionExpand()\"\n            [attr.aria-expanded]=\"selectionExpanded\"\n            [attr.aria-controls]=\"'expanded-selection-' + id\"\n          >\n            @if (!selectionExpanded) { {{ showAllText }} } @else { {{ commonStrings.keys.comboboxShowLess }} }\n          </button>\n        </span>\n      </span>\n    </span>\n    } } @else { @for (item of multiSelectModel; track item; let i = $index) {\n    <ng-container\n      [ngTemplateOutlet]=\"pillTemplate\"\n      [ngTemplateOutletContext]=\"{$implicit: item, index: i}\"\n    ></ng-container>\n    } }\n  </span>\n\n  @if (showSelectAll && shouldCalculate) {\n  <span class=\"clr-combobox-pills-calculation\" aria-hidden=\"true\">\n    @for (item of multiSelectModel; track item) {\n    <span class=\"label label-combobox-pill\" #pill>\n      <span class=\"clr-combobox-pill-content\">\n        @if (optionSelected) {\n        <ng-container\n          [ngTemplateOutlet]=\"optionSelected.template\"\n          [ngTemplateOutletContext]=\"{$implicit: item}\"\n        ></ng-container>\n        }\n      </span>\n      <button type=\"button\" class=\"clr-combobox-remove-btn\" tabindex=\"-1\">\n        <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n      </button>\n    </span>\n    }\n  </span>\n  } }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually.\n'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n", dependencies: [{ kind: "directive", type: i8.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1$1.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i1$1.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i1$1.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: i9.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: i3.ClrRovingTabindex, selector: "[clrRovingTabindex]", inputs: ["clrRovingTabindex", "clrRovingTabindexDisabled"] }, { kind: "directive", type: i3.ClrKeyFocusItem, selector: "[clrKeyFocusItem]" }, { kind: "directive", type: i4.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i4.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }, { kind: "pipe", type: i8.SlicePipe, name: "slice" }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCombobox, decorators: [{
             type: Component,
@@ -1161,17 +1471,21 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                         '[class.aria-required]': 'true',
                         '[class.clr-combobox]': 'true',
                         '[class.clr-combobox-disabled]': 'control?.disabled',
-                    }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  class=\"clr-combobox-wrapper\"\n  clrPopoverAnchor\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"(control?.control.touched && control?.invalid)\"\n  [class.disabled]=\"control?.disabled\"\n>\n  @if (multiSelect && optionSelectionService.selectionModel.model && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    @for (item of multiSelectModel; track item; let i = $index) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n          @if (optionSelected) {\n          <ng-container\n            [ngTemplateOutlet]=\"optionSelected.template\"\n            [ngTemplateOutletContext]=\"{$implicit: optionSelectionService.selectionModel.model[i]}\"\n          ></ng-container>\n          }\n        </span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          [disabled]=\"control?.disabled? true: null\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n          (click)=\"unselect(item)\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    }\n  </span>\n  }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually due to issues in Edge browser.\nAdditionally 'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n" }]
+                    }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<!-- The (click) handler is needed to auto-focus on input field which can not currently occupy the whole\nwidth of the component, after being wrapped to a new line -->\n<div\n  #wrapper\n  class=\"clr-combobox-wrapper\"\n  clrPopoverOrigin\n  (click)=\"onWrapperClick($event)\"\n  [class.multi]=\"multiSelect\"\n  [class.invalid]=\"(control?.control.touched && control?.invalid)\"\n  [class.disabled]=\"control?.disabled\"\n>\n  @if (multiSelect && multiSelectModel && multiSelectModel.length > 0) {\n  <span\n    role=\"grid\"\n    clrRovingTabindex\n    [clrRovingTabindexDisabled]=\"control?.disabled\"\n    clrDirection=\"both\"\n    [attr.aria-label]=\"getSelectionAriaLabel()\"\n    [attr.aria-disabled]=\"control?.disabled? true: null\"\n    class=\"clr-combobox-pills\"\n  >\n    <ng-template #pillTemplate let-item let-i=\"index\">\n      <span class=\"label label-combobox-pill\" role=\"row\">\n        <span role=\"gridcell\">\n          <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>\n            @if (optionSelected) {\n            <ng-container\n              [ngTemplateOutlet]=\"optionSelected.template\"\n              [ngTemplateOutletContext]=\"{$implicit: item}\"\n            ></ng-container>\n            }\n          </span>\n        </span>\n        <span role=\"gridcell\">\n          <button\n            clrKeyFocusItem\n            type=\"button\"\n            class=\"clr-combobox-remove-btn\"\n            [disabled]=\"control?.disabled ? true : null\"\n            [attr.aria-label]=\"commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)\"\n            (click)=\"unselect(item)\"\n          >\n            <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n          </button>\n        </span>\n      </span>\n    </ng-template>\n\n    @if (showSelectAll) { @if (isTotalSelection && !selectionExpanded) {\n    <span class=\"label label-combobox-pill\" role=\"row\">\n      <span role=\"gridcell\">\n        <span class=\"clr-combobox-pill-content\" clrKeyFocusItem>{{ allSelectedText }}</span>\n      </span>\n      <span role=\"gridcell\">\n        <button\n          clrKeyFocusItem\n          type=\"button\"\n          class=\"clr-combobox-remove-btn\"\n          (click)=\"clearSelection()\"\n          [attr.aria-label]=\"commonStrings.keys.comboboxUnselectAll\"\n        >\n          <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n        </button>\n      </span>\n    </span>\n    } @if (showIndividualPills) { @for (item of multiSelectModel | slice:0:calculatedLimit; track item; let i = $index)\n    {\n    <ng-container\n      [ngTemplateOutlet]=\"pillTemplate\"\n      [ngTemplateOutletContext]=\"{$implicit: item, index: i}\"\n    ></ng-container>\n    } } @if (showTruncationToggle) {\n    <span role=\"row\" class=\"label label-combobox-pill clr-combobox-truncation-row\">\n      <span role=\"gridcell\" class=\"clr-combobox-truncation-cell\">\n        <span class=\"clr-combobox-pill-content\">\n          <button\n            #truncationButton\n            clrKeyFocusItem\n            type=\"button\"\n            class=\"btn btn-link clr-combobox-show-more-btn\"\n            (click)=\"toggleSelectionExpand()\"\n            [attr.aria-expanded]=\"selectionExpanded\"\n            [attr.aria-controls]=\"'expanded-selection-' + id\"\n          >\n            @if (!selectionExpanded) { {{ showAllText }} } @else { {{ commonStrings.keys.comboboxShowLess }} }\n          </button>\n        </span>\n      </span>\n    </span>\n    } } @else { @for (item of multiSelectModel; track item; let i = $index) {\n    <ng-container\n      [ngTemplateOutlet]=\"pillTemplate\"\n      [ngTemplateOutletContext]=\"{$implicit: item, index: i}\"\n    ></ng-container>\n    } }\n  </span>\n\n  @if (showSelectAll && shouldCalculate) {\n  <span class=\"clr-combobox-pills-calculation\" aria-hidden=\"true\">\n    @for (item of multiSelectModel; track item) {\n    <span class=\"label label-combobox-pill\" #pill>\n      <span class=\"clr-combobox-pill-content\">\n        @if (optionSelected) {\n        <ng-container\n          [ngTemplateOutlet]=\"optionSelected.template\"\n          [ngTemplateOutletContext]=\"{$implicit: item}\"\n        ></ng-container>\n        }\n      </span>\n      <button type=\"button\" class=\"clr-combobox-remove-btn\" tabindex=\"-1\">\n        <cds-icon shape=\"window-close\" size=\"12\"></cds-icon>\n      </button>\n    </span>\n    }\n  </span>\n  } }\n\n  <input\n    #textboxInput\n    type=\"text\"\n    role=\"combobox\"\n    [id]=\"inputId()\"\n    class=\"clr-input clr-combobox-input\"\n    [(ngModel)]=\"searchText\"\n    (blur)=\"onBlur($event)\"\n    (focus)=\"onFocus()\"\n    (change)=\"onChange()\"\n    [attr.aria-expanded]=\"openState\"\n    [attr.aria-owns]=\"ariaOwns\"\n    aria-haspopup=\"listbox\"\n    aria-autocomplete=\"list\"\n    autocomplete=\"off\"\n    [attr.aria-invalid]=\"control?.invalid? true: null\"\n    [disabled]=\"control?.disabled? true: null\"\n    [attr.aria-activedescendant]=\"getActiveDescendant()\"\n    [attr.placeholder]=\"placeholder\"\n  />\n\n  <!-- No click handler, as it uses the handler on the .clr-combobox-wrapper -->\n  <button\n    #trigger\n    type=\"button\"\n    class=\"clr-combobox-trigger\"\n    tabindex=\"-1\"\n    [disabled]=\"control?.disabled || null\"\n    [attr.aria-label]=\"commonStrings.keys.comboboxOpen\"\n  >\n    <cds-icon shape=\"angle\" direction=\"down\"></cds-icon>\n  </button>\n\n  <div class=\"clr-focus-indicator\" [class.clr-focus]=\"focused\"></div>\n</div>\n\n<!-- Both close handlers are handled manually.\n'outsideClickToClose' has complex handling that's necessary\nto be manual due to the component architecture -->\n<div role=\"dialog\" *clrPopoverContent=\"openState; at popoverPosition; type: popoverType;\">\n  <ng-content></ng-content>\n</div>\n" }]
         }], ctorParameters: () => [{ type: i0.ViewContainerRef }, { type: i0.Injector }, { type: i1$1.NgControl, decorators: [{
                     type: Self
                 }, {
                     type: Optional
-                }] }, { type: i0.Renderer2 }, { type: i0.ElementRef }, { type: OptionSelectionService }, { type: i3$1.ClrCommonStringsService }, { type: i4$1.ClrPopoverService }, { type: ComboboxContainerService, decorators: [{
+                }] }, { type: i0.Renderer2 }, { type: i0.ElementRef }, { type: OptionSelectionService }, { type: i3.ClrCommonStringsService }, { type: i4.ClrPopoverService }, { type: ComboboxContainerService, decorators: [{
                     type: Optional
                 }] }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [PLATFORM_ID]
-                }] }, { type: ComboboxFocusHandler }, { type: i0.ChangeDetectorRef }], propDecorators: { placeholder: [{
+                }] }, { type: ComboboxFocusHandler }, { type: i0.ChangeDetectorRef }, { type: i0.NgZone }, { type: ClrComboboxContainer, decorators: [{
+                    type: Optional
+                }, {
+                    type: Host
+                }] }], propDecorators: { placeholder: [{
                 type: Input,
                 args: ['placeholder']
             }], clrInputChange: [{
@@ -1192,12 +1506,30 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], optionSelected: [{
                 type: ContentChild,
                 args: [ClrOptionSelected]
+            }], truncationButton: [{
+                type: ViewChild,
+                args: ['truncationButton']
+            }], wrapper: [{
+                type: ViewChild,
+                args: ['wrapper', { static: true }]
+            }], calculationPills: [{
+                type: ViewChildren,
+                args: ['pill']
             }], options: [{
                 type: ContentChild,
                 args: [ClrOptions]
+            }], showSelectAll: [{
+                type: Input,
+                args: [{ alias: 'showSelectAll', transform: booleanAttribute }]
             }], editable: [{
                 type: Input,
                 args: ['clrEditable']
+            }], editableResolver: [{
+                type: Input,
+                args: ['clrEditableResolverFn']
+            }], identityFn: [{
+                type: Input,
+                args: ['clrComboboxIdentityFn']
             }], multiSelect: [{
                 type: Input,
                 args: ['clrMulti']
@@ -1223,9 +1555,7 @@ class ClrOptionItems {
         this.iterableProxy = new NgForOf(vcr, template, differs);
         this.subscriptions.push(optionService.inputChanged.subscribe(filter => {
             this.filter = filter;
-            if (optionService.filtering) {
-                this.updateItems();
-            }
+            this.updateItems();
         }));
     }
     set rawItems(items) {
@@ -1359,7 +1689,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 class ClrComboboxModule {
     constructor() {
-        ClarityIcons.addIcons(exclamationCircleIcon, checkCircleIcon, angleIcon, windowCloseIcon);
+        ClarityIcons.addIcons(successStandardIcon, errorStandardIcon, angleIcon, windowCloseIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrComboboxModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrComboboxModule, declarations: [ClrCombobox,
@@ -1374,7 +1704,7 @@ class ClrComboboxModule {
             ClrKeyFocusModule,
             ClrCommonFormsModule,
             ClrConditionalModule,
-            _lrClrPopoverModuleNext,
+            ClrPopoverModuleNext,
             ClrSpinnerModule], exports: [ClrCommonFormsModule,
             ClrCombobox,
             ClrComboboxContainer,
@@ -1390,7 +1720,7 @@ class ClrComboboxModule {
             ClrKeyFocusModule,
             ClrCommonFormsModule,
             ClrConditionalModule,
-            _lrClrPopoverModuleNext,
+            ClrPopoverModuleNext,
             ClrSpinnerModule, ClrCommonFormsModule,
             ClrConditionalModule] }); }
 }
@@ -1404,7 +1734,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                         ClrKeyFocusModule,
                         ClrCommonFormsModule,
                         ClrConditionalModule,
-                        _lrClrPopoverModuleNext,
+                        ClrPopoverModuleNext,
                         ClrSpinnerModule,
                     ],
                     declarations: [
@@ -1441,5 +1771,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions };
+export { ClrCombobox, ClrComboboxContainer, ClrComboboxModule, ClrOption, ClrOptionGroup, ClrOptionItems, ClrOptionSelected, ClrOptions, SELECT_ALL_ID };
 //# sourceMappingURL=clr-angular-forms-combobox.mjs.map
