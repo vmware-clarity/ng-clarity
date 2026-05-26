@@ -19,6 +19,7 @@ import { Subscription } from 'rxjs';
 
 import { ClrAlert } from './alert';
 import { MultiAlertService } from './providers/multi-alert.service';
+import { AlertType } from './utils/alert-types';
 
 @Component({
   selector: 'clr-alerts',
@@ -87,7 +88,7 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
     });
   }
 
-  get currentAlertType(): string {
+  get currentAlertType(): AlertType | '' {
     if (this.multiAlertService.currentAlert) {
       return this.multiAlertService.currentAlert.alertType;
     }

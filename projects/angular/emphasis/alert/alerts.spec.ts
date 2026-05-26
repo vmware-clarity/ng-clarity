@@ -273,22 +273,12 @@ export default function () {
 @Component({
   template: `
     <clr-alerts [(clrCurrentAlertIndex)]="currentAlertIndex">
-      <clr-alert
-        [clrAlertType]="'alert-danger'"
-        [clrAlertClosable]="true"
-        [clrAlertClosed]="false"
-        [clrAlertAppLevel]="true"
-      >
+      <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="true" [clrAlertClosed]="false" [clrAlertAppLevel]="true">
         <clr-alert-item>
           <span class="alert-text">This is the first alert!</span>
         </clr-alert-item>
       </clr-alert>
-      <clr-alert
-        [clrAlertType]="'alert-danger'"
-        [clrAlertClosable]="true"
-        [clrAlertClosed]="false"
-        [clrAlertAppLevel]="true"
-      >
+      <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="true" [clrAlertClosed]="false" [clrAlertAppLevel]="true">
         <clr-alert-item>
           <span class="alert-text">This is the second alert!</span>
         </clr-alert-item>
@@ -307,22 +297,12 @@ class TestComponent {
 @Component({
   template: `
     <clr-alerts [(clrCurrentAlert)]="currentAlert">
-      <clr-alert
-        [clrAlertType]="'alert-danger'"
-        [clrAlertClosable]="true"
-        [clrAlertClosed]="false"
-        [clrAlertAppLevel]="true"
-      >
+      <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="true" [clrAlertClosed]="false" [clrAlertAppLevel]="true">
         <clr-alert-item>
           <span class="alert-text">This is the first alert!</span>
         </clr-alert-item>
       </clr-alert>
-      <clr-alert
-        [clrAlertType]="'alert-danger'"
-        [clrAlertClosable]="true"
-        [clrAlertClosed]="false"
-        [clrAlertAppLevel]="true"
-      >
+      <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="true" [clrAlertClosed]="false" [clrAlertAppLevel]="true">
         <clr-alert-item>
           <span class="alert-text">This is the second alert!</span>
         </clr-alert-item>
