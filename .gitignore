@@ -59,6 +59,7 @@ Thumbs.db
 
 # Website
 projects/website/src/compiled-content/*.json
+projects/website/src/assets/compiled-content/*.json
 projects/website/src/assets/clarity-icons.zip
 
 #Storybook

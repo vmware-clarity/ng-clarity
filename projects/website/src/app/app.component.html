@@ -16,6 +16,13 @@
         </a>
         <app-version-select></app-version-select>
       </div>
+
+      <!-- Search functionality -->
+      @if (header.openNavLevel !== 1) {
+        <app-search-input placeholder="Search" [maxResults]="10" (resultSelected)="onSearchResultSelected($event)">
+        </app-search-input>
+      }
+
       <div class="header-actions">
         @if (header.openNavLevel !== 1) {
           <app-theme-toggle></app-theme-toggle>

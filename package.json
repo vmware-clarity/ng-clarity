@@ -148,6 +148,7 @@
     "lint-staged": "16.4.0",
     "marked": "17.0.6",
     "marked-gfm-heading-id": "4.1.4",
+    "minisearch": "7.1.0",
     "marked-highlight": "2.2.4",
     "ng-packagr": "21.2.7",
     "node-static": "0.7.11",

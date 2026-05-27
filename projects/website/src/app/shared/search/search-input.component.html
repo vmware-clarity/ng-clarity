@@ -1,0 +1,71 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<form class="search" role="search">
+  <label for="clarity-search-input">
+    <input
+      #searchInput
+      id="clarity-search-input"
+      type="text"
+      role="combobox"
+      [placeholder]="placeholder"
+      [formControl]="searchControl"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+      (keydown)="handleKeyDown($event)"
+      autocomplete="off"
+      [attr.aria-expanded]="showResults"
+      [attr.aria-activedescendant]="selectedIndex >= 0 ? 'search-result-' + selectedIndex : null"
+      aria-label="Search Clarity documentation"
+      aria-autocomplete="list"
+      aria-controls="search-results-list"
+    />
+    <button
+      *ngIf="searchControl.value && searchControl.value.length > 0"
+      type="button"
+      class="search-clear"
+      (click)="clearSearch()"
+      aria-label="Clear search"
+    >
+      <clr-icon shape="times" aria-hidden="true"></clr-icon>
+    </button>
+  </label>
+
+  <!-- Search Results Dropdown -->
+  <div
+    *ngIf="showResults && (results.length > 0 || (!isLoading && searchControl.value))"
+    id="search-results-list"
+    class="search-results"
+    role="listbox"
+    aria-label="Search results"
+  >
+    <!-- Results -->
+    <div
+      *ngFor="let result of results; let i = index; trackBy: trackByResultId"
+      class="search-result"
+      [class.active]="selectedIndex === i"
+      [id]="'search-result-' + i"
+      role="option"
+      [attr.aria-selected]="selectedIndex === i"
+      (click)="selectResultByIndex(i)"
+      (mouseenter)="highlightResult(i)"
+    >
+      <span class="search-result-title">{{ getResultDisplayText(result) }}</span>
+      <span class="search-result-type">{{ getResultTypeLabel(result) }}</span>
+    </div>
+
+    <!-- No Results -->
+    <div
+      *ngIf="results.length === 0 && searchControl.value"
+      class="search-result search-no-results"
+      role="option"
+      aria-disabled="true"
+    >
+      <span>No results for "{{ searchControl.value }}"</span>
+    </div>
+  </div>
+</form>

@@ -40,15 +40,29 @@ main();
 
 async function main() {
   const compiledContentPath = path.join(PROJECT_ROOT, 'src/compiled-content');
+  const assetsCompiledContentPath = path.join(PROJECT_ROOT, 'src/assets/compiled-content');
+
   fs.mkdirSync(compiledContentPath, { recursive: true });
+  fs.mkdirSync(assetsCompiledContentPath, { recursive: true });
+
+  const styleDocsMap = await compileStyleDocs();
 
   writeJson('nav.json', await compileNav());
   writeJson('pages.json', await compilePages());
-  writeJson('style-docs.json', await compileStyleDocs());
+  writeJson('style-docs.json', styleDocsMap);
   writeJson('stackblitz-example-template.json', await compileStackBlitzExampleTemplate());
 
+  const searchIndex = await compileSearchIndex(styleDocsMap);
+  writeJson('search-index.json', searchIndex);
+
+  // Also copy search index to assets for runtime access
+  if (searchIndex) {
+    fs.writeFileSync(path.join(assetsCompiledContentPath, 'search-index.json'), searchIndex);
+  }
+
   function writeJson(filename, data) {
-    fs.writeFileSync(path.join(compiledContentPath, filename), JSON.stringify(data, undefined, 2));
+    const content = typeof data === 'string' ? data : JSON.stringify(data, undefined, 2);
+    fs.writeFileSync(path.join(compiledContentPath, filename), content);
   }
 }
 
@@ -301,5 +315,68 @@ function styleText(document) {
 function addLevel3HeadingsToToc(document) {
   for (const h3Element of Array.from(document.querySelectorAll('h3'))) {
     h3Element.setAttribute('data-toc-item', '');
+  }
+}
+
+/**
+ * Compile search index using extensible indexer system
+ */
+async function compileSearchIndex(styleDocsMap) {
+  try {
+    // Import MiniSearch with fallback
+    let MiniSearch;
+    try {
+      MiniSearch = require('minisearch');
+    } catch {
+      console.warn('MiniSearch not found, skipping search index generation');
+      return null;
+    }
+
+    // Import indexers
+    const ComponentIndexer = require('./indexers/component-indexer');
+    const PageIndexer = require('./indexers/page-indexer');
+    const ApiIndexer = require('./indexers/api-indexer');
+
+    // Initialize indexers
+    const indexers = [
+      new ComponentIndexer(PROJECT_ROOT),
+      new PageIndexer(PROJECT_ROOT),
+      new ApiIndexer(styleDocsMap, PROJECT_ROOT),
+      // Future: new TokenIndexer(PROJECT_ROOT) - easy to add later
+    ];
+
+    // Extract documents from all indexers
+    const allDocuments = [];
+    for (const indexer of indexers) {
+      try {
+        const documents = await indexer.extract();
+        allDocuments.push(...documents);
+        console.log(`${indexer.constructor.name}: indexed ${documents.length} documents`);
+      } catch (error) {
+        console.warn(`Error extracting from ${indexer.constructor.name}:`, error.message);
+      }
+    }
+
+    // Create MiniSearch instance
+    const miniSearch = new MiniSearch({
+      fields: ['title', 'content', 'tags'],
+      storeFields: ['title', 'url', 'type', 'component', 'indexer', 'metadata'],
+      searchOptions: {
+        prefix: true,
+        fuzzy: 0.2,
+        combineWith: 'AND',
+      },
+    });
+
+    // Add all documents to search index
+    miniSearch.addAll(allDocuments);
+
+    console.log(`Search index compiled: ${allDocuments.length} documents total`);
+
+    // Return serialized index
+    return JSON.stringify(miniSearch);
+  } catch (error) {
+    console.error('Error compiling search index:', error);
+    return null;
   }
 }
