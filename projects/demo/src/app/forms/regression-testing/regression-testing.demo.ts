@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 
 @Component({
@@ -13,7 +13,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators }
   templateUrl: './regression-testing.demo.html',
   standalone: false,
 })
-export class RegressionTestingDemo {
+export class RegressionTestingDemo implements OnInit {
   undefinedErrorForm: FormGroup = new FormGroup({
     password: new FormControl('', []),
   });
@@ -23,7 +23,7 @@ export class RegressionTestingDemo {
     name: 'name',
   } as const;
 
-  readonly maxLength = 80;
+  readonly maxLength = 10;
   forbiddenValue: string = 'forbidden';
   forbiddenFormValidation!: FormGroup;
 
