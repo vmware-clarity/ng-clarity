@@ -1143,7 +1143,8 @@ export class ClrFormsModule {
 export class ClrIfError extends AbstractIfState {
     constructor(ngControlService: NgControlService, template: TemplateRef<any>, container: ViewContainerRef);
     // (undocumented)
-    error: string;
+    get error(): string;
+    set error(value: string);
     // Warning: (ae-forgotten-export) The symbol "CONTROL_STATE" needs to be exported by the entry point clr-angular-forms.d.ts
     //
     // (undocumented)

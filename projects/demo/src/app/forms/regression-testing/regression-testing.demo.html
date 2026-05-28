@@ -6,6 +6,14 @@
   -->
 <h1>Regression Testing</h1>
 
+<h2>CDE-3109 — <code>clrIfError</code> with dynamically-set validators</h2>
+<p>
+  <strong>CDE-3109:</strong> When validators were added to a form control dynamically (e.g. in <code>ngOnInit</code> via
+  <code>setValidators()</code>), the <code>clrIfError</code> directive did not receive its error-type input value in
+  time. As a result, the directive treated every invalid state as a generic error and the browser console showed an
+  <em>undefined</em> error reference.
+</p>
+
 <form clrForm [formGroup]="undefinedErrorForm" (ngSubmit)="onSubmit()">
   <clr-password-container>
     <label>Password</label>
@@ -19,6 +27,14 @@
 
   <button type="button" class="btn btn-primary" (click)="onSubmit()">Submit</button>
 </form>
+
+<h2>CDE-3111 — <code>clrIfError</code> multiple value validation with specific errors</h2>
+<p>
+  <strong>CDE-3111:</strong> Because <code>clrIfError</code> had not yet received its specific error type when the
+  control's state was first evaluated, <em>all</em> <code>clr-control-error</code> elements inside the container were
+  shown whenever the control became invalid — not only the one whose error was active. Only the currently active
+  <code>clrIfError</code> error message is shown when a control has multiple validators.
+</p>
 
 <form clrForm [formGroup]="forbiddenFormValidation" id="test-wizard-page-form">
   <clr-input-container>
