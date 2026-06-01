@@ -33,6 +33,7 @@
     "_test:schematics": "vitest run --config projects/angular/schematics/vitest.config.ts",
     "_test:angular:watch": "ng test clr-angular",
     "_test:addons:watch": "ng test clr-addons",
+    "_build:without-storybook": "npm-run-all _build:angular _build:addons _build:ui _build:demo _build:website",
     "_build:angular": "ng build clr-angular --configuration production && npm run _build:schematics",
     "_build:schematics": "tsc -p projects/angular/schematics/tsconfig.json && cp projects/angular/schematics/collection.json dist/clr-angular/schematics/",
     "_build:addons": "ng build clr-addons --configuration production",
