@@ -26,6 +26,7 @@ export class RegressionTestingDemo implements OnInit {
   readonly maxLength = 10;
   forbiddenValue: string = 'forbidden';
   forbiddenFormValidation!: FormGroup;
+  errorKey = 'required';
 
   ngOnInit() {
     this.setValidators();

@@ -36,6 +36,10 @@
   <code>clrIfError</code> error message is shown when a control has multiple validators.
 </p>
 
+<button class="btn" (click)="errorKey = errorKey === 'maxlength' ? 'required' : 'maxlength'">
+  Toggle ERROR {{errorKey}}
+</button>
+
 <form clrForm [formGroup]="forbiddenFormValidation">
   <clr-input-container>
     <label class="clr-col-sm-2 clr-col-12 clr-required-mark">Name</label>
@@ -48,6 +52,7 @@
       [attr.maxlength]="maxLength + 1"
     />
     <clr-control-helper> Forbidden value: <strong>{{ forbiddenValue }}</strong> </clr-control-helper>
+    <clr-control-error *clrIfError="errorKey"> Dynamic error based on "{{errorKey}}" error type. </clr-control-error>
     <clr-control-error *clrIfError="'required'"> A value is required. </clr-control-error>
     <clr-control-error *clrIfError="'maxlength'">
       The value must be shorter than {{ maxLength }} characters.

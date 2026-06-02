@@ -38,7 +38,7 @@ export class ClrIfError extends AbstractIfState {
   set error(value: string) {
     this._error = value;
 
-    this.ngControlService.emitControlsChange(this.controls);
+    this.handleState(this.state);
   }
 
   /**

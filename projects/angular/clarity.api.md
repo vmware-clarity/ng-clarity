@@ -92,6 +92,10 @@ export abstract class AbstractIfState {
     protected handleState(_state: any): void;
     // (undocumented)
     protected ngControlService: NgControlService;
+    // Warning: (ae-forgotten-export) The symbol "CONTROL_STATE" needs to be exported by the entry point clr-angular.d.ts
+    //
+    // (undocumented)
+    protected state: CONTROL_STATE;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<AbstractIfState, never, never, {}, {}, never, never, true, never>;
     // (undocumented)
@@ -3836,8 +3840,6 @@ export class ClrIfError extends AbstractIfState {
     // (undocumented)
     get error(): string;
     set error(value: string);
-    // Warning: (ae-forgotten-export) The symbol "CONTROL_STATE" needs to be exported by the entry point clr-angular.d.ts
-    //
     // (undocumented)
     protected handleState(state: CONTROL_STATE): void;
     // (undocumented)
