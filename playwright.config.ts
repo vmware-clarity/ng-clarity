@@ -26,7 +26,7 @@ export default defineConfig({
   },
   fullyParallel: true,
   forbidOnly: true,
-  retries: 2,
+  retries: 1,
   workers: '95%',
   reporter: 'html',
   projects: [
@@ -38,5 +38,6 @@ export default defineConfig({
   webServer: {
     command: 'npm run ts-node -- ./scripts/start-storybook-server.ts',
     port: 8080,
+    reuseExistingServer: !process.env['CI'],
   },
 });
