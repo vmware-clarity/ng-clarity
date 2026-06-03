@@ -979,6 +979,7 @@ class AbstractIfState {
                 return merge(...statusStreams);
             }), takeUntilDestroyed())
                 .subscribe(status => {
+                this.state = status;
                 this.handleState(status);
             });
         }
@@ -1016,19 +1017,29 @@ class ClrIfError extends AbstractIfState {
             throw new Error('clrIfError can only be used within a form control container element like clr-input-container');
         }
     }
+    get error() {
+        return this._error;
+    }
+    set error(value) {
+        this._error = value;
+        this.handleState(this.state);
+    }
     /**
      * @param state CONTROL_STATE
      */
     handleState(state) {
-        if (this.error && !!this.controls?.length) {
+        if (!this.controls?.length) {
+            return;
+        }
+        if (this.error) {
             const invalidControl = this.controls?.filter(control => control.hasError(this.error))[0];
             this.displayError(!!invalidControl, invalidControl);
         }
         else {
-            this.displayError(CONTROL_STATE.INVALID === state);
+            this.displayError(CONTROL_STATE.INVALID === state, this.controls[0]);
         }
     }
-    displayError(invalid, control = this.controls[0]) {
+    displayError(invalid, control) {
         /* if no container do nothing */
         if (!this.container) {
             return;
