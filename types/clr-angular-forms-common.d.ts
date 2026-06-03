@@ -196,8 +196,14 @@ declare abstract class ClrAbstractContainer implements OnDestroy {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["label", "controlSuccessComponent", "controlErrorComponent", "controlHelperComponent"], never, true, never>;
 }
 
+declare enum CONTROL_STATE {
+    VALID = "VALID",
+    INVALID = "INVALID"
+}
+
 declare abstract class AbstractIfState {
     protected ngControlService: NgControlService;
+    protected state: CONTROL_STATE;
     protected displayedContent: boolean;
     protected controls: NgControl[];
     protected constructor(ngControlService: NgControlService);
@@ -207,17 +213,14 @@ declare abstract class AbstractIfState {
     static ɵdir: i0.ɵɵDirectiveDeclaration<AbstractIfState, never, never, {}, {}, never, never, true, never>;
 }
 
-declare enum CONTROL_STATE {
-    VALID = "VALID",
-    INVALID = "INVALID"
-}
-
 declare class ClrIfError extends AbstractIfState {
     private template;
     private container;
-    error: string;
+    private _error;
     private embeddedViewRef;
     constructor(ngControlService: NgControlService, template: TemplateRef<any>, container: ViewContainerRef);
+    get error(): string;
+    set error(value: string);
     /**
      * @param state CONTROL_STATE
      */
