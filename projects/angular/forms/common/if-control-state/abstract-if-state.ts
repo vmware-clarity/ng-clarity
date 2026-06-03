@@ -11,10 +11,12 @@ import { NgControl } from '@angular/forms';
 import { merge, of, tap } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
+import { CONTROL_STATE } from './control-state.enum';
 import { NgControlService } from '../providers/ng-control.service';
 
 @Directive()
 export abstract class AbstractIfState {
+  protected state: CONTROL_STATE;
   protected displayedContent = false;
   protected controls: NgControl[];
 
@@ -37,6 +39,7 @@ export abstract class AbstractIfState {
           takeUntilDestroyed()
         )
         .subscribe(status => {
+          this.state = status;
           this.handleState(status);
         });
     }
