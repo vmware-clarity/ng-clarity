@@ -1,0 +1,12 @@
+---
+description: Accordion, stepper, and collapsible-panel component patterns
+globs: projects/angular/accordion/**,projects/angular/stepper/**,projects/angular/collapsible-panel/**,.storybook/stories/accordion/**,.storybook/stories/stepper/**,projects/demo/src/app/accordion/**,projects/demo/src/app/stepper/**
+---
+
+# Accordion / Stepper / CollapsiblePanel
+
+## Architecture
+
+- **CollapsiblePanel base**: `CollapsiblePanel` (abstract directive in `projects/angular/collapsible-panel/`) is the shared agnostic base for both `ClrAccordionPanel` and `ClrStepperPanel`. Stepper-specific logic (status tracking, box-shadows) lives only in the stepper module.
+- **Chocolate Factory (Willy Wonka / Oompa Loompa)**: Cross-component change detection pattern. A `WillyWonka` directive on the parent emits changes; `OompaLoompa` directives on children trigger `ChangeDetectorRef.markForCheck()`.
+- **IfExpandService**: Used for lazy content rendering in accordion/stepper panels. The `*clrIfExpanded` directive structurally adds/removes DOM — component state inside it is destroyed on collapse.
