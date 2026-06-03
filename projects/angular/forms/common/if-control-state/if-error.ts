@@ -6,6 +6,7 @@
  */
 
 import { Directive, EmbeddedViewRef, Input, Optional, TemplateRef, ViewContainerRef } from '@angular/core';
+import { NgControl } from '@angular/forms';
 
 import { AbstractIfState } from './abstract-if-state';
 import { CONTROL_STATE } from './control-state.enum';
@@ -45,15 +46,19 @@ export class ClrIfError extends AbstractIfState {
    * @param state CONTROL_STATE
    */
   protected override handleState(state: CONTROL_STATE) {
-    if (this.error && !!this.controls?.length) {
+    if (!this.controls?.length) {
+      return;
+    }
+
+    if (this.error) {
       const invalidControl = this.controls?.filter(control => control.hasError(this.error))[0];
       this.displayError(!!invalidControl, invalidControl);
     } else {
-      this.displayError(CONTROL_STATE.INVALID === state);
+      this.displayError(CONTROL_STATE.INVALID === state, this.controls[0]);
     }
   }
 
-  private displayError(invalid: boolean, control = this.controls[0]) {
+  private displayError(invalid: boolean, control: NgControl) {
     /* if no container do nothing */
     if (!this.container) {
       return;
