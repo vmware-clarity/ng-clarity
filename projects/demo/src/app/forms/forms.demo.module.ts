@@ -35,6 +35,7 @@ import { FormsLayoutHorizontalAngularGridDemo } from './layout-angular/layout-ho
 import { FormsLayoutHorizontalAngularDemo } from './layout-angular/layout-horizontal-grid';
 import { FormsLayoutVerticalAngularDemo } from './layout-angular/layout-vertical-grid';
 import { FormsReactiveDemo, FormsReactiveOnPushDemo } from './reactive/reactive';
+import { RegressionTestingDemo } from './regression-testing/regression-testing.demo';
 import { FormsResetDemo } from './reset/reset';
 import { FormsTemplateDrivenDemo, FormsTemplateDrivenOnPushDemo } from './template-driven/template-driven';
 import { FormsValidationDemo } from './validation/validation';
@@ -71,6 +72,7 @@ import { FormsValidationDemo } from './validation/validation';
     FormsGenericContainerDemo,
     FormsValidationDemo,
     DynamicControlsDemo,
+    RegressionTestingDemo,
   ],
   exports: [
     FormsDemo,
@@ -100,6 +102,7 @@ import { FormsValidationDemo } from './validation/validation';
     FormsGenericContainerDemo,
     FormsValidationDemo,
     DynamicControlsDemo,
+    RegressionTestingDemo,
   ],
 })
 export class FormsDemoModule {}

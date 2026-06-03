@@ -5,15 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { FormControl, FormsModule, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClrInput, ClrInputContainer } from '@clr/angular/forms/input';
 import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
 
 import { ClrIfError } from './if-error';
 import { ClrControlError } from '../control-subtexts/error';
+import { ClrForm } from '../form';
 import { NgControlService } from '../providers/ng-control.service';
 
 const errorMessage = 'ERROR_MESSAGE';
@@ -21,13 +22,13 @@ const minLengthMessage = 'MIN_LENGTH_MESSAGE';
 const maxLengthMessage = 'MAX_LENGTH_MESSAGE';
 
 @Component({
-  template: `<div *clrIfError></div>`,
+  template: ` <div *clrIfError></div>`,
   standalone: false,
 })
 class InvalidUseTest {}
 
 @Component({
-  template: `<clr-control-error *clrIfError>${errorMessage}</clr-control-error>`,
+  template: ` <clr-control-error *clrIfError>${errorMessage}</clr-control-error>`,
   providers: [NgControlService],
   standalone: false,
 })
@@ -45,6 +46,55 @@ class GeneralErrorTest {}
   standalone: false,
 })
 class SpecificErrorTest {}
+
+@Component({
+  template: `
+    <form clrForm [formGroup]="undefinedErrorForm" (ngSubmit)="onSubmit()">
+      <clr-input-container>
+        <label>Password</label>
+        <input clrInput formControlName="password" />
+        <clr-control-error *clrIfError="'required'"> Input is required</clr-control-error>
+        <clr-control-error *clrIfError="'maxlength'">
+          The value must be shorter than {{ maxLength }} characters.
+        </clr-control-error>
+        <clr-control-error *clrIfError="'minlength'; error as err">
+          Must be at least {{ err.requiredLength }} characters
+        </clr-control-error>
+      </clr-input-container>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  `,
+  providers: [NgControlService],
+  standalone: false,
+})
+class DynamicErrorTypeTest implements OnInit {
+  readonly maxLength = 10;
+  readonly minLength = 8;
+  undefinedErrorForm: FormGroup = new FormGroup({
+    password: new FormControl('', []),
+  });
+
+  ngOnInit() {
+    if (this.undefinedErrorForm) {
+      const ctrl = this.undefinedErrorForm.get('password');
+      ctrl.setValidators([
+        Validators.required,
+        Validators.maxLength(this.maxLength),
+        Validators.minLength(this.minLength),
+      ]);
+      ctrl.updateValueAndValidity();
+    }
+  }
+
+  onSubmit() {
+    this.undefinedErrorForm.markAllAsTouched();
+    const controlNames = Object.keys(this.undefinedErrorForm.controls);
+    for (let i = 0; i < controlNames.length; i++) {
+      this.undefinedErrorForm.controls[controlNames[i]].updateValueAndValidity();
+    }
+  }
+}
 
 export default function (): void {
   describe('ClrIfError', () => {
@@ -188,6 +238,68 @@ export default function (): void {
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         expect(fixture.nativeElement.innerHTML).not.toContain(minLengthMessage);
         expect(fixture.nativeElement.innerHTML).not.toContain(maxLengthMessage);
+      });
+    });
+
+    describe('dynamic error input (CDE-3109 / CDE-3111 regression)', () => {
+      let fixture: ComponentFixture<DynamicErrorTypeTest>;
+      let component: DynamicErrorTypeTest;
+
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          imports: [ClrIcon, FormsModule, ReactiveFormsModule],
+          declarations: [ClrForm, ClrInput, ClrControlError, ClrInputContainer, ClrIfError, DynamicErrorTypeTest],
+        });
+        fixture = TestBed.createComponent(DynamicErrorTypeTest);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+      });
+
+      // Correct errors ARE shown after validators are applied dynamically and no error in console (CDE-3109)
+      it('hides all errors initially before the form is interacted with', () => {
+        expect(fixture.nativeElement.innerHTML).not.toContain('Input is required');
+        expect(fixture.nativeElement.innerHTML).not.toContain(`shorter than ${component.maxLength} characters`);
+        expect(fixture.nativeElement.innerHTML).not.toContain(`Must be at least ${component.minLength} characters`);
+      });
+
+      it('hides all errors when the value satisfies all validators after submit', async () => {
+        fixture.componentInstance.undefinedErrorForm.get('password').setValue('abcdefgh');
+        fixture.componentInstance.onSubmit();
+        await delay();
+        fixture.detectChanges();
+        expect(fixture.nativeElement.innerHTML).not.toContain('Input is required');
+        expect(fixture.nativeElement.innerHTML).not.toContain(`shorter than ${component.maxLength} characters`);
+        expect(fixture.nativeElement.innerHTML).not.toContain(`Must be at least ${component.minLength} characters`);
+      });
+
+      // Only the matching error is shown, not all errors at once (CDE-3111)
+      it('does not show minlength or maxlength errors when only the required error is active', async () => {
+        fixture.componentInstance.onSubmit();
+        await delay();
+        fixture.detectChanges();
+        expect(fixture.nativeElement.innerHTML).toContain('Input is required');
+        expect(fixture.nativeElement.innerHTML).not.toContain(`shorter than ${component.maxLength} characters`);
+        expect(fixture.nativeElement.innerHTML).not.toContain(`Must be at least ${component.maxLength} characters`);
+      });
+
+      it('does not show required or maxlength errors when only the minlength error is active', async () => {
+        fixture.componentInstance.undefinedErrorForm.get('password').setValue('abc');
+        fixture.componentInstance.onSubmit();
+        await delay();
+        fixture.detectChanges();
+        expect(fixture.nativeElement.innerHTML).not.toContain('Input is required');
+        expect(fixture.nativeElement.innerHTML).not.toContain(`shorter than ${component.maxLength} characters`);
+        expect(fixture.nativeElement.innerHTML).toContain(`Must be at least ${component.minLength} characters`);
+      });
+
+      it('does not show required or minlength errors when only the maxlength error is active', async () => {
+        fixture.componentInstance.undefinedErrorForm.get('password').setValue('abcdefghijk');
+        fixture.componentInstance.onSubmit();
+        await delay();
+        fixture.detectChanges();
+        expect(fixture.nativeElement.innerHTML).not.toContain('Input is required');
+        expect(fixture.nativeElement.innerHTML).toContain(`shorter than ${component.maxLength} characters`);
+        expect(fixture.nativeElement.innerHTML).not.toContain(`Must be at least ${component.minLength} characters`);
       });
     });
   });

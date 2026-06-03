@@ -1,0 +1,64 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h1>Regression Testing</h1>
+
+<h2>CDE-3109 — <code>clrIfError</code> with dynamically-set validators</h2>
+<p>
+  <strong>CDE-3109:</strong> When validators were added to a form control dynamically (e.g. in <code>ngOnInit</code> via
+  <code>setValidators()</code>), the <code>clrIfError</code> directive did not receive its error-type input value in
+  time. As a result, the directive treated every invalid state as a generic error and the browser console showed an
+  <em>undefined</em> error reference.
+</p>
+
+<form clrForm [formGroup]="undefinedErrorForm" (ngSubmit)="onSubmit()">
+  <clr-password-container>
+    <label>Password</label>
+    <input clrPassword formControlName="password" />
+    <clr-control-error *clrIfError="'required'"> Password is required </clr-control-error>
+    <clr-control-error *clrIfError="'minlength'; error as err">
+      Must be at least {{ err.requiredLength }} characters
+    </clr-control-error>
+    <clr-control-error *clrIfError="'customError'; error as err"> {{ err.customError }} </clr-control-error>
+  </clr-password-container>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<h2>CDE-3111 — <code>clrIfError</code> multiple value validation with specific errors</h2>
+<p>
+  <strong>CDE-3111:</strong> Because <code>clrIfError</code> had not yet received its specific error type when the
+  control's state was first evaluated, <em>all</em> <code>clr-control-error</code> elements inside the container were
+  shown whenever the control became invalid — not only the one whose error was active. Only the currently active
+  <code>clrIfError</code> error message is shown when a control has multiple validators.
+</p>
+
+<button class="btn" (click)="errorKey = errorKey === 'maxlength' ? 'required' : 'maxlength'">
+  Toggle ERROR {{errorKey}}
+</button>
+
+<form clrForm [formGroup]="forbiddenFormValidation">
+  <clr-input-container>
+    <label class="clr-col-sm-2 clr-col-12 clr-required-mark">Name</label>
+    <input
+      class="clr-col-sm-10 clr-col-12 full-width"
+      clrInput
+      [formControlName]="formControls.name"
+      data-test-id="name"
+      placeholder="Type something"
+      [attr.maxlength]="maxLength + 1"
+    />
+    <clr-control-helper> Forbidden value: <strong>{{ forbiddenValue }}</strong> </clr-control-helper>
+    <clr-control-error *clrIfError="errorKey"> Dynamic error based on "{{errorKey}}" error type. </clr-control-error>
+    <clr-control-error *clrIfError="'required'"> A value is required. </clr-control-error>
+    <clr-control-error *clrIfError="'maxlength'">
+      The value must be shorter than {{ maxLength }} characters.
+    </clr-control-error>
+    <clr-control-error *clrIfError="'forbidden'; error as err">
+      The value must not match the forbidden value "{{ forbiddenValue }}".
+    </clr-control-error>
+  </clr-input-container>
+</form>
