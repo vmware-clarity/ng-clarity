@@ -234,3 +234,40 @@ const LegacyParagraphsTemplate: StoryFn = () => ({
 });
 
 export const LegacyParagraphs: StoryObj = { render: LegacyParagraphsTemplate };
+
+// ─── Accents & Special Glyphs ────────────────────────────────────────────────
+
+const AccentsTemplate: StoryFn = () => ({
+  template: `
+    <div cds-layout="vertical gap:lg">
+      <p cds-text="body">
+        <strong>Accents test (Latin letters with acute, grave, tilde, umlaut, circumflex, cedilla):</strong>
+      </p>
+      <div cds-layout="vertical gap:sm">
+        <p cds-text="display">áéíóú àèìòù äëïöü âêîôû ñç ÁÉÍÓÚ ÀÈÌÒÙ ÄËÏÖÜ ÂÊÎÔÛ ÑÇ</p>
+        <p cds-text="headline">áéíóú àèìòù äëïöü âêîôû ñç ÁÉÍÓÚ ÀÈÌÒÙ ÄËÏÖÜ ÂÊÎÔÛ ÑÇ</p>
+        <p cds-text="title">áéíóú àèìòù äëïöü âêîôû ñç ÁÉÍÓÚ ÀÈÌÒÙ ÄËÏÖÜ ÂÊÎÔÛ ÑÇ</p>
+        <p cds-text="section">áéíóú àèìòù äëïöü âêîôû ñç ÁÉÍÓÚ ÀÈÌÒÙ ÄËÏÖÜ ÂÊÎÔÛ ÑÇ</p>
+        <p cds-text="body">áéíóú àèìòù äëïöü âêîôû ñç ÁÉÍÓÚ ÀÈÌÒÙ ÄËÏÖÜ ÂÊÎÔÛ ÑÇ</p>
+      </div>
+      
+      <p cds-text="body">
+        <strong>Backtick / Spacing test (CDE-2042):</strong>
+      </p>
+      <div cds-layout="vertical gap:sm">
+        <p cds-text="display">a&#96;b c&#96;d e&#96;f g&#96;h (Should not overlap next character)</p>
+        <p cds-text="body">a&#96;b c&#96;d e&#96;f g&#96;h (Should not overlap next character)</p>
+      </div>
+
+      <p cds-text="body">
+        <strong>Solid Square Custom Glyph (uni25FC):</strong>
+      </p>
+      <div cds-layout="vertical gap:sm">
+        <p cds-text="display">&#9724; (uni25FC: &#9724;)</p>
+        <p cds-text="body">&#9724; (uni25FC: &#9724;)</p>
+      </div>
+    </div>
+  `,
+});
+
+export const Accents: StoryObj = { render: AccentsTemplate };
