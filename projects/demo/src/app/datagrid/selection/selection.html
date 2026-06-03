@@ -33,6 +33,9 @@
   User should be able to dynamically change selection trough datagrid input
   <code class="clr-code">[(clrDgSelected)]</code>.
   <button class="btn" (click)="selectItems()">Select items</button>
+  <button class="btn" (click)="disableSelectAll = !disableSelectAll;">
+    Disable select all: {{disableSelectAll ? "ON" : "OFF"}}
+  </button>
 </p>
 
 <h3>Client side, no trackBy</h3>
@@ -51,6 +54,7 @@
 <clr-datagrid
   [(clrDgSelected)]="clientNoTrackBySelected"
   [clrDgSelectionType]="'multi'"
+  [clrDgSelectAllDisabled]="disableSelectAll"
   (clrDgSelectedChange)="selectedChange($event)"
   [clrDgItemsIdentityFn]="identityFn"
 >
