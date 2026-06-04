@@ -114,3 +114,39 @@
   [componentClass]="withActionButtonsExampleTs"
   [showComponentClass]="false"
 ></app-stackblitz-example>
+
+<h4 cds-text="subsection" class="clr-mt-32px">First Day of Week</h4>
+<p cds-text="body" class="clr-mt-16px">
+  By default, the first day of the week shown in the calendar is derived from the Angular locale (for example, Sunday
+  for <code cds-text="code">en-US</code>, Monday for <code cds-text="code">fr</code>). Use the
+  <code cds-text="code">[clrFirstDayOfWeek]</code> input on <code cds-text="code">&lt;clr-date-container&gt;</code> to
+  override this value globally for an instance of the date picker. The input accepts a
+  <code cds-text="code">ClrWeekday</code> enum value, where <code cds-text="code">Sunday</code> is
+  <code cds-text="code">0</code> and <code cds-text="code">Saturday</code> is <code cds-text="code">6</code>.
+</p>
+<p cds-text="body" class="clr-mt-16px">
+  This is useful when an application exposes a "First day of the week" admin setting that needs to be honored regardless
+  of the user's locale.
+</p>
+<form clrForm clrLayout="vertical">
+  <clr-select-container>
+    <label>First day of week</label>
+    <select clrSelect name="firstDayOfWeek" [(ngModel)]="firstDayOfWeek">
+      @for (option of weekdayOptions; track option.value) {
+      <option [ngValue]="option.value">{{ option.label }}</option>
+      }
+    </select>
+    <clr-control-helper
+      >Select &quot;Locale default&quot; to revert to the value derived from the Angular locale.</clr-control-helper
+    >
+  </clr-select-container>
+  <clr-date-container [clrFirstDayOfWeek]="firstDayOfWeek">
+    <label>Pick a date</label>
+    <input type="date" autocomplete="off" clrDate name="firstDayDemo" [(ngModel)]="firstDayDemo" />
+  </clr-date-container>
+</form>
+<app-stackblitz-example
+  name="datepicker with configurable first day of week"
+  [componentTemplate]="firstDayOfWeekExample"
+  [componentClass]="firstDayOfWeekExampleTs"
+></app-stackblitz-example>

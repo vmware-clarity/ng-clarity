@@ -47,8 +47,8 @@ clr-datagrid {
   .custom-preview {
     width: 250px;
     overflow: hidden;
-    font-size: var(--cds-global-typography-secondary-font-size);
-    line-height: var(--cds-global-typography-secondary-line-height);
+    font-size: var(--cds-alias-typography-secondary-font-size);
+    line-height: var(--cds-alias-typography-secondary-line-height);
 
     .grid-ghost {
       border: 1px solid var(--clr-table-border-color);

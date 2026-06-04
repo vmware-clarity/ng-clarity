@@ -171,6 +171,13 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           description:
             'Emits when the "select all" checkbox is clicked and [clrDgCustomSelectAllEnabled] is true. Emits true for select all and false for deselect all.',
         },
+        {
+          name: '[clrDgSelectAllDisabled]',
+          type: 'boolean',
+          defaultValue: 'false',
+          description:
+            'When true, the "select all" checkbox in the datagrid header is disabled. Individual row checkboxes remain functional.',
+        },
       ],
     },
     {

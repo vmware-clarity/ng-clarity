@@ -104,6 +104,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * The application can provide custom select all logic.
    */
   @Input('clrDgCustomSelectAllEnabled') customSelectAllEnabled = false;
+  @Input('clrDgSelectAllDisabled') selectAllDisabled = false;
   @Output('clrDgCustomSelectAll') customSelectAll = new EventEmitter<boolean>();
 
   /**
