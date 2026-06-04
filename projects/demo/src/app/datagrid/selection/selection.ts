@@ -19,6 +19,7 @@ import { User } from '../inventory/user';
   standalone: false,
 })
 export class DatagridSelectionDemo {
+  disableSelectAll = false;
   clientNoTrackByUsers: User[];
   clientNoTrackBySelected: User[] = [];
   clientTrackByIndexUsers: User[];
