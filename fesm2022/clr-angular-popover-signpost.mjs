@@ -263,6 +263,7 @@ class ClrSignpostContent {
         signpostIdService.setId(this.signpostContentId);
         popoverService.panelClass.push('clr-signpost-container');
         popoverContent.contentType = ClrPopoverType.SIGNPOST;
+        popoverContent.contentAt = this._position;
     }
     /*********
      *
