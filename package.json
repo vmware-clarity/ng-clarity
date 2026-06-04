@@ -66,10 +66,10 @@
     "_lint:format-code-examples:fix": "node ./projects/website/scripts/format-code-examples.js --fix",
     "_lint:format-code-examples:changed": "node ./scripts/get-changed-files.js --command \"node ./projects/website/scripts/format-code-examples.js\"",
     "_lint:format-code-examples:changed:fix": "node ./scripts/get-changed-files.js --command \"node ./projects/website/scripts/format-code-examples.js --fix\"",
-    "figma:push": "npm run _build:ui && node --env-file=.env.figma scripts/figma-push.mjs",
-    "figma:push:dry-run": "npm run _build:ui && node --env-file=.env.figma scripts/figma-push.mjs --dry-run",
-    "figma:push:branch": "npm run _build:ui && node --env-file=.env.figma scripts/figma-push.mjs --branch",
-    "figma:extract": "node scripts/figma-push.mjs --extract figma-tokens.extract.json"
+    "figma:push": "node --env-file=.env.figma scripts/figma/index.mjs",
+    "figma:push:dry-run": "node --env-file=.env.figma scripts/figma/index.mjs --dry-run",
+    "figma:push:branch": "node --env-file=.env.figma scripts/figma/index.mjs --branch",
+    "figma:extract": "node scripts/figma/index.mjs --extract figma-tokens.extract.json"
   },
   "devDependencies": {
     "@amanda-mitchell/semantic-release-npm-multiple": "3.17.0",

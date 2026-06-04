@@ -11,7 +11,7 @@
 
   "exclusions": {
     "_comment": "Tokens excluded from publishing. Patterns are lowercase substring matches. Exact names are matched case-insensitively.",
-    "patterns": ["deprecated", "internal", "test-only", "-hovered-", "-pressed-", "-activated-"],
+    "patterns": ["deprecated", "internal", "test-only", "-outline", "-hovered-", "-pressed-", "-activated-"],
     "exact": []
   },
 
