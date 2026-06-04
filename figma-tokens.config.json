@@ -1,0 +1,142 @@
+{
+  "$schema": "./figma-tokens.config.schema.json",
+
+  "collections": {
+    "cdsGlobalColors": "CDS Global Colors",
+    "cdsGlobalSpace": "CDS Global Space",
+    "cdsTheme": "CDS Theme",
+    "clrDensity": "CLR Density",
+    "clrComponent": "CLR Component"
+  },
+
+  "exclusions": {
+    "_comment": "Tokens excluded from publishing. Patterns are lowercase substring matches. Exact names are matched case-insensitively.",
+    "patterns": ["deprecated", "internal", "test-only", "-hovered-", "-pressed-", "-activated-"],
+    "exact": []
+  },
+
+  "scopeRules": [
+    {
+      "_comment": "Font family tokens",
+      "pattern": "*font-family*",
+      "scopes": ["FONT_FAMILY"]
+    },
+    {
+      "_comment": "Font size tokens",
+      "pattern": "*font-size*",
+      "scopes": ["FONT_SIZE"]
+    },
+    {
+      "_comment": "Font weight tokens",
+      "pattern": "*font-weight*",
+      "scopes": ["FONT_WEIGHT"]
+    },
+    {
+      "_comment": "Line height tokens",
+      "pattern": "*line-height*",
+      "scopes": ["LINE_HEIGHT"]
+    },
+    {
+      "_comment": "Letter spacing tokens",
+      "pattern": "*letter-spacing*",
+      "scopes": ["LETTER_SPACING"]
+    },
+    {
+      "_comment": "Paragraph spacing tokens",
+      "pattern": "*paragraph-spacing*",
+      "scopes": ["PARAGRAPH_SPACING"]
+    },
+    {
+      "_comment": "Typography catch-all (covers font/text properties not matched above)",
+      "pattern": "*typography*",
+      "scopes": ["FONT_SIZE", "FONT_WEIGHT", "FONT_FAMILY", "LINE_HEIGHT", "LETTER_SPACING"]
+    },
+    {
+      "_comment": "Border radius tokens",
+      "pattern": "*border-radius*",
+      "scopes": ["CORNER_RADIUS"]
+    },
+    {
+      "_comment": "Border radius short name (clr-global-borderradius, etc.)",
+      "pattern": "*borderradius*",
+      "scopes": ["CORNER_RADIUS"]
+    },
+    {
+      "_comment": "Opacity tokens",
+      "pattern": "*opacity*",
+      "scopes": ["OPACITY"]
+    },
+    {
+      "_comment": "Gap / spacing tokens used in layouts",
+      "pattern": "*-gap*",
+      "scopes": ["GAP"]
+    },
+    {
+      "_comment": "Width / height dimension tokens",
+      "pattern": "*-width*",
+      "scopes": ["WIDTH_HEIGHT"]
+    },
+    {
+      "_comment": "Height dimension tokens",
+      "pattern": "*-height*",
+      "scopes": ["WIDTH_HEIGHT"]
+    },
+    {
+      "_comment": "Background color tokens",
+      "pattern": "*-background*",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"]
+    },
+    {
+      "_comment": "Background short name (bg)",
+      "pattern": "*-bg*",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"]
+    },
+    {
+      "_comment": "Text / foreground color tokens",
+      "pattern": "*-text*",
+      "scopes": ["TEXT_FILL"]
+    },
+    {
+      "_comment": "Stroke / border color tokens",
+      "pattern": "*-border*",
+      "scopes": ["STROKE_COLOR"]
+    },
+    {
+      "_comment": "Stroke-specific token names",
+      "pattern": "*-stroke*",
+      "scopes": ["STROKE_COLOR"]
+    },
+    {
+      "_comment": "Shadow / effect color tokens",
+      "pattern": "*-shadow*",
+      "scopes": ["EFFECT_COLOR"]
+    },
+    {
+      "_comment": "Generic color tokens (palette, status colours, etc.)",
+      "pattern": "*-color*",
+      "scopes": ["ALL_FILLS", "STROKE_COLOR", "EFFECT_COLOR"]
+    },
+    {
+      "_comment": "Global primitive colors",
+      "pattern": "--cds-global-color-*",
+      "scopes": ["ALL_FILLS", "STROKE_COLOR", "EFFECT_COLOR"]
+    },
+    {
+      "_comment": "Global spacing / layout tokens",
+      "pattern": "--cds-global-space*",
+      "scopes": ["GAP", "WIDTH_HEIGHT"]
+    },
+    {
+      "_comment": "Global layout spacing tokens",
+      "pattern": "--cds-global-layout-space*",
+      "scopes": ["GAP", "WIDTH_HEIGHT"]
+    }
+  ],
+
+  "codeSyntax": {
+    "_comment": "Templates for Figma Code Syntax (code context shown to designers). Supports: ${name} (full CSS var name), ${kebab} (name without leading --), ${camel} (camelCase)",
+    "WEB": "var(${name})",
+    "ANDROID": "@clr/${kebab}",
+    "iOS": "Clarity.${camel}"
+  }
+}

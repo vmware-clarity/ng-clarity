@@ -1,0 +1,109 @@
+name: Figma Token Publish
+
+on:
+  # Auto-trigger: push tokens to production Figma whenever a release is cut
+  # (runs after the "Release" workflow merges to main and publishes packages).
+  workflow_run:
+    workflows: ['Release']
+    types: [completed]
+
+  # Manual trigger: publish tokens from a specific branch for designer review.
+  # When run from a non-main branch the tokens land in isolated collections
+  # suffixed with the branch name, leaving the production file untouched.
+  workflow_dispatch:
+    inputs:
+      branch_isolation:
+        description: 'Isolation mode for non-main branches'
+        required: false
+        default: 'collection'
+        type: choice
+        options:
+          - collection
+          - branch
+      dry_run:
+        description: 'Dry run (parse tokens but make no API calls)'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: figma-publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish-tokens:
+    name: Publish Design Tokens to Figma
+    runs-on: ubuntu-latest
+    # For workflow_run, only proceed if the triggering workflow succeeded
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Build clr-ui CSS
+        run: npm run _build:ui
+
+      # ── Determine branch name for isolation ──────────────────────────────────
+      - name: Resolve branch name
+        id: branch
+        run: |
+          if [[ "${{ github.ref_name }}" == "main" ]]; then
+            echo "name=" >> "$GITHUB_OUTPUT"
+            echo "is_main=true" >> "$GITHUB_OUTPUT"
+          else
+            SAFE=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/-/g' | cut -c1-40)
+            echo "name=$SAFE" >> "$GITHUB_OUTPUT"
+            echo "is_main=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ── Production push (main branch / release workflow) ─────────────────────
+      - name: Push tokens to Figma (production)
+        if: steps.branch.outputs.is_main == 'true'
+        env:
+          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+          FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
+        run: |
+          DRY=${{ inputs.dry_run == true && '--dry-run' || '' }}
+          node scripts/figma-push.mjs $DRY
+
+      # ── Dev branch push (isolated collections) ───────────────────────────────
+      - name: Push tokens to Figma (dev branch — isolated)
+        if: steps.branch.outputs.is_main == 'false'
+        env:
+          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+          FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
+          FIGMA_BRANCH_MODE: ${{ inputs.branch_isolation || 'collection' }}
+        run: |
+          DRY=${{ inputs.dry_run == true && '--dry-run' || '' }}
+          node scripts/figma-push.mjs --branch "${{ steps.branch.outputs.name }}" $DRY
+
+      # ── Summary ──────────────────────────────────────────────────────────────
+      - name: Write job summary
+        if: always()
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" << 'EOF'
+          ## Figma Token Publish
+
+          | Field | Value |
+          |---|---|
+          | Branch | `${{ github.ref_name }}` |
+          | Production push | `${{ steps.branch.outputs.is_main == 'true' && 'yes' || 'no (isolated)' }}` |
+          | Isolation mode | `${{ inputs.branch_isolation || 'collection' }}` |
+          | Dry run | `${{ inputs.dry_run || false }}` |
+          | Triggered by | `${{ github.event_name }}` |
+
+          Design tokens from `dist/clr-ui/clr-ui.css` were published to the
+          [Figma file](https://www.figma.com/file/${{ secrets.FIGMA_FILE_KEY }}).
+          EOF
