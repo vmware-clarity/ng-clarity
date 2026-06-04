@@ -250,7 +250,7 @@ const AccentsTemplate: StoryFn = () => ({
         <p cds-text="section">áéíóú àèìòù äëïöü âêîôû ñç ÁÉÍÓÚ ÀÈÌÒÙ ÄËÏÖÜ ÂÊÎÔÛ ÑÇ</p>
         <p cds-text="body">áéíóú àèìòù äëïöü âêîôû ñç ÁÉÍÓÚ ÀÈÌÒÙ ÄËÏÖÜ ÂÊÎÔÛ ÑÇ</p>
       </div>
-      
+
       <p cds-text="body">
         <strong>Backtick / Spacing test (CDE-2042):</strong>
       </p>
