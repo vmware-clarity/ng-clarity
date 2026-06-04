@@ -252,7 +252,7 @@ const AccentsTemplate: StoryFn = () => ({
       </div>
 
       <p cds-text="body">
-        <strong>Backtick / Spacing test (CDE-2042):</strong>
+        <strong>Backtick / Spacing test:</strong>
       </p>
       <div cds-layout="vertical gap:sm">
         <p cds-text="display">a&#96;b c&#96;d e&#96;f g&#96;h (Should not overlap next character)</p>
