@@ -5,11 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { FontPreset, fontPresets } from './utils/font-presets';
-import { getPreset } from './utils/font-presets';
+import { FontPreset, fontPresets, getPreset } from './utils/font-presets';
 
 @Component({
   selector: 'clr-typography-font-autopsy',
@@ -17,14 +16,12 @@ import { getPreset } from './utils/font-presets';
   templateUrl: './typography-font-autopsy.html',
 })
 export class TypographyFontAutopsyDemo {
-  presetSwitcher = new FormGroup({
-    preset: new FormControl('Metropolis'),
-  });
+  @ViewChild('compareSelect', { read: ElementRef }) compareSelect: ElementRef<HTMLSelectElement> | undefined;
 
   model = new FormGroup({
     font: new FormControl('Metropolis', [Validators.required]),
-    demoLetter: new FormControl('x', [Validators.maxLength(1)]),
-    topGap: new FormControl(0.147, [Validators.min(0)]),
+    demoLetter: new FormControl('xX', [Validators.maxLength(1)]),
+    topGap: new FormControl(0.148, [Validators.min(0)]),
     ascender: new FormControl(0.17, [Validators.min(0)]),
     xHeight: new FormControl(0.517, [Validators.min(0)]),
     descenderOverage: new FormControl(0.013, [Validators.min(0)]),
@@ -74,9 +71,18 @@ export class TypographyFontAutopsyDemo {
     this.loadPreset(preset);
   }
 
+  compareTo(event: Event) {
+    const fontName = (event.target as HTMLInputElement).value;
+
+    this.model.patchValue({ font: fontName.replace(/["']/g, '') });
+  }
+
   loadPreset(presetToLoad: FontPreset) {
     this.fontField = presetToLoad.font;
     this.model.patchValue(presetToLoad);
+    if (this.compareSelect) {
+      this.compareSelect.nativeElement.value = '';
+    }
   }
 }
 

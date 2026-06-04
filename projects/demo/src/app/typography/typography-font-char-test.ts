@@ -12,4 +12,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./typography.demo.scss'],
   templateUrl: './typography-font-char-test.html',
 })
-export class TypographyFontCharTestDemo {}
+export class TypographyFontCharTestDemo {
+  showBroadhevan = true;
+  showMetropolis = true;
+  showClarityCity = false;
+}

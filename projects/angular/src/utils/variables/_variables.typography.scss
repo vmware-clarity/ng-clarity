@@ -14,7 +14,7 @@ $clr-fontSkipBase64: false !default;
 $clr-metropolis-font-family: var(--clr-metropolis-font-family);
 $clr-font: var(--clr-font) !default;
 $clr-body-font: $clr-font;
-$clr-altFont: $clr-font !default; //TODO: TBD. Alternative font for Clarity
+$clr-altFont: Broadhevan, 'Avenir Next', 'Helvetica Neue', Arial, sans-serif !default; //TODO: TBD. Alternative font for Clarity
 
 $clr-font-weight-light: var(--clr-font-weight-light) !default;
 $clr-font-weight-regular: var(--clr-font-weight-regular) !default;
