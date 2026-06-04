@@ -52,6 +52,19 @@ export default {
   },
 };
 
+const SignpostDefaultPositionTemplate: StoryFn = args => ({
+  template: `
+    <div style="padding: 250px; text-align: center">
+      <clr-signpost [clrSignpostTriggerAriaLabel]="clrSignpostTriggerAriaLabel">
+        <clr-signpost-content [clrSignpostCloseAriaLabel]="clrSignpostCloseAriaLabel">
+          {{ content }}
+        </clr-signpost-content>
+      </clr-signpost>
+    </div>
+  `,
+  props: args,
+});
+
 const SignpostTemplate: StoryFn = args => ({
   template: `
     <div style="padding: 250px; text-align: center">
@@ -85,6 +98,14 @@ export const Initial: StoryObj = {
 
 export const Opened = {
   render: SignpostTemplate,
+  play({ canvasElement }) {
+    canvasElement.querySelector('button').click();
+  },
+};
+
+// visual regression test for CDE-3123
+export const DefaultPositionOpened = {
+  render: SignpostDefaultPositionTemplate,
   play({ canvasElement }) {
     canvasElement.querySelector('button').click();
   },
