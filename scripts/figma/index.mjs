@@ -80,7 +80,7 @@ async function main() {
   }
   const cssText = fs.readFileSync(CSS_FILE, 'utf8');
   const modeVars = resolveModeVars(parseCssBlocks(cssText));
-  const collectionDefs = buildCollectionDefs(modeVars);
+  const collectionDefs = buildCollectionDefs(config.collections, modeVars);
 
   // ── Fetch existing Figma variables ──────────────────────────────────────────
   let existingCollections = [];

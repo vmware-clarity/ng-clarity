@@ -6,10 +6,13 @@
  */
 
 /**
- * Figma variable collection definitions.
+ * Builds runtime Figma collection definitions from the config-driven
+ * CollectionConfig array loaded by config.mjs.
  *
- * Maps the parsed CSS tokens into the set of Figma collections, each describing
- * which tokens belong to it, its mode names, and the value source per mode.
+ * All structural knowledge (which CSS prefixes belong where, which modes exist,
+ * which CSS variable map backs each mode) now lives in figma-tokens.config.json
+ * rather than being hardcoded here. This module is a pure translator between
+ * the config shape and the CollectionDef shape consumed by the planner.
  */
 
 /**
@@ -20,44 +23,33 @@
  * @property {(modeIndex: number) => Map<string, string>} source Variable values for a mode.
  */
 
+/** @type {Record<import('./config.mjs').CssModeSource, keyof ModeVars>} */
+const SOURCE_KEY = { root: 'rootVars', dark: 'darkVars', compact: 'compactVars' };
+
 /**
- * Build the collection definitions bound to the resolved per-mode variable maps.
+ * @typedef {{ rootVars: Map<string, string>, darkVars: Map<string, string>, compactVars: Map<string, string> }} ModeVars
+ */
+
+/**
+ * Translate the config-driven collection definitions into the CollectionDef
+ * objects required by the planner.
  *
- * @param {{ rootVars: Map<string, string>, darkVars: Map<string, string>, compactVars: Map<string, string> }} modeVars
+ * Each collection's `filter` uses prefix matching:
+ *   - A token is included if it starts with any entry in `filter.include` (OR).
+ *   - A token is excluded if it starts with any entry in `filter.exclude` (OR).
+ *
+ * Each mode's `source` key maps to the matching parsed CSS variable map.
+ *
+ * @param {import('./config.mjs').CollectionConfig[]} collectionConfigs
+ * @param {ModeVars} modeVars
  * @returns {CollectionDef[]}
  */
-export function buildCollectionDefs({ rootVars, darkVars, compactVars }) {
-  return [
-    {
-      name: 'CDS Global Colors',
-      filter: n => /^--cds-global-color-/.test(n),
-      modes: ['Value'],
-      source: () => rootVars,
-    },
-    {
-      name: 'CDS Global Space',
-      filter: n => /^--cds-global-(space|layout)-/.test(n),
-      modes: ['Value'],
-      source: () => rootVars,
-    },
-    {
-      name: 'CDS Theme',
-      filter: n => /^--cds-alias-/.test(n),
-      modes: ['Light', 'Dark'],
-      source: idx => (idx === 0 ? rootVars : darkVars),
-    },
-    {
-      name: 'CLR Density',
-      filter: n => /^--clr-base-/.test(n),
-      modes: ['Regular', 'Compact'],
-      source: idx => (idx === 0 ? rootVars : compactVars),
-    },
-    {
-      name: 'CLR Component',
-      // Everything else with --clr- that didn't match the density filter
-      filter: n => /^--clr-/.test(n) && !/^--clr-base-/.test(n),
-      modes: ['Value'],
-      source: () => rootVars,
-    },
-  ];
+export function buildCollectionDefs(collectionConfigs, modeVars) {
+  return collectionConfigs.map(({ name, filter, modes }) => ({
+    name,
+    filter: cssName =>
+      filter.include.some(p => cssName.startsWith(p)) && !filter.exclude.some(p => cssName.startsWith(p)),
+    modes: modes.map(m => m.name),
+    source: idx => modeVars[SOURCE_KEY[modes[idx].source]],
+  }));
 }

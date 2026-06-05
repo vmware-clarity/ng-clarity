@@ -69,7 +69,8 @@
     "figma:push": "node --env-file=.env.figma scripts/figma/index.mjs",
     "figma:push:dry-run": "node --env-file=.env.figma scripts/figma/index.mjs --dry-run",
     "figma:push:branch": "node --env-file=.env.figma scripts/figma/index.mjs --branch",
-    "figma:extract": "node scripts/figma/index.mjs --extract figma-tokens.extract.json"
+    "figma:extract": "node scripts/figma/index.mjs --extract figma-tokens.extract.json",
+    "test:figma": "vitest run --config scripts/figma/vitest.config.mjs"
   },
   "devDependencies": {
     "@amanda-mitchell/semantic-release-npm-multiple": "3.17.0",

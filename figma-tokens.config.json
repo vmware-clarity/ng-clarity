@@ -1,13 +1,39 @@
 {
   "$schema": "./figma-tokens.config.schema.json",
 
-  "collections": {
-    "cdsGlobalColors": "CDS Global Colors",
-    "cdsGlobalSpace": "CDS Global Space",
-    "cdsTheme": "CDS Theme",
-    "clrDensity": "CLR Density",
-    "clrComponent": "CLR Component"
-  },
+  "collections": [
+    {
+      "name": "CDS Global Colors",
+      "filter": { "include": ["--cds-global-color-"] },
+      "modes": [{ "name": "Value", "source": "root" }]
+    },
+    {
+      "name": "CDS Global Space",
+      "filter": { "include": ["--cds-global-space-", "--cds-global-layout-"] },
+      "modes": [{ "name": "Value", "source": "root" }]
+    },
+    {
+      "name": "CDS Theme",
+      "filter": { "include": ["--cds-alias-"] },
+      "modes": [
+        { "name": "Light", "source": "root" },
+        { "name": "Dark", "source": "dark" }
+      ]
+    },
+    {
+      "name": "CLR Density",
+      "filter": { "include": ["--clr-base-"] },
+      "modes": [
+        { "name": "Regular", "source": "root" },
+        { "name": "Compact", "source": "compact" }
+      ]
+    },
+    {
+      "name": "CLR Component",
+      "filter": { "include": ["--clr-"], "exclude": ["--clr-base-"] },
+      "modes": [{ "name": "Value", "source": "root" }]
+    }
+  ],
 
   "exclusions": {
     "_comment": "Tokens excluded from publishing. Patterns are lowercase substring matches. Exact names are matched case-insensitively.",

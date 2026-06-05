@@ -91,74 +91,92 @@ export function hexToFigmaColor(value) {
 }
 
 /**
+ * Resolve `calc(N * 1rem / var(--cds-global-base))` and its parenthesised variant
+ * `calc(N * (1rem / var(--cds-global-base)))` to N px (N may be negative).
+ * At the default base of 20, `1rem / base = 1 px`.
+ *
+ * @param {string} value
+ * @returns {number | null}
+ */
+export function calcRemBase(value) {
+  const m =
+    value.match(/^calc\(\s*(-?[\d.]+)\s*\*\s*1rem\s*\/\s*var\(--cds-global-base\)\s*\)$/) ??
+    value.match(/^calc\(\s*(-?[\d.]+)\s*\*\s*\(1rem\s*\/\s*var\(--cds-global-base\)\)\s*\)$/);
+  return m ? parseFloat(m[1]) : null;
+}
+
+/**
+ * Resolve `calc((1rem / var(--cds-global-base)) * var(--scale-name))` to a px number.
+ *
+ * The referenced scale variable must hold a dimensionless bare-number multiplier
+ * (e.g. `1`, `0.875`). Treating `1rem/base` as 1 px at default scale, the result
+ * equals that multiplier directly.
+ *
+ * @param {string} value
+ * @param {(name: string) => string | undefined} varLookup
+ * @returns {number | null}
+ */
+export function calcScaleVar(value, varLookup) {
+  const m = value.match(/^calc\(\s*\(1rem\s*\/\s*var\(--cds-global-base\)\)\s*\*\s*var\((--[a-zA-Z0-9-]+)\)\s*\)$/);
+  if (!m) {
+    return null;
+  }
+  const scaleRaw = varLookup(m[1]);
+  if (scaleRaw === undefined) {
+    return null;
+  }
+  const scaleVal = parseFloat(scaleRaw);
+  return isNaN(scaleVal) ? null : scaleVal;
+}
+
+/**
+ * Resolve `calc(N * var(--name))` by looking up `--name`, recursively resolving
+ * its value to px via {@link resolveCalcToPx}, then multiplying by N.
+ *
+ * @param {string} value
+ * @param {(name: string) => string | undefined} varLookup
+ * @returns {number | null}
+ */
+export function calcVarMultiply(value, varLookup) {
+  const m = value.match(/^calc\(\s*(-?[\d.]+)\s*\*\s*var\((--[a-zA-Z0-9-]+)\)\s*\)$/);
+  if (!m) {
+    return null;
+  }
+  const n = parseFloat(m[1]);
+  const varRaw = varLookup(m[2]);
+  if (varRaw === undefined) {
+    return null;
+  }
+  const varPx = resolveCalcToPx(varRaw, varLookup);
+  return varPx !== null ? n * varPx : null;
+}
+
+/**
  * Resolve a `calc()` expression to a plain px number.
  *
- * Handles the following forms (N may be negative):
- *   • `calc(N * 1rem / var(--cds-global-base))`       — standard rem/base scale
- *   • `calc(N * (1rem / var(--cds-global-base)))`      — parenthesised form, same semantics
- *   • `calc(N * 1px)`                                  — explicit pixel multiply
+ * Delegates to the focused helpers in priority order:
+ *   1. {@link calcRemBase}     — `calc(N * 1rem / var(--cds-global-base))` and parenthesised form
+ *   2. {@link calcScaleVar}    — `calc((1rem / var(--base)) * var(--scale))` (requires `varLookup`)
+ *   3. {@link calcVarMultiply} — `calc(N * var(--name))` recursive  (requires `varLookup`)
  *
- * When `varLookup` is supplied, two additional forms are resolved recursively:
- *   • `calc((1rem / var(--cds-global-base)) * var(--scale-name))`
- *     → looks up `--scale-name` as a bare scale factor (e.g. 1, 0.875)
- *   • `calc(N * var(--name))`
- *     → looks up `--name`, resolves it to px, then multiplies by N
- *     (enables e.g. `calc(6 * var(--cds-internal-scale-2))` → 6 px at default scale)
+ * Why `varLookup` is required for patterns 2 and 3:
+ * The compiled stylesheet expresses spacing and typography tokens as
+ * `calc(N * var(--cds-internal-scale-2))`, where `--cds-internal-scale-2` is
+ * itself `calc((1rem / var(--cds-global-base)) * var(--cds-global-scale-space))`.
+ * Without a lookup into the full CSS variable map there is no way to reduce
+ * these two levels to a static number. With the lookup, 29 additional tokens
+ * are promoted from STRING to FLOAT at default scale=1.
  *
  * @param {string} value
  * @param {((name: string) => string | undefined) | null} [varLookup]
- *   Optional CSS variable value resolver used for the `var(--name)` patterns.
+ *   Full CSS variable map getter (e.g. `rootVars.get.bind(rootVars)`).
+ *   Required to resolve `var(--name)` references inside calc expressions.
  * @returns {number | null}
  */
 export function resolveCalcToPx(value, varLookup = null) {
-  // calc(N * 1rem / var(--cds-global-base)) at default base 20 → N px  (N may be negative)
-  let m = value.match(/^calc\(\s*(-?[\d.]+)\s*\*\s*1rem\s*\/\s*var\(--cds-global-base\)\s*\)$/);
-  if (m) {
-    return parseFloat(m[1]);
-  }
-
-  // calc(N * (1rem / var(--cds-global-base))) — parenthesised form, same semantics
-  m = value.match(/^calc\(\s*(-?[\d.]+)\s*\*\s*\(1rem\s*\/\s*var\(--cds-global-base\)\)\s*\)$/);
-  if (m) {
-    return parseFloat(m[1]);
-  }
-
-  // calc(N * 1px)
-  m = value.match(/^calc\(\s*(-?[\d.]+)\s*\*\s*1px\s*\)$/);
-  if (m) {
-    return parseFloat(m[1]);
-  }
-
-  if (varLookup) {
-    // calc((1rem / var(--cds-global-base)) * var(--scale-name))
-    // The scale variable holds a dimensionless multiplier (e.g. 1, 0.875).
-    // Treating 1rem/base as 1 px at default scale, the result is that multiplier.
-    m = value.match(/^calc\(\s*\(1rem\s*\/\s*var\(--cds-global-base\)\)\s*\*\s*var\((--[a-zA-Z0-9-]+)\)\s*\)$/);
-    if (m) {
-      const scaleRaw = varLookup(m[1]);
-      if (scaleRaw !== undefined) {
-        const scaleVal = parseFloat(scaleRaw);
-        if (!isNaN(scaleVal)) {
-          return scaleVal;
-        }
-      }
-    }
-
-    // calc(N * var(--name)) — resolve --name to px recursively, then multiply
-    m = value.match(/^calc\(\s*(-?[\d.]+)\s*\*\s*var\((--[a-zA-Z0-9-]+)\)\s*\)$/);
-    if (m) {
-      const n = parseFloat(m[1]);
-      const varRaw = varLookup(m[2]);
-      if (varRaw !== undefined) {
-        const varPx = resolveCalcToPx(varRaw, varLookup);
-        if (varPx !== null) {
-          return n * varPx;
-        }
-      }
-    }
-  }
-
-  return null;
+  return (
+    calcRemBase(value) ?? (varLookup ? (calcScaleVar(value, varLookup) ?? calcVarMultiply(value, varLookup)) : null)
+  );
 }
 
 /**

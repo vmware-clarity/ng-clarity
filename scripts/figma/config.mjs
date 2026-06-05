@@ -17,12 +17,39 @@ import fs from 'node:fs';
 const DEFAULT_CODE_SYNTAX = { WEB: 'var(${name})', ANDROID: '@clr/${kebab}', iOS: 'Clarity.${camel}' };
 
 /**
+ * @typedef {'root' | 'dark' | 'compact'} CssModeSource
+ * Identifies which parsed CSS variable map a collection mode reads from.
+ */
+
+/**
+ * @typedef {Object} CollectionModeConfig
+ * @property {string} name Mode display name shown in Figma.
+ * @property {CssModeSource} source Which CSS variable map to use for this mode.
+ */
+
+/**
+ * @typedef {Object} CollectionFilterConfig
+ * @property {string[]} include CSS variable name prefixes; a token must start with at least one (OR).
+ * @property {string[]} [exclude] CSS variable name prefixes; a token must not start with any (OR).
+ */
+
+/**
+ * @typedef {Object} CollectionConfig
+ * @property {string} name Collection display name shown in Figma.
+ * @property {CollectionFilterConfig} filter Which CSS tokens belong to this collection.
+ * @property {CollectionModeConfig[]} modes Mode list; index 0 is the default/base mode.
+ */
+
+/**
  * @typedef {Object} FigmaTokensConfig
+ * @property {CollectionConfig[]} collections Ordered collection definitions.
  * @property {string[]} exclusionPatterns Lowercased substrings for simple matching.
  * @property {Set<string>} exclusionExact Lowercased exact token names to exclude.
  * @property {Array<{pattern: string, scopes: string[]}>} scopeRules Ordered scope rules; first match wins.
  * @property {Record<string, string>} codeSyntaxTemplates Platform → template string.
  */
+
+const VALID_SOURCES = new Set(['root', 'dark', 'compact']);
 
 /**
  * Load and normalize the token publisher configuration.
@@ -32,6 +59,30 @@ const DEFAULT_CODE_SYNTAX = { WEB: 'var(${name})', ANDROID: '@clr/${kebab}', iOS
  */
 export function loadConfig(configPath) {
   const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+
+  const collections = (config.collections ?? []).map((col, i) => {
+    if (!col.name) {
+      throw new Error(`collections[${i}]: "name" is required`);
+    }
+    if (!Array.isArray(col.filter?.include) || col.filter.include.length === 0) {
+      throw new Error(`collections[${i}] ("${col.name}"): filter.include must be a non-empty array`);
+    }
+    if (!Array.isArray(col.modes) || col.modes.length === 0) {
+      throw new Error(`collections[${i}] ("${col.name}"): modes must be a non-empty array`);
+    }
+    for (const mode of col.modes) {
+      if (!VALID_SOURCES.has(mode.source)) {
+        throw new Error(
+          `collections[${i}] ("${col.name}") mode "${mode.name}": source must be one of ${[...VALID_SOURCES].join(', ')}`
+        );
+      }
+    }
+    return /** @type {CollectionConfig} */ ({
+      name: col.name,
+      filter: { include: col.filter.include, exclude: col.filter.exclude ?? [] },
+      modes: col.modes.map(m => ({ name: m.name, source: m.source })),
+    });
+  });
 
   const exclusionPatterns = (config.exclusions?.patterns ?? []).map(p => p.toLowerCase());
   const exclusionExact = new Set((config.exclusions?.exact ?? []).map(n => n.toLowerCase()));
@@ -43,5 +94,5 @@ export function loadConfig(configPath) {
     return Object.fromEntries(Object.entries(raw).filter(([k]) => !k.startsWith('_')));
   })();
 
-  return { exclusionPatterns, exclusionExact, scopeRules, codeSyntaxTemplates };
+  return { collections, exclusionPatterns, exclusionExact, scopeRules, codeSyntaxTemplates };
 }
