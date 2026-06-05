@@ -73,15 +73,6 @@ async function main() {
     `\n🎨  Figma token push — file: ${figmaFileKey}${branchName ? ` [branch: ${branchName}]` : ''}${dryRun ? ' (DRY RUN)' : ''}\n`
   );
 
-  // ── Parse CSS ──────────────────────────────────────────────────────────────
-  if (!fs.existsSync(CSS_FILE)) {
-    console.error(`❌  ${CSS_FILE} not found. Run: npm run _build:ui`);
-    process.exit(1);
-  }
-  const cssText = fs.readFileSync(CSS_FILE, 'utf8');
-  const modeVars = resolveModeVars(parseCssBlocks(cssText));
-  const collectionDefs = buildCollectionDefs(config.collections, modeVars);
-
   // ── Fetch existing Figma variables ──────────────────────────────────────────
   let existingCollections = [];
   let existingVars = [];
@@ -116,6 +107,15 @@ async function main() {
       collectionSuffix = ` [${branchName}]`;
     }
   }
+
+  // ── Parse CSS ──────────────────────────────────────────────────────────────
+  if (!fs.existsSync(CSS_FILE)) {
+    console.error(`❌  ${CSS_FILE} not found. Run: npm run _build:ui`);
+    process.exit(1);
+  }
+  const cssText = fs.readFileSync(CSS_FILE, 'utf8');
+  const modeVars = resolveModeVars(parseCssBlocks(cssText));
+  const collectionDefs = buildCollectionDefs(config.collections, modeVars);
 
   // ── Build payload ───────────────────────────────────────────────────────────
   const idMap = createIdMap();

@@ -1,6 +1,7 @@
 {
   "$schema": "./figma-tokens.config.schema.json",
 
+  "_comment": "Order of collections building is important. First GLOBAL COLORS and SPACE, then DENSITY, then LAYOUT, then EVERYTHING else.",
   "collections": [
     {
       "name": "CDS Global Colors",
@@ -9,18 +10,11 @@
     },
     {
       "name": "CDS Global Space",
-      "filter": { "include": ["--cds-global-space-", "--cds-global-layout-"] },
+      "filter": { "include": ["--cds-global-space-"] },
       "modes": [{ "name": "Value", "source": "root" }]
     },
     {
-      "name": "CDS Theme",
-      "filter": { "include": ["--cds-alias-"] },
-      "modes": [
-        { "name": "Light", "source": "root" },
-        { "name": "Dark", "source": "dark" }
-      ]
-    },
-    {
+      "_comment": "Density scale tokens referenced by CDS Spacing aliases. Must be processed before CDS Spacing so var(--clr-base-*) references in typography tokens resolve as VARIABLE_ALIAS in idMap.",
       "name": "CLR Density",
       "filter": { "include": ["--clr-base-"] },
       "modes": [
@@ -29,8 +23,77 @@
       ]
     },
     {
-      "name": "CLR Component",
-      "filter": { "include": ["--clr-"], "exclude": ["--clr-base-"] },
+      "name": "CDS Global Layout",
+      "filter": { "include": ["--cds-global-layout-"] },
+      "modes": [{ "name": "Value", "source": "root" }]
+    },
+    {
+      "_comment": "Semantic colour aliases — full-namespace colour groups (status, viz, utility) plus the colour-bearing sub-tokens inside the object and typography namespaces.",
+      "name": "CDS Theme",
+      "filter": {
+        "include": [
+          "--cds-alias-status-",
+          "--cds-alias-viz-",
+          "--cds-alias-utility-",
+          "--cds-alias-object-interaction-background",
+          "--cds-alias-object-interaction-border-color",
+          "--cds-alias-object-interaction-color",
+          "--cds-alias-object-interaction-info-",
+          "--cds-alias-object-interaction-success-",
+          "--cds-alias-object-interaction-warning-",
+          "--cds-alias-object-interaction-danger-",
+          "--cds-alias-object-interaction-neutral-",
+          "--cds-alias-object-interaction-inverse-",
+          "--cds-alias-object-app-",
+          "--cds-alias-object-overlay-",
+          "--cds-alias-object-border-color",
+          "--cds-alias-object-container-",
+          "--cds-alias-object-opacity-",
+          "--cds-alias-typography-color-",
+          "--cds-alias-typography-link-",
+          "--cds-alias-typography-info-",
+          "--cds-alias-typography-success-",
+          "--cds-alias-typography-warning-",
+          "--cds-alias-typography-danger-",
+          "--cds-alias-typography-neutral-",
+          "--cds-alias-typography-disabled"
+        ]
+      },
+      "modes": [
+        { "name": "Light", "source": "root" },
+        { "name": "Dark", "source": "dark" }
+      ]
+    },
+    {
+      "_comment": "Structural and sizing aliases — border-radius, border-width, shadow, interaction geometry, and typography metrics. The exclude list mirrors CDS Theme's colour sub-prefixes so the two collections are mutually exclusive. CLR Density must appear before this collection so typography var(--clr-base-*) aliases resolve correctly.",
+      "name": "CDS Spacing",
+      "filter": {
+        "include": ["--cds-alias-object-", "--cds-alias-typography-"],
+        "exclude": [
+          "--cds-alias-object-interaction-background",
+          "--cds-alias-object-interaction-border-color",
+          "--cds-alias-object-interaction-color",
+          "--cds-alias-object-interaction-info-",
+          "--cds-alias-object-interaction-success-",
+          "--cds-alias-object-interaction-warning-",
+          "--cds-alias-object-interaction-danger-",
+          "--cds-alias-object-interaction-neutral-",
+          "--cds-alias-object-interaction-inverse-",
+          "--cds-alias-object-app-",
+          "--cds-alias-object-overlay-",
+          "--cds-alias-object-border-color",
+          "--cds-alias-object-container-",
+          "--cds-alias-object-opacity-",
+          "--cds-alias-typography-color-",
+          "--cds-alias-typography-link-",
+          "--cds-alias-typography-info-",
+          "--cds-alias-typography-success-",
+          "--cds-alias-typography-warning-",
+          "--cds-alias-typography-danger-",
+          "--cds-alias-typography-neutral-",
+          "--cds-alias-typography-disabled"
+        ]
+      },
       "modes": [{ "name": "Value", "source": "root" }]
     }
   ],
