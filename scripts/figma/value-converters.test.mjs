@@ -14,6 +14,7 @@ import {
   calcScaleVar,
   calcVarMultiply,
   resolveCalcToPx,
+  resolveEmToPx,
   resolveValue,
   inferType,
 } from './value-converters.mjs';
@@ -323,6 +324,70 @@ describe('resolveCalcToPx', () => {
   });
 });
 
+// ─── resolveEmToPx ───────────────────────────────────────────────────────────
+
+describe('resolveEmToPx', () => {
+  // Simulates a CSS variable map modelled after the real stylesheet:
+  //   --cds-alias-typography-display-font-size → var(--clr-base-typography-font-size-display)
+  //   --clr-base-typography-font-size-display  → calc(40 * 1rem / var(--cds-global-base))
+  const vars = {
+    '--cds-alias-typography-display-font-size': 'var(--clr-base-typography-font-size-display)',
+    '--clr-base-typography-font-size-display': 'calc(40 * 1rem / var(--cds-global-base))',
+    // Three-hop chain via --cds-global-space-9
+    '--cds-alias-typography-heading-font-size': 'var(--clr-base-typography-font-size-heading)',
+    '--clr-base-typography-font-size-heading': 'var(--cds-global-space-9)',
+    '--cds-global-space-9': 'calc(24 * var(--cds-internal-scale-2))',
+    '--cds-internal-scale-2': 'calc((1rem / var(--cds-global-base)) * var(--cds-global-scale-space))',
+    '--cds-global-scale-space': '1',
+    // Simple px font-size (used for isolated tests)
+    '--test-font-size': '16px',
+  };
+  const lookup = n => vars[n];
+
+  it('multiplies the em value by the resolved font-size (one var hop)', () => {
+    // -0.0125em × 40px = -0.5px
+    const result = resolveEmToPx('-0.0125em', '--cds-alias-typography-display-letter-spacing', lookup);
+    expect(result).toBeCloseTo(-0.5);
+  });
+
+  it('follows a three-hop var() chain (em × heading font-size → 24px)', () => {
+    // -0.0125em × 24px = -0.3px
+    const result = resolveEmToPx('-0.0125em', '--cds-alias-typography-heading-letter-spacing', lookup);
+    expect(result).toBeCloseTo(-0.3);
+  });
+
+  it('resolves a bare-px font-size', () => {
+    // '--test-letter-spacing' → replace '-letter-spacing' → '--test-font-size'
+    const lkp = n => (n === '--test-font-size' ? '20px' : undefined);
+    expect(resolveEmToPx('0.05em', '--test-letter-spacing', lkp)).toBeCloseTo(1);
+  });
+
+  it('handles positive em values', () => {
+    const lkp = n => (n === '--my-token-font-size' ? '10px' : undefined);
+    expect(resolveEmToPx('0.018182em', '--my-token-letter-spacing', lkp)).toBeCloseTo(0.18182, 4);
+  });
+
+  it('returns null when cssVarName has no -letter-spacing suffix', () => {
+    // resolveEmToPx should not attempt conversion for non-letter-spacing tokens
+    expect(resolveEmToPx('0.1em', '--cds-alias-typography-x-height', lookup)).toBeNull();
+    expect(resolveEmToPx('0.1em', '--cds-alias-typography-top-gap-height', lookup)).toBeNull();
+  });
+
+  it('returns null when the peer font-size variable is absent', () => {
+    expect(resolveEmToPx('-0.01em', '--missing-letter-spacing', lookup)).toBeNull();
+  });
+
+  it('returns null for non-em values', () => {
+    expect(resolveEmToPx('16px', '--any-letter-spacing', lookup)).toBeNull();
+    expect(resolveEmToPx('400', '--any-letter-spacing', lookup)).toBeNull();
+    expect(resolveEmToPx('bold', '--any-letter-spacing', lookup)).toBeNull();
+  });
+
+  it('returns null when varLookup is absent', () => {
+    expect(resolveEmToPx('-0.01em', '--cds-alias-typography-display-letter-spacing', null)).toBeNull();
+  });
+});
+
 // ─── resolveValue ────────────────────────────────────────────────────────────
 
 describe('resolveValue', () => {
@@ -399,6 +464,22 @@ describe('resolveValue', () => {
       };
       const result = resolveValue('calc(6 * var(--cds-internal-scale-2))', idMap, n => vars[n]);
       expect(result).toEqual({ type: 'FLOAT', figmaValue: 6 });
+    });
+
+    it('converts em letter-spacing to px via the peer font-size token', () => {
+      const vars = {
+        '--cds-alias-typography-display-font-size': 'var(--clr-base-typography-font-size-display)',
+        '--clr-base-typography-font-size-display': 'calc(40 * 1rem / var(--cds-global-base))',
+      };
+      const result = resolveValue('-0.0125em', idMap, n => vars[n], '--cds-alias-typography-display-letter-spacing');
+      expect(result.type).toBe('FLOAT');
+      expect(result.figmaValue).toBeCloseTo(-0.5);
+    });
+
+    it('falls back to STRING for em values without a matching peer font-size', () => {
+      // x-height has no -letter-spacing suffix → resolveEmToPx returns null
+      const result = resolveValue('0.1475em', idMap, () => undefined, '--cds-alias-typography-x-height');
+      expect(result.type).toBe('STRING');
     });
   });
 

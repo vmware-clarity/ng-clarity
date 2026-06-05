@@ -126,7 +126,7 @@ export function buildPushPlan({
       const codeSyntax = buildCodeSyntax(cssName);
 
       const baseValue = baseSource.get(cssName) ?? '';
-      const baseResolved = resolveValue(baseValue, idMap, varLookup);
+      const baseResolved = resolveValue(baseValue, idMap, varLookup, cssName);
 
       // Skip tokens whose value is a complex multi-value string (calc chains, etc.)
       if (baseResolved.type === 'STRING' && baseValue.includes('var(') && baseValue.includes(',')) {
@@ -176,7 +176,7 @@ export function buildPushPlan({
       for (let mi = 0; mi < colDef.modes.length; mi++) {
         const modeSource = colDef.source(mi);
         const rawValue = modeSource.get(cssName) ?? baseValue;
-        const resolved = resolveValue(rawValue, idMap, varLookup);
+        const resolved = resolveValue(rawValue, idMap, varLookup, cssName);
         if (resolved.type === 'STRING' && rawValue.includes('var(') && rawValue.includes(',')) {
           continue;
         }

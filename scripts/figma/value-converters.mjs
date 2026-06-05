@@ -152,6 +152,93 @@ export function calcVarMultiply(value, varLookup) {
 }
 
 /**
+ * Resolve any CSS numeric value to a plain number, recursively following
+ * `var()` chains until a concrete form is reached.
+ *
+ * Recognised forms (in priority order):
+ *   1. `Npx`        — strip unit, return N
+ *   2. bare number  — return as-is (font-weights, multipliers, …)
+ *   3. `N%`         — return N (Figma stores percentages as their numeric value)
+ *   4. `calc(…)`    — delegate to {@link resolveCalcToPx}
+ *   5. `var(--x)`   — look up via `varLookup` and recurse
+ *
+ * This is intentionally not exported — it is a shared implementation detail
+ * used by {@link resolveValue} (for the FLOAT branches) and by
+ * {@link resolveEmToPx} (to resolve the peer font-size chain).
+ *
+ * @param {string} rawValue
+ * @param {(name: string) => string | undefined} varLookup
+ * @returns {number | null}
+ */
+function resolveToPx(rawValue, varLookup) {
+  const v = rawValue.trim();
+
+  const px = v.match(/^([\d.]+)px$/);
+  if (px) {
+    return parseFloat(px[1]);
+  }
+
+  const bare = v.match(/^([\d.]+)$/);
+  if (bare) {
+    return parseFloat(bare[1]);
+  }
+
+  const pct = v.match(/^([\d.]+)%$/);
+  if (pct) {
+    return parseFloat(pct[1]);
+  }
+
+  const calcResult = resolveCalcToPx(v, varLookup);
+  if (calcResult !== null) {
+    return calcResult;
+  }
+
+  const varRef = v.match(/^var\((--[a-zA-Z0-9-]+)\)$/);
+  if (varRef) {
+    const raw = varLookup(varRef[1]);
+    return raw !== undefined ? resolveToPx(raw, varLookup) : null;
+  }
+
+  return null;
+}
+
+/**
+ * Convert an `em`-unit letter-spacing value to pixels by multiplying it with
+ * the resolved pixel size of the corresponding font-size token.
+ *
+ * The font-size token name is derived from `cssVarName` by replacing the
+ * `-letter-spacing` suffix with `-font-size`.  If the suffix is absent, or
+ * the font-size cannot be resolved to a number, `null` is returned so the
+ * caller can fall through to a STRING representation.
+ *
+ * @param {string} value   CSS value, e.g. `"-0.0125em"`.
+ * @param {string} cssVarName  Full CSS custom-property name of the token being
+ *   resolved (e.g. `"--cds-alias-typography-display-letter-spacing"`).
+ * @param {(name: string) => string | undefined} varLookup
+ * @returns {number | null}
+ */
+export function resolveEmToPx(value, cssVarName, varLookup) {
+  const m = value.match(/^(-?[\d.]+)em$/);
+  if (!m || !varLookup) {
+    return null;
+  }
+
+  const fontSizeName = cssVarName.replace(/-letter-spacing$/, '-font-size');
+  if (fontSizeName === cssVarName) {
+    return null;
+  }
+
+  const fontSizeRaw = varLookup(fontSizeName);
+  if (!fontSizeRaw) {
+    return null;
+  }
+
+  const fontSizePx = resolveToPx(fontSizeRaw, varLookup);
+
+  return fontSizePx !== null ? parseFloat(m[1]) * fontSizePx : null;
+}
+
+/**
  * Resolve a `calc()` expression to a plain px number.
  *
  * Delegates to the focused helpers in priority order:
@@ -185,10 +272,15 @@ export function resolveCalcToPx(value, varLookup = null) {
  * @param {string} rawValue
  * @param {import('./id-map.mjs').IdMap} idMap
  * @param {((name: string) => string | undefined) | null} [varLookup]
- *   Optional CSS variable value resolver forwarded to {@link resolveCalcToPx}.
+ *   Optional CSS variable value resolver forwarded to {@link resolveCalcToPx}
+ *   and {@link resolveEmToPx}.
+ * @param {string | null} [cssVarName]
+ *   Full CSS custom-property name of the token being resolved
+ *   (e.g. `"--cds-alias-typography-display-letter-spacing"`).
+ *   Required for em→px conversion via {@link resolveEmToPx}.
  * @returns {{ type: 'ALIAS' | 'COLOR' | 'FLOAT' | 'STRING', figmaValue: unknown }}
  */
-export function resolveValue(rawValue, idMap, varLookup = null) {
+export function resolveValue(rawValue, idMap, varLookup = null, cssVarName = null) {
   const v = rawValue.trim();
 
   // VARIABLE_ALIAS: var(--token-name)
@@ -208,28 +300,23 @@ export function resolveValue(rawValue, idMap, varLookup = null) {
     return { type: 'COLOR', figmaValue: color };
   }
 
-  // FLOAT: Npx
-  const px = v.match(/^([\d.]+)px$/);
-  if (px) {
-    return { type: 'FLOAT', figmaValue: parseFloat(px[1]) };
+  // FLOAT: Npx / bare number / N% / calc(…)
+  // Top-level var() references are excluded here: those either resolved as ALIAS
+  // above or must fall through to STRING — we must not follow their chain to a
+  // number and silently drop the alias relationship.
+  if (!v.startsWith('var(')) {
+    const numPx = resolveToPx(v, varLookup);
+    if (numPx !== null) {
+      return { type: 'FLOAT', figmaValue: numPx };
+    }
   }
 
-  // FLOAT: bare number (font weights, opacity, line-height)
-  const bare = v.match(/^([\d.]+)$/);
-  if (bare) {
-    return { type: 'FLOAT', figmaValue: parseFloat(bare[1]) };
-  }
-
-  // FLOAT: N%  (e.g. border-radius: 50% → 50)
-  const pct = v.match(/^([\d.]+)%$/);
-  if (pct) {
-    return { type: 'FLOAT', figmaValue: parseFloat(pct[1]) };
-  }
-
-  // FLOAT: calc expression
-  const calcPx = resolveCalcToPx(v, varLookup);
-  if (calcPx !== null) {
-    return { type: 'FLOAT', figmaValue: calcPx };
+  // FLOAT: em unit (e.g. letter-spacing: -0.0125em) → px via peer font-size token
+  if (/^-?[\d.]+em$/.test(v) && cssVarName && varLookup) {
+    const emPx = resolveEmToPx(v, cssVarName, varLookup);
+    if (emPx !== null) {
+      return { type: 'FLOAT', figmaValue: emPx };
+    }
   }
 
   // STRING fallback
@@ -253,7 +340,7 @@ export function resolveValue(rawValue, idMap, varLookup = null) {
  * @returns {{ type: 'COLOR' | 'FLOAT' | 'STRING', figmaValue: unknown }}
  */
 export function inferType(name, value, idMap, varLookup = null) {
-  const resolved = resolveValue(value, idMap, varLookup);
+  const resolved = resolveValue(value, idMap, varLookup, name);
   if (resolved.type !== 'ALIAS') {
     return resolved;
   }
