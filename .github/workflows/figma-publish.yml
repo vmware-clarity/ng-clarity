@@ -30,6 +30,9 @@ concurrency:
   group: figma-publish-${{ github.ref }}
   cancel-in-progress: false
 
+permissions:
+  contents: read
+
 jobs:
   publish-tokens:
     name: Publish Design Tokens to Figma
