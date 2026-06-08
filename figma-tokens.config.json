@@ -70,6 +70,7 @@
       "filter": {
         "include": ["--cds-alias-object-", "--cds-alias-typography-"],
         "exclude": [
+          "--cds-alias-object-border-width-",
           "--cds-alias-object-interaction-background",
           "--cds-alias-object-interaction-border-color",
           "--cds-alias-object-interaction-color",
@@ -100,7 +101,19 @@
 
   "exclusions": {
     "_comment": "Tokens excluded from publishing. Patterns are lowercase substring matches. Exact names are matched case-insensitively.",
-    "patterns": ["deprecated", "internal", "test-only", "-outline", "-hovered-", "-pressed-", "-activated-"],
+    "patterns": [
+      "deprecated",
+      "internal",
+      "test-only",
+      "-outline",
+      "-hovered-",
+      "-pressed-",
+      "-activated-",
+      "-typography-top-gap-height",
+      "-typography-ascender-height",
+      "-typography-x-height",
+      "cds-alias-object-skeleton-loading-gradient"
+    ],
     "exact": []
   },
 

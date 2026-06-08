@@ -31,7 +31,6 @@ import { inferType, resolveValue } from './value-converters.mjs';
  *   payloadCollections: any[],
  *   payloadModes: any[],
  *   payloadVars: any[],
- *   payloadModeValues: any[],
  *   deletedVarIds: Set<string>,
  *   stats: { new: number, update: number, skipped: number },
  *   existingCollByName: Map<string, any>,
@@ -82,9 +81,9 @@ export function buildPushPlan({
     const colId = existingCol ? existingCol.id : tempId();
     const isNewCol = !existingCol;
 
-    if (isNewCol) {
-      payloadCollections.push({ action: 'CREATE', id: colId, name: colName });
-    }
+    payloadCollections.push(
+      isNewCol ? { action: 'CREATE', id: colId, name: colName } : { action: 'UPDATE', id: colId, name: colName }
+    );
 
     // Ensure modes exist
     const modeIds = [];

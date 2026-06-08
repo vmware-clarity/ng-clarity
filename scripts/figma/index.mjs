@@ -20,7 +20,7 @@
  *
  * Usage:
  *   node --env-file=.env.figma scripts/figma/index.mjs [options]
- *1
+ *
  * Options:
  *   --dry-run              Parse and plan the push but make no API calls.
  *   --extract [file]       Write the parsed token plan to a JSON file instead
@@ -169,7 +169,6 @@ async function main() {
   const deleteVars = payloadVars.filter(v => v.action === 'DELETE');
 
   if (deleteVars.length > 0) {
-    console.log(deleteVars);
     console.log(`  🗑️   Deleting ${deleteVars.length} type-mismatched variables first…`);
     await figma.post(`/files/${effectiveFileKey}/variables`, {
       variableCollections: [],
