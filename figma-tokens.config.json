@@ -10,7 +10,7 @@
     },
     {
       "name": "CDS Global Space",
-      "filter": { "include": ["--cds-global-space-"] },
+      "filter": { "include": ["--cds-global-space-", "--cds-alias-object-border-width-"] },
       "modes": [{ "name": "Value", "source": "root" }]
     },
     {
@@ -136,7 +136,12 @@
       "scopes": ["PARAGRAPH_SPACING"]
     },
     {
-      "_comment": "Typography catch-all (covers font/text properties not matched above)",
+      "_comment": "Typography colour tokens — text, link, semantic states, and disabled. Pattern uses regex alternation (| is passed through to RegExp unchanged by the * → .* conversion in token-rules.mjs).",
+      "pattern": "--cds-alias-typography-(color-|link-|info-|success-|warning-|danger-|neutral-|disabled)*",
+      "scopes": ["TEXT_FILL"]
+    },
+    {
+      "_comment": "Typography catch-all — structural tokens (font metrics, letter-spacing, line-height) not matched by the specific rules above.",
       "pattern": "*typography*",
       "scopes": ["FONT_SIZE", "FONT_WEIGHT", "FONT_FAMILY", "LINE_HEIGHT", "LETTER_SPACING"]
     },
@@ -153,7 +158,7 @@
     {
       "_comment": "Opacity tokens",
       "pattern": "*opacity*",
-      "scopes": ["OPACITY"]
+      "scopes": ["ALL_FILLS"]
     },
     {
       "_comment": "Gap / spacing tokens used in layouts",
@@ -187,13 +192,18 @@
     },
     {
       "_comment": "Stroke / border color tokens",
-      "pattern": "*-border*",
+      "pattern": "*-border-color*",
+      "scopes": ["STROKE_COLOR"]
+    },
+    {
+      "_comment": "Stroke / border color tokens",
+      "pattern": "*-viz-border*",
       "scopes": ["STROKE_COLOR"]
     },
     {
       "_comment": "Stroke-specific token names",
       "pattern": "*-stroke*",
-      "scopes": ["STROKE_COLOR"]
+      "scopes": ["STROKE_FLOAT"]
     },
     {
       "_comment": "Shadow / effect color tokens",

@@ -41,24 +41,27 @@ export function buildExtractView({ collectionDefs, collectionSuffix, plan, exist
       ? existingCol.id
       : (payloadCollections.find(c => c.name === colDef.name + collectionSuffix)?.id ?? '?');
 
-    const modeNames = colDef.modes;
+    // Resolve mode IDs once at the collection level so variable loops can reuse them.
+    const modes = colDef.modes.map(modeName => {
+      const modeEntry = payloadModes.find(m => m.variableCollectionId === colId && m.name === modeName);
+      const existingModeObj = existingModes.find(m => m.collectionId === colId && m.name === modeName);
+      return { id: modeEntry?.id ?? existingModeObj?.modeId ?? null, name: modeName };
+    });
+
     const variables = payloadVars
       .filter(v => v.variableCollectionId === colId && v.action !== 'DELETE')
       .map(v => {
         const varModeValues = payloadModeValues.filter(mv => mv.variableId === v.id);
         const valuesByMode = {};
-        for (let mi = 0; mi < modeNames.length; mi++) {
-          const modeEntry = payloadModes.find(m => m.variableCollectionId === colId && m.name === modeNames[mi]);
-          // Also check existingModes for this collection
-          const existingModeObj = existingModes.find(m => m.collectionId === colId && m.name === modeNames[mi]);
-          const modeId = modeEntry?.id ?? existingModeObj?.modeId;
-          const mv = varModeValues.find(mv => mv.modeId === modeId);
+        for (const mode of modes) {
+          const mv = varModeValues.find(mv => mv.modeId === mode.id);
           if (mv) {
-            valuesByMode[modeNames[mi]] = mv.value;
+            valuesByMode[mode.name] = mv.value;
           }
         }
         const cssName = '--' + v.name.replace(/\//g, '-');
         return {
+          id: v.id,
           figmaPath: v.name,
           cssVar: cssName,
           resolvedType: v.resolvedType,
@@ -70,8 +73,9 @@ export function buildExtractView({ collectionDefs, collectionSuffix, plan, exist
       });
 
     return {
+      id: colId,
       name: colDef.name + collectionSuffix,
-      modes: modeNames,
+      modes,
       variableCount: variables.length,
       variables,
     };
