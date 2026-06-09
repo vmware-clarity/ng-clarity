@@ -51,7 +51,7 @@ import { parseCssBlocks, resolveModeVars } from './css-parser.mjs';
 import { buildCollectionDefs } from './collections.mjs';
 import { createTokenRules } from './token-rules.mjs';
 import { createIdMap } from './id-map.mjs';
-import { buildPushPlan } from './planner.mjs';
+import { buildPushPlan, buildCollectionPlan, populateIdMapFromExisting } from './planner.mjs';
 import { buildExtractView } from './extract-view.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -59,6 +59,7 @@ const ROOT = path.resolve(__dirname, '..', '..');
 const CONFIG_PATH = path.join(ROOT, 'figma-tokens.config.json');
 const CSS_FILE = path.join(ROOT, 'dist', 'clr-ui', 'clr-ui.css');
 
+/** Maximum variables per Figma POST request. */
 const BATCH = 500;
 
 async function main() {
@@ -117,39 +118,37 @@ async function main() {
   const modeVars = resolveModeVars(parseCssBlocks(cssText));
   const collectionDefs = buildCollectionDefs(config.collections, modeVars, config.humanReadable);
 
-  // ── Build payload ───────────────────────────────────────────────────────────
-  const idMap = createIdMap();
-  const plan = buildPushPlan({
-    collectionDefs,
-    collectionSuffix,
-    existingCollections,
-    existingModes,
-    existingVars,
-    idMap,
-    rules,
-    varLookup: name => modeVars.rootVars.get(name),
-  });
+  // ── Dry-run / extract: build full plan and report, then exit ───────────────
+  if (dryRun || extractMode) {
+    const idMap = createIdMap();
+    const plan = buildPushPlan({
+      collectionDefs,
+      collectionSuffix,
+      existingCollections,
+      existingModes,
+      existingVars,
+      idMap,
+      rules,
+      varLookup: name => modeVars.rootVars.get(name),
+    });
 
-  const { payloadCollections, payloadModes, payloadVars, payloadModeValues, deletedVarIds, stats } = plan;
+    const { payloadModeValues, deletedVarIds, stats } = plan;
+    const hrCount = Object.keys(config.humanReadable).length;
+    console.log(`📊  Token plan:`);
+    console.log(`    Collections    : ${collectionDefs.length}`);
+    console.log(`    New vars       : ${stats.new}`);
+    console.log(`    Updated vars   : ${stats.update}`);
+    console.log(`    Skipped        : ${stats.skipped}  (complex multi-value strings)`);
+    console.log(`    Deletions      : ${deletedVarIds.size}  (type corrections)`);
+    console.log(`    Mode values    : ${payloadModeValues.length}`);
+    console.log(`    Human readable : ${hrCount}`);
 
-  // ── Stats ───────────────────────────────────────────────────────────────────
-  const hrCount = Object.keys(config.humanReadable).length;
-  console.log(`📊  Token plan:`);
-  console.log(`    Collections    : ${collectionDefs.length}`);
-  console.log(`    New vars       : ${stats.new}`);
-  console.log(`    Updated vars   : ${stats.update}`);
-  console.log(`    Skipped        : ${stats.skipped}  (complex multi-value strings)`);
-  console.log(`    Deletions      : ${deletedVarIds.size}  (type corrections)`);
-  console.log(`    Mode values    : ${payloadModeValues.length}`);
-  console.log(`    Human readable : ${hrCount}`);
+    if (dryRun) {
+      console.log('\n✅  Dry run complete — no changes made to Figma.\n');
+      return;
+    }
 
-  if (dryRun) {
-    console.log('\n✅  Dry run complete — no changes made to Figma.\n');
-    return;
-  }
-
-  // ── Extract to file ─────────────────────────────────────────────────────────
-  if (extractMode) {
+    // ── Extract to file ───────────────────────────────────────────────────────
     const output = buildExtractView({
       collectionDefs,
       collectionSuffix,
@@ -165,54 +164,128 @@ async function main() {
     return;
   }
 
-  // ── Push to Figma ─────────────────────────────────────────────────────────
+  // ── Push to Figma: one collection at a time ────────────────────────────────
+  //
+  // Figma temp IDs are only valid within the single POST request that declares
+  // them.  Sending multiple collections in one batched POST (or across batches)
+  // means batch 2+ carry stale temp IDs that Figma no longer recognises.
+  //
+  // The fix: push each collection in its own POST, then GET the current variable
+  // list and refresh idMap with real Figma IDs before planning the next
+  // collection.  Cross-collection VARIABLE_ALIAS values in subsequent
+  // collections therefore always reference real IDs, not temp ones.
   console.log('\n⬆️   Pushing to Figma…');
-  const createUpdateVars = payloadVars.filter(v => v.action !== 'DELETE');
-  const deleteVars = payloadVars.filter(v => v.action === 'DELETE');
 
-  if (deleteVars.length > 0) {
-    console.log(`  🗑️   Deleting ${deleteVars.length} type-mismatched variables first…`);
-    await figma.post(`/files/${effectiveFileKey}/variables`, {
-      variableCollections: [],
-      variableModes: [],
-      variables: deleteVars,
-      variableModeValues: [],
+  const idMap = createIdMap();
+  populateIdMapFromExisting(existingVars, idMap);
+
+  // Shared lookup structures — updated after each GET so subsequent collections
+  // see the latest state (real IDs, newly-created collections/modes).
+  const existingCollByName = new Map(existingCollections.map(c => [c.name, c]));
+  const existingVarByName = new Map(existingVars.map(v => [v.name, v]));
+
+  // Shared temp-ID counter: must be shared across all buildCollectionPlan calls
+  // so temp IDs are globally unique within this push run.
+  const tempIdCounter = { n: 0 };
+  const tempId = () => `temp-${++tempIdCounter.n}`;
+
+  let totalNew = 0;
+  let totalUpdate = 0;
+  let totalSkipped = 0;
+  let totalDeleted = 0;
+  let totalModeValues = 0;
+
+  for (const colDef of collectionDefs) {
+    console.log(`\n  📦  Collection: "${colDef.name}"`);
+
+    const colPlan = buildCollectionPlan({
+      colDef,
+      collectionSuffix,
+      existingCollByName,
+      existingModes,
+      existingVarByName,
+      idMap,
+      rules,
+      varLookup: name => modeVars.rootVars.get(name),
+      tempId,
     });
+
+    totalNew += colPlan.stats.new;
+    totalUpdate += colPlan.stats.update;
+    totalSkipped += colPlan.stats.skipped;
+    totalDeleted += colPlan.deletedVarIds.size;
+    totalModeValues += colPlan.payloadModeValues.length;
+
+    // ── Type-mismatch deletions (must precede recreations) ─────────────────
+    const deleteVars = colPlan.payloadVars.filter(v => v.action === 'DELETE');
+    if (deleteVars.length > 0) {
+      console.log(`    🗑️   Deleting ${deleteVars.length} type-mismatched variable(s)…`);
+      await figma.post(`/files/${effectiveFileKey}/variables`, {
+        variableCollections: [],
+        variableModes: [],
+        variables: deleteVars,
+        variableModeValues: [],
+      });
+    }
+
+    // ── Push this collection in batches ────────────────────────────────────
+    // Each collection is kept in a single POST whenever possible (< BATCH vars).
+    // If a collection exceeds BATCH variables it is split, but the collection and
+    // modes are always included in the first batch so Figma can resolve the IDs.
+    const createUpdateVars = colPlan.payloadVars.filter(v => v.action !== 'DELETE');
+
+    for (let i = 0; i < Math.max(createUpdateVars.length, 1); i += BATCH) {
+      const slice = createUpdateVars.slice(i, i + BATCH);
+      const sliceIds = new Set(slice.map(v => v.id));
+      const sliceMV = colPlan.payloadModeValues.filter(mv => sliceIds.has(mv.variableId));
+      console.log(
+        `    📤  Batch ${Math.floor(i / BATCH) + 1}: ${slice.length} var(s), ${sliceMV.length} mode value(s)`
+      );
+      await figma.post(`/files/${effectiveFileKey}/variables`, {
+        variableCollections: i === 0 ? colPlan.payloadCollections : [],
+        variableModes: i === 0 ? colPlan.payloadModes : [],
+        variables: slice,
+        variableModeValues: sliceMV,
+      });
+    }
+
+    // ── Refresh idMap with real Figma IDs ──────────────────────────────────
+    // Any temp IDs assigned during this collection's plan are now resolved to
+    // real Figma IDs.  The next collection's VARIABLE_ALIAS mode values will
+    // therefore carry real IDs rather than stale temp IDs.
+    console.log(`    🔄  Syncing variable IDs…`);
+    const fresh = await figma.get(`/files/${effectiveFileKey}/variables/local`);
+    const freshCollections = Object.values(fresh.meta?.variableCollections ?? {});
+    const freshVars = Object.values(fresh.meta?.variables ?? {});
+
+    // Rebuild idMap and lookup structures from the authoritative Figma state.
+    populateIdMapFromExisting(freshVars, idMap);
+
+    existingCollByName.clear();
+    for (const c of freshCollections) {
+      existingCollByName.set(c.name, c);
+    }
+
+    existingVarByName.clear();
+    for (const v of freshVars) {
+      existingVarByName.set(v.name, v);
+    }
+
+    existingModes.length = 0;
+    existingModes.push(...freshCollections.flatMap(c => c.modes.map(m => ({ ...m, collectionId: c.id }))));
   }
 
-  await batchedPush(
-    figma,
-    effectiveFileKey,
-    'Push',
-    createUpdateVars,
-    payloadModeValues,
-    payloadCollections,
-    payloadModes
-  );
-
-  console.log(`\n✅  Done! ${stats.new + stats.update} tokens published to Figma.\n`);
-}
-
-/**
- * Split into batches to stay under Figma's 500-item limit per request.
- * Collections + modes are sent only with the first batch.
- */
-async function batchedPush(figma, fileKey, label, allVars, allModeValues, payloadCollections, payloadModes) {
-  for (let i = 0; i < allVars.length; i += BATCH) {
-    const slice = allVars.slice(i, i + BATCH);
-    // Include mode values for the vars in this slice
-    const sliceIds = new Set(slice.map(v => v.id));
-    const sliceMV = allModeValues.filter(mv => sliceIds.has(mv.variableId));
-    console.log(
-      `  📤  ${label} batch ${Math.floor(i / BATCH) + 1}: ${slice.length} vars, ${sliceMV.length} mode values`
-    );
-    await figma.post(`/files/${fileKey}/variables`, {
-      variableCollections: i === 0 ? payloadCollections : [],
-      variableModes: i === 0 ? payloadModes : [],
-      variables: slice,
-      variableModeValues: sliceMV,
-    });
-  }
+  // ── Summary ────────────────────────────────────────────────────────────────
+  const hrCount = Object.keys(config.humanReadable).length;
+  console.log(`\n📊  Push summary:`);
+  console.log(`    Collections    : ${collectionDefs.length}`);
+  console.log(`    New vars       : ${totalNew}`);
+  console.log(`    Updated vars   : ${totalUpdate}`);
+  console.log(`    Skipped        : ${totalSkipped}  (complex multi-value strings)`);
+  console.log(`    Deletions      : ${totalDeleted}  (type corrections)`);
+  console.log(`    Mode values    : ${totalModeValues}`);
+  console.log(`    Human readable : ${hrCount}`);
+  console.log(`\n✅  Done! ${totalNew + totalUpdate} tokens published to Figma.\n`);
 }
 
 main().catch(err => {
