@@ -490,6 +490,33 @@ describe('resolveValue', () => {
       expect(resolveValue('Metropolis', idMap)).toEqual({ type: 'STRING', figmaValue: 'Metropolis' });
     });
 
+    describe('font-family normalisation', () => {
+      it('extracts the first font from a quoted fallback stack', () => {
+        const result = resolveValue(
+          "'Metropolis', 'Avenir Next', sans-serif",
+          idMap,
+          null,
+          '--cds-alias-typography-font-family'
+        );
+        expect(result).toEqual({ type: 'STRING', figmaValue: 'Metropolis' });
+      });
+
+      it('extracts the first font from a double-quoted fallback stack', () => {
+        const result = resolveValue('"Roboto", "Helvetica Neue", sans-serif', idMap, null, '--clr-font-family');
+        expect(result).toEqual({ type: 'STRING', figmaValue: 'Roboto' });
+      });
+
+      it('leaves a single unquoted font name unchanged', () => {
+        const result = resolveValue('Metropolis', idMap, null, '--cds-alias-typography-font-family');
+        expect(result).toEqual({ type: 'STRING', figmaValue: 'Metropolis' });
+      });
+
+      it('does not normalise non-font-family tokens', () => {
+        const result = resolveValue("'Metropolis', 'Avenir Next'", idMap, null, '--cds-alias-typography-color');
+        expect(result).toEqual({ type: 'STRING', figmaValue: "'Metropolis', 'Avenir Next'" });
+      });
+    });
+
     it('falls back to STRING for complex calc', () => {
       const result = resolveValue('calc(100% - var(--clr-some-offset))', idMap);
       expect(result.type).toBe('STRING');

@@ -103,6 +103,7 @@
     "_comment": "Tokens excluded from publishing. Patterns are lowercase substring matches. Exact names are matched case-insensitively.",
     "patterns": ["deprecated", "internal", "-outline"],
     "exact": [
+      "--cds-global-layout-grid-cols",
       "--cds-alias-object-skeleton-loading-gradient",
       "--cds-alias-typography-top-gap-height",
       "--cds-alias-typography-ascender-height",

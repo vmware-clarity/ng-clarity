@@ -178,7 +178,6 @@ async function main() {
     });
   }
 
-  console.log(createUpdateVars);
   await batchedPush(
     figma,
     effectiveFileKey,

@@ -267,6 +267,20 @@ export function resolveCalcToPx(value, varLookup = null) {
 }
 
 /**
+ * Extract the primary (first) font name from a CSS font-family fallback stack.
+ * Strips surrounding single or double quotes.
+ *
+ * e.g. `'Metropolis', 'Avenir Next', sans-serif` → `Metropolis`
+ *
+ * @param {string} value Raw CSS font-family value.
+ * @returns {string}
+ */
+function normalizeFontFamilyStack(value) {
+  const first = value.split(',')[0].trim();
+  return first.replace(/^(['"])(.*)\1$/, '$2').trim();
+}
+
+/**
  * Resolve a raw CSS value into a typed Figma payload.
  *
  * @param {string} rawValue
@@ -317,6 +331,12 @@ export function resolveValue(rawValue, idMap, varLookup = null, cssVarName = nul
     if (emPx !== null) {
       return { type: 'FLOAT', figmaValue: emPx };
     }
+  }
+
+  // STRING: font-family — Figma accepts only a single font name, so reduce the
+  // CSS fallback stack to the first (primary) font and strip any surrounding quotes.
+  if (cssVarName?.includes('font-family')) {
+    return { type: 'STRING', figmaValue: normalizeFontFamilyStack(v) };
   }
 
   // STRING fallback
