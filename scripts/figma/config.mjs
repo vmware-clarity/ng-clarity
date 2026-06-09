@@ -38,6 +38,9 @@ const DEFAULT_CODE_SYNTAX = { WEB: 'var(${name})', ANDROID: '@clr/${kebab}', iOS
  * @property {string} name Collection display name shown in Figma.
  * @property {CollectionFilterConfig} filter Which CSS tokens belong to this collection.
  * @property {CollectionModeConfig[]} modes Mode list; index 0 is the default/base mode.
+ * @property {boolean} [humanReadable] When true this collection is populated from the
+ *   top-level `humanReadable` map rather than CSS token scanning. CSS `filter.include`
+ *   may be empty for such collections.
  */
 
 /**
@@ -47,6 +50,7 @@ const DEFAULT_CODE_SYNTAX = { WEB: 'var(${name})', ANDROID: '@clr/${kebab}', iOS
  * @property {Set<string>} exclusionExact Lowercased exact token names to exclude.
  * @property {Array<{pattern: string, scopes: string[]}>} scopeRules Ordered scope rules; first match wins.
  * @property {Record<string, string>} codeSyntaxTemplates Platform → template string.
+ * @property {Record<string, string>} humanReadable Human-readable display name → CSS variable name map.
  */
 
 const VALID_SOURCES = new Set(['root', 'dark', 'compact']);
@@ -94,5 +98,7 @@ export function loadConfig(configPath) {
     return Object.fromEntries(Object.entries(raw).filter(([k]) => !k.startsWith('_')));
   })();
 
-  return { collections, exclusionPatterns, exclusionExact, scopeRules, codeSyntaxTemplates };
+  const humanReadable = /** @type {Record<string, string>} */ (config.humanReadable ?? {});
+
+  return { collections, exclusionPatterns, exclusionExact, scopeRules, codeSyntaxTemplates, humanReadable };
 }

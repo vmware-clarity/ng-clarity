@@ -115,7 +115,7 @@ async function main() {
   }
   const cssText = fs.readFileSync(CSS_FILE, 'utf8');
   const modeVars = resolveModeVars(parseCssBlocks(cssText));
-  const collectionDefs = buildCollectionDefs(config.collections, modeVars);
+  const collectionDefs = buildCollectionDefs(config.collections, modeVars, config.humanReadable);
 
   // ── Build payload ───────────────────────────────────────────────────────────
   const idMap = createIdMap();
@@ -133,13 +133,15 @@ async function main() {
   const { payloadCollections, payloadModes, payloadVars, payloadModeValues, deletedVarIds, stats } = plan;
 
   // ── Stats ───────────────────────────────────────────────────────────────────
+  const hrCount = Object.keys(config.humanReadable).length;
   console.log(`📊  Token plan:`);
-  console.log(`    Collections : ${collectionDefs.length}`);
-  console.log(`    New vars    : ${stats.new}`);
-  console.log(`    Updated vars: ${stats.update}`);
-  console.log(`    Skipped     : ${stats.skipped}  (complex multi-value strings)`);
-  console.log(`    Deletions   : ${deletedVarIds.size}  (type corrections)`);
-  console.log(`    Mode values : ${payloadModeValues.length}`);
+  console.log(`    Collections    : ${collectionDefs.length}`);
+  console.log(`    New vars       : ${stats.new}`);
+  console.log(`    Updated vars   : ${stats.update}`);
+  console.log(`    Skipped        : ${stats.skipped}  (complex multi-value strings)`);
+  console.log(`    Deletions      : ${deletedVarIds.size}  (type corrections)`);
+  console.log(`    Mode values    : ${payloadModeValues.length}`);
+  console.log(`    Human readable : ${hrCount}`);
 
   if (dryRun) {
     console.log('\n✅  Dry run complete — no changes made to Figma.\n');

@@ -96,8 +96,19 @@
         ]
       },
       "modes": [{ "name": "Value", "source": "root" }]
+    },
+    {
+      "_comment": "Friendly-named alias variables. Each entry in the top-level humanReadable map creates a VARIABLE_ALIAS that points to the corresponding semantic token, giving designers clean display names while preserving the live alias chain.",
+      "name": "Human Readable Tokens",
+      "humanReadable": true,
+      "filter": { "include": [] },
+      "modes": [{ "name": "Value", "source": "root" }]
     }
   ],
+
+  "humanReadable": {
+    "--cds-alias-object-container-background": "Container Background"
+  },
 
   "exclusions": {
     "_comment": "Tokens excluded from publishing. Patterns are lowercase substring matches. Exact names are matched case-insensitively.",

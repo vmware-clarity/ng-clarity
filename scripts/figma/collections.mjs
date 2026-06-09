@@ -21,6 +21,9 @@
  * @property {(name: string) => boolean} filter True if the token belongs here.
  * @property {string[]} modes Mode names; index 0 = default/base.
  * @property {(modeIndex: number) => Map<string, string>} source Variable values for a mode.
+ * @property {Map<string, string> | undefined} [humanReadableEntries]
+ *   Present only on humanReadable collections. Maps display name → CSS variable name.
+ *   When present the planner iterates this map instead of the CSS source.
  */
 
 /** @type {Record<import('./config.mjs').CssModeSource, keyof ModeVars>} */
@@ -38,18 +41,33 @@ const SOURCE_KEY = { root: 'rootVars', dark: 'darkVars', compact: 'compactVars' 
  *   - A token is included if it starts with any entry in `filter.include` (OR).
  *   - A token is excluded if it starts with any entry in `filter.exclude` (OR).
  *
+ * Collections marked `humanReadable: true` in the config get a `humanReadableEntries`
+ * map attached to their def. Their filter always returns false (no CSS tokens are
+ * scanned directly); the planner populates them from the entries map instead.
+ *
  * Each mode's `source` key maps to the matching parsed CSS variable map.
  *
  * @param {import('./config.mjs').CollectionConfig[]} collectionConfigs
  * @param {ModeVars} modeVars
+ * @param {Record<string, string>} [humanReadableMap]
+ *   The top-level `humanReadable` map from the config (display name → CSS var name).
  * @returns {CollectionDef[]}
  */
-export function buildCollectionDefs(collectionConfigs, modeVars) {
-  return collectionConfigs.map(({ name, filter, modes }) => ({
-    name,
-    filter: cssName =>
-      filter.include.some(p => cssName.startsWith(p)) && !filter.exclude.some(p => cssName.startsWith(p)),
-    modes: modes.map(m => m.name),
-    source: idx => modeVars[SOURCE_KEY[modes[idx].source]],
-  }));
+export function buildCollectionDefs(collectionConfigs, modeVars, humanReadableMap = {}) {
+  return collectionConfigs.map(({ name, filter, modes, humanReadable }) => {
+    /** @type {CollectionDef} */
+    const def = {
+      name,
+      filter: cssName =>
+        filter.include.some(p => cssName.startsWith(p)) && !filter.exclude.some(p => cssName.startsWith(p)),
+      modes: modes.map(m => m.name),
+      source: idx => modeVars[SOURCE_KEY[modes[idx].source]],
+    };
+
+    if (humanReadable) {
+      def.humanReadableEntries = new Map(Object.entries(humanReadableMap));
+    }
+
+    return def;
+  });
 }
