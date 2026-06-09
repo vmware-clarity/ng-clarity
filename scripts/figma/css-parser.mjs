@@ -13,11 +13,13 @@
  * blocks that apply to both modes equally.
  */
 
-// Canonical selectors we care about
+// Canonical selectors we care about.
+// The "bare" DARK / COMPACT forms (without :where(:root,:host) prefix) are the
+// primary sources for mode overrides in the compiled Clarity stylesheet.
 export const SELECTORS = {
   ROOT: ':where(:root, :host)',
-  DARK: ':where(:root, :host) [cds-theme~=dark]',
-  COMPACT: ':where(:root, :host) [clr-density]',
+  DARK: '[cds-theme~=dark]',
+  COMPACT: '[clr-density=compact]',
   BOTH_THEME: ':where(:root, :host), :where(:root, :host) [cds-theme]',
   BOTH_DENSITY: ':where(:root, :host), :where(:root, :host) [clr-density]',
 };
@@ -116,9 +118,14 @@ export function parseCssBlocks(css) {
  */
 export function resolveModeVars(allBlocks) {
   const rootVars = allBlocks.get(SELECTORS.ROOT) ?? new Map();
-  const darkVars = allBlocks.get(SELECTORS.DARK) ?? new Map();
-  const compactVars = allBlocks.get(SELECTORS.COMPACT) ?? new Map();
-  // Merge shorthand dual-selector blocks (these apply to both modes equally)
+  // Primary dark overrides live in the bare [cds-theme~=dark] block (235 props).
+  const darkVars = new Map(allBlocks.get(SELECTORS.DARK) ?? []);
+
+  // Compact overrides live in [clr-density=compact].
+  const compactVars = new Map(allBlocks.get(SELECTORS.COMPACT) ?? []);
+
+  // Merge shorthand dual-selector blocks (these apply to both modes equally).
+  // Only fills gaps — never overwrites mode-specific declarations.
   const bothThemeVars = allBlocks.get(SELECTORS.BOTH_THEME) ?? new Map();
   const bothDensityVars = allBlocks.get(SELECTORS.BOTH_DENSITY) ?? new Map();
 

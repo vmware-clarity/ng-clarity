@@ -101,20 +101,13 @@
 
   "exclusions": {
     "_comment": "Tokens excluded from publishing. Patterns are lowercase substring matches. Exact names are matched case-insensitively.",
-    "patterns": [
-      "deprecated",
-      "internal",
-      "test-only",
-      "-outline",
-      "-hovered-",
-      "-pressed-",
-      "-activated-",
-      "-typography-top-gap-height",
-      "-typography-ascender-height",
-      "-typography-x-height",
-      "cds-alias-object-skeleton-loading-gradient"
-    ],
-    "exact": []
+    "patterns": ["deprecated", "internal", "-outline"],
+    "exact": [
+      "--cds-alias-object-skeleton-loading-gradient",
+      "--cds-alias-typography-top-gap-height",
+      "--cds-alias-typography-ascender-height",
+      "--cds-alias-typography-x-height"
+    ]
   },
 
   "scopeRules": [
