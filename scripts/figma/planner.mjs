@@ -16,6 +16,67 @@
 import { inferType, resolveValue } from './value-converters.mjs';
 
 /**
+ * Plan a single variable: emit a CREATE or UPDATE payload entry and handle
+ * type-mismatch deletions transparently.
+ *
+ * If the existing Figma variable has a different resolvedType than the one we
+ * want to create, the old variable is queued for deletion and the new one is
+ * always CREATEd (Figma does not allow changing a variable's type in-place).
+ *
+ * @param {Object} p
+ * @param {string} p.figmaName  Figma-path variable name (slash-separated or display name).
+ * @param {string} p.colId      Collection ID (real or temp).
+ * @param {string} p.resolvedType  Figma variable type ('COLOR' | 'FLOAT' | 'STRING').
+ * @param {string[]} p.scopes
+ * @param {Record<string, string>} p.codeSyntax
+ * @param {string} p.description
+ * @param {Map<string, any>} p.existingVarByName
+ * @param {Set<string>} p.deletedVarIds  Mutated: receives the deleted ID if applicable.
+ * @param {any[]} p.payloadVars          Mutated: receives the DELETE + CREATE/UPDATE entry.
+ * @param {() => string} p.tempId
+ * @returns {{ varId: string, isUpdate: boolean }}
+ */
+function planVariableCreateOrUpdate({
+  figmaName,
+  colId,
+  resolvedType,
+  scopes,
+  codeSyntax,
+  description,
+  existingVarByName,
+  deletedVarIds,
+  payloadVars,
+  tempId,
+}) {
+  const existingVar = existingVarByName.get(figmaName);
+
+  if (existingVar && existingVar.resolvedType !== resolvedType) {
+    deletedVarIds.add(existingVar.id);
+    payloadVars.push({ action: 'DELETE', id: existingVar.id });
+  }
+
+  const isUpdate = !!(existingVar && !deletedVarIds.has(existingVar.id));
+  const varId = isUpdate ? existingVar.id : tempId();
+
+  payloadVars.push(
+    isUpdate
+      ? { action: 'UPDATE', id: varId, name: figmaName, variableCollectionId: colId, scopes, codeSyntax, description }
+      : {
+          action: 'CREATE',
+          id: varId,
+          name: figmaName,
+          variableCollectionId: colId,
+          resolvedType,
+          scopes,
+          codeSyntax,
+          description,
+        }
+  );
+
+  return { varId, isUpdate };
+}
+
+/**
  * Pre-populate idMap from existing Figma variables so that alias chains can be
  * resolved before any new variables are processed.
  *
@@ -149,44 +210,27 @@ export function buildCollectionPlan({
         continue;
       } // Referenced token not yet in idMap; skip
 
-      const figmaName = displayName;
       const scopes = resolveFigmaScopes(cssName);
       const codeSyntax = buildCodeSyntax(cssName);
       const resolvedType = idMap.getMeta(refId)?.type ?? 'STRING';
       const aliasValue = { type: 'VARIABLE_ALIAS', id: refId };
 
-      const existingVar = existingVarByName.get(figmaName);
+      const { varId, isUpdate } = planVariableCreateOrUpdate({
+        figmaName: displayName,
+        colId,
+        resolvedType,
+        scopes,
+        codeSyntax,
+        description: `Alias of: ${cssName}`,
+        existingVarByName,
+        deletedVarIds,
+        payloadVars,
+        tempId,
+      });
 
-      // Fix type-mismatched variables: delete + recreate
-      if (existingVar && existingVar.resolvedType !== resolvedType) {
-        deletedVarIds.add(existingVar.id);
-        payloadVars.push({ action: 'DELETE', id: existingVar.id });
-      }
-
-      const varId = existingVar && !deletedVarIds.has(existingVar.id) ? existingVar.id : tempId();
-
-      if (existingVar && !deletedVarIds.has(existingVar.id)) {
-        payloadVars.push({
-          action: 'UPDATE',
-          id: varId,
-          name: figmaName,
-          variableCollectionId: colId,
-          scopes,
-          codeSyntax,
-          description: `Alias of: ${cssName}`,
-        });
+      if (isUpdate) {
         statsUpdate++;
       } else {
-        payloadVars.push({
-          action: 'CREATE',
-          id: varId,
-          name: figmaName,
-          variableCollectionId: colId,
-          resolvedType,
-          scopes,
-          codeSyntax,
-          description: `Alias of: ${cssName}`,
-        });
         statsNew++;
       }
 
@@ -232,42 +276,26 @@ export function buildCollectionPlan({
 
       const resolvedType = inferType(cssName, baseValue, idMap, varLookup).type;
 
-      const existingVar = existingVarByName.get(figmaName);
+      const { varId, isUpdate } = planVariableCreateOrUpdate({
+        figmaName,
+        colId,
+        resolvedType,
+        scopes,
+        codeSyntax,
+        description: `CSS: ${cssName}`,
+        existingVarByName,
+        deletedVarIds,
+        payloadVars,
+        tempId,
+      });
 
-      // Fix type-mismatched variables: delete + recreate
-      if (existingVar && existingVar.resolvedType !== resolvedType) {
-        deletedVarIds.add(existingVar.id);
-        payloadVars.push({ action: 'DELETE', id: existingVar.id });
-      }
-
-      const varId = existingVar && !deletedVarIds.has(existingVar.id) ? existingVar.id : tempId();
-      idMap.set(cssName, varId, { type: resolvedType });
-
-      if (existingVar && !deletedVarIds.has(existingVar.id)) {
-        payloadVars.push({
-          action: 'UPDATE',
-          id: varId,
-          name: figmaName,
-          variableCollectionId: colId,
-          scopes,
-          codeSyntax,
-          description: `CSS: ${cssName}`,
-        });
+      if (isUpdate) {
         statsUpdate++;
       } else {
-        payloadVars.push({
-          action: 'CREATE',
-          id: varId,
-          name: figmaName,
-          variableCollectionId: colId,
-          resolvedType,
-          scopes,
-          codeSyntax,
-          description: `CSS: ${cssName}`,
-        });
         statsNew++;
       }
 
+      idMap.set(cssName, varId, { type: resolvedType });
       tokenEntries.push({ cssName, varId, baseValue });
     }
 
