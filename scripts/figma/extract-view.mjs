@@ -59,7 +59,11 @@ export function buildExtractView({ collectionDefs, collectionSuffix, plan, exist
             valuesByMode[mode.name] = mv.value;
           }
         }
-        const cssName = '--' + v.name.replace(/\//g, '-');
+        // Human-readable alias variables store the source CSS var in the description
+        // ("Alias of: --cds-…"); regular variables derive it from the Figma path.
+        const cssName = v.description?.startsWith('Alias of: ')
+          ? v.description.slice('Alias of: '.length)
+          : '--' + v.name.replace(/\//g, '-');
         return {
           id: v.id,
           figmaPath: v.name,

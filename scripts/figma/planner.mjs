@@ -115,75 +115,141 @@ export function buildPushPlan({
       }
     }
 
-    // Collect all variable names that belong to this collection (from base mode source)
-    const baseSource = colDef.source(0);
-    const tokenNames = [...baseSource.keys()].filter(n => colDef.filter(n) && !isExcluded(n));
-
-    for (const cssName of tokenNames) {
-      const figmaName = cssName.replace(/^--/, '').replace(/-/g, '/');
-      const scopes = resolveFigmaScopes(cssName);
-      const codeSyntax = buildCodeSyntax(cssName);
-
-      const baseValue = baseSource.get(cssName) ?? '';
-      const baseResolved = resolveValue(baseValue, idMap, varLookup, cssName);
-
-      // Skip tokens whose value is a complex multi-value string (calc chains, etc.)
-      if (baseResolved.type === 'STRING' && baseValue.includes('var(') && baseValue.includes(',')) {
-        statsSkipped++;
-        continue;
-      }
-
-      const resolvedType = inferType(cssName, baseValue, idMap, varLookup).type;
-
-      const existingVar = existingVarByName.get(figmaName);
-
-      // Fix type-mismatched variables: delete + recreate
-      if (existingVar && existingVar.resolvedType !== resolvedType) {
-        deletedVarIds.add(existingVar.id);
-        payloadVars.push({ action: 'DELETE', id: existingVar.id });
-      }
-
-      const varId = existingVar && !deletedVarIds.has(existingVar.id) ? existingVar.id : tempId();
-      idMap.set(cssName, varId, { type: resolvedType });
-
-      if (existingVar && !deletedVarIds.has(existingVar.id)) {
-        payloadVars.push({
-          action: 'UPDATE',
-          id: varId,
-          name: figmaName,
-          variableCollectionId: colId,
-          scopes,
-          codeSyntax,
-          description: `CSS: ${cssName}`,
-        });
-        statsUpdate++;
-      } else {
-        payloadVars.push({
-          action: 'CREATE',
-          id: varId,
-          name: figmaName,
-          variableCollectionId: colId,
-          resolvedType,
-          scopes,
-          codeSyntax,
-          description: `CSS: ${cssName}`,
-        });
-        statsNew++;
-      }
-
-      // Mode values
-      for (let mi = 0; mi < colDef.modes.length; mi++) {
-        const modeSource = colDef.source(mi);
-        const rawValue = modeSource.get(cssName) ?? baseValue;
-        const resolved = resolveValue(rawValue, idMap, varLookup, cssName);
-        if (resolved.type === 'STRING' && rawValue.includes('var(') && rawValue.includes(',')) {
+    if (colDef.humanReadableEntries) {
+      // Human-readable alias collection: each entry creates a VARIABLE_ALIAS
+      // that points to the corresponding already-published semantic token.
+      // The Figma variable name is the display name; the value is a VARIABLE_ALIAS.
+      for (const [cssName, displayName] of colDef.humanReadableEntries) {
+        if (isExcluded(cssName)) {
           continue;
         }
-        payloadModeValues.push({
-          variableId: varId,
-          modeId: modeIds[mi],
-          value: resolved.figmaValue,
-        });
+
+        const refId = idMap.get(cssName);
+        if (!refId) {
+          continue; // Referenced token not yet in idMap; skip
+        }
+
+        const figmaName = displayName;
+        const scopes = resolveFigmaScopes(cssName);
+        const codeSyntax = buildCodeSyntax(cssName);
+        const resolvedType = idMap.getMeta(refId)?.type ?? 'STRING';
+        const aliasValue = { type: 'VARIABLE_ALIAS', id: refId };
+
+        const existingVar = existingVarByName.get(figmaName);
+
+        // Fix type-mismatched variables: delete + recreate
+        if (existingVar && existingVar.resolvedType !== resolvedType) {
+          deletedVarIds.add(existingVar.id);
+          payloadVars.push({ action: 'DELETE', id: existingVar.id });
+        }
+
+        const varId = existingVar && !deletedVarIds.has(existingVar.id) ? existingVar.id : tempId();
+
+        if (existingVar && !deletedVarIds.has(existingVar.id)) {
+          payloadVars.push({
+            action: 'UPDATE',
+            id: varId,
+            name: figmaName,
+            variableCollectionId: colId,
+            scopes,
+            codeSyntax,
+            description: `Alias of: ${cssName}`,
+          });
+          statsUpdate++;
+        } else {
+          payloadVars.push({
+            action: 'CREATE',
+            id: varId,
+            name: figmaName,
+            variableCollectionId: colId,
+            resolvedType,
+            scopes,
+            codeSyntax,
+            description: `Alias of: ${cssName}`,
+          });
+          statsNew++;
+        }
+
+        // All modes share the same VARIABLE_ALIAS value
+        for (let mi = 0; mi < colDef.modes.length; mi++) {
+          payloadModeValues.push({
+            variableId: varId,
+            modeId: modeIds[mi],
+            value: aliasValue,
+          });
+        }
+      }
+    } else {
+      // Regular collection: scan the CSS source and emit one variable per token.
+      const baseSource = colDef.source(0);
+      const tokenNames = [...baseSource.keys()].filter(n => colDef.filter(n) && !isExcluded(n));
+
+      for (const cssName of tokenNames) {
+        const figmaName = cssName.replace(/^--/, '').replace(/-/g, '/');
+        const scopes = resolveFigmaScopes(cssName);
+        const codeSyntax = buildCodeSyntax(cssName);
+
+        const baseValue = baseSource.get(cssName) ?? '';
+        const baseResolved = resolveValue(baseValue, idMap, varLookup, cssName);
+
+        // Skip tokens whose value is a complex multi-value string (calc chains, etc.)
+        if (baseResolved.type === 'STRING' && baseValue.includes('var(') && baseValue.includes(',')) {
+          statsSkipped++;
+          continue;
+        }
+
+        const resolvedType = inferType(cssName, baseValue, idMap, varLookup).type;
+
+        const existingVar = existingVarByName.get(figmaName);
+
+        // Fix type-mismatched variables: delete + recreate
+        if (existingVar && existingVar.resolvedType !== resolvedType) {
+          deletedVarIds.add(existingVar.id);
+          payloadVars.push({ action: 'DELETE', id: existingVar.id });
+        }
+
+        const varId = existingVar && !deletedVarIds.has(existingVar.id) ? existingVar.id : tempId();
+        idMap.set(cssName, varId, { type: resolvedType });
+
+        if (existingVar && !deletedVarIds.has(existingVar.id)) {
+          payloadVars.push({
+            action: 'UPDATE',
+            id: varId,
+            name: figmaName,
+            variableCollectionId: colId,
+            scopes,
+            codeSyntax,
+            description: `CSS: ${cssName}`,
+          });
+          statsUpdate++;
+        } else {
+          payloadVars.push({
+            action: 'CREATE',
+            id: varId,
+            name: figmaName,
+            variableCollectionId: colId,
+            resolvedType,
+            scopes,
+            codeSyntax,
+            description: `CSS: ${cssName}`,
+          });
+          statsNew++;
+        }
+
+        // Mode values
+        for (let mi = 0; mi < colDef.modes.length; mi++) {
+          const modeSource = colDef.source(mi);
+          const rawValue = modeSource.get(cssName) ?? baseValue;
+          const resolved = resolveValue(rawValue, idMap, varLookup, cssName);
+          if (resolved.type === 'STRING' && rawValue.includes('var(') && rawValue.includes(',')) {
+            continue;
+          }
+          payloadModeValues.push({
+            variableId: varId,
+            modeId: modeIds[mi],
+            value: resolved.figmaValue,
+          });
+        }
       }
     }
   }

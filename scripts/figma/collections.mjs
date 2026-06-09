@@ -22,7 +22,7 @@
  * @property {string[]} modes Mode names; index 0 = default/base.
  * @property {(modeIndex: number) => Map<string, string>} source Variable values for a mode.
  * @property {Map<string, string> | undefined} [humanReadableEntries]
- *   Present only on humanReadable collections. Maps display name → CSS variable name.
+ *   Present only on humanReadable collections. Maps CSS variable name → display name.
  *   When present the planner iterates this map instead of the CSS source.
  */
 

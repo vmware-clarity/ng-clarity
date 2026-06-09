@@ -68,12 +68,15 @@ export function loadConfig(configPath) {
     if (!col.name) {
       throw new Error(`collections[${i}]: "name" is required`);
     }
-    if (!Array.isArray(col.filter?.include) || col.filter.include.length === 0) {
+
+    if (!col.humanReadable && (!Array.isArray(col.filter?.include) || col.filter.include.length === 0)) {
       throw new Error(`collections[${i}] ("${col.name}"): filter.include must be a non-empty array`);
     }
+
     if (!Array.isArray(col.modes) || col.modes.length === 0) {
       throw new Error(`collections[${i}] ("${col.name}"): modes must be a non-empty array`);
     }
+
     for (const mode of col.modes) {
       if (!VALID_SOURCES.has(mode.source)) {
         throw new Error(
@@ -85,6 +88,7 @@ export function loadConfig(configPath) {
       name: col.name,
       filter: { include: col.filter.include, exclude: col.filter.exclude ?? [] },
       modes: col.modes.map(m => ({ name: m.name, source: m.source })),
+      ...(col.humanReadable ? { humanReadable: true } : {}),
     });
   });
 
