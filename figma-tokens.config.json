@@ -117,12 +117,18 @@
       "--cds-global-layout-grid-cols",
       "--cds-alias-object-skeleton-loading-gradient",
       "--cds-alias-typography-top-gap-height",
+      "--cds-alias-typography-monospace-font-family",
       "--cds-alias-typography-ascender-height",
       "--cds-alias-typography-x-height"
     ]
   },
 
   "scopeRules": [
+    {
+      "_comment": "Global tokens have no scopes",
+      "pattern": "--cds-global-*",
+      "scopes": []
+    },
     {
       "_comment": "Font family tokens",
       "pattern": "*font-family*",
@@ -219,7 +225,12 @@
       "scopes": ["STROKE_COLOR"]
     },
     {
-      "_comment": "Stroke-specific token names",
+      "_comment": "Border-specific token names",
+      "pattern": "*-border-width*",
+      "scopes": ["STROKE_FLOAT"]
+    },
+    {
+      "_comment": "Border-specific token names",
       "pattern": "*-stroke*",
       "scopes": ["STROKE_FLOAT"]
     },
@@ -252,8 +263,6 @@
 
   "codeSyntax": {
     "_comment": "Templates for Figma Code Syntax (code context shown to designers). Supports: ${name} (full CSS var name), ${kebab} (name without leading --), ${camel} (camelCase)",
-    "WEB": "var(${name})",
-    "ANDROID": "@clr/${kebab}",
-    "iOS": "Clarity.${camel}"
+    "WEB": "var(${name})"
   }
 }
