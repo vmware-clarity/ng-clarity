@@ -53,6 +53,7 @@ import { createTokenRules } from './token-rules.mjs';
 import { createIdMap } from './id-map.mjs';
 import { buildPushPlan, buildCollectionPlan, populateIdMapFromExisting } from './planner.mjs';
 import { buildExtractView } from './extract-view.mjs';
+import { printDiff } from './diff-printer.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -195,6 +196,9 @@ async function main() {
   let totalDeleted = 0;
   let totalModeValues = 0;
 
+  /** @type {Array<{ collectionName: string, diff: import('./planner.mjs').DiffEntry[] }>} */
+  const diffReport = [];
+
   for (const colDef of collectionDefs) {
     console.log(`\n  📦  Collection: "${colDef.name}"`);
 
@@ -215,6 +219,7 @@ async function main() {
     totalSkipped += colPlan.stats.skipped;
     totalDeleted += colPlan.deletedVarIds.size;
     totalModeValues += colPlan.payloadModeValues.length;
+    diffReport.push({ collectionName: colDef.name + collectionSuffix, diff: colPlan.diff });
 
     // ── Type-mismatch deletions (must precede recreations) ─────────────────
     const deleteVars = colPlan.payloadVars.filter(v => v.action === 'DELETE');
@@ -289,6 +294,9 @@ async function main() {
       variableModeValues: [],
     });
   }
+
+  // ── Diff ───────────────────────────────────────────────────────────────────
+  printDiff(diffReport);
 
   // ── Summary ────────────────────────────────────────────────────────────────
   const hrCount = Object.keys(config.humanReadable).length;
