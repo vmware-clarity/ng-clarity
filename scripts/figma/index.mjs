@@ -275,6 +275,21 @@ async function main() {
     existingModes.push(...freshCollections.flatMap(c => c.modes.map(m => ({ ...m, collectionId: c.id }))));
   }
 
+  // ── Remove Figma's auto-created "Mode 1" from every new collection ──────────
+  // Figma silently appends a default "Mode 1" whenever a collection is created,
+  // even when we supply our own named modes in the same request.  Detect and
+  // delete every such stale mode now that all collections are live.
+  const defaultModes = existingModes.filter(m => m.name === 'Mode 1');
+  if (defaultModes.length > 0) {
+    console.log(`\n  🧹  Removing ${defaultModes.length} auto-created "Mode 1" mode(s)…`);
+    await figma.post(`/files/${effectiveFileKey}/variables`, {
+      variableCollections: [],
+      variableModes: defaultModes.map(m => ({ action: 'DELETE', id: m.modeId, variableCollectionId: m.collectionId })),
+      variables: [],
+      variableModeValues: [],
+    });
+  }
+
   // ── Summary ────────────────────────────────────────────────────────────────
   const hrCount = Object.keys(config.humanReadable).length;
   console.log(`\n📊  Push summary:`);

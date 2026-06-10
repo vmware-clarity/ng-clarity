@@ -168,16 +168,6 @@ export function buildCollectionPlan({
 
     if (existingModeId) {
       modeIds.push(existingModeId);
-    } else if (isNewCol && mi === 0) {
-      // For new collections, Figma auto-creates one mode ("Mode 1") — we rename it
-      const autoModeId = tempId();
-      modeIds.push(autoModeId);
-      payloadModes.push({
-        action: 'CREATE',
-        id: autoModeId,
-        name: modeName,
-        variableCollectionId: colId,
-      });
     } else {
       const newModeId = tempId();
       modeIds.push(newModeId);
