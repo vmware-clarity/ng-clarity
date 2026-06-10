@@ -58,20 +58,16 @@ function planVariableCreateOrUpdate({
   const isUpdate = !!(existingVar && !deletedVarIds.has(existingVar.id));
   const varId = isUpdate ? existingVar.id : tempId();
 
-  payloadVars.push(
-    isUpdate
-      ? { action: 'UPDATE', id: varId, name: figmaName, variableCollectionId: colId, scopes, codeSyntax, description }
-      : {
-          action: 'CREATE',
-          id: varId,
-          name: figmaName,
-          variableCollectionId: colId,
-          resolvedType,
-          scopes,
-          codeSyntax,
-          description,
-        }
-  );
+  payloadVars.push({
+    action: isUpdate ? 'UPDATE' : 'CREATE',
+    id: varId,
+    name: figmaName,
+    variableCollectionId: colId,
+    resolvedType,
+    scopes,
+    codeSyntax,
+    description,
+  });
 
   return { varId, isUpdate };
 }
@@ -162,9 +158,7 @@ export function buildCollectionPlan({
   const colId = existingCol ? existingCol.id : tempId();
   const isNewCol = !existingCol;
 
-  payloadCollections.push(
-    isNewCol ? { action: 'CREATE', id: colId, name: colName } : { action: 'UPDATE', id: colId, name: colName }
-  );
+  payloadCollections.push({ action: isNewCol ? 'CREATE' : 'UPDATE', id: colId, name: colName });
 
   // Ensure modes exist
   const modeIds = [];
