@@ -79,7 +79,7 @@ jobs:
           FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
         run: |
           DRY=${{ inputs.dry_run == true && '--dry-run' || '' }}
-          node scripts/figma-push.mjs $DRY
+          node scripts/figma/index.mjs $DRY
 
       # ── Dev branch push (isolated collections) ───────────────────────────────
       - name: Push tokens to Figma (dev branch — isolated)
@@ -90,7 +90,7 @@ jobs:
           FIGMA_BRANCH_MODE: ${{ inputs.branch_isolation || 'collection' }}
         run: |
           DRY=${{ inputs.dry_run == true && '--dry-run' || '' }}
-          node scripts/figma-push.mjs --branch "${{ steps.branch.outputs.name }}" $DRY
+          node scripts/figma/index.mjs --branch "${{ steps.branch.outputs.name }}" $DRY
 
       # ── Summary ──────────────────────────────────────────────────────────────
       - name: Write job summary
