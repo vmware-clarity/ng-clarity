@@ -73,7 +73,7 @@ jobs:
       - name: Build Storybook
         run: npm run _build:storybook
       - name: Update Visual Snapshots
-        run: npx playwright test --update-snapshots
+        run: npx playwright test ./tests/visual-snapshots.spec.ts --update-snapshots
       - name: Collect Changes
         id: diff
         run: |
