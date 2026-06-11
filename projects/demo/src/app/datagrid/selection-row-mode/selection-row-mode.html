@@ -44,12 +44,18 @@
     [clrDgItem]="user"
     [clrDgRowSelectionLabel]="'Select row for ' + user.name"
   >
+    <clr-dg-action-overflow>
+      <button class="action-item">Edit</button>
+      <button class="action-item">Delete</button>
+    </clr-dg-action-overflow>
     <clr-dg-cell>{{user.id}}</clr-dg-cell>
     <clr-dg-cell>{{user.name}}</clr-dg-cell>
     <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
     <clr-dg-cell>
       <span class="color-square" [style.backgroundColor]="user.color"></span>
     </clr-dg-cell>
+
+    <clr-dg-row-detail *clrIfExpanded>Lorem ipsum...</clr-dg-row-detail>
   </clr-dg-row>
 
   <clr-dg-footer>{{users.length}} users</clr-dg-footer>
@@ -78,6 +84,10 @@
     [clrDgItem]="user"
     [clrDgRowSelectionLabel]="'Select row for ' + user.name"
   >
+    <clr-dg-action-overflow>
+      <button class="action-item">Edit</button>
+      <button class="action-item">Delete</button>
+    </clr-dg-action-overflow>
     <clr-dg-cell>{{user.id}}</clr-dg-cell>
     <clr-dg-cell>{{user.name}}</clr-dg-cell>
     <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
@@ -85,6 +95,14 @@
       <span class="color-square" [style.backgroundColor]="user.color"></span>
     </clr-dg-cell>
   </clr-dg-row>
+
+  <clr-dg-detail *clrIfDetail="let detail">
+    <clr-dg-detail-header>HEADER {{detail.name}}</clr-dg-detail-header>
+    <clr-dg-detail-body>
+      <b cds-text="medium">Additional Details</b>
+      {{detail | json}}
+    </clr-dg-detail-body>
+  </clr-dg-detail>
 
   <clr-dg-footer>{{users.length}} users</clr-dg-footer>
 </clr-datagrid>

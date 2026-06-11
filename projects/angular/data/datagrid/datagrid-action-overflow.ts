@@ -37,6 +37,7 @@ let clrDgActionId = 0;
       [attr.aria-label]="buttonLabel || commonStrings.keys.rowActions"
       clrPopoverOrigin
       clrPopoverOpenCloseButton
+      (click)="openActionStopPropagation($event)"
     >
       <cds-icon shape="ellipsis-vertical" [attr.title]="buttonLabel || commonStrings.keys.rowActions"></cds-icon>
     </button>
@@ -121,6 +122,11 @@ export class ClrDatagridActionOverflow implements OnDestroy {
 
   closeOverflowContent(event: Event): void {
     this.popoverService.toggleWithEvent(event);
+  }
+
+  openActionStopPropagation(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
   }
 
   private initializeFocus(): void {
