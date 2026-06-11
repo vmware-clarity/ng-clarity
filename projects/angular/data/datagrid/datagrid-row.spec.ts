@@ -558,40 +558,31 @@ export default function (): void {
 
     describe('CDE-2323: Sticky controls do not trigger row selection', function () {
       describe('with expandable rows and action overflow', function () {
-        let fixture: ComponentFixture<RowSelectionWithExpandAndActionTest>;
-        let nativeElement: HTMLElement;
+        let context: TestContext<ClrDatagridRow<Item>, RowSelectionWithExpandAndActionTest>;
 
         beforeEach(function () {
-          TestBed.configureTestingModule({
-            imports: [ClrDatagridModule, NoopAnimationsModule],
-            declarations: [RowSelectionWithExpandAndActionTest],
-            providers: [AnimationBuilder],
-          });
-
-          fixture = TestBed.createComponent(RowSelectionWithExpandAndActionTest);
-          nativeElement = fixture.nativeElement;
-          fixture.detectChanges();
-        });
-
-        afterEach(function () {
-          fixture.destroy();
+          context = this.create(ClrDatagridRow, RowSelectionWithExpandAndActionTest, DATAGRID_SPEC_PROVIDERS);
+          context.detectChanges();
         });
 
         it('does not select the row when the action overflow toggle is clicked', function () {
-          expect(fixture.componentInstance.selected).toEqual([]);
-          const actionToggle: HTMLButtonElement = nativeElement.querySelector('.datagrid-action-toggle');
+          expect(context.testComponent.selected).toEqual([]);
+          const actionToggle: HTMLButtonElement = context.clarityElement.querySelector('.datagrid-action-toggle');
           actionToggle.click();
-          fixture.detectChanges();
-          expect(fixture.componentInstance.selected).toEqual([]);
+          context.detectChanges();
+          expect(context.testComponent.selected).toEqual([]);
         });
 
         it('does not select the row when the expand caret is clicked', async function () {
-          expect(fixture.componentInstance.selected).toEqual([]);
-          const expandCaret: HTMLButtonElement = nativeElement.querySelector('.datagrid-expandable-caret-button');
+          expect(context.testComponent.selected).toEqual([]);
+          const expandCaret: HTMLButtonElement = context.clarityElement.querySelector(
+            '.datagrid-expandable-caret button'
+          );
           expandCaret.click();
+          context.detectChanges();
           await delay();
-          fixture.detectChanges();
-          expect(fixture.componentInstance.selected).toEqual([]);
+          context.detectChanges();
+          expect(context.testComponent.selected).toEqual([]);
         });
       });
 
@@ -615,10 +606,11 @@ export default function (): void {
           fixture.destroy();
         });
 
-        it('does not select the row when the action overflow toggle is clicked', function () {
+        it('does not select the row when the action overflow toggle is clicked', async function () {
           expect(fixture.componentInstance.selected).toEqual([]);
           const actionToggle: HTMLButtonElement = nativeElement.querySelector('.datagrid-action-toggle');
           actionToggle.click();
+          await delay();
           fixture.detectChanges();
           expect(fixture.componentInstance.selected).toEqual([]);
         });
@@ -865,16 +857,20 @@ class DatagridWithDisabledOrHiddenDetails {
  */
 @Component({
   template: `
-    <clr-datagrid [(clrDgSelected)]="selected" [clrDgRowSelection]="true">
-      @for (item of items; track item.id) {
-        <clr-dg-row [clrDgItem]="item">
-          <clr-dg-action-overflow>
-            <button class="action-item">Edit</button>
-          </clr-dg-action-overflow>
-          <clr-dg-cell>{{ item.id }}</clr-dg-cell>
-          <clr-dg-row-detail *clrIfExpanded>Detail {{ item.id }}</clr-dg-row-detail>
-        </clr-dg-row>
-      }
+    <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'" [clrDgRowSelection]="true">
+      <clr-dg-column>ID</clr-dg-column>
+
+      <clr-dg-row
+        *clrDgItems="let item of items"
+        clrDgItem]="item"
+        [clrDgRowSelectionLabel]="'Select row for ' + item.id"
+      >
+        <clr-dg-action-overflow>
+          <button class="action-item">Edit</button>
+        </clr-dg-action-overflow>
+        <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+        <clr-dg-row-detail *clrIfExpanded>Detail {{ item.id }}</clr-dg-row-detail>
+      </clr-dg-row>
     </clr-datagrid>
   `,
   standalone: false,
@@ -887,15 +883,20 @@ class RowSelectionWithExpandAndActionTest {
 /** CDE-2323: detail caret + action overflow with row selection. */
 @Component({
   template: `
-    <clr-datagrid [(clrDgSelected)]="selected" [clrDgRowSelection]="true">
-      @for (item of items; track item.id) {
-        <clr-dg-row [clrDgItem]="item">
-          <clr-dg-action-overflow>
-            <button class="action-item">Edit</button>
-          </clr-dg-action-overflow>
-          <clr-dg-cell>{{ item.id }}</clr-dg-cell>
-        </clr-dg-row>
-      }
+    <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'" [clrDgRowSelection]="true">
+      <clr-dg-column>ID</clr-dg-column>
+
+      <clr-dg-row
+        *clrDgItems="let item of items"
+        clrDgItem]="item"
+        [clrDgRowSelectionLabel]="'Select row for ' + item.id"
+      >
+        <clr-dg-action-overflow>
+          <button class="action-item">Edit</button>
+        </clr-dg-action-overflow>
+        <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+      </clr-dg-row>
+
       <clr-dg-detail *clrIfDetail="let detail">
         <clr-dg-detail-header>Details</clr-dg-detail-header>
         <clr-dg-detail-body>{{ detail.id }}</clr-dg-detail-body>
