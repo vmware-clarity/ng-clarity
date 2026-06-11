@@ -8,6 +8,7 @@
 import { AnimationBuilder } from '@angular/animations';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay, TestContext } from '@clr/angular/testing';
 import { LoadingListener } from '@clr/angular/utils';
 
@@ -536,11 +537,93 @@ export default function (): void {
         context.detectChanges();
         expect(context.clarityElement.querySelectorAll('clr-dg-cell').length).toBe(1);
       });
+
+      it('does not propagate click to the parent row when the expand caret is clicked', function () {
+        const rowMaster: HTMLElement = context.clarityElement.querySelector('.datagrid-row-master');
+        let rowMasterClickCount = 0;
+        rowMaster.addEventListener('click', () => rowMasterClickCount++);
+
+        const caret: HTMLButtonElement = context.clarityElement.querySelector('.datagrid-expandable-caret-button');
+        caret.click();
+
+        expect(rowMasterClickCount).toBe(0);
+      });
+
       async function flushAnimations() {
         context.detectChanges();
         await delay();
         context.detectChanges();
       }
+    });
+
+    describe('CDE-2323: Sticky controls do not trigger row selection', function () {
+      describe('with expandable rows and action overflow', function () {
+        let context: TestContext<ClrDatagridRow<Item>, RowSelectionWithExpandAndActionTest>;
+
+        beforeEach(function () {
+          context = this.create(ClrDatagridRow, RowSelectionWithExpandAndActionTest, DATAGRID_SPEC_PROVIDERS);
+          context.detectChanges();
+        });
+
+        it('does not select the row when the action overflow toggle is clicked', function () {
+          expect(context.testComponent.selected).toEqual([]);
+          const actionToggle: HTMLButtonElement = context.clarityElement.querySelector('.datagrid-action-toggle');
+          actionToggle.click();
+          context.detectChanges();
+          expect(context.testComponent.selected).toEqual([]);
+        });
+
+        it('does not select the row when the expand caret is clicked', async function () {
+          expect(context.testComponent.selected).toEqual([]);
+          const expandCaret: HTMLButtonElement = context.clarityElement.querySelector(
+            '.datagrid-expandable-caret button'
+          );
+          expandCaret.click();
+          context.detectChanges();
+          await delay();
+          context.detectChanges();
+          expect(context.testComponent.selected).toEqual([]);
+        });
+      });
+
+      describe('with detail view and action overflow', function () {
+        let fixture: ComponentFixture<RowSelectionWithDetailAndActionTest>;
+        let nativeElement: HTMLElement;
+
+        beforeEach(function () {
+          TestBed.configureTestingModule({
+            imports: [ClrDatagridModule, NoopAnimationsModule],
+            declarations: [RowSelectionWithDetailAndActionTest],
+            providers: [AnimationBuilder],
+          });
+
+          fixture = TestBed.createComponent(RowSelectionWithDetailAndActionTest);
+          nativeElement = fixture.nativeElement;
+          fixture.detectChanges();
+        });
+
+        afterEach(function () {
+          fixture.destroy();
+        });
+
+        it('does not select the row when the action overflow toggle is clicked', async function () {
+          expect(fixture.componentInstance.selected).toEqual([]);
+          const actionToggle: HTMLButtonElement = nativeElement.querySelector('.datagrid-action-toggle');
+          actionToggle.click();
+          await delay();
+          fixture.detectChanges();
+          expect(fixture.componentInstance.selected).toEqual([]);
+        });
+
+        it('does not select the row when the detail caret is clicked', async function () {
+          expect(fixture.componentInstance.selected).toEqual([]);
+          const detailCaret: HTMLButtonElement = nativeElement.querySelector('.datagrid-detail-caret-button');
+          detailCaret.click();
+          await delay();
+          fixture.detectChanges();
+          expect(fixture.componentInstance.selected).toEqual([]);
+        });
+      });
     });
 
     describe('Details', function () {
@@ -622,6 +705,21 @@ export default function (): void {
 
         const buttons = context.clarityElement.querySelectorAll('button.datagrid-detail-caret-button');
         expect(buttons.length).toBe(1);
+      });
+
+      it('does not propagate click to the parent row when the detail caret is clicked', async function () {
+        const rowMaster: HTMLElement = context.clarityElement.querySelector('.datagrid-row-master');
+        let rowMasterClickCount = 0;
+        rowMaster.addEventListener('click', () => rowMasterClickCount++);
+
+        const detailButton: HTMLButtonElement = context.clarityElement.querySelector(
+          'button.datagrid-detail-caret-button'
+        );
+        detailButton.click();
+        await delay();
+        context.detectChanges();
+
+        expect(rowMasterClickCount).toBe(0);
       });
     });
   });
@@ -751,4 +849,63 @@ class DatagridWithDisabledOrHiddenDetails {
     this._preState = value;
     this.cdr.detectChanges();
   }
+}
+
+/**
+ * CDE-2323: expand caret + action overflow with row selection.
+ * Note: detail service disables the expand caret, so these are separate components.
+ */
+@Component({
+  template: `
+    <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'" [clrDgRowSelection]="true">
+      <clr-dg-column>ID</clr-dg-column>
+
+      <clr-dg-row
+        *clrDgItems="let item of items"
+        clrDgItem]="item"
+        [clrDgRowSelectionLabel]="'Select row for ' + item.id"
+      >
+        <clr-dg-action-overflow>
+          <button class="action-item">Edit</button>
+        </clr-dg-action-overflow>
+        <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+        <clr-dg-row-detail *clrIfExpanded>Detail {{ item.id }}</clr-dg-row-detail>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class RowSelectionWithExpandAndActionTest {
+  selected: Item[] = [];
+  readonly items: Item[] = [{ id: 1 }, { id: 2 }];
+}
+
+/** CDE-2323: detail caret + action overflow with row selection. */
+@Component({
+  template: `
+    <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'" [clrDgRowSelection]="true">
+      <clr-dg-column>ID</clr-dg-column>
+
+      <clr-dg-row
+        *clrDgItems="let item of items"
+        clrDgItem]="item"
+        [clrDgRowSelectionLabel]="'Select row for ' + item.id"
+      >
+        <clr-dg-action-overflow>
+          <button class="action-item">Edit</button>
+        </clr-dg-action-overflow>
+        <clr-dg-cell>{{ item.id }}</clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-detail *clrIfDetail="let detail">
+        <clr-dg-detail-header>Details</clr-dg-detail-header>
+        <clr-dg-detail-body>{{ detail.id }}</clr-dg-detail-body>
+      </clr-dg-detail>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class RowSelectionWithDetailAndActionTest {
+  selected: Item[] = [];
+  readonly items: Item[] = [{ id: 1 }, { id: 2 }];
 }
