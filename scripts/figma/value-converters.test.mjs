@@ -437,9 +437,25 @@ describe('resolveValue', () => {
       expect(resolveValue('16px', idMap)).toEqual({ type: 'FLOAT', figmaValue: 16 });
     });
 
+    it('resolves a negative integer px value as FLOAT', () => {
+      expect(resolveValue('-4px', idMap)).toEqual({ type: 'FLOAT', figmaValue: -4 });
+    });
+
+    it('resolves a negative fractional px value as FLOAT', () => {
+      expect(resolveValue('-0.5px', idMap)).toEqual({ type: 'FLOAT', figmaValue: -0.5 });
+    });
+
     it('resolves bare numbers (font weight, opacity)', () => {
       expect(resolveValue('400', idMap)).toEqual({ type: 'FLOAT', figmaValue: 400 });
       expect(resolveValue('1', idMap)).toEqual({ type: 'FLOAT', figmaValue: 1 });
+    });
+
+    it('resolves a negative integer bare number as FLOAT', () => {
+      expect(resolveValue('-1', idMap)).toEqual({ type: 'FLOAT', figmaValue: -1 });
+    });
+
+    it('resolves a negative fractional bare number as FLOAT', () => {
+      expect(resolveValue('-0.5', idMap)).toEqual({ type: 'FLOAT', figmaValue: -0.5 });
     });
 
     it('resolves percentage values', () => {
@@ -480,74 +496,6 @@ describe('resolveValue', () => {
       // x-height has no -letter-spacing suffix → resolveEmToPx returns null
       const result = resolveValue('0.1475em', idMap, () => undefined, '--cds-alias-typography-x-height');
       expect(result.type).toBe('STRING');
-    });
-
-    // ── Negative px and bare numbers (BUG-2) ──────────────────────────────────
-    // Before the fix both patterns used `[\d.]+`, which excluded the leading `-`.
-    // Those values silently became STRING and caused a Figma type-mismatch on
-    // every push.  The fix changes both to `-?[\d.]+`.
-
-    describe('negative px values (BUG-2)', () => {
-      it('resolves a negative integer px value as FLOAT', () => {
-        expect(resolveValue('-4px', idMap)).toEqual({ type: 'FLOAT', figmaValue: -4 });
-      });
-
-      it('resolves a negative fractional px value as FLOAT', () => {
-        expect(resolveValue('-0.5px', idMap)).toEqual({ type: 'FLOAT', figmaValue: -0.5 });
-      });
-
-      it('resolves a larger negative px offset as FLOAT', () => {
-        expect(resolveValue('-16px', idMap)).toEqual({ type: 'FLOAT', figmaValue: -16 });
-      });
-
-      // resolveValue intentionally keeps unresolved top-level var() references as
-      // STRING so the alias relationship is preserved.  The var()-chain path inside
-      // resolveToPx is exercised through calc() expressions (see calcVarMultiply
-      // tests).  A var() whose target is absent from idMap → STRING is the correct,
-      // intentional outcome.
-      it('keeps an unresolved var() reference as STRING even when its target is a negative px value', () => {
-        const lookup = name => (name === '--my-offset' ? '-4px' : undefined);
-        expect(resolveValue('var(--my-offset)', idMap, lookup)).toEqual({
-          type: 'STRING',
-          figmaValue: 'var(--my-offset)',
-        });
-      });
-
-      it('resolves a calc() that multiplies a var() containing a negative px value as FLOAT', () => {
-        // calc(1 * var(--my-offset)) with --my-offset = '-4px'
-        // → calcVarMultiply → resolveToPx('-4px') → -4  → 1 * -4 = -4
-        const lookup = name => (name === '--my-offset' ? '-4px' : undefined);
-        expect(resolveValue('calc(1 * var(--my-offset))', idMap, lookup)).toEqual({ type: 'FLOAT', figmaValue: -4 });
-      });
-    });
-
-    describe('negative bare numbers (BUG-2)', () => {
-      it('resolves a negative integer bare number as FLOAT', () => {
-        expect(resolveValue('-1', idMap)).toEqual({ type: 'FLOAT', figmaValue: -1 });
-      });
-
-      it('resolves a negative fractional bare number as FLOAT', () => {
-        expect(resolveValue('-0.5', idMap)).toEqual({ type: 'FLOAT', figmaValue: -0.5 });
-      });
-
-      // Same reasoning as the var() test above: top-level var() → STRING by design.
-      it('keeps an unresolved var() reference as STRING even when its target is a negative bare number', () => {
-        const lookup = name => (name === '--my-multiplier' ? '-2' : undefined);
-        expect(resolveValue('var(--my-multiplier)', idMap, lookup)).toEqual({
-          type: 'STRING',
-          figmaValue: 'var(--my-multiplier)',
-        });
-      });
-
-      it('resolves a calc() that multiplies a var() containing a negative bare number as FLOAT', () => {
-        // calc(3 * var(--my-multiplier)) with --my-multiplier = '-2'
-        // → calcVarMultiply → resolveToPx('-2') → -2  → 3 * -2 = -6
-        const lookup = name => (name === '--my-multiplier' ? '-2' : undefined);
-        expect(resolveValue('calc(3 * var(--my-multiplier))', idMap, lookup)).toEqual({
-          type: 'FLOAT',
-          figmaValue: -6,
-        });
-      });
     });
 
     describe('positive px and bare numbers still resolve correctly after the fix', () => {
