@@ -36,6 +36,13 @@ export function createTokenRules({ exclusionPatterns, exclusionExact, scopeRules
     return exclusionPatterns.some(p => lower.includes(p));
   }
 
+  // Pre-compile each scope rule's glob pattern once instead of recompiling the
+  // RegExp on every token × rule lookup (tens of thousands of allocations per push).
+  const compiledScopeRules = scopeRules.map(rule => ({
+    re: new RegExp(rule.pattern.replace(/\*/g, '.*').replace(/\?/g, '.'), 'i'),
+    scopes: rule.scopes,
+  }));
+
   /**
    * Map a token name to Figma variable scopes using the config scope rules.
    * Rules are tested in order; first match wins. Falls back to ALL_SCOPES.
@@ -44,10 +51,9 @@ export function createTokenRules({ exclusionPatterns, exclusionExact, scopeRules
    * @returns {string[]}
    */
   function resolveFigmaScopes(name) {
-    for (const rule of scopeRules) {
-      const pattern = rule.pattern.replace(/\*/g, '.*').replace(/\?/g, '.');
-      if (new RegExp(pattern, 'i').test(name)) {
-        return rule.scopes;
+    for (const { re, scopes } of compiledScopeRules) {
+      if (re.test(name)) {
+        return scopes;
       }
     }
     return ['ALL_SCOPES'];

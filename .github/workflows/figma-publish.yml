@@ -28,6 +28,10 @@ on:
 
 concurrency:
   group: figma-publish-${{ github.ref }}
+  # Intentionally queue rather than cancel: the publisher pushes one Figma
+  # collection at a time and refreshes variable IDs between pushes. Cancelling a
+  # run mid-push could leave Figma with a partially-applied variable set, so we
+  # let in-progress pushes finish and run queued pushes sequentially.
   cancel-in-progress: false
 
 permissions:
@@ -61,12 +65,14 @@ jobs:
       # ── Determine branch name for isolation ──────────────────────────────────
       - name: Resolve branch name
         id: branch
+        env:
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          if [[ "${{ github.ref_name }}" == "main" ]]; then
+          if [[ "$REF_NAME" == "main" ]]; then
             echo "name=" >> "$GITHUB_OUTPUT"
             echo "is_main=true" >> "$GITHUB_OUTPUT"
           else
-            SAFE=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/-/g' | cut -c1-40)
+            SAFE=$(printf '%s' "$REF_NAME" | sed 's/[^a-zA-Z0-9._-]/-/g' | cut -c1-40)
             echo "name=$SAFE" >> "$GITHUB_OUTPUT"
             echo "is_main=false" >> "$GITHUB_OUTPUT"
           fi
@@ -95,18 +101,23 @@ jobs:
       # ── Summary ──────────────────────────────────────────────────────────────
       - name: Write job summary
         if: always()
+        env:
+          IS_MAIN: ${{ steps.branch.outputs.is_main }}
+          ISOLATION: ${{ inputs.branch_isolation || 'collection' }}
+          DRY_RUN: ${{ inputs.dry_run || false }}
+          EVENT: ${{ github.event_name }}
+          BRANCH: ${{ github.ref_name }}
         run: |
-          cat >> "$GITHUB_STEP_SUMMARY" << 'EOF'
+          cat >> "$GITHUB_STEP_SUMMARY" << EOF
           ## Figma Token Publish
 
           | Field | Value |
           |---|---|
-          | Branch | `${{ github.ref_name }}` |
-          | Production push | `${{ steps.branch.outputs.is_main == 'true' && 'yes' || 'no (isolated)' }}` |
-          | Isolation mode | `${{ inputs.branch_isolation || 'collection' }}` |
-          | Dry run | `${{ inputs.dry_run || false }}` |
-          | Triggered by | `${{ github.event_name }}` |
+          | Branch | \`$BRANCH\` |
+          | Production push | \`$( [ "$IS_MAIN" = "true" ] && echo yes || echo "no (isolated)" )\` |
+          | Isolation mode | \`$ISOLATION\` |
+          | Dry run | \`$DRY_RUN\` |
+          | Triggered by | \`$EVENT\` |
 
-          Design tokens from `dist/clr-ui/clr-ui.css` were published to the
-          [Figma file](https://www.figma.com/file/${{ secrets.FIGMA_FILE_KEY }}).
+          Design tokens from \`dist/clr-ui/clr-ui.css\` were published to Figma.
           EOF

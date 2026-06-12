@@ -50,7 +50,7 @@ const SOURCE_KEY = { root: 'rootVars', dark: 'darkVars', compact: 'compactVars' 
  * @param {import('./config.mjs').CollectionConfig[]} collectionConfigs
  * @param {ModeVars} modeVars
  * @param {Record<string, string>} [humanReadableMap]
- *   The top-level `humanReadable` map from the config (display name → CSS var name).
+ *   The top-level `humanReadable` map from the config (CSS var name → display name).
  * @returns {CollectionDef[]}
  */
 export function buildCollectionDefs(collectionConfigs, modeVars, humanReadableMap = {}) {

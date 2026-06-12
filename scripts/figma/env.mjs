@@ -25,9 +25,10 @@ export function loadEnv({ extractMode = false, env = process.env } = {}) {
   const figmaBranchMode = env.FIGMA_BRANCH_MODE ?? 'collection';
 
   if (!extractMode && (!figmaToken || !rawFileKey)) {
-    console.error('❌  FIGMA_TOKEN and FIGMA_FILE_KEY must be set (e.g. via .env.figma).');
-    console.error('    Tip: to inspect tokens without credentials, run: node scripts/figma-push.mjs --extract');
-    process.exit(1);
+    throw new Error(
+      '❌  FIGMA_TOKEN and FIGMA_FILE_KEY must be set (e.g. via .env.figma).\n' +
+        '    Tip: to inspect tokens without credentials, run: node scripts/figma/index.mjs --extract'
+    );
   }
 
   // Accept full Figma URLs: extract the key from the path segment after /file/ or /design/

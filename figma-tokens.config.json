@@ -107,6 +107,7 @@
   ],
 
   "humanReadable": {
+    "_comment": "TODO(CDE-3113): MVP stub — only one friendly-named alias is published today. Add more CSS-var → display-name entries here as the designer-facing naming is agreed. Keys must be CSS custom-property names (start with '--').",
     "--cds-alias-object-container-background": "Container Background"
   },
 
@@ -262,7 +263,7 @@
   ],
 
   "codeSyntax": {
-    "_comment": "Templates for Figma Code Syntax (code context shown to designers). Supports: ${name} (full CSS var name), ${kebab} (name without leading --), ${camel} (camelCase)",
+    "_comment": "Templates for Figma Code Syntax (code context shown to designers). Supports: ${name} (full CSS var name), ${kebab} (name without leading --), ${camel} (camelCase). WEB-only by design: ng-clarity ships CSS custom properties only — there are no published Android/iOS Clarity token packages, so ANDROID/iOS code syntax is intentionally omitted to avoid showing designers references that don't exist.",
     "WEB": "var(${name})"
   }
 }

@@ -21,7 +21,7 @@ export function hslToFigmaColor(value) {
   const s = parseFloat(m[2]) / 100;
   const l = parseFloat(m[3]) / 100;
   const a = m[4] !== undefined ? (m[4].endsWith('%') ? parseFloat(m[4]) / 100 : parseFloat(m[4])) : 1;
-  // HLS to RGB
+  // HSL to RGB
   let r, g, b;
   if (s === 0) {
     r = g = b = l;
@@ -156,8 +156,8 @@ export function calcVarMultiply(value, varLookup) {
  * `var()` chains until a concrete form is reached.
  *
  * Recognised forms (in priority order):
- *   1. `Npx`        — strip unit, return N
- *   2. bare number  — return as-is (font-weights, multipliers, …)
+ *   1. `Npx`        — strip unit, return N  (N may be negative, e.g. `-4px`)
+ *   2. bare number  — return as-is (font-weights, multipliers, …; may be negative)
  *   3. `N%`         — return N (Figma stores percentages as their numeric value)
  *   4. `calc(…)`    — delegate to {@link resolveCalcToPx}
  *   5. `var(--x)`   — look up via `varLookup` and recurse
@@ -173,12 +173,14 @@ export function calcVarMultiply(value, varLookup) {
 function resolveToPx(rawValue, varLookup) {
   const v = rawValue.trim();
 
-  const px = v.match(/^([\d.]+)px$/);
+  // `-?` allows negative values such as `-4px` (inset shadows, negative letter-spacing).
+  const px = v.match(/^(-?[\d.]+)px$/);
   if (px) {
     return parseFloat(px[1]);
   }
 
-  const bare = v.match(/^([\d.]+)$/);
+  // `-?` allows negative bare numbers (e.g. `-0.5` as a multiplier or offset).
+  const bare = v.match(/^(-?[\d.]+)$/);
   if (bare) {
     return parseFloat(bare[1]);
   }

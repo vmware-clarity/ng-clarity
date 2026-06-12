@@ -20,7 +20,18 @@
  * @param {Array<{ collectionName: string, diff: import('./planner.mjs').DiffEntry[] }>} diffReport
  */
 export function printDiff(diffReport) {
-  console.log('\n📋  Diff:\n');
+  console.log(formatDiff(diffReport));
+}
+
+/**
+ * Build the human-readable diff string (see {@link printDiff}) without emitting it.
+ * Kept side-effect-free so the formatting can be unit-tested.
+ *
+ * @param {Array<{ collectionName: string, diff: import('./planner.mjs').DiffEntry[] }>} diffReport
+ * @returns {string}
+ */
+export function formatDiff(diffReport) {
+  const lines = ['\n📋  Diff:\n'];
 
   let anyChanges = false;
 
@@ -42,27 +53,29 @@ export function printDiff(diffReport) {
       .filter(Boolean)
       .join('  ');
 
-    console.log(`  📦  ${collectionName}  (${badge})`);
+    lines.push(`  📦  ${collectionName}  (${badge})`);
 
     for (const e of retyped) {
-      console.log(`    ↻  ${e.name.padEnd(60)}  ${e.prevType} → ${e.type}`);
+      lines.push(`    ↻  ${e.name.padEnd(60)}  ${e.prevType} → ${e.type}`);
     }
 
     for (const e of created) {
-      console.log(`    +  ${e.name.padEnd(60)}  ${e.type}`);
+      lines.push(`    +  ${e.name.padEnd(60)}  ${e.type}`);
     }
 
     for (const e of updated) {
-      console.log(`    ~  ${e.name.padEnd(60)}  ${e.type}`);
+      lines.push(`    ~  ${e.name.padEnd(60)}  ${e.type}`);
       for (const { field, from, to } of e.changes ?? []) {
-        console.log(`         ${field.padEnd(22)}  ${from}  →  ${to}`);
+        lines.push(`         ${field.padEnd(22)}  ${from}  →  ${to}`);
       }
     }
 
-    console.log('');
+    lines.push('');
   }
 
   if (!anyChanges) {
-    console.log('  No changes.\n');
+    lines.push('  No changes.\n');
   }
+
+  return lines.join('\n');
 }

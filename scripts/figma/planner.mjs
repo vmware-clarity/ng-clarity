@@ -163,6 +163,11 @@ function figmaValuesEqual(a, b) {
     return Math.round(a * 1e6) === Math.round(b * 1e6);
   }
 
+  // Guard against null before typeof object checks — typeof null === 'object'.
+  if (a === null || b === null) {
+    return false;
+  }
+
   if (typeof a !== 'object' || typeof b !== 'object') {
     return false;
   }

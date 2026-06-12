@@ -35,6 +35,10 @@ export function parseCliArgs(argv = process.argv) {
 
   const branchIdx = argv.indexOf('--branch');
   const branchName = branchIdx !== -1 ? argv[branchIdx + 1] : undefined;
+  if (branchIdx !== -1 && (!branchName || branchName.startsWith('--'))) {
+    console.error('❌  --branch requires a non-empty branch name.');
+    process.exit(1);
+  }
 
   return { dryRun, extractMode, extractFile, branchName };
 }
