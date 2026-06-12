@@ -33,6 +33,7 @@
     "_test:schematics": "vitest run --config projects/angular/schematics/vitest.config.ts",
     "_test:angular:watch": "ng test clr-angular",
     "_test:addons:watch": "ng test clr-addons",
+    "_test:figma": "vitest run --config scripts/figma/vitest.config.mjs",
     "_build:angular": "ng build clr-angular --configuration production && npm run _build:schematics",
     "_build:schematics": "tsc -p projects/angular/schematics/tsconfig.json && cp projects/angular/schematics/collection.json dist/clr-angular/schematics/",
     "_build:addons": "ng build clr-addons --configuration production",
@@ -65,7 +66,12 @@
     "_lint:format-code-examples": "node ./projects/website/scripts/format-code-examples.js",
     "_lint:format-code-examples:fix": "node ./projects/website/scripts/format-code-examples.js --fix",
     "_lint:format-code-examples:changed": "node ./scripts/get-changed-files.js --command \"node ./projects/website/scripts/format-code-examples.js\"",
-    "_lint:format-code-examples:changed:fix": "node ./scripts/get-changed-files.js --command \"node ./projects/website/scripts/format-code-examples.js --fix\""
+    "_lint:format-code-examples:changed:fix": "node ./scripts/get-changed-files.js --command \"node ./projects/website/scripts/format-code-examples.js --fix\"",
+    "_figma:push": "node --env-file=.env.figma scripts/figma/index.mjs",
+    "figma:push": "npm-run-all _test:figma _figma:push",
+    "figma:push:dry-run": "node --env-file=.env.figma scripts/figma/index.mjs --dry-run",
+    "figma:push:branch": "node --env-file=.env.figma scripts/figma/index.mjs --branch",
+    "figma:extract": "node scripts/figma/index.mjs --extract figma-tokens.extract.json"
   },
   "devDependencies": {
     "@amanda-mitchell/semantic-release-npm-multiple": "3.17.0",

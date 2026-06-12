@@ -1,0 +1,269 @@
+{
+  "$schema": "./figma-tokens.config.schema.json",
+
+  "_comment": "Order of collections building is important. First GLOBAL COLORS and SPACE, then DENSITY, then LAYOUT, then EVERYTHING else.",
+  "collections": [
+    {
+      "name": "CDS Global Colors",
+      "filter": { "include": ["--cds-global-color-"] },
+      "modes": [{ "name": "Value", "source": "root" }]
+    },
+    {
+      "name": "CDS Global Space",
+      "filter": { "include": ["--cds-global-space-", "--cds-alias-object-border-width-"] },
+      "modes": [{ "name": "Value", "source": "root" }]
+    },
+    {
+      "_comment": "Density scale tokens referenced by CDS Spacing aliases. Must be processed before CDS Spacing so var(--clr-base-*) references in typography tokens resolve as VARIABLE_ALIAS in idMap.",
+      "name": "CLR Density",
+      "filter": { "include": ["--clr-base-"] },
+      "modes": [
+        { "name": "Regular", "source": "root" },
+        { "name": "Compact", "source": "compact" }
+      ]
+    },
+    {
+      "name": "CDS Global Layout",
+      "filter": { "include": ["--cds-global-layout-"] },
+      "modes": [{ "name": "Value", "source": "root" }]
+    },
+    {
+      "_comment": "Semantic colour aliases — full-namespace colour groups (status, viz, utility) plus the colour-bearing sub-tokens inside the object and typography namespaces.",
+      "name": "CDS Theme",
+      "filter": {
+        "include": [
+          "--cds-alias-status-",
+          "--cds-alias-viz-",
+          "--cds-alias-utility-",
+          "--cds-alias-object-interaction-background",
+          "--cds-alias-object-interaction-border-color",
+          "--cds-alias-object-interaction-color",
+          "--cds-alias-object-interaction-info-",
+          "--cds-alias-object-interaction-success-",
+          "--cds-alias-object-interaction-warning-",
+          "--cds-alias-object-interaction-danger-",
+          "--cds-alias-object-interaction-neutral-",
+          "--cds-alias-object-interaction-inverse-",
+          "--cds-alias-object-app-",
+          "--cds-alias-object-overlay-",
+          "--cds-alias-object-border-color",
+          "--cds-alias-object-container-",
+          "--cds-alias-object-opacity-",
+          "--cds-alias-typography-color-",
+          "--cds-alias-typography-link-",
+          "--cds-alias-typography-info-",
+          "--cds-alias-typography-success-",
+          "--cds-alias-typography-warning-",
+          "--cds-alias-typography-danger-",
+          "--cds-alias-typography-neutral-",
+          "--cds-alias-typography-disabled"
+        ]
+      },
+      "modes": [
+        { "name": "Light", "source": "root" },
+        { "name": "Dark", "source": "dark" }
+      ]
+    },
+    {
+      "_comment": "Structural and sizing aliases — border-radius, border-width, shadow, interaction geometry, and typography metrics. The exclude list mirrors CDS Theme's colour sub-prefixes so the two collections are mutually exclusive. CLR Density must appear before this collection so typography var(--clr-base-*) aliases resolve correctly.",
+      "name": "CDS Spacing",
+      "filter": {
+        "include": ["--cds-alias-object-", "--cds-alias-typography-"],
+        "exclude": [
+          "--cds-alias-object-border-width-",
+          "--cds-alias-object-interaction-background",
+          "--cds-alias-object-interaction-border-color",
+          "--cds-alias-object-interaction-color",
+          "--cds-alias-object-interaction-info-",
+          "--cds-alias-object-interaction-success-",
+          "--cds-alias-object-interaction-warning-",
+          "--cds-alias-object-interaction-danger-",
+          "--cds-alias-object-interaction-neutral-",
+          "--cds-alias-object-interaction-inverse-",
+          "--cds-alias-object-app-",
+          "--cds-alias-object-overlay-",
+          "--cds-alias-object-border-color",
+          "--cds-alias-object-container-",
+          "--cds-alias-object-opacity-",
+          "--cds-alias-typography-color-",
+          "--cds-alias-typography-link-",
+          "--cds-alias-typography-info-",
+          "--cds-alias-typography-success-",
+          "--cds-alias-typography-warning-",
+          "--cds-alias-typography-danger-",
+          "--cds-alias-typography-neutral-",
+          "--cds-alias-typography-disabled"
+        ]
+      },
+      "modes": [{ "name": "Value", "source": "root" }]
+    },
+    {
+      "_comment": "Friendly-named alias variables. Each entry in the top-level humanReadable map creates a VARIABLE_ALIAS that points to the corresponding semantic token, giving designers clean display names while preserving the live alias chain.",
+      "name": "Human Readable Tokens",
+      "humanReadable": true,
+      "filter": { "include": [] },
+      "modes": [{ "name": "Value", "source": "root" }]
+    }
+  ],
+
+  "humanReadable": {
+    "_comment": "TODO(CDE-3113): MVP stub — only one friendly-named alias is published today. Add more CSS-var → display-name entries here as the designer-facing naming is agreed. Keys must be CSS custom-property names (start with '--').",
+    "--cds-alias-object-container-background": "Container Background"
+  },
+
+  "exclusions": {
+    "_comment": "Tokens excluded from publishing. Patterns are lowercase substring matches. Exact names are matched case-insensitively.",
+    "patterns": ["deprecated", "internal", "-outline"],
+    "exact": [
+      "--cds-global-layout-grid-cols",
+      "--cds-alias-object-skeleton-loading-gradient",
+      "--cds-alias-typography-top-gap-height",
+      "--cds-alias-typography-monospace-font-family",
+      "--cds-alias-typography-ascender-height",
+      "--cds-alias-typography-x-height"
+    ]
+  },
+
+  "scopeRules": [
+    {
+      "_comment": "Global tokens have no scopes",
+      "pattern": "--cds-global-*",
+      "scopes": []
+    },
+    {
+      "_comment": "Font family tokens",
+      "pattern": "*font-family*",
+      "scopes": ["FONT_FAMILY"]
+    },
+    {
+      "_comment": "Font size tokens",
+      "pattern": "*font-size*",
+      "scopes": ["FONT_SIZE"]
+    },
+    {
+      "_comment": "Font weight tokens",
+      "pattern": "*font-weight*",
+      "scopes": ["FONT_WEIGHT"]
+    },
+    {
+      "_comment": "Line height tokens",
+      "pattern": "*line-height*",
+      "scopes": ["LINE_HEIGHT"]
+    },
+    {
+      "_comment": "Letter spacing tokens",
+      "pattern": "*letter-spacing*",
+      "scopes": ["LETTER_SPACING"]
+    },
+    {
+      "_comment": "Paragraph spacing tokens",
+      "pattern": "*paragraph-spacing*",
+      "scopes": ["PARAGRAPH_SPACING"]
+    },
+    {
+      "_comment": "Typography colour tokens — text, link, semantic states, and disabled. Pattern uses regex alternation (| is passed through to RegExp unchanged by the * → .* conversion in token-rules.mjs).",
+      "pattern": "--cds-alias-typography-(color-|link-|info-|success-|warning-|danger-|neutral-|disabled)*",
+      "scopes": ["TEXT_FILL"]
+    },
+    {
+      "_comment": "Typography catch-all — structural tokens (font metrics, letter-spacing, line-height) not matched by the specific rules above.",
+      "pattern": "*typography*",
+      "scopes": ["FONT_SIZE", "FONT_WEIGHT", "FONT_FAMILY", "LINE_HEIGHT", "LETTER_SPACING"]
+    },
+    {
+      "_comment": "Border radius tokens",
+      "pattern": "*border-radius*",
+      "scopes": ["CORNER_RADIUS"]
+    },
+    {
+      "_comment": "Border radius short name (clr-global-borderradius, etc.)",
+      "pattern": "*borderradius*",
+      "scopes": ["CORNER_RADIUS"]
+    },
+    {
+      "_comment": "Opacity tokens",
+      "pattern": "*opacity*",
+      "scopes": ["ALL_FILLS"]
+    },
+    {
+      "_comment": "Gap / spacing tokens used in layouts",
+      "pattern": "*-gap*",
+      "scopes": ["GAP"]
+    },
+    {
+      "_comment": "Width / height dimension tokens",
+      "pattern": "*-width*",
+      "scopes": ["WIDTH_HEIGHT"]
+    },
+    {
+      "_comment": "Height dimension tokens",
+      "pattern": "*-height*",
+      "scopes": ["WIDTH_HEIGHT"]
+    },
+    {
+      "_comment": "Background color tokens",
+      "pattern": "*-background*",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"]
+    },
+    {
+      "_comment": "Background short name (bg)",
+      "pattern": "*-bg*",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"]
+    },
+    {
+      "_comment": "Text / foreground color tokens",
+      "pattern": "*-text*",
+      "scopes": ["TEXT_FILL"]
+    },
+    {
+      "_comment": "Stroke / border color tokens",
+      "pattern": "*-border-color*",
+      "scopes": ["STROKE_COLOR"]
+    },
+    {
+      "_comment": "Stroke / border color tokens",
+      "pattern": "*-viz-border*",
+      "scopes": ["STROKE_COLOR"]
+    },
+    {
+      "_comment": "Border-specific token names",
+      "pattern": "*-border-width*",
+      "scopes": ["STROKE_FLOAT"]
+    },
+    {
+      "_comment": "Border-specific token names",
+      "pattern": "*-stroke*",
+      "scopes": ["STROKE_FLOAT"]
+    },
+    {
+      "_comment": "Shadow / effect color tokens",
+      "pattern": "*-shadow*",
+      "scopes": ["EFFECT_COLOR"]
+    },
+    {
+      "_comment": "Generic color tokens (palette, status colours, etc.)",
+      "pattern": "*-color*",
+      "scopes": ["ALL_FILLS", "STROKE_COLOR", "EFFECT_COLOR"]
+    },
+    {
+      "_comment": "Global primitive colors",
+      "pattern": "--cds-global-color-*",
+      "scopes": ["ALL_FILLS", "STROKE_COLOR", "EFFECT_COLOR"]
+    },
+    {
+      "_comment": "Global spacing / layout tokens",
+      "pattern": "--cds-global-space*",
+      "scopes": ["GAP", "WIDTH_HEIGHT"]
+    },
+    {
+      "_comment": "Global layout spacing tokens",
+      "pattern": "--cds-global-layout-space*",
+      "scopes": ["GAP", "WIDTH_HEIGHT"]
+    }
+  ],
+
+  "codeSyntax": {
+    "_comment": "Templates for Figma Code Syntax (code context shown to designers). Supports: ${name} (full CSS var name), ${kebab} (name without leading --), ${camel} (camelCase). WEB-only by design: ng-clarity ships CSS custom properties only — there are no published Android/iOS Clarity token packages, so ANDROID/iOS code syntax is intentionally omitted to avoid showing designers references that don't exist.",
+    "WEB": "var(${name})"
+  }
+}

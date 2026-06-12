@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://clarity.design/schemas/figma-tokens.config.schema.json",
+  "title": "Figma Tokens Publisher Config",
+  "description": "Configuration for scripts/figma/index.mjs — how compiled CSS custom properties are mapped to Figma variable collections, scopes, code syntax, and human-readable aliases.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["collections"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Reference to this JSON Schema for editor validation."
+    },
+    "_comment": {
+      "type": "string",
+      "description": "Free-form note ignored by the loader."
+    },
+    "collections": {
+      "type": "array",
+      "description": "Ordered Figma collection definitions. Order matters: dependencies (global colors/space, density, layout) must precede the collections that alias them.",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/collection" }
+    },
+    "humanReadable": {
+      "type": "object",
+      "description": "Map of CSS custom-property name (key, must start with '--') to a friendly Figma display name (value). Each entry publishes a VARIABLE_ALIAS pointing at the corresponding semantic token.",
+      "propertyNames": {
+        "anyOf": [{ "pattern": "^--" }, { "pattern": "^_" }]
+      },
+      "additionalProperties": { "type": "string" }
+    },
+    "exclusions": {
+      "type": "object",
+      "description": "Tokens excluded from publishing.",
+      "additionalProperties": false,
+      "properties": {
+        "_comment": { "type": "string" },
+        "patterns": {
+          "type": "array",
+          "description": "Lowercased substring matches; a token is excluded if its name contains any entry.",
+          "items": { "type": "string" }
+        },
+        "exact": {
+          "type": "array",
+          "description": "Exact CSS custom-property names to exclude (matched case-insensitively).",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "scopeRules": {
+      "type": "array",
+      "description": "Ordered glob → Figma scope rules. First match wins; falls back to ALL_SCOPES.",
+      "items": { "$ref": "#/definitions/scopeRule" }
+    },
+    "codeSyntax": {
+      "type": "object",
+      "description": "Per-platform Figma Code Syntax templates. Supports ${name}, ${kebab}, ${camel}. Keys starting with '_' are ignored.",
+      "additionalProperties": { "type": "string" }
+    }
+  },
+  "definitions": {
+    "collection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "filter", "modes"],
+      "properties": {
+        "_comment": { "type": "string" },
+        "name": {
+          "type": "string",
+          "description": "Collection display name shown in Figma."
+        },
+        "humanReadable": {
+          "type": "boolean",
+          "description": "When true, this collection is populated from the top-level humanReadable map instead of CSS token scanning. filter.include may be empty."
+        },
+        "filter": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["include"],
+          "properties": {
+            "include": {
+              "type": "array",
+              "description": "CSS variable name prefixes; a token is included if it starts with at least one (OR). May be empty only for humanReadable collections.",
+              "items": { "type": "string" }
+            },
+            "exclude": {
+              "type": "array",
+              "description": "CSS variable name prefixes; a token is excluded if it starts with any (OR).",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "modes": {
+          "type": "array",
+          "description": "Mode list; index 0 is the default/base mode.",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "source"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Mode display name shown in Figma."
+              },
+              "source": {
+                "type": "string",
+                "description": "Which parsed CSS variable map backs this mode.",
+                "enum": ["root", "dark", "compact"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "scopeRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pattern", "scopes"],
+      "properties": {
+        "_comment": { "type": "string" },
+        "pattern": {
+          "type": "string",
+          "description": "Glob-like pattern matched against token names (* → .*, ? → .). Matched case-insensitively."
+        },
+        "scopes": {
+          "type": "array",
+          "description": "Figma variable scopes applied when the pattern matches.",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}
