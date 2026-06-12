@@ -15,6 +15,7 @@ import { DetailService } from './providers/detail.service';
   selector: 'clr-dg-detail',
   host: {
     '[class.datagrid-detail-pane]': 'true',
+    '[style.width.%]': 'detailWidth',
   },
   // We put the @if on the cdkTrapFocus so it doesn't always exist on the page
   // have to test for presence of header for aria-describedby because it was causing unit tests to crash
@@ -44,10 +45,35 @@ export class ClrDatagridDetail {
 
   @ContentChild(ClrDatagridDetailHeader) header: ClrDatagridDetailHeader;
 
+  private _detailWidth = 66;
+
   constructor(
     public detailService: DetailService,
     public commonStrings: ClrCommonStringsService
   ) {}
+
+  @Input('clrDetailWidth')
+  get detailWidth(): number {
+    return this._detailWidth;
+  }
+  set detailWidth(value: number) {
+    if (value === null || value === undefined) {
+      this._detailWidth = 66; // default
+      return;
+    }
+
+    if (value < 0) {
+      this._detailWidth = 0;
+      return;
+    }
+
+    if (value > 100) {
+      this._detailWidth = 100;
+      return;
+    }
+
+    this._detailWidth = value;
+  }
 
   get labelledBy(): string {
     if (this.ariaLabelledBy) {

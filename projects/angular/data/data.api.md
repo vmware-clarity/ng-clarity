@@ -450,6 +450,9 @@ export class ClrDatagridDetail {
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     detailService: DetailService;
+    set detailWidth(value: number);
+    // (undocumented)
+    get detailWidth(): number;
     // (undocumented)
     header: ClrDatagridDetailHeader;
     // (undocumented)
@@ -457,7 +460,7 @@ export class ClrDatagridDetail {
     // (undocumented)
     get labelledBy(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": { "alias": "clrDetailAriaLabelledBy"; "required": false; }; "ariaLabel": { "alias": "clrDetailAriaLabel"; "required": false; }; }, {}, ["header"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": { "alias": "clrDetailAriaLabelledBy"; "required": false; }; "ariaLabel": { "alias": "clrDetailAriaLabel"; "required": false; }; "detailWidth": { "alias": "clrDetailWidth"; "required": false; }; }, {}, ["header"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetail, never>;
 }
