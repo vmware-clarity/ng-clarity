@@ -29,7 +29,7 @@ import { getIconBadgeSVG, getIconSVG } from './utils/icon.svg-helpers';
   selector: 'clr-icon, cds-icon',
   templateUrl: './icon.component.html',
   styleUrls: ['./icon.component.scss'],
-  encapsulation: ViewEncapsulation.ShadowDom,
+  encapsulation: ViewEncapsulation.ExperimentalIsolatedShadowDom,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[attr.shape]': 'shape',

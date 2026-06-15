@@ -10,7 +10,7 @@ import { IconShapeTuple } from '../interfaces/icon.interfaces';
 
 const icon = {
   outline:
-    '<circle class="cds-internal-dot-3222" cx="31.1" cy="18" r="2.9"/><circle class="cds-internal-dot-2" cx="18" cy="18" r="2.9"/><circle class="cds-internal-dot-1" cx="4.9" cy="18" r="2.9"/>',
+    '<circle class="cds-internal-dot-3" cx="31.1" cy="18" r="2.9"/><circle class="cds-internal-dot-2" cx="18" cy="18" r="2.9"/><circle class="cds-internal-dot-1" cx="4.9" cy="18" r="2.9"/>',
 };
 
 export const unknownIconName = 'unknown';
