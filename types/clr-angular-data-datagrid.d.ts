@@ -726,12 +726,13 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
     set clrDgRowSelectionLabel(label: string);
     get _view(): any;
     get identifyBy(): _clr_angular_data_datagrid.ClrDatagridItemsIdentityFunction<any>;
+    openDetails(event: MouseEvent, detailButton: HTMLButtonElement): void;
     ngOnInit(): void;
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
     toggle(selected?: boolean): void;
-    toggleExpand(): void;
+    toggleExpand(event: MouseEvent): void;
     /**
      * The default behavior in Chrome and Firefox for shift-clicking on a label is to perform text-selection.
      * This prevents our intended range-selection, because this text-selection overrides our shift-click event.
