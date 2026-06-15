@@ -74,7 +74,7 @@
         @if (expand.expandable) { @if (!expand.loading) {
         <button
           tabindex="-1"
-          (click)="toggleExpand()"
+          (click)="toggleExpand($event)"
           type="button"
           class="datagrid-expandable-caret-button"
           [attr.aria-expanded]="expand.expanded"
@@ -97,7 +97,7 @@
         @if (!detailHidden) {
         <button
           tabindex="-1"
-          (click)="detailService.toggle(item, detailButton)"
+          (click)="openDetails($event, detailButton)"
           type="button"
           #detailButton
           class="datagrid-detail-caret-button"
