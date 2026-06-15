@@ -37,6 +37,7 @@ let clrDgActionId = 0;
       [attr.aria-label]="buttonLabel || commonStrings.keys.rowActions"
       clrPopoverOrigin
       clrPopoverOpenCloseButton
+      (click)="$event.stopPropagation()"
     >
       <cds-icon shape="ellipsis-vertical" [attr.title]="buttonLabel || commonStrings.keys.rowActions"></cds-icon>
     </button>
