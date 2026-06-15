@@ -239,6 +239,12 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     return this.items.identifyBy;
   }
 
+  openDetails(event: MouseEvent, detailButton: HTMLButtonElement) {
+    event.stopPropagation();
+
+    this.detailService.toggle(this.item, detailButton);
+  }
+
   ngOnInit() {
     this.wrappedInjector = new HostWrapper(WrappedRow, this.vcr);
     this.selection.lockItem(this.item, this.clrDgSelectable === false);
@@ -309,7 +315,9 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     }
   }
 
-  toggleExpand() {
+  toggleExpand(event: MouseEvent) {
+    event.stopPropagation();
+
     if (this.expand.expandable) {
       this.expandAnimation.updateStartHeight();
       this.expanded = !this.expanded;
