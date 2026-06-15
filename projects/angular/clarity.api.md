@@ -2175,8 +2175,6 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     get open(): boolean;
     set open(open: boolean);
     // (undocumented)
-    openActionStopPropagation(event: MouseEvent): void;
-    // (undocumented)
     openChange: EventEmitter<boolean>;
     // (undocumented)
     popoverId: string;

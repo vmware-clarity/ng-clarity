@@ -239,8 +239,6 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     get open(): boolean;
     set open(open: boolean);
     // (undocumented)
-    openActionStopPropagation(event: MouseEvent): void;
-    // (undocumented)
     openChange: EventEmitter<boolean>;
     // (undocumented)
     popoverId: string;
@@ -1685,7 +1683,7 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1052:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1051:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 
