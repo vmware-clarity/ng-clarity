@@ -7,9 +7,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
-  hslToFigmaColor,
-  rgbToFigmaColor,
-  hexToFigmaColor,
+  parseCssColor,
   calcRemBase,
   calcScaleVar,
   calcVarMultiply,
@@ -17,8 +15,8 @@ import {
   resolveEmToPx,
   resolveValue,
   inferType,
-} from './value-converters.mjs';
-import { createIdMap } from './id-map.mjs';
+} from '../core/value-converters.mjs';
+import { createIdMap } from '../core/id-map.mjs';
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -33,151 +31,139 @@ function roundColor(c) {
   );
 }
 
-// ─── hslToFigmaColor ──────────────────────────────────────────────────────────
+// ─── parseCssColor ────────────────────────────────────────────────────────────
 
-describe('hslToFigmaColor', () => {
-  it('converts comma-separated hsl', () => {
-    expect(roundColor(hslToFigmaColor('hsl(0, 100%, 50%)'))).toEqual({ r: 1, g: 0, b: 0, a: 1 });
+describe('parseCssColor', () => {
+  describe('hsl', () => {
+    it('converts comma-separated hsl', () => {
+      expect(roundColor(parseCssColor('hsl(0, 100%, 50%)'))).toEqual({ r: 1, g: 0, b: 0, a: 1 });
+    });
+
+    it('converts space-separated hsl', () => {
+      expect(roundColor(parseCssColor('hsl(0 100% 50%)'))).toEqual({ r: 1, g: 0, b: 0, a: 1 });
+    });
+
+    it('accepts the deg unit on the hue', () => {
+      expect(roundColor(parseCssColor('hsl(120deg 100% 50%)'))).toEqual({ r: 0, g: 1, b: 0, a: 1 });
+    });
+
+    it('converts blue correctly', () => {
+      expect(roundColor(parseCssColor('hsl(240, 100%, 50%)'))).toEqual({ r: 0, g: 0, b: 1, a: 1 });
+    });
+
+    it('resolves achromatic (s=0) to grey', () => {
+      const c = parseCssColor('hsl(0, 0%, 50%)');
+      expect(c.r).toBeCloseTo(0.5);
+      expect(c.g).toBeCloseTo(0.5);
+      expect(c.b).toBeCloseTo(0.5);
+      expect(c.a).toBe(1);
+    });
+
+    it('resolves white', () => {
+      expect(roundColor(parseCssColor('hsl(0, 0%, 100%)'))).toEqual({ r: 1, g: 1, b: 1, a: 1 });
+    });
+
+    it('resolves black', () => {
+      expect(roundColor(parseCssColor('hsl(0, 0%, 0%)'))).toEqual({ r: 0, g: 0, b: 0, a: 1 });
+    });
+
+    it('parses a decimal alpha', () => {
+      const c = parseCssColor('hsl(0, 100%, 50%, 0.5)');
+      expect(c.a).toBeCloseTo(0.5);
+    });
+
+    it('parses a percentage alpha', () => {
+      const c = parseCssColor('hsl(0, 100%, 50%, 50%)');
+      expect(c.a).toBeCloseTo(0.5);
+    });
   });
 
-  it('converts space-separated hsl', () => {
-    expect(roundColor(hslToFigmaColor('hsl(0 100% 50%)'))).toEqual({ r: 1, g: 0, b: 0, a: 1 });
+  describe('rgb', () => {
+    it('converts comma-separated rgb', () => {
+      expect(roundColor(parseCssColor('rgb(255, 0, 0)'))).toEqual({ r: 1, g: 0, b: 0, a: 1 });
+    });
+
+    it('converts space-separated rgb', () => {
+      expect(roundColor(parseCssColor('rgb(255 0 0)'))).toEqual({ r: 1, g: 0, b: 0, a: 1 });
+    });
+
+    it('converts rgba with decimal alpha', () => {
+      expect(roundColor(parseCssColor('rgba(255, 0, 0, 0.5)'))).toEqual({ r: 1, g: 0, b: 0, a: 0.5 });
+    });
+
+    it('converts rgba with percentage alpha', () => {
+      const c = parseCssColor('rgba(255, 0, 0, 50%)');
+      expect(c.a).toBeCloseTo(0.5);
+    });
+
+    it('converts black', () => {
+      expect(roundColor(parseCssColor('rgb(0, 0, 0)'))).toEqual({ r: 0, g: 0, b: 0, a: 1 });
+    });
+
+    it('converts white', () => {
+      expect(roundColor(parseCssColor('rgb(255, 255, 255)'))).toEqual({ r: 1, g: 1, b: 1, a: 1 });
+    });
   });
 
-  it('accepts the deg unit on the hue', () => {
-    expect(roundColor(hslToFigmaColor('hsl(120deg 100% 50%)'))).toEqual({ r: 0, g: 1, b: 0, a: 1 });
+  describe('hex', () => {
+    it('converts a 6-digit hex', () => {
+      expect(roundColor(parseCssColor('#ff0000'))).toEqual({ r: 1, g: 0, b: 0, a: 1 });
+    });
+
+    it('converts a 3-digit shorthand hex', () => {
+      expect(roundColor(parseCssColor('#f00'))).toEqual({ r: 1, g: 0, b: 0, a: 1 });
+    });
+
+    it('converts an 8-digit hex with alpha', () => {
+      const c = parseCssColor('#ff000080');
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0);
+      expect(c.b).toBe(0);
+      expect(c.a).toBeCloseTo(0.502, 2);
+    });
+
+    it('converts a 4-digit shorthand hex with alpha', () => {
+      const c = parseCssColor('#f00f');
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0);
+      expect(c.b).toBe(0);
+      expect(c.a).toBe(1);
+    });
+
+    it('is case-insensitive', () => {
+      expect(roundColor(parseCssColor('#FF0000'))).toEqual(roundColor(parseCssColor('#ff0000')));
+    });
+
+    it('treats 4-digit #rgba as a valid shorthand', () => {
+      // #ff00 → fully transparent yellow (r=1, g=1, b=0, a=0)
+      const c = parseCssColor('#ff00');
+      expect(c).not.toBeNull();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(1);
+      expect(c.b).toBe(0);
+      expect(c.a).toBe(0);
+    });
   });
 
-  it('converts blue correctly', () => {
-    expect(roundColor(hslToFigmaColor('hsl(240, 100%, 50%)'))).toEqual({ r: 0, g: 0, b: 1, a: 1 });
-  });
+  describe('null for non-color values', () => {
+    it('returns null for bare numbers (font-weights)', () => {
+      expect(parseCssColor('400')).toBeNull();
+      expect(parseCssColor('1')).toBeNull();
+    });
 
-  it('resolves achromatic (s=0) to grey', () => {
-    const c = hslToFigmaColor('hsl(0, 0%, 50%)');
-    expect(c.r).toBeCloseTo(0.5);
-    expect(c.g).toBeCloseTo(0.5);
-    expect(c.b).toBeCloseTo(0.5);
-    expect(c.a).toBe(1);
-  });
+    it('returns null for px lengths', () => {
+      expect(parseCssColor('16px')).toBeNull();
+      expect(parseCssColor('1000px')).toBeNull();
+    });
 
-  it('resolves white', () => {
-    expect(roundColor(hslToFigmaColor('hsl(0, 0%, 100%)'))).toEqual({ r: 1, g: 1, b: 1, a: 1 });
-  });
+    it('returns null for non-color keywords', () => {
+      expect(parseCssColor('bold')).toBeNull();
+      expect(parseCssColor('Metropolis')).toBeNull();
+    });
 
-  it('resolves black', () => {
-    expect(roundColor(hslToFigmaColor('hsl(0, 0%, 0%)'))).toEqual({ r: 0, g: 0, b: 0, a: 1 });
-  });
-
-  it('parses a decimal alpha', () => {
-    const c = hslToFigmaColor('hsl(0, 100%, 50%, 0.5)');
-    expect(c.a).toBe(0.5);
-  });
-
-  it('parses a percentage alpha', () => {
-    const c = hslToFigmaColor('hsl(0, 100%, 50%, 50%)');
-    expect(c.a).toBe(0.5);
-  });
-
-  it('returns null for a non-hsl string', () => {
-    expect(hslToFigmaColor('#ff0000')).toBeNull();
-    expect(hslToFigmaColor('bold')).toBeNull();
-    expect(hslToFigmaColor('')).toBeNull();
-  });
-});
-
-// ─── rgbToFigmaColor ──────────────────────────────────────────────────────────
-
-describe('rgbToFigmaColor', () => {
-  it('converts comma-separated rgb', () => {
-    expect(rgbToFigmaColor('rgb(255, 0, 0)')).toEqual({ r: 1, g: 0, b: 0, a: 1 });
-  });
-
-  it('converts space-separated rgb', () => {
-    expect(rgbToFigmaColor('rgb(255 0 0)')).toEqual({ r: 1, g: 0, b: 0, a: 1 });
-  });
-
-  it('converts rgba with decimal alpha', () => {
-    expect(rgbToFigmaColor('rgba(255, 0, 0, 0.5)')).toEqual({ r: 1, g: 0, b: 0, a: 0.5 });
-  });
-
-  it('converts rgba with percentage alpha', () => {
-    const c = rgbToFigmaColor('rgba(255, 0, 0, 50%)');
-    expect(c.a).toBe(0.5);
-  });
-
-  it('converts black', () => {
-    expect(rgbToFigmaColor('rgb(0, 0, 0)')).toEqual({ r: 0, g: 0, b: 0, a: 1 });
-  });
-
-  it('converts white', () => {
-    expect(rgbToFigmaColor('rgb(255, 255, 255)')).toEqual({ r: 1, g: 1, b: 1, a: 1 });
-  });
-
-  it('returns null for a non-rgb string', () => {
-    expect(rgbToFigmaColor('#ff0000')).toBeNull();
-    expect(rgbToFigmaColor('hsl(0,100%,50%)')).toBeNull();
-    expect(rgbToFigmaColor('bold')).toBeNull();
-  });
-});
-
-// ─── hexToFigmaColor ──────────────────────────────────────────────────────────
-
-describe('hexToFigmaColor', () => {
-  it('converts a 6-digit hex', () => {
-    expect(hexToFigmaColor('#ff0000')).toEqual({ r: 1, g: 0, b: 0, a: 1 });
-  });
-
-  it('converts a 3-digit shorthand hex', () => {
-    expect(hexToFigmaColor('#f00')).toEqual({ r: 1, g: 0, b: 0, a: 1 });
-  });
-
-  it('converts an 8-digit hex with alpha', () => {
-    const c = hexToFigmaColor('#ff000080');
-    expect(c.r).toBe(1);
-    expect(c.g).toBe(0);
-    expect(c.b).toBe(0);
-    expect(c.a).toBeCloseTo(0.502, 2);
-  });
-
-  it('converts a 4-digit shorthand hex with alpha', () => {
-    const c = hexToFigmaColor('#f00f');
-    expect(c.r).toBe(1);
-    expect(c.g).toBe(0);
-    expect(c.b).toBe(0);
-    expect(c.a).toBe(1);
-  });
-
-  it('is case-insensitive', () => {
-    expect(hexToFigmaColor('#FF0000')).toEqual(hexToFigmaColor('#ff0000'));
-  });
-
-  it('returns null when there is no leading #', () => {
-    expect(hexToFigmaColor('ff0000')).toBeNull();
-    expect(hexToFigmaColor('Metropolis')).toBeNull();
-    expect(hexToFigmaColor('1000px')).toBeNull();
-    expect(hexToFigmaColor('400')).toBeNull();
-  });
-
-  it('returns null for invalid hex characters', () => {
-    expect(hexToFigmaColor('#zzzzzz')).toBeNull();
-    expect(hexToFigmaColor('#gg0000')).toBeNull();
-  });
-
-  it('returns null for wrong hex length', () => {
-    // 2-digit, 5-digit, and 7-digit hex bodies are not valid shorthand or full forms
-    expect(hexToFigmaColor('#ff')).toBeNull();
-    expect(hexToFigmaColor('#ff000')).toBeNull();
-    expect(hexToFigmaColor('#ff00000')).toBeNull();
-  });
-
-  it('treats 4-digit #rgba as a valid shorthand', () => {
-    // #ff00 → expands to #ffff0000 → fully transparent yellow (r=1,g=1,b=0,a=0)
-    const c = hexToFigmaColor('#ff00');
-    expect(c).not.toBeNull();
-    expect(c.r).toBe(1);
-    expect(c.g).toBe(1);
-    expect(c.b).toBe(0);
-    expect(c.a).toBe(0);
+    it('returns null for invalid hex', () => {
+      expect(parseCssColor('#zzzzzz')).toBeNull();
+    });
   });
 });
 

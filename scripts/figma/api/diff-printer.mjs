@@ -6,6 +6,34 @@
  */
 
 /**
+ * Print a stats summary table to the console.
+ *
+ * Used for both the dry-run/extract plan summary and the post-push summary so
+ * the layout stays consistent without copy-paste drift.
+ *
+ * @param {string} label  Heading shown after the 📊 icon (e.g. "Token plan" or "Push summary").
+ * @param {{ collections: number, created: number, updated: number, skipped: number, deleted: number, modeValues: number, humanReadable: number }} stats
+ * @param {string} [doneMsg]  Optional trailing message (e.g. "✅  Dry run complete").
+ */
+export function printStats(
+  label,
+  { collections, created, updated, skipped, deleted, modeValues, humanReadable },
+  doneMsg
+) {
+  console.log(`\n📊  ${label}:`);
+  console.log(`    Collections    : ${collections}`);
+  console.log(`    New vars       : ${created}`);
+  console.log(`    Updated vars   : ${updated}`);
+  console.log(`    Skipped        : ${skipped}  (complex multi-value strings)`);
+  console.log(`    Deletions      : ${deleted}  (type corrections)`);
+  console.log(`    Mode values    : ${modeValues}`);
+  console.log(`    Human readable : ${humanReadable}`);
+  if (doneMsg) {
+    console.log(doneMsg);
+  }
+}
+
+/**
  * Prints a human-readable diff of all variable changes grouped by collection.
  *
  * Output format per collection:

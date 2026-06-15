@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { figmaNameToCssName } from '../util/naming.mjs';
+
 /**
  * Builds the human-readable, per-collection extract view of the push plan.
  *
@@ -63,7 +65,7 @@ export function buildExtractView({ collectionDefs, collectionSuffix, plan, exist
         // ("Alias of: --cds-…"); regular variables derive it from the Figma path.
         const cssName = v.description?.startsWith('Alias of: ')
           ? v.description.slice('Alias of: '.length)
-          : '--' + v.name.replace(/\//g, '-');
+          : figmaNameToCssName(v.name);
         return {
           id: v.id,
           figmaPath: v.name,

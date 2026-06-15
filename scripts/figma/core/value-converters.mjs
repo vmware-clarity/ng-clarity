@@ -5,89 +5,40 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { parse as culoriParse, rgb as culoriRgb } from 'culori';
+
 /**
  * Pure value converters that translate CSS values into Figma variable payloads:
- * colors (hsl/rgb/hex), float resolution (px / bare / % / calc), variable
- * aliases, and type inference.
+ * colors (hsl/rgb/hex/oklch/lab/hwb/named), float resolution (px / bare / % / calc),
+ * variable aliases, and type inference.
  */
 
-/** hsl(H deg S% L%) or hsl(H, S%, L%) → Figma {r,g,b,a} (0-1 floats) */
-export function hslToFigmaColor(value) {
-  const m = value.match(/hsl\(\s*([\d.]+)(?:deg)?\s*[, ]\s*([\d.]+)%\s*[, ]\s*([\d.]+)%(?:\s*[,/]\s*([\d.]+%?))?\s*\)/);
-  if (!m) {
-    return null;
-  }
-  const h = parseFloat(m[1]) / 360;
-  const s = parseFloat(m[2]) / 100;
-  const l = parseFloat(m[3]) / 100;
-  const a = m[4] !== undefined ? (m[4].endsWith('%') ? parseFloat(m[4]) / 100 : parseFloat(m[4])) : 1;
-  // HSL to RGB
-  let r, g, b;
-  if (s === 0) {
-    r = g = b = l;
-  } else {
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    const p = 2 * l - q;
-    const hue2rgb = (p, q, t) => {
-      if (t < 0) {
-        t += 1;
-      }
-      if (t > 1) {
-        t -= 1;
-      }
-      if (t < 1 / 6) {
-        return p + (q - p) * 6 * t;
-      }
-      if (t < 1 / 2) {
-        return q;
-      }
-      if (t < 2 / 3) {
-        return p + (q - p) * (2 / 3 - t) * 6;
-      }
-      return p;
-    };
-    r = hue2rgb(p, q, h + 1 / 3);
-    g = hue2rgb(p, q, h);
-    b = hue2rgb(p, q, h - 1 / 3);
-  }
-  return { r: Math.round(r * 1e6) / 1e6, g: Math.round(g * 1e6) / 1e6, b: Math.round(b * 1e6) / 1e6, a };
-}
-
-/** rgb(R G B) or rgb(R, G, B) → Figma {r,g,b,a} */
-export function rgbToFigmaColor(value) {
-  const m = value.match(/rgba?\(\s*([\d.]+)\s*[, ]\s*([\d.]+)\s*[, ]\s*([\d.]+)(?:\s*[,/]\s*([\d.]+%?))?\s*\)/);
-  if (!m) {
-    return null;
-  }
-  const a = m[4] !== undefined ? (m[4].endsWith('%') ? parseFloat(m[4]) / 100 : parseFloat(m[4])) : 1;
-  return { r: parseFloat(m[1]) / 255, g: parseFloat(m[2]) / 255, b: parseFloat(m[3]) / 255, a };
-}
-
-/** #rrggbb / #rgb / #rgba / #rrggbbaa → Figma {r,g,b,a}; null for anything that isn't a hex color */
-export function hexToFigmaColor(value) {
+/**
+ * Parse any CSS color expression into a Figma `{r, g, b, a}` object (0–1 floats).
+ *
+ * Delegates to `culori` which covers the full CSS Color Level 4 spec: hsl, rgb,
+ * hex, oklch, lab, hwb, color(), and named keywords.
+ *
+ * A lightweight guard rejects values that can never be CSS colors (bare numbers
+ * such as font-weights, px lengths, etc.) before handing off to culori, since
+ * culori would otherwise accept bare numbers as grayscale values.
+ *
+ * @param {string} value Raw CSS value.
+ * @returns {{ r: number, g: number, b: number, a: number } | null}
+ */
+export function parseCssColor(value) {
   const v = value.trim();
-  // Require a leading '#'; otherwise this is not a hex color (e.g. "Metropolis", "1000px").
-  if (!v.startsWith('#')) {
+  // Only attempt color parsing for values that look like CSS colors:
+  // starts with '#', contains '(' (functional notation), or is all letters (named keyword).
+  if (!v.startsWith('#') && !v.includes('(') && !/^[a-zA-Z]+$/.test(v)) {
     return null;
   }
-  let hex = v.slice(1);
-  // Expand shorthand #rgb / #rgba to #rrggbb / #rrggbbaa
-  if (hex.length === 3 || hex.length === 4) {
-    hex = hex
-      .split('')
-      .map(c => c + c)
-      .join('');
-  }
-  // Only 6-digit (rgb) or 8-digit (rgba) hex values made of valid hex digits qualify.
-  if (!/^(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(hex)) {
+  const parsed = culoriParse(v);
+  if (!parsed) {
     return null;
   }
-  return {
-    r: parseInt(hex.slice(0, 2), 16) / 255,
-    g: parseInt(hex.slice(2, 4), 16) / 255,
-    b: parseInt(hex.slice(4, 6), 16) / 255,
-    a: hex.length === 8 ? parseInt(hex.slice(6, 8), 16) / 255 : 1,
-  };
+  const { r = 0, g = 0, b = 0, alpha = 1 } = culoriRgb(parsed);
+  return { r, g, b, a: alpha };
 }
 
 /**
@@ -311,7 +262,7 @@ export function resolveValue(rawValue, idMap, varLookup = null, cssVarName = nul
   }
 
   // COLOR
-  const color = hslToFigmaColor(v) ?? rgbToFigmaColor(v) ?? hexToFigmaColor(v);
+  const color = parseCssColor(v);
   if (color) {
     return { type: 'COLOR', figmaValue: color };
   }
