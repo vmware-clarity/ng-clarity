@@ -240,7 +240,6 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   }
 
   openDetails(event: MouseEvent, detailButton: HTMLButtonElement) {
-    event.preventDefault();
     event.stopPropagation();
 
     this.detailService.toggle(this.item, detailButton);
@@ -317,7 +316,6 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   }
 
   toggleExpand(event: MouseEvent) {
-    event.preventDefault();
     event.stopPropagation();
 
     if (this.expand.expandable) {

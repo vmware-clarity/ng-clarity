@@ -565,6 +565,26 @@ export default function (): void {
           context.detectChanges();
         });
 
+        it('does select deselect the row when the row is clicked', async function () {
+          expect(context.testComponent.selected).toEqual([]);
+          const cell: HTMLButtonElement = context.clarityElement.querySelector(
+            '.datagrid-scrolling-cells .datagrid-cell'
+          );
+
+          // select first row
+          cell.click();
+          await delay();
+          context.detectChanges();
+          expect(context.testComponent.selected.length).toEqual(1);
+          expect(context.testComponent.selected[0].id).toEqual(1);
+
+          // deselect first row
+          cell.click();
+          await delay();
+          context.detectChanges();
+          expect(context.testComponent.selected).toEqual([]);
+        });
+
         it('does not select the row when the action overflow toggle is clicked', function () {
           expect(context.testComponent.selected).toEqual([]);
           const actionToggle: HTMLButtonElement = context.clarityElement.querySelector('.datagrid-action-toggle');
@@ -862,7 +882,7 @@ class DatagridWithDisabledOrHiddenDetails {
 
       <clr-dg-row
         *clrDgItems="let item of items"
-        clrDgItem]="item"
+        [clrDgItem]="item"
         [clrDgRowSelectionLabel]="'Select row for ' + item.id"
       >
         <clr-dg-action-overflow>
@@ -888,7 +908,7 @@ class RowSelectionWithExpandAndActionTest {
 
       <clr-dg-row
         *clrDgItems="let item of items"
-        clrDgItem]="item"
+        [clrDgItem]="item"
         [clrDgRowSelectionLabel]="'Select row for ' + item.id"
       >
         <clr-dg-action-overflow>

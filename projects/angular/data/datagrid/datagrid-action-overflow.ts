@@ -125,7 +125,6 @@ export class ClrDatagridActionOverflow implements OnDestroy {
   }
 
   openActionStopPropagation(event: MouseEvent) {
-    event.preventDefault();
     event.stopPropagation();
   }
 
