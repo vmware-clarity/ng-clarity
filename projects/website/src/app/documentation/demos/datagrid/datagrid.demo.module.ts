@@ -28,6 +28,7 @@ import { DatagridFullDemo } from './full/full';
 import { DatagridHideShowColumnsDemo } from './hide-show-columns/hide-show-columns';
 import { DatagridPaginationDemo } from './pagination/pagination';
 import { DatagridPlaceholderDemo } from './placeholder/placeholder';
+import { DatagridSelectAllDisabledDemo } from './select-all-disabled/select-all-disabled';
 import { DatagridSelectionDemo } from './selection/selection';
 import { DatagridServerDrivenDemo } from './server-driven/server-driven';
 import { DatagridSingleActionDemo } from './single-action/single-action';
@@ -122,6 +123,13 @@ const routes: Routes = [
         component: DatagridCustomSelectAllDemo,
         data: {
           demoName: 'Custom Select All',
+        },
+      },
+      {
+        path: 'select-all-disabled',
+        component: DatagridSelectAllDisabledDemo,
+        data: {
+          demoName: 'Disable Select All',
         },
       },
       {
@@ -230,6 +238,7 @@ const routes: Routes = [
     DatagridCompactDemo,
     DatagridCustomRenderingDemo,
     DatagridCustomSelectAllDemo,
+    DatagridSelectAllDisabledDemo,
     DatagridFilteringDemo,
     DatagridFullDemo,
     DatagridPaginationDemo,

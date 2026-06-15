@@ -151,6 +151,7 @@ class MultiSelectionTest {
   template: `
     <clr-datagrid
       [clrDgCustomSelectAllEnabled]="clrDgCustomSelectAllEnabled"
+      [clrDgSelectAllDisabled]="clrDgSelectAllDisabled"
       [(clrDgSelected)]="selected"
       [clrDgSelectionType]="'multi'"
       (clrDgCustomSelectAll)="clrDgCustomSelectAllEventSpy($event)"
@@ -170,6 +171,7 @@ class MultiSelectionSimpleTest {
   items: any[] = [1, 2, 3, 4, 5, 6, 7];
   selected: any[] = [];
   @Input() clrDgCustomSelectAllEnabled = false;
+  @Input() clrDgSelectAllDisabled = false;
 
   readonly clrDgCustomSelectAllEventSpy = jasmine.createSpy('clrDgCustomSelectAll');
 }
@@ -1179,6 +1181,57 @@ export default function (): void {
             selectAllCheckbox.click();
 
             expect(selection.current).toEqual([]);
+          });
+        });
+
+        describe('disabled select all', function () {
+          it('select all checkbox is enabled by default', function () {
+            expect(selectAllCheckbox.disabled).toBeFalse();
+          });
+
+          it('disables the select all checkbox when clrDgSelectAllDisabled is true', function () {
+            context.testComponent.clrDgSelectAllDisabled = true;
+            context.detectChanges();
+
+            expect(selectAllCheckbox.disabled).toBeTrue();
+          });
+
+          it('re-enables the select all checkbox when clrDgSelectAllDisabled is set back to false', function () {
+            context.testComponent.clrDgSelectAllDisabled = true;
+            context.detectChanges();
+            expect(selectAllCheckbox.disabled).toBeTrue();
+
+            context.testComponent.clrDgSelectAllDisabled = false;
+            context.detectChanges();
+            expect(selectAllCheckbox.disabled).toBeFalse();
+          });
+
+          it('does not change the selection when disabled and clicked', function () {
+            context.testComponent.clrDgSelectAllDisabled = true;
+            context.detectChanges();
+
+            selectAllCheckbox.click();
+
+            expect(selection.current).toEqual([]);
+          });
+
+          it('does not emit the custom select all event when disabled', function () {
+            context.testComponent.clrDgCustomSelectAllEnabled = true;
+            context.testComponent.clrDgSelectAllDisabled = true;
+            context.detectChanges();
+
+            selectAllCheckbox.click();
+
+            expect(context.testComponent.clrDgCustomSelectAllEventSpy).not.toHaveBeenCalled();
+          });
+
+          it('individual row checkboxes remain functional when select all is disabled', function () {
+            context.testComponent.clrDgSelectAllDisabled = true;
+            context.detectChanges();
+
+            itemCheckboxes[0].click();
+
+            expect(selection.current).toEqual([1]);
           });
         });
       });
