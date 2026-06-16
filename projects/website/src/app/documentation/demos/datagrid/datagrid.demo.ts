@@ -364,6 +364,32 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
       ],
     },
     {
+      name: 'ClrDatagridDetail',
+      selector: 'clr-dg-detail',
+      props: [
+        {
+          name: '[clrDetailWidth]',
+          type: 'number',
+          defaultValue: '66',
+          description:
+            'Sets the width of the detail pane as a percentage of the datagrid width. Accepts values from 0 to 100 (inclusive). Values outside this range are clamped. Setting null or undefined restores the default of 66.',
+        },
+        {
+          name: '[clrDetailAriaLabel]',
+          type: 'string',
+          defaultValue: 'undefined',
+          description: 'Sets aria-label on the detail pane dialog. Use when no visible header title is present.',
+        },
+        {
+          name: '[clrDetailAriaLabelledBy]',
+          type: 'string',
+          defaultValue: 'undefined',
+          description:
+            'One or more space-separated element IDs to append to the auto-generated aria-labelledby on the detail pane dialog.',
+        },
+      ],
+    },
+    {
       name: 'ClrIfDetail',
       selector: '[clrIfDetail]',
       props: [
