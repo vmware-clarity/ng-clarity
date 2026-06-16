@@ -30,6 +30,79 @@ export default function (): void {
       it('should wire up host bindings', () => {
         expect(context.clarityElement.className).toContain('datagrid-detail-pane');
       });
+
+      describe('clrDetailWidth', () => {
+        it('should have a default width of 66', () => {
+          expect(context.clarityDirective.detailWidth).toBe(66);
+        });
+
+        it('should apply the default width as an inline style on the host element', () => {
+          expect(context.clarityElement.style.width).toBe('66%');
+        });
+
+        it('should accept a valid percentage value', () => {
+          context.testComponent.detailWidth = 50;
+          context.detectChanges();
+          expect(context.clarityDirective.detailWidth).toBe(50);
+          expect(context.clarityElement.style.width).toBe('50%');
+        });
+
+        it('should clamp values below 0 to 0', () => {
+          context.testComponent.detailWidth = -10;
+          context.detectChanges();
+          expect(context.clarityDirective.detailWidth).toBe(0);
+          expect(context.clarityElement.style.width).toBe('0%');
+        });
+
+        it('should clamp values above 100 to 100', () => {
+          context.testComponent.detailWidth = 150;
+          context.detectChanges();
+          expect(context.clarityDirective.detailWidth).toBe(100);
+          expect(context.clarityElement.style.width).toBe('100%');
+        });
+
+        it('should accept the boundary value 0', () => {
+          context.testComponent.detailWidth = 0;
+          context.detectChanges();
+          expect(context.clarityDirective.detailWidth).toBe(0);
+          expect(context.clarityElement.style.width).toBe('0%');
+        });
+
+        it('should accept the boundary value 100', () => {
+          context.testComponent.detailWidth = 100;
+          context.detectChanges();
+          expect(context.clarityDirective.detailWidth).toBe(100);
+          expect(context.clarityElement.style.width).toBe('100%');
+        });
+
+        it('should reset to the default (66) when set to null', () => {
+          context.testComponent.detailWidth = 40;
+          context.detectChanges();
+          context.testComponent.detailWidth = null;
+          context.detectChanges();
+          expect(context.clarityDirective.detailWidth).toBe(66);
+          expect(context.clarityElement.style.width).toBe('66%');
+        });
+
+        it('should reset to the default (66) when set to undefined', () => {
+          context.testComponent.detailWidth = 40;
+          context.detectChanges();
+          context.testComponent.detailWidth = undefined;
+          context.detectChanges();
+          expect(context.clarityDirective.detailWidth).toBe(66);
+          expect(context.clarityElement.style.width).toBe('66%');
+        });
+
+        it('should update the inline style when the input value changes', () => {
+          context.testComponent.detailWidth = 30;
+          context.detectChanges();
+          expect(context.clarityElement.style.width).toBe('30%');
+
+          context.testComponent.detailWidth = 80;
+          context.detectChanges();
+          expect(context.clarityElement.style.width).toBe('80%');
+        });
+      });
     });
 
     describe('View', function () {
@@ -125,7 +198,11 @@ export default function (): void {
 
 @Component({
   template: `
-    <clr-dg-detail [clrDetailAriaLabelledBy]="ariaLabelledBy" [clrDetailAriaLabel]="ariaLabel">
+    <clr-dg-detail
+      [clrDetailAriaLabelledBy]="ariaLabelledBy"
+      [clrDetailAriaLabel]="ariaLabel"
+      [clrDetailWidth]="detailWidth"
+    >
       <clr-dg-detail-header>Title</clr-dg-detail-header>
       <clr-dg-detail-body>${content}</clr-dg-detail-body>
     </clr-dg-detail>
@@ -135,4 +212,5 @@ export default function (): void {
 class FullTest {
   ariaLabelledBy: string;
   ariaLabel: string;
+  detailWidth: number | null | undefined;
 }
