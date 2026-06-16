@@ -2709,6 +2709,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
+    openDetails(event: MouseEvent, detailButton: HTMLButtonElement): void;
+    // (undocumented)
     radioId: string;
     // (undocumented)
     replaced: boolean;
@@ -2733,7 +2735,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     toggle(selected?: boolean): void;
     // (undocumented)
-    toggleExpand(): void;
+    toggleExpand(event: MouseEvent): void;
     // (undocumented)
     get _view(): any;
     // (undocumented)
