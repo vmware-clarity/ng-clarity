@@ -30,6 +30,11 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
         run: npx semantic-release --extends ./.releaserc.release.js
+      - name: Update Figma Tokens
+        env:
+          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+          FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
+        run: npm run figma:push
       - name: Update Website StackBlitz Versions
         run: |
           RELEASED_VERSION=$(node -p "require('./dist/clr-angular/package.json').version")

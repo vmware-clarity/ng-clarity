@@ -74,11 +74,6 @@ export async function executePush({
     existingVars
   );
 
-  // Shared temp-ID counter across all buildCollectionPlan calls so temp IDs
-  // are globally unique within this push run.
-  const tempIdCounter = { n: 0 };
-  const tempId = () => `temp-${++tempIdCounter.n}`;
-
   let totalNew = 0;
   let totalUpdate = 0;
   let totalSkipped = 0;
@@ -100,7 +95,6 @@ export async function executePush({
       idMap,
       rules,
       varLookup,
-      tempId,
     });
 
     totalNew += colPlan.stats.new;

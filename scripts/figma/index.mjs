@@ -23,6 +23,9 @@
  *
  * Options:
  *   --dry-run              Parse and plan the push but make no API calls.
+ *   --preview              Fetch the current Figma state, compute a full variable
+ *                          diff (new / updated / deleted), print it to the console,
+ *                          and exit without pushing. Requires credentials.
  *   --extract [file]       Write the parsed token plan to a JSON file instead
  *                          of pushing. No Figma credentials required.
  *                          Defaults to: figma-tokens.extract.json
@@ -51,11 +54,11 @@ import { parseCssBlocks, resolveModeVars } from './setup/css-parser.mjs';
 import { buildCollectionDefs } from './core/collections.mjs';
 import { createTokenRules } from './core/token-rules.mjs';
 import { createIdMap } from './core/id-map.mjs';
-import { buildPushPlan } from './core/planner.mjs';
+import { buildPushPlan, buildCollectionPlan, populateIdMapFromExisting } from './core/planner.mjs';
 import { buildExtractView } from './api/extract-view.mjs';
 import { printDiff, printStats } from './api/diff-printer.mjs';
 import { executePush } from './api/push-executor.mjs';
-import { parseFigmaVarsResponse } from './util/figma-response.mjs';
+import { parseFigmaVarsResponse, buildLookupMaps } from './util/figma-response.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -64,14 +67,15 @@ const CSS_FILE = path.join(ROOT, 'dist', 'clr-ui', 'clr-ui.css');
 
 async function main() {
   // ── CLI + environment ─────────────────────────────────────────────────────
-  const { dryRun, extractMode, extractFile, branchName } = parseCliArgs();
+  const { dryRun, previewMode, extractMode, extractFile, branchName } = parseCliArgs();
   const { figmaToken, figmaFileKey, figmaBranchMode } = loadEnv({ extractMode });
   const config = loadConfig(CONFIG_PATH);
   const rules = createTokenRules(config);
   const figma = createFigmaClient(figmaToken);
 
+  const modeLabel = dryRun ? ' (DRY RUN)' : previewMode ? ' (PREVIEW)' : '';
   console.log(
-    `\n🎨  Figma token push — file: ${figmaFileKey}${branchName ? ` [branch: ${branchName}]` : ''}${dryRun ? ' (DRY RUN)' : ''}\n`
+    `\n🎨  Figma token push — file: ${figmaFileKey}${branchName ? ` [branch: ${branchName}]` : ''}${modeLabel}\n`
   );
 
   // ── Fetch existing Figma variables ──────────────────────────────────────────
@@ -80,7 +84,9 @@ async function main() {
   let existingModes = [];
   let effectiveFileKey = figmaFileKey;
 
-  if (!dryRun && !extractMode) {
+  // Preview mode fetches existing vars inside its own block (after branch isolation
+  // resolves effectiveFileKey), so we skip the initial fetch here for preview too.
+  if (!dryRun && !extractMode && !previewMode) {
     console.log('⬇️   Fetching existing Figma variables…');
     const existing = await figma.get(`/files/${figmaFileKey}/variables/local`);
     ({ collections: existingCollections, vars: existingVars, modes: existingModes } = parseFigmaVarsResponse(existing));
@@ -158,6 +164,64 @@ async function main() {
     const outPath = path.resolve(ROOT, extractFile);
     fs.writeFileSync(outPath, JSON.stringify(output, null, 2), 'utf8');
     console.log(`\n💾  Extracted ${stats.new + stats.update} tokens → ${path.relative(ROOT, outPath)}\n`);
+    return;
+  }
+
+  // ── Preview: fetch current state, compute full diff, print, no push ─────────
+  if (previewMode) {
+    console.log('\n👁️   Fetching current Figma state to compute diff…');
+    const existing = await figma.get(`/files/${effectiveFileKey}/variables/local`);
+    const {
+      collections: previewCollections,
+      vars: previewVars,
+      modes: previewModes,
+    } = parseFigmaVarsResponse(existing);
+    const { collByName: existingCollByName, varByName: existingVarByName } = buildLookupMaps(
+      previewCollections,
+      previewVars
+    );
+
+    const previewIdMap = createIdMap();
+    populateIdMapFromExisting(previewVars, previewIdMap);
+
+    let previewNew = 0;
+    let previewUpdate = 0;
+    let previewSkipped = 0;
+    const diffReport = [];
+
+    for (const colDef of collectionDefs) {
+      const colPlan = buildCollectionPlan({
+        colDef,
+        collectionSuffix,
+        existingCollByName,
+        existingModes: previewModes,
+        existingVarByName,
+        idMap: previewIdMap,
+        rules,
+        varLookup: name => modeVars.rootVars.get(name),
+      });
+
+      previewNew += colPlan.stats.new;
+      previewUpdate += colPlan.stats.update;
+      previewSkipped += colPlan.stats.skipped;
+      diffReport.push({ collectionName: colDef.name + collectionSuffix, diff: colPlan.diff });
+    }
+
+    const hrCount = Object.keys(config.humanReadable).length;
+    printDiff(diffReport);
+    printStats(
+      'Push preview',
+      {
+        collections: collectionDefs.length,
+        created: previewNew,
+        updated: previewUpdate,
+        skipped: previewSkipped,
+        deleted: 0,
+        modeValues: 0,
+        humanReadable: hrCount,
+      },
+      '\n✅  Preview complete — no changes made to Figma.\n'
+    );
     return;
   }
 

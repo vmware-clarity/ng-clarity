@@ -1,13 +1,33 @@
 name: Figma Token Publish
 
 on:
-  # Auto-trigger: push tokens to production Figma whenever a release is cut
-  # (runs after the "Release" workflow merges to main and publishes packages).
-  workflow_run:
-    workflows: ['Release']
-    types: [completed]
+  # Called by release.yml (production push) and release-preview.yml (preview).
+  # Replaces the old workflow_run trigger so the connection is explicit and
+  # visible in the workflow graph.
+  workflow_call:
+    inputs:
+      dry_run:
+        description: 'Dry run (parse tokens but make no API calls)'
+        required: false
+        default: false
+        type: boolean
+      preview:
+        description: 'Preview mode (fetch current Figma state, print full diff, make no changes)'
+        required: false
+        default: false
+        type: boolean
+      branch_isolation:
+        description: 'Isolation mode for non-main branches'
+        required: false
+        default: 'collection'
+        type: string
+    secrets:
+      FIGMA_TOKEN:
+        required: false
+      FIGMA_FILE_KEY:
+        required: false
 
-  # Manual trigger: publish tokens from a specific branch for designer review.
+  # Manual trigger: publish or preview tokens from a specific branch.
   # When run from a non-main branch the tokens land in isolated collections
   # suffixed with the branch name, leaving the production file untouched.
   workflow_dispatch:
@@ -22,6 +42,11 @@ on:
           - branch
       dry_run:
         description: 'Dry run (parse tokens but make no API calls)'
+        required: false
+        default: false
+        type: boolean
+      preview:
+        description: 'Preview mode (fetch current Figma state, print full diff, make no changes)'
         required: false
         default: false
         type: boolean
@@ -41,10 +66,9 @@ jobs:
   publish-tokens:
     name: Publish Design Tokens to Figma
     runs-on: ubuntu-latest
-    # For workflow_run, only proceed if the triggering workflow succeeded
     if: >
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+      github.event_name == 'workflow_call'
 
     steps:
       - name: Checkout
@@ -84,8 +108,10 @@ jobs:
           FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
           FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
         run: |
-          DRY=${{ inputs.dry_run == true && '--dry-run' || '' }}
-          node scripts/figma/index.mjs $DRY
+          FLAGS=""
+          [[ "${{ inputs.dry_run }}" == "true" ]] && FLAGS="$FLAGS --dry-run"
+          [[ "${{ inputs.preview }}" == "true" ]] && FLAGS="$FLAGS --preview"
+          node scripts/figma/index.mjs $FLAGS
 
       # ── Dev branch push (isolated collections) ───────────────────────────────
       - name: Push tokens to Figma (dev branch — isolated)
@@ -95,8 +121,10 @@ jobs:
           FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
           FIGMA_BRANCH_MODE: ${{ inputs.branch_isolation || 'collection' }}
         run: |
-          DRY=${{ inputs.dry_run == true && '--dry-run' || '' }}
-          node scripts/figma/index.mjs --branch "${{ steps.branch.outputs.name }}" $DRY
+          FLAGS="--branch ${{ steps.branch.outputs.name }}"
+          [[ "${{ inputs.dry_run }}" == "true" ]] && FLAGS="$FLAGS --dry-run"
+          [[ "${{ inputs.preview }}" == "true" ]] && FLAGS="$FLAGS --preview"
+          node scripts/figma/index.mjs $FLAGS
 
       # ── Summary ──────────────────────────────────────────────────────────────
       - name: Write job summary
@@ -105,6 +133,7 @@ jobs:
           IS_MAIN: ${{ steps.branch.outputs.is_main }}
           ISOLATION: ${{ inputs.branch_isolation || 'collection' }}
           DRY_RUN: ${{ inputs.dry_run || false }}
+          PREVIEW: ${{ inputs.preview || false }}
           EVENT: ${{ github.event_name }}
           BRANCH: ${{ github.ref_name }}
         run: |
@@ -117,6 +146,7 @@ jobs:
           | Production push | \`$( [ "$IS_MAIN" = "true" ] && echo yes || echo "no (isolated)" )\` |
           | Isolation mode | \`$ISOLATION\` |
           | Dry run | \`$DRY_RUN\` |
+          | Preview | \`$PREVIEW\` |
           | Triggered by | \`$EVENT\` |
 
           Design tokens from \`dist/clr-ui/clr-ui.css\` were published to Figma.

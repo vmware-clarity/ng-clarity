@@ -17,6 +17,7 @@ import { inferType, resolveValue } from './value-converters.mjs';
 import { detectChanges, hasVariableChanged, buildReverseIdMap } from './variable-diff.mjs';
 import { cssNameToFigmaName, figmaNameToCssName } from '../util/naming.mjs';
 import { buildLookupMaps } from '../util/figma-response.mjs';
+import { nextTempId } from '../util/temp-id.mjs';
 
 /**
  * @typedef {{ field: string, from: string, to: string }} FieldChange
@@ -50,10 +51,9 @@ import { buildLookupMaps } from '../util/figma-response.mjs';
  * @param {Map<string, any>} p.existingVarByName
  * @param {Set<string>} p.deletedVarIds  Mutated: receives the deleted ID on type mismatch.
  * @param {any[]} p.payloadVars          Mutated: receives the DELETE entry on type mismatch.
- * @param {() => string} p.tempId
  * @returns {{ varId: string, isUpdate: boolean, isRetype: boolean, existingVar: any, prevType: string|undefined }}
  */
-function resolveVariableId({ figmaName, resolvedType, existingVarByName, deletedVarIds, payloadVars, tempId }) {
+function resolveVariableId({ figmaName, resolvedType, existingVarByName, deletedVarIds, payloadVars }) {
   const existingVar = existingVarByName.get(figmaName);
   const prevType = existingVar?.resolvedType;
   const isRetype = !!(existingVar && prevType !== resolvedType);
@@ -64,7 +64,7 @@ function resolveVariableId({ figmaName, resolvedType, existingVarByName, deleted
   }
 
   const isUpdate = !!(existingVar && !deletedVarIds.has(existingVar.id));
-  const varId = isUpdate ? existingVar.id : tempId();
+  const varId = isUpdate ? existingVar.id : nextTempId();
 
   return { varId, isUpdate, isRetype, existingVar, prevType };
 }
@@ -86,7 +86,6 @@ function resolveVariableId({ figmaName, resolvedType, existingVarByName, deleted
  * @param {Map<string, any>} p.existingVarByName
  * @param {Set<string>} p.deletedVarIds  Mutated: receives the deleted ID if applicable.
  * @param {any[]} p.payloadVars          Mutated: receives the DELETE + CREATE/UPDATE entry.
- * @param {() => string} p.tempId
  * @returns {{ varId: string, isUpdate: boolean, diffEntry: DiffEntry }}
  */
 function planVariableCreateOrUpdate({
@@ -99,7 +98,6 @@ function planVariableCreateOrUpdate({
   existingVarByName,
   deletedVarIds,
   payloadVars,
-  tempId,
 }) {
   const { varId, isUpdate, isRetype, prevType } = resolveVariableId({
     figmaName,
@@ -107,7 +105,6 @@ function planVariableCreateOrUpdate({
     existingVarByName,
     deletedVarIds,
     payloadVars,
-    tempId,
   });
 
   payloadVars.push({
@@ -171,8 +168,6 @@ export function populateIdMapFromExisting(existingVars, idMap) {
  * @param {import('./id-map.mjs').IdMap} params.idMap Mutated in place.
  * @param {import('./token-rules.mjs').createTokenRules extends (...a: any) => infer R ? R : never} params.rules
  * @param {((name: string) => string | undefined) | null} [params.varLookup]
- * @param {() => string} params.tempId Shared temp-ID generator — must be shared across all
- *   collection plan calls in a single push run to guarantee uniqueness.
  * @returns {{
  *   payloadCollections: any[],
  *   payloadModes: any[],
@@ -192,7 +187,6 @@ export function buildCollectionPlan({
   idMap,
   rules,
   varLookup = null,
-  tempId,
 }) {
   const { isExcluded, resolveFigmaScopes, buildCodeSyntax } = rules;
 
@@ -214,7 +208,7 @@ export function buildCollectionPlan({
 
   const colName = colDef.name + collectionSuffix;
   const existingCol = existingCollByName.get(colName);
-  const colId = existingCol ? existingCol.id : tempId();
+  const colId = existingCol ? existingCol.id : nextTempId();
   const isNewCol = !existingCol;
 
   payloadCollections.push({ action: isNewCol ? 'CREATE' : 'UPDATE', id: colId, name: colName });
@@ -228,7 +222,7 @@ export function buildCollectionPlan({
     if (existingModeId) {
       modeIds.push(existingModeId);
     } else {
-      const newModeId = tempId();
+      const newModeId = nextTempId();
       modeIds.push(newModeId);
       payloadModes.push({
         action: 'CREATE',
@@ -281,7 +275,6 @@ export function buildCollectionPlan({
         existingVarByName,
         deletedVarIds,
         payloadVars,
-        tempId,
       });
 
       if (isUpdate) {
@@ -353,7 +346,6 @@ export function buildCollectionPlan({
         existingVarByName,
         deletedVarIds,
         payloadVars,
-        tempId,
       });
 
       idMap.set(cssName, varId, { type: resolvedType });
@@ -513,9 +505,6 @@ export function buildPushPlan({
 
   populateIdMapFromExisting(existingVars, idMap);
 
-  const tempIdCounter = { n: 0 };
-  const tempId = () => `temp-${++tempIdCounter.n}`;
-
   const payloadCollections = [];
   const payloadModes = [];
   const payloadVars = [];
@@ -535,7 +524,6 @@ export function buildPushPlan({
       idMap,
       rules,
       varLookup,
-      tempId,
     });
 
     payloadCollections.push(...colPlan.payloadCollections);

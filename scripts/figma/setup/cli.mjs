@@ -18,10 +18,14 @@ const DEFAULT_EXTRACT_FILE = 'figma-tokens.extract.json';
  * Parse the supported CLI flags.
  *
  * @param {string[]} [argv] Defaults to process.argv.
- * @returns {{ dryRun: boolean, extractMode: boolean, extractFile: string | null, branchName: string | undefined }}
+ * @returns {{ dryRun: boolean, previewMode: boolean, extractMode: boolean, extractFile: string | null, branchName: string | undefined }}
  */
 export function parseCliArgs(argv = process.argv) {
   const dryRun = argv.includes('--dry-run');
+
+  // Preview: fetch current Figma state, compute a full variable diff, then exit
+  // without pushing. Requires FIGMA_TOKEN and FIGMA_FILE_KEY (unlike --dry-run).
+  const previewMode = argv.includes('--preview');
 
   const extractIdx = argv.indexOf('--extract');
   const extractMode = extractIdx !== -1;
@@ -40,5 +44,5 @@ export function parseCliArgs(argv = process.argv) {
     process.exit(1);
   }
 
-  return { dryRun, extractMode, extractFile, branchName };
+  return { dryRun, previewMode, extractMode, extractFile, branchName };
 }

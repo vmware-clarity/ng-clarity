@@ -23,6 +23,11 @@ jobs:
         run: npm run test
       - name: Public Api Check
         run: npm run public-api:check
+      - name: Preview Figma Token Changes
+        env:
+          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+          FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
+        run: npm run figma:push:preview
       - name: Preview Release
         env:
           BD_ACCESS_TOKEN: ${{ secrets.BD_ACCESS_TOKEN }}
