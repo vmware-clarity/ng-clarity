@@ -79,6 +79,7 @@ import { CellCoordinates, KeyNavigationGridController } from './utils/key-naviga
   host: {
     '[class.datagrid-host]': 'true',
     '[class.datagrid-detail-open]': 'detailService.isOpen',
+    '[class.datagrid-detail-overlay]': 'detailService.detailWidth === 100',
     '[class.datagrid-virtual-scroll]': '!!virtualScroll',
   },
   standalone: false,

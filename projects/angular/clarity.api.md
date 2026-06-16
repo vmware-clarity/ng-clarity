@@ -2381,9 +2381,9 @@ export class ClrDatagridDetail {
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     detailService: DetailService;
-    set detailWidth(value: number);
     // (undocumented)
     get detailWidth(): number;
+    set detailWidth(value: number);
     // (undocumented)
     header: ClrDatagridDetailHeader;
     // (undocumented)

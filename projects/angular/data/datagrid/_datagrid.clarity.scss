@@ -1257,6 +1257,10 @@
   }
 
   .datagrid-detail-open {
+    &:has(.datagrid-detail-pane.datagrid-detail-custom-width) .datagrid-inner-wrapper {
+      min-width: initial;
+    }
+
     & > .datagrid-outer-wrapper > .datagrid-inner-wrapper {
       div.datagrid-table {
         /**
@@ -1348,7 +1352,6 @@
     background: datagrid-variables.$clr-datagrid-detail-pane-bg-color;
     overflow: hidden;
     display: block;
-    flex-grow: 2;
   }
 
   .datagrid-detail-pane-content {

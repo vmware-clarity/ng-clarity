@@ -12,6 +12,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable()
 export class DetailService {
   id: string;
+  detailWidth = 66;
 
   private preventScroll = false;
   private toggleState = false;

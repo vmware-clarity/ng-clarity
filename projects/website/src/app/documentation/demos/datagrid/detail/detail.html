@@ -214,6 +214,11 @@
   <li>Accepts a number between <strong>0</strong> and <strong>100</strong> (inclusive).</li>
   <li>Values below 0 are clamped to 0; values above 100 are clamped to 100.</li>
   <li>
+    <strong>Depending on the datagrid width values above certain percentage will have diminishing returns.</strong>
+    The control column and the actions still will be visible up to 99%. At 100% the details will stretch over entire
+    datagrid.
+  </li>
+  <li>
     Setting <code cds-text="code">null</code> or <code cds-text="code">undefined</code> restores the default of 66.
   </li>
 </ul>
@@ -228,7 +233,7 @@
   <p class="card-block" cds-layout="m-t:none">
     <clr-range-container cds-layout="m-t:none" [clrRangeHasProgress]="true">
       <label>Detail Pane Width: <strong>{{ detailWidth }}%</strong></label>
-      <input type="range" clrRange id="widthSlider" min="0" max="100" step="5" [(ngModel)]="detailWidth" />
+      <input type="range" clrRange id="widthSlider" min="0" max="100" step="2" [(ngModel)]="detailWidth" />
     </clr-range-container>
   </p>
 </div>
