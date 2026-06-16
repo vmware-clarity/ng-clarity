@@ -460,11 +460,11 @@ export class ClrDatagridDetail {
     // (undocumented)
     get isCustomWidth(): boolean;
     // (undocumented)
-    get width(): number;
-    // (undocumented)
     get label(): string;
     // (undocumented)
     get labelledBy(): string;
+    // (undocumented)
+    get width(): number;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": { "alias": "clrDetailAriaLabelledBy"; "required": false; }; "ariaLabel": { "alias": "clrDetailAriaLabel"; "required": false; }; "detailWidth": { "alias": "clrDetailWidth"; "required": false; }; }, {}, ["header"], ["*"], false, never>;
     // (undocumented)
@@ -1692,7 +1692,7 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1052:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1053:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 

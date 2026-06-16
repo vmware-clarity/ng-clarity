@@ -2391,11 +2391,11 @@ export class ClrDatagridDetail {
     // (undocumented)
     get isCustomWidth(): boolean;
     // (undocumented)
-    get width(): number;
-    // (undocumented)
     get label(): string;
     // (undocumented)
     get labelledBy(): string;
+    // (undocumented)
+    get width(): number;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": { "alias": "clrDetailAriaLabelledBy"; "required": false; }; "ariaLabel": { "alias": "clrDetailAriaLabel"; "required": false; }; "detailWidth": { "alias": "clrDetailWidth"; "required": false; }; }, {}, ["header"], ["*"], false, never>;
     // (undocumented)
