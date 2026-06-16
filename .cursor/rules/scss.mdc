@@ -1,0 +1,16 @@
+---
+description: SCSS styling conventions for Clarity components
+globs: "**/*.scss"
+---
+
+# SCSS Conventions
+
+- Styles mixin file: `_component.clarity.scss` — always wrapped in `@include mixins.exports('component.clarity') { ... }`.
+- Shared/reusable mixins file: `_mixins.component.scss` — used when a mixin is consumed by multiple components (e.g., `_mixins.collapsible-panel.scss` consumed by accordion and stepper).
+- Properties file: `_properties.component.scss` — defines CSS custom properties using design tokens, wrapped in `@include mixins.exports('component.properties')`.
+- Variables file: `_variables.component.scss` — maps SCSS `$clr-*` variables to `var(--clr-*, fallback)` with `!default`.
+- Use `@if`/`@else` control flow blocks, not the Sass `if()` function (IDE language servers don't support the modern `if(sass(...))` syntax).
+- Only use `rem` and `%` sizes; the only exception is `1px` borders.
+- Do not hardcode colors — use SCSS variables from the token system.
+- Keep CSS selectors flat — try not to exceed 2 levels (`.parent .child`).
+- Style components via CSS class names, not element tag selectors. Use `host: { '[class.clr-component]': 'true' }` and target `.clr-component` in SCSS.
