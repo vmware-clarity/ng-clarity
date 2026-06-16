@@ -17,7 +17,7 @@ import { User } from '../inventory/user';
   standalone: false,
 })
 export class DatagridDetailDemo implements AfterViewInit {
-  _detailWidth: number = null;
+  detailWidth: number = null;
   users: User[];
   selection: User[] = [];
   singleSelection: User[] = [];
@@ -39,14 +39,6 @@ export class DatagridDetailDemo implements AfterViewInit {
   }
   set preState(value: any) {
     this._preState = value;
-    this.cdr.detectChanges();
-  }
-
-  get detailWidth() {
-    return this._detailWidth;
-  }
-  set detailWidth(value: number) {
-    this._detailWidth = value;
     this.cdr.detectChanges();
   }
 

@@ -34,45 +34,55 @@ export default function (): void {
       describe('clrDetailWidth', () => {
         it('should have a default width of 66', () => {
           expect(context.clarityDirective.detailWidth).toBe(66);
-        });
-
-        it('should apply the default width as an inline style on the host element', () => {
           expect(context.clarityElement.style.width).toBe('66%');
+          expect(context.clarityElement.classList).not.toContain('datagrid-detail-custom-width');
         });
 
         it('should accept a valid percentage value', () => {
           context.testComponent.detailWidth = 50;
           context.detectChanges();
+
           expect(context.clarityDirective.detailWidth).toBe(50);
           expect(context.clarityElement.style.width).toBe('50%');
+          expect(context.clarityElement.classList).toContain('datagrid-detail-custom-width');
         });
 
         it('should clamp values below 0 to 0', () => {
           context.testComponent.detailWidth = -10;
           context.detectChanges();
+
           expect(context.clarityDirective.detailWidth).toBe(0);
           expect(context.clarityElement.style.width).toBe('0%');
+          expect(context.clarityElement.classList).toContain('datagrid-detail-custom-width');
         });
 
         it('should clamp values above 100 to 100', () => {
           context.testComponent.detailWidth = 150;
           context.detectChanges();
+
           expect(context.clarityDirective.detailWidth).toBe(100);
-          expect(context.clarityElement.style.width).toBe('100%');
+          // At 100% the inline style is intentionally absent so the CSS overlay rule takes over.
+          expect(context.clarityElement.style.width).toBe('');
+          expect(context.clarityElement.classList).toContain('datagrid-detail-custom-width');
         });
 
         it('should accept the boundary value 0', () => {
           context.testComponent.detailWidth = 0;
           context.detectChanges();
+
           expect(context.clarityDirective.detailWidth).toBe(0);
           expect(context.clarityElement.style.width).toBe('0%');
+          expect(context.clarityElement.classList).toContain('datagrid-detail-custom-width');
         });
 
-        it('should accept the boundary value 100', () => {
+        it('should accept the boundary value 100 without setting an inline style', () => {
           context.testComponent.detailWidth = 100;
           context.detectChanges();
+
           expect(context.clarityDirective.detailWidth).toBe(100);
-          expect(context.clarityElement.style.width).toBe('100%');
+          // At 100% the inline style is intentionally absent so the CSS overlay rule takes over.
+          expect(context.clarityElement.style.width).toBe('');
+          expect(context.clarityElement.classList).toContain('datagrid-detail-custom-width');
         });
 
         it('should reset to the default (66) when set to null', () => {
@@ -80,8 +90,10 @@ export default function (): void {
           context.detectChanges();
           context.testComponent.detailWidth = null;
           context.detectChanges();
+
           expect(context.clarityDirective.detailWidth).toBe(66);
           expect(context.clarityElement.style.width).toBe('66%');
+          expect(context.clarityElement.classList).not.toContain('datagrid-detail-custom-width');
         });
 
         it('should reset to the default (66) when set to undefined', () => {
@@ -89,18 +101,24 @@ export default function (): void {
           context.detectChanges();
           context.testComponent.detailWidth = undefined;
           context.detectChanges();
+
           expect(context.clarityDirective.detailWidth).toBe(66);
           expect(context.clarityElement.style.width).toBe('66%');
+          expect(context.clarityElement.classList).not.toContain('datagrid-detail-custom-width');
         });
 
         it('should update the inline style when the input value changes', () => {
           context.testComponent.detailWidth = 30;
           context.detectChanges();
+
           expect(context.clarityElement.style.width).toBe('30%');
+          expect(context.clarityElement.classList).toContain('datagrid-detail-custom-width');
 
           context.testComponent.detailWidth = 80;
           context.detectChanges();
+
           expect(context.clarityElement.style.width).toBe('80%');
+          expect(context.clarityElement.classList).toContain('datagrid-detail-custom-width');
         });
       });
     });

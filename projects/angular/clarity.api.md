@@ -2086,6 +2086,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     _fixedColumnTemplate: TemplateRef<any>;
     // (undocumented)
     set identityFn(value: ClrDatagridItemsIdentityFunction<T>);
+    // (undocumented)
+    get isDetailOverlay(): boolean;
     // Warning: (ae-forgotten-export) The symbol "Items" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
@@ -2386,6 +2388,10 @@ export class ClrDatagridDetail {
     set detailWidth(value: number);
     // (undocumented)
     header: ClrDatagridDetailHeader;
+    // (undocumented)
+    get isCustomWidth(): boolean;
+    // (undocumented)
+    get width(): number;
     // (undocumented)
     get label(): string;
     // (undocumented)

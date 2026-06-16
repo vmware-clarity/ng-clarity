@@ -41,7 +41,7 @@ import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType, selectionTypeAttribute } from './enums/selection-type';
 import { ClrDatagridStateInterface } from './interfaces/state.interface';
 import { ColumnsService } from './providers/columns.service';
-import { DetailService } from './providers/detail.service';
+import { DetailService, MAX_DETAIL_WIDTH } from './providers/detail.service';
 import { DisplayModeService } from './providers/display-mode.service';
 import { FiltersProvider } from './providers/filters';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
@@ -79,7 +79,7 @@ import { CellCoordinates, KeyNavigationGridController } from './utils/key-naviga
   host: {
     '[class.datagrid-host]': 'true',
     '[class.datagrid-detail-open]': 'detailService.isOpen',
-    '[class.datagrid-detail-overlay]': 'detailService.detailWidth === 100',
+    '[class.datagrid-detail-overlay]': 'isDetailOverlay',
     '[class.datagrid-virtual-scroll]': '!!virtualScroll',
   },
   standalone: false,
@@ -276,6 +276,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   get virtualScroll(): ClrDatagridVirtualScrollDirective<any> {
     return this._virtualScroll?.get(0);
+  }
+
+  get isDetailOverlay(): boolean {
+    return this.detailService.detailWidth === MAX_DETAIL_WIDTH;
   }
 
   ngAfterContentInit() {
