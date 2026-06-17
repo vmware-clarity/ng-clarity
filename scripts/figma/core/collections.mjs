@@ -22,7 +22,7 @@
  * @property {string[]} modes Mode names; index 0 = default/base.
  * @property {(modeIndex: number) => Map<string, string>} source Variable values for a mode.
  * @property {Map<string, string> | undefined} [humanReadableEntries]
- *   Present only on humanReadable collections. Maps display name → CSS variable name.
+ *   Present only on collections that carry a humanReadable map. Maps display name → CSS variable name.
  *   When present the planner iterates this map instead of the CSS source.
  */
 
@@ -49,11 +49,9 @@ const SOURCE_KEY = { root: 'rootVars', dark: 'darkVars', compact: 'compactVars' 
  *
  * @param {import('./config.mjs').CollectionConfig[]} collectionConfigs
  * @param {ModeVars} modeVars
- * @param {Record<string, string>} [humanReadableMap]
- *   The top-level `humanReadable` map from the config (CSS var name → display name).
  * @returns {CollectionDef[]}
  */
-export function buildCollectionDefs(collectionConfigs, modeVars, humanReadableMap = {}) {
+export function buildCollectionDefs(collectionConfigs, modeVars) {
   return collectionConfigs.map(({ name, filter, modes, humanReadable }) => {
     /** @type {CollectionDef} */
     const def = {
@@ -65,7 +63,7 @@ export function buildCollectionDefs(collectionConfigs, modeVars, humanReadableMa
     };
 
     if (humanReadable) {
-      def.humanReadableEntries = new Map(Object.entries(humanReadableMap));
+      def.humanReadableEntries = new Map(Object.entries(humanReadable));
     }
 
     return def;

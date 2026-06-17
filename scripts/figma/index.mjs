@@ -120,7 +120,7 @@ async function main() {
   }
   const cssText = fs.readFileSync(CSS_FILE, 'utf8');
   const modeVars = resolveModeVars(parseCssBlocks(cssText));
-  const collectionDefs = buildCollectionDefs(config.collections, modeVars, config.humanReadable);
+  const collectionDefs = buildCollectionDefs(config.collections, modeVars);
 
   // ── Dry-run / extract: build full plan and report, then exit ───────────────
   if (dryRun || extractMode) {
@@ -137,7 +137,10 @@ async function main() {
     });
 
     const { payloadModeValues, deletedVarIds, stats } = plan;
-    const hrCount = Object.keys(config.humanReadable).length;
+    const hrCount = config.collections.reduce(
+      (n, col) => n + (col.humanReadable ? Object.keys(col.humanReadable).length : 0),
+      0
+    );
     printStats('Token plan', {
       collections: collectionDefs.length,
       created: stats.new,
@@ -209,7 +212,10 @@ async function main() {
       diffReport.push({ collectionName: colDef.name + collectionSuffix, diff: colPlan.diff });
     }
 
-    const hrCount = Object.keys(config.humanReadable).length;
+    const hrCount = config.collections.reduce(
+      (n, col) => n + (col.humanReadable ? Object.keys(col.humanReadable).length : 0),
+      0
+    );
     printDiff(diffReport);
     printStats(
       'Push preview',
@@ -246,7 +252,10 @@ async function main() {
   printDiff(diffReport);
 
   // ── Summary ────────────────────────────────────────────────────────────────
-  const hrCount = Object.keys(config.humanReadable).length;
+  const hrCount = config.collections.reduce(
+    (n, col) => n + (col.humanReadable ? Object.keys(col.humanReadable).length : 0),
+    0
+  );
   printStats(
     'Push summary',
     {

@@ -38,9 +38,9 @@ const DEFAULT_CODE_SYNTAX = { WEB: 'var(${name})', ANDROID: '@clr/${kebab}', iOS
  * @property {string} name Collection display name shown in Figma.
  * @property {CollectionFilterConfig} filter Which CSS tokens belong to this collection.
  * @property {CollectionModeConfig[]} modes Mode list; index 0 is the default/base mode.
- * @property {boolean} [humanReadable] When true this collection is populated from the
- *   top-level `humanReadable` map rather than CSS token scanning. CSS `filter.include`
- *   may be empty for such collections.
+ * @property {Record<string, string>} [humanReadable] When present this collection is populated
+ *   from these entries (display name → CSS var) rather than CSS token scanning.
+ *   CSS `filter.include` may be empty for such collections.
  */
 
 /**
@@ -50,7 +50,6 @@ const DEFAULT_CODE_SYNTAX = { WEB: 'var(${name})', ANDROID: '@clr/${kebab}', iOS
  * @property {Set<string>} exclusionExact Lowercased exact token names to exclude.
  * @property {Array<{pattern: string, scopes: string[]}>} scopeRules Ordered scope rules; first match wins.
  * @property {Record<string, string>} codeSyntaxTemplates Platform → template string.
- * @property {Record<string, string>} humanReadable Human-readable display name → CSS variable name map.
  */
 
 const VALID_SOURCES = new Set(['root', 'dark', 'compact']);
@@ -69,7 +68,9 @@ export function loadConfig(configPath) {
       throw new Error(`collections[${i}]: "name" is required`);
     }
 
-    if (!col.humanReadable && (!Array.isArray(col.filter?.include) || col.filter.include.length === 0)) {
+    const isHumanReadable = col.humanReadable && typeof col.humanReadable === 'object';
+
+    if (!isHumanReadable && (!Array.isArray(col.filter?.include) || col.filter.include.length === 0)) {
       throw new Error(`collections[${i}] ("${col.name}"): filter.include must be a non-empty array`);
     }
 
@@ -84,11 +85,30 @@ export function loadConfig(configPath) {
         );
       }
     }
+
+    // Strip _comment and other meta keys, then validate values are CSS custom properties.
+    let humanReadable;
+    if (isHumanReadable) {
+      humanReadable = /** @type {Record<string, string>} */ (
+        Object.fromEntries(Object.entries(col.humanReadable).filter(([k]) => !k.startsWith('_')))
+      );
+
+      // Values are CSS custom-property names; a typo without the "--" prefix would
+      // silently produce zero aliases, so fail loudly instead.
+      for (const [displayName, cssVar] of Object.entries(humanReadable)) {
+        if (!cssVar.startsWith('--')) {
+          throw new Error(
+            `collections[${i}] ("${col.name}") humanReadable["${displayName}"] value "${cssVar}" must start with "--" (CSS custom property name).`
+          );
+        }
+      }
+    }
+
     return /** @type {CollectionConfig} */ ({
       name: col.name,
       filter: { include: col.filter.include, exclude: col.filter.exclude ?? [] },
       modes: col.modes.map(m => ({ name: m.name, source: m.source })),
-      ...(col.humanReadable ? { humanReadable: true } : {}),
+      ...(humanReadable ? { humanReadable } : {}),
     });
   });
 
@@ -102,19 +122,5 @@ export function loadConfig(configPath) {
     return Object.fromEntries(Object.entries(raw).filter(([k]) => !k.startsWith('_')));
   })();
 
-  // Strip _comment and other non-token meta keys before validation.
-  const humanReadable = /** @type {Record<string, string>} */ (
-    Object.fromEntries(Object.entries(config.humanReadable ?? {}).filter(([k]) => !k.startsWith('_')))
-  );
-  // Values are CSS custom-property names; a typo without the "--" prefix would
-  // silently produce zero aliases, so fail loudly instead.
-  for (const [displayName, cssVar] of Object.entries(humanReadable)) {
-    if (!cssVar.startsWith('--')) {
-      throw new Error(
-        `humanReadable["${displayName}"] value "${cssVar}" must start with "--" (CSS custom property name).`
-      );
-    }
-  }
-
-  return { collections, exclusionPatterns, exclusionExact, scopeRules, codeSyntaxTemplates, humanReadable };
+  return { collections, exclusionPatterns, exclusionExact, scopeRules, codeSyntaxTemplates };
 }

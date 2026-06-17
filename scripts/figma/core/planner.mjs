@@ -164,7 +164,8 @@ export function populateIdMapFromExisting(existingVars, idMap) {
  * @param {string} params.collectionSuffix Branch isolation suffix (e.g. " [dev]").
  * @param {Map<string, any>} params.existingCollByName Map from collection name → Figma collection object.
  * @param {Array<{modeId: string, name: string, collectionId: string}>} params.existingModes
- * @param {Map<string, any>} params.existingVarByName Map from Figma variable name → variable object.
+ * @param {Map<string, any>} params.existingVarByName Map from Figma variable name → variable object (globally unique names only; used by regular collections).
+ * @param {Map<string, Map<string, any>>} params.varsByColId Per-collection variable map used by humanReadable collections to avoid name-collision with sibling collections.
  * @param {import('./id-map.mjs').IdMap} params.idMap Mutated in place.
  * @param {import('./token-rules.mjs').createTokenRules extends (...a: any) => infer R ? R : never} params.rules
  * @param {((name: string) => string | undefined) | null} [params.varLookup]
@@ -184,6 +185,7 @@ export function buildCollectionPlan({
   existingCollByName,
   existingModes,
   existingVarByName,
+  varsByColId = new Map(),
   idMap,
   rules,
   varLookup = null,
@@ -240,6 +242,13 @@ export function buildCollectionPlan({
     const modeIdToName = new Map(modeIds.map((id, i) => [id, colDef.modes[i]]));
     const reverseIdMap = buildReverseIdMap(idMap);
 
+    // Scope variable lookups to this collection so that identical display names
+    // in sibling humanReadable collections don't collide.
+    // varsByColId is keyed by collection ID and preserves every variable
+    // independently — unlike the global existingVarByName map which stores
+    // only the last variable per name (last-write-wins across collections).
+    const colVarByName = varsByColId.get(colId) ?? new Map();
+
     for (const [displayName, cssName] of colDef.humanReadableEntries) {
       if (isExcluded(cssName)) {
         continue;
@@ -247,8 +256,14 @@ export function buildCollectionPlan({
 
       const refId = idMap.get(cssName);
       if (!refId) {
+        // Referenced token is not in idMap — usually a typo in the config or a
+        // token that was excluded/never published.  Warn loudly so the empty
+        // alias is not silently swallowed (which makes the whole collection
+        // look "ignored"), and count it as skipped.
+        console.warn(`    ⚠️   humanReadable "${displayName}" → ${cssName}: referenced token not found; skipping.`);
+        statsSkipped++;
         continue;
-      } // Referenced token not yet in idMap; skip
+      }
 
       const scopes = resolveFigmaScopes(cssName);
       const codeSyntax = buildCodeSyntax(cssName);
@@ -257,7 +272,7 @@ export function buildCollectionPlan({
       const description = `Alias of: ${cssName}`;
 
       // Skip if the variable already exists with the same type and identical values.
-      const existingHrVar = existingVarByName.get(displayName);
+      const existingHrVar = colVarByName.get(displayName);
       if (existingHrVar && existingHrVar.resolvedType === resolvedType) {
         const newModeValues = modeIds.map(modeId => ({ modeId, value: aliasValue }));
         if (!hasVariableChanged(existingHrVar, { scopes, codeSyntax, description, newModeValues })) {
@@ -272,7 +287,7 @@ export function buildCollectionPlan({
         scopes,
         codeSyntax,
         description,
-        existingVarByName,
+        existingVarByName: colVarByName,
         deletedVarIds,
         payloadVars,
       });
@@ -498,10 +513,11 @@ export function buildPushPlan({
   rules,
   varLookup = null,
 }) {
-  const { collByName: existingCollByName, varByName: existingVarByName } = buildLookupMaps(
-    existingCollections,
-    existingVars
-  );
+  const {
+    collByName: existingCollByName,
+    varByName: existingVarByName,
+    varsByColId,
+  } = buildLookupMaps(existingCollections, existingVars);
 
   populateIdMapFromExisting(existingVars, idMap);
 
@@ -521,6 +537,7 @@ export function buildPushPlan({
       existingCollByName,
       existingModes,
       existingVarByName,
+      varsByColId,
       idMap,
       rules,
       varLookup,

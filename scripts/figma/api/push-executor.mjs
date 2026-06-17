@@ -69,10 +69,14 @@ export async function executePush({
 
   // Mutable lookup Maps rebuilt from each GET response so subsequent
   // collections always see the latest authoritative Figma state.
-  const { collByName: existingCollByName, varByName: existingVarByName } = buildLookupMaps(
-    existingCollections,
-    existingVars
-  );
+  const {
+    collByName: existingCollByName,
+    varByName: existingVarByName,
+    varsByColId: initialVarsByColId,
+  } = buildLookupMaps(existingCollections, existingVars);
+  // varsByColId is a per-collection variable map that survives re-assignment;
+  // declared as let so it can be replaced wholesale after each push.
+  let varsByColId = initialVarsByColId;
 
   let totalNew = 0;
   let totalUpdate = 0;
@@ -92,6 +96,7 @@ export async function executePush({
       existingCollByName,
       existingModes,
       existingVarByName,
+      varsByColId,
       idMap,
       rules,
       varLookup,
@@ -159,6 +164,8 @@ export async function executePush({
 
     existingModes.length = 0;
     existingModes.push(...freshModes);
+
+    ({ varsByColId } = buildLookupMaps(freshCollections, freshVars));
   }
 
   // ── Remove Figma's auto-created "Mode 1" from the collections we just pushed ─

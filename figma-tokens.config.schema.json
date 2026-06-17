@@ -21,18 +21,6 @@
       "minItems": 1,
       "items": { "$ref": "#/definitions/collection" }
     },
-    "humanReadable": {
-      "type": "object",
-      "description": "Map of designer display name (key) to CSS custom-property name (value, must start with '--'). Each entry publishes a VARIABLE_ALIAS in the humanReadable collection pointing at the corresponding semantic token. One CSS variable can appear as the value of multiple entries to expose it under several display names.",
-      "properties": {
-        "_comment": { "type": "string", "description": "Free-form note ignored by the loader." }
-      },
-      "additionalProperties": {
-        "type": "string",
-        "pattern": "^--",
-        "description": "CSS custom-property name the display-name key resolves to."
-      }
-    },
     "exclusions": {
       "type": "object",
       "description": "Tokens excluded from publishing.",
@@ -63,6 +51,18 @@
     }
   },
   "definitions": {
+    "humanReadableMap": {
+      "type": "object",
+      "description": "Map of designer display name (key) to CSS custom-property name (value, must start with '--'). One CSS variable can appear as the value of multiple entries to expose it under several display names.",
+      "properties": {
+        "_comment": { "type": "string", "description": "Free-form note ignored by the loader." }
+      },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^--",
+        "description": "CSS custom-property name the display-name key resolves to."
+      }
+    },
     "collection": {
       "type": "object",
       "additionalProperties": false,
@@ -74,8 +74,8 @@
           "description": "Collection display name shown in Figma."
         },
         "humanReadable": {
-          "type": "boolean",
-          "description": "When true, this collection is populated from the top-level humanReadable map instead of CSS token scanning. filter.include may be empty."
+          "$ref": "#/definitions/humanReadableMap",
+          "description": "When present, this collection is populated from these entries (display name → CSS var) instead of CSS token scanning. filter.include may be empty."
         },
         "filter": {
           "type": "object",
