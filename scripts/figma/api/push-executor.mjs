@@ -161,11 +161,14 @@ export async function executePush({
     existingModes.push(...freshModes);
   }
 
-  // ── Remove Figma's auto-created "Mode 1" from every new collection ─────────
+  // ── Remove Figma's auto-created "Mode 1" from the collections we just pushed ─
   // Figma silently appends a default "Mode 1" whenever a collection is created,
-  // even when we supply our own named modes in the same request.  Detect and
-  // delete every such stale mode now that all collections are live.
-  const defaultModes = existingModes.filter(m => m.name === 'Mode 1');
+  // even when we supply our own named modes in the same request.  Only target
+  // collections from this push run to avoid touching unrelated collections.
+  const pushedCollectionIds = new Set(
+    collectionDefs.map(def => existingCollByName.get(def.name + collectionSuffix)?.id).filter(Boolean)
+  );
+  const defaultModes = existingModes.filter(m => m.name === 'Mode 1' && pushedCollectionIds.has(m.collectionId));
   if (defaultModes.length > 0) {
     console.log(`\n  🧹  Removing ${defaultModes.length} auto-created "Mode 1" mode(s)…`);
     await figma.post(`/files/${effectiveFileKey}/variables`, {

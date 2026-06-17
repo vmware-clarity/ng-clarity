@@ -240,7 +240,7 @@ export function buildCollectionPlan({
     const modeIdToName = new Map(modeIds.map((id, i) => [id, colDef.modes[i]]));
     const reverseIdMap = buildReverseIdMap(idMap);
 
-    for (const [cssName, displayName] of colDef.humanReadableEntries) {
+    for (const [displayName, cssName] of colDef.humanReadableEntries) {
       if (isExcluded(cssName)) {
         continue;
       }

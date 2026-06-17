@@ -140,8 +140,21 @@
   ],
 
   "humanReadable": {
-    "_comment": "TODO(CDE-3113): MVP stub — only one friendly-named alias is published today. Add more CSS-var → display-name entries here as the designer-facing naming is agreed. Keys must be CSS custom-property names (start with '--').",
-    "--cds-alias-object-container-background": "Container Background"
+    "_comment": "TODO(CDE-3113): MVP stub — add more display-name → CSS-var entries here as the designer-facing naming is agreed. Keys are designer display names; values must be CSS custom-property names (start with '--').",
+    "Primary/Body text": "--cds-alias-typography-color-400",
+    "Primary/Body text - Disabled": "--cds-alias-typography-disabled",
+    "Primary/Link": "--cds-alias-typography-link-color",
+    "Container/App Background": "--cds-alias-object-app-background",
+    "Container/Container Background": "--cds-alias-object-container-background",
+    "Container/Container Background (Tinted)": "--cds-alias-object-container-background-tint",
+    "Container/Divider Border": "--cds-alias-object-container-border-color",
+    "Container/Modal Overlay": "--cds-alias-object-overlay-backdrop-background",
+    "Interactive Background": "--cds-alias-object-interaction-background",
+    "Interactive Text & Icon/Default": "--cds-alias-typography-color-400",
+    "Interactive Text & Icon/Placeholder": "--cds-alias-typography-color-200",
+    "Interactive Text & Icon/Hover": "--cds-alias-object-interaction-color-hover",
+    "Interactive Text & Icon/Active": "--cds-alias-object-interaction-color-active",
+    "Interactive Text & Icon/Selected": "--cds-alias-object-interaction-color-selected"
   },
 
   "exclusions": {

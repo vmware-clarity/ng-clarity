@@ -50,7 +50,7 @@ const DEFAULT_CODE_SYNTAX = { WEB: 'var(${name})', ANDROID: '@clr/${kebab}', iOS
  * @property {Set<string>} exclusionExact Lowercased exact token names to exclude.
  * @property {Array<{pattern: string, scopes: string[]}>} scopeRules Ordered scope rules; first match wins.
  * @property {Record<string, string>} codeSyntaxTemplates Platform → template string.
- * @property {Record<string, string>} humanReadable CSS variable name → human-readable display name map.
+ * @property {Record<string, string>} humanReadable Human-readable display name → CSS variable name map.
  */
 
 const VALID_SOURCES = new Set(['root', 'dark', 'compact']);
@@ -106,11 +106,13 @@ export function loadConfig(configPath) {
   const humanReadable = /** @type {Record<string, string>} */ (
     Object.fromEntries(Object.entries(config.humanReadable ?? {}).filter(([k]) => !k.startsWith('_')))
   );
-  // Keys are CSS custom-property names; a typo without the "--" prefix would
+  // Values are CSS custom-property names; a typo without the "--" prefix would
   // silently produce zero aliases, so fail loudly instead.
-  for (const key of Object.keys(humanReadable)) {
-    if (!key.startsWith('--')) {
-      throw new Error(`humanReadable key "${key}" must start with "--" (CSS custom property name).`);
+  for (const [displayName, cssVar] of Object.entries(humanReadable)) {
+    if (!cssVar.startsWith('--')) {
+      throw new Error(
+        `humanReadable["${displayName}"] value "${cssVar}" must start with "--" (CSS custom property name).`
+      );
     }
   }
 

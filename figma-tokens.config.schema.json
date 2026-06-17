@@ -23,11 +23,15 @@
     },
     "humanReadable": {
       "type": "object",
-      "description": "Map of CSS custom-property name (key, must start with '--') to a friendly Figma display name (value). Each entry publishes a VARIABLE_ALIAS pointing at the corresponding semantic token.",
-      "propertyNames": {
-        "anyOf": [{ "pattern": "^--" }, { "pattern": "^_" }]
+      "description": "Map of designer display name (key) to CSS custom-property name (value, must start with '--'). Each entry publishes a VARIABLE_ALIAS in the humanReadable collection pointing at the corresponding semantic token. One CSS variable can appear as the value of multiple entries to expose it under several display names.",
+      "properties": {
+        "_comment": { "type": "string", "description": "Free-form note ignored by the loader." }
       },
-      "additionalProperties": { "type": "string" }
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^--",
+        "description": "CSS custom-property name the display-name key resolves to."
+      }
     },
     "exclusions": {
       "type": "object",
