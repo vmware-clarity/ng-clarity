@@ -1259,6 +1259,11 @@
   .datagrid-detail-open {
     &:has(.datagrid-detail-pane.datagrid-detail-custom-width) .datagrid-inner-wrapper {
       min-width: initial;
+      width: initial;
+    }
+
+    .datagrid-detail-pane.datagrid-detail-custom-width {
+      flex-grow: 0;
     }
 
     & > .datagrid-outer-wrapper > .datagrid-inner-wrapper {
@@ -1304,6 +1309,10 @@
     .datagrid {
       border-top-right-radius: 0;
       border-right: none;
+    }
+
+    .datagrid-inner-wrapper {
+      width: 34%;
     }
 
     .datagrid-placeholder-container,
@@ -1352,6 +1361,7 @@
     background: datagrid-variables.$clr-datagrid-detail-pane-bg-color;
     overflow: hidden;
     display: block;
+    flex-grow: 2;
   }
 
   .datagrid-detail-pane-content {
