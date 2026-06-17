@@ -50,6 +50,9 @@ for (const story of stories) {
     }
 
     await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
+    // Wait for network to settle so Angular has finished its initial render cycle
+    // before capturing the screenshot. For a static storybook build this is near-instant.
+    await page.waitForLoadState('networkidle');
 
     const fullPage = takeFullPageScreenshot(componentParsed, storyName);
     const screenshotTarget = fullPage ? page : page.locator('body');

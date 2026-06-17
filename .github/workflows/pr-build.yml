@@ -5,6 +5,30 @@ concurrency:
   group: pr-build-${{github.event.pull_request.number}}
   cancel-in-progress: true
 jobs:
+  build-storybook:
+    name: Build Storybook
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts
+      - name: Build Storybook
+        run: npm run _build:storybook
+      - name: Upload Docs Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs
+          path: dist/docs/
+
   pr-build:
     name: PR Build
     timeout-minutes: 30
@@ -13,26 +37,22 @@ jobs:
       GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
+          cache: 'npm'
       - name: Install Dependencies
         run: npm ci --ignore-scripts
       - name: Lint
         run: npm run lint
       - name: Build
-        run: npm run build
+        run: npm run _build:without-storybook
       - name: Test
         run: npm run test
       - name: Public Api Check
         run: npm run public-api:check
-      - name: Upload Docs Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: docs
-          path: dist/docs/
       - name: Upload Website Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -46,7 +66,8 @@ jobs:
 
   pr-visual-regression-test:
     name: PR Visual Regression Test
-    timeout-minutes: 40
+    needs: build-storybook
+    timeout-minutes: 30
     # This job intentionally does not use the `ubuntu-latest` image.
     # An updated image could generate different snapshots, so we should explicitly update the image version.
     runs-on: ubuntu-24.04
@@ -61,17 +82,31 @@ jobs:
       CLARITY_VRT_DENSITY: ${{matrix.density}}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
+          cache: 'npm'
       - name: Install Dependencies
         run: npm ci --ignore-scripts
+      - name: Cache Playwright Browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{matrix.browser}}-${{hashFiles('package-lock.json')}}
       - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps ${{matrix.browser}}
-      - name: Build Storybook
-        run: npm run _build:storybook
+      - name: Install Playwright System Dependencies
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps ${{matrix.browser}}
+      - name: Download Docs Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs
+          path: dist/docs/
       - name: Update Visual Snapshots
         run: npx playwright test --update-snapshots
       - name: Collect Changes
