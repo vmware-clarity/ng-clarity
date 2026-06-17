@@ -21,7 +21,7 @@ export const FIGMA_API = 'https://api.figma.com/v1';
  * @param {{ baseUrl?: string }} [options]
  * @returns {{ get: (endpoint: string) => Promise<any>, post: (endpoint: string, body: unknown) => Promise<any> }}
  */
-export function createFigmaClient(token, { baseUrl = FIGMA_API } = {}) {
+export function createFigmaClient(token, figmaFileKey, { baseUrl = FIGMA_API } = {}) {
   /** Abort a single request if Figma does not respond within this window. */
   const TIMEOUT_MS = 30_000;
 
@@ -54,6 +54,14 @@ export function createFigmaClient(token, { baseUrl = FIGMA_API } = {}) {
     }
   }
 
+  async function getVariables() {
+    return get(`/files/${figmaFileKey}/variables/local`);
+  }
+
+  async function getBranches() {
+    return get(`/files/${figmaFileKey}/branches`);
+  }
+
   async function get(endpoint) {
     return withRetry(async () => {
       const res = await fetch(`${baseUrl}${endpoint}`, {
@@ -84,5 +92,5 @@ export function createFigmaClient(token, { baseUrl = FIGMA_API } = {}) {
     }, `POST ${endpoint}`);
   }
 
-  return { get, post };
+  return { getVariables, getBranches, get, post };
 }

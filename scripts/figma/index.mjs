@@ -71,7 +71,7 @@ async function main() {
   const { figmaToken, figmaFileKey, figmaBranchMode } = loadEnv({ extractMode });
   const config = loadConfig(CONFIG_PATH);
   const rules = createTokenRules(config);
-  const figma = createFigmaClient(figmaToken);
+  const figma = createFigmaClient(figmaToken, figmaFileKey);
 
   const modeLabel = dryRun ? ' (DRY RUN)' : previewMode ? ' (PREVIEW)' : '';
   console.log(
@@ -89,6 +89,7 @@ async function main() {
   if (!dryRun && !extractMode && !previewMode) {
     console.log('⬇️   Fetching existing Figma variables…');
     const existing = await figma.get(`/files/${figmaFileKey}/variables/local`);
+    // const existing = await figma.getVariables();
     ({ collections: existingCollections, vars: existingVars, modes: existingModes } = parseFigmaVarsResponse(existing));
   }
 
@@ -98,6 +99,7 @@ async function main() {
     if (figmaBranchMode === 'branch' && !dryRun) {
       // Target the Figma branch file key
       const branches = await figma.get(`/files/${figmaFileKey}/branches`);
+      // const branches = await figma.getBranches();
       const branch = branches.branches?.find(b => b.name.toLowerCase().includes(branchName.toLowerCase()));
       if (branch) {
         effectiveFileKey = branch.key;

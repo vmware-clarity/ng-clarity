@@ -65,10 +65,43 @@
       ]
     },
     {
-      "_comment": "Structural and sizing aliases — border-radius, border-width, shadow, interaction geometry, and typography metrics. The exclude list mirrors CDS Theme's colour sub-prefixes so the two collections are mutually exclusive. CLR Density must appear before this collection so typography var(--clr-base-*) aliases resolve correctly.",
+      "_comment": "Structural and sizing aliases for typography metrics. The exclude list mirrors CDS Theme's colour sub-prefixes so the two collections are mutually exclusive. CLR Density must appear before this collection so typography var(--clr-base-*) aliases resolve correctly.",
+      "name": "CDS Typography",
+      "filter": {
+        "include": ["--cds-alias-typography-"],
+        "exclude": [
+          "--cds-alias-object-border-width-",
+          "--cds-alias-object-interaction-background",
+          "--cds-alias-object-interaction-border-color",
+          "--cds-alias-object-interaction-color",
+          "--cds-alias-object-interaction-info-",
+          "--cds-alias-object-interaction-success-",
+          "--cds-alias-object-interaction-warning-",
+          "--cds-alias-object-interaction-danger-",
+          "--cds-alias-object-interaction-neutral-",
+          "--cds-alias-object-interaction-inverse-",
+          "--cds-alias-object-app-",
+          "--cds-alias-object-overlay-",
+          "--cds-alias-object-border-color",
+          "--cds-alias-object-container-",
+          "--cds-alias-object-opacity-",
+          "--cds-alias-typography-color-",
+          "--cds-alias-typography-link-",
+          "--cds-alias-typography-info-",
+          "--cds-alias-typography-success-",
+          "--cds-alias-typography-warning-",
+          "--cds-alias-typography-danger-",
+          "--cds-alias-typography-neutral-",
+          "--cds-alias-typography-disabled"
+        ]
+      },
+      "modes": [{ "name": "Value", "source": "root" }]
+    },
+    {
+      "_comment": "Structural and sizing aliases — border-radius, border-width, shadow, interaction geometry. The exclude list mirrors CDS Theme's colour sub-prefixes so the two collections are mutually exclusive. CLR Density must appear before this collection so typography var(--clr-base-*) aliases resolve correctly.",
       "name": "CDS Spacing",
       "filter": {
-        "include": ["--cds-alias-object-", "--cds-alias-typography-"],
+        "include": ["--cds-alias-object-"],
         "exclude": [
           "--cds-alias-object-border-width-",
           "--cds-alias-object-interaction-background",
@@ -99,7 +132,7 @@
     },
     {
       "_comment": "Friendly-named alias variables. Each entry in the top-level humanReadable map creates a VARIABLE_ALIAS that points to the corresponding semantic token, giving designers clean display names while preserving the live alias chain.",
-      "name": "Human Readable Tokens",
+      "name": "Colors",
       "humanReadable": true,
       "filter": { "include": [] },
       "modes": [{ "name": "Value", "source": "root" }]
@@ -172,12 +205,7 @@
     },
     {
       "_comment": "Border radius tokens",
-      "pattern": "*border-radius*",
-      "scopes": ["CORNER_RADIUS"]
-    },
-    {
-      "_comment": "Border radius short name (clr-global-borderradius, etc.)",
-      "pattern": "*borderradius*",
+      "pattern": "*(border-radius|borderradius)*",
       "scopes": ["CORNER_RADIUS"]
     },
     {
@@ -202,12 +230,7 @@
     },
     {
       "_comment": "Background color tokens",
-      "pattern": "*-background*",
-      "scopes": ["FRAME_FILL", "SHAPE_FILL"]
-    },
-    {
-      "_comment": "Background short name (bg)",
-      "pattern": "*-bg*",
+      "pattern": "*(-background*|-bg)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"]
     },
     {
@@ -217,22 +240,12 @@
     },
     {
       "_comment": "Stroke / border color tokens",
-      "pattern": "*-border-color*",
-      "scopes": ["STROKE_COLOR"]
-    },
-    {
-      "_comment": "Stroke / border color tokens",
-      "pattern": "*-viz-border*",
+      "pattern": "*(-border-color|-viz-border)*",
       "scopes": ["STROKE_COLOR"]
     },
     {
       "_comment": "Border-specific token names",
-      "pattern": "*-border-width*",
-      "scopes": ["STROKE_FLOAT"]
-    },
-    {
-      "_comment": "Border-specific token names",
-      "pattern": "*-stroke*",
+      "pattern": "*(-border-width|-stroke)*",
       "scopes": ["STROKE_FLOAT"]
     },
     {
@@ -244,16 +257,6 @@
       "_comment": "Generic color tokens (palette, status colours, etc.)",
       "pattern": "*-color*",
       "scopes": ["ALL_FILLS", "STROKE_COLOR", "EFFECT_COLOR"]
-    },
-    {
-      "_comment": "Global primitive colors",
-      "pattern": "--cds-global-color-*",
-      "scopes": ["ALL_FILLS", "STROKE_COLOR", "EFFECT_COLOR"]
-    },
-    {
-      "_comment": "Global spacing / layout tokens",
-      "pattern": "--cds-global-space*",
-      "scopes": ["GAP", "WIDTH_HEIGHT"]
     },
     {
       "_comment": "Global layout spacing tokens",

@@ -50,10 +50,10 @@ function figmaValuesEqual(a, b) {
   if ('r' in a) {
     return (
       'r' in b &&
-      Math.abs(a.r - b.r) < 1e-5 &&
-      Math.abs(a.g - b.g) < 1e-5 &&
-      Math.abs(a.b - b.b) < 1e-5 &&
-      Math.abs(a.a - b.a) < 1e-5
+      Math.abs(a.r - b.r) < 1e-2 &&
+      Math.abs(a.g - b.g) < 1e-2 &&
+      Math.abs(a.b - b.b) < 1e-2 &&
+      Math.abs(a.a - b.a) < 1e-2
     );
   }
 
