@@ -12,7 +12,6 @@
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 
 @include mixins.exports('forms.textarea') {
-  // @TODO Fix selectors when old forms are removed to allow better defaults
   .clr-textarea-wrapper {
     white-space: nowrap;
     display: flex;
@@ -36,12 +35,7 @@
 
     &.clr-focus,
     &:focus {
-      // TODO(CDE-863) - Remove outline mixin and convert this component to just use border-color to avoid the white
-      // outline in addition to the intended color on focus
-
-      @include mixins.include-slim-outline-style-form-fields();
-
-      outline-color: forms-variables.$clr-forms-focused-color;
+      outline: none;
       border-color: forms-variables.$clr-forms-focused-color;
     }
 
@@ -61,10 +55,6 @@
   .clr-error .clr-textarea {
     border-color: forms-variables.$clr-forms-invalid-color;
     outline-color: forms-variables.$clr-forms-invalid-color;
-  }
-
-  .clr-control-container textarea {
-    width: auto; // @TODO remove when removing old forms - forced 100% width by old forms
   }
 
   .clr-form-control.row .clr-textarea-wrapper {
