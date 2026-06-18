@@ -16,6 +16,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { loadEnv } from './env.mjs';
 import { loadConfig } from './config.mjs';
@@ -46,25 +47,34 @@ import { buildCollectionDefs } from '../core/collections.mjs';
  * @property {string} root
  */
 
+const paths = {
+  root: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..'),
+  get configPath() {
+    return path.join(this.root, 'figma-tokens.config.json');
+  },
+  get cssFile() {
+    return path.join(this.root, 'dist', 'clr-ui', 'clr-ui.css');
+  },
+};
+
 /**
  * Build the shared context object handed to the selected controller.
  *
- * @param {Object} params
- * @param {ReturnType<import('./cli.mjs').parseCliArgs>} params.cli Parsed CLI options.
- * @param {RunPaths} params.paths Absolute filesystem paths resolved by the entry point.
- * @returns {Promise<RunContext>}
+ * @param {ReturnType<import('./cli.mjs').parseCliArgs>} cli
+ * @returns {RunContext}
  */
-export async function buildRunContext({ cli, paths }) {
+export function buildRunContext(cli) {
+  if (!fs.existsSync(paths.cssFile)) {
+    console.error(`❌  ${paths.cssFile} not found. Run: npm run _build:ui`);
+    process.exit(1);
+  }
+
   const { extractMode, branchName, extractFile } = cli;
 
   const { figmaToken, figmaFileKey, figmaBranchMode } = loadEnv({ extractMode });
   const config = loadConfig(paths.configPath);
   const rules = createTokenRules(config);
 
-  if (!fs.existsSync(paths.cssFile)) {
-    console.error(`❌  ${paths.cssFile} not found. Run: npm run _build:ui`);
-    process.exit(1);
-  }
   const cssText = fs.readFileSync(paths.cssFile, 'utf8');
   const modeVars = resolveModeVars(parseCssBlocks(cssText));
   const collectionDefs = buildCollectionDefs(config.collections, modeVars);
@@ -80,7 +90,7 @@ export async function buildRunContext({ cli, paths }) {
     figmaBranchMode,
     config,
     rules,
-    varLookup: name => modeVars.rootVars.get(name),
+    varLookup: name => modeVars.root.get(name),
     collectionDefs,
     branchName,
     extractFile,

@@ -20,8 +20,12 @@ export const SELECTORS = {
   ROOT: ':where(:root, :host)',
   DARK: '[cds-theme~=dark]',
   COMPACT: '[clr-density=compact]',
-  BOTH_THEME: ':where(:root, :host), :where(:root, :host) [cds-theme]',
-  BOTH_DENSITY: ':where(:root, :host), :where(:root, :host) [clr-density]',
+  get BOTH_THEME() {
+    return `${this.ROOT}, ${this.ROOT} [cds-theme]`;
+  },
+  get BOTH_DENSITY() {
+    return `${this.ROOT}, ${this.ROOT} [clr-density]`;
+  },
 };
 
 /**
@@ -108,43 +112,50 @@ export function parseCssBlocks(css) {
 }
 
 /**
+ * Parsed CSS variable maps, keyed by mode name.
+ * Keys match the `CssModeSource` union used in `config.mjs` and `figma-tokens.config.json`.
+ *
+ * @typedef {{ root: Map<string, string>, dark: Map<string, string>, compact: Map<string, string> }} ModeVars
+ */
+
+/**
  * Resolve the canonical per-mode variable maps from parsed CSS blocks.
  *
  * Merges the shorthand dual-selector blocks (which apply to both modes equally)
  * into the base buckets without overwriting mode-specific declarations.
  *
  * @param {Map<string, Map<string, string>>} allBlocks
- * @returns {{ rootVars: Map<string, string>, darkVars: Map<string, string>, compactVars: Map<string, string> }}
+ * @returns {ModeVars}
  */
 export function resolveModeVars(allBlocks) {
-  const rootVars = allBlocks.get(SELECTORS.ROOT) ?? new Map();
+  const root = allBlocks.get(SELECTORS.ROOT) ?? new Map();
   // Primary dark overrides live in the bare [cds-theme~=dark] block (235 props).
-  const darkVars = new Map(allBlocks.get(SELECTORS.DARK) ?? []);
+  const dark = new Map(allBlocks.get(SELECTORS.DARK) ?? []);
 
   // Compact overrides live in [clr-density=compact].
-  const compactVars = new Map(allBlocks.get(SELECTORS.COMPACT) ?? []);
+  const compact = new Map(allBlocks.get(SELECTORS.COMPACT) ?? []);
 
   // Merge shorthand dual-selector blocks (these apply to both modes equally).
   // Only fills gaps — never overwrites mode-specific declarations.
-  const bothThemeVars = allBlocks.get(SELECTORS.BOTH_THEME) ?? new Map();
-  const bothDensityVars = allBlocks.get(SELECTORS.BOTH_DENSITY) ?? new Map();
+  const bothTheme = allBlocks.get(SELECTORS.BOTH_THEME) ?? new Map();
+  const bothDensity = allBlocks.get(SELECTORS.BOTH_DENSITY) ?? new Map();
 
-  for (const [k, v] of bothThemeVars) {
-    if (!rootVars.has(k)) {
-      rootVars.set(k, v);
+  for (const [k, v] of bothTheme) {
+    if (!root.has(k)) {
+      root.set(k, v);
     }
-    if (!darkVars.has(k)) {
-      darkVars.set(k, v);
+    if (!dark.has(k)) {
+      dark.set(k, v);
     }
   }
-  for (const [k, v] of bothDensityVars) {
-    if (!rootVars.has(k)) {
-      rootVars.set(k, v);
+  for (const [k, v] of bothDensity) {
+    if (!root.has(k)) {
+      root.set(k, v);
     }
-    if (!compactVars.has(k)) {
-      compactVars.set(k, v);
+    if (!compact.has(k)) {
+      compact.set(k, v);
     }
   }
 
-  return { rootVars, darkVars, compactVars };
+  return { root, dark, compact };
 }

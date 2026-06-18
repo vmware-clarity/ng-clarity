@@ -28,13 +28,6 @@
  *   When present the planner iterates this map instead of the CSS source.
  */
 
-/** @type {Record<import('./config.mjs').CssModeSource, keyof ModeVars>} */
-const SOURCE_KEY = { root: 'rootVars', dark: 'darkVars', compact: 'compactVars' };
-
-/**
- * @typedef {{ rootVars: Map<string, string>, darkVars: Map<string, string>, compactVars: Map<string, string> }} ModeVars
- */
-
 /**
  * Translate the config-driven collection definitions into the CollectionDef
  * objects required by the planner.
@@ -47,10 +40,12 @@ const SOURCE_KEY = { root: 'rootVars', dark: 'darkVars', compact: 'compactVars' 
  * map attached to their def. Their filter always returns false (no CSS tokens are
  * scanned directly); the planner populates them from the entries map instead.
  *
- * Each mode's `source` key maps to the matching parsed CSS variable map.
+ * Each mode's `source` string ('root' | 'dark' | 'compact') is used directly as a
+ * key into the {@link import('../setup/css-parser.mjs').ModeVars} object returned by
+ * `resolveModeVars`, so no translation table is needed.
  *
  * @param {import('./config.mjs').CollectionConfig[]} collectionConfigs
- * @param {ModeVars} modeVars
+ * @param {import('../setup/css-parser.mjs').ModeVars} modeVars
  * @returns {CollectionDef[]}
  */
 export function buildCollectionDefs(collectionConfigs, modeVars) {
@@ -62,7 +57,7 @@ export function buildCollectionDefs(collectionConfigs, modeVars) {
       filter: cssName =>
         filter.include.some(p => cssName.startsWith(p)) && !filter.exclude.some(p => cssName.startsWith(p)),
       modes: modes.map(m => m.name),
-      source: idx => modeVars[SOURCE_KEY[modes[idx].source]],
+      source: idx => modeVars[modes[idx].source],
     };
 
     if (humanReadable) {

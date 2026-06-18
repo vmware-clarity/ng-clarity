@@ -43,26 +43,14 @@
  *   FIGMA_BRANCH_MODE  "branch" | "collection" (default: "collection")
  */
 
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
 import { parseCliArgs } from './setup/cli.mjs';
 import { buildRunContext } from './setup/context.mjs';
 import { executeRun, resolveMode } from './controllers/factory.mjs';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT = path.resolve(__dirname, '..', '..');
-
-const paths = {
-  root: ROOT,
-  configPath: path.join(ROOT, 'figma-tokens.config.json'),
-  cssFile: path.join(ROOT, 'dist', 'clr-ui', 'clr-ui.css'),
-};
-
 async function main() {
   const cli = parseCliArgs();
+  const ctx = buildRunContext(cli);
   const mode = resolveMode(cli);
-  const ctx = await buildRunContext({ cli, paths });
   await executeRun(mode, ctx);
 }
 

@@ -69,14 +69,14 @@ export async function executePush({
 
   // Mutable lookup Maps rebuilt from each GET response so subsequent
   // collections always see the latest authoritative Figma state.
-  const {
+  // All three Maps are declared as let so they can be replaced wholesale via
+  // buildLookupMaps after each collection push (keeps cross-collection alias
+  // resolution accurate without manual clear-and-rebuild loops).
+  let {
     collByName: existingCollByName,
     varByName: existingVarByName,
-    varsByColId: initialVarsByColId,
+    varsByColId,
   } = buildLookupMaps(existingCollections, existingVars);
-  // varsByColId is a per-collection variable map that survives re-assignment;
-  // declared as let so it can be replaced wholesale after each push.
-  let varsByColId = initialVarsByColId;
 
   let totalNew = 0;
   let totalUpdate = 0;
@@ -124,10 +124,21 @@ export async function executePush({
     // and modes are always included in the first batch so Figma can resolve IDs.
     const createUpdateVars = colPlan.payloadVars.filter(v => v.action !== 'DELETE');
 
+    // Pre-index mode values by variable ID so each batch slice can resolve its
+    // mode values in O(slice.length) instead of O(slice.length × modeValues.length).
+    const modeValuesByVarId = new Map();
+    for (const mv of colPlan.payloadModeValues) {
+      const modeValueByVarId = modeValuesByVarId.get(mv.variableId);
+      if (modeValueByVarId) {
+        modeValueByVarId.push(mv);
+      } else {
+        modeValuesByVarId.set(mv.variableId, [mv]);
+      }
+    }
+
     for (let i = 0; i < Math.max(createUpdateVars.length, 1); i += BATCH) {
       const slice = createUpdateVars.slice(i, i + BATCH);
-      const sliceIds = new Set(slice.map(v => v.id));
-      const sliceMV = colPlan.payloadModeValues.filter(mv => sliceIds.has(mv.variableId));
+      const sliceMV = slice.flatMap(v => modeValuesByVarId.get(v.id) ?? []);
       console.log(
         `    📤  Batch ${Math.floor(i / BATCH) + 1}: ${slice.length} var(s), ${sliceMV.length} mode value(s)`
       );
@@ -154,20 +165,13 @@ export async function executePush({
 
     populateIdMapFromExisting(freshVars, idMap);
 
-    existingCollByName.clear();
-    for (const c of freshCollections) {
-      existingCollByName.set(c.name, c);
-    }
-
-    existingVarByName.clear();
-    for (const v of freshVars) {
-      existingVarByName.set(v.name, v);
-    }
-
+    ({
+      collByName: existingCollByName,
+      varByName: existingVarByName,
+      varsByColId,
+    } = buildLookupMaps(freshCollections, freshVars));
     existingModes.length = 0;
     existingModes.push(...freshModes);
-
-    ({ varsByColId } = buildLookupMaps(freshCollections, freshVars));
   }
 
   // ── Remove Figma's auto-created "Mode 1" from the collections we just pushed ─
