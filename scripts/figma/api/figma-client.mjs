@@ -19,7 +19,7 @@ export const FIGMA_API = 'https://api.figma.com/v1';
  *
  * @param {string} token Figma personal access token (X-Figma-Token).
  * @param {{ baseUrl?: string }} [options]
- * @returns {{ getVariables: (figmaFileKey: string) => Promise<any>, getBranches: (figmaFileKey: string) => Promise<any>, get: (figmaFileKey: string, endpoint: string) => Promise<any>, postVariables: (body: unknown) => Promise<any> , post: (endpoint: string, body: unknown) => Promise<any> }}
+ * @returns {{ getVariables: function(figmaFileKey: string): Promise<any>, getBranches: function(figmaFileKey: string): Promise<any>, postVariables: function(figmaFileKey: string, body: string): Promise<any>, get: function(endpoint: string): Promise<any>, post: function(endpoint: string, body: string): Promise<any> }}
  */
 export function createFigmaClient(token, { baseUrl = FIGMA_API } = {}) {
   /** Abort a single request if Figma does not respond within this window. */

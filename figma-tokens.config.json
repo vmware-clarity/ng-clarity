@@ -5,17 +5,20 @@
   "collections": [
     {
       "name": "CDS Global Colors",
+      "hiddenFromPublishing": true,
       "filter": { "include": ["--cds-global-color-"] },
       "modes": [{ "name": "Value", "source": "root" }]
     },
     {
       "name": "CDS Global Space",
+      "hiddenFromPublishing": true,
       "filter": { "include": ["--cds-global-space-", "--cds-alias-object-border-width-"] },
       "modes": [{ "name": "Value", "source": "root" }]
     },
     {
       "_comment": "Density scale tokens referenced by CDS Spacing aliases. Must be processed before CDS Spacing so var(--clr-base-*) references in typography tokens resolve as VARIABLE_ALIAS in idMap.",
       "name": "CLR Density",
+      "hiddenFromPublishing": true,
       "filter": { "include": ["--clr-base-"] },
       "modes": [
         { "name": "Regular", "source": "root" },
@@ -24,12 +27,14 @@
     },
     {
       "name": "CDS Global Layout",
+      "hiddenFromPublishing": true,
       "filter": { "include": ["--cds-global-layout-"] },
       "modes": [{ "name": "Value", "source": "root" }]
     },
     {
       "_comment": "Semantic colour aliases — full-namespace colour groups (status, viz, utility) plus the colour-bearing sub-tokens inside the object and typography namespaces.",
       "name": "CDS Theme",
+      "hiddenFromPublishing": true,
       "filter": {
         "include": [
           "--cds-alias-status-",
@@ -67,6 +72,7 @@
     {
       "_comment": "Structural and sizing aliases for typography metrics. The exclude list mirrors CDS Theme's colour sub-prefixes so the two collections are mutually exclusive. CLR Density must appear before this collection so typography var(--clr-base-*) aliases resolve correctly.",
       "name": "CDS Typography",
+      "hiddenFromPublishing": true,
       "filter": {
         "include": ["--cds-alias-typography-"],
         "exclude": [
@@ -100,6 +106,7 @@
     {
       "_comment": "Structural and sizing aliases — border-radius, border-width, shadow, interaction geometry. The exclude list mirrors CDS Theme's colour sub-prefixes so the two collections are mutually exclusive. CLR Density must appear before this collection so typography var(--clr-base-*) aliases resolve correctly.",
       "name": "CDS Spacing",
+      "hiddenFromPublishing": true,
       "filter": {
         "include": ["--cds-alias-object-"],
         "exclude": [
@@ -133,6 +140,7 @@
     {
       "_comment": "Friendly-named alias variables. Each entry in the top-level humanReadable map creates a VARIABLE_ALIAS that points to the corresponding semantic token, giving designers clean display names while preserving the live alias chain.",
       "name": "Colors",
+      "hiddenFromPublishing": false,
       "humanReadable": {
         "Primary/Body text": "--cds-alias-typography-color-400",
         "Primary/Body text - Disabled": "--cds-alias-typography-disabled",
@@ -184,6 +192,7 @@
     {
       "_comment": "Friendly-named alias variables. Each entry in the top-level humanReadable map creates a VARIABLE_ALIAS that points to the corresponding semantic token, giving designers clean display names while preserving the live alias chain.",
       "name": "Spacings",
+      "hiddenFromPublishing": false,
       "humanReadable": {
         "0": "--clr-base-layout-space-0",
         "1": "--clr-base-layout-space-4xs",
@@ -279,16 +288,6 @@
       "scopes": ["GAP"]
     },
     {
-      "_comment": "Width / height dimension tokens",
-      "pattern": "*-width*",
-      "scopes": ["WIDTH_HEIGHT"]
-    },
-    {
-      "_comment": "Height dimension tokens",
-      "pattern": "*-height*",
-      "scopes": ["WIDTH_HEIGHT"]
-    },
-    {
       "_comment": "Background color tokens",
       "pattern": "*(-background*|-bg)",
       "scopes": ["FRAME_FILL", "SHAPE_FILL"]
@@ -307,6 +306,11 @@
       "_comment": "Border-specific token names",
       "pattern": "*(-border-width|-stroke)*",
       "scopes": ["STROKE_FLOAT"]
+    },
+    {
+      "_comment": "Width / height dimension tokens",
+      "pattern": "*(-width|-height|-base-vertical-offset|-base-horizontal-offset|-base-icon-tooltip|-base-icon-size|-base-spinner-|-base-layout-space)*",
+      "scopes": ["WIDTH_HEIGHT"]
     },
     {
       "_comment": "Shadow / effect color tokens",

@@ -14,7 +14,7 @@
 
 import fs from 'node:fs';
 
-const DEFAULT_CODE_SYNTAX = { WEB: 'var(${name})', ANDROID: '@clr/${kebab}', iOS: 'Clarity.${camel}' };
+const DEFAULT_CODE_SYNTAX = { WEB: 'var(${name})' };
 
 /**
  * @typedef {'root' | 'dark' | 'compact'} CssModeSource
@@ -36,6 +36,8 @@ const DEFAULT_CODE_SYNTAX = { WEB: 'var(${name})', ANDROID: '@clr/${kebab}', iOS
 /**
  * @typedef {Object} CollectionConfig
  * @property {string} name Collection display name shown in Figma.
+ * @property {boolean} hiddenFromPublishing When true, the collection and all its variables
+ *   are hidden from publishing. Defaults to false.
  * @property {CollectionFilterConfig} filter Which CSS tokens belong to this collection.
  * @property {CollectionModeConfig[]} modes Mode list; index 0 is the default/base mode.
  * @property {Record<string, string>} [humanReadable] When present this collection is populated
@@ -106,6 +108,7 @@ export function loadConfig(configPath) {
 
     return /** @type {CollectionConfig} */ ({
       name: col.name,
+      hiddenFromPublishing: col.hiddenFromPublishing ?? false,
       filter: { include: col.filter.include, exclude: col.filter.exclude ?? [] },
       modes: col.modes.map(m => ({ name: m.name, source: m.source })),
       ...(humanReadable ? { humanReadable } : {}),

@@ -83,6 +83,7 @@ function resolveVariableId({ figmaName, resolvedType, existingVarByName, deleted
  * @param {string[]} p.scopes
  * @param {Record<string, string>} p.codeSyntax
  * @param {string} p.description
+ * @param {boolean} p.hiddenFromPublishing
  * @param {Map<string, any>} p.existingVarByName
  * @param {Set<string>} p.deletedVarIds  Mutated: receives the deleted ID if applicable.
  * @param {any[]} p.payloadVars          Mutated: receives the DELETE + CREATE/UPDATE entry.
@@ -95,6 +96,7 @@ function planVariableCreateOrUpdate({
   scopes,
   codeSyntax,
   description,
+  hiddenFromPublishing,
   existingVarByName,
   deletedVarIds,
   payloadVars,
@@ -116,6 +118,7 @@ function planVariableCreateOrUpdate({
     scopes,
     codeSyntax,
     description,
+    hiddenFromPublishing,
   });
 
   /** @type {DiffEntry} */
@@ -213,7 +216,12 @@ export function buildCollectionPlan({
   const colId = existingCol ? existingCol.id : nextTempId();
   const isNewCol = !existingCol;
 
-  payloadCollections.push({ action: isNewCol ? 'CREATE' : 'UPDATE', id: colId, name: colName });
+  payloadCollections.push({
+    action: isNewCol ? 'CREATE' : 'UPDATE',
+    id: colId,
+    name: colName,
+    hiddenFromPublishing: colDef.hiddenFromPublishing,
+  });
 
   // Ensure modes exist
   const modeIds = [];
@@ -275,7 +283,15 @@ export function buildCollectionPlan({
       const existingHrVar = colVarByName.get(displayName);
       if (existingHrVar && existingHrVar.resolvedType === resolvedType) {
         const newModeValues = modeIds.map(modeId => ({ modeId, value: aliasValue }));
-        if (!hasVariableChanged(existingHrVar, { scopes, codeSyntax, description, newModeValues })) {
+        if (
+          !hasVariableChanged(existingHrVar, {
+            scopes,
+            codeSyntax,
+            description,
+            hiddenFromPublishing: colDef.hiddenFromPublishing,
+            newModeValues,
+          })
+        ) {
           continue;
         }
       }
@@ -287,6 +303,7 @@ export function buildCollectionPlan({
         scopes,
         codeSyntax,
         description,
+        hiddenFromPublishing: colDef.hiddenFromPublishing,
         existingVarByName: colVarByName,
         deletedVarIds,
         payloadVars,
@@ -299,6 +316,7 @@ export function buildCollectionPlan({
           scopes,
           codeSyntax,
           description,
+          hiddenFromPublishing: colDef.hiddenFromPublishing,
           newModeValues,
           modeIdToName,
           reverseIdMap,
@@ -412,7 +430,16 @@ export function buildCollectionPlan({
       }
 
       // For existing (non-retyped) variables, skip if nothing actually changed.
-      if (isUpdate && !hasVariableChanged(existingVar, { scopes, codeSyntax, description, newModeValues })) {
+      if (
+        isUpdate &&
+        !hasVariableChanged(existingVar, {
+          scopes,
+          codeSyntax,
+          description,
+          hiddenFromPublishing: colDef.hiddenFromPublishing,
+          newModeValues,
+        })
+      ) {
         continue;
       }
 
@@ -426,12 +453,14 @@ export function buildCollectionPlan({
           scopes,
           codeSyntax,
           description,
+          hiddenFromPublishing: colDef.hiddenFromPublishing,
         });
         statsUpdate++;
         const changes = detectChanges(existingVar, {
           scopes,
           codeSyntax,
           description,
+          hiddenFromPublishing: colDef.hiddenFromPublishing,
           newModeValues,
           modeIdToName,
           reverseIdMap,
@@ -447,6 +476,7 @@ export function buildCollectionPlan({
           scopes,
           codeSyntax,
           description,
+          hiddenFromPublishing: colDef.hiddenFromPublishing,
         });
         statsNew++;
         diff.push(

@@ -18,6 +18,8 @@
 /**
  * @typedef {Object} CollectionDef
  * @property {string} name Collection display name.
+ * @property {boolean} hiddenFromPublishing When true, the collection and all its variables
+ *   are hidden from publishing in Figma.
  * @property {(name: string) => boolean} filter True if the token belongs here.
  * @property {string[]} modes Mode names; index 0 = default/base.
  * @property {(modeIndex: number) => Map<string, string>} source Variable values for a mode.
@@ -52,10 +54,11 @@ const SOURCE_KEY = { root: 'rootVars', dark: 'darkVars', compact: 'compactVars' 
  * @returns {CollectionDef[]}
  */
 export function buildCollectionDefs(collectionConfigs, modeVars) {
-  return collectionConfigs.map(({ name, filter, modes, humanReadable }) => {
+  return collectionConfigs.map(({ name, hiddenFromPublishing, filter, modes, humanReadable }) => {
     /** @type {CollectionDef} */
     const def = {
       name,
+      hiddenFromPublishing: hiddenFromPublishing ?? false,
       filter: cssName =>
         filter.include.some(p => cssName.startsWith(p)) && !filter.exclude.some(p => cssName.startsWith(p)),
       modes: modes.map(m => m.name),

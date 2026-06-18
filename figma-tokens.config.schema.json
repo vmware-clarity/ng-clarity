@@ -73,6 +73,11 @@
           "type": "string",
           "description": "Collection display name shown in Figma."
         },
+        "hiddenFromPublishing": {
+          "type": "boolean",
+          "description": "When true, the collection and every variable it contains are hidden from publishing in Figma (designers cannot publish them to a library). Defaults to false.",
+          "default": false
+        },
         "humanReadable": {
           "$ref": "#/definitions/humanReadableMap",
           "description": "When present, this collection is populated from these entries (display name → CSS var) instead of CSS token scanning. filter.include may be empty."

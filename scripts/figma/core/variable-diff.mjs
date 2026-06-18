@@ -110,15 +110,23 @@ function formatFigmaValue(value, reverseIdMap) {
  * the desired new state.  Each entry has a human-readable `field` label and
  * formatted `from` / `to` strings.
  *
- * @param {{ scopes?: string[], codeSyntax?: Record<string,string>, description?: string, valuesByMode?: Record<string,unknown> }} existingVar
- * @param {{ scopes: string[], codeSyntax: Record<string,string>, description: string, newModeValues: Array<{modeId: string, value: unknown}>, modeIdToName: Map<string,string>, reverseIdMap: Map<string,string> }} next
+ * @param {{ scopes?: string[], codeSyntax?: Record<string,string>, description?: string, hiddenFromPublishing?: boolean, valuesByMode?: Record<string,unknown> }} existingVar
+ * @param {{ scopes: string[], codeSyntax: Record<string,string>, description: string, hiddenFromPublishing: boolean, newModeValues: Array<{modeId: string, value: unknown}>, modeIdToName: Map<string,string>, reverseIdMap: Map<string,string> }} next
  * @returns {import('./planner.mjs').FieldChange[]}
  */
 export function detectChanges(
   existingVar,
-  { scopes, codeSyntax, description, newModeValues, modeIdToName, reverseIdMap }
+  { scopes, codeSyntax, description, hiddenFromPublishing, newModeValues, modeIdToName, reverseIdMap }
 ) {
   const changes = [];
+
+  if ((existingVar.hiddenFromPublishing ?? false) !== (hiddenFromPublishing ?? false)) {
+    changes.push({
+      field: 'hiddenFromPublishing',
+      from: String(existingVar.hiddenFromPublishing ?? false),
+      to: String(hiddenFromPublishing ?? false),
+    });
+  }
 
   const existingScopes = (existingVar.scopes ?? []).map(normalizeScope);
   const normalizedScopes = scopes.map(normalizeScope);
@@ -161,11 +169,11 @@ export function detectChanges(
 }
 
 /**
- * Returns true if any field (scopes, codeSyntax, description, or any mode value)
+ * Returns true if any field (hiddenFromPublishing, scopes, codeSyntax, description, or any mode value)
  * differs from the existing Figma variable — i.e. the variable needs an UPDATE push.
  *
- * @param {{ scopes?: string[], codeSyntax?: Record<string,string>, description?: string, valuesByMode?: Record<string,unknown> }} existingVar
- * @param {{ scopes: string[], codeSyntax: Record<string,string>, description: string, newModeValues: Array<{modeId: string, value: unknown}> }} next
+ * @param {{ scopes?: string[], codeSyntax?: Record<string,string>, description?: string, hiddenFromPublishing?: boolean, valuesByMode?: Record<string,unknown> }} existingVar
+ * @param {{ scopes: string[], codeSyntax: Record<string,string>, description: string, hiddenFromPublishing: boolean, newModeValues: Array<{modeId: string, value: unknown}> }} next
  * @returns {boolean}
  */
 export function hasVariableChanged(existingVar, next) {
