@@ -15,7 +15,7 @@
 
 import { createFigmaClient } from '../api/figma-client.mjs';
 import { executePush } from '../api/push-executor.mjs';
-import { printDiff, printStats } from '../api/diff-printer.mjs';
+import { printStats } from '../api/diff-printer.mjs';
 import { parseFigmaVarsResponse } from '../util/figma-response.mjs';
 import { resolveBranchIsolation } from '../setup/branch.mjs';
 
@@ -46,7 +46,7 @@ export async function runPush(ctx) {
 
   console.log('\n⬆️   Pushing to Figma…');
 
-  const { totalNew, totalUpdate, totalSkipped, totalDeleted, totalModeValues, diffReport } = await executePush({
+  const { totalNew, totalUpdate, totalSkipped, totalDeleted, totalModeValues } = await executePush({
     figma,
     effectiveFileKey,
     collectionDefs: ctx.collectionDefs,
@@ -57,8 +57,6 @@ export async function runPush(ctx) {
     rules: ctx.rules,
     varLookup: ctx.varLookup,
   });
-
-  printDiff(diffReport);
 
   printStats(
     'Push summary',

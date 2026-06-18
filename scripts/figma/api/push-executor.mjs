@@ -21,6 +21,7 @@
 import { buildCollectionPlan, populateIdMapFromExisting } from '../core/planner.mjs';
 import { createIdMap } from '../core/id-map.mjs';
 import { parseFigmaVarsResponse, buildLookupMaps } from '../util/figma-response.mjs';
+import { printDiff } from './diff-printer.mjs';
 
 /** Maximum variables per Figma POST request. */
 const BATCH = 500;
@@ -50,7 +51,6 @@ const BATCH = 500;
  *   totalSkipped: number,
  *   totalDeleted: number,
  *   totalModeValues: number,
- *   diffReport: Array<{ collectionName: string, diff: import('../core/planner.mjs').DiffEntry[] }>,
  * }>}
  */
 export async function executePush({
@@ -84,9 +84,6 @@ export async function executePush({
   let totalDeleted = 0;
   let totalModeValues = 0;
 
-  /** @type {Array<{ collectionName: string, diff: import('../core/planner.mjs').DiffEntry[] }>} */
-  const diffReport = [];
-
   for (const colDef of collectionDefs) {
     console.log(`\n  📦  Collection: "${colDef.name}"`);
 
@@ -107,7 +104,6 @@ export async function executePush({
     totalSkipped += colPlan.stats.skipped;
     totalDeleted += colPlan.deletedVarIds.size;
     totalModeValues += colPlan.payloadModeValues.length;
-    diffReport.push({ collectionName: colDef.name + collectionSuffix, diff: colPlan.diff });
 
     // ── Type-mismatch deletions (must precede recreations) ──────────────────
     const deleteVars = colPlan.payloadVars.filter(v => v.action === 'DELETE');
@@ -141,6 +137,11 @@ export async function executePush({
         variables: slice,
         variableModeValues: sliceMV,
       });
+    }
+
+    // ── Diff for this collection ────────────────────────────────────────────
+    if (colPlan.diff.length > 0) {
+      printDiff([{ collectionName: colDef.name + collectionSuffix, diff: colPlan.diff }]);
     }
 
     // ── Refresh idMap with real Figma IDs ───────────────────────────────────
@@ -187,5 +188,5 @@ export async function executePush({
     });
   }
 
-  return { totalNew, totalUpdate, totalSkipped, totalDeleted, totalModeValues, diffReport };
+  return { totalNew, totalUpdate, totalSkipped, totalDeleted, totalModeValues };
 }

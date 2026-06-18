@@ -40,10 +40,11 @@ export async function runPreview(ctx) {
   console.log('\n👁️   Fetching current Figma state to compute diff…');
   const existing = await figma.getVariables(effectiveFileKey);
   const { collections: previewCollections, vars: previewVars, modes: previewModes } = parseFigmaVarsResponse(existing);
-  const { collByName: existingCollByName, varByName: existingVarByName } = buildLookupMaps(
-    previewCollections,
-    previewVars
-  );
+  const {
+    collByName: existingCollByName,
+    varByName: existingVarByName,
+    varsByColId,
+  } = buildLookupMaps(previewCollections, previewVars);
 
   const previewIdMap = createIdMap();
   populateIdMapFromExisting(previewVars, previewIdMap);
@@ -60,6 +61,7 @@ export async function runPreview(ctx) {
       existingCollByName,
       existingModes: previewModes,
       existingVarByName,
+      varsByColId,
       idMap: previewIdMap,
       rules: ctx.rules,
       varLookup: ctx.varLookup,
