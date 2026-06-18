@@ -19,9 +19,9 @@ export const FIGMA_API = 'https://api.figma.com/v1';
  *
  * @param {string} token Figma personal access token (X-Figma-Token).
  * @param {{ baseUrl?: string }} [options]
- * @returns {{ get: (endpoint: string) => Promise<any>, post: (endpoint: string, body: unknown) => Promise<any> }}
+ * @returns {{ getVariables: (figmaFileKey: string) => Promise<any>, getBranches: (figmaFileKey: string) => Promise<any>, get: (figmaFileKey: string, endpoint: string) => Promise<any>, postVariables: (body: unknown) => Promise<any> , post: (endpoint: string, body: unknown) => Promise<any> }}
  */
-export function createFigmaClient(token, figmaFileKey, { baseUrl = FIGMA_API } = {}) {
+export function createFigmaClient(token, { baseUrl = FIGMA_API } = {}) {
   /** Abort a single request if Figma does not respond within this window. */
   const TIMEOUT_MS = 30_000;
 
@@ -54,12 +54,16 @@ export function createFigmaClient(token, figmaFileKey, { baseUrl = FIGMA_API } =
     }
   }
 
-  async function getVariables() {
+  async function getVariables(figmaFileKey) {
     return get(`/files/${figmaFileKey}/variables/local`);
   }
 
-  async function getBranches() {
+  async function getBranches(figmaFileKey) {
     return get(`/files/${figmaFileKey}/branches`);
+  }
+
+  async function postVariables(figmaFileKey, body) {
+    return post(`/files/${figmaFileKey}/variables`, body);
   }
 
   async function get(endpoint) {
@@ -92,5 +96,5 @@ export function createFigmaClient(token, figmaFileKey, { baseUrl = FIGMA_API } =
     }, `POST ${endpoint}`);
   }
 
-  return { getVariables, getBranches, get, post };
+  return { getVariables, getBranches, postVariables, get, post };
 }

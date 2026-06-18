@@ -113,7 +113,8 @@ export async function executePush({
     const deleteVars = colPlan.payloadVars.filter(v => v.action === 'DELETE');
     if (deleteVars.length > 0) {
       console.log(`    🗑️   Deleting ${deleteVars.length} type-mismatched variable(s)…`);
-      await figma.post(`/files/${effectiveFileKey}/variables`, {
+
+      await figma.postVariables(effectiveFileKey, {
         variableCollections: [],
         variableModes: [],
         variables: deleteVars,
@@ -134,7 +135,7 @@ export async function executePush({
       console.log(
         `    📤  Batch ${Math.floor(i / BATCH) + 1}: ${slice.length} var(s), ${sliceMV.length} mode value(s)`
       );
-      await figma.post(`/files/${effectiveFileKey}/variables`, {
+      await figma.postVariables(effectiveFileKey, {
         variableCollections: i === 0 ? colPlan.payloadCollections : [],
         variableModes: i === 0 ? colPlan.payloadModes : [],
         variables: slice,
@@ -147,7 +148,7 @@ export async function executePush({
     // real Figma IDs.  The next collection's VARIABLE_ALIAS mode values will
     // therefore carry real IDs rather than stale temp IDs.
     console.log(`    🔄  Syncing variable IDs…`);
-    const fresh = await figma.get(`/files/${effectiveFileKey}/variables/local`);
+    const fresh = await figma.getVariables(effectiveFileKey);
     const { collections: freshCollections, vars: freshVars, modes: freshModes } = parseFigmaVarsResponse(fresh);
 
     populateIdMapFromExisting(freshVars, idMap);
@@ -178,7 +179,7 @@ export async function executePush({
   const defaultModes = existingModes.filter(m => m.name === 'Mode 1' && pushedCollectionIds.has(m.collectionId));
   if (defaultModes.length > 0) {
     console.log(`\n  🧹  Removing ${defaultModes.length} auto-created "Mode 1" mode(s)…`);
-    await figma.post(`/files/${effectiveFileKey}/variables`, {
+    await figma.postVariables(effectiveFileKey, {
       variableCollections: [],
       variableModes: defaultModes.map(m => ({ action: 'DELETE', id: m.modeId, variableCollectionId: m.collectionId })),
       variables: [],

@@ -88,8 +88,7 @@ async function main() {
   // resolves effectiveFileKey), so we skip the initial fetch here for preview too.
   if (!dryRun && !extractMode && !previewMode) {
     console.log('⬇️   Fetching existing Figma variables…');
-    const existing = await figma.get(`/files/${figmaFileKey}/variables/local`);
-    // const existing = await figma.getVariables();
+    const existing = await figma.getVariables(figmaFileKey);
     ({ collections: existingCollections, vars: existingVars, modes: existingModes } = parseFigmaVarsResponse(existing));
   }
 
@@ -98,8 +97,7 @@ async function main() {
   if (branchName) {
     if (figmaBranchMode === 'branch' && !dryRun) {
       // Target the Figma branch file key
-      const branches = await figma.get(`/files/${figmaFileKey}/branches`);
-      // const branches = await figma.getBranches();
+      const branches = await figma.getBranches(figmaFileKey);
       const branch = branches.branches?.find(b => b.name.toLowerCase().includes(branchName.toLowerCase()));
       if (branch) {
         effectiveFileKey = branch.key;
@@ -175,7 +173,7 @@ async function main() {
   // ── Preview: fetch current state, compute full diff, print, no push ─────────
   if (previewMode) {
     console.log('\n👁️   Fetching current Figma state to compute diff…');
-    const existing = await figma.get(`/files/${effectiveFileKey}/variables/local`);
+    const existing = await figma.getVariables(effectiveFileKey);
     const {
       collections: previewCollections,
       vars: previewVars,
