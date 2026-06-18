@@ -8,27 +8,52 @@
 /**
  * Push controller (default mode).
  *
- * Pushes the planned variables to Figma one collection at a time (via
- * {@link executePush}), then prints the change diff and the final summary.
+ * Creates the Figma client, fetches the existing Figma state, resolves branch
+ * isolation, then pushes the planned variables one collection at a time (via
+ * {@link executePush}) and prints the change diff and final summary.
  */
 
+import { createFigmaClient } from '../api/figma-client.mjs';
 import { executePush } from '../api/push-executor.mjs';
 import { printDiff, printStats } from '../api/diff-printer.mjs';
+import { parseFigmaVarsResponse } from '../util/figma-response.mjs';
+import { resolveBranchIsolation } from '../setup/branch.mjs';
 
 /**
  * @param {import('../setup/context.mjs').RunContext} ctx
  */
 export async function runPush(ctx) {
+  const figma = createFigmaClient(ctx.figmaToken);
+
+  console.log(
+    `\n🎨  Figma token push — file: ${ctx.figmaFileKey}${ctx.branchName ? ` [branch: ${ctx.branchName}]` : ''}\n`
+  );
+
+  console.log('⬇️   Fetching existing Figma variables…');
+  const existing = await figma.getVariables(ctx.figmaFileKey);
+  const {
+    collections: existingCollections,
+    vars: existingVars,
+    modes: existingModes,
+  } = parseFigmaVarsResponse(existing);
+
+  const { effectiveFileKey, collectionSuffix } = await resolveBranchIsolation({
+    figma,
+    figmaFileKey: ctx.figmaFileKey,
+    figmaBranchMode: ctx.figmaBranchMode,
+    branchName: ctx.branchName,
+  });
+
   console.log('\n⬆️   Pushing to Figma…');
 
   const { totalNew, totalUpdate, totalSkipped, totalDeleted, totalModeValues, diffReport } = await executePush({
-    figma: ctx.figma,
-    effectiveFileKey: ctx.effectiveFileKey,
+    figma,
+    effectiveFileKey,
     collectionDefs: ctx.collectionDefs,
-    collectionSuffix: ctx.collectionSuffix,
-    existingCollections: ctx.existingCollections,
-    existingVars: ctx.existingVars,
-    existingModes: ctx.existingModes,
+    collectionSuffix,
+    existingCollections,
+    existingVars,
+    existingModes,
     rules: ctx.rules,
     varLookup: ctx.varLookup,
   });

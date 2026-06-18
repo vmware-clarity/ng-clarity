@@ -62,7 +62,7 @@ const paths = {
 async function main() {
   const cli = parseCliArgs();
   const mode = resolveMode(cli);
-  const ctx = await buildRunContext({ cli, mode, paths });
+  const ctx = await buildRunContext({ cli, paths });
   await executeRun(mode, ctx);
 }
 

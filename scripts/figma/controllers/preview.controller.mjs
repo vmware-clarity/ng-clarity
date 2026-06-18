@@ -8,21 +8,37 @@
 /**
  * Preview controller (`--preview`).
  *
- * Fetches the current Figma state, computes a full create/update diff per
- * collection, prints it, and exits without pushing. Requires credentials.
+ * Creates the Figma client, resolves branch isolation, fetches the current Figma
+ * state, computes a full create/update diff per collection, prints it, and exits
+ * without pushing. Requires credentials.
  */
 
+import { createFigmaClient } from '../api/figma-client.mjs';
+import { printDiff, printStats } from '../api/diff-printer.mjs';
 import { createIdMap } from '../core/id-map.mjs';
 import { buildCollectionPlan, populateIdMapFromExisting } from '../core/planner.mjs';
-import { printDiff, printStats } from '../api/diff-printer.mjs';
 import { parseFigmaVarsResponse, buildLookupMaps } from '../util/figma-response.mjs';
+import { resolveBranchIsolation } from '../setup/branch.mjs';
 
 /**
  * @param {import('../setup/context.mjs').RunContext} ctx
  */
 export async function runPreview(ctx) {
+  const figma = createFigmaClient(ctx.figmaToken);
+
+  console.log(
+    `\n🎨  Figma token preview — file: ${ctx.figmaFileKey}${ctx.branchName ? ` [branch: ${ctx.branchName}]` : ''}\n`
+  );
+
+  const { effectiveFileKey, collectionSuffix } = await resolveBranchIsolation({
+    figma,
+    figmaFileKey: ctx.figmaFileKey,
+    figmaBranchMode: ctx.figmaBranchMode,
+    branchName: ctx.branchName,
+  });
+
   console.log('\n👁️   Fetching current Figma state to compute diff…');
-  const existing = await ctx.figma.getVariables(ctx.effectiveFileKey);
+  const existing = await figma.getVariables(effectiveFileKey);
   const { collections: previewCollections, vars: previewVars, modes: previewModes } = parseFigmaVarsResponse(existing);
   const { collByName: existingCollByName, varByName: existingVarByName } = buildLookupMaps(
     previewCollections,
@@ -40,7 +56,7 @@ export async function runPreview(ctx) {
   for (const colDef of ctx.collectionDefs) {
     const colPlan = buildCollectionPlan({
       colDef,
-      collectionSuffix: ctx.collectionSuffix,
+      collectionSuffix,
       existingCollByName,
       existingModes: previewModes,
       existingVarByName,
@@ -52,7 +68,7 @@ export async function runPreview(ctx) {
     previewNew += colPlan.stats.new;
     previewUpdate += colPlan.stats.update;
     previewSkipped += colPlan.stats.skipped;
-    diffReport.push({ collectionName: colDef.name + ctx.collectionSuffix, diff: colPlan.diff });
+    diffReport.push({ collectionName: colDef.name + collectionSuffix, diff: colPlan.diff });
   }
 
   printDiff(diffReport);
