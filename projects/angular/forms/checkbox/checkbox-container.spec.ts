@@ -29,6 +29,48 @@ class NoLabelTest {}
 
 @Component({
   template: `
+    <clr-checkbox-container>
+      <label>My Group</label>
+      <clr-checkbox-wrapper>
+        <label>Option</label>
+        <input type="checkbox" clrCheckbox name="opt" [(ngModel)]="model" value="opt" />
+      </clr-checkbox-wrapper>
+    </clr-checkbox-container>
+  `,
+  standalone: false,
+})
+class AriaLabelledByTest {
+  model = '';
+}
+
+@Component({
+  template: `
+    <clr-checkbox-container>
+      <label>My Group</label>
+    </clr-checkbox-container>
+  `,
+  standalone: false,
+})
+class AriaLabelledByNoCheckboxesTest {}
+
+@Component({
+  template: `
+    <clr-checkbox-container>
+      <label id="my-label">My Group</label>
+      <clr-checkbox-wrapper>
+        <label>Option</label>
+        <input type="checkbox" clrCheckbox name="opt" [(ngModel)]="model" value="opt" />
+      </clr-checkbox-wrapper>
+    </clr-checkbox-container>
+  `,
+  standalone: false,
+})
+class AriaLabelledByExistingIdTest {
+  model = '';
+}
+
+@Component({
+  template: `
     <clr-checkbox-container [clrInline]="inline">
       <label>Hello World</label>
       <clr-checkbox-wrapper>
@@ -99,6 +141,46 @@ export default function (): void {
       ReactiveTest,
       '.clr-checkbox-wrapper [clrCheckbox]'
     );
+
+    describe('aria-labelledby', () => {
+      it('should set aria-labelledby on the host pointing to the label id', () => {
+        TestBed.configureTestingModule({
+          imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
+          declarations: [ClrCheckboxContainer, ClrCheckboxWrapper, ClrCheckbox, AriaLabelledByTest],
+          providers: [NgControl, NgControlService, LayoutService],
+        });
+        const fixture = TestBed.createComponent(AriaLabelledByTest);
+        fixture.detectChanges();
+        const host = fixture.debugElement.query(By.directive(ClrCheckboxContainer)).nativeElement;
+        const label = host.querySelector('label');
+        expect(label.id).toBeTruthy();
+        expect(host.getAttribute('aria-labelledby')).toBe(label.id);
+      });
+
+      it('should preserve existing label id instead of overwriting it', () => {
+        TestBed.configureTestingModule({
+          imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
+          declarations: [ClrCheckboxContainer, ClrCheckboxWrapper, ClrCheckbox, AriaLabelledByExistingIdTest],
+          providers: [NgControl, NgControlService, LayoutService],
+        });
+        const fixture = TestBed.createComponent(AriaLabelledByExistingIdTest);
+        fixture.detectChanges();
+        const host = fixture.debugElement.query(By.directive(ClrCheckboxContainer)).nativeElement;
+        expect(host.getAttribute('aria-labelledby')).toBe('my-label');
+      });
+
+      it('should not set aria-labelledby on the host when no clr-checkbox-wrapper children are present', () => {
+        TestBed.configureTestingModule({
+          imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
+          declarations: [ClrCheckboxContainer, ClrCheckboxWrapper, ClrCheckbox, AriaLabelledByNoCheckboxesTest],
+          providers: [NgControl, NgControlService, LayoutService],
+        });
+        const fixture = TestBed.createComponent(AriaLabelledByNoCheckboxesTest);
+        fixture.detectChanges();
+        const host = fixture.debugElement.query(By.directive(ClrCheckboxContainer)).nativeElement;
+        expect(host.getAttribute('aria-labelledby')).toBeNull();
+      });
+    });
 
     describe('inline buttons', () => {
       let fixture, containerDE, containerEl;
