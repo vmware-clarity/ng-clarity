@@ -88,6 +88,19 @@ describe('ClrStepButton Next', () => {
     fixture.detectChanges();
     expect(stepperService.navigateToNextPanel).toHaveBeenCalled();
   });
+
+  it('should have type="button" attribute set on the host element', () => {
+    const btn = fixture.debugElement.query(By.directive(ClrStepButton));
+    expect(btn.nativeElement.getAttribute('type')).toBe('button');
+  });
+
+  it('should prevent default on click to avoid form submission', () => {
+    const btn = fixture.debugElement.query(By.directive(ClrStepButton));
+    const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+    const preventDefaultSpy = spyOn(event, 'preventDefault');
+    btn.nativeElement.dispatchEvent(event);
+    expect(preventDefaultSpy).toHaveBeenCalled();
+  });
 });
 
 describe('ClrStepButton Previous', () => {

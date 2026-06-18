@@ -21,7 +21,7 @@ export enum ClrStepButtonType {
   host: {
     '[class.clr-step-button]': 'true',
     '[class.btn]': 'true',
-    '[type]': "'button'",
+    '[attr.type]': "'button'",
   },
   standalone: false,
 })
@@ -40,8 +40,9 @@ export class ClrStepButton implements OnInit {
     this.previousButton = this.type === ClrStepButtonType.Previous;
   }
 
-  @HostListener('click')
-  navigateToNextPanel() {
+  @HostListener('click', ['$event'])
+  navigateToNextPanel(event: Event) {
+    event.preventDefault();
     if (this.previousButton) {
       this.stepperService.navigateToPreviousPanel(this.clrStep.id);
       return;
