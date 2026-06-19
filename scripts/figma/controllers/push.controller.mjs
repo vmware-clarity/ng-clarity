@@ -71,7 +71,6 @@ export async function runPush(cli, ctx) {
       skipped: totalSkipped,
       deleted: totalDeleted,
       modeValues: totalModeValues,
-      humanReadable: ctx.humanReadableCount,
     },
     `\n✅  Done! ${totalNew + totalUpdate} tokens published to Figma.\n`
   );

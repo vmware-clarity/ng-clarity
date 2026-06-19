@@ -56,6 +56,5 @@ export function printPlanStats(ctx, plan) {
     skipped: stats.skipped,
     deleted: deletedVarIds.size,
     modeValues: payloadModeValues.length,
-    humanReadable: ctx.humanReadableCount,
   });
 }

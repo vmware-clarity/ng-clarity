@@ -86,7 +86,6 @@ export async function runPreview(cli, ctx) {
       skipped: previewSkipped,
       deleted: 0,
       modeValues: 0,
-      humanReadable: ctx.humanReadableCount,
     },
     '\n✅  Preview complete — no changes made to Figma.\n'
   );

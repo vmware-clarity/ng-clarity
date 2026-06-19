@@ -12,14 +12,10 @@
  * the layout stays consistent without copy-paste drift.
  *
  * @param {string} label  Heading shown after the 📊 icon (e.g. "Token plan" or "Push summary").
- * @param {{ collections: number, created: number, updated: number, skipped: number, deleted: number, modeValues: number, humanReadable: number }} stats
+ * @param {{ collections: number, created: number, updated: number, skipped: number, deleted: number, modeValues: number }} stats
  * @param {string} [doneMsg]  Optional trailing message (e.g. "✅  Dry run complete").
  */
-export function printStats(
-  label,
-  { collections, created, updated, skipped, deleted, modeValues, humanReadable },
-  doneMsg
-) {
+export function printStats(label, { collections, created, updated, skipped, deleted, modeValues }, doneMsg) {
   console.log(`\n📊  ${label}:`);
   console.log(`    Collections    : ${collections}`);
   console.log(`    New vars       : ${created}`);
@@ -27,7 +23,6 @@ export function printStats(
   console.log(`    Skipped        : ${skipped}  (complex multi-value strings)`);
   console.log(`    Deletions      : ${deleted}  (type corrections)`);
   console.log(`    Mode values    : ${modeValues}`);
-  console.log(`    Human readable : ${humanReadable}`);
   if (doneMsg) {
     console.log(doneMsg);
   }

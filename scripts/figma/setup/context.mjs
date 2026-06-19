@@ -36,7 +36,6 @@ import { buildCollectionDefs } from '../core/collections.mjs';
  * @property {ReturnType<import('../core/token-rules.mjs').createTokenRules>} rules
  * @property {(name: string) => string | undefined} varLookup
  * @property {import('../core/collections.mjs').CollectionDef[]} collectionDefs
- * @property {number} humanReadableCount
  * @property {string} source  CSS source path relative to the repo root.
  * @property {string} root
  */
@@ -72,17 +71,11 @@ export function buildRunContext() {
   const modeVars = resolveModeVars(parseCssBlocks(cssText));
   const collectionDefs = buildCollectionDefs(config.collections, modeVars);
 
-  const humanReadableCount = config.collections.reduce(
-    (n, col) => n + (col.humanReadable ? Object.keys(col.humanReadable).length : 0),
-    0
-  );
-
   return {
     config,
     rules,
     varLookup: name => modeVars.root.get(name),
     collectionDefs,
-    humanReadableCount,
     source: path.relative(paths.root, paths.cssFile),
     root: paths.root,
   };
