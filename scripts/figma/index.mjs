@@ -30,17 +30,11 @@
  *   --extract [file]       Write the parsed token plan to a JSON file instead
  *                          of pushing. No Figma credentials required.
  *                          Defaults to: figma-tokens.extract.json
- *   --branch <name>        Dev branch name; isolates tokens from production.
- *                          With FIGMA_BRANCH_MODE=branch: targets a Figma branch.
- *                          With FIGMA_BRANCH_MODE=collection (default): suffixes
- *                          collection names with " [<branch>]".
  *
  * Required env vars (set in .env.figma) — not needed for --extract:
  *   FIGMA_TOKEN        Personal access token with file_variables:read/write.
  *   FIGMA_FILE_KEY     Figma file key (last path segment of the file URL).
- *
- * Optional env vars:
- *   FIGMA_BRANCH_MODE  "branch" | "collection" (default: "collection")
+ *                      Full URLs are NOT accepted.
  */
 
 import { parseCliArgs } from './setup/cli.mjs';
@@ -49,7 +43,7 @@ import { executeRun, resolveMode } from './controllers/factory.mjs';
 
 async function main() {
   const cli = parseCliArgs();
-  const ctx = buildRunContext(cli);
+  const ctx = buildRunContext();
   const mode = resolveMode(cli);
   await executeRun(mode, cli, ctx);
 }

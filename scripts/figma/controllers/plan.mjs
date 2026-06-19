@@ -20,18 +20,13 @@ import { printStats } from '../api/diff-printer.mjs';
 /**
  * Build the complete push plan for all collections.
  *
- * `collectionSuffix` is computed by the calling controller (dry-run and extract
- * always use a plain suffix; push/preview use the result of resolveBranchIsolation).
- *
  * @param {import('../setup/context.mjs').RunContext} ctx
- * @param {string} collectionSuffix  Branch isolation suffix, e.g. " [dev]" or "".
  * @returns {ReturnType<typeof buildPushPlan>}
  */
-export function buildPlan(ctx, collectionSuffix) {
+export function buildPlan(ctx) {
   const idMap = createIdMap();
   return buildPushPlan({
     collectionDefs: ctx.collectionDefs,
-    collectionSuffix,
     existingCollections: [],
     existingModes: [],
     existingVars: [],

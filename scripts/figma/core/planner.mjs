@@ -164,7 +164,6 @@ export function populateIdMapFromExisting(existingVars, idMap) {
  *
  * @param {Object} params
  * @param {import('./collections.mjs').CollectionDef} params.colDef
- * @param {string} params.collectionSuffix Branch isolation suffix (e.g. " [dev]").
  * @param {Map<string, any>} params.existingCollByName Map from collection name → Figma collection object.
  * @param {Array<{modeId: string, name: string, collectionId: string}>} params.existingModes
  * @param {Map<string, any>} params.existingVarByName Map from Figma variable name → variable object (globally unique names only; used by regular collections).
@@ -184,7 +183,6 @@ export function populateIdMapFromExisting(existingVars, idMap) {
  */
 export function buildCollectionPlan({
   colDef,
-  collectionSuffix,
   existingCollByName,
   existingModes,
   existingVarByName,
@@ -211,7 +209,7 @@ export function buildCollectionPlan({
   let statsUpdate = 0;
   let statsSkipped = 0;
 
-  const colName = colDef.name + collectionSuffix;
+  const colName = colDef.name;
   const existingCol = existingCollByName.get(colName);
   const colId = existingCol ? existingCol.id : nextTempId();
   const isNewCol = !existingCol;
@@ -516,7 +514,6 @@ export function buildCollectionPlan({
  *
  * @param {Object} params
  * @param {import('./collections.mjs').CollectionDef[]} params.collectionDefs
- * @param {string} params.collectionSuffix Branch isolation suffix (e.g. " [dev]").
  * @param {Array<{id: string, name: string}>} params.existingCollections
  * @param {Array<{modeId: string, name: string, collectionId: string}>} params.existingModes
  * @param {Array<{id: string, name: string, resolvedType: string}>} params.existingVars
@@ -535,7 +532,6 @@ export function buildCollectionPlan({
  */
 export function buildPushPlan({
   collectionDefs,
-  collectionSuffix,
   existingCollections,
   existingModes,
   existingVars,
@@ -563,7 +559,6 @@ export function buildPushPlan({
   for (const colDef of collectionDefs) {
     const colPlan = buildCollectionPlan({
       colDef,
-      collectionSuffix,
       existingCollByName,
       existingModes,
       existingVarByName,

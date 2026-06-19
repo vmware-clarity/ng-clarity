@@ -25,29 +25,29 @@ The CSS is the **single source of truth**: this tool only mirrors it into Figma.
 
 ### Modules
 
-| File                                 | Responsibility                                                            |
-| ------------------------------------ | ------------------------------------------------------------------------- |
-| `index.mjs`                          | Entry point: parses CLI, builds context, delegates to a controller.       |
-| `setup/cli.mjs`                      | Parses CLI flags (`--dry-run`, `--preview`, `--extract`, `--branch`).     |
-| `setup/env.mjs`                      | Reads & validates `FIGMA_TOKEN` / `FIGMA_FILE_KEY` / `FIGMA_BRANCH_MODE`. |
-| `setup/config.mjs`                   | Loads and normalizes `figma-tokens.config.json`.                          |
-| `setup/css-parser.mjs`               | Parses CSS blocks into root / dark / compact variable maps.               |
-| `setup/context.mjs`                  | Builds the shared run context consumed by every controller.               |
-| `controllers/factory.mjs`            | Resolves the run mode and selects its controller.                         |
-| `controllers/dry-run.controller.mjs` | `--dry-run`: build plan + print summary, no API calls.                    |
-| `controllers/extract.controller.mjs` | `--extract`: build plan + write JSON view to disk.                        |
-| `controllers/preview.controller.mjs` | `--preview`: fetch state, print diff, no push.                            |
-| `controllers/push.controller.mjs`    | Default: push the plan to Figma and print the summary.                    |
-| `controllers/plan.mjs`               | Shared plan-building + stats helper for dry-run and extract.              |
-| `core/collections.mjs`               | Translates config collections into planner-ready definitions.             |
-| `core/token-rules.mjs`               | Exclusion, scope, and code-syntax helpers bound to the config.            |
-| `core/value-converters.mjs`          | Pure CSS-value → Figma-payload converters + type inference.               |
-| `core/planner.mjs`                   | Builds the create/update/delete push plan by diffing against Figma.       |
-| `core/id-map.mjs`                    | CSS-var-name ↔ Figma-variable-id lookup used to resolve aliases.          |
-| `api/extract-view.mjs`               | Builds the JSON view written by `--extract`.                              |
-| `api/diff-printer.mjs`               | Formats the human-readable change diff.                                   |
-| `api/push-executor.mjs`              | Per-collection push loop and idMap refresh between POSTs.                 |
-| `api/figma-client.mjs`               | Thin Figma REST client (auth, timeout, 429/5xx retry).                    |
+| File                                 | Responsibility                                                      |
+| ------------------------------------ | ------------------------------------------------------------------- |
+| `index.mjs`                          | Entry point: parses CLI, builds context, delegates to a controller. |
+| `setup/cli.mjs`                      | Parses CLI flags (`--dry-run`, `--preview`, `--extract`).           |
+| `setup/env.mjs`                      | Reads & validates `FIGMA_TOKEN` / `FIGMA_FILE_KEY`.                 |
+| `setup/config.mjs`                   | Loads and normalizes `figma-tokens.config.json`.                    |
+| `setup/css-parser.mjs`               | Parses CSS blocks into root / dark / compact variable maps.         |
+| `setup/context.mjs`                  | Builds the shared run context consumed by every controller.         |
+| `controllers/factory.mjs`            | Resolves the run mode and selects its controller.                   |
+| `controllers/dry-run.controller.mjs` | `--dry-run`: build plan + print summary, no API calls.              |
+| `controllers/extract.controller.mjs` | `--extract`: build plan + write JSON view to disk.                  |
+| `controllers/preview.controller.mjs` | `--preview`: fetch state, print diff, no push.                      |
+| `controllers/push.controller.mjs`    | Default: push the plan to Figma and print the summary.              |
+| `controllers/plan.mjs`               | Shared plan-building + stats helper for dry-run and extract.        |
+| `core/collections.mjs`               | Translates config collections into planner-ready definitions.       |
+| `core/token-rules.mjs`               | Exclusion, scope, and code-syntax helpers bound to the config.      |
+| `core/value-converters.mjs`          | Pure CSS-value → Figma-payload converters + type inference.         |
+| `core/planner.mjs`                   | Builds the create/update/delete push plan by diffing against Figma. |
+| `core/id-map.mjs`                    | CSS-var-name ↔ Figma-variable-id lookup used to resolve aliases.    |
+| `api/extract-view.mjs`               | Builds the JSON view written by `--extract`.                        |
+| `api/diff-printer.mjs`               | Formats the human-readable change diff.                             |
+| `api/push-executor.mjs`              | Per-collection push loop and idMap refresh between POSTs.           |
+| `api/figma-client.mjs`               | Thin Figma REST client (auth, timeout, 429/5xx retry).              |
 
 ## Collections
 
@@ -77,9 +77,28 @@ cp .env.figma .env.figma.local   # or edit .env.figma directly, keep it out of g
 
 - `FIGMA_TOKEN` — personal access token with `file_variables:read` and
   `file_variables:write` scopes.
-- `FIGMA_FILE_KEY` — the segment after `/file/` or `/design/` in the file URL
-  (full URLs are accepted too).
-- `FIGMA_BRANCH_MODE` — `collection` (default) or `branch`.
+- `FIGMA_FILE_KEY` — the key that identifies the target Figma file. Figma branches
+  are independent files with their own key, so the same variable controls whether
+  you publish to the main file or to a branch:
+
+  | Target      | URL pattern                                                     | Key to use                                |
+  | ----------- | --------------------------------------------------------------- | ----------------------------------------- |
+  | Main file   | `https://www.figma.com/design/<FILE_KEY>/…`                     | `<FILE_KEY>` (segment after `/design/`)   |
+  | Branch file | `https://www.figma.com/design/<FILE_KEY>/branch/<BRANCH_KEY>/…` | `<BRANCH_KEY>` (segment after `/branch/`) |
+
+  **Example — main file:**
+
+  ```
+  URL:            https://www.figma.com/design/xxxxxxxxxxxxxxxxxxxxxx/...
+  FIGMA_FILE_KEY: xxxxxxxxxxxxxxxxxxxxxx
+  ```
+
+  **Example — branch file:**
+
+  ```
+  URL:            https://www.figma.com/design/xxxxxxxxxxxxxxxxxxxxxx/branch/yyyyyyyyyyyyyyyyyyyyyy/...
+  FIGMA_FILE_KEY: yyyyyyyyyyyyyyyyyyyyyy
+  ```
 
 2. Run one of the npm scripts:
 
@@ -92,15 +111,12 @@ npm run figma:extract
 
 # Push to Figma (runs the test suite first)
 npm run figma:push
-
-# Push from a dev branch into isolated collections
-npm run figma:push:branch -- my-branch-name
 ```
 
 Or invoke the script directly:
 
 ```bash
-node --env-file=.env.figma scripts/figma/index.mjs [--dry-run] [--branch <name>] [--extract [file]]
+node --env-file=.env.figma scripts/figma/index.mjs [--dry-run] [--extract [file]]
 ```
 
 ## Running the tests
@@ -113,6 +129,7 @@ npm run _test:figma
 
 ## CI
 
-`.github/workflows/figma-publish.yml` publishes tokens to the production Figma
-file after a release, and supports a manual `workflow_dispatch` that can publish
-a branch into isolated collections for designer review.
+`.github/workflows/figma-publish.yml` publishes tokens to Figma after a release,
+and supports a manual `workflow_dispatch` for ad-hoc pushes. To target a specific
+Figma file (e.g. a branch file), set `FIGMA_FILE_KEY` to that file's key before
+triggering the workflow.

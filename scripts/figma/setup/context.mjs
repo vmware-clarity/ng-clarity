@@ -8,10 +8,10 @@
 /**
  * Builds the shared run context consumed by every controller.
  *
- * Contains only what is truly needed by all four modes (dry-run / extract /
- * preview / push): credential loading, config, token rules, and CSS parsing.
- * Mode-specific concerns — logging, Figma client creation, branch isolation,
- * and fetching existing variables — live in the controllers themselves.
+ * Contains only what is truly needed by all modes (dry-run / extract /
+ * preview / push): config, token rules, and parsed CSS variable maps.
+ * Mode-specific concerns — logging, Figma client creation, and fetching
+ * existing variables — live in the controllers themselves.
  */
 
 import fs from 'node:fs';
@@ -60,9 +60,6 @@ export function buildRunContext() {
     console.error(`❌  ${paths.cssFile} not found. Run: npm run _build:ui`);
     process.exit(1);
   }
-
-  // const { extractMode, branchName, extractFile } = cli;
-  // const { figmaToken, figmaFileKey, figmaBranchMode } = loadEnv({ extractMode });
 
   const config = loadConfig(paths.configPath);
   const rules = createTokenRules(config);

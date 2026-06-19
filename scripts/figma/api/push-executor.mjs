@@ -37,9 +37,8 @@ const BATCH = 500;
  *
  * @param {Object} params
  * @param {ReturnType<import('./figma-client.mjs').createFigmaClient>} params.figma
- * @param {string} params.effectiveFileKey  Figma file key (or branch key).
+ * @param {string} params.figmaFileKey  Figma file key.
  * @param {import('../core/collections.mjs').CollectionDef[]} params.collectionDefs
- * @param {string} params.collectionSuffix  Branch isolation suffix (e.g. " [dev]").
  * @param {any[]} params.existingCollections  Initial list from the pre-push GET.
  * @param {any[]} params.existingVars         Initial list from the pre-push GET.
  * @param {Array<{modeId: string, name: string, collectionId: string}>} params.existingModes
@@ -55,9 +54,8 @@ const BATCH = 500;
  */
 export async function executePush({
   figma,
-  effectiveFileKey,
+  figmaFileKey,
   collectionDefs,
-  collectionSuffix,
   existingCollections,
   existingVars,
   existingModes,
@@ -89,7 +87,6 @@ export async function executePush({
 
     const colPlan = buildCollectionPlan({
       colDef,
-      collectionSuffix,
       existingCollByName,
       existingModes,
       existingVarByName,
@@ -116,7 +113,7 @@ export async function executePush({
     if (deleteVars.length > 0) {
       console.log(`    🗑️   Deleting ${deleteVars.length} type-mismatched variable(s)…`);
 
-      await figma.postVariables(effectiveFileKey, {
+      await figma.postVariables(figmaFileKey, {
         variableCollections: [],
         variableModes: [],
         variables: deleteVars,
@@ -147,7 +144,7 @@ export async function executePush({
       console.log(
         `    📤  Batch ${Math.floor(i / BATCH) + 1}: ${slice.length} var(s), ${sliceMV.length} mode value(s)`
       );
-      await figma.postVariables(effectiveFileKey, {
+      await figma.postVariables(figmaFileKey, {
         variableCollections: i === 0 ? colPlan.payloadCollections : [],
         variableModes: i === 0 ? colPlan.payloadModes : [],
         variables: slice,
@@ -157,7 +154,7 @@ export async function executePush({
 
     // ── Diff for this collection ────────────────────────────────────────────
     if (colPlan.diff.length > 0) {
-      printDiff([{ collectionName: colDef.name + collectionSuffix, diff: colPlan.diff }]);
+      printDiff([{ collectionName: colDef.name, diff: colPlan.diff }]);
     }
 
     // ── Refresh idMap with real Figma IDs ───────────────────────────────────
@@ -165,7 +162,7 @@ export async function executePush({
     // real Figma IDs.  The next collection's VARIABLE_ALIAS mode values will
     // therefore carry real IDs rather than stale temp IDs.
     console.log(`    🔄  Syncing variable IDs…`);
-    const fresh = await figma.getVariables(effectiveFileKey);
+    const fresh = await figma.getVariables(figmaFileKey);
     const { collections: freshCollections, vars: freshVars, modes: freshModes } = parseFigmaVarsResponse(fresh);
 
     populateIdMapFromExisting(freshVars, idMap);
@@ -183,13 +180,11 @@ export async function executePush({
   // Figma silently appends a default "Mode 1" whenever a collection is created,
   // even when we supply our own named modes in the same request. Only target
   // collections from this push run to avoid touching unrelated collections.
-  const pushedCollectionIds = new Set(
-    collectionDefs.map(def => existingCollByName.get(def.name + collectionSuffix)?.id).filter(Boolean)
-  );
+  const pushedCollectionIds = new Set(collectionDefs.map(def => existingCollByName.get(def.name)?.id).filter(Boolean));
   const defaultModes = existingModes.filter(m => m.name === 'Mode 1' && pushedCollectionIds.has(m.collectionId));
   if (defaultModes.length > 0) {
     console.log(`\n  🧹  Removing ${defaultModes.length} auto-created "Mode 1" mode(s)…`);
-    await figma.postVariables(effectiveFileKey, {
+    await figma.postVariables(figmaFileKey, {
       variableCollections: [],
       variableModes: defaultModes.map(m => ({ action: 'DELETE', id: m.modeId, variableCollectionId: m.collectionId })),
       variables: [],

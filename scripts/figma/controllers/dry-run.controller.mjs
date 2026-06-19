@@ -9,8 +9,7 @@
  * Dry-run controller (`--dry-run`).
  *
  * Builds the full push plan and prints the summary without making any Figma API
- * calls. No branch-to-file-key resolution is needed: when a branch name is
- * supplied, it is always rendered as a collection suffix.
+ * calls.
  */
 
 import { buildPlan, printPlanStats } from './plan.mjs';
@@ -19,12 +18,8 @@ import { buildPlan, printPlanStats } from './plan.mjs';
  * @param {import('../setup/context.mjs').RunContext} ctx
  */
 export function runDryRun(ctx) {
-  const collectionSuffix = ctx.branchName ? ` [${ctx.branchName}]` : '';
-  console.log(
-    `\n🎨  Figma token dry run — file: ${ctx.figmaFileKey}${ctx.branchName ? ` [branch: ${ctx.branchName}]` : ''}\n`
-  );
-
-  const plan = buildPlan(ctx, collectionSuffix);
+  console.log(`\n🎨  Figma token dry run — file: ${ctx.figmaFileKey}\n`);
+  const plan = buildPlan(ctx);
   printPlanStats(ctx, plan);
   console.log('\n✅  Dry run complete — no changes made to Figma.\n');
 }

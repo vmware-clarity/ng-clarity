@@ -9,8 +9,7 @@
  * Extract controller (`--extract [file]`).
  *
  * Builds the full push plan and serializes a human-readable, per-collection view
- * to a JSON file. Requires no Figma credentials. Branch names are always rendered
- * as a collection suffix — no network call is made to resolve them.
+ * to a JSON file. Requires no Figma credentials.
  */
 
 import fs from 'node:fs';
@@ -24,9 +23,9 @@ import { buildPlan, printPlanStats } from './plan.mjs';
  * @param {import('../setup/context.mjs').RunContext} ctx
  */
 export function runExtract(cli, ctx) {
-  console.log(`\n🎨  Figma token extract${ctx.figmaFileKey ? ` — file: ${ctx.figmaFileKey}` : ''}\n`);
+  console.log('\n🎨  Figma token extract\n');
 
-  const plan = buildPlan(ctx, '');
+  const plan = buildPlan(ctx);
   printPlanStats(ctx, plan);
 
   const output = buildExtractView({

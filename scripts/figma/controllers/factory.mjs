@@ -61,10 +61,10 @@ export async function executeRun(mode, cli, ctx) {
       runExtract(cli, ctx);
       break;
     case 'preview':
-      await runPreview(cli, ctx);
+      await runPreview(ctx);
       break;
     case 'push':
-      await runPush(cli, ctx);
+      await runPush(ctx);
       break;
     default:
       throw new Error(`Unknown run mode: ${mode}`);

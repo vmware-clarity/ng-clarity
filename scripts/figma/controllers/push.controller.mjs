@@ -8,30 +8,25 @@
 /**
  * Push controller (default mode).
  *
- * Creates the Figma client, fetches the existing Figma state, resolves branch
- * isolation, then pushes the planned variables one collection at a time (via
- * {@link executePush}) and prints the change diff and final summary.
+ * Creates the Figma client, fetches the existing Figma state, then pushes the
+ * planned variables one collection at a time (via {@link executePush}) and
+ * prints the change diff and final summary.
  */
 
 import { createFigmaClient } from '../api/figma-client.mjs';
 import { executePush } from '../api/push-executor.mjs';
 import { printStats } from '../api/diff-printer.mjs';
 import { parseFigmaVarsResponse } from '../util/figma-response.mjs';
-import { resolveBranchIsolation } from '../setup/branch.mjs';
 import { loadEnv } from '../setup/env.mjs';
 
 /**
- * @param {ReturnType<import('../setup/cli.mjs').parseCliArgs>} cli
  * @param {import('../setup/context.mjs').RunContext} ctx
  */
-export async function runPush(cli, ctx) {
-  const { figmaToken, figmaFileKey, figmaBranchMode } = loadEnv();
-
+export async function runPush(ctx) {
+  const { figmaToken, figmaFileKey } = loadEnv();
   const figma = createFigmaClient(figmaToken);
 
-  console.log(
-    `\n🎨  Figma token push — file: ${figmaFileKey}${cli.branchName ? ` [branch: ${cli.branchName}]` : ''}\n`
-  );
+  console.log(`\n🎨  Figma token push — file: ${figmaFileKey}\n`);
 
   console.log('⬇️   Fetching existing Figma variables…');
   const existing = await figma.getVariables(figmaFileKey);
@@ -41,20 +36,12 @@ export async function runPush(cli, ctx) {
     modes: existingModes,
   } = parseFigmaVarsResponse(existing);
 
-  const { effectiveFileKey, collectionSuffix } = await resolveBranchIsolation({
-    figma,
-    figmaFileKey: figmaFileKey,
-    figmaBranchMode: figmaBranchMode,
-    branchName: cli.branchName,
-  });
-
   console.log('\n⬆️   Pushing to Figma…');
 
   const { totalNew, totalUpdate, totalSkipped, totalDeleted, totalModeValues } = await executePush({
     figma,
-    effectiveFileKey,
+    figmaFileKey,
     collectionDefs: ctx.collectionDefs,
-    collectionSuffix,
     existingCollections,
     existingVars,
     existingModes,

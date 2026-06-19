@@ -18,7 +18,7 @@ const DEFAULT_EXTRACT_FILE = 'figma-tokens.extract.json';
  * Parse the supported CLI flags.
  *
  * @param {string[]} [argv] Defaults to process.argv.
- * @returns {{ dryRun: boolean, previewMode: boolean, extractMode: boolean, extractFile: string | null, branchName: string | undefined }}
+ * @returns {{ dryRun: boolean, previewMode: boolean, extractMode: boolean, extractFile: string | null }}
  */
 export function parseCliArgs(argv = process.argv) {
   const dryRun = argv.includes('--dry-run');
@@ -37,12 +37,5 @@ export function parseCliArgs(argv = process.argv) {
     return next && !next.startsWith('--') ? next : DEFAULT_EXTRACT_FILE;
   })();
 
-  const branchIdx = argv.indexOf('--branch');
-  const branchName = branchIdx !== -1 ? argv[branchIdx + 1] : undefined;
-  if (branchIdx !== -1 && (!branchName || branchName.startsWith('--'))) {
-    console.error('❌  --branch requires a non-empty branch name.');
-    process.exit(1);
-  }
-
-  return { dryRun, previewMode, extractMode, extractFile, branchName };
+  return { dryRun, previewMode, extractMode, extractFile };
 }

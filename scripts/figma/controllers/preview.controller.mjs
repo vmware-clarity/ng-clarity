@@ -8,9 +8,9 @@
 /**
  * Preview controller (`--preview`).
  *
- * Creates the Figma client, resolves branch isolation, fetches the current Figma
- * state, computes a full create/update diff per collection, prints it, and exits
- * without pushing. Requires credentials.
+ * Creates the Figma client, fetches the current Figma state, computes a full
+ * create/update diff per collection, prints it, and exits without pushing.
+ * Requires credentials.
  */
 
 import { createFigmaClient } from '../api/figma-client.mjs';
@@ -18,30 +18,19 @@ import { printDiff, printStats } from '../api/diff-printer.mjs';
 import { createIdMap } from '../core/id-map.mjs';
 import { buildCollectionPlan, populateIdMapFromExisting } from '../core/planner.mjs';
 import { parseFigmaVarsResponse, buildLookupMaps } from '../util/figma-response.mjs';
-import { resolveBranchIsolation } from '../setup/branch.mjs';
 import { loadEnv } from '../setup/env.mjs';
 
 /**
- * @param {ReturnType<import('../setup/cli.mjs').parseCliArgs>} cli
  * @param {import('../setup/context.mjs').RunContext} ctx
  */
-export async function runPreview(cli, ctx) {
-  const { figmaToken, figmaFileKey, figmaBranchMode } = loadEnv();
+export async function runPreview(ctx) {
+  const { figmaToken, figmaFileKey } = loadEnv();
   const figma = createFigmaClient(figmaToken);
 
-  console.log(
-    `\n🎨  Figma token preview — file: ${figmaFileKey}${cli.branchName ? ` [branch: ${cli.branchName}]` : ''}\n`
-  );
-
-  const { effectiveFileKey, collectionSuffix } = await resolveBranchIsolation({
-    figma,
-    figmaFileKey: figmaFileKey,
-    figmaBranchMode: figmaBranchMode,
-    branchName: cli.branchName,
-  });
+  console.log(`\n🎨  Figma token preview — file: ${figmaFileKey}\n`);
 
   console.log('\n👁️   Fetching current Figma state to compute diff…');
-  const existing = await figma.getVariables(effectiveFileKey);
+  const existing = await figma.getVariables(figmaFileKey);
   const { collections: previewCollections, vars: previewVars, modes: previewModes } = parseFigmaVarsResponse(existing);
   const {
     collByName: existingCollByName,
@@ -60,7 +49,6 @@ export async function runPreview(cli, ctx) {
   for (const colDef of ctx.collectionDefs) {
     const colPlan = buildCollectionPlan({
       colDef,
-      collectionSuffix,
       existingCollByName,
       existingModes: previewModes,
       existingVarByName,
@@ -73,7 +61,7 @@ export async function runPreview(cli, ctx) {
     previewNew += colPlan.stats.new;
     previewUpdate += colPlan.stats.update;
     previewSkipped += colPlan.stats.skipped;
-    diffReport.push({ collectionName: colDef.name + collectionSuffix, diff: colPlan.diff });
+    diffReport.push({ collectionName: colDef.name, diff: colPlan.diff });
   }
 
   printDiff(diffReport);

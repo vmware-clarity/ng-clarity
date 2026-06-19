@@ -16,30 +16,16 @@ on:
         required: false
         default: false
         type: boolean
-      branch_isolation:
-        description: 'Isolation mode for non-main branches'
-        required: false
-        default: 'collection'
-        type: string
     secrets:
       FIGMA_TOKEN:
         required: false
       FIGMA_FILE_KEY:
         required: false
 
-  # Manual trigger: publish or preview tokens from a specific branch.
-  # When run from a non-main branch the tokens land in isolated collections
-  # suffixed with the branch name, leaving the production file untouched.
+  # Manual trigger: publish or preview tokens.
+  # To target a Figma branch file, set FIGMA_FILE_KEY to the branch file key.
   workflow_dispatch:
     inputs:
-      branch_isolation:
-        description: 'Isolation mode for non-main branches'
-        required: false
-        default: 'collection'
-        type: choice
-        options:
-          - collection
-          - branch
       dry_run:
         description: 'Dry run (parse tokens but make no API calls)'
         required: false
@@ -86,24 +72,7 @@ jobs:
       - name: Build clr-ui CSS
         run: npm run _build:ui
 
-      # ── Determine branch name for isolation ──────────────────────────────────
-      - name: Resolve branch name
-        id: branch
-        env:
-          REF_NAME: ${{ github.ref_name }}
-        run: |
-          if [[ "$REF_NAME" == "main" ]]; then
-            echo "name=" >> "$GITHUB_OUTPUT"
-            echo "is_main=true" >> "$GITHUB_OUTPUT"
-          else
-            SAFE=$(printf '%s' "$REF_NAME" | sed 's/[^a-zA-Z0-9._-]/-/g' | cut -c1-40)
-            echo "name=$SAFE" >> "$GITHUB_OUTPUT"
-            echo "is_main=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      # ── Production push (main branch / release workflow) ─────────────────────
-      - name: Push tokens to Figma (production)
-        if: steps.branch.outputs.is_main == 'true'
+      - name: Push tokens to Figma
         env:
           FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
           FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
@@ -113,25 +82,10 @@ jobs:
           [[ "${{ inputs.preview }}" == "true" ]] && FLAGS="$FLAGS --preview"
           node scripts/figma/index.mjs $FLAGS
 
-      # ── Dev branch push (isolated collections) ───────────────────────────────
-      - name: Push tokens to Figma (dev branch — isolated)
-        if: steps.branch.outputs.is_main == 'false'
-        env:
-          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
-          FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
-          FIGMA_BRANCH_MODE: ${{ inputs.branch_isolation || 'collection' }}
-        run: |
-          FLAGS="--branch ${{ steps.branch.outputs.name }}"
-          [[ "${{ inputs.dry_run }}" == "true" ]] && FLAGS="$FLAGS --dry-run"
-          [[ "${{ inputs.preview }}" == "true" ]] && FLAGS="$FLAGS --preview"
-          node scripts/figma/index.mjs $FLAGS
-
       # ── Summary ──────────────────────────────────────────────────────────────
       - name: Write job summary
         if: always()
         env:
-          IS_MAIN: ${{ steps.branch.outputs.is_main }}
-          ISOLATION: ${{ inputs.branch_isolation || 'collection' }}
           DRY_RUN: ${{ inputs.dry_run || false }}
           PREVIEW: ${{ inputs.preview || false }}
           EVENT: ${{ github.event_name }}
@@ -143,8 +97,6 @@ jobs:
           | Field | Value |
           |---|---|
           | Branch | \`$BRANCH\` |
-          | Production push | \`$( [ "$IS_MAIN" = "true" ] && echo yes || echo "no (isolated)" )\` |
-          | Isolation mode | \`$ISOLATION\` |
           | Dry run | \`$DRY_RUN\` |
           | Preview | \`$PREVIEW\` |
           | Triggered by | \`$EVENT\` |
