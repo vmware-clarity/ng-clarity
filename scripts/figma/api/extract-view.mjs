@@ -6,6 +6,12 @@
  */
 
 import { figmaNameToCssName } from '../util/naming.mjs';
+/**
+ * Description prefix written by planner.mjs for human-readable alias variables.
+ * Kept here as a constant so a format change in planner.mjs produces an obvious
+ * compile-time (or grep-time) failure rather than a silent wrong cssVar output.
+ */
+export const ALIAS_DESCRIPTION_PREFIX = 'Alias of: ';
 
 /**
  * Builds the human-readable, per-collection extract view of the push plan.
@@ -25,16 +31,6 @@ import { figmaNameToCssName } from '../util/naming.mjs';
 export function buildExtractView({ collectionDefs, plan, existingModes, source }) {
   const { payloadCollections, payloadModes, payloadVars, payloadModeValues, existingCollByName, stats } = plan;
 
-  // Build a human-readable per-collection view alongside the raw Figma payload
-  const modeIdToName = new Map();
-  for (const m of payloadModes) {
-    modeIdToName.set(m.id, m.name);
-  }
-  // For existing modes (not in payloadModes) we need a lookup from existingModes
-  for (const em of existingModes) {
-    modeIdToName.set(em.modeId, em.name);
-  }
-
   const collectionView = collectionDefs.map(colDef => {
     const existingCol = existingCollByName.get(colDef.name);
     const colId = existingCol ? existingCol.id : (payloadCollections.find(c => c.name === colDef.name)?.id ?? '?');
@@ -43,7 +39,10 @@ export function buildExtractView({ collectionDefs, plan, existingModes, source }
     const modes = colDef.modes.map(modeName => {
       const modeEntry = payloadModes.find(m => m.variableCollectionId === colId && m.name === modeName);
       const existingModeObj = existingModes.find(m => m.collectionId === colId && m.name === modeName);
-      return { id: modeEntry?.id ?? existingModeObj?.modeId ?? null, name: modeName };
+      return {
+        id: modeEntry?.id ?? existingModeObj?.modeId ?? null,
+        name: modeName,
+      };
     });
 
     const variables = payloadVars
@@ -59,13 +58,14 @@ export function buildExtractView({ collectionDefs, plan, existingModes, source }
         }
         // Human-readable alias variables store the source CSS var in the description
         // ("Alias of: --cds-…"); regular variables derive it from the Figma path.
-        const cssName = v.description?.startsWith('Alias of: ')
-          ? v.description.slice('Alias of: '.length)
+        const cssVar = v.description?.startsWith(ALIAS_DESCRIPTION_PREFIX)
+          ? v.description.slice(ALIAS_DESCRIPTION_PREFIX.length)
           : figmaNameToCssName(v.name);
+
         return {
           id: v.id,
-          figmaPath: v.name,
-          cssVar: cssName,
+          figmaName: v.name,
+          cssVar,
           resolvedType: v.resolvedType,
           scopes: v.scopes,
           codeSyntax: v.codeSyntax,

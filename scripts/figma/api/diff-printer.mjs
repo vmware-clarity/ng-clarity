@@ -61,17 +61,19 @@ export function printDiff(diffReport) {
 export function formatDiff(diffReport) {
   const lines = ['\n📋  Diff:\n'];
 
-  let anyChanges = false;
+  let hasChanges = false;
 
   for (const { collectionName, diff } of diffReport) {
-    const retyped = diff.filter(e => e.action === 'retype');
-    const created = diff.filter(e => e.action === 'create');
-    const updated = diff.filter(e => e.action === 'update');
-
     if (diff.length === 0) {
       continue;
     }
-    anyChanges = true;
+    hasChanges = true;
+
+    const diffGroupedByAction = Object.groupBy(diff, ({ action }) => action);
+
+    const retyped = diffGroupedByAction.retype ? diffGroupedByAction.retype : [];
+    const created = diffGroupedByAction.create ? diffGroupedByAction.create : [];
+    const updated = diffGroupedByAction.update ? diffGroupedByAction.update : [];
 
     const badge = [
       created.length ? `+${created.length}` : null,
@@ -83,25 +85,20 @@ export function formatDiff(diffReport) {
 
     lines.push(`  📦  ${collectionName}  (${badge})`);
 
-    for (const e of retyped) {
-      lines.push(`    ↻  ${e.name.padEnd(60)}  ${e.prevType} → ${e.type}`);
-    }
-
-    for (const e of created) {
-      lines.push(`    +  ${e.name.padEnd(60)}  ${e.type}`);
-    }
-
-    for (const e of updated) {
+    retyped.forEach(e => lines.push(`    ↻  ${e.name.padEnd(60)}  ${e.prevType} → ${e.type}`));
+    created.forEach(e => lines.push(`    +  ${e.name.padEnd(60)}  ${e.type}`));
+    updated.forEach(e => {
       lines.push(`    ~  ${e.name.padEnd(60)}  ${e.type}`);
-      for (const { field, from, to } of e.changes ?? []) {
-        lines.push(`         ${field.padEnd(22)}  ${from}  →  ${to}`);
-      }
-    }
+
+      e.changes?.forEach(c => {
+        lines.push(`         ${c.field.padEnd(22)}  ${c.from}  →  ${c.to}`);
+      });
+    });
 
     lines.push('');
   }
 
-  if (!anyChanges) {
+  if (!hasChanges) {
     lines.push('  No changes.\n');
   }
 
