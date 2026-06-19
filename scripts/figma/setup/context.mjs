@@ -18,7 +18,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { loadEnv } from './env.mjs';
 import { loadConfig } from './config.mjs';
 import { parseCssBlocks, resolveModeVars } from './css-parser.mjs';
 import { createTokenRules } from '../core/token-rules.mjs';
@@ -33,15 +32,10 @@ import { buildCollectionDefs } from '../core/collections.mjs';
 
 /**
  * @typedef {Object} RunContext
- * @property {string | undefined} figmaToken     Figma personal access token.
- * @property {string} figmaFileKey               Figma file key (normalized).
- * @property {string} figmaBranchMode            "branch" | "collection".
  * @property {import('./config.mjs').FigmaTokensConfig} config
  * @property {ReturnType<import('../core/token-rules.mjs').createTokenRules>} rules
  * @property {(name: string) => string | undefined} varLookup
  * @property {import('../core/collections.mjs').CollectionDef[]} collectionDefs
- * @property {string | undefined} branchName
- * @property {string | null} extractFile
  * @property {number} humanReadableCount
  * @property {string} source  CSS source path relative to the repo root.
  * @property {string} root
@@ -60,18 +54,17 @@ const paths = {
 /**
  * Build the shared context object handed to the selected controller.
  *
- * @param {ReturnType<import('./cli.mjs').parseCliArgs>} cli
  * @returns {RunContext}
  */
-export function buildRunContext(cli) {
+export function buildRunContext() {
   if (!fs.existsSync(paths.cssFile)) {
     console.error(`❌  ${paths.cssFile} not found. Run: npm run _build:ui`);
     process.exit(1);
   }
 
-  const { extractMode, branchName, extractFile } = cli;
+  // const { extractMode, branchName, extractFile } = cli;
+  // const { figmaToken, figmaFileKey, figmaBranchMode } = loadEnv({ extractMode });
 
-  const { figmaToken, figmaFileKey, figmaBranchMode } = loadEnv({ extractMode });
   const config = loadConfig(paths.configPath);
   const rules = createTokenRules(config);
 
@@ -85,15 +78,10 @@ export function buildRunContext(cli) {
   );
 
   return {
-    figmaToken,
-    figmaFileKey,
-    figmaBranchMode,
     config,
     rules,
     varLookup: name => modeVars.root.get(name),
     collectionDefs,
-    branchName,
-    extractFile,
     humanReadableCount,
     source: path.relative(paths.root, paths.cssFile),
     root: paths.root,

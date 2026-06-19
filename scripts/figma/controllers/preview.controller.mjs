@@ -19,22 +19,25 @@ import { createIdMap } from '../core/id-map.mjs';
 import { buildCollectionPlan, populateIdMapFromExisting } from '../core/planner.mjs';
 import { parseFigmaVarsResponse, buildLookupMaps } from '../util/figma-response.mjs';
 import { resolveBranchIsolation } from '../setup/branch.mjs';
+import { loadEnv } from '../setup/env.mjs';
 
 /**
+ * @param {ReturnType<import('../setup/cli.mjs').parseCliArgs>} cli
  * @param {import('../setup/context.mjs').RunContext} ctx
  */
-export async function runPreview(ctx) {
-  const figma = createFigmaClient(ctx.figmaToken);
+export async function runPreview(cli, ctx) {
+  const { figmaToken, figmaFileKey, figmaBranchMode } = loadEnv();
+  const figma = createFigmaClient(figmaToken);
 
   console.log(
-    `\n🎨  Figma token preview — file: ${ctx.figmaFileKey}${ctx.branchName ? ` [branch: ${ctx.branchName}]` : ''}\n`
+    `\n🎨  Figma token preview — file: ${figmaFileKey}${cli.branchName ? ` [branch: ${cli.branchName}]` : ''}\n`
   );
 
   const { effectiveFileKey, collectionSuffix } = await resolveBranchIsolation({
     figma,
-    figmaFileKey: ctx.figmaFileKey,
-    figmaBranchMode: ctx.figmaBranchMode,
-    branchName: ctx.branchName,
+    figmaFileKey: figmaFileKey,
+    figmaBranchMode: figmaBranchMode,
+    branchName: cli.branchName,
   });
 
   console.log('\n👁️   Fetching current Figma state to compute diff…');

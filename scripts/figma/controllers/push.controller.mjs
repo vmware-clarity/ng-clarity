@@ -18,19 +18,23 @@ import { executePush } from '../api/push-executor.mjs';
 import { printStats } from '../api/diff-printer.mjs';
 import { parseFigmaVarsResponse } from '../util/figma-response.mjs';
 import { resolveBranchIsolation } from '../setup/branch.mjs';
+import { loadEnv } from '../setup/env.mjs';
 
 /**
+ * @param {ReturnType<import('../setup/cli.mjs').parseCliArgs>} cli
  * @param {import('../setup/context.mjs').RunContext} ctx
  */
-export async function runPush(ctx) {
-  const figma = createFigmaClient(ctx.figmaToken);
+export async function runPush(cli, ctx) {
+  const { figmaToken, figmaFileKey, figmaBranchMode } = loadEnv();
+
+  const figma = createFigmaClient(figmaToken);
 
   console.log(
-    `\n🎨  Figma token push — file: ${ctx.figmaFileKey}${ctx.branchName ? ` [branch: ${ctx.branchName}]` : ''}\n`
+    `\n🎨  Figma token push — file: ${figmaFileKey}${cli.branchName ? ` [branch: ${cli.branchName}]` : ''}\n`
   );
 
   console.log('⬇️   Fetching existing Figma variables…');
-  const existing = await figma.getVariables(ctx.figmaFileKey);
+  const existing = await figma.getVariables(figmaFileKey);
   const {
     collections: existingCollections,
     vars: existingVars,
@@ -39,9 +43,9 @@ export async function runPush(ctx) {
 
   const { effectiveFileKey, collectionSuffix } = await resolveBranchIsolation({
     figma,
-    figmaFileKey: ctx.figmaFileKey,
-    figmaBranchMode: ctx.figmaBranchMode,
-    branchName: ctx.branchName,
+    figmaFileKey: figmaFileKey,
+    figmaBranchMode: figmaBranchMode,
+    branchName: cli.branchName,
   });
 
   console.log('\n⬆️   Pushing to Figma…');

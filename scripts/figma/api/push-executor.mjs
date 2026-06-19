@@ -105,8 +105,14 @@ export async function executePush({
     totalDeleted += colPlan.deletedVarIds.size;
     totalModeValues += colPlan.payloadModeValues.length;
 
+    const groupedVarsBy = Object.groupBy(colPlan.payloadVars, ({ action }) =>
+      action === 'DELETE' ? 'delete' : 'createUpdate'
+    );
+
+    const deleteVars = groupedVarsBy.delete ? groupedVarsBy.delete : [];
+    const createUpdateVars = groupedVarsBy.createUpdate ? groupedVarsBy.createUpdate : [];
+
     // ── Type-mismatch deletions (must precede recreations) ──────────────────
-    const deleteVars = colPlan.payloadVars.filter(v => v.action === 'DELETE');
     if (deleteVars.length > 0) {
       console.log(`    🗑️   Deleting ${deleteVars.length} type-mismatched variable(s)…`);
 
@@ -122,7 +128,6 @@ export async function executePush({
     // Each collection is kept in a single POST whenever possible (< BATCH vars).
     // If a collection exceeds BATCH variables it is split, but the collection
     // and modes are always included in the first batch so Figma can resolve IDs.
-    const createUpdateVars = colPlan.payloadVars.filter(v => v.action !== 'DELETE');
 
     // Pre-index mode values by variable ID so each batch slice can resolve its
     // mode values in O(slice.length) instead of O(slice.length × modeValues.length).
@@ -176,7 +181,7 @@ export async function executePush({
 
   // ── Remove Figma's auto-created "Mode 1" from the collections we just pushed ─
   // Figma silently appends a default "Mode 1" whenever a collection is created,
-  // even when we supply our own named modes in the same request.  Only target
+  // even when we supply our own named modes in the same request. Only target
   // collections from this push run to avoid touching unrelated collections.
   const pushedCollectionIds = new Set(
     collectionDefs.map(def => existingCollByName.get(def.name + collectionSuffix)?.id).filter(Boolean)

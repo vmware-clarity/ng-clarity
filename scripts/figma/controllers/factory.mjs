@@ -49,21 +49,22 @@ export function resolveMode({ dryRun, extractMode, previewMode }) {
  * Resolve the controller function for a given run mode.
  *
  * @param {RunMode} mode
+ * @param {ReturnType<import('../setup/cli.mjs').parseCliArgs>} cli
  * @param {import('../setup/context.mjs').RunContext} ctx
  */
-export async function executeRun(mode, ctx) {
+export async function executeRun(mode, cli, ctx) {
   switch (mode) {
     case 'dry-run':
       runDryRun(ctx);
       break;
     case 'extract':
-      runExtract(ctx);
+      runExtract(cli, ctx);
       break;
     case 'preview':
-      await runPreview(ctx);
+      await runPreview(cli, ctx);
       break;
     case 'push':
-      await runPush(ctx);
+      await runPush(cli, ctx);
       break;
     default:
       throw new Error(`Unknown run mode: ${mode}`);

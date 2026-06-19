@@ -51,7 +51,7 @@ async function main() {
   const cli = parseCliArgs();
   const ctx = buildRunContext(cli);
   const mode = resolveMode(cli);
-  await executeRun(mode, ctx);
+  await executeRun(mode, cli, ctx);
 }
 
 main().catch(err => {

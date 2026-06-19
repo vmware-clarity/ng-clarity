@@ -17,14 +17,12 @@ import { figmaNameToCssName } from '../util/naming.mjs';
 /**
  * @param {Object} params
  * @param {import('./collections.mjs').CollectionDef[]} params.collectionDefs
- * @param {string} params.collectionSuffix
  * @param {Object} params.plan Output of {@link import('./planner.mjs').buildPushPlan}.
  * @param {Array<{modeId: string, name: string, collectionId: string}>} params.existingModes
- * @param {string | null} params.branchName
  * @param {string} params.source Relative path of the CSS source file.
  * @returns {Object} Serializable extract document.
  */
-export function buildExtractView({ collectionDefs, collectionSuffix, plan, existingModes, branchName, source }) {
+export function buildExtractView({ collectionDefs, plan, existingModes, source }) {
   const { payloadCollections, payloadModes, payloadVars, payloadModeValues, existingCollByName, stats } = plan;
 
   // Build a human-readable per-collection view alongside the raw Figma payload
@@ -38,10 +36,8 @@ export function buildExtractView({ collectionDefs, collectionSuffix, plan, exist
   }
 
   const collectionView = collectionDefs.map(colDef => {
-    const existingCol = existingCollByName.get(colDef.name + collectionSuffix);
-    const colId = existingCol
-      ? existingCol.id
-      : (payloadCollections.find(c => c.name === colDef.name + collectionSuffix)?.id ?? '?');
+    const existingCol = existingCollByName.get(colDef.name);
+    const colId = existingCol ? existingCol.id : (payloadCollections.find(c => c.name === colDef.name)?.id ?? '?');
 
     // Resolve mode IDs once at the collection level so variable loops can reuse them.
     const modes = colDef.modes.map(modeName => {
@@ -80,7 +76,7 @@ export function buildExtractView({ collectionDefs, collectionSuffix, plan, exist
 
     return {
       id: colId,
-      name: colDef.name + collectionSuffix,
+      name: colDef.name,
       modes,
       variableCount: variables.length,
       variables,
@@ -90,7 +86,6 @@ export function buildExtractView({ collectionDefs, collectionSuffix, plan, exist
   return {
     generated: new Date().toISOString(),
     source,
-    branch: branchName ?? null,
     summary: {
       collections: collectionDefs.length,
       totalVariables: stats.new + stats.update,

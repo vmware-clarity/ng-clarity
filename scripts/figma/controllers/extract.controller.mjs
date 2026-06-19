@@ -20,27 +20,23 @@ import { buildExtractView } from '../api/extract-view.mjs';
 import { buildPlan, printPlanStats } from './plan.mjs';
 
 /**
+ * @param {ReturnType<import('../setup/cli.mjs').parseCliArgs>} cli
  * @param {import('../setup/context.mjs').RunContext} ctx
  */
-export function runExtract(ctx) {
-  const collectionSuffix = ctx.branchName ? ` [${ctx.branchName}]` : '';
-  console.log(
-    `\n🎨  Figma token extract${ctx.figmaFileKey ? ` — file: ${ctx.figmaFileKey}` : ''}${ctx.branchName ? ` [branch: ${ctx.branchName}]` : ''}\n`
-  );
+export function runExtract(cli, ctx) {
+  console.log(`\n🎨  Figma token extract${ctx.figmaFileKey ? ` — file: ${ctx.figmaFileKey}` : ''}\n`);
 
-  const plan = buildPlan(ctx, collectionSuffix);
+  const plan = buildPlan(ctx, '');
   printPlanStats(ctx, plan);
 
   const output = buildExtractView({
     collectionDefs: ctx.collectionDefs,
-    collectionSuffix,
     plan,
     existingModes: [],
-    branchName: ctx.branchName,
     source: ctx.source,
   });
 
-  const outPath = path.resolve(ctx.root, ctx.extractFile);
+  const outPath = path.resolve(ctx.root, cli.extractFile);
   fs.writeFileSync(outPath, JSON.stringify(output, null, 2), 'utf8');
 
   const { stats } = plan;

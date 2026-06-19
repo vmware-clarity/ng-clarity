@@ -19,12 +19,12 @@
  * @param {{ extractMode?: boolean, env?: NodeJS.ProcessEnv }} [options]
  * @returns {{ figmaToken: string | undefined, figmaFileKey: string, figmaBranchMode: string }}
  */
-export function loadEnv({ extractMode = false, env = process.env } = {}) {
+export function loadEnv({ env = process.env } = {}) {
   const figmaToken = env.FIGMA_TOKEN;
   const rawFileKey = env.FIGMA_FILE_KEY ?? '';
   const figmaBranchMode = env.FIGMA_BRANCH_MODE ?? 'collection';
 
-  if (!extractMode && (!figmaToken || !rawFileKey)) {
+  if (!figmaToken || !rawFileKey) {
     throw new Error(
       '❌  FIGMA_TOKEN and FIGMA_FILE_KEY must be set (e.g. via .env.figma).\n' +
         '    Tip: to inspect tokens without credentials, run: node scripts/figma/index.mjs --extract'
