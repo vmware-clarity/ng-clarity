@@ -57,6 +57,22 @@ const DEFAULT_CODE_SYNTAX = { WEB: 'var(${name})' };
 const VALID_SOURCES = new Set(['root', 'dark', 'compact']);
 
 /**
+ * Reference resolver function. The reference array will have "$ref" at 0 index and reference key at 1 index.
+ * @param referenceArray
+ * @param config
+ * @returns {*[]}
+ */
+function resolveReference(referenceArray, config) {
+  let innerReference = referenceArray ?? [];
+
+  if (innerReference[0] === '$ref') {
+    innerReference = config[referenceArray[1]];
+  }
+
+  return innerReference;
+}
+
+/**
  * Load and normalize the token publisher configuration.
  *
  * @param {string} configPath Absolute path to figma-tokens.config.json.
@@ -106,10 +122,15 @@ export function loadConfig(configPath) {
       }
     }
 
+    // Resolve include exclude JSON references.
+    // Currently, there is no internal JSON references within the config file.
+    const include = resolveReference(col.filter.include, config);
+    const exclude = resolveReference(col.filter.exclude, config);
+
     return /** @type {CollectionConfig} */ ({
       name: col.name,
       hiddenFromPublishing: col.hiddenFromPublishing ?? false,
-      filter: { include: col.filter.include, exclude: col.filter.exclude ?? [] },
+      filter: { include, exclude },
       modes: col.modes.map(m => ({ name: m.name, source: m.source })),
       ...(humanReadable ? { humanReadable } : {}),
     });

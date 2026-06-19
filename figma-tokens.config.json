@@ -76,21 +76,6 @@
       "filter": {
         "include": ["--cds-alias-typography-"],
         "exclude": [
-          "--cds-alias-object-border-width-",
-          "--cds-alias-object-interaction-background",
-          "--cds-alias-object-interaction-border-color",
-          "--cds-alias-object-interaction-color",
-          "--cds-alias-object-interaction-info-",
-          "--cds-alias-object-interaction-success-",
-          "--cds-alias-object-interaction-warning-",
-          "--cds-alias-object-interaction-danger-",
-          "--cds-alias-object-interaction-neutral-",
-          "--cds-alias-object-interaction-inverse-",
-          "--cds-alias-object-app-",
-          "--cds-alias-object-overlay-",
-          "--cds-alias-object-border-color",
-          "--cds-alias-object-container-",
-          "--cds-alias-object-opacity-",
           "--cds-alias-typography-color-",
           "--cds-alias-typography-link-",
           "--cds-alias-typography-info-",
@@ -124,15 +109,7 @@
           "--cds-alias-object-overlay-",
           "--cds-alias-object-border-color",
           "--cds-alias-object-container-",
-          "--cds-alias-object-opacity-",
-          "--cds-alias-typography-color-",
-          "--cds-alias-typography-link-",
-          "--cds-alias-typography-info-",
-          "--cds-alias-typography-success-",
-          "--cds-alias-typography-warning-",
-          "--cds-alias-typography-danger-",
-          "--cds-alias-typography-neutral-",
-          "--cds-alias-typography-disabled"
+          "--cds-alias-object-opacity-"
         ]
       },
       "modes": [{ "name": "Value", "source": "root" }]
