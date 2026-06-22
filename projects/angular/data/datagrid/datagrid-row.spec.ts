@@ -538,6 +538,23 @@ export default function (): void {
         expect(context.clarityElement.querySelectorAll('clr-dg-cell').length).toBe(1);
       });
 
+      // CDE-3127: expanded row detail must exist in DOM and must not have inline position/z-index
+      // that would create a competing stacking context with sticky column cells.
+      it('renders .datagrid-row-detail in DOM when row is expanded and does not override stacking context', async function () {
+        expand.expanded = true;
+        await delay();
+        context.detectChanges();
+
+        const rowDetail: HTMLElement = context.clarityElement.querySelector('.datagrid-row-detail');
+        // Detail element must be present when row is expanded
+        expect(rowDetail).not.toBeNull();
+        // The detail must not carry inline position or z-index overrides — stacking is handled
+        // entirely via SCSS where sticky column cells (z-index:500) naturally sit above
+        // non-positioned detail rows (CDE-3127).
+        expect(rowDetail.style.position).toBe('');
+        expect(rowDetail.style.zIndex).toBe('');
+      });
+
       it('does not propagate click to the parent row when the expand caret is clicked', function () {
         const rowMaster: HTMLElement = context.clarityElement.querySelector('.datagrid-row-master');
         let rowMasterClickCount = 0;
