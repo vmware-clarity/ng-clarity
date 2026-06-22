@@ -282,8 +282,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     // the CDK viewport to recalculate the total scrollable content size.
     // We skip the very first observation (initial render) by ignoring entries
     // whose blockSize matches the current scrollHeight of the element.
-    const datagridRowsElement =
-      this.datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-rows');
+    const datagridRowsElement = this.datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-rows');
     if (datagridRowsElement && typeof ResizeObserver !== 'undefined') {
       let initialHeight: number | null = null;
       this.rowsResizeObserver = new ResizeObserver(entries => {

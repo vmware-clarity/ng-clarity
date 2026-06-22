@@ -331,7 +331,9 @@ export default function (): void {
         // Spy on ResizeObserver before detectChanges so we intercept the constructor call.
         const observeSpy = jasmine.createSpy('observe');
         const disconnectSpy = jasmine.createSpy('disconnect');
-        const resizeObserverSpy = jasmine.createSpy('ResizeObserver').and.callFake(function (_cb: ResizeObserverCallback) {
+        const resizeObserverSpy = jasmine.createSpy('ResizeObserver').and.callFake(function (
+          _cb: ResizeObserverCallback
+        ) {
           return { observe: observeSpy, disconnect: disconnectSpy };
         });
 
@@ -358,7 +360,9 @@ export default function (): void {
         // Intercept ResizeObserver construction to capture the callback.
         let capturedCallback: ResizeObserverCallback | null = null;
         const originalResizeObserver = (window as any).ResizeObserver;
-        (window as any).ResizeObserver = jasmine.createSpy('ResizeObserver').and.callFake(function (cb: ResizeObserverCallback) {
+        (window as any).ResizeObserver = jasmine.createSpy('ResizeObserver').and.callFake(function (
+          cb: ResizeObserverCallback
+        ) {
           capturedCallback = cb;
           return { observe: () => {}, disconnect: () => {} };
         });
@@ -397,7 +401,9 @@ export default function (): void {
         let capturedDisconnect: jasmine.Spy | null = null;
 
         const originalResizeObserver = (window as any).ResizeObserver;
-        (window as any).ResizeObserver = jasmine.createSpy('ResizeObserver').and.callFake(function (_cb: ResizeObserverCallback) {
+        (window as any).ResizeObserver = jasmine.createSpy('ResizeObserver').and.callFake(function (
+          _cb: ResizeObserverCallback
+        ) {
           const disconnectSpy = jasmine.createSpy('disconnect');
           capturedDisconnect = disconnectSpy;
           return { observe: () => {}, disconnect: disconnectSpy };
