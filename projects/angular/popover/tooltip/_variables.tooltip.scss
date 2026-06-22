@@ -12,7 +12,7 @@
 $clr-tooltip-arrow-height: #{density.$clr-base-icon-size-xs} !default;
 $clr-tooltip-arrow-width: #{density.$clr-base-icon-size-xs} !default;
 // arrow width/height (12px) + distance (8px)
-$clr-tooltip-adjusted-margin: calc($clr-tooltip-arrow-height + density.$clr-base-vertical-offset-m) !default;
+$clr-tooltip-adjusted-margin: calc(#{$clr-tooltip-arrow-height} + #{density.$clr-base-vertical-offset-m}) !default;
 
 $clr-tooltip-color: var(--clr-tooltip-color) !default;
 $clr-tooltip-background-color: var(--clr-tooltip-background-color) !default;
