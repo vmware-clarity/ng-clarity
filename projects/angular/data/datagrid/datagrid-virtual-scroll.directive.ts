@@ -86,6 +86,17 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   private subscriptions: Subscription[] = [];
   private topIndex = 0;
 
+  /**
+   * ResizeObserver watching the datagrid rows container. When any row expands or
+   * collapses its detail content the container height changes. We use that signal
+   * to tell the CDK viewport to re-measure itself so it recalculates the total
+   * scrollable content size with the correct height.
+   *
+   * This avoids having to hook into each individual row's IfExpandService and works
+   * regardless of how the height change originates (CSS animations, dynamic content, etc.).
+   */
+  private rowsResizeObserver: ResizeObserver | null = null;
+
   // @deprecated remove the mutation observer when `datagrid-compact` class is deleted
   private mutationChanges: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
     mutations.forEach((mutation: MutationRecord) => {
@@ -266,6 +277,35 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
     this.gridRoleElement = this.datagridElementRef.nativeElement.querySelector<HTMLElement>('[role="grid"]');
 
+    // Attach a ResizeObserver to the rows container so that when any row expands
+    // or collapses (changing the total height of the rows container), we notify
+    // the CDK viewport to recalculate the total scrollable content size.
+    // We skip the very first observation (initial render) by ignoring entries
+    // whose blockSize matches the current scrollHeight of the element.
+    const datagridRowsElement =
+      this.datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-rows');
+    if (datagridRowsElement && typeof ResizeObserver !== 'undefined') {
+      let initialHeight: number | null = null;
+      this.rowsResizeObserver = new ResizeObserver(entries => {
+        for (const entry of entries) {
+          const newHeight = entry.borderBoxSize?.[0]?.blockSize ?? entry.contentRect.height;
+          if (initialHeight === null) {
+            // Record the height on first fire (initial layout) — do not trigger a
+            // re-measure because the viewport has just been initialised.
+            initialHeight = newHeight;
+          } else if (newHeight !== initialHeight) {
+            initialHeight = newHeight;
+            // Run inside NgZone so Angular change detection and the CDK viewport
+            // layout cycle are triggered correctly.
+            this.ngZone.run(() => {
+              this.virtualScrollViewport?.checkViewportSize();
+            });
+          }
+        }
+      });
+      this.rowsResizeObserver.observe(datagridRowsElement);
+    }
+
     this.updateCdkVirtualForInputs();
 
     this.subscriptions.push(
@@ -306,6 +346,8 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.cdkVirtualFor?.ngOnDestroy();
     this.virtualScrollViewport?.ngOnDestroy();
     this.mutationChanges?.disconnect();
+    this.rowsResizeObserver?.disconnect();
+    this.rowsResizeObserver = null;
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
