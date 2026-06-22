@@ -383,7 +383,7 @@ export default function (): void {
             ({
               borderBoxSize: [{ blockSize, inlineSize: 0 }],
               contentRect: { height: blockSize } as DOMRectReadOnly,
-            }) as ResizeObserverEntry;
+            }) as unknown as ResizeObserverEntry;
 
           // First fire: sets initialHeight — should NOT trigger checkViewportSize.
           (capturedCallback as ResizeObserverCallback)([makeEntry(100)], null as any);
