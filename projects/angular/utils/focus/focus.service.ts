@@ -61,32 +61,30 @@ export class FocusService {
   }
 
   move(direction: ArrowKeyDirection): boolean {
-    if (!this.current) {
-      return false;
-    }
-    return this.moveFrom(this.current, direction, new Set<FocusableItem>());
-  }
-
-  private moveFrom(from: FocusableItem, direction: ArrowKeyDirection, visited: Set<FocusableItem>): boolean {
-    const next = from[direction];
-    if (!next) {
-      return false;
-    }
-    // Turning the value into an Observable isn't great, but it's the fastest way to avoid code duplication.
-    // If performance ever matters for this, we can refactor using additional private methods.
-    const nextObs = isObservable(next) ? next : of(next);
     let moved = false;
-    nextObs.subscribe(item => {
-      if (item && !visited.has(item)) {
-        if (item.disabled) {
-          visited.add(item);
-          moved = this.moveFrom(item, direction, visited);
-        } else {
-          this.moveTo(item);
-          moved = true;
-        }
+    if (this.current) {
+      const visited = new Set<FocusableItem>();
+      let from: FocusableItem = this.current;
+      // Turning the value into an Observable isn't great, but it's the fastest way to avoid code duplication.
+      // If performance ever matters for this, we can refactor using additional private methods.
+      while (from[direction]) {
+        const nextObs = isObservable(from[direction]) ? from[direction] : of(from[direction]);
+        let skipDisabled = false;
+        nextObs.subscribe(item => {
+          if (item && !visited.has(item)) {
+            if (item.disabled) {
+              visited.add(item);
+              from = item;
+              skipDisabled = true;
+            } else {
+              this.moveTo(item);
+              moved = true;
+            }
+          }
+        });
+        if (!skipDisabled) break;
       }
-    });
+    }
     return moved;
   }
 
