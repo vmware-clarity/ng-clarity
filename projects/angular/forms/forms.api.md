@@ -212,12 +212,16 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     // (undocumented)
     protected get allCheckboxesDisabled(): boolean;
     // (undocumented)
+    ariaLabelledBy: string;
+    // (undocumented)
     checkboxes: QueryList<ClrCheckbox>;
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
     // (undocumented)
     protected controlClassService: ControlClassService;
+    // (undocumented)
+    groupLabel: ElementRef<HTMLElement>;
     // (undocumented)
     protected layoutService: LayoutService;
     // (undocumented)
@@ -227,7 +231,7 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     // (undocumented)
     role: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxContainer, "clr-checkbox-container,clr-toggle-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["checkboxes"], ["label", "clr-checkbox-wrapper,clr-toggle-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxContainer, "clr-checkbox-container,clr-toggle-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["groupLabel", "checkboxes"], ["label", "clr-checkbox-wrapper,clr-toggle-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckboxContainer, [{ optional: true; }, null, null]>;
 }
