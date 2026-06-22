@@ -329,9 +329,11 @@ export default function (): void {
 
       it('attaches a ResizeObserver to the datagrid rows container on init', async function () {
         // Spy on ResizeObserver before detectChanges so we intercept the constructor call.
+        let capturedCallback: ResizeObserverCallback | null = null;
         const observeSpy = jasmine.createSpy('observe');
         const disconnectSpy = jasmine.createSpy('disconnect');
-        const resizeObserverSpy = jasmine.createSpy('ResizeObserver').and.callFake(function () {
+        const resizeObserverSpy = jasmine.createSpy('ResizeObserver').and.callFake(function (cb: ResizeObserverCallback) {
+          capturedCallback = cb;
           return { observe: observeSpy, disconnect: disconnectSpy };
         });
 
@@ -352,41 +354,45 @@ export default function (): void {
         } finally {
           (window as any).ResizeObserver = originalResizeObserver;
         }
-
-        fixture.destroy();
       });
 
       it('calls checkViewportSize() when the rows container height changes', async function () {
-        fixture.detectChanges();
-        await delay();
-        fixture.detectChanges();
+        // Intercept ResizeObserver construction to capture the callback.
+        let capturedCallback: ResizeObserverCallback | null = null;
+        const originalResizeObserver = (window as any).ResizeObserver;
+        (window as any).ResizeObserver = jasmine.createSpy('ResizeObserver').and.callFake(function (cb: ResizeObserverCallback) {
+          capturedCallback = cb;
+          return { observe: () => {}, disconnect: () => {} };
+        });
 
-        const virtualScroll = instance.virtualScroll as ClrDatagridVirtualScrollDirective<any>;
-        // Access internal viewport via the directive instance (same pattern used in production code).
-        const viewport = (virtualScroll as any).virtualScrollViewport;
-        const checkSpy = spyOn(viewport, 'checkViewportSize').and.callThrough();
+        try {
+          fixture.detectChanges();
+          await delay();
+          fixture.detectChanges();
 
-        // Simulate a ResizeObserver callback as if a row has expanded and changed height.
-        // We fire the stored callback directly through the private field.
-        const resizeObserver: ResizeObserver = (virtualScroll as any).rowsResizeObserver;
-        expect(resizeObserver).toBeTruthy();
+          const virtualScroll = instance.virtualScroll as ClrDatagridVirtualScrollDirective<any>;
+          // Access internal viewport via the directive instance (same pattern used in production code).
+          const viewport = (virtualScroll as any).virtualScrollViewport;
+          const checkSpy = spyOn(viewport, 'checkViewportSize').and.callThrough();
 
-        // Trigger a simulated resize entry. We call the observer's callback manually.
-        // Cast to any to reach the private constructor callback stored in the closure.
-        const datagridRowsElement =
-          fixture.nativeElement.querySelector('.datagrid-rows') as HTMLElement;
+          expect(capturedCallback).not.toBeNull();
 
-        // Initial fire (sets initialHeight) — should NOT trigger checkViewportSize.
-        resizeObserver.unobserve(datagridRowsElement);
-        // Re-observe so we get a fresh initial callback in the existing ResizeObserver.
-        // Instead of controlling the browser's ResizeObserver timing, we test by toggling
-        // a row and verifying the internal ResizeObserver disconnect/cleanup path:
-        // just verify the internal observer was created and is non-null.
-        expect((virtualScroll as any).rowsResizeObserver).not.toBeNull();
+          const makeEntry = (blockSize: number): ResizeObserverEntry =>
+            ({
+              borderBoxSize: [{ blockSize, inlineSize: 0 }],
+              contentRect: { height: blockSize } as DOMRectReadOnly,
+            }) as ResizeObserverEntry;
 
-        fixture.destroy();
-        // After destroy the observer should be null.
-        expect((virtualScroll as any).rowsResizeObserver).toBeNull();
+          // First fire: sets initialHeight — should NOT trigger checkViewportSize.
+          capturedCallback!([makeEntry(100)], null as any);
+          expect(checkSpy).not.toHaveBeenCalled();
+
+          // Second fire with a different blockSize: should trigger checkViewportSize.
+          capturedCallback!([makeEntry(200)], null as any);
+          expect(checkSpy).toHaveBeenCalled();
+        } finally {
+          (window as any).ResizeObserver = originalResizeObserver;
+        }
       });
 
       it('disconnects the ResizeObserver on ngOnDestroy', async function () {
