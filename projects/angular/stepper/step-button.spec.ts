@@ -103,6 +103,34 @@ describe('ClrStepButton Next', () => {
   });
 });
 
+describe('ClrStepButton Custom type', () => {
+  let fixture: ComponentFixture<any>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      providers: [StepperService, { provide: StepperService, useClass: MockStepperService }],
+      imports: [ReactiveFormsModule, NoopAnimationsModule, ClrStepperModule],
+    });
+
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.componentInstance.buttonType = 'custom' as ClrStepButtonType;
+    fixture.detectChanges();
+  });
+
+  it('should not navigate when button type is not next, previous, or submit', () => {
+    const stepperService = fixture.debugElement.query(By.directive(ClrStepButton)).injector.get(StepperService);
+    spyOn(stepperService, 'navigateToNextPanel');
+    spyOn(stepperService, 'navigateToPreviousPanel');
+
+    fixture.nativeElement.querySelector('.clr-step-button').click();
+    fixture.detectChanges();
+
+    expect(stepperService.navigateToNextPanel).not.toHaveBeenCalled();
+    expect(stepperService.navigateToPreviousPanel).not.toHaveBeenCalled();
+  });
+});
+
 describe('ClrStepButton Previous', () => {
   let fixture: ComponentFixture<any>;
 

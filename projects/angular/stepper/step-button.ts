@@ -43,11 +43,10 @@ export class ClrStepButton implements OnInit {
   @HostListener('click', ['$event'])
   navigateToNextPanel(event: Event) {
     event.preventDefault();
-    if (this.previousButton) {
+    if (this.type === ClrStepButtonType.Previous) {
       this.stepperService.navigateToPreviousPanel(this.clrStep.id);
-      return;
+    } else if (this.type === ClrStepButtonType.Next || this.type === ClrStepButtonType.Submit) {
+      this.stepperService.navigateToNextPanel(this.clrStep.id, this.clrStep.formGroup.valid);
     }
-
-    this.stepperService.navigateToNextPanel(this.clrStep.id, this.clrStep.formGroup.valid);
   }
 }
