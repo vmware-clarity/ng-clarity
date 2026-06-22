@@ -329,11 +329,9 @@ export default function (): void {
 
       it('attaches a ResizeObserver to the datagrid rows container on init', async function () {
         // Spy on ResizeObserver before detectChanges so we intercept the constructor call.
-        let capturedCallback: ResizeObserverCallback | null = null;
         const observeSpy = jasmine.createSpy('observe');
         const disconnectSpy = jasmine.createSpy('disconnect');
-        const resizeObserverSpy = jasmine.createSpy('ResizeObserver').and.callFake(function (cb: ResizeObserverCallback) {
-          capturedCallback = cb;
+        const resizeObserverSpy = jasmine.createSpy('ResizeObserver').and.callFake(function (_cb: ResizeObserverCallback) {
           return { observe: observeSpy, disconnect: disconnectSpy };
         });
 
@@ -384,11 +382,11 @@ export default function (): void {
             }) as ResizeObserverEntry;
 
           // First fire: sets initialHeight — should NOT trigger checkViewportSize.
-          capturedCallback!([makeEntry(100)], null as any);
+          (capturedCallback as ResizeObserverCallback)([makeEntry(100)], null as any);
           expect(checkSpy).not.toHaveBeenCalled();
 
           // Second fire with a different blockSize: should trigger checkViewportSize.
-          capturedCallback!([makeEntry(200)], null as any);
+          (capturedCallback as ResizeObserverCallback)([makeEntry(200)], null as any);
           expect(checkSpy).toHaveBeenCalled();
         } finally {
           (window as any).ResizeObserver = originalResizeObserver;
@@ -399,7 +397,7 @@ export default function (): void {
         let capturedDisconnect: jasmine.Spy | null = null;
 
         const originalResizeObserver = (window as any).ResizeObserver;
-        (window as any).ResizeObserver = jasmine.createSpy('ResizeObserver').and.callFake(function (cb: ResizeObserverCallback) {
+        (window as any).ResizeObserver = jasmine.createSpy('ResizeObserver').and.callFake(function (_cb: ResizeObserverCallback) {
           const disconnectSpy = jasmine.createSpy('disconnect');
           capturedDisconnect = disconnectSpy;
           return { observe: () => {}, disconnect: disconnectSpy };
@@ -411,11 +409,11 @@ export default function (): void {
           fixture.detectChanges();
 
           expect(capturedDisconnect).not.toBeNull();
-          expect(capturedDisconnect!).not.toHaveBeenCalled();
+          expect(capturedDisconnect as jasmine.Spy).not.toHaveBeenCalled();
 
           fixture.destroy();
 
-          expect(capturedDisconnect!).toHaveBeenCalledTimes(1);
+          expect(capturedDisconnect as jasmine.Spy).toHaveBeenCalledTimes(1);
         } finally {
           (window as any).ResizeObserver = originalResizeObserver;
         }
