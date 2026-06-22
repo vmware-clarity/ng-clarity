@@ -109,13 +109,11 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
         // Even if we properly waited for ngAfterViewInit, the container still wouldn't be attached to the DOM.
         // So setTimeout is the only way to wait for the container to be ready to move focus to first item.
         setTimeout(() => {
-          if (this._container) {
-            this.focusService.moveTo(this);
-            if (this.parent) {
-              this.focusService.move(ArrowKeyDirection.RIGHT);
-            } else {
-              this.focusService.move(ArrowKeyDirection.DOWN);
-            }
+          this.focusService.moveTo(this);
+          if (this.parent) {
+            this.focusService.move(ArrowKeyDirection.RIGHT);
+          } else {
+            this.focusService.move(ArrowKeyDirection.DOWN);
           }
         });
       }

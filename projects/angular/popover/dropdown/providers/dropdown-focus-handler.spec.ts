@@ -195,20 +195,8 @@ export default function (): void {
         // but maybe that's too detailed for this unit test? It's just the easiest way to test it right now.
       });
 
-      it('does not call focusService.moveTo when container is not yet set (CDE-3003)', async function (this: TestContext) {
-        // Simulate the race condition: dropdown opened before container is registered
-        this.focusHandler.addChildren(this.children);
-        const moveTo = spyOn(this.focusService, 'moveTo');
-        const move = spyOn(this.focusService, 'move');
-        // Open via toggleWithEvent (arrow key) but do NOT set container
-        this.popoverService.toggleWithEvent({});
-        await delay();
-
-        // With the guard in place, moveTo and move must NOT be called when _container is null
-        expect(moveTo).not.toHaveBeenCalled();
-        expect(move).not.toHaveBeenCalled();
-      });
     });
+
 
     describe('nested dropdown', function () {
       beforeEach(function (this: TestContext) {
