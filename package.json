@@ -105,7 +105,7 @@
     "autoprefixer": "10.4.27",
     "csso-cli": "4.0.2",
     "domino": "2.1.6",
-    "eslint": "9.39.2",
+    "eslint": "9.39.4",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-decorator-position": "6.0.0",
     "eslint-plugin-import": "2.32.0",
