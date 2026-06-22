@@ -195,6 +195,46 @@ export default function (): void {
         // but maybe that's too detailed for this unit test? It's just the easiest way to test it right now.
       });
 
+      it('reports disabled as true when the trigger button has the disabled attribute', function (this: TestContext) {
+        const disabledButton = document.createElement('button');
+        disabledButton.disabled = true;
+        this.focusHandler.trigger = disabledButton;
+        expect(this.focusHandler.disabled).toBe(true);
+      });
+
+      it('reports disabled as false when the trigger button is not disabled', function (this: TestContext) {
+        this.focusHandler.trigger = this.trigger;
+        expect(this.focusHandler.disabled).toBe(false);
+      });
+
+      it('skips a disabled last trigger and wraps focus to the first child on ArrowDown', function (this: TestContext) {
+        // Simulate: [item0, item1, disabledTrigger(last)] with loop
+        // The disabled trigger is another DropdownFocusHandler whose button is disabled.
+        const disabledTriggerButton = document.createElement('button');
+        disabledTriggerButton.disabled = true;
+        document.body.appendChild(disabledTriggerButton);
+
+        const disabledTriggerItem = new MockFocusableItem('disabled-trigger');
+        disabledTriggerItem.disabled = true;
+
+        // linkVertical loop: item0 <-> item1 <-> disabledTrigger -> item0
+        const item0 = this.children[0];
+        const item1 = this.children[1];
+        item0.up = disabledTriggerItem;
+        item0.down = item1;
+        item1.up = item0;
+        item1.down = disabledTriggerItem;
+        disabledTriggerItem.down = item0;
+
+        this.focusService.reset(item1);
+        const moved = this.focusService.move(ArrowKeyDirection.DOWN);
+
+        expect(moved).toBe(true);
+        expect(this.focusService.current).toBe(item0);
+
+        document.body.removeChild(disabledTriggerButton);
+      });
+
     });
 
 

@@ -139,6 +139,22 @@ export default function (): void {
         expect(moved).toBe(false);
       });
 
+      it('wraps to the first item when the disabled last item is a trigger and loop is enabled', function (this: TestContext) {
+        const first = new MockFocusableItem('1');
+        const second = new MockFocusableItem('2');
+        const disabledTrigger = new MockFocusableItem('3');
+        disabledTrigger.disabled = true;
+        // linkVertical loop: last.down -> first
+        first.down = second;
+        second.down = disabledTrigger;
+        disabledTrigger.down = first;
+        const spy = spyOn(this.focusService, 'moveTo');
+        this.focusService.reset(second);
+        this.focusService.move(ArrowKeyDirection.DOWN);
+        expect(spy).toHaveBeenCalledWith(first);
+        expect(spy).not.toHaveBeenCalledWith(disabledTrigger);
+      });
+
       it('does not move focus to another item if current is undefined', function (this: TestContext) {
         const spy = spyOn(this.focusService, 'moveTo');
         const result = this.focusService.move(ArrowKeyDirection.DOWN);
