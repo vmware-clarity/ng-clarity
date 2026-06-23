@@ -1,0 +1,124 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<clr-wizard
+  #wizard
+  [(clrWizardOpen)]="opened"
+  [clrWizardSize]="size"
+  class="app-wizard"
+  [class.zoom2x]="currentZoomLevel === ZoomLevel.x2"
+  [class.zoom4x]="currentZoomLevel === ZoomLevel.x4"
+  [class.showNav]="showNav"
+  [class.debug-popup]="isSignPostOpen"
+>
+  <clr-wizard-title *ngIf="!configService.debug" [attr.data-test-id]="'appfx-wizard-title'">
+    <button
+      class="btn-close-stepnav"
+      [attr.aria-label]="workflowStrings.closeStepNavAriaLabel"
+      (click)="showNav = false"
+    >
+      <cds-icon direction="left" shape="angle" class="stepnav-close"></cds-icon>
+    </button>
+    {{ title }}
+  </clr-wizard-title>
+  <clr-wizard-title *ngIf="configService.debug" [attr.data-test-id]="'appfx-wizard-title'">
+    <appfx-model-popup [modelMgr]="modelMgr"></appfx-model-popup>
+    <button
+      class="btn-close-stepnav"
+      [attr.aria-label]="workflowStrings.closeStepNavAriaLabel"
+      (click)="showNav = false"
+    >
+      <cds-icon direction="left" shape="angle" class="stepnav-close"></cds-icon>
+    </button>
+    {{ title }}
+  </clr-wizard-title>
+
+  <div *ngIf="footer?.componentClass" ngProjectAs="clr-wizard-button" class="appfx-wizard-footer">
+    <ng-container
+      [ngComponentOutlet]="footer.componentClass"
+      [ngComponentOutletInputs]="footerComponentInputs"
+    ></ng-container>
+  </div>
+
+  <clr-wizard-button [type]="'cancel'">{{ workflowStrings.cancel }}</clr-wizard-button>
+  <clr-wizard-button [type]="'previous'">{{ workflowStrings.back }}</clr-wizard-button>
+  <clr-wizard-button [type]="'next'">{{ workflowStrings.next }}</clr-wizard-button>
+  <clr-wizard-button [type]="'finish'">{{ workflowStrings.finish }}</clr-wizard-button>
+
+  <!-- A wizard with empty pages cannot be opened with latest Clarity 15 and above. -->
+  <!-- We need an empty placeholder page, in order to be able to use wizards with asynchronous page loading. -->
+  <!-- More details: https://github.com/vmware-clarity/ng-clarity/issues/1108 -->
+  <ng-container *ngIf="!pages?.length">
+    <clr-wizard-page>
+      <ng-template clrPageTitle> </ng-template>
+    </clr-wizard-page>
+  </ng-container>
+
+  <appfx-validation-banner
+    *ngIf="closeHandlerValidationState.errors?.length"
+    cds-layout="m-b:sm"
+    [state]="closeHandlerValidationState"
+  >
+  </appfx-validation-banner>
+  <ng-container *ngFor="let page of pagesInternal; let pageIndex = index">
+    <clr-wizard-page
+      #clrWizardPage
+      *ngIf="!page.isSkipped"
+      class="pb-0"
+      [class.pt-0]="page.description"
+      [clrWizardPageNextDisabled]="isNextButtonDisabled"
+      [class.is-loading]="isLoading"
+      clrWizardPagePreventDefault="true"
+      (clrWizardPageOnCommit)="onWizardCommit()"
+      (clrWizardPageOnCancel)="onWizardCancel()"
+      (clrWizardPagePrevious)="onWizardBack()"
+      (clrWizardPageOnLoad)="onWizardPageActivated(page)"
+      [attr.data-test-id]="'appfx-wizard-step-content'"
+    >
+      <ng-template clrPageTitle>
+        <button
+          class="btn-show-stepnav"
+          [attr.aria-label]="workflowStrings.openStepNavAriaLabel"
+          (click)="openStepNavPanel()"
+        >
+          <cds-icon shape="bars"></cds-icon>
+        </button>
+        <span class="page-index">{{ activeStepIndex }}.&nbsp;</span>{{ page.title }}
+      </ng-template>
+
+      <ng-template clrPageNavTitle>
+        <!-- TODO: Should remove these cds-icon tags when clarity fixes https://github.com/vmware/clarity/issues/3976 -->
+        <cds-icon
+          shape="success-standard"
+          class="clr-sr-only"
+          status="success"
+          *ngIf="clrWizardPage.completed"
+          [class.is-inverse]="clrWizardPage.current"
+          [attr.title]="workflowStrings.step.completed"
+        ></cds-icon>
+        <cds-icon
+          shape="pencil"
+          class="clr-sr-only"
+          *ngIf="clrWizardPage.enabled && !clrWizardPage.completed"
+          [class.is-inverse]="clrWizardPage.current"
+          [attr.title]="workflowStrings.step.inProgress"
+        ></cds-icon>
+        {{ page.navTitle || page.title }}
+      </ng-template>
+      <appfx-step-container [step]="page" [description]="page.description" class="content-container clr-flex-column">
+      </appfx-step-container>
+    </clr-wizard-page>
+  </ng-container>
+
+  <appfx-spinner
+    *ngIf="isLoading"
+    [message]="workflowStrings.loading"
+    [progressDetails]="pageProgressDetails"
+    [showActionButton]="showProgressCancelButton"
+    [actionButtonLabel]="cancelValidationButtonLabel"
+    (actionClick)="cancelPageValidation()"
+  ></appfx-spinner>
+</clr-wizard>

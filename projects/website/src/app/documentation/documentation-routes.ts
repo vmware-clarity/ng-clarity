@@ -354,6 +354,50 @@ export const documentationRoutes: Routes = [
         data: { routePath: 'translate/:tab?' },
         loadChildren: () => import('./demos/translate/translate.demo.module').then(m => m.TranslateAddonDemoModule),
       },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'wizard-addon/:tab?' },
+        loadChildren: () => import('./demos/wizard-addon/wizard-addon.demo.module').then(m => m.WizardAddonDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'stepper-addon/:tab?' },
+        loadChildren: () =>
+          import('./demos/stepper-addon/stepper-addon.demo.module').then(m => m.StepperAddonDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'card-container/:tab?' },
+        loadChildren: () =>
+          import('./demos/card-container/card-container.demo.module').then(m => m.CardContainerAddonDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'property-view/:tab?' },
+        loadChildren: () =>
+          import('./demos/property-view/property-view.demo.module').then(m => m.PropertyViewAddonDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'tabs-addon/:tab?' },
+        loadChildren: () => import('./demos/tabs-addon/tabs-addon.demo.module').then(m => m.TabsAddonDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'dialog/:tab?' },
+        loadChildren: () => import('./demos/dialog/dialog.demo.module').then(m => m.DialogDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'menu/:tab?' },
+        loadChildren: () => import('./demos/menu/menu.demo.module').then(m => m.MenuDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'certificate-viewer/:tab?' },
+        loadChildren: () =>
+          import('./demos/certificate-viewer/certificate-viewer.demo.module').then(m => m.CertificateViewerDemoModule),
+      },
     ],
   },
 ];

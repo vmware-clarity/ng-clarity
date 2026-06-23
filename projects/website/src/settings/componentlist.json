@@ -326,6 +326,54 @@
       "url": "translate",
       "text": "Translate",
       "type": "addons"
+    },
+    {
+      "url": "wizard-addon",
+      "text": "Wizard",
+      "type": "addons",
+      "storybookPath": "addons-wizard"
+    },
+    {
+      "url": "stepper-addon",
+      "text": "Stepper",
+      "type": "addons",
+      "storybookPath": "addons-stepper"
+    },
+    {
+      "url": "card-container",
+      "text": "Card Container",
+      "type": "addons",
+      "storybookPath": "addons-card-container"
+    },
+    {
+      "url": "property-view",
+      "text": "Property View",
+      "type": "addons",
+      "storybookPath": "addons-property-view"
+    },
+    {
+      "url": "tabs-addon",
+      "text": "Tabs",
+      "type": "addons",
+      "storybookPath": "addons-tabs"
+    },
+    {
+      "url": "dialog",
+      "text": "Dialog",
+      "type": "addons",
+      "storybookPath": "addons-dialog"
+    },
+    {
+      "url": "menu",
+      "text": "Menu",
+      "type": "addons",
+      "storybookPath": "addons-menu"
+    },
+    {
+      "url": "certificate-viewer",
+      "text": "Certificate Viewer",
+      "type": "addons",
+      "storybookPath": "addons-certificate-viewer"
     }
   ]
 }

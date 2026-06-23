@@ -1,0 +1,84 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+.menu-mode-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+
+  .btn {
+    min-width: 0;
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+  }
+}
+
+.menu-last-action {
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--cds-alias-object-container-background-tint);
+  border-radius: var(--cds-alias-object-border-radius-100);
+  font-size: 0.75rem;
+}
+
+.menu-hint {
+  color: var(--cds-alias-typography-secondary-color);
+  font-size: 0.75rem;
+  margin: 0 0 0.75rem;
+}
+
+.menu-context-area {
+  height: 280px;
+  border: 2px dashed var(--cds-alias-object-border-color);
+  border-radius: var(--cds-alias-object-border-radius-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: context-menu;
+  user-select: none;
+
+  &:hover {
+    border-color: var(--cds-alias-status-info);
+    background: var(--cds-alias-object-container-background-tint);
+  }
+}
+
+.menu-tree-container {
+  border: 1px solid var(--cds-alias-object-border-color);
+  border-radius: var(--cds-alias-object-border-radius-100);
+  padding: 1rem;
+  min-height: 220px;
+}
+
+.menu-actions-cell {
+  width: 2.5rem;
+  text-align: center;
+  overflow: visible;
+}
+
+.menu-button-container {
+  padding: 1.5rem 0 1rem;
+}
+
+.menu-button-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.menu-icons-container {
+  padding: 1.5rem 0 1rem;
+}
+
+.menu-icon-toolbar {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--cds-alias-object-border-color);
+  border-radius: var(--cds-alias-object-border-radius-100);
+  width: fit-content;
+}

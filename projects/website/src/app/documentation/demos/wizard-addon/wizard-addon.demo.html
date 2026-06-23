@@ -1,0 +1,266 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      <code cds-text="code">&#64;clr/addons/wizard</code> provides a multi-step wizard built on top of Clarity Modal. It
+      adds workflow orchestration, automatic data injection between steps, loading indicators, standardised error
+      handling, conditional step skipping, and an optional "Ready to Complete" summary page.
+    </p>
+
+    <h2 id="structure" class="clr-mt-48px" cds-text="title">Wizard Structure</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      AppFx Wizard is built using Clarity Wizard and provides a lot of additional features. A wizard built using AppFx
+      Wizard has the following structural elements:
+    </p>
+    <ol cds-list class="clr-mt-8px">
+      <li>
+        <strong>Wizard component</strong> — hosts <code cds-text="code">&lt;appfx-wizard&gt;</code>, configures steps,
+        defines data retrieval per page, and handles <em>Finish</em> via <code cds-text="code">CloseHandler</code>.
+      </li>
+      <li>
+        <strong>Wizard model</strong> — a POJO with <code cds-text="code">Var&lt;T&gt;</code> properties for initial
+        state, page inputs/outputs, and data retrieval.
+      </li>
+      <li>
+        <strong>Page component</strong> (per step) — implements <code cds-text="code">StepModelHolder</code> to receive
+        the typed model, and optionally <code cds-text="code">OnStepActivate</code> /
+        <code cds-text="code">OnStepValidate</code>.
+      </li>
+      <li>
+        <strong>Page model</strong> (per step) — typed POJO with <code cds-text="code">&#64;In()</code> and
+        <code cds-text="code">&#64;Out()</code> decorated properties.
+      </li>
+    </ol>
+
+    <h2 id="features" class="clr-mt-48px" cds-text="title">Features</h2>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <ul cds-list>
+          <li>Pre-loads data for the first page; spinner displayed automatically</li>
+          <li>Orchestrates data retrieval on page transitions (lazy or eager)</li>
+          <li>Caches data between back/forth navigation</li>
+          <li>Reloads data when upstream selection changes</li>
+        </ul>
+      </div>
+      <div class="clr-col-6">
+        <ul cds-list>
+          <li>Optional summary page with <code cds-text="code">step.summary</code></li>
+          <li>Custom footer component support</li>
+          <li>Conditional step relevance via <code cds-text="code">step.isRelevant</code></li>
+          <li>Inline (Stepper) mode — same steps, no modal</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 id="import" class="clr-mt-48px" cds-text="title">Module Import</h2>
+    <app-code-snippet [code]="moduleImportTs" language="typescript" [copy]="true"></app-code-snippet>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="playground" cds-text="title">Playground</h2>
+    <p cds-text="body" class="clr-mt-16px clr-mb-24px">
+      Select presentation type and click the button to start the workflow. The wizard demonstrates data retrieval,
+      conditional steps, validation, and summary page.
+    </p>
+
+    <div class="wizard-playground-controls clr-mb-24px">
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="inlineMode" />
+        <label>Inline Wizard (Stepper)</label>
+      </clr-toggle-wrapper>
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="configurationService.debug" />
+        <label>Debug Mode</label>
+      </clr-toggle-wrapper>
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="longNavTitle" [disabled]="inlineMode" />
+        <label>Long Wizard Navigation Labels</label>
+      </clr-toggle-wrapper>
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="showSummaryPage" [disabled]="inlineMode" />
+        <label>Show Summary Page</label>
+      </clr-toggle-wrapper>
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="asyncErrorOnSubmit" [disabled]="inlineMode" />
+        <label>Error on Finish</label>
+      </clr-toggle-wrapper>
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="useCustomFooter" [disabled]="inlineMode" />
+        <label>Custom Footer</label>
+      </clr-toggle-wrapper>
+
+      <clr-radio-container clrInline class="clr-mt-16px">
+        <label>Select Wizard size</label>
+        <clr-radio-wrapper *ngFor="let size of supportedWizardSizes">
+          <label>{{ size }}</label>
+          <input clrRadio type="radio" [value]="size" [(ngModel)]="selectedWizardSize" [disabled]="inlineMode" />
+        </clr-radio-wrapper>
+      </clr-radio-container>
+
+      <button class="btn btn-primary clr-mt-16px" (click)="openSimpleWizard()">Open Workflow</button>
+    </div>
+
+    <clr-demo-sample-wizard
+      *ngIf="simpleWizardOpened && !inlineMode"
+      (onClose)="closeSimpleWizard()"
+      [vcMoRef]="vcMoRef"
+      [wizardSize]="selectedWizardSize"
+      [useDescriptionForNavTitle]="longNavTitle"
+      [showSummaryPage]="showSummaryPage"
+      [asyncErrorOnSubmit]="asyncErrorOnSubmit"
+      [useCustomFooter]="useCustomFooter"
+    ></clr-demo-sample-wizard>
+
+    <clr-demo-sample-stepper *ngIf="simpleWizardOpened && inlineMode" [vcMoRef]="vcMoRef"></clr-demo-sample-stepper>
+
+    <h2 id="basic-wizard" class="clr-mt-48px" cds-text="title">Basic Wizard (code example)</h2>
+    <p cds-text="body" class="clr-mt-16px">A minimal two-step wizard to get started.</p>
+
+    <app-stackblitz-example
+      name="basic-wizard"
+      [componentTemplate]="basicWizardHtml"
+      [componentClass]="basicWizardTs"
+    ></app-stackblitz-example>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 id="api-wizard" cds-text="title">WizardComponent Inputs</h2>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th>Input</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>title</code></td>
+          <td>string</td>
+          <td>Wizard header title</td>
+        </tr>
+        <tr>
+          <td><code>pages</code></td>
+          <td>Step[]</td>
+          <td>Ordered step descriptors</td>
+        </tr>
+        <tr>
+          <td><code>wizardModel</code></td>
+          <td>WorkflowModel</td>
+          <td>Shared data model</td>
+        </tr>
+        <tr>
+          <td><code>opened</code></td>
+          <td>boolean</td>
+          <td>Two-way open/close binding</td>
+        </tr>
+        <tr>
+          <td><code>size</code></td>
+          <td>string</td>
+          <td>md / lg / xl / full-screen</td>
+        </tr>
+        <tr>
+          <td><code>closeHandler</code></td>
+          <td>CloseHandler</td>
+          <td>onSubmit and onCancel callbacks (return Observable)</td>
+        </tr>
+        <tr>
+          <td><code>footer</code></td>
+          <td>WizardFooterConfig</td>
+          <td>Optional custom footer component class</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="api-step" class="clr-mt-48px" cds-text="title">Step Interface</h2>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>title</code></td>
+          <td>string</td>
+          <td>Step header title</td>
+        </tr>
+        <tr>
+          <td><code>description</code></td>
+          <td>string?</td>
+          <td>Subtitle shown below the title</td>
+        </tr>
+        <tr>
+          <td><code>navTitle</code></td>
+          <td>string?</td>
+          <td>Short title in left nav panel</td>
+        </tr>
+        <tr>
+          <td><code>componentClass</code></td>
+          <td>Type&lt;any&gt;</td>
+          <td>Angular component to render inside the step</td>
+        </tr>
+        <tr>
+          <td><code>model</code></td>
+          <td>StepModel</td>
+          <td>Typed step data model with &#64;In/&#64;Out properties</td>
+        </tr>
+        <tr>
+          <td><code>mappings</code></td>
+          <td>Mappings?</td>
+          <td>Custom property name remapping between step and workflow model</td>
+        </tr>
+        <tr>
+          <td><code>isRelevant</code></td>
+          <td>Var&lt;boolean&gt;?</td>
+          <td>Reactive relevance; step is skipped when false</td>
+        </tr>
+        <tr>
+          <td><code>summary</code></td>
+          <td>(builder, model?) =&gt; SectionModel</td>
+          <td>Builds this step's contribution to the summary page</td>
+        </tr>
+        <tr>
+          <td><code>recreateComponent</code></td>
+          <td>boolean?</td>
+          <td>Re-instantiate the component on every activation</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="api-lifecycle" class="clr-mt-48px" cds-text="title">Step Component Lifecycle Interfaces</h2>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th>Interface</th>
+          <th>Method</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>StepModelHolder</code></td>
+          <td><code>model: T</code></td>
+          <td>Receives the typed step model before activation</td>
+        </tr>
+        <tr>
+          <td><code>OnStepActivate</code></td>
+          <td><code>activate(changes)</code></td>
+          <td>Called every time the step becomes active</td>
+        </tr>
+        <tr>
+          <td><code>OnStepValidate</code></td>
+          <td><code>validate(): Observable&lt;boolean&gt;</code></td>
+          <td>Called when user clicks Next; returning false keeps the step open</td>
+        </tr>
+      </tbody>
+    </table>
+  </app-doc-tab>
+</app-doc-tabs>

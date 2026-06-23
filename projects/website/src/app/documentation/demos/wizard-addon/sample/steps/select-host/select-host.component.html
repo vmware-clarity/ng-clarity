@@ -1,0 +1,89 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<clr-tree>
+  <clr-tree-node [clrExpanded]="true">
+    <cds-icon shape="building"></cds-icon>
+    Datacenter Seattle
+
+    <clr-tree-node [clrExpanded]="true">
+      <button
+        class="clr-treenode-link"
+        [class.active]="isNodeSelected('domain-c73')"
+        (click)="selectNode('domain-c73', 'Production Cluster')"
+      >
+        <cds-icon shape="cluster"></cds-icon>
+        Production Cluster
+      </button>
+
+      <clr-tree-node>
+        <button
+          class="clr-treenode-link"
+          [class.active]="isNodeSelected('host-80')"
+          (click)="selectNode('host-80', '10.186.20.80')"
+        >
+          <cds-icon shape="host" badge="warning-triangle"></cds-icon>
+          10.186.20.80
+        </button>
+      </clr-tree-node>
+
+      <clr-tree-node>
+        <button
+          class="clr-treenode-link"
+          [class.active]="isNodeSelected('host-81')"
+          (click)="selectNode('host-81', '10.186.20.81')"
+        >
+          <cds-icon shape="host" badge="danger"></cds-icon>
+          10.186.20.81 (disconnected)
+        </button>
+      </clr-tree-node>
+
+      <clr-tree-node>
+        <button
+          class="clr-treenode-link"
+          [class.active]="isNodeSelected('host-82')"
+          (click)="selectNode('host-82', '10.186.20.82')"
+        >
+          <cds-icon shape="host"></cds-icon>
+          10.186.20.82
+        </button>
+      </clr-tree-node>
+
+      <clr-tree-node>
+        <button
+          class="clr-treenode-link"
+          [class.active]="isNodeSelected('host-83')"
+          (click)="selectNode('host-83', '10.186.20.83')"
+        >
+          <cds-icon shape="host"></cds-icon>
+          10.186.20.83
+        </button>
+      </clr-tree-node>
+    </clr-tree-node>
+
+    <clr-tree-node>
+      <button
+        class="clr-treenode-link"
+        [class.active]="isNodeSelected('host-98')"
+        (click)="selectNode('host-98', '10.186.71.98')"
+      >
+        <cds-icon shape="host"></cds-icon>
+        10.186.71.98
+      </button>
+    </clr-tree-node>
+
+    <clr-tree-node>
+      <button
+        class="clr-treenode-link"
+        [class.active]="isNodeSelected('host-103')"
+        (click)="selectNode('host-103', '10.186.71.103')"
+      >
+        <cds-icon shape="host"></cds-icon>
+        10.186.71.103
+      </button>
+    </clr-tree-node>
+  </clr-tree-node>
+</clr-tree>

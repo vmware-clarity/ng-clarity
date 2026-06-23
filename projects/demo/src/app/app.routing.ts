@@ -139,6 +139,54 @@ export const APP_ROUTES: Routes = [
     loadChildren: () => import('./vertical-nav/vertical-nav.demo.module').then(m => m.VerticalNavDemoModule),
   },
   { path: 'wizard', loadChildren: () => import('./wizard/wizard.demo.module').then(m => m.WizardDemoModule) },
+  {
+    path: 'datagrid-advanced',
+    data: { section: 'addons', label: 'Datagrid Advanced' },
+    loadChildren: () =>
+      import('./addons/datagrid-advanced/datagrid-advanced.demo.module').then(m => m.DatagridAdvancedDemoModule),
+  },
+  {
+    path: 'wizard-addon',
+    data: { section: 'addons', label: 'Wizard' },
+    loadChildren: () => import('./addons/wizard-addon/wizard-addon.demo.module').then(m => m.WizardAddonDemoModule),
+  },
+  {
+    path: 'stepper-addon',
+    data: { section: 'addons', label: 'Stepper' },
+    loadChildren: () => import('./addons/stepper-addon/stepper-addon.demo.module').then(m => m.StepperAddonDemoModule),
+  },
+  {
+    path: 'card-container',
+    data: { section: 'addons', label: 'Card Container' },
+    loadChildren: () =>
+      import('./addons/card-container/card-container.demo.module').then(m => m.CardContainerDemoModule),
+  },
+  {
+    path: 'property-view',
+    data: { section: 'addons', label: 'Property View' },
+    loadChildren: () => import('./addons/property-view/property-view.demo.module').then(m => m.PropertyViewDemoModule),
+  },
+  {
+    path: 'tabs-addon',
+    data: { section: 'addons', label: 'Tabs' },
+    loadChildren: () => import('./addons/tabs-addon/tabs-addon.demo.module').then(m => m.TabsAddonDemoModule),
+  },
+  {
+    path: 'dialog',
+    data: { section: 'addons', label: 'Dialog' },
+    loadChildren: () => import('./addons/dialog/dialog.demo.module').then(m => m.DialogDemoModule),
+  },
+  {
+    path: 'menu',
+    data: { section: 'addons', label: 'Menu' },
+    loadChildren: () => import('./addons/menu/menu.demo.module').then(m => m.MenuDemoModule),
+  },
+  {
+    path: 'certificate-viewer',
+    data: { section: 'addons', label: 'Certificate Viewer' },
+    loadChildren: () =>
+      import('./addons/certificate-viewer/certificate-viewer.demo.module').then(m => m.CertificateViewerDemoModule),
+  },
   { path: 'z-index', loadChildren: () => import('./z-index/z-index.demo.module').then(m => m.ZIndexDemoModule) },
   {
     path: 'shadow-root',
