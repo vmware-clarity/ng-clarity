@@ -848,9 +848,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+const MAX_DETAIL_WIDTH = 100;
+const DEFAULT_DETAIL_WIDTH = 66;
+const MIN_DETAIL_WIDTH = 0;
 class DetailService {
     constructor(modalStackService) {
         this.modalStackService = modalStackService;
+        this.detailWidth = DEFAULT_DETAIL_WIDTH;
         this.preventScroll = false;
         this.toggleState = false;
         this._enabled = false;
@@ -5060,6 +5064,9 @@ class ClrDatagrid {
     get virtualScroll() {
         return this._virtualScroll?.get(0);
     }
+    get isDetailOverlay() {
+        return this.detailService.detailWidth === MAX_DETAIL_WIDTH;
+    }
     ngAfterContentInit() {
         if (!this.items.smart) {
             this.items.all = this.rows.map((row) => row.item);
@@ -5296,7 +5303,7 @@ class ClrDatagrid {
         }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagrid, deps: [{ token: DatagridRenderOrganizer }, { token: Items }, { token: ExpandableRowsCount }, { token: Selection }, { token: RowActionService }, { token: StateProvider }, { token: DisplayModeService }, { token: i0.Renderer2 }, { token: DetailService }, { token: DOCUMENT }, { token: i0.ElementRef }, { token: Page }, { token: i2.ClrCommonStringsService }, { token: KeyNavigationGridController }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrDatagrid, isStandalone: false, selector: "clr-datagrid", inputs: { loadingMoreItems: ["clrLoadingMoreItems", "loadingMoreItems"], clrDgSingleSelectionAriaLabel: "clrDgSingleSelectionAriaLabel", clrDgSingleActionableAriaLabel: "clrDgSingleActionableAriaLabel", clrDetailExpandableAriaLabel: "clrDetailExpandableAriaLabel", clrDgDisablePageFocus: "clrDgDisablePageFocus", customSelectAllEnabled: ["clrDgCustomSelectAllEnabled", "customSelectAllEnabled"], selectAllDisabled: ["clrDgSelectAllDisabled", "selectAllDisabled"], loading: ["clrDgLoading", "loading"], selectionType: ["clrDgSelectionType", "selectionType", selectionTypeAttribute], selected: ["clrDgSelected", "selected"], clrDgPreserveSelection: "clrDgPreserveSelection", rowSelectionMode: ["clrDgRowSelection", "rowSelectionMode"], identityFn: ["clrDgItemsIdentityFn", "identityFn"] }, outputs: { selectedChanged: "clrDgSelectedChange", refresh: "clrDgRefresh", customSelectAll: "clrDgCustomSelectAll" }, host: { properties: { "class.datagrid-host": "true", "class.datagrid-detail-open": "detailService.isOpen", "class.datagrid-virtual-scroll": "!!virtualScroll" } }, providers: [
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrDatagrid, isStandalone: false, selector: "clr-datagrid", inputs: { loadingMoreItems: ["clrLoadingMoreItems", "loadingMoreItems"], clrDgSingleSelectionAriaLabel: "clrDgSingleSelectionAriaLabel", clrDgSingleActionableAriaLabel: "clrDgSingleActionableAriaLabel", clrDetailExpandableAriaLabel: "clrDetailExpandableAriaLabel", clrDgDisablePageFocus: "clrDgDisablePageFocus", customSelectAllEnabled: ["clrDgCustomSelectAllEnabled", "customSelectAllEnabled"], selectAllDisabled: ["clrDgSelectAllDisabled", "selectAllDisabled"], loading: ["clrDgLoading", "loading"], selectionType: ["clrDgSelectionType", "selectionType", selectionTypeAttribute], selected: ["clrDgSelected", "selected"], clrDgPreserveSelection: "clrDgPreserveSelection", rowSelectionMode: ["clrDgRowSelection", "rowSelectionMode"], identityFn: ["clrDgItemsIdentityFn", "identityFn"] }, outputs: { selectedChanged: "clrDgSelectedChange", refresh: "clrDgRefresh", customSelectAll: "clrDgCustomSelectAll" }, host: { properties: { "class.datagrid-host": "true", "class.datagrid-detail-open": "detailService.isOpen", "class.datagrid-detail-overlay": "isDetailOverlay", "class.datagrid-virtual-scroll": "!!virtualScroll" } }, providers: [
             Selection,
             Sort,
             FiltersProvider,
@@ -5335,6 +5342,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     ], host: {
                         '[class.datagrid-host]': 'true',
                         '[class.datagrid-detail-open]': 'detailService.isOpen',
+                        '[class.datagrid-detail-overlay]': 'isDetailOverlay',
                         '[class.datagrid-virtual-scroll]': '!!virtualScroll',
                     }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-content select=\"clr-dg-action-bar\"></ng-content>\n<div class=\"datagrid-outer-wrapper\">\n  <div class=\"datagrid-inner-wrapper\">\n    <div class=\"datagrid\" #datagrid [attr.aria-hidden]=\"detailService.isOpen ? true : null\">\n      <div class=\"datagrid-table-wrapper\">\n        <div role=\"grid\" class=\"datagrid-table\" tabindex=\"-1\" #datagridTable>\n          <div role=\"rowgroup\" class=\"datagrid-header\" #datagridHeader>\n            <div role=\"row\" class=\"datagrid-row\">\n              <div class=\"datagrid-row-master datagrid-row-flex\">\n                <div class=\"datagrid-row-sticky\">\n                  <!--header for datagrid where you can select multiple rows -->\n                  @if (selection.selectionType === SELECTION_TYPE.Multi) {\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-select datagrid-fixed-column\"\n                    (keydown.space)=\"toggleAllSelected($event)\"\n                  >\n                    @if (!virtualScroll || customSelectAllEnabled) {\n                    <div class=\"clr-checkbox-wrapper\">\n                      <!-- We need to move focus and space-key handling to the parent because of keyboard arrow key navigation,\n                          which is not able to transfer focus directly on the input when focused with the tab key -->\n                      <input\n                        #selectAllCheckbox\n                        type=\"checkbox\"\n                        [id]=\"selectAllId\"\n                        [(ngModel)]=\"allSelected\"\n                        [attr.aria-label]=\"commonStrings.keys.selectAll\"\n                        tabindex=\"-1\"\n                        [attr.disabled]=\"selectAllDisabled ? true : null\"\n                      />\n                      <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->\n                      <label [for]=\"selectAllId\" class=\"clr-control-label clr-col-null\">\n                        <span class=\"clr-sr-only\">{{commonStrings.keys.selectAll}}</span>\n                      </label>\n                    </div>\n                    }\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                  <!-- header for datagrid where you can select one row only -->\n                  @if (selection.selectionType === SELECTION_TYPE.Single) {\n                  <div #stickyHeader role=\"columnheader\" class=\"datagrid-column datagrid-select datagrid-fixed-column\">\n                    <div class=\"clr-sr-only\">{{clrDgSingleSelectionAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                  <!-- header for single row action; only displayType if we have at least one actionable row in datagrid -->\n                  @if (rowActionService.hasActionableRow) {\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-row-actions datagrid-fixed-column\"\n                  >\n                    <div class=\"clr-sr-only\">{{clrDgSingleActionableAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                  <!-- header for carets; only displayType if we have at least one expandable row in datagrid -->\n                  @if (expandableRows.hasExpandableRow || detailService.enabled) {\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-expandable-caret datagrid-fixed-column\"\n                  >\n                    <div class=\"clr-sr-only\">{{clrDetailExpandableAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                </div>\n                <div class=\"datagrid-row-scrollable\">\n                  <ng-container #projectedDisplayColumns></ng-container>\n                </div>\n                @if (virtualScroll) {\n                <div class=\"datagrid-row-sticky datagrid-row-sticky-scroll\">\n                  <div class=\"datagrid-column\"></div>\n                </div>\n                }\n              </div>\n            </div>\n          </div>\n\n          <div class=\"datagrid-content\" [class.datagrid-content-virtual]=\"virtualScroll\" #contentWrapper>\n            @if (virtualScroll) {\n            <div class=\"datagrid-content-virtual-spacer\" [style.height]=\"virtualScroll?.totalContentHeight\"></div>\n            }\n            <div role=\"presentation\" #rowsWrapper class=\"datagrid-rows\">\n              @if (loadingMoreItems) {\n              <clr-dg-row class=\"datagrid-row-loading\">\n                <clr-dg-cell>\n                  <clr-spinner clrMedium></clr-spinner>\n                  <span>{{ commonStrings.keys.loading }}</span>\n                </clr-dg-cell>\n              </clr-dg-row>\n              }\n\n              <ng-container #displayedRows></ng-container>\n\n              @if (loadingMoreItems) {\n              <clr-dg-row class=\"datagrid-row-loading\">\n                <clr-dg-cell>\n                  <clr-spinner clrMedium></clr-spinner>\n                  <span>{{ commonStrings.keys.loading }}</span>\n                </clr-dg-cell>\n              </clr-dg-row>\n              }\n\n              <!-- Custom placeholder overrides the default empty one -->\n              <ng-content select=\"clr-dg-placeholder\"></ng-content>\n              @if (!placeholder) {\n              <clr-dg-placeholder></clr-dg-placeholder>\n              }\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <ng-content select=\"clr-dg-footer\"></ng-content>\n    @if (loading) {\n    <div class=\"datagrid-spinner\">\n      <clr-spinner clrMedium>Loading</clr-spinner>\n    </div>\n    }\n  </div>\n  <ng-content select=\"[clrIfDetail],clr-dg-detail\"></ng-content>\n</div>\n\n<div class=\"datagrid-calculation-table\">\n  <div class=\"datagrid-calculation-header\">\n    <ng-container #projectedCalculationColumns></ng-container>\n  </div>\n  <ng-container #calculationRows></ng-container>\n</div>\n\n<ng-template #fixedColumnTemplate>\n  <div class=\"datagrid-column datagrid-fixed-column\"></div>\n</ng-template>\n" }]
         }], ctorParameters: () => [{ type: DatagridRenderOrganizer }, { type: Items }, { type: ExpandableRowsCount }, { type: Selection }, { type: RowActionService }, { type: StateProvider }, { type: DisplayModeService }, { type: i0.Renderer2 }, { type: DetailService }, { type: undefined, decorators: [{
@@ -5957,6 +5965,32 @@ class ClrDatagridDetail {
         this.detailService = detailService;
         this.commonStrings = commonStrings;
     }
+    get detailWidth() {
+        return this.detailService.detailWidth;
+    }
+    set detailWidth(value) {
+        if (value === null || value === undefined) {
+            this.detailService.detailWidth = DEFAULT_DETAIL_WIDTH;
+            return;
+        }
+        if (value < MIN_DETAIL_WIDTH) {
+            this.detailService.detailWidth = MIN_DETAIL_WIDTH;
+            return;
+        }
+        if (value > MAX_DETAIL_WIDTH) {
+            this.detailService.detailWidth = MAX_DETAIL_WIDTH;
+            return;
+        }
+        this.detailService.detailWidth = value;
+    }
+    get isCustomWidth() {
+        return this.detailWidth !== DEFAULT_DETAIL_WIDTH;
+    }
+    get width() {
+        // Skip the inline style at 100% so the .datagrid-detail-overlay CSS rule takes over
+        // without needing !important to override an inline style.
+        return this.detailWidth !== MAX_DETAIL_WIDTH ? this.detailWidth : null;
+    }
     get labelledBy() {
         if (this.ariaLabelledBy) {
             return this.header ? `${this.header.titleId} ${this.ariaLabelledBy}` : this.ariaLabelledBy;
@@ -5981,7 +6015,7 @@ class ClrDatagridDetail {
         this.detailService.close();
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridDetail, deps: [{ token: DetailService }, { token: i2.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrDatagridDetail, isStandalone: false, selector: "clr-dg-detail", inputs: { ariaLabelledBy: ["clrDetailAriaLabelledBy", "ariaLabelledBy"], ariaLabel: ["clrDetailAriaLabel", "ariaLabel"] }, host: { properties: { "class.datagrid-detail-pane": "true" } }, queries: [{ propertyName: "header", first: true, predicate: ClrDatagridDetailHeader, descendants: true }], ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrDatagridDetail, isStandalone: false, selector: "clr-dg-detail", inputs: { ariaLabelledBy: ["clrDetailAriaLabelledBy", "ariaLabelledBy"], ariaLabel: ["clrDetailAriaLabel", "ariaLabel"], detailWidth: ["clrDetailWidth", "detailWidth"] }, host: { properties: { "class.datagrid-detail-pane": "true", "class.datagrid-detail-custom-width": "isCustomWidth", "style.width.%": "width" } }, queries: [{ propertyName: "header", first: true, predicate: ClrDatagridDetailHeader, descendants: true }], ngImport: i0, template: `
     @if (detailService.isOpen) {
       <div
         cdkTrapFocus
@@ -6006,6 +6040,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     selector: 'clr-dg-detail',
                     host: {
                         '[class.datagrid-detail-pane]': 'true',
+                        '[class.datagrid-detail-custom-width]': 'isCustomWidth',
+                        '[style.width.%]': 'width',
                     },
                     // We put the @if on the cdkTrapFocus so it doesn't always exist on the page
                     // have to test for presence of header for aria-describedby because it was causing unit tests to crash
@@ -6038,6 +6074,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], header: [{
                 type: ContentChild,
                 args: [ClrDatagridDetailHeader]
+            }], detailWidth: [{
+                type: Input,
+                args: ['clrDetailWidth']
             }] } });
 
 /*
