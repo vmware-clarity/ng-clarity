@@ -58,6 +58,7 @@ interface ClrDatagridFilterInterface<T, S = any> {
 declare class DetailService {
     private readonly modalStackService;
     id: string;
+    detailWidth: number;
     private preventScroll;
     private toggleState;
     private cache;
@@ -998,6 +999,7 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
     get allSelected(): boolean;
     set allSelected(value: boolean);
     get virtualScroll(): ClrDatagridVirtualScrollDirective<any>;
+    protected get isDetailOverlay(): boolean;
     ngAfterContentInit(): void;
     /**
      * Our setup happens in the view of some of our components, so we wait for it to be done before starting
@@ -1208,11 +1210,15 @@ declare class ClrDatagridDetail {
     ariaLabel: string;
     header: ClrDatagridDetailHeader;
     constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
+    get detailWidth(): number;
+    set detailWidth(value: number | null | undefined);
+    get isCustomWidth(): boolean;
+    get width(): number | null;
     get labelledBy(): string;
     get label(): string;
     close(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetail, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": { "alias": "clrDetailAriaLabelledBy"; "required": false; }; "ariaLabel": { "alias": "clrDetailAriaLabel"; "required": false; }; }, {}, ["header"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": { "alias": "clrDetailAriaLabelledBy"; "required": false; }; "ariaLabel": { "alias": "clrDetailAriaLabel"; "required": false; }; "detailWidth": { "alias": "clrDetailWidth"; "required": false; }; }, {}, ["header"], ["*"], false, never>;
 }
 
 declare class ClrDatagridDetailBody {
