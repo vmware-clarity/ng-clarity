@@ -55,8 +55,8 @@ $clr-calendar-width: calc(3 * #{$clr-calendar-btn-size} + (2 * #{$clr-calendar-b
 
 //(7 = 6 date rows + 1 row for calendar switches and month/year pickers) + 1 row for day heading + 2 * 16px padding + 2px for border + 6 * 4px vertical gap for buttons
 $clr-calendar-height: calc(
-  (7 * #{$clr-calendar-header-btn-height}) + $clr-calendar-weekday-height + (2 * #{$clr-calendar-vertical-padding}) +
-    (2 * #{tokens.$cds-alias-object-border-width-100}) + density.$clr-base-gap-s
+  (7 * #{$clr-calendar-header-btn-height}) + #{$clr-calendar-weekday-height} + (2 * #{$clr-calendar-vertical-padding}) +
+    (2 * #{tokens.$cds-alias-object-border-width-100}) + #{density.$clr-base-gap-s}
 );
 
 $clr-monthpicker-min-height: calc(6 * #{$clr-calendar-header-btn-height});
