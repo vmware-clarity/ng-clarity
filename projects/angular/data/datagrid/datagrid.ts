@@ -278,7 +278,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     return this._virtualScroll?.get(0);
   }
 
-  get isDetailOverlay(): boolean {
+  protected get isDetailOverlay(): boolean {
     return this.detailService.detailWidth === MAX_DETAIL_WIDTH;
   }
 

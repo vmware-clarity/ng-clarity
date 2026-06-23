@@ -1260,6 +1260,10 @@
     &:has(.datagrid-detail-pane.datagrid-detail-custom-width) .datagrid-inner-wrapper {
       min-width: initial;
       width: initial;
+
+      .datagrid-rows {
+        overflow-x: initial;
+      }
     }
 
     .datagrid-detail-pane.datagrid-detail-custom-width {
@@ -1498,6 +1502,7 @@
       border-left: tokens.$cds-alias-object-border-width-100 solid;
       border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
       border-radius: density.$clr-base-border-radius-s;
+      width: 100% !important;
     }
   }
 

@@ -17,7 +17,7 @@ import { User } from '../inventory/user';
   standalone: false,
 })
 export class DatagridDetailDemo implements AfterViewInit {
-  detailWidth: number = null;
+  detailWidth: number | null = null;
   users: User[];
   selection: User[] = [];
   singleSelection: User[] = [];

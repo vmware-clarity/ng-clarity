@@ -55,7 +55,7 @@ export class ClrDatagridDetail {
   get detailWidth(): number {
     return this.detailService.detailWidth;
   }
-  set detailWidth(value: number) {
+  set detailWidth(value: number | null | undefined) {
     if (value === null || value === undefined) {
       this.detailService.detailWidth = DEFAULT_DETAIL_WIDTH;
       return;
@@ -78,7 +78,7 @@ export class ClrDatagridDetail {
     return this.detailWidth !== DEFAULT_DETAIL_WIDTH;
   }
 
-  get width(): number {
+  get width(): number | null {
     // Skip the inline style at 100% so the .datagrid-detail-overlay CSS rule takes over
     // without needing !important to override an inline style.
     return this.detailWidth !== MAX_DETAIL_WIDTH ? this.detailWidth : null;

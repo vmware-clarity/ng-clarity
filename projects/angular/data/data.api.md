@@ -150,7 +150,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     set identityFn(value: ClrDatagridItemsIdentityFunction<T>);
     // (undocumented)
-    get isDetailOverlay(): boolean;
+    protected get isDetailOverlay(): boolean;
     // Warning: (ae-forgotten-export) The symbol "Items" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
@@ -454,7 +454,7 @@ export class ClrDatagridDetail {
     detailService: DetailService;
     // (undocumented)
     get detailWidth(): number;
-    set detailWidth(value: number);
+    set detailWidth(value: number | null | undefined);
     // (undocumented)
     header: ClrDatagridDetailHeader;
     // (undocumented)
@@ -464,7 +464,7 @@ export class ClrDatagridDetail {
     // (undocumented)
     get labelledBy(): string;
     // (undocumented)
-    get width(): number;
+    get width(): number | null;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": { "alias": "clrDetailAriaLabelledBy"; "required": false; }; "ariaLabel": { "alias": "clrDetailAriaLabel"; "required": false; }; "detailWidth": { "alias": "clrDetailWidth"; "required": false; }; }, {}, ["header"], ["*"], false, never>;
     // (undocumented)
