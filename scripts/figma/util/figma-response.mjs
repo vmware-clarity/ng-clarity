@@ -17,12 +17,16 @@
  * Extract collections, variables, and modes from a Figma `/variables/local`
  * GET response into flat arrays.
  *
+ * Variables with `deletedButReferenced: true` are excluded — Figma marks them
+ * as deleted but keeps them alive while other variables still alias them.
+ * Treating them as absent causes the planner to CREATE fresh replacements.
+ *
  * @param {Object} response Raw Figma API response.
  * @returns {{ collections: any[], vars: any[], modes: Array<{modeId: string, name: string, collectionId: string}> }}
  */
 export function parseFigmaVarsResponse(response) {
   const collections = Object.values(response.meta?.variableCollections ?? {});
-  const vars = Object.values(response.meta?.variables ?? {});
+  const vars = Object.values(response.meta?.variables ?? {}).filter(v => !v.deletedButReferenced);
   const modes = collections.flatMap(c => c.modes.map(m => ({ ...m, collectionId: c.id })));
   return { collections, vars, modes };
 }

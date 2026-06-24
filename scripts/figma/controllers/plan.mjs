@@ -43,13 +43,13 @@ export function buildPlan(ctx) {
  * @param {ReturnType<typeof buildPushPlan>} plan
  */
 export function printPlanStats(ctx, plan) {
-  const { payloadModeValues, deletedVarIds, stats } = plan;
+  const { payloadModeValues, deprecatedVarIds, stats } = plan;
   printStats('Token plan', {
     collections: ctx.collectionDefs.length,
     created: stats.new,
     updated: stats.update,
     skipped: stats.skipped,
-    deleted: deletedVarIds.size,
+    deprecated: deprecatedVarIds.size,
     modeValues: payloadModeValues.length,
   });
 }

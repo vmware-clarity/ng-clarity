@@ -28,18 +28,23 @@ import { nextTempId } from '../util/temp-id.mjs';
  */
 
 /**
- * @typedef {{ action: 'create' | 'update' | 'retype', name: string, type: string, prevType?: string, changes?: FieldChange[] }} DiffEntry
+ * @typedef {{ action: 'create' | 'update' | 'deprecate', name: string, type: string, prevType?: string, changes?: FieldChange[] }} DiffEntry
  * Describes a single variable change for the human-readable diff output.
- *   create  — variable did not exist; it is being created.
- *   update  — variable already existed and at least one field differs.
- *             `changes` lists every field that was modified.
- *   retype  — variable existed with a different type; it was deleted and will
- *             be recreated.  `prevType` carries the old type.
+ *   create    — variable did not exist; it is being created.
+ *   update    — variable already existed and at least one field differs.
+ *               `changes` lists every field that was modified.
+ *   deprecate — variable existed with a different type; the old variable is
+ *               renamed to `<name>_deprecated` for Figma users to review, and
+ *               a new variable with the correct type is created.
+ *               `prevType` carries the old type.
  */
 
 /**
- * Resolve the Figma variable ID for a token, queuing a DELETE when the existing
- * variable has a different type (Figma does not allow in-place type changes).
+ * Resolve the Figma variable ID for a token, queuing a rename-to-deprecated when
+ * the existing variable has a different type (Figma does not allow in-place type
+ * changes).  The old variable is renamed to `<figmaName>_deprecated` so Figma
+ * users can review and clean it up; a new variable with the correct type is
+ * created under the original name.
  *
  * This is the shared ID-assignment step used by both the regular-collection
  * pass 1 (which defers payload construction until mode values are known) and
@@ -49,21 +54,26 @@ import { nextTempId } from '../util/temp-id.mjs';
  * @param {string} p.figmaName
  * @param {string} p.resolvedType
  * @param {Map<string, any>} p.existingVarByName
- * @param {Set<string>} p.deletedVarIds  Mutated: receives the deleted ID on type mismatch.
- * @param {any[]} p.payloadVars          Mutated: receives the DELETE entry on type mismatch.
+ * @param {Set<string>} p.deprecatedVarIds  Mutated: receives the old ID on type mismatch so pass 2 does not re-process it.
+ * @param {any[]} p.payloadVars          Mutated: receives the rename UPDATE entry on type mismatch.
  * @returns {{ varId: string, isUpdate: boolean, isRetype: boolean, existingVar: any, prevType: string|undefined }}
  */
-function resolveVariableId({ figmaName, resolvedType, existingVarByName, deletedVarIds, payloadVars }) {
+function resolveVariableId({ figmaName, resolvedType, existingVarByName, deprecatedVarIds, payloadVars }) {
   const existingVar = existingVarByName.get(figmaName);
   const prevType = existingVar?.resolvedType;
   const isRetype = !!(existingVar && prevType !== resolvedType);
 
   if (isRetype) {
-    deletedVarIds.add(existingVar.id);
-    payloadVars.push({ action: 'DELETE', id: existingVar.id });
+    deprecatedVarIds.add(existingVar.id);
+    payloadVars.push({
+      action: 'UPDATE',
+      id: existingVar.id,
+      name: `${figmaName}_deprecated`,
+      variableCollectionId: existingVar.variableCollectionId,
+    });
   }
 
-  const isUpdate = !!(existingVar && !deletedVarIds.has(existingVar.id));
+  const isUpdate = !!(existingVar && !deprecatedVarIds.has(existingVar.id));
   const varId = isUpdate ? existingVar.id : nextTempId();
 
   return { varId, isUpdate, isRetype, existingVar, prevType };
@@ -85,8 +95,8 @@ function resolveVariableId({ figmaName, resolvedType, existingVarByName, deleted
  * @param {string} p.description
  * @param {boolean} p.hiddenFromPublishing
  * @param {Map<string, any>} p.existingVarByName
- * @param {Set<string>} p.deletedVarIds  Mutated: receives the deleted ID if applicable.
- * @param {any[]} p.payloadVars          Mutated: receives the DELETE + CREATE/UPDATE entry.
+ * @param {Set<string>} p.deprecatedVarIds  Mutated: receives the old ID if type changes.
+ * @param {any[]} p.payloadVars          Mutated: receives the rename UPDATE + CREATE/UPDATE entry.
  * @returns {{ varId: string, isUpdate: boolean, diffEntry: DiffEntry }}
  */
 function planVariableCreateOrUpdate({
@@ -98,14 +108,14 @@ function planVariableCreateOrUpdate({
   description,
   hiddenFromPublishing,
   existingVarByName,
-  deletedVarIds,
+  deprecatedVarIds,
   payloadVars,
 }) {
   const { varId, isUpdate, isRetype, prevType } = resolveVariableId({
     figmaName,
     resolvedType,
     existingVarByName,
-    deletedVarIds,
+    deprecatedVarIds,
     payloadVars,
   });
 
@@ -123,7 +133,7 @@ function planVariableCreateOrUpdate({
 
   /** @type {DiffEntry} */
   const diffEntry = isRetype
-    ? { action: 'retype', name: figmaName, type: resolvedType, prevType }
+    ? { action: 'deprecate', name: figmaName, type: resolvedType, prevType }
     : { action: isUpdate ? 'update' : 'create', name: figmaName, type: resolvedType };
 
   return { varId, isUpdate, diffEntry };
@@ -176,7 +186,7 @@ export function populateIdMapFromExisting(existingVars, idMap) {
  *   payloadModes: any[],
  *   payloadVars: any[],
  *   payloadModeValues: any[],
- *   deletedVarIds: Set<string>,
+ *   deprecatedVarIds: Set<string>,
  *   stats: { new: number, update: number, skipped: number },
  *   diff: DiffEntry[],
  * }}
@@ -201,7 +211,7 @@ export function buildCollectionPlan({
   const payloadModes = [];
   const payloadVars = [];
   const payloadModeValues = [];
-  const deletedVarIds = new Set();
+  const deprecatedVarIds = new Set();
   /** @type {DiffEntry[]} */
   const diff = [];
 
@@ -303,7 +313,7 @@ export function buildCollectionPlan({
         description,
         hiddenFromPublishing: colDef.hiddenFromPublishing,
         existingVarByName: colVarByName,
-        deletedVarIds,
+        deprecatedVarIds,
         payloadVars,
       });
 
@@ -375,7 +385,7 @@ export function buildCollectionPlan({
         figmaName,
         resolvedType,
         existingVarByName,
-        deletedVarIds,
+        deprecatedVarIds,
         payloadVars,
       });
 
@@ -427,7 +437,7 @@ export function buildCollectionPlan({
         newModeValues.push({ modeId: modeIds[mi], value: resolved.figmaValue });
       }
 
-      // For existing (non-retyped) variables, skip if nothing actually changed.
+      // For existing (non-deprecated) variables, skip if nothing actually changed.
       if (
         isUpdate &&
         !hasVariableChanged(existingVar, {
@@ -479,7 +489,7 @@ export function buildCollectionPlan({
         statsNew++;
         diff.push(
           isRetype
-            ? { action: 'retype', name: figmaName, type: resolvedType, prevType }
+            ? { action: 'deprecate', name: figmaName, type: resolvedType, prevType }
             : { action: 'create', name: figmaName, type: resolvedType }
         );
       }
@@ -496,7 +506,7 @@ export function buildCollectionPlan({
     payloadModes,
     payloadVars,
     payloadModeValues,
-    deletedVarIds,
+    deprecatedVarIds,
     stats: { new: statsNew, update: statsUpdate, skipped: statsSkipped },
     diff,
   };
@@ -525,7 +535,7 @@ export function buildCollectionPlan({
  *   payloadModes: any[],
  *   payloadVars: any[],
  *   payloadModeValues: any[],
- *   deletedVarIds: Set<string>,
+ *   deprecatedVarIds: Set<string>,
  *   stats: { new: number, update: number, skipped: number },
  *   existingCollByName: Map<string, any>,
  * }}
@@ -551,7 +561,7 @@ export function buildPushPlan({
   const payloadModes = [];
   const payloadVars = [];
   const payloadModeValues = [];
-  const deletedVarIds = new Set();
+  const deprecatedVarIds = new Set();
   let statsNew = 0;
   let statsUpdate = 0;
   let statsSkipped = 0;
@@ -572,8 +582,8 @@ export function buildPushPlan({
     payloadModes.push(...colPlan.payloadModes);
     payloadVars.push(...colPlan.payloadVars);
     payloadModeValues.push(...colPlan.payloadModeValues);
-    for (const id of colPlan.deletedVarIds) {
-      deletedVarIds.add(id);
+    for (const id of colPlan.deprecatedVarIds) {
+      deprecatedVarIds.add(id);
     }
 
     statsNew += colPlan.stats.new;
@@ -586,7 +596,7 @@ export function buildPushPlan({
     payloadModes,
     payloadVars,
     payloadModeValues,
-    deletedVarIds,
+    deprecatedVarIds,
     stats: { new: statsNew, update: statsUpdate, skipped: statsSkipped },
     existingCollByName,
   };

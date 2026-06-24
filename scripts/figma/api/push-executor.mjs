@@ -48,7 +48,7 @@ const BATCH = 500;
  *   totalNew: number,
  *   totalUpdate: number,
  *   totalSkipped: number,
- *   totalDeleted: number,
+ *   totalDeprecated: number,
  *   totalModeValues: number,
  * }>}
  */
@@ -79,7 +79,7 @@ export async function executePush({
   let totalNew = 0;
   let totalUpdate = 0;
   let totalSkipped = 0;
-  let totalDeleted = 0;
+  let totalDeprecated = 0;
   let totalModeValues = 0;
 
   for (const colDef of collectionDefs) {
@@ -99,27 +99,10 @@ export async function executePush({
     totalNew += colPlan.stats.new;
     totalUpdate += colPlan.stats.update;
     totalSkipped += colPlan.stats.skipped;
-    totalDeleted += colPlan.deletedVarIds.size;
+    totalDeprecated += colPlan.deprecatedVarIds.size;
     totalModeValues += colPlan.payloadModeValues.length;
 
-    const groupedVarsBy = Object.groupBy(colPlan.payloadVars, ({ action }) =>
-      action === 'DELETE' ? 'delete' : 'createUpdate'
-    );
-
-    const deleteVars = groupedVarsBy.delete ? groupedVarsBy.delete : [];
-    const createUpdateVars = groupedVarsBy.createUpdate ? groupedVarsBy.createUpdate : [];
-
-    // ── Type-mismatch deletions (must precede recreations) ──────────────────
-    if (deleteVars.length > 0) {
-      console.log(`    🗑️   Deleting ${deleteVars.length} type-mismatched variable(s)…`);
-
-      await figma.postVariables(figmaFileKey, {
-        variableCollections: [],
-        variableModes: [],
-        variables: deleteVars,
-        variableModeValues: [],
-      });
-    }
+    const createUpdateVars = colPlan.payloadVars;
 
     // ── Push this collection in batches ─────────────────────────────────────
     // Each collection is kept in a single POST whenever possible (< BATCH vars).
@@ -192,5 +175,5 @@ export async function executePush({
     });
   }
 
-  return { totalNew, totalUpdate, totalSkipped, totalDeleted, totalModeValues };
+  return { totalNew, totalUpdate, totalSkipped, totalDeprecated, totalModeValues };
 }

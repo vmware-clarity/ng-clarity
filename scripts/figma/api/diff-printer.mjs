@@ -12,16 +12,16 @@
  * the layout stays consistent without copy-paste drift.
  *
  * @param {string} label  Heading shown after the 📊 icon (e.g. "Token plan" or "Push summary").
- * @param {{ collections: number, created: number, updated: number, skipped: number, deleted: number, modeValues: number }} stats
+ * @param {{ collections: number, created: number, updated: number, skipped: number, deprecated: number, modeValues: number }} stats
  * @param {string} [doneMsg]  Optional trailing message (e.g. "✅  Dry run complete").
  */
-export function printStats(label, { collections, created, updated, skipped, deleted, modeValues }, doneMsg) {
+export function printStats(label, { collections, created, updated, skipped, deprecated, modeValues }, doneMsg) {
   console.log(`\n📊  ${label}:`);
   console.log(`    Collections    : ${collections}`);
   console.log(`    New vars       : ${created}`);
   console.log(`    Updated vars   : ${updated}`);
   console.log(`    Skipped        : ${skipped}  (complex multi-value strings)`);
-  console.log(`    Deletions      : ${deleted}  (type corrections)`);
+  console.log(`    Deprecated     : ${deprecated}  (old var deprecated, new var created)`);
   console.log(`    Mode values    : ${modeValues}`);
   if (doneMsg) {
     console.log(doneMsg);
@@ -32,8 +32,8 @@ export function printStats(label, { collections, created, updated, skipped, dele
  * Prints a human-readable diff of all variable changes grouped by collection.
  *
  * Output format per collection:
- *   📦  <collection name>  (+<created> ~<updated> ↻<retyped>)
- *     ↻  <name>    <prevType> → <newType>   ← type corrections
+ *   📦  <collection name>  (+<created> ~<updated> ⚠<deprecated>)
+ *     ⚠  <name>    <prevType> → <newType>   ← type changed; old var renamed to <name>_deprecated
  *     +  <name>    <type>                   ← new variables
  *     ~  <name>    <type>                   ← updated variables
  *          <field>   <from>  →  <to>        ← one line per changed field
@@ -66,21 +66,23 @@ export function formatDiff(diffReport) {
 
     const diffGroupedByAction = Object.groupBy(diff, ({ action }) => action);
 
-    const retyped = diffGroupedByAction.retype ? diffGroupedByAction.retype : [];
+    const deprecated = diffGroupedByAction.deprecate ? diffGroupedByAction.deprecate : [];
     const created = diffGroupedByAction.create ? diffGroupedByAction.create : [];
     const updated = diffGroupedByAction.update ? diffGroupedByAction.update : [];
 
     const badge = [
       created.length ? `+${created.length}` : null,
       updated.length ? `~${updated.length}` : null,
-      retyped.length ? `↻${retyped.length}` : null,
+      deprecated.length ? `${deprecated.length}⚠ ` : null,
     ]
       .filter(Boolean)
       .join('  ');
 
     lines.push(`  📦  ${collectionName}  (${badge})`);
 
-    retyped.forEach(e => lines.push(`    ↻  ${e.name.padEnd(60)}  ${e.prevType} → ${e.type}`));
+    deprecated.forEach(e =>
+      lines.push(`    ⚠  ${e.name.padEnd(60)}  ${e.prevType} → ${e.type}\n         (old var → ${e.name}_deprecated)`)
+    );
     created.forEach(e => lines.push(`    +  ${e.name.padEnd(60)}  ${e.type}`));
     updated.forEach(e => {
       lines.push(`    ~  ${e.name.padEnd(60)}  ${e.type}`);

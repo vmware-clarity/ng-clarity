@@ -44,6 +44,7 @@ export async function runPreview(ctx) {
   let previewNew = 0;
   let previewUpdate = 0;
   let previewSkipped = 0;
+  let previewDeprecated = 0;
   const diffReport = [];
 
   for (const colDef of ctx.collectionDefs) {
@@ -61,6 +62,7 @@ export async function runPreview(ctx) {
     previewNew += colPlan.stats.new;
     previewUpdate += colPlan.stats.update;
     previewSkipped += colPlan.stats.skipped;
+    previewDeprecated += colPlan.deprecatedVarIds.size;
     diffReport.push({ collectionName: colDef.name, diff: colPlan.diff });
   }
 
@@ -72,7 +74,7 @@ export async function runPreview(ctx) {
       created: previewNew,
       updated: previewUpdate,
       skipped: previewSkipped,
-      deleted: 0,
+      deprecated: previewDeprecated,
       modeValues: 0,
     },
     '\n✅  Preview complete — no changes made to Figma.\n'

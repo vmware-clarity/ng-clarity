@@ -38,7 +38,7 @@ export async function runPush(ctx) {
 
   console.log('\n⬆️   Pushing to Figma…');
 
-  const { totalNew, totalUpdate, totalSkipped, totalDeleted, totalModeValues } = await executePush({
+  const { totalNew, totalUpdate, totalSkipped, totalDeprecated, totalModeValues } = await executePush({
     figma,
     figmaFileKey,
     collectionDefs: ctx.collectionDefs,
@@ -56,7 +56,7 @@ export async function runPush(ctx) {
       created: totalNew,
       updated: totalUpdate,
       skipped: totalSkipped,
-      deleted: totalDeleted,
+      deprecated: totalDeprecated,
       modeValues: totalModeValues,
     },
     `\n✅  Done! ${totalNew + totalUpdate} tokens published to Figma.\n`
