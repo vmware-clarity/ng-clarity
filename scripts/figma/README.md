@@ -67,13 +67,7 @@ Figma variable ID rather than a stale temp ID:
 
 ## Running locally
 
-1. Copy the credentials template and fill in real values (never commit secrets):
-
-```bash
-cp .env.figma .env.figma.local   # or edit .env.figma directly, keep it out of git
-```
-
-`.env.figma` needs:
+1. Copy the credentials and fill in real values (never commit secrets) as process variables OR add them `--env-file`.
 
 - `FIGMA_TOKEN` — personal access token with `file_variables:read` and
   `file_variables:write` scopes.
@@ -116,7 +110,10 @@ npm run figma:push
 Or invoke the script directly:
 
 ```bash
-node --env-file=.env.figma scripts/figma/index.mjs [--dry-run] [--extract [file]]
+# With ENV file
+node --env-file=.env.figma scripts/figma/index.mjs [--preview] [--dry-run] [--extract [file]]
+# OR with process variables
+FIGMA_TOKEN=figd_XXXXXXXXXXXXXX FIGMA_FILE_KEY=YYYYYYYYYYYYYY node scripts/figma/index.mjs [--preview] [--dry-run] [--extract [file]]
 ```
 
 ## Running the tests

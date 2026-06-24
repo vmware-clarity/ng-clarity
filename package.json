@@ -67,11 +67,11 @@
     "_lint:format-code-examples:fix": "node ./projects/website/scripts/format-code-examples.js --fix",
     "_lint:format-code-examples:changed": "node ./scripts/get-changed-files.js --command \"node ./projects/website/scripts/format-code-examples.js\"",
     "_lint:format-code-examples:changed:fix": "node ./scripts/get-changed-files.js --command \"node ./projects/website/scripts/format-code-examples.js --fix\"",
-    "_figma:push": "node --env-file=.env.figma scripts/figma/index.mjs",
-    "_figma:push:preview": "node --env-file=.env.figma scripts/figma/index.mjs --preview",
+    "_figma:push": "node scripts/figma/index.mjs",
+    "_figma:push:preview": "node scripts/figma/index.mjs --preview",
     "figma:push": "npm-run-all _test:figma _figma:push",
     "figma:push:preview": "npm-run-all _test:figma _figma:push:preview",
-    "figma:push:dry-run": "node --env-file=.env.figma scripts/figma/index.mjs --dry-run",
+    "figma:push:dry-run": "node scripts/figma/index.mjs --dry-run",
     "figma:extract": "node scripts/figma/index.mjs --extract figma-tokens.extract.json"
   },
   "devDependencies": {
