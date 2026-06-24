@@ -109,6 +109,18 @@ export default function (): void {
       const firstButton: HTMLButtonElement = context.testComponent.actionItem.nativeElement;
       expectActiveElementToBe(firstButton);
     });
+
+    it('stops click event propagation when the toggle button is clicked', function () {
+      let propagatedToParent = false;
+      context.testElement.addEventListener('click', () => {
+        propagatedToParent = true;
+      });
+
+      toggle.click();
+      context.detectChanges();
+
+      expect(propagatedToParent).toBe(false);
+    });
   });
 }
 
