@@ -261,7 +261,7 @@
     },
     {
       "_comment": "Gap / spacing tokens used in layouts",
-      "pattern": "*-gap*",
+      "pattern": "*(-gap|-base-vertical-offset|-base-horizontal-offset)*",
       "scopes": ["GAP"]
     },
     {
@@ -286,7 +286,7 @@
     },
     {
       "_comment": "Width / height dimension tokens",
-      "pattern": "*(-width|-height|-base-vertical-offset|-base-horizontal-offset|-base-icon-tooltip|-base-icon-size|-base-spinner-|-base-layout-space)*",
+      "pattern": "*(-width|-height|-base-icon-tooltip|-base-icon-size|-base-spinner-)*",
       "scopes": ["WIDTH_HEIGHT"]
     },
     {
@@ -301,7 +301,7 @@
     },
     {
       "_comment": "Global layout spacing tokens",
-      "pattern": "--cds-global-layout-space*",
+      "pattern": "(--cds-global-layout-space|-base-layout-space)*",
       "scopes": ["GAP", "WIDTH_HEIGHT"]
     }
   ],
