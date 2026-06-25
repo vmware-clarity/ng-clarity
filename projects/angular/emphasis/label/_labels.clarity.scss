@@ -153,6 +153,23 @@
       margin: 0;
     }
 
-    @include label-mixins.generateDisabledLabelStyles();
+    &.clickable.disabled,
+    &.clickable:disabled {
+      cursor: not-allowed;
+      background: label-variables.$clr-label-bg-disabled-color;
+      color: label-variables.$clr-label-disabled-color;
+      border-color: label-variables.$clr-label-disabled-border-color;
+
+      cds-icon,
+      clr-icon {
+        color: label-variables.$clr-label-disabled-color;
+      }
+
+      .badge {
+        background: label-variables.$clr-label-disabled-color;
+        border-color: label-variables.$clr-label-disabled-color;
+        color: label-variables.$clr-label-bg-disabled-color;
+      }
+    }
   }
 }
