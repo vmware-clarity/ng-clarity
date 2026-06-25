@@ -101,7 +101,7 @@
       text-decoration: none;
     }
 
-    &.clickable:not(.disabled) {
+    &.clickable:not(.disabled, :disabled) {
       cursor: pointer;
 
       &:hover {
@@ -153,23 +153,6 @@
       margin: 0;
     }
 
-    &.disabled,
-    &:disabled {
-      cursor: not-allowed;
-      background: label-variables.$clr-label-bg-disabled-color;
-      color: label-variables.$clr-label-disabled-color;
-      border-color: label-variables.$clr-label-disabled-border-color;
-
-      cds-icon,
-      clr-icon {
-        color: label-variables.$clr-label-disabled-color;
-      }
-
-      .badge {
-        background: label-variables.$clr-label-disabled-color;
-        border-color: label-variables.$clr-label-disabled-color;
-        color: label-variables.$clr-label-bg-disabled-color;
-      }
-    }
+    @include label-mixins.generateDisabledLabelStyles();
   }
 }
