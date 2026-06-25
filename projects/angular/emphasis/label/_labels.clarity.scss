@@ -153,6 +153,10 @@
       margin: 0;
     }
 
+    &.disabled,
+    &:disabled,
+    &.solid.disabled,
+    &.solid:disabled,
     &.clickable.disabled,
     &.clickable:disabled {
       cursor: not-allowed;
