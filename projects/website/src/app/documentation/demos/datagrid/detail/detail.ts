@@ -7,8 +7,9 @@
 
 import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ClrDatagridModule, ClrPopoverHostDirective, ClrStopEscapePropagationDirective } from '@clr/angular';
+import { ClrDatagridModule, ClrRangeModule } from '@clr/angular';
 
 import { CodeSnippetComponent } from '../../../../shared/code-snippet/code-snippet.component';
 import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
@@ -234,6 +235,70 @@ const TWO_WAY_BINDING_EXAMPLE = `
 </clr-datagrid>
 `;
 
+const DETAIL_WIDTH_EXAMPLE = `
+<clr-dg-detail *clrIfDetail="let detail" [clrDetailWidth]="50">
+  <clr-dg-detail-header>{{ detail.name }}</clr-dg-detail-header>
+  <clr-dg-detail-body>
+    <!-- ... -->
+  </clr-dg-detail-body>
+</clr-dg-detail>
+`;
+
+const DETAIL_WIDTH_EXAMPLE_HTML = `
+<clr-range-container [clrRangeHasProgress]="true">
+  <label>Detail Pane Width: {{ detailWidth }}%</label>
+  <input type="range" clrRange id="widthSlider" min="0" max="100" step="5" [(ngModel)]="detailWidth" />
+</clr-range-container>
+
+<clr-datagrid>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-detail *clrIfDetail="let detail" [clrDetailWidth]="detailWidth">
+    <clr-dg-detail-header>{{ detail.name }}</clr-dg-detail-header>
+    <clr-dg-detail-body>
+      <b>ID:</b>
+      {{ detail.id }}
+    </clr-dg-detail-body>
+  </clr-dg-detail>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+`;
+
+const DETAIL_WIDTH_EXAMPLE_TS = `
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ClrDatagridModule, ClrIcon, ClrRangeModule } from '@clr/angular';
+import { Inventory } from './inventory/inventory';
+import { User } from './inventory/user';
+
+@Component({
+  selector: 'app-example',
+  templateUrl: './example.component.html',
+  styleUrl: './example.component.scss',
+
+  providers: [Inventory],
+  imports: [CommonModule, FormsModule, ClrDatagridModule, ClrRangeModule, ClrIcon],
+})
+export class ExampleComponent {
+  users: User[];
+  detailWidth = 66;
+
+  constructor(public inventory: Inventory) {
+    this.inventory.size = 10;
+    this.inventory.reset();
+    this.users = this.inventory.all;
+  }
+}
+`;
+
 @Component({
   providers: [Inventory],
   templateUrl: 'detail.html',
@@ -241,12 +306,12 @@ const TWO_WAY_BINDING_EXAMPLE = `
   imports: [
     CodeSnippetComponent,
     ClrDatagridModule,
-    ClrStopEscapePropagationDirective,
-    ClrPopoverHostDirective,
+    ClrRangeModule,
     StackblitzExampleComponent,
     DatagridDetailAccessibilityGuidance,
     RouterLink,
     DatePipe,
+    FormsModule,
   ],
 })
 export class DatagridDetailPaneDemo {
@@ -254,6 +319,9 @@ export class DatagridDetailPaneDemo {
   detailPaneExample = DETAIL_PANE_EXAMPLE;
   changeEventExample = CHANGE_EVENT_EXAMPLE;
   twoWayBindingExample = TWO_WAY_BINDING_EXAMPLE;
+  detailWidthExample = DETAIL_WIDTH_EXAMPLE;
+  detailWidthExampleHtml = DETAIL_WIDTH_EXAMPLE_HTML;
+  detailWidthExampleTs = DETAIL_WIDTH_EXAMPLE_TS;
   commonFiles = {
     ...CommonFiles,
     exampleTs: CommonFiles.exampleTs
@@ -264,10 +332,16 @@ export class DatagridDetailPaneDemo {
   users: User[];
   selected: User[] = [];
   state: User | undefined;
+  widthDemoUsers: User[];
+  detailWidth = 66;
 
   constructor(inventory: Inventory) {
     inventory.size = 103;
     inventory.reset();
     this.users = inventory.all;
+
+    inventory.size = 10;
+    inventory.reset();
+    this.widthDemoUsers = inventory.all;
   }
 }
