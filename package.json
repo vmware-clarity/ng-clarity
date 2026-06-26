@@ -167,8 +167,5 @@
     "yaml": "2.8.2",
     "yargs": "18.0.0",
     "zone.js": "0.16.0"
-  },
-  "dependencies": {
-    "wcag-contrast": "^3.0.0"
   }
 }

@@ -17,6 +17,11 @@ export const appRoutes: Routes = [
     loadComponent: () => import('./content-page/content-page.component').then(m => m.ContentPageComponent),
   },
   {
+    path: 'theme-builder',
+    loadComponent: () => import('./theme-builder/theme-builder.component').then(m => m.ThemeBuilderComponent),
+    title: 'Theme Builder — Clarity Design System',
+  },
+  {
     path: '',
     component: HomeComponent,
   },
