@@ -5,7 +5,7 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<!--<app-site-nav></app-site-nav>-->
+<app-site-nav></app-site-nav>
 
 <main class="content-area theme-builder-page">
   <div class="tb-header">
@@ -534,7 +534,7 @@
         type="color"
         class="tb-color-picker tb-derived-picker"
         [(ngModel)]="currentDerived[fieldKey].override"
-        (ngModelChange)="onDerivedChange(fieldKey)"
+        (ngModelChange)="onDerivedChange()"
       />
     }
     <button
