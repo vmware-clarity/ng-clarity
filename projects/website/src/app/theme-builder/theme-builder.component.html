@@ -18,16 +18,24 @@
     <div class="tb-presets" cds-layout="m-t:sm">
       <span cds-text="secondary" class="tb-presets-label">Presets:</span>
       @for (preset of presets; track preset.name) {
-        <button class="btn btn-sm btn-outline" (click)="applyPreset(preset)">{{ preset.name }}</button>
+        <button
+          class="btn btn-sm"
+          [class.btn-primary]="activePreset?.name === preset.name"
+          [class.btn-outline]="activePreset?.name !== preset.name"
+          (click)="applyPreset(preset)"
+        >
+          {{ preset.name }}
+        </button>
       }
     </div>
   </div>
 
+  <!-- ── Two-column layout: controls | preview ── -->
   <div class="tb-layout" cds-layout="m-t:lg m-b:lg">
-    <!-- ── Controls panel ── -->
-    <aside class="tb-controls">
-      <!-- Theme mode tabs -->
-      <div class="tb-theme-tabs">
+    <!-- ── Controls card (sticky left column) ── -->
+    <div class="card tb-controls-card">
+      <!-- Light / Dark mode toggle in card header -->
+      <div class="card-header tb-theme-tabs">
         <button
           class="btn btn-sm"
           [class.btn-primary]="activeTheme === 'light'"
@@ -47,9 +55,8 @@
       </div>
 
       <!-- Primary / Info -->
-      <section class="tb-color-group">
-        <h2 cds-text="section" class="tb-group-title">Primary (Action / Info)</h2>
-
+      <div class="card-block">
+        <p class="tb-group-title">Primary (Action / Info)</p>
         <div class="tb-color-row">
           <label class="tb-color-label">Base</label>
           <div class="tb-color-input-wrap">
@@ -76,7 +83,6 @@
             {{ primaryContrastOnWhite | number: '1.1-1' }}:1 on white — {{ primaryScoreOnWhite }}
           </div>
         </div>
-
         <div class="tb-derived-row">
           @for (
             field of [
@@ -92,11 +98,11 @@
             ></ng-container>
           }
         </div>
-      </section>
+      </div>
 
       <!-- Success -->
-      <section class="tb-color-group">
-        <h2 cds-text="section" class="tb-group-title">Success</h2>
+      <div class="card-block">
+        <p class="tb-group-title">Success</p>
         <div class="tb-color-row">
           <label class="tb-color-label">Base</label>
           <div class="tb-color-input-wrap">
@@ -130,11 +136,11 @@
             ></ng-container>
           }
         </div>
-      </section>
+      </div>
 
       <!-- Warning -->
-      <section class="tb-color-group">
-        <h2 cds-text="section" class="tb-group-title">Warning</h2>
+      <div class="card-block">
+        <p class="tb-group-title">Warning</p>
         <div class="tb-color-row">
           <label class="tb-color-label">Base</label>
           <div class="tb-color-input-wrap">
@@ -168,11 +174,11 @@
             ></ng-container>
           }
         </div>
-      </section>
+      </div>
 
       <!-- Danger -->
-      <section class="tb-color-group">
-        <h2 cds-text="section" class="tb-group-title">Danger</h2>
+      <div class="card-block">
+        <p class="tb-group-title">Danger</p>
         <div class="tb-color-row">
           <label class="tb-color-label">Base</label>
           <div class="tb-color-input-wrap">
@@ -206,11 +212,11 @@
             ></ng-container>
           }
         </div>
-      </section>
+      </div>
 
       <!-- Backgrounds -->
-      <section class="tb-color-group">
-        <h2 cds-text="section" class="tb-group-title">Backgrounds</h2>
+      <div class="card-block">
+        <p class="tb-group-title">Backgrounds</p>
         <div class="tb-color-row">
           <label class="tb-color-label">App</label>
           <div class="tb-color-input-wrap">
@@ -242,11 +248,11 @@
             />
           </div>
         </div>
-      </section>
+      </div>
 
       <!-- Typography -->
-      <section class="tb-color-group">
-        <h2 cds-text="section" class="tb-group-title">Primary Text</h2>
+      <div class="card-block">
+        <p class="tb-group-title">Primary Text</p>
         <div class="tb-color-row">
           <label class="tb-color-label">Text</label>
           <div class="tb-color-input-wrap">
@@ -268,17 +274,21 @@
             {{ textContrastOnContainer | number: '1.1-1' }}:1 on container — {{ textScoreOnContainer }}
           </div>
         </div>
-      </section>
-    </aside>
+      </div>
+    </div>
+    <!-- end controls card -->
 
-    <!-- ── Preview panel ── -->
-    <div class="tb-preview-outer">
-      <div class="tb-preview-header">
-        <span cds-text="section">Live Preview</span>
-        <span class="tb-preview-mode-badge">{{ activeTheme === 'dark' ? '🌙 Dark' : '☀ Light' }}</span>
+    <!-- ── Preview card (right column) ── -->
+    <div class="card tb-preview-card">
+      <div class="card-header">
+        Live Preview:
+        <span>
+          <cds-icon [shape]="activeTheme === 'dark' ? 'moon' : 'sun'" [solid]="true" [size]="'md'"></cds-icon>
+          {{ activeTheme === 'dark' ? 'Dark' : 'Light' }}
+        </span>
       </div>
 
-      <div #previewWrapper class="tb-preview-sandbox" [attr.cds-theme]="activeTheme">
+      <div class="card-block tb-preview-sandbox" #previewWrapper [attr.cds-theme]="activeTheme">
         <!-- Buttons -->
         <div class="tb-preview-section">
           <p class="tb-preview-section-label">Buttons</p>
@@ -460,7 +470,6 @@
             <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
             <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
             <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
-
             <clr-wizard-page>
               <ng-template clrPageTitle>Step 1: Introduction</ng-template>
               Welcome to the wizard. This step introduces the process.
@@ -477,11 +486,13 @@
         </div>
       </div>
     </div>
+    <!-- end preview card -->
   </div>
+  <!-- end .tb-layout -->
 
-  <!-- ── CSS Output ── -->
-  <div class="tb-output">
-    <div class="tb-output-header">
+  <!-- ── Generated CSS card (full width below grid) ── -->
+  <div class="card tb-output-card">
+    <div class="card-header tb-output-header-row">
       <h2 cds-text="section">Generated CSS</h2>
       <div class="tb-output-tabs">
         <button
@@ -513,7 +524,10 @@
         {{ copied ? 'Copied!' : 'Copy CSS' }}
       </button>
     </div>
-    <pre class="tb-output-code"><code>{{ generatedCss }}</code></pre>
+
+    <div class="card-block tb-code-block">
+      <pre class="tb-output-code"><code>{{ generatedCss }}</code></pre>
+    </div>
   </div>
 
   <app-site-footer></app-site-footer>
