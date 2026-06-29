@@ -5,14 +5,25 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, Component, ContentChildren, Input, Optional, QueryList } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChild,
+  ContentChildren,
+  ElementRef,
+  Input,
+  Optional,
+  QueryList,
+} from '@angular/core';
 import {
   ClrAbstractContainer,
+  ClrControlLabel,
   ContainerIdService,
   ControlClassService,
   LayoutService,
   NgControlService,
 } from '@clr/angular/forms/common';
+import { uniqueIdFactory } from '@clr/angular/utils';
 
 import { ClrCheckbox } from './checkbox';
 
@@ -43,16 +54,20 @@ import { ClrCheckbox } from './checkbox';
     '[class.clr-form-control-disabled]': 'allCheckboxesDisabled',
     '[class.clr-row]': 'addGrid()',
     '[attr.role]': 'role',
+    '[attr.aria-labelledby]': 'ariaLabelledBy',
   },
   providers: [NgControlService, ControlClassService, ContainerIdService],
   standalone: false,
 })
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
   role: string;
+  ariaLabelledBy: string;
 
   @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes: QueryList<ClrCheckbox>;
+  @ContentChild(ClrControlLabel, { read: ElementRef, static: true }) groupLabel: ElementRef<HTMLElement>;
 
   private inline = false;
+  private _generatedId = uniqueIdFactory();
 
   constructor(
     @Optional() protected override layoutService: LayoutService,
@@ -90,9 +105,22 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
 
   ngAfterContentInit() {
     this.setAriaRoles();
+    this.setAriaLabelledBy();
   }
 
   private setAriaRoles() {
     this.role = this.checkboxes?.length ? 'group' : null;
+  }
+
+  private setAriaLabelledBy() {
+    const existingId = this.groupLabel?.nativeElement.getAttribute('id');
+    if (!existingId) {
+      if (this.label) {
+        this.label.idAttr = this._generatedId;
+      }
+      this.ariaLabelledBy = this.checkboxes?.length ? this._generatedId : null;
+    } else {
+      this.ariaLabelledBy = this.checkboxes?.length ? existingId : null;
+    }
   }
 }
