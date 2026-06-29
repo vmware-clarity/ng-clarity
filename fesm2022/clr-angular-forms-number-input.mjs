@@ -25,7 +25,7 @@ class ClrNumberInputContainer extends ClrAbstractContainer {
         this.input.dispatchBlur();
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrNumberInputContainer, deps: [{ token: i1.ControlClassService }, { token: i1.LayoutService, optional: true }, { token: i1.NgControlService }, { token: i1.FormsFocusService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrNumberInputContainer, isStandalone: false, selector: "clr-number-input-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-form-control-readonly": "input.readonly", "class.clr-row": "addGrid()" } }, providers: [FormsFocusService, NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "input", first: true, predicate: i0.forwardRef(() => ClrNumberInput), descendants: true }], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrNumberInputContainer, isStandalone: false, selector: "clr-number-input-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-form-control-readonly": "input?.readonly", "class.clr-row": "addGrid()" } }, providers: [FormsFocusService, NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "input", first: true, predicate: i0.forwardRef(() => ClrNumberInput), descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -115,7 +115,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     host: {
                         '[class.clr-form-control]': 'true',
                         '[class.clr-form-control-disabled]': 'control?.disabled',
-                        '[class.clr-form-control-readonly]': 'input.readonly',
+                        '[class.clr-form-control-readonly]': 'input?.readonly',
                         '[class.clr-row]': 'addGrid()',
                     },
                     providers: [FormsFocusService, NgControlService, ControlIdService, ControlClassService],
