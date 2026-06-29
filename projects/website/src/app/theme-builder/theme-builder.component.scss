@@ -10,15 +10,16 @@
   flex-direction: row;
   min-height: 0;
   overflow: hidden;
-}
 
-.theme-builder-page {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1.5rem 2rem 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  .theme-builder-page {
+    padding-top: var(--clr-base-vertical-offset-2xl);
+    //flex: 1;
+    //overflow-y: auto;
+    ////padding: 1.5rem 2rem 2rem;
+    //display: flex;
+    //flex-direction: column;
+    //gap: 1.5rem;
+  }
 }
 
 // ── Header ──
@@ -64,7 +65,7 @@
   background: var(--cds-alias-object-container-background);
   border: 1px solid var(--cds-alias-object-border-color);
   border-radius: 4px;
-  padding: 1rem;
+  //padding: 1rem;
   position: sticky;
   top: 0;
   max-height: calc(100vh - 200px);

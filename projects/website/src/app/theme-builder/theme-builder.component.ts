@@ -104,7 +104,8 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    document.querySelector('app-root')?.classList.add('layout-theme-builder');
+    console.log('ngOnInit');
+    // document.querySelector('app-root')?.classList.add('layout-theme-builder');
   }
 
   ngAfterViewInit(): void {
@@ -112,7 +113,8 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    document.querySelector('app-root')?.classList.remove('layout-theme-builder');
+    console.log('ngOnDestroy');
+    // document.querySelector('app-root')?.classList.remove('layout-theme-builder');
     if (this.copiedTimer) {
       clearTimeout(this.copiedTimer);
     }

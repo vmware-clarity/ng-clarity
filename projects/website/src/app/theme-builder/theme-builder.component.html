@@ -8,14 +8,14 @@
 <app-site-nav></app-site-nav>
 
 <main class="content-area theme-builder-page">
-  <div class="tb-header">
-    <h1 cds-text="heading">Theme Builder</h1>
-    <p cds-text="body" class="tb-subtitle">
+  <div>
+    <h2 cds-text="title">Theme Builder</h2>
+    <p cds-text="body" cds-layout="m-t:lg">
       Customize Clarity colors and export a CSS override file for your environment.
     </p>
 
     <!-- Preset selector -->
-    <div class="tb-presets">
+    <div class="tb-presets" cds-layout="m-t:sm">
       <span cds-text="secondary" class="tb-presets-label">Presets:</span>
       @for (preset of presets; track preset.name) {
         <button class="btn btn-sm btn-outline" (click)="applyPreset(preset)">{{ preset.name }}</button>
@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <div class="tb-layout">
+  <div class="tb-layout" cds-layout="m-t:lg m-b:lg">
     <!-- ── Controls panel ── -->
     <aside class="tb-controls">
       <!-- Theme mode tabs -->
