@@ -13,6 +13,11 @@
   .theme-builder-page {
     padding-top: var(--clr-base-vertical-offset-2xl);
   }
+
+  ::ng-deep pre {
+    border: none;
+    margin: 0;
+  }
 }
 
 // ── Page header ──
@@ -235,6 +240,13 @@
 
 .tb-output-card {
   margin-top: 0;
+
+  app-code-snippet {
+    display: block;
+    max-height: 600px;
+    overflow: auto;
+    margin-bottom: var(--clr-base-vertical-offset-l);
+  }
 
   // Card-header contains title + tab buttons + copy button in a flex row
   .card-header {

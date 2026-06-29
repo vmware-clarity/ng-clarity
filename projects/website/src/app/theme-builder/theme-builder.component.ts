@@ -16,6 +16,7 @@ import { PRESETS, SAMPLE_ROWS } from './utils/presets';
 import { buildDerivedSet, effectiveValue } from './utils/theme-derivation';
 import { DataRow, DerivableField, DerivedSet, ThemeColors, ThemePreset } from './utils/types';
 import { contrastRatio, wcagScore } from './utils/wcag';
+import { CodeSnippetComponent } from '../shared/code-snippet/code-snippet.component';
 import { SiteFooterComponent } from '../shared/site-footer/site-footer.component';
 import { SiteNavComponent } from '../shared/site-nav/site-nav.component';
 
@@ -26,7 +27,7 @@ export type { DataRow, DerivableField, DerivedSet, ThemeColors, ThemePreset };
   templateUrl: './theme-builder.component.html',
   styleUrl: './theme-builder.component.scss',
   host: { '[class.content-container]': 'true' },
-  imports: [CommonModule, ClarityModule, FormsModule, SiteFooterComponent, SiteNavComponent],
+  imports: [CommonModule, ClarityModule, FormsModule, CodeSnippetComponent, SiteFooterComponent, SiteNavComponent],
 })
 export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('previewWrapper') previewWrapper!: ElementRef<HTMLElement>;
