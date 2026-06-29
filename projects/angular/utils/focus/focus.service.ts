@@ -63,17 +63,26 @@ export class FocusService {
   move(direction: ArrowKeyDirection): boolean {
     let moved = false;
     if (this.current) {
-      const next = this.current[direction];
-      if (next) {
-        // Turning the value into an Observable isn't great, but it's the fastest way to avoid code duplication.
-        // If performance ever matters for this, we can refactor using additional private methods.
-        const nextObs = isObservable(next) ? next : of(next);
+      const visited = new Set<FocusableItem>();
+      let from: FocusableItem = this.current;
+      // Turning the value into an Observable isn't great, but it's the fastest way to avoid code duplication.
+      // If performance ever matters for this, we can refactor using additional private methods.
+      while (from[direction]) {
+        const nextObs = isObservable(from[direction]) ? from[direction] : of(from[direction]);
+        let skipDisabled = false;
         nextObs.subscribe(item => {
-          if (item) {
-            this.moveTo(item);
-            moved = true;
+          if (item && !visited.has(item)) {
+            if (item.disabled) {
+              visited.add(item);
+              from = item;
+              skipDisabled = true;
+            } else {
+              this.moveTo(item);
+              moved = true;
+            }
           }
         });
+        if (!skipDisabled) break;
       }
     }
     return moved;

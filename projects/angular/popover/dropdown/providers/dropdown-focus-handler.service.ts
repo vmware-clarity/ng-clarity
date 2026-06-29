@@ -45,6 +45,10 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     this.moveToFirstItemWhenOpen();
   }
 
+  get disabled(): boolean {
+    return !!(this._trigger as HTMLButtonElement)?.disabled;
+  }
+
   get trigger() {
     return this._trigger;
   }

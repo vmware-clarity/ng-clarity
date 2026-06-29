@@ -109,15 +109,50 @@ export default function (): void {
         }
       });
 
-      it('focuses on disabled item in navigation', function (this: TestContext) {
+      it('skips disabled items and moves to the next enabled item', function (this: TestContext) {
         const current = new MockFocusableItem('1');
-        const nope = new MockFocusableItem('2');
-        nope.disabled = true;
-        current.down = nope;
+        const disabled = new MockFocusableItem('2');
+        const enabled = new MockFocusableItem('3');
+        disabled.disabled = true;
+        current.down = disabled;
+        disabled.down = enabled;
         const spy = spyOn(this.focusService, 'moveTo');
         this.focusService.reset(current);
         this.focusService.move(ArrowKeyDirection.DOWN);
-        expect(spy).toHaveBeenCalledWith(nope);
+        expect(spy).toHaveBeenCalledWith(enabled);
+        expect(spy).not.toHaveBeenCalledWith(disabled);
+      });
+
+      it('does not move when all items in direction are disabled (loop protection)', function (this: TestContext) {
+        const current = new MockFocusableItem('1');
+        const disabledA = new MockFocusableItem('2');
+        const disabledB = new MockFocusableItem('3');
+        disabledA.disabled = true;
+        disabledB.disabled = true;
+        current.down = disabledA;
+        disabledA.down = disabledB;
+        disabledB.down = disabledA; // loop
+        const spy = spyOn(this.focusService, 'moveTo');
+        this.focusService.reset(current);
+        const moved = this.focusService.move(ArrowKeyDirection.DOWN);
+        expect(spy).not.toHaveBeenCalled();
+        expect(moved).toBe(false);
+      });
+
+      it('wraps to the first item when the disabled last item is a trigger and loop is enabled', function (this: TestContext) {
+        const first = new MockFocusableItem('1');
+        const second = new MockFocusableItem('2');
+        const disabledTrigger = new MockFocusableItem('3');
+        disabledTrigger.disabled = true;
+        // linkVertical loop: last.down -> first
+        first.down = second;
+        second.down = disabledTrigger;
+        disabledTrigger.down = first;
+        const spy = spyOn(this.focusService, 'moveTo');
+        this.focusService.reset(second);
+        this.focusService.move(ArrowKeyDirection.DOWN);
+        expect(spy).toHaveBeenCalledWith(first);
+        expect(spy).not.toHaveBeenCalledWith(disabledTrigger);
       });
 
       it('does not move focus to another item if current is undefined', function (this: TestContext) {
