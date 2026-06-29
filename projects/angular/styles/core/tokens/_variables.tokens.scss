@@ -326,6 +326,11 @@ $cds-global-animation-easing-secondary: var(--cds-global-animation-easing-second
 $cds-global-animation-easing-loop: var(--cds-global-animation-easing-loop) !default;
 $cds-global-animation-easing-in-out: var(--cds-global-animation-easing-in-out) !default;
 $cds-global-animation-skeleton-duration: var(--cds-global-animation-skeleton-duration) !default;
+$cds-alias-primary-tint: var(--cds-alias-primary-tint);
+$cds-alias-primary-tint-dark: var(--cds-alias-primary-tint-dark);
+$cds-alias-primary: var(--cds-alias-primary);
+$cds-alias-primary-shade: var(--cds-alias-primary-shade);
+$cds-alias-primary-dark: var(--cds-alias-primary-dark);
 $cds-alias-object-border-radius-100: var(--cds-alias-object-border-radius-100) !default;
 $cds-alias-object-border-radius-100-static: 4 !default;
 $cds-alias-object-border-radius-200: var(--cds-alias-object-border-radius-200) !default;
@@ -758,6 +763,7 @@ $cds-alias-typography-smallcaption-line-height: var(--cds-alias-typography-small
 $cds-alias-typography-smallcaption-line-height-static: 1.2em !default;
 $cds-alias-typography-smallcaption-letter-spacing: var(--cds-alias-typography-smallcaption-letter-spacing) !default;
 $cds-alias-typography-smallcaption-font-weight: var(--cds-alias-typography-smallcaption-font-weight) !default;
+$cds-alias-typography-primary-hover: var(--cds-alias-typography-primary-hover) !default;
 $cds-alias-typography-info-hover: var(--cds-alias-typography-info-hover) !default;
 $cds-alias-typography-success-hover: var(--cds-alias-typography-success-hover) !default;
 $cds-alias-typography-warning-hover: var(--cds-alias-typography-warning-hover) !default;

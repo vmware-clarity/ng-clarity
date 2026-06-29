@@ -8,6 +8,13 @@
 @use './tokens/variables.tokens' as tokens;
 
 [cds-theme~='dark'] {
+  // primary
+  --cds-alias-primary-tint: #{tokens.$cds-global-color-blue-800};
+  --cds-alias-primary-tint-dark: #{tokens.$cds-global-color-construction-800};
+  --cds-alias-primary: #{tokens.$cds-global-color-blue-400};
+  --cds-alias-primary-shade: #{tokens.$cds-global-color-blue-500};
+  --cds-alias-primary-dark: #{tokens.$cds-global-color-blue-500};
+
   // typography
   --cds-alias-typography-color-100: #{tokens.$cds-global-color-black};
   --cds-alias-typography-color-200: #{tokens.$cds-global-color-construction-300};
@@ -56,13 +63,13 @@
   --cds-alias-object-interaction-color-selected: #{tokens.$cds-global-color-construction-200};
   --cds-alias-object-interaction-color-disabled: #{tokens.$cds-global-color-construction-600};
   --cds-alias-object-interaction-background: #{tokens.$cds-global-color-construction-1000};
-  --cds-alias-object-interaction-background-hover: #{tokens.$cds-global-color-construction-800};
+  --cds-alias-object-interaction-background-hover: #{tokens.$cds-alias-primary-tint-dark};
   --cds-alias-object-interaction-background-active: #{tokens.$cds-global-color-construction-600};
-  --cds-alias-object-interaction-background-selected: #{tokens.$cds-global-color-blue-900};
+  --cds-alias-object-interaction-background-selected: #{tokens.$cds-alias-primary-tint};
   --cds-alias-object-interaction-background-selected-active: #{tokens.$cds-global-color-construction-600};
   --cds-alias-object-interaction-background-selected-hover: #{tokens.$cds-global-color-construction-700};
   --cds-alias-object-interaction-background-disabled: #{tokens.$cds-global-color-construction-700};
-  --cds-alias-object-interaction-background-highlight: #{tokens.$cds-global-color-blue-400};
+  --cds-alias-object-interaction-background-highlight: #{tokens.$cds-alias-primary};
   --cds-alias-object-interaction-background-shade: #{tokens.$cds-global-color-construction-1100};
   --cds-alias-object-interaction-background-shade-hover: #{tokens.$cds-global-color-construction-600};
   --cds-alias-object-interaction-background-shade-active: #{tokens.$cds-global-color-construction-800};

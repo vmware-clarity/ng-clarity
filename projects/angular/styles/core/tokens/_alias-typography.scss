@@ -37,8 +37,8 @@
   --cds-alias-typography-top-gap-height: 0.1475em;
   --cds-alias-typography-ascender-height: 0.1703em;
   --cds-alias-typography-x-height: 0.517em;
-  --cds-alias-typography-link-color: var(--cds-global-color-blue-800);
-  --cds-alias-typography-link-color-hover: var(--cds-global-color-blue-900);
+  --cds-alias-typography-link-color: var(--cds-alias-primary-shade);
+  --cds-alias-typography-link-color-hover: var(--cds-alias-primary-dark);
   --cds-alias-typography-link-color-active: var(--cds-global-color-red-700);
   --cds-alias-typography-link-color-visited: var(--cds-global-color-violet-700);
   --cds-alias-typography-link-color-visited-hover: var(--cds-global-color-violet-1000);
@@ -65,6 +65,7 @@
   --cds-alias-typography-caption-font-weight: 400;
   --cds-alias-typography-smallcaption-letter-spacing: 0.05em;
   --cds-alias-typography-smallcaption-font-weight: 500;
+  --cds-alias-typography-primary-hover: var(--cds-alias-primary-shade);
   --cds-alias-typography-info-hover: var(--cds-global-color-blue-800);
   --cds-alias-typography-success-hover: var(--cds-global-color-green-800);
   --cds-alias-typography-warning-hover: var(--cds-global-color-ochre-900);
