@@ -6,13 +6,13 @@
  */
 
 import { shiftL } from './color';
-import { DerivableField, DerivedSet, ThemeColors } from './types';
+import { DerivableField, DerivedSet, HslColor, ThemeColors } from './types';
 
-export function effectiveValue(f: DerivableField): string {
+export function effectiveValue(f: DerivableField): HslColor {
   return f.useManual ? f.override : f.auto;
 }
 
-function computeAutos(base: ThemeColors, isDark: boolean): Record<string, string> {
+function computeAutos(base: ThemeColors, isDark: boolean): Record<string, HslColor> {
   const tk = (
     key: 'primary' | 'success' | 'warning' | 'danger',
     tint: number,
@@ -36,7 +36,7 @@ function computeAutos(base: ThemeColors, isDark: boolean): Record<string, string
 export function buildDerivedSet(base: ThemeColors, existing: DerivedSet | null, isDark: boolean): DerivedSet {
   const autos = computeAutos(base, isDark);
   const make = (key: string): DerivableField => {
-    const auto = autos[key] ?? '#000000';
+    const auto: HslColor = (autos[key] as HslColor) ?? [0, 0, 0];
     const prev = existing?.[key as keyof DerivedSet];
     return {
       auto,

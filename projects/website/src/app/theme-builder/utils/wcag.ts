@@ -7,7 +7,8 @@
 
 // WCAG 2.0 contrast formulas extracted from wcag-contrast@3.0.0 (BSD-2-Clause).
 
-import { WcagLevel } from './types';
+import { hslToRgb } from './color';
+import { HslColor, WcagLevel } from './types';
 
 const redCoefficient = 0.2126;
 const greenCoefficient = 0.7152;
@@ -27,17 +28,9 @@ function relativeLuminance([r, g, b]: [number, number, number]): number {
   return colorMap[0] * redCoefficient + colorMap[1] * greenCoefficient + colorMap[2] * blueCoefficient;
 }
 
-/**
- * Get the contrast ratio between two relative luminance values
- * @param {number} a luminance value
- * @param {number} b luminance value
- * @returns {number} contrast ratio
- * @example
- * luminance(1, 1); // = 1
- */
-export function contrastRatio(a: [number, number, number], b: [number, number, number]): number {
-  const l1 = relativeLuminance(a);
-  const l2 = relativeLuminance(b);
+export function contrastRatio(a: HslColor, b: HslColor): number {
+  const l1 = relativeLuminance(hslToRgb(...a));
+  const l2 = relativeLuminance(hslToRgb(...b));
   return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
 }
 

@@ -63,14 +63,14 @@
             <input
               type="color"
               class="tb-color-picker"
-              [(ngModel)]="current.primary"
-              (ngModelChange)="onColorChange()"
+              [value]="colorToHex(current.primary)"
+              (input)="setCurrentColor('primary', $any($event.target).value)"
             />
             <input
               type="text"
               class="tb-hex-input"
-              [(ngModel)]="current.primary"
-              (ngModelChange)="onColorChange()"
+              [value]="colorToHex(current.primary)"
+              (input)="setCurrentColor('primary', $any($event.target).value)"
               maxlength="7"
             />
           </div>
@@ -109,14 +109,14 @@
             <input
               type="color"
               class="tb-color-picker"
-              [(ngModel)]="current.success"
-              (ngModelChange)="onColorChange()"
+              [value]="colorToHex(current.success)"
+              (input)="setCurrentColor('success', $any($event.target).value)"
             />
             <input
               type="text"
               class="tb-hex-input"
-              [(ngModel)]="current.success"
-              (ngModelChange)="onColorChange()"
+              [value]="colorToHex(current.success)"
+              (input)="setCurrentColor('success', $any($event.target).value)"
               maxlength="7"
             />
           </div>
@@ -147,14 +147,14 @@
             <input
               type="color"
               class="tb-color-picker"
-              [(ngModel)]="current.warning"
-              (ngModelChange)="onColorChange()"
+              [value]="colorToHex(current.warning)"
+              (input)="setCurrentColor('warning', $any($event.target).value)"
             />
             <input
               type="text"
               class="tb-hex-input"
-              [(ngModel)]="current.warning"
-              (ngModelChange)="onColorChange()"
+              [value]="colorToHex(current.warning)"
+              (input)="setCurrentColor('warning', $any($event.target).value)"
               maxlength="7"
             />
           </div>
@@ -185,14 +185,14 @@
             <input
               type="color"
               class="tb-color-picker"
-              [(ngModel)]="current.danger"
-              (ngModelChange)="onColorChange()"
+              [value]="colorToHex(current.danger)"
+              (input)="setCurrentColor('danger', $any($event.target).value)"
             />
             <input
               type="text"
               class="tb-hex-input"
-              [(ngModel)]="current.danger"
-              (ngModelChange)="onColorChange()"
+              [value]="colorToHex(current.danger)"
+              (input)="setCurrentColor('danger', $any($event.target).value)"
               maxlength="7"
             />
           </div>
@@ -220,12 +220,17 @@
         <div class="tb-color-row">
           <label class="tb-color-label">App</label>
           <div class="tb-color-input-wrap">
-            <input type="color" class="tb-color-picker" [(ngModel)]="current.appBg" (ngModelChange)="onColorChange()" />
+            <input
+              type="color"
+              class="tb-color-picker"
+              [value]="colorToHex(current.appBg)"
+              (input)="setCurrentColor('appBg', $any($event.target).value)"
+            />
             <input
               type="text"
               class="tb-hex-input"
-              [(ngModel)]="current.appBg"
-              (ngModelChange)="onColorChange()"
+              [value]="colorToHex(current.appBg)"
+              (input)="setCurrentColor('appBg', $any($event.target).value)"
               maxlength="7"
             />
           </div>
@@ -236,14 +241,14 @@
             <input
               type="color"
               class="tb-color-picker"
-              [(ngModel)]="current.containerBg"
-              (ngModelChange)="onColorChange()"
+              [value]="colorToHex(current.containerBg)"
+              (input)="setCurrentColor('containerBg', $any($event.target).value)"
             />
             <input
               type="text"
               class="tb-hex-input"
-              [(ngModel)]="current.containerBg"
-              (ngModelChange)="onColorChange()"
+              [value]="colorToHex(current.containerBg)"
+              (input)="setCurrentColor('containerBg', $any($event.target).value)"
               maxlength="7"
             />
           </div>
@@ -256,12 +261,17 @@
         <div class="tb-color-row">
           <label class="tb-color-label">Text</label>
           <div class="tb-color-input-wrap">
-            <input type="color" class="tb-color-picker" [(ngModel)]="current.text" (ngModelChange)="onColorChange()" />
+            <input
+              type="color"
+              class="tb-color-picker"
+              [value]="colorToHex(current.text)"
+              (input)="setCurrentColor('text', $any($event.target).value)"
+            />
             <input
               type="text"
               class="tb-hex-input"
-              [(ngModel)]="current.text"
-              (ngModelChange)="onColorChange()"
+              [value]="colorToHex(current.text)"
+              (input)="setCurrentColor('text', $any($event.target).value)"
               maxlength="7"
             />
           </div>
@@ -538,15 +548,17 @@
     <div
       class="tb-derived-swatch"
       [style.backgroundColor]="
-        currentDerived[fieldKey].useManual ? currentDerived[fieldKey].override : currentDerived[fieldKey].auto
+        colorToHsl(
+          currentDerived[fieldKey].useManual ? currentDerived[fieldKey].override : currentDerived[fieldKey].auto
+        )
       "
     ></div>
     @if (currentDerived[fieldKey].useManual) {
       <input
         type="color"
         class="tb-color-picker tb-derived-picker"
-        [(ngModel)]="currentDerived[fieldKey].override"
-        (ngModelChange)="onDerivedChange()"
+        [value]="colorToHex(currentDerived[fieldKey].override)"
+        (input)="setDerivedOverride(currentDerived[fieldKey], $any($event.target).value)"
       />
     }
     <button

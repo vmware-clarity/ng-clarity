@@ -7,19 +7,22 @@
 
 export type WcagLevel = 'AAA' | 'AA' | 'AA Large' | 'Fail';
 
+/** HSL color tuple: [hue 0–360, saturation 0–100, lightness 0–100] */
+export type HslColor = [number, number, number];
+
 export interface ThemeColors {
-  primary: string;
-  success: string;
-  warning: string;
-  danger: string;
-  appBg: string;
-  containerBg: string;
-  text: string;
+  primary: HslColor;
+  success: HslColor;
+  warning: HslColor;
+  danger: HslColor;
+  appBg: HslColor;
+  containerBg: HslColor;
+  text: HslColor;
 }
 
 export interface DerivableField {
-  auto: string;
-  override: string;
+  auto: HslColor;
+  override: HslColor;
   useManual: boolean;
 }
 

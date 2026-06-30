@@ -6,7 +6,7 @@
  */
 
 import { effectiveValue } from './theme-derivation';
-import { CssThemeTokens, DerivedSet, ThemeColors } from './types';
+import { CssThemeTokens, DerivedSet, HslColor, ThemeColors } from './types';
 
 /**
  * Generates a CSS block for the given theme mode.
@@ -21,9 +21,10 @@ export function buildCssBlock(
 ): string {
   const sel = mode === 'light' ? `[cds-theme~='light']` : `[cds-theme~='dark']`;
   const lines: string[] = [`${sel} {`];
+  const toHsl = ([h, s, l]: HslColor): string => `hsl(${h}, ${s}%, ${l}%)`;
 
-  const emit = (prop: string, fallback: string) => {
-    lines.push(`  ${prop}: ${tokens?.[prop] ?? fallback};`);
+  const emit = (prop: string, fallback: HslColor) => {
+    lines.push(`  ${prop}: ${tokens?.[prop] ?? toHsl(fallback)};`);
   };
 
   lines.push('  /* Primary / Info */');

@@ -5,28 +5,27 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { hslToHex } from './color';
 import { CssThemeTokens, DataRow, ThemeColors, ThemePreset } from './types';
 
-// Hex values derived from Clarity's SCSS HSL tokens — used for color pickers and WCAG calculations.
+// HSL values derived from Clarity's SCSS HSL tokens — used for color pickers and WCAG calculations.
 const CLARITY_LIGHT: ThemeColors = {
-  primary: hslToHex(198, 100, 34), // blue-700
-  success: hslToHex(93, 80, 28), // green-700
-  warning: hslToHex(40, 100, 59), // ochre-500
-  danger: hslToHex(9, 100, 44), // red-700
-  appBg: hslToHex(198, 33, 99), // construction-25
-  containerBg: '#ffffff',
-  text: '#000000',
+  primary: [198, 100, 34], // blue-700
+  success: [93, 80, 28], // green-700
+  warning: [40, 100, 59], // ochre-500
+  danger: [9, 100, 44], // red-700
+  appBg: [198, 33, 99], // construction-25
+  containerBg: [0, 0, 100],
+  text: [0, 0, 0],
 };
 
 const CLARITY_DARK: ThemeColors = {
-  primary: hslToHex(198, 100, 59), // blue-400
-  success: hslToHex(93, 80, 44), // green-500
-  warning: hslToHex(41, 100, 70), // ochre-400
-  danger: hslToHex(9, 100, 65), // red-500
-  appBg: hslToHex(198, 30, 15), // construction-1000
-  containerBg: hslToHex(198, 28, 18), // construction-900
-  text: '#ffffff',
+  primary: [198, 100, 59], // blue-400
+  success: [93, 80, 44], // green-500
+  warning: [41, 100, 70], // ochre-400
+  danger: [9, 100, 65], // red-500
+  appBg: [198, 30, 15], // construction-1000
+  containerBg: [198, 28, 18], // construction-900
+  text: [0, 0, 100],
 };
 
 // Token expressions that map to the exact global color tokens Clarity's own SCSS uses.
@@ -135,43 +134,43 @@ export const PRESETS: ThemePreset[] = [
   {
     name: 'Evergreen',
     light: {
-      primary: hslToHex(160, 69, 36), // jade-600
-      success: hslToHex(93, 80, 28), // green-700
-      warning: hslToHex(40, 100, 59), // ochre-500
-      danger: hslToHex(9, 100, 44), // red-700
+      primary: [160, 69, 36], // jade-600
+      success: [93, 80, 28], // green-700
+      warning: [40, 100, 59], // ochre-500
+      danger: [9, 100, 44], // red-700
       appBg: CLARITY_LIGHT.appBg,
-      containerBg: '#ffffff',
-      text: '#000000',
+      containerBg: [0, 0, 100],
+      text: [0, 0, 0],
     },
     dark: {
-      primary: hslToHex(160, 69, 53), // jade-400
-      success: hslToHex(93, 80, 44), // green-500
-      warning: hslToHex(41, 100, 70), // ochre-400
-      danger: hslToHex(9, 100, 65), // red-500
+      primary: [160, 69, 53], // jade-400
+      success: [93, 80, 44], // green-500
+      warning: [41, 100, 70], // ochre-400
+      danger: [9, 100, 65], // red-500
       appBg: CLARITY_DARK.appBg,
       containerBg: CLARITY_DARK.containerBg,
-      text: '#ffffff',
+      text: [0, 0, 100],
     },
   },
   {
     name: 'Midnight',
     light: {
-      primary: hslToHex(282, 60, 49), // violet-600
-      success: hslToHex(184, 100, 34), // aqua-600
-      warning: hslToHex(50, 100, 57), // yellow-300
-      danger: hslToHex(9, 100, 44), // red-700
+      primary: [282, 60, 49], // violet-600
+      success: [184, 100, 34], // aqua-600
+      warning: [50, 100, 57], // yellow-300
+      danger: [9, 100, 44], // red-700
       appBg: CLARITY_LIGHT.appBg,
-      containerBg: '#ffffff',
-      text: '#000000',
+      containerBg: [0, 0, 100],
+      text: [0, 0, 0],
     },
     dark: {
-      primary: hslToHex(282, 60, 65), // violet-400
-      success: hslToHex(184, 100, 48), // aqua-400
-      warning: hslToHex(50, 100, 57), // yellow-300
-      danger: hslToHex(9, 100, 65), // red-500
+      primary: [282, 60, 65], // violet-400
+      success: [184, 100, 48], // aqua-400
+      warning: [50, 100, 57], // yellow-300
+      danger: [9, 100, 65], // red-500
       appBg: CLARITY_DARK.appBg,
       containerBg: CLARITY_DARK.containerBg,
-      text: '#ffffff',
+      text: [0, 0, 100],
     },
   },
 ];
