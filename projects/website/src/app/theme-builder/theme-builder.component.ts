@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ClarityModule } from '@clr/angular';
+import { ClarityIcons, ClarityModule, pencilIcon, undoIcon } from '@clr/angular';
 
 import { hexToRgb } from './utils/color';
 import { buildCssBlock } from './utils/css-generation';
@@ -55,6 +55,11 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   copied = false;
   private copiedTimer: ReturnType<typeof setTimeout> | null = null;
+
+  constructor() {
+    ClarityIcons.addIcons(undoIcon);
+    ClarityIcons.addIcons(pencilIcon);
+  }
 
   get current(): ThemeColors {
     return this.colors[this.activeTheme];
