@@ -56,234 +56,62 @@
 
       <!-- Primary / Info -->
       <div class="card-block">
-        <p class="tb-group-title">Primary (Action / Info)</p>
-        <div class="tb-color-row">
-          <label class="tb-color-label">Base</label>
-          <div class="tb-color-input-wrap">
-            <input
-              type="color"
-              class="tb-color-picker"
-              [value]="current.primary.hex"
-              (input)="setCurrentColor('primary', $any($event.target).value)"
-            />
-            <input
-              type="text"
-              class="tb-hex-input"
-              [value]="current.primary.hex"
-              (input)="setCurrentColor('primary', $any($event.target).value)"
-              maxlength="7"
-            />
-          </div>
-          <div
-            class="tb-contrast-badge"
-            [class.tb-contrast-fail]="primaryScoreOnWhite === 'Fail'"
-            [class.tb-contrast-aa]="primaryScoreOnWhite === 'AA' || primaryScoreOnWhite === 'AAA'"
-            [class.tb-contrast-large]="primaryScoreOnWhite === 'AA Large'"
-          >
-            {{ primaryContrastOnWhite | number: '1.1-1' }}:1 on white — {{ primaryScoreOnWhite }}
-          </div>
-        </div>
-        <div class="tb-derived-row">
-          @for (
-            field of [
-              { key: 'primaryTint', label: 'Tint' },
-              { key: 'primaryShade', label: 'Shade' },
-              { key: 'primaryHover', label: 'Hover' },
-              { key: 'primaryActive', label: 'Active' },
-            ];
-            track field.key
-          ) {
-            <ng-container
-              *ngTemplateOutlet="derivedField; context: { $implicit: field.key, label: field.label }"
-            ></ng-container>
+        @for (colorGroup of themeColors; track colorGroup) {
+          <p class="tb-group-title">{{ colorGroup }}</p>
+
+          @for (colorVariant of colorStruct[activeTheme][colorGroup]; track colorVariant) {
+            <div class="tb-color-row">
+              <label class="tb-color-label">Base</label>
+              <div class="tb-color-input-wrap">
+                <input
+                  type="color"
+                  class="tb-color-picker"
+                  [value]="colorVariant.hex"
+                  (input)="setCurrentColor(colorVariant, $any($event.target).value)"
+                />
+                <input
+                  readonly
+                  type="text"
+                  class="tb-hex-input"
+                  [value]="colorVariant.hex"
+                  (input)="setCurrentColor(colorVariant, $any($event.target).value)"
+                  maxlength="7"
+                />
+                <button
+                  *ngIf="!colorVariant.isOriginalColor"
+                  class="btn btn-sm btn-primary"
+                  (click)="colorVariant.color = null; applyPreviewStyles()"
+                  title="Back to original color"
+                >
+                  <cds-icon shape="undo"></cds-icon>
+                </button>
+              </div>
+              <!--              <div-->
+              <!--                class="tb-contrast-badge"-->
+              <!--                [class.tb-contrast-fail]="primaryScoreOnWhite === 'Fail'"-->
+              <!--                [class.tb-contrast-aa]="primaryScoreOnWhite === 'AA' || primaryScoreOnWhite === 'AAA'"-->
+              <!--                [class.tb-contrast-large]="primaryScoreOnWhite === 'AA Large'"-->
+              <!--              >-->
+              <!--                {{ primaryContrastOnWhite | number: '1.1-1' }}:1 on white — {{ primaryScoreOnWhite }}-->
+              <!--              </div>-->
+              <!--              <div class="tb-derived-row">-->
+              <!--                @for (-->
+              <!--                  field of [-->
+              <!--                    { key: 'primaryTint', label: 'Tint' },-->
+              <!--                    { key: 'primaryShade', label: 'Shade' },-->
+              <!--                    { key: 'primaryHover', label: 'Hover' },-->
+              <!--                    { key: 'primaryActive', label: 'Active' },-->
+              <!--                  ];-->
+              <!--                  track field.key-->
+              <!--                  ) {-->
+              <!--                  <ng-container-->
+              <!--                    *ngTemplateOutlet="derivedField; context: { $implicit: field.key, label: field.label }"-->
+              <!--                  ></ng-container>-->
+              <!--                }-->
+              <!--              </div>-->
+            </div>
           }
-        </div>
-      </div>
-
-      <!-- Success -->
-      <div class="card-block">
-        <p class="tb-group-title">Success</p>
-        <div class="tb-color-row">
-          <label class="tb-color-label">Base</label>
-          <div class="tb-color-input-wrap">
-            <input
-              type="color"
-              class="tb-color-picker"
-              [value]="current.success.hex"
-              (input)="setCurrentColor('success', $any($event.target).value)"
-            />
-            <input
-              type="text"
-              class="tb-hex-input"
-              [value]="current.success.hex"
-              (input)="setCurrentColor('success', $any($event.target).value)"
-              maxlength="7"
-            />
-          </div>
-        </div>
-        <div class="tb-derived-row">
-          @for (
-            field of [
-              { key: 'successTint', label: 'Tint' },
-              { key: 'successShade', label: 'Shade' },
-              { key: 'successHover', label: 'Hover' },
-              { key: 'successActive', label: 'Active' },
-            ];
-            track field.key
-          ) {
-            <ng-container
-              *ngTemplateOutlet="derivedField; context: { $implicit: field.key, label: field.label }"
-            ></ng-container>
-          }
-        </div>
-      </div>
-
-      <!-- Warning -->
-      <div class="card-block">
-        <p class="tb-group-title">Warning</p>
-        <div class="tb-color-row">
-          <label class="tb-color-label">Base</label>
-          <div class="tb-color-input-wrap">
-            <input
-              type="color"
-              class="tb-color-picker"
-              [value]="current.warning.hex"
-              (input)="setCurrentColor('warning', $any($event.target).value)"
-            />
-            <input
-              type="text"
-              class="tb-hex-input"
-              [value]="current.warning.hex"
-              (input)="setCurrentColor('warning', $any($event.target).value)"
-              maxlength="7"
-            />
-          </div>
-        </div>
-        <div class="tb-derived-row">
-          @for (
-            field of [
-              { key: 'warningTint', label: 'Tint' },
-              { key: 'warningShade', label: 'Shade' },
-              { key: 'warningHover', label: 'Hover' },
-              { key: 'warningActive', label: 'Active' },
-            ];
-            track field.key
-          ) {
-            <ng-container
-              *ngTemplateOutlet="derivedField; context: { $implicit: field.key, label: field.label }"
-            ></ng-container>
-          }
-        </div>
-      </div>
-
-      <!-- Danger -->
-      <div class="card-block">
-        <p class="tb-group-title">Danger</p>
-        <div class="tb-color-row">
-          <label class="tb-color-label">Base</label>
-          <div class="tb-color-input-wrap">
-            <input
-              type="color"
-              class="tb-color-picker"
-              [value]="current.danger.hex"
-              (input)="setCurrentColor('danger', $any($event.target).value)"
-            />
-            <input
-              type="text"
-              class="tb-hex-input"
-              [value]="current.danger.hex"
-              (input)="setCurrentColor('danger', $any($event.target).value)"
-              maxlength="7"
-            />
-          </div>
-        </div>
-        <div class="tb-derived-row">
-          @for (
-            field of [
-              { key: 'dangerTint', label: 'Tint' },
-              { key: 'dangerShade', label: 'Shade' },
-              { key: 'dangerHover', label: 'Hover' },
-              { key: 'dangerActive', label: 'Active' },
-            ];
-            track field.key
-          ) {
-            <ng-container
-              *ngTemplateOutlet="derivedField; context: { $implicit: field.key, label: field.label }"
-            ></ng-container>
-          }
-        </div>
-      </div>
-
-      <!-- Backgrounds -->
-      <div class="card-block">
-        <p class="tb-group-title">Backgrounds</p>
-        <div class="tb-color-row">
-          <label class="tb-color-label">App</label>
-          <div class="tb-color-input-wrap">
-            <input
-              type="color"
-              class="tb-color-picker"
-              [value]="current.appBg.hex"
-              (input)="setCurrentColor('appBg', $any($event.target).value)"
-            />
-            <input
-              type="text"
-              class="tb-hex-input"
-              [value]="current.appBg.hex"
-              (input)="setCurrentColor('appBg', $any($event.target).value)"
-              maxlength="7"
-            />
-          </div>
-        </div>
-        <div class="tb-color-row">
-          <label class="tb-color-label">Container</label>
-          <div class="tb-color-input-wrap">
-            <input
-              type="color"
-              class="tb-color-picker"
-              [value]="current.containerBg.hex"
-              (input)="setCurrentColor('containerBg', $any($event.target).value)"
-            />
-            <input
-              type="text"
-              class="tb-hex-input"
-              [value]="current.containerBg.hex"
-              (input)="setCurrentColor('containerBg', $any($event.target).value)"
-              maxlength="7"
-            />
-          </div>
-        </div>
-      </div>
-
-      <!-- Typography -->
-      <div class="card-block">
-        <p class="tb-group-title">Primary Text</p>
-        <div class="tb-color-row">
-          <label class="tb-color-label">Text</label>
-          <div class="tb-color-input-wrap">
-            <input
-              type="color"
-              class="tb-color-picker"
-              [value]="current.text.hex"
-              (input)="setCurrentColor('text', $any($event.target).value)"
-            />
-            <input
-              type="text"
-              class="tb-hex-input"
-              [value]="current.text.hex"
-              (input)="setCurrentColor('text', $any($event.target).value)"
-              maxlength="7"
-            />
-          </div>
-          <div
-            class="tb-contrast-badge"
-            [class.tb-contrast-fail]="textScoreOnContainer === 'Fail'"
-            [class.tb-contrast-aa]="textScoreOnContainer === 'AA' || textScoreOnContainer === 'AAA'"
-            [class.tb-contrast-large]="textScoreOnContainer === 'AA Large'"
-          >
-            {{ textContrastOnContainer | number: '1.1-1' }}:1 on container — {{ textScoreOnContainer }}
-          </div>
-        </div>
+        }
       </div>
     </div>
     <!-- end controls card -->

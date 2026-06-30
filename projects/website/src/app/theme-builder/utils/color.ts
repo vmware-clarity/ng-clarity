@@ -86,6 +86,26 @@ export class Color {
     return hslToHex(...this.color);
   }
 
+  /** HSL string — used by native color inputs. */
+  get hsl(): string {
+    return `hsl(${this.color[0]}deg, ${this.color[1]}%, ${this.color[2]}%)`;
+  }
+
+  get isOriginalColor(): boolean {
+    // no original color override
+    if (!this._color) {
+      return true;
+    }
+
+    const originalColorHsl = this.parseHsl(this.originalColor);
+
+    return (
+      this._color[0] === originalColorHsl[0] &&
+      this._color[1] === originalColorHsl[1] &&
+      this._color[2] === originalColorHsl[2]
+    );
+  }
+
   /** Returns an independent copy so editing a working theme never mutates a preset. */
   clone(): Color {
     const copy = new Color(this.name, this.originalColor);

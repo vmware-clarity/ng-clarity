@@ -8,37 +8,29 @@
 import { Color } from './color';
 import { CssThemeTokens, DataRow, ThemeColors, ThemePreset } from './types';
 
-// const TOKEN_KEYS = {
-//   primary: [
-//     '--cds-alias-primary-tint',
-//     '--cds-alias-primary-tint-dark',
-//     '--cds-alias-primary',
-//     '--cds-alias-primary-shade',
-//     '--cds-alias-primary-dark',
-//   ],
-//   info: [
-//     '--cds-alias-status-info-tint',
-//     '--cds-alias-status-info',
-//     '--cds-alias-status-info-shade',
-//   ],
-//   success: [
-//     '--cds-alias-status-success-tint',
-//     '--cds-alias-status-success',
-//     '--cds-alias-status-success-shade',
-//   ],
-//   warning: [
-//     '--cds-alias-status-warning-tint',
-//     '--cds-alias-status-warning',
-//     '--cds-alias-status-warning-shade',
-//     '--cds-alias-status-warning-dark',
-//   ],
-//   danger: [
-//     '--cds-alias-status-danger-tint',
-//     '--cds-alias-status-danger',
-//     '--cds-alias-status-danger-shade',
-//     '--cds-alias-status-danger-dark',
-//   ],
-// }
+export const TOKEN_KEYS = {
+  primary: [
+    '--cds-alias-primary',
+    '--cds-alias-primary-tint',
+    '--cds-alias-primary-tint-dark',
+    '--cds-alias-primary-shade',
+    '--cds-alias-primary-dark',
+  ],
+  info: ['--cds-alias-status-info', '--cds-alias-status-info-tint', '--cds-alias-status-info-shade'],
+  success: ['--cds-alias-status-success', '--cds-alias-status-success-tint', '--cds-alias-status-success-shade'],
+  warning: [
+    '--cds-alias-status-warning',
+    '--cds-alias-status-warning-tint',
+    '--cds-alias-status-warning-shade',
+    '--cds-alias-status-warning-dark',
+  ],
+  danger: [
+    '--cds-alias-status-danger',
+    '--cds-alias-status-danger-tint',
+    '--cds-alias-status-danger-shade',
+    '--cds-alias-status-danger-dark',
+  ],
+};
 
 // CSS custom property each base token maps to — passed to the Color constructor as the token name.
 const TOKEN_NAMES: Record<keyof ThemeColors, string> = {
