@@ -1,0 +1,574 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<app-site-nav></app-site-nav>
+
+<main class="content-area theme-builder-page">
+  <div>
+    <h2 cds-text="title">Theme Builder</h2>
+    <p cds-text="body" cds-layout="m-t:lg">
+      Customize Clarity colors and export a CSS override file for your environment.
+    </p>
+
+    <!-- Preset selector -->
+    <div class="tb-presets" cds-layout="m-t:sm">
+      <span cds-text="secondary" class="tb-presets-label">Presets:</span>
+      @for (preset of presets; track preset.name) {
+        <button
+          class="btn btn-sm"
+          [class.btn-primary]="activePreset?.name === preset.name"
+          [class.btn-outline]="activePreset?.name !== preset.name"
+          (click)="applyPreset(preset)"
+        >
+          {{ preset.name }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- ── Two-column layout: controls | preview ── -->
+  <div class="tb-layout" cds-layout="m-t:lg m-b:lg">
+    <!-- ── Controls card (sticky left column) ── -->
+    <div class="card tb-controls-card">
+      <!-- Light / Dark mode toggle in card header -->
+      <div class="card-header tb-theme-tabs">
+        <button
+          class="btn btn-sm"
+          [class.btn-primary]="activeTheme === 'light'"
+          [class.btn-outline]="activeTheme !== 'light'"
+          (click)="applyActiveTheme('light')"
+        >
+          Light
+        </button>
+        <button
+          class="btn btn-sm"
+          [class.btn-primary]="activeTheme === 'dark'"
+          [class.btn-outline]="activeTheme !== 'dark'"
+          (click)="applyActiveTheme('dark')"
+        >
+          Dark
+        </button>
+      </div>
+
+      <!-- Primary / Info -->
+      <div class="card-block">
+        <p class="tb-group-title">Primary (Action / Info)</p>
+        <div class="tb-color-row">
+          <label class="tb-color-label">Base</label>
+          <div class="tb-color-input-wrap">
+            <input
+              type="color"
+              class="tb-color-picker"
+              [value]="current.primary.hex"
+              (input)="setCurrentColor('primary', $any($event.target).value)"
+            />
+            <input
+              type="text"
+              class="tb-hex-input"
+              [value]="current.primary.hex"
+              (input)="setCurrentColor('primary', $any($event.target).value)"
+              maxlength="7"
+            />
+          </div>
+          <div
+            class="tb-contrast-badge"
+            [class.tb-contrast-fail]="primaryScoreOnWhite === 'Fail'"
+            [class.tb-contrast-aa]="primaryScoreOnWhite === 'AA' || primaryScoreOnWhite === 'AAA'"
+            [class.tb-contrast-large]="primaryScoreOnWhite === 'AA Large'"
+          >
+            {{ primaryContrastOnWhite | number: '1.1-1' }}:1 on white — {{ primaryScoreOnWhite }}
+          </div>
+        </div>
+        <div class="tb-derived-row">
+          @for (
+            field of [
+              { key: 'primaryTint', label: 'Tint' },
+              { key: 'primaryShade', label: 'Shade' },
+              { key: 'primaryHover', label: 'Hover' },
+              { key: 'primaryActive', label: 'Active' },
+            ];
+            track field.key
+          ) {
+            <ng-container
+              *ngTemplateOutlet="derivedField; context: { $implicit: field.key, label: field.label }"
+            ></ng-container>
+          }
+        </div>
+      </div>
+
+      <!-- Success -->
+      <div class="card-block">
+        <p class="tb-group-title">Success</p>
+        <div class="tb-color-row">
+          <label class="tb-color-label">Base</label>
+          <div class="tb-color-input-wrap">
+            <input
+              type="color"
+              class="tb-color-picker"
+              [value]="current.success.hex"
+              (input)="setCurrentColor('success', $any($event.target).value)"
+            />
+            <input
+              type="text"
+              class="tb-hex-input"
+              [value]="current.success.hex"
+              (input)="setCurrentColor('success', $any($event.target).value)"
+              maxlength="7"
+            />
+          </div>
+        </div>
+        <div class="tb-derived-row">
+          @for (
+            field of [
+              { key: 'successTint', label: 'Tint' },
+              { key: 'successShade', label: 'Shade' },
+              { key: 'successHover', label: 'Hover' },
+              { key: 'successActive', label: 'Active' },
+            ];
+            track field.key
+          ) {
+            <ng-container
+              *ngTemplateOutlet="derivedField; context: { $implicit: field.key, label: field.label }"
+            ></ng-container>
+          }
+        </div>
+      </div>
+
+      <!-- Warning -->
+      <div class="card-block">
+        <p class="tb-group-title">Warning</p>
+        <div class="tb-color-row">
+          <label class="tb-color-label">Base</label>
+          <div class="tb-color-input-wrap">
+            <input
+              type="color"
+              class="tb-color-picker"
+              [value]="current.warning.hex"
+              (input)="setCurrentColor('warning', $any($event.target).value)"
+            />
+            <input
+              type="text"
+              class="tb-hex-input"
+              [value]="current.warning.hex"
+              (input)="setCurrentColor('warning', $any($event.target).value)"
+              maxlength="7"
+            />
+          </div>
+        </div>
+        <div class="tb-derived-row">
+          @for (
+            field of [
+              { key: 'warningTint', label: 'Tint' },
+              { key: 'warningShade', label: 'Shade' },
+              { key: 'warningHover', label: 'Hover' },
+              { key: 'warningActive', label: 'Active' },
+            ];
+            track field.key
+          ) {
+            <ng-container
+              *ngTemplateOutlet="derivedField; context: { $implicit: field.key, label: field.label }"
+            ></ng-container>
+          }
+        </div>
+      </div>
+
+      <!-- Danger -->
+      <div class="card-block">
+        <p class="tb-group-title">Danger</p>
+        <div class="tb-color-row">
+          <label class="tb-color-label">Base</label>
+          <div class="tb-color-input-wrap">
+            <input
+              type="color"
+              class="tb-color-picker"
+              [value]="current.danger.hex"
+              (input)="setCurrentColor('danger', $any($event.target).value)"
+            />
+            <input
+              type="text"
+              class="tb-hex-input"
+              [value]="current.danger.hex"
+              (input)="setCurrentColor('danger', $any($event.target).value)"
+              maxlength="7"
+            />
+          </div>
+        </div>
+        <div class="tb-derived-row">
+          @for (
+            field of [
+              { key: 'dangerTint', label: 'Tint' },
+              { key: 'dangerShade', label: 'Shade' },
+              { key: 'dangerHover', label: 'Hover' },
+              { key: 'dangerActive', label: 'Active' },
+            ];
+            track field.key
+          ) {
+            <ng-container
+              *ngTemplateOutlet="derivedField; context: { $implicit: field.key, label: field.label }"
+            ></ng-container>
+          }
+        </div>
+      </div>
+
+      <!-- Backgrounds -->
+      <div class="card-block">
+        <p class="tb-group-title">Backgrounds</p>
+        <div class="tb-color-row">
+          <label class="tb-color-label">App</label>
+          <div class="tb-color-input-wrap">
+            <input
+              type="color"
+              class="tb-color-picker"
+              [value]="current.appBg.hex"
+              (input)="setCurrentColor('appBg', $any($event.target).value)"
+            />
+            <input
+              type="text"
+              class="tb-hex-input"
+              [value]="current.appBg.hex"
+              (input)="setCurrentColor('appBg', $any($event.target).value)"
+              maxlength="7"
+            />
+          </div>
+        </div>
+        <div class="tb-color-row">
+          <label class="tb-color-label">Container</label>
+          <div class="tb-color-input-wrap">
+            <input
+              type="color"
+              class="tb-color-picker"
+              [value]="current.containerBg.hex"
+              (input)="setCurrentColor('containerBg', $any($event.target).value)"
+            />
+            <input
+              type="text"
+              class="tb-hex-input"
+              [value]="current.containerBg.hex"
+              (input)="setCurrentColor('containerBg', $any($event.target).value)"
+              maxlength="7"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Typography -->
+      <div class="card-block">
+        <p class="tb-group-title">Primary Text</p>
+        <div class="tb-color-row">
+          <label class="tb-color-label">Text</label>
+          <div class="tb-color-input-wrap">
+            <input
+              type="color"
+              class="tb-color-picker"
+              [value]="current.text.hex"
+              (input)="setCurrentColor('text', $any($event.target).value)"
+            />
+            <input
+              type="text"
+              class="tb-hex-input"
+              [value]="current.text.hex"
+              (input)="setCurrentColor('text', $any($event.target).value)"
+              maxlength="7"
+            />
+          </div>
+          <div
+            class="tb-contrast-badge"
+            [class.tb-contrast-fail]="textScoreOnContainer === 'Fail'"
+            [class.tb-contrast-aa]="textScoreOnContainer === 'AA' || textScoreOnContainer === 'AAA'"
+            [class.tb-contrast-large]="textScoreOnContainer === 'AA Large'"
+          >
+            {{ textContrastOnContainer | number: '1.1-1' }}:1 on container — {{ textScoreOnContainer }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end controls card -->
+
+    <!-- ── Preview card (right column) ── -->
+    <div class="card tb-preview-card">
+      <div class="card-header">
+        Live Preview:
+        <span>
+          <cds-icon [shape]="activeTheme === 'dark' ? 'moon' : 'sun'" [solid]="true" [size]="'md'"></cds-icon>
+          {{ activeTheme === 'dark' ? 'Dark' : 'Light' }}
+        </span>
+      </div>
+
+      <div class="card-block tb-preview-sandbox" #previewWrapper [attr.cds-theme]="activeTheme">
+        <!-- Buttons -->
+        <div class="tb-preview-section">
+          <p class="tb-preview-section-label">Buttons</p>
+          <div class="tb-preview-row">
+            <button class="btn btn-primary">Primary</button>
+            <button class="btn btn-outline">Outline</button>
+            <button class="btn btn-danger">Danger</button>
+            <button class="btn btn-success">Success</button>
+            <button class="btn btn-warning">Warning</button>
+            <button class="btn btn-primary" disabled>Disabled</button>
+          </div>
+        </div>
+
+        <!-- Badges & Labels -->
+        <div class="tb-preview-section">
+          <p class="tb-preview-section-label">Badges &amp; Labels</p>
+          <div class="tb-preview-row">
+            <span class="badge badge-info">Info 5</span>
+            <span class="badge badge-success">Success 3</span>
+            <span class="badge badge-warning">Warning 2</span>
+            <span class="badge badge-danger">Danger 1</span>
+            <span class="label label-info">Info</span>
+            <span class="label label-success">Success</span>
+            <span class="label label-warning">Warning</span>
+            <span class="label label-danger">Danger</span>
+          </div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="tb-preview-section">
+          <p class="tb-preview-section-label">Alerts</p>
+          <clr-alert [clrAlertType]="'info'" [clrAlertClosable]="false">
+            <clr-alert-item><span class="alert-text">This is an info alert.</span></clr-alert-item>
+          </clr-alert>
+          <clr-alert [clrAlertType]="'success'" [clrAlertClosable]="false">
+            <clr-alert-item><span class="alert-text">Operation completed successfully.</span></clr-alert-item>
+          </clr-alert>
+          <clr-alert [clrAlertType]="'warning'" [clrAlertClosable]="false">
+            <clr-alert-item><span class="alert-text">Please review before proceeding.</span></clr-alert-item>
+          </clr-alert>
+          <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="false">
+            <clr-alert-item><span class="alert-text">Something went wrong.</span></clr-alert-item>
+          </clr-alert>
+        </div>
+
+        <!-- Forms -->
+        <div class="tb-preview-section">
+          <p class="tb-preview-section-label">Form Controls</p>
+          <form clrForm clrLayout="horizontal">
+            <clr-input-container>
+              <label>Text input</label>
+              <input clrInput type="text" placeholder="Enter value..." />
+            </clr-input-container>
+            <clr-select-container>
+              <label>Select</label>
+              <select clrSelect>
+                <option>Option A</option>
+                <option>Option B</option>
+                <option>Option C</option>
+              </select>
+            </clr-select-container>
+            <clr-checkbox-container>
+              <clr-checkbox-wrapper>
+                <input type="checkbox" clrCheckbox checked />
+                <label>Checkbox (checked)</label>
+              </clr-checkbox-wrapper>
+              <clr-checkbox-wrapper>
+                <input type="checkbox" clrCheckbox />
+                <label>Checkbox (unchecked)</label>
+              </clr-checkbox-wrapper>
+            </clr-checkbox-container>
+            <clr-radio-container>
+              <clr-radio-wrapper>
+                <input type="radio" clrRadio name="r1" value="a" checked />
+                <label>Radio A</label>
+              </clr-radio-wrapper>
+              <clr-radio-wrapper>
+                <input type="radio" clrRadio name="r1" value="b" />
+                <label>Radio B</label>
+              </clr-radio-wrapper>
+            </clr-radio-container>
+            <clr-toggle-container>
+              <clr-toggle-wrapper>
+                <input type="checkbox" clrToggle checked />
+                <label>Toggle (on)</label>
+              </clr-toggle-wrapper>
+            </clr-toggle-container>
+          </form>
+        </div>
+
+        <!-- Accordion -->
+        <div class="tb-preview-section">
+          <p class="tb-preview-section-label">Accordion</p>
+          <clr-accordion>
+            <clr-accordion-panel [clrAccordionPanelOpen]="true">
+              <clr-accordion-title>Panel One</clr-accordion-title>
+              <clr-accordion-content>Content for the first accordion panel.</clr-accordion-content>
+            </clr-accordion-panel>
+            <clr-accordion-panel>
+              <clr-accordion-title>Panel Two</clr-accordion-title>
+              <clr-accordion-content>Content for the second accordion panel.</clr-accordion-content>
+            </clr-accordion-panel>
+          </clr-accordion>
+        </div>
+
+        <!-- Tree view -->
+        <div class="tb-preview-section">
+          <p class="tb-preview-section-label">Tree View</p>
+          <clr-tree>
+            <clr-tree-node [clrExpanded]="true">
+              Root Node
+              <clr-tree-node [clrSelected]="1"> Child One </clr-tree-node>
+              <clr-tree-node>
+                Child Two
+                <clr-tree-node>Grandchild</clr-tree-node>
+              </clr-tree-node>
+            </clr-tree-node>
+          </clr-tree>
+        </div>
+
+        <!-- Vertical nav -->
+        <div class="tb-preview-section">
+          <p class="tb-preview-section-label">Vertical Navigation</p>
+          <div class="tb-nav-preview-wrap">
+            <clr-vertical-nav [clrVerticalNavCollapsible]="true">
+              <clr-vertical-nav-group clrVerticalNavGroupExpanded>
+                <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
+                Dashboard
+                <clr-vertical-nav-group-children>
+                  <a clrVerticalNavLink href="javascript:void(0)" class="active">Overview</a>
+                  <a clrVerticalNavLink href="javascript:void(0)">Analytics</a>
+                </clr-vertical-nav-group-children>
+              </clr-vertical-nav-group>
+              <clr-vertical-nav-group>
+                <cds-icon shape="cog" clrVerticalNavIcon></cds-icon>
+                Settings
+                <clr-vertical-nav-group-children>
+                  <a clrVerticalNavLink href="javascript:void(0)">Profile</a>
+                  <a clrVerticalNavLink href="javascript:void(0)">Security</a>
+                </clr-vertical-nav-group-children>
+              </clr-vertical-nav-group>
+            </clr-vertical-nav>
+          </div>
+        </div>
+
+        <!-- Datagrid -->
+        <div class="tb-preview-section">
+          <p class="tb-preview-section-label">Datagrid</p>
+          <clr-datagrid>
+            <clr-dg-column>Name</clr-dg-column>
+            <clr-dg-column>Role</clr-dg-column>
+            <clr-dg-column>Status</clr-dg-column>
+            @for (row of rows; track row.name) {
+              <clr-dg-row [clrDgItem]="row">
+                <clr-dg-cell>{{ row.name }}</clr-dg-cell>
+                <clr-dg-cell>{{ row.role }}</clr-dg-cell>
+                <clr-dg-cell>
+                  <span
+                    class="label"
+                    [class.label-success]="row.status === 'Active'"
+                    [class.label-danger]="row.status === 'Inactive'"
+                  >
+                    {{ row.status }}
+                  </span>
+                </clr-dg-cell>
+              </clr-dg-row>
+            }
+            <clr-dg-footer>{{ rows.length }} users</clr-dg-footer>
+          </clr-datagrid>
+        </div>
+
+        <!-- Wizard launcher -->
+        <div class="tb-preview-section">
+          <p class="tb-preview-section-label">Wizard</p>
+          <button class="btn btn-outline" (click)="wizardOpen = true">Open Wizard</button>
+          <clr-wizard [(clrWizardOpen)]="wizardOpen" clrWizardSize="md">
+            <clr-wizard-title>Sample Wizard</clr-wizard-title>
+            <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+            <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+            <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+            <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+            <clr-wizard-page>
+              <ng-template clrPageTitle>Step 1: Introduction</ng-template>
+              Welcome to the wizard. This step introduces the process.
+            </clr-wizard-page>
+            <clr-wizard-page>
+              <ng-template clrPageTitle>Step 2: Configuration</ng-template>
+              Configure the required options in this step.
+            </clr-wizard-page>
+            <clr-wizard-page>
+              <ng-template clrPageTitle>Step 3: Confirm</ng-template>
+              Review your choices and click Finish.
+            </clr-wizard-page>
+          </clr-wizard>
+        </div>
+      </div>
+    </div>
+    <!-- end preview card -->
+  </div>
+  <!-- end .tb-layout -->
+
+  <!-- ── Generated CSS card (full width below grid) ── -->
+  <div class="card tb-output-card">
+    <div class="card-header tb-output-header-row">
+      <h2 cds-text="section">Generated CSS</h2>
+      <div class="tb-output-tabs">
+        <button
+          class="btn btn-sm"
+          [class.btn-primary]="outputTab === 'combined'"
+          [class.btn-outline]="outputTab !== 'combined'"
+          (click)="outputTab = 'combined'"
+        >
+          Combined
+        </button>
+        <button
+          class="btn btn-sm"
+          [class.btn-primary]="outputTab === 'light'"
+          [class.btn-outline]="outputTab !== 'light'"
+          (click)="outputTab = 'light'"
+        >
+          Light
+        </button>
+        <button
+          class="btn btn-sm"
+          [class.btn-primary]="outputTab === 'dark'"
+          [class.btn-outline]="outputTab !== 'dark'"
+          (click)="outputTab = 'dark'"
+        >
+          Dark
+        </button>
+      </div>
+      <button class="btn btn-sm btn-outline" (click)="copyCSS()">
+        {{ copied ? 'Copied!' : 'Copy CSS' }}
+      </button>
+    </div>
+
+    <app-code-snippet [code]="generatedCss" language="css"></app-code-snippet>
+  </div>
+
+  <app-site-footer></app-site-footer>
+</main>
+
+<!-- ── Derived field template ── -->
+<ng-template #derivedField let-fieldKey let-label="label">
+  <div class="tb-derived-item">
+    <span class="tb-derived-label">{{ label }}</span>
+    <div
+      class="tb-derived-swatch"
+      [style.backgroundColor]="
+        colorToHsl(
+          currentDerived[fieldKey].useManual ? currentDerived[fieldKey].override : currentDerived[fieldKey].auto
+        )
+      "
+    ></div>
+    @if (currentDerived[fieldKey].useManual) {
+      <input
+        type="color"
+        class="tb-color-picker tb-derived-picker"
+        [value]="colorToHex(currentDerived[fieldKey].override)"
+        (input)="setDerivedOverride(currentDerived[fieldKey], $any($event.target).value)"
+      />
+    }
+    <button
+      class="btn btn-sm btn-icon"
+      [class.btn-outline]="!currentDerived[fieldKey].useManual"
+      [class.btn-primary]="currentDerived[fieldKey].useManual"
+      (click)="toggleManual(fieldKey)"
+      [title]="currentDerived[fieldKey].useManual ? 'Back to auto' : 'Override manually'"
+    >
+      <cds-icon [shape]="currentDerived[fieldKey].useManual ? 'undo' : 'pencil'"></cds-icon>
+    </button>
+  </div>
+</ng-template>

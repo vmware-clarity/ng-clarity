@@ -1,0 +1,281 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+// ── Host: content-container row (site-nav + content-area) ──
+:host {
+  display: flex;
+  flex-direction: row;
+  // No overflow:hidden — that broke position:sticky and clipped nested scroll containers
+  .theme-builder-page {
+    padding-top: var(--clr-base-vertical-offset-2xl);
+  }
+
+  ::ng-deep pre {
+    border: none;
+    margin: 0;
+  }
+}
+
+// ── Page header ──
+
+.tb-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tb-subtitle {
+  color: var(--cds-alias-typography-color-300);
+}
+
+.tb-presets {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tb-presets-label {
+  color: var(--cds-alias-typography-color-300);
+}
+
+// ── Two-column grid ──
+
+.tb-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+// ── Controls card ──
+
+.tb-controls-card {
+  margin-top: 0;
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 3rem);
+  overflow-y: auto;
+
+  // Card-header contains the Light/Dark toggle buttons
+  .card-header {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+}
+
+.tb-group-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--cds-alias-typography-color-300);
+}
+
+.tb-color-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.375rem;
+  flex-wrap: wrap;
+}
+
+.tb-color-label {
+  font-size: 0.7rem;
+  color: var(--cds-alias-typography-color-300);
+  width: 60px;
+  flex-shrink: 0;
+}
+
+.tb-color-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.tb-color-picker {
+  width: 36px;
+  height: 28px;
+  padding: 2px;
+  border: 1px solid var(--cds-alias-object-border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  background: none;
+}
+
+.tb-hex-input {
+  width: 76px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border: 1px solid var(--cds-alias-object-border-color);
+  border-radius: 3px;
+  background: var(--cds-alias-object-container-background);
+  color: var(--cds-alias-typography-color-500);
+}
+
+// WCAG contrast badge
+.tb-contrast-badge {
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: var(--cds-alias-status-danger-tint);
+  color: var(--cds-alias-status-danger);
+  white-space: nowrap;
+
+  &.tb-contrast-aa {
+    background: var(--cds-alias-status-success-tint);
+    color: var(--cds-alias-status-success);
+  }
+
+  &.tb-contrast-large {
+    background: var(--cds-alias-status-warning-tint);
+    color: var(--cds-alias-status-warning-dark, var(--cds-alias-status-warning));
+  }
+
+  &.tb-contrast-fail {
+    background: var(--cds-alias-status-danger-tint);
+    color: var(--cds-alias-status-danger);
+  }
+}
+
+// Derived color rows
+.tb-derived-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+  padding-left: 0.5rem;
+}
+
+.tb-derived-item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.tb-derived-label {
+  font-size: 0.65rem;
+  color: var(--cds-alias-typography-color-200);
+  width: 44px;
+  flex-shrink: 0;
+}
+
+.tb-derived-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  border: 1px solid var(--cds-alias-object-border-color);
+  flex-shrink: 0;
+}
+
+.tb-derived-picker {
+  width: 28px;
+  height: 22px;
+}
+
+// ── Preview card ──
+
+.tb-preview-card {
+  margin-top: 0;
+
+  // Card-header contains "Live Preview" label + mode badge
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--clr-base-gap-m);
+
+    > span {
+      display: flex;
+      align-items: center;
+      gap: var(--clr-base-gap-xs);
+    }
+  }
+}
+
+.tb-preview-sandbox {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border-radius: var(--cds-alias-object-border-radius-100);
+}
+
+.tb-preview-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tb-preview-section-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--cds-alias-typography-color-200);
+  margin: 0;
+}
+
+.tb-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tb-nav-preview-wrap {
+  height: 180px;
+  border: 1px solid var(--cds-alias-object-border-color);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+}
+
+// ── Generated CSS card ──
+
+.tb-output-card {
+  margin-top: 0;
+
+  app-code-snippet {
+    display: block;
+    max-height: 600px;
+    overflow: auto;
+    margin-bottom: var(--clr-base-vertical-offset-l);
+  }
+
+  // Card-header contains title + tab buttons + copy button in a flex row
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+}
+
+.tb-output-tabs {
+  display: flex;
+  gap: 0.375rem;
+}
+
+// Remove card-block padding so the <pre> fills edge-to-edge
+.tb-code-block {
+  padding: 0;
+}
+
+.tb-output-code {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  font-family: ui-monospace, Consolas, Menlo, Monaco, monospace;
+  background: var(--cds-alias-object-app-background);
+  color: var(--cds-alias-typography-color-500);
+  overflow: auto;
+  max-height: 480px;
+  white-space: pre;
+}
