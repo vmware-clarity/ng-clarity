@@ -20,10 +20,10 @@ function computeAutos(base: ThemeColors, isDark: boolean): Record<string, HslCol
     hover: number,
     active: number
   ) => ({
-    [`${key}Tint`]: shiftL(base[key], isDark ? -tint : tint),
-    [`${key}Shade`]: shiftL(base[key], isDark ? shade : -shade),
-    [`${key}Hover`]: shiftL(base[key], isDark ? hover : -hover),
-    [`${key}Active`]: shiftL(base[key], isDark ? active : -active),
+    [`${key}Tint`]: shiftL(base[key].color, isDark ? -tint : tint),
+    [`${key}Shade`]: shiftL(base[key].color, isDark ? shade : -shade),
+    [`${key}Hover`]: shiftL(base[key].color, isDark ? hover : -hover),
+    [`${key}Active`]: shiftL(base[key].color, isDark ? active : -active),
   });
   return {
     ...tk('primary', 40, 7, 10, 17),

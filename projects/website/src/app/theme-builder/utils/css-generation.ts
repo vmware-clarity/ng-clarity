@@ -28,23 +28,23 @@ export function buildCssBlock(
   };
 
   lines.push('  /* Primary / Info */');
-  emit('--cds-alias-status-info', colors.primary);
+  emit('--cds-alias-status-info', colors.primary.color);
   emit('--cds-alias-status-info-tint', effectiveValue(d.primaryTint));
   emit('--cds-alias-status-info-shade', effectiveValue(d.primaryShade));
-  emit('--cds-alias-object-interaction-background-highlight', colors.primary);
+  emit('--cds-alias-object-interaction-background-highlight', colors.primary.color);
   emit('--cds-alias-object-interaction-background-selected', effectiveValue(d.primaryTint));
   emit('--cds-alias-object-interaction-info-hover', effectiveValue(d.primaryHover));
   emit('--cds-alias-object-interaction-info-click', effectiveValue(d.primaryActive));
   emit('--cds-alias-object-interaction-info-active', effectiveValue(d.primaryActive));
   emit('--cds-alias-object-interaction-info-selected', effectiveValue(d.primaryActive));
   emit('--cds-alias-object-interaction-info-secondary-hover', effectiveValue(d.primaryTint));
-  emit('--cds-alias-typography-link-color', colors.primary);
+  emit('--cds-alias-typography-link-color', colors.primary.color);
   emit('--cds-alias-typography-link-color-hover', effectiveValue(d.primaryHover));
   emit('--cds-alias-typography-info-hover', effectiveValue(d.primaryHover));
 
   lines.push('');
   lines.push('  /* Success */');
-  emit('--cds-alias-status-success', colors.success);
+  emit('--cds-alias-status-success', colors.success.color);
   emit('--cds-alias-status-success-tint', effectiveValue(d.successTint));
   emit('--cds-alias-status-success-shade', effectiveValue(d.successShade));
   emit('--cds-alias-object-interaction-success-hover', effectiveValue(d.successHover));
@@ -55,7 +55,7 @@ export function buildCssBlock(
 
   lines.push('');
   lines.push('  /* Warning */');
-  emit('--cds-alias-status-warning', colors.warning);
+  emit('--cds-alias-status-warning', colors.warning.color);
   emit('--cds-alias-status-warning-tint', effectiveValue(d.warningTint));
   emit('--cds-alias-status-warning-shade', effectiveValue(d.warningShade));
   emit('--cds-alias-status-warning-dark', effectiveValue(d.warningActive));
@@ -67,7 +67,7 @@ export function buildCssBlock(
 
   lines.push('');
   lines.push('  /* Danger */');
-  emit('--cds-alias-status-danger', colors.danger);
+  emit('--cds-alias-status-danger', colors.danger.color);
   emit('--cds-alias-status-danger-tint', effectiveValue(d.dangerTint));
   emit('--cds-alias-status-danger-shade', effectiveValue(d.dangerShade));
   emit('--cds-alias-status-danger-dark', effectiveValue(d.dangerActive));
@@ -79,13 +79,13 @@ export function buildCssBlock(
 
   lines.push('');
   lines.push('  /* Backgrounds */');
-  emit('--cds-alias-object-app-background', colors.appBg);
-  emit('--cds-alias-object-container-background', colors.containerBg);
-  emit('--cds-alias-object-overlay-background', colors.containerBg);
+  emit('--cds-alias-object-app-background', colors.appBg.color);
+  emit('--cds-alias-object-container-background', colors.containerBg.color);
+  emit('--cds-alias-object-overlay-background', colors.containerBg.color);
 
   lines.push('');
   lines.push('  /* Typography */');
-  emit('--cds-alias-typography-color-500', colors.text);
+  emit('--cds-alias-typography-color-500', colors.text.color);
 
   lines.push('}');
   return lines.join('\n');

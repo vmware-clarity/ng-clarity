@@ -5,28 +5,101 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { Color } from './color';
 import { CssThemeTokens, DataRow, ThemeColors, ThemePreset } from './types';
 
-// HSL values derived from Clarity's SCSS HSL tokens — used for color pickers and WCAG calculations.
-const CLARITY_LIGHT: ThemeColors = {
-  primary: [198, 100, 34], // blue-700
-  success: [93, 80, 28], // green-700
-  warning: [40, 100, 59], // ochre-500
-  danger: [9, 100, 44], // red-700
-  appBg: [198, 33, 99], // construction-25
-  containerBg: [0, 0, 100],
-  text: [0, 0, 0],
+// const TOKEN_KEYS = {
+//   primary: [
+//     '--cds-alias-primary-tint',
+//     '--cds-alias-primary-tint-dark',
+//     '--cds-alias-primary',
+//     '--cds-alias-primary-shade',
+//     '--cds-alias-primary-dark',
+//   ],
+//   info: [
+//     '--cds-alias-status-info-tint',
+//     '--cds-alias-status-info',
+//     '--cds-alias-status-info-shade',
+//   ],
+//   success: [
+//     '--cds-alias-status-success-tint',
+//     '--cds-alias-status-success',
+//     '--cds-alias-status-success-shade',
+//   ],
+//   warning: [
+//     '--cds-alias-status-warning-tint',
+//     '--cds-alias-status-warning',
+//     '--cds-alias-status-warning-shade',
+//     '--cds-alias-status-warning-dark',
+//   ],
+//   danger: [
+//     '--cds-alias-status-danger-tint',
+//     '--cds-alias-status-danger',
+//     '--cds-alias-status-danger-shade',
+//     '--cds-alias-status-danger-dark',
+//   ],
+// }
+
+// CSS custom property each base token maps to — passed to the Color constructor as the token name.
+const TOKEN_NAMES: Record<keyof ThemeColors, string> = {
+  primary: '--cds-alias-status-info',
+  success: '--cds-alias-status-success',
+  warning: '--cds-alias-status-warning',
+  danger: '--cds-alias-status-danger',
+  appBg: '--cds-alias-object-app-background',
+  containerBg: '--cds-alias-object-container-background',
+  text: '--cds-alias-typography-color-500',
 };
 
-const CLARITY_DARK: ThemeColors = {
-  primary: [198, 100, 59], // blue-400
-  success: [93, 80, 44], // green-500
-  warning: [41, 100, 70], // ochre-400
-  danger: [9, 100, 65], // red-500
-  appBg: [198, 30, 15], // construction-1000
-  containerBg: [198, 28, 18], // construction-900
-  text: [0, 0, 100],
+/** Builds a ThemeColors set of Color tokens from Clarity-provided HSL strings. */
+function makeColors(originals: Record<keyof ThemeColors, string>): ThemeColors {
+  return {
+    primary: new Color(TOKEN_NAMES.primary, originals.primary),
+    success: new Color(TOKEN_NAMES.success, originals.success),
+    warning: new Color(TOKEN_NAMES.warning, originals.warning),
+    danger: new Color(TOKEN_NAMES.danger, originals.danger),
+    appBg: new Color(TOKEN_NAMES.appBg, originals.appBg),
+    containerBg: new Color(TOKEN_NAMES.containerBg, originals.containerBg),
+    text: new Color(TOKEN_NAMES.text, originals.text),
+  };
+}
+
+/** Returns an independent copy of a ThemeColors set so editing never mutates a preset. */
+export function cloneThemeColors(colors: ThemeColors): ThemeColors {
+  return {
+    primary: colors.primary.clone(),
+    success: colors.success.clone(),
+    warning: colors.warning.clone(),
+    danger: colors.danger.clone(),
+    appBg: colors.appBg.clone(),
+    containerBg: colors.containerBg.clone(),
+    text: colors.text.clone(),
+  };
+}
+
+// HSL values derived from Clarity's SCSS HSL tokens — used for color pickers and WCAG calculations.
+const CLARITY_LIGHT_ORIGINALS: Record<keyof ThemeColors, string> = {
+  primary: 'hsl(198deg 100% 34%)', // blue-700
+  success: 'hsl(93deg 80% 28%)', // green-700
+  warning: 'hsl(40deg 100% 59%)', // ochre-500
+  danger: 'hsl(9deg 100% 44%)', // red-700
+  appBg: 'hsl(198deg 33% 99%)', // construction-25
+  containerBg: 'hsl(0deg 0% 100%)',
+  text: 'hsl(0deg 0% 0%)',
 };
+
+const CLARITY_DARK_ORIGINALS: Record<keyof ThemeColors, string> = {
+  primary: 'hsl(198deg 100% 59%)', // blue-400
+  success: 'hsl(93deg 80% 44%)', // green-500
+  warning: 'hsl(41deg 100% 70%)', // ochre-400
+  danger: 'hsl(9deg 100% 65%)', // red-500
+  appBg: 'hsl(198deg 30% 15%)', // construction-1000
+  containerBg: 'hsl(198deg 28% 18%)', // construction-900
+  text: 'hsl(0deg 0% 100%)',
+};
+
+const CLARITY_LIGHT: ThemeColors = makeColors(CLARITY_LIGHT_ORIGINALS);
+const CLARITY_DARK: ThemeColors = makeColors(CLARITY_DARK_ORIGINALS);
 
 // Token expressions that map to the exact global color tokens Clarity's own SCSS uses.
 // These are used in the CSS output for the Clarity Default preset so the output
@@ -126,52 +199,30 @@ const CLARITY_DARK_CSS_TOKENS: CssThemeTokens = {
 export const PRESETS: ThemePreset[] = [
   {
     name: 'Clarity Default',
-    light: { ...CLARITY_LIGHT },
-    dark: { ...CLARITY_DARK },
+    light: CLARITY_LIGHT,
+    dark: CLARITY_DARK,
     lightCssTokens: CLARITY_LIGHT_CSS_TOKENS,
     darkCssTokens: CLARITY_DARK_CSS_TOKENS,
   },
   {
     name: 'Evergreen',
-    light: {
-      primary: [160, 69, 36], // jade-600
-      success: [93, 80, 28], // green-700
-      warning: [40, 100, 59], // ochre-500
-      danger: [9, 100, 44], // red-700
-      appBg: CLARITY_LIGHT.appBg,
-      containerBg: [0, 0, 100],
-      text: [0, 0, 0],
-    },
-    dark: {
-      primary: [160, 69, 53], // jade-400
-      success: [93, 80, 44], // green-500
-      warning: [41, 100, 70], // ochre-400
-      danger: [9, 100, 65], // red-500
-      appBg: CLARITY_DARK.appBg,
-      containerBg: CLARITY_DARK.containerBg,
-      text: [0, 0, 100],
-    },
+    light: makeColors({ ...CLARITY_LIGHT_ORIGINALS, primary: 'hsl(160deg 69% 36%)' }), // jade-600
+    dark: makeColors({ ...CLARITY_DARK_ORIGINALS, primary: 'hsl(160deg 69% 53%)' }), // jade-400
   },
   {
     name: 'Midnight',
-    light: {
-      primary: [282, 60, 49], // violet-600
-      success: [184, 100, 34], // aqua-600
-      warning: [50, 100, 57], // yellow-300
-      danger: [9, 100, 44], // red-700
-      appBg: CLARITY_LIGHT.appBg,
-      containerBg: [0, 0, 100],
-      text: [0, 0, 0],
-    },
-    dark: {
-      primary: [282, 60, 65], // violet-400
-      success: [184, 100, 48], // aqua-400
-      warning: [50, 100, 57], // yellow-300
-      danger: [9, 100, 65], // red-500
-      appBg: CLARITY_DARK.appBg,
-      containerBg: CLARITY_DARK.containerBg,
-      text: [0, 0, 100],
-    },
+    light: makeColors({
+      ...CLARITY_LIGHT_ORIGINALS,
+      primary: 'hsl(282deg 60% 49%)', // violet-600
+      success: 'hsl(184deg 100% 34%)', // aqua-600
+      warning: 'hsl(50deg 100% 57%)', // yellow-300
+    }),
+    dark: makeColors({
+      ...CLARITY_DARK_ORIGINALS,
+      primary: 'hsl(282deg 60% 65%)', // violet-400
+      success: 'hsl(184deg 100% 48%)', // aqua-400
+      warning: 'hsl(50deg 100% 57%)', // yellow-300
+    }),
   },
 ];
 

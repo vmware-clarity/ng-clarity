@@ -5,19 +5,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import type { Color } from './color';
+
 export type WcagLevel = 'AAA' | 'AA' | 'AA Large' | 'Fail';
 
 /** HSL color tuple: [hue 0–360, saturation 0–100, lightness 0–100] */
 export type HslColor = [number, number, number];
 
 export interface ThemeColors {
-  primary: HslColor;
-  success: HslColor;
-  warning: HslColor;
-  danger: HslColor;
-  appBg: HslColor;
-  containerBg: HslColor;
-  text: HslColor;
+  primary: Color;
+  success: Color;
+  warning: Color;
+  danger: Color;
+  appBg: Color;
+  containerBg: Color;
+  text: Color;
 }
 
 export interface DerivableField {

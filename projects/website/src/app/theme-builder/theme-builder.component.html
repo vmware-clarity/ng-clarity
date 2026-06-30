@@ -40,7 +40,7 @@
           class="btn btn-sm"
           [class.btn-primary]="activeTheme === 'light'"
           [class.btn-outline]="activeTheme !== 'light'"
-          (click)="activeTheme = 'light'; applyPreviewStyles()"
+          (click)="applyActiveTheme('light')"
         >
           Light
         </button>
@@ -48,7 +48,7 @@
           class="btn btn-sm"
           [class.btn-primary]="activeTheme === 'dark'"
           [class.btn-outline]="activeTheme !== 'dark'"
-          (click)="activeTheme = 'dark'; applyPreviewStyles()"
+          (click)="applyActiveTheme('dark')"
         >
           Dark
         </button>
@@ -63,13 +63,13 @@
             <input
               type="color"
               class="tb-color-picker"
-              [value]="colorToHex(current.primary)"
+              [value]="current.primary.hex"
               (input)="setCurrentColor('primary', $any($event.target).value)"
             />
             <input
               type="text"
               class="tb-hex-input"
-              [value]="colorToHex(current.primary)"
+              [value]="current.primary.hex"
               (input)="setCurrentColor('primary', $any($event.target).value)"
               maxlength="7"
             />
@@ -109,13 +109,13 @@
             <input
               type="color"
               class="tb-color-picker"
-              [value]="colorToHex(current.success)"
+              [value]="current.success.hex"
               (input)="setCurrentColor('success', $any($event.target).value)"
             />
             <input
               type="text"
               class="tb-hex-input"
-              [value]="colorToHex(current.success)"
+              [value]="current.success.hex"
               (input)="setCurrentColor('success', $any($event.target).value)"
               maxlength="7"
             />
@@ -147,13 +147,13 @@
             <input
               type="color"
               class="tb-color-picker"
-              [value]="colorToHex(current.warning)"
+              [value]="current.warning.hex"
               (input)="setCurrentColor('warning', $any($event.target).value)"
             />
             <input
               type="text"
               class="tb-hex-input"
-              [value]="colorToHex(current.warning)"
+              [value]="current.warning.hex"
               (input)="setCurrentColor('warning', $any($event.target).value)"
               maxlength="7"
             />
@@ -185,13 +185,13 @@
             <input
               type="color"
               class="tb-color-picker"
-              [value]="colorToHex(current.danger)"
+              [value]="current.danger.hex"
               (input)="setCurrentColor('danger', $any($event.target).value)"
             />
             <input
               type="text"
               class="tb-hex-input"
-              [value]="colorToHex(current.danger)"
+              [value]="current.danger.hex"
               (input)="setCurrentColor('danger', $any($event.target).value)"
               maxlength="7"
             />
@@ -223,13 +223,13 @@
             <input
               type="color"
               class="tb-color-picker"
-              [value]="colorToHex(current.appBg)"
+              [value]="current.appBg.hex"
               (input)="setCurrentColor('appBg', $any($event.target).value)"
             />
             <input
               type="text"
               class="tb-hex-input"
-              [value]="colorToHex(current.appBg)"
+              [value]="current.appBg.hex"
               (input)="setCurrentColor('appBg', $any($event.target).value)"
               maxlength="7"
             />
@@ -241,13 +241,13 @@
             <input
               type="color"
               class="tb-color-picker"
-              [value]="colorToHex(current.containerBg)"
+              [value]="current.containerBg.hex"
               (input)="setCurrentColor('containerBg', $any($event.target).value)"
             />
             <input
               type="text"
               class="tb-hex-input"
-              [value]="colorToHex(current.containerBg)"
+              [value]="current.containerBg.hex"
               (input)="setCurrentColor('containerBg', $any($event.target).value)"
               maxlength="7"
             />
@@ -264,13 +264,13 @@
             <input
               type="color"
               class="tb-color-picker"
-              [value]="colorToHex(current.text)"
+              [value]="current.text.hex"
               (input)="setCurrentColor('text', $any($event.target).value)"
             />
             <input
               type="text"
               class="tb-hex-input"
-              [value]="colorToHex(current.text)"
+              [value]="current.text.hex"
               (input)="setCurrentColor('text', $any($event.target).value)"
               maxlength="7"
             />
