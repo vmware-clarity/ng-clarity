@@ -1,0 +1,105 @@
+name: Figma Token Publish
+
+on:
+  # Called by release.yml (production push) and release-preview.yml (preview).
+  # Replaces the old workflow_run trigger so the connection is explicit and
+  # visible in the workflow graph.
+  workflow_call:
+    inputs:
+      dry_run:
+        description: 'Dry run (parse tokens but make no API calls)'
+        required: false
+        default: false
+        type: boolean
+      preview:
+        description: 'Preview mode (fetch current Figma state, print full diff, make no changes)'
+        required: false
+        default: false
+        type: boolean
+    secrets:
+      FIGMA_TOKEN:
+        required: false
+      FIGMA_FILE_KEY:
+        required: false
+
+  # Manual trigger: publish or preview tokens.
+  # To target a Figma branch file, set FIGMA_FILE_KEY to the branch file key.
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (parse tokens but make no API calls)'
+        required: false
+        default: false
+        type: boolean
+      preview:
+        description: 'Preview mode (fetch current Figma state, print full diff, make no changes)'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: figma-publish-${{ github.ref }}
+  # Intentionally queue rather than cancel: the publisher pushes one Figma
+  # collection at a time and refreshes variable IDs between pushes. Cancelling a
+  # run mid-push could leave Figma with a partially-applied variable set, so we
+  # let in-progress pushes finish and run queued pushes sequentially.
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish-tokens:
+    name: Publish Design Tokens to Figma
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'workflow_call'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Build clr-ui CSS
+        run: npm run _build:ui
+
+      - name: Push tokens to Figma
+        env:
+          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+          FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
+        run: |
+          FLAGS=""
+          [[ "${{ inputs.dry_run }}" == "true" ]] && FLAGS="$FLAGS --dry-run"
+          [[ "${{ inputs.preview }}" == "true" ]] && FLAGS="$FLAGS --preview"
+          node scripts/figma/index.mjs $FLAGS
+
+      # ── Summary ──────────────────────────────────────────────────────────────
+      - name: Write job summary
+        if: always()
+        env:
+          DRY_RUN: ${{ inputs.dry_run || false }}
+          PREVIEW: ${{ inputs.preview || false }}
+          EVENT: ${{ github.event_name }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" << EOF
+          ## Figma Token Publish
+
+          | Field | Value |
+          |---|---|
+          | Branch | \`$BRANCH\` |
+          | Dry run | \`$DRY_RUN\` |
+          | Preview | \`$PREVIEW\` |
+          | Triggered by | \`$EVENT\` |
+
+          Design tokens from \`dist/clr-ui/clr-ui.css\` were published to Figma.
+          EOF
