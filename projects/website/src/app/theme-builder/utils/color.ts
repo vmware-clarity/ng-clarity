@@ -91,6 +91,21 @@ export class Color {
     return `hsl(${this.color[0]}deg, ${this.color[1]}%, ${this.color[2]}%)`;
   }
 
+  /** Human-readable variant label derived from the token name suffix, e.g. `Tint dark`. */
+  get label(): string {
+    if (this.name.endsWith('-tint-dark')) {
+      return 'Tint dark';
+    } else if (this.name.endsWith('-tint')) {
+      return 'Tint';
+    } else if (this.name.endsWith('-shade')) {
+      return 'Shade';
+    } else if (this.name.endsWith('-dark')) {
+      return 'Dark';
+    }
+
+    return 'Base';
+  }
+
   get isOriginalColor(): boolean {
     // no original color override
     if (!this._color) {

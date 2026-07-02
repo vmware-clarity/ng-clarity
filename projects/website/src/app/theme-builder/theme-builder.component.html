@@ -61,7 +61,7 @@
 
           @for (colorVariant of colorStruct[activeTheme][colorGroup]; track colorVariant) {
             <div class="tb-color-row">
-              <label class="tb-color-label">Base</label>
+              <label class="tb-color-label">{{ colorVariant.label }}</label>
               <div class="tb-color-input-wrap">
                 <input
                   type="color"
@@ -327,34 +327,8 @@
   <div class="card tb-output-card">
     <div class="card-header tb-output-header-row">
       <h2 cds-text="section">Generated CSS</h2>
-      <div class="tb-output-tabs">
-        <button
-          class="btn btn-sm"
-          [class.btn-primary]="outputTab === 'combined'"
-          [class.btn-outline]="outputTab !== 'combined'"
-          (click)="outputTab = 'combined'"
-        >
-          Combined
-        </button>
-        <button
-          class="btn btn-sm"
-          [class.btn-primary]="outputTab === 'light'"
-          [class.btn-outline]="outputTab !== 'light'"
-          (click)="outputTab = 'light'"
-        >
-          Light
-        </button>
-        <button
-          class="btn btn-sm"
-          [class.btn-primary]="outputTab === 'dark'"
-          [class.btn-outline]="outputTab !== 'dark'"
-          (click)="outputTab = 'dark'"
-        >
-          Dark
-        </button>
-      </div>
       <button class="btn btn-sm btn-outline" (click)="copyCSS()">
-        {{ copied ? 'Copied!' : 'Copy CSS' }}
+        {{ copied ? 'Copied!' : 'Copy' }}
       </button>
     </div>
 
@@ -363,35 +337,3 @@
 
   <app-site-footer></app-site-footer>
 </main>
-
-<!-- ── Derived field template ── -->
-<!--<ng-template #derivedField let-fieldKey let-label="label">-->
-<!--  <div class="tb-derived-item">-->
-<!--    <span class="tb-derived-label">{{ label }}</span>-->
-<!--    <div-->
-<!--      class="tb-derived-swatch"-->
-<!--      [style.backgroundColor]="-->
-<!--        colorToHsl(-->
-<!--          currentDerived[fieldKey].useManual ? currentDerived[fieldKey].override : currentDerived[fieldKey].auto-->
-<!--        )-->
-<!--      "-->
-<!--    ></div>-->
-<!--    @if (currentDerived[fieldKey].useManual) {-->
-<!--      <input-->
-<!--        type="color"-->
-<!--        class="tb-color-picker tb-derived-picker"-->
-<!--        [value]="colorToHex(currentDerived[fieldKey].override)"-->
-<!--        (input)="setDerivedOverride(currentDerived[fieldKey], $any($event.target).value)"-->
-<!--      />-->
-<!--    }-->
-<!--    <button-->
-<!--      class="btn btn-sm btn-icon"-->
-<!--      [class.btn-outline]="!currentDerived[fieldKey].useManual"-->
-<!--      [class.btn-primary]="currentDerived[fieldKey].useManual"-->
-<!--      (click)="toggleManual(fieldKey)"-->
-<!--      [title]="currentDerived[fieldKey].useManual ? 'Back to auto' : 'Override manually'"-->
-<!--    >-->
-<!--      <cds-icon [shape]="currentDerived[fieldKey].useManual ? 'undo' : 'pencil'"></cds-icon>-->
-<!--    </button>-->
-<!--  </div>-->
-<!--</ng-template>-->
