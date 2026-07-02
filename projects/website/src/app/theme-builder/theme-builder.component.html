@@ -365,33 +365,33 @@
 </main>
 
 <!-- ── Derived field template ── -->
-<ng-template #derivedField let-fieldKey let-label="label">
-  <div class="tb-derived-item">
-    <span class="tb-derived-label">{{ label }}</span>
-    <div
-      class="tb-derived-swatch"
-      [style.backgroundColor]="
-        colorToHsl(
-          currentDerived[fieldKey].useManual ? currentDerived[fieldKey].override : currentDerived[fieldKey].auto
-        )
-      "
-    ></div>
-    @if (currentDerived[fieldKey].useManual) {
-      <input
-        type="color"
-        class="tb-color-picker tb-derived-picker"
-        [value]="colorToHex(currentDerived[fieldKey].override)"
-        (input)="setDerivedOverride(currentDerived[fieldKey], $any($event.target).value)"
-      />
-    }
-    <button
-      class="btn btn-sm btn-icon"
-      [class.btn-outline]="!currentDerived[fieldKey].useManual"
-      [class.btn-primary]="currentDerived[fieldKey].useManual"
-      (click)="toggleManual(fieldKey)"
-      [title]="currentDerived[fieldKey].useManual ? 'Back to auto' : 'Override manually'"
-    >
-      <cds-icon [shape]="currentDerived[fieldKey].useManual ? 'undo' : 'pencil'"></cds-icon>
-    </button>
-  </div>
-</ng-template>
+<!--<ng-template #derivedField let-fieldKey let-label="label">-->
+<!--  <div class="tb-derived-item">-->
+<!--    <span class="tb-derived-label">{{ label }}</span>-->
+<!--    <div-->
+<!--      class="tb-derived-swatch"-->
+<!--      [style.backgroundColor]="-->
+<!--        colorToHsl(-->
+<!--          currentDerived[fieldKey].useManual ? currentDerived[fieldKey].override : currentDerived[fieldKey].auto-->
+<!--        )-->
+<!--      "-->
+<!--    ></div>-->
+<!--    @if (currentDerived[fieldKey].useManual) {-->
+<!--      <input-->
+<!--        type="color"-->
+<!--        class="tb-color-picker tb-derived-picker"-->
+<!--        [value]="colorToHex(currentDerived[fieldKey].override)"-->
+<!--        (input)="setDerivedOverride(currentDerived[fieldKey], $any($event.target).value)"-->
+<!--      />-->
+<!--    }-->
+<!--    <button-->
+<!--      class="btn btn-sm btn-icon"-->
+<!--      [class.btn-outline]="!currentDerived[fieldKey].useManual"-->
+<!--      [class.btn-primary]="currentDerived[fieldKey].useManual"-->
+<!--      (click)="toggleManual(fieldKey)"-->
+<!--      [title]="currentDerived[fieldKey].useManual ? 'Back to auto' : 'Override manually'"-->
+<!--    >-->
+<!--      <cds-icon [shape]="currentDerived[fieldKey].useManual ? 'undo' : 'pencil'"></cds-icon>-->
+<!--    </button>-->
+<!--  </div>-->
+<!--</ng-template>-->

@@ -22,31 +22,6 @@ export interface ThemeColors {
   text: Color;
 }
 
-export interface DerivableField {
-  auto: HslColor;
-  override: HslColor;
-  useManual: boolean;
-}
-
-export interface DerivedSet {
-  primaryTint: DerivableField;
-  primaryShade: DerivableField;
-  primaryHover: DerivableField;
-  primaryActive: DerivableField;
-  successTint: DerivableField;
-  successShade: DerivableField;
-  successHover: DerivableField;
-  successActive: DerivableField;
-  warningTint: DerivableField;
-  warningShade: DerivableField;
-  warningHover: DerivableField;
-  warningActive: DerivableField;
-  dangerTint: DerivableField;
-  dangerShade: DerivableField;
-  dangerHover: DerivableField;
-  dangerActive: DerivableField;
-}
-
 /**
  * Maps CSS custom property names to token expressions (e.g. `var(--cds-global-color-blue-700)`).
  * When provided to buildCssBlock, these override the computed hex values in the CSS output.
