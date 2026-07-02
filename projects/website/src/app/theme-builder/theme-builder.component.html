@@ -169,6 +169,10 @@
     </div>
     <!-- end controls card -->
 
+    <!-- ── Preview DARK card ── -->
+    <!-- Invisible for filling the dark values on initial load -->
+    <div style="display: none" #previewDarkWrapper cds-theme="dark"></div>
+
     <!-- ── Preview card (right column) ── -->
     <div class="card tb-preview-card">
       <div class="card-header">
@@ -328,7 +332,7 @@
         <!-- Datagrid -->
         <div class="tb-preview-section">
           <p class="tb-preview-section-label">Datagrid</p>
-          <clr-datagrid>
+          <clr-datagrid [clrDgSelectionType]="'multi'">
             <clr-dg-column>Name</clr-dg-column>
             <clr-dg-column>Role</clr-dg-column>
             <clr-dg-column>Status</clr-dg-column>
@@ -338,9 +342,9 @@
                 <clr-dg-cell>{{ row.role }}</clr-dg-cell>
                 <clr-dg-cell>
                   <span
-                    class="label"
-                    [class.label-success]="row.status === 'Active'"
-                    [class.label-danger]="row.status === 'Inactive'"
+                    class="badge"
+                    [class.badge-success]="row.status === 'Active'"
+                    [class.badge-danger]="row.status === 'Inactive'"
                   >
                     {{ row.status }}
                   </span>

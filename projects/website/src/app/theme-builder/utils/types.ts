@@ -13,13 +13,11 @@ export type WcagLevel = 'AAA' | 'AA' | 'AA Large' | 'Fail';
 export type HslColor = [number, number, number];
 
 export interface ThemeColors {
-  primary: Color;
-  success: Color;
-  warning: Color;
-  danger: Color;
-  appBg: Color;
-  containerBg: Color;
-  text: Color;
+  primary?: Color;
+  info?: Color;
+  success?: Color;
+  warning?: Color;
+  danger?: Color;
 }
 
 /**
