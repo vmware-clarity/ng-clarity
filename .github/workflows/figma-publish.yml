@@ -1,9 +1,13 @@
 name: Figma Token Publish
 
 on:
-  # Called by release.yml (production push) and release-preview.yml (preview).
-  # Replaces the old workflow_run trigger so the connection is explicit and
-  # visible in the workflow graph.
+  # NOTE: release.yml and release-preview.yml currently run `npm run figma:push`
+  # / `figma:push:preview` as plain inline steps rather than calling this
+  # workflow, so this workflow_call trigger only fires if something explicitly
+  # invokes it that way (nothing in this repo does yet). It's kept available
+  # for a manual/dispatch flow and as the target of a future job-level
+  # `uses: ./.github/workflows/figma-publish.yml` from the release workflows,
+  # which would also let them share this file's concurrency group natively.
   workflow_call:
     inputs:
       dry_run:

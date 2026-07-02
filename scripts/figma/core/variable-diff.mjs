@@ -46,14 +46,16 @@ function figmaValuesEqual(a, b) {
     return b.type === 'VARIABLE_ALIAS' && a.id === b.id;
   }
 
-  // COLOR { r, g, b, a }
+  // COLOR { r, g, b, a }: compare with a tight epsilon so float rounding in the
+  // Figma round-trip doesn't trigger spurious updates, without masking a real
+  // color change (1e-2 would hide a ~2.5/255-per-channel color edit).
   if ('r' in a) {
     return (
       'r' in b &&
-      Math.abs(a.r - b.r) < 1e-2 &&
-      Math.abs(a.g - b.g) < 1e-2 &&
-      Math.abs(a.b - b.b) < 1e-2 &&
-      Math.abs(a.a - b.a) < 1e-2
+      Math.abs(a.r - b.r) < 1e-5 &&
+      Math.abs(a.g - b.g) < 1e-5 &&
+      Math.abs(a.b - b.b) < 1e-5 &&
+      Math.abs(a.a - b.a) < 1e-5
     );
   }
 

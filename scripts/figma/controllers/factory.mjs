@@ -13,8 +13,7 @@
  * entry point free of branching.
  */
 
-import { runDryRun } from './dry-run.controller.mjs';
-import { runExtract } from './extract.controller.mjs';
+import { runOfflinePlan } from './offline-plan.controller.mjs';
 import { runPreview } from './preview.controller.mjs';
 import { runPush } from './push.controller.mjs';
 
@@ -55,10 +54,8 @@ export function resolveMode({ dryRun, extractMode, previewMode }) {
 export async function executeRun(mode, cli, ctx) {
   switch (mode) {
     case 'dry-run':
-      runDryRun(ctx);
-      break;
     case 'extract':
-      runExtract(cli, ctx);
+      runOfflinePlan(cli, ctx);
       break;
     case 'preview':
       await runPreview(ctx);

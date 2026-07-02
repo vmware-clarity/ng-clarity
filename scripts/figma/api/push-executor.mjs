@@ -16,6 +16,11 @@
  *
  * After all collections are pushed it removes the "Mode 1" default mode that
  * Figma silently injects whenever a new collection is created.
+ *
+ * With `preview: true` the same per-collection planning/aggregation runs and
+ * the diff still prints, but nothing is POSTed and no default-mode cleanup
+ * runs — this is the shared implementation behind both the push and preview
+ * controllers so they can't drift into two different aggregation algorithms.
  */
 
 import { buildCollectionPlan, populateIdMapFromExisting } from '../core/planner.mjs';
@@ -44,6 +49,10 @@ const BATCH = 500;
  * @param {Array<{modeId: string, name: string, collectionId: string}>} params.existingModes
  * @param {ReturnType<import('../core/token-rules.mjs').createTokenRules>} params.rules
  * @param {((name: string) => string | undefined) | null} params.varLookup
+ * @param {boolean} [params.preview] When true, plan and print the diff for every
+ *   collection but never call the Figma API's POST/DELETE endpoints. Used by
+ *   the preview controller so it shares this exact planning/aggregation loop
+ *   instead of re-implementing it.
  * @returns {Promise<{
  *   totalNew: number,
  *   totalUpdate: number,
@@ -58,23 +67,23 @@ export async function executePush({
   collectionDefs,
   existingCollections,
   existingVars,
-  existingModes,
+  existingModes: initialModes,
   rules,
   varLookup,
+  preview = false,
 }) {
   const idMap = createIdMap();
   populateIdMapFromExisting(existingVars, idMap);
 
-  // Mutable lookup Maps rebuilt from each GET response so subsequent
-  // collections always see the latest authoritative Figma state.
-  // All three Maps are declared as let so they can be replaced wholesale via
-  // buildLookupMaps after each collection push (keeps cross-collection alias
-  // resolution accurate without manual clear-and-rebuild loops).
+  // Mutable lookup state rebuilt from each GET response so subsequent
+  // collections always see the latest authoritative Figma state. Reassigned
+  // (never mutated in place) so callers' own arrays/maps are never touched.
   let {
     collByName: existingCollByName,
     varByName: existingVarByName,
     varsByColId,
   } = buildLookupMaps(existingCollections, existingVars);
+  let existingModes = initialModes;
 
   let totalNew = 0;
   let totalUpdate = 0;
@@ -102,6 +111,17 @@ export async function executePush({
     totalDeprecated += colPlan.deprecatedVarIds.size;
     totalModeValues += colPlan.payloadModeValues.length;
 
+    // ── Diff for this collection ────────────────────────────────────────────
+    if (colPlan.diff.length > 0) {
+      printDiff([{ collectionName: colDef.name, diff: colPlan.diff }]);
+    }
+
+    if (preview) {
+      // Nothing was written, so there is no fresh Figma state to refresh from —
+      // the temp IDs assigned above are only used for this report.
+      continue;
+    }
+
     const createUpdateVars = colPlan.payloadVars;
 
     // ── Push this collection in batches ─────────────────────────────────────
@@ -111,15 +131,7 @@ export async function executePush({
 
     // Pre-index mode values by variable ID so each batch slice can resolve its
     // mode values in O(slice.length) instead of O(slice.length × modeValues.length).
-    const modeValuesByVarId = new Map();
-    for (const mv of colPlan.payloadModeValues) {
-      const modeValueByVarId = modeValuesByVarId.get(mv.variableId);
-      if (modeValueByVarId) {
-        modeValueByVarId.push(mv);
-      } else {
-        modeValuesByVarId.set(mv.variableId, [mv]);
-      }
-    }
+    const modeValuesByVarId = Map.groupBy(colPlan.payloadModeValues, mv => mv.variableId);
 
     for (let i = 0; i < Math.max(createUpdateVars.length, 1); i += BATCH) {
       const slice = createUpdateVars.slice(i, i + BATCH);
@@ -135,15 +147,19 @@ export async function executePush({
       });
     }
 
-    // ── Diff for this collection ────────────────────────────────────────────
-    if (colPlan.diff.length > 0) {
-      printDiff([{ collectionName: colDef.name, diff: colPlan.diff }]);
-    }
-
     // ── Refresh idMap with real Figma IDs ───────────────────────────────────
     // Any temp IDs assigned during this collection's plan are now resolved to
     // real Figma IDs.  The next collection's VARIABLE_ALIAS mode values will
     // therefore carry real IDs rather than stale temp IDs.
+    //
+    // NOTE for a future pass: Figma's POST /variables response includes a
+    // `meta.tempIdToRealId` map that documents this exact use case — resolving
+    // this collection's temp IDs without a follow-up GET of the *entire* file.
+    // That would halve this loop's network round-trips, but swapping to it
+    // needs verification against a real API response (shape, and whether reads
+    // immediately after a write are guaranteed consistent) that wasn't possible
+    // to do in this environment, so the known-correct GET-based refresh is kept
+    // here rather than shipping an unverified change to a live push path.
     console.log(`    🔄  Syncing variable IDs…`);
     const fresh = await figma.getVariables(figmaFileKey);
     const { collections: freshCollections, vars: freshVars, modes: freshModes } = parseFigmaVarsResponse(fresh);
@@ -155,8 +171,11 @@ export async function executePush({
       varByName: existingVarByName,
       varsByColId,
     } = buildLookupMaps(freshCollections, freshVars));
-    existingModes.length = 0;
-    existingModes.push(...freshModes);
+    existingModes = freshModes;
+  }
+
+  if (preview) {
+    return { totalNew, totalUpdate, totalSkipped, totalDeprecated, totalModeValues };
   }
 
   // ── Remove Figma's auto-created "Mode 1" from the collections we just pushed ─

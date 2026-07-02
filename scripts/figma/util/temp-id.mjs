@@ -5,24 +5,22 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { randomUUID } from 'node:crypto';
+
 /**
- * Singleton temp-ID counter shared across the entire module graph.
+ * Generate a Figma temp ID.
  *
- * Figma temp IDs (e.g. `"temp-1"`) are only valid within the single POST
- * request that declares them.  A process-wide counter guarantees that every
- * collection plan in a push run gets a globally unique ID, so cross-collection
- * VARIABLE_ALIAS mode values never collide — without any ID generator being
- * passed around as a parameter.
+ * Figma temp IDs (e.g. `"temp-<uuid>"`) are only valid within the single POST
+ * request that declares them; Figma only requires each one to be unique
+ * within that request. Built on `crypto.randomUUID()` so uniqueness doesn't
+ * depend on any shared counter state — no ID generator needs to be passed
+ * around as a parameter, and nothing needs resetting between runs (e.g. tests).
  *
- * Because Node.js caches modules, any file that imports {@link nextTempId}
- * shares the same counter automatically.
- *
- * @returns {string} The next temp ID, e.g. `"temp-1"`, `"temp-2"`, …
+ * @returns {string} The next temp ID, e.g. `"temp-3fa85f64-5717-4562-b3fc-2c963f66afa6"`.
  *
  * @example
  * import { nextTempId } from '../util/temp-id.mjs';
- * const colId = nextTempId(); // "temp-1"
- * const modeId = nextTempId(); // "temp-2"
+ * const colId = nextTempId();
+ * const modeId = nextTempId();
  */
-let _n = 0;
-export const nextTempId = () => `temp-${++_n}`;
+export const nextTempId = () => `temp-${randomUUID()}`;

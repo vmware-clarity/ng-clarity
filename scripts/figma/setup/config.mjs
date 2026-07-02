@@ -13,8 +13,11 @@
  */
 
 import fs from 'node:fs';
+import path from 'node:path';
+import Ajv from 'ajv';
 
 const DEFAULT_CODE_SYNTAX = { WEB: 'var(${name})' };
+const SCHEMA_FILENAME = 'figma-tokens.config.schema.json';
 
 /**
  * @typedef {'root' | 'dark' | 'compact'} CssModeSource
@@ -54,22 +57,49 @@ const DEFAULT_CODE_SYNTAX = { WEB: 'var(${name})' };
  * @property {Record<string, string>} codeSyntaxTemplates Platform → template string.
  */
 
-const VALID_SOURCES = new Set(['root', 'dark', 'compact']);
+/**
+ * Validate the raw parsed config against figma-tokens.config.schema.json (the
+ * same schema referenced by the config's own "$schema" for editor tooling).
+ * Covers required fields, types, enums (e.g. mode.source), and the
+ * humanReadable value "--" pattern — everything the schema can express as a
+ * single JSON Schema constraint.
+ *
+ * @param {Object} config
+ * @param {string} configPath Used to locate the schema file alongside the config.
+ */
+function validateAgainstSchema(config, configPath) {
+  const schemaPath = path.join(path.dirname(configPath), SCHEMA_FILENAME);
+  const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf8'));
+  const validate = new Ajv({ allErrors: true }).compile(schema);
+
+  if (!validate(config)) {
+    const details = validate.errors.map(e => `  ${e.instancePath || '(root)'} ${e.message}`).join('\n');
+    throw new Error(`figma-tokens.config.json failed schema validation:\n${details}`);
+  }
+}
 
 /**
- * Reference resolver function. The reference array will have "$ref" at 0 index and reference key at 1 index.
- * @param referenceArray
- * @param config
- * @returns {*[]}
+ * Resolve `{ "$ref": "key" }` markers within a filter.include/exclude array by
+ * splicing in the named top-level config array they point to. Plain string
+ * entries pass through unchanged, so one list can mix literals with shared
+ * refs (e.g. a collection-specific prefix alongside a prefix list reused by
+ * several collections).
+ *
+ * @param {Array<string | { $ref: string }>} [entries]
+ * @param {Object} config Parsed figma-tokens.config.json, used to look up ref targets.
+ * @returns {string[]}
  */
-function resolveReference(referenceArray, config) {
-  let innerReference = referenceArray ?? [];
-
-  if (innerReference[0] === '$ref') {
-    innerReference = config[referenceArray[1]];
-  }
-
-  return innerReference;
+function resolveReference(entries, config) {
+  return (entries ?? []).flatMap(entry => {
+    if (entry && typeof entry === 'object' && '$ref' in entry) {
+      const referenced = config[entry.$ref];
+      if (!Array.isArray(referenced)) {
+        throw new Error(`$ref "${entry.$ref}" must point to a top-level array in figma-tokens.config.json`);
+      }
+      return referenced;
+    }
+    return entry;
+  });
 }
 
 /**
@@ -80,50 +110,30 @@ function resolveReference(referenceArray, config) {
  */
 export function loadConfig(configPath) {
   const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  validateAgainstSchema(config, configPath);
 
   const collections = (config.collections ?? []).map((col, i) => {
-    if (!col.name) {
-      throw new Error(`collections[${i}]: "name" is required`);
-    }
-
     const isHumanReadable = col.humanReadable && typeof col.humanReadable === 'object';
 
-    if (!isHumanReadable && (!Array.isArray(col.filter?.include) || col.filter.include.length === 0)) {
+    // Structural checks (required fields, types, mode.source enum, the
+    // humanReadable "--" value pattern, …) are covered by the schema above.
+    // This one is cross-field and stays here: the schema can't cleanly say
+    // "filter.include must be non-empty unless humanReadable is present".
+    if (!isHumanReadable && col.filter.include.length === 0) {
       throw new Error(`collections[${i}] ("${col.name}"): filter.include must be a non-empty array`);
     }
 
-    if (!Array.isArray(col.modes) || col.modes.length === 0) {
-      throw new Error(`collections[${i}] ("${col.name}"): modes must be a non-empty array`);
-    }
-
-    for (const mode of col.modes) {
-      if (!VALID_SOURCES.has(mode.source)) {
-        throw new Error(
-          `collections[${i}] ("${col.name}") mode "${mode.name}": source must be one of ${[...VALID_SOURCES].join(', ')}`
-        );
-      }
-    }
-
-    // Strip _comment and other meta keys, then validate values are CSS custom properties.
+    // Strip _comment and other meta keys (schema validation already confirmed
+    // every remaining value matches the "--" CSS custom-property pattern).
     let humanReadable;
     if (isHumanReadable) {
       humanReadable = /** @type {Record<string, string>} */ (
         Object.fromEntries(Object.entries(col.humanReadable).filter(([k]) => !k.startsWith('_')))
       );
-
-      // Values are CSS custom-property names; a typo without the "--" prefix would
-      // silently produce zero aliases, so fail loudly instead.
-      for (const [displayName, cssVar] of Object.entries(humanReadable)) {
-        if (!cssVar.startsWith('--')) {
-          throw new Error(
-            `collections[${i}] ("${col.name}") humanReadable["${displayName}"] value "${cssVar}" must start with "--" (CSS custom property name).`
-          );
-        }
-      }
     }
 
-    // Resolve include exclude JSON references.
-    // Currently, there is no internal JSON references within the config file.
+    // Splice in any { "$ref": "..." } entries so callers only ever see plain
+    // prefix strings — see e.g. "typographyColorPrefixes" in the config.
     const include = resolveReference(col.filter.include, config);
     const exclude = resolveReference(col.filter.exclude, config);
 

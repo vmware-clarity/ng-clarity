@@ -1,6 +1,13 @@
 name: Release
 on:
   workflow_dispatch:
+concurrency:
+  # Shares figma-publish.yml's group: this workflow pushes tokens to Figma via
+  # `npm run figma:push` as a plain step (not a workflow_call), so without this
+  # a manual figma-publish.yml dispatch could race an in-progress release and
+  # leave Figma with a partially-applied variable set.
+  group: figma-publish-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   release:
     name: Release

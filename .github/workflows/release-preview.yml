@@ -1,6 +1,10 @@
 name: Release Preview
 on:
   workflow_dispatch:
+concurrency:
+  # Shares figma-publish.yml's group; see release.yml for why.
+  group: figma-publish-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   release-preview:
     name: Release Preview

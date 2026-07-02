@@ -13,6 +13,8 @@
  * blocks that apply to both modes equally.
  */
 
+import postcss from 'postcss';
+
 // Canonical selectors we care about.
 // The "bare" DARK / COMPACT forms (without :where(:root,:host) prefix) are the
 // primary sources for mode overrides in the compiled Clarity stylesheet.
@@ -29,84 +31,41 @@ export const SELECTORS = {
 };
 
 /**
- * Fast line-scanner CSS parser: extracts custom property declarations per selector.
+ * Extracts custom property declarations per selector from compiled CSS.
  * Returns a Map<selectorString, Map<propName, value>>.
  *
- * Assumes compiled SCSS output where:
- * - Each custom property declaration occupies exactly one line: `  --name: value;`
- * - Selector lines end with `{`
- * - Block endings are `}` lines
- * This is always true for output from `sass` / `csso`.
+ * Only scans rules at the root of the stylesheet — declarations nested inside
+ * at-rules (@media, @keyframes, …) are not collected, matching how this tool
+ * has always worked: none of the SELECTORS above ever appear inside one in the
+ * compiled Clarity stylesheet.
  *
  * @param {string} css
  * @returns {Map<string, Map<string, string>>}
  */
 export function parseCssBlocks(css) {
   const blocks = new Map();
-  const lines = css.split('\n');
-  let currentSelector = '';
-  let selectorBuffer = '';
-  let depth = 0;
+  const root = postcss.parse(css);
 
-  for (const rawLine of lines) {
-    const line = rawLine.trim();
-    if (!line || line.startsWith('/*') || line.startsWith('*') || line.startsWith('//')) {
-      continue;
+  root.each(node => {
+    if (node.type !== 'rule') {
+      return;
     }
 
-    // Track brace depth for @rule skipping
-    const opens = (line.match(/\{/g) ?? []).length;
-    const closes = (line.match(/\}/g) ?? []).length;
+    // Normalize whitespace so a selector the compiler wrapped across multiple
+    // lines still matches the single-line SELECTORS constants below.
+    const selector = node.selector.replace(/\s+/g, ' ').trim();
 
-    if (line.endsWith('{')) {
-      depth += opens - closes;
-      if (depth === 1) {
-        // Top-level rule block opening
-        selectorBuffer += (selectorBuffer ? ' ' : '') + line.slice(0, -1).trim();
-        currentSelector = selectorBuffer.replace(/\s+/g, ' ').trim();
-        selectorBuffer = '';
-      } else {
-        // Nested block (e.g. @keyframes) — accumulate selector parts
-        selectorBuffer += ' ' + line.slice(0, -1).trim();
-      }
-      continue;
-    }
-
-    if (line === '}' || line.startsWith('}')) {
-      depth -= closes - opens;
-      if (depth < 0) {
-        depth = 0;
-      }
-      if (depth === 0) {
-        currentSelector = '';
-      }
-      continue;
-    }
-
-    // Custom property declaration inside a top-level block
-    if (depth === 1 && line.startsWith('--') && line.includes(':')) {
-      const colonIdx = line.indexOf(':');
-      const name = line.slice(0, colonIdx).trim();
-      // Value: everything after ':' up to (but not including) ';'
-      let value = line.slice(colonIdx + 1).trim();
-      if (value.endsWith(';')) {
-        value = value.slice(0, -1).trim();
-      }
-      if (!name.startsWith('--') || !value) {
+    for (const decl of node.nodes) {
+      const value = decl.type === 'decl' ? decl.value.trim() : '';
+      if (decl.type !== 'decl' || !decl.prop.startsWith('--') || !value) {
         continue;
       }
-      if (!blocks.has(currentSelector)) {
-        blocks.set(currentSelector, new Map());
+      if (!blocks.has(selector)) {
+        blocks.set(selector, new Map());
       }
-      blocks.get(currentSelector).set(name, value);
-      continue;
+      blocks.get(selector).set(decl.prop, value);
     }
-
-    // Multi-line selector accumulation (comma-separated selectors across lines)
-    if (depth === 0 && line && !line.startsWith('@') && !line.startsWith('}')) {
-      selectorBuffer += (selectorBuffer ? ' ' : '') + line;
-    }
-  }
+  });
 
   return blocks;
 }

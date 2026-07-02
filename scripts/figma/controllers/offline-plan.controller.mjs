@@ -6,10 +6,14 @@
  */
 
 /**
- * Extract controller (`--extract [file]`).
+ * Offline-plan controller (`--dry-run` / `--extract [file]`).
  *
- * Builds the full push plan and serializes a human-readable, per-collection view
- * to a JSON file. Requires no Figma credentials.
+ * Both flags build the exact same full push plan with no network I/O — dry-run
+ * requires no Figma credentials by design. They only differ in what happens
+ * with the result: dry-run just prints the summary, extract also serializes a
+ * per-collection JSON view to disk. Previously these lived in two separate
+ * controllers that both called the same plan.mjs helpers; merged here so that
+ * difference stays a three-line tail instead of two files.
  */
 
 import fs from 'node:fs';
@@ -22,11 +26,16 @@ import { buildPlan, printPlanStats } from './plan.mjs';
  * @param {ReturnType<import('../setup/cli.mjs').parseCliArgs>} cli
  * @param {import('../setup/context.mjs').RunContext} ctx
  */
-export function runExtract(cli, ctx) {
-  console.log('\n🎨  Figma token extract\n');
+export function runOfflinePlan(cli, ctx) {
+  console.log(cli.extractMode ? '\n🎨  Figma token extract\n' : '\n🎨  Figma token dry run\n');
 
   const plan = buildPlan(ctx);
   printPlanStats(ctx, plan);
+
+  if (!cli.extractMode) {
+    console.log('\n✅  Dry run complete — no changes made to Figma.\n');
+    return;
+  }
 
   const output = buildExtractView({
     collectionDefs: ctx.collectionDefs,

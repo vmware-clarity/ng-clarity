@@ -29,6 +29,18 @@ export function printStats(label, { collections, created, updated, skipped, depr
 }
 
 /**
+ * Format one diff-entry line: `<marker>  <name padded>  <suffix>`.
+ * Shared by the created/updated/deprecated branches below so the column width
+ * and marker placement can only drift in one place.
+ *
+ * @param {string} marker
+ * @param {import('./planner.mjs').DiffEntry} e
+ * @param {string} suffix
+ * @returns {string}
+ */
+const formatEntry = (marker, e, suffix) => `    ${marker}  ${e.name.padEnd(60)}  ${suffix}`;
+
+/**
  * Prints a human-readable diff of all variable changes grouped by collection.
  *
  * Output format per collection:
@@ -73,7 +85,7 @@ export function formatDiff(diffReport) {
     const badge = [
       created.length ? `+${created.length}` : null,
       updated.length ? `~${updated.length}` : null,
-      deprecated.length ? `${deprecated.length}⚠ ` : null,
+      deprecated.length ? `⚠${deprecated.length}` : null,
     ]
       .filter(Boolean)
       .join('  ');
@@ -81,11 +93,11 @@ export function formatDiff(diffReport) {
     lines.push(`  📦  ${collectionName}  (${badge})`);
 
     deprecated.forEach(e =>
-      lines.push(`    ⚠  ${e.name.padEnd(60)}  ${e.prevType} → ${e.type}\n         (old var → ${e.name}_deprecated)`)
+      lines.push(`${formatEntry('⚠', e, `${e.prevType} → ${e.type}`)}\n         (old var → ${e.name}_deprecated)`)
     );
-    created.forEach(e => lines.push(`    +  ${e.name.padEnd(60)}  ${e.type}`));
+    created.forEach(e => lines.push(formatEntry('+', e, e.type)));
     updated.forEach(e => {
-      lines.push(`    ~  ${e.name.padEnd(60)}  ${e.type}`);
+      lines.push(formatEntry('~', e, e.type));
 
       e.changes?.forEach(c => {
         lines.push(`         ${c.field.padEnd(22)}  ${c.from}  →  ${c.to}`);
