@@ -78,7 +78,7 @@
                   <button
                     *ngIf="!colorGroup.base.isOriginalColor"
                     class="btn btn-sm btn-icon btn-primary"
-                    (click)="colorGroup.base.color = null; applyPreviewStyles()"
+                    (click)="resetColor($event, colorGroup.base)"
                     title="Back to original color"
                   >
                     <cds-icon shape="undo"></cds-icon>
@@ -130,7 +130,7 @@
                       <button
                         *ngIf="!colorVariant.isOriginalColor"
                         class="btn btn-sm btn-icon btn-primary"
-                        (click)="colorVariant.color = null; applyPreviewStyles()"
+                        (click)="resetColor($event, colorVariant)"
                         title="Back to original color"
                       >
                         <cds-icon shape="undo"></cds-icon>

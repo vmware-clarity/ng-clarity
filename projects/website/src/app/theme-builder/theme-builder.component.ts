@@ -205,8 +205,16 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   applyPreset(preset: ThemePreset): void {
     this.activePreset = preset;
-    this.colors.light = cloneThemeColors(preset.light);
-    this.colors.dark = cloneThemeColors(preset.dark);
+    // this.colors.light = cloneThemeColors(preset.light);
+    // this.colors.dark = cloneThemeColors(preset.dark);
+
+    console.log(this.activePreset);
+  }
+
+  resetColor($event: Event, color: Color) {
+    $event.stopPropagation();
+    color.color = null;
+    this.applyPreviewStyles();
   }
 
   async copyCSS(): Promise<void> {
