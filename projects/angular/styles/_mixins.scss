@@ -164,29 +164,25 @@ $opp-directions: (
 
 $typography-tokens: (
   'DISPLAY-40': (
-    // H1, Login Header
-    font-size: #{variables.$clr-base-typography-font-size-display},
+    /* H1, Login Header*/ font-size: #{variables.$clr-base-typography-font-size-display},
     font-weight: var(--cds-alias-typography-display-font-weight),
     line-height: #{variables.$clr-base-typography-line-height-44},
     letter-spacing: #{baselinePx(-0.5)},
   ),
   'HEADLINE-32': (
-    // H2, Page Header
-    font-size: #{variables.$clr-base-typography-font-size-headline},
+    /* H2, Page Header*/ font-size: #{variables.$clr-base-typography-font-size-headline},
     font-weight: var(--cds-alias-typography-headline-font-weight),
     line-height: #{variables.$clr-base-typography-line-height-36},
     letter-spacing: #{baselinePx(-0.4)},
   ),
   'TITLE-24-EXP': (
-    // H3, Modal, Wizard Heading
-    font-size: #{variables.$clr-base-typography-font-size-heading},
+    /* H3, Modal, Wizard Heading*/ font-size: #{variables.$clr-base-typography-font-size-heading},
     font-weight: var(--cds-alias-typography-title-font-weight),
     line-height: #{variables.$clr-base-typography-line-height-32},
     letter-spacing: #{baselinePx(-0.2)},
   ),
   'SECTION-20-STD': (
-    // H4, Card, Signpost Heading, Wizard Sidenav Title
-    font-size: #{variables.$clr-base-typography-font-size-section},
+    /* H4, Card, Signpost Heading, Wizard Sidenav Title*/ font-size: #{variables.$clr-base-typography-font-size-section},
     font-weight: var(--cds-alias-typography-section-font-weight),
     line-height: #{variables.$clr-base-typography-line-height-24},
     letter-spacing: #{baselinePx(-0.2)},
@@ -198,8 +194,7 @@ $typography-tokens: (
     letter-spacing: #{baselinePx(-0.2)},
   ),
   'SUBSECTION-16-EXP': (
-    // H5, Stack View Heading
-    font-size: #{variables.$clr-base-typography-font-size-sub-section},
+    /* H5, Stack View Heading*/ font-size: #{variables.$clr-base-typography-font-size-sub-section},
     font-weight: var(--cds-alias-typography-subsection-font-weight),
     line-height: #{variables.$clr-base-typography-line-height-24},
     letter-spacing: #{baselinePx(-0.2)},
@@ -211,29 +206,25 @@ $typography-tokens: (
     letter-spacing: #{baselinePx(-0.2)},
   ),
   'MESSAGE-16-EXP': (
-    // H6, Heading
-    font-size: #{variables.$clr-base-typography-font-size-sub-section},
+    /* H6, Heading*/ font-size: #{variables.$clr-base-typography-font-size-sub-section},
     font-weight: var(--cds-alias-typography-message-font-weight),
     line-height: #{variables.$clr-base-typography-line-height-24},
     letter-spacing: #{baselinePx(-0.2)},
   ),
   'BODY-14-SB-STD': (
-    // Not used yet
-    font-size: #{variables.$clr-base-typography-font-size-default},
+    /* Not used yet*/ font-size: #{variables.$clr-base-typography-font-size-default},
     font-weight: var(--cds-alias-typography-font-weight-semibold),
     line-height: #{variables.$clr-base-typography-line-height-20},
     letter-spacing: #{baselinePx(-0.1)},
   ),
   'BODY-14-MD-STD': (
-    // Wizard sidenav link
-    font-size: #{variables.$clr-base-typography-font-size-default},
+    /* Wizard sidenav link*/ font-size: #{variables.$clr-base-typography-font-size-default},
     font-weight: var(--cds-alias-typography-font-weight-medium),
     line-height: #{variables.$clr-base-typography-line-height-20},
     letter-spacing: #{baselinePx(-0.1)},
   ),
   'BODY-14-RG-STD': (
-    // P0, P1, Body text
-    font-size: #{variables.$clr-base-typography-font-size-default},
+    /* P0, P1, Body text*/ font-size: #{variables.$clr-base-typography-font-size-default},
     font-weight: var(--cds-alias-typography-body-font-weight),
     line-height: #{variables.$clr-base-typography-line-height-20},
     letter-spacing: #{baselinePx(-0.1)},
@@ -263,22 +254,19 @@ $typography-tokens: (
     letter-spacing: #{baselinePx(-0.1)},
   ),
   'SECONDARY-13-MD-EXP': (
-    // P2, Section Header
-    font-size: #{variables.$clr-base-typography-font-size-inline},
+    /* P2, Section Header*/ font-size: #{variables.$clr-base-typography-font-size-inline},
     font-weight: var(--cds-alias-typography-font-weight-medium),
     line-height: #{variables.$clr-base-typography-line-height-24},
     letter-spacing: #{baselinePx(-0.1)},
   ),
   'SECONDARY-13-RG-CPT': (
-    // Checkbox and radio labels, Spinner
-    font-size: #{variables.$clr-base-typography-font-size-inline},
+    /* Checkbox and radio labels, Spinner*/ font-size: #{variables.$clr-base-typography-font-size-inline},
     font-weight: var(--cds-alias-typography-secondary-font-weight),
     line-height: #{variables.$clr-base-typography-line-height-16},
     letter-spacing: #{baselinePx(-0.1)},
   ),
   'SECONDARY-13-RG-EXP': (
-    // P3, Form Labels and Column Headers
-    // P5, Table footer and chart data
+    /* P3, Form Labels and Column Headers*/ /* P5, Table footer and chart data*/
     font-size: #{variables.$clr-base-typography-font-size-inline},
     font-weight: var(--cds-alias-typography-secondary-font-weight),
     line-height: #{variables.$clr-base-typography-line-height-24},
@@ -291,8 +279,7 @@ $typography-tokens: (
     letter-spacing: #{baselinePx(-0.1)},
   ),
   'SECONDARY-13-SB-STD': (
-    // P4, Form Labels and Column Headers
-    font-size: #{variables.$clr-base-typography-font-size-inline},
+    /* P4, Form Labels and Column Headers*/ font-size: #{variables.$clr-base-typography-font-size-inline},
     font-weight: var(--cds-alias-typography-font-weight-semibold),
     line-height: #{variables.$clr-base-typography-line-height-20},
     letter-spacing: #{baselinePx(-0.1)},
@@ -310,15 +297,13 @@ $typography-tokens: (
     letter-spacing: #{baselinePx(-0.1)},
   ),
   'CAPTION-LG-11-STD': (
-    // P6, Small Headers
-    font-size: #{variables.$clr-base-typography-font-size-caption},
+    /* P6, Small Headers*/ font-size: #{variables.$clr-base-typography-font-size-caption},
     font-weight: var(--cds-alias-typography-caption-font-weight),
     line-height: #{variables.$clr-base-typography-line-height-16},
     letter-spacing: #{baselinePx(0.2)},
   ),
   'CAPTION-LG-11-CPT': (
-    // Badges, Tag and Labels
-    font-size: #{variables.$clr-base-typography-font-size-caption},
+    /* Badges, Tag and Labels*/ font-size: #{variables.$clr-base-typography-font-size-caption},
     font-weight: var(--cds-alias-typography-caption-font-weight),
     line-height: #{variables.$clr-base-typography-line-height-12},
     letter-spacing: #{baselinePx(0.2)},
@@ -330,23 +315,20 @@ $typography-tokens: (
     letter-spacing: #{baselinePx(0.2)},
   ),
   'CAPTION-SM-10': (
-    // P7, P8
-    font-size: #{variables.$clr-base-typography-font-size-caption-small},
+    /* P7, P8*/ font-size: #{variables.$clr-base-typography-font-size-caption-small},
     font-weight: var(--cds-alias-typography-smallcaption-font-weight),
     line-height: #{variables.$clr-base-typography-line-height-12},
     letter-spacing: #{baselinePx(0.5)},
   ),
   'BUTTON-12': (
-    // Buttons
-    font-size: #{variables.$clr-base-typography-font-size-button},
+    /* Buttons*/ font-size: #{variables.$clr-base-typography-font-size-button},
     font-weight: var(--cds-alias-typography-font-weight-semibold),
     line-height: #{variables.$clr-base-typography-line-height-16},
     letter-spacing: var(--cds-global-space-1),
     text-transform: uppercase,
   ),
   'BUTTON-11-SMALL': (
-    // Small Buttons
-    font-size: #{variables.$clr-base-typography-font-size-caption},
+    /* Small Buttons*/ font-size: #{variables.$clr-base-typography-font-size-caption},
     font-weight: var(--cds-alias-typography-font-weight-semibold),
     line-height: #{variables.$clr-base-typography-line-height-16},
     letter-spacing: #{baselinePx(0.2)},

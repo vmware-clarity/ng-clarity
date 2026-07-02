@@ -10,7 +10,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } fr
 import { FormsModule } from '@angular/forms';
 import { ClarityIcons, ClarityModule, pencilIcon, undoIcon } from '@clr/angular';
 
-import { Color, hexToHsl, hslToHex } from './utils/color';
+import { Color, hexToHsl, hslToHex, shiftL } from './utils/color';
 import { buildCssBlock } from './utils/css-generation';
 import { cloneThemeColors, PRESETS, SAMPLE_ROWS, TOKEN_KEYS } from './utils/presets';
 import { buildDerivedSet } from './utils/theme-derivation';
@@ -151,10 +151,28 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     return `hsl(${h}, ${s}%, ${l}%)`;
   }
 
-  setCurrentColor(colorVariant: Color, hex: string): void {
+  setCurrentColor(colorVariant: Color, hex: string, colorGroup: Color[]): void {
     if (/^#[0-9a-fA-F]{6}$/.test(hex)) {
       colorVariant.color = hexToHsl(hex);
       // this.onColorChange();
+
+      if (TOKEN_KEYS.baseTokens.includes(colorVariant.name)) {
+        const baseColorHSL = colorVariant.color;
+
+        colorGroup.forEach(item => {
+          if (item.name.endsWith('-tint')) {
+            item.color = [baseColorHSL[0], baseColorHSL[1], this.isDarkTheme ? 6 : 94];
+          } else if (item.name.endsWith('-tint-dark')) {
+            item.color = [baseColorHSL[0], baseColorHSL[1], this.isDarkTheme ? 5 : 95];
+          } else if (item.name.endsWith('-shade')) {
+            item.color = shiftL(baseColorHSL, this.isDarkTheme ? 7 : -7);
+          } else if (item.name.endsWith('-dark')) {
+            item.color = shiftL(baseColorHSL, this.isDarkTheme ? 10 : -10);
+          }
+        });
+
+        console.log(colorGroup);
+      }
 
       this.applyPreviewStyles();
     }
@@ -226,57 +244,6 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!el) {
       return;
     }
-    // const c = this.colors[this.activeTheme];
-    // const d = this.derived[this.activeTheme];
-    //
-    // const hsl = (color: HslColor) => this.colorToHsl(color);
-    // const ev = (f: DerivableField) => hsl(effectiveValue(f));
-    //
-    // const vars: Record<string, string> = {
-    //   '--cds-alias-status-info': hsl(c.primary.color),
-    //   '--cds-alias-status-info-tint': ev(d.primaryTint),
-    //   '--cds-alias-status-info-shade': ev(d.primaryShade),
-    //   '--cds-alias-object-interaction-background-highlight': hsl(c.primary.color),
-    //   '--cds-alias-object-interaction-background-selected': ev(d.primaryTint),
-    //   '--cds-alias-object-interaction-info-hover': ev(d.primaryHover),
-    //   '--cds-alias-object-interaction-info-click': ev(d.primaryActive),
-    //   '--cds-alias-object-interaction-info-active': ev(d.primaryActive),
-    //   '--cds-alias-object-interaction-info-selected': ev(d.primaryActive),
-    //   '--cds-alias-object-interaction-info-secondary-hover': ev(d.primaryTint),
-    //   '--cds-alias-typography-link-color': hsl(c.primary.color),
-    //   '--cds-alias-typography-link-color-hover': ev(d.primaryHover),
-    //   '--cds-alias-typography-info-hover': ev(d.primaryHover),
-    //   '--cds-alias-status-success': hsl(c.success.color),
-    //   '--cds-alias-status-success-tint': ev(d.successTint),
-    //   '--cds-alias-status-success-shade': ev(d.successShade),
-    //   '--cds-alias-object-interaction-success-hover': ev(d.successHover),
-    //   '--cds-alias-object-interaction-success-click': ev(d.successActive),
-    //   '--cds-alias-object-interaction-success-active': ev(d.successActive),
-    //   '--cds-alias-object-interaction-success-secondary-hover': ev(d.successTint),
-    //   '--cds-alias-typography-success-hover': ev(d.successHover),
-    //   '--cds-alias-status-warning': hsl(c.warning.color),
-    //   '--cds-alias-status-warning-tint': ev(d.warningTint),
-    //   '--cds-alias-status-warning-shade': ev(d.warningShade),
-    //   '--cds-alias-status-warning-dark': ev(d.warningActive),
-    //   '--cds-alias-object-interaction-warning-hover': ev(d.warningHover),
-    //   '--cds-alias-object-interaction-warning-click': ev(d.warningActive),
-    //   '--cds-alias-object-interaction-warning-active': ev(d.warningActive),
-    //   '--cds-alias-object-interaction-warning-secondary-hover': ev(d.warningTint),
-    //   '--cds-alias-typography-warning-hover': ev(d.warningHover),
-    //   '--cds-alias-status-danger': hsl(c.danger.color),
-    //   '--cds-alias-status-danger-tint': ev(d.dangerTint),
-    //   '--cds-alias-status-danger-shade': ev(d.dangerShade),
-    //   '--cds-alias-status-danger-dark': ev(d.dangerActive),
-    //   '--cds-alias-object-interaction-danger-hover': ev(d.dangerHover),
-    //   '--cds-alias-object-interaction-danger-click': ev(d.dangerActive),
-    //   '--cds-alias-object-interaction-danger-active': ev(d.dangerActive),
-    //   '--cds-alias-object-interaction-danger-secondary-hover': ev(d.dangerTint),
-    //   '--cds-alias-typography-danger-hover': ev(d.dangerHover),
-    //   '--cds-alias-object-app-background': hsl(c.appBg.color),
-    //   '--cds-alias-object-container-background': hsl(c.containerBg.color),
-    //   '--cds-alias-object-overlay-background': hsl(c.containerBg.color),
-    //   '--cds-alias-typography-color-500': hsl(c.text.color),
-    // };
 
     const colorGroups = this.colorStruct[this.activeTheme];
 
@@ -287,8 +254,6 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
         el.style.setProperty(color.name, color.hsl);
       }
     }
-    // el.style.backgroundColor = hsl(c.appBg.color);
-    // el.style.color = hsl(c.text.color);
   }
 
   private buildColorStructure() {
@@ -301,7 +266,11 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.colorStruct[this.activeTheme] = {};
 
-      for (let key in TOKEN_KEYS) {
+      for (const key in TOKEN_KEYS) {
+        if (key === 'baseTokens') {
+          continue;
+        }
+
         const tokenGroup = TOKEN_KEYS[key];
         this.colorStruct[this.activeTheme][key] = [];
         for (let i = 0; i < tokenGroup.length; i++) {

@@ -67,16 +67,11 @@
                   type="color"
                   class="tb-color-picker"
                   [value]="colorVariant.hex"
-                  (input)="setCurrentColor(colorVariant, $any($event.target).value)"
+                  (input)="
+                    setCurrentColor(colorVariant, $any($event.target).value, colorStruct[activeTheme][colorGroup])
+                  "
                 />
-                <input
-                  readonly
-                  type="text"
-                  class="tb-hex-input"
-                  [value]="colorVariant.hex"
-                  (input)="setCurrentColor(colorVariant, $any($event.target).value)"
-                  maxlength="7"
-                />
+                <input readonly type="text" class="tb-hex-input" [value]="colorVariant.hex" />
                 <button
                   *ngIf="!colorVariant.isOriginalColor"
                   class="btn btn-sm btn-primary"

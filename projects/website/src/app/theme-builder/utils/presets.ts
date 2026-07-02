@@ -9,6 +9,13 @@ import { Color } from './color';
 import { CssThemeTokens, DataRow, ThemeColors, ThemePreset } from './types';
 
 export const TOKEN_KEYS = {
+  baseTokens: [
+    '--cds-alias-primary',
+    '--cds-alias-status-info',
+    '--cds-alias-status-success',
+    '--cds-alias-status-warning',
+    '--cds-alias-status-danger',
+  ],
   primary: [
     '--cds-alias-primary',
     '--cds-alias-primary-tint',
@@ -16,8 +23,18 @@ export const TOKEN_KEYS = {
     '--cds-alias-primary-shade',
     '--cds-alias-primary-dark',
   ],
-  info: ['--cds-alias-status-info', '--cds-alias-status-info-tint', '--cds-alias-status-info-shade'],
-  success: ['--cds-alias-status-success', '--cds-alias-status-success-tint', '--cds-alias-status-success-shade'],
+  info: [
+    '--cds-alias-status-info',
+    '--cds-alias-status-info-tint',
+    '--cds-alias-status-info-shade',
+    '--cds-alias-status-info-dark',
+  ],
+  success: [
+    '--cds-alias-status-success',
+    '--cds-alias-status-success-tint',
+    '--cds-alias-status-success-shade',
+    '--cds-alias-status-success-dark',
+  ],
   warning: [
     '--cds-alias-status-warning',
     '--cds-alias-status-warning-tint',
