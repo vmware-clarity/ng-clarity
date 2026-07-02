@@ -47,7 +47,7 @@
 
 .tb-layout {
   display: grid;
-  grid-template-columns: 360px 1fr;
+  grid-template-columns: 440px 1fr;
   gap: 1.5rem;
   align-items: start;
 }
@@ -69,55 +69,32 @@
   }
 }
 
-.tb-group-title {
-  margin: 0 0 0.5rem;
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--cds-alias-typography-color-300);
-}
-
-.tb-color-row {
+.card-block {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.375rem;
-  flex-wrap: wrap;
-}
+  flex-direction: column;
+  gap: var(--clr-base-gap-l);
 
-.tb-color-label {
-  font-size: 0.7rem;
-  color: var(--cds-alias-typography-color-300);
-  width: 60px;
-  flex-shrink: 0;
-}
+  .tb-color-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--clr-base-gap-s);
+    min-width: 190px;
+  }
 
-.tb-color-input-wrap {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-}
+  .tb-color-picker {
+    padding: var(--clr-base-vertical-offset-2xs) var(--clr-base-horizontal-offset-2xs);
+    border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+    border-radius: var(--cds-alias-object-border-radius-100);
+    cursor: pointer;
+    background: var(--cds-alias-object-container-background);
+  }
 
-.tb-color-picker {
-  width: 36px;
-  height: 28px;
-  padding: 2px;
-  border: 1px solid var(--cds-alias-object-border-color);
-  border-radius: 4px;
-  cursor: pointer;
-  background: none;
-}
-
-.tb-hex-input {
-  width: 96px;
-  font-family: monospace;
-  font-size: 0.75rem;
-  padding: 2px 6px;
-  border: 1px solid var(--cds-alias-object-border-color);
-  border-radius: 3px;
-  background: var(--cds-alias-object-container-background);
-  color: var(--cds-alias-typography-color-500);
+  .tb-hex-input {
+    width: var(--clr-base-layout-space-5xl);
+    padding: var(--clr-base-vertical-offset-2xs) var(--clr-base-horizontal-offset-s);
+    border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+    border-radius: var(--cds-alias-object-border-radius-100);
+  }
 }
 
 // WCAG contrast badge

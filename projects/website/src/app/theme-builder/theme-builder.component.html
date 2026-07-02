@@ -54,58 +54,116 @@
         </button>
       </div>
 
-      <!-- Primary / Info -->
       <div class="card-block">
-        @for (colorGroup of themeColors; track colorGroup) {
-          <p class="tb-group-title">{{ colorGroup }}</p>
+        @for (colorGroup of themeColors; track colorGroup.key) {
+          <clr-stack-view>
+            <clr-stack-header>{{ colorGroup.key | uppercase }}</clr-stack-header>
+            <clr-stack-block [clrStackViewLevel]="1">
+              <clr-stack-label>{{ colorGroup.base.label }}</clr-stack-label>
+              <clr-stack-content>
+                <div class="tb-color-input-wrap">
+                  <input
+                    type="color"
+                    class="tb-color-picker"
+                    [value]="colorGroup.base.hex"
+                    (input)="
+                      setCurrentColor(
+                        colorGroup.base,
+                        $any($event.target).value,
+                        colorStruct[activeTheme][colorGroup.key]
+                      )
+                    "
+                  />
+                  <input readonly type="text" class="tb-hex-input" [value]="colorGroup.base.hex" />
+                  <button
+                    *ngIf="!colorGroup.base.isOriginalColor"
+                    class="btn btn-sm btn-icon btn-primary"
+                    (click)="colorGroup.base.color = null; applyPreviewStyles()"
+                    title="Back to original color"
+                  >
+                    <cds-icon shape="undo"></cds-icon>
+                  </button>
+                </div>
+                <!--              <div-->
+                <!--                class="tb-contrast-badge"-->
+                <!--                [class.tb-contrast-fail]="primaryScoreOnWhite === 'Fail'"-->
+                <!--                [class.tb-contrast-aa]="primaryScoreOnWhite === 'AA' || primaryScoreOnWhite === 'AAA'"-->
+                <!--                [class.tb-contrast-large]="primaryScoreOnWhite === 'AA Large'"-->
+                <!--              >-->
+                <!--                {{ primaryContrastOnWhite | number: '1.1-1' }}:1 on white — {{ primaryScoreOnWhite }}-->
+                <!--              </div>-->
+                <!--              <div class="tb-derived-row">-->
+                <!--                @for (-->
+                <!--                  field of [-->
+                <!--                    { key: 'primaryTint', label: 'Tint' },-->
+                <!--                    { key: 'primaryShade', label: 'Shade' },-->
+                <!--                    { key: 'primaryHover', label: 'Hover' },-->
+                <!--                    { key: 'primaryActive', label: 'Active' },-->
+                <!--                  ];-->
+                <!--                  track field.key-->
+                <!--                  ) {-->
+                <!--                  <ng-container-->
+                <!--                    *ngTemplateOutlet="derivedField; context: { $implicit: field.key, label: field.label }"-->
+                <!--                  ></ng-container>-->
+                <!--                }-->
+                <!--              </div>-->
+              </clr-stack-content>
 
-          @for (colorVariant of colorStruct[activeTheme][colorGroup]; track colorVariant) {
-            <div class="tb-color-row">
-              <label class="tb-color-label">{{ colorVariant.label }}</label>
-              <div class="tb-color-input-wrap">
-                <input
-                  type="color"
-                  class="tb-color-picker"
-                  [value]="colorVariant.hex"
-                  (input)="
-                    setCurrentColor(colorVariant, $any($event.target).value, colorStruct[activeTheme][colorGroup])
-                  "
-                />
-                <input readonly type="text" class="tb-hex-input" [value]="colorVariant.hex" />
-                <button
-                  *ngIf="!colorVariant.isOriginalColor"
-                  class="btn btn-sm btn-primary"
-                  (click)="colorVariant.color = null; applyPreviewStyles()"
-                  title="Back to original color"
-                >
-                  <cds-icon shape="undo"></cds-icon>
-                </button>
-              </div>
-              <!--              <div-->
-              <!--                class="tb-contrast-badge"-->
-              <!--                [class.tb-contrast-fail]="primaryScoreOnWhite === 'Fail'"-->
-              <!--                [class.tb-contrast-aa]="primaryScoreOnWhite === 'AA' || primaryScoreOnWhite === 'AAA'"-->
-              <!--                [class.tb-contrast-large]="primaryScoreOnWhite === 'AA Large'"-->
-              <!--              >-->
-              <!--                {{ primaryContrastOnWhite | number: '1.1-1' }}:1 on white — {{ primaryScoreOnWhite }}-->
-              <!--              </div>-->
-              <!--              <div class="tb-derived-row">-->
-              <!--                @for (-->
-              <!--                  field of [-->
-              <!--                    { key: 'primaryTint', label: 'Tint' },-->
-              <!--                    { key: 'primaryShade', label: 'Shade' },-->
-              <!--                    { key: 'primaryHover', label: 'Hover' },-->
-              <!--                    { key: 'primaryActive', label: 'Active' },-->
-              <!--                  ];-->
-              <!--                  track field.key-->
-              <!--                  ) {-->
-              <!--                  <ng-container-->
-              <!--                    *ngTemplateOutlet="derivedField; context: { $implicit: field.key, label: field.label }"-->
-              <!--                  ></ng-container>-->
-              <!--                }-->
-              <!--              </div>-->
-            </div>
-          }
+              @for (colorVariant of colorGroup.variants; track colorVariant.label) {
+                <clr-stack-block [clrStackViewLevel]="2">
+                  <clr-stack-label>{{ colorVariant.label }}</clr-stack-label>
+                  <clr-stack-content>
+                    <div class="tb-color-input-wrap">
+                      <input
+                        type="color"
+                        class="tb-color-picker"
+                        [value]="colorVariant.hex"
+                        (input)="
+                          setCurrentColor(
+                            colorVariant,
+                            $any($event.target).value,
+                            colorStruct[activeTheme][colorGroup.key]
+                          )
+                        "
+                      />
+                      <input readonly type="text" class="tb-hex-input" [value]="colorVariant.hex" />
+                      <button
+                        *ngIf="!colorVariant.isOriginalColor"
+                        class="btn btn-sm btn-icon btn-primary"
+                        (click)="colorVariant.color = null; applyPreviewStyles()"
+                        title="Back to original color"
+                      >
+                        <cds-icon shape="undo"></cds-icon>
+                      </button>
+                    </div>
+                    <!--              <div-->
+                    <!--                class="tb-contrast-badge"-->
+                    <!--                [class.tb-contrast-fail]="primaryScoreOnWhite === 'Fail'"-->
+                    <!--                [class.tb-contrast-aa]="primaryScoreOnWhite === 'AA' || primaryScoreOnWhite === 'AAA'"-->
+                    <!--                [class.tb-contrast-large]="primaryScoreOnWhite === 'AA Large'"-->
+                    <!--              >-->
+                    <!--                {{ primaryContrastOnWhite | number: '1.1-1' }}:1 on white — {{ primaryScoreOnWhite }}-->
+                    <!--              </div>-->
+                    <!--              <div class="tb-derived-row">-->
+                    <!--                @for (-->
+                    <!--                  field of [-->
+                    <!--                    { key: 'primaryTint', label: 'Tint' },-->
+                    <!--                    { key: 'primaryShade', label: 'Shade' },-->
+                    <!--                    { key: 'primaryHover', label: 'Hover' },-->
+                    <!--                    { key: 'primaryActive', label: 'Active' },-->
+                    <!--                  ];-->
+                    <!--                  track field.key-->
+                    <!--                  ) {-->
+                    <!--                  <ng-container-->
+                    <!--                    *ngTemplateOutlet="derivedField; context: { $implicit: field.key, label: field.label }"-->
+                    <!--                  ></ng-container>-->
+                    <!--                }-->
+                    <!--              </div>-->
+                  </clr-stack-content>
+                </clr-stack-block>
+              }
+            </clr-stack-block>
+          </clr-stack-view>
         }
       </div>
     </div>

@@ -133,11 +133,22 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get themeColors() {
+    const result = [];
+
     if (this.colorStruct[this.activeTheme]) {
-      return Object.keys(this.colorStruct[this.activeTheme]);
+      const keys = Object.keys(this.colorStruct[this.activeTheme]);
+
+      for (const key of keys) {
+        const allColors: Color[] = this.colorStruct[this.activeTheme][key];
+        result.push({
+          key,
+          base: allColors.find(c => c.label === 'Base'),
+          variants: allColors.filter(c => c.label !== 'Base'),
+        });
+      }
     }
 
-    return [];
+    return result;
   }
 
   applyActiveTheme(theme: 'light' | 'dark') {
