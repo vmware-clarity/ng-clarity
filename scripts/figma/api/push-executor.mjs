@@ -65,11 +65,9 @@ export async function executePush({
   const idMap = createIdMap();
   populateIdMapFromExisting(existingVars, idMap);
 
-  // Mutable lookup Maps rebuilt from each GET response so subsequent
-  // collections always see the latest authoritative Figma state.
-  // All three Maps are declared as let so they can be replaced wholesale via
-  // buildLookupMaps after each collection push (keeps cross-collection alias
-  // resolution accurate without manual clear-and-rebuild loops).
+  // Mutable lookup state rebuilt from each GET response so subsequent
+  // collections always see the latest authoritative Figma state. Reassigned
+  // (never mutated in place) so callers' own arrays/maps are never touched.
   let {
     collByName: existingCollByName,
     varByName: existingVarByName,
@@ -111,15 +109,7 @@ export async function executePush({
 
     // Pre-index mode values by variable ID so each batch slice can resolve its
     // mode values in O(slice.length) instead of O(slice.length × modeValues.length).
-    const modeValuesByVarId = new Map();
-    for (const mv of colPlan.payloadModeValues) {
-      const modeValueByVarId = modeValuesByVarId.get(mv.variableId);
-      if (modeValueByVarId) {
-        modeValueByVarId.push(mv);
-      } else {
-        modeValuesByVarId.set(mv.variableId, [mv]);
-      }
-    }
+    const modeValuesByVarId = Map.groupBy(colPlan.payloadModeValues, mv => mv.variableId);
 
     for (let i = 0; i < Math.max(createUpdateVars.length, 1); i += BATCH) {
       const slice = createUpdateVars.slice(i, i + BATCH);
@@ -144,6 +134,15 @@ export async function executePush({
     // Any temp IDs assigned during this collection's plan are now resolved to
     // real Figma IDs.  The next collection's VARIABLE_ALIAS mode values will
     // therefore carry real IDs rather than stale temp IDs.
+    //
+    // NOTE for a future pass: Figma's POST /variables response includes a
+    // `meta.tempIdToRealId` map that documents this exact use case — resolving
+    // this collection's temp IDs without a follow-up GET of the *entire* file.
+    // That would halve this loop's network round-trips, but swapping to it
+    // needs verification against a real API response (shape, and whether reads
+    // immediately after a write are guaranteed consistent) that wasn't possible
+    // to do in this environment, so the known-correct GET-based refresh is kept
+    // here rather than shipping an unverified change to a live push path.
     console.log(`    🔄  Syncing variable IDs…`);
     const fresh = await figma.getVariables(figmaFileKey);
     const { collections: freshCollections, vars: freshVars, modes: freshModes } = parseFigmaVarsResponse(fresh);
@@ -155,8 +154,7 @@ export async function executePush({
       varByName: existingVarByName,
       varsByColId,
     } = buildLookupMaps(freshCollections, freshVars));
-    existingModes.length = 0;
-    existingModes.push(...freshModes);
+    existingModes = freshModes;
   }
 
   // ── Remove Figma's auto-created "Mode 1" from the collections we just pushed ─

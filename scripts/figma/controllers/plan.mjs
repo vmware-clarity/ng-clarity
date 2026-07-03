@@ -6,11 +6,9 @@
  */
 
 /**
- * Plan-building helpers shared by the dry-run and extract controllers.
- *
- * Both branches build the same full push plan (no network I/O, temp IDs are
- * never resolved to real ones) and print the same "Token plan" summary; only
- * their tail behavior differs (one logs, the other serializes to disk).
+ * Plan-building helpers used by the offline-plan controller (`--dry-run` /
+ * `--extract`): build the same full push plan (no network I/O, temp IDs are
+ * never resolved to real ones) and print the same "Token plan" summary.
  */
 
 import { createIdMap } from '../core/id-map.mjs';

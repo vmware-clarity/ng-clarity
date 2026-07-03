@@ -31,48 +31,61 @@ export const ALIAS_DESCRIPTION_PREFIX = 'Alias of: ';
 export function buildExtractView({ collectionDefs, plan, existingModes, source }) {
   const { payloadCollections, payloadModes, payloadVars, payloadModeValues, existingCollByName, stats } = plan;
 
+  // Pre-index everything by collection/variable ID so the loops below are
+  // O(1) lookups per variable instead of re-scanning the full payload arrays
+  // for every collection and every variable.
+  const payloadCollByName = new Map(payloadCollections.map(c => [c.name, c]));
+  const payloadModesByColId = Map.groupBy(payloadModes, m => m.variableCollectionId);
+  const existingModesByColId = Map.groupBy(existingModes, m => m.collectionId);
+  const payloadVarsByColId = Map.groupBy(
+    payloadVars.filter(v => v.action !== 'DELETE'),
+    v => v.variableCollectionId
+  );
+  const modeValuesByVarId = Map.groupBy(payloadModeValues, mv => mv.variableId);
+
   const collectionView = collectionDefs.map(colDef => {
     const existingCol = existingCollByName.get(colDef.name);
-    const colId = existingCol ? existingCol.id : (payloadCollections.find(c => c.name === colDef.name)?.id ?? '?');
+    const colId = existingCol ? existingCol.id : (payloadCollByName.get(colDef.name)?.id ?? '?');
+
+    const colPayloadModes = payloadModesByColId.get(colId) ?? [];
+    const colExistingModes = existingModesByColId.get(colId) ?? [];
 
     // Resolve mode IDs once at the collection level so variable loops can reuse them.
     const modes = colDef.modes.map(modeName => {
-      const modeEntry = payloadModes.find(m => m.variableCollectionId === colId && m.name === modeName);
-      const existingModeObj = existingModes.find(m => m.collectionId === colId && m.name === modeName);
+      const modeEntry = colPayloadModes.find(m => m.name === modeName);
+      const existingModeObj = colExistingModes.find(m => m.name === modeName);
       return {
         id: modeEntry?.id ?? existingModeObj?.modeId ?? null,
         name: modeName,
       };
     });
 
-    const variables = payloadVars
-      .filter(v => v.variableCollectionId === colId && v.action !== 'DELETE')
-      .map(v => {
-        const varModeValues = payloadModeValues.filter(mv => mv.variableId === v.id);
-        const valuesByMode = {};
-        for (const mode of modes) {
-          const mv = varModeValues.find(mv => mv.modeId === mode.id);
-          if (mv) {
-            valuesByMode[mode.name] = mv.value;
-          }
+    const variables = (payloadVarsByColId.get(colId) ?? []).map(v => {
+      const varModeValues = modeValuesByVarId.get(v.id) ?? [];
+      const valuesByMode = {};
+      for (const mode of modes) {
+        const mv = varModeValues.find(mv => mv.modeId === mode.id);
+        if (mv) {
+          valuesByMode[mode.name] = mv.value;
         }
-        // Human-readable alias variables store the source CSS var in the description
-        // ("Alias of: --cds-…"); regular variables derive it from the Figma path.
-        const cssVar = v.description?.startsWith(ALIAS_DESCRIPTION_PREFIX)
-          ? v.description.slice(ALIAS_DESCRIPTION_PREFIX.length)
-          : figmaNameToCssName(v.name);
+      }
+      // Human-readable alias variables store the source CSS var in the description
+      // ("Alias of: --cds-…"); regular variables derive it from the Figma path.
+      const cssVar = v.description?.startsWith(ALIAS_DESCRIPTION_PREFIX)
+        ? v.description.slice(ALIAS_DESCRIPTION_PREFIX.length)
+        : figmaNameToCssName(v.name);
 
-        return {
-          id: v.id,
-          figmaName: v.name,
-          cssVar,
-          resolvedType: v.resolvedType,
-          scopes: v.scopes,
-          codeSyntax: v.codeSyntax,
-          description: v.description,
-          values: valuesByMode,
-        };
-      });
+      return {
+        id: v.id,
+        figmaName: v.name,
+        cssVar,
+        resolvedType: v.resolvedType,
+        scopes: v.scopes,
+        codeSyntax: v.codeSyntax,
+        description: v.description,
+        values: valuesByMode,
+      };
+    });
 
     return {
       id: colId,

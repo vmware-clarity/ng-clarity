@@ -1,9 +1,6 @@
 name: Figma Token Publish
 
 on:
-  # Called by release.yml (production push) and release-preview.yml (preview).
-  # Replaces the old workflow_run trigger so the connection is explicit and
-  # visible in the workflow graph.
   workflow_call:
     inputs:
       dry_run:
