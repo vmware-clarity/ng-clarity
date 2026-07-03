@@ -80,44 +80,66 @@ function resolveVariableId({ figmaName, resolvedType, existingVarByName, depreca
 }
 
 /**
- * Plan a single variable: emit a CREATE or UPDATE payload entry using
- * {@link resolveVariableId} for the ID-assignment step.
+ * Per-collection context threaded through the variable-planning helpers below
+ * instead of repeating the same handful of arguments for every variable in
+ * the collection — every field here is constant for the whole collection.
  *
- * Used by the human-readable branch where mode values are known upfront
- * and no two-pass approach is needed.
- *
- * @param {Object} p
- * @param {string} p.figmaName  Figma-path variable name (slash-separated or display name).
- * @param {string} p.colId      Collection ID (real or temp).
- * @param {string} p.resolvedType  Figma variable type ('COLOR' | 'FLOAT' | 'STRING').
- * @param {string[]} p.scopes
- * @param {Record<string, string>} p.codeSyntax
- * @param {string} p.description
- * @param {boolean} p.hiddenFromPublishing
- * @param {Map<string, any>} p.existingVarByName
- * @param {Set<string>} p.deprecatedVarIds  Mutated: receives the old ID if type changes.
- * @param {any[]} p.payloadVars          Mutated: receives the rename UPDATE + CREATE/UPDATE entry.
- * @returns {{ varId: string, isUpdate: boolean, diffEntry: DiffEntry }}
+ * @typedef {Object} CollectionPlanContext
+ * @property {string} colId
+ * @property {boolean} hiddenFromPublishing
+ * @property {any[]} payloadVars   Mutated: receives CREATE/UPDATE entries.
+ * @property {DiffEntry[]} diff    Mutated: receives one entry per planned variable.
+ * @property {{ new: number, update: number, skipped: number }} stats  Mutated: `new`/`update` incremented.
+ * @property {Map<string, string>} modeIdToName
+ * @property {Map<string, string>} reverseIdMap
+ * @property {Map<string, any>} existingVarByName  Only read by {@link planVariableCreateOrUpdate}.
+ * @property {Set<string>} deprecatedVarIds        Only written by {@link planVariableCreateOrUpdate} (via {@link resolveVariableId}) on retype.
  */
-function planVariableCreateOrUpdate({
-  figmaName,
-  colId,
-  resolvedType,
-  scopes,
-  codeSyntax,
-  description,
-  hiddenFromPublishing,
-  existingVarByName,
-  deprecatedVarIds,
-  payloadVars,
-}) {
-  const { varId, isUpdate, isRetype, prevType } = resolveVariableId({
+
+/**
+ * Build and push the CREATE/UPDATE payload entry for a variable whose ID has
+ * already been resolved via {@link resolveVariableId}, then record its diff
+ * entry (computing `changes` via {@link detectChanges} when it's an update)
+ * and bump `ctx.stats.new`/`ctx.stats.update` accordingly.
+ *
+ * Shared by {@link planVariableCreateOrUpdate} (human-readable branch, which
+ * resolves and builds in the same step) and the regular-collection pass 2
+ * (which resolves in pass 1 and only builds the payload here, once mode
+ * values are known). `resolvedType` is always included in the payload, even
+ * for UPDATE: Figma variable types are immutable, so a genuine UPDATE never
+ * actually changes it — a real retype always forces `isUpdate: false` (see
+ * {@link resolveVariableId}) and goes through the CREATE branch instead.
+ *
+ * @param {CollectionPlanContext} ctx
+ * @param {Object} variable
+ * @param {string} variable.figmaName  Figma-path variable name (slash-separated or display name).
+ * @param {string} variable.resolvedType  Figma variable type ('COLOR' | 'FLOAT' | 'STRING').
+ * @param {string[]} variable.scopes
+ * @param {Record<string, string>} variable.codeSyntax
+ * @param {string} variable.description
+ * @param {string} variable.varId
+ * @param {boolean} variable.isUpdate
+ * @param {boolean} variable.isRetype
+ * @param {string|undefined} variable.prevType
+ * @param {any} variable.existingVar  Pre-existing Figma variable object; only read when `isUpdate`.
+ * @param {Array<{modeId: string, value: any}>} variable.newModeValues  Only read when `isUpdate`.
+ * @returns {string} varId
+ */
+function pushVariablePayload(ctx, variable) {
+  const { colId, hiddenFromPublishing, payloadVars, diff, stats, modeIdToName, reverseIdMap } = ctx;
+  const {
     figmaName,
     resolvedType,
-    existingVarByName,
-    deprecatedVarIds,
-    payloadVars,
-  });
+    scopes,
+    codeSyntax,
+    description,
+    varId,
+    isUpdate,
+    isRetype,
+    prevType,
+    existingVar,
+    newModeValues,
+  } = variable;
 
   payloadVars.push({
     action: isUpdate ? 'UPDATE' : 'CREATE',
@@ -131,12 +153,57 @@ function planVariableCreateOrUpdate({
     hiddenFromPublishing,
   });
 
-  /** @type {DiffEntry} */
   const diffEntry = isRetype
     ? { action: 'deprecate', name: figmaName, type: resolvedType, prevType }
     : { action: isUpdate ? 'update' : 'create', name: figmaName, type: resolvedType };
 
-  return { varId, isUpdate, diffEntry };
+  if (isUpdate) {
+    stats.update++;
+    diffEntry.changes = detectChanges(existingVar, {
+      scopes,
+      codeSyntax,
+      description,
+      hiddenFromPublishing,
+      newModeValues,
+      modeIdToName,
+      reverseIdMap,
+    });
+  } else {
+    stats.new++;
+  }
+  diff.push(diffEntry);
+
+  return varId;
+}
+
+/**
+ * Plan a single variable: resolve its ID via {@link resolveVariableId} and emit
+ * a CREATE or UPDATE payload entry via {@link pushVariablePayload}.
+ *
+ * Used by the human-readable branch where mode values are known upfront
+ * and no two-pass approach is needed.
+ *
+ * @param {CollectionPlanContext} ctx
+ * @param {Object} variable
+ * @param {string} variable.figmaName  Figma-path variable name (slash-separated or display name).
+ * @param {string} variable.resolvedType  Figma variable type ('COLOR' | 'FLOAT' | 'STRING').
+ * @param {string[]} variable.scopes
+ * @param {Record<string, string>} variable.codeSyntax
+ * @param {string} variable.description
+ * @param {Array<{modeId: string, value: any}>} variable.newModeValues  Only read when the variable already exists.
+ * @returns {string} varId
+ */
+function planVariableCreateOrUpdate(ctx, variable) {
+  const { figmaName, resolvedType } = variable;
+  const { varId, isUpdate, isRetype, existingVar, prevType } = resolveVariableId({
+    figmaName,
+    resolvedType,
+    existingVarByName: ctx.existingVarByName,
+    deprecatedVarIds: ctx.deprecatedVarIds,
+    payloadVars: ctx.payloadVars,
+  });
+
+  return pushVariablePayload(ctx, { ...variable, varId, isUpdate, isRetype, existingVar, prevType });
 }
 
 /**
@@ -201,7 +268,7 @@ export function buildCollectionPlan({
   rules,
   varLookup = null,
 }) {
-  const { isExcluded, resolveFigmaScopes, buildCodeSyntax } = rules;
+  const { hiddenFromPublishing } = colDef;
 
   /** Map from "collectionId/modeName" → modeId */
   const existingModeKey = (colId, modeName) =>
@@ -209,15 +276,6 @@ export function buildCollectionPlan({
 
   const payloadCollections = [];
   const payloadModes = [];
-  const payloadVars = [];
-  const payloadModeValues = [];
-  const deprecatedVarIds = new Set();
-  /** @type {DiffEntry[]} */
-  const diff = [];
-
-  let statsNew = 0;
-  let statsUpdate = 0;
-  let statsSkipped = 0;
 
   const colName = colDef.name;
   const existingCol = existingCollByName.get(colName);
@@ -228,7 +286,7 @@ export function buildCollectionPlan({
     action: isNewCol ? 'CREATE' : 'UPDATE',
     id: colId,
     name: colName,
-    hiddenFromPublishing: colDef.hiddenFromPublishing,
+    hiddenFromPublishing,
   });
 
   // Ensure modes exist
@@ -251,166 +309,196 @@ export function buildCollectionPlan({
     }
   }
 
-  if (colDef.humanReadableEntries) {
-    // Human-readable alias collection: each entry creates a VARIABLE_ALIAS
-    // that points to the corresponding already-published semantic token.
-    // The Figma variable name is the display name; the value is a VARIABLE_ALIAS.
-    const modeIdToName = new Map(modeIds.map((id, i) => [id, colDef.modes[i]]));
-    const reverseIdMap = buildReverseIdMap(idMap);
+  const branchArgs = {
+    colDef,
+    colId,
+    modeIds,
+    hiddenFromPublishing,
+    idMap,
+    rules,
+    varLookup,
+    existingVarByName,
+    varsByColId,
+  };
+  const { payloadVars, payloadModeValues, deprecatedVarIds, stats, diff } = colDef.humanReadableEntries
+    ? planHumanReadableCollection(branchArgs)
+    : planRegularCollection(branchArgs);
 
-    // Scope variable lookups to this collection so that identical display names
-    // in sibling humanReadable collections don't collide.
-    // varsByColId is keyed by collection ID and preserves every variable
-    // independently — unlike the global existingVarByName map which stores
-    // only the last variable per name (last-write-wins across collections).
-    const colVarByName = varsByColId.get(colId) ?? new Map();
+  return { payloadCollections, payloadModes, payloadVars, payloadModeValues, deprecatedVarIds, stats, diff };
+}
 
-    for (const [displayName, cssName] of colDef.humanReadableEntries) {
-      if (isExcluded(cssName)) {
-        continue;
-      }
+/**
+ * Plan a human-readable alias collection: each entry creates a VARIABLE_ALIAS
+ * that points to the corresponding already-published semantic token. The
+ * Figma variable name is the display name; the value is a VARIABLE_ALIAS.
+ *
+ * @param {Object} p
+ * @param {import('./collections.mjs').CollectionDef} p.colDef
+ * @param {string} p.colId
+ * @param {string[]} p.modeIds
+ * @param {boolean} p.hiddenFromPublishing
+ * @param {import('./id-map.mjs').IdMap} p.idMap
+ * @param {import('./token-rules.mjs').createTokenRules extends (...a: any) => infer R ? R : never} p.rules
+ * @param {Map<string, Map<string, any>>} p.varsByColId
+ * @returns {{ payloadVars: any[], payloadModeValues: any[], deprecatedVarIds: Set<string>, stats: { new: number, update: number, skipped: number }, diff: DiffEntry[] }}
+ */
+function planHumanReadableCollection({ colDef, colId, modeIds, hiddenFromPublishing, idMap, rules, varsByColId }) {
+  const { isExcluded, resolveFigmaScopes, buildCodeSyntax } = rules;
+  const payloadVars = [];
+  const payloadModeValues = [];
+  const deprecatedVarIds = new Set();
+  /** @type {DiffEntry[]} */
+  const diff = [];
+  const stats = { new: 0, update: 0, skipped: 0 };
 
-      const refId = idMap.get(cssName);
-      if (!refId) {
-        // Referenced token is not in idMap — usually a typo in the config or a
-        // token that was excluded/never published.  Warn loudly so the empty
-        // alias is not silently swallowed (which makes the whole collection
-        // look "ignored"), and count it as skipped.
-        console.warn(`    ⚠️   humanReadable "${displayName}" → ${cssName}: referenced token not found; skipping.`);
-        statsSkipped++;
-        continue;
-      }
+  // Scope variable lookups to this collection so that identical display names
+  // in sibling humanReadable collections don't collide.
+  // varsByColId is keyed by collection ID and preserves every variable
+  // independently — unlike the global existingVarByName map which stores
+  // only the last variable per name (last-write-wins across collections).
+  const colVarByName = varsByColId.get(colId) ?? new Map();
 
-      const scopes = resolveFigmaScopes(cssName);
-      const codeSyntax = buildCodeSyntax(cssName);
-      const resolvedType = idMap.getMeta(refId)?.type ?? 'STRING';
-      const aliasValue = { type: 'VARIABLE_ALIAS', id: refId };
-      const description = `Alias of: ${cssName}`;
+  /** @type {CollectionPlanContext} */
+  const ctx = {
+    colId,
+    hiddenFromPublishing,
+    payloadVars,
+    diff,
+    stats,
+    modeIdToName: new Map(modeIds.map((id, i) => [id, colDef.modes[i]])),
+    reverseIdMap: buildReverseIdMap(idMap),
+    existingVarByName: colVarByName,
+    deprecatedVarIds,
+  };
 
-      // Skip if the variable already exists with the same type and identical values.
-      const existingHrVar = colVarByName.get(displayName);
-      if (existingHrVar && existingHrVar.resolvedType === resolvedType) {
-        const newModeValues = modeIds.map(modeId => ({ modeId, value: aliasValue }));
-        if (
-          !hasVariableChanged(existingHrVar, {
-            scopes,
-            codeSyntax,
-            description,
-            hiddenFromPublishing: colDef.hiddenFromPublishing,
-            newModeValues,
-          })
-        ) {
-          continue;
-        }
-      }
-
-      const { varId, isUpdate, diffEntry } = planVariableCreateOrUpdate({
-        figmaName: displayName,
-        colId,
-        resolvedType,
-        scopes,
-        codeSyntax,
-        description,
-        hiddenFromPublishing: colDef.hiddenFromPublishing,
-        existingVarByName: colVarByName,
-        deprecatedVarIds,
-        payloadVars,
-      });
-
-      if (isUpdate) {
-        statsUpdate++;
-        const newModeValues = modeIds.map(modeId => ({ modeId, value: aliasValue }));
-        diffEntry.changes = detectChanges(existingHrVar, {
-          scopes,
-          codeSyntax,
-          description,
-          hiddenFromPublishing: colDef.hiddenFromPublishing,
-          newModeValues,
-          modeIdToName,
-          reverseIdMap,
-        });
-      } else {
-        statsNew++;
-      }
-
-      diff.push(diffEntry);
-
-      // All modes share the same VARIABLE_ALIAS value
-      for (let mi = 0; mi < colDef.modes.length; mi++) {
-        payloadModeValues.push({
-          variableId: varId,
-          modeId: modeIds[mi],
-          value: aliasValue,
-        });
-      }
-    }
-  } else {
-    // Regular collection: scan the CSS source and emit one variable per token.
-    //
-    // Two passes are required so that intra-collection VARIABLE_ALIAS chains
-    // resolve correctly regardless of CSS Map iteration order.  If token A's
-    // dark-mode value is var(--token-B) and B happens to appear later in the
-    // CSS Map, B won't be in idMap when A's mode values are resolved in a
-    // single pass — resolveValue falls through to STRING and Figma rejects the
-    // push with a type-mismatch error.  Pass 1 populates idMap for every token
-    // in the collection first; pass 2 resolves mode values against the complete map.
-    const baseSource = colDef.source(0);
-    const tokenNames = [...baseSource.keys()].filter(n => colDef.filter(n) && !isExcluded(n));
-
-    // ── Pass 1: assign IDs and populate idMap only ─────────────────────────
-    // Payload pushes are deferred to pass 2 so that mode values — which require
-    // a complete intra-collection idMap — are available for change detection
-    // before deciding whether an UPDATE is actually necessary.
-    /** @type {Array<{ cssName: string, figmaName: string, varId: string, baseValue: string, isUpdate: boolean, isRetype: boolean, existingVar: any, scopes: string[], codeSyntax: Record<string,string>, resolvedType: string, prevType: string|undefined }>} */
-    const tokenEntries = [];
-
-    for (const cssName of tokenNames) {
-      const figmaName = cssNameToFigmaName(cssName);
-      const scopes = resolveFigmaScopes(cssName);
-      const codeSyntax = buildCodeSyntax(cssName);
-
-      const baseValue = baseSource.get(cssName) ?? '';
-      const baseResolved = resolveValue(baseValue, idMap, varLookup, cssName);
-
-      // Skip tokens whose value is a complex multi-value string (calc chains, etc.)
-      if (baseResolved.type === 'STRING' && baseValue.includes('var(') && baseValue.includes(',')) {
-        statsSkipped++;
-        continue;
-      }
-
-      const resolvedType = inferType(cssName, baseValue, idMap, varLookup).type;
-      // Delegate DELETE-queueing, isRetype, isUpdate, and varId resolution to the
-      // shared helper — payload construction is deferred to pass 2.
-      const { varId, isUpdate, isRetype, existingVar, prevType } = resolveVariableId({
-        figmaName,
-        resolvedType,
-        existingVarByName,
-        deprecatedVarIds,
-        payloadVars,
-      });
-
-      idMap.set(cssName, varId, { type: resolvedType });
-      tokenEntries.push({
-        cssName,
-        figmaName,
-        varId,
-        baseValue,
-        isUpdate,
-        isRetype,
-        existingVar,
-        scopes,
-        codeSyntax,
-        resolvedType,
-        prevType,
-      });
+  for (const [displayName, cssName] of colDef.humanReadableEntries) {
+    if (isExcluded(cssName)) {
+      continue;
     }
 
-    // ── Pass 2: compute mode values, skip unchanged, push payloads ──────────
-    const modeIdToName = new Map(modeIds.map((id, i) => [id, colDef.modes[i]]));
-    // Built after pass 1 so that temp IDs for this collection's new variables are included.
-    const reverseIdMap = buildReverseIdMap(idMap);
+    const refId = idMap.get(cssName);
+    if (!refId) {
+      // Referenced token is not in idMap — usually a typo in the config or a
+      // token that was excluded/never published.  Warn loudly so the empty
+      // alias is not silently swallowed (which makes the whole collection
+      // look "ignored"), and count it as skipped.
+      console.warn(`    ⚠️   humanReadable "${displayName}" → ${cssName}: referenced token not found; skipping.`);
+      stats.skipped++;
+      continue;
+    }
 
-    for (const {
+    const scopes = resolveFigmaScopes(cssName);
+    const codeSyntax = buildCodeSyntax(cssName);
+    const resolvedType = idMap.getMeta(refId)?.type ?? 'STRING';
+    const aliasValue = { type: 'VARIABLE_ALIAS', id: refId };
+    const description = `Alias of: ${cssName}`;
+    // All modes share the same VARIABLE_ALIAS value.
+    const newModeValues = modeIds.map(modeId => ({ modeId, value: aliasValue }));
+
+    // Skip if the variable already exists with the same type and identical values.
+    const existingHrVar = colVarByName.get(displayName);
+    if (
+      existingHrVar &&
+      existingHrVar.resolvedType === resolvedType &&
+      !hasVariableChanged(existingHrVar, { scopes, codeSyntax, description, hiddenFromPublishing, newModeValues })
+    ) {
+      continue;
+    }
+
+    const varId = planVariableCreateOrUpdate(ctx, {
+      figmaName: displayName,
+      resolvedType,
+      scopes,
+      codeSyntax,
+      description,
+      newModeValues,
+    });
+
+    for (let mi = 0; mi < colDef.modes.length; mi++) {
+      payloadModeValues.push({ variableId: varId, modeId: modeIds[mi], value: aliasValue });
+    }
+  }
+
+  return { payloadVars, payloadModeValues, deprecatedVarIds, stats, diff };
+}
+
+/**
+ * Plan a regular collection: scan the CSS source and emit one variable per token.
+ *
+ * Two passes are required so that intra-collection VARIABLE_ALIAS chains
+ * resolve correctly regardless of CSS Map iteration order.  If token A's
+ * dark-mode value is var(--token-B) and B happens to appear later in the
+ * CSS Map, B won't be in idMap when A's mode values are resolved in a single
+ * pass — resolveValue falls through to STRING and Figma rejects the push with
+ * a type-mismatch error.  Pass 1 populates idMap for every token in the
+ * collection first; pass 2 resolves mode values against the complete map.
+ *
+ * @param {Object} p
+ * @param {import('./collections.mjs').CollectionDef} p.colDef
+ * @param {string} p.colId
+ * @param {string[]} p.modeIds
+ * @param {boolean} p.hiddenFromPublishing
+ * @param {import('./id-map.mjs').IdMap} p.idMap
+ * @param {import('./token-rules.mjs').createTokenRules extends (...a: any) => infer R ? R : never} p.rules
+ * @param {((name: string) => string | undefined) | null} p.varLookup
+ * @param {Map<string, any>} p.existingVarByName
+ * @returns {{ payloadVars: any[], payloadModeValues: any[], deprecatedVarIds: Set<string>, stats: { new: number, update: number, skipped: number }, diff: DiffEntry[] }}
+ */
+function planRegularCollection({
+  colDef,
+  colId,
+  modeIds,
+  hiddenFromPublishing,
+  idMap,
+  rules,
+  varLookup,
+  existingVarByName,
+}) {
+  const { isExcluded, resolveFigmaScopes, buildCodeSyntax } = rules;
+  const payloadVars = [];
+  const payloadModeValues = [];
+  const deprecatedVarIds = new Set();
+  /** @type {DiffEntry[]} */
+  const diff = [];
+  const stats = { new: 0, update: 0, skipped: 0 };
+
+  const baseSource = colDef.source(0);
+  const tokenNames = [...baseSource.keys()].filter(n => colDef.filter(n) && !isExcluded(n));
+
+  // ── Pass 1: assign IDs and populate idMap only ─────────────────────────
+  // Payload pushes are deferred to pass 2 so that mode values — which require
+  // a complete intra-collection idMap — are available for change detection
+  // before deciding whether an UPDATE is actually necessary.
+  /** @type {Array<{ cssName: string, figmaName: string, varId: string, baseValue: string, isUpdate: boolean, isRetype: boolean, existingVar: any, scopes: string[], codeSyntax: Record<string,string>, resolvedType: string, prevType: string|undefined }>} */
+  const tokenEntries = [];
+
+  for (const cssName of tokenNames) {
+    const figmaName = cssNameToFigmaName(cssName);
+    const scopes = resolveFigmaScopes(cssName);
+    const codeSyntax = buildCodeSyntax(cssName);
+
+    const baseValue = baseSource.get(cssName) ?? '';
+    const baseResolved = resolveValue(baseValue, idMap, varLookup, cssName);
+
+    // Skip tokens whose value is a complex multi-value string (calc chains, etc.)
+    if (baseResolved.type === 'STRING' && baseValue.includes('var(') && baseValue.includes(',')) {
+      stats.skipped++;
+      continue;
+    }
+
+    const resolvedType = inferType(cssName, baseValue, idMap, varLookup).type;
+    // Delegate DELETE-queueing, isRetype, isUpdate, and varId resolution to the
+    // shared helper — payload construction is deferred to pass 2.
+    const { varId, isUpdate, isRetype, existingVar, prevType } = resolveVariableId({
+      figmaName,
+      resolvedType,
+      existingVarByName,
+      deprecatedVarIds,
+      payloadVars,
+    });
+
+    idMap.set(cssName, varId, { type: resolvedType });
+    tokenEntries.push({
       cssName,
       figmaName,
       varId,
@@ -422,94 +510,66 @@ export function buildCollectionPlan({
       codeSyntax,
       resolvedType,
       prevType,
-    } of tokenEntries) {
-      const description = `CSS: ${cssName}`;
+    });
+  }
 
-      // Compute new mode values now that all intra-collection tokens are in idMap.
-      const newModeValues = [];
-      for (let mi = 0; mi < colDef.modes.length; mi++) {
-        const modeSource = colDef.source(mi);
-        const rawValue = modeSource.get(cssName) ?? baseValue;
-        const resolved = resolveValue(rawValue, idMap, varLookup, cssName);
-        if (resolved.type === 'STRING' && rawValue.includes('var(') && rawValue.includes(',')) {
-          continue;
-        }
-        newModeValues.push({ modeId: modeIds[mi], value: resolved.figmaValue });
-      }
+  // ── Pass 2: compute mode values, skip unchanged, push payloads ──────────
+  /** @type {CollectionPlanContext} */
+  const ctx = {
+    colId,
+    hiddenFromPublishing,
+    payloadVars,
+    diff,
+    stats,
+    modeIdToName: new Map(modeIds.map((id, i) => [id, colDef.modes[i]])),
+    // Built after pass 1 so that temp IDs for this collection's new variables are included.
+    reverseIdMap: buildReverseIdMap(idMap),
+    existingVarByName,
+    deprecatedVarIds,
+  };
 
-      // For existing (non-deprecated) variables, skip if nothing actually changed.
-      if (
-        isUpdate &&
-        !hasVariableChanged(existingVar, {
-          scopes,
-          codeSyntax,
-          description,
-          hiddenFromPublishing: colDef.hiddenFromPublishing,
-          newModeValues,
-        })
-      ) {
+  for (const tokenEntry of tokenEntries) {
+    // const { cssName, baseValue, isUpdate, existingVar, scopes, codeSyntax } = tokenEntry;
+    const description = `CSS: ${tokenEntry.cssName}`;
+
+    // Compute new mode values now that all intra-collection tokens are in idMap.
+    const newModeValues = [];
+    for (let mi = 0; mi < colDef.modes.length; mi++) {
+      const modeSource = colDef.source(mi);
+      const rawValue = modeSource.get(tokenEntry.cssName) ?? tokenEntry.baseValue;
+      const resolved = resolveValue(rawValue, idMap, varLookup, tokenEntry.cssName);
+      if (resolved.type === 'STRING' && rawValue.includes('var(') && rawValue.includes(',')) {
         continue;
       }
+      newModeValues.push({ modeId: modeIds[mi], value: resolved.figmaValue });
+    }
 
-      // Push variable payload.
-      if (isUpdate) {
-        payloadVars.push({
-          action: 'UPDATE',
-          id: varId,
-          name: figmaName,
-          variableCollectionId: colId,
-          scopes,
-          codeSyntax,
-          description,
-          hiddenFromPublishing: colDef.hiddenFromPublishing,
-        });
-        statsUpdate++;
-        const changes = detectChanges(existingVar, {
-          scopes,
-          codeSyntax,
-          description,
-          hiddenFromPublishing: colDef.hiddenFromPublishing,
-          newModeValues,
-          modeIdToName,
-          reverseIdMap,
-        });
-        diff.push({ action: 'update', name: figmaName, type: resolvedType, changes });
-      } else {
-        payloadVars.push({
-          action: 'CREATE',
-          id: varId,
-          name: figmaName,
-          variableCollectionId: colId,
-          resolvedType,
-          scopes,
-          codeSyntax,
-          description,
-          hiddenFromPublishing: colDef.hiddenFromPublishing,
-        });
-        statsNew++;
-        diff.push(
-          isRetype
-            ? { action: 'deprecate', name: figmaName, type: resolvedType, prevType }
-            : { action: 'create', name: figmaName, type: resolvedType }
-        );
-      }
+    // For existing (non-deprecated) variables, skip if nothing actually changed.
+    if (
+      tokenEntry.isUpdate &&
+      !hasVariableChanged(tokenEntry.existingVar, {
+        scopes: tokenEntry.scopes,
+        codeSyntax: tokenEntry.codeSyntax,
+        description,
+        hiddenFromPublishing,
+        newModeValues,
+      })
+    ) {
+      continue;
+    }
 
-      // Push mode values.
-      for (const { modeId, value } of newModeValues) {
-        payloadModeValues.push({ variableId: varId, modeId, value });
-      }
+    // Push variable payload — tokenEntry already carries figmaName, resolvedType,
+    // scopes, codeSyntax, varId, isUpdate, isRetype, prevType, existingVar; only
+    // description and newModeValues are pass-2-specific additions.
+    pushVariablePayload(ctx, { ...tokenEntry, description, newModeValues });
+
+    // Push mode values.
+    for (const { modeId, value } of newModeValues) {
+      payloadModeValues.push({ variableId: tokenEntry.varId, modeId, value });
     }
   }
 
-  return {
-    payloadCollections,
-    payloadModes,
-    payloadVars,
-    payloadModeValues,
-    deprecatedVarIds,
-    stats: { new: statsNew, update: statsUpdate, skipped: statsSkipped },
-    diff,
-  };
+  return { payloadVars, payloadModeValues, deprecatedVarIds, stats, diff };
 }
 
 /**
