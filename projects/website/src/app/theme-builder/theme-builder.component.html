@@ -78,7 +78,7 @@
                   <button
                     *ngIf="!colorGroup.base.isOriginalColor"
                     class="btn btn-sm btn-icon btn-primary"
-                    (click)="resetColor($event, colorGroup.base)"
+                    (click)="resetColor($event, colorGroup.base, colorStruct[activeTheme][colorGroup.key])"
                     title="Back to original color"
                   >
                     <cds-icon shape="undo"></cds-icon>
@@ -118,13 +118,7 @@
                         type="color"
                         class="tb-color-picker"
                         [value]="colorVariant.hex"
-                        (input)="
-                          setCurrentColor(
-                            colorVariant,
-                            $any($event.target).value,
-                            colorStruct[activeTheme][colorGroup.key]
-                          )
-                        "
+                        (input)="setCurrentColor(colorVariant, $any($event.target).value)"
                       />
                       <input readonly type="text" class="tb-hex-input" [value]="colorVariant.hex" />
                       <button

@@ -8,6 +8,25 @@
 import { Color } from './color';
 import { DataRow, ThemePreset } from './types';
 
+export const DEFAULT_OVERRIDES = {
+  '--cds-alias-status-info': ['--cds-alias-utility-blue'],
+  '--cds-alias-status-info-tint': [
+    '--cds-alias-utility-blue-tint',
+    '--cds-alias-object-interaction-info-secondary-hover',
+  ],
+  '--cds-alias-status-info-shade': [
+    '--cds-alias-object-interaction-info-hover',
+    '--cds-alias-typography-info-hover',
+    '--cds-alias-utility-blue-shade',
+  ],
+  '--cds-alias-status-info-dark': [
+    '--cds-alias-utility-blue-dark',
+    '--cds-alias-object-interaction-info-click',
+    '--cds-alias-object-interaction-info-active',
+    '--cds-alias-object-interaction-info-selected',
+  ],
+};
+
 export const TOKEN_KEYS = {
   baseTokens: [
     '--cds-alias-primary',
