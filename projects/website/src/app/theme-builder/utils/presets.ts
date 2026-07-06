@@ -9,10 +9,12 @@ import { Color } from './color';
 import { DataRow, ThemePreset } from './types';
 
 export const DEFAULT_OVERRIDES = {
+  // primary colors have no overrides. They are used as is.
+  // info
   '--cds-alias-status-info': ['--cds-alias-utility-blue'],
   '--cds-alias-status-info-tint': [
-    '--cds-alias-utility-blue-tint',
     '--cds-alias-object-interaction-info-secondary-hover',
+    '--cds-alias-utility-blue-tint',
   ],
   '--cds-alias-status-info-shade': [
     '--cds-alias-object-interaction-info-hover',
@@ -20,10 +22,54 @@ export const DEFAULT_OVERRIDES = {
     '--cds-alias-utility-blue-shade',
   ],
   '--cds-alias-status-info-dark': [
-    '--cds-alias-utility-blue-dark',
     '--cds-alias-object-interaction-info-click',
     '--cds-alias-object-interaction-info-active',
     '--cds-alias-object-interaction-info-selected',
+  ],
+  // success
+  '--cds-alias-status-success': ['--cds-alias-utility-green'],
+  '--cds-alias-status-success-tint': [
+    '--cds-alias-object-interaction-success-secondary-hover',
+    '--cds-alias-utility-green-tint',
+  ],
+  '--cds-alias-status-success-shade': [
+    '--cds-alias-object-interaction-success-hover',
+    '--cds-alias-typography-success-hover',
+    '--cds-alias-utility-green-shade',
+  ],
+  '--cds-alias-status-success-dark': [
+    '--cds-alias-object-interaction-success-click',
+    '--cds-alias-object-interaction-success-active',
+  ],
+  // warning
+  '--cds-alias-status-warning': ['--cds-alias-utility-yellow'],
+  '--cds-alias-status-warning-tint': [
+    '--cds-alias-object-interaction-warning-secondary-hover',
+    '--cds-alias-utility-yellow-tint',
+  ],
+  '--cds-alias-status-warning-shade': [
+    '--cds-alias-object-interaction-warning-hover',
+    '--cds-alias-typography-warning-hover',
+    '--cds-alias-utility-yellow-shade',
+  ],
+  '--cds-alias-status-warning-dark': [
+    '--cds-alias-object-interaction-warning-click',
+    '--cds-alias-object-interaction-warning-active',
+  ],
+  //danger
+  '--cds-alias-status-danger': ['--cds-alias-utility-red'],
+  '--cds-alias-status-danger-tint': [
+    '--cds-alias-object-interaction-danger-secondary-hover',
+    '--cds-alias-utility-red-tint',
+  ],
+  '--cds-alias-status-danger-shade': [
+    '--cds-alias-object-interaction-danger-hover',
+    '--cds-alias-typography-danger-hover',
+    '--cds-alias-utility-red-shade',
+  ],
+  '--cds-alias-status-danger-dark': [
+    '--cds-alias-object-interaction-danger-click',
+    '--cds-alias-object-interaction-danger-active',
   ],
 };
 
