@@ -29,6 +29,18 @@ export default {
         Multi: SelectionType.Multi,
       },
     },
+    clrDetailWidth: {
+      description:
+        'Sets the width of the detail pane as a percentage of the datagrid width. ' +
+        'Accepts values between 0 and 100 (inclusive). Values outside this range are clamped: ' +
+        'negative values become 0 and values above 100 become 100. ' +
+        'Setting null or undefined restores the default of 66.',
+      control: { type: 'number', min: 0, max: 100 },
+      table: {
+        defaultValue: { summary: '66' },
+        type: { summary: 'number' },
+      },
+    },
     // methods
     close: { control: { disable: true } },
     // story helpers
@@ -54,6 +66,7 @@ export default {
     clrDgSelectionType: SelectionType.None,
     clrDetailAriaLabel: '',
     clrDetailAriaLabelledBy: '',
+    clrDetailWidth: 66,
     // story helpers
     elements,
     detailContentType: 'json',
@@ -153,6 +166,7 @@ const DetailTemplate: StoryFn = args => {
         <clr-dg-detail
           [ngClass]="{ highlight }"
           *clrIfDetail="let element"
+          [clrDetailWidth]="clrDetailWidth"
           ${args.clrDetailAriaLabel ? '[clrDetailAriaLabel]="clrDetailAriaLabel"' : ''}
           ${args.clrDetailAriaLabelledBy ? '[clrDetailAriaLabelledBy]="clrDetailAriaLabelledBy"' : ''}
         >
@@ -215,6 +229,16 @@ export const OpenDetail: StoryObj = {
     detailContentType: 'datagrid',
     // The height is set larger than the height of the rows to regression test the detail pane border. (CDE-2188)
     height: 500,
+  },
+};
+
+export const OpenDetailWithCustomWidth: StoryObj = {
+  render: DetailTemplate,
+  play: openDetail,
+  args: {
+    detailContentType: 'json',
+    height: 500,
+    clrDetailWidth: 90,
   },
 };
 export const OpenDetailWithRemovedMargin: StoryObj = {

@@ -242,6 +242,22 @@ export const LabelComponentClickableWithClose: StoryObj = {
   },
 };
 
+export const LabelComponentSolidDisabled: StoryObj = {
+  argTypes: {
+    labelType: { control: { disable: true }, table: { disable: true } },
+    cssLabel: { control: { disable: true }, table: { disable: true } },
+  },
+  args: {
+    labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
+    disabled: true,
+    cssLabel: false,
+    clickable: true,
+    closeIcon: true,
+    solid: true,
+    badgeText: '42',
+  },
+};
+
 export const LabelComponentDisabled: StoryObj = {
   argTypes: {
     labelType: { control: { disable: true }, table: { disable: true } },
