@@ -50,7 +50,28 @@
       "additionalProperties": { "type": "string" }
     }
   },
+  "patternProperties": {
+    "^[a-zA-Z][a-zA-Z0-9]*PrefixList$|^[a-zA-Z][a-zA-Z0-9]*Prefixes$": {
+      "type": "array",
+      "description": "A named list of CSS variable name prefixes, spliced into any filter.include/exclude that references it via { \"$ref\": \"<this key>\" } — lets a prefix group be defined once and reused across collections instead of duplicated.",
+      "items": { "type": "string" }
+    }
+  },
   "definitions": {
+    "refOrString": {
+      "description": "Either a literal CSS variable name prefix, or a { \"$ref\": \"key\" } marker that splices in the named top-level prefix-list array (e.g. \"typographyColorPrefixes\").",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["$ref"],
+          "properties": {
+            "$ref": { "type": "string", "description": "Name of a top-level *Prefixes/*PrefixList array property." }
+          }
+        }
+      ]
+    },
     "humanReadableMap": {
       "type": "object",
       "description": "Map of designer display name (key) to CSS custom-property name (value, must start with '--'). One CSS variable can appear as the value of multiple entries to expose it under several display names.",
@@ -89,13 +110,13 @@
           "properties": {
             "include": {
               "type": "array",
-              "description": "CSS variable name prefixes; a token is included if it starts with at least one (OR). May be empty only for humanReadable collections.",
-              "items": { "type": "string" }
+              "description": "CSS variable name prefixes (or { \"$ref\": \"...\" } markers, see refOrString); a token is included if it starts with at least one resolved prefix (OR). May be empty only for humanReadable collections.",
+              "items": { "$ref": "#/definitions/refOrString" }
             },
             "exclude": {
               "type": "array",
-              "description": "CSS variable name prefixes; a token is excluded if it starts with any (OR).",
-              "items": { "type": "string" }
+              "description": "CSS variable name prefixes (or { \"$ref\": \"...\" } markers, see refOrString); a token is excluded if it starts with any resolved prefix (OR).",
+              "items": { "$ref": "#/definitions/refOrString" }
             }
           }
         },
