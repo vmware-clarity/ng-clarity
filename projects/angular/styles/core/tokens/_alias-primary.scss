@@ -8,28 +8,31 @@
 @use '../../mixins';
 
 @include mixins.root-or-host() {
-  --cds-alias-primary-tint: var(--cds-global-color-blue-50);
-  --cds-alias-primary-tint-dark: var(--cds-global-color-blue-75);
-  --cds-alias-primary: var(--cds-global-color-blue-700);
-  --cds-alias-primary-shade: var(--cds-global-color-blue-800);
-  --cds-alias-primary-dark: var(--cds-global-color-blue-900);
+  &,
+  & [cds-theme] {
+    --cds-alias-primary-tint: var(--cds-global-color-blue-50);
+    --cds-alias-primary-tint-dark: var(--cds-global-color-blue-75);
+    --cds-alias-primary: var(--cds-global-color-blue-700);
+    --cds-alias-primary-shade: var(--cds-global-color-blue-800);
+    --cds-alias-primary-dark: var(--cds-global-color-blue-900);
 
-  // info overrides will affect primary tokens, but primary overrides will not affect info tokens
-  //--cds-alias-primary-tint: var(--cds-alias-status-info-tint);
-  //--cds-alias-primary-tint-dark: var(--cds-alias-status-info);
-  //--cds-alias-primary: var(--cds-alias-status-info);
-  //--cds-alias-primary-shade: var(--cds-alias-status-info-shade);
-  //--cds-alias-primary-dark: var(--cds-alias-status-info);
+    // info overrides will affect primary tokens, but primary overrides will not affect info tokens
+    //--cds-alias-primary-tint: var(--cds-alias-status-info-tint);
+    //--cds-alias-primary-tint-dark: var(--cds-alias-status-info);
+    //--cds-alias-primary: var(--cds-alias-status-info);
+    //--cds-alias-primary-shade: var(--cds-alias-status-info-shade);
+    //--cds-alias-primary-dark: var(--cds-alias-status-info);
 
-  //--cds-alias-primary-tint: hsl(184deg, 45%, 94%);
-  //--cds-alias-primary-tint-dark: hsl(184deg, 45%, 90%);
-  //--cds-alias-primary: hsl(184deg, 45%, 37%);
-  //--cds-alias-primary-shade: hsl(184deg, 45%, 33%);
-  //--cds-alias-primary-dark: hsl(184deg, 45%, 20%);
+    //--cds-alias-primary-tint: hsl(184deg, 45%, 94%);
+    //--cds-alias-primary-tint-dark: hsl(184deg, 45%, 90%);
+    //--cds-alias-primary: hsl(184deg, 45%, 37%);
+    //--cds-alias-primary-shade: hsl(184deg, 45%, 33%);
+    //--cds-alias-primary-dark: hsl(184deg, 45%, 20%);
 
-  //--cds-alias-primary-tint: var(--cds-global-color-aqua-50);
-  //--cds-alias-primary-tint-dark: var(--cds-global-color-jade-50);
-  //--cds-alias-primary: var(--cds-global-color-aqua-600);
-  //--cds-alias-primary-shade: var(--cds-global-color-aqua-700);
-  //--cds-alias-primary-dark: var(--cds-global-color-aqua-800);
+    //--cds-alias-primary-tint: var(--cds-global-color-aqua-50);
+    //--cds-alias-primary-tint-dark: var(--cds-global-color-jade-50);
+    //--cds-alias-primary: var(--cds-global-color-aqua-600);
+    //--cds-alias-primary-shade: var(--cds-global-color-aqua-700);
+    //--cds-alias-primary-dark: var(--cds-global-color-aqua-800);
+  }
 }
