@@ -40,10 +40,12 @@ import { buildCollectionDefs } from '../core/collections.mjs';
  * @property {string} root
  */
 
+const scriptRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+
 const paths = {
-  root: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..'),
+  root: path.resolve(scriptRoot, '..'),
   get configPath() {
-    return path.join(this.root, 'figma-tokens.config.json');
+    return path.join(scriptRoot, 'figma-tokens.config.json');
   },
   get cssFile() {
     return path.join(this.root, 'dist', 'clr-ui', 'clr-ui.css');

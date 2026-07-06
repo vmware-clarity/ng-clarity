@@ -26,7 +26,7 @@ export function loadEnv({ env = process.env } = {}) {
   if (!figmaToken || !figmaFileKey) {
     throw new Error(
       '❌  FIGMA_TOKEN and FIGMA_FILE_KEY must be set (e.g. via .env.figma).\n' +
-        '    Tip: to inspect tokens without credentials, run: node scripts/figma/index.mjs --extract'
+        '    Tip: to inspect tokens without credentials, run: node figma/index.mjs --extract'
     );
   }
 

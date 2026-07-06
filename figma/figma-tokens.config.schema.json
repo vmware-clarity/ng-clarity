@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://clarity.design/schemas/figma-tokens.config.schema.json",
   "title": "Figma Tokens Publisher Config",
-  "description": "Configuration for scripts/figma/index.mjs — how compiled CSS custom properties are mapped to Figma variable collections, scopes, code syntax, and human-readable aliases.",
+  "description": "Configuration for figma/index.mjs — how compiled CSS custom properties are mapped to Figma variable collections, scopes, code syntax, and human-readable aliases.",
   "type": "object",
   "additionalProperties": false,
   "required": ["collections"],

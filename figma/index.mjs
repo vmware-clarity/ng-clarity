@@ -20,9 +20,9 @@
  * logic branch (dry-run / extract / preview / push) lives in its own controller.
  *
  * Usage:
- *   node --env-file=.env.figma scripts/figma/index.mjs [options]
+ *   node --env-file=.env.figma figma/index.mjs [options]
  *   OR
- *   FIGMA_TOKEN=figd_XXXXXXXXXXXXXX FIGMA_FILE_KEY=YYYYYYYYYYYYYY node scripts/figma/index.mjs [options]
+ *   FIGMA_TOKEN=figd_XXXXXXXXXXXXXX FIGMA_FILE_KEY=YYYYYYYYYYYYYY node figma/index.mjs [options]
  *
  * Options:
  *   --dry-run              Parse and plan the push but make no API calls.

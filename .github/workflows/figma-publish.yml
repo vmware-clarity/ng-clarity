@@ -77,7 +77,7 @@ jobs:
           FLAGS=""
           [[ "${{ inputs.dry_run }}" == "true" ]] && FLAGS="$FLAGS --dry-run"
           [[ "${{ inputs.preview }}" == "true" ]] && FLAGS="$FLAGS --preview"
-          node scripts/figma/index.mjs $FLAGS
+          node figma/index.mjs $FLAGS
 
       # ── Summary ──────────────────────────────────────────────────────────────
       - name: Write job summary

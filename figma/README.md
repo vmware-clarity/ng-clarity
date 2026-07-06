@@ -19,7 +19,7 @@ The CSS is the **single source of truth**: this tool only mirrors it into Figma.
 2. Parse every CSS custom property and resolve its value to a typed Figma payload
    (COLOR / FLOAT / STRING / VARIABLE_ALIAS).
 3. Apply scope, exclusion, and code-syntax rules from
-   [`figma-tokens.config.json`](../../figma-tokens.config.json).
+   [`figma-tokens.config.json`](./figma-tokens.config.json).
 4. Diff against the variables already in the Figma file and push only the
    create/update/delete operations needed.
 
@@ -117,15 +117,15 @@ Or invoke the script directly:
 
 ```bash
 # With ENV file
-node --env-file=.env.figma scripts/figma/index.mjs [--preview] [--dry-run] [--extract [file]]
+node --env-file=.env.figma figma/index.mjs [--preview] [--dry-run] [--extract [file]]
 # OR with process variables
-FIGMA_TOKEN=figd_XXXXXXXXXXXXXX FIGMA_FILE_KEY=YYYYYYYYYYYYYY node scripts/figma/index.mjs [--preview] [--dry-run] [--extract [file]]
+FIGMA_TOKEN=figd_XXXXXXXXXXXXXX FIGMA_FILE_KEY=YYYYYYYYYYYYYY node figma/index.mjs [--preview] [--dry-run] [--extract [file]]
 ```
 
 ## Running the tests
 
 ```bash
-npx vitest --config scripts/figma/vitest.config.mjs
+npx vitest --config figma/vitest.config.mjs
 # or
 npm run _test:figma
 ```
