@@ -34,14 +34,22 @@ export function contrastRatio(a: [number, number, number], b: [number, number, n
 }
 
 export function wcagScore(ratio: number): WcagLevel {
+  const result = {
+    label: 'Fail',
+    score: ratio.toFixed(2),
+    type: 'danger',
+  };
+
   if (ratio >= 7) {
-    return 'AAA';
+    result.label = 'AAA';
+    result.type = 'success';
+  } else if (ratio >= 4.5) {
+    result.label = 'AA';
+    result.type = 'success';
+  } else if (ratio >= 3) {
+    result.label = 'AA Large';
+    result.type = 'warning';
   }
-  if (ratio >= 4.5) {
-    return 'AA';
-  }
-  if (ratio >= 3) {
-    return 'AA Large';
-  }
-  return 'Fail';
+
+  return result;
 }

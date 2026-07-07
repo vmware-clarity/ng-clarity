@@ -74,6 +74,21 @@ export const DEFAULT_OVERRIDES = {
   ],
 };
 
+export const BACKGROUND_TOKENS = [
+  {
+    name: 'App Background',
+    token: '--cds-alias-object-app-background',
+  },
+  {
+    name: 'Interaction Background',
+    token: '--cds-alias-object-interaction-background',
+  },
+  {
+    name: 'Container Background',
+    token: '--cds-alias-object-container-background',
+  },
+];
+
 export const TOKEN_KEYS = {
   baseTokens: [
     '--cds-alias-primary',

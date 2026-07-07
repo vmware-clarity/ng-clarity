@@ -12,7 +12,7 @@ import { ClarityIcons, ClarityModule, pencilIcon, undoIcon } from '@clr/angular'
 
 import { Color, hexToHsl, shiftL } from './utils/color';
 import { generateCSS } from './utils/css-generator';
-import { DEFAULT_OVERRIDES, PRESETS, SAMPLE_ROWS, TOKEN_KEYS } from './utils/presets';
+import { BACKGROUND_TOKENS, DEFAULT_OVERRIDES, PRESETS, SAMPLE_ROWS, TOKEN_KEYS } from './utils/presets';
 import { CdsThemeStructure, DataRow, ThemeColors, ThemePreset } from './utils/types';
 import { contrastRatio, wcagScore } from './utils/wcag';
 import { CodeSnippetComponent } from '../shared/code-snippet/code-snippet.component';
@@ -44,6 +44,11 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     dark: {},
   };
 
+  backgrounds: CdsThemeStructure = {
+    light: {},
+    dark: {},
+  };
+
   wizardOpen = false;
   rows = SAMPLE_ROWS;
 
@@ -63,25 +68,25 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.activeTheme === 'dark';
   }
 
-  get primaryContrastOnWhite(): number {
-    return contrastRatio(this.themeColors[0]?.base.rgb, [255, 255, 255]);
-  }
+  // get primaryContrastOnWhite(): number {
+  //   return contrastRatio(this.themeColors[0]?.base.rgb, [255, 255, 255]);
+  // }
 
-  get primaryContrastOnBlack(): number {
-    return contrastRatio(this.themeColors[0]?.base.rgb, [0, 0, 0]);
-  }
+  // get primaryContrastOnBlack(): number {
+  //   return contrastRatio(this.themeColors[0]?.base.rgb, [0, 0, 0]);
+  // }
 
   // get textContrastOnContainer(): number {
   //   return contrastRatio(this.current.text.rgb, this.current.containerBg.rgb);
   // }
 
-  get scoreOnWhite(): string {
-    return wcagScore(this.primaryContrastOnWhite);
-  }
+  // get scoreOnWhite(): string {
+  //   return wcagScore(this.primaryContrastOnWhite);
+  // }
 
-  get primaryScoreOnBlack(): string {
-    return wcagScore(this.primaryContrastOnBlack);
-  }
+  // get primaryScoreOnBlack(): string {
+  //   return wcagScore(this.primaryContrastOnBlack);
+  // }
 
   // get textScoreOnContainer(): string {
   //   return wcagScore(this.textContrastOnContainer);
@@ -226,6 +231,49 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  getContrast(color: Color): any {
+    const contrast = {
+      minContrast: {},
+      backgrounds: [],
+    };
+
+    let minScore = 10;
+    for (let bgName in this.backgrounds[this.activeTheme]) {
+      const background = this.backgrounds[this.activeTheme][bgName];
+
+      const score = contrastRatio(color.rgb, background.rgb);
+
+      if (minScore > score) {
+        minScore = score;
+      }
+
+      contrast.backgrounds.push({
+        name: bgName,
+        score,
+        wcag: wcagScore(score),
+      });
+    }
+
+    contrast.minContrast = {
+      wcag: wcagScore(minScore),
+      score: minScore,
+    };
+
+    return contrast;
+  }
+
+  getBadgeColor(contrastLabel: string) {
+    switch (contrastLabel) {
+      case 'Fail':
+        return 'danger';
+      case 'AA Large':
+        return 'warning';
+      case 'AA':
+      default:
+        return 'success';
+    }
+  }
+
   private colorBuilder(colorVariant: Color, colorGroup: Color[], isDarkTheme = this.isDarkTheme) {
     if (TOKEN_KEYS.baseTokens.includes(colorVariant.name)) {
       const baseColorHSL = colorVariant.color;
@@ -264,6 +312,11 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
           this.colorStruct['dark'][key].push(new Color(tokenGroup[i], darkStyles.getPropertyValue(tokenGroup[i])));
         }
       }
+
+      BACKGROUND_TOKENS.forEach(bg => {
+        this.backgrounds['light'][bg.name] = new Color(bg.token, lightStyles.getPropertyValue(bg.token));
+        this.backgrounds['dark'][bg.name] = new Color(bg.token, darkStyles.getPropertyValue(bg.token));
+      });
     }, 200);
   }
 }

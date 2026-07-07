@@ -7,7 +7,11 @@
 
 import type { Color } from './color';
 
-export type WcagLevel = 'AAA' | 'AA' | 'AA Large' | 'Fail';
+export interface WcagLevel {
+  label: string;
+  score: string;
+  type: string;
+}
 
 export type CdsThemeStructure = { light: {}; dark: {} };
 

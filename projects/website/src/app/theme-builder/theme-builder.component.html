@@ -56,11 +56,30 @@
 
       <div class="card-block">
         @for (colorGroup of themeColors; track colorGroup.key) {
+          @let contrast = getContrast(colorGroup.base);
           <clr-stack-view>
             <clr-stack-header>{{ colorGroup.key | uppercase }}</clr-stack-header>
             <clr-stack-block [clrStackViewLevel]="1">
-              <clr-stack-label>{{ colorGroup.base.label }}</clr-stack-label>
-              <clr-stack-content>
+              <clr-stack-label class="tb-stack-label">
+                {{ colorGroup.base.label }}
+
+                <clr-tooltip>
+                  <clr-label
+                    cds-layout="m:none"
+                    clrTooltipTrigger
+                    [clrText]="'Contrast ' + contrast.minContrast.wcag.label"
+                    [clrBadgeText]="contrast.minContrast.wcag.score"
+                    [clrColor]="contrast.minContrast.wcag.type"
+                  >
+                  </clr-label>
+                  <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
+                    @for (background of contrast.backgrounds; track background.name) {
+                      <div>{{ background.name }}: {{ background.wcag.label }} ({{ background.wcag.score }})</div>
+                    }
+                  </clr-tooltip-content>
+                </clr-tooltip>
+              </clr-stack-label>
+              <clr-stack-content style="width: 52%">
                 <div class="tb-color-input-wrap">
                   <input
                     type="color"
@@ -84,29 +103,6 @@
                     <cds-icon shape="undo"></cds-icon>
                   </button>
                 </div>
-                <!--              <div-->
-                <!--                class="tb-contrast-badge"-->
-                <!--                [class.tb-contrast-fail]="primaryScoreOnWhite === 'Fail'"-->
-                <!--                [class.tb-contrast-aa]="primaryScoreOnWhite === 'AA' || primaryScoreOnWhite === 'AAA'"-->
-                <!--                [class.tb-contrast-large]="primaryScoreOnWhite === 'AA Large'"-->
-                <!--              >-->
-                <!--                {{ primaryContrastOnWhite | number: '1.1-1' }}:1 on white — {{ primaryScoreOnWhite }}-->
-                <!--              </div>-->
-                <!--              <div class="tb-derived-row">-->
-                <!--                @for (-->
-                <!--                  field of [-->
-                <!--                    { key: 'primaryTint', label: 'Tint' },-->
-                <!--                    { key: 'primaryShade', label: 'Shade' },-->
-                <!--                    { key: 'primaryHover', label: 'Hover' },-->
-                <!--                    { key: 'primaryActive', label: 'Active' },-->
-                <!--                  ];-->
-                <!--                  track field.key-->
-                <!--                  ) {-->
-                <!--                  <ng-container-->
-                <!--                    *ngTemplateOutlet="derivedField; context: { $implicit: field.key, label: field.label }"-->
-                <!--                  ></ng-container>-->
-                <!--                }-->
-                <!--              </div>-->
               </clr-stack-content>
 
               @for (colorVariant of colorGroup.variants; track colorVariant.label) {
@@ -130,29 +126,6 @@
                         <cds-icon shape="undo"></cds-icon>
                       </button>
                     </div>
-                    <!--              <div-->
-                    <!--                class="tb-contrast-badge"-->
-                    <!--                [class.tb-contrast-fail]="primaryScoreOnWhite === 'Fail'"-->
-                    <!--                [class.tb-contrast-aa]="primaryScoreOnWhite === 'AA' || primaryScoreOnWhite === 'AAA'"-->
-                    <!--                [class.tb-contrast-large]="primaryScoreOnWhite === 'AA Large'"-->
-                    <!--              >-->
-                    <!--                {{ primaryContrastOnWhite | number: '1.1-1' }}:1 on white — {{ primaryScoreOnWhite }}-->
-                    <!--              </div>-->
-                    <!--              <div class="tb-derived-row">-->
-                    <!--                @for (-->
-                    <!--                  field of [-->
-                    <!--                    { key: 'primaryTint', label: 'Tint' },-->
-                    <!--                    { key: 'primaryShade', label: 'Shade' },-->
-                    <!--                    { key: 'primaryHover', label: 'Hover' },-->
-                    <!--                    { key: 'primaryActive', label: 'Active' },-->
-                    <!--                  ];-->
-                    <!--                  track field.key-->
-                    <!--                  ) {-->
-                    <!--                  <ng-container-->
-                    <!--                    *ngTemplateOutlet="derivedField; context: { $implicit: field.key, label: field.label }"-->
-                    <!--                  ></ng-container>-->
-                    <!--                }-->
-                    <!--              </div>-->
                   </clr-stack-content>
                 </clr-stack-block>
               }

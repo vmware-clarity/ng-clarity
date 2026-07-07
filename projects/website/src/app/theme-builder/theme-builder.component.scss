@@ -14,9 +14,19 @@
     padding-top: var(--clr-base-vertical-offset-2xl);
   }
 
-  ::ng-deep pre {
-    border: none;
-    margin: 0;
+  ::ng-deep {
+    pre {
+      border: none;
+      margin: 0;
+    }
+
+    .stack-view .stack-view-key {
+      min-width: 46%;
+    }
+
+    .stack-view .stack-block-content {
+      max-width: 46%;
+    }
   }
 }
 
@@ -47,8 +57,8 @@
 
 .tb-layout {
   display: grid;
-  grid-template-columns: 440px 1fr;
-  gap: 1.5rem;
+  grid-template-columns: 500px 1fr;
+  gap: 1rem;
   align-items: start;
 }
 
@@ -95,30 +105,11 @@
     border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
     border-radius: var(--cds-alias-object-border-radius-100);
   }
-}
 
-// WCAG contrast badge
-.tb-contrast-badge {
-  font-size: 0.65rem;
-  padding: 2px 6px;
-  border-radius: 3px;
-  background: var(--cds-alias-status-danger-tint);
-  color: var(--cds-alias-status-danger);
-  white-space: nowrap;
-
-  &.tb-contrast-aa {
-    background: var(--cds-alias-status-success-tint);
-    color: var(--cds-alias-status-success);
-  }
-
-  &.tb-contrast-large {
-    background: var(--cds-alias-status-warning-tint);
-    color: var(--cds-alias-status-warning-dark, var(--cds-alias-status-warning));
-  }
-
-  &.tb-contrast-fail {
-    background: var(--cds-alias-status-danger-tint);
-    color: var(--cds-alias-status-danger);
+  .tb-stack-label {
+    display: flex;
+    gap: var(--clr-base-gap-m);
+    align-items: center;
   }
 }
 
