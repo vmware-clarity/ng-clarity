@@ -6,11 +6,10 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { StoryIndex, StoryIndexV3 } from '@storybook/types';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { screenshotOptions } from './screenshot-options';
+import { excludeTakingScreenshot, getPageViewPort, loadStories, takeFullPageScreenshot } from './helpers/stories';
 
 const browser = process.env['CLARITY_VRT_BROWSER'];
 const theme = process.env['CLARITY_VRT_THEME'];
@@ -18,18 +17,21 @@ const density = process.env['CLARITY_VRT_DENSITY'];
 const matrixKey = `${browser}-${theme}-${density}`;
 
 const usedScreenshotPaths: string[] = [];
-const indexFilePath = path.join('.', 'dist', 'docs', 'index.json');
 
-const index = JSON.parse(fs.readFileSync(indexFilePath).toString());
-
-const stories: any[] = Object.values(convertToIndexV3(index).stories);
+const stories: any[] = loadStories();
 
 for (const story of stories) {
-  const component = story.kind.split('/')[0];
+  const component = story.kind?.split('/')[0];
   const storyId = story.id;
+
+  if (!component || story.id.endsWith('--docs')) {
+    continue;
+  }
+
   const componentParsed = component.replaceAll(' ', '-').replaceAll('/', '-').toLowerCase();
   const storyName = storyId.replace(`${componentParsed}-`, '');
-  if (story.id.endsWith('--docs') || !component || excludeTakingScreenshot(componentParsed, storyName)) {
+
+  if (excludeTakingScreenshot(componentParsed, storyName)) {
     continue;
   }
 
@@ -61,43 +63,6 @@ for (const story of stories) {
       threshold: 0.01,
     });
   });
-}
-
-function excludeTakingScreenshot(component: string, storyName: string) {
-  return screenshotOptions[component]?.exclude || screenshotOptions[storyName]?.exclude;
-}
-
-function takeFullPageScreenshot(component: string, storyName: string) {
-  return screenshotOptions[component]?.fullPageScreenshot || screenshotOptions[storyName]?.fullPageScreenshot;
-}
-
-function getPageViewPort(component: string, storyName: string) {
-  return screenshotOptions[component]?.viewport || screenshotOptions[storyName]?.viewport;
-}
-
-function convertToIndexV3(index: StoryIndex): StoryIndexV3 {
-  const { entries } = index;
-  const stories = Object.entries(entries).reduce(
-    (acc, [id, entry]) => {
-      const { type, ...rest } = entry;
-      acc[id] = {
-        ...rest,
-        kind: rest.title,
-        story: rest.name,
-        parameters: {
-          __id: rest.id,
-          docsOnly: type === 'docs',
-          fileName: rest.importPath,
-        },
-      };
-      return acc;
-    },
-    {} as StoryIndexV3['stories']
-  );
-  return {
-    v: 3,
-    stories,
-  };
 }
 
 const usedScreenshotsFilePath = path.join('.', 'tests', 'snapshots', `used-screenshot-paths-${matrixKey}.txt`);

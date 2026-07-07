@@ -1,0 +1,39 @@
+# Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+# The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+# This software is released under MIT license.
+# The full license information can be found in LICENSE in the root directory of this project.
+
+name: PR Applitools Visual Test
+on:
+  pull_request:
+concurrency:
+  group: pr-applitools-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  pr-applitools-visual-test:
+    name: PR Applitools Visual Test
+    runs-on: ubuntu-24.04
+    continue-on-error: true
+    timeout-minutes: 40
+    env:
+      APPLITOOLS_API_KEY: ${{ secrets.APPLITOOLS_API_KEY }}
+      APPLITOOLS_SERVER_URL: ${{ secrets.APPLITOOLS_SERVER_URL }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome-stable
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts
+      - name: Build Storybook
+        run: npm run _build:storybook
+      - name: Start Storybook Server
+        run: npm run ts-node -- ./scripts/start-storybook-server.ts &
+      - name: Wait for Storybook
+        run: until curl -sf http://localhost:8080 > /dev/null; do sleep 1; done
+      - name: Run Applitools Visual Tests
+        run: npx @applitools/eyes-storybook --storybook-url http://localhost:8080
