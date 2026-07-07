@@ -144,6 +144,7 @@
     @include label-mixins.generateLabelStyles(blue, 3);
     @include label-mixins.generateLabelStyles(orange, 4);
     @include label-mixins.generateLabelStyles(light-blue, 5);
+    @include label-mixins.generateLabelStyles(primary);
     @include label-mixins.generateLabelStyles(info);
     @include label-mixins.generateLabelStyles(success);
     @include label-mixins.generateLabelStyles(warning);

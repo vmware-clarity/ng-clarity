@@ -41,7 +41,8 @@
     background-color: map.get($colors, solid-bg-color);
     color: map.get($colors, solid-color);
 
-    &.clickable:not(.disabled, :active, :hover) > .badge {
+    &.clickable:not(.disabled, :active, :hover) > .badge,
+    &:not(.clickable) > .badge {
       border-color: map.get($badge-colors, outline-border-color);
       background-color: map.get($badge-colors, outline-bg-color);
       color: map.get($badge-colors, outline-color);

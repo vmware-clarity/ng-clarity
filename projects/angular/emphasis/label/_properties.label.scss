@@ -69,6 +69,14 @@
       --clr-label-light-blue-solid-border-color: #{tokens.$cds-alias-utility-light-blue-shade};
       --clr-label-light-blue-solid-color: #{tokens.$cds-alias-typography-color-500};
 
+      // primary
+      --clr-label-primary-bg-color: #{tokens.$cds-alias-primary-tint};
+      --clr-label-primary-font-color: #{tokens.$cds-alias-typography-color-500};
+      --clr-label-primary-border-color: #{tokens.$cds-alias-primary};
+      --clr-label-primary-solid-bg-color: #{tokens.$cds-alias-primary};
+      --clr-label-primary-solid-border-color: #{tokens.$cds-alias-primary-shade};
+      --clr-label-primary-solid-color: #{tokens.$cds-alias-typography-color-100};
+
       // info
       --clr-label-info-bg-color: #{tokens.$cds-alias-utility-blue-tint};
       --clr-label-info-font-color: #{tokens.$cds-alias-typography-color-500};

@@ -21,6 +21,9 @@
       --clr-badge-outline-color: #{tokens.$cds-alias-typography-color-500};
 
       // solid
+      --clr-badge-primary-bg-color: #{tokens.$cds-alias-primary};
+      --clr-badge-primary-border-color: #{tokens.$cds-alias-primary};
+      --clr-badge-primary-color: #{tokens.$cds-alias-typography-color-100};
       --clr-badge-info-bg-color: #{tokens.$cds-alias-utility-blue};
       --clr-badge-info-border-color: #{tokens.$cds-alias-utility-blue};
       --clr-badge-info-color: #{tokens.$cds-alias-typography-color-100};
@@ -50,6 +53,9 @@
       --clr-badge-light-blue-color: #{tokens.$cds-alias-typography-color-500};
 
       // outlined
+      --clr-badge-primary-outline-bg-color: #{tokens.$cds-alias-primary-tint};
+      --clr-badge-primary-outline-border-color: #{tokens.$cds-alias-primary};
+      --clr-badge-primary-outline-color: #{tokens.$cds-alias-typography-color-500};
       --clr-badge-info-outline-bg-color: #{tokens.$cds-alias-utility-blue-tint};
       --clr-badge-info-outline-border-color: #{tokens.$cds-alias-utility-blue};
       --clr-badge-info-outline-color: #{tokens.$cds-alias-typography-color-500};

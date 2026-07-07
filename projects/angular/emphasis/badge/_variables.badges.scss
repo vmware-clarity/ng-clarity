@@ -20,6 +20,14 @@ $clr-badge-info-outline-bg-color: var(--clr-badge-info-outline-bg-color) !defaul
 $clr-badge-info-outline-border-color: var(--clr-badge-info-outline-border-color) !default;
 $clr-badge-info-outline-color: var(--clr-badge-info-outline-color) !default;
 
+// primary
+$clr-badge-primary-bg-color: var(--clr-badge-primary-bg-color) !default;
+$clr-badge-primary-border-color: var(--clr-badge-primary-border-color) !default;
+$clr-badge-primary-color: var(--clr-badge-primary-color) !default;
+$clr-badge-primary-outline-bg-color: var(--clr-badge-primary-outline-bg-color) !default;
+$clr-badge-primary-outline-border-color: var(--clr-badge-primary-outline-border-color) !default;
+$clr-badge-primary-outline-color: var(--clr-badge-primary-outline-color) !default;
+
 // success
 $clr-badge-success-bg-color: var(--clr-badge-success-bg-color) !default;
 $clr-badge-success-border-color: var(--clr-badge-success-border-color) !default;
@@ -156,5 +164,13 @@ $badge-colors: (
     outline-bg-color: $clr-badge-info-outline-bg-color,
     outline-border-color: $clr-badge-info-outline-border-color,
     outline-color: $clr-badge-info-outline-color,
+  ),
+  primary: (
+    bg-color: $clr-badge-primary-bg-color,
+    border-color: $clr-badge-primary-border-color,
+    color: $clr-badge-primary-color,
+    outline-bg-color: $clr-badge-primary-outline-bg-color,
+    outline-border-color: $clr-badge-primary-outline-border-color,
+    outline-color: $clr-badge-primary-outline-color,
   ),
 );

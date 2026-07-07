@@ -184,6 +184,8 @@
           <div class="tb-preview-row">
             <button class="btn btn-primary">Primary</button>
             <button class="btn btn-outline">Outline</button>
+            <button class="btn btn-link">Outline</button>
+            <button class="btn btn-info">Outline</button>
             <button class="btn btn-danger">Danger</button>
             <button class="btn btn-success">Success</button>
             <button class="btn btn-warning">Warning</button>
@@ -195,14 +197,47 @@
         <div class="tb-preview-section">
           <p class="tb-preview-section-label">Badges &amp; Labels</p>
           <div class="tb-preview-row">
-            <span class="badge badge-info">Info 5</span>
-            <span class="badge badge-success">Success 3</span>
-            <span class="badge badge-warning">Warning 2</span>
-            <span class="badge badge-danger">Danger 1</span>
-            <span class="label label-info">Info</span>
-            <span class="label label-success">Success</span>
-            <span class="label label-warning">Warning</span>
-            <span class="label label-danger">Danger</span>
+            <clr-label [clrType]="'outlined'" [clrColor]="'primary'" [clrText]="'primary'" [clrBadgeText]="'99+'" />
+            <clr-label
+              [clrType]="'outlined'"
+              [clrClickable]="true"
+              [clrColor]="'info'"
+              [clrText]="'info'"
+              [clrBadgeText]="'99+'"
+            />
+            <clr-label [clrType]="'outlined'" [clrColor]="'danger'" [clrText]="'danger'" [clrBadgeText]="'99+'" />
+            <clr-label [clrType]="'outlined'" [clrColor]="'success'" [clrText]="'success'" [clrBadgeText]="'99+'" />
+            <clr-label
+              [clrType]="'outlined'"
+              [clrClickable]="true"
+              [clrColor]="'warning'"
+              [clrText]="'warning'"
+              [clrBadgeText]="'99+'"
+            />
+
+            <clr-label
+              [clrType]="'solid'"
+              [clrClickable]="true"
+              [clrColor]="'primary'"
+              [clrText]="'primary'"
+              [clrBadgeText]="'99+'"
+            />
+            <clr-label [clrType]="'solid'" [clrColor]="'info'" [clrText]="'info'" [clrBadgeText]="'99+'" />
+            <clr-label
+              [clrType]="'solid'"
+              [clrClickable]="true"
+              [clrColor]="'danger'"
+              [clrText]="'danger'"
+              [clrBadgeText]="'99+'"
+            />
+            <clr-label
+              [clrType]="'solid'"
+              [clrClickable]="true"
+              [clrColor]="'success'"
+              [clrText]="'success'"
+              [clrBadgeText]="'99+'"
+            />
+            <clr-label [clrType]="'solid'" [clrColor]="'warning'" [clrText]="'warning'" [clrBadgeText]="'99+'" />
           </div>
         </div>
 

@@ -94,6 +94,12 @@ describe('ClrBadge component', () => {
       const badgeElement = fixture.nativeElement.querySelector('.badge');
       expect(badgeElement).not.toBeNull();
 
+      // set primary color
+      fixture.componentInstance.color = ClrBadgeColors.Primary;
+      fixture.detectChanges();
+
+      expect(badgeElement.className).toContain('badge-primary');
+
       // set info color
       fixture.componentInstance.color = ClrBadgeColors.Info;
       fixture.detectChanges();

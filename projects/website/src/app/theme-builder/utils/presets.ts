@@ -10,6 +10,7 @@ import { DataRow, ThemePreset } from './types';
 
 export const DEFAULT_OVERRIDES = {
   // primary colors have no overrides. They are used as is.
+  // '--cds-alias-primary-tint': ['--cds-alias-object-interaction-background-hover'],
   // info
   '--cds-alias-status-info': ['--cds-alias-utility-blue'],
   '--cds-alias-status-info-tint': [

@@ -64,6 +64,14 @@ $clr-label-light-blue-solid-bg-color: var(--clr-label-light-blue-solid-bg-color)
 $clr-label-light-blue-solid-border-color: var(--clr-label-light-blue-solid-border-color) !default;
 $clr-label-light-blue-solid-color: var(--clr-label-light-blue-solid-color) !default;
 
+// primary
+$clr-label-primary-bg-color: var(--clr-label-primary-bg-color) !default;
+$clr-label-primary-font-color: var(--clr-label-primary-font-color) !default;
+$clr-label-primary-border-color: var(--clr-label-primary-border-color) !default;
+$clr-label-primary-solid-bg-color: var(--clr-label-primary-solid-bg-color) !default;
+$clr-label-primary-solid-border-color: var(--clr-primaryl-info-solid-border-color) !default;
+$clr-label-primary-solid-color: var(--clr-label-primary-solid-color) !default;
+
 // info
 $clr-label-info-bg-color: var(--clr-label-info-bg-color) !default;
 $clr-label-info-font-color: var(--clr-label-info-font-color) !default;
@@ -177,5 +185,13 @@ $label-colors: (
     solid-bg-color: $clr-label-info-solid-bg-color,
     solid-border-color: $clr-label-info-solid-border-color,
     solid-color: $clr-label-info-solid-color,
+  ),
+  primary: (
+    bg-color: $clr-label-primary-bg-color,
+    border-color: $clr-label-primary-border-color,
+    color: $clr-label-primary-font-color,
+    solid-bg-color: $clr-label-primary-solid-bg-color,
+    solid-border-color: $clr-label-primary-solid-border-color,
+    solid-color: $clr-label-primary-solid-color,
   ),
 );

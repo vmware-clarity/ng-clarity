@@ -147,6 +147,12 @@ describe('ClrLabel component', () => {
       const htmlElement = fixture.nativeElement.querySelector('.label');
       expect(htmlElement).not.toBeNull();
 
+      // set primary color
+      fixture.componentInstance.color = ClrLabelColors.Primary;
+      fixture.detectChanges();
+
+      expect(htmlElement.className).toContain('label-primary');
+
       // set info color
       fixture.componentInstance.color = ClrLabelColors.Info;
       fixture.detectChanges();
