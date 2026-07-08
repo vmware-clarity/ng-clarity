@@ -502,7 +502,9 @@ class ClrSidePanel {
         }
         if (this.pinned) {
             this.modal.stopClose = true;
-            this.updatePinnedClasses();
+            if (this.__open) {
+                this.updatePinnedClasses();
+            }
         }
         else {
             this.modal.stopClose = this.originalStopClose;
