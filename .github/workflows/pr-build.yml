@@ -46,7 +46,7 @@ jobs:
           path: coverage/
 
   pr-visual-regression-test:
-    name: PR Visual Regression Test
+    name: PR Visual Regression Test (${{matrix.browser}}, ${{matrix.theme}}, ${{matrix.density}}, shard ${{matrix.shard}}/2)
     timeout-minutes: 40
     # This job intentionally does not use the `ubuntu-latest` image.
     # An updated image could generate different snapshots, so we should explicitly update the image version.
@@ -56,10 +56,12 @@ jobs:
         browser: ['chromium', 'firefox']
         theme: ['light', 'dark']
         density: ['default', 'compact']
+        shard: [1, 2]
     env:
       CLARITY_VRT_BROWSER: ${{matrix.browser}}
       CLARITY_VRT_THEME: ${{matrix.theme}}
       CLARITY_VRT_DENSITY: ${{matrix.density}}
+      CLARITY_VRT_SHARD: ${{matrix.shard}}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -72,17 +74,24 @@ jobs:
         run: npm ci --ignore-scripts
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps ${{matrix.browser}}
+      - name: Cache Storybook Build
+        id: storybook-cache
+        uses: actions/cache@v4
+        with:
+          path: dist/docs
+          key: storybook-build-${{hashFiles('package-lock.json', 'projects/angular/**', 'projects/ui/**', '.storybook/**', 'angular.json')}}
       - name: Build Storybook
+        if: steps.storybook-cache.outputs.cache-hit != 'true'
         run: npm run _build:storybook
       - name: Update Visual Snapshots
-        run: npx playwright test --update-snapshots
+        run: npx playwright test --update-snapshots --shard=${{matrix.shard}}/2
       - name: Collect Changes
         id: diff
         run: |
           git add .
-          git diff --cached --binary > visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}.diff
+          git diff --cached --binary > visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}-${{matrix.shard}}.diff
       - name: Upload Changes
         uses: actions/upload-artifact@v4
         with:
-          name: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}.diff
-          path: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}.diff
+          name: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}-${{matrix.shard}}.diff
+          path: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}-${{matrix.shard}}.diff
