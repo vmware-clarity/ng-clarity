@@ -326,6 +326,12 @@
       "url": "translate",
       "text": "Translate",
       "type": "addons"
+    },
+    {
+      "url": "property-view",
+      "text": "Property View",
+      "type": "addons",
+      "storybookPath": "addons-property-view"
     }
   ]
 }

@@ -1,0 +1,37 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h1>Property View Interactive Demo</h1>
+
+<div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center" class="clr-mb-24px">
+  <button class="btn btn-tertiary" (click)="addCategory()">Add Category</button>
+  <button class="btn btn-tertiary" (click)="addSection()">Add Section</button>
+  <button class="btn btn-tertiary" (click)="addProperty()">Add Property</button>
+  <button class="btn btn-tertiary" (click)="showSectionActionBar()">Show Section Action Bar</button>
+
+  <clr-dropdown>
+    <button class="btn btn-outline-primary" clrDropdownTrigger>
+      Add Message
+      <cds-icon shape="angle" direction="down"></cds-icon>
+    </button>
+    <clr-dropdown-menu *clrIfOpen>
+      <div clrDropdownItem (click)="addPlainMessage()">Plain Message</div>
+      <div clrDropdownItem (click)="addHtmlRenderedMessage()">HTML Rendered Message</div>
+    </clr-dropdown-menu>
+  </clr-dropdown>
+
+  <clr-checkbox-wrapper>
+    <input type="checkbox" clrCheckbox [(ngModel)]="collapsedSection" (ngModelChange)="collapseSection()" />
+    <label>Collapse Lion Section</label>
+  </clr-checkbox-wrapper>
+
+  <clr-checkbox-wrapper>
+    <input type="checkbox" clrCheckbox [(ngModel)]="renderTitleAsHtml" (ngModelChange)="renderSectionTitleAsHtml()" />
+    <label>Render Lion Section Title as HTML</label>
+  </clr-checkbox-wrapper>
+</div>
+
+<appfx-property-view [data]="interactiveData" *ngIf="interactiveData"></appfx-property-view>

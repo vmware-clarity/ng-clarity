@@ -354,6 +354,12 @@ export const documentationRoutes: Routes = [
         data: { routePath: 'translate/:tab?' },
         loadChildren: () => import('./demos/translate/translate.demo.module').then(m => m.TranslateAddonDemoModule),
       },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'property-view/:tab?' },
+        loadChildren: () =>
+          import('./demos/property-view/property-view.demo.module').then(m => m.PropertyViewAddonDemoModule),
+      },
     ],
   },
 ];
