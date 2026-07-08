@@ -1,0 +1,245 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h1>Multi-Page Dialog</h1>
+
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p>
+      The multi-page dialog (<code>appfx-dialog</code>) is a Clarity modal that hosts tabbed workflow steps. Each step
+      is rendered by a separate component registered via the <code>Step</code> model.
+    </p>
+    <h3>Import</h3>
+    <app-code-snippet
+      [code]="'import { AppfxMultiPageDialogModule } from \'@clr/addons/dialog\';'"
+      language="typescript"
+      [copy]="true"
+    ></app-code-snippet>
+    <h3>Usage</h3>
+    <p>
+      Wrap steps inside <code>appfx-dialog</code>. Pass the steps array and a workflow model. Optionally supply a
+      <code>closeHandler</code> to perform async submit/cancel logic.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <div class="dialog-playground-controls">
+      <label>Layout</label>
+      <clr-select-container>
+        <select clrSelect [(ngModel)]="selectedLayout">
+          <option value="horizontal">Horizontal</option>
+          <option value="vertical">Vertical</option>
+        </select>
+      </clr-select-container>
+
+      <label>Size</label>
+      <clr-select-container>
+        <select clrSelect [(ngModel)]="selectedSize">
+          <option *ngFor="let s of sizes" [value]="s">{{ s }}</option>
+        </select>
+      </clr-select-container>
+
+      <label>Default Button</label>
+      <clr-select-container>
+        <select clrSelect [(ngModel)]="selectedDefaultButton">
+          <option value="close">Close</option>
+          <option value="submit">Submit</option>
+        </select>
+      </clr-select-container>
+
+      <button class="btn btn-primary" (click)="openDialog()">Open Dialog</button>
+    </div>
+
+    <appfx-dialog
+      [(opened)]="dialogOpened"
+      [steps]="steps"
+      [model]="dialogModel"
+      title="VM Provisioning"
+      [tabLayout]="selectedLayout"
+      [size]="selectedSize"
+      [defaultButton]="selectedDefaultButton"
+      [showTabLinks]="showTabLinks"
+    >
+    </appfx-dialog>
+
+    <app-stackblitz-example name="basic-dialog" [componentTemplate]="basicDialogHtml" [componentClass]="basicDialogTs">
+    </app-stackblitz-example>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h3>AppfxMultiPageDialogModule</h3>
+    <p>
+      The main module to import. Exports: <code>appfx-dialog</code>, <code>appfx-dialog-header</code>,
+      <code>appfx-toggle</code>.
+    </p>
+
+    <h3>DialogComponent <code>appfx-dialog</code></h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Input</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>title</td>
+          <td>string</td>
+          <td>—</td>
+          <td>Modal title</td>
+        </tr>
+        <tr>
+          <td>subTitle</td>
+          <td>string | Observable&lt;string&gt;</td>
+          <td>—</td>
+          <td>Secondary title displayed next to the primary title with a separator</td>
+        </tr>
+        <tr>
+          <td>steps</td>
+          <td>Step[]</td>
+          <td>—</td>
+          <td>Array of step definitions</td>
+        </tr>
+        <tr>
+          <td>model</td>
+          <td>WorkflowModel</td>
+          <td>—</td>
+          <td>Workflow model shared across steps</td>
+        </tr>
+        <tr>
+          <td>tabLayout</td>
+          <td>TabLayout</td>
+          <td>horizontal</td>
+          <td>Layout direction of tabs</td>
+        </tr>
+        <tr>
+          <td>size</td>
+          <td>ModalSize</td>
+          <td>—</td>
+          <td>Clarity modal size: sm, md, lg, xl, full-screen</td>
+        </tr>
+        <tr>
+          <td>defaultButton</td>
+          <td>'submit' | 'close'</td>
+          <td>close</td>
+          <td>Which footer button is highlighted</td>
+        </tr>
+        <tr>
+          <td>height</td>
+          <td>string</td>
+          <td>545px min</td>
+          <td>Explicit dialog height (e.g. '800px')</td>
+        </tr>
+        <tr>
+          <td>loading</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>Show spinner overlay</td>
+        </tr>
+        <tr>
+          <td>opened</td>
+          <td>boolean</td>
+          <td>true</td>
+          <td>Controls dialog open/close state</td>
+        </tr>
+        <tr>
+          <td>closeHandler</td>
+          <td>CloseHandler</td>
+          <td>—</td>
+          <td>Object with onSubmit / onCancel callbacks returning Observable</td>
+        </tr>
+        <tr>
+          <td>okButtonLabel</td>
+          <td>string</td>
+          <td>OK</td>
+          <td>Submit button label</td>
+        </tr>
+        <tr>
+          <td>cancelButtonLabel</td>
+          <td>string</td>
+          <td>Cancel</td>
+          <td>Cancel button label</td>
+        </tr>
+        <tr>
+          <td>showTabLinks</td>
+          <td>boolean</td>
+          <td>true</td>
+          <td>Show or hide tab navigation links</td>
+        </tr>
+        <tr>
+          <td>disableTabsContent</td>
+          <td>boolean</td>
+          <td>—</td>
+          <td>Disable tab content interaction</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Output</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>onModelChange</td>
+          <td>EventEmitter&lt;ModelChange[]&gt;</td>
+          <td>Emits when workflow model variables change</td>
+        </tr>
+        <tr>
+          <td>onClose</td>
+          <td>EventEmitter&lt;void&gt;</td>
+          <td>Emits when dialog is closed</td>
+        </tr>
+        <tr>
+          <td>openedChange</td>
+          <td>EventEmitter&lt;boolean&gt;</td>
+          <td>Two-way binding partner for opened</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>ToggleComponent <code>appfx-toggle</code></h3>
+    <p>A labeled checkbox toggle for use inside <code>appfx-dialog-header</code>.</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Input</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>label</td>
+          <td>string</td>
+          <td>Label text</td>
+        </tr>
+        <tr>
+          <td>toggleId</td>
+          <td>string</td>
+          <td>Input element ID (auto-generated if omitted)</td>
+        </tr>
+        <tr>
+          <td>toggleState</td>
+          <td>boolean</td>
+          <td>Current toggle value (two-way bindable)</td>
+        </tr>
+        <tr>
+          <td>disabled</td>
+          <td>boolean</td>
+          <td>Disables the control</td>
+        </tr>
+      </tbody>
+    </table>
+  </app-doc-tab>
+</app-doc-tabs>

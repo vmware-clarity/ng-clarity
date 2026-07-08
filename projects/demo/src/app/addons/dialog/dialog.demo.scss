@@ -1,0 +1,16 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+.dialog-playground-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
+  padding: 0.75rem 1rem;
+  background: var(--cds-alias-object-container-background-tint);
+  border-radius: var(--cds-alias-object-border-radius-100);
+}
