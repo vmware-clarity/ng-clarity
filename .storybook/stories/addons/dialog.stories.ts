@@ -8,15 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AppfxMultiPageDialogModule, DialogComponent } from '@clr/addons/dialog';
-import {
-  AppfxWorkflowCoreModule,
-  Step,
-  StepModel,
-  StepModelHolder,
-  TabLayout,
-  Var,
-  WorkflowModel,
-} from '@clr/addons/var';
+import { AppfxWorkflowCoreModule, Step, StepModel, StepModelHolder, TabLayout, Var } from '@clr/addons/var';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 // ─── Step models ─────────────────────────────────────────────────────────────
@@ -30,7 +22,7 @@ class ReviewModel implements StepModel {
   readyToComplete = true;
 }
 
-class DialogWorkflowModel extends WorkflowModel {}
+class DialogWorkflowModel {}
 
 // ─── Step components ─────────────────────────────────────────────────────────
 
@@ -58,7 +50,7 @@ class DialogNameStepComponent implements StepModelHolder {
   selector: 'clr-dialog-story-review-step',
   standalone: true,
   imports: [CommonModule],
-  template: ` <p>Ready to complete.</p> `,
+  template: '<p>Ready to complete.</p>',
 })
 class DialogReviewStepComponent {}
 
