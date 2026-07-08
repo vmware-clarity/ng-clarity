@@ -6,7 +6,7 @@
   -->
 <clr-main-container>
   <app-skip-link></app-skip-link>
-  <clr-header role="banner" class="header-1" #header>
+  <clr-header *ngIf="!themeBuilderOnly" role="banner" class="header-1" #header>
     <div class="branding">
       <a routerLink="/" class="logo-and-title">
         <span class="clr-icon clarity-logo"></span>

@@ -27,6 +27,24 @@
     .stack-view .stack-block-content {
       max-width: 46%;
     }
+
+    .card .alert {
+      margin: 0;
+    }
+
+    .card-block .progress,
+    .card-block .progress-static,
+    .card-footer .progress,
+    .card-footer .progress-static {
+      position: relative;
+      height: var(--clr-base-progress-bar-height);
+      margin: 0;
+
+      > progress {
+        height: 100%;
+        position: static;
+      }
+    }
   }
 }
 
@@ -67,8 +85,8 @@
 .tb-controls-card {
   margin-top: 0;
   position: sticky;
-  top: 1rem;
-  max-height: calc(100vh - 3rem);
+  top: 0;
+  max-height: calc(100vh - 11rem);
   overflow-y: auto;
 
   // Card-header contains the Light/Dark toggle buttons

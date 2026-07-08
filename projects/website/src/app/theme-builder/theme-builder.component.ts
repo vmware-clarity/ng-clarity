@@ -8,8 +8,18 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ClarityIcons, ClarityModule, pencilIcon, undoIcon } from '@clr/angular';
+import {
+  ClarityIcons,
+  ClarityModule,
+  ClrTimelineStepState,
+  cogIcon,
+  homeIcon,
+  pencilIcon,
+  undoIcon,
+  userIcon,
+} from '@clr/angular';
 
+import { getFeatureFlags } from '../feature-flags';
 import { Color, hexToHsl, shiftL } from './utils/color';
 import { generateCSS } from './utils/css-generator';
 import { BACKGROUND_TOKENS, DEFAULT_OVERRIDES, PRESETS, SAMPLE_ROWS, TOKEN_KEYS } from './utils/presets';
@@ -52,48 +62,39 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   wizardOpen = false;
   rows = SAMPLE_ROWS;
 
+  description: string;
+
+  stepperForm = {
+    account: { fullName: '' },
+    confirm: { agree: false },
+  };
   copied = false;
+
+  readonly timelineStates = ClrTimelineStepState;
+  protected readonly themeBuilderOnly = getFeatureFlags().themeBuilderOnly;
+
   private copiedTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
     ClarityIcons.addIcons(undoIcon);
     ClarityIcons.addIcons(pencilIcon);
+    ClarityIcons.addIcons(homeIcon);
+    ClarityIcons.addIcons(cogIcon);
+    ClarityIcons.addIcons(userIcon);
   }
-
-  // get current(): ThemeColors {
-  //   return this.colors[this.activeTheme];
-  // }
 
   get isDarkTheme(): boolean {
     return this.activeTheme === 'dark';
   }
 
-  // get primaryContrastOnWhite(): number {
-  //   return contrastRatio(this.themeColors[0]?.base.rgb, [255, 255, 255]);
-  // }
-
-  // get primaryContrastOnBlack(): number {
-  //   return contrastRatio(this.themeColors[0]?.base.rgb, [0, 0, 0]);
-  // }
-
-  // get textContrastOnContainer(): number {
-  //   return contrastRatio(this.current.text.rgb, this.current.containerBg.rgb);
-  // }
-
-  // get scoreOnWhite(): string {
-  //   return wcagScore(this.primaryContrastOnWhite);
-  // }
-
-  // get primaryScoreOnBlack(): string {
-  //   return wcagScore(this.primaryContrastOnBlack);
-  // }
-
-  // get textScoreOnContainer(): string {
-  //   return wcagScore(this.textContrastOnContainer);
-  // }
-
   get generatedCss(): string {
-    return generateCSS(this.colorStruct);
+    const generatedCSS = generateCSS(this.colorStruct);
+
+    if (generatedCSS.find(line => line === '\n/* NO changes */')) {
+      this.activePreset = PRESETS[0];
+    }
+
+    return generatedCSS.join('\n');
   }
 
   get themeColors() {
@@ -128,6 +129,8 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.colorBuilder(colorVariant, colorGroup);
 
       this.applyPreviewStyles();
+
+      this.activePreset = null;
     }
   }
 
@@ -198,8 +201,13 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async copyCSS(): Promise<void> {
+    const css = this.generatedCss;
+
+    // iframe communication to parent
+    window.top.postMessage(css, '*');
+
     try {
-      await navigator.clipboard.writeText(this.generatedCss);
+      await navigator.clipboard.writeText(css);
       this.copied = true;
       if (this.copiedTimer) {
         clearTimeout(this.copiedTimer);
@@ -222,10 +230,16 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
       const colorVariants = colorGroups[colorGroupKey];
       for (let i = 0; i < colorVariants.length; i++) {
         const color = colorVariants[i] as Color;
+
         el.style.setProperty(color.name, color.hsl);
 
         DEFAULT_OVERRIDES[color.name]?.forEach((override: string) => {
-          el.style.setProperty(override, `var(${color.name})`);
+          // remove override if color isOriginalColor
+          if (color.isOriginalColor) {
+            el.style.removeProperty(override);
+          } else {
+            el.style.setProperty(override, `var(${color.name})`);
+          }
         });
       }
     }
@@ -289,8 +303,6 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
           item.color = shiftL(baseColorHSL, isDarkTheme ? 10 : -10);
         }
       });
-
-      console.log(colorGroup);
     }
   }
 

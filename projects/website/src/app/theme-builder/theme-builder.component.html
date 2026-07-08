@@ -5,7 +5,7 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<app-site-nav></app-site-nav>
+<app-site-nav *ngIf="!themeBuilderOnly"></app-site-nav>
 
 <main class="content-area theme-builder-page">
   <div>
@@ -156,9 +156,11 @@
           <p class="tb-preview-section-label">Buttons</p>
           <div class="tb-preview-row">
             <button class="btn btn-primary">Primary</button>
-            <button class="btn btn-outline">Outline</button>
-            <button class="btn btn-link">Outline</button>
-            <button class="btn btn-info">Outline</button>
+            <button class="btn btn-outline">Primary Outline</button>
+            <button class="btn btn-link-primary">Primary FLAT</button> <br />
+            <button class="btn btn-info">Info</button>
+            <button class="btn btn-info-outline">Info Outline</button>
+            <button class="btn btn-link-info">Info Flat</button>
             <button class="btn btn-danger">Danger</button>
             <button class="btn btn-success">Success</button>
             <button class="btn btn-warning">Warning</button>
@@ -231,23 +233,62 @@
           </clr-alert>
         </div>
 
+        <!-- App-Level Alerts -->
+        <div class="tb-preview-section">
+          <p class="tb-preview-section-label">App-Level Alerts</p>
+          <clr-alert [clrAlertType]="'info'" [clrAlertAppLevel]="true">
+            <clr-alert-item>
+              <span class="alert-text">This is an app level info.</span>
+              <div class="alert-actions">
+                <button class="btn alert-action"><cds-icon shape="user"></cds-icon>Thanks</button>
+              </div>
+            </clr-alert-item>
+          </clr-alert>
+          <clr-alert [clrAlertType]="'danger'" [clrAlertAppLevel]="true">
+            <clr-alert-item>
+              <span class="alert-text">This is an app level alert.</span>
+              <div class="alert-actions">
+                <button class="btn alert-action"><cds-icon shape="user"></cds-icon>Fix</button>
+              </div>
+            </clr-alert-item>
+          </clr-alert>
+          <clr-alert [clrAlertType]="'warning'" [clrAlertAppLevel]="true">
+            <clr-alert-item>
+              <span class="alert-text">This is an app level warning.</span>
+              <div class="alert-actions">
+                <button class="btn alert-action"><cds-icon shape="user"></cds-icon>Check</button>
+              </div>
+            </clr-alert-item>
+          </clr-alert>
+          <clr-alert [clrAlertType]="'success'" [clrAlertAppLevel]="true">
+            <clr-alert-item>
+              <span class="alert-text">This is an app level success.</span>
+              <div class="alert-actions">
+                <button class="btn alert-action"><cds-icon shape="user"></cds-icon>Great</button>
+              </div>
+            </clr-alert-item>
+          </clr-alert>
+
+          <clr-alert [clrAlertType]="'neutral'" [clrAlertAppLevel]="true">
+            <clr-alert-item>
+              <span class="alert-text">App-level alerts should be reserved for important, page-wide messages.</span>
+              <div class="alert-actions">
+                <button class="btn alert-action"><cds-icon shape="user"></cds-icon>Dismiss</button>
+              </div>
+            </clr-alert-item>
+          </clr-alert>
+        </div>
+
         <!-- Forms -->
         <div class="tb-preview-section">
           <p class="tb-preview-section-label">Form Controls</p>
-          <form clrForm clrLayout="horizontal">
+          <form clrForm #tbForm="ngForm" clrLayout="horizontal">
             <clr-input-container>
               <label>Text input</label>
               <input clrInput type="text" placeholder="Enter value..." />
             </clr-input-container>
-            <clr-select-container>
-              <label>Select</label>
-              <select clrSelect>
-                <option>Option A</option>
-                <option>Option B</option>
-                <option>Option C</option>
-              </select>
-            </clr-select-container>
             <clr-checkbox-container>
+              <label>Checkbox</label>
               <clr-checkbox-wrapper>
                 <input type="checkbox" clrCheckbox checked />
                 <label>Checkbox (checked)</label>
@@ -258,6 +299,7 @@
               </clr-checkbox-wrapper>
             </clr-checkbox-container>
             <clr-radio-container>
+              <label>Radio</label>
               <clr-radio-wrapper>
                 <input type="radio" clrRadio name="r1" value="a" checked />
                 <label>Radio A</label>
@@ -268,11 +310,19 @@
               </clr-radio-wrapper>
             </clr-radio-container>
             <clr-toggle-container>
+              <label>Toggle</label>
               <clr-toggle-wrapper>
                 <input type="checkbox" clrToggle checked />
                 <label>Toggle (on)</label>
               </clr-toggle-wrapper>
             </clr-toggle-container>
+
+            <clr-textarea-container>
+              <label>Textarea</label>
+              <textarea clrTextarea [(ngModel)]="description" name="description" required></textarea>
+              <clr-control-helper>Please provide a description.</clr-control-helper>
+              <clr-control-error *clrIfError="'required'">You must provide a description!</clr-control-error>
+            </clr-textarea-container>
           </form>
         </div>
 
@@ -306,6 +356,15 @@
           </clr-tree>
         </div>
 
+        <!-- Progress bar -->
+        <div class="tb-preview-section">
+          <p class="tb-preview-section-label">Progress Bar</p>
+          <clr-progress-bar clrValue="20" clrMax="100"></clr-progress-bar>
+          <clr-progress-bar clrValue="55" clrMax="100" clrColor="warning" clrLabeled></clr-progress-bar>
+          <clr-progress-bar clrValue="80" clrMax="100" clrColor="success"></clr-progress-bar>
+          <clr-progress-bar clrValue="40" clrMax="100" clrColor="danger"></clr-progress-bar>
+        </div>
+
         <!-- Vertical nav -->
         <div class="tb-preview-section">
           <p class="tb-preview-section-label">Vertical Navigation</p>
@@ -329,6 +388,39 @@
               </clr-vertical-nav-group>
             </clr-vertical-nav>
           </div>
+        </div>
+
+        <!-- Stepper -->
+        <div class="tb-preview-section">
+          <p class="tb-preview-section-label">Stepper</p>
+          <form clrStepper #tbStepperForm="ngForm">
+            <clr-stepper-panel ngModelGroup="account">
+              <clr-step-title>Account Details</clr-step-title>
+              <clr-step-description>Tell us about yourself</clr-step-description>
+              <clr-step-content>
+                <clr-input-container>
+                  <label>Full Name</label>
+                  <input clrInput name="fullName" [(ngModel)]="stepperForm.account.fullName" />
+                </clr-input-container>
+                <button clrStepButton="next">Next</button>
+              </clr-step-content>
+            </clr-stepper-panel>
+
+            <clr-stepper-panel ngModelGroup="confirm">
+              <clr-step-title>Confirmation</clr-step-title>
+              <clr-step-description>Review and submit</clr-step-description>
+              <clr-step-content>
+                <clr-checkbox-container>
+                  <clr-checkbox-wrapper>
+                    <input type="checkbox" clrCheckbox name="agree" [(ngModel)]="stepperForm.confirm.agree" />
+                    <label>I agree to the terms</label>
+                  </clr-checkbox-wrapper>
+                </clr-checkbox-container>
+                <button clrStepButton="previous">Previous</button>
+                <button clrStepButton="submit">Submit</button>
+              </clr-step-content>
+            </clr-stepper-panel>
+          </form>
         </div>
 
         <!-- Datagrid -->
@@ -355,6 +447,55 @@
             }
             <clr-dg-footer>{{ rows.length }} users</clr-dg-footer>
           </clr-datagrid>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tb-preview-section">
+          <p class="tb-preview-section-label">Tabs</p>
+          <clr-tabs>
+            <clr-tab>
+              <button clrTabLink>Dashboard</button>
+              <clr-tab-content>
+                <p>Content for the Dashboard tab.</p>
+              </clr-tab-content>
+            </clr-tab>
+            <clr-tab>
+              <button clrTabLink>Management</button>
+              <clr-tab-content>
+                <p>Content for the Management tab.</p>
+              </clr-tab-content>
+            </clr-tab>
+            <clr-tab>
+              <button clrTabLink>Settings</button>
+              <clr-tab-content>
+                <p>Content for the Settings tab.</p>
+              </clr-tab-content>
+            </clr-tab>
+          </clr-tabs>
+        </div>
+
+        <!-- Timeline -->
+        <div class="tb-preview-section">
+          <p class="tb-preview-section-label">Timeline</p>
+          <clr-timeline>
+            <clr-timeline-step [clrState]="timelineStates.SUCCESS">
+              <clr-timeline-step-header>11:59 am</clr-timeline-step-header>
+              <clr-timeline-step-title>Add KMS</clr-timeline-step-title>
+              <clr-timeline-step-description>Root CA certificate requested.</clr-timeline-step-description>
+            </clr-timeline-step>
+            <clr-timeline-step [clrState]="timelineStates.CURRENT">
+              <clr-timeline-step-header>12:04 pm</clr-timeline-step-header>
+              <clr-timeline-step-title>Make KMS trust vCenter</clr-timeline-step-title>
+              <clr-timeline-step-description>
+                Upload the certificate to the KMS to complete the connection.
+              </clr-timeline-step-description>
+            </clr-timeline-step>
+            <clr-timeline-step [clrState]="timelineStates.NOT_STARTED">
+              <clr-timeline-step-header>--:-- --</clr-timeline-step-header>
+              <clr-timeline-step-title>Enable Encryption</clr-timeline-step-title>
+              <clr-timeline-step-description>Not started yet.</clr-timeline-step-description>
+            </clr-timeline-step>
+          </clr-timeline>
         </div>
 
         <!-- Wizard launcher -->
