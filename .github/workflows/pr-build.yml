@@ -56,10 +56,12 @@ jobs:
         browser: ['chromium', 'firefox']
         theme: ['light', 'dark']
         density: ['default', 'compact']
+        shard: [1, 2]
     env:
       CLARITY_VRT_BROWSER: ${{matrix.browser}}
       CLARITY_VRT_THEME: ${{matrix.theme}}
       CLARITY_VRT_DENSITY: ${{matrix.density}}
+      CLARITY_VRT_SHARD: ${{matrix.shard}}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -75,14 +77,14 @@ jobs:
       - name: Build Storybook
         run: npm run _build:storybook
       - name: Update Visual Snapshots
-        run: npx playwright test --update-snapshots
+        run: npx playwright test --update-snapshots --shard=${{matrix.shard}}/2
       - name: Collect Changes
         id: diff
         run: |
           git add .
-          git diff --cached --binary > visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}.diff
+          git diff --cached --binary > visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}-${{matrix.shard}}.diff
       - name: Upload Changes
         uses: actions/upload-artifact@v4
         with:
-          name: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}.diff
-          path: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}.diff
+          name: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}-${{matrix.shard}}.diff
+          path: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}-${{matrix.shard}}.diff
