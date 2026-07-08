@@ -46,7 +46,7 @@ jobs:
           path: coverage/
 
   pr-visual-regression-test:
-    name: PR Visual Regression Test
+    name: PR Visual Regression Test (${{matrix.browser}}, ${{matrix.theme}}, ${{matrix.density}}, shard ${{matrix.shard}}/2)
     timeout-minutes: 40
     # This job intentionally does not use the `ubuntu-latest` image.
     # An updated image could generate different snapshots, so we should explicitly update the image version.
