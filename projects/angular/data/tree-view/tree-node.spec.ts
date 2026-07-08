@@ -530,6 +530,22 @@ export default function (): void {
         contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
         expect(focusManager.focusParent).toHaveBeenCalledWith(this.clarityDirective._model);
       });
+
+      it('sets inert on the children container when the node is collapsed to prevent Tab into hidden children', function (this: Context) {
+        const childrenContainer = this.clarityElement.querySelector('.clr-treenode-children') as HTMLElement;
+        // Initially collapsed — inert should be present
+        expect(this.clarityDirective.expanded).toBeFalse();
+        this.detectChanges();
+        expect(childrenContainer.hasAttribute('inert')).toBeTrue();
+        // Expand the node — inert should be removed
+        this.clarityDirective.expanded = true;
+        this.detectChanges();
+        expect(childrenContainer.hasAttribute('inert')).toBeFalse();
+        // Collapse again — inert should be restored
+        this.clarityDirective.expanded = false;
+        this.detectChanges();
+        expect(childrenContainer.hasAttribute('inert')).toBeTrue();
+      });
     });
 
     describe('Ally with link nodes', function () {
