@@ -1,0 +1,62 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<form
+  clrStepper
+  [formGroup]="form"
+  (ngSubmit)="onFormSubmit()"
+  [clrInitialStep]="initialStep"
+  [ngClass]="{ 'disable-form': isLoading }"
+>
+  <ng-container *ngFor="let step of stepsInternal; let i = index; let last = last">
+    <clr-stepper-panel
+      *ngIf="!step.isSkipped"
+      formGroupName="step{{ i }}"
+      [appfxOverrideClrStrings]="stepPanelOverriddenStrings"
+    >
+      <clr-step-title>{{ step.title }}</clr-step-title>
+      <clr-step-description>
+        <appfx-property-view
+          *ngIf="step.initialDescription"
+          [data]="step.initialDescription"
+          [attr.aria-label]="step.description"
+        ></appfx-property-view>
+      </clr-step-description>
+
+      <clr-step-content>
+        <appfx-step-container [step]="step"> </appfx-step-container>
+
+        <button
+          *ngIf="!last"
+          [disabled]="isNextButtonDisabled(step)"
+          clrStepButton="next"
+          [ngClass]="{ 'btn-primary': usePrimaryNextButton }"
+        >
+          {{ workflowStrings.next }}
+        </button>
+        <button *ngIf="last" [disabled]="isNextButtonDisabled(step)" clrStepButton="submit">
+          {{ workflowStrings.finish }}
+        </button>
+        <button *ngIf="showBackButton && !isFirstVisibleStep(i)" clrStepButton="previous">
+          {{ workflowStrings.back }}
+        </button>
+        <button *ngIf="showCancelButton" (click)="onCancel.emit()" type="button" class="clr-step-button btn btn-link">
+          {{ workflowStrings.cancel }}
+        </button>
+      </clr-step-content>
+    </clr-stepper-panel>
+  </ng-container>
+</form>
+
+<appfx-spinner
+  *ngIf="isLoading"
+  [message]="workflowStrings.loading"
+  [progressDetails]="pageProgressDetails"
+  [showActionButton]="showProgressCancelButton"
+  [actionButtonLabel]="cancelValidationButtonLabel"
+  (actionClick)="cancelPageValidation()"
+>
+</appfx-spinner>

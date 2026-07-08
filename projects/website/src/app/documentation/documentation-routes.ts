@@ -360,6 +360,12 @@ export const documentationRoutes: Routes = [
         loadChildren: () =>
           import('./demos/property-view/property-view.demo.module').then(m => m.PropertyViewAddonDemoModule),
       },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'stepper-addon/:tab?' },
+        loadChildren: () =>
+          import('./demos/stepper-addon/stepper-addon.demo.module').then(m => m.StepperAddonDemoModule),
+      },
     ],
   },
 ];

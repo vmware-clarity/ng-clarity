@@ -332,6 +332,12 @@
       "text": "Property View",
       "type": "addons",
       "storybookPath": "addons-property-view"
+    },
+    {
+      "url": "stepper-addon",
+      "text": "Stepper",
+      "type": "addons",
+      "storybookPath": "addons-stepper"
     }
   ]
 }

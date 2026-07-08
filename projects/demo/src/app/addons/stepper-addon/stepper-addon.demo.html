@@ -1,0 +1,24 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h1>Stepper Addon Demo</h1>
+
+<div *ngIf="!done">
+  <appfx-stepper [steps]="steps" [wizardModel]="model" (onFinish)="onFinish()"></appfx-stepper>
+</div>
+
+<div *ngIf="done" class="clr-mt-24px">
+  <div class="alert alert-success">
+    <div class="alert-items">
+      <div class="alert-item static">
+        <span class="alert-text">
+          Project <strong>{{ model.name.value }}</strong> assigned to <strong>{{ model.team.value }}</strong>.
+        </span>
+      </div>
+    </div>
+  </div>
+  <button class="btn clr-mt-16px" (click)="reset()">Reset</button>
+</div>

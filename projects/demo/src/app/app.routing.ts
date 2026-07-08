@@ -144,6 +144,11 @@ export const APP_ROUTES: Routes = [
     data: { section: 'addons', label: 'Property View' },
     loadChildren: () => import('./addons/property-view/property-view.demo.module').then(m => m.PropertyViewDemoModule),
   },
+  {
+    path: 'stepper-addon',
+    data: { section: 'addons', label: 'Stepper' },
+    loadChildren: () => import('./addons/stepper-addon/stepper-addon.demo.module').then(m => m.StepperAddonDemoModule),
+  },
   { path: 'z-index', loadChildren: () => import('./z-index/z-index.demo.module').then(m => m.ZIndexDemoModule) },
   {
     path: 'shadow-root',
