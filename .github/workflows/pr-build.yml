@@ -13,11 +13,12 @@ jobs:
       GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
+          cache: 'npm'
       - name: Install Dependencies
         run: npm ci --ignore-scripts
       - name: Lint
@@ -61,11 +62,12 @@ jobs:
       CLARITY_VRT_DENSITY: ${{matrix.density}}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
+          cache: 'npm'
       - name: Install Dependencies
         run: npm ci --ignore-scripts
       - name: Install Playwright Browsers
