@@ -7,5 +7,5 @@
 
 export { IfTabActiveDirective, IfTabActiveDirective as IfTabActive } from './if-tab-active/if-tab-active.directive';
 export { TabLinksComponent, TabLinksComponent as TabLinks } from './tab-links/tab-links.component';
-export { TabsComponent as AppfxTabsComponent, TabsComponent as Tabs } from './tabs.component';
+export { TabsComponent, TabsComponent as AppfxTabsComponent, TabsComponent as Tabs } from './tabs.component';
 export { AppfxTabsModule } from './tabs.module';

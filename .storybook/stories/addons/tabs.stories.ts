@@ -70,7 +70,12 @@ class TabsRegionStepComponent implements StepModelHolder {
 @Component({
   selector: 'clr-tabs-story-review-step',
   standalone: true,
-  template: ` <div style="padding: 1rem"><p>Review your configuration before proceeding.</p></div> `,
+  template: `
+    <div style="padding: 1rem">
+      <h4>Review</h4>
+      <p>Review your configuration before proceeding.</p>
+    </div>
+  `,
 })
 class TabsReviewStepComponent implements StepModelHolder {
   model: ReviewModel;
