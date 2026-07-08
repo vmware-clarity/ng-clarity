@@ -252,7 +252,6 @@ describe('Side Panel', () => {
     testFixture.detectChanges();
 
     // Set pinned=true while panel is closed
-    testComponent.sidePanelInstance['_pinned'] = true;
     testComponent.sidePanelInstance.pinned = true;
     testFixture.detectChanges();
 
