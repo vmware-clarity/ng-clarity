@@ -1,0 +1,251 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+.app-wizard {
+  $clr_spinner_size: 3.6rem;
+
+  .btn-close-stepnav {
+    display: none;
+    border: 0;
+    background: transparent;
+    padding: 0;
+
+    cds-icon {
+      cursor: pointer;
+    }
+  }
+
+  .btn-show-stepnav {
+    display: none;
+    border: 0;
+    background: transparent;
+
+    cds-icon {
+      cursor: pointer;
+    }
+  }
+
+  .page-index {
+    display: none;
+  }
+
+  .appfx-wizard-footer {
+    flex: 1 1 auto;
+    overflow: hidden;
+    margin-right: auto;
+  }
+
+  &.zoom2x {
+    &.showNav {
+      ::ng-deep .clr-wizard-stepnav {
+        overflow: auto;
+      }
+    }
+  }
+
+  ::ng-deep {
+    // center the spinner with shown navigation panel
+    appfx-spinner {
+      left: 27%;
+      width: 73%;
+    }
+
+    clr-spinner {
+      // disable clr-spinner overrides from _wizard.clarity.scss
+      position: static !important;
+    }
+
+    div.clr-wizard-body-wrapper {
+      display: flex;
+      flex: 1 1 auto;
+      width: 100%;
+    }
+
+    main.clr-wizard-content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .btn.btn-link.clr-wizard-stepnav-link {
+      height: unset;
+      max-width: unset;
+    }
+
+    .clr-wizard-stepnav-link-title {
+      overflow-wrap: break-word;
+      white-space: normal;
+      line-height: 1.2rem;
+    }
+  }
+
+  &.zoom2x,
+  &.zoom4x {
+    ::ng-deep {
+      // center the spinner with hidden navigation panel
+      appfx-spinner {
+        left: 0;
+        width: 100%;
+      }
+
+      .clr-wizard-stepnav-wrapper {
+        display: none;
+      }
+
+      .modal {
+        overflow: visible;
+      }
+    }
+
+    clr-wizard-page {
+      appfx-step-container.content-container {
+        height: auto;
+      }
+    }
+
+    .btn-show-stepnav,
+    .page-index {
+      display: inline-flex;
+      padding-left: 0;
+    }
+
+    .btn-show-stepnav cds-icon {
+      fill: var(--clr-wizard-main-text-color);
+    }
+
+    &.showNav {
+      ::ng-deep .modal-dialog > .clr-wizard-content-wrapper > .clr-wizard-stepnav-wrapper {
+        display: inherit;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        max-width: unset;
+        padding: 0;
+        z-index: 1001;
+      }
+
+      .btn-close-stepnav {
+        display: inherit;
+
+        cds-icon {
+          vertical-align: baseline;
+          fill: var(--clr-wizard-main-text-color);
+        }
+      }
+    }
+  }
+
+  &.zoom4x {
+    ::ng-deep {
+      .modal {
+        padding: 0;
+
+        .modal-dialog {
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          min-height: unset;
+        }
+      }
+
+      .clr-wizard-main-content {
+        display: block;
+        overflow-y: auto;
+
+        .clr-wizard-body {
+          overflow-y: hidden;
+          max-height: unset;
+          height: unset;
+        }
+      }
+
+      .modal-footer {
+        position: sticky;
+        bottom: 0;
+        background-color: inherit;
+        min-height: 3.2rem;
+        height: 3.2rem;
+        padding-top: 0.7rem;
+        z-index: 1000;
+      }
+    }
+  }
+
+  clr-wizard-page {
+    height: 100%;
+    padding-bottom: 0;
+
+    &.is-loading {
+      pointer-events: none;
+      cursor: not-allowed;
+      opacity: 0.6;
+
+      // Prevent double-disabling of elements.
+      .div-disabled {
+        opacity: 1;
+      }
+    }
+
+    $wizard-page-top-offset: 0.3rem;
+
+    @mixin first-row {
+      line-height: 1.2rem;
+      padding-top: 0.39996rem;
+      font-size: 0.650004rem;
+    }
+
+    .first-row {
+      @include first-row;
+
+      margin-bottom: 0.84rem;
+      margin-top: $wizard-page-top-offset;
+    }
+
+    appfx-validation-banner ~ form .form-group {
+      margin-bottom: 3px;
+      margin-top: 2px;
+    }
+
+    appfx-validation-banner ~ * {
+      padding-top: $wizard-page-top-offset;
+
+      > span {
+        @include first-row;
+
+        margin-bottom: 9px;
+      }
+    }
+
+    appfx-validation-banner ~ * ~ * {
+      padding-top: 0;
+    }
+
+    .alert-item {
+      align-items: center;
+    }
+
+    appfx-step-container {
+      height: 100%;
+      flex-flow: column;
+      display: flex;
+    }
+
+    @mixin non-chrome-browsers-auto-height-fix {
+      // note: non-chrome browsers have difficulties
+      // when using auto height so we have to provide
+      // them some value to evaluate flex with.
+      height: 1px;
+    }
+  }
+}
+
+.debug-popup {
+  ::ng-deep {
+    clr-modal > div > div.modal-dialog.modal-xl {
+      margin-left: 350px; // width of clr-signpost-popup
+    }
+  }
+}
