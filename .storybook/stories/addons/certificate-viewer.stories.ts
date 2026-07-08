@@ -7,10 +7,10 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { AppfxCertificateViewerModule, CertificateViewerComponent } from '@clr/addons/certificate-viewer';
+import { AppfxCertificateViewerModule } from '@clr/addons/certificate-viewer';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
-import googleCerts from '../../projects/website/src/app/documentation/demos/certificate-viewer/certs/google-certs.json';
+import googleCerts from '../../../projects/website/src/app/documentation/demos/certificate-viewer/certs/google-certs.json';
 
 // ─── Wrapper ─────────────────────────────────────────────────────────────────
 
@@ -37,7 +37,7 @@ class CertViewerStoryWrapperComponent {
 
 export default {
   title: 'Addons/Certificate Viewer',
-  component: CertificateViewerComponent,
+  component: CertViewerStoryWrapperComponent,
   decorators: [
     moduleMetadata({
       imports: [AppfxCertificateViewerModule, CommonModule, CertViewerStoryWrapperComponent],
@@ -53,7 +53,7 @@ export default {
   },
 };
 
-type Story = StoryObj<CertificateViewerComponent>;
+type Story = StoryObj<CertViewerStoryWrapperComponent>;
 
 const template: StoryFn<CertViewerStoryWrapperComponent> = args => ({
   props: args,
