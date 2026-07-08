@@ -9,9 +9,14 @@ import { Injectable } from '@angular/core';
 import { ModalStackService } from '@clr/angular/modal';
 import { BehaviorSubject, Observable } from 'rxjs';
 
+export const MAX_DETAIL_WIDTH = 100;
+export const DEFAULT_DETAIL_WIDTH = 66;
+export const MIN_DETAIL_WIDTH = 0;
+
 @Injectable()
 export class DetailService {
   id: string;
+  detailWidth = DEFAULT_DETAIL_WIDTH;
 
   private preventScroll = false;
   private toggleState = false;
