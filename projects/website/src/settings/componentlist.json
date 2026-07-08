@@ -350,6 +350,12 @@
       "text": "Tabs",
       "type": "addons",
       "storybookPath": "addons-tabs"
+    },
+    {
+      "url": "dialog",
+      "text": "Dialog",
+      "type": "addons",
+      "storybookPath": "addons-dialog"
     }
   ]
 }

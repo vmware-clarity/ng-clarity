@@ -159,6 +159,11 @@ export const APP_ROUTES: Routes = [
     data: { section: 'addons', label: 'Tabs' },
     loadChildren: () => import('./addons/tabs-addon/tabs-addon.demo.module').then(m => m.TabsAddonDemoModule),
   },
+  {
+    path: 'dialog',
+    data: { section: 'addons', label: 'Dialog' },
+    loadChildren: () => import('./addons/dialog/dialog.demo.module').then(m => m.DialogDemoModule),
+  },
   { path: 'z-index', loadChildren: () => import('./z-index/z-index.demo.module').then(m => m.ZIndexDemoModule) },
   {
     path: 'shadow-root',
