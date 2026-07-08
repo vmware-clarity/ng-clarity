@@ -1,0 +1,81 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<section class="certificate-chain">
+  <ng-container
+    *ngTemplateOutlet="
+      headingTemplate;
+      context: {
+        level: topHeadingLevel + 1,
+        textContent: 'certificate-hierarchy' | translate,
+        class: 'certificate-viewer-details-subtitle',
+      }
+    "
+  >
+  </ng-container>
+
+  <clr-tree class="content">
+    <clr-tree-node
+      *clrRecursiveFor="let certificate of certificateChain?.rootCertificate; getChildren: getNextCertificate"
+      [clrExpanded]="true"
+    >
+      <button
+        class="clr-treenode-link"
+        [class.active]="isSelected(certificate)"
+        (click)="selectCertificate(certificate)"
+        tabindex="-1"
+      >
+        {{ certificate?.subject.commonName }}
+      </button>
+    </clr-tree-node>
+  </clr-tree>
+</section>
+
+<section class="fields">
+  <ng-container
+    *ngTemplateOutlet="
+      headingTemplate;
+      context: {
+        level: topHeadingLevel + 1,
+        textContent: 'certificate-fields' | translate,
+        class: 'certificate-viewer-details-subtitle',
+      }
+    "
+  >
+  </ng-container>
+
+  <clr-tree class="content">
+    <clr-tree-node
+      *clrRecursiveFor="let field of this.selectedCertificate?.rootField; getChildren: getFieldsChildren"
+      [clrExpanded]="true"
+    >
+      <button
+        class="clr-treenode-link"
+        [class.active]="isSelectedField(field)"
+        (click)="selectCertificateField(field)"
+        tabindex="-1"
+      >
+        {{ field | translateField: 'name' }}
+      </button>
+    </clr-tree-node>
+  </clr-tree>
+</section>
+
+<section class="value">
+  <ng-container
+    *ngTemplateOutlet="
+      headingTemplate;
+      context: {
+        level: topHeadingLevel + 1,
+        textContent: 'field-value' | translate,
+        class: 'certificate-viewer-details-subtitle',
+      }
+    "
+  >
+  </ng-container>
+
+  <pre class="content">{{ selectedCertificateField | translateField: 'value' }}</pre>
+</section>

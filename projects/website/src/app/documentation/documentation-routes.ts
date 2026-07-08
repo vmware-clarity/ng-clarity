@@ -354,6 +354,12 @@ export const documentationRoutes: Routes = [
         data: { routePath: 'translate/:tab?' },
         loadChildren: () => import('./demos/translate/translate.demo.module').then(m => m.TranslateAddonDemoModule),
       },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'certificate-viewer/:tab?' },
+        loadChildren: () =>
+          import('./demos/certificate-viewer/certificate-viewer.demo.module').then(m => m.CertificateViewerDemoModule),
+      },
     ],
   },
 ];

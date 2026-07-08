@@ -1,0 +1,175 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h1>Certificate Viewer</h1>
+
+<app-doc-tabs>
+  <!-- ═══════════════ OVERVIEW ═══════════════ -->
+  <app-doc-tab tab="overview">
+    <p>
+      The certificate viewer (<code>appfx-certificate-viewer</code>) displays detailed X.509 certificate chain
+      information. It renders a <strong>General</strong> tab (validity dates, subject, issuer, fingerprints) and a
+      <strong>Details</strong> tab with the fully parsed certificate tree.
+    </p>
+
+    <h3>Import</h3>
+    <app-code-snippet
+      [code]="'import { AppfxCertificateViewerModule } from \'@clr/addons/certificate-viewer\';'"
+      language="typescript"
+      [copy]="true"
+    ></app-code-snippet>
+
+    <h3>Usage</h3>
+    <p>
+      Pass a PEM-encoded certificate chain array where index 0 is the <strong>leaf</strong> certificate and the last
+      index is the <strong>root</strong> (TLS 1.2 RFC 5246 §7.4.2 ordering). Parsing is asynchronous using
+      <code>asn1js</code> and <code>pkijs</code>.
+    </p>
+
+    <h3>Peer Dependencies</h3>
+    <app-code-snippet [code]="'npm install asn1js pkijs'" language="bash" [copy]="true"></app-code-snippet>
+  </app-doc-tab>
+
+  <!-- ═══════════════ DEMO ═══════════════ -->
+  <app-doc-tab tab="code">
+    <!-- Mode selector — mirrors the original FILL PARENT / FIXED HEIGHT / MODAL / DETAILS PANE tabs -->
+    <div class="cert-mode-bar">
+      @for (m of modes; track m.id) {
+      <button
+        class="btn btn-sm"
+        [class.btn-primary]="activeMode === m.id"
+        [class.btn-outline]="activeMode !== m.id"
+        (click)="setMode(m.id)"
+      >
+        {{ m.label | uppercase }}
+      </button>
+      }
+    </div>
+
+    <!-- ── Fill Parent ─────────────────────────────────────────────────────── -->
+    @if (activeMode === 'fill-parent') {
+    <div class="cert-fill-parent-container">
+      <appfx-certificate-viewer [pemEncodedCertificatesChain]="googleChainPems"></appfx-certificate-viewer>
+    </div>
+    }
+
+    <!-- ── Fixed Height ───────────────────────────────────────────────────── -->
+    @if (activeMode === 'fixed-height') {
+    <div class="cert-fixed-height-container">
+      <appfx-certificate-viewer [pemEncodedCertificatesChain]="googleChainPems"></appfx-certificate-viewer>
+    </div>
+    }
+
+    <!-- ── Heading Level 1 ────────────────────────────────────────────────── -->
+    @if (activeMode === 'heading-level-1') {
+    <div class="cert-fill-parent-container">
+      <appfx-certificate-viewer
+        [pemEncodedCertificatesChain]="googleChainPems"
+        [topHeadingLevel]="1"
+      ></appfx-certificate-viewer>
+    </div>
+    }
+
+    <!-- ── Heading Level 7 ────────────────────────────────────────────────── -->
+    @if (activeMode === 'heading-level-7') {
+    <div class="cert-fill-parent-container">
+      <appfx-certificate-viewer
+        [pemEncodedCertificatesChain]="googleChainPems"
+        [topHeadingLevel]="$any(7)"
+      ></appfx-certificate-viewer>
+    </div>
+    }
+
+    <!-- ── Modal ──────────────────────────────────────────────────────────── -->
+    @if (activeMode === 'modal') {
+    <div class="cert-modal-trigger">
+      <button class="btn btn-primary" (click)="openModal()">Open Certificate Viewer</button>
+    </div>
+
+    <clr-modal [(clrModalOpen)]="modalOpen" [clrModalSize]="'xl'">
+      <h3 class="modal-title">Certificate Details</h3>
+      <div class="modal-body cert-modal-body">
+        <appfx-certificate-viewer
+          [pemEncodedCertificatesChain]="googleChainPems"
+          [topHeadingLevel]="5"
+        ></appfx-certificate-viewer>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="modalOpen = false">Close</button>
+      </div>
+    </clr-modal>
+    }
+
+    <!-- ── Details Pane ───────────────────────────────────────────────────── -->
+    @if (activeMode === 'details-pane') {
+    <clr-datagrid [(clrDgSelected)]="selected">
+      <clr-dg-column>Host Name</clr-dg-column>
+      <clr-dg-column>Host Address</clr-dg-column>
+
+      <clr-dg-row *clrDgItems="let item of hosts" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.hostname }}</clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-detail *clrIfDetail="let detail">
+        <clr-dg-detail-header>Host {{ detail.hostname }}</clr-dg-detail-header>
+        <clr-dg-detail-body>
+          <appfx-certificate-viewer
+            class="margin-top padding-bottom flex"
+            [pemEncodedCertificatesChain]="googleChainPems"
+          ></appfx-certificate-viewer>
+        </clr-dg-detail-body>
+      </clr-dg-detail>
+    </clr-datagrid>
+    }
+
+    <!-- Stackblitz -->
+    <app-stackblitz-example
+      name="basic-cert"
+      [componentTemplate]="basicCertHtml"
+      [componentClass]="basicCertTs"
+    ></app-stackblitz-example>
+  </app-doc-tab>
+
+  <!-- ═══════════════ API ═══════════════ -->
+  <app-doc-tab tab="api">
+    <h3>AppfxCertificateViewerModule</h3>
+    <p>
+      The main module to import. Exports: <code>appfx-certificate-viewer</code>. Peer dependencies:
+      <code>asn1js</code> and <code>pkijs</code> must be installed in your project.
+    </p>
+
+    <h3>CertificateViewerComponent <code>&lt;appfx-certificate-viewer&gt;</code></h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Input</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>pemEncodedCertificatesChain</code></td>
+          <td><code>string[]</code></td>
+          <td>—</td>
+          <td>PEM-encoded certificate chain. Index 0 is the leaf, last is the root.</td>
+        </tr>
+        <tr>
+          <td><code>topHeadingLevel</code></td>
+          <td><code>1 | 2 | 3 | 4 | 5</code></td>
+          <td><code>5</code></td>
+          <td>
+            Heading level for the top-level header. Nested headings increment automatically. Use to satisfy WCAG heading
+            hierarchy requirements.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </app-doc-tab>
+</app-doc-tabs>

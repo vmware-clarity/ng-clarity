@@ -139,6 +139,12 @@ export const APP_ROUTES: Routes = [
     loadChildren: () => import('./vertical-nav/vertical-nav.demo.module').then(m => m.VerticalNavDemoModule),
   },
   { path: 'wizard', loadChildren: () => import('./wizard/wizard.demo.module').then(m => m.WizardDemoModule) },
+  {
+    path: 'certificate-viewer',
+    data: { section: 'addons', label: 'Certificate Viewer' },
+    loadChildren: () =>
+      import('./addons/certificate-viewer/certificate-viewer.demo.module').then(m => m.CertificateViewerDemoModule),
+  },
   { path: 'z-index', loadChildren: () => import('./z-index/z-index.demo.module').then(m => m.ZIndexDemoModule) },
   {
     path: 'shadow-root',

@@ -326,6 +326,12 @@
       "url": "translate",
       "text": "Translate",
       "type": "addons"
+    },
+    {
+      "url": "certificate-viewer",
+      "text": "Certificate Viewer",
+      "type": "addons",
+      "storybookPath": "addons-certificate-viewer"
     }
   ]
 }
