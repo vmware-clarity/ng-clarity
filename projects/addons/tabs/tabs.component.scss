@@ -1,0 +1,95 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+.div-disabled {
+  left: 0;
+  top: 0;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* considered as a clone of js-ui-lib from `modal.less`. Simplify and reduce these styles as needed */
+%text-overflow-ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+:host {
+  min-height: inherit;
+  display: block;
+
+  &.loading {
+    position: relative;
+  }
+
+  ::ng-deep {
+    .tab-content {
+      width: 100%;
+    }
+  }
+
+  ::ng-deep clr-tabs.appfx-secondary-tabs > ul.nav {
+    gap: 0;
+    box-shadow: none;
+
+    li[role='presentation'] {
+      &:not(:first-of-type) button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      &:not(:last-of-type) button {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    [role='tab'] {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  .appfx-tabs {
+    &.show-tab-nav {
+      ::ng-deep {
+        .nav {
+          display: flex;
+        }
+      }
+    }
+
+    &:not(.show-tab-nav) {
+      ::ng-deep {
+        .nav {
+          display: none;
+        }
+      }
+    }
+
+    appfx-step-container.content-container {
+      width: 100%;
+    }
+
+    clr-tabs.tabs-vertical {
+      ::ng-deep {
+        & > ul.nav {
+          button {
+            white-space: normal;
+            height: auto;
+            line-height: 1.2rem;
+            min-height: 1.8rem;
+            // Keep the bottom border hidden on hover
+            border: none !important;
+          }
+        }
+      }
+    }
+  }
+}

@@ -371,6 +371,11 @@ export const documentationRoutes: Routes = [
         data: { routePath: 'wizard-addon/:tab?' },
         loadChildren: () => import('./demos/wizard-addon/wizard-addon.demo.module').then(m => m.WizardAddonDemoModule),
       },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'tabs-addon/:tab?' },
+        loadChildren: () => import('./demos/tabs-addon/tabs-addon.demo.module').then(m => m.TabsAddonDemoModule),
+      },
     ],
   },
 ];
