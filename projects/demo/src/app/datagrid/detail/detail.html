@@ -236,6 +236,11 @@
 
 <h3>Fixed Height</h3>
 
+<clr-number-input-container>
+  <label>Detail Width</label>
+  <input type="number" id="detailWidth" min="10" max="100" clrNumberInput [(ngModel)]="detailWidth" />
+</clr-number-input-container>
+
 <clr-datagrid id="simple" [(clrDgSelected)]="selection" [clrDgSelectionType]="'multi'" style="height: 500px">
   <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
   <clr-dg-column [clrDgField]="'name'"><ng-container *clrDgHideableColumn>Name</ng-container></clr-dg-column>
@@ -264,7 +269,7 @@
 
   <!-- Desugared with pre-selection -->
   <ng-template [(clrIfDetail)]="preState" let-detail>
-    <clr-dg-detail>
+    <clr-dg-detail [clrDetailWidth]="detailWidth">
       <clr-dg-detail-header>
         {{detail.name}} {{detail.name}} {{detail.name}} {{detail.name}} {{detail.name}} {{detail.name}} {{detail.name}}
         {{detail.name}} {{detail.name}}
