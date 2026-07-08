@@ -11,7 +11,7 @@ import { MenuItem, MenuItemType } from './menu-item.token';
  * A MenuItem where multiple menuItems can be nested.
  */
 export class NestedMenu extends MenuItem {
-  type = MenuItemType.menu;
+  override type = MenuItemType.menu;
 
   text?: string;
 

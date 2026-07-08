@@ -21,7 +21,7 @@ import { MenuItem, MenuItemType } from './menu-item.token';
   ],
 })
 export class MenuHeaderComponent extends MenuItem {
-  type = MenuItemType.header;
+  override type = MenuItemType.header;
 
   @Input() iconClass: string;
 

@@ -74,7 +74,7 @@ class MenuStoryWrapperComponent {
 
 export default {
   title: 'Addons/Menu',
-  component: MenuComponent,
+  component: MenuStoryWrapperComponent,
   decorators: [
     moduleMetadata({
       imports: [AppfxMenuModule, CommonModule, MenuStoryWrapperComponent],
@@ -88,7 +88,7 @@ export default {
   },
 };
 
-type Story = StoryObj<MenuComponent>;
+type Story = StoryObj<MenuStoryWrapperComponent>;
 
 const template: StoryFn<MenuStoryWrapperComponent> = args => ({
   props: args,

@@ -21,7 +21,7 @@ import { MenuItem, MenuItemType } from './menu-item.token';
   ],
 })
 export class MenuActionComponent extends MenuItem {
-  type = MenuItemType.action;
+  override type = MenuItemType.action;
 
   @Input() iconClass?: string;
 

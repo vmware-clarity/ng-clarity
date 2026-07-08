@@ -21,5 +21,5 @@ import { MenuItem, MenuItemType } from './menu-item.token';
   ],
 })
 export class MenuSeparatorComponent extends MenuItem {
-  type = MenuItemType.separator;
+  override type = MenuItemType.separator;
 }
