@@ -107,7 +107,7 @@
     "domino": "2.1.6",
     "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
-    "eslint-plugin-decorator-position": "6.0.0",
+    "eslint-plugin-decorator-position": "6.1.1",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jasmine": "4.2.2",
     "eslint-plugin-license-header": "0.9.0",
