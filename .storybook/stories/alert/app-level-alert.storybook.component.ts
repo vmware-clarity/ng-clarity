@@ -8,6 +8,7 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ClrAlertModule, ClrDropdownModule, ClrIcon } from '@clr/angular';
+import { AlertType } from '@clr/angular/emphasis/alert';
 import { createArray } from 'helpers/common';
 
 import { RenderComponentStorybook } from '../../helpers/render-component';
@@ -97,8 +98,7 @@ export class AppLevelAlertStorybookComponent extends RenderComponentStorybook {
   @Input() paginated = false;
   createArray = createArray;
 
-  // The alert types can be provided via args or defaulted here.
-  @Input() alertTypes: string[] = ['info', 'warning', 'danger', 'success', 'neutral'];
+  @Input() alertTypes: AlertType[] = ['info', 'warning', 'danger', 'success', 'neutral'];
 
   @Output() clrAlertClosedChange: EventEmitter<boolean> = new EventEmitter();
 }

@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrAlert } from './alert';
 import { ClrAlertModule } from './alert.module';
+import { AlertType } from './utils/alert-types';
 
 const CLOSE_ARIA_LABEL = 'Close Test Alert';
 
@@ -34,7 +35,7 @@ const CLOSE_ARIA_LABEL = 'Close Test Alert';
 class TestComponent {
   @ViewChild(ClrAlert) alertInstance: ClrAlert;
 
-  type = '';
+  type: AlertType = 'info';
   isSmall = false;
   isClosable = false;
   isLightweight = false;
