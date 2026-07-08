@@ -1,0 +1,181 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Menu</h2>
+<p>
+  Contextual menu built on <code>clr-dropdown</code> — supports nested submenus, icons, keyboard navigation, and
+  200%/400% zoom accessibility.
+</p>
+
+<!-- Mode selector -->
+<div class="menu-mode-bar">
+  @for (m of modes; track m.id) {
+  <button
+    class="btn btn-sm"
+    [class.btn-primary]="activeMode === m.id"
+    [class.btn-outline]="activeMode !== m.id"
+    (click)="setMode(m.id)"
+  >
+    {{ m.label | uppercase }}
+  </button>
+  }
+</div>
+
+@if (lastAction) {
+<div class="menu-last-action">Last action: <strong>{{ lastAction }}</strong></div>
+}
+
+<!-- Context Area -->
+@if (activeMode === 'context-area') {
+<div class="menu-context-area" (contextmenu)="onContextMenu($event)">
+  <p class="menu-hint">Right-click anywhere in this area</p>
+</div>
+
+<appfx-menu #contextMenu>
+  <appfx-menu-header [text]="'File Actions'"></appfx-menu-header>
+  <appfx-menu-action [text]="'New File'" [shortcut]="'Ctrl+N'" (handle)="handleAction('New File')"></appfx-menu-action>
+  <appfx-menu-action [text]="'Open'" [shortcut]="'Ctrl+O'" (handle)="handleAction('Open')"></appfx-menu-action>
+  <appfx-menu-separator></appfx-menu-separator>
+  <appfx-menu [text]="'More Actions'">
+    <appfx-menu-action [text]="'Duplicate'" (handle)="handleAction('Duplicate')"></appfx-menu-action>
+    <appfx-menu-action [text]="'Archive'" (handle)="handleAction('Archive')"></appfx-menu-action>
+  </appfx-menu>
+  <appfx-menu-separator></appfx-menu-separator>
+  <appfx-menu-action [text]="'Delete'" [enabled]="false"></appfx-menu-action>
+</appfx-menu>
+}
+
+<!-- Tree -->
+@if (activeMode === 'tree') {
+<div class="menu-tree-container">
+  <p class="menu-hint">Right-click a node to open its context menu</p>
+  <clr-tree>
+    @for (node of treeNodes; track node.label) {
+    <clr-tree-node [(clrExpanded)]="node.expanded" (contextmenu)="onTreeNodeContextMenu($event, node)">
+      {{ node.label }} @if (node.children) { @for (child of node.children; track child.label) {
+      <clr-tree-node (contextmenu)="onTreeNodeContextMenu($event, child)">
+        {{ child.label }} @if (child.children) { @for (gc of child.children; track gc.label) {
+        <clr-tree-node (contextmenu)="onTreeNodeContextMenu($event, gc)">{{ gc.label }}</clr-tree-node>
+        } }
+      </clr-tree-node>
+      } }
+    </clr-tree-node>
+    }
+  </clr-tree>
+</div>
+
+<appfx-menu #treeMenu>
+  <appfx-menu-action
+    [text]="'Open'"
+    (handle)="handleAction('Open: ' + (selectedNode?.label ?? ''))"
+  ></appfx-menu-action>
+  <appfx-menu-action
+    [text]="'Rename'"
+    (handle)="handleAction('Rename: ' + (selectedNode?.label ?? ''))"
+  ></appfx-menu-action>
+  <appfx-menu-separator></appfx-menu-separator>
+  <appfx-menu-action
+    [text]="'Delete'"
+    (handle)="handleAction('Delete: ' + (selectedNode?.label ?? ''))"
+  ></appfx-menu-action>
+</appfx-menu>
+}
+
+<!-- Datagrid -->
+@if (activeMode === 'datagrid') {
+<clr-datagrid>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Type</clr-dg-column>
+  <clr-dg-column>Size</clr-dg-column>
+  <clr-dg-column></clr-dg-column>
+
+  @for (file of files; track file.name) {
+  <clr-dg-row>
+    <clr-dg-cell>{{ file.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ file.type }}</clr-dg-cell>
+    <clr-dg-cell>{{ file.size }}</clr-dg-cell>
+    <clr-dg-cell class="menu-actions-cell">
+      <button class="btn btn-icon btn-sm btn-link" title="Actions" (click)="onRowMenuClick($event, file)">
+        <cds-icon shape="ellipsis-vertical"></cds-icon>
+      </button>
+    </clr-dg-cell>
+  </clr-dg-row>
+  }
+</clr-datagrid>
+
+<appfx-menu #datagridMenu>
+  <appfx-menu-action [text]="'Open'" (handle)="handleAction('Open: ' + (selectedFile?.name ?? ''))"></appfx-menu-action>
+  <appfx-menu-action
+    [text]="'Download'"
+    (handle)="handleAction('Download: ' + (selectedFile?.name ?? ''))"
+  ></appfx-menu-action>
+  <appfx-menu-action
+    [text]="'Rename'"
+    (handle)="handleAction('Rename: ' + (selectedFile?.name ?? ''))"
+  ></appfx-menu-action>
+  <appfx-menu-separator></appfx-menu-separator>
+  <appfx-menu-action
+    [text]="'Delete'"
+    (handle)="handleAction('Delete: ' + (selectedFile?.name ?? ''))"
+  ></appfx-menu-action>
+</appfx-menu>
+}
+
+<!-- Button -->
+@if (activeMode === 'button') {
+<div class="menu-button-container">
+  <p class="menu-hint">Click the button to open the actions menu</p>
+  <div class="menu-button-group">
+    <button class="btn btn-primary" (click)="onButtonMenuClick($event)">
+      Actions <cds-icon shape="angle" direction="down"></cds-icon>
+    </button>
+    <button class="btn btn-outline" (click)="handleAction('Save')">Save</button>
+  </div>
+</div>
+
+<appfx-menu #buttonMenu>
+  <appfx-menu-action [text]="'New Item'" [shortcut]="'Ctrl+N'" (handle)="handleAction('New Item')"></appfx-menu-action>
+  <appfx-menu-action [text]="'Edit'" [shortcut]="'Ctrl+E'" (handle)="handleAction('Edit')"></appfx-menu-action>
+  <appfx-menu-separator></appfx-menu-separator>
+  <appfx-menu [text]="'Export As'">
+    <appfx-menu-action [text]="'PDF'" (handle)="handleAction('Export PDF')"></appfx-menu-action>
+    <appfx-menu-action [text]="'CSV'" (handle)="handleAction('Export CSV')"></appfx-menu-action>
+  </appfx-menu>
+  <appfx-menu-separator></appfx-menu-separator>
+  <appfx-menu-action [text]="'Delete'" [enabled]="false"></appfx-menu-action>
+</appfx-menu>
+}
+
+<!-- Icons -->
+@if (activeMode === 'icons') {
+<div class="menu-icons-container">
+  <p class="menu-hint">Click an icon to open its actions menu</p>
+  <div class="menu-icon-toolbar">
+    <button class="btn btn-icon btn-outline" title="File" (click)="onIconMenuClick($event)">
+      <cds-icon shape="file"></cds-icon>
+    </button>
+    <button class="btn btn-icon btn-outline" title="Edit" (click)="onIconMenuClick($event)">
+      <cds-icon shape="pencil"></cds-icon>
+    </button>
+    <button class="btn btn-icon btn-outline" title="Share" (click)="onIconMenuClick($event)">
+      <cds-icon shape="share"></cds-icon>
+    </button>
+    <button class="btn btn-icon btn-outline" title="More" (click)="onIconMenuClick($event)">
+      <cds-icon shape="ellipsis-vertical"></cds-icon>
+    </button>
+  </div>
+</div>
+
+<appfx-menu #iconsMenu>
+  <appfx-menu-action [text]="'Open'" (handle)="handleAction('Open')"></appfx-menu-action>
+  <appfx-menu-action [text]="'Copy Link'" (handle)="handleAction('Copy Link')"></appfx-menu-action>
+  <appfx-menu-separator></appfx-menu-separator>
+  <appfx-menu-action [text]="'Properties'" (handle)="handleAction('Properties')"></appfx-menu-action>
+</appfx-menu>
+}
+
+<menu-outlet></menu-outlet>

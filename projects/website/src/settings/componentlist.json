@@ -326,6 +326,12 @@
       "url": "translate",
       "text": "Translate",
       "type": "addons"
+    },
+    {
+      "url": "menu",
+      "text": "Menu",
+      "type": "addons",
+      "storybookPath": "addons-menu"
     }
   ]
 }

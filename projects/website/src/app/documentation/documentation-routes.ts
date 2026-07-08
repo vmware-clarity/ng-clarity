@@ -354,6 +354,11 @@ export const documentationRoutes: Routes = [
         data: { routePath: 'translate/:tab?' },
         loadChildren: () => import('./demos/translate/translate.demo.module').then(m => m.TranslateAddonDemoModule),
       },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'menu/:tab?' },
+        loadChildren: () => import('./demos/menu/menu.demo.module').then(m => m.MenuDemoModule),
+      },
     ],
   },
 ];

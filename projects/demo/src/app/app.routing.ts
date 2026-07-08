@@ -139,6 +139,11 @@ export const APP_ROUTES: Routes = [
     loadChildren: () => import('./vertical-nav/vertical-nav.demo.module').then(m => m.VerticalNavDemoModule),
   },
   { path: 'wizard', loadChildren: () => import('./wizard/wizard.demo.module').then(m => m.WizardDemoModule) },
+  {
+    path: 'menu',
+    data: { section: 'addons', label: 'Menu' },
+    loadChildren: () => import('./addons/menu/menu.demo.module').then(m => m.MenuDemoModule),
+  },
   { path: 'z-index', loadChildren: () => import('./z-index/z-index.demo.module').then(m => m.ZIndexDemoModule) },
   {
     path: 'shadow-root',

@@ -1,0 +1,331 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h1>Menu</h1>
+
+<app-doc-tabs>
+  <!-- ═══════════════ OVERVIEW ═══════════════ -->
+  <app-doc-tab tab="overview">
+    <p>
+      The context menu (<code>appfx-menu</code>) provides a right-click style contextual menu built on top of Clarity's
+      <code>clr-dropdown</code>. It supports nested submenus, icons, keyboard navigation, and 200%/400% zoom
+      accessibility.
+    </p>
+
+    <h3>Import</h3>
+    <app-code-snippet
+      [code]="'import { AppfxMenuModule } from \'@clr/addons/menu\';'"
+      language="typescript"
+      [copy]="true"
+    ></app-code-snippet>
+
+    <h3>Setup</h3>
+    <p>
+      Declare <code>&lt;appfx-menu&gt;</code> and add exactly one <code>&lt;menu-outlet&gt;</code> to your root layout.
+      Call <code>menu.show(event, x, y)</code> to position and open it. The menu content (actions, headers, separators,
+      submenus) must be declared statically — use <code>[enabled]="false"</code>
+      to disable items instead of adding/removing them.
+    </p>
+  </app-doc-tab>
+
+  <!-- ═══════════════ CODE ═══════════════ -->
+  <app-doc-tab tab="code">
+    <!-- Mode buttons -->
+    <div class="menu-mode-bar">
+      @for (m of modes; track m.id) {
+      <button
+        class="btn btn-sm"
+        [class.btn-primary]="activeMode === m.id"
+        [class.btn-outline]="activeMode !== m.id"
+        (click)="setMode(m.id)"
+      >
+        {{ m.label | uppercase }}
+      </button>
+      }
+    </div>
+
+    @if (lastAction) {
+    <div class="menu-last-action">Last action: <strong>{{ lastAction }}</strong></div>
+    }
+
+    <!-- ── Context Area ─────────────────────────────────────────────────── -->
+    @if (activeMode === 'context-area') {
+    <div class="menu-context-area" (contextmenu)="onContextMenu($event)">
+      <p class="menu-hint">Right-click anywhere in this area to open the menu</p>
+    </div>
+
+    <appfx-menu #contextMenu>
+      <appfx-menu-header [text]="'File Actions'"></appfx-menu-header>
+      <appfx-menu-action
+        [text]="'New File'"
+        [shortcut]="'Ctrl+N'"
+        (handle)="handleAction('New File')"
+      ></appfx-menu-action>
+      <appfx-menu-action [text]="'Open'" [shortcut]="'Ctrl+O'" (handle)="handleAction('Open')"></appfx-menu-action>
+      <appfx-menu-separator></appfx-menu-separator>
+      <appfx-menu [text]="'More Actions'">
+        <appfx-menu-action
+          [text]="'Duplicate'"
+          [shortcut]="'Ctrl+D'"
+          (handle)="handleAction('Duplicate')"
+        ></appfx-menu-action>
+        <appfx-menu-action [text]="'Archive'" (handle)="handleAction('Archive')"></appfx-menu-action>
+      </appfx-menu>
+      <appfx-menu-separator></appfx-menu-separator>
+      <appfx-menu-action [text]="'Delete'" [enabled]="false"></appfx-menu-action>
+    </appfx-menu>
+    }
+
+    <!-- ── Tree ────────────────────────────────────────────────────────── -->
+    @if (activeMode === 'tree') {
+    <div class="menu-tree-container">
+      <p class="menu-hint">Right-click a node to open its context menu</p>
+      <clr-tree>
+        @for (node of treeNodes; track node.label) {
+        <clr-tree-node [(clrExpanded)]="node.expanded" (contextmenu)="onTreeNodeContextMenu($event, node)">
+          {{ node.label }} @if (node.children) { @for (child of node.children; track child.label) {
+          <clr-tree-node (contextmenu)="onTreeNodeContextMenu($event, child)">
+            {{ child.label }} @if (child.children) { @for (grandchild of child.children; track grandchild.label) {
+            <clr-tree-node (contextmenu)="onTreeNodeContextMenu($event, grandchild)">
+              {{ grandchild.label }}
+            </clr-tree-node>
+            } }
+          </clr-tree-node>
+          } }
+        </clr-tree-node>
+        }
+      </clr-tree>
+
+      @if (selectedNode) {
+      <p class="menu-selection-hint">Right-clicked: <strong>{{ selectedNode.label }}</strong></p>
+      }
+    </div>
+
+    <appfx-menu #treeMenu>
+      <appfx-menu-action
+        [text]="'Open'"
+        (handle)="handleAction('Open: ' + (selectedNode?.label ?? ''))"
+      ></appfx-menu-action>
+      <appfx-menu-action
+        [text]="'Rename'"
+        (handle)="handleAction('Rename: ' + (selectedNode?.label ?? ''))"
+      ></appfx-menu-action>
+      <appfx-menu-separator></appfx-menu-separator>
+      <appfx-menu-action
+        [text]="'Delete'"
+        (handle)="handleAction('Delete: ' + (selectedNode?.label ?? ''))"
+      ></appfx-menu-action>
+    </appfx-menu>
+    }
+
+    <!-- ── Datagrid ─────────────────────────────────────────────────────── -->
+    @if (activeMode === 'datagrid') {
+    <div class="menu-datagrid-container">
+      <clr-datagrid>
+        <clr-dg-column>Name</clr-dg-column>
+        <clr-dg-column>Type</clr-dg-column>
+        <clr-dg-column>Size</clr-dg-column>
+        <clr-dg-column class="menu-actions-col"></clr-dg-column>
+
+        @for (file of files; track file.name) {
+        <clr-dg-row>
+          <clr-dg-cell>{{ file.name }}</clr-dg-cell>
+          <clr-dg-cell>{{ file.type }}</clr-dg-cell>
+          <clr-dg-cell>{{ file.size }}</clr-dg-cell>
+          <clr-dg-cell class="menu-actions-cell">
+            <button class="btn btn-icon btn-sm btn-link" title="Actions" (click)="onRowMenuClick($event, file)">
+              <cds-icon shape="ellipsis-vertical"></cds-icon>
+            </button>
+          </clr-dg-cell>
+        </clr-dg-row>
+        }
+      </clr-datagrid>
+    </div>
+
+    <appfx-menu #datagridMenu>
+      <appfx-menu-action
+        [text]="'Open'"
+        (handle)="handleAction('Open: ' + (selectedFile?.name ?? ''))"
+      ></appfx-menu-action>
+      <appfx-menu-action
+        [text]="'Download'"
+        (handle)="handleAction('Download: ' + (selectedFile?.name ?? ''))"
+      ></appfx-menu-action>
+      <appfx-menu-action
+        [text]="'Rename'"
+        (handle)="handleAction('Rename: ' + (selectedFile?.name ?? ''))"
+      ></appfx-menu-action>
+      <appfx-menu-separator></appfx-menu-separator>
+      <appfx-menu-action
+        [text]="'Delete'"
+        (handle)="handleAction('Delete: ' + (selectedFile?.name ?? ''))"
+      ></appfx-menu-action>
+    </appfx-menu>
+    }
+
+    <!-- ── Button ──────────────────────────────────────────────────────── -->
+    @if (activeMode === 'button') {
+    <div class="menu-button-container">
+      <p class="menu-hint">Click the button to open the actions menu</p>
+      <div class="menu-button-group">
+        <button class="btn btn-primary" (click)="onButtonMenuClick($event)">
+          Actions <cds-icon shape="angle" direction="down"></cds-icon>
+        </button>
+        <button class="btn btn-outline" (click)="handleAction('Save')">Save</button>
+        <button class="btn btn-outline" (click)="handleAction('Cancel')">Cancel</button>
+      </div>
+    </div>
+
+    <appfx-menu #buttonMenu>
+      <appfx-menu-action
+        [text]="'New Item'"
+        [shortcut]="'Ctrl+N'"
+        (handle)="handleAction('New Item')"
+      ></appfx-menu-action>
+      <appfx-menu-action [text]="'Edit'" [shortcut]="'Ctrl+E'" (handle)="handleAction('Edit')"></appfx-menu-action>
+      <appfx-menu-separator></appfx-menu-separator>
+      <appfx-menu [text]="'Export As'">
+        <appfx-menu-action [text]="'PDF'" (handle)="handleAction('Export PDF')"></appfx-menu-action>
+        <appfx-menu-action [text]="'CSV'" (handle)="handleAction('Export CSV')"></appfx-menu-action>
+        <appfx-menu-action [text]="'JSON'" (handle)="handleAction('Export JSON')"></appfx-menu-action>
+      </appfx-menu>
+      <appfx-menu-separator></appfx-menu-separator>
+      <appfx-menu-action [text]="'Delete'" [enabled]="false"></appfx-menu-action>
+    </appfx-menu>
+    }
+
+    <!-- ── Icons ──────────────────────────────────────────────────────── -->
+    @if (activeMode === 'icons') {
+    <div class="menu-icons-container">
+      <p class="menu-hint">Click an icon button to open its menu</p>
+      <div class="menu-icon-toolbar">
+        <button class="btn btn-icon btn-outline" title="File actions" (click)="onIconMenuClick($event)">
+          <cds-icon shape="file"></cds-icon>
+        </button>
+        <button class="btn btn-icon btn-outline" title="Edit actions" (click)="onIconMenuClick($event)">
+          <cds-icon shape="pencil"></cds-icon>
+        </button>
+        <button class="btn btn-icon btn-outline" title="Share actions" (click)="onIconMenuClick($event)">
+          <cds-icon shape="share"></cds-icon>
+        </button>
+        <button class="btn btn-icon btn-outline" title="More actions" (click)="onIconMenuClick($event)">
+          <cds-icon shape="ellipsis-vertical"></cds-icon>
+        </button>
+      </div>
+    </div>
+
+    <appfx-menu #iconsMenu>
+      <appfx-menu-action [text]="'Open'" (handle)="handleAction('Open')"></appfx-menu-action>
+      <appfx-menu-action [text]="'Copy Link'" (handle)="handleAction('Copy Link')"></appfx-menu-action>
+      <appfx-menu-separator></appfx-menu-separator>
+      <appfx-menu-action [text]="'Properties'" (handle)="handleAction('Properties')"></appfx-menu-action>
+    </appfx-menu>
+    }
+
+    <!-- Single outlet for all modes -->
+    <menu-outlet></menu-outlet>
+
+    <app-stackblitz-example
+      name="basic-menu"
+      [componentTemplate]="basicMenuHtml"
+      [componentClass]="basicMenuTs"
+    ></app-stackblitz-example>
+  </app-doc-tab>
+
+  <!-- ═══════════════ API ═══════════════ -->
+  <app-doc-tab tab="api">
+    <h3>AppfxMenuModule</h3>
+    <p>
+      Exports: <code>appfx-menu</code>, <code>appfx-menu-action</code>, <code>appfx-menu-header</code>,
+      <code>appfx-menu-separator</code>, <code>menu-outlet</code>.
+    </p>
+
+    <h3>MenuComponent <code>&lt;appfx-menu&gt;</code></h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Member</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>show(e, x, y, trigger?)</code></td>
+          <td>void</td>
+          <td>
+            Opens menu at given viewport coordinates. Optionally pass a trigger element to restore focus on close.
+          </td>
+        </tr>
+        <tr>
+          <td><code>close(e)</code></td>
+          <td>void</td>
+          <td>Closes the menu</td>
+        </tr>
+        <tr>
+          <td><code>text</code></td>
+          <td>string</td>
+          <td>When used as a nested menu, sets the submenu label</td>
+        </tr>
+        <tr>
+          <td><code>opened</code></td>
+          <td>EventEmitter</td>
+          <td>Emits once when the menu opens</td>
+        </tr>
+        <tr>
+          <td><code>closed</code></td>
+          <td>EventEmitter</td>
+          <td>Emits once when the menu closes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>MenuActionComponent <code>&lt;appfx-menu-action&gt;</code></h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Input</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>string</td>
+          <td>Action label</td>
+        </tr>
+        <tr>
+          <td><code>iconClass</code></td>
+          <td>string</td>
+          <td>Optional icon CSS class</td>
+        </tr>
+        <tr>
+          <td><code>shortcut</code></td>
+          <td>string</td>
+          <td>Keyboard shortcut hint (right-aligned)</td>
+        </tr>
+        <tr>
+          <td><code>enabled</code></td>
+          <td>boolean</td>
+          <td>Default: true. Disabled items render but are unclickable.</td>
+        </tr>
+        <tr>
+          <td><code>handle</code></td>
+          <td>EventEmitter</td>
+          <td>Emits when the action is clicked while enabled</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Important: Static item constraint</h3>
+    <p>
+      The set of menu items must be declared statically — the menu will throw if items are added or removed after
+      initial render. Use <code>[enabled]="false"</code> to disable items asynchronously instead.
+    </p>
+  </app-doc-tab>
+</app-doc-tabs>
