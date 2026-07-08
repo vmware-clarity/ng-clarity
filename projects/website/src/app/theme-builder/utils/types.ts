@@ -13,7 +13,17 @@ export interface WcagLevel {
   type: string;
 }
 
-export type CdsThemeStructure = { light: {}; dark: {} };
+export interface ContrastResult {
+  minContrast: { wcag: WcagLevel; score: number };
+  backgrounds: { name: string; score: number; wcag: WcagLevel }[];
+}
+
+/**
+ * Per-theme lookup keyed by token group / background name. Defaults to grouped
+ * color variants (`Color[]`, used by `colorStruct`); pass `Color` for single-value
+ * structures like `backgrounds`.
+ */
+export type CdsThemeStructure<T = Color[]> = { light: Record<string, T>; dark: Record<string, T> };
 
 /** HSL color tuple: [hue 0–360, saturation 0–100, lightness 0–100] */
 export type HslColor = [number, number, number];
@@ -30,6 +40,13 @@ export interface ThemePreset {
   name: string;
   light: ThemeColors;
   dark: ThemeColors;
+}
+
+export interface ThemeColor {
+  key: string;
+  base: Color;
+  variants: Color[];
+  contrast: ContrastResult;
 }
 
 export interface DataRow {

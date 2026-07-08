@@ -121,13 +121,8 @@ export class Color {
     );
   }
 
-  /** Returns an independent copy so editing a working theme never mutates a preset. */
-  clone(): Color {
-    const copy = new Color(this.name, this.originalColor);
-    if (this._color) {
-      copy.color = [...this._color];
-    }
-    return copy;
+  reset(): void {
+    this._color = undefined;
   }
 
   /** Converts HSL to RGB — use only for relative luminance calculations. */

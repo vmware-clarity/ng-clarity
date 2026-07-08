@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClarityIcons,
@@ -14,7 +14,9 @@ import {
   ClrTimelineStepState,
   cogIcon,
   homeIcon,
+  moonIcon,
   pencilIcon,
+  sunIcon,
   undoIcon,
   userIcon,
 } from '@clr/angular';
@@ -23,7 +25,7 @@ import { getFeatureFlags } from '../feature-flags';
 import { Color, hexToHsl, shiftL } from './utils/color';
 import { generateCSS } from './utils/css-generator';
 import { BACKGROUND_TOKENS, DEFAULT_OVERRIDES, PRESETS, SAMPLE_ROWS, TOKEN_KEYS } from './utils/presets';
-import { CdsThemeStructure, DataRow, ThemeColors, ThemePreset } from './utils/types';
+import { CdsThemeStructure, ContrastResult, DataRow, ThemeColor, ThemeColors, ThemePreset } from './utils/types';
 import { contrastRatio, wcagScore } from './utils/wcag';
 import { CodeSnippetComponent } from '../shared/code-snippet/code-snippet.component';
 import { SiteFooterComponent } from '../shared/site-footer/site-footer.component';
@@ -38,7 +40,7 @@ export type { DataRow, ThemeColors, ThemePreset };
   host: { '[class.content-container]': 'true' },
   imports: [CommonModule, ClarityModule, FormsModule, CodeSnippetComponent, SiteFooterComponent, SiteNavComponent],
 })
-export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ThemeBuilderComponent implements AfterViewInit, OnDestroy {
   @ViewChild('previewWrapper') previewWrapper!: ElementRef<HTMLElement>;
   @ViewChild('previewDarkWrapper') previewDarkWrapper!: ElementRef<HTMLElement>;
 
@@ -54,10 +56,12 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     dark: {},
   };
 
-  backgrounds: CdsThemeStructure = {
+  backgrounds: CdsThemeStructure<Color> = {
     light: {},
     dark: {},
   };
+
+  themeColors: ThemeColor[] = [];
 
   wizardOpen = false;
   rows = SAMPLE_ROWS;
@@ -76,11 +80,9 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   private copiedTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
-    ClarityIcons.addIcons(undoIcon);
-    ClarityIcons.addIcons(pencilIcon);
-    ClarityIcons.addIcons(homeIcon);
-    ClarityIcons.addIcons(cogIcon);
-    ClarityIcons.addIcons(userIcon);
+    localStorage.setItem('theme', 'light');
+
+    ClarityIcons.addIcons(sunIcon, moonIcon, undoIcon, pencilIcon, homeIcon, cogIcon, userIcon);
   }
 
   get isDarkTheme(): boolean {
@@ -88,38 +90,14 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get generatedCss(): string {
-    const generatedCSS = generateCSS(this.colorStruct);
-
-    if (generatedCSS.find(line => line === '\n/* NO changes */')) {
-      this.activePreset = PRESETS[0];
-    }
-
-    return generatedCSS.join('\n');
-  }
-
-  get themeColors() {
-    const result = [];
-
-    if (this.colorStruct[this.activeTheme]) {
-      const keys = Object.keys(this.colorStruct[this.activeTheme]);
-
-      for (const key of keys) {
-        const allColors: Color[] = this.colorStruct[this.activeTheme][key];
-        result.push({
-          key,
-          base: allColors.find(c => c.label === 'Base'),
-          variants: allColors.filter(c => c.label !== 'Base'),
-        });
-      }
-    }
-
-    return result;
+    return generateCSS(this.colorStruct).join('\n');
   }
 
   applyActiveTheme(theme: 'light' | 'dark') {
     this.activeTheme = theme;
 
     this.applyPreviewStyles();
+    this.refreshThemeColors();
   }
 
   setCurrentColor(colorVariant: Color, hex: string, colorGroup: Color[] = []): void {
@@ -129,14 +107,9 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.colorBuilder(colorVariant, colorGroup);
 
       this.applyPreviewStyles();
-
-      this.activePreset = null;
+      this.refreshThemeColors();
+      this.resetActivePreset();
     }
-  }
-
-  ngOnInit(): void {
-    console.log('ngOnInit');
-    // document.querySelector('app-root')?.classList.add('layout-theme-builder');
   }
 
   ngAfterViewInit(): void {
@@ -146,7 +119,6 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('ngOnDestroy');
     if (this.copiedTimer) {
       clearTimeout(this.copiedTimer);
     }
@@ -160,9 +132,9 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
         continue;
       }
 
-      if (!this.activePreset[theme]) {
-        this.resetAllThemeColors(theme);
+      this.resetAllThemeColors(theme);
 
+      if (!this.activePreset[theme]) {
         continue;
       }
 
@@ -177,6 +149,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.applyPreviewStyles();
+    this.refreshThemeColors();
   }
 
   resetAllThemeColors(theme: string) {
@@ -184,26 +157,29 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
       const tokenGroup = this.colorStruct[theme][key];
 
       for (let i = 0; i < tokenGroup.length; i++) {
-        tokenGroup[i].color = null;
+        tokenGroup[i].reset();
       }
     }
   }
 
   resetColor($event: Event, color: Color, colorGroup: Color[] = []) {
     $event.stopPropagation();
-    color.color = null;
+    color.reset();
 
     colorGroup?.forEach(color => {
-      color.color = null;
+      color.reset();
     });
 
     this.applyPreviewStyles();
+    this.refreshThemeColors();
+    this.resetActivePreset();
   }
 
   async copyCSS(): Promise<void> {
     const css = this.generatedCss;
 
-    // iframe communication to parent
+    // Target origin is unknown (the theme builder can be embedded by any host) and the
+    // payload (generated CSS) isn't sensitive, so a wildcard target is intentional here.
     window.top.postMessage(css, '*');
 
     try {
@@ -235,6 +211,8 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
 
         DEFAULT_OVERRIDES[color.name]?.forEach((override: string) => {
           // remove override if color isOriginalColor
+          // another shorter variant is:
+          // el.style.setProperty(override, color.isOriginalColor ? null : `var(${color.name})`);
           if (color.isOriginalColor) {
             el.style.removeProperty(override);
           } else {
@@ -245,14 +223,11 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  getContrast(color: Color): any {
-    const contrast = {
-      minContrast: {},
-      backgrounds: [],
-    };
+  private getContrast(color: Color): ContrastResult {
+    const backgrounds: ContrastResult['backgrounds'] = [];
 
     let minScore = 10;
-    for (let bgName in this.backgrounds[this.activeTheme]) {
+    for (const bgName in this.backgrounds[this.activeTheme]) {
       const background = this.backgrounds[this.activeTheme][bgName];
 
       const score = contrastRatio(color.rgb, background.rgb);
@@ -261,31 +236,47 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
         minScore = score;
       }
 
-      contrast.backgrounds.push({
+      backgrounds.push({
         name: bgName,
         score,
         wcag: wcagScore(score),
       });
     }
 
-    contrast.minContrast = {
-      wcag: wcagScore(minScore),
-      score: minScore,
+    return {
+      minContrast: { wcag: wcagScore(minScore), score: minScore },
+      backgrounds,
     };
-
-    return contrast;
   }
 
-  getBadgeColor(contrastLabel: string) {
-    switch (contrastLabel) {
-      case 'Fail':
-        return 'danger';
-      case 'AA Large':
-        return 'warning';
-      case 'AA':
-      default:
-        return 'success';
+  private refreshThemeColors(): void {
+    const themeColors: ThemeColor[] = [];
+    const colorGroups = this.colorStruct[this.activeTheme];
+
+    for (const key of Object.keys(colorGroups)) {
+      const colorGroup = colorGroups[key];
+      const baseColor = colorGroup.find(c => c.label === 'Base');
+
+      themeColors.push({
+        key,
+        base: baseColor,
+        variants: colorGroup.filter(c => c.label !== 'Base'),
+        contrast: this.getContrast(baseColor),
+      });
     }
+
+    this.themeColors = themeColors;
+  }
+
+  private resetActivePreset(): void {
+    const themes = Object.values(this.colorStruct) as Record<string, Color[]>[];
+    const allOriginal = themes.every(theme => {
+      return Object.values(theme).every(colors => {
+        return colors.every(color => color.isOriginalColor);
+      });
+    });
+
+    this.activePreset = allOriginal ? PRESETS[0] : null;
   }
 
   private colorBuilder(colorVariant: Color, colorGroup: Color[], isDarkTheme = this.isDarkTheme) {
@@ -329,6 +320,8 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.backgrounds['light'][bg.name] = new Color(bg.token, lightStyles.getPropertyValue(bg.token));
         this.backgrounds['dark'][bg.name] = new Color(bg.token, darkStyles.getPropertyValue(bg.token));
       });
+
+      this.refreshThemeColors();
     }, 200);
   }
 }

@@ -56,7 +56,6 @@
 
       <div class="card-block">
         @for (colorGroup of themeColors; track colorGroup.key) {
-          @let contrast = getContrast(colorGroup.base);
           <clr-stack-view>
             <clr-stack-header>{{ colorGroup.key | uppercase }}</clr-stack-header>
             <clr-stack-block [clrStackViewLevel]="1">
@@ -67,13 +66,13 @@
                   <clr-label
                     cds-layout="m:none"
                     clrTooltipTrigger
-                    [clrText]="'Contrast ' + contrast.minContrast.wcag.label"
-                    [clrBadgeText]="contrast.minContrast.wcag.score"
-                    [clrColor]="contrast.minContrast.wcag.type"
+                    [clrText]="'Contrast ' + colorGroup.contrast.minContrast.wcag.label"
+                    [clrBadgeText]="colorGroup.contrast.minContrast.wcag.score"
+                    [clrColor]="colorGroup.contrast.minContrast.wcag.type"
                   >
                   </clr-label>
                   <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
-                    @for (background of contrast.backgrounds; track background.name) {
+                    @for (background of colorGroup.contrast.backgrounds; track background.name) {
                       <div>{{ background.name }}: {{ background.wcag.label }} ({{ background.wcag.score }})</div>
                     }
                   </clr-tooltip-content>
@@ -219,16 +218,16 @@
         <!-- Alerts -->
         <div class="tb-preview-section">
           <p class="tb-preview-section-label">Alerts</p>
-          <clr-alert [clrAlertType]="'info'" [clrAlertClosable]="false">
+          <clr-alert [clrAlertType]="'info'">
             <clr-alert-item><span class="alert-text">This is an info alert.</span></clr-alert-item>
           </clr-alert>
-          <clr-alert [clrAlertType]="'success'" [clrAlertClosable]="false">
+          <clr-alert [clrAlertType]="'success'">
             <clr-alert-item><span class="alert-text">Operation completed successfully.</span></clr-alert-item>
           </clr-alert>
-          <clr-alert [clrAlertType]="'warning'" [clrAlertClosable]="false">
+          <clr-alert [clrAlertType]="'warning'">
             <clr-alert-item><span class="alert-text">Please review before proceeding.</span></clr-alert-item>
           </clr-alert>
-          <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="false">
+          <clr-alert [clrAlertType]="'danger'">
             <clr-alert-item><span class="alert-text">Something went wrong.</span></clr-alert-item>
           </clr-alert>
         </div>
