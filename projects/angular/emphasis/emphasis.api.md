@@ -216,6 +216,8 @@ export enum ClrBadgeColors {
     // (undocumented)
     Orange = "orange",
     // (undocumented)
+    Primary = "primary",
+    // (undocumented)
     Purple = "purple",
     // (undocumented)
     Success = "success",
@@ -277,6 +279,8 @@ export enum ClrLabelColors {
     None = "",
     // (undocumented)
     Orange = "orange",
+    // (undocumented)
+    Primary = "primary",
     // (undocumented)
     Purple = "purple",
     // (undocumented)
