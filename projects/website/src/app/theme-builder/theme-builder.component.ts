@@ -25,7 +25,15 @@ import { getFeatureFlags } from '../feature-flags';
 import { Color } from './utils/color';
 import { generateCSS } from './utils/css-generator';
 import { BACKGROUND_TOKENS, DEFAULT_OVERRIDES, PRESETS, SAMPLE_ROWS, TOKEN_KEYS } from './utils/presets';
-import { CdsThemeStructure, ContrastResult, DataRow, ThemeColor, ThemeColors, ThemePreset } from './utils/types';
+import {
+  CdsThemeStructure,
+  ContrastResult,
+  DataRow,
+  HslColor,
+  ThemeColor,
+  ThemeColors,
+  ThemePreset,
+} from './utils/types';
 import { contrastRatio, wcagScore } from './utils/wcag';
 import { CodeSnippetComponent } from '../shared/code-snippet/code-snippet.component';
 import { SiteFooterComponent } from '../shared/site-footer/site-footer.component';
@@ -291,9 +299,9 @@ export class ThemeBuilderComponent implements AfterViewInit, OnDestroy {
 
       colorGroup.forEach(item => {
         if (item.name.endsWith('-tint')) {
-          item.color = [baseColorHSL[0], baseColorHSL[1], isDarkTheme ? 25 : 94];
+          item.color = new HslColor(baseColorHSL.h, baseColorHSL.s, isDarkTheme ? 25 : 94);
         } else if (item.name.endsWith('-tint-dark')) {
-          item.color = [baseColorHSL[0], baseColorHSL[1], isDarkTheme ? 18 : 95];
+          item.color = new HslColor(baseColorHSL.h, baseColorHSL.s, isDarkTheme ? 18 : 95);
         } else if (item.name.endsWith('-shade')) {
           item.color = Color.shiftL(baseColorHSL, isDarkTheme ? 7 : -7);
         } else if (item.name.endsWith('-dark')) {

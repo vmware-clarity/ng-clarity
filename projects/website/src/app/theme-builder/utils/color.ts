@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { HslColor, OKLabColor, OklchColor, RgbColor } from './types';
+import { HslColor, LinearSrgbColor, OKLabColor, OklchColor, RgbColor } from './types';
 
 /**
  * A single theme token: its CSS custom property name, the original Clarity-provided
@@ -35,17 +35,18 @@ export class Color {
 
   /** RGB components — HSL is converted to RGB only for relative luminance checks. */
   get rgb(): RgbColor {
-    return this.hslToRgb(...this.color);
+    return this.hslToRgb(this.color);
   }
 
   /** HEX string — used by native color inputs. */
   get hex(): string {
-    return this.hslToHex(...this.color);
+    return this.hslToHex(this.color);
   }
 
   /** HSL string — used by native color inputs. */
   get hsl(): string {
-    return `hsl(${this.color[0]}deg, ${this.color[1]}%, ${this.color[2]}%)`;
+    const { h, s, l } = this.color;
+    return `hsl(${h}deg, ${s}%, ${l}%)`;
   }
 
   /**
@@ -53,12 +54,12 @@ export class Color {
    * uniformly across all hues, which is why it's used for palette/contrast math.
    */
   get oklch(): OklchColor {
-    return this.hslToOklch(...this.color);
+    return this.hslToOklch(this.color);
   }
 
   /** OKLCH string, CSS Color 4 syntax. */
   get oklchString(): string {
-    const [l, c, h] = this.oklch;
+    const { l, c, h } = this.oklch;
     return `oklch(${Math.round(l * 1000) / 10}% ${Math.round(c * 10000) / 10000} ${Math.round(h * 10) / 10}deg)`;
   }
 
@@ -86,9 +87,9 @@ export class Color {
     const originalColorHsl = this.parseHsl(this.originalColor);
 
     return (
-      this._color[0] === originalColorHsl[0] &&
-      this._color[1] === originalColorHsl[1] &&
-      this._color[2] === originalColorHsl[2]
+      this._color.h === originalColorHsl.h &&
+      this._color.s === originalColorHsl.s &&
+      this._color.l === originalColorHsl.l
     );
   }
 
@@ -96,8 +97,8 @@ export class Color {
     return /^#[0-9a-fA-F]{6}$/.test(hex);
   }
 
-  static shiftL([h, s, l]: HslColor, delta: number): HslColor {
-    return [h, s, Math.max(0, Math.min(100, l + delta))];
+  static shiftL({ h, s, l }: HslColor, delta: number): HslColor {
+    return new HslColor(h, s, l + delta);
   }
 
   static hexToHsl(hex: string): HslColor {
@@ -110,9 +111,11 @@ export class Color {
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
     const l = (max + min) / 2;
+
     if (max === min) {
-      return [0, 0, Math.round(l * 100)];
+      return new HslColor(0, 0, Math.round(l * 100));
     }
+
     const d = max - min;
     const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     let hue = 0;
@@ -123,10 +126,11 @@ export class Color {
     } else {
       hue = ((r - g) / d + 4) / 6;
     }
-    return [Math.round(hue * 360), Math.round(s * 100), Math.round(l * 100)];
+
+    return new HslColor(Math.round(hue * 360), Math.round(s * 100), Math.round(l * 100));
   }
 
-  hslToHex(h: number, s: number, l: number): string {
+  hslToHex({ h, s, l }: HslColor): string {
     l /= 100;
     const a = (s * Math.min(l, 1 - l)) / 100;
     const f = (n: number) => {
@@ -144,18 +148,14 @@ export class Color {
    * formulas). Goes through OKLCH — not raw HSL — whenever perceptual uniformity
    * matters, since HSL's `L` looks lighter or darker depending on hue.
    */
-  hslToOklch(h: number, s: number, l: number): OklchColor {
-    const [r, g, b] = this.hslToRgb(h, s, l);
-    const [L, a, bLab] = this.linearSrgbToOklab(
-      this.srgbToLinear(r / 255),
-      this.srgbToLinear(g / 255),
-      this.srgbToLinear(b / 255)
-    );
+  hslToOklch(hsl: HslColor): OklchColor {
+    const linearSrgbColor = new LinearSrgbColor(this.hslToRgb(hsl));
+    const oklabColor = this.linearSrgbToOklab(linearSrgbColor);
 
-    const c = Math.sqrt(a * a + bLab * bLab);
-    const hue = (Math.atan2(bLab, a) * 180) / Math.PI;
+    const c = Math.sqrt(oklabColor.a * oklabColor.a + oklabColor.b * oklabColor.b);
+    const hue = (Math.atan2(oklabColor.b, oklabColor.a) * 180) / Math.PI;
 
-    return [L, c, hue < 0 ? hue + 360 : hue];
+    return new OklchColor(oklabColor.l, c, hue);
   }
 
   reset(): void {
@@ -163,37 +163,32 @@ export class Color {
   }
 
   /** Converts HSL to RGB — use only for relative luminance calculations. */
-  private hslToRgb(h: number, s: number, l: number): RgbColor {
+  private hslToRgb({ h, s, l }: HslColor): RgbColor {
     l /= 100;
     const a = (s * Math.min(l, 1 - l)) / 100;
     const f = (n: number) => {
       const k = (n + h / 30) % 12;
-      return Math.round(255 * (l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)));
+      return 255 * (l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1));
     };
-    return [f(0), f(8), f(4)];
+    return new RgbColor(f(0), f(8), f(4));
   }
 
-  /** Un-gammas an sRGB channel (0–1) to linear light, per IEC 61966-2-1. */
-  private srgbToLinear(c: number): number {
-    return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-  }
-
-  /** Converts linear sRGB (0–1 channels) to OKLab `[L, a, b]`. */
-  private linearSrgbToOklab(r: number, g: number, b: number): OKLabColor {
+  /** Converts linear sRGB (0–1 channels) to OKLab. */
+  private linearSrgbToOklab({ r, g, b }: LinearSrgbColor): OKLabColor {
     const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
     const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
     const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
 
-    return [
+    return new OKLabColor(
       0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s,
       1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s,
-      0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s,
-    ];
+      0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s
+    );
   }
 
-  /** Parses a CSS HSL string such as `hsl(198deg 100% 59%)` into `[h, s, l]`. */
+  /** Parses a CSS HSL string such as `hsl(198deg 100% 59%)`. */
   private parseHsl(input: string): HslColor {
     const [h = 0, s = 0, l = 0] = input.match(/[\d.]+/g)?.map(Number) ?? [];
-    return [h, s, l];
+    return new HslColor(h, s, l);
   }
 }

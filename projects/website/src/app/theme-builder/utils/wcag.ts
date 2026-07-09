@@ -18,7 +18,7 @@ function adjustGamma(v: number): number {
   return Math.pow((v + 0.055) / 1.055, 2.4);
 }
 
-function relativeLuminance([r, g, b]: RgbColor): number {
+function relativeLuminance({ r, g, b }: RgbColor): number {
   const colorMap = [r, g, b].map(c => {
     const s = c / 255;
     return s <= 0.03928 ? s / lowGammaCoefficient : adjustGamma(s);
