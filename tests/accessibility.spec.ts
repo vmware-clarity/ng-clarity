@@ -30,9 +30,7 @@ for (const story of stories) {
       const storyParams = new URLSearchParams({
         id: storyId,
         args: 'highlight:false',
-        // a11y.manual:true prevents @storybook/addon-a11y from auto-running axe,
-        // which would conflict with our programmatic @axe-core/playwright scan.
-        globals: `theme:${theme};a11y.manual:true`,
+        globals: `theme:${theme}`,
         viewMode: 'story',
       });
       await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
