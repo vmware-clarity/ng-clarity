@@ -60,7 +60,7 @@ export interface Cells {
           >
             <clr-dg-row [clrDgItem]="row">
               @for (col of cols; track colByIndex($index, col)) {
-                <clr-dg-cell>{{ row?.cells[col.name] }}</clr-dg-cell>
+                <clr-dg-cell style="white-space: nowrap">{{ row?.cells[col.name] }}</clr-dg-cell>
               }
               <ng-container ngProjectAs="clr-dg-row-detail">
                 <clr-dg-row-detail *clrIfExpanded>
@@ -327,74 +327,80 @@ export default function (): void {
         fixture.destroy();
       });
 
-      it('attaches a ResizeObserver to the datagrid rows container on init', async function () {
-        // Spy on ResizeObserver before detectChanges so we intercept the constructor call.
-        const observeSpy = jasmine.createSpy('observe');
-        const disconnectSpy = jasmine.createSpy('disconnect');
-        const resizeObserverSpy = jasmine.createSpy('ResizeObserver').and.callFake(function (
-          _cb: ResizeObserverCallback
-        ) {
-          return { observe: observeSpy, disconnect: disconnectSpy };
-        });
+      async function expandFirstRow(compiled: any, fixture: ComponentFixture<any>) {
+        const caretButton: HTMLButtonElement = compiled.querySelector('button.datagrid-expandable-caret-button');
+        caretButton.click();
+        fixture.detectChanges();
+        await delay(50);
+        fixture.detectChanges();
+        await delay(50);
+        fixture.detectChanges();
+      }
 
-        const originalResizeObserver = (window as any).ResizeObserver;
-        (window as any).ResizeObserver = resizeObserverSpy;
+      it('grows and shrinks the total scrollable content size to match an expanded row real height', async function () {
+        const compiled = fixture.nativeElement;
 
-        try {
-          fixture.detectChanges();
-          await delay();
-          fixture.detectChanges();
+        fixture.detectChanges();
+        await delay();
+        fixture.detectChanges();
+        await delay();
 
-          expect(resizeObserverSpy).toHaveBeenCalled();
-          expect(observeSpy).toHaveBeenCalled();
+        const virtualScroll = instance.virtualScroll as ClrDatagridVirtualScrollDirective<any>;
+        const rowMaster: HTMLElement = compiled.querySelector('.datagrid-row-master[role="row"]');
 
-          // The observed element should be the .datagrid-rows container.
-          const observedElement = observeSpy.calls.mostRecent().args[0] as HTMLElement;
-          expect(observedElement.classList.contains('datagrid-rows')).toBeTrue();
-        } finally {
-          (window as any).ResizeObserver = originalResizeObserver;
-        }
+        const collapsedTotalHeight = parseFloat(virtualScroll.totalContentHeight);
+        const collapsedRowHeight = rowMaster.getBoundingClientRect().height;
+
+        await expandFirstRow(compiled, fixture);
+
+        const expandedRowHeight = rowMaster.getBoundingClientRect().height;
+        const expandedTotalHeight = parseFloat(virtualScroll.totalContentHeight);
+
+        // Sanity check: the row detail actually added real height in the DOM.
+        expect(expandedRowHeight).toBeGreaterThan(collapsedRowHeight);
+
+        // The bug: FixedSizeVirtualScrollStrategy's total content size is dataLength * itemSize,
+        // a value with no dependency on any row's real DOM height, so it never changes here.
+        // The fix must make it track the real height that was just added.
+        expect(expandedTotalHeight - collapsedTotalHeight).toBeCloseTo(expandedRowHeight - collapsedRowHeight, -1);
+
+        // Collapse it again and confirm the total size comes back down.
+        await expandFirstRow(compiled, fixture);
+        const collapsedAgainTotalHeight = parseFloat(virtualScroll.totalContentHeight);
+        expect(collapsedAgainTotalHeight).toBeCloseTo(collapsedTotalHeight, -1);
       });
 
-      it('calls checkViewportSize() when the rows container height changes', async function () {
-        // Intercept ResizeObserver construction to capture the callback.
-        let capturedCallback: ResizeObserverCallback | null = null;
-        const originalResizeObserver = (window as any).ResizeObserver;
-        (window as any).ResizeObserver = jasmine.createSpy('ResizeObserver').and.callFake(function (
-          cb: ResizeObserverCallback
-        ) {
-          capturedCallback = cb;
-          return { observe: () => {}, disconnect: () => {} };
-        });
+      it('accounts for an expanded row extra height when scrolling to an index past it', async function () {
+        const compiled = fixture.nativeElement;
 
-        try {
-          fixture.detectChanges();
-          await delay();
-          fixture.detectChanges();
+        fixture.detectChanges();
+        await delay();
+        fixture.detectChanges();
+        await delay();
 
-          const virtualScroll = instance.virtualScroll as ClrDatagridVirtualScrollDirective<any>;
-          // Access internal viewport via the directive instance (same pattern used in production code).
-          const viewport = (virtualScroll as any).virtualScrollViewport;
-          const checkSpy = spyOn(viewport, 'checkViewportSize').and.callThrough();
+        const virtualScroll = instance.virtualScroll as ClrDatagridVirtualScrollDirective<any>;
+        const viewport = (virtualScroll as any).virtualScrollViewport;
+        const rowMaster: HTMLElement = compiled.querySelector('.datagrid-row-master[role="row"]');
+        const collapsedRowHeight = rowMaster.getBoundingClientRect().height;
 
-          expect(capturedCallback).not.toBeNull();
+        await expandFirstRow(compiled, fixture);
+        const expandedRowHeight = rowMaster.getBoundingClientRect().height;
+        const extraHeight = expandedRowHeight - collapsedRowHeight;
 
-          const makeEntry = (blockSize: number): ResizeObserverEntry =>
-            ({
-              borderBoxSize: [{ blockSize, inlineSize: 0 }],
-              contentRect: { height: blockSize } as DOMRectReadOnly,
-            }) as unknown as ResizeObserverEntry;
+        // Scroll to a nearby index, still past the expanded row but well within the initial
+        // render/buffer window, so this stays a pure "did the offset account for the expanded
+        // row" check without picking up unrelated row-height variance (e.g. text wrapping) that
+        // can show up once virtual scroll has to render a completely different, far-away part of
+        // the (deliberately unstyled/no-fixed-column-width) test data set.
+        virtualScroll.scrollToIndex(5);
+        await delay(50);
+        fixture.detectChanges();
+        await delay(50);
 
-          // First fire: sets initialHeight — should NOT trigger checkViewportSize.
-          (capturedCallback as ResizeObserverCallback)([makeEntry(100)], null as any);
-          expect(checkSpy).not.toHaveBeenCalled();
-
-          // Second fire with a different blockSize: should trigger checkViewportSize.
-          (capturedCallback as ResizeObserverCallback)([makeEntry(200)], null as any);
-          expect(checkSpy).toHaveBeenCalled();
-        } finally {
-          (window as any).ResizeObserver = originalResizeObserver;
-        }
+        // The bug: scrollToIndex(index) computes index * itemSize, ignoring the extra height any
+        // earlier row picked up from being expanded, so the viewport lands short of where it
+        // should. The fix must offset by the real extra height of rows scrolled past.
+        expect(viewport.measureScrollOffset()).toBeCloseTo(5 * virtualScroll.itemSize + extraHeight, -1);
       });
 
       it('disconnects the ResizeObserver on ngOnDestroy', async function () {
