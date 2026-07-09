@@ -149,6 +149,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     _fixedColumnTemplate: TemplateRef<any>;
     // (undocumented)
     set identityFn(value: ClrDatagridItemsIdentityFunction<T>);
+    // (undocumented)
+    protected get isDetailOverlay(): boolean;
     // Warning: (ae-forgotten-export) The symbol "Items" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
@@ -451,13 +453,20 @@ export class ClrDatagridDetail {
     // (undocumented)
     detailService: DetailService;
     // (undocumented)
+    get detailWidth(): number;
+    set detailWidth(value: number | null | undefined);
+    // (undocumented)
     header: ClrDatagridDetailHeader;
+    // (undocumented)
+    get isCustomWidth(): boolean;
     // (undocumented)
     get label(): string;
     // (undocumented)
     get labelledBy(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": { "alias": "clrDetailAriaLabelledBy"; "required": false; }; "ariaLabel": { "alias": "clrDetailAriaLabel"; "required": false; }; }, {}, ["header"], ["*"], false, never>;
+    get width(): number | null;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": { "alias": "clrDetailAriaLabelledBy"; "required": false; }; "ariaLabel": { "alias": "clrDetailAriaLabel"; "required": false; }; "detailWidth": { "alias": "clrDetailWidth"; "required": false; }; }, {}, ["header"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetail, never>;
 }
@@ -776,6 +785,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
+    openDetails(event: MouseEvent, detailButton: HTMLButtonElement): void;
+    // (undocumented)
     radioId: string;
     // (undocumented)
     replaced: boolean;
@@ -800,7 +811,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     toggle(selected?: boolean): void;
     // (undocumented)
-    toggleExpand(): void;
+    toggleExpand(event: MouseEvent): void;
     // (undocumented)
     get _view(): any;
     // (undocumented)
@@ -1681,7 +1692,7 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1050:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1053:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 

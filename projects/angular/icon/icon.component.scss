@@ -8,6 +8,9 @@
 @use '../styles/core/tokens/variables.tokens' as tokens;
 @use '../styles/variables/variables.density' as density;
 @use '../styles/mixins';
+// TODO: Remove this import — the icon has no <slot> elements so slot/::slotted/dialog rules
+// from base.element.scss are unused. Removing it currently changes some inherited styles;
+// audit and remove once safe to do so.
 @use '../styles/core/base/base.element.scss';
 
 :host {
