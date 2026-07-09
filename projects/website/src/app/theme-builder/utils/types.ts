@@ -31,6 +31,12 @@ export type HslColor = [number, number, number];
 /** RGB color tuple: [Red 0–255, Green 0–255, Blue 0–255] */
 export type RgbColor = [number, number, number];
 
+/** OKLCH color tuple: [lightness 0–1, chroma ≥0, hue 0–360] */
+export type OklchColor = [number, number, number];
+
+/** OKLab color tuple */
+export type OKLabColor = [number, number, number];
+
 export interface ThemeColors {
   primary?: Color;
   info?: Color;

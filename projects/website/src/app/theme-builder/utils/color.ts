@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { HslColor, RgbColor } from './types';
+import { HslColor, OKLabColor, OklchColor, RgbColor } from './types';
 
 /**
  * A single theme token: its CSS custom property name, the original Clarity-provided
@@ -46,6 +46,20 @@ export class Color {
   /** HSL string — used by native color inputs. */
   get hsl(): string {
     return `hsl(${this.color[0]}deg, ${this.color[1]}%, ${this.color[2]}%)`;
+  }
+
+  /**
+   * OKLCH components — unlike HSL's `L`, OKLCH's `L` tracks perceived lightness
+   * uniformly across all hues, which is why it's used for palette/contrast math.
+   */
+  get oklch(): OklchColor {
+    return this.hslToOklch(...this.color);
+  }
+
+  /** OKLCH string, CSS Color 4 syntax. */
+  get oklchString(): string {
+    const [l, c, h] = this.oklch;
+    return `oklch(${Math.round(l * 1000) / 10}% ${Math.round(c * 10000) / 10000} ${Math.round(h * 10) / 10}deg)`;
   }
 
   /** Human-readable variant label derived from the token name suffix, e.g. `Tint dark`. */
@@ -125,6 +139,25 @@ export class Color {
     return `#${f(0)}${f(8)}${f(4)}`;
   }
 
+  /**
+   * Converts HSL to OKLCH via linear sRGB and OKLab (CSS Color 4 / Björn Ottosson
+   * formulas). Goes through OKLCH — not raw HSL — whenever perceptual uniformity
+   * matters, since HSL's `L` looks lighter or darker depending on hue.
+   */
+  hslToOklch(h: number, s: number, l: number): OklchColor {
+    const [r, g, b] = this.hslToRgb(h, s, l);
+    const [L, a, bLab] = this.linearSrgbToOklab(
+      this.srgbToLinear(r / 255),
+      this.srgbToLinear(g / 255),
+      this.srgbToLinear(b / 255)
+    );
+
+    const c = Math.sqrt(a * a + bLab * bLab);
+    const hue = (Math.atan2(bLab, a) * 180) / Math.PI;
+
+    return [L, c, hue < 0 ? hue + 360 : hue];
+  }
+
   reset(): void {
     this._color = undefined;
   }
@@ -138,6 +171,24 @@ export class Color {
       return Math.round(255 * (l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)));
     };
     return [f(0), f(8), f(4)];
+  }
+
+  /** Un-gammas an sRGB channel (0–1) to linear light, per IEC 61966-2-1. */
+  private srgbToLinear(c: number): number {
+    return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  }
+
+  /** Converts linear sRGB (0–1 channels) to OKLab `[L, a, b]`. */
+  private linearSrgbToOklab(r: number, g: number, b: number): OKLabColor {
+    const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+    const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+    const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+
+    return [
+      0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s,
+      1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s,
+      0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s,
+    ];
   }
 
   /** Parses a CSS HSL string such as `hsl(198deg 100% 59%)` into `[h, s, l]`. */
