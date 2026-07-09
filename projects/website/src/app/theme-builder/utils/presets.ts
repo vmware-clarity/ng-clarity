@@ -9,8 +9,15 @@ import { Color } from './color';
 import { DataRow, ThemePreset } from './types';
 
 export const DEFAULT_OVERRIDES = {
-  // primary colors have no overrides. They are used as is.
-  // '--cds-alias-primary-tint': ['--cds-alias-object-interaction-background-hover'],
+  // primary
+  // '--cds-alias-primary': ['--cds-alias-object-interaction-background-highlight'],
+  '--cds-alias-primary-tint': ['--cds-alias-object-interaction-background-hover'],
+  '--cds-alias-primary-shade': ['--cds-alias-typography-link-color'],
+  '--cds-alias-primary-dark': ['--cds-alias-typography-link-color-hover'],
+  '--cds-alias-primary-tint-dark': [
+    '--cds-alias-object-interaction-background-selected',
+    'cds-alias-object-interaction-background-shade-active',
+  ],
   // info
   '--cds-alias-status-info': ['--cds-alias-utility-blue'],
   '--cds-alias-status-info-tint': [

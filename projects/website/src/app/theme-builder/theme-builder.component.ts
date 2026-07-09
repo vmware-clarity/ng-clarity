@@ -51,6 +51,12 @@ export class ThemeBuilderComponent implements AfterViewInit, OnDestroy {
 
   activeTheme: 'light' | 'dark' = 'light';
 
+  breadcrumbs = [
+    { label: 'Framework', routerLink: '/framework' },
+    { label: 'Angular', routerLink: '/framework/angular' },
+    { label: 'Clarity', routerLink: '/framework/angular/clarity' },
+  ];
+
   colorStruct: CdsThemeStructure = {
     light: {},
     dark: {},

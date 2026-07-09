@@ -150,13 +150,21 @@
       </div>
 
       <div class="card-block tb-preview-sandbox" #previewWrapper [attr.cds-theme]="activeTheme">
+        <!-- Breadcrumbs -->
+        <div class="tb-preview-section">
+          <p cds-text="subsection uppercase bold">Breadcrumbs</p>
+          <div class="tb-preview-row">
+            <clr-breadcrumbs [items]="breadcrumbs"></clr-breadcrumbs>
+          </div>
+        </div>
+
         <!-- Buttons -->
         <div class="tb-preview-section">
-          <p class="tb-preview-section-label">Buttons</p>
+          <p cds-text="subsection uppercase bold">Buttons</p>
           <div class="tb-preview-row">
             <button class="btn btn-primary">Primary</button>
             <button class="btn btn-outline">Primary Outline</button>
-            <button class="btn btn-link-primary">Primary FLAT</button> <br />
+            <button class="btn btn-link-primary">Primary FLAT</button>
             <button class="btn btn-info">Info</button>
             <button class="btn btn-info-outline">Info Outline</button>
             <button class="btn btn-link-info">Info Flat</button>
@@ -169,7 +177,7 @@
 
         <!-- Badges & Labels -->
         <div class="tb-preview-section">
-          <p class="tb-preview-section-label">Badges &amp; Labels</p>
+          <p cds-text="subsection uppercase bold">Badges &amp; Labels</p>
           <div class="tb-preview-row">
             <clr-label [clrType]="'outlined'" [clrColor]="'primary'" [clrText]="'primary'" [clrBadgeText]="'99+'" />
             <clr-label
@@ -217,7 +225,7 @@
 
         <!-- Alerts -->
         <div class="tb-preview-section">
-          <p class="tb-preview-section-label">Alerts</p>
+          <p cds-text="subsection uppercase bold">Alerts</p>
           <clr-alert [clrAlertType]="'info'">
             <clr-alert-item><span class="alert-text">This is an info alert.</span></clr-alert-item>
           </clr-alert>
@@ -234,7 +242,7 @@
 
         <!-- App-Level Alerts -->
         <div class="tb-preview-section">
-          <p class="tb-preview-section-label">App-Level Alerts</p>
+          <p cds-text="subsection uppercase bold">App-Level Alerts</p>
           <clr-alert [clrAlertType]="'info'" [clrAlertAppLevel]="true">
             <clr-alert-item>
               <span class="alert-text">This is an app level info.</span>
@@ -271,7 +279,7 @@
 
         <!-- Forms -->
         <div class="tb-preview-section">
-          <p class="tb-preview-section-label">Form Controls</p>
+          <p cds-text="subsection uppercase bold">Form Controls</p>
           <form clrForm #tbForm="ngForm" clrLayout="horizontal">
             <clr-input-container>
               <label>Text input</label>
@@ -318,7 +326,7 @@
 
         <!-- Accordion -->
         <div class="tb-preview-section">
-          <p class="tb-preview-section-label">Accordion</p>
+          <p cds-text="subsection uppercase bold">Accordion</p>
           <clr-accordion>
             <clr-accordion-panel [clrAccordionPanelOpen]="true">
               <clr-accordion-title>Panel One</clr-accordion-title>
@@ -333,7 +341,7 @@
 
         <!-- Tree view -->
         <div class="tb-preview-section">
-          <p class="tb-preview-section-label">Tree View</p>
+          <p cds-text="subsection uppercase bold">Tree View</p>
           <clr-tree>
             <clr-tree-node [clrExpanded]="true">
               Root Node
@@ -348,7 +356,7 @@
 
         <!-- Progress bar -->
         <div class="tb-preview-section">
-          <p class="tb-preview-section-label">Progress Bar</p>
+          <p cds-text="subsection uppercase bold">Progress Bar</p>
           <clr-progress-bar clrValue="20" clrMax="100"></clr-progress-bar>
           <clr-progress-bar clrValue="55" clrMax="100" clrColor="warning" clrLabeled></clr-progress-bar>
           <clr-progress-bar clrValue="80" clrMax="100" clrColor="success"></clr-progress-bar>
@@ -357,7 +365,7 @@
 
         <!-- Vertical nav -->
         <div class="tb-preview-section">
-          <p class="tb-preview-section-label">Vertical Navigation</p>
+          <p cds-text="subsection uppercase bold">Vertical Navigation</p>
           <div class="tb-nav-preview-wrap">
             <clr-vertical-nav [clrVerticalNavCollapsible]="true">
               <clr-vertical-nav-group clrVerticalNavGroupExpanded>
@@ -382,7 +390,7 @@
 
         <!-- Stepper -->
         <div class="tb-preview-section">
-          <p class="tb-preview-section-label">Stepper</p>
+          <p cds-text="subsection uppercase bold">Stepper</p>
           <form clrStepper #tbStepperForm="ngForm">
             <clr-stepper-panel ngModelGroup="account">
               <clr-step-title>Account Details</clr-step-title>
@@ -415,7 +423,7 @@
 
         <!-- Datagrid -->
         <div class="tb-preview-section">
-          <p class="tb-preview-section-label">Datagrid</p>
+          <p cds-text="subsection uppercase bold">Datagrid</p>
           <clr-datagrid [clrDgSelectionType]="'multi'">
             <clr-dg-column>Name</clr-dg-column>
             <clr-dg-column>Role</clr-dg-column>
@@ -441,7 +449,7 @@
 
         <!-- Tabs -->
         <div class="tb-preview-section">
-          <p class="tb-preview-section-label">Tabs</p>
+          <p cds-text="subsection uppercase bold">Tabs</p>
           <clr-tabs>
             <clr-tab>
               <button clrTabLink>Dashboard</button>
@@ -466,7 +474,7 @@
 
         <!-- Timeline -->
         <div class="tb-preview-section">
-          <p class="tb-preview-section-label">Timeline</p>
+          <p cds-text="subsection uppercase bold">Timeline</p>
           <clr-timeline>
             <clr-timeline-step [clrState]="timelineStates.SUCCESS">
               <clr-timeline-step-header>11:59 am</clr-timeline-step-header>
@@ -490,7 +498,7 @@
 
         <!-- Wizard launcher -->
         <div class="tb-preview-section">
-          <p class="tb-preview-section-label">Wizard</p>
+          <p cds-text="subsection uppercase bold">Wizard</p>
           <button class="btn btn-outline" (click)="wizardOpen = true">Open Wizard</button>
           <clr-wizard [(clrWizardOpen)]="wizardOpen" clrWizardSize="md">
             <clr-wizard-title>Sample Wizard</clr-wizard-title>

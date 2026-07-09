@@ -53,7 +53,7 @@
 .tb-header {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--clr-base-gap-m);
 }
 
 .tb-subtitle {
@@ -63,7 +63,7 @@
 .tb-presets {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--clr-base-gap-m);
   flex-wrap: wrap;
 }
 
@@ -76,7 +76,7 @@
 .tb-layout {
   display: grid;
   grid-template-columns: 500px 1fr;
-  gap: 1rem;
+  gap: var(--clr-base-gap-l);
   align-items: start;
 }
 
@@ -86,13 +86,13 @@
   margin-top: 0;
   position: sticky;
   top: 0;
-  max-height: calc(100vh - 11rem);
+  max-height: calc(100vh - var(--cds-global-space-15));
   overflow-y: auto;
 
   // Card-header contains the Light/Dark toggle buttons
   .card-header {
     display: flex;
-    gap: 0.5rem;
+    gap: var(--clr-base-gap-m);
     align-items: center;
   }
 }
@@ -131,41 +131,6 @@
   }
 }
 
-// Derived color rows
-.tb-derived-row {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  margin-top: 0.25rem;
-  padding-left: 0.5rem;
-}
-
-.tb-derived-item {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-}
-
-.tb-derived-label {
-  font-size: 0.65rem;
-  color: var(--cds-alias-typography-color-200);
-  width: 44px;
-  flex-shrink: 0;
-}
-
-.tb-derived-swatch {
-  width: 20px;
-  height: 20px;
-  border-radius: 3px;
-  border: 1px solid var(--cds-alias-object-border-color);
-  flex-shrink: 0;
-}
-
-.tb-derived-picker {
-  width: 28px;
-  height: 22px;
-}
-
 // ── Preview card ──
 
 .tb-preview-card {
@@ -188,7 +153,7 @@
 .tb-preview-sandbox {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--clr-base-gap-l);
   border-bottom-left-radius: var(--cds-alias-object-border-radius-100);
   border-bottom-right-radius: var(--cds-alias-object-border-radius-100);
 }
@@ -196,29 +161,19 @@
 .tb-preview-section {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-}
-
-.tb-preview-section-label {
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--cds-alias-typography-color-200);
-  margin: 0;
+  gap: var(--clr-base-gap-m);
 }
 
 .tb-preview-row {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--clr-base-gap-m);
   flex-wrap: wrap;
 }
 
 .tb-nav-preview-wrap {
   height: 180px;
-  border: 1px solid var(--cds-alias-object-border-color);
-  border-radius: 4px;
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
   overflow: hidden;
   display: flex;
 }
@@ -226,8 +181,6 @@
 // ── Generated CSS card ──
 
 .tb-output-card {
-  margin-top: 0;
-
   app-code-snippet {
     display: block;
     max-height: 600px;
@@ -239,30 +192,7 @@
   .card-header {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--clr-base-gap-l);
     flex-wrap: wrap;
   }
-}
-
-.tb-output-tabs {
-  display: flex;
-  gap: 0.375rem;
-}
-
-// Remove card-block padding so the <pre> fills edge-to-edge
-.tb-code-block {
-  padding: 0;
-}
-
-.tb-output-code {
-  margin: 0;
-  padding: 1rem 1.25rem;
-  font-size: 0.75rem;
-  line-height: 1.6;
-  font-family: ui-monospace, Consolas, Menlo, Monaco, monospace;
-  background: var(--cds-alias-object-app-background);
-  color: var(--cds-alias-typography-color-500);
-  overflow: auto;
-  max-height: 480px;
-  white-space: pre;
 }
