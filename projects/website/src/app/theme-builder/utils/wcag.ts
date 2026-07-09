@@ -7,7 +7,7 @@
 
 // WCAG 2.0 contrast formulas extracted from wcag-contrast@3.0.0 (BSD-2-Clause).
 
-import { WcagLevel } from './types';
+import { RgbColor, WcagLevel } from './types';
 
 const redCoefficient = 0.2126;
 const greenCoefficient = 0.7152;
@@ -18,7 +18,7 @@ function adjustGamma(v: number): number {
   return Math.pow((v + 0.055) / 1.055, 2.4);
 }
 
-function relativeLuminance([r, g, b]: [number, number, number]): number {
+function relativeLuminance([r, g, b]: RgbColor): number {
   const colorMap = [r, g, b].map(c => {
     const s = c / 255;
     return s <= 0.03928 ? s / lowGammaCoefficient : adjustGamma(s);
@@ -27,7 +27,7 @@ function relativeLuminance([r, g, b]: [number, number, number]): number {
   return colorMap[0] * redCoefficient + colorMap[1] * greenCoefficient + colorMap[2] * blueCoefficient;
 }
 
-export function contrastRatio(a: [number, number, number], b: [number, number, number]): number {
+export function contrastRatio(a: RgbColor, b: RgbColor): number {
   const l1 = relativeLuminance(a);
   const l2 = relativeLuminance(b);
   return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);

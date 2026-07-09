@@ -28,6 +28,9 @@ export type CdsThemeStructure<T = Color[]> = { light: Record<string, T>; dark: R
 /** HSL color tuple: [hue 0–360, saturation 0–100, lightness 0–100] */
 export type HslColor = [number, number, number];
 
+/** RGB color tuple: [Red 0–255, Green 0–255, Blue 0–255] */
+export type RgbColor = [number, number, number];
+
 export interface ThemeColors {
   primary?: Color;
   info?: Color;

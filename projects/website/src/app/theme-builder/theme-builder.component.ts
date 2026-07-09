@@ -22,7 +22,7 @@ import {
 } from '@clr/angular';
 
 import { getFeatureFlags } from '../feature-flags';
-import { Color, hexToHsl, shiftL } from './utils/color';
+import { Color } from './utils/color';
 import { generateCSS } from './utils/css-generator';
 import { BACKGROUND_TOKENS, DEFAULT_OVERRIDES, PRESETS, SAMPLE_ROWS, TOKEN_KEYS } from './utils/presets';
 import { CdsThemeStructure, ContrastResult, DataRow, ThemeColor, ThemeColors, ThemePreset } from './utils/types';
@@ -107,8 +107,8 @@ export class ThemeBuilderComponent implements AfterViewInit, OnDestroy {
   }
 
   setCurrentColor(colorVariant: Color, hex: string, colorGroup: Color[] = []): void {
-    if (/^#[0-9a-fA-F]{6}$/.test(hex)) {
-      colorVariant.color = hexToHsl(hex);
+    if (Color.isHex(hex)) {
+      colorVariant.color = Color.hexToHsl(hex);
 
       this.colorBuilder(colorVariant, colorGroup);
 
@@ -295,9 +295,9 @@ export class ThemeBuilderComponent implements AfterViewInit, OnDestroy {
         } else if (item.name.endsWith('-tint-dark')) {
           item.color = [baseColorHSL[0], baseColorHSL[1], isDarkTheme ? 18 : 95];
         } else if (item.name.endsWith('-shade')) {
-          item.color = shiftL(baseColorHSL, isDarkTheme ? 7 : -7);
+          item.color = Color.shiftL(baseColorHSL, isDarkTheme ? 7 : -7);
         } else if (item.name.endsWith('-dark')) {
-          item.color = shiftL(baseColorHSL, isDarkTheme ? 10 : -10);
+          item.color = Color.shiftL(baseColorHSL, isDarkTheme ? 10 : -10);
         }
       });
     }
