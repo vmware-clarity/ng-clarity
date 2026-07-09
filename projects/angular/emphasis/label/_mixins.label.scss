@@ -25,8 +25,8 @@
     color: map.get($colors, color);
   }
 
-  &.clickable:not(.disabled):hover,
-  &.clickable:not(.disabled):active {
+  &.clickable:not(.disabled, :disabled):hover,
+  &.clickable:not(.disabled, :disabled):active {
     border-color: map.get($colors, border-color);
 
     & > .badge {
@@ -41,15 +41,15 @@
     background-color: map.get($colors, solid-bg-color);
     color: map.get($colors, solid-color);
 
-    &.clickable:not(.disabled, :active, :hover) > .badge,
+    &.clickable:not(.disabled, :disabled, :active, :hover) > .badge,
     &:not(.clickable) > .badge {
       border-color: map.get($badge-colors, outline-border-color);
       background-color: map.get($badge-colors, outline-bg-color);
       color: map.get($badge-colors, outline-color);
     }
 
-    &.clickable:active > .badge,
-    &.clickable:hover > .badge {
+    &.clickable:not(.disabled, :disabled):active > .badge,
+    &.clickable:not(.disabled, :disabled):hover > .badge {
       border-color: map.get($badge-colors, border-color);
       background-color: map.get($badge-colors, bg-color);
       color: map.get($badge-colors, color);

@@ -101,7 +101,7 @@
       text-decoration: none;
     }
 
-    &.clickable:not(.disabled) {
+    &.clickable:not(.disabled, :disabled) {
       cursor: pointer;
 
       &:hover {
@@ -155,7 +155,11 @@
     }
 
     &.disabled,
-    &:disabled {
+    &:disabled,
+    &.solid.disabled,
+    &.solid:disabled,
+    &.clickable.disabled,
+    &.clickable:disabled {
       cursor: not-allowed;
       background: label-variables.$clr-label-bg-disabled-color;
       color: label-variables.$clr-label-disabled-color;
