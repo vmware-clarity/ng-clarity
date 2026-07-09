@@ -59,6 +59,9 @@ export class ThemeBuilderComponent implements AfterViewInit, OnDestroy {
 
   activeTheme: 'light' | 'dark' = 'light';
 
+  // Forces black text on the warning color for legibility — toggled via the "Warning text override" switch.
+  warningTextOverrideEnabled = true;
+
   breadcrumbs = [
     { label: 'Framework', routerLink: '/framework' },
     { label: 'Angular', routerLink: '/framework/angular' },
@@ -222,6 +225,17 @@ export class ThemeBuilderComponent implements AfterViewInit, OnDestroy {
         const color = colorVariants[i] as Color;
 
         el.style.setProperty(color.name, color.hsl);
+
+        // warning text override — toggled via the "Warning text override" switch
+        if (color.name === '--cds-alias-status-warning') {
+          const override = '--cds-alias-typography-color-black';
+
+          if (!this.warningTextOverrideEnabled || color.isOriginalColor) {
+            el.style.removeProperty(override);
+          } else {
+            el.style.setProperty(override, 'var(--cds-alias-typography-color-100)');
+          }
+        }
 
         DEFAULT_OVERRIDES[color.name]?.forEach((override: string) => {
           // remove override if color isOriginalColor

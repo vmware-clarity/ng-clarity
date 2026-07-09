@@ -99,7 +99,7 @@
       --clr-label-warning-border-color: #{tokens.$cds-alias-utility-yellow};
       --clr-label-warning-solid-bg-color: #{tokens.$cds-alias-utility-yellow};
       --clr-label-warning-solid-border-color: #{tokens.$cds-alias-utility-yellow-shade};
-      --clr-label-warning-solid-color: #{tokens.$cds-global-color-black};
+      --clr-label-warning-solid-color: #{tokens.$cds-alias-typography-color-black};
 
       // danger
       --clr-label-danger-bg-color: #{tokens.$cds-alias-utility-red-tint};

@@ -16,7 +16,7 @@ export const DEFAULT_OVERRIDES = {
   '--cds-alias-primary-dark': ['--cds-alias-typography-link-color-hover'],
   '--cds-alias-primary-tint-dark': [
     '--cds-alias-object-interaction-background-selected',
-    'cds-alias-object-interaction-background-shade-active',
+    '--cds-alias-object-interaction-background-shade-active',
   ],
   // info
   '--cds-alias-status-info': ['--cds-alias-utility-blue'],
@@ -159,6 +159,57 @@ export const PRESETS: ThemePreset[] = [
       primary: new Color('--cds-alias-primary', 'hsl(282deg 60% 65%)'), // violet-400
       success: new Color('--cds-alias-status-success', 'hsl(184deg 100% 48%)'), // aqua-400
       warning: new Color('--cds-alias-status-warning', 'hsl(50deg 100% 57%)'), // yellow-300
+    },
+  },
+  {
+    name: 'Sunset',
+    light: {
+      primary: new Color('--cds-alias-primary', 'hsl(39deg 100% 50%)'), // ochre-600
+      info: new Color('--cds-alias-status-info', 'hsl(238deg 60% 52%)'), // lavender-600
+      success: new Color('--cds-alias-status-success', 'hsl(93deg 80% 37%)'), // green-600
+      warning: new Color('--cds-alias-status-warning', 'hsl(345deg 83% 40%)'), // magenta-600
+      danger: new Color('--cds-alias-status-danger', 'hsl(9deg 100% 59%)'), // red-600
+    },
+    dark: {
+      primary: new Color('--cds-alias-primary', 'hsl(41deg 100% 70%)'), // ochre-400
+      info: new Color('--cds-alias-status-info', 'hsl(238deg 58% 64%)'), // lavender-400
+      success: new Color('--cds-alias-status-success', 'hsl(93deg 80% 48%)'), // green-400
+      warning: new Color('--cds-alias-status-warning', 'hsl(345deg 100% 61%)'), // magenta-400
+      danger: new Color('--cds-alias-status-danger', 'hsl(9deg 100% 71%)'), // red-400
+    },
+  },
+  {
+    name: 'Berry',
+    light: {
+      primary: new Color('--cds-alias-primary', 'hsl(345deg 83% 40%)'), // magenta-600
+      info: new Color('--cds-alias-status-info', 'hsl(238deg 60% 52%)'), // lavender-600
+      success: new Color('--cds-alias-status-success', 'hsl(160deg 69% 36%)'), // jade-600
+      warning: new Color('--cds-alias-status-warning', 'hsl(42deg 100% 42%)'), // yellow-600
+      danger: new Color('--cds-alias-status-danger', 'hsl(9deg 100% 59%)'), // red-600
+    },
+    dark: {
+      primary: new Color('--cds-alias-primary', 'hsl(345deg 100% 61%)'), // magenta-400
+      info: new Color('--cds-alias-status-info', 'hsl(238deg 58% 64%)'), // lavender-400
+      success: new Color('--cds-alias-status-success', 'hsl(160deg 69% 53%)'), // jade-400
+      warning: new Color('--cds-alias-status-warning', 'hsl(46deg 100% 52%)'), // yellow-400
+      danger: new Color('--cds-alias-status-danger', 'hsl(9deg 100% 71%)'), // red-400
+    },
+  },
+  {
+    name: 'Ocean',
+    light: {
+      primary: new Color('--cds-alias-primary', 'hsl(184deg 100% 34%)'), // aqua-600
+      info: new Color('--cds-alias-status-info', 'hsl(282deg 60% 49%)'), // violet-600
+      success: new Color('--cds-alias-status-success', 'hsl(93deg 80% 37%)'), // green-600
+      warning: new Color('--cds-alias-status-warning', 'hsl(42deg 100% 42%)'), // yellow-600
+      danger: new Color('--cds-alias-status-danger', 'hsl(9deg 100% 59%)'), // red-600
+    },
+    dark: {
+      primary: new Color('--cds-alias-primary', 'hsl(184deg 100% 48%)'), // aqua-400
+      info: new Color('--cds-alias-status-info', 'hsl(282deg 60% 65%)'), // violet-400
+      success: new Color('--cds-alias-status-success', 'hsl(93deg 80% 48%)'), // green-400
+      warning: new Color('--cds-alias-status-warning', 'hsl(46deg 100% 52%)'), // yellow-400
+      danger: new Color('--cds-alias-status-danger', 'hsl(9deg 100% 71%)'), // red-400
     },
   },
 ];

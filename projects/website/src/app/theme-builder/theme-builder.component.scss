@@ -94,6 +94,10 @@
     display: flex;
     gap: var(--clr-base-gap-m);
     align-items: center;
+
+    .tb-warning-text-toggle {
+      margin-left: auto;
+    }
   }
 }
 

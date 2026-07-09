@@ -147,6 +147,16 @@
           <cds-icon [shape]="activeTheme === 'dark' ? 'moon' : 'sun'" [solid]="true" [size]="'md'"></cds-icon>
           {{ activeTheme === 'dark' ? 'Dark' : 'Light' }}
         </span>
+
+        <clr-toggle-wrapper style="margin-left: auto">
+          <input
+            type="checkbox"
+            clrToggle
+            [(ngModel)]="warningTextOverrideEnabled"
+            (ngModelChange)="applyPreviewStyles()"
+          />
+          <label>Custom Theme Warning text override {{ warningTextOverrideEnabled ? 'ON' : 'OFF' }}</label>
+        </clr-toggle-wrapper>
       </div>
 
       <div class="card-block tb-preview-sandbox" #previewWrapper [attr.cds-theme]="activeTheme">
