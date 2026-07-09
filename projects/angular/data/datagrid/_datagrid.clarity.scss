@@ -295,10 +295,6 @@
     .datagrid-row-detail {
       display: flex;
       flex-flow: row nowrap;
-      // CDE-3127: Do NOT set position/z-index here. The detail row must not create a stacking context.
-      // Sticky column cells (.datagrid-row-sticky) use position:sticky + z-index:500, which naturally
-      // renders them above any non-positioned element. Adding position or z-index to .datagrid-row-detail
-      // would create a competing stacking context that could cause the detail to obscure sticky columns.
 
       .datagrid-cell {
         padding-top: 0;
