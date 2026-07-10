@@ -143,7 +143,8 @@ export const APP_ROUTES: Routes = [
     path: 'property-view',
     data: { section: 'addons', label: 'Property View' },
     loadChildren: () => import('./addons/property-view/property-view.demo.module').then(m => m.PropertyViewDemoModule),
-  }
+  },
+  {
     path: 'datagrid-advanced',
     data: { section: 'addons', label: 'Datagrid Advanced' },
     loadChildren: () =>
