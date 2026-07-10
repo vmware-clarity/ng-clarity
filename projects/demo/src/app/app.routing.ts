@@ -144,6 +144,12 @@ export const APP_ROUTES: Routes = [
     data: { section: 'addons', label: 'Menu' },
     loadChildren: () => import('./addons/menu/menu.demo.module').then(m => m.MenuDemoModule),
   },
+  {
+    path: 'datagrid-advanced',
+    data: { section: 'addons', label: 'Datagrid Advanced' },
+    loadChildren: () =>
+      import('./addons/datagrid-advanced/datagrid-advanced.demo.module').then(m => m.DatagridAdvancedDemoModule),
+  },
   { path: 'z-index', loadChildren: () => import('./z-index/z-index.demo.module').then(m => m.ZIndexDemoModule) },
   {
     path: 'shadow-root',
