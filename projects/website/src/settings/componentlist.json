@@ -326,6 +326,12 @@
       "url": "translate",
       "text": "Translate",
       "type": "addons"
+    },
+    {
+      "url": "card-container",
+      "text": "Card Container",
+      "type": "addons",
+      "storybookPath": "addons-card-container"
     }
   ]
 }
