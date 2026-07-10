@@ -42,6 +42,10 @@
       "types": "./types/clr-addons-a11y.d.ts",
       "default": "./fesm2022/clr-addons-a11y.mjs"
     },
+    "./card-container": {
+      "types": "./types/clr-addons-card-container.d.ts",
+      "default": "./fesm2022/clr-addons-card-container.mjs"
+    },
     "./datagrid": {
       "types": "./types/clr-addons-datagrid.d.ts",
       "default": "./fesm2022/clr-addons-datagrid.mjs"
@@ -76,5 +80,5 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "version": "0.0.0-preview.bbf9103"
+  "version": "0.0.0-preview.dd3300f"
 }
