@@ -1527,6 +1527,38 @@ export default function (): void {
         expect(detailService.state).toEqual(context.testComponent.items[1]);
       });
     });
+
+    describe('detail pane overlay class', function () {
+      let context: TestContext<ClrDatagrid, PanelTrackByTest>;
+      let detailService: DetailService;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, PanelTrackByTest, DATAGRID_SPEC_PROVIDERS);
+        detailService = context.getClarityProvider(DetailService) as DetailService;
+        context.detectChanges();
+      });
+
+      it('should not have datagrid-detail-overlay class by default', () => {
+        expect(context.clarityElement.classList).not.toContain('datagrid-detail-overlay');
+      });
+
+      it('should add datagrid-detail-overlay class when detailWidth is 100', () => {
+        detailService.detailWidth = 100;
+        context.detectChanges();
+        expect(context.clarityElement.classList).toContain('datagrid-detail-overlay');
+      });
+
+      it('should remove datagrid-detail-overlay class when detailWidth is no longer 100', () => {
+        detailService.detailWidth = 100;
+        context.detectChanges();
+        expect(context.clarityElement.classList).toContain('datagrid-detail-overlay');
+
+        detailService.detailWidth = 80;
+        context.detectChanges();
+        expect(context.clarityElement.classList).not.toContain('datagrid-detail-overlay');
+      });
+    });
+
     describe('initialize datagrid with opened detail', function () {
       let context: TestContext<ClrDatagrid, PanelInitializeOpenedTest>;
 
