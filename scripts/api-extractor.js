@@ -54,16 +54,13 @@ const EXCLUDED_SUB_DIRS = new Set(['src', 'assets', 'styles', 'types', 'schemati
 
 /**
  * Library configurations. Each entry describes one publishable package:
- *   id                     — Short identifier used in log output and task IDs.
- *   pkgName                — npm package name, used for TypeScript path mappings.
- *   distDir                — Root of the compiled library output.
- *   typesDir               — Directory containing rolled-up .d.ts declaration files.
- *   srcRoot                — Source root; scanned for root and secondary entry points.
- *   tsconfig               — Filename of the production tsconfig within srcRoot.
- *   reportName             — Filename for the root entry point's API report.
- *   recurseSecondaryEntries — When true, a subdirectory with no entry file of its own
- *                            (e.g. one that merely groups related entry points) is
- *                            searched one level deeper instead of being skipped.
+ *   id         — Short identifier used in log output and task IDs.
+ *   pkgName    — npm package name, used for TypeScript path mappings.
+ *   distDir    — Root of the compiled library output.
+ *   typesDir   — Directory containing rolled-up .d.ts declaration files.
+ *   srcRoot    — Source root; scanned for root and secondary entry points.
+ *   tsconfig   — Filename of the production tsconfig within srcRoot.
+ *   reportName — Filename for the root entry point's API report.
  */
 const LIBRARIES = [
   {
@@ -83,7 +80,6 @@ const LIBRARIES = [
     srcRoot: path.join(CWD, 'projects/addons'),
     tsconfig: 'tsconfig.lib.prod.json',
     reportName: 'clr-addons.api.md',
-    recurseSecondaryEntries: true,
   },
 ];
 
@@ -130,45 +126,13 @@ function getTypeDeclarationPath(libConfig, entryName) {
 }
 
 /**
- * Searches a directory tree for secondary entry points. Descent into a directory
- * stops as soon as it resolves its own entry file — its children are not inspected.
- * If a directory has no entry file of its own (e.g. it merely groups related entry
- * points, like workflow/ grouping workflow/strings/) and `recurse` is enabled, its
- * children are searched instead; otherwise it is skipped, matching legacy behavior.
- * Returns an array of { relParts, dir }, one per discovered entry.
- */
-function findSecondaryEntries(baseDir, relParts, recurse) {
-  const found = [];
-  const dirents = fs.readdirSync(baseDir, { withFileTypes: true });
-
-  dirents.forEach(dirent => {
-    if (!dirent.isDirectory() || EXCLUDED_SUB_DIRS.has(dirent.name)) {
-      return;
-    }
-
-    const subPath = path.join(baseDir, dirent.name);
-    const subRelParts = [...relParts, dirent.name];
-
-    if (getEntryFile(subPath)) {
-      found.push({ relParts: subRelParts, dir: subPath });
-    } else if (recurse) {
-      found.push(...findSecondaryEntries(subPath, subRelParts, recurse));
-    }
-  });
-
-  return found;
-}
-
-/**
  * Scans all configured libraries and discovers their root and secondary entry points.
  * Returns an array of task objects, each describing a single entry point to process.
  *
  * Task object shape:
- *   id            — Unique identifier, e.g. "angular/root" or "addons/workflow/strings".
+ *   id            — Unique identifier, e.g. "angular/root" or "angular/button".
  *   libConfig     — Reference to the parent LIBRARIES entry.
- *   entryName     — "root" for the library root, or the entry's path segments joined
- *                   with "-" (matches ng-packagr's rolled-up .d.ts naming convention).
- *   relDir        — Entry's path relative to the library source root (undefined for root).
+ *   entryName     — "root" for the library root, or the sub-directory name.
  *   isSubEntry    — Whether this is a secondary entry point.
  *   distEntryFile — Absolute path to the expected rolled-up .d.ts file.
  */
@@ -195,19 +159,25 @@ function getTasks() {
       console.warn(`⚠️  ${lib.id}: source root exists but no entry file found`);
     }
 
-    // Secondary entry points, including ones nested under a grouping directory
-    // that has no entry file of its own (e.g. workflow/strings), for libraries
-    // that opt into it.
-    findSecondaryEntries(lib.srcRoot, [], Boolean(lib.recurseSecondaryEntries)).forEach(({ relParts }) => {
-      const entryName = relParts.join('-');
-      tasks.push({
-        id: `${lib.id}/${relParts.join('/')}`,
-        libConfig: lib,
-        entryName,
-        relDir: path.join(...relParts),
-        isSubEntry: true,
-        distEntryFile: getTypeDeclarationPath(lib, entryName),
-      });
+    // Secondary entry points
+    const subDirs = fs.readdirSync(lib.srcRoot, { withFileTypes: true });
+    subDirs.forEach(dirent => {
+      if (!dirent.isDirectory() || EXCLUDED_SUB_DIRS.has(dirent.name)) {
+        return;
+      }
+
+      const subPath = path.join(lib.srcRoot, dirent.name);
+      const subEntry = getEntryFile(subPath);
+
+      if (subEntry) {
+        tasks.push({
+          id: `${lib.id}/${dirent.name}`,
+          libConfig: lib,
+          entryName: dirent.name,
+          isSubEntry: true,
+          distEntryFile: getTypeDeclarationPath(lib, dirent.name),
+        });
+      }
     });
   });
 
@@ -215,13 +185,12 @@ function getTasks() {
 }
 
 /**
- * Determines the API report filename for a task. Secondary entry points are named
- * after their own directory (not the full path); root entry points use the
- * library-level report name.
+ * Determines the API report filename for a task. Secondary entry points use
+ * their entry name; root entry points use the library-level report name.
  */
 function getReportFilename(task) {
   if (task.isSubEntry) {
-    return `${path.basename(task.relDir)}.api.md`;
+    return `${task.entryName}.api.md`;
   }
   return task.libConfig.reportName;
 }
@@ -318,7 +287,7 @@ function processTask(task, baseConfig, distPaths) {
   const reportFileName = getReportFilename(task);
 
   // Resolve the report output directory based on whether this is a root or secondary entry point.
-  const reportDir = task.isSubEntry ? path.join(task.libConfig.srcRoot, task.relDir) : task.libConfig.srcRoot;
+  const reportDir = task.isSubEntry ? path.join(task.libConfig.srcRoot, task.entryName) : task.libConfig.srcRoot;
 
   const tempGenDir = path.join(TEMP_GEN_FOLDER, task.id);
   const safeId = task.id.replace(/\//g, '-');
