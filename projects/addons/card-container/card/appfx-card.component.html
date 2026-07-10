@@ -1,0 +1,52 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div
+  class="appfx-card droppable"
+  cdkDropList
+  cdkDropListOrientation="horizontal"
+  cdkDropListAutoScrollStep="6"
+  [cdkDropListConnectedTo]="cdkDropGroup"
+  [class.draggable-over]="isDraggableOver"
+  (cdkDropListDropped)="onDrop()"
+  [@cardAnimation]
+>
+  <div
+    tabindex="0"
+    class="draggable"
+    [class.selected-card]="isSelected"
+    cdkDrag
+    cdkDragPreviewContainer="parent"
+    (cdkDragStarted)="onDragStart()"
+    (keyup.enter)="selectCard($event)"
+    (keyup.arrowleft)="moveDropPositionBackwards($event)"
+    (keyup.arrowright)="moveDropPositionForwards($event)"
+  >
+    <div class="custom-placeholder" *cdkDragPlaceholder></div>
+    <button
+      class="drag-handler-button btn btn-icon"
+      [attr.aria-label]="'cardDragHandle' | translate"
+      aria-describedby="card-drag-handler-instructions"
+      (keyup.enter)="onDropHandleKeyUp($event)"
+      (keyup.space)="onDropHandleKeyUp($event)"
+    >
+      <span class="clr-sr-only" id="card-drag-handler-instructions">
+        {{ 'cardDragHandleDescription' | translate }}
+      </span>
+      <cds-icon
+        class="drag-handle-icon"
+        shape="drag-handle"
+        size="32"
+        cdkDragHandle
+        [cdkDragHandleDisabled]="!dragDropEnabled"
+        [hidden]="!dragDropEnabled"
+      >
+      </cds-icon>
+    </button>
+    <ng-template #cardViewContainer> </ng-template>
+  </div>
+</div>
