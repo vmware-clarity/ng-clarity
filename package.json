@@ -61,6 +61,14 @@
     "./translate": {
       "types": "./types/clr-addons-translate.d.ts",
       "default": "./fesm2022/clr-addons-translate.mjs"
+    },
+    "./workflow": {
+      "types": "./types/clr-addons-workflow.d.ts",
+      "default": "./fesm2022/clr-addons-workflow.mjs"
+    },
+    "./workflow/strings": {
+      "types": "./types/clr-addons-workflow-strings.d.ts",
+      "default": "./fesm2022/clr-addons-workflow-strings.mjs"
     }
   },
   "sideEffects": false,
@@ -68,5 +76,5 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "version": "0.0.0-preview.ed7c525"
+  "version": "0.0.0-preview.bbf9103"
 }
