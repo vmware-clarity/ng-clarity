@@ -15,18 +15,20 @@
     </p>
 
     <!-- Preset selector -->
-    <div class="tb-presets" cds-layout="m-t:sm">
-      <span cds-text="secondary" class="tb-presets-label">Presets:</span>
-      @for (preset of presets; track preset.name) {
-        <button
-          class="btn btn-sm"
-          [class.btn-primary]="activePreset?.name === preset.name"
-          [class.btn-outline]="activePreset?.name !== preset.name"
-          (click)="applyPreset(preset)"
-        >
-          {{ preset.name }}
-        </button>
-      }
+    <div class="tb-presets" cds-layout="m-t:lg">
+      <div class="tb-preset-cards">
+        @for (preset of presets; track preset.name) {
+          <a
+            href="javascript://"
+            class="card clickable tb-preset-card"
+            [class.tb-preset-card-active]="activePreset?.name === preset.name"
+            (click)="applyPreset(preset)"
+          >
+            <div class="tb-preset-swatch" [style.background-color]="preset.light?.primary?.hex"></div>
+            <div class="card-text">{{ preset.name }}</div>
+          </a>
+        }
+      </div>
     </div>
   </div>
 
@@ -34,26 +36,6 @@
   <div class="tb-layout" cds-layout="m-t:lg m-b:lg">
     <!-- ── Controls card (sticky left column) ── -->
     <div class="card tb-controls-card">
-      <!-- Light / Dark mode toggle in card header -->
-      <div class="card-header tb-theme-tabs">
-        <button
-          class="btn btn-sm"
-          [class.btn-primary]="activeTheme === 'light'"
-          [class.btn-outline]="activeTheme !== 'light'"
-          (click)="applyActiveTheme('light')"
-        >
-          Light
-        </button>
-        <button
-          class="btn btn-sm"
-          [class.btn-primary]="activeTheme === 'dark'"
-          [class.btn-outline]="activeTheme !== 'dark'"
-          (click)="applyActiveTheme('dark')"
-        >
-          Dark
-        </button>
-      </div>
-
       <div class="card-block">
         @for (colorGroup of themeColors; track colorGroup.key) {
           <clr-stack-view>
@@ -143,10 +125,14 @@
     <div class="card tb-preview-card">
       <div class="card-header">
         Live Preview:
-        <span>
-          <cds-icon [shape]="activeTheme === 'dark' ? 'moon' : 'sun'" [solid]="true" [size]="'md'"></cds-icon>
-          {{ activeTheme === 'dark' ? 'Dark' : 'Light' }}
-        </span>
+        <button
+          class="btn btn-outline-neutral"
+          [attr.aria-label]="'Switch to ' + (isDarkTheme ? 'light' : 'dark') + ' theme'"
+          (click)="toggleActiveTheme()"
+        >
+          <cds-icon [shape]="isDarkTheme ? 'moon' : 'sun'" [solid]="true" [size]="'md'"></cds-icon>
+          {{ isDarkTheme ? 'Dark' : 'Light' }}
+        </button>
 
         <clr-toggle-wrapper style="margin-left: auto">
           <input

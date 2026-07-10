@@ -110,8 +110,8 @@ export class ThemeBuilderComponent implements AfterViewInit, OnDestroy {
     return generateCSS(this.colorStruct, this.warningTextOverrideEnabled).join('\n');
   }
 
-  applyActiveTheme(theme: 'light' | 'dark') {
-    this.activeTheme = theme;
+  toggleActiveTheme(): void {
+    this.activeTheme = this.activeTheme === 'dark' ? 'light' : 'dark';
 
     this.applyPreviewStyles();
     this.refreshThemeColors();
