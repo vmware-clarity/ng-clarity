@@ -107,7 +107,7 @@ export class ThemeBuilderComponent implements AfterViewInit, OnDestroy {
   }
 
   get generatedCss(): string {
-    return generateCSS(this.colorStruct).join('\n');
+    return generateCSS(this.colorStruct, this.warningTextOverrideEnabled).join('\n');
   }
 
   applyActiveTheme(theme: 'light' | 'dark') {
@@ -226,11 +226,11 @@ export class ThemeBuilderComponent implements AfterViewInit, OnDestroy {
 
         el.style.setProperty(color.name, color.hsl);
 
-        // warning text override — toggled via the "Warning text override" switch
+        // warning text override — toggled via the "Warning text override" switch; light theme only
         if (color.name === '--cds-alias-status-warning') {
           const override = '--cds-alias-typography-color-black';
 
-          if (!this.warningTextOverrideEnabled || color.isOriginalColor) {
+          if (this.activeTheme !== 'light' || !this.warningTextOverrideEnabled || color.isOriginalColor) {
             el.style.removeProperty(override);
           } else {
             el.style.setProperty(override, 'var(--cds-alias-typography-color-100)');
