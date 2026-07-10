@@ -1,0 +1,59 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+:host {
+  $clr-td-font-size: 0.65rem;
+
+  .pv-section-title-container {
+    .pv-section-title-content {
+      padding-left: 0;
+      padding-right: 0;
+      border: 0 solid transparent;
+      line-height: inherit;
+      // since UX requirement is to bold the keys of the property view,
+      // after doing it the keys appears bigger than the section title,
+      // because Clarity sets TH size to 0.55re and TD to 0.65rem. To
+      // workaround this we override the TH size in property view by
+      // increasing its font size as TD.
+      font-size: $clr-td-font-size;
+      // unset clarity visual style --clr-table-noborder-bg-color
+      background-color: unset;
+
+      .pv-section-title-expand-button {
+        padding: 0;
+        border: 0;
+        background-color: transparent;
+        cursor: pointer;
+        vertical-align: middle;
+        color: unset;
+      }
+
+      .pv-section-title-icon {
+        margin: 0;
+        vertical-align: middle;
+      }
+
+      .pv-section-title-text {
+        vertical-align: middle;
+      }
+
+      .pv-section-actions-dropdown {
+        display: inline-block;
+        vertical-align: middle;
+
+        [clrDropdownTrigger] {
+          height: auto;
+          font-size: inherit;
+          line-height: inherit;
+        }
+
+        cds-icon {
+          top: 2px;
+        }
+      }
+    }
+  }
+}
