@@ -10,7 +10,7 @@ import { StoryObj } from '@storybook/angular';
 import { LabelStoryBookComponent } from './label.storybook.component';
 
 const LABEL_COLOR_TYPES = ['', 'purple', 'blue', 'orange', 'light-blue'];
-const LABEL_STATUS_TYPES = ['info', 'success', 'warning', 'danger'];
+const LABEL_STATUS_TYPES = ['primary', 'info', 'success', 'warning', 'danger'];
 
 export default {
   title: 'Label/Label',
