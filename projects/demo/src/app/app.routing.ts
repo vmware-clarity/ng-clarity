@@ -140,6 +140,12 @@ export const APP_ROUTES: Routes = [
   },
   { path: 'wizard', loadChildren: () => import('./wizard/wizard.demo.module').then(m => m.WizardDemoModule) },
   {
+    path: 'card-container',
+    data: { section: 'addons', label: 'Card Container' },
+    loadChildren: () =>
+      import('./addons/card-container/card-container.demo.module').then(m => m.CardContainerDemoModule),
+  },
+  {
     path: 'datagrid-advanced',
     data: { section: 'addons', label: 'Datagrid Advanced' },
     loadChildren: () =>
