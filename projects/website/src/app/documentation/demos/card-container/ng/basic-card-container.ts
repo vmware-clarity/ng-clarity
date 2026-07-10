@@ -75,13 +75,7 @@ export class DynamicCardComponent {}
     TagsCardComponent,
     DynamicCardComponent,
   ],
-  template: `
-    <div class="clr-mb-16px">
-      <button class="btn btn-outline" (click)="addCard()">Add Card</button>
-      <button class="btn btn-outline" (click)="removeCard()" [disabled]="cards.length <= 1">Remove Last</button>
-    </div>
-    <appfx-card-container [cards]="cards" [containerId]="'demo-container'"></appfx-card-container>
-  `,
+  templateUrl: './basic-card-container.html',
 })
 export class BasicCardContainerDemoComponent {
   cards: any[] = [

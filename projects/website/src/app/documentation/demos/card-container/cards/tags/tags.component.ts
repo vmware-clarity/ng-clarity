@@ -10,6 +10,14 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'appfx-demo-tags-card',
   standalone: true,
-  templateUrl: 'tags.component.html',
+  template: `
+    <div class="card">
+      <div class="card-header">Tags</div>
+      <div class="card-block">Tags Sample</div>
+      <div class="card-footer">
+        <button class="btn btn-sm btn-link">Tags Action</button>
+      </div>
+    </div>
+  `,
 })
 export class TagsCardComponent {}

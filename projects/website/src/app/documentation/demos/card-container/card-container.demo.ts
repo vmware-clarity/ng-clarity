@@ -35,7 +35,6 @@ export class MyModule {}
   selector: 'clr-card-container-demo',
   standalone: true,
   templateUrl: './card-container.demo.html',
-  styleUrl: './card-container.demo.scss',
   host: {
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',

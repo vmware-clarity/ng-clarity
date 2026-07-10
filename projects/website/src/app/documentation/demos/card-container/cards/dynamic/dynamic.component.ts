@@ -10,6 +10,11 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'appfx-demo-dynamic-card',
   standalone: true,
-  templateUrl: 'dynamic.component.html',
+  template: `
+    <div class="card">
+      <div class="card-header">Dynamic</div>
+      <div class="card-block">Dynamic</div>
+    </div>
+  `,
 })
 export class DynamicCardComponent {}

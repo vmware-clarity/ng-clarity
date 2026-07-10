@@ -36,7 +36,7 @@
   </app-doc-tab>
 
   <app-doc-tab tab="code">
-    <h2 id="basic-card-container" cds-text="title">Basic Card Container</h2>
+    <h2 id="basic-card-container" cds-text="title">Card Container</h2>
     <p cds-text="body" class="clr-mt-16px">
       Three cards in a dashboard. Use the buttons below to add or remove cards dynamically.
     </p>
@@ -128,6 +128,21 @@
           <td><code>unitHeight</code></td>
           <td>number</td>
           <td>Card height in grid units</td>
+        </tr>
+        <tr>
+          <td><code>canHide</code></td>
+          <td>boolean</td>
+          <td>If <code>false</code>, the card cannot be hidden from the settings panel; default <code>true</code></td>
+        </tr>
+        <tr>
+          <td><code>context</code></td>
+          <td>AppfxCardContext</td>
+          <td>Key/value pairs passed as input properties to the dynamically created <code>componentClass</code> instance</td>
+        </tr>
+        <tr>
+          <td><code>cardZoomSizes</code></td>
+          <td>AppfxCardZoomSizes</td>
+          <td>Overrides for <code>unitWidth</code>/<code>unitHeight</code> at 2x and 4x zoom levels</td>
         </tr>
       </tbody>
     </table>

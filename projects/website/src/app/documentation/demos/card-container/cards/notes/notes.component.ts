@@ -10,6 +10,14 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'appfx-demo-note-card',
   standalone: true,
-  templateUrl: 'notes.component.html',
+  template: `
+    <div class="card">
+      <div class="card-header">Notes</div>
+      <div class="card-block">Notes</div>
+      <div class="card-footer">
+        <button class="btn btn-sm btn-link">Notes Action</button>
+      </div>
+    </div>
+  `,
 })
 export class NotesCardComponent {}
