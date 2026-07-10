@@ -146,5 +146,79 @@
         </tr>
       </tbody>
     </table>
+
+    <h2 id="api-zoom-sizes" class="clr-mt-48px" cds-text="title">AppfxCardZoomSizes Interface</h2>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>zoom2x</code></td>
+          <td><code>{{ '{' }} unitWidth?: number; unitHeight?: number {{ '}' }}</code></td>
+          <td><code>unitWidth</code>/<code>unitHeight</code> overrides at 2x zoom</td>
+        </tr>
+        <tr>
+          <td><code>zoom4x</code></td>
+          <td><code>{{ '{' }} unitWidth?: number; unitHeight?: number {{ '}' }}</code></td>
+          <td><code>unitWidth</code>/<code>unitHeight</code> overrides at 4x zoom</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="api-persistence-store" class="clr-mt-48px" cds-text="title">AppfxContainerPersistenceStore Interface</h2>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>retrieve</code></td>
+          <td>() =&gt; Observable&lt;AppfxCardSettings[]&gt;</td>
+          <td>Returns the persisted card settings</td>
+        </tr>
+        <tr>
+          <td><code>save</code></td>
+          <td>(cardSettings: AppfxCardSettings[]) =&gt; void</td>
+          <td>Persists the given card settings; if no <code>persistenceStore</code> is provided, local storage is used</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="api-card-settings" class="clr-mt-48px" cds-text="title">AppfxCardSettings Interface</h2>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>id</code></td>
+          <td>string</td>
+          <td>Unique card identifier</td>
+        </tr>
+        <tr>
+          <td><code>order</code></td>
+          <td>number</td>
+          <td>Order of the card inside the container view</td>
+        </tr>
+        <tr>
+          <td><code>hidden</code></td>
+          <td>boolean</td>
+          <td>Whether the card is currently hidden via the settings panel</td>
+        </tr>
+      </tbody>
+    </table>
   </app-doc-tab>
 </app-doc-tabs>
