@@ -6,9 +6,10 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AppfxMenuModule, MenuComponent } from '@clr/addons/menu';
 import { ClarityModule } from '@clr/angular';
+import { buildingIcon, ClarityIcons, clusterIcon, hostIcon, vmIcon } from '@clr/angular/icon';
 
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
@@ -18,19 +19,31 @@ import { ClarityDocComponent } from '../clarity-doc';
 
 const BasicMenuHtml = require('!raw-loader!./ng/basic-menu.html').default;
 const BasicMenuTs = require('!raw-loader!./ng/basic-menu.ts').default;
+const ButtonMenuHtml = require('!raw-loader!./ng/button-menu.html').default;
+const ButtonMenuTs = require('!raw-loader!./ng/button-menu.ts').default;
+const DatagridMenuHtml = require('!raw-loader!./ng/datagrid-menu.html').default;
+const DatagridMenuTs = require('!raw-loader!./ng/datagrid-menu.ts').default;
+const IconsMenuHtml = require('!raw-loader!./ng/icons-menu.html').default;
+const IconsMenuScss = require('!raw-loader!./ng/icons-menu.scss').default;
+const IconsMenuTs = require('!raw-loader!./ng/icons-menu.ts').default;
+const TreeMenuHtml = require('!raw-loader!./ng/tree-menu.html').default;
+const TreeMenuTs = require('!raw-loader!./ng/tree-menu.ts').default;
 
 export type MenuDemoMode = 'context-area' | 'tree' | 'datagrid' | 'button' | 'icons';
 
-export interface FileEntry {
+interface StackblitzExample {
   name: string;
-  type: string;
-  size: string;
+  html: string;
+  ts: string;
+  styles?: string;
 }
 
-export interface TreeNode {
-  label: string;
-  children?: TreeNode[];
-  expanded?: boolean;
+interface Vm {
+  name: string;
+  state: string;
+  status: string;
+  provisionedSpace: string;
+  usedSpace: string;
 }
 
 @Component({
@@ -47,21 +60,19 @@ export interface TreeNode {
     DocTabsComponent,
     StackblitzExampleComponent,
   ],
+  encapsulation: ViewEncapsulation.None,
 })
 export class MenuDemoComponent extends ClarityDocComponent {
-  @ViewChild('contextMenu') contextMenu?: MenuComponent;
-  @ViewChild('treeMenu') treeMenu?: MenuComponent;
-  @ViewChild('datagridMenu') datagridMenu?: MenuComponent;
-  @ViewChild('buttonMenu') buttonMenu?: MenuComponent;
-  @ViewChild('iconsMenu') iconsMenu?: MenuComponent;
+  @ViewChild('actionsMenu', { static: true }) actionsMenu!: MenuComponent;
+  @ViewChild('iconsMenu', { static: true }) iconsMenu!: MenuComponent;
 
-  readonly basicMenuHtml = BasicMenuHtml;
-  readonly basicMenuTs = BasicMenuTs;
-
-  activeMode: MenuDemoMode = 'context-area';
-  lastAction = '';
-  selectedFile: FileEntry | null = null;
-  selectedNode: TreeNode | null = null;
+  readonly stackblitzExamples: Record<MenuDemoMode, StackblitzExample> = {
+    'context-area': { name: 'menu-context-area', html: BasicMenuHtml, ts: BasicMenuTs },
+    tree: { name: 'menu-tree', html: TreeMenuHtml, ts: TreeMenuTs },
+    datagrid: { name: 'menu-datagrid', html: DatagridMenuHtml, ts: DatagridMenuTs },
+    button: { name: 'menu-button', html: ButtonMenuHtml, ts: ButtonMenuTs },
+    icons: { name: 'menu-icons', html: IconsMenuHtml, ts: IconsMenuTs, styles: IconsMenuScss },
+  };
 
   readonly modes: { id: MenuDemoMode; label: string }[] = [
     { id: 'context-area', label: 'Context Area' },
@@ -71,74 +82,73 @@ export class MenuDemoComponent extends ClarityDocComponent {
     { id: 'icons', label: 'Icons' },
   ];
 
-  readonly files: FileEntry[] = [
-    { name: 'annual-report.pdf', type: 'PDF', size: '2.4 MB' },
-    { name: 'budget-2026.xlsx', type: 'Excel', size: '1.1 MB' },
-    { name: 'meeting-notes.txt', type: 'Text', size: '12 KB' },
-    { name: 'presentation.pptx', type: 'PowerPoint', size: '5.7 MB' },
-    { name: 'backup.zip', type: 'Archive', size: '48.3 MB' },
-  ];
+  activeMode: MenuDemoMode = 'context-area';
+  lastAction = '';
 
-  readonly treeNodes: TreeNode[] = [
+  readonly vms: Vm[] = [
     {
-      label: 'Documents',
-      expanded: true,
-      children: [
-        { label: 'Reports', children: [{ label: 'Q1 Report' }, { label: 'Q2 Report' }] },
-        { label: 'Presentations' },
-      ],
+      name: 'external-gateway',
+      state: 'Powered On',
+      status: 'Normal',
+      provisionedSpace: '18.84 GB',
+      usedSpace: '3.18 GB',
     },
-    { label: 'Downloads', children: [{ label: 'Installers' }, { label: 'Media' }] },
-    { label: 'Pictures', children: [{ label: 'Vacation' }, { label: 'Work' }] },
+    {
+      name: 'ha-proxy',
+      state: 'Powered Off',
+      status: 'Normal',
+      provisionedSpace: '24.08 GB',
+      usedSpace: '10.65 GB',
+    },
+    {
+      name: 'vCLS-vm',
+      state: 'Powered On',
+      status: 'Normal',
+      provisionedSpace: '2.2 GB',
+      usedSpace: '40.8 GB',
+    },
+    {
+      name: 'Control plane VM',
+      state: 'Powered On',
+      status: 'Normal',
+      provisionedSpace: '21.2 GB',
+      usedSpace: '83.8 GB',
+    },
   ];
 
   constructor() {
     super('menu');
+    ClarityIcons.addIcons(buildingIcon, clusterIcon, hostIcon, vmIcon);
+  }
+
+  get activeStackblitzExample(): StackblitzExample {
+    return this.stackblitzExamples[this.activeMode];
   }
 
   setMode(mode: MenuDemoMode): void {
     this.activeMode = mode;
     this.lastAction = '';
-    this.selectedFile = null;
-    this.selectedNode = null;
+  }
+
+  onOpenMenu(event: MouseEvent): void {
+    this.actionsMenu.close(event);
+    this.actionsMenu.show(event, event.clientX, event.clientY);
+    event.preventDefault();
+  }
+
+  onOpenIconsMenu(event: MouseEvent): void {
+    this.iconsMenu.close(event);
+    this.iconsMenu.show(event, event.clientX, event.clientY);
+    event.preventDefault();
+  }
+
+  onOpenButtonMenu(event: MouseEvent): void {
+    const rect = (event.currentTarget as HTMLButtonElement).getBoundingClientRect();
+    this.actionsMenu.close(event);
+    this.actionsMenu.show(event, rect.left, rect.top + rect.height);
   }
 
   handleAction(label: string): void {
     this.lastAction = label;
-  }
-
-  /* Context Area */
-  onContextMenu(event: MouseEvent): void {
-    event.preventDefault();
-    this.contextMenu?.show(event, event.clientX, event.clientY);
-  }
-
-  /* Tree */
-  onTreeNodeContextMenu(event: MouseEvent, node: TreeNode): void {
-    event.preventDefault();
-    event.stopPropagation();
-    this.selectedNode = node;
-    this.treeMenu?.show(event, event.clientX, event.clientY);
-  }
-
-  /* Datagrid */
-  onRowMenuClick(event: MouseEvent, file: FileEntry): void {
-    event.stopPropagation();
-    this.selectedFile = file;
-    this.datagridMenu?.show(event, event.clientX, event.clientY);
-  }
-
-  /* Button */
-  onButtonMenuClick(event: MouseEvent): void {
-    const btn = event.currentTarget as HTMLElement;
-    const rect = btn.getBoundingClientRect();
-    this.buttonMenu?.show(event, rect.left, rect.bottom + 4, btn);
-  }
-
-  /* Icons */
-  onIconMenuClick(event: MouseEvent): void {
-    const btn = event.currentTarget as HTMLElement;
-    const rect = btn.getBoundingClientRect();
-    this.iconsMenu?.show(event, rect.left, rect.bottom + 4, btn);
   }
 }
