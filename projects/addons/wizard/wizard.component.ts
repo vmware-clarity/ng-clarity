@@ -621,7 +621,7 @@ export interface WizardResult {
   /**
    * Reason for wizard close.
    * "finish" indicates wizard closed by clicking finish button.
-   * "close" indicates wizard closed by clicking cancel button.
+   * "cancel" indicates wizard closed by clicking cancel button.
    */
   close: Reason;
 }
