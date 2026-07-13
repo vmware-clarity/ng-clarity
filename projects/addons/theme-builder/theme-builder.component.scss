@@ -1,0 +1,178 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+:host {
+  display: block;
+
+  ::ng-deep {
+    .stack-view .stack-view-key {
+      min-width: 46%;
+    }
+
+    .stack-view .stack-block-content {
+      max-width: 46%;
+    }
+
+    .card .alert {
+      margin: 0;
+    }
+
+    .card-block .progress,
+    .card-block .progress-static,
+    .card-footer .progress,
+    .card-footer .progress-static {
+      position: relative;
+      height: var(--clr-base-progress-bar-height);
+      margin: 0;
+
+      > progress {
+        height: 100%;
+        position: static;
+      }
+    }
+  }
+}
+
+.tb-presets {
+  display: flex;
+  align-items: center;
+  gap: var(--clr-base-gap-m);
+  flex-wrap: wrap;
+}
+
+.tb-preset-cards {
+  display: flex;
+  gap: var(--clr-base-gap-l);
+  flex-flow: row nowrap;
+}
+
+// Modeled on app-link-cards' `.card-link`: a clickable card pairing a colored
+// badge with a text label — square swatch instead of a hexagon, no arrow icon.
+.tb-preset-card {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--clr-base-gap-m);
+  margin: 0;
+  padding: var(--clr-base-vertical-offset-m) var(--clr-base-horizontal-offset-m);
+  min-width: 170px;
+
+  &.tb-preset-card-active {
+    outline: var(--cds-alias-object-border-width-200) solid var(--cds-alias-primary);
+    outline-offset: 2px;
+  }
+
+  .card-text {
+    margin-bottom: 0;
+  }
+}
+
+.tb-preset-swatch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  min-width: 32px;
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+  border-radius: var(--cds-alias-object-border-radius-100);
+  background: var(--cds-alias-object-container-background);
+  font-size: 0.5rem;
+  color: var(--cds-alias-typography-color-300);
+}
+
+// ── Two-column grid ──
+
+.tb-layout {
+  display: grid;
+  grid-template-columns: 500px 1fr;
+  gap: var(--clr-base-gap-l);
+  align-items: start;
+}
+
+// ── Controls card ──
+
+.tb-controls-card {
+  margin-top: 0;
+  position: sticky;
+  top: 0;
+  max-height: calc(100vh - var(--cds-global-space-15));
+  overflow-y: auto;
+}
+
+.card-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--clr-base-gap-l);
+
+  .tb-color-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--clr-base-gap-s);
+    min-width: 190px;
+  }
+
+  .tb-color-picker {
+    padding: var(--clr-base-vertical-offset-2xs) var(--clr-base-horizontal-offset-2xs);
+    border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+    border-radius: var(--cds-alias-object-border-radius-100);
+    cursor: pointer;
+    background: var(--cds-alias-object-container-background);
+  }
+
+  .tb-hex-input {
+    width: var(--clr-base-layout-space-5xl);
+    padding: var(--clr-base-vertical-offset-2xs) var(--clr-base-horizontal-offset-s);
+    border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+    border-radius: var(--cds-alias-object-border-radius-100);
+  }
+
+  .tb-stack-label {
+    display: flex;
+    gap: var(--clr-base-gap-m);
+    align-items: center;
+  }
+}
+
+// ── Preview card ──
+
+.tb-preview-card {
+  margin-top: 0;
+
+  // Card-header contains "Live Preview" label + light/dark toggle button
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--clr-base-gap-m);
+  }
+}
+
+.tb-preview-sandbox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--clr-base-gap-l);
+  border-bottom-left-radius: var(--cds-alias-object-border-radius-100);
+  border-bottom-right-radius: var(--cds-alias-object-border-radius-100);
+}
+
+.tb-preview-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--clr-base-gap-m);
+}
+
+.tb-preview-row {
+  display: flex;
+  align-items: center;
+  gap: var(--clr-base-gap-m);
+  flex-wrap: wrap;
+}
+
+.tb-nav-preview-wrap {
+  height: 180px;
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+  overflow: hidden;
+  display: flex;
+}
