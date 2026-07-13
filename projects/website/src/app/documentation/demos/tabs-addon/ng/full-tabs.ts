@@ -10,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxTabsModule } from '@clr/addons/tabs';
 import { Step, StepModel, StepModelHolder, TabLayout, Var } from '@clr/addons/var';
+import { ClarityModule } from '@clr/angular';
 
 // ─── Step 1 model ─────────────────────────────────────────────────────────────
 export class NameModel implements StepModel {
@@ -19,7 +20,7 @@ export class NameModel implements StepModel {
 
 // ─── Step 1 component ─────────────────────────────────────────────────────────
 @Component({
-  selector: 'clr-basic-tabs-name-step',
+  selector: 'clr-full-tabs-name-step',
   standalone: true,
   imports: [FormsModule],
   template: `
@@ -33,7 +34,7 @@ export class NameModel implements StepModel {
     </div>
   `,
 })
-export class BasicTabsNameStepComponent implements StepModelHolder {
+export class FullTabsNameStepComponent implements StepModelHolder {
   model: NameModel;
 }
 
@@ -45,7 +46,7 @@ export class RegionModel implements StepModel {
 
 // ─── Step 2 component ─────────────────────────────────────────────────────────
 @Component({
-  selector: 'clr-basic-tabs-region-step',
+  selector: 'clr-full-tabs-region-step',
   standalone: true,
   imports: [FormsModule],
   template: `
@@ -60,8 +61,28 @@ export class RegionModel implements StepModel {
     </div>
   `,
 })
-export class BasicTabsRegionStepComponent implements StepModelHolder {
+export class FullTabsRegionStepComponent implements StepModelHolder {
   model: RegionModel;
+}
+
+// ─── Step 3 model ─────────────────────────────────────────────────────────────
+export class ReviewModel implements StepModel {
+  readyToComplete = true;
+}
+
+// ─── Step 3 component ─────────────────────────────────────────────────────────
+@Component({
+  selector: 'clr-full-tabs-review-step',
+  standalone: true,
+  template: `
+    <div style="padding: 1rem">
+      <h4>Review</h4>
+      <p>Review your configuration before proceeding.</p>
+    </div>
+  `,
+})
+export class FullTabsReviewStepComponent implements StepModelHolder {
+  model: ReviewModel;
 }
 
 // ─── Workflow model ────────────────────────────────────────────────────────────
@@ -72,20 +93,70 @@ export class TabsWorkflowModel {
 
 // ─── Root component ───────────────────────────────────────────────────────────
 @Component({
-  selector: 'clr-basic-tabs-demo',
+  selector: 'clr-full-tabs-demo',
   standalone: true,
-  imports: [CommonModule, AppfxTabsModule, BasicTabsNameStepComponent, BasicTabsRegionStepComponent],
-  template: ` <appfx-tabs [tabs]="steps" [model]="workflowModel" [tabLayout]="TabLayout.horizontal"> </appfx-tabs> `,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ClarityModule,
+    AppfxTabsModule,
+    FullTabsNameStepComponent,
+    FullTabsRegionStepComponent,
+    FullTabsReviewStepComponent,
+  ],
+  template: `
+    <div class="tabs-playground-controls">
+      <clr-radio-container clrInline>
+        <label>Layout</label>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="layout" [value]="TabLayout.horizontal" [(ngModel)]="selectedLayout" />
+          <label>Horizontal</label>
+        </clr-radio-wrapper>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="layout" [value]="TabLayout.vertical" [(ngModel)]="selectedLayout" />
+          <label>Vertical</label>
+        </clr-radio-wrapper>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="layout" [value]="TabLayout.secondary" [(ngModel)]="selectedLayout" />
+          <label>Secondary</label>
+        </clr-radio-wrapper>
+      </clr-radio-container>
+
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="disableContent" />
+        <label>Disable tab content</label>
+      </clr-toggle-wrapper>
+
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="showTabLinks" />
+        <label>Show tab links</label>
+      </clr-toggle-wrapper>
+    </div>
+
+    <appfx-tabs
+      [tabs]="steps"
+      [model]="workflowModel"
+      [tabLayout]="selectedLayout"
+      [disableTabsContent]="disableContent"
+      [showTabLinks]="showTabLinks"
+    >
+    </appfx-tabs>
+  `,
 })
-export class BasicTabsDemoComponent implements OnInit {
+export class FullTabsDemoComponent implements OnInit {
   TabLayout = TabLayout;
   workflowModel = new TabsWorkflowModel();
   steps: Step[] = [];
 
+  selectedLayout: TabLayout = TabLayout.horizontal;
+  disableContent = false;
+  showTabLinks = true;
+
   ngOnInit() {
     this.steps = [
-      { title: 'Name', componentClass: BasicTabsNameStepComponent, model: new NameModel() } as Step,
-      { title: 'Region', componentClass: BasicTabsRegionStepComponent, model: new RegionModel() } as Step,
+      { title: 'Name', componentClass: FullTabsNameStepComponent, model: new NameModel() } as Step,
+      { title: 'Region', componentClass: FullTabsRegionStepComponent, model: new RegionModel() } as Step,
+      { title: 'Review', componentClass: FullTabsReviewStepComponent, model: new ReviewModel() } as Step,
     ];
   }
 }
