@@ -11,16 +11,15 @@
   <!-- ═══════════════ OVERVIEW ═══════════════ -->
   <app-doc-tab tab="overview">
     <p class="component-summary">
-      <code cds-text="code">&#64;clr/addons/tabs</code> renders a composition of step components as a tabbed
-      interface using Clarity's <code cds-text="code">clr-tabs</code>. The workflow is orchestrated by the same
+      <code cds-text="code">&#64;clr/addons/tabs</code> renders a composition of step components as a tabbed interface
+      using Clarity's <code cds-text="code">clr-tabs</code>. The workflow is orchestrated by the same
       <code cds-text="code">WorkflowModelManager</code> used by the Wizard and Stepper, so step components and step
       models can be reused across all three patterns without modification.
     </p>
 
     <h2 id="structure" class="clr-mt-48px" cds-text="title">Tabs Structure</h2>
     <p cds-text="body" class="clr-mt-16px">
-      AppFx Tabs is built on top of Clarity Tabs and shares the same structural building blocks as Wizard and
-      Stepper:
+      AppFx Tabs is built on top of Clarity Tabs and shares the same structural building blocks as Wizard and Stepper:
     </p>
     <ol cds-list class="clr-mt-8px">
       <li>
@@ -33,12 +32,12 @@
         steps, identical in shape to a Wizard or Stepper model.
       </li>
       <li>
-        <strong>Step component</strong> (per tab) — implements <code cds-text="code">StepModelHolder</code> to
-        receive the typed step model, same as a Wizard page.
+        <strong>Step component</strong> (per tab) — implements <code cds-text="code">StepModelHolder</code> to receive
+        the typed step model, same as a Wizard page.
       </li>
       <li>
-        <strong>Step model</strong> (per tab) — typed POJO with input/output properties, reusable between Tabs,
-        Wizard, and Stepper.
+        <strong>Step model</strong> (per tab) — typed POJO with input/output properties, reusable between Tabs, Wizard,
+        and Stepper.
       </li>
     </ol>
 
@@ -46,16 +45,16 @@
 
     <h3 class="clr-mt-24px" cds-text="section">Horizontal, Vertical, or Secondary tabs</h3>
     <p cds-text="body" class="clr-mt-8px">
-      AppFx Tabs offers the flexibility to display tabs horizontally (the default), in a vertical orientation, or as
-      a secondary tab in a horizontal layout. To customize the layout, set the
+      AppFx Tabs offers the flexibility to display tabs horizontally (the default), in a vertical orientation, or as a
+      secondary tab in a horizontal layout. To customize the layout, set the
       <code cds-text="code">tabLayout</code> property.
     </p>
 
     <h3 class="clr-mt-24px" cds-text="section">Disable all tabs</h3>
     <p cds-text="body" class="clr-mt-8px">
       Tab <strong>content</strong> can be disabled with the <code cds-text="code">disableTabsContent</code> property.
-      The user will still be able to click around the tabs but will not be able to interact with the step
-      components. When tab content is disabled, steps will not get validated.
+      The user will still be able to click around the tabs but will not be able to interact with the step components.
+      When tab content is disabled, steps will not get validated.
     </p>
 
     <h3 class="clr-mt-24px" cds-text="section">Reusable in AppFx Dialog</h3>
@@ -276,8 +275,8 @@
           <td><code>boolean</code></td>
           <td>No</td>
           <td>
-            If <code>true</code>, the step component is instantiated upon first activation. If <code>false</code>,
-            it's instantiated immediately when the tabs component is created. Default: <code>false</code>.
+            If <code>true</code>, the step component is instantiated upon first activation. If <code>false</code>, it's
+            instantiated immediately when the tabs component is created. Default: <code>false</code>.
           </td>
         </tr>
         <tr>
