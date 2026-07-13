@@ -1,0 +1,122 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+:host {
+  &.indented {
+    .pv-property-key-container {
+      padding-left: 0.96rem;
+    }
+  }
+
+  &.collapsed {
+    visibility: hidden;
+
+    .pv-property-key-container,
+    .pv-property-values-container {
+      padding-top: 0;
+      padding-bottom: 0;
+
+      .pv-property-key-content,
+      .pv-property-values-content {
+        display: block;
+        height: 0;
+        overflow: hidden;
+      }
+    }
+  }
+
+  .pv-property-key-container,
+  .pv-property-values-container {
+    // Explicitly set the padding-top and padding-bottom because of different global styles leaking
+    // from '_tables.clarity.scss' that change the spacing layout of appfx-property-view.
+    // To ensure a consistent layout across Clarity versions, set the padding explicitly.
+    // Note: The 'important' keyword is needed to override the padding inherited from global Clarity styles.
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.2rem !important;
+    padding-left: 0;
+    padding-right: 0;
+    line-height: inherit;
+  }
+
+  .pv-property-key-container {
+    font-weight: 500;
+    padding-right: 0.96rem;
+
+    .pv-property-key-content {
+      display: inline-block;
+      width: 7.2rem;
+      overflow-wrap: break-word;
+
+      .pv-property-key-icon {
+        display: inline-block;
+        margin: 0;
+        vertical-align: middle;
+      }
+
+      .pv-property-key-text {
+        white-space: pre-wrap;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .pv-property-values-container {
+    padding-left: 0.96rem;
+
+    .pv-property-values-content {
+      min-width: 7.2rem;
+      display: inline-block;
+      width: 100%;
+      box-sizing: border-box;
+
+      .pv-property-value {
+        width: 100%;
+        display: inline-block;
+
+        &:not(:first-child) {
+          padding-top: 0.24rem;
+        }
+
+        .pv-property-value-icon {
+          display: inline-block;
+          margin: 0;
+          vertical-align: middle;
+        }
+
+        .pv-property-value-link {
+          vertical-align: middle;
+        }
+
+        .pv-property-value-text {
+          white-space: pre-wrap;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+
+  &.zoom4x {
+    &:not(.indented) {
+      .pv-property-values-container {
+        padding-left: 0;
+      }
+    }
+
+    .pv-property-key-container {
+      padding-right: 0;
+    }
+
+    .pv-property-key-container,
+    .pv-property-values-container {
+      display: block;
+      width: 100%;
+    }
+
+    .pv-property-key-container .pv-property-key-content {
+      width: 100%;
+    }
+  }
+}
