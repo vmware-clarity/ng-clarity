@@ -356,6 +356,12 @@ export const documentationRoutes: Routes = [
       },
       {
         matcher: documentationRouteMatcher,
+        data: { routePath: 'property-view/:tab?' },
+        loadChildren: () =>
+          import('./demos/property-view/property-view.demo.module').then(m => m.PropertyViewAddonDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
         data: { routePath: 'card-container/:tab?' },
         loadChildren: () =>
           import('./demos/card-container/card-container.demo.module').then(m => m.CardContainerAddonDemoModule),
