@@ -8,6 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ZoomLevelService } from '@clr/addons/a11y';
 import { WorkflowConfigurationService } from '@clr/addons/var';
 import { AppfxWizardModule } from '@clr/addons/wizard';
 import { ClarityModule } from '@clr/angular';
@@ -16,6 +17,7 @@ import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
+import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 import { ClarityDocComponent } from '../clarity-doc';
 import { SampleStepperComponent } from './sample/sample-stepper.component';
 import { SampleWizardComponent } from './sample/sample-wizard.component';
@@ -43,7 +45,7 @@ export class MyModule {}
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
-  providers: [SampleWorkflowService],
+  providers: [SampleWorkflowService, ZoomLevelService],
   imports: [
     CommonModule,
     ClarityModule,
@@ -53,6 +55,7 @@ export class MyModule {}
     DocTabComponent,
     DocTabsComponent,
     StackblitzExampleComponent,
+    ThemedImageComponent,
     SampleWizardComponent,
     SampleStepperComponent,
   ],

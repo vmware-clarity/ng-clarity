@@ -57,6 +57,131 @@
       </div>
     </div>
 
+    <h3 id="data-retrieval" class="clr-mt-32px" cds-text="section">Data Retrieval</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Wizard automates the common data-loading concerns of a multi-step workflow so page components stay focused on
+      rendering and stay agnostic of how their data is retrieved:
+    </p>
+    <ul cds-list class="clr-mt-8px">
+      <li>
+        <strong>Pre-loads</strong> the data for the first page; a spinner is shown and user interaction is blocked until
+        it resolves.
+      </li>
+      <li>
+        <strong>Orchestrates retrieval</strong> between steps — lazily (once the user clicks <em>Next</em>) or eagerly
+        (as soon as an upstream selection changes).
+      </li>
+      <li><strong>Caches</strong> data so moving back and forth without changing a selection doesn't reload it.</li>
+      <li><strong>Reloads</strong> data automatically when the user changes an upstream selection.</li>
+      <li>
+        <strong>Transforms</strong> data before handing it to a page component — sub-setting, localizing, or mapping to
+        a UI model.
+      </li>
+      <li>
+        <strong>Handles errors</strong> — if retrieval fails, a standardised error page replaces the active step, with a
+        <em>Retry</em> action that resumes the workflow on success.
+      </li>
+    </ul>
+
+    <h3 id="ready-to-complete" class="clr-mt-32px" cds-text="section">Ready to Complete Page</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      When at least one step defines <code cds-text="code">step.summary</code>, the wizard automatically appends a
+      "Ready to Complete" page built on <a routerLink="/documentation/property-view">Property View</a>. A section is
+      generated for every step that defines <code cds-text="code">summary</code>, titled with
+      <code cds-text="code">step.navTitle || step.title</code>.
+    </p>
+
+    <h3 id="custom-validation" class="clr-mt-32px" cds-text="section">Custom Wizard Validation</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Long-running finish logic belongs in <code cds-text="code">CloseHandler.onSubmit</code>:
+    </p>
+    <ul cds-list class="clr-mt-8px">
+      <li>
+        Throwing an <code cds-text="code">Error</code> displays it above the wizard pages and keeps the wizard open.
+      </li>
+      <li>Returning an <code cds-text="code">Observable&lt;any&gt;</code> keeps the wizard open until it completes.</li>
+      <li>
+        Throwing <code cds-text="code">preventDisplayingWizardError</code> keeps the wizard open without showing an
+        error — the consumer is responsible for handling that error itself.
+      </li>
+    </ul>
+    <div class="clrweb-Img clr-mt-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/wizard-addon/light-theme/wizard_finish_error.png'"
+        [darkSrc]="'/assets/images/documentation/wizard-addon/dark-theme/wizard_finish_error.png'"
+        [imageAlt]="'Ready to Complete page showing a finish error banner'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h3 id="custom-footer" class="clr-mt-32px" cds-text="section">Custom Footer Component</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Set <code cds-text="code">footer.componentClass</code> to render a component on the left side of the
+      Back/Next/Finish buttons. The component must implement the <code cds-text="code">WizardFooter</code> interface
+      (<code cds-text="code">currentStep</code>, <code cds-text="code">steps</code>,
+      <code cds-text="code">workflowModel</code>), which the wizard re-injects on every step change so the footer can
+      react to the current step.
+    </p>
+    <div class="clrweb-Img clr-mt-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/wizard-addon/light-theme/wizard_custom_footer.png'"
+        [darkSrc]="'/assets/images/documentation/wizard-addon/dark-theme/wizard_custom_footer.png'"
+        [imageAlt]="'Wizard with a custom footer component'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h3 id="accessibility" class="clr-mt-32px" cds-text="section">Accessibility</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Wizard is WCAG 2.1 compliant and supports 200% and 400% browser zoom when the application provides a
+      <code cds-text="code">ZoomLevelService</code>. At 200% zoom the step navigation sidebar collapses behind a burger
+      menu at the top-left of the dialog to free up space for page content. At 400% zoom the wizard expands into
+      full-screen mode.
+    </p>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6 clrweb-Img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/wizard-addon/light-theme/wizard_2x.png'"
+          [darkSrc]="'/assets/images/documentation/wizard-addon/dark-theme/wizard_2x.png'"
+          [imageAlt]="'Wizard at 200% zoom with the navigation sidebar collapsed'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-6 clrweb-Img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/wizard-addon/light-theme/wizard_nav_2x.png'"
+          [darkSrc]="'/assets/images/documentation/wizard-addon/dark-theme/wizard_nav_2x.png'"
+          [imageAlt]="'Wizard navigation opened from the burger menu at 200% zoom'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+    </div>
+    <div class="clrweb-Img clr-mt-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/wizard-addon/light-theme/wizard_4x.png'"
+        [darkSrc]="'/assets/images/documentation/wizard-addon/dark-theme/wizard_4x.png'"
+        [imageAlt]="'Wizard in full-screen mode at 400% zoom'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h3 id="debug-mode" class="clr-mt-32px" cds-text="section">Debug Mode</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Debug mode visualises the live state of the wizard model. Enable it programmatically by setting
+      <code cds-text="code">WorkflowConfigurationService.debug = true</code>, or at runtime via
+      <code cds-text="code">appfx.debug=true</code> in browser local storage. Once enabled, an info icon appears next to
+      the wizard title; clicking it opens a signpost showing the current model properties and their values. Try it with
+      the <em>Debug Mode</em> toggle in the Playground tab.
+    </p>
+    <div class="clrweb-Img clr-mt-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/wizard-addon/light-theme/wizard_debug_mode.png'"
+        [darkSrc]="'/assets/images/documentation/wizard-addon/dark-theme/wizard_debug_mode.png'"
+        [imageAlt]="'Debug mode signpost showing the wizard model properties'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
     <h2 id="import" class="clr-mt-48px" cds-text="title">Module Import</h2>
     <app-code-snippet [code]="moduleImportTs" language="typescript" [copy]="true"></app-code-snippet>
   </app-doc-tab>
@@ -162,7 +287,12 @@
         <tr>
           <td><code>size</code></td>
           <td>string</td>
-          <td>md / lg / xl / full-screen</td>
+          <td>md / lg / xl / full-screen. Default: <code>'lg'</code></td>
+        </tr>
+        <tr>
+          <td><code>loading</code></td>
+          <td>boolean</td>
+          <td>Show the wizard's loading spinner</td>
         </tr>
         <tr>
           <td><code>closeHandler</code></td>
@@ -173,6 +303,42 @@
           <td><code>footer</code></td>
           <td>WizardFooterConfig</td>
           <td>Optional custom footer component class</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="api-wizard-outputs" class="clr-mt-48px" cds-text="title">WizardComponent Outputs</h2>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th>Output</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>openedChange</code></td>
+          <td>EventEmitter&lt;boolean&gt;</td>
+          <td>Emits when the <code>opened</code> input changes</td>
+        </tr>
+        <tr>
+          <td><code>onModelChange</code></td>
+          <td>EventEmitter&lt;ModelChange[]&gt;</td>
+          <td>Emits whenever a workflow model variable changes</td>
+        </tr>
+        <tr>
+          <td><code>onFinish</code></td>
+          <td>EventEmitter&lt;void&gt;</td>
+          <td>Emits when the user clicks <em>Finish</em></td>
+        </tr>
+        <tr>
+          <td><code>onClose</code></td>
+          <td>EventEmitter&lt;Reason&gt;</td>
+          <td>
+            Emits when the wizard closes via the close button, <em>Cancel</em>, or <em>Finish</em>. Use the
+            <code>Reason</code> enum (<code>'finish' | 'cancel'</code>) to distinguish the close origin.
+          </td>
         </tr>
       </tbody>
     </table>
@@ -262,5 +428,44 @@
         </tr>
       </tbody>
     </table>
+
+    <h2 id="api-footer" class="clr-mt-48px" cds-text="title">WizardFooter Interface</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Implemented by the component referenced in <code>footer.componentClass</code>. The wizard re-injects these
+      properties on every step change.
+    </p>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>currentStep</code></td>
+          <td>Step</td>
+          <td>The currently active step</td>
+        </tr>
+        <tr>
+          <td><code>steps</code></td>
+          <td>Step[]</td>
+          <td>All steps configured on the wizard</td>
+        </tr>
+        <tr>
+          <td><code>workflowModel</code></td>
+          <td>WorkflowModel</td>
+          <td>The shared wizard model</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="api-prevent-error" class="clr-mt-48px" cds-text="title">preventDisplayingWizardError</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      A sentinel <code>Error</code> exported by the addon. Throw it (or error the
+      <code>CloseHandler.onSubmit</code> /<code>onCancel</code> Observable with it) to keep the wizard open without the
+      default error banner — the consumer becomes responsible for surfacing that error itself.
+    </p>
   </app-doc-tab>
 </app-doc-tabs>
