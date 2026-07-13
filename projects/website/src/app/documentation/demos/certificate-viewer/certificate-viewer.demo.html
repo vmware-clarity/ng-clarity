@@ -16,6 +16,36 @@
       <strong>Details</strong> tab with the fully parsed certificate tree.
     </p>
 
+    <h3>General tab</h3>
+    <p>The General tab contains a short summary of the leaf certificate:</p>
+    <ul>
+      <li><strong>Issued To</strong> — the subject to which the certificate was issued.</li>
+      <li><strong>Issued By</strong> — the issuer of the certificate.</li>
+      <li><strong>Validity</strong> — the certificate validity period.</li>
+      <li><strong>Fingerprints</strong> — the SHA-1 and SHA-256 fingerprints of the certificate.</li>
+    </ul>
+
+    <h3>Details tab</h3>
+    <p>The Details tab is an explorer view of the provided certificate chain with three sections:</p>
+    <ul>
+      <li>
+        The Certificate Hierarchy tree represents the certificate chain beginning with the root certificate. Selecting a
+        certificate in the hierarchy tree populates the Certificate Fields tree.
+      </li>
+      <li>
+        The Certificate Fields tree contains all of the fields of the selected certificate. The common fields are
+        translated and the rest are presented as PKI OIDs. Selecting a field in this tree displays its value in the
+        Field Value area.
+      </li>
+      <li>
+        The Field Value of the selected field is a monospace font area. Common certificate fields are presented in a
+        human-readable format; otherwise the value is formatted as a hex string.
+      </li>
+    </ul>
+  </app-doc-tab>
+
+  <!-- ═══════════════ DEMO ═══════════════ -->
+  <app-doc-tab tab="code">
     <h3>Import</h3>
     <app-code-snippet
       [code]="'import { AppfxCertificateViewerModule } from \'@clr/addons/certificate-viewer\';'"
@@ -23,31 +53,31 @@
       [copy]="true"
     ></app-code-snippet>
 
-    <h3>Usage</h3>
+    <h3>Peer Dependencies</h3>
+    <app-code-snippet [code]="'npm install asn1js pkijs'" language="bash" [copy]="true"></app-code-snippet>
+
     <p>
       Pass a PEM-encoded certificate chain array where index 0 is the <strong>leaf</strong> certificate and the last
       index is the <strong>root</strong> (TLS 1.2 RFC 5246 §7.4.2 ordering). Parsing is asynchronous using
       <code>asn1js</code> and <code>pkijs</code>.
     </p>
 
-    <h3>Peer Dependencies</h3>
-    <app-code-snippet [code]="'npm install asn1js pkijs'" language="bash" [copy]="true"></app-code-snippet>
-  </app-doc-tab>
-
-  <!-- ═══════════════ DEMO ═══════════════ -->
-  <app-doc-tab tab="code">
     <!-- Mode selector — mirrors the original FILL PARENT / FIXED HEIGHT / MODAL / DETAILS PANE tabs -->
     <div class="cert-mode-bar">
-      @for (m of modes; track m.id) {
-      <button
-        class="btn btn-sm"
-        [class.btn-primary]="activeMode === m.id"
-        [class.btn-outline]="activeMode !== m.id"
-        (click)="setMode(m.id)"
-      >
-        {{ m.label | uppercase }}
-      </button>
-      }
+      <div class="btn-group">
+        @for (m of modes; track m.id) {
+        <div class="radio btn">
+          <input
+            type="radio"
+            name="certificate-viewer-mode"
+            id="cert-mode-{{ m.id }}"
+            [checked]="activeMode === m.id"
+            (change)="setMode(m.id)"
+          />
+          <label for="cert-mode-{{ m.id }}">{{ m.label }}</label>
+        </div>
+        }
+      </div>
     </div>
 
     <!-- ── Fill Parent ─────────────────────────────────────────────────────── -->
