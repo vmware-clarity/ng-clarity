@@ -8,14 +8,10 @@
 .property-view-controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: var(--clr-base-gap-m);
   align-items: center;
 
   clr-checkbox-wrapper {
-    margin-left: 0.25rem;
-  }
-
-  label h6 {
-    margin-top: 10px;
+    margin-left: var(--clr-base-gap-s);
   }
 }

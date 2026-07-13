@@ -144,6 +144,18 @@ export const APP_ROUTES: Routes = [
     data: { section: 'addons', label: 'Property View' },
     loadChildren: () => import('./addons/property-view/property-view.demo.module').then(m => m.PropertyViewDemoModule),
   },
+  {
+    path: 'card-container',
+    data: { section: 'addons', label: 'Card Container' },
+    loadChildren: () =>
+      import('./addons/card-container/card-container.demo.module').then(m => m.CardContainerDemoModule),
+  },
+  {
+    path: 'datagrid-advanced',
+    data: { section: 'addons', label: 'Datagrid Advanced' },
+    loadChildren: () =>
+      import('./addons/datagrid-advanced/datagrid-advanced.demo.module').then(m => m.DatagridAdvancedDemoModule),
+  },
   { path: 'z-index', loadChildren: () => import('./z-index/z-index.demo.module').then(m => m.ZIndexDemoModule) },
   {
     path: 'shadow-root',
