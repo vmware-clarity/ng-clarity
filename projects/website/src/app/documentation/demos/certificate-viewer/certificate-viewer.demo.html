@@ -55,12 +55,6 @@
     <h3>Peer Dependencies</h3>
     <app-code-snippet [code]="'npm install asn1js pkijs'" language="bash" [copy]="true"></app-code-snippet>
 
-    <p>
-      Pass a PEM-encoded certificate chain array where index 0 is the <strong>leaf</strong> certificate and the last
-      index is the <strong>root</strong> (TLS 1.2 RFC 5246 §7.4.2 ordering). Parsing is asynchronous using
-      <code>asn1js</code> and <code>pkijs</code>.
-    </p>
-
     <!-- Mode selector — mirrors the original FILL PARENT / FIXED HEIGHT / MODAL / DETAILS PANE tabs -->
     <div class="cert-mode-bar">
       <div class="btn-group">
