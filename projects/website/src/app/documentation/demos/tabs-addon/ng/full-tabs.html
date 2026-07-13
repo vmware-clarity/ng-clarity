@@ -1,0 +1,42 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div class="tabs-playground-controls">
+  <clr-radio-container clrInline>
+    <label>Layout</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="layout" [value]="TabLayout.horizontal" [(ngModel)]="selectedLayout" />
+      <label>Horizontal</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="layout" [value]="TabLayout.vertical" [(ngModel)]="selectedLayout" />
+      <label>Vertical</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="layout" [value]="TabLayout.secondary" [(ngModel)]="selectedLayout" />
+      <label>Secondary</label>
+    </clr-radio-wrapper>
+  </clr-radio-container>
+
+  <clr-toggle-wrapper>
+    <input type="checkbox" clrToggle [(ngModel)]="disableContent" />
+    <label>Disable tab content</label>
+  </clr-toggle-wrapper>
+
+  <clr-toggle-wrapper>
+    <input type="checkbox" clrToggle [(ngModel)]="showTabLinks" />
+    <label>Show tab links</label>
+  </clr-toggle-wrapper>
+</div>
+
+<appfx-tabs
+  [tabs]="steps"
+  [model]="workflowModel"
+  [tabLayout]="selectedLayout"
+  [disableTabsContent]="disableContent"
+  [showTabLinks]="showTabLinks"
+>
+</appfx-tabs>

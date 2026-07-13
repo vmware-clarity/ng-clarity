@@ -20,8 +20,18 @@ import { ClarityDocComponent } from '../clarity-doc';
 import { SampleWorkflowModel } from '../wizard-addon/sample/sample-workflow.model';
 import { SampleWorkflowService } from '../wizard-addon/sample/sample-workflow.service';
 
-const BasicTabsHtml = require('!raw-loader!./ng/basic-tabs.html').default;
-const BasicTabsTs = require('!raw-loader!./ng/basic-tabs.ts').default;
+const FullTabsHtml = require('!raw-loader!./ng/full-tabs.html').default;
+const FullTabsTs = require('!raw-loader!./ng/full-tabs.ts').default;
+
+const ModuleImportTs = `
+import { AppfxTabsModule } from '@clr/addons/tabs';
+import { AppfxWorkflowCoreModule } from '@clr/addons/var';
+
+@NgModule({
+  imports: [AppfxTabsModule, AppfxWorkflowCoreModule],
+})
+export class MyModule {}
+`;
 
 @Component({
   selector: 'app-tabs-addon-demo',
@@ -42,8 +52,9 @@ const BasicTabsTs = require('!raw-loader!./ng/basic-tabs.ts').default;
 })
 export class TabsAddonDemoComponent extends ClarityDocComponent implements OnInit {
   TabLayout = TabLayout;
-  readonly basicTabsHtml = BasicTabsHtml;
-  readonly basicTabsTs = BasicTabsTs;
+  readonly moduleImportTs = ModuleImportTs;
+  readonly fullTabsHtml = FullTabsHtml;
+  readonly fullTabsTs = FullTabsTs;
 
   steps: Step[] = [];
   tabsModel: SampleWorkflowModel;
