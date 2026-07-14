@@ -697,6 +697,16 @@ export class MockStandaloneDatagridComponent extends MockAppfxDatagridComponent 
     static ɵfac: i0.ɵɵFactoryDeclaration<MockStandaloneDatagridComponent, never>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "PropertyViewMessageModel" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public (undocumented)
+export function verifyPropertyViewMessage(textValue: string, icon: string, messageModel: PropertyViewMessageModel): void;
+
+// Warning: (ae-forgotten-export) The symbol "PropertyViewPropertyModel" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public (undocumented)
+export function verifyPropertyViewProperty(key: string, value: string[], propertyModel: PropertyViewPropertyModel): void;
+
 // @public (undocumented)
 export class MockStepperComponent {
     // (undocumented)
