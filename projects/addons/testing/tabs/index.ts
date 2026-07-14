@@ -5,8 +5,4 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './tabs';
-export * from './var';
+export { TabsHelper } from './tabs-helper';
