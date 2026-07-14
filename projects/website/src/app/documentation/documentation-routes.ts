@@ -362,6 +362,12 @@ export const documentationRoutes: Routes = [
       },
       {
         matcher: documentationRouteMatcher,
+        data: { routePath: 'card-container/:tab?' },
+        loadChildren: () =>
+          import('./demos/card-container/card-container.demo.module').then(m => m.CardContainerAddonDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
         data: { routePath: 'stepper-addon/:tab?' },
         loadChildren: () =>
           import('./demos/stepper-addon/stepper-addon.demo.module').then(m => m.StepperAddonDemoModule),
