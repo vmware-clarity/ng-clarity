@@ -71,7 +71,7 @@ export class TabsHelper {
     const tabLink = this.component.tabLinkDirectives[linkIndex];
     try {
       tabLink.activate();
-    } catch (e) {
+    } catch {
       throw Error('No tab link found at index ' + linkIndex);
     }
   }

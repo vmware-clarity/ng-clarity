@@ -226,56 +226,56 @@ describe('Appfx Tabs', () => {
       this.component.onStepActiveChange(this.steps[1], true);
       this.fixture.detectChanges();
 
-      expect((<MockStepModel>this.steps[1].model!).isActivated).toEqual(true);
-      expect((<MockStepModel>this.steps[2].model!).isActivated).toEqual(false);
+      expect(((this.steps[1].model as MockStepModel)).isActivated).toEqual(true);
+      expect(((this.steps[2].model as MockStepModel)).isActivated).toEqual(false);
 
       this.component.onStepActiveChange(this.steps[2], true);
       this.fixture.detectChanges();
 
-      expect((<MockStepModel>this.steps[2].model!).isActivated).toEqual(true);
+      expect(((this.steps[2].model as MockStepModel)).isActivated).toEqual(true);
     });
 
     it('validates the current page when navigating to another page', function (this: ThisTest) {
-      expect((<MockStepModel>this.steps[0].model!).isValidated).toEqual(false);
+      expect(((this.steps[0].model as MockStepModel)).isValidated).toEqual(false);
 
       this.component.onStepActiveChange(this.steps[1], true);
 
       this.fixture.detectChanges();
 
-      expect((<MockStepModel>this.steps[0].model!).isValidated).toEqual(true);
-      expect((<MockStepModel>this.steps[1].model!).isValidated).toEqual(false);
+      expect(((this.steps[0].model as MockStepModel)).isValidated).toEqual(true);
+      expect(((this.steps[1].model as MockStepModel)).isValidated).toEqual(false);
 
       this.component.onStepActiveChange(this.steps[0], true);
       this.fixture.detectChanges();
 
-      expect((<MockStepModel>this.steps[1].model!).isValidated).toEqual(true);
+      expect(((this.steps[1].model as MockStepModel)).isValidated).toEqual(true);
     });
 
     it('does not validate the current page when navigating to another page when disableTabsContent = true', function (this: ThisTest) {
       this.component.disableTabsContent = true;
       this.fixture.detectChanges();
 
-      expect((<MockStepModel>this.steps[0].model!).isValidated).toEqual(false);
-      expect((<MockStepModel>this.steps[1].model!).isValidated).toEqual(false);
+      expect(((this.steps[0].model as MockStepModel)).isValidated).toEqual(false);
+      expect(((this.steps[1].model as MockStepModel)).isValidated).toEqual(false);
       this.component.onStepActiveChange(this.steps[1], true);
 
       this.fixture.detectChanges();
 
-      expect((<MockStepModel>this.steps[0].model!).isValidated).toEqual(false);
-      expect((<MockStepModel>this.steps[1].model!).isValidated).toEqual(false);
+      expect(((this.steps[0].model as MockStepModel)).isValidated).toEqual(false);
+      expect(((this.steps[1].model as MockStepModel)).isValidated).toEqual(false);
     });
 
     it('return true when validate$ method is called and all steps are valid', function (this: ThisTest) {
-      expect((<MockStepModel>this.steps[0].model!).isValidated).toEqual(false);
-      expect((<MockStepModel>this.steps[1].model!).isValidated).toEqual(false);
+      expect(((this.steps[0].model as MockStepModel)).isValidated).toEqual(false);
+      expect(((this.steps[1].model as MockStepModel)).isValidated).toEqual(false);
 
       this.component.onStepActiveChange(this.steps[1], true);
       this.fixture.detectChanges();
 
-      expect((<MockStepModel>this.steps[0].model!).isValidated).toEqual(true);
+      expect(((this.steps[0].model as MockStepModel)).isValidated).toEqual(true);
       expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[0]);
 
-      expect((<MockStepModel>this.steps[1].model!).isValidated).toEqual(false);
+      expect(((this.steps[1].model as MockStepModel)).isValidated).toEqual(false);
 
       let isValid = false;
       this.component
@@ -285,7 +285,7 @@ describe('Appfx Tabs', () => {
           isValid = valid;
         });
 
-      expect((<MockStepModel>this.steps[1].model!).isValidated).toEqual(true);
+      expect(((this.steps[1].model as MockStepModel)).isValidated).toEqual(true);
       expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[1]);
       expect(isValid).withContext('All steps should be valid').toBeTruthy();
     });
@@ -301,11 +301,11 @@ describe('Appfx Tabs', () => {
 
       expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[0]);
 
-      expect(this.steps.map(step => (<MockStepModel>step.model!).isValidated))
+      expect(this.steps.map(step => ((step.model as MockStepModel)).isValidated))
         .withContext('First page should be validated')
         .toEqual([true, false, false]);
 
-      expect((<MockStepModel>this.steps[2].model!).isActivated).toEqual(true);
+      expect(((this.steps[2].model as MockStepModel)).isActivated).toEqual(true);
 
       // Go to the second valid page
       this.component.onStepActiveChange(this.steps[1], true);
@@ -313,7 +313,7 @@ describe('Appfx Tabs', () => {
 
       expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[2]);
 
-      expect((<MockStepModel>this.steps[2].model!).isValidated).toEqual(true);
+      expect(((this.steps[2].model as MockStepModel)).isValidated).toEqual(true);
 
       let isValid = false;
       this.component
@@ -340,7 +340,7 @@ describe('Appfx Tabs', () => {
       this.component.onStepActiveChange(this.steps[1], true);
       this.fixture.detectChanges();
 
-      expect((<MockStepModel>this.steps[0].model!).isValidated).toEqual(false);
+      expect(((this.steps[0].model as MockStepModel)).isValidated).toEqual(false);
       expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[0]);
 
       let isValid = false;
@@ -351,7 +351,7 @@ describe('Appfx Tabs', () => {
           isValid = valid;
         });
 
-      expect((<MockStepModel>this.steps[1].model!).isValidated).toEqual(false);
+      expect(((this.steps[1].model as MockStepModel)).isValidated).toEqual(false);
       expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[1]);
       expect(isValid).withContext('The second page should be valid').toBeTruthy();
     });
@@ -367,11 +367,11 @@ describe('Appfx Tabs', () => {
 
       expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[0]);
 
-      expect(this.steps.map(step => (<MockStepModel>step.model!).isValidated))
+      expect(this.steps.map(step => ((step.model as MockStepModel)).isValidated))
         .withContext('Only first page should be validated')
         .toEqual([true, false, false]);
 
-      expect((<MockStepModel>this.steps[2].model!).isActivated).withContext('Third page should be activated').toEqual(true);
+      expect(((this.steps[2].model as MockStepModel)).isActivated).withContext('Third page should be activated').toEqual(true);
 
       // Go to the second valid page
       this.component.onStepActiveChange(this.steps[1], true);
@@ -379,7 +379,7 @@ describe('Appfx Tabs', () => {
 
       expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[2]);
 
-      expect((<MockStepModel>this.steps[2].model!).isValidated).withContext('Third page should be validated').toEqual(true);
+      expect(((this.steps[2].model as MockStepModel)).isValidated).withContext('Third page should be validated').toEqual(true);
 
       let isValid = false;
       this.component
@@ -404,7 +404,7 @@ describe('Appfx Tabs', () => {
 
       expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[0]);
 
-      expect(this.steps.map(step => (<MockStepModel>step.model!).isValidated))
+      expect(this.steps.map(step => ((step.model as MockStepModel)).isValidated))
         .withContext('Only first page should be validated')
         .toEqual([true, false, false]);
 
@@ -421,7 +421,7 @@ describe('Appfx Tabs', () => {
     }));
 
     function verifyAllStepPagesNotValidated(steps: Step[]) {
-      expect(steps.map(step => (<MockStepModel>step.model!).isValidated))
+      expect(steps.map(step => ((step.model as MockStepModel)).isValidated))
         .withContext('All pages should not be validated')
         .toEqual([false, false, false]);
     }
@@ -466,8 +466,8 @@ describe('Appfx Tabs', () => {
     });
 
     it('the second page is activated if the first one is skipped', function (this: ThisTest) {
-      expect((<MockStepModel>this.steps[0].model!).isActivated).toEqual(false);
-      expect((<MockStepModel>this.steps[1].model!).isActivated).toEqual(true);
+      expect(((this.steps[0].model as MockStepModel)).isActivated).toEqual(false);
+      expect(((this.steps[1].model as MockStepModel)).isActivated).toEqual(true);
     });
 
     it('renders page tabs links correctly', waitForAsync(function (this: ThisTest) {
