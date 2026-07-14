@@ -23,9 +23,6 @@ const ButtonMenuHtml = require('!raw-loader!./ng/button-menu.html').default;
 const ButtonMenuTs = require('!raw-loader!./ng/button-menu.ts').default;
 const DatagridMenuHtml = require('!raw-loader!./ng/datagrid-menu.html').default;
 const DatagridMenuTs = require('!raw-loader!./ng/datagrid-menu.ts').default;
-const IconsMenuHtml = require('!raw-loader!./ng/icons-menu.html').default;
-const IconsMenuScss = require('!raw-loader!./ng/icons-menu.scss').default;
-const IconsMenuTs = require('!raw-loader!./ng/icons-menu.ts').default;
 const TreeMenuHtml = require('!raw-loader!./ng/tree-menu.html').default;
 const TreeMenuTs = require('!raw-loader!./ng/tree-menu.ts').default;
 
@@ -71,7 +68,7 @@ export class MenuDemoComponent extends ClarityDocComponent {
     tree: { name: 'menu-tree', html: TreeMenuHtml, ts: TreeMenuTs },
     datagrid: { name: 'menu-datagrid', html: DatagridMenuHtml, ts: DatagridMenuTs },
     button: { name: 'menu-button', html: ButtonMenuHtml, ts: ButtonMenuTs },
-    icons: { name: 'menu-icons', html: IconsMenuHtml, ts: IconsMenuTs, styles: IconsMenuScss },
+    icons: { name: 'menu-icons', html: BasicMenuHtml, ts: BasicMenuTs },
   };
 
   readonly modes: { id: MenuDemoMode; label: string }[] = [

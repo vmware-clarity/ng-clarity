@@ -7,7 +7,13 @@
 <div
   class="menu-area"
   (contextmenu)="onContextMenu($event)"
-  style="border: 1px dashed #ccc; padding: 2rem; min-height: 120px; text-align: center; cursor: context-menu"
+  style="
+    border: var(--cds-alias-object-border-width-100) dashed var(--cds-alias-object-border-color);
+    padding: var(--clr-base-vertical-offset-2xl) var(--clr-base-horizontal-offset-2xl);
+    min-height: 120px;
+    text-align: center;
+    cursor: context-menu;
+  "
 >
   Right-click here
 </div>

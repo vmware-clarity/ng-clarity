@@ -21,7 +21,7 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
       class="menu-story-area"
       (contextmenu)="onContextMenu($event)"
       style="
-        border: var(--cds-alias-object-border-width-200) dashed --cds-alias-object-border-color;
+        border: var(--cds-alias-object-border-width-200) dashed var(--cds-alias-object-border-color);
         padding: var(--clr-base-vertical-offset-2xl) var(--clr-base-horizontal-offset-2xl);
         min-height: 150px;
         text-align: center;
@@ -30,7 +30,9 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
       "
     >
       <p>Right-click anywhere in this area</p>
-      <p *ngIf="lastAction" style="font-size: 0.8rem; color: #666">Last: {{ lastAction }}</p>
+      <p *ngIf="lastAction" style="font-size: 0.8rem; color: var(--cds-alias-typography-secondary-color)">
+        Last: {{ lastAction }}
+      </p>
     </div>
 
     <appfx-menu #demoMenu>

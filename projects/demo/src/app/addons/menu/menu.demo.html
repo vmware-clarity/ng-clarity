@@ -180,11 +180,7 @@
 
 <appfx-menu #iconsMenu>
   <appfx-menu-header [text]="'Actions demo menu'"></appfx-menu-header>
-  <appfx-menu-action
-    [text]="'Action 1 with icon'"
-    iconClass="books-icon"
-    (handle)="handleAction('Action 1 with icon')"
-  ></appfx-menu-action>
+  <appfx-menu-action [text]="'Action 1'" (handle)="handleAction('Action 1')"></appfx-menu-action>
   <appfx-menu-separator></appfx-menu-separator>
   <appfx-menu-action
     [text]="'Action 2'"
