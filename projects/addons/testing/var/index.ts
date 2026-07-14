@@ -11,4 +11,4 @@ export {
   MockStepModel,
   MockWorkflowConfigurationService,
   MockWorkflowTestModule,
-} from './workflows.mock';
+} from './workflow.mock';

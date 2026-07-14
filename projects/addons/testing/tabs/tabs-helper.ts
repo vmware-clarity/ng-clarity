@@ -27,28 +27,28 @@ export class TabsHelper {
   }
 
   /**
-   * discover clarity tab links of ( zero or more ) items within the tabs
+   * Discover clarity tab links of (zero or more) items within the tabs.
    */
   getLinkList(): Array<DebugElement> {
     return this.tabs.queryAll(By.css(`[role="tablist"] > [role="presentation"] > [clrTabLink]`));
   }
 
   /**
-   * a DOM pointer to a tab link, as afforded by supplied index into collection
+   * A DOM pointer to a tab link, as afforded by supplied index into collection.
    */
   findLink(linkIndex: number): DebugElement | undefined {
     return this.getLinkList()[linkIndex];
   }
 
   /**
-   * retrieves active Clarity Tab instance
+   * Retrieves the active Clarity Tab instance.
    */
   getActiveTab(): ClrTab {
     return this.component.tabsService.activeTab;
   }
 
   /**
-   * determines active shown tab using relative sequences that map directly to DOM source order
+   * Determines the active shown tab using relative sequences that map directly to DOM source order.
    */
   getActiveTabIndex(): number {
     return this.component.tabLinkDirectives.findIndex(
@@ -57,7 +57,7 @@ export class TabsHelper {
   }
 
   /**
-   * extract located projected content as provided for the active tab
+   * Extract located projected content as provided for the active tab.
    */
   getActiveTabContentElement(): HTMLElement | undefined {
     const evr = this.getActiveTab().tabContent['viewRef'] as EmbeddedViewRef<ClrTabContent>;
@@ -71,14 +71,13 @@ export class TabsHelper {
     const tabLink = this.component.tabLinkDirectives[linkIndex];
     try {
       tabLink.activate();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (e) {
+    } catch {
       throw Error('No tab link found at index ' + linkIndex);
     }
   }
 
   /**
-   * searched for tab link text, as applied to a tab button
+   * Searches for tab link text, as applied to a tab button.
    */
   findLinkText(linkIndex: number): string | undefined {
     const tabLinkElement = this.findLink(linkIndex);
@@ -86,7 +85,7 @@ export class TabsHelper {
   }
 
   /**
-   * debug element for the icon found inside the tab link
+   * Debug element for the icon found inside the tab link.
    */
   findLinkIcon(linkIndex: number): DebugElement | undefined {
     const tabLinkElement = this.findLink(linkIndex);
@@ -94,7 +93,7 @@ export class TabsHelper {
   }
 
   /**
-   * Optionally find the custom component or desired HTML element within the panel
+   * Optionally find the custom component or desired HTML element within the active panel.
    */
   findContentView(childTabContentQuery?: Predicate<DebugElement>): DebugElement | undefined {
     const panel = this.tabs.query(By.css(`section.active`));

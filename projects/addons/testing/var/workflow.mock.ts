@@ -14,7 +14,7 @@ import { tap } from 'rxjs/operators';
 @Component({
   selector: 'appfx-mock-page-page',
   standalone: false,
-  template: '<div>{{model.mockPropertyValue}}</div>',
+  template: '<div>{{ model.mockPropertyValue }}</div>',
 })
 export class MockStepComponent implements OnStepValidate, OnStepActivate {
   model: MockStepModel;
@@ -38,7 +38,7 @@ export class MockStepComponent implements OnStepValidate, OnStepActivate {
   template: '<div></div>',
 })
 export class InvalidMockComponent extends MockStepComponent {
-  validate(): Observable<boolean> {
+  override validate(): Observable<boolean> {
     return of(false).pipe(
       tap(() => {
         this.model.isValidated = true;
@@ -53,15 +53,11 @@ export class MockStepModel implements StepModel {
   readyToComplete: boolean;
 
   validationState: StepValidationState = new StepValidationState();
+
   constructor(public mockPropertyValue: string) {}
 }
 
-@NgModule({
-  imports: [NoopAnimationsModule],
-  declarations: [InvalidMockComponent, MockStepComponent],
-})
-export class MockWorkflowTestModule {}
-
+/** Simple mock of {@link WorkflowConfigurationService} used by workflow-dependent tests. */
 export class MockWorkflowConfigurationService {
   private debugValue = false;
 
@@ -73,3 +69,9 @@ export class MockWorkflowConfigurationService {
     this.debugValue = newValue;
   }
 }
+
+@NgModule({
+  imports: [NoopAnimationsModule],
+  declarations: [InvalidMockComponent, MockStepComponent],
+})
+export class MockWorkflowTestModule {}

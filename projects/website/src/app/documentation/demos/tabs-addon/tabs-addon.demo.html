@@ -10,40 +10,81 @@
 <app-doc-tabs>
   <!-- ═══════════════ OVERVIEW ═══════════════ -->
   <app-doc-tab tab="overview">
-    <p>
-      <strong>AppFx Tabs</strong> renders a composition of step components as a tabbed interface using Clarity's
-      <code>clr-tabs</code> under the hood. The workflow is managed by the same <code>WorkflowModelManager</code> used
-      by the Wizard and Stepper, so step components and models can be shared across all three patterns without
-      modification.
+    <p class="component-summary">
+      <code cds-text="code">&#64;clr/addons/tabs</code> renders a composition of step components as a tabbed interface
+      using Clarity's <code cds-text="code">clr-tabs</code>. The workflow is orchestrated by the same
+      <code cds-text="code">WorkflowModelManager</code> used by the Wizard and Stepper, so step components and step
+      models can be reused across all three patterns without modification.
     </p>
 
-    <h3>Features</h3>
-    <ul>
-      <li><strong>Horizontal, Vertical, or Secondary layout</strong> — controlled via <code>[tabLayout]</code></li>
+    <h2 id="structure" class="clr-mt-48px" cds-text="title">Tabs Structure</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      AppFx Tabs is built on top of Clarity Tabs and shares the same structural building blocks as Wizard and Stepper:
+    </p>
+    <ol cds-list class="clr-mt-8px">
       <li>
-        <strong>Shared step API</strong> — identical <code>Step[]</code> / <code>WorkflowModel</code> interface as
-        Wizard &amp; Stepper
-      </li>
-      <li><strong>Collapsible tab links</strong> — auto-collapses at high zoom levels (accessibility)</li>
-      <li>
-        <strong>Per-tab validation</strong> — error badges on invalid tabs, auto-focus first invalid tab on
-        <code>validate$()</code>
+        <strong>Tabs component</strong> — hosts <code cds-text="code">&lt;appfx-tabs&gt;</code>, configures
+        <code cds-text="code">tabs</code> and <code cds-text="code">model</code>, and exposes
+        <code cds-text="code">validate$()</code> for the caller to invoke on save.
       </li>
       <li>
-        <strong>Programmatic validation</strong> — <code>validate$()</code> and
-        <code>validateActiveTab$()</code> observables
+        <strong>Tabs model</strong> — a POJO with <code cds-text="code">Var&lt;T&gt;</code> properties shared across
+        steps, identical in shape to a Wizard or Stepper model.
       </li>
       <li>
-        <strong>Disable all content</strong> — <code>[disableTabsContent]</code> blocks interaction without hiding tabs
+        <strong>Step component</strong> (per tab) — implements <code cds-text="code">StepModelHolder</code> to receive
+        the typed step model, same as a Wizard page.
       </li>
-    </ul>
+      <li>
+        <strong>Step model</strong> (per tab) — typed POJO with input/output properties, reusable between Tabs, Wizard,
+        and Stepper.
+      </li>
+    </ol>
 
-    <h3>Module import</h3>
-    <app-code-snippet
-      [code]="'import { AppfxTabsModule } from \'@clr/addons/tabs\';'"
-      language="typescript"
-      [copy]="true"
-    ></app-code-snippet>
+    <h2 id="features" class="clr-mt-48px" cds-text="title">Features</h2>
+
+    <h3 class="clr-mt-24px" cds-text="section">Horizontal, Vertical, or Secondary tabs</h3>
+    <p cds-text="body" class="clr-mt-8px">
+      AppFx Tabs offers the flexibility to display tabs horizontally (the default), in a vertical orientation, or as a
+      secondary tab in a horizontal layout. To customize the layout, set the
+      <code cds-text="code">tabLayout</code> property.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="section">Disable all tabs</h3>
+    <p cds-text="body" class="clr-mt-8px">
+      Tab <strong>content</strong> can be disabled with the <code cds-text="code">disableTabsContent</code> property.
+      The user will still be able to click around the tabs but will not be able to interact with the step components.
+      When tab content is disabled, steps will not get validated.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="section">Reusable in AppFx Dialog</h3>
+    <p cds-text="body" class="clr-mt-8px">
+      AppFx Tabs is fully compatible with AppFx Dialog, with both components sharing the same underlying workflow
+      functionality. The key distinction lies in how they are rendered, with AppFx Dialog appearing as a modal popup.
+      This compatibility allows one to effortlessly use AppFx Tabs within AppFx Dialog, reducing code duplication and
+      enhancing maintainability.
+    </p>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-6">
+        <ul cds-list>
+          <li>Collapsible tab links — auto-collapses at high zoom levels (accessibility)</li>
+          <li>Per-tab validation with error badges on invalid tabs</li>
+        </ul>
+      </div>
+      <div class="clr-col-6">
+        <ul cds-list>
+          <li>
+            Programmatic validation via <code cds-text="code">validate$()</code> and
+            <code cds-text="code">validateActiveTab$()</code>
+          </li>
+          <li>Auto-focuses the first invalid tab when <code cds-text="code">validate$()</code> fails</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 id="import" class="clr-mt-48px" cds-text="title">Module Import</h2>
+    <app-code-snippet [code]="moduleImportTs" language="typescript" [copy]="true"></app-code-snippet>
   </app-doc-tab>
 
   <!-- ═══════════════ CODE ═══════════════ -->
@@ -89,11 +130,16 @@
       </appfx-tabs>
     </div>
 
-    <!-- Stackblitz example -->
+    <h2 id="full-tabs" class="clr-mt-48px" cds-text="title">Full Tabs demo (code example)</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      A self-contained Stackblitz example with the same layout, disable-content, and show-tab-links controls as the
+      playground above, wired to their own <code cds-text="code">appfx-tabs</code> instance.
+    </p>
+
     <app-stackblitz-example
-      name="basic-tabs"
-      [componentTemplate]="basicTabsHtml"
-      [componentClass]="basicTabsTs"
+      name="full-tabs"
+      [componentTemplate]="fullTabsHtml"
+      [componentClass]="fullTabsTs"
     ></app-stackblitz-example>
   </app-doc-tab>
 
@@ -187,6 +233,63 @@
           <td><code>EventEmitter&lt;boolean&gt;</code></td>
           <td>—</td>
           <td>Emits when the collapsible tab links panel opens or closes.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Step Interface</h3>
+    <p>The <code>Step</code> interface describes the content of each tab.</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Required?</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>title</code></td>
+          <td><code>string</code></td>
+          <td>Yes</td>
+          <td>Tab title.</td>
+        </tr>
+        <tr>
+          <td><code>componentClass</code></td>
+          <td><code>Type&lt;any&gt;</code></td>
+          <td>Yes</td>
+          <td>Step component class rendered inside the tab.</td>
+        </tr>
+        <tr>
+          <td><code>model</code></td>
+          <td><code>StepModel | StepModelFactory</code></td>
+          <td>No</td>
+          <td>
+            Data model of the step, containing input and output properties. Use a
+            <code>StepModelFactory</code> if <code>recreateComponent</code> is set.
+          </td>
+        </tr>
+        <tr>
+          <td><code>instantiateLazy</code></td>
+          <td><code>boolean</code></td>
+          <td>No</td>
+          <td>
+            If <code>true</code>, the step component is instantiated upon first activation. If <code>false</code>, it's
+            instantiated immediately when the tabs component is created. Default: <code>false</code>.
+          </td>
+        </tr>
+        <tr>
+          <td><code>mappings</code></td>
+          <td><code>Mappings</code></td>
+          <td>No</td>
+          <td>Property name mappings between the step model and the tabs model, if names differ.</td>
+        </tr>
+        <tr>
+          <td><code>recreateComponent</code></td>
+          <td><code>(stepModelChanges?: ModelChanges) =&gt; boolean</code></td>
+          <td>No</td>
+          <td>Recreate the step component whenever this function returns <code>true</code>.</td>
         </tr>
       </tbody>
     </table>
