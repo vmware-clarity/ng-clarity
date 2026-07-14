@@ -41,12 +41,15 @@ describe('ThemeBuilderComponent', () => {
     this.fixture.destroy();
   });
 
-  it('defaults presets to the built-in PRESETS list and selects the first one', fakeAsync(function (this: ThisTest) {
+  it('defaults presets to the Clarity Default preset plus the built-in PRESETS list, selecting the first one', fakeAsync(function (
+    this: ThisTest
+  ) {
     this.fixture.detectChanges(false);
     tick(buildStructureMs);
 
-    expect(this.component.presets).toBe(PRESETS);
-    expect(this.component.activePreset).toBe(PRESETS[0]);
+    expect(this.component.presets[0]).toBe(CLARITY_DEFAULT_PRESET);
+    PRESETS.forEach((preset, i) => expect(this.component.presets[i + 1]).toBe(preset));
+    expect(this.component.activePreset).toBe(CLARITY_DEFAULT_PRESET);
   }));
 
   it('always prepends the Clarity Default preset to a custom [presets] input and selects it', fakeAsync(function (
