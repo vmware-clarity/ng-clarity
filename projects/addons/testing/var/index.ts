@@ -5,9 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './dialog';
-export * from './tabs';
-export * from './var';
+export {
+  InvalidMockComponent,
+  MockStepComponent,
+  MockStepModel,
+  MockWorkflowConfigurationService,
+  MockWorkflowTestModule,
+} from './workflows.mock';
