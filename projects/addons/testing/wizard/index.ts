@@ -5,8 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './property-view';
-export * from './wizard';
+export { MockAppfxWizardComponent, MockWizardStandaloneComponent } from './wizard.component.mock';
+export { MockWorkflowConfigurationService } from './workflow-configuration.service.mock';
+export { WizardHelper } from './wizard-helper';

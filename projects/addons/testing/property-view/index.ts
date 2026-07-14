@@ -5,8 +5,4 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './property-view';
-export * from './wizard';
+export { MockPropertyViewComponent, MockPropertyViewStandaloneComponent } from './property-view.component.mock';

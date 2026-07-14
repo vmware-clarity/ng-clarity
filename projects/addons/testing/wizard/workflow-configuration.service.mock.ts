@@ -5,8 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './property-view';
-export * from './wizard';
+export class MockWorkflowConfigurationService {
+  private debugValue = false;
+
+  get debug(): boolean {
+    return this.debugValue;
+  }
+
+  set debug(newValue: boolean) {
+    this.debugValue = newValue;
+  }
+}
