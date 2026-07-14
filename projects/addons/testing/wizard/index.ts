@@ -6,5 +6,4 @@
  */
 
 export { MockAppfxWizardComponent, MockWizardStandaloneComponent } from './wizard.component.mock';
-export { MockWorkflowConfigurationService } from './workflow-configuration.service.mock';
 export { WizardHelper } from './wizard-helper';
