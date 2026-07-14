@@ -10,7 +10,9 @@ result live, and exporting a CSS override file consumers can drop into their app
 
 - `[presets]` — the list of named color presets shown in the preset selector. Defaults to
   Clarity's built-in preset list (`PRESETS`), exported from this entry point so consumers can
-  extend it (e.g. `[...PRESETS, myPreset]`) instead of replacing it outright.
+  extend it (e.g. `[...PRESETS, myPreset]`) or replacing it outright. Whatever list is
+  provided, the Clarity Default preset is always prepended and selected initially, so it remains
+  always available.
 - `(generatedCSS)` — emits the generated CSS override text (a `string`) every time a color,
   preset, reset, or the warning-text-override toggle changes.
 - `[customContent]` — by default (`false`) the component renders a built-in preview covering most

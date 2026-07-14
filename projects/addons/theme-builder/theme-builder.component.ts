@@ -22,7 +22,14 @@ import {
 
 import { Color } from './utils/color';
 import { generateCSS } from './utils/css-generator';
-import { BACKGROUND_TOKENS, DEFAULT_OVERRIDES, PRESETS, SAMPLE_ROWS, TOKEN_KEYS } from './utils/presets';
+import {
+  BACKGROUND_TOKENS,
+  CLARITY_DEFAULT_PRESET,
+  DEFAULT_OVERRIDES,
+  PRESETS,
+  SAMPLE_ROWS,
+  TOKEN_KEYS,
+} from './utils/presets';
 import { CdsThemeStructure, ContrastResult, DataRow, HslColor, ThemeColor, ThemePreset } from './utils/types';
 import { contrastRatio, wcagScore } from './utils/wcag';
 
@@ -33,9 +40,6 @@ import { contrastRatio, wcagScore } from './utils/wcag';
   imports: [ClarityModule, CommonModule, FormsModule],
 })
 export class ThemeBuilderComponent implements OnInit, AfterViewInit {
-  /** Presets available in the preset selector. Defaults to Clarity's built-in preset list. */
-  @Input() presets: ThemePreset[] = PRESETS;
-
   /** Set to true when projecting custom preview content; suppresses the built-in preview. */
   @Input() customContent = false;
 
@@ -82,8 +86,24 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
 
   readonly timelineStates = ClrTimelineStepState;
 
+  private _presets: ThemePreset[] = [CLARITY_DEFAULT_PRESET, ...PRESETS];
+
   constructor() {
     ClarityIcons.addIcons(sunIcon, moonIcon, undoIcon, homeIcon, cogIcon, userIcon);
+  }
+
+  /**
+   * Presets available in the preset selector. Defaults to Clarity's built-in preset list.
+   * The Clarity Default preset is always prepended, so it's guaranteed to remain available
+   * as a fallback even when a custom list is provided.
+   */
+  @Input()
+  get presets(): ThemePreset[] {
+    return this._presets;
+  }
+
+  set presets(value: ThemePreset[]) {
+    this._presets = [CLARITY_DEFAULT_PRESET, ...(value ?? [])];
   }
 
   get isDarkTheme(): boolean {

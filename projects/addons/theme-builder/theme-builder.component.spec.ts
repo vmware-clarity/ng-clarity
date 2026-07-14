@@ -11,7 +11,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ThemeBuilderComponent } from './theme-builder.component';
 import { Color } from './utils/color';
-import { PRESETS } from './utils/presets';
+import { CLARITY_DEFAULT_PRESET, PRESETS } from './utils/presets';
 import { ThemePreset } from './utils/types';
 
 const buildStructureMs = 200;
@@ -49,12 +49,17 @@ describe('ThemeBuilderComponent', () => {
     expect(this.component.activePreset).toBe(PRESETS[0]);
   }));
 
-  it('selects the first entry of a custom [presets] input', fakeAsync(function (this: ThisTest) {
+  it('always prepends the Clarity Default preset to a custom [presets] input and selects it', fakeAsync(function (
+    this: ThisTest
+  ) {
     this.component.presets = testPresets;
     this.fixture.detectChanges(false);
     tick(buildStructureMs);
 
-    expect(this.component.activePreset).toBe(testPresets[0]);
+    expect(this.component.presets[0]).toBe(CLARITY_DEFAULT_PRESET);
+    expect(this.component.presets[1]).toBe(testPresets[0]);
+    expect(this.component.presets[2]).toBe(testPresets[1]);
+    expect(this.component.activePreset).toBe(CLARITY_DEFAULT_PRESET);
   }));
 
   it('renders the built-in preview by default', fakeAsync(function (this: ThisTest) {

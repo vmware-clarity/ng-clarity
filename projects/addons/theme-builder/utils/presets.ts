@@ -137,12 +137,14 @@ export const TOKEN_KEYS = {
   ],
 };
 
+/** The Clarity theme. Acts as the identity preset that resets every color back to its shipped value. */
+export const CLARITY_DEFAULT_PRESET: ThemePreset = {
+  name: 'Clarity Default',
+  light: null,
+  dark: null,
+};
+
 export const PRESETS: ThemePreset[] = [
-  {
-    name: 'Clarity Default',
-    light: null,
-    dark: null,
-  },
   {
     name: 'Evergreen',
     light: { primary: new Color('--cds-alias-primary', 'hsl(160deg 69% 36%)') }, // jade-600
