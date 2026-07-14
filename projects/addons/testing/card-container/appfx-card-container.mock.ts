@@ -6,8 +6,7 @@
  */
 
 import { Component, ElementRef, EmbeddedViewRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { cardDefaults } from '@clr/addons/card-container/appfx-card-container-constants';
-import { AppfxCardInternal } from '@clr/addons/card-container/appfx-card-container.interface';
+import { AppfxCard } from '@clr/addons/card-container';
 
 // mock for container service
 export class MockContainerService {
@@ -139,7 +138,7 @@ export class MockElementRef extends ElementRef {
 }
 
 // sort function to display cards by sorted titles
-export const sortCardsFn = (a: AppfxCardInternal, b: AppfxCardInternal) => {
+export const sortCardsFn = (a: AppfxCard, b: AppfxCard) => {
   if (a.title && b.title) {
     return a.title.localeCompare(b.title);
   }
@@ -197,7 +196,7 @@ export const sampleCardsSettings = [
 
 // card to order mapping
 export const cardIdToOrder = {
-  cardWithDefaultOrder: cardDefaults.order,
+  cardWithDefaultOrder: Infinity,
   [sampleCards[0].id]: 0,
   [sampleCards[1].id]: 1,
   [sampleCards[2].id]: 2,
