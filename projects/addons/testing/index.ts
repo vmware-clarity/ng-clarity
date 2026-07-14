@@ -9,4 +9,5 @@ export * from './a11y';
 export * from './datagrid';
 export * from './datagrid-filters';
 export * from './property-view';
+export * from './stepper';
 export * from './wizard';
