@@ -7,8 +7,8 @@
 
 import { TestBed } from '@angular/core/testing';
 
-import { PropertyViewCategoryModel, PropertyViewModelType, PropertyViewSectionModel } from './property-view.model';
 import { PropertyViewSectionsExpandedStateManager } from './property-view-sections-expanded-state.manager';
+import { PropertyViewCategoryModel, PropertyViewModelType, PropertyViewSectionModel } from './property-view.model';
 
 interface ThisTest {
   createCategoryData: (overrides: Partial<PropertyViewCategoryModel>) => PropertyViewCategoryModel;

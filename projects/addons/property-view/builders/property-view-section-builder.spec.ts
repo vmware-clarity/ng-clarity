@@ -36,7 +36,6 @@ describe('PropertyViewSectionBuilder', function () {
   });
 
   describe('renderAsHtml() method', function () {
-    // eslint-disable-next-line sonarjs/no-duplicate-string
     it('should return the builder', function () {
       const sectionBuilder = new PropertyViewSectionBuilder(nullCategoryBuilder, '');
 
@@ -315,7 +314,6 @@ describe('PropertyViewSectionBuilder', function () {
   });
 
   describe('message() method', function () {
-    // eslint-disable-next-line sonarjs/no-duplicate-string
     it('should create a PropertyViewMessageBuilder instance with the correct values', function () {
       const sectionBuilder = new PropertyViewSectionBuilder(nullCategoryBuilder, '');
 
@@ -332,7 +330,6 @@ describe('PropertyViewSectionBuilder', function () {
       );
     });
 
-    // eslint-disable-next-line sonarjs/no-duplicate-string
     it('should create a new PropertyViewMessageBuilder instance on each invocation', function () {
       const sectionBuilder = new PropertyViewSectionBuilder(nullCategoryBuilder, '');
       sectionBuilder.message('message-1');

@@ -10,6 +10,7 @@ import { Component, Input, NgModule, SimpleChange, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { PropertyViewConfigProvider } from '../property-view-config-provider';
 import {
   PropertyViewModelType,
   PropertyViewPropertyKeyModel,
@@ -18,8 +19,8 @@ import {
   PropertyViewPropertyValueComponentModel,
   PropertyViewPropertyValueModel,
 } from '../property-view.model';
-import { PropertyViewConfigProvider } from '../property-view-config-provider';
 import { PropertyViewPropertyComponent } from './property-view-property.component';
+
 import Spy = jasmine.Spy;
 
 interface ThisTest {
@@ -383,7 +384,7 @@ describe('PropertyViewPropertyComponent', function () {
         expect(this.getValuesElements().length).toEqual(3);
         expect(this.getValuesElements()[0].textContent?.trim()).toEqual(valueText1);
         expect(this.getValuesElements()[1].textContent?.trim()).toEqual(valueText2);
-        expect(this.getValuesElements()[2].children.item(0)!.tagName).toEqual(
+        expect((this.getValuesElements()[2].children.item(0) as Element).tagName).toEqual(
           'APPFX-PROPERTY-VIEW-PROPERTY-VALUE-COMPONENT'
         );
         expect(this.component.data.content[2].type).toEqual(PropertyViewModelType.PropertyValueComponent);
@@ -691,11 +692,9 @@ class MockComponent implements PropertyViewPropertyValueComponent<MockModel> {
   template: '',
 })
 class PropertyViewPropertyValueContainerMockComponent<T> {
-  @Input()
-  componentType?: Type<PropertyViewPropertyValueComponent<T>> | null;
+  @Input() componentType?: Type<PropertyViewPropertyValueComponent<T>> | null;
 
-  @Input()
-  componentModel?: T | null;
+  @Input() componentModel?: T | null;
 }
 
 @NgModule({

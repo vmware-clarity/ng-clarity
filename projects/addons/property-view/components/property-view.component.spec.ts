@@ -10,11 +10,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { PropertyViewCategoryModel, PropertyViewModel, PropertyViewModelType } from '../property-view.model';
 import { PropertyViewConfigProvider } from '../property-view-config-provider';
 import { PropertyViewSectionsExpandedStateManager } from '../property-view-sections-expanded-state.manager';
-import { PropertyViewComponent } from './property-view.component';
+import { PropertyViewCategoryModel, PropertyViewModel, PropertyViewModelType } from '../property-view.model';
 import { PropertyViewCategoryComponent } from './property-view-category.component';
+import { PropertyViewComponent } from './property-view.component';
+
 import Spy = jasmine.Spy;
 
 @Component({
@@ -23,11 +24,9 @@ import Spy = jasmine.Spy;
   template: '',
 })
 class PropertyViewCategoryMockComponent {
-  @Input()
-  componentId: string;
+  @Input() componentId: string;
 
-  @Input()
-  data: PropertyViewCategoryModel;
+  @Input() data: PropertyViewCategoryModel;
 }
 
 class PropertyViewCategoriesSectionsExpandedStateManagerMock {

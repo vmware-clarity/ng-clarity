@@ -12,13 +12,13 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 
 import { MockPropertyViewStrings } from '../../testing';
+import { PropertyViewStrings } from '../property-view-strings.service';
 import {
   PropertyViewMessageModel,
   PropertyViewModelType,
   PropertyViewPropertyModel,
   PropertyViewSectionModel,
 } from '../property-view.model';
-import { PropertyViewStrings } from '../property-view-strings.service';
 import { PropertyViewSectionComponent } from './property-view-section.component';
 
 @Component({
@@ -27,8 +27,7 @@ import { PropertyViewSectionComponent } from './property-view-section.component'
   template: '',
 })
 class PropertyViewMessageMockComponent {
-  @Input()
-  data: PropertyViewMessageModel;
+  @Input() data: PropertyViewMessageModel;
 }
 
 @Component({
@@ -37,8 +36,7 @@ class PropertyViewMessageMockComponent {
   template: '',
 })
 class PropertyViewPropertyMockComponent {
-  @Input()
-  data: PropertyViewPropertyModel;
+  @Input() data: PropertyViewPropertyModel;
 }
 
 interface ThisTest {
@@ -153,7 +151,6 @@ describe('PropertyViewSectionComponent', function () {
     });
 
     const titleText2 = 'title-text-2';
-    // eslint-disable-next-line sonarjs/no-duplicate-string
     it('should be updated when input data changes', function (this: ThisTest) {
       this.component.data = this.createData({
         title: 'title-text-1',

@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { verifyPropertyViewMessage, verifyPropertyViewProperty } from './property-view-test-helper';
 import { PropertyViewPropertyBuilder } from '../../property-view/builders/property-view-property-builder';
 import { PropertyViewMessageModel, PropertyViewModelType } from '../../property-view/property-view.model';
-import { verifyPropertyViewMessage, verifyPropertyViewProperty } from './property-view-test-helper';
 
 describe('property-view-test-helper', () => {
   describe('#verifyPropertyViewProperty()', () => {

@@ -11,9 +11,9 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MockPropertyViewStrings } from '../../testing';
-import { PropertyViewCategoryModel, PropertyViewModelType, PropertyViewSectionModel } from '../property-view.model';
 import { PropertyViewSectionsExpandedStateManager } from '../property-view-sections-expanded-state.manager';
 import { PropertyViewStrings } from '../property-view-strings.service';
+import { PropertyViewCategoryModel, PropertyViewModelType, PropertyViewSectionModel } from '../property-view.model';
 import { PropertyViewCategoryComponent } from './property-view-category.component';
 
 @Component({
@@ -22,14 +22,11 @@ import { PropertyViewCategoryComponent } from './property-view-category.componen
   template: '',
 })
 class PropertyViewSectionMockComponent {
-  @Input()
-  componentId: string;
+  @Input() componentId: string;
 
-  @Input()
-  data: PropertyViewSectionModel;
+  @Input() data: PropertyViewSectionModel;
 
-  @Input()
-  expanded: boolean;
+  @Input() expanded: boolean;
 }
 
 class PropertyViewCategoriesSectionsExpandedStateManagerMock {

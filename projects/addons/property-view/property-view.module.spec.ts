@@ -7,8 +7,8 @@
 
 import { angleIcon, ClarityIcons } from '@clr/angular/icon';
 
-import { AppfxPropertyViewModule, pvStringsServiceFactory } from './property-view.module';
 import { PropertyViewStrings } from './property-view-strings.service';
+import { AppfxPropertyViewModule, pvStringsServiceFactory } from './property-view.module';
 
 describe('#pvStringsServiceFactory()', () => {
   it('returns the existing service', () => {
