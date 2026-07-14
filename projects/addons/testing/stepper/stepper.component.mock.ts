@@ -14,14 +14,12 @@ import { ModelChange, Step, WorkflowModel } from '@clr/addons/var';
   template: '<ng-content></ng-content>',
 })
 export class MockStepperComponent {
-  @Input() public steps: Step[];
-  @Input() public wizardModel: WorkflowModel;
-  @Input() public loading: boolean;
+  @Input() steps: Step[];
+  @Input() wizardModel: WorkflowModel;
+  @Input() loading: boolean;
 
-  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() public onModelChange: EventEmitter<ModelChange[]> = new EventEmitter<ModelChange[]>();
-  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
-  @Output() public onFinish: EventEmitter<void> = new EventEmitter<void>();
+  @Output() onModelChange: EventEmitter<ModelChange[]> = new EventEmitter<ModelChange[]>();
+  @Output() onFinish: EventEmitter<void> = new EventEmitter<void>();
 }
 
 @Component({

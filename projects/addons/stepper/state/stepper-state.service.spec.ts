@@ -9,8 +9,8 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { Step, StepInternal } from '@clr/addons/var';
 import { take } from 'rxjs/operators';
 
-import { SummaryService } from '../summary/summary.service';
 import { StepperStateService, StepState } from './stepper-state.service';
+import { SummaryService } from '../summary/summary.service';
 
 describe('StepperStateService', () => {
   describe('#constructor', () => {
@@ -77,10 +77,10 @@ describe('StepperStateService', () => {
       stepperStateService.stepActivated(<Step>{}, true, 1);
       tick(50);
 
-      stepperStateService.markStepValid(stepState1!.step, true);
-      expect(stepState1!.valid).toBeTruthy();
-      stepperStateService.markStepValid(stepState2!.step, false);
-      expect(stepState2!.valid).toBeFalsy();
+      stepperStateService.markStepValid((stepState1 as StepState).step, true);
+      expect((stepState1 as StepState).valid).toBeTruthy();
+      stepperStateService.markStepValid((stepState2 as StepState).step, false);
+      expect((stepState2 as StepState).valid).toBeFalsy();
     }));
   });
 

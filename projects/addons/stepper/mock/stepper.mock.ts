@@ -12,13 +12,17 @@ import { distinctUntilChanged } from 'rxjs/operators';
 import { StepState } from '../state/stepper-state.service';
 
 export class MockStepperStateService {
+  onStepActivated$: Observable<StepState>;
+
   private panelState$ = new Subject<StepState>();
   private firstStepExpanded = false;
   private lastStepStates: StepState[] = [];
 
-  public onStepActivated$: Observable<StepState> = this.panelState$.pipe(distinctUntilChanged());
+  constructor() {
+    this.onStepActivated$ = this.panelState$.pipe(distinctUntilChanged());
+  }
 
-  public stepActivated(step: Step, expanded: boolean, index: number): void {
+  stepActivated(step: Step, expanded: boolean, index: number): void {
     if (!this.firstStepExpanded && !expanded) {
       return;
     }
@@ -40,36 +44,38 @@ export class MockStepperStateService {
     }
   }
 
-  public markStepValid(step: Step, isValid: boolean): void {
+  markStepValid(step: Step, isValid: boolean): void {
     const index = this.lastStepStates.findIndex(stepState => stepState && stepState.step === step);
     this.lastStepStates[index].valid = isValid;
   }
 
-  public resetNextStepsValidStates(): void {
+  resetNextStepsValidStates(): void {
     // no reset necessary.
   }
 
-  public getIndexOfFirstIncompleteStep(): number {
-    return this.lastStepStates.find(
-      stepState => stepState && !(<StepInternal>stepState.step).isSkipped && !stepState.valid
-    )!.index;
+  getIndexOfFirstIncompleteStep(): number {
+    return (
+      this.lastStepStates.find(
+        stepState => stepState && !(<StepInternal>stepState.step).isSkipped && !stepState.valid
+      ) as StepState
+    ).index;
   }
 
-  public getFirstIncompleteStepContainerIndex(): number {
+  getFirstIncompleteStepContainerIndex(): number {
     return this.lastStepStates
       .filter(stepState => stepState && !(<StepInternal>stepState.step).isSkipped)
       .findIndex(stepState => !stepState.valid);
   }
 
-  public areAllStepsCompleted(): boolean {
+  areAllStepsCompleted(): boolean {
     return false;
   }
 
-  public isStepActivated(): boolean {
+  isStepActivated(): boolean {
     return true;
   }
 
-  public isFirstVisibleStep(): boolean {
+  isFirstVisibleStep(): boolean {
     return true;
   }
 }

@@ -41,25 +41,24 @@ import { MockStepperStateService } from './mock/stepper.mock';
 import { StepperStateService } from './state/stepper-state.service';
 import { StepperComponent } from './stepper.component';
 import { SummaryService } from './summary/summary.service';
+
 import Spy = jasmine.Spy;
 
 class MockWizardModel {
-  public contextObjectId: Var<string> = Var.of('vm-11');
-  public newContextObjectId: Var<string> = Var.of('host-11');
+  contextObjectId: Var<string> = Var.of('vm-11');
+  newContextObjectId: Var<string> = Var.of('host-11');
 }
 
 class MockStep1Model implements StepModel {
-  public loading = false;
-  public activateCallsCount = 0;
-  public validateCallsCount = 0;
-  public readyToComplete: boolean;
-  public changes: ModelChanges;
+  loading = false;
+  activateCallsCount = 0;
+  validateCallsCount = 0;
+  readyToComplete: boolean;
+  changes: ModelChanges;
 
-  @In()
-  public vmId?: string;
+  @In() vmId?: string;
 
-  @Out()
-  public newVmId: Var<string> = Var.of();
+  @Out() newVmId: Var<string> = Var.of();
 }
 
 @Component({
@@ -68,28 +67,27 @@ class MockStep1Model implements StepModel {
   template: `<div>Step 1 Content</div>`,
 })
 class MockStep1Component implements StepModelHolder, OnStepActivate, OnStepValidate {
-  public model: MockStep1Model;
+  model: MockStep1Model;
 
-  public activate(changes: ModelChanges) {
+  activate(changes: ModelChanges) {
     this.model.activateCallsCount += 1;
     this.model.changes = changes;
   }
 
-  public validate(): Observable<boolean> {
+  validate(): Observable<boolean> {
     this.model.validateCallsCount += 1;
     return of(true);
   }
 }
 
 class MockStep2Model {
-  public loading = false;
-  public activateCallsCount = 0;
-  public validateCallsCount = 0;
-  public nextValidationResult = false;
-  public changes: ModelChanges;
+  loading = false;
+  activateCallsCount = 0;
+  validateCallsCount = 0;
+  nextValidationResult = false;
+  changes: ModelChanges;
 
-  @In()
-  public newVmId: string;
+  @In() newVmId: string;
 }
 
 @Component({
@@ -98,24 +96,24 @@ class MockStep2Model {
   template: `<div>Step 2 Content</div>`,
 })
 class MockStep2Component implements StepModelHolder, OnStepActivate, OnStepValidate {
-  public model: MockStep2Model;
+  model: MockStep2Model;
 
-  public activate(changes: ModelChanges) {
+  activate(changes: ModelChanges) {
     this.model.activateCallsCount += 1;
     this.model.changes = changes;
   }
 
-  public validate(): Observable<boolean> {
+  validate(): Observable<boolean> {
     this.model.validateCallsCount += 1;
     return of(this.model.nextValidationResult);
   }
 }
 
 class MockStep3Model {
-  public loading = false;
-  public activateCallsCount = 0;
-  public validateCallsCount = 0;
-  public changes: ModelChanges;
+  loading = false;
+  activateCallsCount = 0;
+  validateCallsCount = 0;
+  changes: ModelChanges;
 }
 
 @Component({
@@ -124,25 +122,25 @@ class MockStep3Model {
   template: `<div>Step 3 Content</div>`,
 })
 class MockStep3Component implements StepModelHolder, OnStepActivate, OnStepValidate {
-  public model: MockStep3Model;
+  model: MockStep3Model;
 
-  public activate(changes: ModelChanges) {
+  activate(changes: ModelChanges) {
     this.model.activateCallsCount += 1;
     this.model.changes = changes;
   }
 
-  public validate(): Observable<boolean> {
+  validate(): Observable<boolean> {
     this.model.validateCallsCount += 1;
     return of(true);
   }
 }
 
 class MockStep4Model implements StepModel {
-  public validation$ = new Subject<boolean>();
+  validation$ = new Subject<boolean>();
 
-  public cancelableValidation: CancelableStepValidation | undefined = undefined;
+  cancelableValidation: CancelableStepValidation | undefined = undefined;
 
-  public canceledValidationCallsCount = 0;
+  canceledValidationCallsCount = 0;
 }
 
 @Component({
@@ -151,9 +149,9 @@ class MockStep4Model implements StepModel {
   template: `<div>Step 4 Content</div>`,
 })
 class MockStep4Component implements StepModelHolder {
-  public model: MockStep4Model;
+  model: MockStep4Model;
 
-  public validate(): Observable<boolean> {
+  validate(): Observable<boolean> {
     this.model.cancelableValidation = {
       cancelButtonLabel: 'cancel-validation',
       cancelValidation: () => {
