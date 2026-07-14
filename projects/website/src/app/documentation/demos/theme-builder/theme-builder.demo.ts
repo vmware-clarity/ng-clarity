@@ -6,6 +6,7 @@
  */
 
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { ThemeBuilderComponent as ClrThemeBuilder, PRESETS, ThemePreset } from '@clr/addons/theme-builder';
 
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
@@ -44,7 +45,14 @@ export class ExampleComponent {
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
-  imports: [DocTabsComponent, DocTabComponent, ClrThemeBuilder, CodeSnippetComponent, StackblitzExampleComponent],
+  imports: [
+    DocTabsComponent,
+    DocTabComponent,
+    ClrThemeBuilder,
+    CodeSnippetComponent,
+    StackblitzExampleComponent,
+    RouterLink,
+  ],
 })
 export class ThemeBuilderAddonDemo extends ClarityDocComponent {
   defaultHtml = DEFAULT_HTML;
