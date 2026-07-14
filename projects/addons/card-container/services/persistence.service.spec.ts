@@ -11,8 +11,8 @@ import { SampleCardComponent, sampleCards } from '@clr/addons/testing';
 import { of } from 'rxjs';
 
 import { AppfxCardInternal, AppfxCardSettings } from '../appfx-card-container.interface';
-import { AppfxCardContainerStore } from '../utils/appfx-card-container-store';
 import { PersistenceService } from './persistence.service';
+import { AppfxCardContainerStore } from '../utils/appfx-card-container-store';
 
 describe('#PersistenceService', () => {
   const containerStore = new AppfxCardContainerStore().getLocalStore('containerId');

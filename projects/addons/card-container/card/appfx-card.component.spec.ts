@@ -23,10 +23,10 @@ import { AppfxTranslateModule } from '@clr/addons/translate';
 import { ClrIcon } from '@clr/angular/icon';
 
 import { AppfxCardInternal } from '../appfx-card-container.interface';
+import { AppfxCardComponent } from './appfx-card.component';
 import { A11yService } from '../services/a11y.service';
 import { DragDropService } from '../services/dnd.service';
 import { LayoutService } from '../services/layout.service';
-import { AppfxCardComponent } from './appfx-card.component';
 
 const sampleCardId = 'sample-card-1';
 

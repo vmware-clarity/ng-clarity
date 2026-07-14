@@ -11,16 +11,16 @@ import { Renderer2 } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
-import { AppfxTranslateModule } from '@clr/addons/translate';
 import { MockRenderer2, sampleCards } from '@clr/addons/testing';
+import { AppfxTranslateModule } from '@clr/addons/translate';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 import { of } from 'rxjs';
 
+import { AppfxCardContainerComponent } from './appfx-card-container.component';
 import { AppfxCardComponent } from '../card/appfx-card.component';
 import { ContainerService } from '../services/container.service';
 import { PersistenceService } from '../services/persistence.service';
 import { AppfxCardContainerSettingsComponent } from '../settings/appfx-card-container-settings.component';
-import { AppfxCardContainerComponent } from './appfx-card-container.component';
 
 const mockContainerService = {
   initialize: () => {},

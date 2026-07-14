@@ -6,8 +6,8 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AppfxTranslateModule } from '@clr/addons/translate';
 import { sampleCards, sortCardsFn } from '@clr/addons/testing';
+import { AppfxTranslateModule } from '@clr/addons/translate';
 import { ClrCheckboxModule } from '@clr/angular/forms/checkbox';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 
