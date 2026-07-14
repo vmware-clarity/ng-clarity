@@ -21,8 +21,8 @@ import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
       class="menu-story-area"
       (contextmenu)="onContextMenu($event)"
       style="
-        border: 2px dashed #ccc;
-        padding: 2rem;
+        border: var(--cds-alias-object-border-width-200) dashed --cds-alias-object-border-color;
+        padding: var(--clr-base-vertical-offset-2xl) var(--clr-base-horizontal-offset-2xl);
         min-height: 150px;
         text-align: center;
         cursor: context-menu;
