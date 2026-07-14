@@ -878,6 +878,70 @@ export class WizardHelper {
 }
 
 // @public (undocumented)
+export class SampleCardComponent {
+    constructor(el: ElementRef);
+    // (undocumented)
+    eleRef: ElementRef;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<SampleCardComponent, "ng-component", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<SampleCardComponent, never>;
+}
+
+// @public (undocumented)
+export const sampleCards: ({
+    id: string;
+    title: string;
+    componentClass: typeof SampleCardComponent;
+    hidden: boolean;
+    order: number;
+    view: EmbeddedViewRef<void>;
+    canHide?: undefined;
+} | {
+    id: string;
+    title: string;
+    componentClass: typeof SampleCardComponent;
+    hidden: boolean;
+    canHide: boolean;
+    order: number;
+    view: EmbeddedViewRef<void>;
+})[];
+
+// @public (undocumented)
+export const sampleCardsSettings: {
+    id: string;
+    hidden: boolean;
+    order: number;
+}[];
+
+// @public (undocumented)
+export class SampleCardWithoutFooterComponent {
+    constructor(el: ElementRef);
+    // (undocumented)
+    eleRef: ElementRef;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<SampleCardWithoutFooterComponent, "ng-component", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<SampleCardWithoutFooterComponent, never>;
+}
+
+// @public (undocumented)
+export class SampleCardWithoutHeaderComponent {
+    constructor(el: ElementRef);
+    // (undocumented)
+    eleRef: ElementRef;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<SampleCardWithoutHeaderComponent, "ng-component", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<SampleCardWithoutHeaderComponent, never>;
+}
+
+// Warning: (ae-forgotten-export) The symbol "AppfxCard" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public (undocumented)
+export const sortCardsFn: (a: AppfxCard, b: AppfxCard) => number;
+
+// @public (undocumented)
 export class ZoomLevelServiceMock {
     // (undocumented)
     onChange: rxjs.Observable<ZoomLevel>;
