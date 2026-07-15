@@ -612,6 +612,38 @@ export class MockStandaloneDatagridComponent extends MockAppfxDatagridComponent 
 }
 
 // @public (undocumented)
+export class MockStepperComponent {
+    // (undocumented)
+    loading: boolean;
+    // (undocumented)
+    onFinish: EventEmitter<void>;
+    // Warning: (ae-forgotten-export) The symbol "ModelChange" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    onModelChange: EventEmitter<ModelChange[]>;
+    // Warning: (ae-forgotten-export) The symbol "Step" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    steps: Step[];
+    // Warning: (ae-forgotten-export) The symbol "WorkflowModel" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    wizardModel: WorkflowModel;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockStepperComponent, "appfx-stepper", never, { "steps": { "alias": "steps"; "required": false; }; "wizardModel": { "alias": "wizardModel"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; }, { "onModelChange": "onModelChange"; "onFinish": "onFinish"; }, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockStepperComponent, never>;
+}
+
+// @public (undocumented)
+export class MockStepperStandaloneComponent extends MockStepperComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockStepperStandaloneComponent, "appfx-stepper", never, {}, {}, never, ["*"], true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockStepperStandaloneComponent, never>;
+}
+
+// @public (undocumented)
 export class SampleCardComponent {
     constructor(el: ElementRef);
     // (undocumented)
