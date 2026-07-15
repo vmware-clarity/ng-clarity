@@ -39,6 +39,7 @@ import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
+import * as i1_2 from '@angular/platform-browser/animations';
 import * as i38 from '@angular/common';
 import * as i46 from '@angular/forms';
 import { InjectionToken } from '@angular/core';
@@ -56,6 +57,7 @@ import { OnInit } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { PipeTransform } from '@angular/core';
+import { Predicate } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
@@ -71,6 +73,12 @@ import { TrackByFunction } from '@angular/core';
 import { Type } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
 import { ViewportRuler } from '@angular/cdk/scrolling';
+
+// @public (undocumented)
+export const cardIdToOrder: {
+    [x: string]: number;
+    cardWithDefaultOrder: number;
+};
 
 // @public (undocumented)
 export class FilterInputTestHelper {
@@ -249,6 +257,54 @@ export class GridRowTestHelper {
 }
 
 // @public (undocumented)
+export class InvalidMockComponent extends MockStepComponent {
+    // (undocumented)
+    validate(): Observable<boolean>;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<InvalidMockComponent, "appfx-invalid-mock-page-page", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<InvalidMockComponent, never>;
+}
+
+// @public (undocumented)
+export class MockA11yService {
+    // (undocumented)
+    isDraggableOver(): void;
+    // (undocumented)
+    isSelected(): void;
+    // (undocumented)
+    moveDropPosition(): void;
+    // (undocumented)
+    selectCard(): void;
+}
+
+// @public (undocumented)
+export class MockAppfxCardContainerComponent {
+    // (undocumented)
+    cards: unknown[];
+    // (undocumented)
+    containerId: string;
+    // (undocumented)
+    dragDropEnabled: boolean;
+    // (undocumented)
+    persistenceStore?: unknown;
+    // (undocumented)
+    showCardContainerSettings: boolean;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxCardContainerComponent, "appfx-card-container", never, { "containerId": { "alias": "containerId"; "required": false; }; "cards": { "alias": "cards"; "required": false; }; "persistenceStore": { "alias": "persistenceStore"; "required": false; }; "showCardContainerSettings": { "alias": "showCardContainerSettings"; "required": false; }; "dragDropEnabled": { "alias": "dragDropEnabled"; "required": false; }; }, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxCardContainerComponent, never>;
+}
+
+// @public (undocumented)
+export class MockAppfxCardContainerStandaloneComponent extends MockAppfxCardContainerComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxCardContainerStandaloneComponent, "appfx-card-container", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxCardContainerStandaloneComponent, never>;
+}
+
+// @public (undocumented)
 export class MockAppfxDatagridComponent {
     // (undocumented)
     actionBarActions: any[];
@@ -342,6 +398,62 @@ export class MockAppfxDatagridComponent {
     static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDatagridComponent, "appfx-datagrid", never, { "gridItems": { "alias": "gridItems"; "required": false; }; "columns": { "alias": "columns"; "required": false; }; "layoutModel": { "alias": "layoutModel"; "required": false; }; "footerModel": { "alias": "footerModel"; "required": false; }; "pageSize": { "alias": "pageSize"; "required": false; }; "pageSizeOptions": { "alias": "pageSizeOptions"; "required": false; }; "totalItems": { "alias": "totalItems"; "required": false; }; "selectionType": { "alias": "selectionType"; "required": false; }; "selectedItems": { "alias": "selectedItems"; "required": false; }; "datagridLabels": { "alias": "datagridLabels"; "required": false; }; "preSelectFirstItem": { "alias": "preSelectFirstItem"; "required": false; }; "rowSelectionMode": { "alias": "rowSelectionMode"; "required": false; }; "actionBarActions": { "alias": "actionBarActions"; "required": false; }; "showFooter": { "alias": "showFooter"; "required": false; }; "singleRowActions": { "alias": "singleRowActions"; "required": false; }; "noItemsFoundPlaceholder": { "alias": "noItemsFoundPlaceholder"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "serverDrivenDatagrid": { "alias": "serverDrivenDatagrid"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; "listItemsCount": { "alias": "listItemsCount"; "required": false; }; "trackByGridItemProperty": { "alias": "trackByGridItemProperty"; "required": false; }; "isRowLocked": { "alias": "isRowLocked"; "required": false; }; "detailHeader": { "alias": "detailHeader"; "required": false; }; "detailBody": { "alias": "detailBody"; "required": false; }; "rowDetailContent": { "alias": "rowDetailContent"; "required": false; }; "rowsExpandedByDefault": { "alias": "rowsExpandedByDefault"; "required": false; }; "vscPersistDatagridSettings": { "alias": "vscPersistDatagridSettings"; "required": false; }; "detailState": { "alias": "detailState"; "required": false; }; "trackByFunction": { "alias": "trackByFunction"; "required": false; }; "virtualScrolling": { "alias": "virtualScrolling"; "required": false; }; "dataRange": { "alias": "dataRange"; "required": false; }; }, { "selectedItemsChange": "selectedItemsChange"; "gridItemsChange": "gridItemsChange"; "selectionChange": "selectionChange"; "searchTermChange": "searchTermChange"; "refreshGridData": "refreshGridData"; "refreshVirtualGridData": "refreshVirtualGridData"; "actionClick": "actionClick"; "rowActionMenuOpenChange": "rowActionMenuOpenChange"; "exportDataEvent": "exportDataEvent"; "detailStateChange": "detailStateChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDatagridComponent, never>;
+}
+
+// @public (undocumented)
+export class MockAppfxWizardComponent {
+    // (undocumented)
+    loading: boolean;
+    // Warning: (ae-forgotten-export) The symbol "Reason" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    onClose: EventEmitter<Reason>;
+    // (undocumented)
+    onFinish: EventEmitter<void>;
+    // Warning: (ae-forgotten-export) The symbol "ModelChange" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    onModelChange: EventEmitter<ModelChange[]>;
+    // (undocumented)
+    opened: boolean;
+    // (undocumented)
+    openedChange: EventEmitter<boolean>;
+    // Warning: (ae-forgotten-export) The symbol "Step" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    pages: Step[];
+    // (undocumented)
+    size: string;
+    // (undocumented)
+    title: string;
+    // Warning: (ae-forgotten-export) The symbol "WorkflowModel" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    wizardModel: WorkflowModel;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxWizardComponent, "appfx-wizard", never, { "title": { "alias": "title"; "required": false; }; "pages": { "alias": "pages"; "required": false; }; "wizardModel": { "alias": "wizardModel"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "size": { "alias": "size"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "openedChange": "openedChange"; "onModelChange": "onModelChange"; "onFinish": "onFinish"; "onClose": "onClose"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxWizardComponent, never>;
+}
+
+// @public (undocumented)
+export class MockCardContainerComponent {
+    // (undocumented)
+    cardContainer: ViewContainerRef;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockCardContainerComponent, "ng-component", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockCardContainerComponent, never>;
+}
+
+// @public (undocumented)
+export class MockContainerService {
+    // (undocumented)
+    getCardOrder(): void;
+    // (undocumented)
+    getVisibleCardsCount(): void;
+    // (undocumented)
+    moveCard(): void;
 }
 
 // @public (undocumented)
@@ -446,6 +558,22 @@ export class MockDatagridPreserveSelectionDirective {
 }
 
 // @public (undocumented)
+export class MockDragDropService {
+    // (undocumented)
+    onDragDrop(): void;
+    // (undocumented)
+    onDragStart(): void;
+}
+
+// @public (undocumented)
+export class MockElementRef extends ElementRef {
+    // (undocumented)
+    nativeElement: {
+        querySelector: () => void;
+    };
+}
+
+// @public (undocumented)
 export class MockIsRowSelectablePipe implements PipeTransform {
     // (undocumented)
     transform(rowItem: any, isLocked?: (rowItem: any) => boolean, disabled?: boolean): boolean;
@@ -453,6 +581,58 @@ export class MockIsRowSelectablePipe implements PipeTransform {
     static ɵfac: i0.ɵɵFactoryDeclaration<MockIsRowSelectablePipe, never>;
     // (undocumented)
     static ɵpipe: i0.ɵɵPipeDeclaration<MockIsRowSelectablePipe, "isRowSelectable", false>;
+}
+
+// @public (undocumented)
+export class MockLayoutService {
+    // (undocumented)
+    updateCardSize(): void;
+}
+
+// @public (undocumented)
+export class MockPropertyViewComponent {
+    // (undocumented)
+    config: any;
+    // (undocumented)
+    data: any;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockPropertyViewComponent, "appfx-property-view", never, { "data": { "alias": "data"; "required": false; }; "config": { "alias": "config"; "required": false; }; }, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockPropertyViewComponent, never>;
+}
+
+// @public (undocumented)
+export class MockPropertyViewStandaloneComponent extends MockPropertyViewComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockPropertyViewStandaloneComponent, "appfx-property-view", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockPropertyViewStandaloneComponent, never>;
+}
+
+// Warning: (ae-forgotten-export) The symbol "PropertyViewStrings" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public
+export class MockPropertyViewStrings extends PropertyViewStrings {
+    // (undocumented)
+    actions: string;
+    // (undocumented)
+    categoryListItemAreaLabel: string;
+    // (undocumented)
+    categoryListItemsAreaLabel: string;
+    // (undocumented)
+    toggle: string;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockPropertyViewStrings, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<MockPropertyViewStrings>;
+}
+
+// @public (undocumented)
+export class MockRenderer2 {
+    // (undocumented)
+    removeStyle(el: any, name: string): void;
+    // (undocumented)
+    setStyle(el: any, name: string, style: string): void;
 }
 
 // @public (undocumented)
@@ -477,6 +657,239 @@ export class MockStandaloneDatagridComponent extends MockAppfxDatagridComponent 
     static ɵcmp: i0.ɵɵComponentDeclaration<MockStandaloneDatagridComponent, "appfx-datagrid", never, {}, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockStandaloneDatagridComponent, never>;
+}
+
+// Warning: (ae-forgotten-export) The symbol "OnStepValidate" needs to be exported by the entry point clr-addons-testing.d.ts
+// Warning: (ae-forgotten-export) The symbol "OnStepActivate" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public (undocumented)
+export class MockStepComponent implements OnStepValidate, OnStepActivate {
+    // (undocumented)
+    activate(): void;
+    // (undocumented)
+    model: MockStepModel;
+    // (undocumented)
+    validate(): Observable<boolean>;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockStepComponent, "appfx-mock-page-page", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockStepComponent, never>;
+}
+
+// Warning: (ae-forgotten-export) The symbol "StepModel" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public (undocumented)
+export class MockStepModel implements StepModel {
+    constructor(mockPropertyValue: string);
+    // (undocumented)
+    isActivated: boolean;
+    // (undocumented)
+    isValidated: boolean;
+    // (undocumented)
+    mockPropertyValue: string;
+    // (undocumented)
+    readyToComplete: boolean;
+    // Warning: (ae-forgotten-export) The symbol "StepValidationState" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    validationState: StepValidationState;
+}
+
+// @public (undocumented)
+export class MockStepperComponent {
+    // (undocumented)
+    loading: boolean;
+    // (undocumented)
+    onFinish: EventEmitter<void>;
+    // (undocumented)
+    onModelChange: EventEmitter<ModelChange[]>;
+    // (undocumented)
+    steps: Step[];
+    // (undocumented)
+    wizardModel: WorkflowModel;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockStepperComponent, "appfx-stepper", never, { "steps": { "alias": "steps"; "required": false; }; "wizardModel": { "alias": "wizardModel"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; }, { "onModelChange": "onModelChange"; "onFinish": "onFinish"; }, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockStepperComponent, never>;
+}
+
+// @public (undocumented)
+export class MockStepperStandaloneComponent extends MockStepperComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockStepperStandaloneComponent, "appfx-stepper", never, {}, {}, never, ["*"], true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockStepperStandaloneComponent, never>;
+}
+
+// @public (undocumented)
+export class MockWizardStandaloneComponent extends MockAppfxWizardComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockWizardStandaloneComponent, "appfx-wizard", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockWizardStandaloneComponent, never>;
+}
+
+// @public
+export class MockWorkflowConfigurationService {
+    // (undocumented)
+    get debug(): boolean;
+    set debug(newValue: boolean);
+}
+
+// @public (undocumented)
+export class MockWorkflowTestModule {
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockWorkflowTestModule, never>;
+    // (undocumented)
+    static ɵinj: i0.ɵɵInjectorDeclaration<MockWorkflowTestModule>;
+    // (undocumented)
+    static ɵmod: i0.ɵɵNgModuleDeclaration<MockWorkflowTestModule, [typeof InvalidMockComponent, typeof MockStepComponent], [typeof i1_2.NoopAnimationsModule], never>;
+}
+
+// @public (undocumented)
+export class SampleCardComponent {
+    constructor(el: ElementRef);
+    // (undocumented)
+    eleRef: ElementRef;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<SampleCardComponent, "ng-component", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<SampleCardComponent, never>;
+}
+
+// @public (undocumented)
+export const sampleCards: ({
+    id: string;
+    title: string;
+    componentClass: typeof SampleCardComponent;
+    hidden: boolean;
+    order: number;
+    view: EmbeddedViewRef<void>;
+    canHide?: undefined;
+} | {
+    id: string;
+    title: string;
+    componentClass: typeof SampleCardComponent;
+    hidden: boolean;
+    canHide: boolean;
+    order: number;
+    view: EmbeddedViewRef<void>;
+})[];
+
+// @public (undocumented)
+export const sampleCardsSettings: {
+    id: string;
+    hidden: boolean;
+    order: number;
+}[];
+
+// @public (undocumented)
+export class SampleCardWithoutFooterComponent {
+    constructor(el: ElementRef);
+    // (undocumented)
+    eleRef: ElementRef;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<SampleCardWithoutFooterComponent, "ng-component", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<SampleCardWithoutFooterComponent, never>;
+}
+
+// @public (undocumented)
+export class SampleCardWithoutHeaderComponent {
+    constructor(el: ElementRef);
+    // (undocumented)
+    eleRef: ElementRef;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<SampleCardWithoutHeaderComponent, "ng-component", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<SampleCardWithoutHeaderComponent, never>;
+}
+
+// Warning: (ae-forgotten-export) The symbol "AppfxCard" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public (undocumented)
+export const sortCardsFn: (a: AppfxCard, b: AppfxCard) => number;
+
+// @public (undocumented)
+export class TabsHelper {
+    constructor(contextDebugElement: DebugElement);
+    // (undocumented)
+    areTabsVisible(): boolean;
+    clickLink(linkIndex: number): void;
+    findContentView(childTabContentQuery?: Predicate<DebugElement>): DebugElement | undefined;
+    findLink(linkIndex: number): DebugElement | undefined;
+    findLinkIcon(linkIndex: number): DebugElement | undefined;
+    findLinkText(linkIndex: number): string | undefined;
+    // Warning: (ae-forgotten-export) The symbol "ClrTab" needs to be exported by the entry point clr-addons-testing.d.ts
+    getActiveTab(): ClrTab;
+    getActiveTabContentElement(): HTMLElement | undefined;
+    getActiveTabIndex(): number;
+    getLinkList(): Array<DebugElement>;
+}
+
+// Warning: (ae-forgotten-export) The symbol "PropertyViewMessageModel" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public (undocumented)
+export function verifyPropertyViewMessage(textValue: string, icon: string, messageModel: PropertyViewMessageModel): void;
+
+// Warning: (ae-forgotten-export) The symbol "PropertyViewPropertyModel" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public (undocumented)
+export function verifyPropertyViewProperty(key: string, value: string[], propertyModel: PropertyViewPropertyModel): void;
+
+// @public (undocumented)
+export class WizardHelper {
+    constructor(wizard: DebugElement);
+    // (undocumented)
+    get activePageNavTitle(): string | undefined;
+    // (undocumented)
+    get activePageTitle(): string;
+    // (undocumented)
+    back(): void;
+    // (undocumented)
+    get backButton(): DebugElement;
+    // (undocumented)
+    get backButtonText(): string;
+    // (undocumented)
+    get buttons(): DebugElement[];
+    // (undocumented)
+    cancel(): void;
+    // (undocumented)
+    get cancelButton(): DebugElement;
+    // (undocumented)
+    get cancelButtonText(): string;
+    // (undocumented)
+    closeNavigator(): void;
+    // (undocumented)
+    finish(): void;
+    // (undocumented)
+    get finishButton(): DebugElement;
+    // (undocumented)
+    get finishButtonText(): string;
+    // (undocumented)
+    isNavVisible(): boolean;
+    // (undocumented)
+    isShowNavIconVisible(): boolean;
+    // (undocumented)
+    isStepNavEnabled(stepIndex: number): boolean;
+    // (undocumented)
+    get isVisible(): boolean;
+    // (undocumented)
+    navigateToStep(stepIndex: number): void;
+    // (undocumented)
+    next(): void;
+    // (undocumented)
+    get nextButton(): DebugElement;
+    // (undocumented)
+    get nextButtonText(): string;
+    // (undocumented)
+    get pageNavTitles(): Array<string | undefined>;
+    // (undocumented)
+    showNavigator(): void;
+    // (undocumented)
+    get size(): string | undefined;
+    // (undocumented)
+    get visibleButtons(): DebugElement[];
 }
 
 // @public (undocumented)
