@@ -5,7 +5,5 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './menu';
+export { MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent } from './menu-action.component.mock';
+export { MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent } from './menu.component.mock';
