@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { Component, EventEmitter, Output, Input, ViewContainerRef, ViewChild, Directive, Pipe, Injectable } from '@angular/core';
+import { Component, Input, ViewContainerRef, ViewChild, ElementRef, EventEmitter, Output, Directive, Pipe, Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { ClrDatagrid } from '@clr/angular/data/datagrid';
@@ -49,6 +49,280 @@ class ZoomLevelServiceMock {
         this.onChange = this.resizeSubject.asObservable();
     }
 }
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class MockAppfxCardContainerComponent {
+    constructor() {
+        this.cards = [];
+        this.showCardContainerSettings = true;
+        this.dragDropEnabled = true;
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxCardContainerComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockAppfxCardContainerComponent, isStandalone: false, selector: "appfx-card-container", inputs: { containerId: "containerId", cards: "cards", persistenceStore: "persistenceStore", showCardContainerSettings: "showCardContainerSettings", dragDropEnabled: "dragDropEnabled" }, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxCardContainerComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-card-container',
+                    standalone: false,
+                    template: '',
+                }]
+        }], propDecorators: { containerId: [{
+                type: Input
+            }], cards: [{
+                type: Input
+            }], persistenceStore: [{
+                type: Input
+            }], showCardContainerSettings: [{
+                type: Input
+            }], dragDropEnabled: [{
+                type: Input
+            }] } });
+class MockAppfxCardContainerStandaloneComponent extends MockAppfxCardContainerComponent {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxCardContainerStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockAppfxCardContainerStandaloneComponent, isStandalone: true, selector: "appfx-card-container", usesInheritance: true, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxCardContainerStandaloneComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-card-container',
+                    standalone: true,
+                    template: '',
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+// mock for container service
+class MockContainerService {
+    getCardOrder() { }
+    moveCard() { }
+    getVisibleCardsCount() { }
+}
+// mock for A11y service
+class MockA11yService {
+    isSelected() { }
+    isDraggableOver() { }
+    selectCard() { }
+    moveDropPosition() { }
+}
+// mock for DragDrop service
+class MockDragDropService {
+    onDragStart() { }
+    onDragDrop() { }
+}
+// mock for Layout service
+class MockLayoutService {
+    updateCardSize() { }
+}
+// Renderer2 Mock
+class MockRenderer2 {
+    setStyle(el, name, style) {
+        el[name] = style;
+    }
+    removeStyle(el, name) {
+        el[name] = null;
+    }
+}
+// Mock Card Container for ViewContainerRef
+class MockCardContainerComponent {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockCardContainerComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockCardContainerComponent, isStandalone: false, selector: "ng-component", viewQueries: [{ propertyName: "cardContainer", first: true, predicate: ["cardContainer"], descendants: true, read: ViewContainerRef, static: true }], ngImport: i0, template: `
+    <div class="scrollable">
+      <div>
+        <ng-template #cardContainer></ng-template>
+      </div>
+    </div>
+  `, isInline: true, styles: [".scrollable{overflow:auto;position:absolute;inset:0;max-height:20px}\n"], preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockCardContainerComponent, decorators: [{
+            type: Component,
+            args: [{ standalone: false, template: `
+    <div class="scrollable">
+      <div>
+        <ng-template #cardContainer></ng-template>
+      </div>
+    </div>
+  `, styles: [".scrollable{overflow:auto;position:absolute;inset:0;max-height:20px}\n"] }]
+        }], propDecorators: { cardContainer: [{
+                type: ViewChild,
+                args: ['cardContainer', { read: ViewContainerRef, static: true }]
+            }] } });
+// Sample Card to test scenarios
+class SampleCardComponent {
+    constructor(el) {
+        this.eleRef = el;
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: SampleCardComponent, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: SampleCardComponent, isStandalone: false, selector: "ng-component", ngImport: i0, template: `
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Sample Card</div>
+      </div>
+      <div class="card-block"></div>
+      <div class="card-footer"></div>
+    </div>
+  `, isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: SampleCardComponent, decorators: [{
+            type: Component,
+            args: [{
+                    standalone: false,
+                    template: `
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Sample Card</div>
+      </div>
+      <div class="card-block"></div>
+      <div class="card-footer"></div>
+    </div>
+  `,
+                }]
+        }], ctorParameters: () => [{ type: i0.ElementRef }] });
+// Sample Card to without footer test scenarios
+class SampleCardWithoutFooterComponent {
+    constructor(el) {
+        this.eleRef = el;
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: SampleCardWithoutFooterComponent, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: SampleCardWithoutFooterComponent, isStandalone: false, selector: "ng-component", ngImport: i0, template: `
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Sample Card</div>
+      </div>
+      <div class="card-block"></div>
+    </div>
+  `, isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: SampleCardWithoutFooterComponent, decorators: [{
+            type: Component,
+            args: [{
+                    standalone: false,
+                    template: `
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Sample Card</div>
+      </div>
+      <div class="card-block"></div>
+    </div>
+  `,
+                }]
+        }], ctorParameters: () => [{ type: i0.ElementRef }] });
+// Sample Card to without header test scenarios
+class SampleCardWithoutHeaderComponent {
+    constructor(el) {
+        this.eleRef = el;
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: SampleCardWithoutHeaderComponent, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: SampleCardWithoutHeaderComponent, isStandalone: false, selector: "ng-component", ngImport: i0, template: `
+    <div class="card">
+      <div class="card-block">
+        <div class="card-title">Sample Card</div>
+      </div>
+      <div class="card-footer"></div>
+    </div>
+  `, isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: SampleCardWithoutHeaderComponent, decorators: [{
+            type: Component,
+            args: [{
+                    standalone: false,
+                    template: `
+    <div class="card">
+      <div class="card-block">
+        <div class="card-title">Sample Card</div>
+      </div>
+      <div class="card-footer"></div>
+    </div>
+  `,
+                }]
+        }], ctorParameters: () => [{ type: i0.ElementRef }] });
+// mock element ref
+class MockElementRef extends ElementRef {
+    constructor() {
+        super(...arguments);
+        this.nativeElement = {
+            querySelector: () => { },
+        };
+    }
+}
+// sort function to display cards by sorted titles
+const sortCardsFn = (a, b) => {
+    if (a.title && b.title) {
+        return a.title.localeCompare(b.title);
+    }
+    return 0;
+};
+// sample cards for unit tests
+const sampleCards = [
+    {
+        id: 'sample-card-1',
+        title: 'Sample Card 1',
+        componentClass: SampleCardComponent,
+        hidden: false,
+        order: 0,
+        view: undefined,
+    },
+    {
+        id: 'sample-card-2',
+        title: 'Sample Card 2',
+        componentClass: SampleCardComponent,
+        hidden: false,
+        canHide: false,
+        order: 1,
+        view: undefined,
+    },
+    {
+        id: 'sample-card-3',
+        title: 'Sample Card 3',
+        componentClass: SampleCardComponent,
+        hidden: false,
+        canHide: false,
+        order: 5,
+        view: undefined,
+    },
+];
+// sample card settings
+const sampleCardsSettings = [
+    {
+        id: 'sample-card-1',
+        hidden: false,
+        order: 0,
+    },
+    {
+        id: 'sample-card-2',
+        hidden: true,
+        order: 2,
+    },
+    {
+        id: 'sample-card-3',
+        hidden: false,
+        order: 5,
+    },
+];
+// card to order mapping
+const cardIdToOrder = {
+    cardWithDefaultOrder: Infinity,
+    [sampleCards[0].id]: 0,
+    [sampleCards[1].id]: 1,
+    [sampleCards[2].id]: 2,
+};
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -1089,5 +1363,5 @@ function verifyPropertyViewMessage(textValue, icon, messageModel) {
  * Generated bundle index. Do not edit.
  */
 
-export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockAppfxDatagridComponent, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockIsRowSelectablePipe, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, ZoomLevelServiceMock, verifyPropertyViewMessage, verifyPropertyViewProperty };
+export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
 //# sourceMappingURL=clr-addons-testing.mjs.map
