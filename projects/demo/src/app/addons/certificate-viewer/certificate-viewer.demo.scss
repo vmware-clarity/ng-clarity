@@ -8,34 +8,27 @@
 .cert-mode-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 1.5rem 0;
-
-  .btn {
-    min-width: 0;
-    font-size: 0.65rem;
-    letter-spacing: 0.04em;
-  }
+  margin: var(--clr-base-vertical-offset-2xl) 0;
 }
 
 .cert-fill-parent-container {
-  border: 1px solid var(--cds-alias-object-border-color);
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
   border-radius: var(--cds-alias-object-border-radius-100);
-  padding: 1rem;
+  padding: var(--clr-base-vertical-offset-xl) var(--clr-base-horizontal-offset-xl);
   min-height: 420px;
   overflow: auto;
 }
 
 .cert-fixed-height-container {
-  border: 1px solid var(--cds-alias-object-border-color);
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
   border-radius: var(--cds-alias-object-border-radius-100);
-  padding: 1rem;
+  padding: var(--clr-base-vertical-offset-xl) var(--clr-base-horizontal-offset-xl);
   height: 420px;
   overflow: auto;
 }
 
 .cert-modal-trigger {
-  padding: 2rem 0;
+  padding: var(--clr-base-vertical-offset-3xl) 0;
 }
 
 .cert-modal-body {

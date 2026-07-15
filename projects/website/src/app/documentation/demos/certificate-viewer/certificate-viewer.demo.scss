@@ -7,30 +7,30 @@
 
 /* ─── Mode selector bar ──────────────────────────────────────────────────── */
 .cert-mode-bar {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--clr-base-vertical-offset-2xl);
 }
 
 /* ─── Fill-parent container ──────────────────────────────────────────────── */
 .cert-fill-parent-container {
-  border: 1px solid var(--cds-alias-object-border-color);
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
   border-radius: var(--cds-alias-object-border-radius-100);
-  padding: 1rem;
+  padding: var(--clr-base-vertical-offset-xl) var(--clr-base-horizontal-offset-xl);
   min-height: 420px;
   overflow: auto;
 }
 
 /* ─── Fixed-height container ─────────────────────────────────────────────── */
 .cert-fixed-height-container {
-  border: 1px solid var(--cds-alias-object-border-color);
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
   border-radius: var(--cds-alias-object-border-radius-100);
-  padding: 1rem;
+  padding: var(--clr-base-vertical-offset-xl) var(--clr-base-horizontal-offset-xl);
   height: 420px;
   overflow: auto;
 }
 
 /* ─── Modal trigger ─────────────────────────────────────────────────────── */
 .cert-modal-trigger {
-  padding: 2rem 0;
+  padding: var(--clr-base-vertical-offset-3xl) 0;
 }
 
 .cert-modal-body {
