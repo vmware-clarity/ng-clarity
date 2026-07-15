@@ -5,4 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export { MockPropertyViewComponent, MockPropertyViewStandaloneComponent } from './property-view.component.mock';
+export { MockPropertyViewComponent, MockPropertyViewStandaloneComponent } from './property-view-component.mock';
+export { MockPropertyViewStrings } from './property-view-strings.mock';
+export { verifyPropertyViewMessage, verifyPropertyViewProperty } from './property-view-test-helper';
