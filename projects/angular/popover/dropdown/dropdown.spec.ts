@@ -5,7 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, ElementRef, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -317,6 +318,41 @@ export default function (): void {
     }
   });
 
+  describe('Dropdown item that destroys an ancestor view while the menu is open', () => {
+    let fixture: ComponentFixture<DropdownItemThatDestroysAncestorTestComponent>;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [ClrDropdownModule, CommonModule],
+        declarations: [DropdownItemThatDestroysAncestorTestComponent, DestroyTrackingLeaf],
+      });
+
+      fixture = TestBed.createComponent(DropdownItemThatDestroysAncestorTestComponent);
+      fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      fixture.destroy();
+    });
+
+    // The order of elements in DropdownItemThatDestroysAncestorTestComponent's template matters:
+    // the dropdown must come before the *ngIf-wrapped sibling for the destroy walk to skip it.
+    it('still destroys sibling views that come after the open dropdown in the container', () => {
+      const leaf = fixture.componentInstance.leaf;
+      expect(leaf.destroyed).toBeFalse();
+
+      fixture.componentInstance.dropdownTriggerButtonElementRef.nativeElement.click();
+      fixture.detectChanges();
+      expect(fixture.componentInstance.dropdownInstance.popoverService.open).toBeTrue();
+
+      // Clicking the item destroys the ancestor container synchronously, while the popover is still open.
+      fixture.componentInstance.dropdownItemButtonElementRef.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(leaf.destroyed).toBeTrue();
+    });
+  });
+
   describe('Dropdown in shadow DOM', () => {
     let fixture: ComponentFixture<TestShadowDomComponent>;
 
@@ -417,6 +453,52 @@ class TestShadowDomComponent {
   @ViewChild(ClrDropdownTrigger) dropdownTriggerInstance: ClrDropdownTrigger;
 
   menuClosable = true;
+}
+
+@Component({
+  selector: 'destroy-tracking-leaf',
+  template: '',
+  standalone: false,
+})
+class DestroyTrackingLeaf implements OnDestroy {
+  destroyed = false;
+
+  ngOnDestroy() {
+    this.destroyed = true;
+  }
+}
+
+@Component({
+  template: `
+    @if (showSubtree) {
+      <div>
+        <clr-dropdown>
+          <button class="btn btn-primary" type="button" clrDropdownTrigger>Dropdown</button>
+          <clr-dropdown-menu *clrIfOpen>
+            <button clrDropdownItem (click)="showSubtree = false">Destroy subtree</button>
+          </clr-dropdown-menu>
+        </clr-dropdown>
+        <ng-container *ngIf="true">
+          <destroy-tracking-leaf #leaf></destroy-tracking-leaf>
+        </ng-container>
+      </div>
+    }
+  `,
+  standalone: false,
+})
+class DropdownItemThatDestroysAncestorTestComponent {
+  showSubtree = true;
+
+  @ViewChild(ClrDropdown) dropdownInstance: ClrDropdown;
+  @ViewChild('leaf', { read: DestroyTrackingLeaf }) leaf: DestroyTrackingLeaf;
+
+  // eslint-disable-next-line decorator-position/decorator-position
+  @ViewChild(ClrDropdownTrigger, { read: ElementRef })
+  readonly dropdownTriggerButtonElementRef: ElementRef<HTMLButtonElement>;
+
+  // eslint-disable-next-line decorator-position/decorator-position
+  @ViewChild(ClrDropdownItem, { read: ElementRef })
+  readonly dropdownItemButtonElementRef: ElementRef<HTMLButtonElement>;
 }
 
 @Component({
