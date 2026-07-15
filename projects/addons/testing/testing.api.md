@@ -456,6 +456,44 @@ export class MockIsRowSelectablePipe implements PipeTransform {
 }
 
 // @public (undocumented)
+export class MockPropertyViewComponent {
+    // (undocumented)
+    config: any;
+    // (undocumented)
+    data: any;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockPropertyViewComponent, "appfx-property-view", never, { "data": { "alias": "data"; "required": false; }; "config": { "alias": "config"; "required": false; }; }, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockPropertyViewComponent, never>;
+}
+
+// @public (undocumented)
+export class MockPropertyViewStandaloneComponent extends MockPropertyViewComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockPropertyViewStandaloneComponent, "appfx-property-view", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockPropertyViewStandaloneComponent, never>;
+}
+
+// Warning: (ae-forgotten-export) The symbol "PropertyViewStrings" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public
+export class MockPropertyViewStrings extends PropertyViewStrings {
+    // (undocumented)
+    actions: string;
+    // (undocumented)
+    categoryListItemAreaLabel: string;
+    // (undocumented)
+    categoryListItemsAreaLabel: string;
+    // (undocumented)
+    toggle: string;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockPropertyViewStrings, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<MockPropertyViewStrings>;
+}
+
+// @public (undocumented)
 export class MockRequiredFieldLegendComponent {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<MockRequiredFieldLegendComponent, "appfx-required-field-legend", never, {}, {}, never, never, false, never>;
@@ -478,6 +516,16 @@ export class MockStandaloneDatagridComponent extends MockAppfxDatagridComponent 
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockStandaloneDatagridComponent, never>;
 }
+
+// Warning: (ae-forgotten-export) The symbol "PropertyViewMessageModel" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public (undocumented)
+export function verifyPropertyViewMessage(textValue: string, icon: string, messageModel: PropertyViewMessageModel): void;
+
+// Warning: (ae-forgotten-export) The symbol "PropertyViewPropertyModel" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public (undocumented)
+export function verifyPropertyViewProperty(key: string, value: string[], propertyModel: PropertyViewPropertyModel): void;
 
 // @public (undocumented)
 export class ZoomLevelServiceMock {
