@@ -703,16 +703,10 @@ export class MockStepperComponent {
     loading: boolean;
     // (undocumented)
     onFinish: EventEmitter<void>;
-    // Warning: (ae-forgotten-export) The symbol "ModelChange" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
     // (undocumented)
     onModelChange: EventEmitter<ModelChange[]>;
-    // Warning: (ae-forgotten-export) The symbol "Step" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
     // (undocumented)
     steps: Step[];
-    // Warning: (ae-forgotten-export) The symbol "WorkflowModel" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
     // (undocumented)
     wizardModel: WorkflowModel;
     // (undocumented)
@@ -727,6 +721,21 @@ export class MockStepperStandaloneComponent extends MockStepperComponent {
     static ɵcmp: i0.ɵɵComponentDeclaration<MockStepperStandaloneComponent, "appfx-stepper", never, {}, {}, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockStepperStandaloneComponent, never>;
+}
+
+// @public (undocumented)
+export class MockWizardStandaloneComponent extends MockAppfxWizardComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockWizardStandaloneComponent, "appfx-wizard", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockWizardStandaloneComponent, never>;
+}
+
+// @public (undocumented)
+export class MockWorkflowConfigurationService {
+    // (undocumented)
+    get debug(): boolean;
+    set debug(newValue: boolean);
 }
 
 // @public (undocumented)
