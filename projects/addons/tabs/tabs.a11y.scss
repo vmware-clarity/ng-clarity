@@ -10,7 +10,7 @@
     &.show-tab-content {
       ::ng-deep {
         .tab-content {
-          display: flex;
+          display: flex !important;
         }
       }
     }
