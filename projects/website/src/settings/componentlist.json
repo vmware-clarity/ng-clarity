@@ -334,6 +334,12 @@
       "storybookPath": "addons-menu"
     },
     {
+      "url": "certificate-viewer",
+      "text": "Certificate Viewer",
+      "type": "addons",
+      "storybookPath": "addons-certificate-viewer"
+    },
+    {
       "url": "property-view",
       "text": "Property View",
       "type": "addons",
