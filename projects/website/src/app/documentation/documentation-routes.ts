@@ -356,6 +356,17 @@ export const documentationRoutes: Routes = [
       },
       {
         matcher: documentationRouteMatcher,
+        data: { routePath: 'menu/:tab?' },
+        loadChildren: () => import('./demos/menu/menu.demo.module').then(m => m.MenuDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'certificate-viewer/:tab?' },
+        loadChildren: () =>
+          import('./demos/certificate-viewer/certificate-viewer.demo.module').then(m => m.CertificateViewerDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
         data: { routePath: 'property-view/:tab?' },
         loadChildren: () =>
           import('./demos/property-view/property-view.demo.module').then(m => m.PropertyViewAddonDemoModule),

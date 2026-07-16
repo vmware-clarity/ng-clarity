@@ -5,9 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './card-container';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './menu';
-export * from './property-view';
+import { MenuItem, MenuItemType } from './menu-item.token';
+
+/**
+ * A MenuItem where multiple menuItems can be nested.
+ */
+export class NestedMenu extends MenuItem {
+  override type = MenuItemType.menu;
+
+  text?: string;
+
+  iconClass?: string;
+
+  menuItems: Iterable<MenuItem>;
+}

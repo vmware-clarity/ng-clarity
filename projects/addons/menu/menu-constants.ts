@@ -5,9 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './card-container';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './menu';
-export * from './property-view';
+/**
+ * Defines menu constants aligned with UX.
+ */
+export class MenuConstants {
+  static clrMaxMenuWidthInPixels = 360;
+  static menuLeftOffset = 10;
+}

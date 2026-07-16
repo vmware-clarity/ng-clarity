@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './card-container';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './menu';
-export * from './property-view';
+/**
+ * Used as token for querying a list of heterogeneous implementations.
+ */
+export abstract class FocusableItemProvider {
+  abstract getFocusableItem(): any;
+}

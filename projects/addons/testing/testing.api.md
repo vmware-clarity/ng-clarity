@@ -389,6 +389,56 @@ export class MockAppfxDatagridComponent {
 }
 
 // @public (undocumented)
+export class MockAppfxMenuActionComponent {
+    // (undocumented)
+    actionId: string;
+    // (undocumented)
+    enabled?: boolean;
+    // (undocumented)
+    handle: EventEmitter<void>;
+    // (undocumented)
+    iconClass?: string;
+    // (undocumented)
+    shortcut?: string;
+    // (undocumented)
+    text?: string;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxMenuActionComponent, "appfx-menu-action", never, { "actionId": { "alias": "actionId"; "required": false; }; "iconClass": { "alias": "iconClass"; "required": false; }; "text": { "alias": "text"; "required": false; }; "shortcut": { "alias": "shortcut"; "required": false; }; "enabled": { "alias": "enabled"; "required": false; }; }, { "handle": "handle"; }, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxMenuActionComponent, never>;
+}
+
+// @public (undocumented)
+export class MockAppfxMenuActionStandaloneComponent extends MockAppfxMenuActionComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxMenuActionStandaloneComponent, "appfx-menu-action", never, {}, {}, never, ["*"], true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxMenuActionStandaloneComponent, never>;
+}
+
+// @public (undocumented)
+export class MockAppfxMenuComponent {
+    // (undocumented)
+    closed: EventEmitter<void>;
+    // (undocumented)
+    opened: EventEmitter<void>;
+    // (undocumented)
+    text: string;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxMenuComponent, "appfx-menu", never, { "text": { "alias": "text"; "required": false; }; }, { "opened": "opened"; "closed": "closed"; }, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxMenuComponent, never>;
+}
+
+// @public (undocumented)
+export class MockAppfxMenuStandaloneComponent extends MockAppfxMenuComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxMenuStandaloneComponent, "appfx-menu", never, {}, {}, never, ["*"], true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxMenuStandaloneComponent, never>;
+}
+
+// @public (undocumented)
 export class MockCardContainerComponent {
     // (undocumented)
     cardContainer: ViewContainerRef;
