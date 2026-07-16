@@ -611,6 +611,7 @@ class ClrPopoverContent {
             return;
         }
         this.removeOverlay();
+        this.popoverService.popoverVisibleEmit(false);
         this.popoverService.open = false;
         if (this.popoverService.originElement) {
             const shouldFocusTrigger = this.popoverType !== ClrPopoverType.TOOLTIP &&
@@ -674,7 +675,6 @@ class ClrPopoverContent {
         this.view = null;
         this.intersectionObserver?.disconnect();
         this.intersectionObserver = null;
-        this.popoverService.popoverVisibleEmit(false);
     }
     getScrollableParents(node) {
         let parent = node;
