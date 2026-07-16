@@ -9,3 +9,4 @@ export * from './a11y';
 export * from './card-container';
 export * from './datagrid';
 export * from './datagrid-filters';
+export * from './property-view';
