@@ -26,7 +26,17 @@
     "@angular/platform-browser": ">= 21.1.0",
     "@angular/router": ">= 21.1.0",
     "@clr/angular": ">= 18",
+    "asn1js": "^3.0.6",
+    "pkijs": "^3.2.5",
     "rxjs": "^7.8.0"
+  },
+  "peerDependenciesMeta": {
+    "asn1js": {
+      "optional": true
+    },
+    "pkijs": {
+      "optional": true
+    }
   },
   "module": "fesm2022/clr-addons.mjs",
   "typings": "types/clr-addons.d.ts",
@@ -45,6 +55,10 @@
     "./card-container": {
       "types": "./types/clr-addons-card-container.d.ts",
       "default": "./fesm2022/clr-addons-card-container.mjs"
+    },
+    "./certificate-viewer": {
+      "types": "./types/clr-addons-certificate-viewer.d.ts",
+      "default": "./fesm2022/clr-addons-certificate-viewer.mjs"
     },
     "./datagrid": {
       "types": "./types/clr-addons-datagrid.d.ts",
@@ -88,5 +102,5 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "version": "0.0.0-preview.2358821"
+  "version": "0.0.0-preview.5f08c63"
 }
