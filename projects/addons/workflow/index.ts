@@ -5,5 +5,4 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-// No exports, use secondary entry points.
-export {};
+export { AppfxWorkflowsModule } from './appfx-workflows.module';
