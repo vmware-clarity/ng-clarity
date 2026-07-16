@@ -88,6 +88,12 @@ export const parameters = {
       ...customViewports,
     },
   },
+  // @storybook/addon-a11y auto-runs axe-core on every story render. The Playwright a11y test
+  // suite (tests/accessibility.spec.ts) drives its own @axe-core/playwright scan per story, and
+  // axe-core refuses concurrent runs on the same page, so the two collide. Disabling this at the
+  // story-parameter level (set at build time) is deterministic, unlike toggling it via a runtime
+  // global, which raced with the addon's own auto-run and failed intermittently.
+  ...(process.env.STORYBOOK_DISABLE_AUTO_A11Y === 'true' ? { a11y: { test: 'off' } } : {}),
 };
 
 export const globalTypes = {

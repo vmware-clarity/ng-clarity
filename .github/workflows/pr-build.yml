@@ -84,7 +84,7 @@ jobs:
         if: steps.storybook-cache.outputs.cache-hit != 'true'
         run: npm run _build:storybook
       - name: Update Visual Snapshots
-        run: npx playwright test --update-snapshots --shard=${{matrix.shard}}/2
+        run: npx playwright test ./tests/visual-snapshots.spec.ts --update-snapshots --shard=${{matrix.shard}}/2
       - name: Collect Changes
         id: diff
         run: |

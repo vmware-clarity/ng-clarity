@@ -1,0 +1,84 @@
+name: PR A11y Test
+on:
+  pull_request:
+concurrency:
+  group: pr-a11y-${{github.event.pull_request.number}}
+  cancel-in-progress: true
+permissions:
+  pull-requests: write
+jobs:
+  pr-a11y-test:
+    name: PR A11y Test
+    continue-on-error: true
+    timeout-minutes: 30
+    # This job intentionally does not use the `ubuntu-latest` image.
+    # An updated image could generate different results, so we pin the version explicitly.
+    runs-on: ubuntu-24.04
+    env:
+      CLARITY_VRT_BROWSER: chromium
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: Build Storybook
+        env:
+          STORYBOOK_DISABLE_AUTO_A11Y: 'true'
+        run: npm run _build:storybook
+      - name: Run Accessibility Tests
+        run: npx playwright test --retries=0 --reporter=html ./tests/accessibility.spec.ts
+      - name: Upload Accessibility Report
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-report
+          path: playwright-report
+      - name: Deploy A11y Report to Netlify
+        id: deploy-a11y
+        if: success() || failure()
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
+          NETLIFY_SITE_NAME: ${{secrets.NETLIFY_SITE_NAME}}
+          PR_NUMBER: ${{github.event.pull_request.number}}
+        run: |
+          RESULT=$(npx netlify-cli@23.6.0 deploy --no-build --dir playwright-report --site "$NETLIFY_SITE_NAME" --alias "${PR_NUMBER}-a11y" --json 2>/dev/null || echo '{}')
+          DEPLOY_URL=$(echo "$RESULT" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('deploy_url') or d.get('deployUrl') or '')" 2>/dev/null || echo '')
+          echo "deploy_url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
+      - name: Find Existing A11y Comment
+        id: find-comment
+        if: success() || failure()
+        uses: peter-evans/find-comment@v2
+        with:
+          issue-number: ${{github.event.pull_request.number}}
+          comment-author: 'github-actions[bot]'
+          body-includes: '♿ Accessibility Report'
+      - name: Post A11y Comment with Netlify Link
+        if: (success() || failure()) && steps.deploy-a11y.outputs.deploy_url != ''
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          comment-id: ${{steps.find-comment.outputs.comment-id}}
+          issue-number: ${{github.event.pull_request.number}}
+          body: |
+            ♿ **Accessibility Report** · [View Report](${{steps.deploy-a11y.outputs.deploy_url}})
+
+            > A11y tests are non-blocking — violations indicate WCAG A/AA issues to address over time.
+          edit-mode: replace
+      - name: Post A11y Comment with Artifact Link
+        if: (success() || failure()) && steps.deploy-a11y.outputs.deploy_url == ''
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          comment-id: ${{steps.find-comment.outputs.comment-id}}
+          issue-number: ${{github.event.pull_request.number}}
+          body: |
+            ♿ **Accessibility Report** · [Download from Actions](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}})
+
+            > A11y tests are non-blocking — violations indicate WCAG A/AA issues to address over time.
+          edit-mode: replace
