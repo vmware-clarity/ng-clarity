@@ -349,6 +349,33 @@ declare class MockDatagridFiltersStandaloneComponent extends MockDatagridFilters
     static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersStandaloneComponent, "appfx-datagrid-filters", never, {}, {}, never, never, true, never>;
 }
 
+declare class MockAppfxMenuActionComponent {
+    actionId: string;
+    iconClass?: string;
+    text?: string;
+    shortcut?: string;
+    enabled?: boolean;
+    handle: EventEmitter<void>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxMenuActionComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxMenuActionComponent, "appfx-menu-action", never, { "actionId": { "alias": "actionId"; "required": false; }; "iconClass": { "alias": "iconClass"; "required": false; }; "text": { "alias": "text"; "required": false; }; "shortcut": { "alias": "shortcut"; "required": false; }; "enabled": { "alias": "enabled"; "required": false; }; }, { "handle": "handle"; }, never, ["*"], false, never>;
+}
+declare class MockAppfxMenuActionStandaloneComponent extends MockAppfxMenuActionComponent {
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxMenuActionStandaloneComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxMenuActionStandaloneComponent, "appfx-menu-action", never, {}, {}, never, ["*"], true, never>;
+}
+
+declare class MockAppfxMenuComponent {
+    text: string;
+    opened: EventEmitter<void>;
+    closed: EventEmitter<void>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxMenuComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxMenuComponent, "appfx-menu", never, { "text": { "alias": "text"; "required": false; }; }, { "opened": "opened"; "closed": "closed"; }, never, ["*"], false, never>;
+}
+declare class MockAppfxMenuStandaloneComponent extends MockAppfxMenuComponent {
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxMenuStandaloneComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxMenuStandaloneComponent, "appfx-menu", never, {}, {}, never, ["*"], true, never>;
+}
+
 declare class MockPropertyViewComponent {
     data: any;
     config: any;
@@ -375,4 +402,4 @@ declare class MockPropertyViewStrings extends PropertyViewStrings {
 declare function verifyPropertyViewProperty(key: string, value: string[], propertyModel: PropertyViewPropertyModel): void;
 declare function verifyPropertyViewMessage(textValue: string, icon: string, messageModel: PropertyViewMessageModel): void;
 
-export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
+export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };

@@ -72,6 +72,10 @@
       "types": "./types/clr-addons-drag-and-drop.d.ts",
       "default": "./fesm2022/clr-addons-drag-and-drop.mjs"
     },
+    "./menu": {
+      "types": "./types/clr-addons-menu.d.ts",
+      "default": "./fesm2022/clr-addons-menu.mjs"
+    },
     "./property-view": {
       "types": "./types/clr-addons-property-view.d.ts",
       "default": "./fesm2022/clr-addons-property-view.mjs"
@@ -102,5 +106,5 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "version": "0.0.0-preview.0f5ed87"
+  "version": "0.0.0-preview.35dd616"
 }

@@ -1273,6 +1273,101 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+class MockAppfxMenuActionComponent {
+    constructor() {
+        this.enabled = true;
+        this.handle = new EventEmitter(true);
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxMenuActionComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockAppfxMenuActionComponent, isStandalone: false, selector: "appfx-menu-action", inputs: { actionId: "actionId", iconClass: "iconClass", text: "text", shortcut: "shortcut", enabled: "enabled" }, outputs: { handle: "handle" }, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxMenuActionComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-menu-action',
+                    standalone: false,
+                    template: '<ng-content></ng-content>',
+                }]
+        }], propDecorators: { actionId: [{
+                type: Input
+            }], iconClass: [{
+                type: Input
+            }], text: [{
+                type: Input
+            }], shortcut: [{
+                type: Input
+            }], enabled: [{
+                type: Input
+            }], handle: [{
+                type: Output
+            }] } });
+class MockAppfxMenuActionStandaloneComponent extends MockAppfxMenuActionComponent {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxMenuActionStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockAppfxMenuActionStandaloneComponent, isStandalone: true, selector: "appfx-menu-action", usesInheritance: true, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxMenuActionStandaloneComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-menu-action',
+                    standalone: true,
+                    template: '<ng-content></ng-content>',
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class MockAppfxMenuComponent {
+    constructor() {
+        this.opened = new EventEmitter();
+        this.closed = new EventEmitter();
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxMenuComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockAppfxMenuComponent, isStandalone: false, selector: "appfx-menu", inputs: { text: "text" }, outputs: { opened: "opened", closed: "closed" }, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxMenuComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-menu',
+                    standalone: false,
+                    template: '<ng-content></ng-content>',
+                }]
+        }], propDecorators: { text: [{
+                type: Input
+            }], opened: [{
+                type: Output
+            }], closed: [{
+                type: Output
+            }] } });
+class MockAppfxMenuStandaloneComponent extends MockAppfxMenuComponent {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxMenuStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockAppfxMenuStandaloneComponent, isStandalone: true, selector: "appfx-menu", usesInheritance: true, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxMenuStandaloneComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-menu',
+                    standalone: true,
+                    template: '<ng-content></ng-content>',
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 class MockPropertyViewComponent {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockPropertyViewComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockPropertyViewComponent, isStandalone: false, selector: "appfx-property-view", inputs: { data: "data", config: "config" }, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
@@ -1363,5 +1458,5 @@ function verifyPropertyViewMessage(textValue, icon, messageModel) {
  * Generated bundle index. Do not edit.
  */
 
-export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
+export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
 //# sourceMappingURL=clr-addons-testing.mjs.map
