@@ -1,0 +1,4 @@
+{
+  "module": "../fesm2022/clr-addons-var.mjs",
+  "typings": "../types/clr-addons-var.d.ts"
+}
