@@ -1,0 +1,77 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<clr-modal
+  [clrModalStaticBackdrop]="true"
+  [clrModalOpen]="opened"
+  (clrModalOpenChange)="onModalOpenChange($event)"
+  [clrModalSize]="size || ''"
+  class="appfx-dialog"
+  [ngClass]="tabLayout"
+  [class.debug-popup]="isSignPostOpen"
+  [class.zoom2x]="currentZoomLevel === ZoomLevel.x2"
+  [class.zoom4x]="currentZoomLevel === ZoomLevel.x4"
+  [class.tab-links-opened]="tabLinksOpened"
+  [class.show-tab-content]="!tabLinksOpened"
+>
+  <div class="modal-title">
+    <appfx-model-popup *ngIf="configService.debug" [modelMgr]="appfxTabs.modelMgr"> </appfx-model-popup>
+    <appfx-tab-links *ngIf="showAppfxTabLinks" [(opened)]="tabLinksOpened" [title]="appfxTabs.activeTabStep.title">
+    </appfx-tab-links>
+    <ng-container *ngIf="subTitle$ | async as st; else noSubTitle">
+      <h1 class="modal-title p-0 primaryTitle" [textContent]="title"></h1>
+      <div class="separator"></div>
+      <h2 class="secondaryTitle" [textContent]="st"></h2>
+    </ng-container>
+    <ng-template #noSubTitle>
+      <h1 class="modal-title p-0 primaryTitle secondaryTitleIsEmpty" [textContent]="title"></h1>
+    </ng-template>
+  </div>
+
+  <div class="modal-body" [ngStyle]="heightStyle">
+    <appfx-spinner *ngIf="isLoading" [message]="workflowStrings.loading"></appfx-spinner>
+    <appfx-validation-banner [state]="closeHandlerValidationState"> </appfx-validation-banner>
+
+    <ng-content select="appfx-dialog-header"></ng-content>
+
+    <appfx-tabs
+      #appfxTabs
+      [tabs]="steps"
+      [model]="model"
+      [disableTabsContent]="disableTabsContent"
+      [tabLayout]="tabLayout"
+      [showTabLinks]="showTabLinksInAppfxTabs"
+      [showLoadingIndicator]="false"
+      [autoCollapseTabLinks]="false"
+      (onModelChange)="onModelChange.emit($event)"
+      (tabLinksOpenedChange)="tabLinksOpened = $event"
+    >
+    </appfx-tabs>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      data-test-id="cancelBtn"
+      class="btn"
+      [class.btn-primary]="defaultButton === 'close'"
+      [class.btn-outline]="defaultButton !== 'close'"
+      (click)="onCancelButtonClick()"
+    >
+      {{ cancelButtonLabel }}
+    </button>
+    <button
+      type="button"
+      data-test-id="submitBtn"
+      [disabled]="isOkButtonDisabled"
+      class="btn"
+      [class.btn-primary]="defaultButton === 'submit'"
+      [class.btn-outline]="defaultButton !== 'submit'"
+      (click)="onOkButtonClick()"
+    >
+      {{ okButtonLabel }}
+    </button>
+  </div>
+</clr-modal>

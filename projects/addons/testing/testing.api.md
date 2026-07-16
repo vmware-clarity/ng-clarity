@@ -401,6 +401,86 @@ export class MockAppfxDatagridComponent {
 }
 
 // @public (undocumented)
+export class MockAppfxDialogComponent {
+    // (undocumented)
+    cancelButtonLabel: string;
+    // Warning: (ae-forgotten-export) The symbol "CloseHandler" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    closeHandler: CloseHandler;
+    // Warning: (ae-forgotten-export) The symbol "DefaultButton" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    defaultButton: DefaultButton;
+    // (undocumented)
+    disableTabsContent: boolean;
+    // (undocumented)
+    height: string;
+    // (undocumented)
+    loading: boolean;
+    // Warning: (ae-forgotten-export) The symbol "WorkflowModel" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    model: WorkflowModel;
+    // (undocumented)
+    okButtonLabel: string;
+    // (undocumented)
+    onClose: EventEmitter<void>;
+    // Warning: (ae-forgotten-export) The symbol "ModelChange" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    readonly onModelChange: EventEmitter<ModelChange[]>;
+    // (undocumented)
+    opened: boolean;
+    // (undocumented)
+    openedChange: EventEmitter<boolean>;
+    // (undocumented)
+    showTabLinks: boolean;
+    // (undocumented)
+    size: string;
+    // Warning: (ae-forgotten-export) The symbol "Step" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    steps: Step[];
+    // (undocumented)
+    subTitle: string;
+    // Warning: (ae-forgotten-export) The symbol "TabLayout" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    tabLayout: TabLayout;
+    // (undocumented)
+    title: string;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDialogComponent, "appfx-dialog", never, { "title": { "alias": "title"; "required": false; }; "subTitle": { "alias": "subTitle"; "required": false; }; "size": { "alias": "size"; "required": false; }; "height": { "alias": "height"; "required": false; }; "defaultButton": { "alias": "defaultButton"; "required": false; }; "cancelButtonLabel": { "alias": "cancelButtonLabel"; "required": false; }; "okButtonLabel": { "alias": "okButtonLabel"; "required": false; }; "tabLayout": { "alias": "tabLayout"; "required": false; }; "disableTabsContent": { "alias": "disableTabsContent"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "steps": { "alias": "steps"; "required": false; }; "model": { "alias": "model"; "required": false; }; "closeHandler": { "alias": "closeHandler"; "required": false; }; "showTabLinks": { "alias": "showTabLinks"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "onModelChange": "onModelChange"; "onClose": "onClose"; "openedChange": "openedChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDialogComponent, never>;
+}
+
+// @public (undocumented)
+export class MockAppfxDialogHeaderComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDialogHeaderComponent, "appfx-dialog-header", never, {}, {}, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDialogHeaderComponent, never>;
+}
+
+// @public (undocumented)
+export class MockAppfxDialogHeaderStandaloneComponent extends MockAppfxDialogHeaderComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDialogHeaderStandaloneComponent, "appfx-dialog-header", never, {}, {}, never, ["*"], true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDialogHeaderStandaloneComponent, never>;
+}
+
+// @public (undocumented)
+export class MockAppfxDialogStandaloneComponent extends MockAppfxDialogComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDialogStandaloneComponent, "appfx-dialog", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDialogStandaloneComponent, never>;
+}
+
+// @public (undocumented)
 export class MockAppfxWizardComponent {
     // (undocumented)
     loading: boolean;
@@ -410,24 +490,18 @@ export class MockAppfxWizardComponent {
     onClose: EventEmitter<Reason>;
     // (undocumented)
     onFinish: EventEmitter<void>;
-    // Warning: (ae-forgotten-export) The symbol "ModelChange" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
     // (undocumented)
     onModelChange: EventEmitter<ModelChange[]>;
     // (undocumented)
     opened: boolean;
     // (undocumented)
     openedChange: EventEmitter<boolean>;
-    // Warning: (ae-forgotten-export) The symbol "Step" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
     // (undocumented)
     pages: Step[];
     // (undocumented)
     size: string;
     // (undocumented)
     title: string;
-    // Warning: (ae-forgotten-export) The symbol "WorkflowModel" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
     // (undocumented)
     wizardModel: WorkflowModel;
     // (undocumented)

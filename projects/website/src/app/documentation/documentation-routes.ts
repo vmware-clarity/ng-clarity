@@ -382,6 +382,11 @@ export const documentationRoutes: Routes = [
         data: { routePath: 'tabs-addon/:tab?' },
         loadChildren: () => import('./demos/tabs-addon/tabs-addon.demo.module').then(m => m.TabsAddonDemoModule),
       },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'dialog/:tab?' },
+        loadChildren: () => import('./demos/dialog/dialog.demo.module').then(m => m.DialogDemoModule),
+      },
     ],
   },
 ];

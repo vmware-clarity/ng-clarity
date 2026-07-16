@@ -5,13 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './card-container';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './dialog';
-export * from './property-view';
-export * from './stepper';
-export * from './tabs';
-export * from './var';
-export * from './wizard';
+export { MockAppfxDialogComponent, MockAppfxDialogStandaloneComponent } from './multi-page-dialog.component.mock';
+export {
+  MockAppfxDialogHeaderComponent,
+  MockAppfxDialogHeaderStandaloneComponent,
+} from './multi-page-dialog-header.component.mock';

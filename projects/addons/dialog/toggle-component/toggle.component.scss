@@ -4,14 +4,12 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+.toggle-header {
+  display: flex;
+  margin-left: 0;
+  margin-bottom: 5px;
+}
 
-export * from './a11y';
-export * from './card-container';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './dialog';
-export * from './property-view';
-export * from './stepper';
-export * from './tabs';
-export * from './var';
-export * from './wizard';
+.toggle-label {
+  margin-right: 5px;
+}
