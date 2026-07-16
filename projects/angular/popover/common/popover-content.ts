@@ -285,6 +285,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     }
 
     this.removeOverlay();
+    this.popoverService.popoverVisibleEmit(false);
     this.popoverService.open = false;
 
     if (this.popoverService.originElement) {
@@ -366,8 +367,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     this.intersectionObserver?.disconnect();
     this.intersectionObserver = null;
-
-    this.popoverService.popoverVisibleEmit(false);
   }
 
   private getScrollableParents(node: HTMLElement) {
