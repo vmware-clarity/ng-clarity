@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './card-container';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './property-view';
-export * from './stepper';
-export * from './wizard';
+import { PropertyViewModel } from '@clr/addons/property-view';
+import { StepModel } from '@clr/addons/var';
+
+export class SummaryModel implements StepModel {
+  loading = false;
+  data: PropertyViewModel;
+}

@@ -1,0 +1,471 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      <code cds-text="code">&#64;clr/addons/wizard</code> provides a multi-step wizard built on top of Clarity Modal. It
+      adds workflow orchestration, automatic data injection between steps, loading indicators, standardised error
+      handling, conditional step skipping, and an optional "Ready to Complete" summary page.
+    </p>
+
+    <h2 id="structure" class="clr-mt-48px" cds-text="title">Wizard Structure</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      AppFx Wizard is built using Clarity Wizard and provides a lot of additional features. A wizard built using AppFx
+      Wizard has the following structural elements:
+    </p>
+    <ol cds-list class="clr-mt-8px">
+      <li>
+        <strong>Wizard component</strong> — hosts <code cds-text="code">&lt;appfx-wizard&gt;</code>, configures steps,
+        defines data retrieval per page, and handles <em>Finish</em> via <code cds-text="code">CloseHandler</code>.
+      </li>
+      <li>
+        <strong>Wizard model</strong> — a POJO with <code cds-text="code">Var&lt;T&gt;</code> properties for initial
+        state, page inputs/outputs, and data retrieval.
+      </li>
+      <li>
+        <strong>Page component</strong> (per step) — implements <code cds-text="code">StepModelHolder</code> to receive
+        the typed model, and optionally <code cds-text="code">OnStepActivate</code> /
+        <code cds-text="code">OnStepValidate</code>.
+      </li>
+      <li>
+        <strong>Page model</strong> (per step) — typed POJO with <code cds-text="code">&#64;In()</code> and
+        <code cds-text="code">&#64;Out()</code> decorated properties.
+      </li>
+    </ol>
+
+    <h2 id="features" class="clr-mt-48px" cds-text="title">Features</h2>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6">
+        <ul cds-list>
+          <li>Pre-loads data for the first page; spinner displayed automatically</li>
+          <li>Orchestrates data retrieval on page transitions (lazy or eager)</li>
+          <li>Caches data between back/forth navigation</li>
+          <li>Reloads data when upstream selection changes</li>
+        </ul>
+      </div>
+      <div class="clr-col-6">
+        <ul cds-list>
+          <li>Optional summary page with <code cds-text="code">step.summary</code></li>
+          <li>Custom footer component support</li>
+          <li>Conditional step relevance via <code cds-text="code">step.isRelevant</code></li>
+          <li>Inline (Stepper) mode — same steps, no modal</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 id="data-retrieval" class="clr-mt-32px" cds-text="section">Data Retrieval</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Wizard automates the common data-loading concerns of a multi-step workflow so page components stay focused on
+      rendering and stay agnostic of how their data is retrieved:
+    </p>
+    <ul cds-list class="clr-mt-8px">
+      <li>
+        <strong>Pre-loads</strong> the data for the first page; a spinner is shown and user interaction is blocked until
+        it resolves.
+      </li>
+      <li>
+        <strong>Orchestrates retrieval</strong> between steps — lazily (once the user clicks <em>Next</em>) or eagerly
+        (as soon as an upstream selection changes).
+      </li>
+      <li><strong>Caches</strong> data so moving back and forth without changing a selection doesn't reload it.</li>
+      <li><strong>Reloads</strong> data automatically when the user changes an upstream selection.</li>
+      <li>
+        <strong>Transforms</strong> data before handing it to a page component — sub-setting, localizing, or mapping to
+        a UI model.
+      </li>
+      <li>
+        <strong>Handles errors</strong> — if retrieval fails, a standardised error page replaces the active step, with a
+        <em>Retry</em> action that resumes the workflow on success.
+      </li>
+    </ul>
+
+    <h3 id="ready-to-complete" class="clr-mt-32px" cds-text="section">Ready to Complete Page</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      When at least one step defines <code cds-text="code">step.summary</code>, the wizard automatically appends a
+      "Ready to Complete" page built on <a routerLink="/documentation/property-view">Property View</a>. A section is
+      generated for every step that defines <code cds-text="code">summary</code>, titled with
+      <code cds-text="code">step.navTitle || step.title</code>.
+    </p>
+
+    <h3 id="custom-validation" class="clr-mt-32px" cds-text="section">Custom Wizard Validation</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Long-running finish logic belongs in <code cds-text="code">CloseHandler.onSubmit</code>:
+    </p>
+    <ul cds-list class="clr-mt-8px">
+      <li>
+        Throwing an <code cds-text="code">Error</code> displays it above the wizard pages and keeps the wizard open.
+      </li>
+      <li>Returning an <code cds-text="code">Observable&lt;any&gt;</code> keeps the wizard open until it completes.</li>
+      <li>
+        Throwing <code cds-text="code">preventDisplayingWizardError</code> keeps the wizard open without showing an
+        error — the consumer is responsible for handling that error itself.
+      </li>
+    </ul>
+    <div class="clrweb-Img clr-mt-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/wizard-addon/light-theme/wizard_finish_error.png'"
+        [darkSrc]="'/assets/images/documentation/wizard-addon/dark-theme/wizard_finish_error.png'"
+        [imageAlt]="'Ready to Complete page showing a finish error banner'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h3 id="custom-footer" class="clr-mt-32px" cds-text="section">Custom Footer Component</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Set <code cds-text="code">footer.componentClass</code> to render a component on the left side of the
+      Back/Next/Finish buttons. The component must implement the <code cds-text="code">WizardFooter</code> interface
+      (<code cds-text="code">currentStep</code>, <code cds-text="code">steps</code>,
+      <code cds-text="code">workflowModel</code>), which the wizard re-injects on every step change so the footer can
+      react to the current step.
+    </p>
+    <div class="clrweb-Img clr-mt-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/wizard-addon/light-theme/wizard_custom_footer.png'"
+        [darkSrc]="'/assets/images/documentation/wizard-addon/dark-theme/wizard_custom_footer.png'"
+        [imageAlt]="'Wizard with a custom footer component'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h3 id="accessibility" class="clr-mt-32px" cds-text="section">Accessibility</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Wizard is WCAG 2.1 compliant and supports 200% and 400% browser zoom when the application provides a
+      <code cds-text="code">ZoomLevelService</code>. At 200% zoom the step navigation sidebar collapses behind a burger
+      menu at the top-left of the dialog to free up space for page content. At 400% zoom the wizard expands into
+      full-screen mode.
+    </p>
+    <div class="clr-row clr-mt-16px">
+      <div class="clr-col-6 clrweb-Img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/wizard-addon/light-theme/wizard_2x.png'"
+          [darkSrc]="'/assets/images/documentation/wizard-addon/dark-theme/wizard_2x.png'"
+          [imageAlt]="'Wizard at 200% zoom with the navigation sidebar collapsed'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+      <div class="clr-col-6 clrweb-Img">
+        <app-themed-image
+          [lightSrc]="'/assets/images/documentation/wizard-addon/light-theme/wizard_nav_2x.png'"
+          [darkSrc]="'/assets/images/documentation/wizard-addon/dark-theme/wizard_nav_2x.png'"
+          [imageAlt]="'Wizard navigation opened from the burger menu at 200% zoom'"
+          [imageStyle]="'max-width: 100%'"
+        ></app-themed-image>
+      </div>
+    </div>
+    <div class="clrweb-Img clr-mt-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/wizard-addon/light-theme/wizard_4x.png'"
+        [darkSrc]="'/assets/images/documentation/wizard-addon/dark-theme/wizard_4x.png'"
+        [imageAlt]="'Wizard in full-screen mode at 400% zoom'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h3 id="debug-mode" class="clr-mt-32px" cds-text="section">Debug Mode</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Debug mode visualises the live state of the wizard model. Enable it programmatically by setting
+      <code cds-text="code">WorkflowConfigurationService.debug = true</code>, or at runtime via
+      <code cds-text="code">appfx.debug=true</code> in browser local storage. Once enabled, an info icon appears next to
+      the wizard title; clicking it opens a signpost showing the current model properties and their values. Try it with
+      the <em>Debug Mode</em> toggle in the Playground tab.
+    </p>
+    <div class="clrweb-Img clr-mt-16px">
+      <app-themed-image
+        [lightSrc]="'/assets/images/documentation/wizard-addon/light-theme/wizard_debug_mode.png'"
+        [darkSrc]="'/assets/images/documentation/wizard-addon/dark-theme/wizard_debug_mode.png'"
+        [imageAlt]="'Debug mode signpost showing the wizard model properties'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h2 id="import" class="clr-mt-48px" cds-text="title">Module Import</h2>
+    <app-code-snippet [code]="moduleImportTs" language="typescript" [copy]="true"></app-code-snippet>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="playground" cds-text="title">Playground</h2>
+    <p cds-text="body" class="clr-mt-16px clr-mb-24px">
+      Select presentation type and click the button to start the workflow. The wizard demonstrates data retrieval,
+      conditional steps, validation, and summary page.
+    </p>
+
+    <div class="wizard-playground-controls clr-mb-24px">
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="inlineMode" />
+        <label>Inline Wizard (Stepper)</label>
+      </clr-toggle-wrapper>
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="configurationService.debug" />
+        <label>Debug Mode</label>
+      </clr-toggle-wrapper>
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="longNavTitle" [disabled]="inlineMode" />
+        <label>Long Wizard Navigation Labels</label>
+      </clr-toggle-wrapper>
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="showSummaryPage" [disabled]="inlineMode" />
+        <label>Show Summary Page</label>
+      </clr-toggle-wrapper>
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="asyncErrorOnSubmit" [disabled]="inlineMode" />
+        <label>Error on Finish</label>
+      </clr-toggle-wrapper>
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="useCustomFooter" [disabled]="inlineMode" />
+        <label>Custom Footer</label>
+      </clr-toggle-wrapper>
+
+      <clr-radio-container clrInline class="clr-mt-16px">
+        <label>Select Wizard size</label>
+        <clr-radio-wrapper *ngFor="let size of supportedWizardSizes">
+          <label>{{ size }}</label>
+          <input clrRadio type="radio" [value]="size" [(ngModel)]="selectedWizardSize" [disabled]="inlineMode" />
+        </clr-radio-wrapper>
+      </clr-radio-container>
+
+      <button class="btn btn-primary clr-mt-16px" (click)="openSimpleWizard()">Open Workflow</button>
+    </div>
+
+    <clr-demo-sample-wizard
+      *ngIf="simpleWizardOpened && !inlineMode"
+      (onClose)="closeSimpleWizard()"
+      [vcMoRef]="vcMoRef"
+      [wizardSize]="selectedWizardSize"
+      [useDescriptionForNavTitle]="longNavTitle"
+      [showSummaryPage]="showSummaryPage"
+      [asyncErrorOnSubmit]="asyncErrorOnSubmit"
+      [useCustomFooter]="useCustomFooter"
+    ></clr-demo-sample-wizard>
+
+    <clr-demo-sample-stepper *ngIf="simpleWizardOpened && inlineMode" [vcMoRef]="vcMoRef"></clr-demo-sample-stepper>
+
+    <h2 id="basic-wizard" class="clr-mt-48px" cds-text="title">Basic Wizard (code example)</h2>
+    <p cds-text="body" class="clr-mt-16px">A minimal two-step wizard to get started.</p>
+
+    <app-stackblitz-example
+      name="basic-wizard"
+      [componentTemplate]="basicWizardHtml"
+      [componentClass]="basicWizardTs"
+    ></app-stackblitz-example>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 id="api-wizard" cds-text="title">WizardComponent Inputs</h2>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th>Input</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>title</code></td>
+          <td>string</td>
+          <td>Wizard header title</td>
+        </tr>
+        <tr>
+          <td><code>pages</code></td>
+          <td>Step[]</td>
+          <td>Ordered step descriptors</td>
+        </tr>
+        <tr>
+          <td><code>wizardModel</code></td>
+          <td>WorkflowModel</td>
+          <td>Shared data model</td>
+        </tr>
+        <tr>
+          <td><code>opened</code></td>
+          <td>boolean</td>
+          <td>Two-way open/close binding</td>
+        </tr>
+        <tr>
+          <td><code>size</code></td>
+          <td>string</td>
+          <td>md / lg / xl / full-screen. Default: <code>'lg'</code></td>
+        </tr>
+        <tr>
+          <td><code>loading</code></td>
+          <td>boolean</td>
+          <td>Show the wizard's loading spinner</td>
+        </tr>
+        <tr>
+          <td><code>closeHandler</code></td>
+          <td>CloseHandler</td>
+          <td>onSubmit and onCancel callbacks (return Observable)</td>
+        </tr>
+        <tr>
+          <td><code>footer</code></td>
+          <td>WizardFooterConfig</td>
+          <td>Optional custom footer component class</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="api-wizard-outputs" class="clr-mt-48px" cds-text="title">WizardComponent Outputs</h2>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th>Output</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>openedChange</code></td>
+          <td>EventEmitter&lt;boolean&gt;</td>
+          <td>Emits when the <code>opened</code> input changes</td>
+        </tr>
+        <tr>
+          <td><code>onModelChange</code></td>
+          <td>EventEmitter&lt;ModelChange[]&gt;</td>
+          <td>Emits whenever a workflow model variable changes</td>
+        </tr>
+        <tr>
+          <td><code>onFinish</code></td>
+          <td>EventEmitter&lt;void&gt;</td>
+          <td>Emits when the user clicks <em>Finish</em></td>
+        </tr>
+        <tr>
+          <td><code>onClose</code></td>
+          <td>EventEmitter&lt;Reason&gt;</td>
+          <td>
+            Emits when the wizard closes via the close button, <em>Cancel</em>, or <em>Finish</em>. Use the
+            <code>Reason</code> enum (<code>'finish' | 'cancel'</code>) to distinguish the close origin.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="api-step" class="clr-mt-48px" cds-text="title">Step Interface</h2>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>title</code></td>
+          <td>string</td>
+          <td>Step header title</td>
+        </tr>
+        <tr>
+          <td><code>description</code></td>
+          <td>string?</td>
+          <td>Subtitle shown below the title</td>
+        </tr>
+        <tr>
+          <td><code>navTitle</code></td>
+          <td>string?</td>
+          <td>Short title in left nav panel</td>
+        </tr>
+        <tr>
+          <td><code>componentClass</code></td>
+          <td>Type&lt;any&gt;</td>
+          <td>Angular component to render inside the step</td>
+        </tr>
+        <tr>
+          <td><code>model</code></td>
+          <td>StepModel</td>
+          <td>Typed step data model with &#64;In/&#64;Out properties</td>
+        </tr>
+        <tr>
+          <td><code>mappings</code></td>
+          <td>Mappings?</td>
+          <td>Custom property name remapping between step and workflow model</td>
+        </tr>
+        <tr>
+          <td><code>isRelevant</code></td>
+          <td>Var&lt;boolean&gt;?</td>
+          <td>Reactive relevance; step is skipped when false</td>
+        </tr>
+        <tr>
+          <td><code>summary</code></td>
+          <td>(builder, model?) =&gt; SectionModel</td>
+          <td>Builds this step's contribution to the summary page</td>
+        </tr>
+        <tr>
+          <td><code>recreateComponent</code></td>
+          <td>boolean?</td>
+          <td>Re-instantiate the component on every activation</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="api-lifecycle" class="clr-mt-48px" cds-text="title">Step Component Lifecycle Interfaces</h2>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th>Interface</th>
+          <th>Method</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>StepModelHolder</code></td>
+          <td><code>model: T</code></td>
+          <td>Receives the typed step model before activation</td>
+        </tr>
+        <tr>
+          <td><code>OnStepActivate</code></td>
+          <td><code>activate(changes)</code></td>
+          <td>Called every time the step becomes active</td>
+        </tr>
+        <tr>
+          <td><code>OnStepValidate</code></td>
+          <td><code>validate(): Observable&lt;boolean&gt;</code></td>
+          <td>Called when user clicks Next; returning false keeps the step open</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="api-footer" class="clr-mt-48px" cds-text="title">WizardFooter Interface</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Implemented by the component referenced in <code>footer.componentClass</code>. The wizard re-injects these
+      properties on every step change.
+    </p>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>currentStep</code></td>
+          <td>Step</td>
+          <td>The currently active step</td>
+        </tr>
+        <tr>
+          <td><code>steps</code></td>
+          <td>Step[]</td>
+          <td>All steps configured on the wizard</td>
+        </tr>
+        <tr>
+          <td><code>workflowModel</code></td>
+          <td>WorkflowModel</td>
+          <td>The shared wizard model</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="api-prevent-error" class="clr-mt-48px" cds-text="title">preventDisplayingWizardError</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      A sentinel <code>Error</code> exported by the addon. Throw it (or error the
+      <code>CloseHandler.onSubmit</code> /<code>onCancel</code> Observable with it) to keep the wizard open without the
+      default error banner — the consumer becomes responsible for surfacing that error itself.
+    </p>
+  </app-doc-tab>
+</app-doc-tabs>

@@ -372,6 +372,11 @@ export const documentationRoutes: Routes = [
         loadChildren: () =>
           import('./demos/stepper-addon/stepper-addon.demo.module').then(m => m.StepperAddonDemoModule),
       },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'wizard-addon/:tab?' },
+        loadChildren: () => import('./demos/wizard-addon/wizard-addon.demo.module').then(m => m.WizardAddonDemoModule),
+      },
     ],
   },
 ];

@@ -389,6 +389,42 @@ export class MockAppfxDatagridComponent {
 }
 
 // @public (undocumented)
+export class MockAppfxWizardComponent {
+    // (undocumented)
+    loading: boolean;
+    // Warning: (ae-forgotten-export) The symbol "Reason" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    onClose: EventEmitter<Reason>;
+    // (undocumented)
+    onFinish: EventEmitter<void>;
+    // Warning: (ae-forgotten-export) The symbol "ModelChange" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    onModelChange: EventEmitter<ModelChange[]>;
+    // (undocumented)
+    opened: boolean;
+    // (undocumented)
+    openedChange: EventEmitter<boolean>;
+    // Warning: (ae-forgotten-export) The symbol "Step" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    pages: Step[];
+    // (undocumented)
+    size: string;
+    // (undocumented)
+    title: string;
+    // Warning: (ae-forgotten-export) The symbol "WorkflowModel" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    wizardModel: WorkflowModel;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxWizardComponent, "appfx-wizard", never, { "title": { "alias": "title"; "required": false; }; "pages": { "alias": "pages"; "required": false; }; "wizardModel": { "alias": "wizardModel"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "size": { "alias": "size"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "openedChange": "openedChange"; "onModelChange": "onModelChange"; "onFinish": "onFinish"; "onClose": "onClose"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxWizardComponent, never>;
+}
+
+// @public (undocumented)
 export class MockCardContainerComponent {
     // (undocumented)
     cardContainer: ViewContainerRef;
@@ -617,16 +653,10 @@ export class MockStepperComponent {
     loading: boolean;
     // (undocumented)
     onFinish: EventEmitter<void>;
-    // Warning: (ae-forgotten-export) The symbol "ModelChange" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
     // (undocumented)
     onModelChange: EventEmitter<ModelChange[]>;
-    // Warning: (ae-forgotten-export) The symbol "Step" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
     // (undocumented)
     steps: Step[];
-    // Warning: (ae-forgotten-export) The symbol "WorkflowModel" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
     // (undocumented)
     wizardModel: WorkflowModel;
     // (undocumented)
@@ -641,6 +671,21 @@ export class MockStepperStandaloneComponent extends MockStepperComponent {
     static ɵcmp: i0.ɵɵComponentDeclaration<MockStepperStandaloneComponent, "appfx-stepper", never, {}, {}, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockStepperStandaloneComponent, never>;
+}
+
+// @public (undocumented)
+export class MockWizardStandaloneComponent extends MockAppfxWizardComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockWizardStandaloneComponent, "appfx-wizard", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockWizardStandaloneComponent, never>;
+}
+
+// @public (undocumented)
+export class MockWorkflowConfigurationService {
+    // (undocumented)
+    get debug(): boolean;
+    set debug(newValue: boolean);
 }
 
 // @public (undocumented)
@@ -716,6 +761,61 @@ export function verifyPropertyViewMessage(textValue: string, icon: string, messa
 //
 // @public (undocumented)
 export function verifyPropertyViewProperty(key: string, value: string[], propertyModel: PropertyViewPropertyModel): void;
+
+// @public (undocumented)
+export class WizardHelper {
+    constructor(wizard: DebugElement);
+    // (undocumented)
+    get activePageNavTitle(): string | undefined;
+    // (undocumented)
+    get activePageTitle(): string;
+    // (undocumented)
+    back(): void;
+    // (undocumented)
+    get backButton(): DebugElement;
+    // (undocumented)
+    get backButtonText(): string;
+    // (undocumented)
+    get buttons(): DebugElement[];
+    // (undocumented)
+    cancel(): void;
+    // (undocumented)
+    get cancelButton(): DebugElement;
+    // (undocumented)
+    get cancelButtonText(): string;
+    // (undocumented)
+    closeNavigator(): void;
+    // (undocumented)
+    finish(): void;
+    // (undocumented)
+    get finishButton(): DebugElement;
+    // (undocumented)
+    get finishButtonText(): string;
+    // (undocumented)
+    isNavVisible(): boolean;
+    // (undocumented)
+    isShowNavIconVisible(): boolean;
+    // (undocumented)
+    isStepNavEnabled(stepIndex: number): boolean;
+    // (undocumented)
+    get isVisible(): boolean;
+    // (undocumented)
+    navigateToStep(stepIndex: number): void;
+    // (undocumented)
+    next(): void;
+    // (undocumented)
+    get nextButton(): DebugElement;
+    // (undocumented)
+    get nextButtonText(): string;
+    // (undocumented)
+    get pageNavTitles(): Array<string | undefined>;
+    // (undocumented)
+    showNavigator(): void;
+    // (undocumented)
+    get size(): string | undefined;
+    // (undocumented)
+    get visibleButtons(): DebugElement[];
+}
 
 // @public (undocumented)
 export class ZoomLevelServiceMock {

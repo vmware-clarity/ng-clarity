@@ -5,10 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './card-container';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './property-view';
-export * from './stepper';
-export * from './wizard';
+import { Out, StepModel, StepValidationState, Var } from '@clr/addons/var';
+
+export class SelectVmModel implements StepModel {
+  loading = false;
+  validationState = new StepValidationState();
+
+  @Out() vmId: Var<string> = Var.of();
+
+  @Out() vmName: Var<string> = Var.of();
+}

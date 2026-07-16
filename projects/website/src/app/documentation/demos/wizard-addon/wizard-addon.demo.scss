@@ -5,10 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './card-container';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './property-view';
-export * from './stepper';
-export * from './wizard';
+.wizard-playground-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}

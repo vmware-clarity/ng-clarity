@@ -4,11 +4,8 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
-export * from './a11y';
-export * from './card-container';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './property-view';
-export * from './stepper';
-export * from './wizard';
+.saved-as-draft {
+  margin-left: 0.5rem;
+  font-style: italic;
+  color: var(--clr-color-neutral-600, #737373);
+}
