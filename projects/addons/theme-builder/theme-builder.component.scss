@@ -42,31 +42,30 @@
   align-items: center;
   gap: var(--clr-base-gap-m);
   flex-wrap: wrap;
+  margin: 0 var(--clr-base-gap-m);
 }
 
 .tb-preset-cards {
-  display: flex;
   gap: var(--clr-base-gap-l);
-  flex-flow: row nowrap;
-}
 
-// Modeled on app-link-cards' `.card-link`: a clickable card pairing a colored
-// badge with a text label — square swatch instead of a hexagon, no arrow icon.
-.tb-preset-card {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--clr-base-gap-m);
-  margin: 0;
-  padding: var(--clr-base-vertical-offset-m) var(--clr-base-horizontal-offset-m);
-  min-width: 170px;
+  // Modeled on app-link-cards' `.card-link`: a clickable card pairing a colored
+  // badge with a text label — square swatch instead of a hexagon, no arrow icon.
+  .tb-preset-card {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--clr-base-gap-m);
+    margin: 0;
+    padding: var(--clr-base-vertical-offset-m) var(--clr-base-horizontal-offset-m);
+    min-width: 170px;
 
-  &.tb-preset-card-active {
-    outline: var(--cds-alias-object-border-width-200) solid var(--cds-alias-primary);
-    outline-offset: 2px;
-  }
+    &.tb-preset-card-active {
+      outline: var(--cds-alias-object-border-width-200) solid var(--cds-alias-primary);
+      outline-offset: 2px;
+    }
 
-  .card-text {
-    margin-bottom: 0;
+    .card-text {
+      margin-bottom: 0;
+    }
   }
 }
 
@@ -74,12 +73,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 32px;
-  min-width: 32px;
+  height: var(--clr-base-row-height-m);
+  min-width: var(--clr-base-row-height-m);
   border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
   border-radius: var(--cds-alias-object-border-radius-100);
   background: var(--cds-alias-object-container-background);
-  font-size: 0.5rem;
   color: var(--cds-alias-typography-color-300);
 }
 

@@ -7,11 +7,11 @@
 
 <!-- Preset selector -->
 <div class="tb-presets" cds-layout="m-t:lg">
-  <div class="tb-preset-cards">
+  <div class="tb-preset-cards clr-row">
     @for (preset of presets; track preset.name) {
       <a
         href="javascript://"
-        class="card clickable tb-preset-card"
+        class="card clickable tb-preset-card clr-col-1"
         [class.tb-preset-card-active]="activePreset?.name === preset.name"
         (click)="applyPreset(preset)"
       >
@@ -21,6 +21,10 @@
     }
   </div>
 </div>
+
+<!-- ── Preview DARK card ── -->
+<!-- Invisible for filling the dark values on initial load -->
+<div style="display: none" #previewDarkWrapper cds-theme="dark"></div>
 
 <!-- ── Two-column layout: controls | preview ── -->
 <div class="tb-layout" cds-layout="m-t:lg m-b:lg">
@@ -106,10 +110,6 @@
     </div>
   </div>
   <!-- end controls card -->
-
-  <!-- ── Preview DARK card ── -->
-  <!-- Invisible for filling the dark values on initial load -->
-  <div style="display: none" #previewDarkWrapper cds-theme="dark"></div>
 
   <!-- ── Preview card (right column) ── -->
   <div class="card tb-preview-card">
