@@ -1,9 +1,10 @@
 import * as i0 from '@angular/core';
-import { Component, Input, ViewContainerRef, ViewChild, ElementRef, EventEmitter, Output, Directive, Pipe } from '@angular/core';
+import { Component, Input, ViewContainerRef, ViewChild, ElementRef, EventEmitter, Output, Directive, Pipe, Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { ClrDatagrid } from '@clr/angular/data/datagrid';
 import { FilterMode } from '@clr/addons/datagrid-filters';
+import { PropertyViewStrings, PropertyViewModelType } from '@clr/addons/property-view';
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -1272,10 +1273,95 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+class MockPropertyViewComponent {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockPropertyViewComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockPropertyViewComponent, isStandalone: false, selector: "appfx-property-view", inputs: { data: "data", config: "config" }, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockPropertyViewComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-property-view',
+                    standalone: false,
+                    template: '',
+                }]
+        }], propDecorators: { data: [{
+                type: Input
+            }], config: [{
+                type: Input
+            }] } });
+class MockPropertyViewStandaloneComponent extends MockPropertyViewComponent {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockPropertyViewStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockPropertyViewStandaloneComponent, isStandalone: true, selector: "appfx-property-view", usesInheritance: true, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockPropertyViewStandaloneComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-property-view',
+                    standalone: true,
+                    template: '',
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/**
+ * Mock user-visible strings used in the 'appfx-property-view' library.
+ */
+class MockPropertyViewStrings extends PropertyViewStrings {
+    constructor() {
+        super(...arguments);
+        this.toggle = 'Toggle {0} section';
+        this.actions = 'Actions';
+        this.categoryListItemsAreaLabel = '{0} items grouped in {1} sections.';
+        this.categoryListItemAreaLabel = '{0} items grouped in 1 section.';
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockPropertyViewStrings, deps: null, target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockPropertyViewStrings }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockPropertyViewStrings, decorators: [{
+            type: Injectable
+        }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+function verifyPropertyViewProperty(key, value, propertyModel) {
+    expect(propertyModel.type).toEqual(PropertyViewModelType.Property);
+    expect(propertyModel.key.text).toEqual(key);
+    for (let i = 0; i < value.length; i++) {
+        expect(propertyModel.content[i].text).toEqual(value[i]);
+    }
+}
+function verifyPropertyViewMessage(textValue, icon, messageModel) {
+    expect(messageModel.type).toEqual(PropertyViewModelType.Message);
+    expect(messageModel.text).toEqual(textValue);
+    expect(messageModel.icon).toEqual(icon);
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 
 /**
  * Generated bundle index. Do not edit.
  */
 
-export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn };
+export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
 //# sourceMappingURL=clr-addons-testing.mjs.map

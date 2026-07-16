@@ -8,6 +8,7 @@ import { ClrDatagridVirtualScrollRangeInterface, ClrDatagrid } from '@clr/angula
 import { ActionDefinition } from '@clr/addons/datagrid';
 import { ComponentFixture } from '@angular/core/testing';
 import { FilterMode, FilterablePropertyDefinition, PropertyFilter } from '@clr/addons/datagrid-filters';
+import { PropertyViewStrings, PropertyViewMessageModel, PropertyViewPropertyModel } from '@clr/addons/property-view';
 
 declare class MockRequiredFieldLegendComponent {
     static ɵfac: i0.ɵɵFactoryDeclaration<MockRequiredFieldLegendComponent, never>;
@@ -348,4 +349,30 @@ declare class MockDatagridFiltersStandaloneComponent extends MockDatagridFilters
     static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersStandaloneComponent, "appfx-datagrid-filters", never, {}, {}, never, never, true, never>;
 }
 
-export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn };
+declare class MockPropertyViewComponent {
+    data: any;
+    config: any;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockPropertyViewComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockPropertyViewComponent, "appfx-property-view", never, { "data": { "alias": "data"; "required": false; }; "config": { "alias": "config"; "required": false; }; }, {}, never, never, false, never>;
+}
+declare class MockPropertyViewStandaloneComponent extends MockPropertyViewComponent {
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockPropertyViewStandaloneComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockPropertyViewStandaloneComponent, "appfx-property-view", never, {}, {}, never, never, true, never>;
+}
+
+/**
+ * Mock user-visible strings used in the 'appfx-property-view' library.
+ */
+declare class MockPropertyViewStrings extends PropertyViewStrings {
+    toggle: string;
+    actions: string;
+    categoryListItemsAreaLabel: string;
+    categoryListItemAreaLabel: string;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockPropertyViewStrings, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<MockPropertyViewStrings>;
+}
+
+declare function verifyPropertyViewProperty(key: string, value: string[], propertyModel: PropertyViewPropertyModel): void;
+declare function verifyPropertyViewMessage(textValue: string, icon: string, messageModel: PropertyViewMessageModel): void;
+
+export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
