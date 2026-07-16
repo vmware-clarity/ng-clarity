@@ -5,14 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export class MockWorkflowConfigurationService {
-  private debugValue = false;
-
-  get debug(): boolean {
-    return this.debugValue;
-  }
-
-  set debug(newValue: boolean) {
-    this.debugValue = newValue;
-  }
-}
+export {
+  InvalidMockComponent,
+  MockStepComponent,
+  MockStepModel,
+  MockWorkflowConfigurationService,
+  MockWorkflowTestModule,
+} from './workflow.mock';

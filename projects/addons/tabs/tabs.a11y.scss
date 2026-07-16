@@ -5,12 +5,22 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './card-container';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './property-view';
-export * from './stepper';
-export * from './tabs';
-export * from './var';
-export * from './wizard';
+:host {
+  .appfx-tabs {
+    &.show-tab-content {
+      ::ng-deep {
+        .tab-content {
+          display: flex !important;
+        }
+      }
+    }
+
+    &:not(.show-tab-content) {
+      ::ng-deep {
+        .tab-content {
+          display: none;
+        }
+      }
+    }
+  }
+}

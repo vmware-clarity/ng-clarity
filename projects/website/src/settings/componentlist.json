@@ -350,6 +350,12 @@
       "text": "Wizard",
       "type": "addons",
       "storybookPath": "addons-wizard"
+    },
+    {
+      "url": "tabs-addon",
+      "text": "Tabs",
+      "type": "addons",
+      "storybookPath": "addons-tabs"
     }
   ]
 }

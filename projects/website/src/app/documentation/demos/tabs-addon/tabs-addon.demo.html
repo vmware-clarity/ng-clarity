@@ -1,0 +1,421 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h1>Tabs</h1>
+
+<app-doc-tabs>
+  <!-- ═══════════════ OVERVIEW ═══════════════ -->
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      <code cds-text="code">&#64;clr/addons/tabs</code> renders a composition of step components as a tabbed interface
+      using Clarity's <code cds-text="code">clr-tabs</code>. The workflow is orchestrated by the same
+      <code cds-text="code">WorkflowModelManager</code> used by the Wizard and Stepper, so step components and step
+      models can be reused across all three patterns without modification.
+    </p>
+
+    <h2 id="structure" class="clr-mt-48px" cds-text="title">Tabs Structure</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      AppFx Tabs is built on top of Clarity Tabs and shares the same structural building blocks as Wizard and Stepper:
+    </p>
+    <ol cds-list class="clr-mt-8px">
+      <li>
+        <strong>Tabs component</strong> — hosts <code cds-text="code">&lt;appfx-tabs&gt;</code>, configures
+        <code cds-text="code">tabs</code> and <code cds-text="code">model</code>, and exposes
+        <code cds-text="code">validate$()</code> for the caller to invoke on save.
+      </li>
+      <li>
+        <strong>Tabs model</strong> — a POJO with <code cds-text="code">Var&lt;T&gt;</code> properties shared across
+        steps, identical in shape to a Wizard or Stepper model.
+      </li>
+      <li>
+        <strong>Step component</strong> (per tab) — implements <code cds-text="code">StepModelHolder</code> to receive
+        the typed step model, same as a Wizard page.
+      </li>
+      <li>
+        <strong>Step model</strong> (per tab) — typed POJO with input/output properties, reusable between Tabs, Wizard,
+        and Stepper.
+      </li>
+    </ol>
+
+    <h2 id="features" class="clr-mt-48px" cds-text="title">Features</h2>
+
+    <h3 class="clr-mt-24px" cds-text="section">Horizontal, Vertical, or Secondary tabs</h3>
+    <p cds-text="body" class="clr-mt-8px">
+      AppFx Tabs offers the flexibility to display tabs horizontally (the default), in a vertical orientation, or as a
+      secondary tab in a horizontal layout. To customize the layout, set the
+      <code cds-text="code">tabLayout</code> property.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="section">Disable all tabs</h3>
+    <p cds-text="body" class="clr-mt-8px">
+      Tab <strong>content</strong> can be disabled with the <code cds-text="code">disableTabsContent</code> property.
+      The user will still be able to click around the tabs but will not be able to interact with the step components.
+      When tab content is disabled, steps will not get validated.
+    </p>
+
+    <h3 class="clr-mt-24px" cds-text="section">Reusable in AppFx Dialog</h3>
+    <p cds-text="body" class="clr-mt-8px">
+      AppFx Tabs is fully compatible with AppFx Dialog, with both components sharing the same underlying workflow
+      functionality. The key distinction lies in how they are rendered, with AppFx Dialog appearing as a modal popup.
+      This compatibility allows one to effortlessly use AppFx Tabs within AppFx Dialog, reducing code duplication and
+      enhancing maintainability.
+    </p>
+
+    <div class="clr-row clr-mt-24px">
+      <div class="clr-col-6">
+        <ul cds-list>
+          <li>Collapsible tab links — auto-collapses at high zoom levels (accessibility)</li>
+          <li>Per-tab validation with error badges on invalid tabs</li>
+        </ul>
+      </div>
+      <div class="clr-col-6">
+        <ul cds-list>
+          <li>
+            Programmatic validation via <code cds-text="code">validate$()</code> and
+            <code cds-text="code">validateActiveTab$()</code>
+          </li>
+          <li>Auto-focuses the first invalid tab when <code cds-text="code">validate$()</code> fails</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 id="import" class="clr-mt-48px" cds-text="title">Module Import</h2>
+    <app-code-snippet [code]="moduleImportTs" language="typescript" [copy]="true"></app-code-snippet>
+  </app-doc-tab>
+
+  <!-- ═══════════════ CODE ═══════════════ -->
+  <app-doc-tab tab="code">
+    <!-- Playground controls -->
+    <div class="tabs-playground-controls">
+      <clr-radio-container clrInline>
+        <label>Layout</label>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="layout" [value]="TabLayout.horizontal" [(ngModel)]="selectedLayout" />
+          <label>Horizontal</label>
+        </clr-radio-wrapper>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="layout" [value]="TabLayout.vertical" [(ngModel)]="selectedLayout" />
+          <label>Vertical</label>
+        </clr-radio-wrapper>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio name="layout" [value]="TabLayout.secondary" [(ngModel)]="selectedLayout" />
+          <label>Secondary</label>
+        </clr-radio-wrapper>
+      </clr-radio-container>
+
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="disableContent" />
+        <label>Disable tab content</label>
+      </clr-toggle-wrapper>
+
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle [(ngModel)]="showTabLinks" />
+        <label>Show tab links</label>
+      </clr-toggle-wrapper>
+    </div>
+
+    <!-- Live demo -->
+    <div class="tabs-demo-container">
+      <appfx-tabs
+        [tabs]="steps"
+        [model]="tabsModel"
+        [tabLayout]="selectedLayout"
+        [disableTabsContent]="disableContent"
+        [showTabLinks]="showTabLinks"
+      >
+      </appfx-tabs>
+    </div>
+
+    <h2 id="full-tabs" class="clr-mt-48px" cds-text="title">Full Tabs demo (code example)</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      A self-contained Stackblitz example with the same layout, disable-content, and show-tab-links controls as the
+      playground above, wired to their own <code cds-text="code">appfx-tabs</code> instance.
+    </p>
+
+    <app-stackblitz-example
+      name="full-tabs"
+      [componentTemplate]="fullTabsHtml"
+      [componentClass]="fullTabsTs"
+    ></app-stackblitz-example>
+  </app-doc-tab>
+
+  <!-- ═══════════════ API ═══════════════ -->
+  <app-doc-tab tab="api">
+    <h3>AppfxTabsComponent (<code>appfx-tabs</code>)</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>I/O</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>tabs</code></td>
+          <td>Input</td>
+          <td><code>Step[]</code></td>
+          <td>—</td>
+          <td>Step definitions to display as tabs.</td>
+        </tr>
+        <tr>
+          <td><code>model</code></td>
+          <td>Input</td>
+          <td><code>WorkflowModel</code></td>
+          <td>—</td>
+          <td>Shared model injected across steps.</td>
+        </tr>
+        <tr>
+          <td><code>tabLayout</code></td>
+          <td>Input</td>
+          <td><code>TabLayout</code></td>
+          <td><code>horizontal</code></td>
+          <td>Layout: <code>horizontal</code>, <code>vertical</code>, or <code>secondary</code>.</td>
+        </tr>
+        <tr>
+          <td><code>disableTabsContent</code></td>
+          <td>Input</td>
+          <td><code>boolean</code></td>
+          <td><code>false</code></td>
+          <td>Disables all tab content interaction without hiding tabs.</td>
+        </tr>
+        <tr>
+          <td><code>loading</code></td>
+          <td>Input</td>
+          <td><code>boolean</code></td>
+          <td><code>false</code></td>
+          <td>Shows a loading indicator on the component host.</td>
+        </tr>
+        <tr>
+          <td><code>showLoadingIndicator</code></td>
+          <td>Input</td>
+          <td><code>boolean</code></td>
+          <td><code>true</code></td>
+          <td>Controls whether a loading indicator appears during validation.</td>
+        </tr>
+        <tr>
+          <td><code>showTabLinks</code></td>
+          <td>Input</td>
+          <td><code>boolean</code></td>
+          <td><code>true</code></td>
+          <td>Show or hide the tab navigation links.</td>
+        </tr>
+        <tr>
+          <td><code>autoCollapseTabLinks</code></td>
+          <td>Input</td>
+          <td><code>boolean</code></td>
+          <td><code>true</code></td>
+          <td>Auto-collapses vertical tab links at high zoom levels.</td>
+        </tr>
+        <tr>
+          <td><code>onModelChange</code></td>
+          <td>Output</td>
+          <td><code>EventEmitter&lt;ModelChange[]&gt;</code></td>
+          <td>—</td>
+          <td>Emits on any workflow state variable change.</td>
+        </tr>
+        <tr>
+          <td><code>activeTabChange</code></td>
+          <td>Output</td>
+          <td><code>EventEmitter&lt;Step&gt;</code></td>
+          <td>—</td>
+          <td>Emits the activated step when the current tab changes.</td>
+        </tr>
+        <tr>
+          <td><code>tabLinksOpenedChange</code></td>
+          <td>Output</td>
+          <td><code>EventEmitter&lt;boolean&gt;</code></td>
+          <td>—</td>
+          <td>Emits when the collapsible tab links panel opens or closes.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Step Interface</h3>
+    <p>The <code>Step</code> interface describes the content of each tab.</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Required?</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>title</code></td>
+          <td><code>string</code></td>
+          <td>Yes</td>
+          <td>Tab title.</td>
+        </tr>
+        <tr>
+          <td><code>componentClass</code></td>
+          <td><code>Type&lt;any&gt;</code></td>
+          <td>Yes</td>
+          <td>Step component class rendered inside the tab.</td>
+        </tr>
+        <tr>
+          <td><code>model</code></td>
+          <td><code>StepModel | StepModelFactory</code></td>
+          <td>No</td>
+          <td>
+            Data model of the step, containing input and output properties. Use a
+            <code>StepModelFactory</code> if <code>recreateComponent</code> is set.
+          </td>
+        </tr>
+        <tr>
+          <td><code>instantiateLazy</code></td>
+          <td><code>boolean</code></td>
+          <td>No</td>
+          <td>
+            If <code>true</code>, the step component is instantiated upon first activation. If <code>false</code>, it's
+            instantiated immediately when the tabs component is created. Default: <code>false</code>.
+          </td>
+        </tr>
+        <tr>
+          <td><code>mappings</code></td>
+          <td><code>Mappings</code></td>
+          <td>No</td>
+          <td>Property name mappings between the step model and the tabs model, if names differ.</td>
+        </tr>
+        <tr>
+          <td><code>recreateComponent</code></td>
+          <td><code>(stepModelChanges?: ModelChanges) =&gt; boolean</code></td>
+          <td>No</td>
+          <td>Recreate the step component whenever this function returns <code>true</code>.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Public methods</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Returns</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>validate$()</code></td>
+          <td><code>Observable&lt;boolean&gt;</code></td>
+          <td>Validates all tabs; navigates to the first invalid one.</td>
+        </tr>
+        <tr>
+          <td><code>validateActiveTab$()</code></td>
+          <td><code>Observable&lt;boolean&gt;</code></td>
+          <td>Validates only the currently active tab.</td>
+        </tr>
+        <tr>
+          <td><code>isTabActive(step)</code></td>
+          <td><code>boolean</code></td>
+          <td>Returns true if the given step is currently active.</td>
+        </tr>
+        <tr>
+          <td><code>isReady</code></td>
+          <td><code>boolean</code></td>
+          <td>True when all visible tabs have completed their setup.</td>
+        </tr>
+        <tr>
+          <td><code>isLoading</code></td>
+          <td><code>boolean</code></td>
+          <td>True when any step model or the component itself is loading.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>IfTabActiveDirective (<code>[appfxIfTabActive]</code>)</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>I/O</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>appfxIfTabActiveChange</code></td>
+          <td>Output</td>
+          <td><code>EventEmitter&lt;boolean&gt;</code></td>
+          <td>Emits when the tab's active state changes.</td>
+        </tr>
+        <tr>
+          <td><code>activeClass</code></td>
+          <td>Input</td>
+          <td><code>string</code></td>
+          <td>CSS class applied to the tab link when active.</td>
+        </tr>
+        <tr>
+          <td><code>activateTab</code></td>
+          <td>Input</td>
+          <td><code>boolean</code></td>
+          <td>Set to <code>true</code> to programmatically activate the tab.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>RenderAsButtonDirective (<code>[renderAsButton]</code>)</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>I/O</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>renderAsButton</code></td>
+          <td>Input</td>
+          <td><code>boolean</code></td>
+          <td><code>true</code></td>
+          <td>Strips nav-link CSS classes from the tab link, rendering it as a plain button.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>TabLinksComponent (<code>appfx-tab-links</code>)</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>I/O</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>opened</code></td>
+          <td>Input</td>
+          <td><code>boolean</code></td>
+          <td>Whether the collapsible links panel is open.</td>
+        </tr>
+        <tr>
+          <td><code>title</code></td>
+          <td>Input</td>
+          <td><code>string</code></td>
+          <td>Title shown next to the hamburger button when collapsed.</td>
+        </tr>
+        <tr>
+          <td><code>openedChange</code></td>
+          <td>Output</td>
+          <td><code>EventEmitter&lt;boolean&gt;</code></td>
+          <td>Two-way binding support for the opened state.</td>
+        </tr>
+      </tbody>
+    </table>
+  </app-doc-tab>
+</app-doc-tabs>
