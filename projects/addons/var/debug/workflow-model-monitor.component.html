@@ -1,0 +1,32 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<clr-signpost>
+  <ng-template [(clrIfOpen)]="isOpen">
+    <clr-signpost-content #signpostContent clrPosition="left-bottom">
+      <h4 class="title">Workflow Model</h4>
+
+      <div *ngFor="let prop of debugModel" class="clr-row clr-flex-nowrap">
+        <div class="clr-col-7">
+          <h6
+            class="prop-name text-truncate"
+            title="{{ prop.name }}"
+            [class.simple-var]="prop.simpleVar"
+            [class.computed-var]="prop.computedVar"
+          >
+            {{ prop.name }}
+          </h6>
+        </div>
+        <div class="clr-col-5">
+          <h6 class="prop-value text-truncate" title="{{ prop.value }}" [class.prop-changed]="prop.changed">
+            {{ prop.value }}
+          </h6>
+        </div>
+      </div>
+    </clr-signpost-content>
+  </ng-template>
+</clr-signpost>

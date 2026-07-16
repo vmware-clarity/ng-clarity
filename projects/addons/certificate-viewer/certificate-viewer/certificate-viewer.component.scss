@@ -1,0 +1,69 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+[role='heading'] {
+  margin-top: 0;
+
+  &.certificate-viewer-title {
+    color: var(--clr-h5-color);
+    font-weight: var(--clr-h5-font-weight);
+    font-size: var(--clr-h5-font-size);
+    line-height: var(--clr-h5-line-height);
+    letter-spacing: var(--clr-h5-letter-spacing);
+  }
+
+  &.certificate-viewer-general-subtitle {
+    color: var(--clr-h6-color);
+    font-weight: var(--clr-h6-font-weight);
+    font-size: var(--clr-h6-font-size);
+    line-height: var(--clr-h6-line-height);
+    letter-spacing: var(--clr-h6-letter-spacing);
+  }
+
+  &.certificate-viewer-details-subtitle {
+    margin-bottom: 0.5rem;
+    color: var(--clr-h5-color);
+    font-weight: var(--clr-h5-font-weight);
+    font-size: var(--clr-h5-font-size);
+    line-height: var(--clr-h5-line-height);
+    letter-spacing: var(--clr-h5-letter-spacing);
+  }
+}
+
+clr-tabs {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+
+  // Unfortunately the clr-tab section is not a flexible element but instead is an inline element.
+  // This prevents proper content filling and requires a deep override.
+  ::ng-deep {
+    section {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+    }
+  }
+}
+
+appfx-certificate-viewer-general,
+appfx-certificate-viewer-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}

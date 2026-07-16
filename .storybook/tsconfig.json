@@ -7,7 +7,9 @@
     "baseUrl": "./",
     "paths": {
       "@clr/angular": ["./../projects/angular/index.ts"],
-      "@clr/angular/*": ["./../projects/angular/*"]
+      "@clr/angular/*": ["./../projects/angular/*"],
+      "@clr/addons": ["./../projects/addons/index.ts"],
+      "@clr/addons/*": ["./../projects/addons/*"]
     },
     "types": ["node"]
   },
