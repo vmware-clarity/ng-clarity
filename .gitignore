@@ -1,5 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# Figma credentials (never commit real tokens)
+.env.figma
+
 # Compiled output
 /dist
 /tmp
