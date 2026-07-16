@@ -436,6 +436,9 @@ export class MockAppfxMenuStandaloneComponent extends MockAppfxMenuComponent {
     static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxMenuStandaloneComponent, "appfx-menu", never, {}, {}, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxMenuStandaloneComponent, never>;
+}
+
+// @public (undocumented)
 export class MockCardContainerComponent {
     // (undocumented)
     cardContainer: ViewContainerRef;
