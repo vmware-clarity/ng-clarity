@@ -73,6 +73,12 @@ import { ViewContainerRef } from '@angular/core';
 import { ViewportRuler } from '@angular/cdk/scrolling';
 
 // @public (undocumented)
+export const cardIdToOrder: {
+    [x: string]: number;
+    cardWithDefaultOrder: number;
+};
+
+// @public (undocumented)
 export class FilterInputTestHelper {
     constructor(inputElement: HTMLInputElement);
     // (undocumented)
@@ -249,6 +255,44 @@ export class GridRowTestHelper {
 }
 
 // @public (undocumented)
+export class MockA11yService {
+    // (undocumented)
+    isDraggableOver(): void;
+    // (undocumented)
+    isSelected(): void;
+    // (undocumented)
+    moveDropPosition(): void;
+    // (undocumented)
+    selectCard(): void;
+}
+
+// @public (undocumented)
+export class MockAppfxCardContainerComponent {
+    // (undocumented)
+    cards: unknown[];
+    // (undocumented)
+    containerId: string;
+    // (undocumented)
+    dragDropEnabled: boolean;
+    // (undocumented)
+    persistenceStore?: unknown;
+    // (undocumented)
+    showCardContainerSettings: boolean;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxCardContainerComponent, "appfx-card-container", never, { "containerId": { "alias": "containerId"; "required": false; }; "cards": { "alias": "cards"; "required": false; }; "persistenceStore": { "alias": "persistenceStore"; "required": false; }; "showCardContainerSettings": { "alias": "showCardContainerSettings"; "required": false; }; "dragDropEnabled": { "alias": "dragDropEnabled"; "required": false; }; }, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxCardContainerComponent, never>;
+}
+
+// @public (undocumented)
+export class MockAppfxCardContainerStandaloneComponent extends MockAppfxCardContainerComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxCardContainerStandaloneComponent, "appfx-card-container", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxCardContainerStandaloneComponent, never>;
+}
+
+// @public (undocumented)
 export class MockAppfxDatagridComponent {
     // (undocumented)
     actionBarActions: any[];
@@ -392,6 +436,23 @@ export class MockAppfxMenuStandaloneComponent extends MockAppfxMenuComponent {
     static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxMenuStandaloneComponent, "appfx-menu", never, {}, {}, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxMenuStandaloneComponent, never>;
+export class MockCardContainerComponent {
+    // (undocumented)
+    cardContainer: ViewContainerRef;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockCardContainerComponent, "ng-component", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockCardContainerComponent, never>;
+}
+
+// @public (undocumented)
+export class MockContainerService {
+    // (undocumented)
+    getCardOrder(): void;
+    // (undocumented)
+    getVisibleCardsCount(): void;
+    // (undocumented)
+    moveCard(): void;
 }
 
 // @public (undocumented)
@@ -496,6 +557,22 @@ export class MockDatagridPreserveSelectionDirective {
 }
 
 // @public (undocumented)
+export class MockDragDropService {
+    // (undocumented)
+    onDragDrop(): void;
+    // (undocumented)
+    onDragStart(): void;
+}
+
+// @public (undocumented)
+export class MockElementRef extends ElementRef {
+    // (undocumented)
+    nativeElement: {
+        querySelector: () => void;
+    };
+}
+
+// @public (undocumented)
 export class MockIsRowSelectablePipe implements PipeTransform {
     // (undocumented)
     transform(rowItem: any, isLocked?: (rowItem: any) => boolean, disabled?: boolean): boolean;
@@ -503,6 +580,58 @@ export class MockIsRowSelectablePipe implements PipeTransform {
     static ɵfac: i0.ɵɵFactoryDeclaration<MockIsRowSelectablePipe, never>;
     // (undocumented)
     static ɵpipe: i0.ɵɵPipeDeclaration<MockIsRowSelectablePipe, "isRowSelectable", false>;
+}
+
+// @public (undocumented)
+export class MockLayoutService {
+    // (undocumented)
+    updateCardSize(): void;
+}
+
+// @public (undocumented)
+export class MockPropertyViewComponent {
+    // (undocumented)
+    config: any;
+    // (undocumented)
+    data: any;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockPropertyViewComponent, "appfx-property-view", never, { "data": { "alias": "data"; "required": false; }; "config": { "alias": "config"; "required": false; }; }, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockPropertyViewComponent, never>;
+}
+
+// @public (undocumented)
+export class MockPropertyViewStandaloneComponent extends MockPropertyViewComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockPropertyViewStandaloneComponent, "appfx-property-view", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockPropertyViewStandaloneComponent, never>;
+}
+
+// Warning: (ae-forgotten-export) The symbol "PropertyViewStrings" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public
+export class MockPropertyViewStrings extends PropertyViewStrings {
+    // (undocumented)
+    actions: string;
+    // (undocumented)
+    categoryListItemAreaLabel: string;
+    // (undocumented)
+    categoryListItemsAreaLabel: string;
+    // (undocumented)
+    toggle: string;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockPropertyViewStrings, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<MockPropertyViewStrings>;
+}
+
+// @public (undocumented)
+export class MockRenderer2 {
+    // (undocumented)
+    removeStyle(el: any, name: string): void;
+    // (undocumented)
+    setStyle(el: any, name: string, style: string): void;
 }
 
 // @public (undocumented)
@@ -528,6 +657,80 @@ export class MockStandaloneDatagridComponent extends MockAppfxDatagridComponent 
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockStandaloneDatagridComponent, never>;
 }
+
+// @public (undocumented)
+export class SampleCardComponent {
+    constructor(el: ElementRef);
+    // (undocumented)
+    eleRef: ElementRef;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<SampleCardComponent, "ng-component", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<SampleCardComponent, never>;
+}
+
+// @public (undocumented)
+export const sampleCards: ({
+    id: string;
+    title: string;
+    componentClass: typeof SampleCardComponent;
+    hidden: boolean;
+    order: number;
+    view: EmbeddedViewRef<void>;
+    canHide?: undefined;
+} | {
+    id: string;
+    title: string;
+    componentClass: typeof SampleCardComponent;
+    hidden: boolean;
+    canHide: boolean;
+    order: number;
+    view: EmbeddedViewRef<void>;
+})[];
+
+// @public (undocumented)
+export const sampleCardsSettings: {
+    id: string;
+    hidden: boolean;
+    order: number;
+}[];
+
+// @public (undocumented)
+export class SampleCardWithoutFooterComponent {
+    constructor(el: ElementRef);
+    // (undocumented)
+    eleRef: ElementRef;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<SampleCardWithoutFooterComponent, "ng-component", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<SampleCardWithoutFooterComponent, never>;
+}
+
+// @public (undocumented)
+export class SampleCardWithoutHeaderComponent {
+    constructor(el: ElementRef);
+    // (undocumented)
+    eleRef: ElementRef;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<SampleCardWithoutHeaderComponent, "ng-component", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<SampleCardWithoutHeaderComponent, never>;
+}
+
+// Warning: (ae-forgotten-export) The symbol "AppfxCard" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public (undocumented)
+export const sortCardsFn: (a: AppfxCard, b: AppfxCard) => number;
+
+// Warning: (ae-forgotten-export) The symbol "PropertyViewMessageModel" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public (undocumented)
+export function verifyPropertyViewMessage(textValue: string, icon: string, messageModel: PropertyViewMessageModel): void;
+
+// Warning: (ae-forgotten-export) The symbol "PropertyViewPropertyModel" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public (undocumented)
+export function verifyPropertyViewProperty(key: string, value: string[], propertyModel: PropertyViewPropertyModel): void;
 
 // @public (undocumented)
 export class ZoomLevelServiceMock {
