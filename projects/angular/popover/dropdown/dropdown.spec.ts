@@ -341,12 +341,12 @@ export default function (): void {
       const leaf = fixture.componentInstance.leaf;
       expect(leaf.destroyed).toBeFalse();
 
-      fixture.componentInstance.dropdownTriggerButtonElementRef.nativeElement.click();
+      fixture.componentInstance.dropdownTriggerElRef.nativeElement.click();
       fixture.detectChanges();
       expect(fixture.componentInstance.dropdownInstance.popoverService.open).toBeTrue();
 
       // Clicking the item destroys the ancestor container synchronously, while the popover is still open.
-      fixture.componentInstance.dropdownItemButtonElementRef.nativeElement.click();
+      fixture.componentInstance.dropdownItemButtonElRef.nativeElement.click();
       fixture.detectChanges();
 
       expect(leaf.destroyed).toBeTrue();
@@ -491,14 +491,8 @@ class DropdownItemThatDestroysAncestorTestComponent {
 
   @ViewChild(ClrDropdown) dropdownInstance: ClrDropdown;
   @ViewChild('leaf', { read: DestroyTrackingLeaf }) leaf: DestroyTrackingLeaf;
-
-  // eslint-disable-next-line decorator-position/decorator-position
-  @ViewChild(ClrDropdownTrigger, { read: ElementRef })
-  readonly dropdownTriggerButtonElementRef: ElementRef<HTMLButtonElement>;
-
-  // eslint-disable-next-line decorator-position/decorator-position
-  @ViewChild(ClrDropdownItem, { read: ElementRef })
-  readonly dropdownItemButtonElementRef: ElementRef<HTMLButtonElement>;
+  @ViewChild(ClrDropdownTrigger, { read: ElementRef }) readonly dropdownTriggerElRef: ElementRef<HTMLButtonElement>;
+  @ViewChild(ClrDropdownItem, { read: ElementRef }) readonly dropdownItemButtonElRef: ElementRef<HTMLButtonElement>;
 }
 
 @Component({
