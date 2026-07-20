@@ -10,7 +10,7 @@ import { StoryObj } from '@storybook/angular';
 import { BadgeStoryBookComponent } from './badge.storybook.component';
 
 const BADGE_COLOR_TYPES = ['gray', 'purple', 'blue', 'orange', 'light-blue', '1', '2', '3', '4', '5'];
-const BADGE_STATUS_TYPES = ['', 'primary', 'info', 'success', 'warning', 'danger'];
+const BADGE_STATUS_TYPES = ['', 'info', 'success', 'warning', 'danger'];
 
 export default {
   title: 'Badge/Badge',

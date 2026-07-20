@@ -83,6 +83,10 @@ export const DEFAULT_OVERRIDES = {
 
 export const BACKGROUND_TOKENS = [
   {
+    name: 'Text',
+    token: '--cds-alias-typography-color-100',
+  },
+  {
     name: 'App Background',
     token: '--cds-alias-object-app-background',
   },

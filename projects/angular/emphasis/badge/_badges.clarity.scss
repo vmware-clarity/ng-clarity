@@ -53,7 +53,6 @@
     @include badges-mixins.generateBadgeStyles(blue, 3);
     @include badges-mixins.generateBadgeStyles(orange, 4);
     @include badges-mixins.generateBadgeStyles(light-blue, 5);
-    @include badges-mixins.generateBadgeStyles(primary);
     @include badges-mixins.generateBadgeStyles(info);
     @include badges-mixins.generateBadgeStyles(success);
     @include badges-mixins.generateBadgeStyles(danger);

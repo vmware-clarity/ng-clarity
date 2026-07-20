@@ -40,9 +40,6 @@ import { contrastRatio, wcagScore } from './utils/wcag';
   imports: [ClarityModule, CommonModule, FormsModule],
 })
 export class ThemeBuilderComponent implements OnInit, AfterViewInit {
-  /** Set to true when projecting custom preview content; suppresses the built-in preview. */
-  @Input() customContent = false;
-
   /** Emits the generated CSS override text whenever a color, preset, reset, or override toggle changes. */
   @Output() generatedCSS = new EventEmitter<string>();
 

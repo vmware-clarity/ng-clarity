@@ -10,7 +10,6 @@ import { Type } from '@clr/angular/emphasis/common';
 
 export enum ClrBadgeColors {
   None = '',
-  Primary = 'primary',
   Info = 'info',
   Warning = 'warning',
   Danger = 'danger',

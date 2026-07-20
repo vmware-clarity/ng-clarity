@@ -10,7 +10,8 @@
 
   ::ng-deep {
     .stack-view .stack-view-key {
-      min-width: 46%;
+      min-width: 26%;
+      max-width: 26%;
     }
 
     .stack-view .stack-block-content {
@@ -85,7 +86,7 @@
 
 .tb-layout {
   display: grid;
-  grid-template-columns: 500px 1fr;
+  grid-template-columns: 370px 1fr;
   gap: var(--clr-base-gap-l);
   align-items: start;
 }
@@ -98,6 +99,12 @@
   top: 0;
   max-height: calc(100vh - var(--cds-global-space-15));
   overflow-y: auto;
+
+  .tb-control-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 
 .card-block {
@@ -118,6 +125,7 @@
     border-radius: var(--cds-alias-object-border-radius-100);
     cursor: pointer;
     background: var(--cds-alias-object-container-background);
+    width: var(--cds-global-space-11);
   }
 
   .tb-hex-input {

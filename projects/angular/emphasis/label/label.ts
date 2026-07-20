@@ -11,7 +11,6 @@ import { Type } from '@clr/angular/emphasis/common';
 
 export enum ClrLabelColors {
   None = '',
-  Primary = 'primary',
   Info = 'info',
   Warning = 'warning',
   Danger = 'danger',
