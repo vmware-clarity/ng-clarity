@@ -12,12 +12,8 @@ export const DEFAULT_OVERRIDES = {
   // primary
   // '--cds-alias-primary': ['--cds-alias-object-interaction-background-highlight'],
   '--cds-alias-primary-tint': ['--cds-alias-object-interaction-background-hover'],
-  '--cds-alias-primary-shade': [
-    '--cds-alias-typography-link-color',
-    '--cds-alias-typography-primary-hover',
-    '--cds-alias-object-interaction-primary-hover',
-  ],
-  '--cds-alias-primary-dark': ['--cds-alias-typography-link-color-hover'],
+  '--cds-alias-primary-shade': ['--cds-alias-typography-link-color', '--cds-alias-object-interaction-primary-hover'],
+  '--cds-alias-primary-dark': ['--cds-alias-typography-link-color-hover', '--cds-alias-typography-primary-hover'],
   '--cds-alias-primary-tint-dark': [
     '--cds-alias-object-interaction-background-selected',
     '--cds-alias-object-interaction-background-shade-active',

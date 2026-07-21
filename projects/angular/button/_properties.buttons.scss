@@ -48,11 +48,11 @@
       --clr-btn-outline-bg-color: var(--clr-btn-transparent-bg-color);
 
       // Default button colors
-      --clr-btn-default-color: #{tokens.$cds-alias-status-info};
+      --clr-btn-default-color: #{tokens.$cds-alias-primary};
       --clr-btn-default-border-color: var(--clr-btn-default-color);
       --clr-btn-default-bg-color: var(--clr-btn-outline-bg-color);
-      --clr-btn-default-hover-bg-color: #{tokens.$cds-alias-object-interaction-info-secondary-hover};
-      --clr-btn-default-hover-color: #{tokens.$cds-alias-typography-info-hover};
+      --clr-btn-default-hover-bg-color: #{tokens.$cds-alias-object-interaction-primary-secondary-hover};
+      --clr-btn-default-hover-color: #{tokens.$cds-alias-typography-primary-hover};
       --clr-btn-default-active-color: var(--clr-btn-default-color);
       --clr-btn-default-active-bg-color: var(--clr-btn-outline-bg-color);
       --clr-btn-default-disabled-color: #{tokens.$cds-alias-typography-disabled};
@@ -71,7 +71,7 @@
       --clr-btn-default-outline-color: #{tokens.$cds-alias-primary};
       --clr-btn-default-outline-border-color: var(--clr-btn-primary-outline-color);
       --clr-btn-default-outline-bg-color: var(--clr-btn-outline-bg-color);
-      --clr-btn-default-outline-hover-bg-color: #{tokens.$cds-alias-primary-tint};
+      --clr-btn-default-outline-hover-bg-color: #{tokens.$cds-alias-object-interaction-primary-secondary-hover};
       --clr-btn-default-outline-hover-color: #{tokens.$cds-alias-typography-primary-hover};
       --clr-btn-default-outline-active-color: var(--clr-btn-default-outline-color);
       --clr-btn-default-outline-active-bg-color: var(--clr-btn-outline-bg-color);
@@ -99,7 +99,7 @@
       --clr-btn-primary-outline-color: #{tokens.$cds-alias-primary};
       --clr-btn-primary-outline-border-color: var(--clr-btn-primary-outline-color);
       --clr-btn-primary-outline-bg-color: var(--clr-btn-outline-bg-color);
-      --clr-btn-primary-outline-hover-bg-color: #{tokens.$cds-alias-primary-tint};
+      --clr-btn-primary-outline-hover-bg-color: #{tokens.$cds-alias-object-interaction-primary-secondary-hover};
       --clr-btn-primary-outline-hover-color: #{tokens.$cds-alias-typography-primary-hover};
       --clr-btn-primary-outline-active-bg-color: var(--clr-btn-outline-bg-color);
       --clr-btn-primary-outline-active-color: var(--clr-btn-primary-outline-color);
@@ -250,13 +250,13 @@
       --clr-btn-neutral-outline-checked-color: var(--clr-btn-neutral-outline-color);
 
       // Link button colors
-      --clr-btn-link-color: #{tokens.$cds-alias-status-info};
+      --clr-btn-link-color: #{tokens.$cds-alias-primary};
       --clr-btn-link-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-border-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-active-color: var(--clr-btn-link-color);
       --clr-btn-link-active-bg-color: var(--clr-btn-transparent-bg-color);
       --clr-btn-link-hover-bg-color: var(--clr-btn-transparent-bg-color);
-      --clr-btn-link-hover-color: #{tokens.$cds-alias-typography-info-hover};
+      --clr-btn-link-hover-color: #{tokens.$cds-alias-typography-primary-hover};
       --clr-btn-link-visited-color: #{tokens.$cds-alias-typography-link-color-visited};
       --clr-btn-link-visited-hover-color: #{tokens.$cds-alias-typography-link-color-visited-hover};
       --clr-btn-link-disabled-color: #{tokens.$cds-alias-typography-disabled};
