@@ -12,11 +12,16 @@ export const DEFAULT_OVERRIDES = {
   // primary
   // '--cds-alias-primary': ['--cds-alias-object-interaction-background-highlight'],
   '--cds-alias-primary-tint': ['--cds-alias-object-interaction-background-hover'],
-  '--cds-alias-primary-shade': ['--cds-alias-typography-link-color'],
+  '--cds-alias-primary-shade': [
+    '--cds-alias-typography-link-color',
+    '--cds-alias-typography-primary-hover',
+    '--cds-alias-object-interaction-primary-hover',
+  ],
   '--cds-alias-primary-dark': ['--cds-alias-typography-link-color-hover'],
   '--cds-alias-primary-tint-dark': [
     '--cds-alias-object-interaction-background-selected',
     '--cds-alias-object-interaction-background-shade-active',
+    '--cds-alias-object-interaction-primary-secondary-hover',
   ],
   // info
   '--cds-alias-status-info': ['--cds-alias-utility-blue'],
@@ -173,15 +178,15 @@ export const PRESETS: ThemePreset[] = [
       primary: new Color('--cds-alias-primary', 'hsl(39deg 100% 50%)'), // ochre-600
       info: new Color('--cds-alias-status-info', 'hsl(238deg 60% 52%)'), // lavender-600
       success: new Color('--cds-alias-status-success', 'hsl(93deg 80% 37%)'), // green-600
-      warning: new Color('--cds-alias-status-warning', 'hsl(345deg 83% 40%)'), // magenta-600
-      danger: new Color('--cds-alias-status-danger', 'hsl(9deg 100% 59%)'), // red-600
+      warning: new Color('--cds-alias-status-warning', 'hsl(9deg 100% 59%)'), // red-600
+      danger: new Color('--cds-alias-status-danger', 'hsl(345deg 83% 40%)'), // magenta-600
     },
     dark: {
       primary: new Color('--cds-alias-primary', 'hsl(41deg 100% 70%)'), // ochre-400
       info: new Color('--cds-alias-status-info', 'hsl(238deg 58% 64%)'), // lavender-400
       success: new Color('--cds-alias-status-success', 'hsl(93deg 80% 48%)'), // green-400
-      warning: new Color('--cds-alias-status-warning', 'hsl(345deg 100% 61%)'), // magenta-400
-      danger: new Color('--cds-alias-status-danger', 'hsl(9deg 100% 71%)'), // red-400
+      warning: new Color('--cds-alias-status-warning', 'hsl(9deg 100% 71%)'), // red-400
+      danger: new Color('--cds-alias-status-danger', 'hsl(345deg 100% 61%)'), // magenta-400
     },
   },
   {

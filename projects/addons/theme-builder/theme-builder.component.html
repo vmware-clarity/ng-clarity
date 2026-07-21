@@ -110,7 +110,7 @@
             </clr-stack-block>
           </clr-stack-view>
 
-          @if (colorGroup.key === 'warning') {
+          @if (colorGroup.key === 'warning' && !colorGroup.base.isOriginalColor) {
             <clr-toggle-wrapper>
               <input
                 type="checkbox"
@@ -157,8 +157,8 @@
         <p cds-text="subsection uppercase bold">Buttons</p>
         <div class="tb-preview-row">
           <button class="btn btn-primary">Primary</button>
-          <button class="btn btn-outline">Primary Outline</button>
-          <button class="btn btn-link-primary">Primary FLAT</button>
+          <button class="btn">Primary Outline</button>
+          <button class="btn btn-link">Primary FLAT</button>
           <button class="btn btn-info">Info</button>
           <button class="btn btn-info-outline">Info Outline</button>
           <button class="btn btn-link-info">Info Flat</button>

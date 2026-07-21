@@ -68,7 +68,6 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     //
     // (undocumented)
     colorStruct: CdsThemeStructure;
-    customContent: boolean;
     // (undocumented)
     description: string;
     generatedCSS: EventEmitter<string>;
@@ -120,7 +119,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     // (undocumented)
     wizardOpen: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ThemeBuilderComponent, "clr-theme-builder", never, { "customContent": { "alias": "customContent"; "required": false; }; "presets": { "alias": "presets"; "required": false; }; }, { "generatedCSS": "generatedCSS"; }, never, ["*"], true, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ThemeBuilderComponent, "clr-theme-builder", never, { "presets": { "alias": "presets"; "required": false; }; }, { "generatedCSS": "generatedCSS"; }, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ThemeBuilderComponent, never>;
 }
