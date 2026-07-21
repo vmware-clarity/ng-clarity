@@ -5,9 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './card-container';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './menu';
-export * from './property-view';
+import { ComponentRef } from '@angular/core';
+
+export interface MenuOutlet {
+  /**
+   * Adds the menu component to the outlet.
+   */
+  attachMenu(menuComponentRef: ComponentRef<any>): void;
+
+  /**
+   * Removes to menu component from the outlet.
+   */
+  detachMenu(): void;
+}
