@@ -3122,6 +3122,7 @@ class ClrDatagridItems {
     }
     ngOnDestroy() {
         this.subscriptions.forEach(sub => sub.unsubscribe());
+        this.items.smartenDown();
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridItems, deps: [{ token: i0.TemplateRef }, { token: i0.IterableDiffers }, { token: Items }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ClrDatagridItems, isStandalone: false, selector: "[clrDgItems][clrDgItemsOf]", inputs: { rawItems: ["clrDgItemsOf", "rawItems"], trackBy: ["clrDgItemsTrackBy", "trackBy"] }, ngImport: i0 }); }
