@@ -48,9 +48,20 @@
                   >
                   </clr-label>
                   <clr-tooltip-content clrPosition="right" clrSize="lg">
-                    @for (background of colorGroup.contrast.backgrounds; track background.name) {
-                      <div>{{ background.name }}: {{ background.wcag.label }} ({{ background.wcag.score }})</div>
-                    }
+                    <div class="tb-wcag-container">
+                      @for (background of colorGroup.contrast.backgrounds; track background.name) {
+                        <div class="tb-wcag-item">
+                          {{ background.name }}:
+                          <clr-label
+                            cds-layout="m:none"
+                            clrType="solid"
+                            [clrText]="background.wcag.label"
+                            [clrBadgeText]="background.wcag.score"
+                            [clrColor]="background.wcag.type"
+                          />
+                        </div>
+                      }
+                    </div>
                   </clr-tooltip-content>
                 </clr-tooltip>
               </div>

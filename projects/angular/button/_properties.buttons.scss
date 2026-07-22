@@ -85,10 +85,10 @@
       --clr-btn-primary-color: #{tokens.$cds-alias-typography-color-100};
       --clr-btn-primary-bg-color: #{tokens.$cds-alias-primary};
       --clr-btn-primary-border-color: #{tokens.$cds-alias-primary};
-      --clr-btn-primary-hover-bg-color: #{tokens.$cds-alias-primary-shade};
+      --clr-btn-primary-hover-bg-color: #{tokens.$cds-alias-object-interaction-primary-hover};
       --clr-btn-primary-hover-color: var(--clr-btn-primary-color);
       --clr-btn-primary-active-color: #{tokens.$cds-alias-typography-color-100};
-      --clr-btn-primary-active-bg-color: #{tokens.$cds-alias-primary-dark};
+      --clr-btn-primary-active-bg-color: #{tokens.$cds-alias-object-interaction-primary-active};
       --clr-btn-primary-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
       --clr-btn-primary-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
       --clr-btn-primary-disabled-border-color: #{tokens.$cds-alias-status-disabled};

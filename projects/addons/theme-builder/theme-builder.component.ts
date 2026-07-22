@@ -305,7 +305,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
         } else if (item.name.endsWith('-shade')) {
           item.color = Color.shiftL(baseColorHSL, isDarkTheme ? 7 : -7);
         } else if (item.name.endsWith('-dark')) {
-          item.color = Color.shiftL(baseColorHSL, isDarkTheme ? 10 : -10);
+          item.color = Color.shiftL(baseColorHSL, isDarkTheme ? 20 : -10);
         }
       });
     }
