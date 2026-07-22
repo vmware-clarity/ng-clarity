@@ -703,11 +703,15 @@ $cds-alias-typography-display-line-height: var(--cds-alias-typography-display-li
 $cds-alias-typography-display-line-height-static: 1.1em !default;
 $cds-alias-typography-display-letter-spacing: var(--cds-alias-typography-display-letter-spacing) !default;
 $cds-alias-typography-display-font-weight: var(--cds-alias-typography-display-font-weight) !default;
+// $cds-alias-typography-heading-font-size is deprecated. TO be removed in v18.0
 $cds-alias-typography-heading-font-size: var(--cds-alias-typography-heading-font-size) !default;
 $cds-alias-typography-heading-font-size-static: 32 !default;
+// $cds-alias-typography-heading-line-height is deprecated. TO be removed in v18.0
 $cds-alias-typography-heading-line-height: var(--cds-alias-typography-heading-line-height) !default;
 $cds-alias-typography-heading-line-height-static: 1.125em !default;
+// $cds-alias-typography-heading-letter-spacing is deprecated. TO be removed in v18.0
 $cds-alias-typography-heading-letter-spacing: var(--cds-alias-typography-heading-letter-spacing) !default;
+// $cds-alias-typography-heading-font-weight is deprecated. TO be removed in v18.0
 $cds-alias-typography-heading-font-weight: var(--cds-alias-typography-heading-font-weight) !default;
 $cds-alias-typography-headline-font-size: var(--cds-alias-typography-headline-font-size) !default;
 $cds-alias-typography-headline-font-size-static: 32 !default;
