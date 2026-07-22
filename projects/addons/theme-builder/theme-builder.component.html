@@ -1,0 +1,524 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<!-- Preset selector -->
+<div class="tb-presets" cds-layout="m-t:lg">
+  <div class="tb-preset-cards clr-row">
+    @for (preset of presets; track preset.name) {
+      <a
+        href="javascript://"
+        class="card clickable tb-preset-card clr-col-1"
+        [class.tb-preset-card-active]="activePreset?.name === preset.name"
+        (click)="applyPreset(preset)"
+      >
+        <div class="tb-preset-swatch" [style.background-color]="preset.light?.primary?.hex"></div>
+        <div class="card-text">{{ preset.name }}</div>
+      </a>
+    }
+  </div>
+</div>
+
+<!-- ── Preview DARK card ── -->
+<!-- Invisible for filling the dark values on initial load -->
+<div style="display: none" #previewDarkWrapper cds-theme="dark"></div>
+
+<!-- ── Two-column layout: controls | preview ── -->
+<div class="tb-layout" cds-layout="m-t:lg m-b:lg">
+  <!-- ── Controls card (sticky left column) ── -->
+  <div class="card tb-controls-card">
+    <div class="card-block">
+      @for (colorGroup of themeColors; track colorGroup.key) {
+        <div>
+          <clr-stack-view>
+            <clr-stack-header>
+              <div class="tb-control-header">
+                {{ colorGroup.key | uppercase }}
+
+                <clr-tooltip>
+                  <clr-label
+                    cds-layout="m:none"
+                    clrTooltipTrigger
+                    [clrText]="'Contrast ' + colorGroup.contrast.minContrast.wcag.label"
+                    [clrBadgeText]="colorGroup.contrast.minContrast.wcag.score"
+                    [clrColor]="colorGroup.contrast.minContrast.wcag.type"
+                  >
+                  </clr-label>
+                  <clr-tooltip-content clrPosition="right" clrSize="lg">
+                    <div class="tb-wcag-container">
+                      @for (background of colorGroup.contrast.backgrounds; track background.name) {
+                        <div class="tb-wcag-item">
+                          {{ background.name }}:
+                          <clr-label
+                            cds-layout="m:none"
+                            clrType="solid"
+                            [clrText]="background.wcag.label"
+                            [clrBadgeText]="background.wcag.score"
+                            [clrColor]="background.wcag.type"
+                          />
+                        </div>
+                      }
+                    </div>
+                  </clr-tooltip-content>
+                </clr-tooltip>
+              </div>
+            </clr-stack-header>
+            <clr-stack-block [clrStackViewLevel]="1">
+              <clr-stack-label class="tb-stack-label">{{ colorGroup.base.label }}</clr-stack-label>
+              <clr-stack-content style="width: 52%">
+                <div class="tb-color-input-wrap">
+                  <input
+                    type="color"
+                    class="tb-color-picker"
+                    [value]="colorGroup.base.hex"
+                    (input)="
+                      setCurrentColor(
+                        colorGroup.base,
+                        $any($event.target).value,
+                        colorStruct[activeTheme][colorGroup.key]
+                      )
+                    "
+                  />
+                  <input readonly type="text" class="tb-hex-input" [value]="colorGroup.base.hex" />
+                  <button
+                    *ngIf="!colorGroup.base.isOriginalColor"
+                    class="btn btn-sm btn-icon btn-primary"
+                    (click)="resetColor($event, colorGroup.base, colorStruct[activeTheme][colorGroup.key])"
+                    title="Back to original color"
+                  >
+                    <cds-icon shape="undo"></cds-icon>
+                  </button>
+                </div>
+              </clr-stack-content>
+
+              @for (colorVariant of colorGroup.variants; track colorVariant.label) {
+                <clr-stack-block [clrStackViewLevel]="2">
+                  <clr-stack-label>{{ colorVariant.label }}</clr-stack-label>
+                  <clr-stack-content>
+                    <div class="tb-color-input-wrap">
+                      <input
+                        type="color"
+                        class="tb-color-picker"
+                        [value]="colorVariant.hex"
+                        (input)="setCurrentColor(colorVariant, $any($event.target).value)"
+                      />
+                      <input readonly type="text" class="tb-hex-input" [value]="colorVariant.hex" />
+                      <button
+                        *ngIf="!colorVariant.isOriginalColor"
+                        class="btn btn-sm btn-icon btn-primary"
+                        (click)="resetColor($event, colorVariant)"
+                        title="Back to original color"
+                      >
+                        <cds-icon shape="undo"></cds-icon>
+                      </button>
+                    </div>
+                  </clr-stack-content>
+                </clr-stack-block>
+              }
+            </clr-stack-block>
+          </clr-stack-view>
+
+          @if (colorGroup.key === 'warning' && !colorGroup.base.isOriginalColor) {
+            <clr-toggle-wrapper>
+              <input
+                type="checkbox"
+                clrToggle
+                [(ngModel)]="warningTextOverrideEnabled"
+                (ngModelChange)="onWarningTextOverrideChange()"
+              />
+              <label>Light Theme Warning Text Override</label>
+            </clr-toggle-wrapper>
+          }
+        </div>
+      }
+    </div>
+  </div>
+  <!-- end controls card -->
+
+  <!-- ── Preview card (right column) ── -->
+  <div class="card tb-preview-card">
+    <div class="card-header">
+      Live Preview:
+      <button
+        class="btn btn-outline-neutral"
+        [attr.aria-label]="'Switch to ' + (isDarkTheme ? 'light' : 'dark') + ' theme'"
+        (click)="toggleActiveTheme()"
+      >
+        <cds-icon [shape]="isDarkTheme ? 'moon' : 'sun'" [solid]="true" [size]="'md'"></cds-icon>
+        {{ isDarkTheme ? 'Dark' : 'Light' }}
+      </button>
+    </div>
+
+    <div class="card-block tb-preview-sandbox" #previewWrapper [attr.cds-theme]="activeTheme">
+      <ng-content></ng-content>
+
+      <!-- Breadcrumbs -->
+      <div class="tb-preview-section">
+        <p cds-text="subsection uppercase bold">Breadcrumbs</p>
+        <div class="tb-preview-row">
+          <clr-breadcrumbs [items]="breadcrumbs"></clr-breadcrumbs>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="tb-preview-section">
+        <p cds-text="subsection uppercase bold">Buttons</p>
+        <div class="tb-preview-row">
+          <button class="btn btn-primary">Primary</button>
+          <button class="btn">Primary Outline</button>
+          <button class="btn btn-link">Primary FLAT</button>
+          <button class="btn btn-info">Info</button>
+          <button class="btn btn-info-outline">Info Outline</button>
+          <button class="btn btn-link-info">Info Flat</button>
+          <button class="btn btn-danger">Danger</button>
+          <button class="btn btn-success">Success</button>
+          <button class="btn btn-warning">Warning</button>
+          <button class="btn btn-primary" disabled>Disabled</button>
+        </div>
+      </div>
+
+      <!-- Badges & Labels -->
+      <div class="tb-preview-section">
+        <p cds-text="subsection uppercase bold">Badges &amp; Labels</p>
+        <div class="tb-preview-row">
+          <clr-label
+            [clrType]="'outlined'"
+            [clrClickable]="true"
+            [clrColor]="'info'"
+            [clrText]="'info'"
+            [clrBadgeText]="'99+'"
+          />
+          <clr-label [clrType]="'outlined'" [clrColor]="'danger'" [clrText]="'danger'" [clrBadgeText]="'99+'" />
+          <clr-label [clrType]="'outlined'" [clrColor]="'success'" [clrText]="'success'" [clrBadgeText]="'99+'" />
+          <clr-label
+            [clrType]="'outlined'"
+            [clrClickable]="true"
+            [clrColor]="'warning'"
+            [clrText]="'warning'"
+            [clrBadgeText]="'99+'"
+          />
+
+          <clr-label [clrType]="'solid'" [clrColor]="'info'" [clrText]="'info'" [clrBadgeText]="'99+'" />
+          <clr-label
+            [clrType]="'solid'"
+            [clrClickable]="true"
+            [clrColor]="'danger'"
+            [clrText]="'danger'"
+            [clrBadgeText]="'99+'"
+          />
+          <clr-label
+            [clrType]="'solid'"
+            [clrClickable]="true"
+            [clrColor]="'success'"
+            [clrText]="'success'"
+            [clrBadgeText]="'99+'"
+          />
+          <clr-label [clrType]="'solid'" [clrColor]="'warning'" [clrText]="'warning'" [clrBadgeText]="'99+'" />
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div class="tb-preview-section">
+        <p cds-text="subsection uppercase bold">Alerts</p>
+        <clr-alert [clrAlertType]="'info'">
+          <clr-alert-item><span class="alert-text">This is an info alert.</span></clr-alert-item>
+        </clr-alert>
+        <clr-alert [clrAlertType]="'success'">
+          <clr-alert-item><span class="alert-text">Operation completed successfully.</span></clr-alert-item>
+        </clr-alert>
+        <clr-alert [clrAlertType]="'warning'">
+          <clr-alert-item><span class="alert-text">Please review before proceeding.</span></clr-alert-item>
+        </clr-alert>
+        <clr-alert [clrAlertType]="'danger'">
+          <clr-alert-item><span class="alert-text">Something went wrong.</span></clr-alert-item>
+        </clr-alert>
+      </div>
+
+      <!-- App-Level Alerts -->
+      <div class="tb-preview-section">
+        <p cds-text="subsection uppercase bold">App-Level Alerts</p>
+        <clr-alert [clrAlertType]="'info'" [clrAlertAppLevel]="true">
+          <clr-alert-item>
+            <span class="alert-text">This is an app level info.</span>
+            <div class="alert-actions">
+              <button class="btn alert-action"><cds-icon shape="user"></cds-icon>Thanks</button>
+            </div>
+          </clr-alert-item>
+        </clr-alert>
+        <clr-alert [clrAlertType]="'danger'" [clrAlertAppLevel]="true">
+          <clr-alert-item>
+            <span class="alert-text">This is an app level alert.</span>
+            <div class="alert-actions">
+              <button class="btn alert-action"><cds-icon shape="user"></cds-icon>Fix</button>
+            </div>
+          </clr-alert-item>
+        </clr-alert>
+        <clr-alert [clrAlertType]="'warning'" [clrAlertAppLevel]="true">
+          <clr-alert-item>
+            <span class="alert-text">This is an app level warning.</span>
+            <div class="alert-actions">
+              <button class="btn alert-action"><cds-icon shape="user"></cds-icon>Check</button>
+            </div>
+          </clr-alert-item>
+        </clr-alert>
+        <clr-alert [clrAlertType]="'success'" [clrAlertAppLevel]="true">
+          <clr-alert-item>
+            <span class="alert-text">This is an app level success.</span>
+            <div class="alert-actions">
+              <button class="btn alert-action"><cds-icon shape="user"></cds-icon>Great</button>
+            </div>
+          </clr-alert-item>
+        </clr-alert>
+      </div>
+
+      <!-- Forms -->
+      <div class="tb-preview-section">
+        <p cds-text="subsection uppercase bold">Form Controls</p>
+        <form clrForm #tbForm="ngForm" clrLayout="horizontal">
+          <clr-input-container>
+            <label>Text input</label>
+            <input clrInput type="text" placeholder="Enter value..." />
+          </clr-input-container>
+          <clr-checkbox-container>
+            <label>Checkbox</label>
+            <clr-checkbox-wrapper>
+              <input type="checkbox" clrCheckbox checked />
+              <label>Checkbox (checked)</label>
+            </clr-checkbox-wrapper>
+            <clr-checkbox-wrapper>
+              <input type="checkbox" clrCheckbox />
+              <label>Checkbox (unchecked)</label>
+            </clr-checkbox-wrapper>
+          </clr-checkbox-container>
+          <clr-radio-container>
+            <label>Radio</label>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio name="r1" value="a" checked />
+              <label>Radio A</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+              <input type="radio" clrRadio name="r1" value="b" />
+              <label>Radio B</label>
+            </clr-radio-wrapper>
+          </clr-radio-container>
+          <clr-toggle-container>
+            <label>Toggle</label>
+            <clr-toggle-wrapper>
+              <input type="checkbox" clrToggle checked />
+              <label>Toggle (on)</label>
+            </clr-toggle-wrapper>
+          </clr-toggle-container>
+
+          <clr-textarea-container>
+            <label>Textarea</label>
+            <textarea clrTextarea [(ngModel)]="description" name="description" required></textarea>
+            <clr-control-helper>Please provide a description.</clr-control-helper>
+            <clr-control-error *clrIfError="'required'">You must provide a description!</clr-control-error>
+          </clr-textarea-container>
+        </form>
+      </div>
+
+      <!-- Accordion -->
+      <div class="tb-preview-section">
+        <p cds-text="subsection uppercase bold">Accordion</p>
+        <clr-accordion>
+          <clr-accordion-panel [clrAccordionPanelOpen]="true">
+            <clr-accordion-title>Panel One</clr-accordion-title>
+            <clr-accordion-content>Content for the first accordion panel.</clr-accordion-content>
+          </clr-accordion-panel>
+          <clr-accordion-panel>
+            <clr-accordion-title>Panel Two</clr-accordion-title>
+            <clr-accordion-content>Content for the second accordion panel.</clr-accordion-content>
+          </clr-accordion-panel>
+        </clr-accordion>
+      </div>
+
+      <!-- Tree view -->
+      <div class="tb-preview-section">
+        <p cds-text="subsection uppercase bold">Tree View</p>
+        <clr-tree>
+          <clr-tree-node [clrExpanded]="true">
+            Root Node
+            <clr-tree-node [clrSelected]="1"> Child One </clr-tree-node>
+            <clr-tree-node>
+              Child Two
+              <clr-tree-node>Grandchild</clr-tree-node>
+            </clr-tree-node>
+          </clr-tree-node>
+        </clr-tree>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="tb-preview-section">
+        <p cds-text="subsection uppercase bold">Progress Bar</p>
+        <clr-progress-bar clrValue="20" clrMax="100"></clr-progress-bar>
+        <clr-progress-bar clrValue="55" clrMax="100" clrColor="warning" clrLabeled></clr-progress-bar>
+        <clr-progress-bar clrValue="80" clrMax="100" clrColor="success"></clr-progress-bar>
+        <clr-progress-bar clrValue="40" clrMax="100" clrColor="danger"></clr-progress-bar>
+      </div>
+
+      <!-- Vertical nav -->
+      <div class="tb-preview-section">
+        <p cds-text="subsection uppercase bold">Vertical Navigation</p>
+        <div class="tb-nav-preview-wrap">
+          <clr-vertical-nav [clrVerticalNavCollapsible]="true">
+            <clr-vertical-nav-group clrVerticalNavGroupExpanded>
+              <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
+              Dashboard
+              <clr-vertical-nav-group-children>
+                <a clrVerticalNavLink href="javascript:void(0)" class="active">Overview</a>
+                <a clrVerticalNavLink href="javascript:void(0)">Analytics</a>
+              </clr-vertical-nav-group-children>
+            </clr-vertical-nav-group>
+            <clr-vertical-nav-group>
+              <cds-icon shape="cog" clrVerticalNavIcon></cds-icon>
+              Settings
+              <clr-vertical-nav-group-children>
+                <a clrVerticalNavLink href="javascript:void(0)">Profile</a>
+                <a clrVerticalNavLink href="javascript:void(0)">Security</a>
+              </clr-vertical-nav-group-children>
+            </clr-vertical-nav-group>
+          </clr-vertical-nav>
+        </div>
+      </div>
+
+      <!-- Stepper -->
+      <div class="tb-preview-section">
+        <p cds-text="subsection uppercase bold">Stepper</p>
+        <form clrStepper #tbStepperForm="ngForm">
+          <clr-stepper-panel ngModelGroup="account">
+            <clr-step-title>Account Details</clr-step-title>
+            <clr-step-description>Tell us about yourself</clr-step-description>
+            <clr-step-content>
+              <clr-input-container>
+                <label>Full Name</label>
+                <input clrInput name="fullName" [(ngModel)]="stepperForm.account.fullName" />
+              </clr-input-container>
+              <button clrStepButton="next">Next</button>
+            </clr-step-content>
+          </clr-stepper-panel>
+
+          <clr-stepper-panel ngModelGroup="confirm">
+            <clr-step-title>Confirmation</clr-step-title>
+            <clr-step-description>Review and submit</clr-step-description>
+            <clr-step-content>
+              <clr-checkbox-container>
+                <clr-checkbox-wrapper>
+                  <input type="checkbox" clrCheckbox name="agree" [(ngModel)]="stepperForm.confirm.agree" />
+                  <label>I agree to the terms</label>
+                </clr-checkbox-wrapper>
+              </clr-checkbox-container>
+              <button clrStepButton="previous">Previous</button>
+              <button clrStepButton="submit">Submit</button>
+            </clr-step-content>
+          </clr-stepper-panel>
+        </form>
+      </div>
+
+      <!-- Datagrid -->
+      <div class="tb-preview-section">
+        <p cds-text="subsection uppercase bold">Datagrid</p>
+        <clr-datagrid [clrDgSelectionType]="'multi'">
+          <clr-dg-column>Name</clr-dg-column>
+          <clr-dg-column>Role</clr-dg-column>
+          <clr-dg-column>Status</clr-dg-column>
+          @for (row of rows; track row.name) {
+            <clr-dg-row [clrDgItem]="row">
+              <clr-dg-cell>{{ row.name }}</clr-dg-cell>
+              <clr-dg-cell>{{ row.role }}</clr-dg-cell>
+              <clr-dg-cell>
+                <span
+                  class="badge"
+                  [class.badge-success]="row.status === 'Active'"
+                  [class.badge-danger]="row.status === 'Inactive'"
+                >
+                  {{ row.status }}
+                </span>
+              </clr-dg-cell>
+            </clr-dg-row>
+          }
+          <clr-dg-footer>{{ rows.length }} users</clr-dg-footer>
+        </clr-datagrid>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tb-preview-section">
+        <p cds-text="subsection uppercase bold">Tabs</p>
+        <clr-tabs>
+          <clr-tab>
+            <button clrTabLink>Dashboard</button>
+            <clr-tab-content>
+              <p>Content for the Dashboard tab.</p>
+            </clr-tab-content>
+          </clr-tab>
+          <clr-tab>
+            <button clrTabLink>Management</button>
+            <clr-tab-content>
+              <p>Content for the Management tab.</p>
+            </clr-tab-content>
+          </clr-tab>
+          <clr-tab>
+            <button clrTabLink>Settings</button>
+            <clr-tab-content>
+              <p>Content for the Settings tab.</p>
+            </clr-tab-content>
+          </clr-tab>
+        </clr-tabs>
+      </div>
+
+      <!-- Timeline -->
+      <div class="tb-preview-section">
+        <p cds-text="subsection uppercase bold">Timeline</p>
+        <clr-timeline>
+          <clr-timeline-step [clrState]="timelineStates.SUCCESS">
+            <clr-timeline-step-header>11:59 am</clr-timeline-step-header>
+            <clr-timeline-step-title>Add KMS</clr-timeline-step-title>
+            <clr-timeline-step-description>Root CA certificate requested.</clr-timeline-step-description>
+          </clr-timeline-step>
+          <clr-timeline-step [clrState]="timelineStates.CURRENT">
+            <clr-timeline-step-header>12:04 pm</clr-timeline-step-header>
+            <clr-timeline-step-title>Make KMS trust vCenter</clr-timeline-step-title>
+            <clr-timeline-step-description>
+              Upload the certificate to the KMS to complete the connection.
+            </clr-timeline-step-description>
+          </clr-timeline-step>
+          <clr-timeline-step [clrState]="timelineStates.NOT_STARTED">
+            <clr-timeline-step-header>--:-- --</clr-timeline-step-header>
+            <clr-timeline-step-title>Enable Encryption</clr-timeline-step-title>
+            <clr-timeline-step-description>Not started yet.</clr-timeline-step-description>
+          </clr-timeline-step>
+        </clr-timeline>
+      </div>
+
+      <!-- Wizard launcher -->
+      <div class="tb-preview-section">
+        <p cds-text="subsection uppercase bold">Wizard</p>
+        <button class="btn btn-outline" (click)="wizardOpen = true">Open Wizard</button>
+        <clr-wizard [(clrWizardOpen)]="wizardOpen" clrWizardSize="md">
+          <clr-wizard-title>Sample Wizard</clr-wizard-title>
+          <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+          <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+          <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+          <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+          <clr-wizard-page>
+            <ng-template clrPageTitle>Step 1: Introduction</ng-template>
+            Welcome to the wizard. This step introduces the process.
+          </clr-wizard-page>
+          <clr-wizard-page>
+            <ng-template clrPageTitle>Step 2: Configuration</ng-template>
+            Configure the required options in this step.
+          </clr-wizard-page>
+          <clr-wizard-page>
+            <ng-template clrPageTitle>Step 3: Confirm</ng-template>
+            Review your choices and click Finish.
+          </clr-wizard-page>
+        </clr-wizard>
+      </div>
+    </div>
+  </div>
+  <!-- end preview card -->
+</div>
+<!-- end .tb-layout -->

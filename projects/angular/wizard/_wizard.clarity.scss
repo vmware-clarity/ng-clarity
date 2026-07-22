@@ -96,6 +96,10 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
       button.clr-wizard-stepnav-link {
         color: inherit;
         background-color: inherit;
+
+        cds-icon {
+          color: wizard-variables.$clr-wizard-stepnav-selected-border-color;
+        }
       }
 
       &.disabled {

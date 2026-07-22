@@ -1,0 +1,33 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<app-site-nav *ngIf="!themeBuilderOnly"></app-site-nav>
+
+<main class="content-area theme-builder-page">
+  <div>
+    <h2 cds-text="title">Theme Builder</h2>
+    <p cds-text="body" cds-layout="m-t:lg">
+      Customize Clarity colors and export a CSS override file for your environment.
+    </p>
+  </div>
+
+  <clr-theme-builder [presets]="presets" (generatedCSS)="writeGeneratedCss($event)" />
+
+  <!-- ── Generated CSS card (full width below grid) ── -->
+  <div class="card tb-output-card">
+    <div class="card-header tb-output-header-row">
+      <h2 cds-text="section">Generated CSS</h2>
+      <button class="btn btn-sm btn-outline" (click)="copyCSS()">
+        {{ copied ? 'Copied!' : 'Copy' }}
+      </button>
+    </div>
+
+    <app-code-snippet [code]="generatedCss" language="css"></app-code-snippet>
+  </div>
+
+  <app-site-footer></app-site-footer>
+</main>

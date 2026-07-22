@@ -323,6 +323,11 @@
       "type": "addons"
     },
     {
+      "url": "theme-builder",
+      "text": "Theme Builder",
+      "type": "addons"
+    },
+    {
       "url": "translate",
       "text": "Translate",
       "type": "addons"

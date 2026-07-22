@@ -1,0 +1,119 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      <code cds-text="code">ThemeBuilderComponent</code> is a standalone, embeddable UI for customizing Clarity's color
+      tokens (primary, info, success, warning, danger) across the light and dark theme, previewing the result live, and
+      exporting a CSS override file.
+    </p>
+
+    <h2 id="design" class="clr-mt-48px" cds-text="title">Design</h2>
+
+    <h3 class="clr-mt-32px" cds-text="section" id="inputs-and-outputs">Inputs &amp; Outputs</h3>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        <code cds-text="code">[presets]</code> &mdash; the list of named color presets shown in the preset selector.
+        Defaults to Clarity's built-in preset list (<code cds-text="code">PRESETS</code>), exported from
+        <code cds-text="code">&#64;clr/addons/theme-builder</code> so consumers can extend it (e.g.
+        <code cds-text="code">[...PRESETS, myPreset]</code>) instead of replacing it outright.
+      </li>
+      <li>
+        <code cds-text="code">(generatedCSS)</code> &mdash; emits the generated CSS override text (a
+        <code cds-text="code">string</code>) every time a color, preset, reset, or the warning-text-override toggle
+        changes.
+      </li>
+      <li>
+        <code cds-text="code">[customContent]</code> &mdash; set to <code cds-text="code">true</code> to project your
+        own preview through content projection instead of the built-in preview. The projected content still renders
+        inside the themed preview sandbox, so it reacts to the light/dark toggle and every color edit exactly like the
+        built-in preview does.
+      </li>
+    </ul>
+
+    <h4 class="clr-mt-24px" cds-text="subsection">Limitations</h4>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        Persisting the generated CSS is the consumer's responsibility &mdash; display, copy, or save the value emitted
+        through <code cds-text="code">generatedCSS</code>.
+      </li>
+      <li>
+        Only the five status/primary aliases (primary, info, success, warning, danger) and their computed
+        tint/shade/dark variants can be edited.
+      </li>
+    </ul>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
+
+    <h3 data-toc-item id="try-it" cds-text="section" class="clr-mt-32px">Interactive Demo</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      <code cds-text="code">ThemeBuilderComponent</code> powers Clarity's own
+      <a class="clr-mt-16px" [routerLink]="['../../../theme-builder']">Theme Builder</a> tool. Open it to pick a preset,
+      edit colors, and copy the generated CSS.
+    </p>
+
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="theme-builder-demo"
+        [componentTemplate]="defaultHtml"
+        [componentClass]="defaultTs"
+      ></app-stackblitz-example>
+    </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 id="api-reference" cds-text="title" class="clr-mt-48px">API Reference</h2>
+
+    <h3 data-toc-item id="inputs-outputs" cds-text="section" class="clr-mt-32px">clr-theme-builder</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Data Type</th>
+          <th>Description</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">presets</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">ThemePreset[]</code></td>
+          <td>
+            Color presets shown in the preset selector. Defaults to Clarity's built-in
+            <code cds-text="code">PRESETS</code>.
+          </td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">customContent</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>
+            Projects custom preview content instead of the built-in preview. Defaults to
+            <code cds-text="code">false</code>.
+          </td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">generatedCSS</code></td>
+          <td>Output</td>
+          <td><code cds-text="code">EventEmitter&lt;string&gt;</code></td>
+          <td>
+            Emits the generated CSS override text whenever a color, preset, reset, or the warning-text-override toggle
+            changes.
+          </td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+  </app-doc-tab>
+</app-doc-tabs>

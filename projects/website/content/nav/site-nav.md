@@ -63,6 +63,8 @@ groups:
         url: /pages/update-to-v16
       - label: Update v13 to v15
         url: /pages/update-to-v15
+  - label: Theme Builder
+    url: /theme-builder
   - label: Storybook
     url: https://storybook.clarity.design
 ---

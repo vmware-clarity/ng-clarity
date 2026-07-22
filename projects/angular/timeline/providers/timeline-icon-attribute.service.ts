@@ -23,7 +23,7 @@ export class TimelineIconAttributeService {
     });
     this.attributeMap.set(ClrTimelineStepState.CURRENT, {
       iconShape: 'dot-circle',
-      iconStatus: 'info',
+      iconStatus: null,
       ariaLabel: commonStrings.keys.timelineStepCurrent,
     });
     this.attributeMap.set(ClrTimelineStepState.PROCESSING, {

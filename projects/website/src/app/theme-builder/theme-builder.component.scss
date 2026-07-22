@@ -1,0 +1,42 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+// ── Host: content-container row (site-nav + content-area) ──
+:host {
+  display: flex;
+  flex-direction: row;
+  // No overflow:hidden — that broke position:sticky and clipped nested scroll containers
+  .theme-builder-page {
+    padding-top: var(--clr-base-vertical-offset-2xl);
+  }
+
+  ::ng-deep {
+    pre {
+      border: none;
+      margin: 0;
+    }
+  }
+}
+
+// ── Generated CSS card ──
+
+.tb-output-card {
+  app-code-snippet {
+    display: block;
+    max-height: 600px;
+    overflow: auto;
+    margin-bottom: var(--clr-base-vertical-offset-l);
+  }
+
+  // Card-header contains title + tab buttons + copy button in a flex row
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--clr-base-gap-l);
+    flex-wrap: wrap;
+  }
+}
