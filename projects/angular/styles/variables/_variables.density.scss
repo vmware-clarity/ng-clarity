@@ -12,6 +12,8 @@ $clr-base-typography-font-size-default: var(--clr-base-typography-font-size-defa
 $clr-base-typography-font-size-sub-section: var(--clr-base-typography-font-size-sub-section);
 $clr-base-typography-font-size-section: var(--clr-base-typography-font-size-section);
 $clr-base-typography-font-size-title: var(--clr-base-typography-font-size-title);
+// clr-base-typography-font-size-heading is deprecated. TO be removed in v18.0
+$clr-base-typography-font-size-heading: var(--clr-base-typography-font-size-heading);
 $clr-base-typography-font-size-headline: var(--clr-base-typography-font-size-headline);
 $clr-base-typography-font-size-display: var(--clr-base-typography-font-size-display);
 
