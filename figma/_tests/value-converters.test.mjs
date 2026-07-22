@@ -319,10 +319,10 @@ describe('resolveEmToPx', () => {
   const vars = {
     '--cds-alias-typography-display-font-size': 'var(--clr-base-typography-font-size-display)',
     '--clr-base-typography-font-size-display': 'calc(40 * 1rem / var(--cds-global-base))',
-    // Three-hop chain via --cds-global-space-9
-    '--cds-alias-typography-heading-font-size': 'var(--clr-base-typography-font-size-heading)',
-    '--clr-base-typography-font-size-heading': 'var(--cds-global-space-9)',
-    '--cds-global-space-9': 'calc(24 * var(--cds-internal-scale-2))',
+    // Three-hop chain via --cds-global-space-10
+    '--cds-alias-typography-headline-font-size': 'var(--clr-base-typography-font-size-headline)',
+    '--clr-base-typography-font-size-headline': 'var(--cds-global-space-10)',
+    '--cds-global-space-10': 'calc(32 * var(--cds-internal-scale-2))',
     '--cds-internal-scale-2': 'calc((1rem / var(--cds-global-base)) * var(--cds-global-scale-space))',
     '--cds-global-scale-space': '1',
     // Simple px font-size (used for isolated tests)
@@ -336,10 +336,10 @@ describe('resolveEmToPx', () => {
     expect(result).toBeCloseTo(-0.5);
   });
 
-  it('follows a three-hop var() chain (em × heading font-size → 24px)', () => {
-    // -0.0125em × 24px = -0.3px
-    const result = resolveEmToPx('-0.0125em', '--cds-alias-typography-heading-letter-spacing', lookup);
-    expect(result).toBeCloseTo(-0.3);
+  it('follows a three-hop var() chain (em × headline font-size → 32px)', () => {
+    // -0.0125em × 32px = -0.4px
+    const result = resolveEmToPx('-0.0125em', '--cds-alias-typography-headline-letter-spacing', lookup);
+    expect(result).toBeCloseTo(-0.4);
   });
 
   it('resolves a bare-px font-size', () => {
