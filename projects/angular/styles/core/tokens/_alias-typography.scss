@@ -47,8 +47,8 @@
   --cds-alias-typography-body-font-weight: 400;
   --cds-alias-typography-display-letter-spacing: -0.0125em;
   --cds-alias-typography-display-font-weight: 500;
-  --cds-alias-typography-heading-letter-spacing: -0.0125em;
-  --cds-alias-typography-heading-font-weight: 500;
+  --cds-alias-typography-heading-letter-spacing: -0.0125em; // deprecated. TO be removed in v18.0
+  --cds-alias-typography-heading-font-weight: 500; // deprecated. TO be removed in v18.0
   --cds-alias-typography-headline-letter-spacing: -0.0125em;
   --cds-alias-typography-headline-font-weight: 500;
   --cds-alias-typography-title-letter-spacing: -0.00833333em;
@@ -79,11 +79,11 @@
     --cds-alias-typography-body-line-height: #{density.$clr-base-typography-line-height-20};
     --cds-alias-typography-display-font-size: #{density.$clr-base-typography-font-size-display};
     --cds-alias-typography-display-line-height: #{density.$clr-base-typography-line-height-44};
-    --cds-alias-typography-heading-font-size: #{density.$clr-base-typography-font-size-heading};
-    --cds-alias-typography-heading-line-height: #{density.$clr-base-typography-line-height-32};
+    --cds-alias-typography-heading-font-size: #{density.$clr-base-typography-font-size-heading}; // deprecated. TO be removed in v18.0
+    --cds-alias-typography-heading-line-height: #{density.$clr-base-typography-line-height-32}; // deprecated. TO be removed in v18.0
     --cds-alias-typography-headline-font-size: #{density.$clr-base-typography-font-size-headline};
     --cds-alias-typography-headline-line-height: #{density.$clr-base-typography-line-height-36};
-    --cds-alias-typography-title-font-size: #{density.$clr-base-typography-font-size-heading};
+    --cds-alias-typography-title-font-size: #{density.$clr-base-typography-font-size-title};
     --cds-alias-typography-title-line-height: #{density.$clr-base-typography-line-height-32};
     --cds-alias-typography-section-font-size: #{density.$clr-base-typography-font-size-section};
     --cds-alias-typography-section-line-height: #{density.$clr-base-typography-line-height-24};
