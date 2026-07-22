@@ -167,6 +167,11 @@ export const APP_ROUTES: Routes = [
     loadChildren: () =>
       import('./addons/datagrid-advanced/datagrid-advanced.demo.module').then(m => m.DatagridAdvancedDemoModule),
   },
+  {
+    path: 'stepper-addon',
+    data: { section: 'addons', label: 'Stepper' },
+    loadChildren: () => import('./addons/stepper-addon/stepper-addon.demo.module').then(m => m.StepperAddonDemoModule),
+  },
   { path: 'z-index', loadChildren: () => import('./z-index/z-index.demo.module').then(m => m.ZIndexDemoModule) },
   {
     path: 'shadow-root',

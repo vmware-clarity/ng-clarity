@@ -1,0 +1,53 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+.disable-form {
+  left: 0;
+  top: 0;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+form appfx-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 999;
+}
+
+clr-step-description {
+  ::ng-deep {
+    appfx-property-view-category {
+      padding: 0;
+    }
+
+    td.pv-message-container {
+      padding: 0 !important;
+    }
+
+    .pv-message-text {
+      line-height: 1.2rem;
+    }
+
+    .table td,
+    .table th {
+      background: none;
+    }
+  }
+}
+
+:host {
+  /*
+   * Style for the 'Back' stepper navigation button.
+   * Overrides the default Clarity btn-link style for the 'previous' button
+   * to provide a consistent 'outline' look with the Appfx 'Back' wizard button.
+   */
+  button[clrStepButton='previous'] {
+    border: 1px solid var(--clr-btn-primary-outline-color);
+  }
+}

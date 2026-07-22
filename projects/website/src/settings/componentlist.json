@@ -350,6 +350,12 @@
       "text": "Card Container",
       "type": "addons",
       "storybookPath": "addons-card-container"
+    },
+    {
+      "url": "stepper-addon",
+      "text": "Stepper",
+      "type": "addons",
+      "storybookPath": "addons-stepper"
     }
   ]
 }
