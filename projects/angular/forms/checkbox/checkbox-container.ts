@@ -13,6 +13,7 @@ import {
   LayoutService,
   NgControlService,
 } from '@clr/angular/forms/common';
+import { uniqueIdFactory } from '@clr/angular/utils';
 
 import { ClrCheckbox } from './checkbox';
 
@@ -43,16 +44,19 @@ import { ClrCheckbox } from './checkbox';
     '[class.clr-form-control-disabled]': 'allCheckboxesDisabled',
     '[class.clr-row]': 'addGrid()',
     '[attr.role]': 'role',
+    '[attr.aria-labelledby]': 'ariaLabelledBy',
   },
   providers: [NgControlService, ControlClassService, ContainerIdService],
   standalone: false,
 })
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
   role: string;
+  ariaLabelledBy: string;
 
   @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes: QueryList<ClrCheckbox>;
 
   private inline = false;
+  private _generatedId = uniqueIdFactory();
 
   constructor(
     @Optional() protected override layoutService: LayoutService,
@@ -90,9 +94,18 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
 
   ngAfterContentInit() {
     this.setAriaRoles();
+    this.setAriaLabelledBy();
   }
 
   private setAriaRoles() {
     this.role = this.checkboxes?.length ? 'group' : null;
+  }
+
+  private setAriaLabelledBy() {
+    if (!this.label.idAttr) {
+      this.label.idAttr = this._generatedId;
+    }
+
+    this.ariaLabelledBy = this.checkboxes.length ? this.label.idAttr : null;
   }
 }

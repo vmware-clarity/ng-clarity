@@ -5,19 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  AfterContentInit,
-  Component,
-  ContentChild,
-  ContentChildren,
-  ElementRef,
-  Input,
-  Optional,
-  QueryList,
-} from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, Input, Optional, QueryList } from '@angular/core';
 import {
   ClrAbstractContainer,
-  ClrControlLabel,
   ContainerIdService,
   ControlClassService,
   LayoutService,
@@ -64,7 +54,6 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
   ariaLabelledBy: string;
 
   @ContentChildren(ClrRadio, { descendants: true }) radios: QueryList<ClrRadio>;
-  @ContentChild(ClrControlLabel, { read: ElementRef, static: true }) groupLabel: ElementRef<HTMLElement>;
 
   private inline = false;
   private _generatedId = uniqueIdFactory();
@@ -105,12 +94,10 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
   }
 
   private setAriaLabelledBy() {
-    const _id = this.groupLabel?.nativeElement.getAttribute('id');
-    if (!_id) {
-      this.groupLabel?.nativeElement.setAttribute('id', this._generatedId);
-      this.ariaLabelledBy = this.radios.length ? this._generatedId : null;
-    } else {
-      this.ariaLabelledBy = this.radios.length ? _id : null;
+    if (!this.label.idAttr) {
+      this.label.idAttr = this._generatedId;
     }
+
+    this.ariaLabelledBy = this.radios.length ? this.label.idAttr : null;
   }
 }
