@@ -352,6 +352,20 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   @Input() virtualScrolling = false;
 
   /**
+   * Controls whether the "unsort" step is removed from the column sort cycle for
+   * every column in the grid.
+   * - `true` (default): sorting toggles ASC ↔ DESC only; a sorted column cannot
+   *   be returned to the unsorted state by clicking its header.
+   * - `false`: sorting cycles ASC → DESC → unsorted (Clarity's default behavior).
+   *
+   * A column may override this grid-level default via
+   * {@link ColumnDefinition.disableUnsort}.
+   *
+   * @default true
+   */
+  @Input() disableUnsort = true;
+
+  /**
    * Input for providing data when virtual scrolling is enabled.
    * <code>gridItems</code> should not be used in this case.
    */

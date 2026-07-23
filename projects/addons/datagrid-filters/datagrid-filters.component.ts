@@ -43,7 +43,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
 
   mode: FilterMode = FilterMode.Quick;
   selectedFilterMode: FilterMode = FilterMode.Quick;
-  searchTerm: string;
+  searchTerm: string = '';
 
   /**
    * Array of filterable properties
