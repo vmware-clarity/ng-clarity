@@ -8,7 +8,6 @@
   role="row"
   [id]="id"
   class="datagrid-row-master datagrid-row-flex"
-  [clrExpandableAnimation]="expandAnimationTrigger"
   (mousedown)="clearRanges($event)"
   (click)="selectRow(!selected, $event)"
   [class.datagrid-row-clickable]="selection.rowSelectionMode"
@@ -121,7 +120,11 @@
     </ng-container>
     <!-- placeholder for projecting other sticky cells as pinned-->
   </div>
-  <div class="datagrid-row-scrollable" [ngClass]="{'is-replaced': replaced && expanded}">
+  <div
+    class="datagrid-row-scrollable"
+    [ngClass]="{'is-replaced': replaced && expanded}"
+    [clrExpandableAnimation]="expandAnimationTrigger"
+  >
     <div class="datagrid-scrolling-cells">
       <ng-content select="clr-dg-cell"></ng-content>
       <ng-container #scrollableCells></ng-container>

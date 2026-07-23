@@ -20,11 +20,16 @@ jobs:
           token: ${{secrets.GITHUB_TOKEN}}
           sourceRunId: ${{github.event.workflow_run.id}}
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{steps.get-pr-event.outputs.sourceHeadBranch}}
+          sparse-checkout: |
+            netlify-storybook.toml
+            netlify-website.toml
+            .nvmrc
+          sparse-checkout-cone-mode: false
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
       - name: Download Docs Artifact

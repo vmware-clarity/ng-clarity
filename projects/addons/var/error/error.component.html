@@ -1,0 +1,37 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div class="clr-row">
+  <div class="clr-col-12">
+    <div class="card">
+      <div class="card-header">
+        <cds-icon shape="exclamation-circle" solid status="danger" size="36"></cds-icon>
+        <span>{{ workflowStrings.error.title }}</span>
+      </div>
+      <div class="card-block">
+        <div>{{ workflowStrings.error.description }}</div>
+        <clr-stack-view class="clr-component mt-1">
+          <clr-stack-block [clrStackViewLevel]="1">
+            <clr-stack-label>{{ workflowStrings.error.details }}</clr-stack-label>
+            <clr-stack-block [clrStackViewLevel]="2" class="error-details-block">
+              <clr-stack-content>
+                <span>{{ error?.data?.message }}</span>
+                <div *ngIf="error?.data?.stackTrace" class="stack-trace mt-1">
+                  {{ error?.data?.stackTrace }}
+                </div>
+              </clr-stack-content>
+            </clr-stack-block>
+          </clr-stack-block>
+        </clr-stack-view>
+      </div>
+      <div class="card-footer text-right">
+        <button class="btn btn-primary" (click)="retry()">
+          <cds-icon shape="refresh"></cds-icon>{{ workflowStrings.error.retry }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

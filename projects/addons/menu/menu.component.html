@@ -1,0 +1,116 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<clr-dropdown class="app-menu" [class.zoom4x]="currentZoomLevel === ZoomLevel.x4">
+  <!-- hidden clrDropdownTrigger so the DropdownFocusHandler is instantiated before ClrDropdownMenu-->
+  <!-- otherwise DropdownFocusHandler will miss the openChange emission and won't move the focus to the first item -->
+  <button class="appfx-menu-trigger" clrDropdownTrigger></button>
+  <clr-dropdown-menu #rootDropdownMenu *clrIfOpen [class.fullscreen]="currentZoomLevel === ZoomLevel.x4">
+    <ng-template
+      #menuTemplate
+      let-items
+      let-hasIcons="hasIcons"
+      let-parentMenu="parentMenu"
+      let-parentDropdown="parentDropdown"
+      let-parentText="parentText"
+    >
+      <div class="scrollable-content">
+        <focusable-item-collector [parentMenu]="parentMenu">
+          <ng-container *ngIf="parentMenu !== rootDropdownMenu && currentZoomLevel === ZoomLevel.x4">
+            <div class="dropdown-header" aria-hidden="true">
+              <button class="btn-close-submenu" (click)="parentDropdown.popoverService.toggleWithEvent($event)">
+                <cds-icon size="18" shape="angle" direction="left"></cds-icon>
+              </button>
+              <span class="submenu-header-text">{{ parentText }}</span>
+              <button type="button" class="close" (click)="this.close($event)">
+                <cds-icon class="btn-close-menu" shape="window-close"></cds-icon>
+              </button>
+            </div>
+          </ng-container>
+
+          <ng-container *ngFor="let menuItem of $any(items)" [ngSwitch]="menuItem.type">
+            <ng-container *ngIf="!menuItem.hidden">
+              <!-- header item template -->
+              <div *ngSwitchCase="itemTypes.header" class="dropdown-header" aria-hidden="true">
+                <span class="menu-item-icon" [ngClass]="menuItem.iconClass"></span>
+                <span class="title-text">{{ menuItem.text }}</span>
+                <button
+                  *ngIf="currentZoomLevel === ZoomLevel.x4"
+                  type="button"
+                  class="close"
+                  (click)="this.close($event)"
+                >
+                  <cds-icon class="btn-close-menu" shape="window-close"></cds-icon>
+                </button>
+              </div>
+
+              <!-- action item template -->
+              <button
+                *ngSwitchCase="itemTypes.action"
+                clrDropdownItem
+                appfxFocusableDropdownItem
+                [clrDisabled]="!menuItem.enabled"
+                (click)="handleAction(menuItem)"
+                class="menu-item-action"
+                [attr.data-test-id]="menuItem.text"
+              >
+                <span class="menu-item-icon" [ngClass]="getIconClass(menuItem.iconClass, hasIcons)"></span>
+                <span class="menu-item-text">{{ menuItem.text }}</span>
+                <span class="menu-item-shortcut">{{ menuItem.shortcut }}</span>
+              </button>
+
+              <!-- separator item template -->
+              <div
+                *ngSwitchCase="itemTypes.separator"
+                class="dropdown-divider"
+                role="separator"
+                aria-hidden="true"
+              ></div>
+
+              <!-- nested menu item template -->
+              <ng-container *ngSwitchCase="itemTypes.menu">
+                <clr-dropdown #nestedDropdown>
+                  <button clrDropdownTrigger>
+                    <span class="menu-item-icon" [ngClass]="getIconClass(menuItem.iconClass, hasIcons)"></span
+                    >{{ menuItem.text }}
+                  </button>
+                  <clr-dropdown-menu
+                    #nestedDropdownMenu
+                    appfxFocusableMenu
+                    [class.fullscreen]="currentZoomLevel === ZoomLevel.x4"
+                  >
+                    <ng-template
+                      [ngTemplateOutlet]="menuTemplate"
+                      [ngTemplateOutletContext]="{
+                        $implicit: menuItem.menuItems,
+                        hasIcons: menuHasIcons(menuItem.menuItems),
+                        parentMenu: nestedDropdownMenu,
+                        parentDropdown: nestedDropdown,
+                        parentText: menuItem.text,
+                      }"
+                    >
+                    </ng-template>
+                  </clr-dropdown-menu>
+                </clr-dropdown>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </focusable-item-collector>
+      </div>
+    </ng-template>
+    <ng-container
+      [ngTemplateOutlet]="menuTemplate"
+      [ngTemplateOutletContext]="{
+        $implicit: menuItems,
+        hasIcons: menuHasIcons(menuItems),
+        parentMenu: rootDropdownMenu,
+        parentDropdown: dropdown,
+        parentText: text,
+      }"
+    >
+    </ng-container>
+  </clr-dropdown-menu>
+</clr-dropdown>

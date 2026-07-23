@@ -354,6 +354,29 @@ export const documentationRoutes: Routes = [
         data: { routePath: 'translate/:tab?' },
         loadChildren: () => import('./demos/translate/translate.demo.module').then(m => m.TranslateAddonDemoModule),
       },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'menu/:tab?' },
+        loadChildren: () => import('./demos/menu/menu.demo.module').then(m => m.MenuDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'certificate-viewer/:tab?' },
+        loadChildren: () =>
+          import('./demos/certificate-viewer/certificate-viewer.demo.module').then(m => m.CertificateViewerDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'property-view/:tab?' },
+        loadChildren: () =>
+          import('./demos/property-view/property-view.demo.module').then(m => m.PropertyViewAddonDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'card-container/:tab?' },
+        loadChildren: () =>
+          import('./demos/card-container/card-container.demo.module').then(m => m.CardContainerAddonDemoModule),
+      },
     ],
   },
 ];

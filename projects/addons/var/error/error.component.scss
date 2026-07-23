@@ -1,0 +1,38 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+clr-stack-view {
+  ::ng-deep {
+    .stack-view {
+      height: unset;
+    }
+  }
+}
+
+.error-details-block {
+  font-family: monospace;
+
+  ::ng-deep {
+    div.stack-view-key {
+      display: none;
+    }
+
+    div.stack-block-label {
+      padding-left: 0;
+      width: 100%;
+    }
+  }
+}
+
+.stack-trace {
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.btn-primary cds-icon {
+  margin-right: 5px;
+}

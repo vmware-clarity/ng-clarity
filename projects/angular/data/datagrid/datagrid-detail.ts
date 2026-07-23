@@ -9,12 +9,14 @@ import { Component, ContentChild, Input } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrDatagridDetailHeader } from './datagrid-detail-header';
-import { DetailService } from './providers/detail.service';
+import { DEFAULT_DETAIL_WIDTH, DetailService, MAX_DETAIL_WIDTH, MIN_DETAIL_WIDTH } from './providers/detail.service';
 
 @Component({
   selector: 'clr-dg-detail',
   host: {
     '[class.datagrid-detail-pane]': 'true',
+    '[class.datagrid-detail-custom-width]': 'isCustomWidth',
+    '[style.width.%]': 'width',
   },
   // We put the @if on the cdkTrapFocus so it doesn't always exist on the page
   // have to test for presence of header for aria-describedby because it was causing unit tests to crash
@@ -48,6 +50,39 @@ export class ClrDatagridDetail {
     public detailService: DetailService,
     public commonStrings: ClrCommonStringsService
   ) {}
+
+  @Input('clrDetailWidth')
+  get detailWidth(): number {
+    return this.detailService.detailWidth;
+  }
+  set detailWidth(value: number | null | undefined) {
+    if (value === null || value === undefined) {
+      this.detailService.detailWidth = DEFAULT_DETAIL_WIDTH;
+      return;
+    }
+
+    if (value < MIN_DETAIL_WIDTH) {
+      this.detailService.detailWidth = MIN_DETAIL_WIDTH;
+      return;
+    }
+
+    if (value > MAX_DETAIL_WIDTH) {
+      this.detailService.detailWidth = MAX_DETAIL_WIDTH;
+      return;
+    }
+
+    this.detailService.detailWidth = value;
+  }
+
+  get isCustomWidth(): boolean {
+    return this.detailWidth !== DEFAULT_DETAIL_WIDTH;
+  }
+
+  get width(): number | null {
+    // Skip the inline style at 100% so the .datagrid-detail-overlay CSS rule takes over
+    // without needing !important to override an inline style.
+    return this.detailWidth !== MAX_DETAIL_WIDTH ? this.detailWidth : null;
+  }
 
   get labelledBy(): string {
     if (this.ariaLabelledBy) {
