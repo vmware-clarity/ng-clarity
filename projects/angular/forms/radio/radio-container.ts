@@ -94,10 +94,10 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
   }
 
   private setAriaLabelledBy() {
-    if (!this.label.idAttr) {
+    if (this.label && !this.label.idAttr) {
       this.label.idAttr = this._generatedId;
     }
 
-    this.ariaLabelledBy = this.radios.length ? this.label.idAttr : null;
+    this.ariaLabelledBy = this.radios?.length && this.label ? this.label.idAttr : null;
   }
 }

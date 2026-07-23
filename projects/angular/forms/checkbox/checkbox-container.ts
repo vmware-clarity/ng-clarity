@@ -102,10 +102,10 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
   }
 
   private setAriaLabelledBy() {
-    if (!this.label.idAttr) {
+    if (this.label && !this.label.idAttr) {
       this.label.idAttr = this._generatedId;
     }
 
-    this.ariaLabelledBy = this.checkboxes.length ? this.label.idAttr : null;
+    this.ariaLabelledBy = this.checkboxes?.length && this.label ? this.label.idAttr : null;
   }
 }
