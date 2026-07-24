@@ -16,7 +16,6 @@ import {
   CdkVirtualScrollable,
   CdkVirtualScrollableElement,
   CdkVirtualScrollViewport,
-  FixedSizeVirtualScrollStrategy,
   ScrollDispatcher,
   ViewportRuler,
   VIRTUAL_SCROLL_STRATEGY,
@@ -48,6 +47,7 @@ import {
 import { Subscription } from 'rxjs';
 
 import { ClrDatagrid } from './datagrid';
+import { ClrDatagridVirtualScrollStrategy } from './datagrid-virtual-scroll-strategy';
 import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
 import { Items } from './providers/items';
 
@@ -80,11 +80,20 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   private readonly datagridElementRef: ElementRef<HTMLElement>;
 
   private gridRoleElement: HTMLElement | null | undefined;
-  private readonly virtualScrollStrategy: FixedSizeVirtualScrollStrategy;
+  private readonly virtualScrollStrategy: ClrDatagridVirtualScrollStrategy;
   private virtualScrollViewport: CdkVirtualScrollViewport;
   private cdkVirtualFor: CdkVirtualForOf<T>;
   private subscriptions: Subscription[] = [];
   private topIndex = 0;
+
+  /**
+   * ResizeObserver watching every currently rendered row individually (rather than the rows
+   * container as a whole), so any DOM change that makes a row taller or shorter than itemSize -
+   * expandable detail content, dynamically sized cell content, anything - is reported to
+   * virtualScrollStrategy. That keeps its total-content-size and scroll-offset math correct for
+   * the real (variable) row heights instead of assuming every row is exactly itemSize.
+   */
+  private rowsResizeObserver: ResizeObserver | null = null;
 
   // @deprecated remove the mutation observer when `datagrid-compact` class is deleted
   private mutationChanges: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
@@ -146,7 +155,11 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       attributeOldValue: true,
     });
 
-    this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(this.itemSize, this.minBufferPx, this.maxBufferPx);
+    this.virtualScrollStrategy = new ClrDatagridVirtualScrollStrategy(
+      this.itemSize,
+      this.minBufferPx,
+      this.maxBufferPx
+    );
   }
 
   get totalContentHeight() {
@@ -266,6 +279,20 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
     this.gridRoleElement = this.datagridElementRef.nativeElement.querySelector<HTMLElement>('[role="grid"]');
 
+    // A single ResizeObserver instance observes every rendered row individually (rows are added
+    // to it as they render, see observeRenderedRows()). ResizeObserver fires once immediately per
+    // element on observe(), so this also measures rows that start out already taller than
+    // itemSize - no separate "first fire" handling needed.
+    if (typeof ResizeObserver !== 'undefined') {
+      this.rowsResizeObserver = new ResizeObserver(entries => {
+        // Run inside NgZone so Angular change detection and the CDK viewport layout cycle are
+        // triggered correctly for any total-content-size / rendered-range change this causes.
+        this.ngZone.run(() => {
+          this.updateRowHeightsForEntries(entries);
+        });
+      });
+    }
+
     this.updateCdkVirtualForInputs();
 
     this.subscriptions.push(
@@ -297,6 +324,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.cdkVirtualFor?.ngDoCheck();
     if (this.shouldUpdateAriaRowIndexes) {
       this.updateAriaRowIndexes();
+      this.observeRenderedRows();
 
       this.shouldUpdateAriaRowIndexes = false;
     }
@@ -306,6 +334,8 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.cdkVirtualFor?.ngOnDestroy();
     this.virtualScrollViewport?.ngOnDestroy();
     this.mutationChanges?.disconnect();
+    this.rowsResizeObserver?.disconnect();
+    this.rowsResizeObserver = null;
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
@@ -363,10 +393,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   private updateAriaRowIndexes() {
     for (let i = 0; i < this.viewContainerRef.length; i++) {
       const viewRef = this.viewContainerRef.get(i) as EmbeddedViewRef<CdkVirtualForOfContext<T>>;
-
-      const rootElements: HTMLElement[] = viewRef.rootNodes;
-      const datagridRowElement = rootElements.find(rowElement => rowElement.tagName === 'CLR-DG-ROW');
-      const rowRoleElement = datagridRowElement?.querySelector('[role="row"]');
+      const rowRoleElement = this.getRowMasterElement(viewRef);
 
       const newAriaRowIndex = (viewRef.context.index + 1).toString();
       if (rowRoleElement?.getAttribute('aria-rowindex') !== newAriaRowIndex) {
@@ -374,6 +401,54 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         rowRoleElement?.setAttribute('aria-rowindex', newAriaRowIndex);
       }
     }
+  }
+
+  // Registers every currently rendered row with rowsResizeObserver. observe() is a no-op for a
+  // target that's already being observed, so this is safe to call on every rendered-range change
+  // without tracking which rows we've already seen.
+  private observeRenderedRows() {
+    if (!this.rowsResizeObserver) {
+      return;
+    }
+    for (let i = 0; i < this.viewContainerRef.length; i++) {
+      const viewRef = this.viewContainerRef.get(i) as EmbeddedViewRef<CdkVirtualForOfContext<T>>;
+      const rowMasterElement = this.getRowMasterElement(viewRef);
+      if (rowMasterElement) {
+        this.rowsResizeObserver.observe(rowMasterElement);
+      }
+    }
+  }
+
+  private updateRowHeightsForEntries(entries: ResizeObserverEntry[]) {
+    const indexByRowMasterElement = new Map<Element, number>();
+    for (let i = 0; i < this.viewContainerRef.length; i++) {
+      const viewRef = this.viewContainerRef.get(i) as EmbeddedViewRef<CdkVirtualForOfContext<T>>;
+      const rowMasterElement = this.getRowMasterElement(viewRef);
+      if (rowMasterElement) {
+        indexByRowMasterElement.set(rowMasterElement, viewRef.context.index);
+      }
+    }
+
+    // Collect the whole batch before touching virtualScrollStrategy, so a resize that affects
+    // several rows at once (e.g. a bulk expand, or a window resize reflowing every row) triggers
+    // one total-content-size/rendered-range recompute instead of one per row.
+    const extraHeightsByIndex = new Map<number, number>();
+    for (const entry of entries) {
+      const index = indexByRowMasterElement.get(entry.target);
+      if (index === undefined) {
+        // The row this element used to belong to has since scrolled out and been recycled for a
+        // different index (or destroyed); its real height doesn't affect anything we can act on.
+        continue;
+      }
+      extraHeightsByIndex.set(index, (entry.target as HTMLElement).offsetHeight - this.itemSize);
+    }
+    this.virtualScrollStrategy.setItemExtraHeights(extraHeightsByIndex);
+  }
+
+  private getRowMasterElement(viewRef: EmbeddedViewRef<CdkVirtualForOfContext<T>>): HTMLElement | null {
+    const rootElements: HTMLElement[] = viewRef.rootNodes;
+    const datagridRowElement = rootElements.find(rowElement => rowElement.tagName === 'CLR-DG-ROW');
+    return datagridRowElement?.querySelector<HTMLElement>('[role="row"]') ?? null;
   }
 
   private createVirtualScrollViewportForDatagrid(
@@ -384,7 +459,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     scrollDispatcher: ScrollDispatcher,
     viewportRuler: ViewportRuler,
     datagridElementRef: ElementRef<HTMLElement>,
-    virtualScrollStrategy: FixedSizeVirtualScrollStrategy
+    virtualScrollStrategy: ClrDatagridVirtualScrollStrategy
   ) {
     const datagridContentElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-content');
     const datagridRowsElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-rows');
