@@ -2613,6 +2613,7 @@ class DataGridFiltersComponent {
         this.advancedOnlyMode = FilterMode.AdvancedOnly;
         this.mode = FilterMode.Quick;
         this.selectedFilterMode = FilterMode.Quick;
+        this.searchTerm = '';
         /**
          * Event emitter to tell hosting view that search term, used for filtering
          * has changed.
