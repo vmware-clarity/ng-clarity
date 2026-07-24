@@ -284,6 +284,13 @@
         display: none;
       }
     }
+
+    // Hide separator on the last non-hidden column when subsequent columns are all hidden
+    .datagrid-column:not(.datagrid-hidden-column):is(:not(:has(~ .datagrid-column:not(.datagrid-hidden-column)))) {
+      .datagrid-column-separator {
+        display: none;
+      }
+    }
   }
 
   .datagrid-row-flex {
