@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { OnStepValidate, StepModelHolder } from '@clr/addons/var';
-import { ClarityModule } from '@clr/angular';
+import { buildingIcon, ClarityIcons, ClarityModule, clusterIcon, hostIcon } from '@clr/angular';
 import { map, Observable, of } from 'rxjs';
 
 import { SelectHostModel } from './select-host.model';
@@ -20,6 +20,10 @@ import { SelectHostModel } from './select-host.model';
 })
 export class SelectHostComponent implements StepModelHolder, OnStepValidate {
   model: SelectHostModel;
+
+  constructor() {
+    ClarityIcons.addIcons(hostIcon, clusterIcon, buildingIcon);
+  }
 
   selectNode(resourceId: string, resourceName: string): void {
     this.model.computeResourceId.value = resourceId;

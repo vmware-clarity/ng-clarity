@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 .saved-as-draft {
-  margin-left: 0.5rem;
+  margin-left: var(--clr-base-horizontal-offset-m);
   font-style: italic;
-  color: var(--clr-color-neutral-600, #737373);
+  color: var(--cds-alias-typography-disabled);
 }

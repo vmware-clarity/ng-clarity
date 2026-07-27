@@ -8,6 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { ZoomLevelService } from '@clr/addons/a11y';
 import { WorkflowConfigurationService } from '@clr/addons/var';
 import { AppfxWizardModule } from '@clr/addons/wizard';
@@ -58,6 +59,7 @@ export class MyModule {}
     ThemedImageComponent,
     SampleWizardComponent,
     SampleStepperComponent,
+    RouterModule,
   ],
 })
 export class WizardAddonDemoComponent extends ClarityDocComponent {

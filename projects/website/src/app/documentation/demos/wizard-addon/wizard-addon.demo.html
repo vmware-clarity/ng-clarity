@@ -7,9 +7,10 @@
 <app-doc-tabs>
   <app-doc-tab tab="overview">
     <p class="component-summary">
-      <code cds-text="code">&#64;clr/addons/wizard</code> provides a multi-step wizard built on top of Clarity Modal. It
-      adds workflow orchestration, automatic data injection between steps, loading indicators, standardised error
-      handling, conditional step skipping, and an optional "Ready to Complete" summary page.
+      <code cds-text="code">&#64;clr/addons/wizard</code> provides a multi-step wizard built on top of
+      <a [routerLink]="['../modal']">Modal Component</a>. It adds workflow orchestration, automatic data injection
+      between steps, loading indicators, standardised error handling, conditional step skipping, and an optional "Ready
+      to Complete" summary page.
     </p>
 
     <h2 id="structure" class="clr-mt-48px" cds-text="title">Wizard Structure</h2>
@@ -38,25 +39,6 @@
     </ol>
 
     <h2 id="features" class="clr-mt-48px" cds-text="title">Features</h2>
-    <div class="clr-row clr-mt-16px">
-      <div class="clr-col-6">
-        <ul cds-list>
-          <li>Pre-loads data for the first page; spinner displayed automatically</li>
-          <li>Orchestrates data retrieval on page transitions (lazy or eager)</li>
-          <li>Caches data between back/forth navigation</li>
-          <li>Reloads data when upstream selection changes</li>
-        </ul>
-      </div>
-      <div class="clr-col-6">
-        <ul cds-list>
-          <li>Optional summary page with <code cds-text="code">step.summary</code></li>
-          <li>Custom footer component support</li>
-          <li>Conditional step relevance via <code cds-text="code">step.isRelevant</code></li>
-          <li>Inline (Stepper) mode — same steps, no modal</li>
-        </ul>
-      </div>
-    </div>
-
     <h3 id="data-retrieval" class="clr-mt-32px" cds-text="section">Data Retrieval</h3>
     <p cds-text="body" class="clr-mt-16px">
       Wizard automates the common data-loading concerns of a multi-step workflow so page components stay focused on
@@ -187,7 +169,7 @@
   </app-doc-tab>
 
   <app-doc-tab tab="code">
-    <h2 id="playground" cds-text="title">Playground</h2>
+    <h2 id="playground" cds-text="title" cds-layout="m-t:xl">Playground</h2>
     <p cds-text="body" class="clr-mt-16px clr-mb-24px">
       Select presentation type and click the button to start the workflow. The wizard demonstrates data retrieval,
       conditional steps, validation, and summary page.
@@ -254,7 +236,7 @@
   </app-doc-tab>
 
   <app-doc-tab tab="api">
-    <h2 id="api-wizard" cds-text="title">WizardComponent Inputs</h2>
+    <h2 id="api-wizard" cds-text="title" class="clr-mt-24px">WizardComponent Inputs</h2>
     <table class="table clr-mt-16px">
       <thead>
         <tr>

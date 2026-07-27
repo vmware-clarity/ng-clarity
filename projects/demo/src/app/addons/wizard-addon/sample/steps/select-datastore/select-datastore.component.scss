@@ -12,10 +12,10 @@
 }
 
 .storage-policy-container {
-  padding-top: 10px;
+  padding-top: var(--clr-base-vertical-offset-m);
 
   label {
-    padding-right: 5px;
+    padding-right: var(--clr-base-horizontal-offest-s);
   }
 
   button {
