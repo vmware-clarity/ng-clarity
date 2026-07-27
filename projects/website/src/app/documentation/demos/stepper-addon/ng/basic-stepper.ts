@@ -9,11 +9,11 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxStepperModule } from '@clr/addons/stepper';
-import { Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
+import { Out, Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
 
 /* ---- Step 1 model ---- */
 export class ProjectNameModel implements StepModel {
-  name = Var.of<string>('');
+  @Out() name: Var<string> = Var.of('Test');
   readyToComplete = true;
 }
 
@@ -25,7 +25,7 @@ export class ProjectNameModel implements StepModel {
     <div class="clr-form-group">
       <label class="clr-control-label" for="proj-name">Project Name</label>
       <div class="clr-control-container">
-        <input id="proj-name" type="text" class="clr-input" [(ngModel)]="model.name.value" />
+        <input id="proj-name" type="text" class="clr-input" [(ngModel)]="model.name.value" required />
       </div>
     </div>
   `,
@@ -36,7 +36,7 @@ export class StepperStep1Component implements StepModelHolder {
 
 /* ---- Step 2 model ---- */
 export class TeamModel implements StepModel {
-  team = Var.of<string>('frontend');
+  @Out() team: Var<string> = Var.of('frontend');
   readyToComplete = true;
 }
 
@@ -65,8 +65,8 @@ export class StepperStep2Component implements StepModelHolder {
 
 /* ---- Workflow model ---- */
 export class ProjectWorkflowModel {
-  name = Var.of<string>('');
-  team = Var.of<string>('frontend');
+  @Out() name: Var<string> = Var.of();
+  @Out() team: Var<string> = Var.of();
 }
 
 @Component({

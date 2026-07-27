@@ -6,11 +6,16 @@
   -->
 <h1>Stepper Addon Demo</h1>
 
-<div *ngIf="!done">
-  <appfx-stepper [steps]="steps" [wizardModel]="model" (onFinish)="onFinish()"></appfx-stepper>
+<div *ngIf="!submitted">
+  <appfx-stepper
+    [steps]="steps"
+    [wizardModel]="model"
+    (onModelChange)="onModelChange($event)"
+    (onFinish)="onFinish()"
+  ></appfx-stepper>
 </div>
 
-<div *ngIf="done" class="clr-mt-24px">
+<div *ngIf="submitted" class="clr-mt-24px">
   <div class="alert alert-success">
     <div class="alert-items">
       <div class="alert-item static">

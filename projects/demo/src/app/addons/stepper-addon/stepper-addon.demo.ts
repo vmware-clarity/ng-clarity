@@ -5,25 +5,25 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxStepperModule } from '@clr/addons/stepper';
-import { Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
+import { Out, Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
 
 class NameModel implements StepModel {
-  name = Var.of<string>('');
+  @Out() name: Var<string> = Var.of('Test');
   readyToComplete = true;
 }
 
 @Component({
   selector: 'clr-demo-app-stepper-step1',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, JsonPipe],
   template: `
     <div class="clr-form-group">
-      <label class="clr-control-label" for="stp-name">Project Name</label>
-      <input id="stp-name" type="text" class="clr-input" [(ngModel)]="model.name.value" />
+      <label class="clr-control-label" for="step-name">Project Name</label>
+      <input id="step-name" type="text" class="clr-input" [(ngModel)]="model.name.value" required />
     </div>
   `,
 })
@@ -32,14 +32,14 @@ class DemoStepperStep1 implements StepModelHolder {
 }
 
 class TeamModel implements StepModel {
-  team = Var.of<string>('frontend');
+  @Out() team: Var<string> = Var.of('frontend');
   readyToComplete = true;
 }
 
 @Component({
   selector: 'clr-demo-app-stepper-step2',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, JsonPipe],
   template: `
     <div class="clr-select-wrapper">
       <select class="clr-select" [(ngModel)]="model.team.value">
@@ -55,8 +55,8 @@ class DemoStepperStep2 implements StepModelHolder {
 }
 
 class ProjectModel {
-  name = Var.of<string>('');
-  team = Var.of<string>('frontend');
+  @Out() name: Var<string> = Var.of();
+  @Out() team: Var<string> = Var.of();
 }
 
 @Component({
@@ -68,7 +68,8 @@ class ProjectModel {
 export class StepperAddonDemo implements OnInit {
   model = new ProjectModel();
   steps: Step[];
-  done = false;
+  submitted = false;
+  result: { name: string; team: string } | null = null;
 
   ngOnInit() {
     this.steps = [
@@ -88,11 +89,17 @@ export class StepperAddonDemo implements OnInit {
   }
 
   onFinish() {
-    this.done = true;
+    this.result = { name: this.model.name.value, team: this.model.team.value };
+    this.submitted = true;
+  }
+
+  onModelChange(event) {
+    console.log(event);
   }
 
   reset() {
-    this.done = false;
+    this.submitted = false;
+    this.result = null;
     this.model = new ProjectModel();
     this.ngOnInit();
   }

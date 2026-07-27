@@ -9,9 +9,16 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxStepperModule } from '@clr/addons/stepper';
-import { Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
+import { Step } from '@clr/addons/var';
 import { ClarityModule } from '@clr/angular';
 
+import {
+  ProjectNameModel,
+  ProjectWorkflowModel,
+  StepperStep1Component,
+  StepperStep2Component,
+  TeamModel,
+} from './ng/basic-stepper';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -31,59 +38,10 @@ import { AppfxWorkflowCoreModule } from '@clr/addons/var';
 export class MyModule {}
 `;
 
-class ProjectNameModel implements StepModel {
-  name = Var.of<string>('');
-  readyToComplete = true;
-}
-
-@Component({
-  selector: 'clr-stp-doc-step1',
-  standalone: true,
-  imports: [FormsModule],
-  template: `
-    <div class="clr-form-group">
-      <label class="clr-control-label" for="proj-n">Project Name</label>
-      <input id="proj-n" type="text" class="clr-input" [(ngModel)]="model.name.value" />
-    </div>
-  `,
-})
-class StepperDocStep1Component implements StepModelHolder {
-  model: ProjectNameModel;
-}
-
-class TeamModel implements StepModel {
-  team = Var.of<string>('frontend');
-  readyToComplete = true;
-}
-
-@Component({
-  selector: 'clr-stp-doc-step2',
-  standalone: true,
-  imports: [FormsModule],
-  template: `
-    <div class="clr-select-wrapper">
-      <select class="clr-select" [(ngModel)]="model.team.value">
-        <option value="frontend">Frontend</option>
-        <option value="backend">Backend</option>
-        <option value="platform">Platform</option>
-      </select>
-    </div>
-  `,
-})
-class StepperDocStep2Component implements StepModelHolder {
-  model: TeamModel;
-}
-
-class ProjectWorkflowModel {
-  name = Var.of<string>('');
-  team = Var.of<string>('frontend');
-}
-
 @Component({
   selector: 'clr-stepper-addon-demo',
   standalone: true,
   templateUrl: './stepper-addon.demo.html',
-  styleUrl: './stepper-addon.demo.scss',
   host: {
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
@@ -97,8 +55,8 @@ class ProjectWorkflowModel {
     DocTabComponent,
     DocTabsComponent,
     StackblitzExampleComponent,
-    StepperDocStep1Component,
-    StepperDocStep2Component,
+    StepperStep1Component,
+    StepperStep2Component,
   ],
 })
 export class StepperAddonDemoComponent extends ClarityDocComponent implements OnInit {
@@ -136,13 +94,13 @@ export class StepperAddonDemoComponent extends ClarityDocComponent implements On
       {
         title: 'Project Name',
         description: 'Enter a unique name',
-        componentClass: StepperDocStep1Component,
+        componentClass: StepperStep1Component,
         model: new ProjectNameModel(),
       },
       {
         title: 'Assign Team',
         description: 'Select the owner team',
-        componentClass: StepperDocStep2Component,
+        componentClass: StepperStep2Component,
         model: new TeamModel(),
       },
     ];
