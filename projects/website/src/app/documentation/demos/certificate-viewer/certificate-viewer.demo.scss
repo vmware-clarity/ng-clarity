@@ -1,0 +1,39 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/* ─── Mode selector bar ──────────────────────────────────────────────────── */
+.cert-mode-bar {
+  margin-bottom: var(--clr-base-vertical-offset-2xl);
+}
+
+/* ─── Fill-parent container ──────────────────────────────────────────────── */
+.cert-fill-parent-container {
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+  border-radius: var(--cds-alias-object-border-radius-100);
+  padding: var(--clr-base-vertical-offset-xl) var(--clr-base-horizontal-offset-xl);
+  min-height: 420px;
+  overflow: auto;
+}
+
+/* ─── Fixed-height container ─────────────────────────────────────────────── */
+.cert-fixed-height-container {
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+  border-radius: var(--cds-alias-object-border-radius-100);
+  padding: var(--clr-base-vertical-offset-xl) var(--clr-base-horizontal-offset-xl);
+  height: 420px;
+  overflow: auto;
+}
+
+/* ─── Modal trigger ─────────────────────────────────────────────────────── */
+.cert-modal-trigger {
+  padding: var(--clr-base-vertical-offset-3xl) 0;
+}
+
+.cert-modal-body {
+  min-height: 500px;
+  overflow: auto;
+}

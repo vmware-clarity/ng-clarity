@@ -12,6 +12,7 @@ import prismjs from 'prismjs';
 
 // add languages for code highlighting
 import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-bash';
 
 /**
  * Describe ES5/6 module import

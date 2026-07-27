@@ -683,6 +683,19 @@
           <td>No</td>
         </tr>
         <tr>
+          <td><code cds-text="code">disableUnsort</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>
+            Removes the unsort step from the sort cycle for every column. When
+            <code cds-text="code">true</code> (default), clicking a sorted column header toggles ascending/descending
+            only; when <code cds-text="code">false</code>, it cycles ascending &rarr; descending &rarr; unsorted. Can be
+            overridden per column via <code cds-text="code">ColumnDefinition.disableUnsort</code>. Defaults to
+            <code cds-text="code">true</code>.
+          </td>
+          <td>No</td>
+        </tr>
+        <tr>
           <td><code cds-text="code">preSelectFirstItem</code></td>
           <td>Input</td>
           <td><code cds-text="code">boolean</code></td>
@@ -941,6 +954,17 @@
           <td><code cds-text="code">sortAndFilterByField</code></td>
           <td><code cds-text="code">string</code></td>
           <td>Field to filter/sort by.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">disableUnsort</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>
+            Overrides the grid-level <code cds-text="code">disableUnsort</code> for this column. When
+            <code cds-text="code">true</code>, sorting toggles ascending/descending only; when
+            <code cds-text="code">false</code>, it cycles ascending &rarr; descending &rarr; unsorted. When omitted, the
+            grid-level value is used.
+          </td>
           <td>No</td>
         </tr>
       </tbody>

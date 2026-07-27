@@ -179,7 +179,7 @@ $typography-tokens: (
   ),
   'TITLE-24-EXP': (
     // H3, Modal, Wizard Heading
-    font-size: #{variables.$clr-base-typography-font-size-heading},
+    font-size: #{variables.$clr-base-typography-font-size-title},
     font-weight: var(--cds-alias-typography-title-font-weight),
     line-height: #{variables.$clr-base-typography-line-height-32},
     letter-spacing: #{baselinePx(-0.2)},

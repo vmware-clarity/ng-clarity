@@ -62,15 +62,15 @@
 
 [cds-text*='headline'] {
   $lh-gap: mixins.getLineHeightGap(
-    tokens.$cds-alias-typography-heading-line-height-static,
-    tokens.$cds-alias-typography-heading-line-height
+    tokens.$cds-alias-typography-headline-line-height-static,
+    tokens.$cds-alias-typography-headline-line-height
   );
   @include typography-mixins.LHE($lh-gap);
 
-  font-size: tokens.$cds-alias-typography-heading-font-size;
-  font-weight: tokens.$cds-alias-typography-heading-font-weight;
-  line-height: tokens.$cds-alias-typography-heading-line-height;
-  letter-spacing: tokens.$cds-alias-typography-heading-letter-spacing;
+  font-size: tokens.$cds-alias-typography-headline-font-size;
+  font-weight: tokens.$cds-alias-typography-headline-font-weight;
+  line-height: tokens.$cds-alias-typography-headline-line-height;
+  letter-spacing: tokens.$cds-alias-typography-headline-letter-spacing;
 }
 
 [cds-text*='title'] {

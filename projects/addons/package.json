@@ -26,6 +26,16 @@
     "@angular/platform-browser": ">= 21.1.0",
     "@angular/router": ">= 21.1.0",
     "@clr/angular": ">= 18",
+    "asn1js": "^3.0.6",
+    "pkijs": "^3.2.5",
     "rxjs": "^7.8.0"
+  },
+  "peerDependenciesMeta": {
+    "asn1js": {
+      "optional": true
+    },
+    "pkijs": {
+      "optional": true
+    }
   }
 }
