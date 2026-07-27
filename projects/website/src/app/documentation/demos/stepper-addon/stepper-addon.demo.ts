@@ -8,6 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { AppfxStepperModule } from '@clr/addons/stepper';
 import { Step } from '@clr/addons/var';
 import { ClarityModule } from '@clr/angular';
@@ -57,6 +58,7 @@ export class MyModule {}
     StackblitzExampleComponent,
     StepperStep1Component,
     StepperStep2Component,
+    RouterModule
   ],
 })
 export class StepperAddonDemoComponent extends ClarityDocComponent implements OnInit {
