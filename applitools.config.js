@@ -17,7 +17,7 @@ module.exports = {
     { width: 1280, height: 800, name: 'firefox' },
   ],
   layoutBreakpoints: { breakpoints: true, heightBreakpoints: true, reload: false },
-  testConcurrency: 50,
+  testConcurrency: 150,
   storybookUrl: process.env['STORYBOOK_URL'] || 'http://localhost:8080',
   puppeteerOptions: process.env['PUPPETEER_EXECUTABLE_PATH']
     ? { executablePath: process.env['PUPPETEER_EXECUTABLE_PATH'] }
