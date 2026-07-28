@@ -93,6 +93,16 @@ export interface ColumnDefinition<T> {
    * The field by which the column will be filtered and sorted.
    */
   sortAndFilterByField?: string;
+
+  /**
+   * Controls whether the "unsort" step is removed from this column's sort cycle,
+   * overriding the grid-level `disableUnsort` default.
+   * - `true`: this column toggles ascending ↔ descending only.
+   * - `false`: this column cycles ascending → descending → unsorted.
+   *
+   * When omitted, the grid-level `disableUnsort` value is used.
+   */
+  disableUnsort?: boolean;
 }
 
 /**

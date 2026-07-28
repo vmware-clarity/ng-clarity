@@ -244,4 +244,36 @@ describe('Side Panel', () => {
     expect(maybeTitleWrapper.classList.contains('modal-title-wrapper')).toBeTrue();
     expect(maybleCloseButton.classList.contains('close')).toBeTrue();
   });
+
+  it('should NOT add pinned classes to modalHost when panel is closed with pinned=true by default', () => {
+    const testFixture = TestBed.createComponent(TestComponent);
+    const testComponent = testFixture.componentInstance;
+    testComponent.opened = false;
+    testFixture.detectChanges();
+
+    // Set pinned=true while panel is closed
+    testComponent.sidePanelInstance.pinned = true;
+    testFixture.detectChanges();
+
+    const host = document.body;
+    const hasPinnedClass = Array.from(host.classList).some(c => c.startsWith('clr-side-panel-pinned-'));
+    expect(hasPinnedClass).toBeFalse();
+    testFixture.destroy();
+  });
+
+  it('should add pinned classes to modalHost when panel is open with pinned=true', () => {
+    const testFixture = TestBed.createComponent(TestComponent);
+    const testComponent = testFixture.componentInstance;
+    testComponent.opened = true;
+    testFixture.detectChanges();
+
+    // Set pinned=true while panel is open
+    testComponent.sidePanelInstance.pinned = true;
+    testFixture.detectChanges();
+
+    const host = document.body;
+    const hasPinnedClass = Array.from(host.classList).some(c => c.startsWith('clr-side-panel-pinned-'));
+    expect(hasPinnedClass).toBeTrue();
+    testFixture.destroy();
+  });
 });

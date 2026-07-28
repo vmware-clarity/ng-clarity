@@ -28,6 +28,7 @@ import {
   ZoomLevelServiceMock,
 } from '@clr/addons/testing';
 import {
+  ClrDatagridColumn,
   ClrDatagridComparatorInterface,
   ClrDatagridFilterInterface,
   ClrDatagridSortOrder,
@@ -664,6 +665,75 @@ describe('DatagridComponent', () => {
           };
           expect(this.component.columnSortOrderChange).toHaveBeenCalledWith(expectedColumnSortOrdeChange);
         });
+      });
+    });
+
+    describe('disableUnsort', () => {
+      function getColumnDisableUnsort(fixture: ComponentFixture<DatagridHostComponent>): boolean[] {
+        return fixture.debugElement
+          .queryAll(By.directive(ClrDatagridColumn))
+          .map((columnDebugEl: DebugElement) => columnDebugEl.componentInstance.disableUnsort);
+      }
+
+      beforeEach(function (this: DatagridSpecContext) {
+        this.component.columnsDefs = this.columnsDefs;
+        this.component.data = this.data;
+      });
+
+      it('disables unsort for every column by default', function (this: DatagridSpecContext) {
+        this.fixture.detectChanges(false);
+        expect(this.component.appfxDatagridComponent.disableUnsort).toBe(true);
+        expect(getColumnDisableUnsort(this.fixture)).toEqual([true, true, true]);
+      });
+
+      it('enables unsort for every column when the grid input is false', function (this: DatagridSpecContext) {
+        this.component.disableUnsort = false;
+        this.fixture.detectChanges(false);
+        expect(getColumnDisableUnsort(this.fixture)).toEqual([false, false, false]);
+      });
+
+      it('lets a column re-enable unsort when the grid disables it', function (this: DatagridSpecContext) {
+        this.component.disableUnsort = true;
+        this.columnsDefs[2].disableUnsort = false;
+        this.component.columnsDefs = [...this.columnsDefs];
+        this.fixture.detectChanges(false);
+        expect(getColumnDisableUnsort(this.fixture)).toEqual([true, true, false]);
+      });
+
+      it('lets a column disable unsort when the grid enables it', function (this: DatagridSpecContext) {
+        this.component.disableUnsort = false;
+        this.columnsDefs[2].disableUnsort = true;
+        this.component.columnsDefs = [...this.columnsDefs];
+        this.fixture.detectChanges(false);
+        expect(getColumnDisableUnsort(this.fixture)).toEqual([false, false, true]);
+      });
+
+      it('keeps a sorted column sorted on the third click when unsort is disabled', function (this: DatagridSpecContext) {
+        const sortableColumnIndex = 2; // "Status" column defines a sortComparator
+        this.component.disableUnsort = true;
+        this.fixture.detectChanges(false);
+        const gridHelper = new GridHelper(this.fixture.debugElement);
+
+        gridHelper.sortByColumnIndex(sortableColumnIndex); // ascending
+        gridHelper.sortByColumnIndex(sortableColumnIndex); // descending
+        gridHelper.sortByColumnIndex(sortableColumnIndex); // back to ascending (never unsorted)
+        this.fixture.detectChanges(false);
+
+        expect(this.columnsDefs[sortableColumnIndex].defaultSortOrder).toEqual(ClrDatagridSortOrder.ASC);
+      });
+
+      it('returns a sorted column to unsorted on the third click when unsort is enabled', function (this: DatagridSpecContext) {
+        const sortableColumnIndex = 2; // "Status" column defines a sortComparator
+        this.component.disableUnsort = false;
+        this.fixture.detectChanges(false);
+        const gridHelper = new GridHelper(this.fixture.debugElement);
+
+        gridHelper.sortByColumnIndex(sortableColumnIndex); // ascending
+        gridHelper.sortByColumnIndex(sortableColumnIndex); // descending
+        gridHelper.sortByColumnIndex(sortableColumnIndex); // unsorted
+        this.fixture.detectChanges(false);
+
+        expect(this.columnsDefs[sortableColumnIndex].defaultSortOrder).toEqual(ClrDatagridSortOrder.UNSORTED);
       });
     });
 
@@ -1961,6 +2031,7 @@ class StatusComparator implements ClrDatagridComparatorInterface<any> {
       [trackByGridItemProperty]="trackByProperty"
       [isRowLocked]="isRowLocked"
       [virtualScrolling]="virtualScrolling"
+      [disableUnsort]="disableUnsort"
       [serverDrivenDatagrid]="serverDrivenDatagrid"
       [dataRange]="dataRange"
       [(detailState)]="detailState"
@@ -2016,6 +2087,7 @@ class DatagridHostComponent {
   detailState: any = null;
   rowsExpandedByDefault?: boolean = false;
   virtualScrolling = false;
+  disableUnsort = true;
   serverDrivenDatagrid = false;
   dataRange: ClrDatagridVirtualScrollRangeInterface<any> = {
     total: 100,

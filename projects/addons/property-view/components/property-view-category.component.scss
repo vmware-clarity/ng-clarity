@@ -1,0 +1,38 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 0.6rem;
+  line-height: 14px;
+  box-sizing: border-box;
+
+  .pv-sections-table {
+    width: auto;
+    margin: 0;
+    box-sizing: border-box;
+    border-collapse: separate;
+
+    .section-spacer,
+    [appfx-property-view-section] {
+      border: 0 solid transparent;
+    }
+
+    .section-spacer th {
+      padding-top: 0.6rem;
+      padding-bottom: 0;
+      // unset clarity visual style --clr-table-noborder-bg-color
+      background-color: unset;
+    }
+
+    .pv-section-visually-hidden {
+      display: none;
+    }
+  }
+}

@@ -10,6 +10,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { DropdownAngularCloseItemFalseDemo } from './dropdown-angular-close-item-false';
 import { DropdownAngularContextMenuDemo } from './dropdown-angular-context-menu';
+import { DropdownAngularDestroySubtreeDemo } from './dropdown-angular-destroy-subtree';
 import { DropdownAngularNestedDemo } from './dropdown-angular-nested';
 import { DropdownAngularPositioningDemo } from './dropdown-angular-positioning';
 import { DropdownAngularShadowRootDemo } from './dropdown-angular-shadow-root';
@@ -36,6 +37,7 @@ const ROUTES: Routes = [
       { path: 'angular-nested', component: DropdownAngularNestedDemo },
       { path: 'multi-click', component: DropdownAngularCloseItemFalseDemo },
       { path: 'dropdown-header', component: DropdownHeaderDemo },
+      { path: 'destroy-subtree', component: DropdownAngularDestroySubtreeDemo },
     ],
   },
 ];

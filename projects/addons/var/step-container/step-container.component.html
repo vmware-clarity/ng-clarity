@@ -1,0 +1,17 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div class="pr-1 clr-flex-grow-0 clr-flex-shrink-0">
+  <span *ngIf="description">{{ description }}</span>
+  <appfx-validation-banner
+    *ngIf="step.modelInstance?.validationState?.isEmpty() === false"
+    [state]="step.modelInstance?.validationState"
+  >
+  </appfx-validation-banner>
+</div>
+<div class="content-container clr-flex-column clr-flex-grow-1 clr-flex-shrink-1">
+  <ng-template #componentContainer> </ng-template>
+</div>

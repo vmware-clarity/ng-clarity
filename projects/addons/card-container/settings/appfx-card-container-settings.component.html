@@ -1,0 +1,34 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<clr-dropdown [clrCloseMenuOnItemClick]="false">
+  <button class="settings-btn" clrDropdownTrigger>
+    <cds-icon shape="cog" size="24" data-test-id="toggleContainerSettingsDropDown"> </cds-icon>
+    <span class="clr-sr-only">
+      {{ 'settingsCog' | translate }}
+    </span>
+  </button>
+  <clr-dropdown-menu class="container-settings" clrPosition="bottom-right" *clrIfOpen>
+    <div *ngFor="let card of cards; trackBy: trackByFn" clrDropdownItem>
+      <clr-checkbox-wrapper
+        [class.disabled-item]="card.canHide === false"
+        (keydown.space)="toggleShowHide(card)"
+        (keydown.enter)="toggleShowHide(card)"
+      >
+        <input
+          type="checkbox"
+          clrCheckbox
+          name="cards"
+          (change)="toggleShowHide(card)"
+          [checked]="!card.hidden"
+          [disabled]="card.canHide === false"
+          tabindex="-1"
+        />
+        <label [title]="card.title" cds-text="truncate">{{ card.title }}</label>
+      </clr-checkbox-wrapper>
+    </div>
+  </clr-dropdown-menu>
+</clr-dropdown>

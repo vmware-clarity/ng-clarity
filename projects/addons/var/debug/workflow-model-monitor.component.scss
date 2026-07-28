@@ -1,0 +1,50 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+.title {
+  margin-bottom: 0.36rem;
+}
+
+.prop-name {
+  margin-top: 0.12rem;
+}
+
+.prop-value {
+  white-space: nowrap;
+  margin-top: 0.12rem;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.simple-var {
+  color: #2283bc;
+}
+
+.computed-var {
+  color: #9c46bf;
+}
+
+.prop-changed {
+  color: #3fa740;
+}
+
+:host {
+  ::ng-deep {
+    .signpost-content-body {
+      max-height: 650px;
+    }
+
+    .signpost-trigger {
+      height: 1.2rem;
+      line-height: normal;
+    }
+  }
+}
