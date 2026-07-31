@@ -49,3 +49,11 @@
   font-family: var(--cds-alias-typography-font-family);
   font-size: var(--cds-alias-typography-font-size-2);
 }
+
+.shadow-realm-frame {
+  display: block;
+  width: 100%;
+  height: 120px;
+  margin: var(--cds-global-space-5) 0;
+  border: 2px dashed var(--cds-alias-object-border-color);
+}

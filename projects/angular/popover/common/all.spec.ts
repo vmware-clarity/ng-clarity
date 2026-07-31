@@ -12,6 +12,7 @@ import ClrPopoverOpenCloseButtonSpec from './popover-open-close-button.spec';
 import ClrPopoverOriginSpec from './popover-origin.spec';
 import PopoverServiceSpec from './providers/popover.service.spec';
 import ClrStopEscapePropagationDirectiveSpec from './stop-escape-propagation.directive.spec';
+import ResolveCrossWindowOriginSpec from './utils/cross-window-origin.spec';
 
 describe('ClrPopover', () => {
   describe('Service', () => {
@@ -24,6 +25,10 @@ describe('ClrPopover', () => {
     ClrPopoverCloseButtonSpec();
     ClrPopoverContentSpec();
     ClrStopEscapePropagationDirectiveSpec();
+  });
+
+  describe('Utils', () => {
+    ResolveCrossWindowOriginSpec();
   });
 
   describe('clrIfOpen', function () {

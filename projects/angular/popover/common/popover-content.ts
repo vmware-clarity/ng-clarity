@@ -35,6 +35,7 @@ import { Keys } from '@clr/angular/utils';
 import { fromEvent, merge, Subscription, switchMap, timer } from 'rxjs';
 
 import { ClrPopoverService } from './providers/popover.service';
+import { resolveCrossWindowOrigin } from './utils/cross-window-origin';
 import {
   ClrPopoverPosition,
   ClrPopoverType,
@@ -157,10 +158,12 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private get positionStrategy() {
+    const origin = resolveCrossWindowOrigin(this.popoverService.origin);
+
     return this.overlay
       .position()
-      .flexibleConnectedTo(this.popoverService.origin)
-      .setOrigin(this.popoverService.origin)
+      .flexibleConnectedTo(origin)
+      .setOrigin(origin)
       .withPush(true)
       .withPositions([this.preferredPosition, ...this._availablePositions])
       .withFlexibleDimensions(true);
@@ -374,7 +377,11 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     const overflowScrollKeys = ['auto', 'scroll', 'clip'];
     const scrollableParents: (HTMLDocument | HTMLElement)[] = [window.document];
 
-    while (parent && !(parent instanceof HTMLHtmlElement)) {
+    while (
+      parent &&
+      (parent instanceof ShadowRoot || parent instanceof Element) &&
+      !(parent instanceof HTMLHtmlElement)
+    ) {
       if (parent instanceof ShadowRoot) {
         parent = parent.host as HTMLElement;
       }

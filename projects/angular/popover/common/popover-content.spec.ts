@@ -160,6 +160,31 @@ export default function (): void {
         expect(this.fixture.detectChanges).not.toThrowAnyError();
       });
     });
+
+    describe('getScrollableParents', function (this: Context) {
+      it('does not throw when the origin lives inside a ShadowRoot belonging to a foreign document realm', function (this: Context) {
+        // Reproduces CDE-3155: a ShadowRoot host whose ancestor <html>/document belong to a
+        // different window realm (e.g. an iframe in a micro-frontend architecture) fails the
+        // `instanceof HTMLHtmlElement` check across realms, so the walk must not fall through
+        // to calling getComputedStyle() on a non-Element (the foreign Document).
+        const iframe = document.createElement('iframe');
+        document.body.appendChild(iframe);
+        const iframeDoc = iframe.contentDocument;
+        iframeDoc.open();
+        iframeDoc.write('<!DOCTYPE html><html><body><div id="host"></div></body></html>');
+        iframeDoc.close();
+        const host = iframeDoc.getElementById('host');
+        const shadowRoot = host.attachShadow({ mode: 'open' });
+        const trigger = iframeDoc.createElement('button');
+        shadowRoot.appendChild(trigger);
+
+        expect(() => {
+          (this.clarityDirective as any).getScrollableParents(trigger);
+        }).not.toThrow();
+
+        iframe.remove();
+      });
+    });
   });
 
   describe('Point-based positioning', function () {
