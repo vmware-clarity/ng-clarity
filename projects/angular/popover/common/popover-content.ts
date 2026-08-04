@@ -252,27 +252,65 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    * re-clicks so the popover doesn't immediately reopen.
    */
   private createElementBasedOutsideClickSubscription(): Subscription {
-    return this.overlayRef.outsidePointerEvents().subscribe(event => {
-      // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
-      if (this.elementRef?.nativeElement?.contains(event.target)) {
-        return;
-      }
+    const subscription = this.overlayRef.outsidePointerEvents().subscribe(event => this.handleOutsideClick(event));
 
-      // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
-      const isToggleButton =
-        this.popoverService.openEvent &&
-        ((this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
-          (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
-          this.popoverService.openEvent.target === event.target);
+    const crossWindowSubscription = this.createCrossWindowOutsideClickSubscription();
+    if (crossWindowSubscription) {
+      subscription.add(crossWindowSubscription);
+    }
 
-      if (isToggleButton) {
-        event.stopPropagation();
-      }
+    return subscription;
+  }
 
-      if (this._outsideClickClose || isToggleButton) {
-        this.closePopover();
-      }
-    });
+  private handleOutsideClick(event: Event): void {
+    // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
+    if (this.elementRef?.nativeElement?.contains(event.target as Node)) {
+      return;
+    }
+
+    // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
+    const isToggleButton =
+      this.popoverService.openEvent &&
+      ((this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
+        (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
+        this.popoverService.openEvent.target === event.target);
+
+    if (isToggleButton) {
+      event.stopPropagation();
+    }
+
+    if (this._outsideClickClose || isToggleButton) {
+      this.closePopover();
+    }
+  }
+
+  /**
+   * CDK's outsidePointerEvents() only listens on the document that owns the overlay
+   * (this window's), so clicks inside a cross-window origin's own document (e.g. a
+   * ShadowRoot hosted in an iframe) are invisible to it - see resolveCrossWindowOrigin
+   * for the same cross-window scenario affecting positioning instead. Any pointer event
+   * dispatched in that foreign document is guaranteed to be outside the overlay panel,
+   * since the panel always renders in this window's document, so this only needs the
+   * toggle-button exclusion handleOutsideClick already does, not the content-panel
+   * containment check (which can never be true across documents).
+   *
+   * The foreign document's own addEventListener isn't zone-patched (zone.js only patches
+   * the window it's loaded into), so the listener is registered directly and the handler
+   * is explicitly run back inside NgZone.
+   */
+  private createCrossWindowOutsideClickSubscription(): Subscription | null {
+    const originEl = this.popoverService.originElement?.nativeElement;
+    const originWindow = originEl?.ownerDocument?.defaultView;
+
+    if (!originEl || !originWindow || originWindow === window) {
+      return null;
+    }
+
+    return this.zone.runOutsideAngular(() =>
+      merge(fromEvent(originWindow.document, 'pointerdown'), fromEvent(originWindow.document, 'click')).subscribe(
+        event => this.zone.run(() => this.handleOutsideClick(event))
+      )
+    );
   }
 
   private resetPosition() {

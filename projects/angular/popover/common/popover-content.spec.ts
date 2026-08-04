@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TestContext } from '@clr/angular/testing';
 
@@ -181,6 +181,33 @@ export default function (): void {
         expect(() => {
           (this.clarityDirective as any).getScrollableParents(trigger);
         }).not.toThrow();
+
+        iframe.remove();
+      });
+    });
+
+    describe('outside click for cross-window origins', function (this: Context) {
+      it('closes the popover on a click dispatched inside the foreign-realm document CDK cannot see', function (this: Context) {
+        // CDK's outsidePointerEvents() only listens on this window's document, so a click
+        // inside the origin's own iframe document would otherwise never close the popover.
+        const iframe = document.createElement('iframe');
+        document.body.appendChild(iframe);
+        const iframeDoc = iframe.contentDocument;
+        iframeDoc.open();
+        iframeDoc.write('<!DOCTYPE html><html><body></body></html>');
+        iframeDoc.close();
+        const trigger = iframeDoc.createElement('button');
+        iframeDoc.body.appendChild(trigger);
+
+        this.popoverService.origin = new ElementRef(trigger);
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+
+        expect(this.popoverService.open).toBe(true);
+
+        iframeDoc.dispatchEvent(new Event('pointerdown', { bubbles: true }));
+
+        expect(this.popoverService.open).toBe(false);
 
         iframe.remove();
       });
