@@ -17,18 +17,20 @@ import { ElementRef } from '@angular/core';
  * nested document, possibly combined with a ShadowRoot), the raw rect is relative to the
  * wrong viewport and the overlay is mispositioned.
  *
- * If the origin is same-window, this returns it unchanged. Otherwise it returns a
- * Point-based origin (the other shape FlexibleConnectedPositionStrategy natively
- * supports) whose x/y/width/height are live getters that recompute the element's rect
- * plus the cumulative offset of every ancestor iframe between the origin's window and
- * this one, so the overlay still anchors correctly across repositions (scroll, resize).
- * This has no effect on anything besides overlay positioning math - it never replaces
- * the origin ElementRef consumers rely on elsewhere (e.g. scroll listeners), since it
- * only wraps a local copy used for positioning.
+ * If the origin is same-window (or not an Element/ElementRef at all), this returns it
+ * unchanged. Otherwise it returns a Point-based origin (the other shape
+ * FlexibleConnectedPositionStrategy natively supports) whose x/y/width/height are live
+ * getters that recompute the element's rect plus the cumulative offset of every ancestor
+ * iframe between the origin's window and this one, so the overlay still anchors
+ * correctly across repositions (scroll, resize). This has no effect on anything besides
+ * overlay positioning math - it never replaces the origin ElementRef consumers rely on
+ * elsewhere (e.g. scroll listeners), since it only wraps a local copy used for
+ * positioning.
  *
- * Falls back to the original origin, unmodified, whenever the offset can't be safely
- * computed (point-based origins, or a cross-origin/non-ancestor frame boundary that
- * can't be introspected).
+ * If the ancestor iframe chain can't be safely resolved (e.g. a cross-origin frame
+ * boundary this code can't introspect), the getters fall back to the element's own
+ * un-translated rect - the exact numbers CDK would compute if given the raw
+ * Element/ElementRef directly, so behavior for that case is unchanged.
  */
 export function resolveCrossWindowOrigin(
   origin: FlexibleConnectedPositionStrategyOrigin
@@ -42,10 +44,6 @@ export function resolveCrossWindowOrigin(
   const elementWindow = element.ownerDocument?.defaultView;
 
   if (!elementWindow || elementWindow === window) {
-    return origin;
-  }
-
-  if (getCumulativeFrameOffset(elementWindow) === null) {
     return origin;
   }
 

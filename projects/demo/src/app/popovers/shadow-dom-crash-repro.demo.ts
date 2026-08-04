@@ -37,47 +37,47 @@ import { Subscription } from 'rxjs';
       1. Click "Relocate Trigger" to move the dropdown below into a <code>ShadowRoot</code> hosted inside an iframe (a
       separate JS realm), mirroring a micro-frontend/Web Component architecture.<br />
       2. Click the relocated dropdown trigger inside the dashed box. Watch for the error banner (bug present) vs. a
-      normally opening menu with no banner (bug fixed).
+      normally opening menu with no banner (bug fixed).<br />
+      3. With the menu open, scroll this page (Clarity's own layout scrolls via an inner container, so this won't
+      auto-reposition the menu via Clarity's usual scroll-listening - see below). While the menu is open, this demo
+      repositions it on an interval instead, so you can watch it track (or fail to track) the trigger live.
     </p>
-
-    <button class="btn btn-outline" type="button" (click)="relocateIntoShadowRealm()" [disabled]="relocated">
-      Relocate Trigger
-    </button>
-
-    @if (errorMessage) {
-      <div class="alert alert-danger" role="alert">
-        <div class="alert-items">
-          <div class="alert-item static">
-            <div class="alert-icon-wrapper">
-              <cds-icon class="alert-icon" shape="exclamation-circle"></cds-icon>
-            </div>
-            <span class="alert-text">Reproduced crash: {{ errorMessage }}</span>
-          </div>
-        </div>
-      </div>
-    } @else if (dropdownOpened) {
-      <div class="alert alert-success" role="alert">
-        <div class="alert-items">
-          <div class="alert-item static">
-            <div class="alert-icon-wrapper">
-              <cds-icon class="alert-icon" shape="check-circle"></cds-icon>
-            </div>
-            <span class="alert-text">Dropdown opened with no errors. Fix is working.</span>
-          </div>
-        </div>
-      </div>
-    }
-
-    <iframe #hostFrame class="shadow-realm-frame" title="Cross-realm ShadowRoot host"></iframe>
 
     <div #dropdownContainer>
       <clr-dropdown #dropdown>
-        <button type="button" clrDropdownTrigger>Dropdown Trigger</button>
+        <button class="btn btn-outline" type="button" clrDropdownTrigger>Dropdown Trigger</button>
         <clr-dropdown-menu>
           <button type="button" clrDropdownItem>Action One</button>
           <button type="button" clrDropdownItem>Action Two</button>
         </clr-dropdown-menu>
       </clr-dropdown>
+    </div>
+
+    <iframe #hostFrame class="shadow-realm-frame" title="Cross-realm ShadowRoot host"></iframe>
+
+    <div class="repro-actions">
+      <button class="btn btn-outline" type="button" (click)="relocateIntoShadowRealm()" [disabled]="relocated">
+        Relocate Trigger
+      </button>
+    </div>
+
+    <!--
+      Always rendered (never added/removed via @if) with a fixed min-height, so appearing
+      status text never shifts the page layout - a layout shift here would itself trigger
+      a scroll of Clarity's own .content-area, which can close the open popover.
+    -->
+    <div
+      class="repro-status"
+      [class.repro-status-error]="errorMessage"
+      [class.repro-status-success]="!errorMessage && dropdownOpened"
+    >
+      @if (errorMessage) {
+        <cds-icon shape="exclamation-circle"></cds-icon>
+        <span>Reproduced crash: {{ errorMessage }}</span>
+      } @else if (dropdownOpened) {
+        <cds-icon shape="check-circle"></cds-icon>
+        <span>Dropdown opened with no errors. Fix is working.</span>
+      }
     </div>
   `,
 })
@@ -92,6 +92,7 @@ export class ShadowDomCrashReproDemo implements AfterViewInit, OnDestroy {
 
   private openSubscription: Subscription;
   private errorSubscription: Subscription;
+  private repositionIntervalId: ReturnType<typeof setInterval> | null = null;
 
   constructor(private ngZone: NgZone) {}
 
@@ -110,6 +111,7 @@ export class ShadowDomCrashReproDemo implements AfterViewInit, OnDestroy {
     this.openSubscription = this.dropdown.popoverService.openChange.subscribe(open => {
       if (!open) {
         this.dropdownOpened = false;
+        this.stopAutoReposition();
         return;
       }
 
@@ -121,23 +123,39 @@ export class ShadowDomCrashReproDemo implements AfterViewInit, OnDestroy {
           this.dropdownOpened = true;
         }
       }, 50);
+
+      // Clarity's own scroll-listening can't reach this trigger (see class doc), and a
+      // button click would count as an outside click and close the popover. Repositioning
+      // on an interval instead lets you scroll .content-area and watch the overlay track
+      // (or fail to track) the trigger live, with no click involved.
+      this.startAutoReposition();
     });
   }
 
   ngOnDestroy() {
     this.openSubscription?.unsubscribe();
     this.errorSubscription?.unsubscribe();
+    this.stopAutoReposition();
   }
 
   relocateIntoShadowRealm() {
     const iframe = this.hostFrame.nativeElement;
     const iframeDoc = iframe.contentDocument;
     iframeDoc.open();
-    iframeDoc.write('<!DOCTYPE html><html><head></head><body style="margin:8px"></body></html>');
+    iframeDoc.write(`<!DOCTYPE html><html><head></head><body style="margin:0">
+      <div id="scroll-container" style="height:165px; overflow-y:auto;">
+        <div style="height:200px; padding:8px; font-family:sans-serif; color:#666;">
+          Scroll down to reach the trigger&hellip;
+        </div>
+        <div id="shadow-host"></div>
+        <div style="height:200px; padding:8px; font-family:sans-serif; color:#666;">
+          More content below the trigger.
+        </div>
+      </div>
+    </body></html>`);
     iframeDoc.close();
 
-    const shadowHost = iframeDoc.createElement('div');
-    iframeDoc.body.appendChild(shadowHost);
+    const shadowHost = iframeDoc.getElementById('shadow-host');
     const shadowRoot = shadowHost.attachShadow({ mode: 'open' });
 
     // Native ShadowRoots never inherit page-level stylesheets, so clone the ones
@@ -156,5 +174,21 @@ export class ShadowDomCrashReproDemo implements AfterViewInit, OnDestroy {
     this.relocated = true;
     this.errorMessage = null;
     this.dropdownOpened = false;
+  }
+
+  private startAutoReposition() {
+    this.stopAutoReposition();
+    this.ngZone.runOutsideAngular(() => {
+      this.repositionIntervalId = setInterval(() => {
+        this.dropdown.popoverService.updatePosition();
+      }, 200);
+    });
+  }
+
+  private stopAutoReposition() {
+    if (this.repositionIntervalId !== null) {
+      clearInterval(this.repositionIntervalId);
+      this.repositionIntervalId = null;
+    }
   }
 }
