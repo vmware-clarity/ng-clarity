@@ -89,6 +89,35 @@ export default function (): void {
       expect(resolved.height).toBeCloseTo(rawButtonRect.height, 0);
     });
 
+    it('accounts for the iframe border and padding, not just its border', function () {
+      const iframe = createIframe();
+      iframe.style.position = 'absolute';
+      iframe.style.left = '30px';
+      iframe.style.top = '40px';
+      iframe.style.border = '2px solid black';
+      iframe.style.padding = '10px 5px';
+
+      const iframeDoc = iframe.contentDocument;
+      iframeDoc.open();
+      iframeDoc.write('<!DOCTYPE html><html><body style="margin:0"></body></html>');
+      iframeDoc.close();
+
+      const button = iframeDoc.createElement('button');
+      button.style.position = 'absolute';
+      button.style.left = '0px';
+      button.style.top = '0px';
+      iframeDoc.body.appendChild(button);
+
+      const resolved = resolveCrossWindowOrigin(new ElementRef(button)) as { x: number; y: number };
+
+      const iframeRect = iframe.getBoundingClientRect();
+      const rawButtonRect = button.getBoundingClientRect();
+
+      // border (2px) + padding (5px left / 10px top), not just clientLeft/clientTop (border only)
+      expect(resolved.x).toBeCloseTo(iframeRect.left + 2 + 5 + rawButtonRect.left, 0);
+      expect(resolved.y).toBeCloseTo(iframeRect.top + 2 + 10 + rawButtonRect.top, 0);
+    });
+
     it('recomputes live so a later reposition reflects the current rect', function () {
       const iframe = createIframe();
       iframe.style.position = 'absolute';

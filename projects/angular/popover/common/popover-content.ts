@@ -150,7 +150,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
   @Input('clrPopoverContentOrigin')
   set contentOrigin(origin: FlexibleConnectedPositionStrategyOrigin) {
-    if (origin instanceof Element) {
+    // `instanceof Element` is realm-sensitive and misses a raw element belonging to
+    // another window, so a consumer passing one here would bypass the ElementRef wrap
+    // resolveCrossWindowOrigin() relies on to detect a cross-window origin.
+    if ((origin as Node)?.nodeType === Node.ELEMENT_NODE) {
       this.popoverService.origin = new ElementRef(origin as HTMLElement);
     } else {
       this.popoverService.origin = origin;

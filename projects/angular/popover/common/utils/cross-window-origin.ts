@@ -70,8 +70,10 @@ function getOriginElement(origin: FlexibleConnectedPositionStrategyOrigin): Elem
     return origin.nativeElement;
   }
 
-  if (origin instanceof Element) {
-    return origin;
+  // `instanceof Element` is realm-sensitive and misses raw elements belonging to
+  // another window - exactly the population this util targets - so duck-type instead.
+  if ((origin as Node)?.nodeType === Node.ELEMENT_NODE) {
+    return origin as Element;
   }
 
   return null;
@@ -102,9 +104,13 @@ function getCumulativeFrameOffset(originWindow: Window): { x: number; y: number 
     }
 
     const frameRect = frameElement.getBoundingClientRect();
-    const frameEl = frameElement as HTMLElement;
-    offsetX += frameRect.left + frameEl.clientLeft;
-    offsetY += frameRect.top + frameEl.clientTop;
+    // clientLeft/clientTop only cover the frame's border, not any CSS padding, which
+    // would otherwise skew the anchor - read computed style through the frame's own
+    // window for realm-safety.
+    const frameWindow = frameElement.ownerDocument?.defaultView ?? window;
+    const { borderLeftWidth, borderTopWidth, paddingLeft, paddingTop } = frameWindow.getComputedStyle(frameElement);
+    offsetX += frameRect.left + (parseFloat(borderLeftWidth) || 0) + (parseFloat(paddingLeft) || 0);
+    offsetY += frameRect.top + (parseFloat(borderTopWidth) || 0) + (parseFloat(paddingTop) || 0);
     currentWindow = frameElement.ownerDocument?.defaultView ?? null;
   }
 
