@@ -419,27 +419,56 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.intersectionObserver = null;
   }
 
+  /**
+   * Walks ancestors looking for scrollable containers, following the node up through
+   * ShadowRoots and, when the node's own ancestry crosses into an iframe (a different
+   * window realm - e.g. a ShadowRoot hosted in a micro-frontend iframe), continuing the
+   * walk into the parent window via window.frameElement, all the way up to the true
+   * top-level document. Every embedded document passed through this way is added as its
+   * own scrollable parent, so page-level scrolling inside an iframe is tracked too.
+   *
+   * `instanceof` checks are realm-sensitive (they fail for nodes created by a different
+   * window's constructors), so this deliberately uses realm-independent shape checks
+   * (nodeType, tagName, duck-typing ShadowRoot via `host`) instead, and always resolves
+   * computed style through the node's own window rather than this one. This is what lets
+   * the walk safely continue across a same-origin realm boundary instead of just
+   * stopping at it.
+   */
   private getScrollableParents(node: HTMLElement) {
-    let parent = node;
     const overflowScrollKeys = ['auto', 'scroll', 'clip'];
-    const scrollableParents: (HTMLDocument | HTMLElement)[] = [window.document];
+    const scrollableParents: (Document | Element)[] = [window.document];
 
-    while (
-      parent &&
-      (parent instanceof ShadowRoot || parent instanceof Element) &&
-      !(parent instanceof HTMLHtmlElement)
-    ) {
-      if (parent instanceof ShadowRoot) {
-        parent = parent.host as HTMLElement;
+    let parent: Node | null = node;
+
+    while (parent && isElementOrShadowRoot(parent)) {
+      if (isShadowRoot(parent)) {
+        parent = parent.host;
+        continue;
       }
 
-      const { overflowY, overflowX } = window.getComputedStyle(parent);
+      const element = parent as Element;
+      const elementWindow = element.ownerDocument?.defaultView;
+
+      if (isHtmlElement(element)) {
+        const frameElement = elementWindow && elementWindow !== window ? getFrameElement(elementWindow) : null;
+
+        if (!frameElement) {
+          break;
+        }
+
+        // Leaving this document for its parent window - track its own page-level scroll too.
+        scrollableParents.push(element.ownerDocument);
+        parent = frameElement;
+        continue;
+      }
+
+      const { overflowY, overflowX } = (elementWindow ?? window).getComputedStyle(element);
 
       if (overflowScrollKeys.includes(overflowY) || overflowScrollKeys.includes(overflowX)) {
-        scrollableParents.push(parent);
+        scrollableParents.push(element);
       }
 
-      parent = parent.parentNode as HTMLElement;
+      parent = element.parentNode;
     }
 
     return scrollableParents;
@@ -505,5 +534,32 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     }
 
     return popover;
+  }
+}
+
+// Realm-independent shape checks for getScrollableParents(): `instanceof` fails for
+// nodes created by a different window's constructors (e.g. an iframe's own Element,
+// ShadowRoot, or HTMLHtmlElement classes), so these duck-type via nodeType/tagName
+// instead, which works the same regardless of which window created the node.
+
+function isElementOrShadowRoot(node: Node): boolean {
+  return node.nodeType === Node.ELEMENT_NODE || isShadowRoot(node);
+}
+
+function isShadowRoot(node: Node): node is ShadowRoot {
+  return node.nodeType === Node.DOCUMENT_FRAGMENT_NODE && 'host' in node;
+}
+
+function isHtmlElement(node: Node): boolean {
+  return node.nodeType === Node.ELEMENT_NODE && (node as Element).tagName === 'HTML';
+}
+
+// Same-origin-safe: returns null (rather than throwing) if `frameElement` can't be
+// read, which happens when `win` is embedded in a cross-origin parent window.
+function getFrameElement(win: Window): Element | null {
+  try {
+    return win.frameElement;
+  } catch {
+    return null;
   }
 }

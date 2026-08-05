@@ -162,6 +162,16 @@ export default function (): void {
     });
 
     describe('getScrollableParents', function (this: Context) {
+      let cleanupFns: (() => void)[];
+
+      beforeEach(function () {
+        cleanupFns = [];
+      });
+
+      afterEach(function () {
+        cleanupFns.forEach(cleanup => cleanup());
+      });
+
       it('does not throw when the origin lives inside a ShadowRoot belonging to a foreign document realm', function (this: Context) {
         // Reproduces CDE-3155: a ShadowRoot host whose ancestor <html>/document belong to a
         // different window realm (e.g. an iframe in a micro-frontend architecture) fails the
@@ -169,6 +179,7 @@ export default function (): void {
         // to calling getComputedStyle() on a non-Element (the foreign Document).
         const iframe = document.createElement('iframe');
         document.body.appendChild(iframe);
+        cleanupFns.push(() => iframe.remove());
         const iframeDoc = iframe.contentDocument;
         iframeDoc.open();
         iframeDoc.write('<!DOCTYPE html><html><body><div id="host"></div></body></html>');
@@ -181,8 +192,39 @@ export default function (): void {
         expect(() => {
           (this.clarityDirective as any).getScrollableParents(trigger);
         }).not.toThrow();
+      });
 
-        iframe.remove();
+      it('discovers scrollable containers both inside the iframe and beyond it in the main document', function (this: Context) {
+        // The realm-safe walk should continue past the iframe boundary instead of just
+        // stopping there, so scrollable ancestors on both sides of it are found.
+        const outerScrollable = document.createElement('div');
+        outerScrollable.id = 'outer-scrollable';
+        outerScrollable.style.overflowY = 'auto';
+        document.body.appendChild(outerScrollable);
+        cleanupFns.push(() => outerScrollable.remove());
+
+        const iframe = document.createElement('iframe');
+        outerScrollable.appendChild(iframe);
+        cleanupFns.push(() => iframe.remove());
+
+        const iframeDoc = iframe.contentDocument;
+        iframeDoc.open();
+        iframeDoc.write(
+          '<!DOCTYPE html><html><body><div id="inner-scrollable" style="overflow-y:auto;"><div id="host"></div></div></body></html>'
+        );
+        iframeDoc.close();
+        const innerScrollable = iframeDoc.getElementById('inner-scrollable');
+        const host = iframeDoc.getElementById('host');
+        const shadowRoot = host.attachShadow({ mode: 'open' });
+        const trigger = iframeDoc.createElement('button');
+        shadowRoot.appendChild(trigger);
+
+        const scrollableParents: unknown[] = (this.clarityDirective as any).getScrollableParents(trigger);
+
+        expect(scrollableParents).toContain(document);
+        expect(scrollableParents).toContain(iframeDoc);
+        expect(scrollableParents).toContain(innerScrollable);
+        expect(scrollableParents).toContain(outerScrollable);
       });
     });
 

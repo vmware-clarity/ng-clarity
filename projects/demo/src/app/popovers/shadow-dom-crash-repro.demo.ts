@@ -25,6 +25,12 @@ import { Subscription } from 'rxjs';
  *
  * The relocated dropdown only looks correct once Clarity's stylesheets are cloned into
  * the ShadowRoot below, since native ShadowRoots never inherit page-level stylesheets.
+ *
+ * getScrollableParents() walks the trigger's ancestors realm-safely (see its doc comment
+ * in popover-content.ts), continuing across the iframe boundary instead of stopping at
+ * it, so scrolling either the iframe's own internal scroll container or the main page
+ * (Clarity's .content-area) correctly repositions/closes the popover, same as any
+ * same-window trigger - no polling workaround needed here.
  */
 @Component({
   selector: 'clr-shadow-dom-crash-repro-demo',
@@ -38,9 +44,8 @@ import { Subscription } from 'rxjs';
       separate JS realm), mirroring a micro-frontend/Web Component architecture.<br />
       2. Click the relocated dropdown trigger inside the dashed box. Watch for the error banner (bug present) vs. a
       normally opening menu with no banner (bug fixed).<br />
-      3. With the menu open, scroll this page (Clarity's own layout scrolls via an inner container, so this won't
-      auto-reposition the menu via Clarity's usual scroll-listening - see below). While the menu is open, this demo
-      repositions it on an interval instead, so you can watch it track (or fail to track) the trigger live.
+      3. With the menu open, scroll either the dashed box's own inner content or the rest of this page - the overlay
+      should track the trigger and/or close, exactly like a normal same-window dropdown.
     </p>
 
     <div #dropdownContainer>
@@ -92,7 +97,6 @@ export class ShadowDomCrashReproDemo implements AfterViewInit, OnDestroy {
 
   private openSubscription: Subscription;
   private errorSubscription: Subscription;
-  private repositionIntervalId: ReturnType<typeof setInterval> | null = null;
 
   constructor(private ngZone: NgZone) {}
 
@@ -111,7 +115,6 @@ export class ShadowDomCrashReproDemo implements AfterViewInit, OnDestroy {
     this.openSubscription = this.dropdown.popoverService.openChange.subscribe(open => {
       if (!open) {
         this.dropdownOpened = false;
-        this.stopAutoReposition();
         return;
       }
 
@@ -123,19 +126,12 @@ export class ShadowDomCrashReproDemo implements AfterViewInit, OnDestroy {
           this.dropdownOpened = true;
         }
       }, 50);
-
-      // Clarity's own scroll-listening can't reach this trigger (see class doc), and a
-      // button click would count as an outside click and close the popover. Repositioning
-      // on an interval instead lets you scroll .content-area and watch the overlay track
-      // (or fail to track) the trigger live, with no click involved.
-      this.startAutoReposition();
     });
   }
 
   ngOnDestroy() {
     this.openSubscription?.unsubscribe();
     this.errorSubscription?.unsubscribe();
-    this.stopAutoReposition();
   }
 
   relocateIntoShadowRealm() {
@@ -174,21 +170,5 @@ export class ShadowDomCrashReproDemo implements AfterViewInit, OnDestroy {
     this.relocated = true;
     this.errorMessage = null;
     this.dropdownOpened = false;
-  }
-
-  private startAutoReposition() {
-    this.stopAutoReposition();
-    this.ngZone.runOutsideAngular(() => {
-      this.repositionIntervalId = setInterval(() => {
-        this.dropdown.popoverService.updatePosition();
-      }, 200);
-    });
-  }
-
-  private stopAutoReposition() {
-    if (this.repositionIntervalId !== null) {
-      clearInterval(this.repositionIntervalId);
-      this.repositionIntervalId = null;
-    }
   }
 }
