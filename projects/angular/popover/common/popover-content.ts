@@ -272,7 +272,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     const isToggleButton =
       this.popoverService.openEvent &&
       ((this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
-        (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
+        (this.popoverService.openEvent.target as Element).parentElement?.contains(event.target as Element) ||
         this.popoverService.openEvent.target === event.target);
 
     if (isToggleButton) {
@@ -294,6 +294,14 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    * toggle-button exclusion handleOutsideClick already does, not the content-panel
    * containment check (which can never be true across documents).
    *
+   * Listens on capture-phase click/auxclick, mirroring CDK's own OverlayOutsideClickDispatcher.
+   * Capture phase matters: for a toggle re-click, this listener must run and
+   * stopPropagation() BEFORE the trigger's own bubble-phase click handler
+   * (ClrDropdownTrigger's toggleWithEvent) gets a chance to fire, otherwise the popover
+   * closes here and immediately reopens there. A bubble-phase or pointerdown-based
+   * listener can't suppress that handler at all, since pointerdown and click are separate
+   * events and stopping one doesn't affect the other.
+   *
    * The foreign document's own addEventListener isn't zone-patched (zone.js only patches
    * the window it's loaded into), so the listener is registered directly and the handler
    * is explicitly run back inside NgZone.
@@ -307,9 +315,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     }
 
     return this.zone.runOutsideAngular(() =>
-      merge(fromEvent(originWindow.document, 'pointerdown'), fromEvent(originWindow.document, 'click')).subscribe(
-        event => this.zone.run(() => this.handleOutsideClick(event))
-      )
+      merge(
+        fromEvent(originWindow.document, 'click', { capture: true }),
+        fromEvent(originWindow.document, 'auxclick', { capture: true })
+      ).subscribe(event => this.zone.run(() => this.handleOutsideClick(event)))
     );
   }
 

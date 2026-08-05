@@ -187,29 +187,68 @@ export default function (): void {
     });
 
     describe('outside click for cross-window origins', function (this: Context) {
-      it('closes the popover on a click dispatched inside the foreign-realm document CDK cannot see', function (this: Context) {
-        // CDK's outsidePointerEvents() only listens on this window's document, so a click
-        // inside the origin's own iframe document would otherwise never close the popover.
-        const iframe = document.createElement('iframe');
+      let iframe: HTMLIFrameElement;
+      let iframeDoc: Document;
+      let trigger: HTMLButtonElement;
+
+      beforeEach(function () {
+        iframe = document.createElement('iframe');
         document.body.appendChild(iframe);
-        const iframeDoc = iframe.contentDocument;
+        iframeDoc = iframe.contentDocument;
         iframeDoc.open();
         iframeDoc.write('<!DOCTYPE html><html><body></body></html>');
         iframeDoc.close();
-        const trigger = iframeDoc.createElement('button');
+        trigger = iframeDoc.createElement('button');
         iframeDoc.body.appendChild(trigger);
+      });
 
+      afterEach(function () {
+        iframe.remove();
+      });
+
+      it('closes the popover on a click dispatched inside the foreign-realm document CDK cannot see', function (this: Context) {
+        // CDK's outsidePointerEvents() only listens on this window's document, so a click
+        // inside the origin's own iframe document would otherwise never close the popover.
         this.popoverService.origin = new ElementRef(trigger);
         this.testComponent.openState = true;
         this.fixture.detectChanges();
 
         expect(this.popoverService.open).toBe(true);
 
-        iframeDoc.dispatchEvent(new Event('pointerdown', { bubbles: true }));
+        iframeDoc.dispatchEvent(new Event('click', { bubbles: true }));
 
         expect(this.popoverService.open).toBe(false);
+      });
 
-        iframe.remove();
+      it('does not let a toggle re-click on a cross-window trigger reopen the popover', function (this: Context) {
+        // Regression test: a bubble-phase or pointerdown-based listener can't suppress
+        // the trigger's own click handler, so a re-click would close then immediately
+        // reopen the popover. The capture-phase listener must stopPropagation() before
+        // the trigger's own handler ever runs.
+        this.popoverService.origin = new ElementRef(trigger);
+
+        let toggleCount = 0;
+        const toggleListener = (event: Event) => {
+          toggleCount++;
+          this.popoverService.toggleWithEvent(event);
+        };
+        trigger.addEventListener('click', toggleListener);
+
+        // First click opens the popover, mimicking ClrDropdownTrigger's own click handler.
+        trigger.click();
+        this.fixture.detectChanges();
+        expect(this.popoverService.open).toBe(true);
+        expect(toggleCount).toBe(1);
+
+        // Second click (the re-click) must close it via the capture-phase listener
+        // without ever letting the trigger's own click handler run.
+        trigger.click();
+        this.fixture.detectChanges();
+
+        expect(this.popoverService.open).toBe(false);
+        expect(toggleCount).toBe(1);
+
+        trigger.removeEventListener('click', toggleListener);
       });
     });
   });
