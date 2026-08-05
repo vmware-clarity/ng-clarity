@@ -293,6 +293,53 @@ export default function (): void {
         trigger.removeEventListener('click', toggleListener);
       });
     });
+
+    describe('positioning for cross-window origins', function (this: Context) {
+      it('anchors the overlay to the resolved cross-window position, not the raw iframe-relative rect', function (this: Context) {
+        // Integration check that positionStrategy actually wires resolveCrossWindowOrigin
+        // in - cross-window-origin.spec.ts only tests the util in isolation, so deleting
+        // the call site in positionStrategy wouldn't be caught there.
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'absolute';
+        iframe.style.left = '50px';
+        iframe.style.top = '300px';
+        iframe.style.border = 'none';
+        document.body.appendChild(iframe);
+
+        const iframeDoc = iframe.contentDocument;
+        iframeDoc.open();
+        iframeDoc.write('<!DOCTYPE html><html><body style="margin:0"></body></html>');
+        iframeDoc.close();
+
+        const trigger = iframeDoc.createElement('button');
+        trigger.style.position = 'absolute';
+        trigger.style.left = '10px';
+        trigger.style.top = '10px';
+        trigger.style.width = '20px';
+        trigger.style.height = '20px';
+        iframeDoc.body.appendChild(trigger);
+
+        this.popoverService.origin = new ElementRef(trigger);
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+
+        // CDK 21's native-popover-mode overlay doesn't expose the resolved position via
+        // plain top/left CSS (it uses a full-viewport bounding box plus internal
+        // anchoring), so read the position strategy's own resolved origin directly -
+        // the same field _getOriginRect() reads from.
+        const overlayRef = (this.clarityDirective as any).overlayRef;
+        const usedOrigin = (overlayRef.getConfig().positionStrategy as any)._origin;
+
+        // Without resolveCrossWindowOrigin, this would be the raw ElementRef whose
+        // getBoundingClientRect() is relative to the iframe's own viewport (~10, ~10) -
+        // nowhere near where the iframe (and thus the trigger) actually renders on
+        // screen, roughly iframe (50, 300) + trigger (10, 10).
+        expect(usedOrigin.x).toBeCloseTo(60, 0);
+        expect(usedOrigin.y).toBeCloseTo(310, 0);
+
+        iframe.remove();
+      });
+    });
   });
 
   describe('Point-based positioning', function () {

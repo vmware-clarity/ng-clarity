@@ -47,20 +47,36 @@ export function resolveCrossWindowOrigin(
     return origin;
   }
 
+  let cached: { x: number; y: number; width: number; height: number } | null = null;
+
+  // CDK's position strategy reads x/y/width/height several times per apply() (it builds
+  // a rect from a Point origin as {top: y, bottom: y + height, left: x, right: x + width}).
+  // Memoizing per microtask collapses that into a single rect/offset computation instead
+  // of one forced layout read per property access, while still recomputing fresh on the
+  // next reposition (scroll, resize), since the cache clears before the next microtask.
+  const read = () => {
+    if (!cached) {
+      const rect = element.getBoundingClientRect();
+      const offset = getCumulativeFrameOffset(elementWindow) ?? { x: 0, y: 0 };
+      cached = { x: rect.left + offset.x, y: rect.top + offset.y, width: rect.width, height: rect.height };
+      queueMicrotask(() => (cached = null));
+    }
+
+    return cached;
+  };
+
   return {
     get x(): number {
-      const offset = getCumulativeFrameOffset(elementWindow) ?? { x: 0, y: 0 };
-      return element.getBoundingClientRect().left + offset.x;
+      return read().x;
     },
     get y(): number {
-      const offset = getCumulativeFrameOffset(elementWindow) ?? { x: 0, y: 0 };
-      return element.getBoundingClientRect().top + offset.y;
+      return read().y;
     },
     get width(): number {
-      return element.getBoundingClientRect().width;
+      return read().width;
     },
     get height(): number {
-      return element.getBoundingClientRect().height;
+      return read().height;
     },
   };
 }

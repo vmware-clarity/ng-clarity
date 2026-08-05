@@ -118,7 +118,7 @@ export default function (): void {
       expect(resolved.y).toBeCloseTo(iframeRect.top + 2 + 10 + rawButtonRect.top, 0);
     });
 
-    it('recomputes live so a later reposition reflects the current rect', function () {
+    it('recomputes live so a later reposition reflects the current rect', async function () {
       const iframe = createIframe();
       iframe.style.position = 'absolute';
       iframe.style.left = '30px';
@@ -138,6 +138,11 @@ export default function (): void {
 
       const resolved = resolveCrossWindowOrigin(new ElementRef(button)) as { x: number; y: number };
       const initialX = resolved.x;
+
+      // The read above is memoized for the current microtask (see resolveCrossWindowOrigin);
+      // let it clear before moving the iframe and reading again, matching how CDK's own
+      // apply() calls are each their own microtask-separated read.
+      await Promise.resolve();
 
       iframe.style.left = '100px';
 
@@ -175,6 +180,43 @@ export default function (): void {
 
       expect(resolved.x).toBeCloseTo(outerRect.left + innerRect.left + rawButtonRect.left, 0);
       expect(resolved.y).toBeCloseTo(outerRect.top + innerRect.top + rawButtonRect.top, 0);
+    });
+
+    it('memoizes the rect per microtask so reading x/y/width/height only measures once', async function () {
+      const iframe = createIframe();
+      iframe.style.border = 'none';
+
+      const iframeDoc = iframe.contentDocument;
+      iframeDoc.open();
+      iframeDoc.write('<!DOCTYPE html><html><body style="margin:0"></body></html>');
+      iframeDoc.close();
+
+      const button = iframeDoc.createElement('button');
+      iframeDoc.body.appendChild(button);
+
+      const originalGetBoundingClientRect = button.getBoundingClientRect.bind(button);
+      let measureCount = 0;
+      button.getBoundingClientRect = () => {
+        measureCount++;
+        return originalGetBoundingClientRect();
+      };
+
+      const resolved = resolveCrossWindowOrigin(new ElementRef(button)) as {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+      };
+
+      const firstRead = { x: resolved.x, y: resolved.y, width: resolved.width, height: resolved.height };
+      expect(firstRead).toBeTruthy();
+      expect(measureCount).toBe(1);
+
+      // A later reposition (a new microtask) must still measure fresh, not reuse the cache forever.
+      await Promise.resolve();
+      const secondRead = resolved.x;
+      expect(secondRead).toBeDefined();
+      expect(measureCount).toBe(2);
     });
   });
 }
