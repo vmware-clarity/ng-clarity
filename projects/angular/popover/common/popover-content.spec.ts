@@ -244,6 +244,30 @@ export default function (): void {
       });
     });
 
+    describe('outside click toggle-button detection', function (this: Context) {
+      it('does not throw when openEvent.target is null, and does not treat the click as a toggle re-click', function (this: Context) {
+        // Regression: found via a real production repro where clicking outside a popover
+        // did nothing at all. openEvent.target can be null (e.g. the original toggle
+        // button was removed from the DOM, or the event was constructed without one), and
+        // `(openEvent.target as Element).contains(...)` used to run unguarded - throwing
+        // before closePopover() ever got a chance to run, so outside clicks silently died.
+        const openEvent = new MouseEvent('click');
+        Object.defineProperty(openEvent, 'target', { value: null });
+        this.popoverService.openEvent = openEvent;
+        this.testComponent.closeClick = false;
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+
+        expect(() => {
+          (this.clarityDirective as any).handleOutsideClick(new MouseEvent('click'));
+        }).not.toThrow();
+
+        // outsideClickToClose is false and the click can't be verified as the toggle
+        // button (openEvent.target is null), so it correctly stays open rather than crash.
+        expect(this.popoverService.open).toBe(true);
+      });
+    });
+
     describe('outside click for cross-window origins', function (this: Context) {
       let iframe: HTMLIFrameElement;
       let iframeDoc: Document;

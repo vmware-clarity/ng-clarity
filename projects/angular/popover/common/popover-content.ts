@@ -278,11 +278,16 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     }
 
     // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
+    // openEvent.target can itself be null (e.g. the original toggle button was removed
+    // from the DOM before this handler runs), so every access below is optional - an
+    // unguarded `.contains()` call here throws and aborts the whole handler, which is
+    // exactly what stops closePopover() from ever running.
+    const openEventTarget = this.popoverService.openEvent?.target as Element | undefined;
     const isToggleButton =
-      this.popoverService.openEvent &&
-      ((this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
-        (this.popoverService.openEvent.target as Element).parentElement?.contains(event.target as Element) ||
-        this.popoverService.openEvent.target === event.target);
+      !!openEventTarget &&
+      (openEventTarget.contains(event.target as Element) ||
+        openEventTarget.parentElement?.contains(event.target as Element) ||
+        openEventTarget === event.target);
 
     if (isToggleButton) {
       event.stopPropagation();
