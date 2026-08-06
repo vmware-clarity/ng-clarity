@@ -194,6 +194,22 @@ export default function (): void {
         }).not.toThrow();
       });
 
+      it('does not throw when the ancestor chain passes through a plain (non-shadow) DocumentFragment', function (this: Context) {
+        // Second distinct trigger for the same reported TypeError, independent of realms:
+        // a detached subtree rooted in a DocumentFragment. `instanceof ShadowRoot` is false
+        // for a plain fragment (it shares ShadowRoot's nodeType but has no `host`), so the
+        // pre-fix walk fell straight through to getComputedStyle(fragment) and threw.
+        const fragment = document.createDocumentFragment();
+        const wrapper = document.createElement('div');
+        fragment.appendChild(wrapper);
+        const trigger = document.createElement('button');
+        wrapper.appendChild(trigger);
+
+        expect(() => {
+          (this.clarityDirective as any).getScrollableParents(trigger);
+        }).not.toThrow();
+      });
+
       it('discovers scrollable containers both inside the iframe and beyond it in the main document', function (this: Context) {
         // The realm-safe walk should continue past the iframe boundary instead of just
         // stopping there, so scrollable ancestors on both sides of it are found.
