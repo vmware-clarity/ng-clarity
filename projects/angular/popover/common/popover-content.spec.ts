@@ -348,6 +348,68 @@ export default function (): void {
       });
     });
 
+    describe('escape key for cross-window origins', function (this: Context) {
+      let iframe: HTMLIFrameElement;
+      let iframeDoc: Document;
+      let trigger: HTMLButtonElement;
+
+      beforeEach(function () {
+        iframe = document.createElement('iframe');
+        document.body.appendChild(iframe);
+        iframeDoc = iframe.contentDocument;
+        iframeDoc.open();
+        iframeDoc.write('<!DOCTYPE html><html><body></body></html>');
+        iframeDoc.close();
+        trigger = iframeDoc.createElement('button');
+        iframeDoc.body.appendChild(trigger);
+      });
+
+      afterEach(function () {
+        iframe.remove();
+      });
+
+      it('closes the popover on Escape dispatched inside the foreign-realm document CDK cannot see', function (this: Context) {
+        // CDK's OverlayKeyboardDispatcher listens for keydown on this window's
+        // document.body only (see createCrossWindowEscapeSubscription), so a keydown
+        // fired inside the origin's own iframe document - e.g. because focus never left
+        // that document - would otherwise never reach it.
+        this.popoverService.origin = new ElementRef(trigger);
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+
+        expect(this.popoverService.open).toBe(true);
+
+        iframeDoc.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+
+        expect(this.popoverService.open).toBe(false);
+      });
+
+      it('ignores Escape with a modifier key held', function (this: Context) {
+        this.popoverService.origin = new ElementRef(trigger);
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+
+        iframeDoc.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', altKey: true, bubbles: true }));
+
+        expect(this.popoverService.open).toBe(true);
+      });
+
+      it('registers no cross-window keydown listener for a same-window origin', function (this: Context) {
+        const sameWindowTrigger = document.createElement('button');
+        document.body.appendChild(sameWindowTrigger);
+
+        const mainDocSpy = spyOn(document, 'addEventListener').and.callThrough();
+
+        this.popoverService.origin = new ElementRef(sameWindowTrigger);
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+
+        expect(mainDocSpy.calls.allArgs().some(args => args[0] === 'keydown')).toBe(false);
+
+        sameWindowTrigger.remove();
+      });
+    });
+
     describe('positioning for cross-window origins', function (this: Context) {
       it('anchors the overlay to the resolved cross-window position, not the raw iframe-relative rect', function (this: Context) {
         // Integration check that positionStrategy actually wires resolveCrossWindowOrigin

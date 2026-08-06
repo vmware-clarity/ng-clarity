@@ -220,7 +220,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         this.overlayRef?.updatePosition();
       }),
       this.overlayRef.keydownEvents().subscribe(event => {
-        if (event && event.key && event.key === Keys.Escape && !hasModifierKey(event)) {
+        if (isEscapeKey(event)) {
           event.preventDefault();
           this.closePopover();
         }
@@ -230,6 +230,11 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         ? this.createPointBasedOutsideClickSubscription()
         : this.createElementBasedOutsideClickSubscription()
     );
+
+    const crossWindowEscapeSubscription = this.createCrossWindowEscapeSubscription();
+    if (crossWindowEscapeSubscription) {
+      this.subscriptions.push(crossWindowEscapeSubscription);
+    }
   }
 
   /**
@@ -325,6 +330,36 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         fromEvent(originWindow.document, 'click', { capture: true }),
         fromEvent(originWindow.document, 'auxclick', { capture: true })
       ).subscribe(event => this.zone.run(() => this.handleOutsideClick(event)))
+    );
+  }
+
+  /**
+   * CDK's OverlayKeyboardDispatcher (the source behind `overlayRef.keydownEvents()`)
+   * attaches a single keydown listener on this window's document.body once, at app
+   * bootstrap - see its `add()`/`_keydownListener`. A keydown fired while focus sits
+   * inside a cross-window origin's own document (e.g. a ShadowRoot hosted in an iframe)
+   * never bubbles there, since events don't cross document boundaries, so Escape silently
+   * does nothing once the trigger (and focus) has moved into that foreign document. This
+   * mirrors createCrossWindowOutsideClickSubscription's rationale for outside clicks.
+   */
+  private createCrossWindowEscapeSubscription(): Subscription | null {
+    const crossWindowOrigin = getCrossWindowOriginContext(this.popoverService.origin);
+
+    if (!crossWindowOrigin) {
+      return null;
+    }
+
+    const originWindow = crossWindowOrigin.elementWindow;
+
+    return this.zone.runOutsideAngular(() =>
+      fromEvent<KeyboardEvent>(originWindow.document, 'keydown').subscribe(event => {
+        if (isEscapeKey(event)) {
+          this.zone.run(() => {
+            event.preventDefault();
+            this.closePopover();
+          });
+        }
+      })
     );
   }
 
@@ -568,4 +603,8 @@ function getFrameElement(win: Window): Element | null {
   } catch {
     return null;
   }
+}
+
+function isEscapeKey(event: KeyboardEvent): boolean {
+  return !!event && event.key === Keys.Escape && !hasModifierKey(event);
 }
