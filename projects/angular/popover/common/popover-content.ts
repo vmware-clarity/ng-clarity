@@ -35,7 +35,7 @@ import { Keys } from '@clr/angular/utils';
 import { fromEvent, merge, Subscription, switchMap, timer } from 'rxjs';
 
 import { ClrPopoverService } from './providers/popover.service';
-import { resolveCrossWindowOrigin } from './utils/cross-window-origin';
+import { getCrossWindowOriginContext, resolveCrossWindowOrigin } from './utils/cross-window-origin';
 import {
   ClrPopoverPosition,
   ClrPopoverType,
@@ -310,12 +310,15 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    * is explicitly run back inside NgZone.
    */
   private createCrossWindowOutsideClickSubscription(): Subscription | null {
-    const originEl = this.popoverService.originElement?.nativeElement;
-    const originWindow = originEl?.ownerDocument?.defaultView;
+    // Same-window origins bail out here, so a popover that never crosses a window
+    // boundary registers no extra listeners at all.
+    const crossWindowOrigin = getCrossWindowOriginContext(this.popoverService.origin);
 
-    if (!originEl || !originWindow || originWindow === window) {
+    if (!crossWindowOrigin) {
       return null;
     }
+
+    const originWindow = crossWindowOrigin.elementWindow;
 
     return this.zone.runOutsideAngular(() =>
       merge(

@@ -9,6 +9,23 @@ import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { ElementRef } from '@angular/core';
 
 /**
+ * Resolves an origin to its element and owning window, but only when that window differs
+ * from this one - i.e. the origin lives inside an iframe. Returns null for same-window
+ * origins and for non-element (point) origins, so a single check lets callers skip all
+ * cross-window handling for the overwhelming majority of popovers.
+ *
+ * Cheap: a few property reads, no layout access.
+ */
+export function getCrossWindowOriginContext(
+  origin: FlexibleConnectedPositionStrategyOrigin
+): { element: Element; elementWindow: Window } | null {
+  const element = getOriginElement(origin);
+  const elementWindow = element?.ownerDocument?.defaultView;
+
+  return element && elementWindow && elementWindow !== window ? { element, elementWindow } : null;
+}
+
+/**
  * CDK's FlexibleConnectedPositionStrategy anchors the overlay by reading
  * origin.getBoundingClientRect() (for an Element/ElementRef origin) directly off the
  * origin, relative to the origin's own window. That only matches the overlay panel's
@@ -35,17 +52,15 @@ import { ElementRef } from '@angular/core';
 export function resolveCrossWindowOrigin(
   origin: FlexibleConnectedPositionStrategyOrigin
 ): FlexibleConnectedPositionStrategyOrigin {
-  const element = getOriginElement(origin);
+  const crossWindowOrigin = getCrossWindowOriginContext(origin);
 
-  if (!element) {
+  // Same-window origins (and point origins) are handed back untouched - no wrapping, no
+  // translation, no behavior change from a popover that never crosses a window boundary.
+  if (!crossWindowOrigin) {
     return origin;
   }
 
-  const elementWindow = element.ownerDocument?.defaultView;
-
-  if (!elementWindow || elementWindow === window) {
-    return origin;
-  }
+  const { element, elementWindow } = crossWindowOrigin;
 
   let cached: { x: number; y: number; width: number; height: number } | null = null;
 

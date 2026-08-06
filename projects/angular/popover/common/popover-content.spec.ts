@@ -264,6 +264,44 @@ export default function (): void {
         iframe.remove();
       });
 
+      // Counts the capture-phase click listeners this directive registers on an origin's
+      // own document (see createCrossWindowOutsideClickSubscription). CDK's own dispatcher
+      // listens on <body>, not the document, so it isn't picked up here.
+      function countCaptureClickListeners(spy: jasmine.Spy): number {
+        return spy.calls
+          .allArgs()
+          .filter(args => (args[0] === 'click' || args[0] === 'auxclick') && (args[2] as any)?.capture === true).length;
+      }
+
+      it('registers capture-phase listeners on the origin document for a cross-window origin', function (this: Context) {
+        // Positive control for the same-window assertion below - proves the counter can
+        // actually observe the listeners when they are registered.
+        const iframeDocSpy = spyOn(iframeDoc, 'addEventListener').and.callThrough();
+
+        this.popoverService.origin = new ElementRef(trigger);
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+
+        expect(countCaptureClickListeners(iframeDocSpy)).toBeGreaterThan(0);
+      });
+
+      it('registers no cross-window listeners at all for a same-window origin', function (this: Context) {
+        // The "only iframe-hosted origins pay for cross-window handling" contract: a
+        // normal popover must behave exactly as it did before any of this existed.
+        const sameWindowTrigger = document.createElement('button');
+        document.body.appendChild(sameWindowTrigger);
+
+        const mainDocSpy = spyOn(document, 'addEventListener').and.callThrough();
+
+        this.popoverService.origin = new ElementRef(sameWindowTrigger);
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+
+        expect(countCaptureClickListeners(mainDocSpy)).toBe(0);
+
+        sameWindowTrigger.remove();
+      });
+
       it('closes the popover on a click dispatched inside the foreign-realm document CDK cannot see', function (this: Context) {
         // CDK's outsidePointerEvents() only listens on this window's document, so a click
         // inside the origin's own iframe document would otherwise never close the popover.
