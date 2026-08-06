@@ -36,6 +36,7 @@ import { fromEvent, merge, Subscription, switchMap, timer } from 'rxjs';
 
 import { ClrPopoverService } from './providers/popover.service';
 import { getCrossWindowOriginContext, resolveCrossWindowOrigin } from './utils/cross-window-origin';
+import { getFrameElement, isElementOrShadowRoot, isHtmlElement, isShadowRoot } from './utils/dom-realm';
 import {
   ClrPopoverPosition,
   ClrPopoverType,
@@ -575,33 +576,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     }
 
     return popover;
-  }
-}
-
-// Realm-independent shape checks for getScrollableParents(): `instanceof` fails for
-// nodes created by a different window's constructors (e.g. an iframe's own Element,
-// ShadowRoot, or HTMLHtmlElement classes), so these duck-type via nodeType/tagName
-// instead, which works the same regardless of which window created the node.
-
-function isElementOrShadowRoot(node: Node): boolean {
-  return node.nodeType === Node.ELEMENT_NODE || isShadowRoot(node);
-}
-
-function isShadowRoot(node: Node): node is ShadowRoot {
-  return node.nodeType === Node.DOCUMENT_FRAGMENT_NODE && 'host' in node;
-}
-
-function isHtmlElement(node: Node): boolean {
-  return node.nodeType === Node.ELEMENT_NODE && (node as Element).tagName === 'HTML';
-}
-
-// Same-origin-safe: returns null (rather than throwing) if `frameElement` can't be
-// read, which happens when `win` is embedded in a cross-origin parent window.
-function getFrameElement(win: Window): Element | null {
-  try {
-    return win.frameElement;
-  } catch {
-    return null;
   }
 }
 
