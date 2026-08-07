@@ -220,22 +220,12 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       this.popoverService.updatePositionChange().subscribe(() => {
         this.overlayRef?.updatePosition();
       }),
-      this.overlayRef.keydownEvents().subscribe(event => {
-        if (isEscapeKey(event)) {
-          event.preventDefault();
-          this.closePopover();
-        }
-      }),
+      this.createEscapeSubscription(),
 
       this.popoverService.originPoint
         ? this.createPointBasedOutsideClickSubscription()
         : this.createElementBasedOutsideClickSubscription()
     );
-
-    const crossWindowEscapeSubscription = this.createCrossWindowEscapeSubscription();
-    if (crossWindowEscapeSubscription) {
-      this.subscriptions.push(crossWindowEscapeSubscription);
-    }
   }
 
   /**
@@ -243,17 +233,59 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    * mouseup from the same right-click that opened the popover.
    */
   private createPointBasedOutsideClickSubscription(): Subscription {
-    return timer(500)
+    const subscription = timer(500)
       .pipe(switchMap(() => this.overlayRef.outsidePointerEvents()))
-      .subscribe(event => {
-        if (this.elementRef?.nativeElement?.contains(event.target)) {
-          return;
-        }
+      .subscribe(event => this.handlePointOutsideClick(event));
 
-        if (this._outsideClickClose) {
-          this.closePopover();
-        }
-      });
+    const crossWindowSubscription = this.createCrossWindowPointOutsideClickSubscription();
+    if (crossWindowSubscription) {
+      subscription.add(crossWindowSubscription);
+    }
+
+    return subscription;
+  }
+
+  private handlePointOutsideClick(event: Event): void {
+    if (this.elementRef?.nativeElement?.contains(event.target as Node)) {
+      return;
+    }
+
+    if (this._outsideClickClose) {
+      this.closePopover();
+    }
+  }
+
+  /**
+   * Mirrors createCrossWindowOutsideClickSubscription for point-based origins (context
+   * menus): pointTargetElement - the element the point was derived from, e.g. the
+   * right-clicked element - can itself live inside a foreign iframe document, and CDK's
+   * outsidePointerEvents() only listens on this window's document, so a click elsewhere
+   * in that foreign document would otherwise never dismiss the menu. Delayed by the same
+   * 500ms as the same-window stream, for the same reason: avoid the click that opened the
+   * menu immediately closing it again.
+   */
+  private createCrossWindowPointOutsideClickSubscription(): Subscription | null {
+    const pointTargetElement = this.popoverService.pointTargetElement;
+    const crossWindowOrigin = pointTargetElement ? getCrossWindowOriginContext(pointTargetElement) : null;
+
+    if (!crossWindowOrigin) {
+      return null;
+    }
+
+    const originWindow = crossWindowOrigin.elementWindow;
+
+    return timer(500)
+      .pipe(
+        switchMap(() =>
+          this.zone.runOutsideAngular(() =>
+            merge(
+              fromEvent(originWindow.document, 'click', { capture: true }),
+              fromEvent(originWindow.document, 'auxclick', { capture: true })
+            )
+          )
+        )
+      )
+      .subscribe(event => this.zone.run(() => this.handlePointOutsideClick(event)));
   }
 
   /**
@@ -346,27 +378,29 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    * inside a cross-window origin's own document (e.g. a ShadowRoot hosted in an iframe)
    * never bubbles there, since events don't cross document boundaries, so Escape silently
    * does nothing once the trigger (and focus) has moved into that foreign document. This
-   * mirrors createCrossWindowOutsideClickSubscription's rationale for outside clicks.
+   * mirrors createCrossWindowOutsideClickSubscription's rationale for outside clicks -
+   * merged into a single stream/handler here since both ultimately just detect Escape and
+   * close.
    */
-  private createCrossWindowEscapeSubscription(): Subscription | null {
+  private createEscapeSubscription(): Subscription {
     const crossWindowOrigin = getCrossWindowOriginContext(this.popoverService.origin);
+    const keydownEvents = crossWindowOrigin
+      ? merge(
+          this.overlayRef.keydownEvents(),
+          this.zone.runOutsideAngular(() =>
+            fromEvent<KeyboardEvent>(crossWindowOrigin.elementWindow.document, 'keydown')
+          )
+        )
+      : this.overlayRef.keydownEvents();
 
-    if (!crossWindowOrigin) {
-      return null;
-    }
-
-    const originWindow = crossWindowOrigin.elementWindow;
-
-    return this.zone.runOutsideAngular(() =>
-      fromEvent<KeyboardEvent>(originWindow.document, 'keydown').subscribe(event => {
-        if (isEscapeKey(event)) {
-          this.zone.run(() => {
-            event.preventDefault();
-            this.closePopover();
-          });
-        }
-      })
-    );
+    return keydownEvents.subscribe(event => {
+      if (isEscapeKey(event)) {
+        this.zone.run(() => {
+          event.preventDefault();
+          this.closePopover();
+        });
+      }
+    });
   }
 
   private resetPosition() {

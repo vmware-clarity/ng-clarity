@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TestContext } from '@clr/angular/testing';
 
 import { ClrPopoverContent } from './popover-content';
@@ -394,9 +394,9 @@ export default function (): void {
 
       it('closes the popover on Escape dispatched inside the foreign-realm document CDK cannot see', function (this: Context) {
         // CDK's OverlayKeyboardDispatcher listens for keydown on this window's
-        // document.body only (see createCrossWindowEscapeSubscription), so a keydown
-        // fired inside the origin's own iframe document - e.g. because focus never left
-        // that document - would otherwise never reach it.
+        // document.body only (see createEscapeSubscription), so a keydown fired inside
+        // the origin's own iframe document - e.g. because focus never left that document
+        // - would otherwise never reach it.
         this.popoverService.origin = new ElementRef(trigger);
         this.testComponent.openState = true;
         this.fixture.detectChanges();
@@ -536,6 +536,54 @@ export default function (): void {
       expect(popoverService.open).toBeFalse();
 
       fixture.destroy();
+    }));
+  });
+
+  describe('outside click for cross-window point-based origins', function () {
+    let iframe: HTMLIFrameElement;
+    let iframeDoc: Document;
+    let trigger: HTMLButtonElement;
+    let fixture: ComponentFixture<PointContent>;
+    let popoverService: ClrPopoverService;
+
+    beforeEach(function () {
+      TestBed.configureTestingModule({
+        imports: [ClrPopoverModuleNext],
+        declarations: [PointContent],
+      });
+
+      iframe = document.createElement('iframe');
+      document.body.appendChild(iframe);
+      iframeDoc = iframe.contentDocument;
+      iframeDoc.open();
+      iframeDoc.write('<!DOCTYPE html><html><body></body></html>');
+      iframeDoc.close();
+      trigger = iframeDoc.createElement('button');
+      iframeDoc.body.appendChild(trigger);
+
+      fixture = TestBed.createComponent(PointContent);
+      fixture.detectChanges();
+      popoverService = fixture.debugElement.injector.get(ClrPopoverService);
+    });
+
+    afterEach(function () {
+      iframe.remove();
+      fixture.destroy();
+    });
+
+    it('closes a point-based popover on a click dispatched inside the foreign-realm document CDK cannot see', fakeAsync(function () {
+      // Mirrors the element-based cross-window outside-click fix: pointTargetElement
+      // (the right-clicked element a context menu is anchored to) can itself live
+      // inside a foreign iframe document, invisible to CDK's outsidePointerEvents().
+      popoverService.openAtPoint({ x: 10, y: 10 }, trigger);
+      fixture.detectChanges();
+      tick(500);
+
+      expect(popoverService.open).toBe(true);
+
+      iframeDoc.dispatchEvent(new Event('click', { bubbles: true }));
+
+      expect(popoverService.open).toBe(false);
     }));
   });
 }

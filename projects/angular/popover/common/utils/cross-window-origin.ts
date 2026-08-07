@@ -8,6 +8,8 @@
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { ElementRef } from '@angular/core';
 
+import { getFrameElement } from './dom-realm';
+
 /**
  * Resolves an origin to its element and owning window, but only when that window differs
  * from this one - i.e. the origin lives inside an iframe. Returns null for same-window
@@ -122,13 +124,7 @@ function getCumulativeFrameOffset(originWindow: Window): { x: number; y: number 
   let currentWindow: Window | null = originWindow;
 
   while (currentWindow && currentWindow !== window) {
-    let frameElement: Element | null;
-
-    try {
-      frameElement = currentWindow.frameElement;
-    } catch {
-      return null;
-    }
+    const frameElement = getFrameElement(currentWindow);
 
     if (!frameElement) {
       return null;
