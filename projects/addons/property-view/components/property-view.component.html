@@ -1,0 +1,53 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<ng-container *ngIf="data && data.categories && data.categories.length > 1">
+  <ul class="nav" role="tablist" (keydown)="onTabListKeydown($event)">
+    <li *ngFor="let category of data?.categories" class="nav-item" role="presentation">
+      <button
+        type="button"
+        class="btn btn-link nav-link"
+        role="tab"
+        #categoryTabButton
+        [attr.id]="getCategoryTabId(category)"
+        [attr.tabindex]="isCategoryFocused(category) ? 0 : -1"
+        [attr.aria-selected]="isCategorySelected(category)"
+        [attr.aria-controls]="getCategoryPanelId(category)"
+        [ngClass]="{ active: isCategorySelected(category) }"
+        [innerText]="category.title"
+        (click)="selectCategory(category)"
+      ></button>
+    </li>
+  </ul>
+  <ng-container *ngFor="let category of data?.categories; trackBy: getCategoryTrackingId">
+    <div
+      *ngIf="category.id === selectedCategoryId"
+      class="pv-category-container"
+      role="tabpanel"
+      [attr.id]="getCategoryPanelId(category)"
+      [attr.aria-labelledby]="getCategoryTabId(category)"
+      [attr.aria-expanded]="isCategorySelected(category)"
+      [attr.aria-hidden]="isCategorySelected(category) ? undefined : true"
+    >
+      <appfx-property-view-category
+        role="presentation"
+        tabindex="-1"
+        [componentId]="getCategoryComponentId(category)"
+        [data]="category"
+      >
+      </appfx-property-view-category>
+    </div>
+  </ng-container>
+</ng-container>
+<div *ngIf="data && data.categories && data.categories.length === 1" class="pv-category-container" role="presentation">
+  <appfx-property-view-category
+    role="presentation"
+    tabindex="-1"
+    [componentId]="getCategoryComponentId(data.categories[0])"
+    [data]="data.categories[0]"
+  >
+  </appfx-property-view-category>
+</div>

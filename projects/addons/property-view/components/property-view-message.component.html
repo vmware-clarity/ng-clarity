@@ -1,0 +1,23 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<td colspan="2" class="pv-message-container left" role="presentation">
+  <span class="pv-message-content">
+    <span *ngIf="data.icon" class="pv-message-icon" [attr.aria-hidden]="true" [ngClass]="data.icon"></span>
+    <span
+      *ngIf="!data.renderAsHtml"
+      class="pv-message-text"
+      [attr.aria-label]="data.text"
+      [innerText]="data.text"
+    ></span>
+    <span
+      *ngIf="data.renderAsHtml"
+      class="pv-message-text"
+      [attr.aria-label]="data.text"
+      [innerHtml]="data.text"
+    ></span>
+  </span>
+</td>

@@ -39,7 +39,7 @@ Clarity v18 upgrades to Angular 21. This is the minimum supported Angular versio
 ### Drop `@cds/core`
 
 `@clr/angular` no longer depends on `@cds/core`. All supported features have been migrated into `@clr/angular`
-directly, including `cds-icon`, CSS tokens, and CSS utilities (`cds-layout`, `cds-list`, `cds-text`).
+directly, including `cds-icon`, CSS tokens, and CSS utilities (`cds-layout`, `cds-list`, `cds-text`, `cds-divider`).
 
 - Remove `@cds/core` from your dependencies.
 - Change icon imports from `@cds/core/icon` to `@clr/angular/icon`.
@@ -126,6 +126,9 @@ instead of Stepper extending Accordion.
 - `AccordionPanelModel`, `AccordionStatus`, and `panelAnimation` are removed from `@clr/angular/accordion`. Use
   `CollapsiblePanelModel`, `StepperPanelStatus`, and `collapsiblePanelAnimation` from `@clr/angular/collapsible-panel`
   and `@clr/angular/stepper`.
+- `AccordionModel` and `AccordionService` remain in `@clr/angular/accordion` but now extend `CollapsiblePanelGroupModel`
+  and `CollapsiblePanelService` respectively. `AccordionStrategy` also remains in `@clr/angular/accordion`, as it is
+  accordion-specific (single-panel-at-a-time behavior).
 - `getAccordionContentId()` and `getAccordionHeaderId()` on `ClrAccordionPanel` are renamed to `getContentId()` and
   `getHeaderId()`.
 - The `clrAccordionPanelHeadingEnabled` feature flag is removed. All heading values must have explicit content assigned
@@ -148,11 +151,44 @@ The `clrBadgeColor` input is renamed to `clrColor`.
 
 ### Datagrid
 
+- The datagrid selection API has been unified:
+  - `clrDgSingleSelected` input and `clrDgSingleSelectedChange` output have been removed. Use `clrDgSelected` together
+    with a new, required `clrDgSelectionType` input (`"none"` | `"single"` | `"multi"`) instead, wrapping the selected
+    item in an array for single selection.
+  - `SelectionType` enum values changed from numeric (`0`, `1`, `2`) to string literals (`'none'`, `'single'`, `'multi'`).
+  - The addons `SelectionType` enum has been removed; import it from `@clr/angular/data/datagrid` instead.
+  - The `selection.change` Observable now always emits `T[]` (previously `T | T[]` for single selection).
+  - The `selection.currentSingle` setter has been removed; use `selection.current = [item]` instead.
+
+  ```html
+  <!-- Before: Single selection (implicit type) -->
+  <clr-datagrid [(clrDgSingleSelected)]="selectedUser"></clr-datagrid>
+  <!-- After: Single selection (explicit type) -->
+  <clr-datagrid [(clrDgSelected)]="selectedUsers" clrDgSelectionType="single"></clr-datagrid>
+  ```
+
 - `clrDgItemsTrackBy` on `ClrDatagrid` is renamed to `clrDgItemsIdentityFn` to reduce confusion with `clrDgItemsTrackBy` on `ClrDgItems`.
 - Columns now have an **unsorted** state which activates on the third click on a sortable column. It can be disabled
   per column through the `clrDgDisableUnsort` input. Unsorted sortable columns display a visible `two-way-arrows` icon.
 - The opened row detail anchor has been removed; a background color is now used to identify the open detail row. This is
   a visual style change that may affect visual regression tests.
+
+### Datagrid Filters (Addons)
+
+`@clr/addons/datagrid-filters` API changes:
+
+| Old API                                                           | New API                            | Notes                                                        |
+| ----------------------------------------------------------------- | ---------------------------------- | ------------------------------------------------------------ |
+| `EnumPropertyDefinition` constructor param `showKeyInParentheses` | `enableSelectAll` (default `true`) | Controls "Select All" checkbox visibility                    |
+| `UsersFilterComponent.formatUser()` method                        | _(removed)_                        | Delegate to your `DatagridFiltersUserService` implementation |
+| `UsersFilterComponent.userOperators` property                     | _(removed)_                        | Use `filterProperty.supportedOperators` in templates instead |
+
+```typescript
+// Before
+new EnumPropertyDefinition('status', statusOptions, { showKeyInParentheses: false });
+// After
+new EnumPropertyDefinition('status', statusOptions, { enableSelectAll: false });
+```
 
 ### Forms
 

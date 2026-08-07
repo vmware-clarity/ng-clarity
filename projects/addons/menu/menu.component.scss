@@ -1,0 +1,120 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+clr-dropdown-menu {
+  div.scrollable-content {
+    position: static;
+    overflow: hidden auto;
+  }
+
+  .dropdown-header {
+    display: flex;
+
+    .title-text {
+      overflow-wrap: break-word;
+      white-space: normal;
+      min-width: 11rem;
+      max-height: 21rem;
+    }
+  }
+
+  .dropdown-item {
+    &.menu-item-action {
+      height: auto;
+
+      .dropdown-item-content {
+        display: contents;
+      }
+    }
+  }
+
+  .dropdown-divider {
+    margin: 5px var(--clr-base-horizontal-offset-l);
+  }
+}
+
+clr-dropdown {
+  display: block;
+  position: static;
+}
+
+.appfx-menu-trigger {
+  display: none;
+}
+
+.menu-item-action {
+  display: flex;
+  align-items: center;
+}
+
+.menu-item-text {
+  flex: 1 1 auto;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+  width: max-content;
+}
+
+.menu-item-icon {
+  margin-right: 4px;
+  margin-left: 0;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+.no-icon-item {
+  width: 18px;
+}
+
+.menu-item-shortcut {
+  flex: 0 0 auto;
+  padding-left: 0.5rem;
+  opacity: 0.6;
+}
+
+.app-menu {
+  .fullscreen {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  &.zoom4x {
+    clr-dropdown-menu {
+      // This style should be removed when clarity starts to support zoom4x natively.
+      // For now we are overwriting the clarity style to add support for zoom4x.
+      position: fixed !important;
+      max-width: none;
+      margin: 0;
+      border-width: 0;
+      border-radius: 0;
+      transform: none !important;
+    }
+
+    .submenu-header-text {
+      vertical-align: middle;
+    }
+
+    .btn-close-submenu {
+      cursor: pointer;
+      margin-right: 4px;
+      margin-left: 0;
+      margin-top: 1px;
+      display: inline-block;
+      border: 0;
+      background: transparent;
+      padding: 0;
+
+      cds-icon {
+        fill: var(--cds-alias-typography-color-400);
+      }
+    }
+
+    .btn-close-menu {
+      margin-top: 2px;
+      display: block;
+    }
+  }
+}

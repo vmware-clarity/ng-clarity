@@ -1,0 +1,41 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/**
+ * CLI argument parsing for the Figma token publisher.
+ *
+ * Keeps argv handling isolated from the rest of the pipeline so the orchestrator
+ * receives a plain, validated options object.
+ */
+
+const DEFAULT_EXTRACT_FILE = 'figma-tokens.extract.json';
+
+/**
+ * Parse the supported CLI flags.
+ *
+ * @param {string[]} [argv] Defaults to process.argv.
+ * @returns {{ dryRun: boolean, previewMode: boolean, extractMode: boolean, extractFile: string | null }}
+ */
+export function parseCliArgs(argv = process.argv) {
+  const dryRun = argv.includes('--dry-run');
+
+  // Preview: fetch current Figma state, compute a full variable diff, then exit
+  // without pushing. Requires FIGMA_TOKEN and FIGMA_FILE_KEY (unlike --dry-run).
+  const previewMode = argv.includes('--preview');
+
+  const extractIdx = argv.indexOf('--extract');
+  const extractMode = extractIdx !== -1;
+  const extractFile = (() => {
+    if (!extractMode) {
+      return null;
+    }
+    const next = argv[extractIdx + 1];
+    return next && !next.startsWith('--') ? next : DEFAULT_EXTRACT_FILE;
+  })();
+
+  return { dryRun, previewMode, extractMode, extractFile };
+}

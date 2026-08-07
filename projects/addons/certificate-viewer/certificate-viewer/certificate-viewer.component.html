@@ -1,0 +1,68 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<clr-spinner *ngIf="loading; else loaded">{{ 'loading' | translate }}</clr-spinner>
+<ng-template #loaded>
+  <clr-alert *ngIf="parseError" clrAlertType="danger" [clrAlertClosable]="false">
+    <clr-alert-item
+      ><span class="alert-text">{{ parseError }}</span></clr-alert-item
+    >
+  </clr-alert>
+  <ng-container
+    *ngTemplateOutlet="
+      heading;
+      context: {
+        level: topHeadingLevel,
+        textContent:
+          'title'
+          | translate
+            : {
+                title: certificateChain?.leafCertificate?.subject?.commonName,
+              },
+        class: 'certificate-viewer-title',
+      }
+    "
+  >
+  </ng-container>
+
+  <clr-tabs>
+    <clr-tab>
+      <button clrTabLink>{{ 'general' | translate }}</button>
+      <clr-tab-content *clrIfActive>
+        <appfx-certificate-viewer-general
+          [certificate]="certificateChain?.leafCertificate"
+          [topHeadingLevel]="topHeadingLevel"
+          [headingTemplate]="heading"
+        >
+        </appfx-certificate-viewer-general>
+      </clr-tab-content>
+    </clr-tab>
+
+    <clr-tab>
+      <button clrTabLink>{{ 'details' | translate }}</button>
+      <clr-tab-content *clrIfActive>
+        <appfx-certificate-viewer-details
+          [certificateChain]="certificateChain"
+          [topHeadingLevel]="topHeadingLevel"
+          [headingTemplate]="heading"
+        >
+        </appfx-certificate-viewer-details>
+      </clr-tab-content>
+    </clr-tab>
+  </clr-tabs>
+</ng-template>
+
+<ng-template #heading let-level="level" let-textContent="textContent" let-class="class">
+  <ng-container [ngSwitch]="level">
+    <h1 *ngSwitchCase="1" [ngClass]="class">{{ textContent }}</h1>
+    <h2 *ngSwitchCase="2" [ngClass]="class">{{ textContent }}</h2>
+    <h3 *ngSwitchCase="3" [ngClass]="class">{{ textContent }}</h3>
+    <h4 *ngSwitchCase="4" [ngClass]="class">{{ textContent }}</h4>
+    <h5 *ngSwitchCase="5" [ngClass]="class">{{ textContent }}</h5>
+    <h6 *ngSwitchCase="6" [ngClass]="class">{{ textContent }}</h6>
+    <div *ngSwitchDefault role="heading" [attr.aria-level]="level" [ngClass]="class">{{ textContent }}</div>
+  </ng-container>
+</ng-template>

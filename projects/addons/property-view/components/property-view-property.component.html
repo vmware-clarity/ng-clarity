@@ -1,0 +1,45 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<td class="pv-property-key-container left" role="presentation">
+  <span
+    class="pv-property-key-content"
+    [style.width.rem]="!is4xZoomed ? propertyViewConfigProvider.getConfig()?.propertyKeyWidthInRem : undefined"
+  >
+    <span *ngIf="data.key.icon" class="pv-property-key-icon" [ngClass]="data.key.icon"></span>
+    <span class="pv-property-key-text" [attr.aria-label]="data.key.text" [innerText]="data.key.text"></span>
+  </span>
+</td>
+<td class="pv-property-values-container left" role="presentation">
+  <span *ngIf="data.content.length > 0" class="pv-property-values-content">
+    <span *ngFor="let value of propertyValueModelContent; trackBy: getValueTrackingId" class="pv-property-value">
+      <span *ngIf="value.icon" class="pv-property-value-icon" [ngClass]="value.icon"></span>
+      <a
+        *ngIf="value.link"
+        class="pv-property-value-link"
+        href="javascript:void(0)"
+        [innerText]="value.text"
+        (click)="handleLinkClick(value.link)"
+      ></a>
+      <span
+        *ngIf="!value.link"
+        class="pv-property-value-text"
+        [attr.aria-label]="value.text"
+        [innerText]="value.text"
+      ></span>
+    </span>
+    <span
+      *ngFor="let value of propertyValueComponentModelContent; trackBy: getValueTrackingId"
+      class="pv-property-value"
+    >
+      <appfx-property-view-property-value-component
+        [componentType]="value.componentType"
+        [componentModel]="value.componentModel"
+      >
+      </appfx-property-view-property-value-component>
+    </span>
+  </span>
+</td>
