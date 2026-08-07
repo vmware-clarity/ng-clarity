@@ -1,0 +1,122 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:meta';
+@use '../../styles/mixins';
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+@use '../../button/variables.buttons' as button-variables;
+@use 'variables.tooltip' as tooltip-variables;
+@use 'mixins.tooltip' as tooltip-mixins;
+
+@include meta.load-css('properties.tooltip');
+@include mixins.exports('tooltips.clarity') {
+  .tooltip {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    overflow: visible;
+
+    & > .tooltip-content {
+      @include tooltip-mixins.common-tooltip-content-styles;
+
+      //Default Tooltip direction - Top Right
+      @include tooltip-mixins.vertical-tooltip-generator(top, right, true);
+    }
+
+    &:hover > .tooltip-content,
+    &:focus > .tooltip-content {
+      visibility: visible;
+      opacity: 1;
+
+      //Have to do this for IE11. Cant use a :not selector
+      &:empty {
+        visibility: hidden;
+        opacity: 0;
+      }
+    }
+
+    &:focus {
+      outline: 0;
+    }
+
+    &:focus > :first-child {
+      outline-offset: tokens.$cds-alias-object-interaction-outline-offset;
+      outline: tokens.$cds-alias-object-interaction-outline;
+    }
+
+    //Tooltip directions
+    @include tooltip-mixins.generate-tooltip-styles();
+
+    //Tooltips Size
+    @include tooltip-mixins.tooltip-sizes();
+  }
+
+  //Override tooltip margins values for different components.
+
+  //Buttons
+  .tooltip {
+    //Default is top right
+    & > .btn + .tooltip-content,
+    &.tooltip-top-right > .btn + .tooltip-content,
+    &.tooltip-top-left > .btn + .tooltip-content {
+      margin-bottom: calc(tooltip-variables.$clr-tooltip-adjusted-margin - button-variables.$clr-btn-vertical-margin);
+    }
+
+    &.tooltip-bottom-right > .btn + .tooltip-content,
+    &.tooltip-bottom-left > .btn + .tooltip-content {
+      margin-top: calc(tooltip-variables.$clr-tooltip-adjusted-margin - button-variables.$clr-btn-vertical-margin);
+    }
+
+    &.tooltip-right > .btn + .tooltip-content {
+      margin-left: calc(tooltip-variables.$clr-tooltip-adjusted-margin - button-variables.$clr-btn-horizontal-margin);
+    }
+  }
+
+  //Icons
+  .tooltip {
+    > .clr-icon {
+      margin-right: 0;
+    }
+
+    > svg {
+      pointer-events: none;
+    }
+  }
+
+  //Angular component with current structure focuses on the tooltip trigger
+  //whereas the static component host is focused on as its normally a link with an icon in it.
+  //Tooltip is due for a refactor but as of now this fix solves the immediate accessibility bug that
+  //the tooltip component faces.
+  .tooltip-trigger:focus + .tooltip-content {
+    visibility: visible;
+  }
+
+  //Angular Tooltip Moved to new container.
+  .clr-tooltip-container {
+    text-align: left;
+    overflow: visible;
+    display: inline-block;
+
+    & > .tooltip-content {
+      @include tooltip-mixins.common-tooltip-content-styles;
+
+      display: none;
+      visibility: visible;
+    }
+
+    &.cdk-overlay-pane > .tooltip-content {
+      display: block;
+      opacity: 1;
+    }
+
+    //Tooltip directions
+    @include tooltip-mixins.generate-tooltip-styles(false);
+
+    //Tooltips Size
+    @include tooltip-mixins.tooltip-sizes();
+  }
+}

@@ -1,0 +1,96 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'variables.alert' as alert-variables;
+
+@mixin generateAlertType($alertType: 'info') {
+  background: alert-variables.getAlertColor($alertType, bg-color);
+  color: alert-variables.getAlertColor($alertType, color);
+
+  & .alert-items .alert-item a:not(.dropdown-item, .badge, .label) {
+    color: alert-variables.getAlertColor($alertType, color);
+
+    cds-icon,
+    clr-icon {
+      fill: alert-variables.getAlertColor($alertType, color);
+    }
+  }
+
+  $border-prop: alert-variables.getAlertColor($alertType, border-color);
+
+  @if $border-prop != 'none' {
+    border: alert-variables.$clr-alert-borderwidth solid $border-prop;
+  } @else {
+    border: none;
+  }
+
+  .alert-icon {
+    color: alert-variables.getAlertColor($alertType, icon);
+  }
+
+  $myActionSassVar: alert-variables.getAlertColor($alertType, action);
+
+  .alert-actions .dropdown .dropdown-toggle {
+    color: $myActionSassVar;
+    border-color: alert-variables.getAlertColor($alertType, action-active);
+  }
+
+  .alert-action,
+  .dropdown-toggle {
+    color: $myActionSassVar;
+
+    &.btn {
+      border-color: $myActionSassVar;
+      color: $myActionSassVar;
+
+      cds-icon,
+      clr-icon {
+        color: $myActionSassVar;
+      }
+
+      &:active {
+        color: $myActionSassVar;
+
+        cds-icon,
+        clr-icon {
+          color: $myActionSassVar;
+        }
+      }
+    }
+  }
+
+  .close {
+    color: alert-variables.getAlertColor($alertType, close-icon);
+
+    cds-icon,
+    clr-icon {
+      fill: alert-variables.getAlertColor($alertType, close-icon);
+    }
+
+    &:focus,
+    &:hover,
+    &:active {
+      color: alert-variables.getAlertColor($alertType, close-icon-hover);
+
+      cds-icon,
+      clr-icon {
+        fill: alert-variables.getAlertColor($alertType, close-icon-hover);
+      }
+    }
+  }
+}
+@mixin generateLightweightAlertType($alertType: 'info') {
+  &.alert-#{$alertType} {
+    .alert-text {
+      color: alert-variables.getAlertColor('lightweight-#{$alertType}', color);
+    }
+
+    .alert-icon {
+      color: alert-variables.getAlertColor('lightweight-#{$alertType}', icon);
+    }
+  }
+}
