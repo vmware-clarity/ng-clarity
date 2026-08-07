@@ -47,14 +47,17 @@ declare class ClrCheckboxContainer extends ClrAbstractContainer implements After
     protected controlClassService: ControlClassService;
     protected ngControlService: NgControlService;
     role: string;
+    ariaLabelledBy: string;
     checkboxes: QueryList<ClrCheckbox>;
     private inline;
+    private _generatedId;
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
     protected get allCheckboxesDisabled(): boolean;
     ngAfterContentInit(): void;
     private setAriaRoles;
+    private setAriaLabelledBy;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckboxContainer, [{ optional: true; }, null, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxContainer, "clr-checkbox-container,clr-toggle-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["checkboxes"], ["label", "clr-checkbox-wrapper,clr-toggle-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
 }

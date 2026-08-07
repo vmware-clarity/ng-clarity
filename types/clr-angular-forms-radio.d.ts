@@ -27,7 +27,6 @@ declare class ClrRadioContainer extends ClrAbstractContainer implements AfterCon
     role: string;
     ariaLabelledBy: string;
     radios: QueryList<ClrRadio>;
-    groupLabel: ElementRef<HTMLElement>;
     private inline;
     private _generatedId;
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
@@ -37,7 +36,7 @@ declare class ClrRadioContainer extends ClrAbstractContainer implements AfterCon
     private setAriaRoles;
     private setAriaLabelledBy;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadioContainer, [{ optional: true; }, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["groupLabel", "radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
 }
 
 declare class ClrRadioModule {
