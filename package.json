@@ -112,7 +112,7 @@
     "@typescript-eslint/parser": "8.63.0",
     "ajv": "8.18.0",
     "asn1js": "^3.0.6",
-    "autoprefixer": "10.5.2",
+    "autoprefixer": "10.5.4",
     "csso-cli": "4.0.2",
     "culori": "^4.0.2",
     "domino": "2.1.6",
