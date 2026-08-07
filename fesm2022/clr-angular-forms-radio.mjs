@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { ContentChild, Component, Self, Optional, Directive, ElementRef, Input, ContentChildren, NgModule } from '@angular/core';
+import { ContentChild, Component, Self, Optional, Directive, Input, ContentChildren, NgModule } from '@angular/core';
 import * as i1 from '@clr/angular/forms/common';
 import { ClrControlLabel, ControlIdService, WrappedFormControl, ClrAbstractContainer, NgControlService, ControlClassService, ContainerIdService, ClrCommonFormsModule } from '@clr/angular/forms/common';
 import * as i1$1 from '@angular/forms';
@@ -116,17 +116,13 @@ class ClrRadioContainer extends ClrAbstractContainer {
         this.role = this.radios.length ? 'radiogroup' : null;
     }
     setAriaLabelledBy() {
-        const _id = this.groupLabel?.nativeElement.getAttribute('id');
-        if (!_id) {
-            this.groupLabel?.nativeElement.setAttribute('id', this._generatedId);
-            this.ariaLabelledBy = this.radios.length ? this._generatedId : null;
+        if (this.label && !this.label.idAttr) {
+            this.label.idAttr = this._generatedId;
         }
-        else {
-            this.ariaLabelledBy = this.radios.length ? _id : null;
-        }
+        this.ariaLabelledBy = this.radios?.length && this.label ? this.label.idAttr : null;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrRadioContainer, deps: [{ token: i1.LayoutService, optional: true }, { token: i1.ControlClassService }, { token: i1.NgControlService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrRadioContainer, isStandalone: false, selector: "clr-radio-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()", "attr.role": "role", "attr.aria-labelledby": "ariaLabelledBy" } }, providers: [NgControlService, ControlClassService, ContainerIdService], queries: [{ propertyName: "groupLabel", first: true, predicate: ClrControlLabel, descendants: true, read: ElementRef, static: true }, { propertyName: "radios", predicate: ClrRadio, descendants: true }], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrRadioContainer, isStandalone: false, selector: "clr-radio-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()", "attr.role": "role", "attr.aria-labelledby": "ariaLabelledBy" } }, providers: [NgControlService, ControlClassService, ContainerIdService], queries: [{ propertyName: "radios", predicate: ClrRadio, descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -186,9 +182,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                 }] }, { type: i1.ControlClassService }, { type: i1.NgControlService }], propDecorators: { radios: [{
                 type: ContentChildren,
                 args: [ClrRadio, { descendants: true }]
-            }], groupLabel: [{
-                type: ContentChild,
-                args: [ClrControlLabel, { read: ElementRef, static: true }]
             }], clrInline: [{
                 type: Input
             }] } });

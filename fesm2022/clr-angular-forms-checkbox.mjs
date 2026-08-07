@@ -5,10 +5,10 @@ import { ClrControlLabel, ControlIdService, WrappedFormControl, ClrAbstractConta
 import * as i2 from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import * as i1$1 from '@angular/forms';
+import { uniqueIdFactory, ClrHostWrappingModule } from '@clr/angular/utils';
 import * as i2$1 from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { ClarityIcons, successStandardIcon, errorStandardIcon, ClrIcon } from '@clr/angular/icon';
-import { ClrHostWrappingModule } from '@clr/angular/utils';
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -138,6 +138,7 @@ class ClrCheckboxContainer extends ClrAbstractContainer {
         this.controlClassService = controlClassService;
         this.ngControlService = ngControlService;
         this.inline = false;
+        this._generatedId = uniqueIdFactory();
     }
     /*
      * Here we want to support the following cases
@@ -164,12 +165,19 @@ class ClrCheckboxContainer extends ClrAbstractContainer {
     }
     ngAfterContentInit() {
         this.setAriaRoles();
+        this.setAriaLabelledBy();
     }
     setAriaRoles() {
         this.role = this.checkboxes?.length ? 'group' : null;
     }
+    setAriaLabelledBy() {
+        if (this.label && !this.label.idAttr) {
+            this.label.idAttr = this._generatedId;
+        }
+        this.ariaLabelledBy = this.checkboxes?.length && this.label ? this.label.idAttr : null;
+    }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrCheckboxContainer, deps: [{ token: i1.LayoutService, optional: true }, { token: i1.ControlClassService }, { token: i1.NgControlService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrCheckboxContainer, isStandalone: false, selector: "clr-checkbox-container,clr-toggle-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "allCheckboxesDisabled", "class.clr-row": "addGrid()", "attr.role": "role" } }, providers: [NgControlService, ControlClassService, ContainerIdService], queries: [{ propertyName: "checkboxes", predicate: ClrCheckbox, descendants: true }], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrCheckboxContainer, isStandalone: false, selector: "clr-checkbox-container,clr-toggle-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "allCheckboxesDisabled", "class.clr-row": "addGrid()", "attr.role": "role", "attr.aria-labelledby": "ariaLabelledBy" } }, providers: [NgControlService, ControlClassService, ContainerIdService], queries: [{ propertyName: "checkboxes", predicate: ClrCheckbox, descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -219,6 +227,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                         '[class.clr-form-control-disabled]': 'allCheckboxesDisabled',
                         '[class.clr-row]': 'addGrid()',
                         '[attr.role]': 'role',
+                        '[attr.aria-labelledby]': 'ariaLabelledBy',
                     },
                     providers: [NgControlService, ControlClassService, ContainerIdService],
                     standalone: false,
