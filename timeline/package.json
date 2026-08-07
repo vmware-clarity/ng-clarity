@@ -1,0 +1,4 @@
+{
+  "module": "../fesm2022/clr-angular-timeline.mjs",
+  "typings": "../types/clr-angular-timeline.d.ts"
+}

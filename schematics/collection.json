@@ -1,0 +1,14 @@
+{
+  "$schema": "../../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "ng-update": {
+      "version": "18.0.0",
+      "description": "Migrates @clr/angular from v17 to v18",
+      "factory": "./ng-update/index#migrate"
+    },
+    "migrate-v18": {
+      "description": "Applies automated @clr/angular v17→v18 source migrations (templates, imports, CSS). Run with: ng generate @clr/angular:migrate-v18",
+      "factory": "./ng-update/index#migrate"
+    }
+  }
+}
