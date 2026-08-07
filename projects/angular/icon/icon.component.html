@@ -5,7 +5,13 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 @if (isStringIcon) {
-  <span [innerHTML]="iconSVG | iconHtml"></span>
+  <span [innerHTML]="iconSVG | iconHtml" data-ng-owner></span>
 } @else {
-  <svg [innerHTML]="iconSVG | iconHtml" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+  <svg
+    [innerHTML]="iconSVG | iconHtml"
+    viewBox="0 0 36 36"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+    data-ng-owner
+  ></svg>
 }
