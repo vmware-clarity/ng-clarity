@@ -304,6 +304,22 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private handleOutsideClick(event: Event): void {
+    // The very click that opened this popover must never be treated as an outside click.
+    // CDK's OverlayOutsideClickDispatcher listens in the capture phase on this window's
+    // document.body, so it normally runs *before* the trigger's own click handler has
+    // attached the overlay, and the opening click is therefore never delivered here.
+    // That ordering does not hold everywhere: when the trigger lives in a ShadowRoot
+    // owned by a separately bootstrapped Angular application (an ESM micro-frontend
+    // plugin with its own CDK instance), the overlay can already be attached by the time
+    // the dispatcher sees the click, which delivers the opening click straight back as an
+    // "outside" click and tears the popover down microseconds after it opened.
+    // Comparing against the stored open event is exact - CDK re-emits the same Event
+    // object - and it leaves toggle-to-close untouched, since a later click on the
+    // trigger is always a different Event instance.
+    if (event === this.popoverService.openEvent) {
+      return;
+    }
+
     // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
     if (this.elementRef?.nativeElement?.contains(event.target as Node)) {
       return;

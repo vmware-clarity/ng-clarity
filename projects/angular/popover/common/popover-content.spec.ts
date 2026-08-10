@@ -266,6 +266,38 @@ export default function (): void {
         // button (openEvent.target is null), so it correctly stays open rather than crash.
         expect(this.popoverService.open).toBe(true);
       });
+
+      it('ignores the very event that opened the popover instead of closing on it', function (this: Context) {
+        // Regression: in an ESM micro-frontend plugin (trigger inside a ShadowRoot, its own
+        // CDK instance) the overlay can already be attached when CDK's capture-phase
+        // outside-click dispatcher sees the opening click, so that same click is delivered
+        // straight back as an "outside" click and closes the popover ~2ms after it opened -
+        // the popover appears never to open at all, with no console error.
+        const trigger = document.createElement('button');
+        document.body.appendChild(trigger);
+
+        const openEvent = new MouseEvent('click', { bubbles: true });
+        trigger.dispatchEvent(openEvent);
+
+        this.popoverService.origin = new ElementRef(trigger);
+        this.popoverService.openEvent = openEvent;
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+
+        expect(this.popoverService.open).toBe(true);
+
+        // Re-delivering the *same* Event instance must be ignored entirely.
+        (this.clarityDirective as any).handleOutsideClick(openEvent);
+
+        expect(this.popoverService.open).toBe(true);
+
+        // A genuinely different click still closes it, so toggle/outside-click is intact.
+        (this.clarityDirective as any).handleOutsideClick(new MouseEvent('click', { bubbles: true }));
+
+        expect(this.popoverService.open).toBe(false);
+
+        trigger.remove();
+      });
     });
 
     describe('outside click for cross-window origins', function (this: Context) {
