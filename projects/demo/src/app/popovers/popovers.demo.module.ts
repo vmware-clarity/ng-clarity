@@ -16,6 +16,7 @@ import { DropdownContextMenuDemo } from './dropdown-context-menu.demo';
 import { PopoverContextMenuDemo } from './popover-context-menu.demo';
 import { PopoversDemo } from './popovers.demo';
 import { ROUTING } from './popovers.demo.routing';
+import { ShadowDomCrashReproDemo } from './shadow-dom-crash-repro.demo';
 import { SignpostContextMenuDemo } from './signpost-context-menu.demo';
 
 @NgModule({
@@ -31,6 +32,7 @@ import { SignpostContextMenuDemo } from './signpost-context-menu.demo';
     DropdownContextMenuDemo,
     PopoverContextMenuDemo,
     SignpostContextMenuDemo,
+    ShadowDomCrashReproDemo,
   ],
   providers: [ClrPopoverService],
   declarations: [PopoversDemo],
