@@ -6,6 +6,7 @@
  */
 
 import {
+  AfterViewInit,
   booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -44,7 +45,7 @@ import { getIconBadgeSVG, getIconSVG } from './utils/icon.svg-helpers';
   imports: [IconHtmlPipe],
   providers: [IconHtmlPipe],
 })
-export class ClrIcon implements OnInit, OnDestroy {
+export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
   iconSVG: string;
   isStringIcon = false;
 
@@ -157,6 +158,10 @@ export class ClrIcon implements OnInit, OnDestroy {
     });
   }
 
+  ngAfterViewInit() {
+    this.cleanUpAdoptedStyleSheets();
+  }
+
   ngOnDestroy() {
     this.subscription?.unsubscribe();
   }
@@ -176,5 +181,17 @@ export class ClrIcon implements OnInit, OnDestroy {
 
   updateIconSize(value: string) {
     updateIconSizeStyle(this.el.nativeElement, value);
+  }
+
+  /*
+    @TODO - remove in v19 after `cds-icon` selector is removed
+    If @cds/core is used in combination with @clr/angular the internal components or others that use `cds-icon` tag
+    get double icons and leaking style sheets from the web component so we need to clear these up.
+  */
+  private cleanUpAdoptedStyleSheets() {
+    const shadow = this.el.nativeElement.shadowRoot;
+    if (shadow) {
+      shadow.adoptedStyleSheets = [];
+    }
   }
 }
