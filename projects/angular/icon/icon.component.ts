@@ -166,18 +166,6 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     this.subscription?.unsubscribe();
   }
 
-  /* 
-    @TODO - remove in v19 after `cds-icon` selector is removed
-    If @cds/core is used in combination with @clr/angular the internal components or others that use `cds-icon` tag
-    get double icons and leaking style sheets from the web component so we need to clear these up.
-  */
-  cleanUpAdoptedStyleSheets() {
-    const shadow = this.el.nativeElement.shadowRoot;
-    if (shadow) {
-      shadow.adoptedStyleSheets = [];
-    }
-  }
-
   updateIcon() {
     const shapeTemplate = ClarityIcons.registry[this.shape] || ClarityIcons.registry['unknown'];
 
@@ -193,5 +181,17 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
 
   updateIconSize(value: string) {
     updateIconSizeStyle(this.el.nativeElement, value);
+  }
+
+  /*
+    @TODO - remove in v19 after `cds-icon` selector is removed
+    If @cds/core is used in combination with @clr/angular the internal components or others that use `cds-icon` tag
+    get double icons and leaking style sheets from the web component so we need to clear these up.
+  */
+  private cleanUpAdoptedStyleSheets() {
+    const shadow = this.el.nativeElement.shadowRoot;
+    if (shadow) {
+      shadow.adoptedStyleSheets = [];
+    }
   }
 }

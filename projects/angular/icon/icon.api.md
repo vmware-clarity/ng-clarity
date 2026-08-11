@@ -590,8 +590,6 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     get badge(): string | boolean;
     set badge(value: string | boolean);
     // (undocumented)
-    cleanUpAdoptedStyleSheets(): void;
-    // (undocumented)
     get direction(): string;
     set direction(value: string);
     // (undocumented)
