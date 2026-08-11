@@ -49,3 +49,33 @@
   font-family: var(--cds-alias-typography-font-family);
   font-size: var(--cds-alias-typography-font-size-2);
 }
+
+.shadow-realm-frame {
+  display: block;
+  width: 100%;
+  height: 180px;
+  margin: var(--cds-global-space-5) 0;
+  border: 2px dashed var(--cds-alias-object-border-color);
+}
+
+.repro-actions {
+  display: flex;
+  gap: var(--cds-global-space-4);
+}
+
+.repro-status {
+  display: flex;
+  align-items: center;
+  gap: var(--cds-global-space-3);
+  min-height: var(--cds-global-space-9);
+  margin-top: var(--cds-global-space-4);
+  font-size: var(--cds-alias-typography-font-size-2);
+
+  &.repro-status-error {
+    color: var(--cds-alias-status-danger);
+  }
+
+  &.repro-status-success {
+    color: var(--cds-alias-status-success);
+  }
+}
