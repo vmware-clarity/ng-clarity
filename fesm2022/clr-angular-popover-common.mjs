@@ -114,6 +114,156 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+// Realm-independent shape checks for getScrollableParents(): `instanceof` fails for
+// nodes created by a different window's constructors (e.g. an iframe's own Element,
+// ShadowRoot, or HTMLHtmlElement classes), so these duck-type via nodeType/tagName
+// instead, which works the same regardless of which window created the node.
+function isElementOrShadowRoot(node) {
+    return node.nodeType === Node.ELEMENT_NODE || isShadowRoot(node);
+}
+function isShadowRoot(node) {
+    return node.nodeType === Node.DOCUMENT_FRAGMENT_NODE && 'host' in node;
+}
+function isHtmlElement(node) {
+    return node.nodeType === Node.ELEMENT_NODE && node.tagName === 'HTML';
+}
+// Same-origin-safe: returns null (rather than throwing) if `frameElement` can't be
+// read, which happens when `win` is embedded in a cross-origin parent window.
+function getFrameElement(win) {
+    try {
+        return win.frameElement;
+    }
+    catch {
+        return null;
+    }
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/**
+ * Resolves an origin to its element and owning window, but only when that window differs
+ * from this one - i.e. the origin lives inside an iframe. Returns null for same-window
+ * origins and for non-element (point) origins, so a single check lets callers skip all
+ * cross-window handling for the overwhelming majority of popovers.
+ *
+ * Cheap: a few property reads, no layout access.
+ */
+function getCrossWindowOriginContext(origin) {
+    const element = getOriginElement(origin);
+    const elementWindow = element?.ownerDocument?.defaultView;
+    return element && elementWindow && elementWindow !== window ? { element, elementWindow } : null;
+}
+/**
+ * CDK's FlexibleConnectedPositionStrategy anchors the overlay by reading
+ * origin.getBoundingClientRect() (for an Element/ElementRef origin) directly off the
+ * origin, relative to the origin's own window. That only matches the overlay panel's
+ * window (always the one this code runs in) when the origin lives in the same document.
+ * When the origin sits inside an iframe (e.g. a micro-frontend mounting its trigger in a
+ * nested document, possibly combined with a ShadowRoot), the raw rect is relative to the
+ * wrong viewport and the overlay is mispositioned.
+ *
+ * If the origin is same-window (or not an Element/ElementRef at all), this returns it
+ * unchanged. Otherwise it returns a Point-based origin (the other shape
+ * FlexibleConnectedPositionStrategy natively supports) whose x/y/width/height are live
+ * getters that recompute the element's rect plus the cumulative offset of every ancestor
+ * iframe between the origin's window and this one, so the overlay still anchors
+ * correctly across repositions (scroll, resize). This has no effect on anything besides
+ * overlay positioning math - it never replaces the origin ElementRef consumers rely on
+ * elsewhere (e.g. scroll listeners), since it only wraps a local copy used for
+ * positioning.
+ *
+ * If the ancestor iframe chain can't be safely resolved (e.g. a cross-origin frame
+ * boundary this code can't introspect), the getters fall back to the element's own
+ * un-translated rect - the exact numbers CDK would compute if given the raw
+ * Element/ElementRef directly, so behavior for that case is unchanged.
+ */
+function resolveCrossWindowOrigin(origin) {
+    const crossWindowOrigin = getCrossWindowOriginContext(origin);
+    // Same-window origins (and point origins) are handed back untouched - no wrapping, no
+    // translation, no behavior change from a popover that never crosses a window boundary.
+    if (!crossWindowOrigin) {
+        return origin;
+    }
+    const { element, elementWindow } = crossWindowOrigin;
+    let cached = null;
+    // CDK's position strategy reads x/y/width/height several times per apply() (it builds
+    // a rect from a Point origin as {top: y, bottom: y + height, left: x, right: x + width}).
+    // Memoizing per microtask collapses that into a single rect/offset computation instead
+    // of one forced layout read per property access, while still recomputing fresh on the
+    // next reposition (scroll, resize), since the cache clears before the next microtask.
+    const read = () => {
+        if (!cached) {
+            const rect = element.getBoundingClientRect();
+            const offset = getCumulativeFrameOffset(elementWindow) ?? { x: 0, y: 0 };
+            cached = { x: rect.left + offset.x, y: rect.top + offset.y, width: rect.width, height: rect.height };
+            queueMicrotask(() => (cached = null));
+        }
+        return cached;
+    };
+    return {
+        get x() {
+            return read().x;
+        },
+        get y() {
+            return read().y;
+        },
+        get width() {
+            return read().width;
+        },
+        get height() {
+            return read().height;
+        },
+    };
+}
+function getOriginElement(origin) {
+    if (origin instanceof ElementRef) {
+        return origin.nativeElement;
+    }
+    // `instanceof Element` is realm-sensitive and misses raw elements belonging to
+    // another window - exactly the population this util targets - so duck-type instead.
+    if (origin?.nodeType === Node.ELEMENT_NODE) {
+        return origin;
+    }
+    return null;
+}
+/**
+ * Walks the chain of window.frameElement references from `originWindow` up to this
+ * code's own window, summing each ancestor iframe's position. Returns null if the
+ * chain can't be fully resolved (cross-origin boundary, or `originWindow` isn't
+ * actually embedded within this window).
+ */
+function getCumulativeFrameOffset(originWindow) {
+    let offsetX = 0;
+    let offsetY = 0;
+    let currentWindow = originWindow;
+    while (currentWindow && currentWindow !== window) {
+        const frameElement = getFrameElement(currentWindow);
+        if (!frameElement) {
+            return null;
+        }
+        const frameRect = frameElement.getBoundingClientRect();
+        // clientLeft/clientTop only cover the frame's border, not any CSS padding, which
+        // would otherwise skew the anchor - read computed style through the frame's own
+        // window for realm-safety.
+        const frameWindow = frameElement.ownerDocument?.defaultView ?? window;
+        const { borderLeftWidth, borderTopWidth, paddingLeft, paddingTop } = frameWindow.getComputedStyle(frameElement);
+        offsetX += frameRect.left + (parseFloat(borderLeftWidth) || 0) + (parseFloat(paddingLeft) || 0);
+        offsetY += frameRect.top + (parseFloat(borderTopWidth) || 0) + (parseFloat(paddingTop) || 0);
+        currentWindow = frameElement.ownerDocument?.defaultView ?? null;
+    }
+    return currentWindow === window ? { x: offsetX, y: offsetY } : null;
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 var ClrPopoverType;
 (function (ClrPopoverType) {
     ClrPopoverType[ClrPopoverType["SIGNPOST"] = 0] = "SIGNPOST";
@@ -499,7 +649,10 @@ class ClrPopoverContent {
         this._scrollToClose = !!scrollToClose;
     }
     set contentOrigin(origin) {
-        if (origin instanceof Element) {
+        // `instanceof Element` is realm-sensitive and misses a raw element belonging to
+        // another window, so a consumer passing one here would bypass the ElementRef wrap
+        // resolveCrossWindowOrigin() relies on to detect a cross-window origin.
+        if (origin?.nodeType === Node.ELEMENT_NODE) {
             this.popoverService.origin = new ElementRef(origin);
         }
         else {
@@ -507,10 +660,11 @@ class ClrPopoverContent {
         }
     }
     get positionStrategy() {
+        const origin = resolveCrossWindowOrigin(this.popoverService.origin);
         return this.overlay
             .position()
-            .flexibleConnectedTo(this.popoverService.origin)
-            .setOrigin(this.popoverService.origin)
+            .flexibleConnectedTo(origin)
+            .setOrigin(origin)
             .withPush(true)
             .withPositions([this.preferredPosition, ...this._availablePositions])
             .withFlexibleDimensions(true);
@@ -552,12 +706,7 @@ class ClrPopoverContent {
             this.resetPosition();
         }), this.popoverService.updatePositionChange().subscribe(() => {
             this.overlayRef?.updatePosition();
-        }), this.overlayRef.keydownEvents().subscribe(event => {
-            if (event && event.key && event.key === Keys.Escape && !hasModifierKey(event)) {
-                event.preventDefault();
-                this.closePopover();
-            }
-        }), this.popoverService.originPoint
+        }), this.createEscapeSubscription(), this.popoverService.originPoint
             ? this.createPointBasedOutsideClickSubscription()
             : this.createElementBasedOutsideClickSubscription());
     }
@@ -566,37 +715,146 @@ class ClrPopoverContent {
      * mouseup from the same right-click that opened the popover.
      */
     createPointBasedOutsideClickSubscription() {
-        return timer(500)
+        const subscription = timer(500)
             .pipe(switchMap(() => this.overlayRef.outsidePointerEvents()))
-            .subscribe(event => {
-            if (this.elementRef?.nativeElement?.contains(event.target)) {
-                return;
-            }
-            if (this._outsideClickClose) {
-                this.closePopover();
-            }
-        });
+            .subscribe(event => this.handlePointOutsideClick(event));
+        const crossWindowSubscription = this.createCrossWindowPointOutsideClickSubscription();
+        if (crossWindowSubscription) {
+            subscription.add(crossWindowSubscription);
+        }
+        return subscription;
+    }
+    handlePointOutsideClick(event) {
+        if (this.elementRef?.nativeElement?.contains(event.target)) {
+            return;
+        }
+        if (this._outsideClickClose) {
+            this.closePopover();
+        }
+    }
+    /**
+     * Mirrors createCrossWindowOutsideClickSubscription for point-based origins (context
+     * menus): pointTargetElement - the element the point was derived from, e.g. the
+     * right-clicked element - can itself live inside a foreign iframe document, and CDK's
+     * outsidePointerEvents() only listens on this window's document, so a click elsewhere
+     * in that foreign document would otherwise never dismiss the menu. Delayed by the same
+     * 500ms as the same-window stream, for the same reason: avoid the click that opened the
+     * menu immediately closing it again.
+     */
+    createCrossWindowPointOutsideClickSubscription() {
+        const pointTargetElement = this.popoverService.pointTargetElement;
+        const crossWindowOrigin = pointTargetElement ? getCrossWindowOriginContext(pointTargetElement) : null;
+        if (!crossWindowOrigin) {
+            return null;
+        }
+        const originWindow = crossWindowOrigin.elementWindow;
+        return timer(500)
+            .pipe(switchMap(() => this.zone.runOutsideAngular(() => merge(fromEvent(originWindow.document, 'click', { capture: true }), fromEvent(originWindow.document, 'auxclick', { capture: true })))))
+            .subscribe(event => this.zone.run(() => this.handlePointOutsideClick(event)));
     }
     /**
      * Element-based origins close on outside clicks and suppress toggle-button
      * re-clicks so the popover doesn't immediately reopen.
      */
     createElementBasedOutsideClickSubscription() {
-        return this.overlayRef.outsidePointerEvents().subscribe(event => {
-            // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
-            if (this.elementRef?.nativeElement?.contains(event.target)) {
-                return;
-            }
-            // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
-            const isToggleButton = this.popoverService.openEvent &&
-                (this.popoverService.openEvent.target.contains(event.target) ||
-                    this.popoverService.openEvent.target.parentElement.contains(event.target) ||
-                    this.popoverService.openEvent.target === event.target);
-            if (isToggleButton) {
-                event.stopPropagation();
-            }
-            if (this._outsideClickClose || isToggleButton) {
-                this.closePopover();
+        const subscription = this.overlayRef.outsidePointerEvents().subscribe(event => this.handleOutsideClick(event));
+        const crossWindowSubscription = this.createCrossWindowOutsideClickSubscription();
+        if (crossWindowSubscription) {
+            subscription.add(crossWindowSubscription);
+        }
+        return subscription;
+    }
+    handleOutsideClick(event) {
+        // The very click that opened this popover must never be treated as an outside click.
+        // CDK's OverlayOutsideClickDispatcher listens in the capture phase on this window's
+        // document.body, so it normally runs *before* the trigger's own click handler has
+        // attached the overlay, and the opening click is therefore never delivered here.
+        // That ordering does not hold everywhere: when the trigger lives in a ShadowRoot
+        // owned by a separately bootstrapped Angular application (an ESM micro-frontend
+        // plugin with its own CDK instance), the overlay can already be attached by the time
+        // the dispatcher sees the click, which delivers the opening click straight back as an
+        // "outside" click and tears the popover down microseconds after it opened.
+        // Comparing against the stored open event is exact - CDK re-emits the same Event
+        // object - and it leaves toggle-to-close untouched, since a later click on the
+        // trigger is always a different Event instance.
+        if (event === this.popoverService.openEvent) {
+            return;
+        }
+        // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
+        if (this.elementRef?.nativeElement?.contains(event.target)) {
+            return;
+        }
+        // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
+        // openEvent.target can itself be null (e.g. the original toggle button was removed
+        // from the DOM before this handler runs), so every access below is optional - an
+        // unguarded `.contains()` call here throws and aborts the whole handler, which is
+        // exactly what stops closePopover() from ever running.
+        const openEventTarget = this.popoverService.openEvent?.target;
+        const isToggleButton = !!openEventTarget &&
+            (openEventTarget.contains(event.target) ||
+                openEventTarget.parentElement?.contains(event.target) ||
+                openEventTarget === event.target);
+        if (isToggleButton) {
+            event.stopPropagation();
+        }
+        if (this._outsideClickClose || isToggleButton) {
+            this.closePopover();
+        }
+    }
+    /**
+     * CDK's outsidePointerEvents() only listens on the document that owns the overlay
+     * (this window's), so clicks inside a cross-window origin's own document (e.g. a
+     * ShadowRoot hosted in an iframe) are invisible to it - see resolveCrossWindowOrigin
+     * for the same cross-window scenario affecting positioning instead. Any pointer event
+     * dispatched in that foreign document is guaranteed to be outside the overlay panel,
+     * since the panel always renders in this window's document, so this only needs the
+     * toggle-button exclusion handleOutsideClick already does, not the content-panel
+     * containment check (which can never be true across documents).
+     *
+     * Listens on capture-phase click/auxclick, mirroring CDK's own OverlayOutsideClickDispatcher.
+     * Capture phase matters: for a toggle re-click, this listener must run and
+     * stopPropagation() BEFORE the trigger's own bubble-phase click handler
+     * (ClrDropdownTrigger's toggleWithEvent) gets a chance to fire, otherwise the popover
+     * closes here and immediately reopens there. A bubble-phase or pointerdown-based
+     * listener can't suppress that handler at all, since pointerdown and click are separate
+     * events and stopping one doesn't affect the other.
+     *
+     * The foreign document's own addEventListener isn't zone-patched (zone.js only patches
+     * the window it's loaded into), so the listener is registered directly and the handler
+     * is explicitly run back inside NgZone.
+     */
+    createCrossWindowOutsideClickSubscription() {
+        // Same-window origins bail out here, so a popover that never crosses a window
+        // boundary registers no extra listeners at all.
+        const crossWindowOrigin = getCrossWindowOriginContext(this.popoverService.origin);
+        if (!crossWindowOrigin) {
+            return null;
+        }
+        const originWindow = crossWindowOrigin.elementWindow;
+        return this.zone.runOutsideAngular(() => merge(fromEvent(originWindow.document, 'click', { capture: true }), fromEvent(originWindow.document, 'auxclick', { capture: true })).subscribe(event => this.zone.run(() => this.handleOutsideClick(event))));
+    }
+    /**
+     * CDK's OverlayKeyboardDispatcher (the source behind `overlayRef.keydownEvents()`)
+     * attaches a single keydown listener on this window's document.body once, at app
+     * bootstrap - see its `add()`/`_keydownListener`. A keydown fired while focus sits
+     * inside a cross-window origin's own document (e.g. a ShadowRoot hosted in an iframe)
+     * never bubbles there, since events don't cross document boundaries, so Escape silently
+     * does nothing once the trigger (and focus) has moved into that foreign document. This
+     * mirrors createCrossWindowOutsideClickSubscription's rationale for outside clicks -
+     * merged into a single stream/handler here since both ultimately just detect Escape and
+     * close.
+     */
+    createEscapeSubscription() {
+        const crossWindowOrigin = getCrossWindowOriginContext(this.popoverService.origin);
+        const keydownEvents = crossWindowOrigin
+            ? merge(this.overlayRef.keydownEvents(), this.zone.runOutsideAngular(() => fromEvent(crossWindowOrigin.elementWindow.document, 'keydown')))
+            : this.overlayRef.keydownEvents();
+        return keydownEvents.subscribe(event => {
+            if (isEscapeKey(event)) {
+                this.zone.run(() => {
+                    event.preventDefault();
+                    this.closePopover();
+                });
             }
         });
     }
@@ -676,19 +934,47 @@ class ClrPopoverContent {
         this.intersectionObserver?.disconnect();
         this.intersectionObserver = null;
     }
+    /**
+     * Walks ancestors looking for scrollable containers, following the node up through
+     * ShadowRoots and, when the node's own ancestry crosses into an iframe (a different
+     * window realm - e.g. a ShadowRoot hosted in a micro-frontend iframe), continuing the
+     * walk into the parent window via window.frameElement, all the way up to the true
+     * top-level document. Every embedded document passed through this way is added as its
+     * own scrollable parent, so page-level scrolling inside an iframe is tracked too.
+     *
+     * `instanceof` checks are realm-sensitive (they fail for nodes created by a different
+     * window's constructors), so this deliberately uses realm-independent shape checks
+     * (nodeType, tagName, duck-typing ShadowRoot via `host`) instead, and always resolves
+     * computed style through the node's own window rather than this one. This is what lets
+     * the walk safely continue across a same-origin realm boundary instead of just
+     * stopping at it.
+     */
     getScrollableParents(node) {
-        let parent = node;
         const overflowScrollKeys = ['auto', 'scroll', 'clip'];
         const scrollableParents = [window.document];
-        while (parent && !(parent instanceof HTMLHtmlElement)) {
-            if (parent instanceof ShadowRoot) {
+        let parent = node;
+        while (parent && isElementOrShadowRoot(parent)) {
+            if (isShadowRoot(parent)) {
                 parent = parent.host;
+                continue;
             }
-            const { overflowY, overflowX } = window.getComputedStyle(parent);
+            const element = parent;
+            const elementWindow = element.ownerDocument?.defaultView;
+            if (isHtmlElement(element)) {
+                const frameElement = elementWindow && elementWindow !== window ? getFrameElement(elementWindow) : null;
+                if (!frameElement) {
+                    break;
+                }
+                // Leaving this document for its parent window - track its own page-level scroll too.
+                scrollableParents.push(element.ownerDocument);
+                parent = frameElement;
+                continue;
+            }
+            const { overflowY, overflowX } = (elementWindow ?? window).getComputedStyle(element);
             if (overflowScrollKeys.includes(overflowY) || overflowScrollKeys.includes(overflowX)) {
-                scrollableParents.push(parent);
+                scrollableParents.push(element);
             }
-            parent = parent.parentNode;
+            parent = element.parentNode;
         }
         return scrollableParents;
     }
@@ -780,6 +1066,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                 type: Input,
                 args: ['clrPopoverContentOrigin']
             }] } });
+function isEscapeKey(event) {
+    return !!event && event.key === Keys.Escape && !hasModifierKey(event);
+}
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.

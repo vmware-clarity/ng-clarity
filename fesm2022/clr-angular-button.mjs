@@ -423,12 +423,18 @@ class ClrButtonGroup {
     }
     handleFocusOnMenuOpen() {
         this.popoverService.popoverVisible.pipe(takeUntil(this.destroy$)).subscribe(visible => {
-            if (visible) {
-                this.focusHandler.initialize({
-                    menu: this.menu.nativeElement,
-                    menuToggle: this.menuToggle.nativeElement,
-                });
+            // `menu` sits on the element carrying *clrPopoverContent, so the query only
+            // resolves once that embedded view has been created and change detection has
+            // refreshed it. popoverVisible fires from a setTimeout inside showOverlay(), which
+            // is normally late enough - but not guaranteed to be, so dereferencing either
+            // ElementRef unguarded can throw and abort this handler.
+            if (!visible || !this.menu || !this.menuToggle) {
+                return;
             }
+            this.focusHandler.initialize({
+                menu: this.menu.nativeElement,
+                menuToggle: this.menuToggle.nativeElement,
+            });
         });
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrButtonGroup, deps: [{ token: ButtonInGroupService }, { token: i2.ClrPopoverService }, { token: i3.ClrCommonStringsService }, { token: i3.ClrDestroyService }, { token: ButtonGroupFocusHandler }], target: i0.ɵɵFactoryTarget.Component }); }
