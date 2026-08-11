@@ -129,15 +129,77 @@ declare class ClrPopoverContent implements OnDestroy, AfterViewInit {
      * mouseup from the same right-click that opened the popover.
      */
     private createPointBasedOutsideClickSubscription;
+    private handlePointOutsideClick;
+    /**
+     * Mirrors createCrossWindowOutsideClickSubscription for point-based origins (context
+     * menus): pointTargetElement - the element the point was derived from, e.g. the
+     * right-clicked element - can itself live inside a foreign iframe document, and CDK's
+     * outsidePointerEvents() only listens on this window's document, so a click elsewhere
+     * in that foreign document would otherwise never dismiss the menu. Delayed by the same
+     * 500ms as the same-window stream, for the same reason: avoid the click that opened the
+     * menu immediately closing it again.
+     */
+    private createCrossWindowPointOutsideClickSubscription;
     /**
      * Element-based origins close on outside clicks and suppress toggle-button
      * re-clicks so the popover doesn't immediately reopen.
      */
     private createElementBasedOutsideClickSubscription;
+    private handleOutsideClick;
+    /**
+     * CDK's outsidePointerEvents() only listens on the document that owns the overlay
+     * (this window's), so clicks inside a cross-window origin's own document (e.g. a
+     * ShadowRoot hosted in an iframe) are invisible to it - see resolveCrossWindowOrigin
+     * for the same cross-window scenario affecting positioning instead. Any pointer event
+     * dispatched in that foreign document is guaranteed to be outside the overlay panel,
+     * since the panel always renders in this window's document, so this only needs the
+     * toggle-button exclusion handleOutsideClick already does, not the content-panel
+     * containment check (which can never be true across documents).
+     *
+     * Listens on capture-phase click/auxclick, mirroring CDK's own OverlayOutsideClickDispatcher.
+     * Capture phase matters: for a toggle re-click, this listener must run and
+     * stopPropagation() BEFORE the trigger's own bubble-phase click handler
+     * (ClrDropdownTrigger's toggleWithEvent) gets a chance to fire, otherwise the popover
+     * closes here and immediately reopens there. A bubble-phase or pointerdown-based
+     * listener can't suppress that handler at all, since pointerdown and click are separate
+     * events and stopping one doesn't affect the other.
+     *
+     * The foreign document's own addEventListener isn't zone-patched (zone.js only patches
+     * the window it's loaded into), so the listener is registered directly and the handler
+     * is explicitly run back inside NgZone.
+     */
+    private createCrossWindowOutsideClickSubscription;
+    /**
+     * CDK's OverlayKeyboardDispatcher (the source behind `overlayRef.keydownEvents()`)
+     * attaches a single keydown listener on this window's document.body once, at app
+     * bootstrap - see its `add()`/`_keydownListener`. A keydown fired while focus sits
+     * inside a cross-window origin's own document (e.g. a ShadowRoot hosted in an iframe)
+     * never bubbles there, since events don't cross document boundaries, so Escape silently
+     * does nothing once the trigger (and focus) has moved into that foreign document. This
+     * mirrors createCrossWindowOutsideClickSubscription's rationale for outside clicks -
+     * merged into a single stream/handler here since both ultimately just detect Escape and
+     * close.
+     */
+    private createEscapeSubscription;
     private resetPosition;
     private closePopover;
     private showOverlay;
     private removeOverlay;
+    /**
+     * Walks ancestors looking for scrollable containers, following the node up through
+     * ShadowRoots and, when the node's own ancestry crosses into an iframe (a different
+     * window realm - e.g. a ShadowRoot hosted in a micro-frontend iframe), continuing the
+     * walk into the parent window via window.frameElement, all the way up to the true
+     * top-level document. Every embedded document passed through this way is added as its
+     * own scrollable parent, so page-level scrolling inside an iframe is tracked too.
+     *
+     * `instanceof` checks are realm-sensitive (they fail for nodes created by a different
+     * window's constructors), so this deliberately uses realm-independent shape checks
+     * (nodeType, tagName, duck-typing ShadowRoot via `host`) instead, and always resolves
+     * computed style through the node's own window rather than this one. This is what lets
+     * the walk safely continue across a same-origin realm boundary instead of just
+     * stopping at it.
+     */
     private getScrollableParents;
     /**
      * Uses IntersectionObserver to detect when the origin element leaves the screen.
