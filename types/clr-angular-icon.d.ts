@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { PipeTransform, Type, OnInit, OnDestroy, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { PipeTransform, Type, OnInit, AfterViewInit, OnDestroy, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as i2 from '@angular/common';
 
@@ -55,7 +55,7 @@ type Directions = 'up' | 'down' | 'left' | 'right';
 type Orientations = 'horizontal' | 'vertical';
 type StatusTypes = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
 
-declare class ClrIcon implements OnInit, OnDestroy {
+declare class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     el: ElementRef<HTMLElement>;
     private cdr;
     iconSVG: string;
@@ -88,9 +88,11 @@ declare class ClrIcon implements OnInit, OnDestroy {
     get badge(): string | boolean;
     set badge(value: string | boolean);
     ngOnInit(): void;
+    ngAfterViewInit(): void;
     ngOnDestroy(): void;
     updateIcon(): void;
     updateIconSize(value: string): void;
+    private cleanUpAdoptedStyleSheets;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIcon, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrIcon, "clr-icon, cds-icon", never, { "shape": { "alias": "shape"; "required": false; }; "size": { "alias": "size"; "required": false; }; "direction": { "alias": "direction"; "required": false; }; "flip": { "alias": "flip"; "required": false; }; "solid": { "alias": "solid"; "required": false; }; "status": { "alias": "status"; "required": false; }; "inverse": { "alias": "inverse"; "required": false; }; "badge": { "alias": "badge"; "required": false; }; }, {}, never, never, true, never>;
     static ngAcceptInputType_solid: unknown;
