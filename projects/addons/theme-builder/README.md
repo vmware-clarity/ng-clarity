@@ -15,11 +15,11 @@ result live, and exporting a CSS override file consumers can drop into their app
   always available.
 - `(generatedCSS)` — emits the generated CSS override text (a `string`) every time a color,
   preset, reset, or the warning-text-override toggle changes.
-- `[customContent]` — by default (`false`) the component renders a built-in preview covering most
-  Clarity components (buttons, forms, datagrid, alerts, navigation, etc.) so the color changes
-  can be seen in context. Set it to `true` and project your own preview through `<ng-content>`
-  instead; the projected content still renders inside the themed preview sandbox, so it reacts to
-  the light/dark toggle and every color edit exactly like the built-in preview does.
+- Content projection — anything projected through `<ng-content>` renders above the built-in
+  preview, which covers most Clarity components (buttons, forms, datagrid, alerts, navigation,
+  etc.) so the color changes can be seen in context. Projected content renders inside the same
+  themed preview sandbox, so it reacts to the light/dark toggle and every color edit exactly like
+  the built-in preview does.
 
 ##### The component doesn't support:
 
@@ -38,10 +38,10 @@ _host.component.html_:
 <pre>{{ generatedCss }}</pre>
 ```
 
-_host.component.html_ — projecting a custom preview instead of the built-in one:
+_host.component.html_ — projecting a custom preview above the built-in one:
 
 ```html
-<clr-theme-builder [presets]="presets" [customContent]="true" (generatedCSS)="generatedCss = $event">
+<clr-theme-builder [presets]="presets" (generatedCSS)="generatedCss = $event">
   <my-app-shell></my-app-shell>
 </clr-theme-builder>
 ```

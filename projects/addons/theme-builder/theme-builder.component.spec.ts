@@ -206,34 +206,38 @@ describe('ThemeBuilderComponent', () => {
 @Component({
   imports: [ThemeBuilderComponent],
   template: `
-    <clr-theme-builder [customContent]="true">
+    <clr-theme-builder>
       <div class="custom-preview-marker">Custom preview content</div>
     </clr-theme-builder>
   `,
 })
-class CustomContentHostComponent {
+class ProjectedContentHostComponent {
   @ViewChild(ThemeBuilderComponent) themeBuilder: ThemeBuilderComponent;
 }
 
-describe('ThemeBuilderComponent with customContent', () => {
-  let fixture: ComponentFixture<CustomContentHostComponent>;
+describe('ThemeBuilderComponent with projected content', () => {
+  let fixture: ComponentFixture<ProjectedContentHostComponent>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [CustomContentHostComponent, NoopAnimationsModule] });
-    fixture = TestBed.createComponent(CustomContentHostComponent);
+    TestBed.configureTestingModule({ imports: [ProjectedContentHostComponent, NoopAnimationsModule] });
+    fixture = TestBed.createComponent(ProjectedContentHostComponent);
   });
 
   afterEach(() => {
     fixture.destroy();
   });
 
-  it('renders projected content instead of the built-in preview', fakeAsync(() => {
+  it('renders projected content above the built-in preview', fakeAsync(() => {
     fixture.detectChanges(false);
     tick(buildStructureMs);
     fixture.detectChanges();
 
     const host: HTMLElement = fixture.nativeElement;
-    expect(host.querySelector('.custom-preview-marker')).toBeTruthy();
-    expect(host.querySelector('clr-breadcrumbs')).toBeFalsy();
+    const marker = host.querySelector('.custom-preview-marker');
+    const breadcrumbs = host.querySelector('clr-breadcrumbs');
+
+    expect(marker).toBeTruthy();
+    expect(breadcrumbs).toBeTruthy();
+    expect(marker.compareDocumentPosition(breadcrumbs) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   }));
 });

@@ -29,10 +29,9 @@
         changes.
       </li>
       <li>
-        <code cds-text="code">[customContent]</code> &mdash; set to <code cds-text="code">true</code> to project your
-        own preview through content projection instead of the built-in preview. The projected content still renders
-        inside the themed preview sandbox, so it reacts to the light/dark toggle and every color edit exactly like the
-        built-in preview does.
+        Content projection &mdash; anything projected through <code cds-text="code">&lt;ng-content&gt;</code> renders
+        above the built-in preview. Projected content still renders inside the themed preview sandbox, so it reacts to
+        the light/dark toggle and every color edit exactly like the built-in preview does.
       </li>
     </ul>
 
@@ -90,16 +89,6 @@
           <td>
             Color presets shown in the preset selector. Defaults to Clarity's built-in
             <code cds-text="code">PRESETS</code>.
-          </td>
-          <td>No</td>
-        </tr>
-        <tr>
-          <td><code cds-text="code">customContent</code></td>
-          <td>Input</td>
-          <td><code cds-text="code">boolean</code></td>
-          <td>
-            Projects custom preview content instead of the built-in preview. Defaults to
-            <code cds-text="code">false</code>.
           </td>
           <td>No</td>
         </tr>
