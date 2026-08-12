@@ -311,31 +311,35 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private buildColorStructure() {
-    setTimeout(() => {
-      const lightStyles = window.getComputedStyle(this.previewWrapper?.nativeElement);
-      const darkStyles = window.getComputedStyle(this.previewDarkWrapper?.nativeElement);
+  private buildColorStructure(): void {
+    const lightEl = this.previewWrapper?.nativeElement;
+    const darkEl = this.previewDarkWrapper?.nativeElement;
+    if (!lightEl || !darkEl) {
+      return;
+    }
 
-      for (const key in TOKEN_KEYS) {
-        if (key === 'baseTokens') {
-          continue;
-        }
+    const lightStyles = window.getComputedStyle(lightEl);
+    const darkStyles = window.getComputedStyle(darkEl);
 
-        const tokenGroup = TOKEN_KEYS[key];
-        this.colorStruct['light'][key] = [];
-        this.colorStruct['dark'][key] = [];
-        for (let i = 0; i < tokenGroup.length; i++) {
-          this.colorStruct['light'][key].push(new Color(tokenGroup[i], lightStyles.getPropertyValue(tokenGroup[i])));
-          this.colorStruct['dark'][key].push(new Color(tokenGroup[i], darkStyles.getPropertyValue(tokenGroup[i])));
-        }
+    for (const key in TOKEN_KEYS) {
+      if (key === 'baseTokens') {
+        continue;
       }
 
-      BACKGROUND_TOKENS.forEach(bg => {
-        this.backgrounds['light'][bg.name] = new Color(bg.token, lightStyles.getPropertyValue(bg.token));
-        this.backgrounds['dark'][bg.name] = new Color(bg.token, darkStyles.getPropertyValue(bg.token));
-      });
+      const tokenGroup = TOKEN_KEYS[key];
+      this.colorStruct['light'][key] = [];
+      this.colorStruct['dark'][key] = [];
+      for (let i = 0; i < tokenGroup.length; i++) {
+        this.colorStruct['light'][key].push(new Color(tokenGroup[i], lightStyles.getPropertyValue(tokenGroup[i])));
+        this.colorStruct['dark'][key].push(new Color(tokenGroup[i], darkStyles.getPropertyValue(tokenGroup[i])));
+      }
+    }
 
-      this.refreshThemeColors();
-    }, 200);
+    BACKGROUND_TOKENS.forEach(bg => {
+      this.backgrounds['light'][bg.name] = new Color(bg.token, lightStyles.getPropertyValue(bg.token));
+      this.backgrounds['dark'][bg.name] = new Color(bg.token, darkStyles.getPropertyValue(bg.token));
+    });
+
+    this.refreshThemeColors();
   }
 }

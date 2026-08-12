@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { ThemeBuilderComponent as ClrThemeBuilder, PRESETS } from '@clr/addons/theme-builder';
 
 import { getFeatureFlags } from '../feature-flags';
@@ -30,7 +30,7 @@ export class ThemeBuilderComponent implements OnDestroy {
 
   private copiedTimer: ReturnType<typeof setTimeout> | null = null;
 
-  constructor() {
+  constructor(public cd: ChangeDetectorRef) {
     localStorage.setItem('theme', 'light');
   }
 
@@ -42,6 +42,7 @@ export class ThemeBuilderComponent implements OnDestroy {
 
   writeGeneratedCss(css: string) {
     this.generatedCss = css;
+    this.cd.detectChanges();
   }
 
   async copyCSS(): Promise<void> {

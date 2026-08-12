@@ -6,15 +6,13 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ThemeBuilderComponent } from './theme-builder.component';
 import { Color } from './utils/color';
 import { CLARITY_DEFAULT_PRESET, PRESETS } from './utils/presets';
 import { ThemePreset } from './utils/types';
-
-const buildStructureMs = 200;
 
 const testPresets: ThemePreset[] = [
   { name: 'Default', light: null, dark: null },
@@ -41,57 +39,43 @@ describe('ThemeBuilderComponent', () => {
     this.fixture.destroy();
   });
 
-  it('defaults presets to the Clarity Default preset plus the built-in PRESETS list, selecting the first one', fakeAsync(function (
-    this: ThisTest
-  ) {
+  it('defaults presets to the Clarity Default preset plus the built-in PRESETS list, selecting the first one', function (this: ThisTest) {
     this.fixture.detectChanges(false);
-    tick(buildStructureMs);
 
     expect(this.component.presets[0]).toBe(CLARITY_DEFAULT_PRESET);
     PRESETS.forEach((preset, i) => expect(this.component.presets[i + 1]).toBe(preset));
     expect(this.component.activePreset).toBe(CLARITY_DEFAULT_PRESET);
-  }));
+  });
 
-  it('always prepends the Clarity Default preset to a custom [presets] input and selects it', fakeAsync(function (
-    this: ThisTest
-  ) {
+  it('always prepends the Clarity Default preset to a custom [presets] input and selects it', function (this: ThisTest) {
     this.component.presets = testPresets;
     this.fixture.detectChanges(false);
-    tick(buildStructureMs);
 
     expect(this.component.presets[0]).toBe(CLARITY_DEFAULT_PRESET);
     expect(this.component.presets[1]).toBe(testPresets[0]);
     expect(this.component.presets[2]).toBe(testPresets[1]);
     expect(this.component.activePreset).toBe(CLARITY_DEFAULT_PRESET);
-  }));
+  });
 
-  it('renders the built-in preview by default', fakeAsync(function (this: ThisTest) {
+  it('renders the built-in preview by default', function (this: ThisTest) {
     this.fixture.detectChanges(false);
-    tick(buildStructureMs);
-    this.fixture.detectChanges();
 
     const host: HTMLElement = this.fixture.nativeElement;
     expect(host.querySelector('clr-breadcrumbs')).toBeTruthy();
-  }));
+  });
 
-  it('emits generatedCSS reporting no changes once the initial color structure is built', fakeAsync(function (
-    this: ThisTest
-  ) {
+  it('emits generatedCSS reporting no changes once the initial color structure is built', function (this: ThisTest) {
     const emitted: string[] = [];
     this.component.generatedCSS.subscribe((css: string) => emitted.push(css));
 
     this.fixture.detectChanges(false);
-    tick(buildStructureMs);
 
     expect(emitted.length).toBeGreaterThan(0);
     expect(emitted[emitted.length - 1]).toContain('NO changes');
-  }));
+  });
 
-  it('emits updated generatedCSS and clears the active preset when a color is edited', fakeAsync(function (
-    this: ThisTest
-  ) {
+  it('emits updated generatedCSS and clears the active preset when a color is edited', function (this: ThisTest) {
     this.fixture.detectChanges(false);
-    tick(buildStructureMs);
 
     const emitted: string[] = [];
     this.component.generatedCSS.subscribe((css: string) => emitted.push(css));
@@ -102,11 +86,10 @@ describe('ThemeBuilderComponent', () => {
     expect(this.component.activePreset).toBeNull();
     expect(emitted[emitted.length - 1]).not.toContain('NO changes');
     expect(emitted[emitted.length - 1]).toContain('--cds-alias-primary:');
-  }));
+  });
 
-  it('recomputes tint/shade/dark variants from an edited base color', fakeAsync(function (this: ThisTest) {
+  it('recomputes tint/shade/dark variants from an edited base color', function (this: ThisTest) {
     this.fixture.detectChanges(false);
-    tick(buildStructureMs);
 
     const primaryGroup: Color[] = this.component.colorStruct['light']['primary'];
     const primaryBase = primaryGroup.find(c => c.label === 'Base');
@@ -117,11 +100,10 @@ describe('ThemeBuilderComponent', () => {
 
     expect(shade.hsl).not.toBe(originalShadeHsl);
     expect(shade.color.h).toBe(primaryBase.color.h);
-  }));
+  });
 
-  it('ignores non-hex input in setCurrentColor', fakeAsync(function (this: ThisTest) {
+  it('ignores non-hex input in setCurrentColor', function (this: ThisTest) {
     this.fixture.detectChanges(false);
-    tick(buildStructureMs);
 
     const primaryBase = this.component.colorStruct['light']['primary'][0];
     const before = primaryBase.hsl;
@@ -129,12 +111,11 @@ describe('ThemeBuilderComponent', () => {
     this.component.setCurrentColor(primaryBase, 'not-a-hex-color');
 
     expect(primaryBase.hsl).toBe(before);
-  }));
+  });
 
-  it('applies a preset to both the light and dark color structures', fakeAsync(function (this: ThisTest) {
+  it('applies a preset to both the light and dark color structures', function (this: ThisTest) {
     this.component.presets = testPresets;
     this.fixture.detectChanges(false);
-    tick(buildStructureMs);
 
     this.component.applyPreset(testPresets[1]);
 
@@ -144,25 +125,21 @@ describe('ThemeBuilderComponent', () => {
     expect(lightPrimary.hsl).toBe('hsl(160deg, 69%, 36%)');
     expect(darkPrimary.hsl).toBe('hsl(160deg, 69%, 53%)');
     expect(this.component.activePreset).toBe(testPresets[1]);
-  }));
+  });
 
-  it('restores original colors when re-applying the null (Clarity Default) preset', fakeAsync(function (
-    this: ThisTest
-  ) {
+  it('restores original colors when re-applying the null (Clarity Default) preset', function (this: ThisTest) {
     this.component.presets = testPresets;
     this.fixture.detectChanges(false);
-    tick(buildStructureMs);
 
     this.component.applyPreset(testPresets[1]);
     this.component.applyPreset(testPresets[0]);
 
     const lightPrimary = this.component.colorStruct['light']['primary'].find(c => c.label === 'Base');
     expect(lightPrimary.isOriginalColor).toBe(true);
-  }));
+  });
 
-  it('resets an individual color back to its original value', fakeAsync(function (this: ThisTest) {
+  it('resets an individual color back to its original value', function (this: ThisTest) {
     this.fixture.detectChanges(false);
-    tick(buildStructureMs);
 
     const primaryBase = this.component.colorStruct['light']['primary'][0];
     this.component.setCurrentColor(primaryBase, '#112233');
@@ -172,11 +149,10 @@ describe('ThemeBuilderComponent', () => {
     this.component.resetColor(fakeEvent, primaryBase);
 
     expect(primaryBase.isOriginalColor).toBe(true);
-  }));
+  });
 
-  it('toggles the active preview theme between light and dark', fakeAsync(function (this: ThisTest) {
+  it('toggles the active preview theme between light and dark', function (this: ThisTest) {
     this.fixture.detectChanges(false);
-    tick(buildStructureMs);
 
     expect(this.component.activeTheme).toBe('light');
     this.component.toggleActiveTheme();
@@ -184,11 +160,10 @@ describe('ThemeBuilderComponent', () => {
     expect(this.component.isDarkTheme).toBe(true);
     this.component.toggleActiveTheme();
     expect(this.component.activeTheme).toBe('light');
-  }));
+  });
 
-  it('includes the warning-text override in generatedCSS only while enabled', fakeAsync(function (this: ThisTest) {
+  it('includes the warning-text override in generatedCSS only while enabled', function (this: ThisTest) {
     this.fixture.detectChanges(false);
-    tick(buildStructureMs);
 
     const warningBase = this.component.colorStruct['light']['warning'][0];
     this.component.setCurrentColor(warningBase, '#f0a000');
@@ -200,7 +175,7 @@ describe('ThemeBuilderComponent', () => {
     this.component.onWarningTextOverrideChange();
 
     expect(this.component.generatedCss).not.toContain('--cds-alias-typography-color-black');
-  }));
+  });
 });
 
 @Component({
@@ -227,10 +202,8 @@ describe('ThemeBuilderComponent with projected content', () => {
     fixture.destroy();
   });
 
-  it('renders projected content above the built-in preview', fakeAsync(() => {
+  it('renders projected content above the built-in preview', () => {
     fixture.detectChanges(false);
-    tick(buildStructureMs);
-    fixture.detectChanges();
 
     const host: HTMLElement = fixture.nativeElement;
     const marker = host.querySelector('.custom-preview-marker');
@@ -239,5 +212,5 @@ describe('ThemeBuilderComponent with projected content', () => {
     expect(marker).toBeTruthy();
     expect(breadcrumbs).toBeTruthy();
     expect(marker.compareDocumentPosition(breadcrumbs) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-  }));
+  });
 });
