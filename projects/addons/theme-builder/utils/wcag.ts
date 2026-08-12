@@ -36,7 +36,7 @@ export function contrastRatio(a: RgbColor, b: RgbColor): number {
 export function wcagScore(ratio: number): WcagLevel {
   const result = {
     label: 'Fail',
-    score: ratio.toFixed(2),
+    score: Math.max(ratio, 0).toFixed(2),
     type: 'danger',
   };
 

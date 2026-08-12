@@ -45,4 +45,8 @@ describe('wcagScore', () => {
     expect(wcagScore(2.99)).toEqual({ label: 'Fail', score: '2.99', type: 'danger' });
     expect(wcagScore(1)).toEqual({ label: 'Fail', score: '1.00', type: 'danger' });
   });
+
+  it('caps a negative ratio to a score of 0', () => {
+    expect(wcagScore(-5)).toEqual({ label: 'Fail', score: '0.00', type: 'danger' });
+  });
 });

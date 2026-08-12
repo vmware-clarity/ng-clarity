@@ -243,7 +243,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     for (const bgName in this.backgrounds[this.activeTheme]) {
       const background = this.backgrounds[this.activeTheme][bgName];
 
-      const score = contrastRatio(color.rgb, background.rgb);
+      const score = Math.max(contrastRatio(color.rgb, background.rgb), 0);
 
       if (minScore > score) {
         minScore = score;
