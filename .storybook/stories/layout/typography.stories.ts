@@ -119,8 +119,8 @@ const TransformsTemplate: StoryFn = () => ({
       <p cds-text="body truncate" cds-layout="container:xs">
         Text Truncation: The quick brown fox jumps over the lazy dog. (truncate)
       </p>
-      <p cds-text="body break-word" cds-layout="container:xs">
-        Pneumonoultramicroscopicsilicovolcanoconiosis is a long word that will break onto a new line. (break-word)
+      <p cds-text="body break-word" style="max-width: 180px; border: 1px dashed #999; padding: 4px">
+        Short words wrap normally, but pneumonoultramicroscopicsilicovolcanoconiosis breaks mid-word. (break-word)
       </p>
     </div>
   `,
