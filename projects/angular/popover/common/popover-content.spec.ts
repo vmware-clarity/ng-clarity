@@ -161,6 +161,38 @@ export default function (): void {
       });
     });
 
+    describe('origin visibility (IntersectionObserver)', function (this: Context) {
+      let observerCallback: (entries: Partial<IntersectionObserverEntry>[]) => void;
+
+      beforeEach(function (this: Context) {
+        observerCallback = null;
+        spyOn(window, 'IntersectionObserver').and.callFake(function (callback: any) {
+          observerCallback = callback;
+          return { observe: () => {}, disconnect: () => {} } as unknown as IntersectionObserver;
+        } as any);
+      });
+
+      it('does not close the popover on the guaranteed baseline callback fired by observe(), even if it reports not-intersecting', function (this: Context) {
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+
+        expect(observerCallback).toBeTruthy();
+        observerCallback([{ isIntersecting: false } as IntersectionObserverEntry]);
+
+        expect(this.popoverService.open).toBe(true);
+      });
+
+      it('closes the popover when a callback after the baseline reports the origin left the viewport', function (this: Context) {
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+
+        observerCallback([{ isIntersecting: true } as IntersectionObserverEntry]); // baseline
+        observerCallback([{ isIntersecting: false } as IntersectionObserverEntry]); // real change
+
+        expect(this.popoverService.open).toBe(false);
+      });
+    });
+
     describe('getScrollableParents', function (this: Context) {
       let cleanupFns: (() => void)[];
 
