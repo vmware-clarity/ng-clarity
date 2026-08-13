@@ -119,7 +119,14 @@ const TransformsTemplate: StoryFn = () => ({
       <p cds-text="body truncate" cds-layout="container:xs">
         Text Truncation: The quick brown fox jumps over the lazy dog. (truncate)
       </p>
-      <p cds-text="body break-word" style="max-width: 180px; border: 1px dashed #999; padding: 4px">
+      <p
+        cds-text="body break-word"
+        style="
+          max-width: 180px;
+          border: var(--cds-alias-object-border-width-100) dashed var(--cds-alias-object-border-color);
+          padding: var(--clr-base-vertical-offset-s) var(--clr-base-horizontal-offset-s);
+        "
+      >
         Short words wrap normally, but pneumonoultramicroscopicsilicovolcanoconiosis breaks mid-word. (break-word)
       </p>
     </div>
