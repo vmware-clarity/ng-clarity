@@ -603,6 +603,8 @@
       text-align: left;
       min-width: tokens.$cds-global-space-15;
       border: none;
+      overflow-wrap: anywhere;
+      word-break: normal;
 
       &.datagrid-fixed-width {
         flex: 0 0 auto;

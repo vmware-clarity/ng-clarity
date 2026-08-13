@@ -69,6 +69,7 @@ export default {
     expandable: false,
     compact: false,
     overflowEllipsis: false,
+    longWordWrap: false,
     hidableColumns: false,
     showActions: false,
     height: 0,
@@ -170,6 +171,11 @@ const DatagridTemplate: StoryFn = args => ({
           <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Long text width 250px</ng-container>
         </clr-dg-column>
       }
+      @if (longWordWrap) {
+        <clr-dg-column [style.width.px]="100">
+          <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Narrow column, long word</ng-container>
+        </clr-dg-column>
+      }
       <clr-dg-column>
         <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
       </clr-dg-column>
@@ -185,6 +191,9 @@ const DatagridTemplate: StoryFn = args => ({
             sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh lacus,
             in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum
           </clr-dg-cell>
+        }
+        @if (longWordWrap) {
+          <clr-dg-cell>pneumonoultramicroscopicsilicovolcanoconiosis</clr-dg-cell>
         }
         <clr-dg-cell class="electronegativity-container">
           {{ element.electronegativity }}
@@ -292,6 +301,14 @@ export const CompactOverflowEllipsis: StoryObj = {
     overflowEllipsis: true,
   },
 };
+
+export const LongWordWrap: StoryObj = {
+  render: DatagridTemplate,
+  args: {
+    longWordWrap: true,
+  },
+};
+
 export const ActionsBar: StoryObj = {
   render: DatagridTemplate,
   args: {
