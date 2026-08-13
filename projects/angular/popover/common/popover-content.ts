@@ -601,7 +601,14 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
           }
         });
       },
-      { root: null, threshold: 0.8 }
+      // threshold 0.8 alone only fires when the ratio crosses 0.8 - if the origin is
+      // already below 0.8 when the popover opens (e.g. still partially clipped after
+      // scrollIntoView can't fully reveal it) and then scrolls further away without ever
+      // going back above 0.8, no callback fires again and it never gets a chance to close.
+      // Threshold 0 adds a checkpoint at true zero-visibility so leaving the viewport
+      // entirely always fires a real (non-baseline) callback, regardless of what happens
+      // at 0.8.
+      { root: null, threshold: [0, 0.8] }
     );
 
     this.intersectionObserver.observe(this.popoverService.originElement.nativeElement);
