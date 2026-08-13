@@ -30,6 +30,19 @@ export class ColumnsService {
     return this.columnStates.filter(state => !state.hidden);
   }
 
+  get hasPinnedColumns(): boolean {
+    return this.columnStates.some(state => state.pinned);
+  }
+
+  /**
+   * Tells whether the column at the given index is pinned (static). Columns and cells are
+   * matched by their declaration index, so this is what the header and the rows use to decide
+   * which views belong in the sticky container.
+   */
+  isPinned(columnIndex: number): boolean {
+    return !!this.columns[columnIndex]?.value.pinned;
+  }
+
   cache() {
     this._cache = this.columns.map(subject => {
       const value = { ...subject.value };

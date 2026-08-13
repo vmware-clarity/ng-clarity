@@ -6,17 +6,20 @@
  */
 
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
   EventEmitter,
+  Inject,
   Injector,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   ViewChild,
@@ -24,21 +27,25 @@ import {
 } from '@angular/core';
 import { ClrPopoverHostDirective } from '@clr/angular/popover/common';
 import { ClrCommonStringsService, HostWrapper } from '@clr/angular/utils';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { DatagridPropertyComparator } from './built-in/comparators/datagrid-property-comparator';
 import { DatagridNumericFilterImpl } from './built-in/filters/datagrid-numeric-filter-impl';
 import { DatagridPropertyNumericFilter } from './built-in/filters/datagrid-property-numeric-filter';
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
+import { DatagridColumnChanges } from './enums/column-changes.enum';
 import { ClrDatagridAriaSortOrder, ClrDatagridSortOrder } from './enums/sort-order.enum';
+import { ColumnState } from './interfaces/column-state.interface';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
+import { COLUMN_STATE } from './providers/column-state.provider';
+import { ColumnsService } from './providers/columns.service';
 import { CustomFilter } from './providers/custom-filter';
 import { DetailService } from './providers/detail.service';
 import { FiltersProvider } from './providers/filters';
 import { Sort } from './providers/sort';
-import { HIDDEN_COLUMN_CLASS } from './render/constants';
+import { HIDDEN_COLUMN_CLASS, PINNED_COLUMN_CLASS } from './render/constants';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 import { WrappedColumn } from './wrapped-column';
 
@@ -157,6 +164,8 @@ export class ClrDatagridColumn<T = any>
 
   private _showSeparator = true;
 
+  private _pinnable = false;
+
   constructor(
     private el: ElementRef<HTMLElement>,
     private _sort: Sort<T>,
@@ -164,7 +173,9 @@ export class ClrDatagridColumn<T = any>
     private vcr: ViewContainerRef,
     private detailService: DetailService,
     private changeDetectorRef: ChangeDetectorRef,
-    private commonStrings: ClrCommonStringsService
+    private commonStrings: ClrCommonStringsService,
+    private columnsService: ColumnsService,
+    @Optional() @Inject(COLUMN_STATE) private columnState: BehaviorSubject<ColumnState>
   ) {
     super(filters);
     this.subscriptions.push(this.listenForSortingChanges());
@@ -175,12 +186,47 @@ export class ClrDatagridColumn<T = any>
     return this.el.nativeElement.classList.contains(HIDDEN_COLUMN_CLASS);
   }
 
+  /**
+   * Whether the column is currently rendered as pinned. This can differ from `pinnable` while the
+   * detail pane is open, because pinning is suspended for as long as it shows a single column.
+   */
+  get isPinned() {
+    return this.el.nativeElement.classList.contains(PINNED_COLUMN_CLASS);
+  }
+
   get showSeparator() {
     return this._showSeparator;
   }
   set showSeparator(value: boolean) {
     this._showSeparator = value;
     this.changeDetectorRef.markForCheck();
+  }
+
+  /**
+   * Pins the column to the left of the datagrid, so it stays visible while the remaining
+   * columns are scrolled horizontally. Pinned columns keep their declaration order and are
+   * rendered before the scrollable ones, right after the built-in row controls.
+   */
+  @Input({ alias: 'clrDgPinnable', transform: booleanAttribute })
+  get pinnable(): boolean {
+    return this._pinnable;
+  }
+  set pinnable(value: boolean) {
+    if (this._pinnable === value) {
+      return;
+    }
+
+    this._pinnable = value;
+
+    // The column state is what the header and the rows read to decide where to project the
+    // column and its cells. It is optional only so the column keeps working when it is used
+    // outside the render directives, e.g. in isolated tests.
+    if (this.columnState) {
+      this.columnsService.emitStateChange(this.columnState, {
+        pinned: value,
+        changes: [DatagridColumnChanges.PINNED],
+      });
+    }
   }
 
   // TODO: We might want to make this an enum in the future

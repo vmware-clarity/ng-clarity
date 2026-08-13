@@ -1,0 +1,149 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Datagrid: Pinnable columns</h2>
+
+<p>
+  A column with <code class="clr-code">clrDgPinnable</code> is rendered to the left of the scrollable columns and stays
+  visible while the rest of the datagrid is scrolled horizontally. Pinned columns keep their declaration order and are
+  placed after the built-in row controls.
+</p>
+
+<h3>Toggle pinning while scrolled</h3>
+
+<p>Scroll the datagrid sideways, then pin and unpin columns to see them move between the two regions.</p>
+
+<clr-checkbox-container clrInline>
+  <label>Pinned columns</label>
+  <clr-checkbox-wrapper>
+    <input type="checkbox" clrCheckbox name="pin-id" [(ngModel)]="pinId" />
+    <label>User ID</label>
+  </clr-checkbox-wrapper>
+  <clr-checkbox-wrapper>
+    <input type="checkbox" clrCheckbox name="pin-name" [(ngModel)]="pinName" />
+    <label>Name</label>
+  </clr-checkbox-wrapper>
+  <clr-checkbox-wrapper>
+    <input type="checkbox" clrCheckbox name="pin-creation" [(ngModel)]="pinCreation" />
+    <label>Creation date</label>
+  </clr-checkbox-wrapper>
+</clr-checkbox-container>
+
+<div class="pinnable-columns-demo">
+  <clr-datagrid>
+    <clr-dg-column [clrDgField]="'id'" [clrDgPinnable]="pinId" [style.width.px]="120">User ID</clr-dg-column>
+    <clr-dg-column [clrDgField]="'name'" [clrDgPinnable]="pinName" [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column [clrDgField]="'creation'" [style.width.px]="220"> Creation date </clr-dg-column>
+    <clr-dg-column [clrDgField]="'pokemon.name'" [clrDgPinnable]="pinCreation" [style.width.px]="1200"
+      >Pokemon</clr-dg-column
+    >
+    <clr-dg-column [clrDgField]="'color'" [style.width.px]="1200">Favorite color</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+      <clr-dg-cell>{{user.id}}</clr-dg-cell>
+      <clr-dg-cell>{{user.name}}</clr-dg-cell>
+      <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+      <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
+      <clr-dg-cell>
+        <span class="color-square" [style.backgroundColor]="user.color"></span>
+      </clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>{{users.length}} users</clr-dg-footer>
+  </clr-datagrid>
+</div>
+
+<h3>With row controls</h3>
+
+<p>
+  Selection, row actions and the expand caret keep their place at the very left. The pinned columns follow them, and the
+  separator after the last pinned column marks the boundary with the scrollable ones.
+</p>
+
+<div class="pinnable-columns-demo">
+  <clr-datagrid [(clrDgSelected)]="selected">
+    <clr-dg-column clrDgPinnable [style.width.px]="120">User ID</clr-dg-column>
+    <clr-dg-column clrDgPinnable [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column [style.width.px]="1220">Creation date</clr-dg-column>
+    <clr-dg-column [style.width.px]="1200">Pokemon</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+      <clr-dg-action-overflow>
+        <button class="action-item" (click)="selected = [user]">Select only this one</button>
+      </clr-dg-action-overflow>
+
+      <clr-dg-cell>{{user.id}}</clr-dg-cell>
+      <clr-dg-cell>{{user.name}}</clr-dg-cell>
+      <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+      <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
+
+      <clr-dg-row-detail *clrIfExpanded>
+        Expanded details of {{user.name}}. The pinned cells stay visible while this row is expanded.
+      </clr-dg-row-detail>
+    </clr-dg-row>
+
+    <clr-dg-footer>{{selected.length}} of {{users.length}} users selected</clr-dg-footer>
+  </clr-datagrid>
+</div>
+
+<h3>With the detail pane</h3>
+
+<p>
+  The detail pane shows a single, full width column, so there is nothing left to scroll. Pinning is suspended for as
+  long as the pane is open and restored when it closes - the <code class="clr-code">clrDgPinnable</code> input itself is
+  not touched.
+</p>
+
+<div class="pinnable-columns-demo">
+  <clr-datagrid>
+    <clr-dg-column clrDgPinnable [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column [style.width.px]="1120">User ID</clr-dg-column>
+    <clr-dg-column [style.width.px]="1220">Creation date</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+      <clr-dg-cell>{{user.name}}</clr-dg-cell>
+      <clr-dg-cell>{{user.id}}</clr-dg-cell>
+      <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-detail *clrIfDetail="let detail">
+      <clr-dg-detail-header>{{detail.name}}</clr-dg-detail-header>
+      <clr-dg-detail-body>
+        <pre>{{detail | json}}</pre>
+      </clr-dg-detail-body>
+    </clr-dg-detail>
+
+    <clr-dg-footer>{{users.length}} users</clr-dg-footer>
+  </clr-datagrid>
+</div>
+
+<h3>With virtual scroll</h3>
+
+<p>
+  Virtual scroll puts the header and the rows in two separate scroll containers that are kept in sync. The pinned
+  columns have to stay aligned across both while scrolling in either direction.
+</p>
+
+<div class="pinnable-columns-demo">
+  <clr-datagrid [style.height.rem]="24">
+    <clr-dg-column clrDgPinnable [style.width.px]="120">User ID</clr-dg-column>
+    <clr-dg-column clrDgPinnable [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column [style.width.px]="1220">Creation date</clr-dg-column>
+    <clr-dg-column [style.width.px]="1200">Pokemon</clr-dg-column>
+
+    <ng-template clrVirtualScroll let-user [clrVirtualRowsOf]="manyUsers">
+      <clr-dg-row [clrDgItem]="user">
+        <clr-dg-cell>{{user.id}}</clr-dg-cell>
+        <clr-dg-cell>{{user.name}}</clr-dg-cell>
+        <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+        <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
+      </clr-dg-row>
+    </ng-template>
+
+    <clr-dg-footer>{{manyUsers.length}} users</clr-dg-footer>
+  </clr-datagrid>
+</div>

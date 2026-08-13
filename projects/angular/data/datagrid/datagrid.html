@@ -74,6 +74,8 @@
                     <div class="datagrid-column-separator"></div>
                   </div>
                   }
+                  <!-- pinned (static) columns are projected here, after the built-in row controls -->
+                  <ng-container #projectedStickyColumns></ng-container>
                 </div>
                 <div class="datagrid-row-scrollable">
                   <ng-container #projectedDisplayColumns></ng-container>

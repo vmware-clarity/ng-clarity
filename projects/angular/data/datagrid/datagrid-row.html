@@ -118,7 +118,8 @@
       </div>
       }
     </ng-container>
-    <!-- placeholder for projecting other sticky cells as pinned-->
+    <!-- cells of pinned (static) columns are projected here, after the built-in row controls -->
+    <ng-container #pinnedCells></ng-container>
   </div>
   <div
     class="datagrid-row-scrollable"

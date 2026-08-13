@@ -143,6 +143,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChild('rowsWrapper', { read: ElementRef, static: true }) rowsWrapper: ElementRef<HTMLElement>;
   @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
   @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
+  @ViewChild('projectedStickyColumns', { read: ViewContainerRef }) _projectedStickyColumns: ViewContainerRef;
   @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
   @ViewChild('displayedRows', { read: ViewContainerRef }) _displayedRows: ViewContainerRef;
   @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows: ViewContainerRef;
@@ -186,7 +187,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     private page: Page,
     public commonStrings: ClrCommonStringsService,
     public keyNavigation: KeyNavigationGridController,
-    private zone: NgZone
+    private zone: NgZone,
+    private columnsService: ColumnsService
   ) {
     const datagridId = uniqueIdFactory();
 
@@ -381,6 +383,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         for (let i = this._projectedDisplayColumns.length; i > 0; i--) {
           this._projectedDisplayColumns.detach();
         }
+        // Remove any projected columns from the projectedStickyColumns container
+        for (let i = this._projectedStickyColumns.length; i > 0; i--) {
+          this._projectedStickyColumns.detach();
+        }
         // Remove any projected columns from the projectedCalculationColumns container
         for (let i = this._projectedCalculationColumns.length; i > 0; i--) {
           this._projectedCalculationColumns.detach();
@@ -396,8 +402,14 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         if (viewChange === DatagridDisplayMode.DISPLAY) {
           // Set state, style for the datagrid to DISPLAY and insert row & columns into containers
           this.renderer.removeClass(this.el.nativeElement, 'datagrid-calculate-mode');
-          this.columns.forEach(column => {
-            this._projectedDisplayColumns.insert(column._view);
+          // Pinned columns go into the sticky container so they stay visible during horizontal
+          // scroll. Iterating in declaration order keeps both groups in their original order,
+          // which is what matches them with the cells of every row.
+          this.columns.forEach((column, index) => {
+            const container = this.columnsService.isPinned(index)
+              ? this._projectedStickyColumns
+              : this._projectedDisplayColumns;
+            container.insert(column._view);
           });
           this.rows.forEach(row => {
             this._displayedRows.insert(row._view);

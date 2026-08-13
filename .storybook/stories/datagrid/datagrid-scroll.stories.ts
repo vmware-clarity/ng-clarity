@@ -131,3 +131,36 @@ const NestedPopoverInScrollTemplate: StoryFn = args => ({
 export const NestedPopoverInScroll: StoryObj = {
   render: NestedPopoverInScrollTemplate,
 };
+
+const PinnedColumnsTemplate: StoryFn = args => ({
+  template: `
+    <div [style.width.px]="600">
+      <clr-datagrid [clrDgSelectionType]="'multi'" [style.height.px]="300">
+        <clr-dg-column [clrDgPinnable]="pinName" [style.width.px]="250">Name</clr-dg-column>
+        <clr-dg-column [clrDgPinnable]="pinSymbol" [style.width.px]="250">Symbol</clr-dg-column>
+        <clr-dg-column [style.width.px]="250">Number</clr-dg-column>
+        <clr-dg-column [style.width.px]="250">Electronegativity</clr-dg-column>
+        <clr-dg-column [style.width.px]="250">Atomic mass</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let element of elements" [clrDgItem]="element">
+          <clr-dg-cell>{{ element.name }}</clr-dg-cell>
+          <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
+          <clr-dg-cell>{{ element.number }}</clr-dg-cell>
+          <clr-dg-cell>{{ element.electronegativity }}</clr-dg-cell>
+          <clr-dg-cell>{{ element.number * 2 }}</clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>{{ elements.length }} elements</clr-dg-footer>
+      </clr-datagrid>
+    </div>
+  `,
+  props: { ...args },
+});
+
+export const PinnedColumns: StoryObj = {
+  render: PinnedColumnsTemplate,
+  args: {
+    pinName: true,
+    pinSymbol: false,
+  },
+};

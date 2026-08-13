@@ -86,10 +86,15 @@
     }
   }
 
-  .datagrid-overflow-ellipsis .datagrid-row .datagrid-scrolling-cells > .datagrid-cell {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+  .datagrid-overflow-ellipsis .datagrid-row {
+    // Pinned cells sit in the sticky container instead of .datagrid-scrolling-cells, but they
+    // have to truncate the same way as the scrollable ones.
+    .datagrid-scrolling-cells > .datagrid-cell,
+    .datagrid-row-sticky > .datagrid-pinned-column.datagrid-cell {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
   }
 
   .datagrid-header,
@@ -725,6 +730,17 @@
       &.datagrid-column,
       &.datagrid-cell {
         display: none;
+      }
+    }
+
+    // Pinned (static) columns are projected into the sticky container, which sizes itself to its
+    // content. They must keep the width computed for them and never grow or shrink, otherwise the
+    // pinned header and the pinned cells drift apart from each other. Scoped to the sticky
+    // container so cells of a pinned column inside a row detail keep their own layout.
+    .datagrid-row-sticky > .datagrid-pinned-column {
+      &.datagrid-column,
+      &.datagrid-cell {
+        flex: 0 0 auto;
       }
     }
 
