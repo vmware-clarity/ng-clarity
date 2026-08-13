@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { CommonModule } from '@angular/common';
 import { Component, TrackByFunction, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
@@ -30,6 +31,22 @@ class FullTest {
   numbers = [1, 2, 3, 4, 5];
 
   trackBy: (index: number, item: number) => any;
+}
+
+@Component({
+  template: `
+    <ul *ngIf="showItems">
+      <li *clrDgItems="let n of numbers; trackBy: trackBy">{{ n }}</li>
+    </ul>
+  `,
+  standalone: false,
+})
+class DestroyTest {
+  numbers = [1, 2, 3, 4, 5];
+
+  trackBy: (index: number, item: number) => any;
+
+  showItems = true;
 }
 
 @Component({
@@ -99,6 +116,45 @@ export default function (): void {
         this.testComponent.numbers = undefined;
         this.fixture.detectChanges();
         expect(this.clarityDirective._rawItems).toEqual([]);
+      });
+    });
+
+    describe('cleans up on destroy', () => {
+      beforeEach(function () {
+        TestBed.configureTestingModule({
+          imports: [CommonModule, ClrDatagridModule],
+          declarations: [DestroyTest],
+          providers: [Items, FiltersProvider, Sort, Page, StateDebouncer],
+        });
+        this.fixture = TestBed.createComponent(DestroyTest);
+        this.fixture.detectChanges();
+        this.testComponent = this.fixture.componentInstance;
+        this.itemsProvider = TestBed.inject(Items);
+      });
+
+      afterEach(function () {
+        this.fixture.destroy();
+      });
+
+      it('smartens the Items provider back down when the *clrDgItems view is destroyed', function () {
+        expect(this.itemsProvider.smart).toBe(true);
+
+        this.testComponent.showItems = false;
+        this.fixture.detectChanges();
+
+        expect(this.itemsProvider.smart).toBe(false);
+      });
+
+      it('stops reacting to page changes once destroyed, instead of slicing stale data', function () {
+        this.testComponent.showItems = false;
+        this.fixture.detectChanges();
+
+        const page: Page = TestBed.inject(Page);
+        page.size = 2;
+        page.current = 2;
+
+        // With the provider no longer smart, page changes must not touch `displayed`.
+        expect(this.itemsProvider.displayed).toEqual([1, 2, 3, 4, 5]);
       });
     });
 

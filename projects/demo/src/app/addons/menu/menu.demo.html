@@ -1,0 +1,225 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Menu</h2>
+<p>
+  Contextual menu built on <code>clr-dropdown</code> — supports nested submenus, icons, keyboard navigation, and
+  200%/400% zoom accessibility.
+</p>
+
+<!-- Mode selector -->
+<clr-button-group class="btn-secondary" cds-layout="m-b:xl">
+  @for (m of modes; track m.id) { @if (activeMode === m.id) {
+  <clr-button class="btn btn-primary">{{ m.label }}</clr-button>
+  } @else {
+  <clr-button class="btn" (click)="setMode(m.id)">{{ m.label }}</clr-button>
+  } }
+</clr-button-group>
+
+@if (lastAction) {
+<div class="menu-last-action">Last action: <strong>{{ lastAction }}</strong></div>
+}
+
+<!-- Context Area -->
+@if (activeMode === 'context-area') {
+<div class="menu-context-area" (contextmenu)="onOpenMenu($event)">
+  <p class="menu-hint">Right-click anywhere in this area</p>
+</div>
+}
+
+<!-- Tree -->
+@if (activeMode === 'tree') {
+<div class="menu-tree-container">
+  <p class="menu-hint">Right-click a node to open its context menu</p>
+  <clr-tree>
+    <clr-tree-node [clrExpanded]="true">
+      <cds-icon shape="building"></cds-icon>
+      Datacenter
+
+      <clr-tree-node [clrExpanded]="true">
+        <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
+          <cds-icon shape="cluster"></cds-icon>
+          Production Cluster
+        </button>
+
+        <clr-tree-node>
+          <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
+            <cds-icon shape="host" badge="warning-triangle"></cds-icon>
+            192.0.2.80
+          </button>
+        </clr-tree-node>
+
+        <clr-tree-node>
+          <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
+            <cds-icon shape="host" badge="danger"></cds-icon>
+            192.0.2.81 (disconnected)
+          </button>
+        </clr-tree-node>
+
+        <clr-tree-node>
+          <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
+            <cds-icon shape="host"></cds-icon>
+            192.0.2.82
+          </button>
+        </clr-tree-node>
+
+        <clr-tree-node>
+          <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
+            <cds-icon shape="host"></cds-icon>
+            192.0.2.83
+          </button>
+        </clr-tree-node>
+      </clr-tree-node>
+
+      <clr-tree-node>
+        <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
+          <cds-icon shape="host"></cds-icon>
+          192.0.2.98
+        </button>
+      </clr-tree-node>
+
+      <clr-tree-node>
+        <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
+          <cds-icon shape="host"></cds-icon>
+          192.0.2.103
+        </button>
+      </clr-tree-node>
+    </clr-tree-node>
+  </clr-tree>
+</div>
+}
+
+<!-- Datagrid -->
+@if (activeMode === 'datagrid') {
+<clr-datagrid [clrDgRowSelection]="true">
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>State</clr-dg-column>
+  <clr-dg-column>Status</clr-dg-column>
+  <clr-dg-column>Provisioned Space</clr-dg-column>
+  <clr-dg-column>Used Space</clr-dg-column>
+
+  @for (vm of vms; track vm.name) {
+  <clr-dg-row (contextmenu)="onOpenMenu($event)">
+    <clr-dg-cell><cds-icon shape="vm"></cds-icon> {{ vm.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.state }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.status }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.provisionedSpace }}</clr-dg-cell>
+    <clr-dg-cell>{{ vm.usedSpace }}</clr-dg-cell>
+  </clr-dg-row>
+  }
+
+  <clr-dg-footer>{{ vms.length }} VMs</clr-dg-footer>
+</clr-datagrid>
+}
+
+<!-- Button -->
+@if (activeMode === 'button') {
+<div class="menu-button-container">
+  <button class="btn btn-sm btn-action btn-link" aria-haspopup="menu" (click)="onOpenButtonMenu($event)">
+    <cds-icon shape="ellipsis-vertical" class="btn-action-icon"></cds-icon>
+    Actions
+  </button>
+</div>
+}
+
+<!-- Icons -->
+@if (activeMode === 'icons') {
+<div class="menu-context-area" (contextmenu)="onOpenIconsMenu($event)">
+  <p class="menu-hint">Right-click anywhere in this area</p>
+</div>
+}
+
+<!-- Shared menus, reused across all demo modes above -->
+<appfx-menu #actionsMenu>
+  <appfx-menu-header [text]="'Actions demo menu'"></appfx-menu-header>
+  <appfx-menu-action [text]="'Action 1'" (handle)="handleAction('Action 1')"></appfx-menu-action>
+  <appfx-menu-separator></appfx-menu-separator>
+  <appfx-menu-action
+    [text]="'Action 2'"
+    [shortcut]="'ctrl + alt + B'"
+    (handle)="handleAction('Action 2')"
+  ></appfx-menu-action>
+  <appfx-menu-action
+    [text]="'Action 3'"
+    [shortcut]="'ctrl + alt + E'"
+    (handle)="handleAction('Action 3')"
+  ></appfx-menu-action>
+  <appfx-menu-action
+    [text]="'Action 4'"
+    [shortcut]="'ctrl + alt + Z'"
+    (handle)="handleAction('Action 4')"
+  ></appfx-menu-action>
+  <appfx-menu-action
+    [text]="'Action 5'"
+    [shortcut]="'ctrl + alt + T'"
+    (handle)="handleAction('Action 5')"
+  ></appfx-menu-action>
+  <appfx-menu-action [text]="'Action 6'" (handle)="handleAction('Action 6')"></appfx-menu-action>
+  <appfx-menu-action [text]="'Action 7'" (handle)="handleAction('Action 7')"></appfx-menu-action>
+  <appfx-menu [text]="'Submenu'">
+    <appfx-menu-header [text]="'SubMenu demo'"></appfx-menu-header>
+    <appfx-menu-action
+      [text]="'Action with relatively long label'"
+      (handle)="handleAction('Action with relatively long label')"
+    ></appfx-menu-action>
+    <appfx-menu-separator></appfx-menu-separator>
+    <appfx-menu-action [text]="'Action 2'" (handle)="handleAction('Submenu: Action 2')"></appfx-menu-action>
+    <appfx-menu [text]="'Submenu'">
+      <appfx-menu-header [text]="'next level of nesting'"></appfx-menu-header>
+      <appfx-menu-action [text]="'Action 1'"></appfx-menu-action>
+      <appfx-menu-separator></appfx-menu-separator>
+      <appfx-menu-action [text]="'Action 2'"></appfx-menu-action>
+    </appfx-menu>
+  </appfx-menu>
+  <appfx-menu-action [text]="'Action 8'" (handle)="handleAction('Action 8')"></appfx-menu-action>
+</appfx-menu>
+
+<appfx-menu #iconsMenu>
+  <appfx-menu-header [text]="'Actions demo menu'"></appfx-menu-header>
+  <appfx-menu-action [text]="'Action 1'" (handle)="handleAction('Action 1')"></appfx-menu-action>
+  <appfx-menu-separator></appfx-menu-separator>
+  <appfx-menu-action
+    [text]="'Action 2'"
+    [shortcut]="'ctrl + alt + B'"
+    (handle)="handleAction('Action 2')"
+  ></appfx-menu-action>
+  <appfx-menu-action
+    [text]="'Action 3'"
+    [shortcut]="'ctrl + alt + E'"
+    (handle)="handleAction('Action 3')"
+  ></appfx-menu-action>
+  <appfx-menu-action
+    [text]="'Action 4'"
+    [shortcut]="'ctrl + alt + Z'"
+    (handle)="handleAction('Action 4')"
+  ></appfx-menu-action>
+  <appfx-menu-action
+    [text]="'Action 5'"
+    [shortcut]="'ctrl + alt + T'"
+    (handle)="handleAction('Action 5')"
+  ></appfx-menu-action>
+  <appfx-menu-action [text]="'Action 6'" (handle)="handleAction('Action 6')"></appfx-menu-action>
+  <appfx-menu-action [text]="'Action 7'" (handle)="handleAction('Action 7')"></appfx-menu-action>
+  <appfx-menu [text]="'Submenu'">
+    <appfx-menu-header [text]="'SubMenu demo'"></appfx-menu-header>
+    <appfx-menu-action
+      [text]="'Action with relatively long label'"
+      (handle)="handleAction('Action with relatively long label')"
+    ></appfx-menu-action>
+    <appfx-menu-separator></appfx-menu-separator>
+    <appfx-menu-action [text]="'Action 2'" (handle)="handleAction('Submenu: Action 2')"></appfx-menu-action>
+    <appfx-menu [text]="'Submenu'">
+      <appfx-menu-header [text]="'next level of nesting'"></appfx-menu-header>
+      <appfx-menu-action [text]="'Action 1'"></appfx-menu-action>
+      <appfx-menu-separator></appfx-menu-separator>
+      <appfx-menu-action [text]="'Action 2'"></appfx-menu-action>
+    </appfx-menu>
+  </appfx-menu>
+  <appfx-menu-action [text]="'Action 8'" (handle)="handleAction('Action 8')"></appfx-menu-action>
+</appfx-menu>
+
+<menu-outlet></menu-outlet>
