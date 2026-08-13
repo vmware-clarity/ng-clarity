@@ -84,5 +84,6 @@ export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.items.smartenDown();
   }
 }

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -58,6 +58,33 @@ class TemplateDrivenTest {
 
 @Component({
   template: `
+    <clr-checkbox-container>
+      <label [id]="labelId">My Group</label>
+      <clr-checkbox-wrapper>
+        <label>Option</label>
+        <input type="checkbox" clrCheckbox name="opt" [(ngModel)]="model" value="opt" />
+      </clr-checkbox-wrapper>
+    </clr-checkbox-container>
+  `,
+  standalone: false,
+})
+class AriaLabelledByTest {
+  model = '';
+  labelId: string = null;
+}
+
+@Component({
+  template: `
+    <clr-checkbox-container>
+      <label>My Group</label>
+    </clr-checkbox-container>
+  `,
+  standalone: false,
+})
+class AriaLabelledByNoCheckboxesTest {}
+
+@Component({
+  template: `
     <form [formGroup]="form">
       <clr-checkbox-container>
         <label>Hello World</label>
@@ -99,6 +126,46 @@ export default function (): void {
       ReactiveTest,
       '.clr-checkbox-wrapper [clrCheckbox]'
     );
+
+    describe('aria-labelledby', () => {
+      function createFixture<T>(testComponent: Type<T>) {
+        TestBed.configureTestingModule({
+          imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
+          declarations: [ClrCheckboxContainer, ClrCheckboxWrapper, ClrCheckbox, testComponent],
+          providers: [NgControl, NgControlService, LayoutService],
+        });
+        const fixture = TestBed.createComponent(testComponent);
+        const containerEl = fixture.debugElement.query(By.directive(ClrCheckboxContainer)).nativeElement;
+        return { fixture, containerEl };
+      }
+
+      it('sets aria-labelledby on the host pointing to a generated label id', () => {
+        const { fixture, containerEl } = createFixture(AriaLabelledByTest);
+        fixture.detectChanges();
+        const label = containerEl.querySelector('label');
+        expect(label.id).toBeTruthy();
+        expect(containerEl.getAttribute('aria-labelledby')).toBe(label.id);
+      });
+
+      it('preserves an existing label id instead of overwriting it', () => {
+        const { fixture, containerEl } = createFixture(AriaLabelledByTest);
+        fixture.componentInstance.labelId = 'my-label';
+        fixture.detectChanges();
+        expect(containerEl.getAttribute('aria-labelledby')).toBe('my-label');
+      });
+
+      it('does not set aria-labelledby when there are no checkboxes', () => {
+        const { fixture, containerEl } = createFixture(AriaLabelledByNoCheckboxesTest);
+        fixture.detectChanges();
+        expect(containerEl.getAttribute('aria-labelledby')).toBeNull();
+      });
+
+      it('does not throw and leaves aria-labelledby unset when there is no label', () => {
+        const { fixture, containerEl } = createFixture(NoLabelTest);
+        expect(() => fixture.detectChanges()).not.toThrow();
+        expect(containerEl.getAttribute('aria-labelledby')).toBeNull();
+      });
+    });
 
     describe('inline buttons', () => {
       let fixture, containerDE, containerEl;

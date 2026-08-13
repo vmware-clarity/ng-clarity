@@ -140,6 +140,11 @@ export const APP_ROUTES: Routes = [
   },
   { path: 'wizard', loadChildren: () => import('./wizard/wizard.demo.module').then(m => m.WizardDemoModule) },
   {
+    path: 'menu',
+    data: { section: 'addons', label: 'Menu' },
+    loadChildren: () => import('./addons/menu/menu.demo.module').then(m => m.MenuDemoModule),
+  },
+  {
     path: 'certificate-viewer',
     data: { section: 'addons', label: 'Certificate Viewer' },
     loadChildren: () =>
