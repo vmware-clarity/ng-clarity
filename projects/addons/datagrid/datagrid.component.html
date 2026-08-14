@@ -60,6 +60,7 @@
       cdkDrag
       [cdkDragLockAxis]="'x'"
       [cdkDragData]="column"
+      [cdkDragDisabled]="!!column.pinned"
       appfxColumnOrder
       [columnData]="column"
       [columnIndex]="index"

@@ -1,0 +1,39 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Pinnable columns</h2>
+
+<p>
+  A column definition with <code class="clr-code">pinned</code> is rendered to the left of the scrollable columns and
+  stays visible while the grid is scrolled horizontally. Adding <code class="clr-code">pinnable</code> puts a pin toggle
+  in the column header, so the user can pin and unpin the column themselves.
+</p>
+
+<p>
+  VM Name starts pinned and is pinnable, State and Status are pinnable but start loose, and the remaining columns cannot
+  be pinned at all.
+</p>
+
+<div class="card card-block">
+  <p class="card-text">Pinned columns: {{ pinnedColumns || 'none' }}</p>
+  <p class="card-text">Last change: {{ lastPinnedChange || 'none yet' }}</p>
+</div>
+
+<hr />
+
+<appfx-datagrid
+  [gridItems]="vms"
+  [columns]="columns"
+  [selectedItems]="selectedVms"
+  [selectionType]="SelectionType.Multi"
+  [layoutModel]="{ stretchToParentHeight: false }"
+  [footerModel]="{ showFooter: true }"
+  [pageSize]="10"
+  (selectedItemsChange)="onSelectedItemsChange($event)"
+  (columnPinnedChange)="onColumnPinnedChange($event)"
+>
+</appfx-datagrid>

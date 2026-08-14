@@ -97,8 +97,49 @@ class PinToggleTest {
   firstPinned = false;
 }
 
+@Component({
+  template: `
+    <clr-datagrid>
+      @for (column of columns; track column.field) {
+        <clr-dg-column [clrDgPinned]="column.pinned">{{ column.field }}</clr-dg-column>
+      }
+      <clr-dg-row *clrDgItems="let item of items">
+        @for (column of columns; track column.field) {
+          <clr-dg-cell>{{ item }}</clr-dg-cell>
+        }
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class ReorderableColumnsTest {
+  items = [1, 2, 3];
+  columns = [
+    { field: 'First', pinned: true },
+    { field: 'Second', pinned: false },
+    { field: 'Third', pinned: false },
+  ];
+}
+
 export default function (): void {
   describe('Pinnable columns', function () {
+    describe('Reordering', function () {
+      let context: TestContext<ClrDatagrid, ReorderableColumnsTest>;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, ReorderableColumnsTest);
+      });
+
+      it('reorders two scrollable columns while another one is pinned', function () {
+        const [first, second, third] = context.testComponent.columns;
+
+        // Both moved columns are scrollable, the pinned one keeps its place.
+        context.testComponent.columns = [first, third, second];
+
+        expect(() => context.detectChanges()).not.toThrow();
+      });
+    });
+
     describe('Projection', function () {
       let context: TestContext<ClrDatagrid, PinnableTest>;
       let element: HTMLElement;
