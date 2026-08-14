@@ -8,6 +8,7 @@
 import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { ClrCheckboxModule, ClrDatagridModule } from '@clr/angular';
 
 import { EXAMPLES } from './examples';
@@ -21,7 +22,7 @@ import { CommonFiles } from '../utils/stackblitz-common-data';
   providers: [Inventory],
   templateUrl: './pinnable-columns.html',
   styleUrl: '../datagrid.demo.scss',
-  imports: [ClrDatagridModule, ClrCheckboxModule, FormsModule, StackblitzExampleComponent, DatePipe],
+  imports: [ClrDatagridModule, ClrCheckboxModule, FormsModule, StackblitzExampleComponent, RouterLink, DatePipe],
 })
 export class DatagridPinnableColumnsDemo {
   examples = EXAMPLES;
@@ -32,9 +33,17 @@ export class DatagridPinnableColumnsDemo {
   pinId = true;
   pinName = true;
 
+  idPinned = false;
+  namePinned = false;
+
   constructor(inventory: Inventory) {
     inventory.size = 10;
     inventory.reset();
     this.users = inventory.all;
+  }
+
+  // Kept up to date by clrDgPinnedChange, which the two-way binding in the template uses under the hood.
+  get pinnedColumns(): string {
+    return [this.idPinned ? 'User ID' : null, this.namePinned ? 'Name' : null].filter(Boolean).join(', ');
   }
 }

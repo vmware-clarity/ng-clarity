@@ -414,6 +414,12 @@
       Pin the column or columns that let a user recognize a record, usually a name or an ID. Pinned columns take space
       away from the scrollable ones, so pinning too many leaves little room for the data the user came to read.
     </p>
+    <br />
+    <p cds-text="body" class="clr-mt-16px">
+      Pinning can be fixed by the application or handed to the user. A pinnable column carries a pin toggle in front of
+      its title, which lets a user keep whichever column matters to their task in view - useful when different people
+      read the same datagrid for different reasons.
+    </p>
     <div class="clr-mt-24px">
       <clr-datagrid>
         <clr-dg-column clrDgPinned [style.width.px]="140">User ID</clr-dg-column>
