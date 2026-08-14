@@ -101,8 +101,8 @@
 <div class="pinnable-columns-demo">
   <clr-datagrid>
     <clr-dg-column clrDgPinnable [style.width.px]="200">Name</clr-dg-column>
-    <clr-dg-column [style.width.px]="1120">User ID</clr-dg-column>
-    <clr-dg-column [style.width.px]="1220">Creation date</clr-dg-column>
+    <clr-dg-column clrDgPinnable [style.width.px]="120">User ID</clr-dg-column>
+    <clr-dg-column [style.width.px]="220">Creation date</clr-dg-column>
 
     <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
       <clr-dg-cell>{{user.name}}</clr-dg-cell>

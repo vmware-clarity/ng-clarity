@@ -402,6 +402,39 @@
       Datagrids scroll easily if you set their height. The header and footer stay fixed, only the body containing the
       rows scrolls.
     </p>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="pinnable-columns">Pinnable Columns</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      When a datagrid is wider than the space it has, the columns scroll horizontally and the user can lose track of
+      which row they are reading. Pinning keeps a column to the left of the scrollable ones, so the column that
+      identifies the row stays in view while the user reads the rest.
+    </p>
+    <br />
+    <p cds-text="body" class="clr-mt-16px">
+      Pin the column or columns that let a user recognize a record, usually a name or an ID. Pinned columns take space
+      away from the scrollable ones, so pinning too many leaves little room for the data the user came to read.
+    </p>
+    <div class="clr-mt-24px">
+      <clr-datagrid>
+        <clr-dg-column clrDgPinnable [style.width.px]="140">User ID</clr-dg-column>
+        <clr-dg-column clrDgPinnable [style.width.px]="240">Name</clr-dg-column>
+        <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
+        <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
+        <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let user of exampleData4" [clrDgItem]="user">
+          <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+          <clr-dg-cell>
+            <span class="color-square" [style.backgroundColor]="user.color"></span>
+          </clr-dg-cell>
+          <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>{{ exampleData4.length }} users</clr-dg-footer>
+      </clr-datagrid>
+    </div>
   </app-doc-tab>
 
   <app-doc-tab tab="code">

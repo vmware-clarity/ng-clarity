@@ -294,6 +294,13 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           description: 'Set the model property that represents data in the column.',
         },
         {
+          name: '[clrDgPinnable]',
+          type: 'boolean',
+          defaultValue: 'false',
+          description:
+            'Pins the column to the left of the datagrid, so it stays visible while the remaining columns are scrolled horizontally. Pinned columns keep their declaration order and are rendered after the built-in row controls. Pinning is suspended while the detail pane is open.',
+        },
+        {
           name: '[clrFilterNumberMaxPlaceholder]',
           type: 'string',
           defaultValue: 'undefined',

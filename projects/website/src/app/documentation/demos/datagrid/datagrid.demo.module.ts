@@ -27,6 +27,7 @@ import { DatagridFixedHeightDemo } from './fixed-height/fixed-height';
 import { DatagridFullDemo } from './full/full';
 import { DatagridHideShowColumnsDemo } from './hide-show-columns/hide-show-columns';
 import { DatagridPaginationDemo } from './pagination/pagination';
+import { DatagridPinnableColumnsDemo } from './pinnable-columns/pinnable-columns';
 import { DatagridPlaceholderDemo } from './placeholder/placeholder';
 import { DatagridSelectAllDisabledDemo } from './select-all-disabled/select-all-disabled';
 import { DatagridSelectionDemo } from './selection/selection';
@@ -189,6 +190,13 @@ const routes: Routes = [
         },
       },
       {
+        path: 'pinnable-columns',
+        component: DatagridPinnableColumnsDemo,
+        data: {
+          demoName: 'Pinnable Columns',
+        },
+      },
+      {
         path: 'fixed-height',
         component: DatagridFixedHeightDemo,
         data: {
@@ -253,6 +261,7 @@ const routes: Routes = [
     DatagridExpandableRowsDemo,
     DatagridFixedHeightDemo,
     DatagridHideShowColumnsDemo,
+    DatagridPinnableColumnsDemo,
     DatagridDetailPaneDemo,
     DatagridVirtualScrollDemo,
     DatagridDemo,
