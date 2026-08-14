@@ -7,8 +7,8 @@
 
 const basicExample = `
 <clr-datagrid>
-  <clr-dg-column clrDgPinnable [style.width.px]="140">User ID</clr-dg-column>
-  <clr-dg-column clrDgPinnable [style.width.px]="240">Name</clr-dg-column>
+  <clr-dg-column clrDgPinned [style.width.px]="140">User ID</clr-dg-column>
+  <clr-dg-column clrDgPinned [style.width.px]="240">Name</clr-dg-column>
   <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
   <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
   <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
@@ -41,9 +41,9 @@ const runtimeExample = `
 </clr-checkbox-container>
 
 <clr-datagrid>
-  <clr-dg-column [clrDgPinnable]="pinId" [style.width.px]="140">User ID</clr-dg-column>
+  <clr-dg-column [clrDgPinned]="pinId" [style.width.px]="140">User ID</clr-dg-column>
   <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
-  <clr-dg-column [clrDgPinnable]="pinName" [style.width.px]="240">Name</clr-dg-column>
+  <clr-dg-column [clrDgPinned]="pinName" [style.width.px]="240">Name</clr-dg-column>
   <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
   <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
 

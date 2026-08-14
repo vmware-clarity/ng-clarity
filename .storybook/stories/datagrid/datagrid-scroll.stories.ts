@@ -136,8 +136,8 @@ const PinnedColumnsTemplate: StoryFn = args => ({
   template: `
     <div [style.width.px]="600">
       <clr-datagrid [clrDgSelectionType]="'multi'" [style.height.px]="300">
-        <clr-dg-column [clrDgPinnable]="pinName" [style.width.px]="250">Name</clr-dg-column>
-        <clr-dg-column [clrDgPinnable]="pinSymbol" [style.width.px]="250">Symbol</clr-dg-column>
+        <clr-dg-column [clrDgPinned]="pinName" [style.width.px]="250">Name</clr-dg-column>
+        <clr-dg-column [clrDgPinned]="pinSymbol" [style.width.px]="250">Symbol</clr-dg-column>
         <clr-dg-column [style.width.px]="250">Number</clr-dg-column>
         <clr-dg-column [style.width.px]="250">Electronegativity</clr-dg-column>
         <clr-dg-column [style.width.px]="250">Atomic mass</clr-dg-column>

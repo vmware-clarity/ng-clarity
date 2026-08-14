@@ -8,7 +8,7 @@
 <h2>Datagrid: Pinnable columns</h2>
 
 <p>
-  A column with <code class="clr-code">clrDgPinnable</code> is rendered to the left of the scrollable columns and stays
+  A column with <code class="clr-code">clrDgPinned</code> is rendered to the left of the scrollable columns and stays
   visible while the rest of the datagrid is scrolled horizontally. Pinned columns keep their declaration order and are
   placed after the built-in row controls.
 </p>
@@ -35,10 +35,10 @@
 
 <div class="pinnable-columns-demo">
   <clr-datagrid>
-    <clr-dg-column [clrDgField]="'id'" [clrDgPinnable]="pinId" [style.width.px]="120">User ID</clr-dg-column>
-    <clr-dg-column [clrDgField]="'name'" [clrDgPinnable]="pinName" [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column [clrDgField]="'id'" [clrDgPinned]="pinId" [style.width.px]="120">User ID</clr-dg-column>
+    <clr-dg-column [clrDgField]="'name'" [clrDgPinned]="pinName" [style.width.px]="200">Name</clr-dg-column>
     <clr-dg-column [clrDgField]="'creation'" [style.width.px]="220"> Creation date </clr-dg-column>
-    <clr-dg-column [clrDgField]="'pokemon.name'" [clrDgPinnable]="pinCreation" [style.width.px]="1200"
+    <clr-dg-column [clrDgField]="'pokemon.name'" [clrDgPinned]="pinCreation" [style.width.px]="1200"
       >Pokemon</clr-dg-column
     >
     <clr-dg-column [clrDgField]="'color'" [style.width.px]="1200">Favorite color</clr-dg-column>
@@ -66,8 +66,8 @@
 
 <div class="pinnable-columns-demo">
   <clr-datagrid [(clrDgSelected)]="selected">
-    <clr-dg-column clrDgPinnable [style.width.px]="120">User ID</clr-dg-column>
-    <clr-dg-column clrDgPinnable [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="120">User ID</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="200">Name</clr-dg-column>
     <clr-dg-column [style.width.px]="1220">Creation date</clr-dg-column>
     <clr-dg-column [style.width.px]="1200">Pokemon</clr-dg-column>
 
@@ -94,14 +94,14 @@
 
 <p>
   The detail pane shows a single, full width column, so there is nothing left to scroll. Pinning is suspended for as
-  long as the pane is open and restored when it closes - the <code class="clr-code">clrDgPinnable</code> input itself is
+  long as the pane is open and restored when it closes - the <code class="clr-code">clrDgPinned</code> input itself is
   not touched.
 </p>
 
 <div class="pinnable-columns-demo">
   <clr-datagrid>
-    <clr-dg-column clrDgPinnable [style.width.px]="200">Name</clr-dg-column>
-    <clr-dg-column clrDgPinnable [style.width.px]="120">User ID</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="120">User ID</clr-dg-column>
     <clr-dg-column [style.width.px]="220">Creation date</clr-dg-column>
 
     <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
@@ -130,8 +130,8 @@
 
 <div class="pinnable-columns-demo">
   <clr-datagrid [style.height.rem]="24">
-    <clr-dg-column clrDgPinnable [style.width.px]="120">User ID</clr-dg-column>
-    <clr-dg-column clrDgPinnable [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="120">User ID</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="200">Name</clr-dg-column>
     <clr-dg-column [style.width.px]="1220">Creation date</clr-dg-column>
     <clr-dg-column [style.width.px]="1200">Pokemon</clr-dg-column>
 

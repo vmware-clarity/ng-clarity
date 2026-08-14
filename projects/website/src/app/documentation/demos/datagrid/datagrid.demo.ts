@@ -294,7 +294,7 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           description: 'Set the model property that represents data in the column.',
         },
         {
-          name: '[clrDgPinnable]',
+          name: '[clrDgPinned]',
           type: 'boolean',
           defaultValue: 'false',
           description:

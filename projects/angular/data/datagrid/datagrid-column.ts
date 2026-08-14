@@ -164,7 +164,7 @@ export class ClrDatagridColumn<T = any>
 
   private _showSeparator = true;
 
-  private _pinnable = false;
+  private _pinned = false;
 
   constructor(
     private el: ElementRef<HTMLElement>,
@@ -187,8 +187,9 @@ export class ClrDatagridColumn<T = any>
   }
 
   /**
-   * Whether the column is currently rendered as pinned. This can differ from `pinnable` while the
-   * detail pane is open, because pinning is suspended for as long as it shows a single column.
+   * Whether the column is currently rendered as pinned. This can differ from the `pinned` input
+   * while the detail pane is open, because pinning is suspended for as long as it shows a single
+   * column.
    */
   get isPinned() {
     return this.el.nativeElement.classList.contains(PINNED_COLUMN_CLASS);
@@ -207,16 +208,16 @@ export class ClrDatagridColumn<T = any>
    * columns are scrolled horizontally. Pinned columns keep their declaration order and are
    * rendered before the scrollable ones, right after the built-in row controls.
    */
-  @Input({ alias: 'clrDgPinnable', transform: booleanAttribute })
-  get pinnable(): boolean {
-    return this._pinnable;
+  @Input({ alias: 'clrDgPinned', transform: booleanAttribute })
+  get pinned(): boolean {
+    return this._pinned;
   }
-  set pinnable(value: boolean) {
-    if (this._pinnable === value) {
+  set pinned(value: boolean) {
+    if (this._pinned === value) {
       return;
     }
 
-    this._pinnable = value;
+    this._pinned = value;
 
     // The column state is what the header and the rows read to decide where to project the
     // column and its cells. It is optional only so the column keeps working when it is used

@@ -8,7 +8,7 @@
 <h2 class="clr-mt-48px" cds-text="title">Pinnable Columns</h2>
 
 <p class="clr-mt-16px" cds-text="body">
-  A column with <code cds-text="code">clrDgPinnable</code> is rendered to the left of the scrollable columns and stays
+  A column with <code cds-text="code">clrDgPinned</code> is rendered to the left of the scrollable columns and stays
   visible while the rest of the datagrid is scrolled horizontally. Use it to keep the column that identifies a row - a
   name or an ID - in view while the user reads the columns further to the right.
 </p>
@@ -19,8 +19,8 @@
 </p>
 
 <clr-datagrid>
-  <clr-dg-column clrDgPinnable [style.width.px]="140">User ID</clr-dg-column>
-  <clr-dg-column clrDgPinnable [style.width.px]="240">Name</clr-dg-column>
+  <clr-dg-column clrDgPinned [style.width.px]="140">User ID</clr-dg-column>
+  <clr-dg-column clrDgPinned [style.width.px]="240">Name</clr-dg-column>
   <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
   <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
   <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
@@ -60,7 +60,7 @@
 <h3 cds-text="section" class="clr-mt-32px">Changing the Pinned State at Runtime</h3>
 
 <p class="clr-mt-16px" cds-text="body">
-  <code cds-text="code">clrDgPinnable</code> can be bound to an expression, so a column can be pinned and unpinned while
+  <code cds-text="code">clrDgPinned</code> can be bound to an expression, so a column can be pinned and unpinned while
   the datagrid is on screen. Scroll the datagrid below sideways and then change the checkboxes.
 </p>
 
@@ -77,9 +77,9 @@
 </clr-checkbox-container>
 
 <clr-datagrid>
-  <clr-dg-column [clrDgPinnable]="pinId" [style.width.px]="140">User ID</clr-dg-column>
+  <clr-dg-column [clrDgPinned]="pinId" [style.width.px]="140">User ID</clr-dg-column>
   <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
-  <clr-dg-column [clrDgPinnable]="pinName" [style.width.px]="240">Name</clr-dg-column>
+  <clr-dg-column [clrDgPinned]="pinName" [style.width.px]="240">Name</clr-dg-column>
   <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
   <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
 
@@ -114,7 +114,7 @@
   </li>
   <li>
     The detail pane shows a single, full width column, so there is nothing left to scroll. Pinning is suspended for as
-    long as the pane is open and restored when it closes. The <code cds-text="code">clrDgPinnable</code> input itself is
+    long as the pane is open and restored when it closes. The <code cds-text="code">clrDgPinned</code> input itself is
     not changed.
   </li>
   <li>

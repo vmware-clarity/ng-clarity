@@ -37,8 +37,8 @@ function cellTextsIn(root: HTMLElement, container: string): string[][] {
 @Component({
   template: `
     <clr-datagrid>
-      <clr-dg-column [clrDgPinnable]="pinFirst">First</clr-dg-column>
-      <clr-dg-column [clrDgPinnable]="pinSecond">Second</clr-dg-column>
+      <clr-dg-column [clrDgPinned]="pinFirst">First</clr-dg-column>
+      <clr-dg-column [clrDgPinned]="pinSecond">Second</clr-dg-column>
       <clr-dg-column>Third</clr-dg-column>
       <clr-dg-row *clrDgItems="let item of items">
         <clr-dg-cell>{{ item }}</clr-dg-cell>
@@ -58,7 +58,7 @@ class PinnableTest {
 @Component({
   template: `
     <clr-datagrid>
-      <clr-dg-column clrDgPinnable>First</clr-dg-column>
+      <clr-dg-column clrDgPinned>First</clr-dg-column>
       <clr-dg-column>Second</clr-dg-column>
       <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
         <clr-dg-cell>{{ item }}</clr-dg-cell>
@@ -93,8 +93,8 @@ export default function (): void {
         expect(element.querySelector(`.${PINNED_COLUMN_CLASS}`)).toBeNull();
       });
 
-      it('defaults `pinnable` to false on the column', function () {
-        expect(context.clarityDirective.columns.map(column => column.pinnable)).toEqual([false, false, false]);
+      it('defaults `pinned` to false on the column', function () {
+        expect(context.clarityDirective.columns.map(column => column.pinned)).toEqual([false, false, false]);
       });
 
       it('projects a pinned column header into the sticky container of the header', function () {
@@ -209,7 +209,7 @@ export default function (): void {
 
       it('pins the column through the attribute form of the input', function () {
         expect(columnTitles(element, HEADER_STICKY)).toEqual(['First']);
-        expect(context.clarityDirective.columns.first.pinnable).toBeTrue();
+        expect(context.clarityDirective.columns.first.pinned).toBeTrue();
       });
 
       it('suspends pinning while the detail pane is open', function () {
@@ -223,7 +223,7 @@ export default function (): void {
         expect(context.clarityDirective.columns.first.isPinned).toBeFalse();
         expect(context.clarityDirective.columns.last.isHidden).toBeTrue();
         // The input is untouched, only the rendered state is suspended.
-        expect(context.clarityDirective.columns.first.pinnable).toBeTrue();
+        expect(context.clarityDirective.columns.first.pinned).toBeTrue();
       });
 
       it('restores pinning when the detail pane closes', function () {

@@ -299,7 +299,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
               // containers, which happens on the next CALCULATE/DISPLAY cycle. Widths are
               // recomputed there as well, since the flex context of the column changes.
               // Deferring to ngAfterViewChecked keeps us out of the change detection pass that
-              // the `clrDgPinnable` input setter runs in.
+              // the `clrDgPinned` input setter runs in.
               this.columnsSizesStable = false;
               this.shouldStabilizeColumns = true;
             }
