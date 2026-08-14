@@ -70,6 +70,9 @@
       [clrDgSortOrder]="column.defaultSortOrder || defaultUnsortedOrder"
       (clrDgSortOrderChange)="onSortOrderChange($event, column)"
       [clrDgDisableUnsort]="column.disableUnsort ?? disableUnsort"
+      [clrDgPinned]="!!column.pinned"
+      [clrDgPinnable]="!!column.pinnable"
+      (clrDgPinnedChange)="onPinnedChange($event, column)"
     >
       <clr-dg-filter
         *ngIf="column.stringFilter || column.sortAndFilterByField"

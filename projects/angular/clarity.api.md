@@ -1865,6 +1865,7 @@ export interface ClrCommonStrings {
     // (undocumented)
     passwordShow: string;
     pickColumns: string;
+    pinColumn: string;
     previous: string;
     previousPage: string;
     // (undocumented)
@@ -1908,6 +1909,7 @@ export interface ClrCommonStrings {
     toLabel: string;
     totalPages: string;
     unknown: string;
+    unpinColumn: string;
     // (undocumented)
     unselectedTreeNode: string;
     // (undocumented)
@@ -2232,6 +2234,8 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     get colType(): "string" | "number";
     set colType(value: 'string' | 'number');
+    // (undocumented)
+    protected commonStrings: ClrCommonStringsService;
     customFilter: boolean;
     // (undocumented)
     disableUnsort: boolean;
@@ -2252,6 +2256,8 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     get isHidden(): boolean;
     get isPinned(): boolean;
     // (undocumented)
+    static ngAcceptInputType_pinnable: unknown;
+    // (undocumented)
     static ngAcceptInputType_pinned: unknown;
     // (undocumented)
     ngAfterViewInit(): void;
@@ -2261,8 +2267,11 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
+    pinnable: boolean;
     get pinned(): boolean;
     set pinned(value: boolean);
+    // (undocumented)
+    pinnedChange: EventEmitter<boolean>;
     // (undocumented)
     set projectedFilter(custom: any);
     // (undocumented)
@@ -2282,12 +2291,13 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     sortOrderChange: EventEmitter<ClrDatagridSortOrder>;
     // (undocumented)
     titleContainer: ElementRef<HTMLElement>;
+    protected togglePinned(event: MouseEvent): void;
     // (undocumented)
     set updateFilterValue(newValue: string | [number, number]);
     // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "pinned": { "alias": "clrDgPinned"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*"], false, [{ directive: typeof i15.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "pinnable": { "alias": "clrDgPinnable"; "required": false; }; "pinned": { "alias": "clrDgPinned"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "pinnedChange": "clrDgPinnedChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*"], false, [{ directive: typeof i15.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, [null, null, null, null, null, null, null, null, { optional: true; }]>;
 }

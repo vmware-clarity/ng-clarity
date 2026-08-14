@@ -25,6 +25,10 @@ export interface ColumnHiddenState extends ColumnState {
   hidden: boolean;
 }
 
+export interface ColumnPinnedState extends ColumnState {
+  pinned: boolean;
+}
+
 export interface ColumnFilterChange extends ColumnState {
   filterValue: any;
 }

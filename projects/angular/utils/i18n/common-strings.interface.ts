@@ -103,6 +103,14 @@ export interface ClrCommonStrings {
    */
   sortColumn: string;
   /**
+   * Datagrid: pin a column to the left of the datagrid
+   */
+  pinColumn: string;
+  /**
+   * Datagrid: unpin a pinned column
+   */
+  unpinColumn: string;
+  /**
    * Datagrid: first page
    */
   firstPage: string;

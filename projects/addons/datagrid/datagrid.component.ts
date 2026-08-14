@@ -50,6 +50,7 @@ import {
   ColumnFilterChange,
   ColumnHiddenState,
   ColumnOrderChanged,
+  ColumnPinnedState,
   ColumnResize,
   ColumnSortOrder,
 } from './interfaces/column-state';
@@ -433,6 +434,11 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * Event emitter to tell hosting view that hidden state of column has changed.
    */
   @Output() columnHiddenStateChange: EventEmitter<ColumnHiddenState> = new EventEmitter<ColumnHiddenState>();
+
+  /**
+   * Event emitter to tell hosting view that the user pinned or unpinned a column.
+   */
+  @Output() columnPinnedChange: EventEmitter<ColumnPinnedState> = new EventEmitter<ColumnPinnedState>();
 
   /**
    * Event emitter to tell hosting view that column filtering has changed.
@@ -937,6 +943,13 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
   protected onColumnResize(columnSize: number, column: ColumnDefinition<T>): void {
     this.columnResize.emit({ columnSize: columnSize, column: column });
+  }
+
+  protected onPinnedChange(pinned: boolean, column: ColumnDefinition<T>): void {
+    // The column definition is the source of truth for the binding, so it has to be updated or the
+    // next change detection would push the previous value back onto the column.
+    column.pinned = pinned;
+    this.columnPinnedChange.emit({ pinned: pinned, column: column });
   }
 
   protected onSortOrderChange(sortOrder: ClrDatagridSortOrder, column: ColumnDefinition<T>): void {

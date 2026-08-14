@@ -35,6 +35,7 @@ export {
   ColumnFilterChange,
   ColumnHiddenState,
   ColumnOrderChanged,
+  ColumnPinnedState,
   ColumnResize,
   ColumnSortOrder,
 } from './interfaces/column-state';

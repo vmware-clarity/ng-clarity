@@ -21,9 +21,11 @@ import {
   ellipsisVerticalIcon,
   filterGridCircleIcon,
   filterGridIcon,
+  pinIcon,
   stepForward2Icon,
   timesIcon,
   twoWayArrowsIcon,
+  unpinIcon,
   viewColumnsIcon,
   windowCloseIcon,
 } from '@clr/angular/icon';
@@ -165,7 +167,9 @@ export class ClrDatagridModule {
       stepForward2Icon,
       angleDoubleIcon,
       filterGridCircleIcon,
-      filterGridIcon
+      filterGridIcon,
+      pinIcon,
+      unpinIcon
     );
   }
 }

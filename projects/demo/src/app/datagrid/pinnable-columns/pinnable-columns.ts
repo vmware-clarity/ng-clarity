@@ -24,7 +24,8 @@ export class DatagridPinnableColumnsDemo {
 
   pinId = true;
   pinName = true;
-  pinCreation = false;
+  pinPokemon = false;
+  pinColor = false;
 
   constructor(inventory: Inventory) {
     inventory.size = 100;

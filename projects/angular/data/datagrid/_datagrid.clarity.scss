@@ -493,6 +493,32 @@
         flex: 1 1 auto;
       }
 
+      // The pin toggle sits at the very left of the header, in front of the title. It has to stay
+      // outside the title button, otherwise clicking it would sort the column as well.
+      .datagrid-column-pin {
+        @include mixins.clr-no-styles-button();
+        @include mixins.min-equilateral(datagrid-variables.$clr-datagrid-filter-toggle-size);
+
+        cursor: pointer;
+        align-self: center;
+        flex: 0 0 auto;
+        display: flex;
+        margin-right: density.$clr-base-horizontal-offset-s;
+        padding: density.$clr-base-vertical-offset-2xs density.$clr-base-horizontal-offset-2xs;
+
+        cds-icon {
+          color: tokens.$cds-alias-object-interaction-color;
+        }
+
+        &:hover cds-icon {
+          color: tokens.$cds-alias-object-interaction-color-hover;
+        }
+
+        &:active cds-icon {
+          color: tokens.$cds-alias-object-interaction-color-active;
+        }
+      }
+
       .datagrid-column-title {
         @include mixins.clr-no-styles-button();
 

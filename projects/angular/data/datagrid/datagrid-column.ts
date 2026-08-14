@@ -53,6 +53,16 @@ import { WrappedColumn } from './wrapped-column';
   selector: 'clr-dg-column',
   template: `
     <div class="datagrid-column-flex">
+      @if (pinnable) {
+        <button
+          class="datagrid-column-pin"
+          type="button"
+          [attr.aria-label]="pinned ? commonStrings.keys.unpinColumn : commonStrings.keys.pinColumn"
+          (click)="togglePinned($event)"
+        >
+          <cds-icon [size]="'12'" [shape]="pinned ? 'unpin' : 'pin'" solid aria-hidden="true"></cds-icon>
+        </button>
+      }
       @if (sortable) {
         <button class="datagrid-column-title" (click)="sort()" type="button" #titleContainer>
           <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
@@ -115,7 +125,14 @@ export class ClrDatagridColumn<T = any>
   @Input('clrFilterNumberMinPlaceholder') filterNumberMinPlaceholder: string;
   @Input('clrDgDisableUnsort') disableUnsort = false;
 
+  /**
+   * Shows a pin toggle in the column header, letting the user pin and unpin the column from within
+   * the datagrid. It only adds the control - the pinned state itself stays on `clrDgPinned`.
+   */
+  @Input({ alias: 'clrDgPinnable', transform: booleanAttribute }) pinnable = false;
+
   @Output('clrDgSortOrderChange') sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
+  @Output('clrDgPinnedChange') pinnedChange = new EventEmitter<boolean>();
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
   @ViewChild('titleContainer', { read: ElementRef }) titleContainer: ElementRef<HTMLElement>;
@@ -173,7 +190,7 @@ export class ClrDatagridColumn<T = any>
     private vcr: ViewContainerRef,
     private detailService: DetailService,
     private changeDetectorRef: ChangeDetectorRef,
-    private commonStrings: ClrCommonStringsService,
+    protected commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
     @Optional() @Inject(COLUMN_STATE) private columnState: BehaviorSubject<ColumnState>
   ) {
@@ -431,6 +448,20 @@ export class ClrDatagridColumn<T = any>
     // Sets the correct icon for current sort order
     this._sortDirection = this._sortOrder === ClrDatagridSortOrder.DESC ? 'down' : 'up';
     this.sortOrderChange.emit(this._sortOrder);
+  }
+
+  /**
+   * Pins or unpins the column from the header control. Going through the `pinned` setter keeps the
+   * rendering in sync, and the output lets the application follow a change it did not initiate -
+   * without it a one-way [clrDgPinned] binding would write the old value straight back.
+   */
+  protected togglePinned(event: MouseEvent) {
+    // The header is a drop target for the column ordering addon and a click target for the sort
+    // button next to us, so the toggle keeps its click to itself.
+    event.stopPropagation();
+
+    this.pinned = !this.pinned;
+    this.pinnedChange.emit(this.pinned);
   }
 
   private listenForDetailPaneChanges() {
