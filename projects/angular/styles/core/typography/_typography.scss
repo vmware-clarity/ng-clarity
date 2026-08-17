@@ -271,6 +271,13 @@ body[cds-text*='body'] {
   @include mixins.remove-line-height-erasers;
 }
 
+// word breaking
+
+[cds-text~='break-word'] {
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+}
+
 // alignment
 
 [cds-text~='justify'] {
