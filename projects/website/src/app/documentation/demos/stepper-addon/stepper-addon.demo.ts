@@ -58,7 +58,7 @@ export class MyModule {}
     StackblitzExampleComponent,
     StepperStep1Component,
     StepperStep2Component,
-    RouterModule
+    RouterModule,
   ],
 })
 export class StepperAddonDemoComponent extends ClarityDocComponent implements OnInit {
