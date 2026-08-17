@@ -5,10 +5,4 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './card-container';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './menu';
-export * from './property-view';
-export * from './stepper';
+export { MockStepperComponent, MockStepperStandaloneComponent } from './stepper.component.mock';
