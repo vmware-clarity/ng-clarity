@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { OnStepValidate, StepModelHolder } from '@clr/addons/var';
-import { ClarityModule } from '@clr/angular';
+import { ClarityIcons, ClarityModule, vmIcon } from '@clr/angular';
 import { Observable, of } from 'rxjs';
 
 import { SelectVmModel } from './select-vm.model';
@@ -20,6 +20,10 @@ import { SelectVmModel } from './select-vm.model';
 })
 export class SelectVmComponent implements StepModelHolder, OnStepValidate {
   model: SelectVmModel;
+
+  constructor() {
+    ClarityIcons.addIcons(vmIcon);
+  }
 
   selectNode(resourceId: string, resourceName: string): void {
     this.model.vmId.value = resourceId;
