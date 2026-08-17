@@ -92,7 +92,10 @@ export class ExampleComponent {
 `;
 
 const pinnableExample = `
-<p>Pinned from the header: <b>{{ pinnedColumns || 'none' }}</b></p>
+<p>
+  Pinned from the header:
+  <b>{{ pinnedColumns || 'none' }}</b>
+</p>
 
 <clr-datagrid>
   <clr-dg-column clrDgPinnable [(clrDgPinned)]="idPinned" [style.width.px]="140">User ID</clr-dg-column>
@@ -144,7 +147,9 @@ export class ExampleComponent {
 
   // Kept up to date by clrDgPinnedChange, which the two-way binding above uses under the hood.
   get pinnedColumns(): string {
-    return [this.idPinned ? 'User ID' : null, this.namePinned ? 'Name' : null].filter(Boolean).join(', ');
+    return [this.idPinned ? 'User ID' : null, this.namePinned ? 'Name' : null]
+      .filter(Boolean)
+      .join(', ');
   }
 }
 `;
