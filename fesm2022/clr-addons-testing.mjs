@@ -1453,10 +1453,62 @@ function verifyPropertyViewMessage(textValue, icon, messageModel) {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+class MockStepperComponent {
+    constructor() {
+        this.onModelChange = new EventEmitter();
+        this.onFinish = new EventEmitter();
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockStepperComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockStepperComponent, isStandalone: false, selector: "appfx-stepper", inputs: { steps: "steps", wizardModel: "wizardModel", loading: "loading" }, outputs: { onModelChange: "onModelChange", onFinish: "onFinish" }, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockStepperComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-stepper',
+                    standalone: false,
+                    template: '<ng-content></ng-content>',
+                }]
+        }], propDecorators: { steps: [{
+                type: Input
+            }], wizardModel: [{
+                type: Input
+            }], loading: [{
+                type: Input
+            }], onModelChange: [{
+                type: Output
+            }], onFinish: [{
+                type: Output
+            }] } });
+class MockStepperStandaloneComponent extends MockStepperComponent {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockStepperStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockStepperStandaloneComponent, isStandalone: true, selector: "appfx-stepper", usesInheritance: true, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockStepperStandaloneComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-stepper',
+                    standalone: true,
+                    template: '<ng-content></ng-content>',
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 
 /**
  * Generated bundle index. Do not edit.
  */
 
-export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
+export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, MockStepperComponent, MockStepperStandaloneComponent, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
 //# sourceMappingURL=clr-addons-testing.mjs.map
