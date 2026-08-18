@@ -9,7 +9,11 @@
 import { Observable } from 'rxjs';
 
 export type AsyncArray<T> =
-  T[] | null | undefined | Promise<T[] | null | undefined> | Observable<T[] | null | undefined>;
+  | T[]
+  | null
+  | undefined
+  | Promise<T[] | null | undefined>
+  | Observable<T[] | null | undefined>;
 
 export function isPromise<T>(o: AsyncArray<T>): o is Promise<T[]> {
   // Shamelessly copied from every open-source project out there.

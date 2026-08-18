@@ -9,9 +9,9 @@ export { WizardFooter, WizardFooterConfig } from '@clr/addons/var';
 export { AppfxWizardModule } from './wizard.module';
 export {
   WizardComponent,
-   /**
-    * @deprecated Use WizardComponent import instead.
-    */
+  /**
+   * @deprecated Use WizardComponent import instead.
+   */
   WizardComponent as Wizard,
   Reason,
   WizardResult,

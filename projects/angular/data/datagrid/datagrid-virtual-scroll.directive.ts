@@ -52,7 +52,10 @@ import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scr
 import { Items } from './providers/items';
 
 type CdkVirtualForInputKey =
-  'cdkVirtualForOf' | 'cdkVirtualForTrackBy' | 'cdkVirtualForTemplate' | 'cdkVirtualForTemplateCacheSize';
+  | 'cdkVirtualForOf'
+  | 'cdkVirtualForTrackBy'
+  | 'cdkVirtualForTemplate'
+  | 'cdkVirtualForTemplateCacheSize';
 
 type CdkVirtualForInputs<T> = Partial<Pick<CdkVirtualForOf<T>, CdkVirtualForInputKey>>;
 

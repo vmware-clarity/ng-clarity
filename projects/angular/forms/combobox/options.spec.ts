@@ -56,7 +56,8 @@ class TestComponentWithError {}
 export default function (): void {
   describe('Select Options Menu Component', function () {
     let context:
-      TestContext<ClrOptions<string>, TestComponent> | TestContext<ClrOptions<string>, TestComponentWithChild>;
+      | TestContext<ClrOptions<string>, TestComponent>
+      | TestContext<ClrOptions<string>, TestComponentWithChild>;
     let popoverService: ClrPopoverService;
 
     describe('View Basics', function () {
