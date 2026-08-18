@@ -439,6 +439,42 @@ export class MockAppfxMenuStandaloneComponent extends MockAppfxMenuComponent {
 }
 
 // @public (undocumented)
+export class MockAppfxWizardComponent {
+    // (undocumented)
+    loading: boolean;
+    // Warning: (ae-forgotten-export) The symbol "Reason" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    onClose: EventEmitter<Reason>;
+    // (undocumented)
+    onFinish: EventEmitter<void>;
+    // Warning: (ae-forgotten-export) The symbol "ModelChange" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    onModelChange: EventEmitter<ModelChange[]>;
+    // (undocumented)
+    opened: boolean;
+    // (undocumented)
+    openedChange: EventEmitter<boolean>;
+    // Warning: (ae-forgotten-export) The symbol "Step" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    pages: Step[];
+    // (undocumented)
+    size: string;
+    // (undocumented)
+    title: string;
+    // Warning: (ae-forgotten-export) The symbol "WorkflowModel" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    wizardModel: WorkflowModel;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxWizardComponent, "appfx-wizard", never, { "title": { "alias": "title"; "required": false; }; "pages": { "alias": "pages"; "required": false; }; "wizardModel": { "alias": "wizardModel"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "size": { "alias": "size"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "openedChange": "openedChange"; "onModelChange": "onModelChange"; "onFinish": "onFinish"; "onClose": "onClose"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxWizardComponent, never>;
+}
+
+// @public (undocumented)
 export class MockCardContainerComponent {
     // (undocumented)
     cardContainer: ViewContainerRef;
