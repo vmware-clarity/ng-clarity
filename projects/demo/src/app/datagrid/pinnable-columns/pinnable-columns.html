@@ -108,11 +108,15 @@
 </p>
 
 <div class="pinnable-columns-demo">
-  <clr-datagrid [(clrDgSelected)]="selected">
+  <clr-datagrid [clrDgSelectionType]="'multi'" [(clrDgSelected)]="selected">
     <clr-dg-column clrDgPinnable clrDgPinned [style.width.px]="120">User ID</clr-dg-column>
     <clr-dg-column clrDgPinnable clrDgPinned [style.width.px]="200">Name</clr-dg-column>
-    <clr-dg-column clrDgPinnable [style.width.px]="1220">Creation date</clr-dg-column>
-    <clr-dg-column [style.width.px]="1200">Pokemon</clr-dg-column>
+    <clr-dg-column [style.width.px]="220">Creation date</clr-dg-column>
+    <clr-dg-column [style.width.px]="220">Creation date</clr-dg-column>
+    <clr-dg-column [style.width.px]="220">Creation date</clr-dg-column>
+    <clr-dg-column [style.width.px]="220">Creation date</clr-dg-column>
+    <clr-dg-column [style.width.px]="220">Creation date</clr-dg-column>
+    <clr-dg-column [style.width.px]="200">Pokemon</clr-dg-column>
 
     <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
       <clr-dg-action-overflow>
@@ -121,6 +125,10 @@
 
       <clr-dg-cell>{{user.id}}</clr-dg-cell>
       <clr-dg-cell>{{user.name}}</clr-dg-cell>
+      <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+      <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+      <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+      <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
       <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
       <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
 
