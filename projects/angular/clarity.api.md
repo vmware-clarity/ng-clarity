@@ -64,7 +64,6 @@ import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { RendererFactory2 } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
-import { Router } from '@angular/router';
 import { RouterLinkActive } from '@angular/router';
 import * as rxjs from 'rxjs';
 import { SafeHtml } from '@angular/platform-browser';
@@ -840,10 +839,9 @@ export class ClarityModule {
     // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i16" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i17" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, [typeof i1.ClrIcon], [typeof i2_2.ClrEmphasisModule, typeof i3_2.ClrDataModule, typeof i1.ClrIcon, typeof i1.ClrIconModule, typeof i4.ClrModalModule, typeof i5.ClrLoadingModule, typeof i5.ClrConditionalModule, typeof i5.ClrFocusOnViewInitModule, typeof i6_2.ClrButtonModule, typeof i7.ClrFormsModule, typeof i8_3.ClrLayoutModule, typeof i9.ClrPopoverModule, typeof i10.ClrWizardModule, typeof i4.ClrSidePanelModule, typeof i11_2.ClrAccordionModule, typeof i12_2.ClrStepperModule, typeof i13.ClrSpinnerModule, typeof i14.ClrProgressBarModule, typeof i15.ClrPopoverModuleNext, typeof i16.ClrTimelineModule, typeof i17.ClrContextualModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, [typeof i1.ClrIcon], [typeof i2_2.ClrEmphasisModule, typeof i3_2.ClrDataModule, typeof i1.ClrIcon, typeof i1.ClrIconModule, typeof i4.ClrModalModule, typeof i5.ClrLoadingModule, typeof i5.ClrConditionalModule, typeof i5.ClrFocusOnViewInitModule, typeof i6_2.ClrButtonModule, typeof i7.ClrFormsModule, typeof i8_3.ClrLayoutModule, typeof i9.ClrPopoverModule, typeof i10.ClrWizardModule, typeof i4.ClrSidePanelModule, typeof i11_2.ClrAccordionModule, typeof i12_2.ClrStepperModule, typeof i13.ClrSpinnerModule, typeof i14.ClrProgressBarModule, typeof i15.ClrPopoverModuleNext, typeof i16.ClrTimelineModule]>;
 }
 
 // @public (undocumented)
@@ -908,15 +906,6 @@ export const CLR_ALERT_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
 export const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[];
-
-// @public
-export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions>;
-
-// @public
-export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
-
-// @public (undocumented)
-export const CLR_CONTEXTUAL_DIRECTIVES: any[];
 
 // @public (undocumented)
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[];
@@ -1944,15 +1933,6 @@ export class ClrCommonStringsService {
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrCommonStringsService>;
 }
 
-// @public
-export interface ClrComponentContext {
-    actions?: ClrContextAction[];
-    children?: ClrComponentContext[];
-    label?: string;
-    state?: Record<string, unknown>;
-    type: string;
-}
-
 // @public (undocumented)
 export class ClrConditionalModule {
     // (undocumented)
@@ -1961,141 +1941,6 @@ export class ClrConditionalModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrConditionalModule>;
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrConditionalModule, never, [typeof i2.CommonModule, typeof ClrIfActive, typeof ClrIfExpanded], [typeof ClrIfActive, typeof ClrIfExpanded]>;
-}
-
-// @public
-export class ClrContext implements OnInit, OnDestroy, ClrContextProvider {
-    constructor(contextRegistry: ClrContextRegistryService);
-    // (undocumented)
-    getClrContext(): ClrComponentContext | null;
-    label: string;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    ngOnInit(): void;
-    state: Record<string, unknown> | null;
-    type: string;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContext, "[clrContext]", never, { "label": { "alias": "clrContext"; "required": false; }; "type": { "alias": "clrContextType"; "required": false; }; "state": { "alias": "clrContextState"; "required": false; }; }, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContext, never>;
-}
-
-// @public
-export interface ClrContextAction {
-    // (undocumented)
-    disabled?: boolean;
-    href?: string;
-    // (undocumented)
-    kind: 'button' | 'link';
-    label: string;
-}
-
-// @public
-export interface ClrContextDomExtractor {
-    extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrComponentContext | null;
-    selector: string;
-}
-
-// @public
-export class ClrContextFrameHost {
-    constructor(getSnapshot: (options?: ClrContextSnapshotOptions) => ClrPageContext, hostWindow: Window, options?: ClrContextFrameHostOptions);
-    // (undocumented)
-    start(): void;
-    // (undocumented)
-    stop(): void;
-}
-
-// @public (undocumented)
-export interface ClrContextFrameHostOptions {
-    allowedOrigins?: string[];
-}
-
-// @public
-export interface ClrContextFrameRequest {
-    // (undocumented)
-    kind: 'context-request';
-    options?: ClrContextSnapshotOptions;
-    // (undocumented)
-    protocol: typeof CLR_CONTEXT_PROTOCOL;
-    requestId: string;
-}
-
-// @public (undocumented)
-export interface ClrContextFrameRequestOptions {
-    options?: ClrContextSnapshotOptions;
-    targetOrigin?: string;
-    targetWindow?: Window;
-    timeoutMs?: number;
-}
-
-// @public
-export interface ClrContextFrameResponse {
-    // (undocumented)
-    context: ClrPageContext;
-    // (undocumented)
-    kind: 'context-response';
-    // (undocumented)
-    protocol: typeof CLR_CONTEXT_PROTOCOL;
-    // (undocumented)
-    requestId: string;
-}
-
-// @public
-export interface ClrContextProvider {
-    // (undocumented)
-    getClrContext(): ClrComponentContext | null;
-}
-
-// @public
-export class ClrContextRegistryService {
-    collect(): ClrComponentContext[];
-    register(provider: ClrContextProvider): () => void;
-    // (undocumented)
-    unregister(provider: ClrContextProvider): void;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextRegistryService, never>;
-    // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextRegistryService>;
-}
-
-// @public
-export interface ClrContextSnapshotOptions {
-    includeActions?: boolean;
-    includeDomComponents?: boolean;
-    maxComponents?: number;
-    maxItemsPerCollection?: number;
-    maxTextLength?: number;
-}
-
-// @public
-export class ClrContextualEngineService implements OnDestroy {
-    constructor(platformId: unknown, document: Document, contextRegistry: ClrContextRegistryService, router: Router | null);
-    // (undocumented)
-    disableFrameBridge(): void;
-    // (undocumented)
-    disableGlobalAccess(): void;
-    enableFrameBridge(options?: ClrContextFrameHostOptions): void;
-    enableGlobalAccess(propertyName?: string): void;
-    getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext;
-    // (undocumented)
-    ngOnDestroy(): void;
-    registerDomExtractor(extractor: ClrContextDomExtractor): () => void;
-    requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextualEngineService, [null, null, null, { optional: true; }]>;
-    // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextualEngineService>;
-}
-
-// @public (undocumented)
-export class ClrContextualModule {
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextualModule, never>;
-    // (undocumented)
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrContextualModule>;
-    // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrContextualModule, [typeof ClrContext], [typeof i2.CommonModule], [typeof ClrContext]>;
 }
 
 // @public (undocumented)
@@ -4735,17 +4580,6 @@ export class ClrOutsideClickModule {
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrOutsideClickModule, [typeof OutsideClick], [typeof i2.CommonModule], [typeof OutsideClick]>;
 }
 
-// @public
-export interface ClrPageContext {
-    actions?: ClrContextAction[];
-    collectedAt: string;
-    components: ClrComponentContext[];
-    regions: ClrComponentContext[];
-    route?: ClrRouteContext;
-    title: string;
-    url?: string;
-}
-
 // @public (undocumented)
 export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implements OnInit, OnDestroy {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, focusService: FormsFocusService, toggleService: BehaviorSubject<boolean>);
@@ -5215,15 +5049,6 @@ export interface ClrRecursiveForOfContext<T> {
     $implicit: T;
     // (undocumented)
     clrModel: TreeNodeModel<T>;
-}
-
-// @public
-export interface ClrRouteContext {
-    data?: Record<string, unknown>;
-    params?: Record<string, string>;
-    path?: string;
-    queryParams?: Record<string, string>;
-    url: string;
 }
 
 // @public (undocumented)
@@ -6982,12 +6807,6 @@ export class CollapsiblePanelService {
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<CollapsiblePanelService>;
 }
-
-// @public
-export function collectClrDomActions(root: ParentNode, options?: ClrContextSnapshotOptions): ClrContextAction[];
-
-// @public
-export function collectClrDomContexts(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrComponentContext[];
 
 // @public (undocumented)
 export const colorPaletteIcon: IconShapeTuple;
@@ -9121,9 +8940,6 @@ export const replayOneIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const replayOneIconName = "replay-one";
-
-// @public
-export function requestClrContextFromHost(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
 
 // @public (undocumented)
 export const resistorIcon: IconShapeTuple;

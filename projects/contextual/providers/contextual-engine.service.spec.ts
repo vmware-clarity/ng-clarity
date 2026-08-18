@@ -89,6 +89,55 @@ describe('ClrContextualEngineService', () => {
     it('resolves host context with null when the page is not embedded', async () => {
       expect(await engine.requestHostContext()).toBeNull();
     });
+
+    it('serves snapshots to embedded frames only while the frame bridge is enabled', () => {
+      const postMessage = spyOn(window, 'postMessage');
+      const request = {
+        protocol: 'ui-context/v1',
+        kind: 'context-request',
+        requestId: 'frame-request-1',
+      };
+
+      engine.enableFrameBridge();
+      window.dispatchEvent(
+        new MessageEvent('message', { data: request, origin: window.location.origin, source: window })
+      );
+
+      expect(postMessage).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          kind: 'context-response',
+          requestId: 'frame-request-1',
+          context: jasmine.objectContaining({ title: document.title }),
+        }),
+        jasmine.anything()
+      );
+
+      engine.disableFrameBridge();
+      window.dispatchEvent(
+        new MessageEvent('message', { data: request, origin: window.location.origin, source: window })
+      );
+
+      expect(postMessage).toHaveBeenCalledTimes(1);
+    });
+
+    it('cleans up the frame bridge and global accessor when destroyed', () => {
+      const postMessage = spyOn(window, 'postMessage');
+
+      engine.enableFrameBridge();
+      engine.enableGlobalAccess('testClrContext');
+      engine.ngOnDestroy();
+
+      window.dispatchEvent(
+        new MessageEvent('message', {
+          data: { protocol: 'ui-context/v1', kind: 'context-request', requestId: 'frame-request-2' },
+          origin: window.location.origin,
+          source: window,
+        })
+      );
+
+      expect(postMessage).not.toHaveBeenCalled();
+      expect((window as unknown as Record<string, unknown>)['testClrContext']).toBeUndefined();
+    });
   });
 
   describe('with a router', () => {
@@ -99,7 +148,13 @@ describe('ClrContextualEngineService', () => {
             {
               path: 'items/:id',
               component: RoutedComponent,
-              data: { section: 'items', resolver: () => 'not serializable' },
+              data: {
+                section: 'items',
+                tags: ['inventory', () => 'not serializable'],
+                meta: { owner: 'core-team', load: () => 'not serializable' },
+                empty: { load: () => 'not serializable' },
+                resolver: () => 'not serializable',
+              },
             },
           ]),
         ],
@@ -113,7 +168,7 @@ describe('ClrContextualEngineService', () => {
       expect(route?.path).toBe('items/:id');
       expect(route?.params).toEqual({ id: '42' });
       expect(route?.queryParams).toEqual({ tab: 'general' });
-      expect(route?.data).toEqual({ section: 'items' });
+      expect(route?.data).toEqual({ section: 'items', tags: ['inventory'], meta: { owner: 'core-team' } });
     });
   });
 });

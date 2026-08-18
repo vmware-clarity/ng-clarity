@@ -1,0 +1,26 @@
+{
+  "name": "@clr/contextual",
+  "description": "Contextual engine that gives AI agents structured, current context about the page: routes, rendered components and their state, available actions and application-provided annotations. Standalone package with no dependency on @clr/angular — it reads the rendered DOM, so it works alongside any Clarity version and other UI libraries.",
+  "homepage": "https://clarity.design",
+  "keywords": [
+    "clarity",
+    "angular",
+    "ai",
+    "agents",
+    "context"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vmware-clarity/ng-clarity.git"
+  },
+  "author": "Clarity Design System",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vmware-clarity/ng-clarity/issues"
+  },
+  "peerDependencies": {
+    "@angular/common": ">= 21.1.0",
+    "@angular/core": ">= 21.1.0",
+    "@angular/router": ">= 21.1.0"
+  }
+}

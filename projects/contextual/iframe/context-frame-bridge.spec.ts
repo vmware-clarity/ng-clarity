@@ -88,6 +88,15 @@ describe('Context frame bridge', () => {
       expect(postMessage).toHaveBeenCalled();
     });
 
+    it('ignores requests that do not carry a source window to answer to', () => {
+      window.dispatchEvent(
+        new MessageEvent('message', { data: frameRequest('request-no-source'), origin: window.location.origin })
+      );
+
+      expect(getSnapshot).not.toHaveBeenCalled();
+      expect(postMessage).not.toHaveBeenCalled();
+    });
+
     it('ignores unrelated messages', () => {
       dispatchRequest({ some: 'other message' });
       dispatchRequest('plain text');

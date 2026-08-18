@@ -1,0 +1,35 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "es2020",
+    "moduleResolution": "bundler",
+    "types": ["jasmine"],
+    "declaration": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "skipLibCheck": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "useDefineForClassFields": false,
+    "baseUrl": ".",
+    "paths": {
+      "@clr/contextual": ["./index.ts"],
+      "@clr/contextual/*": ["./*"]
+    }
+  },
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": false,
+    "preserveWhitespaces": true,
+    "enableResourceInlining": true,
+    "strictTemplates": true,
+    "strictInjectionParameters": true,
+    "skipTemplateCodegen": true,
+    "strictMetadataEmit": true,
+    "skipMetadataEmit": false,
+    "fullTemplateTypeCheck": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["test.ts", "**/*.spec.ts"]
+}

@@ -292,3 +292,98 @@ describe('DOM context collector - navigation components', () => {
     expect(wizard?.actions).toContain(jasmine.objectContaining({ label: 'Next', kind: 'button' }));
   });
 });
+
+describe('DOM context collector - hand-authored markup', () => {
+  let root: HTMLElement;
+
+  function contextOfType(type: string): ClrComponentContext | undefined {
+    return collectClrDomContexts(root).find(context => context.type === type);
+  }
+
+  beforeEach(() => {
+    root = document.createElement('div');
+    document.body.appendChild(root);
+  });
+
+  afterEach(() => {
+    root.remove();
+  });
+
+  it('reports nothing for library elements that currently render no content', () => {
+    root.innerHTML = '<clr-modal>projected but closed</clr-modal><clr-alert>projected but closed</clr-alert>';
+
+    expect(collectClrDomContexts(root)).toEqual([]);
+  });
+
+  it('describes disabled, invalid and unrecognized form fields', () => {
+    root.innerHTML = `
+      <form clrForm>
+        <div class="clr-form-control clr-form-control-disabled">
+          <label class="clr-control-label">Region</label>
+          <div class="clr-control-container"><select><option>eu</option></select></div>
+        </div>
+        <div class="clr-form-control">
+          <label class="clr-control-label">Notes</label>
+          <div class="clr-control-container clr-error">
+            <textarea required></textarea>
+            <clr-control-error>Required field</clr-control-error>
+          </div>
+        </div>
+        <div class="clr-form-control">
+          <label class="clr-control-label">Custom</label>
+        </div>
+      </form>
+    `;
+
+    expect(contextOfType('form')?.children).toEqual([
+      { type: 'select', label: 'Region', state: { disabled: true } },
+      { type: 'textarea', label: 'Notes', state: { required: true, invalid: true, error: 'Required field' } },
+      { type: 'field', label: 'Custom' },
+    ]);
+  });
+
+  it('only reports the outermost of nested same-type elements', () => {
+    root.innerHTML =
+      '<clr-fake-widget aria-label="Outer"><clr-fake-widget aria-label="Inner"></clr-fake-widget></clr-fake-widget>';
+
+    const widgets = collectClrDomContexts(root).filter(context => context.type === 'fake-widget');
+
+    expect(widgets).toEqual([{ type: 'fake-widget', label: 'Outer' }]);
+  });
+
+  it('applies the component budget during generic collection', () => {
+    root.innerHTML =
+      '<clr-fake-widget aria-label="One"></clr-fake-widget><clr-other-widget aria-label="Two"></clr-other-widget>';
+
+    expect(collectClrDomContexts(root, { maxComponents: 1 }).length).toBe(1);
+  });
+
+  it('falls back to element geometry when checkVisibility is unavailable', () => {
+    root.innerHTML =
+      '<clr-fake-widget aria-label="Visible">content</clr-fake-widget><clr-other-widget aria-label="Hidden" style="display: none">content</clr-other-widget>';
+    for (const element of Array.from(root.querySelectorAll('clr-fake-widget, clr-other-widget'))) {
+      (element as unknown as Record<string, unknown>)['checkVisibility'] = undefined;
+    }
+
+    const contexts = collectClrDomContexts(root);
+
+    expect(contexts).toContain(jasmine.objectContaining({ label: 'Visible' }));
+    expect(contexts).not.toContain(jasmine.objectContaining({ label: 'Hidden' }));
+  });
+
+  it('drops actions that have no label at all', () => {
+    root.innerHTML = `
+      <clr-modal>
+        <div class="modal-dialog">
+          <div class="modal-title">Bare modal</div>
+          <div class="modal-footer"><button type="button"></button></div>
+        </div>
+      </clr-modal>
+    `;
+
+    const modal = contextOfType('modal');
+
+    expect(modal?.label).toBe('Bare modal');
+    expect(modal?.actions).toBeUndefined();
+  });
+});
