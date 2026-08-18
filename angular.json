@@ -226,6 +226,45 @@
         }
       }
     },
+    "clr-contextual": {
+      "projectType": "library",
+      "root": "projects/contextual",
+      "sourceRoot": "projects/contextual",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "options": {
+            "tsConfig": "projects/contextual/tsconfig.lib.json",
+            "project": "projects/contextual/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/contextual/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "styles": ["projects/ui/src/clr-ui.scss"],
+            "main": "projects/contextual/test.ts",
+            "tsConfig": "projects/contextual/tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "codeCoverage": true,
+            "watch": true,
+            "sourceMap": true
+          },
+          "configurations": {
+            "ci": {
+              "watch": false,
+              "sourceMap": false,
+              "browsers": "ChromeHeadless"
+            }
+          }
+        }
+      }
+    },
     "clr-addons": {
       "projectType": "library",
       "root": "projects/addons",
