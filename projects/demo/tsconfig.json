@@ -6,6 +6,8 @@
     "paths": {
       "@clr/angular": ["../angular/index.ts"],
       "@clr/angular/*": ["../angular/*"],
+      "@clr/contextual": ["../contextual/index.ts"],
+      "@clr/contextual/*": ["../contextual/*"],
       "@clr/addons": ["../addons/index.ts"],
       "@clr/addons/*": ["../addons/*"]
     }
