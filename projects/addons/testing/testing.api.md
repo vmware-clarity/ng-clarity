@@ -813,110 +813,59 @@ export function verifyPropertyViewMessage(textValue: string, icon: string, messa
 export function verifyPropertyViewProperty(key: string, value: string[], propertyModel: PropertyViewPropertyModel): void;
 
 // @public (undocumented)
-export class MockStepperComponent {
+export class WizardHelper {
+    constructor(wizard: DebugElement);
     // (undocumented)
-    loading: boolean;
+    get activePageNavTitle(): string | undefined;
     // (undocumented)
-    onFinish: EventEmitter<void>;
-    // Warning: (ae-forgotten-export) The symbol "ModelChange" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
+    get activePageTitle(): string;
     // (undocumented)
-    onModelChange: EventEmitter<ModelChange[]>;
-    // Warning: (ae-forgotten-export) The symbol "Step" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
+    back(): void;
     // (undocumented)
-    steps: Step[];
-    // Warning: (ae-forgotten-export) The symbol "WorkflowModel" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
+    get backButton(): DebugElement;
     // (undocumented)
-    wizardModel: WorkflowModel;
+    get backButtonText(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockStepperComponent, "appfx-stepper", never, { "steps": { "alias": "steps"; "required": false; }; "wizardModel": { "alias": "wizardModel"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; }, { "onModelChange": "onModelChange"; "onFinish": "onFinish"; }, never, ["*"], false, never>;
+    get buttons(): DebugElement[];
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<MockStepperComponent, never>;
+    cancel(): void;
+    // (undocumented)
+    get cancelButton(): DebugElement;
+    // (undocumented)
+    get cancelButtonText(): string;
+    // (undocumented)
+    closeNavigator(): void;
+    // (undocumented)
+    finish(): void;
+    // (undocumented)
+    get finishButton(): DebugElement;
+    // (undocumented)
+    get finishButtonText(): string;
+    // (undocumented)
+    isNavVisible(): boolean;
+    // (undocumented)
+    isShowNavIconVisible(): boolean;
+    // (undocumented)
+    isStepNavEnabled(stepIndex: number): boolean;
+    // (undocumented)
+    get isVisible(): boolean;
+    // (undocumented)
+    navigateToStep(stepIndex: number): void;
+    // (undocumented)
+    next(): void;
+    // (undocumented)
+    get nextButton(): DebugElement;
+    // (undocumented)
+    get nextButtonText(): string;
+    // (undocumented)
+    get pageNavTitles(): Array<string | undefined>;
+    // (undocumented)
+    showNavigator(): void;
+    // (undocumented)
+    get size(): string | undefined;
+    // (undocumented)
+    get visibleButtons(): DebugElement[];
 }
-
-// @public (undocumented)
-export class MockStepperStandaloneComponent extends MockStepperComponent {
-    // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockStepperStandaloneComponent, "appfx-stepper", never, {}, {}, never, ["*"], true, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<MockStepperStandaloneComponent, never>;
-}
-
-// @public (undocumented)
-export class SampleCardComponent {
-    constructor(el: ElementRef);
-    // (undocumented)
-    eleRef: ElementRef;
-    // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<SampleCardComponent, "ng-component", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<SampleCardComponent, never>;
-}
-
-// @public (undocumented)
-export const sampleCards: ({
-    id: string;
-    title: string;
-    componentClass: typeof SampleCardComponent;
-    hidden: boolean;
-    order: number;
-    view: EmbeddedViewRef<void>;
-    canHide?: undefined;
-} | {
-    id: string;
-    title: string;
-    componentClass: typeof SampleCardComponent;
-    hidden: boolean;
-    canHide: boolean;
-    order: number;
-    view: EmbeddedViewRef<void>;
-})[];
-
-// @public (undocumented)
-export const sampleCardsSettings: {
-    id: string;
-    hidden: boolean;
-    order: number;
-}[];
-
-// @public (undocumented)
-export class SampleCardWithoutFooterComponent {
-    constructor(el: ElementRef);
-    // (undocumented)
-    eleRef: ElementRef;
-    // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<SampleCardWithoutFooterComponent, "ng-component", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<SampleCardWithoutFooterComponent, never>;
-}
-
-// @public (undocumented)
-export class SampleCardWithoutHeaderComponent {
-    constructor(el: ElementRef);
-    // (undocumented)
-    eleRef: ElementRef;
-    // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<SampleCardWithoutHeaderComponent, "ng-component", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<SampleCardWithoutHeaderComponent, never>;
-}
-
-// Warning: (ae-forgotten-export) The symbol "AppfxCard" needs to be exported by the entry point clr-addons-testing.d.ts
-//
-// @public (undocumented)
-export const sortCardsFn: (a: AppfxCard, b: AppfxCard) => number;
-
-// Warning: (ae-forgotten-export) The symbol "PropertyViewMessageModel" needs to be exported by the entry point clr-addons-testing.d.ts
-//
-// @public (undocumented)
-export function verifyPropertyViewMessage(textValue: string, icon: string, messageModel: PropertyViewMessageModel): void;
-
-// Warning: (ae-forgotten-export) The symbol "PropertyViewPropertyModel" needs to be exported by the entry point clr-addons-testing.d.ts
-//
-// @public (undocumented)
-export function verifyPropertyViewProperty(key: string, value: string[], propertyModel: PropertyViewPropertyModel): void;
 
 // @public (undocumented)
 export class ZoomLevelServiceMock {
