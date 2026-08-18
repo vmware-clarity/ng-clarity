@@ -18,6 +18,7 @@ export * from '@clr/angular/popover';
 export * from '@clr/angular/utils';
 export * from '@clr/angular/wizard';
 export * from '@clr/angular/collapsible-panel';
+export * from '@clr/angular/contextual';
 export * from '@clr/angular/accordion';
 export * from '@clr/angular/stepper';
 export * from '@clr/angular/progress/spinner';

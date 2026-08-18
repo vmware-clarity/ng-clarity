@@ -8,6 +8,7 @@
 import { NgModule } from '@angular/core';
 import { ClrAccordionModule } from '@clr/angular/accordion';
 import { ClrButtonModule } from '@clr/angular/button';
+import { ClrContextualModule } from '@clr/angular/contextual';
 import { ClrDataModule } from '@clr/angular/data';
 import { ClrEmphasisModule } from '@clr/angular/emphasis';
 import { ClrFormsModule } from '@clr/angular/forms';
@@ -46,6 +47,7 @@ import { ClrWizardModule } from '@clr/angular/wizard';
     ClrProgressBarModule,
     ClrPopoverModuleNext,
     ClrTimelineModule,
+    ClrContextualModule,
   ],
 })
 export class ClarityModule {}
