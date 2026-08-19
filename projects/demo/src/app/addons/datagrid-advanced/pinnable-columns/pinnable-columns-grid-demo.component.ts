@@ -6,7 +6,8 @@
  */
 
 import { Component } from '@angular/core';
-import { AppfxDatagridModule, ColumnDefinition, ColumnPinnedState } from '@clr/addons/datagrid';
+// ColumnPinnedState is disabled with clrDgPinnable, along with onColumnPinnedChange below.
+import { AppfxDatagridModule, ColumnDefinition } from '@clr/addons/datagrid';
 import { SelectionType } from '@clr/angular/data/datagrid';
 
 import { Inventory, VmItem } from '../inventory/inventory';
@@ -20,7 +21,8 @@ import { Inventory, VmItem } from '../inventory/inventory';
 export class PinnableColumnsGridDemoComponent {
   vms: VmItem[];
   selectedVms: VmItem[] = [];
-  lastPinnedChange = '';
+  // Only onColumnPinnedChange wrote this, so it is disabled with clrDgPinnable.
+  // lastPinnedChange = '';
   SelectionType = SelectionType;
 
   // The columns are wide on purpose, so the grid scrolls horizontally and the pinned ones have
@@ -35,14 +37,14 @@ export class PinnableColumnsGridDemoComponent {
     {
       displayName: 'State',
       field: 'state',
-      pinnable: true,
+      // pinnable: true, // disabled with clrDgPinnable
       width: '160px',
     },
     {
       displayName: 'Status',
       field: 'status',
       pinned: true,
-      pinnable: true,
+      // pinnable: true, // disabled with clrDgPinnable
       width: '200px',
     },
     {
@@ -81,7 +83,9 @@ export class PinnableColumnsGridDemoComponent {
 
   // The grid writes the new state onto the column definition before emitting, so this only has to
   // report it. Use the event to persist the choice for the next visit.
-  onColumnPinnedChange(event: ColumnPinnedState): void {
-    this.lastPinnedChange = `${event.column.displayName} was ${event.pinned ? 'pinned' : 'unpinned'}`;
-  }
+  //
+  // Disabled along with clrDgPinnable and the appfx columnPinnedChange output it reported.
+  // onColumnPinnedChange(event: ColumnPinnedState): void {
+  //   this.lastPinnedChange = `${event.column.displayName} was ${event.pinned ? 'pinned' : 'unpinned'}`;
+  // }
 }

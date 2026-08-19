@@ -35,7 +35,7 @@ export {
   ColumnFilterChange,
   ColumnHiddenState,
   ColumnOrderChanged,
-  ColumnPinnedState,
+  // ColumnPinnedState, // disabled with clrDgPinnable
   ColumnResize,
   ColumnSortOrder,
 } from './interfaces/column-state';

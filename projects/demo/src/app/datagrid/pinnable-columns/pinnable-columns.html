@@ -13,49 +13,68 @@
   placed after the built-in row controls.
 </p>
 
-<p>
-  <code class="clr-code">clrDgPinnable</code> adds a pin toggle to the column header, so the user can pin and unpin the
-  column from inside the datagrid instead of the application driving it.
-</p>
+<!--
+  clrDgPinnable is disabled for now, so the section that exercised the header pin toggle is
+  commented out below, and the clrDgPinnable attributes are commented off the datagrids further
+  down. Everything here that only uses clrDgPinned is still live.
 
-<h3>Pin from the column header</h3>
+  <p>
+    <code class="clr-code">clrDgPinnable</code> adds a pin toggle to the column header, so the user can pin and unpin
+    the column from inside the datagrid instead of the application driving it.
+  </p>
 
-<p>
-  Every column here is <code class="clr-code">clrDgPinnable</code> and none starts pinned. Scroll the datagrid sideways
-  and use the pin icon in front of a column title. The columns are also sortable, so this is where to check that
-  clicking the pin does not sort the column.
-</p>
+  <h3>Pin from the column header</h3>
 
-<div class="pinnable-columns-demo">
-  <clr-datagrid>
-    <clr-dg-column [clrDgField]="'id'" clrDgPinnable [style.width.px]="160">User ID</clr-dg-column>
-    <clr-dg-column [clrDgField]="'name'" clrDgPinnable [style.width.px]="200">Name</clr-dg-column>
-    <clr-dg-column [clrDgField]="'creation'" clrDgPinnable [style.width.px]="220">Creation date</clr-dg-column>
-    <clr-dg-column [clrDgField]="'pokemon.name'" clrDgPinnable [style.width.px]="1200">Pokemon</clr-dg-column>
-    <clr-dg-column [clrDgField]="'color'" [style.width.px]="1200">Favorite color</clr-dg-column>
+  <p>
+    Every column here is <code class="clr-code">clrDgPinnable</code> and none starts pinned. Scroll the datagrid
+    sideways and use the pin icon in front of a column title. The columns are also sortable, so this is where to check
+    that clicking the pin does not sort the column.
+  </p>
 
-    <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-      <clr-dg-cell>{{user.id}}</clr-dg-cell>
-      <clr-dg-cell>{{user.name}}</clr-dg-cell>
-      <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
-      <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
-      <clr-dg-cell>
-        <span class="color-square" [style.backgroundColor]="user.color"></span>
-      </clr-dg-cell>
-    </clr-dg-row>
+  <div class="pinnable-columns-demo">
+    <clr-datagrid>
+      <clr-dg-column [clrDgField]="'id'" clrDgPinnable [style.width.px]="160">User ID</clr-dg-column>
+      <clr-dg-column [clrDgField]="'name'" clrDgPinnable [style.width.px]="200">Name</clr-dg-column>
+      <clr-dg-column [clrDgField]="'creation'" clrDgPinnable [style.width.px]="220">Creation date</clr-dg-column>
+      <clr-dg-column [clrDgField]="'pokemon.name'" clrDgPinnable [style.width.px]="1200">Pokemon</clr-dg-column>
+      <clr-dg-column [clrDgField]="'color'" [style.width.px]="1200">Favorite color</clr-dg-column>
 
-    <clr-dg-footer>{{users.length}} users</clr-dg-footer>
-  </clr-datagrid>
-</div>
+      <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+        <clr-dg-cell>{{user.id}}</clr-dg-cell>
+        <clr-dg-cell>{{user.name}}</clr-dg-cell>
+        <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+        <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
+        <clr-dg-cell>
+          <span class="color-square" [style.backgroundColor]="user.color"></span>
+        </clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>{{users.length}} users</clr-dg-footer>
+    </clr-datagrid>
+  </div>
+-->
 
 <h3>Keeping the pinned state in sync</h3>
 
 <p>
-  The columns below combine <code class="clr-code">clrDgPinnable</code> with a two-way
-  <code class="clr-code">[(clrDgPinned)]</code> binding. Ticking a checkbox pins the column and clicking a pin icon
-  ticks the matching checkbox, which is what <code class="clr-code">clrDgPinnedChange</code> is for. The last column has
-  no <code class="clr-code">clrDgPinnable</code>, so it can only be pinned from here.
+  The columns below bind <code class="clr-code">[clrDgPinned]</code>, so ticking a checkbox pins the matching column.
+  The binding is one-way while <code class="clr-code">clrDgPinnable</code> is disabled: with no pin toggle, nothing
+  inside the datagrid can change the pinned state, and without <code class="clr-code">clrDgPinnedChange</code> a two-way
+  <code class="clr-code">[(clrDgPinned)]</code> binding will not compile.
 </p>
+
+<!--
+  Disabled with clrDgPinnable. This section also demonstrated the toggle keeping the checkboxes in
+  sync through clrDgPinnedChange. Restoring it means putting clrDgPinnable back on the User ID, Name
+  and Pokemon columns below, and restoring this paragraph:
+
+  <p>
+    The columns below combine <code class="clr-code">clrDgPinnable</code> with a two-way
+    <code class="clr-code">[(clrDgPinned)]</code> binding. Ticking a checkbox pins the column and clicking a pin icon
+    ticks the matching checkbox, which is what <code class="clr-code">clrDgPinnedChange</code> is for. The last column
+    has no <code class="clr-code">clrDgPinnable</code>, so it can only be pinned from here.
+  </p>
+-->
 
 <clr-checkbox-container clrInline>
   <label>Pinned columns</label>
@@ -73,17 +92,17 @@
   </clr-checkbox-wrapper>
   <clr-checkbox-wrapper>
     <input type="checkbox" clrCheckbox name="pin-color" [(ngModel)]="pinColor" />
-    <label>Favorite color (not pinnable)</label>
+    <label>Favorite color</label>
   </clr-checkbox-wrapper>
 </clr-checkbox-container>
 
 <div class="pinnable-columns-demo">
   <clr-datagrid>
-    <clr-dg-column clrDgPinnable [(clrDgPinned)]="pinId" [style.width.px]="120">User ID</clr-dg-column>
-    <clr-dg-column clrDgPinnable [(clrDgPinned)]="pinName" [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column [clrDgPinned]="pinId" [style.width.px]="120">User ID</clr-dg-column>
+    <clr-dg-column [clrDgPinned]="pinName" [style.width.px]="200">Name</clr-dg-column>
     <clr-dg-column [style.width.px]="220">Creation date</clr-dg-column>
-    <clr-dg-column clrDgPinnable [(clrDgPinned)]="pinPokemon" [style.width.px]="1200">Pokemon</clr-dg-column>
-    <clr-dg-column [(clrDgPinned)]="pinColor" [style.width.px]="1200">Favorite color</clr-dg-column>
+    <clr-dg-column [clrDgPinned]="pinPokemon" [style.width.px]="1200">Pokemon</clr-dg-column>
+    <clr-dg-column [clrDgPinned]="pinColor" [style.width.px]="1200">Favorite color</clr-dg-column>
 
     <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
       <clr-dg-cell>{{user.id}}</clr-dg-cell>
@@ -103,14 +122,17 @@
 
 <p>
   Selection, row actions and the expand caret keep their place at the very left. The pinned columns follow them, and the
-  separator after the last pinned column marks the boundary with the scrollable ones. Toggling from the header here also
-  checks that the pin does not select the row or open the action overflow.
+  separator after the last pinned column marks the boundary with the scrollable ones.
 </p>
 
+<!--
+  Disabled with clrDgPinnable: the User ID and Name columns below also carried clrDgPinnable, which
+  checked that the pin toggle does not select the row or open the action overflow.
+-->
 <div class="pinnable-columns-demo">
   <clr-datagrid [clrDgSelectionType]="'multi'" [(clrDgSelected)]="selected">
-    <clr-dg-column clrDgPinnable clrDgPinned [style.width.px]="120">User ID</clr-dg-column>
-    <clr-dg-column clrDgPinnable clrDgPinned [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="120">User ID</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="200">Name</clr-dg-column>
     <clr-dg-column [style.width.px]="220">Creation date</clr-dg-column>
     <clr-dg-column [style.width.px]="220">Creation date</clr-dg-column>
     <clr-dg-column [style.width.px]="220">Creation date</clr-dg-column>
@@ -146,14 +168,18 @@
 <p>
   The detail pane shows a single, full width column, so there is nothing left to scroll. Pinning is suspended for as
   long as the pane is open and restored when it closes - the <code class="clr-code">clrDgPinned</code> input itself is
-  not touched. The pin toggle stays in the header while the pane is open, so it is worth checking what it does there.
+  not touched.
 </p>
 
+<!--
+  Disabled with clrDgPinnable: all three columns below also carried clrDgPinnable, which checked that
+  the toggle stays in the header while the detail pane is open.
+-->
 <div class="pinnable-columns-demo">
   <clr-datagrid>
-    <clr-dg-column clrDgPinnable clrDgPinned [style.width.px]="200">Name</clr-dg-column>
-    <clr-dg-column clrDgPinnable clrDgPinned [style.width.px]="120">User ID</clr-dg-column>
-    <clr-dg-column clrDgPinnable [style.width.px]="220">Creation date</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="120">User ID</clr-dg-column>
+    <clr-dg-column [style.width.px]="220">Creation date</clr-dg-column>
 
     <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
       <clr-dg-cell>{{user.name}}</clr-dg-cell>
@@ -179,11 +205,12 @@
   columns have to stay aligned across both while scrolling in either direction.
 </p>
 
+<!-- Disabled with clrDgPinnable: all three columns below also carried clrDgPinnable. -->
 <div class="pinnable-columns-demo">
   <clr-datagrid [style.height.rem]="24">
-    <clr-dg-column clrDgPinnable clrDgPinned [style.width.px]="120">User ID</clr-dg-column>
-    <clr-dg-column clrDgPinnable clrDgPinned [style.width.px]="200">Name</clr-dg-column>
-    <clr-dg-column clrDgPinnable [style.width.px]="1220">Creation date</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="120">User ID</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column [style.width.px]="1220">Creation date</clr-dg-column>
     <clr-dg-column [style.width.px]="1200">Pokemon</clr-dg-column>
 
     <ng-template clrVirtualScroll let-user [clrVirtualRowsOf]="manyUsers">

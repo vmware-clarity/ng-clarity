@@ -7,9 +7,13 @@
 
 <div class="card card-block">
   <p class="card-text">Pinned columns: {{ pinnedColumns || 'none' }}</p>
-  <p class="card-text">Last change: {{ lastPinnedChange || 'none yet' }}</p>
+  <!-- Disabled with clrDgPinnable: <p class="card-text">Last change: {{ lastPinnedChange || 'none yet' }}</p> -->
 </div>
 
+<!--
+  Disabled with clrDgPinnable. Restoring it means putting this back on the grid below:
+    (columnPinnedChange)="onColumnPinnedChange($event)"
+-->
 <appfx-datagrid
   [gridItems]="vms"
   [columns]="columns"
@@ -19,6 +23,5 @@
   [footerModel]="{ showFooter: true }"
   [pageSize]="10"
   (selectedItemsChange)="onSelectedItemsChange($event)"
-  (columnPinnedChange)="onColumnPinnedChange($event)"
 >
 </appfx-datagrid>

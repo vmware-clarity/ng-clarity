@@ -294,19 +294,23 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           description: 'Set the model property that represents data in the column.',
         },
         {
-          name: '[(clrDgPinned)]',
+          // Documented one-way while clrDgPinnable is disabled: nothing inside the datagrid can
+          // change the pinned state, and clrDgPinnedChange is commented out with the toggle, so a
+          // two-way [(clrDgPinned)] binding does not compile.
+          name: '[clrDgPinned]',
           type: 'boolean',
           defaultValue: 'false',
           description:
-            'Pins the column to the left of the datagrid, so it stays visible while the remaining columns are scrolled horizontally. Pinned columns keep their declaration order and are rendered after the built-in row controls. Pinning is suspended while the detail pane is open. Bind it two-way when the column is also pinnable, so a pin from the header is written back.',
+            'Pins the column to the left of the datagrid, so it stays visible while the remaining columns are scrolled horizontally. Pinned columns keep their declaration order and are rendered after the built-in row controls. The pinned columns cannot take more than 85% of the datagrid width - past that they shrink to fit. Pinning is suspended while the detail pane is open.',
         },
-        {
-          name: '[clrDgPinnable]',
-          type: 'boolean',
-          defaultValue: 'false',
-          description:
-            'Adds a pin toggle to the column header, letting the user pin and unpin the column from within the datagrid. It only adds the control - the pinned state itself stays on [clrDgPinned].',
-        },
+        // Disabled with clrDgPinnable:
+        // {
+        //   name: '[clrDgPinnable]',
+        //   type: 'boolean',
+        //   defaultValue: 'false',
+        //   description:
+        //     'Adds a pin toggle to the column header, letting the user pin and unpin the column from within the datagrid. It only adds the control - the pinned state itself stays on [clrDgPinned].',
+        // },
         {
           name: '[clrFilterNumberMaxPlaceholder]',
           type: 'string',

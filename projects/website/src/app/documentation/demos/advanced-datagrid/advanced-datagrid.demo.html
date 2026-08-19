@@ -598,8 +598,7 @@
       <h3 data-toc-item id="pinnable-columns" cds-text="section" class="clr-mt-32px">Pinnable Columns</h3>
       <p cds-text="body" class="clr-mt-16px">
         Pinning keeps a column to the left of the scrollable ones, so the column that identifies a row stays in view
-        while the user reads the columns further to the right. Both the initial state and whether the user may change it
-        are set per column definition.
+        while the user reads the columns further to the right. The initial state is set per column definition.
       </p>
 
       <h2 class="clr-mt-48px" cds-text="subsection">Key Features</h2>
@@ -608,17 +607,21 @@
           <strong cds-text="medium">Fixed Pinning:</strong> A column definition with
           <code cds-text="code">pinned: true</code> starts pinned and stays that way unless the application changes it.
         </li>
-        <li>
-          <strong cds-text="medium">User Pinning:</strong> Adding <code cds-text="code">pinnable: true</code> puts a pin
-          toggle in the column header. The two flags are independent, so a column can be pinned without being pinnable,
-          or pinnable without starting out pinned.
-        </li>
-        <li>
-          <strong cds-text="medium">Change Notification:</strong> When the user works the toggle, the grid updates
-          <code cds-text="code">pinned</code> on the column definition and emits
-          <code cds-text="code">(columnPinnedChange)</code> with the column and its new state - use it to persist the
-          choice.
-        </li>
+        <!--
+          Disabled with clrDgPinnable:
+
+          <li>
+            <strong cds-text="medium">User Pinning:</strong> Adding <code cds-text="code">pinnable: true</code> puts a
+            pin toggle in the column header. The two flags are independent, so a column can be pinned without being
+            pinnable, or pinnable without starting out pinned.
+          </li>
+          <li>
+            <strong cds-text="medium">Change Notification:</strong> When the user works the toggle, the grid updates
+            <code cds-text="code">pinned</code> on the column definition and emits
+            <code cds-text="code">(columnPinnedChange)</code> with the column and its new state - use it to persist the
+            choice.
+          </li>
+        -->
       </ul>
 
       <clr-alert [clrAlertClosable]="false" clrAlertType="info">
@@ -909,16 +912,20 @@
           <td>Emits on advanced filter change.</td>
           <td>No</td>
         </tr>
-        <tr>
-          <td><code cds-text="code">columnPinnedChange</code></td>
-          <td>Output</td>
-          <td><code cds-text="code">EventEmitter&lt;ColumnPinnedState&gt;</code></td>
-          <td>
-            Emits when the user pins or unpins a column from its header toggle. The
-            <code cds-text="code">pinned</code> flag on the column definition is updated before the event is emitted.
-          </td>
-          <td>No</td>
-        </tr>
+        <!--
+          Disabled with clrDgPinnable:
+
+          <tr>
+            <td><code cds-text="code">columnPinnedChange</code></td>
+            <td>Output</td>
+            <td><code cds-text="code">EventEmitter&lt;ColumnPinnedState&gt;</code></td>
+            <td>
+              Emits when the user pins or unpins a column from its header toggle. The
+              <code cds-text="code">pinned</code> flag on the column definition is updated before the event is emitted.
+            </td>
+            <td>No</td>
+          </tr>
+        -->
         <tr>
           <td><code cds-text="code">toggleAll</code></td>
           <td>Method</td>
@@ -974,21 +981,26 @@
           <td><code cds-text="code">pinned</code></td>
           <td><code cds-text="code">boolean</code></td>
           <td>
-            Pins the column to the left of the scrollable columns, so it stays visible during horizontal scroll. Kept up
-            to date when the user pins from the header. Defaults to <code cds-text="code">false</code>.
-          </td>
-          <td>No</td>
-        </tr>
-        <tr>
-          <td><code cds-text="code">pinnable</code></td>
-          <td><code cds-text="code">boolean</code></td>
-          <td>
-            Adds a pin toggle to the column header so the user can pin and unpin the column. It only adds the control -
-            the state itself is held by <code cds-text="code">pinned</code>. Defaults to
+            Pins the column to the left of the scrollable columns, so it stays visible during horizontal scroll. The
+            pinned columns cannot take more than 85% of the grid width - past that they shrink to fit. Defaults to
             <code cds-text="code">false</code>.
           </td>
           <td>No</td>
         </tr>
+        <!--
+          Disabled with clrDgPinnable:
+
+          <tr>
+            <td><code cds-text="code">pinnable</code></td>
+            <td><code cds-text="code">boolean</code></td>
+            <td>
+              Adds a pin toggle to the column header so the user can pin and unpin the column. It only adds the control
+              - the state itself is held by <code cds-text="code">pinned</code>. Defaults to
+              <code cds-text="code">false</code>.
+            </td>
+            <td>No</td>
+          </tr>
+        -->
         <tr>
           <td><code cds-text="code">stringFilter</code></td>
           <td><code cds-text="code">ClrDatagridStringFilterInterface&lt;T&gt;</code></td>

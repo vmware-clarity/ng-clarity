@@ -252,7 +252,6 @@ export interface ClrCommonStrings {
     // (undocumented)
     passwordShow: string;
     pickColumns: string;
-    pinColumn: string;
     previous: string;
     previousPage: string;
     // (undocumented)
@@ -296,7 +295,6 @@ export interface ClrCommonStrings {
     toLabel: string;
     totalPages: string;
     unknown: string;
-    unpinColumn: string;
     // (undocumented)
     unselectedTreeNode: string;
     // (undocumented)

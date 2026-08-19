@@ -102,14 +102,17 @@ export interface ClrCommonStrings {
    * Datagrid: sort of columns
    */
   sortColumn: string;
-  /**
-   * Datagrid: pin a column to the left of the datagrid
-   */
-  pinColumn: string;
-  /**
-   * Datagrid: unpin a pinned column
-   */
-  unpinColumn: string;
+  // Disabled along with the clrDgPinnable toggle that was their only consumer. Kept as line
+  // comments rather than doc comments, so api-extractor does not attach them to the next key.
+  //
+  // /**
+  //  * Datagrid: pin a column to the left of the datagrid
+  //  */
+  // pinColumn: string;
+  // /**
+  //  * Datagrid: unpin a pinned column
+  //  */
+  // unpinColumn: string;
   /**
    * Datagrid: first page
    */

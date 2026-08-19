@@ -50,7 +50,7 @@ import {
   ColumnFilterChange,
   ColumnHiddenState,
   ColumnOrderChanged,
-  ColumnPinnedState,
+  // ColumnPinnedState, // disabled with clrDgPinnable
   ColumnResize,
   ColumnSortOrder,
 } from './interfaces/column-state';
@@ -435,10 +435,15 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    */
   @Output() columnHiddenStateChange: EventEmitter<ColumnHiddenState> = new EventEmitter<ColumnHiddenState>();
 
-  /**
-   * Event emitter to tell hosting view that the user pinned or unpinned a column.
-   */
-  @Output() columnPinnedChange: EventEmitter<ColumnPinnedState> = new EventEmitter<ColumnPinnedState>();
+  // Disabled for now: only the clrDgPinnable header toggle could ever raise this, so it is
+  // commented out along with the toggle, onPinnedChange() below and the ColumnPinnedState
+  // interface. Kept as a line comment rather than a doc comment, so api-extractor does not attach
+  // it to the next output.
+  //
+  // /**
+  //  * Event emitter to tell hosting view that the user pinned or unpinned a column.
+  //  */
+  // @Output() columnPinnedChange: EventEmitter<ColumnPinnedState> = new EventEmitter<ColumnPinnedState>();
 
   /**
    * Event emitter to tell hosting view that column filtering has changed.
@@ -945,12 +950,13 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     this.columnResize.emit({ columnSize: columnSize, column: column });
   }
 
-  protected onPinnedChange(pinned: boolean, column: ColumnDefinition<T>): void {
-    // The column definition is the source of truth for the binding, so it has to be updated or the
-    // next change detection would push the previous value back onto the column.
-    column.pinned = pinned;
-    this.columnPinnedChange.emit({ pinned: pinned, column: column });
-  }
+  // Disabled along with clrDgPinnable, which was the only thing that called this.
+  // protected onPinnedChange(pinned: boolean, column: ColumnDefinition<T>): void {
+  //   // The column definition is the source of truth for the binding, so it has to be updated or the
+  //   // next change detection would push the previous value back onto the column.
+  //   column.pinned = pinned;
+  //   this.columnPinnedChange.emit({ pinned: pinned, column: column });
+  // }
 
   protected onSortOrderChange(sortOrder: ClrDatagridSortOrder, column: ColumnDefinition<T>): void {
     const columnSortOrder = {

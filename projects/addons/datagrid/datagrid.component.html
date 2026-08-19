@@ -56,6 +56,12 @@
     <clr-dg-column class="draggableCell" style="width: 20px"></clr-dg-column>
   }
   @for (column of visibleColumns; track trackByColumnId(index, column); let index = $index) {
+    <!--
+      clrDgPinnable is disabled for now, so these two bindings are commented out. Restoring them
+      means putting them back on the clr-dg-column below, next to [clrDgPinned]:
+        [clrDgPinnable]="!!column.pinnable"
+        (clrDgPinnedChange)="onPinnedChange($event, column)"
+    -->
     <clr-dg-column
       cdkDrag
       [cdkDragLockAxis]="'x'"
@@ -72,8 +78,6 @@
       (clrDgSortOrderChange)="onSortOrderChange($event, column)"
       [clrDgDisableUnsort]="column.disableUnsort ?? disableUnsort"
       [clrDgPinned]="!!column.pinned"
-      [clrDgPinnable]="!!column.pinnable"
-      (clrDgPinnedChange)="onPinnedChange($event, column)"
     >
       <clr-dg-filter
         *ngIf="column.stringFilter || column.sortAndFilterByField"

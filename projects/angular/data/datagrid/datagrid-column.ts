@@ -53,16 +53,23 @@ import { WrappedColumn } from './wrapped-column';
   selector: 'clr-dg-column',
   template: `
     <div class="datagrid-column-flex">
-      @if (pinnable) {
-        <button
-          class="datagrid-column-pin"
-          type="button"
-          [attr.aria-label]="pinned ? commonStrings.keys.unpinColumn : commonStrings.keys.pinColumn"
-          (click)="togglePinned($event)"
-        >
-          <cds-icon [size]="'12'" [shape]="pinned ? 'unpin' : 'pin'" solid aria-hidden="true"></cds-icon>
-        </button>
-      }
+      <!--
+        clrDgPinnable is disabled for now. Restoring it means uncommenting this block together with
+        the pinnable input, the clrDgPinnedChange output and togglePinned() below, the
+        .datagrid-column-pin styles, the pin/unpin icons in ClrDatagridModule and the
+        pinColumn/unpinColumn common strings.
+
+        @if (pinnable) {
+          <button
+            class="datagrid-column-pin"
+            type="button"
+            [attr.aria-label]="pinned ? commonStrings.keys.unpinColumn : commonStrings.keys.pinColumn"
+            (click)="togglePinned($event)"
+          >
+            <cds-icon [size]="'12'" [shape]="pinned ? 'unpin' : 'pin'" solid aria-hidden="true"></cds-icon>
+          </button>
+        }
+      -->
       @if (sortable) {
         <button class="datagrid-column-title" (click)="sort()" type="button" #titleContainer>
           <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
@@ -125,14 +132,19 @@ export class ClrDatagridColumn<T = any>
   @Input('clrFilterNumberMinPlaceholder') filterNumberMinPlaceholder: string;
   @Input('clrDgDisableUnsort') disableUnsort = false;
 
-  /**
-   * Shows a pin toggle in the column header, letting the user pin and unpin the column from within
-   * the datagrid. It only adds the control - the pinned state itself stays on `clrDgPinned`.
-   */
-  @Input({ alias: 'clrDgPinnable', transform: booleanAttribute }) pinnable = false;
+  // Disabled for now, together with the toggle in the template above and togglePinned() below.
+  // Kept as a line comment rather than a doc comment, so api-extractor does not attach it to the
+  // next declaration.
+  //
+  // /**
+  //  * Shows a pin toggle in the column header, letting the user pin and unpin the column from within
+  //  * the datagrid. It only adds the control - the pinned state itself stays on `clrDgPinned`.
+  //  */
+  // @Input({ alias: 'clrDgPinnable', transform: booleanAttribute }) pinnable = false;
 
   @Output('clrDgSortOrderChange') sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
-  @Output('clrDgPinnedChange') pinnedChange = new EventEmitter<boolean>();
+  // Only togglePinned() ever emitted this, so it is disabled along with the pin toggle.
+  // @Output('clrDgPinnedChange') pinnedChange = new EventEmitter<boolean>();
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
   @ViewChild('titleContainer', { read: ElementRef }) titleContainer: ElementRef<HTMLElement>;
@@ -450,19 +462,21 @@ export class ClrDatagridColumn<T = any>
     this.sortOrderChange.emit(this._sortOrder);
   }
 
-  /**
-   * Pins or unpins the column from the header control. Going through the `pinned` setter keeps the
-   * rendering in sync, and the output lets the application follow a change it did not initiate -
-   * without it a one-way [clrDgPinned] binding would write the old value straight back.
-   */
-  protected togglePinned(event: MouseEvent) {
-    // The header is a drop target for the column ordering addon and a click target for the sort
-    // button next to us, so the toggle keeps its click to itself.
-    event.stopPropagation();
-
-    this.pinned = !this.pinned;
-    this.pinnedChange.emit(this.pinned);
-  }
+  // Disabled for now, together with the pin toggle in the template and the clrDgPinnable input.
+  //
+  // /**
+  //  * Pins or unpins the column from the header control. Going through the `pinned` setter keeps the
+  //  * rendering in sync, and the output lets the application follow a change it did not initiate -
+  //  * without it a one-way [clrDgPinned] binding would write the old value straight back.
+  //  */
+  // protected togglePinned(event: MouseEvent) {
+  //   // The header is a drop target for the column ordering addon and a click target for the sort
+  //   // button next to us, so the toggle keeps its click to itself.
+  //   event.stopPropagation();
+  //
+  //   this.pinned = !this.pinned;
+  //   this.pinnedChange.emit(this.pinned);
+  // }
 
   private listenForDetailPaneChanges() {
     return this.detailService.stateChange.subscribe(state => {

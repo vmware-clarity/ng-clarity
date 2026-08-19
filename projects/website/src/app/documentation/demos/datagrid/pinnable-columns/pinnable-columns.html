@@ -155,60 +155,67 @@
   [additionalFiles]="commonFiles.additionalFiles"
 ></app-stackblitz-example>
 
-<h3 cds-text="section" class="clr-mt-32px">Letting the User Pin Columns</h3>
+<!--
+  clrDgPinnable is disabled for now, so the whole section documenting it is commented out.
+  Restoring it also needs the idPinned / namePinned fields and the pinnedColumns getter in
+  pinnable-columns.ts, and the pinnableExample / pinnableComponentTS entries in examples.ts.
 
-<p class="clr-mt-16px" cds-text="body">
-  Add <code cds-text="code">clrDgPinnable</code> to put a pin toggle in the column header, so the user can pin and unpin
-  the column from inside the datagrid instead of the application driving it. The toggle sits in front of the column
-  title, and its icon shows the action it performs - a pin while the column is loose, an unpin once it is pinned.
-</p>
+  <h3 cds-text="section" class="clr-mt-32px">Letting the User Pin Columns</h3>
 
-<p class="clr-mt-16px" cds-text="body">
-  The two inputs are independent and do different jobs. <code cds-text="code">clrDgPinnable</code> only adds the
-  control; the pinned state itself stays on <code cds-text="code">clrDgPinned</code>. A column can therefore be pinned
-  without being user-pinnable, and pinnable without starting out pinned.
-</p>
+  <p class="clr-mt-16px" cds-text="body">
+    Add <code cds-text="code">clrDgPinnable</code> to put a pin toggle in the column header, so the user can pin and
+    unpin the column from inside the datagrid instead of the application driving it. The toggle sits in front of the
+    column title, and its icon shows the action it performs - a pin while the column is loose, an unpin once it is
+    pinned.
+  </p>
 
-<p class="clr-mt-16px" cds-text="body">
-  When the user works the toggle, the column reports the new state through
-  <code cds-text="code">clrDgPinnedChange</code>. Bind both halves with <code cds-text="code">[(clrDgPinned)]</code> so
-  the application follows along - the example below uses it to list which columns are pinned. A one-way
-  <code cds-text="code">[clrDgPinned]</code> binding would write its old value straight back on the next change
-  detection, and the toggle would appear to do nothing.
-</p>
+  <p class="clr-mt-16px" cds-text="body">
+    The two inputs are independent and do different jobs. <code cds-text="code">clrDgPinnable</code> only adds the
+    control; the pinned state itself stays on <code cds-text="code">clrDgPinned</code>. A column can therefore be
+    pinned without being user-pinnable, and pinnable without starting out pinned.
+  </p>
 
-<p class="clr-mt-16px" cds-text="body">
-  Pinned from the header: <b cds-text="medium">{{ pinnedColumns || 'none' }}</b>
-</p>
+  <p class="clr-mt-16px" cds-text="body">
+    When the user works the toggle, the column reports the new state through
+    <code cds-text="code">clrDgPinnedChange</code>. Bind both halves with
+    <code cds-text="code">[(clrDgPinned)]</code> so the application follows along - the example below uses it to list
+    which columns are pinned. A one-way <code cds-text="code">[clrDgPinned]</code> binding would write its old value
+    straight back on the next change detection, and the toggle would appear to do nothing.
+  </p>
 
-<clr-datagrid>
-  <clr-dg-column clrDgPinnable [(clrDgPinned)]="idPinned" [style.width.px]="140">User ID</clr-dg-column>
-  <clr-dg-column clrDgPinnable [(clrDgPinned)]="namePinned" [style.width.px]="240">Name</clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
+  <p class="clr-mt-16px" cds-text="body">
+    Pinned from the header: <b cds-text="medium">{{ pinnedColumns || 'none' }}</b>
+  </p>
 
-  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-  </clr-dg-row>
+  <clr-datagrid>
+    <clr-dg-column clrDgPinnable [(clrDgPinned)]="idPinned" [style.width.px]="140">User ID</clr-dg-column>
+    <clr-dg-column clrDgPinnable [(clrDgPinned)]="namePinned" [style.width.px]="240">Name</clr-dg-column>
+    <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
+    <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
+    <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
 
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
+    <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+      <clr-dg-cell>
+        <span class="color-square" [style.backgroundColor]="user.color"></span>
+      </clr-dg-cell>
+      <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+    </clr-dg-row>
 
-<app-stackblitz-example
-  name="Datagrid User Pinnable Columns"
-  [componentTemplate]="examples.pinnableExample"
-  [componentClass]="examples.pinnableComponentTS"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+    <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+  </clr-datagrid>
+
+  <app-stackblitz-example
+    name="Datagrid User Pinnable Columns"
+    [componentTemplate]="examples.pinnableExample"
+    [componentClass]="examples.pinnableComponentTS"
+    [componentStyles]="commonFiles.exampleCss"
+    [showComponentStyles]="false"
+    [additionalFiles]="commonFiles.additionalFiles"
+  ></app-stackblitz-example>
+-->
 
 <h3 cds-text="section" class="clr-mt-32px">Considerations</h3>
 
@@ -227,14 +234,18 @@
     Arrow key navigation follows the columns in the order they appear on screen, so pinning a column also moves it in
     the keyboard order.
   </li>
-  <li>
-    The pin toggle is a button in the header, so it takes focus and is reachable with the keyboard. Its accessible name
-    comes from the <code cds-text="code">pinColumn</code> and <code cds-text="code">unpinColumn</code> common strings -
-    see the <a routerLink="/documentation/internationalization">internationalization documentation</a> for how to
-    translate them.
-  </li>
-  <li>
-    A pinnable column keeps its toggle while the detail pane is open, even though pinning itself is suspended for as
-    long as the pane shows a single column.
-  </li>
+  <!--
+    Disabled with clrDgPinnable:
+
+    <li>
+      The pin toggle is a button in the header, so it takes focus and is reachable with the keyboard. Its accessible
+      name comes from the <code cds-text="code">pinColumn</code> and <code cds-text="code">unpinColumn</code> common
+      strings - see the <a routerLink="/documentation/internationalization">internationalization documentation</a> for
+      how to translate them.
+    </li>
+    <li>
+      A pinnable column keeps its toggle while the detail pane is open, even though pinning itself is suspended for as
+      long as the pane shows a single column.
+    </li>
+  -->
 </ul>

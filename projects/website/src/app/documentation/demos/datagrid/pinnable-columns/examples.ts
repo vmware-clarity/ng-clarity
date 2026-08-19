@@ -91,6 +91,10 @@ export class ExampleComponent {
 }
 `;
 
+/*
+ * Disabled along with clrDgPinnable, together with the 'Letting the User Pin Columns' section of
+ * pinnable-columns.html that these two examples belong to.
+ *
 const pinnableExample = `
 <p>
   Pinned from the header:
@@ -153,11 +157,13 @@ export class ExampleComponent {
   }
 }
 `;
+ */
 
 export const EXAMPLES = {
   basicExample,
   runtimeExample,
   runtimeComponentTS,
-  pinnableExample,
-  pinnableComponentTS,
+  // Disabled with clrDgPinnable, along with the two constants above.
+  // pinnableExample,
+  // pinnableComponentTS,
 };
