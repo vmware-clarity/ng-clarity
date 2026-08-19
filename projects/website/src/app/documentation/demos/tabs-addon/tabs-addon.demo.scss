@@ -9,16 +9,14 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1.2rem;
-  margin-bottom: 1.2rem;
-  padding: 0.75rem 1rem;
-  background: var(--cds-alias-object-container-background-tint);
-  border-radius: var(--cds-alias-object-border-radius-100);
+  gap: var(--clr-base-gap-xl);
+  margin-bottom: var(--clr-base-vertical-offset-xl);
+  padding: var(--clr-base-vertical-offset-l) var(--clr-base-horizontal-offset-l);
 }
 
 .tabs-demo-container {
-  border: 1px solid var(--cds-alias-object-border-color);
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
   border-radius: var(--cds-alias-object-border-radius-100);
-  padding: 1rem;
+  padding: var(--clr-base-vertical-offset-l) var(--clr-base-horizontal-offset-l);
   min-height: 300px;
 }
