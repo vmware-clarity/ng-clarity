@@ -371,7 +371,7 @@
     },
     {
       "url": "dialog",
-      "text": "Dialog",
+      "text": "Multi-Page Dialog",
       "type": "addons",
       "storybookPath": "addons-dialog"
     }
