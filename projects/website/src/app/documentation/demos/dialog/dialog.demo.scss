@@ -8,9 +8,9 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1.2rem;
-  margin-bottom: 1.2rem;
-  padding: 0.75rem 1rem;
+  gap: var(--clr-base-gap-xl);
+  margin-bottom: var(--clr-base-vertical-offset-xl);
+  padding: var(--clr-base-vertical-offset-l) var(--clr-base-horizontal-offset-l);
   background: var(--cds-alias-object-container-background-tint);
   border-radius: var(--cds-alias-object-border-radius-100);
 }

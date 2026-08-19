@@ -114,8 +114,12 @@ export class DialogComponent implements OnInit, OnDestroy {
   @Input() steps: Step[];
 
   /**
-   * You can supply here any structure you like. As long as it has the needed properties
-   * to inject to the step models and eject back from the step models.
+   * You can supply here any structure you like. As long as it has the
+   * needed properties to inject to the step models and eject back from
+   * the step models.
+   *
+   * If not specified, the steps will simply stay disconnected from each other,
+   * so you would need other means of communication between them.
    */
   @Input() model: WorkflowModel;
 
@@ -123,10 +127,17 @@ export class DialogComponent implements OnInit, OnDestroy {
    * Object containing callback methods that will be invoked when the Dialog is Submitted or Cancelled.
    * onSubmit is invoked when the user clicks Ok button.
    * onCancel is invoked when the user clicks Cancel button.
+   * You can perform the actions you want there (i.e modify something).
+   * Dialog will wait for the result and then will close.
+   * If there is an error, it will be displayed in the dialog that will remain open.
    */
   @Input() closeHandler: CloseHandler;
 
-  /** Show Tab Links (true by default). Set to false if you have only one step. */
+  /**
+   * Show Tab Links (true by default)
+   * Set this to false if you want to hide the tab links.
+   * You can set this to false if you have only one step.
+   */
   @Input() showTabLinks = true;
 
   /** Controls dialog open/close state. */
@@ -146,7 +157,10 @@ export class DialogComponent implements OnInit, OnDestroy {
   /** Dispatches when any of the workflow state's variables changes. */
   @Output() readonly onModelChange: EventEmitter<ModelChange[]> = new EventEmitter<ModelChange[]>();
 
-  /** Dispatched when the dialog is closed. */
+  /**
+   * Dispatched when the dialog is closed (in all three cases: via the close button
+   * (on the top right corner) or the OK/Cancel buttons).
+   */
   @Output() onClose: EventEmitter<void> = new EventEmitter<void>();
 
   /** Emits when opened input is changed. */

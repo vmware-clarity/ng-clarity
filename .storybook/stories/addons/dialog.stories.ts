@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AppfxMultiPageDialogModule, DialogComponent } from '@clr/addons/dialog';
 import { AppfxWorkflowCoreModule, Step, StepModel, StepModelHolder, TabLayout, Var } from '@clr/addons/var';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
@@ -76,10 +76,10 @@ class DialogReviewStepComponent {}
 })
 class DialogStoryWrapperComponent implements OnInit {
   title = 'Dialog Title';
-  tabLayout: TabLayout = TabLayout.horizontal;
-  size: string;
-  defaultButton: 'submit' | 'close' = 'close';
-  showTabLinks = true;
+  @Input() tabLayout: TabLayout = TabLayout.horizontal;
+  @Input() size: string;
+  @Input() defaultButton: 'submit' | 'close' = 'close';
+  @Input() showTabLinks = true;
 
   opened = false;
   steps: Step[] = [];
@@ -136,6 +136,15 @@ type Story = StoryObj<DialogComponent>;
 const template: StoryFn<DialogStoryWrapperComponent> = args => ({
   props: args,
   component: DialogStoryWrapperComponent,
+  template: `
+    <clr-dialog-story-wrapper
+      [title]="title"
+      [tabLayout]="tabLayout"
+      [size]="size"
+      [defaultButton]="defaultButton"
+      [showTabLinks]="showTabLinks"
+    ></clr-dialog-story-wrapper>
+  `,
 });
 
 export const Default: Story = {
