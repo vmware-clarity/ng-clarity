@@ -625,8 +625,10 @@
         <clr-alert-item>
           <span class="alert-text">
             Pinned columns take their width out of the scrollable region, so give them explicit widths and pin only the
-            columns a user needs to keep their place. Pinning is also suspended for as long as the detail pane is open,
-            because the pane shows a single, full width column.
+            columns a user needs to keep their place. They cannot take more than 85% of the grid width - past that they
+            shrink to fit, so the scrollable columns stay reachable - but a column squeezed to its minimum width is hard
+            to read. Pinning is also suspended for as long as the detail pane is open, because the pane shows a single,
+            full width column.
           </span>
         </clr-alert-item>
       </clr-alert>

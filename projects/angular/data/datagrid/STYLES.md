@@ -48,6 +48,7 @@
 | --clr-datagrid-filter-toggle-size                    | Width and Height for filter toggle button                                |
 | --clr-datagrid-row-active-color                      | Background color for active state on rows                                |
 | --clr-datagrid-fixed-column-size                     | Size for fixed columns inside datagrid                                   |
+| --clr-datagrid-pinned-columns-max-width              | Largest share of the datagrid the pinned columns may occupy              |
 
 ## CSS Classes
 

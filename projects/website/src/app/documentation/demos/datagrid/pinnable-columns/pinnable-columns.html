@@ -8,14 +8,9 @@
 <h2 class="clr-mt-48px" cds-text="title">Pinnable Columns</h2>
 
 <p class="clr-mt-16px" cds-text="body">
-  A column with <code cds-text="code">clrDgPinned</code> is rendered to the left of the scrollable columns and stays
-  visible while the rest of the datagrid is scrolled horizontally. Use it to keep the column that identifies a row - a
-  name or an ID - in view while the user reads the columns further to the right.
-</p>
-
-<p class="clr-mt-16px" cds-text="body">
-  The input goes on the <code cds-text="code">clr-dg-column</code> component itself. The cells follow their column
-  automatically, so there is nothing to change on <code cds-text="code">clr-dg-cell</code>.
+  A <code cds-text="code">clr-dg-column</code> with <code cds-text="code">clrDgPinned</code> is rendered to the left of
+  the scrollable columns and stays visible while the rest of the datagrid is scrolled horizontally. Useful to keep the
+  column that identifies a row in view while the user reads the columns further to the right.
 </p>
 
 <clr-datagrid>
@@ -55,6 +50,61 @@
   after the built-in row controls - selection, row actions and the expand caret - which always stay at the very left.
   Pinning a column does not move it in the declaration order of the others, so the remaining columns keep their relative
   order as well.
+</p>
+
+<h3 cds-text="section" class="clr-mt-32px">Maximum Width of Pinned Columns</h3>
+
+<p class="clr-mt-16px" cds-text="body">
+  While there is no limit on the number of pinned columns, there is one on their total width. The pinned region - the
+  built-in row controls together with the pinned columns - is capped at 85% of the visible width of the datagrid, so the
+  scrollable columns always keep a remainder. The user can therefore always see that the datagrid scrolls sideways and
+  can reach the rest of the data.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  When the pinned columns ask for more than the cap, they shrink to fit it instead of spilling past it. They give up
+  room in proportion to the widths you set, so a wide pinned column loses more than a narrow one, and no column shrinks
+  below the minimum width of a datagrid column. Pinned columns that already fit are left exactly at the widths you gave
+  them.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  The cap is a share of the current width of the datagrid, so it applies just as much when the datagrid becomes narrower
+  as when a column becomes wider - a layout that fits on a wide screen shrinks its pinned columns on a small one.
+  Because the columns shrink instead of the pinned state changing,
+  <code cds-text="code">clrDgPinned</code> is never written back to and a column you pinned stays pinned.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  In the datagrid below, three pinned columns of 400px each ask for far more than the datagrid can give them, so all
+  three are shrunk to fit the cap. Scroll it sideways to see that the scrollable columns are still reachable.
+</p>
+
+<clr-datagrid>
+  <clr-dg-column clrDgPinned [style.width.px]="400">User ID</clr-dg-column>
+  <clr-dg-column clrDgPinned [style.width.px]="400">Name</clr-dg-column>
+  <clr-dg-column clrDgPinned [style.width.px]="400">Creation date</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<p class="clr-mt-16px" cds-text="body">
+  The share is the <code cds-text="code">--clr-datagrid-pinned-columns-max-width</code> CSS custom property and defaults
+  to <code cds-text="code">85cqi</code>. Override it with a <code cds-text="code">cqi</code> value rather than a
+  percentage: <code cds-text="code">cqi</code> resolves against the visible width of the datagrid, while a percentage
+  would resolve against the full scrollable width of a row and so would not cap anything once the columns overflow.
 </p>
 
 <h3 cds-text="section" class="clr-mt-32px">Changing the Pinned State at Runtime</h3>
@@ -164,8 +214,9 @@
 
 <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
   <li>
-    Pinned columns take space away from the scrollable ones. Since there is no upper bound on how much of the datagrid
-    they can occupy, pin only the columns a user needs to keep their place, and give them explicit widths.
+    Pinned columns take space away from the scrollable ones. They cannot take more than 85% of the datagrid and shrink
+    to fit that cap, but a column squeezed down to its minimum width is hard to read - so pin only the columns a user
+    needs to keep their place, and give them explicit widths.
   </li>
   <li>
     The detail pane shows a single, full width column, so there is nothing left to scroll. Pinning is suspended for as
