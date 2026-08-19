@@ -71,6 +71,26 @@ describe('ClarityIcons service: ', () => {
     });
   });
 
+  describe('getIconShape: ', () => {
+    it('should return the icon shape without copying the whole registry', () => {
+      const [, testShape] = testIcons.justOutline;
+      ClarityIcons.addIcons(['test10', testShape]);
+
+      const registrySpy = spyOnProperty(ClarityIcons, 'registry', 'get').and.callThrough();
+
+      expect(ClarityIcons.getIconShape('test10')).toEqual(renderIcon(testShape));
+      expect(registrySpy).not.toHaveBeenCalled();
+    });
+
+    it('should fall back to the unknown icon shape when the name is "unknown" and not registered', () => {
+      expect(ClarityIcons.getIconShape('unknown')).toEqual(ClarityIcons.registry['unknown']);
+    });
+
+    it('should return undefined for an unregistered icon name', () => {
+      expect(ClarityIcons.getIconShape('does-not-exist')).toBeUndefined();
+    });
+  });
+
   describe('getIconNameFromShape: ', () => {
     it('should return the icon name string from an icon shape tuple', () => {
       const testIcon: IconShapeTuple = ['test09', 'ohai'];
