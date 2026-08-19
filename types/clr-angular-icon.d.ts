@@ -115,6 +115,14 @@ declare class ClarityIcons {
      * Returns a readonly reference of the icon registry.
      */
     static get registry(): Readonly<IconRegistry>;
+    /**
+     * Looks up a single icon shape by name without copying the entire registry.
+     *
+     * Prefer this over indexing into `registry` (e.g. `registry[name]`) in hot paths like icon
+     * rendering: `registry` spreads the whole (potentially large) registry into a new object on
+     * every access, which becomes expensive/memory-churning when many icons render or re-render.
+     */
+    static getIconShape(name: string): IconRegistrySources[string] | undefined;
     static addIcons(...shapes: IconShapeTuple[]): void;
     /**
      * @description

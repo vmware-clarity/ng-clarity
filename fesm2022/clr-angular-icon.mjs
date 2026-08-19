@@ -203,6 +203,20 @@ class ClarityIcons {
     static get registry() {
         return { unknown: unknownIcon[1], ...GlobalStateService.state.iconRegistry };
     }
+    /**
+     * Looks up a single icon shape by name without copying the entire registry.
+     *
+     * Prefer this over indexing into `registry` (e.g. `registry[name]`) in hot paths like icon
+     * rendering: `registry` spreads the whole (potentially large) registry into a new object on
+     * every access, which becomes expensive/memory-churning when many icons render or re-render.
+     */
+    static getIconShape(name) {
+        const iconRegistry = GlobalStateService.state.iconRegistry;
+        if (name in iconRegistry) {
+            return iconRegistry[name];
+        }
+        return name === 'unknown' ? unknownIcon[1] : undefined;
+    }
     static addIcons(...shapes) {
         // Use the static GlobalStateService
         const currentRegistry = GlobalStateService.state.iconRegistry;
@@ -221,11 +235,10 @@ class ClarityIcons {
      * The team will revisit this method for possible deprecation.
      */
     static addAliases(...aliases) {
-        const currentRegistry = ClarityIcons.registry; // Use the getter to include 'unknown'
         const currentGlobalRegistry = GlobalStateService.state.iconRegistry;
         const newAliases = aliases
-            .filter(([name]) => currentRegistry[name]) // Check if the icon to be aliased exists
-            .map(([name, aliasNames]) => aliasNames.map(alias => [alias, currentRegistry[name]])); // Map to [aliasName, iconTemplate]
+            .filter(([name]) => ClarityIcons.getIconShape(name)) // Check if the icon to be aliased exists
+            .map(([name, aliasNames]) => aliasNames.map(alias => [alias, ClarityIcons.getIconShape(name)])); // Map to [aliasName, iconTemplate]
         GlobalStateService.setValue('iconRegistry', {
             ...currentGlobalRegistry,
             ...Object.fromEntries(newAliases.flat()),
@@ -353,7 +366,8 @@ function getIconBadgeSVG(icon) {
     return badge;
 }
 function getIconSVG(icon) {
-    const iconShape = (ClarityIcons.registry[icon.shape] ?? ClarityIcons.registry['unknown']);
+    const iconShape = (ClarityIcons.getIconShape(icon.shape) ??
+        ClarityIcons.getIconShape('unknown'));
     let shape = icon.solid && iconShape.solid ? iconShape.solid : iconShape.outline;
     if (icon.badge && !hasAlertBadge(icon)) {
         shape = icon.solid ? (iconShape.solidBadged ?? shape) : (iconShape.outlineBadged ?? shape);
@@ -456,7 +470,7 @@ class ClrIcon {
     ngOnInit() {
         this.updateIcon(); // Initial render
         this.subscription = GlobalStateService.stateUpdates.subscribe(update => {
-            if (update.key === 'iconRegistry' && ClarityIcons.registry[this.shape] && this._priorShape !== this.shape) {
+            if (update.key === 'iconRegistry' && ClarityIcons.getIconShape(this.shape) && this._priorShape !== this.shape) {
                 this._priorShape = this.shape;
                 this.updateIcon();
             }
@@ -469,7 +483,7 @@ class ClrIcon {
         this.subscription?.unsubscribe();
     }
     updateIcon() {
-        const shapeTemplate = ClarityIcons.registry[this.shape] || ClarityIcons.registry['unknown'];
+        const shapeTemplate = ClarityIcons.getIconShape(this.shape) || ClarityIcons.getIconShape('unknown');
         if (typeof shapeTemplate === 'string') {
             this.isStringIcon = true;
             this.iconSVG = shapeTemplate;
