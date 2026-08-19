@@ -5,7 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, HostListener, Inject, Input, OnInit, Optional, Renderer2 } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostListener,
+  Inject,
+  Input,
+  OnInit,
+  Optional,
+  Renderer2,
+} from '@angular/core';
 import {
   ClrPopoverContent,
   ClrPopoverPosition,
@@ -35,6 +45,7 @@ const defaultSize = 'sm';
   },
   standalone: false,
   hostDirectives: [ClrPopoverContent],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrTooltipContent implements OnInit {
   private _id: string;

@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChildren, Injector, OnInit, QueryList, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChildren,
+  Injector,
+  OnInit,
+  QueryList,
+  ViewContainerRef,
+} from '@angular/core';
 import { ClrSignpost } from '@clr/angular/popover/signpost';
 import { HostWrapper } from '@clr/angular/utils';
 
@@ -20,6 +28,7 @@ import { WrappedCell } from './wrapped-cell';
     role: 'gridcell',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrDatagridCell implements OnInit {
   /*********

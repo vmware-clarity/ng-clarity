@@ -8,6 +8,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   DOCUMENT,
   ElementRef,
@@ -63,6 +64,7 @@ import { SignpostIdService } from './providers/signpost-id.service';
   },
   standalone: false,
   hostDirectives: [ClrPopoverContent],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;

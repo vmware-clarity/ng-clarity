@@ -8,6 +8,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
+  ChangeDetectionStrategy,
   Component,
   ContentChild,
   ContentChildren,
@@ -52,6 +53,7 @@ import { ClrWizardTitle } from './wizard-title';
     '[class.wizard-horizontal]': 'stepnavLayout === ClrWizardStepnavLayout.HORIZONTAL',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   /**
