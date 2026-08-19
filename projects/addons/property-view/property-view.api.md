@@ -7,7 +7,6 @@
 import { AfterContentInit } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
-import { ComponentFactoryResolver } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { DoCheck } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
