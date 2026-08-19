@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, Component, ContentChildren, Input, QueryList } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, ContentChildren, Input, QueryList } from '@angular/core';
 import { ClrDropdownMenu } from '@clr/angular/popover/dropdown';
 
 import { ClrDropdownMenuPrivate } from './clarity-private/dropdown-menu';
@@ -15,6 +15,7 @@ import { FocusableItemProvider } from './focusable-item-provider';
   selector: 'focusable-item-collector',
   standalone: false,
   template: '<ng-content></ng-content>',
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 /**
  * Does the job of the parent ClrDropdownMenu which isn't able to collect the child FocusableItems

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
@@ -17,6 +17,7 @@ import { MultiAlertService } from './providers/multi-alert.service';
   templateUrl: './alerts-pager.html',
   host: { '[class.alerts-pager]': 'true' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrAlertsPager implements OnInit, OnDestroy {
   @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);

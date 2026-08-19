@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DoCheck, ElementRef, Input, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DoCheck, ElementRef, Input, QueryList, ViewChildren } from '@angular/core';
 
 import { PropertyViewConfig } from '../property-view-config';
 import { PropertyViewConfigProvider } from '../property-view-config-provider';
@@ -18,6 +18,7 @@ import { PropertyViewCategoryModel, PropertyViewModel } from '../property-view.m
   templateUrl: 'property-view.component.html',
   styleUrls: ['property-view.component.scss'],
   providers: [PropertyViewConfigProvider, PropertyViewSectionsExpandedStateManager],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PropertyViewComponent implements DoCheck {
   private static idCounter = 0;

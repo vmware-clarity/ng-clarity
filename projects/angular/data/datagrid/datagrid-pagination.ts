@@ -6,6 +6,7 @@
  */
 
 import {
+  ChangeDetectionStrategy,
   Component,
   ContentChild,
   ElementRef,
@@ -128,6 +129,7 @@ import { Page } from './providers/page';
   `,
   host: { '[class.pagination]': 'true' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrDatagridPagination implements OnDestroy, OnInit {
   @Input('clrDgPageInputDisabled') disableCurrentPageInput: boolean;

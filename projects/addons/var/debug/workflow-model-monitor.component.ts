@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ClrPopoverContent } from '@clr/angular/popover/common';
 import { Subscription } from 'rxjs';
 import { bufferTime, map } from 'rxjs/operators';
@@ -23,6 +23,7 @@ import { ModelChange, StepWithChanges, WorkflowModelManager } from '../model/wor
   standalone: false,
   templateUrl: 'workflow-model-monitor.component.html',
   styleUrls: ['workflow-model-monitor.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
   @Input() modelMgr: WorkflowModelManager;

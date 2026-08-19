@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'appfx-spinner',
   standalone: false,
   templateUrl: 'spinner.component.html',
   styleUrls: ['spinner.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SpinnerComponent {
   /**

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   appfxMissingTranslationToken,
   AppfxTranslateService,
@@ -45,6 +45,7 @@ const sortCardsByTitleFn = (a: AppfxCardInternal, b: AppfxCardInternal) => {
       useValue: translations,
     },
   ],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AppfxCardContainerSettingsComponent {
   cards: AppfxCardInternal[];

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { ButtonHubService } from './providers/button-hub.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
@@ -49,6 +49,7 @@ export const CUSTOM_BUTTON_TYPES: any = {
   `,
   host: { class: 'clr-wizard-btn-wrapper', '[attr.aria-hidden]': 'isHidden' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrWizardButton {
   @Input('type') type = '';
