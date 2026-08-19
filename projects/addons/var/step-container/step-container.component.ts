@@ -5,7 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
@@ -22,6 +32,7 @@ import { StepModel } from '../model/step.model';
   selector: 'appfx-step-container',
   standalone: false,
   templateUrl: 'step-container.component.html',
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class StepContainerComponent implements OnInit, OnDestroy {
   @Input() step: StepInternal;

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ClrAbstractContainer } from './abstract-container';
 import { ControlClassService } from './providers/control-class.service';
@@ -41,5 +41,6 @@ import { NgControlService } from './providers/ng-control.service';
   },
   providers: [NgControlService, ControlIdService, ControlClassService],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrControlContainer extends ClrAbstractContainer {}

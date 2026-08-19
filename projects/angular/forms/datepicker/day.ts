@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { DayViewModel } from './model/day-view.model';
@@ -37,6 +37,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
   `,
   host: { '[class.day]': 'true' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrDay {
   @Output('selectDay') onSelectDay = new EventEmitter<DayModel>();

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, Optional, Renderer2 } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Optional, Renderer2 } from '@angular/core';
 import {
   ClrAbstractContainer,
   ControlClassService,
@@ -46,6 +46,7 @@ import {
   },
   providers: [NgControlService, ControlIdService, ControlClassService],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrRangeContainer extends ClrAbstractContainer {
   private _hasProgress = false;

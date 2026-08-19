@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, forwardRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef } from '@angular/core';
 
 import { MenuItem, MenuItemType } from './menu-item.token';
 
@@ -19,6 +19,7 @@ import { MenuItem, MenuItemType } from './menu-item.token';
       useExisting: forwardRef(() => MenuSeparatorComponent),
     },
   ],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class MenuSeparatorComponent extends MenuItem {
   override type = MenuItemType.separator;

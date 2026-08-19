@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, Input } from '@angular/core';
 import { ClrPopoverHostDirective, ClrPopoverPoint, ClrPopoverService } from '@clr/angular/popover/common';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
@@ -33,6 +33,7 @@ import { ClrSignpostTrigger } from './signpost-trigger';
   providers: [SignpostFocusManager, SignpostIdService],
   hostDirectives: [ClrPopoverHostDirective],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 
 /*********
