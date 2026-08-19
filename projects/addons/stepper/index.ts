@@ -5,10 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './a11y';
-export * from './card-container';
-export * from './datagrid';
-export * from './datagrid-filters';
-export * from './menu';
-export * from './property-view';
-export * from './stepper';
+export { AppfxStepperModule } from './stepper.module';
+export { StepperComponent, StepperComponent as Stepper } from './stepper.component';
+export { StepperStateService, StepState } from './state/stepper-state.service';
+export { SummaryService } from './summary/summary.service';
