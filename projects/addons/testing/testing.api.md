@@ -20,7 +20,6 @@ import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { CdkVirtualForOf } from '@angular/cdk/scrolling';
 import { CdkVirtualForOfContext } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';
-import { ComponentFactoryResolver } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ControlValueAccessor } from '@angular/forms';
@@ -476,7 +475,6 @@ export class MockDatagridActionBarComponent {
 
 // @public
 export class MockDatagridCellContainerComponent implements OnInit {
-    constructor(componentFactoryResolver: ComponentFactoryResolver);
     // (undocumented)
     column: any;
     // (undocumented)
