@@ -37,16 +37,11 @@ export class ClarityIcons {
    * every access, which becomes expensive/memory-churning when many icons render or re-render.
    */
   static getIconShape(name: string): IconRegistrySources[string] | undefined {
-    if (name === 'unknown') {
-      return unknownIcon[1] as string;
-    }
-
     const iconRegistry = GlobalStateService.state.iconRegistry;
     if (name in iconRegistry) {
       return iconRegistry[name];
     }
-
-    return undefined;
+    return name === 'unknown' ? (unknownIcon[1] as string) : undefined;
   }
 
   static addIcons(...shapes: IconShapeTuple[]) {
