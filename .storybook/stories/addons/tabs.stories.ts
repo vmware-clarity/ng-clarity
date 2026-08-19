@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxTabsModule, TabsComponent } from '@clr/addons/tabs';
 import { AppfxWorkflowCoreModule, Step, StepModel, StepModelHolder, TabLayout, Var } from '@clr/addons/var';
@@ -105,9 +105,9 @@ class TabsWorkflowModel {
   `,
 })
 class TabsStoryWrapperComponent implements OnInit {
-  tabLayout: TabLayout = TabLayout.horizontal;
-  disableTabsContent = false;
-  showTabLinks = true;
+  @Input() tabLayout: TabLayout = TabLayout.horizontal;
+  @Input() disableTabsContent = false;
+  @Input() showTabLinks = true;
 
   workflowModel = new TabsWorkflowModel();
   steps: Step[] = [];

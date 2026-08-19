@@ -9,7 +9,7 @@
   .appfx-tabs {
     &.show-tab-content {
       ::ng-deep {
-        .tab-content {
+        .tab-content.active {
           display: flex !important;
         }
       }
