@@ -256,6 +256,12 @@
     left: 0;
     z-index: map.get(variables.$clr-layers, datagrid-row-sticky);
 
+    // The pinned columns can never take the whole datagrid, so there is always somewhere to scroll.
+    // The cap applies to the left sticky container only - the one holding the pinned columns.
+    &:not(.datagrid-row-sticky-scroll) {
+      max-width: datagrid-variables.$clr-datagrid-pinned-columns-max-width;
+    }
+
     &-scroll {
       right: 0;
 
@@ -282,7 +288,7 @@
     }
 
     .datagrid-column.datagrid-pinned-column:last-child .datagrid-column-separator::after,
-    .datagrid-cell:last-child::after {
+    .datagrid-cell.datagrid-pinned-column:last-child::after {
       top: 0;
       width: density.$clr-base-layout-space-2xs;
       height: 100%;
@@ -387,6 +393,9 @@
     flex: 1 1 auto;
     min-height: 100%;
     width: 100%;
+
+    // Anchors the `cqi` unit that caps the pinned columns.
+    container-type: inline-size;
   }
 
   .datagrid-table {
@@ -779,13 +788,15 @@
     }
 
     // Pinned (static) columns are projected into the sticky container, which sizes itself to its
-    // content. They must keep the width computed for them and never grow or shrink, otherwise the
-    // pinned header and the pinned cells drift apart from each other. Scoped to the sticky
-    // container so cells of a pinned column inside a row detail keep their own layout.
+    // content. They keep the width computed for them and never grow, otherwise the pinned header
+    // and the pinned cells drift apart from each other. Scoped to the sticky container so cells of
+    // a pinned column inside a row detail keep their own layout.
+    // Shrinking is allowed so that the columns fit inside the max-width cap on the container rather
+    // than spilling out of it.
     .datagrid-row-sticky > .datagrid-pinned-column {
       &.datagrid-column,
       &.datagrid-cell {
-        flex: 0 0 auto;
+        flex: 0 1 auto;
       }
     }
 

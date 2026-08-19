@@ -121,6 +121,54 @@ class ReorderableColumnsTest {
   ];
 }
 
+@Component({
+  template: `
+    <div [style.width.px]="hostWidth">
+      <clr-datagrid [style.height.px]="200">
+        <clr-dg-column clrDgPinned [style.width.px]="pinnedWidth">Pinned A</clr-dg-column>
+        <clr-dg-column clrDgPinned [style.width.px]="pinnedWidth">Pinned B</clr-dg-column>
+        <clr-dg-column [style.width.px]="400">Scroll C</clr-dg-column>
+        <clr-dg-row *clrDgItems="let item of items">
+          <clr-dg-cell>{{ item }}</clr-dg-cell>
+          <clr-dg-cell>{{ item }}</clr-dg-cell>
+          <clr-dg-cell>{{ item }}</clr-dg-cell>
+        </clr-dg-row>
+      </clr-datagrid>
+    </div>
+  `,
+  standalone: false,
+})
+class PinnedWidthCapTest {
+  items = [1, 2, 3];
+  hostWidth = 400;
+  pinnedWidth = 200;
+}
+
+@Component({
+  template: `
+    <div [style.width.px]="hostWidth">
+      <clr-datagrid [style.height.px]="200">
+        <clr-dg-column clrDgPinned [style.width.px]="pinnedWidth">Pinned A</clr-dg-column>
+        <clr-dg-column clrDgPinned [style.width.px]="pinnedWidth">Pinned B</clr-dg-column>
+        <clr-dg-column [style.width.px]="400">Scroll C</clr-dg-column>
+        <ng-template clrVirtualScroll let-item [clrVirtualRowsOf]="items">
+          <clr-dg-row [clrDgItem]="item">
+            <clr-dg-cell>{{ item }}</clr-dg-cell>
+            <clr-dg-cell>{{ item }}</clr-dg-cell>
+            <clr-dg-cell>{{ item }}</clr-dg-cell>
+          </clr-dg-row>
+        </ng-template>
+      </clr-datagrid>
+    </div>
+  `,
+  standalone: false,
+})
+class PinnedWidthCapVirtualScrollTest {
+  items = [1, 2, 3, 4, 5];
+  hostWidth = 400;
+  pinnedWidth = 200;
+}
+
 export default function (): void {
   describe('Pinnable columns', function () {
     describe('Reordering', function () {
@@ -137,6 +185,99 @@ export default function (): void {
         context.testComponent.columns = [first, third, second];
 
         expect(() => context.detectChanges()).not.toThrow();
+      });
+    });
+
+    describe('Maximum total width', function () {
+      // Kept in sync with $clr-datagrid-pinned-columns-max-width in _variables.datagrid.scss.
+      const MAX_SHARE = 0.85;
+
+      function widthOf(root: HTMLElement, selector: string): number {
+        return root.querySelector(selector).getBoundingClientRect().width;
+      }
+
+      // The cap is a share of the visible width of the datagrid, which is what the sticky container
+      // resolves its `cqi` unit against - not the rows, which stretch to the scrollable content.
+      function budget(root: HTMLElement): number {
+        return widthOf(root, '.datagrid-table-wrapper') * MAX_SHARE;
+      }
+
+      function pinnedWidths(root: HTMLElement, container: string): number[] {
+        return queryAll(root, `${container} .datagrid-row-sticky .${PINNED_COLUMN_CLASS}`).map(column =>
+          Math.round(column.getBoundingClientRect().width)
+        );
+      }
+
+      describe('with normal scrolling', function () {
+        let context: TestContext<ClrDatagrid, PinnedWidthCapTest>;
+        let element: HTMLElement;
+
+        beforeEach(function () {
+          context = this.create(ClrDatagrid, PinnedWidthCapTest);
+          element = context.clarityElement;
+        });
+
+        it('caps the pinned columns at their share of the datagrid width', function () {
+          // 2 x 200px of pinned columns asked for all 400px of a 400px wide datagrid.
+          expect(widthOf(element, HEADER_STICKY)).toBeCloseTo(budget(element), 0);
+        });
+
+        it('shrinks the pinned columns so they fit the cap instead of overflowing it', function () {
+          const widths = pinnedWidths(element, '.datagrid-header');
+
+          expect(widths.length).toBe(2);
+          expect(widths.every(width => width < 200)).toBeTrue();
+          expect(widths[0] + widths[1]).toBeLessThanOrEqual(Math.ceil(budget(element)));
+        });
+
+        it('keeps the pinned cells the same width as the pinned headers', function () {
+          // The shrinking is resolved separately for the header and for every row, so it has to
+          // land on the same widths on both sides or the pinned column stops lining up.
+          expect(pinnedWidths(element, '.datagrid-rows .datagrid-row:first-child')).toEqual(
+            pinnedWidths(element, '.datagrid-header')
+          );
+        });
+
+        it('leaves the scrollable columns reachable', function () {
+          expect(widthOf(element, HEADER_SCROLLABLE)).toBeGreaterThan(0);
+          expect(widthOf(element, HEADER_STICKY)).toBeLessThan(widthOf(element, '.datagrid-table-wrapper'));
+        });
+
+        it('does not shrink pinned columns that already fit', function () {
+          context.testComponent.hostWidth = 900;
+          context.detectChanges();
+
+          expect(pinnedWidths(element, '.datagrid-header')).toEqual([200, 200]);
+          expect(widthOf(element, HEADER_STICKY)).toBeLessThan(budget(element));
+        });
+      });
+
+      describe('with virtual scrolling', function () {
+        let context: TestContext<ClrDatagrid, PinnedWidthCapVirtualScrollTest>;
+        let element: HTMLElement;
+
+        beforeEach(function () {
+          context = this.create(ClrDatagrid, PinnedWidthCapVirtualScrollTest);
+          element = context.clarityElement;
+        });
+
+        it('caps the pinned columns at their share of the datagrid width', function () {
+          expect(widthOf(element, HEADER_STICKY)).toBeCloseTo(budget(element), 0);
+        });
+
+        it('shrinks the pinned columns so they fit the cap instead of overflowing it', function () {
+          const widths = pinnedWidths(element, '.datagrid-header');
+
+          expect(widths.length).toBe(2);
+          expect(widths[0] + widths[1]).toBeLessThanOrEqual(Math.ceil(budget(element)));
+        });
+
+        it('does not shrink pinned columns that already fit', function () {
+          context.testComponent.hostWidth = 900;
+          context.detectChanges();
+
+          expect(pinnedWidths(element, '.datagrid-header')).toEqual([200, 200]);
+        });
       });
     });
 
