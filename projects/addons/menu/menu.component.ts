@@ -9,6 +9,7 @@
 
 import {
   AfterContentInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
@@ -46,6 +47,7 @@ import { NestedMenu } from './model/nested-menu';
       useExisting: forwardRef(() => MenuComponent),
     },
   ],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 /**
  * A contextual menu based on `clr-dropdown`

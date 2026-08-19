@@ -5,7 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { ClrDatagridFilterInterface, ClrDatagridStringFilterInterface } from '@clr/angular/data/datagrid';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { asyncScheduler, Subject } from 'rxjs';
@@ -31,6 +41,7 @@ import { DatagridStrings } from '../i18n/datagrid-strings.service';
       />
     </clr-input-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class DatagridFilterComponent implements ClrDatagridFilterInterface<any>, OnInit, AfterViewInit {
   @Input() filterValue: any;

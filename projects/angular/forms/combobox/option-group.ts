@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, Input } from '@angular/core';
 import { uniqueIdFactory } from '@clr/angular/utils';
 
 import { ClrOptionItems } from './option-items.directive';
@@ -22,6 +22,7 @@ import { ClrOptionItems } from './option-items.directive';
     <ng-content></ng-content>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrOptionGroup<T> {
   @Input('clrOptionGroupLabel') label: string;

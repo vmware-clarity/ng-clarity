@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, HostBinding, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 
 import { ClrTimelineLayout } from './enums/timeline-layout.enum';
 import { TimelineIconAttributeService } from './providers/timeline-icon-attribute.service';
@@ -16,6 +16,7 @@ import { TimelineIconAttributeService } from './providers/timeline-icon-attribut
   host: { '[class.clr-timeline]': 'true', '[attr.role]': '"list"' },
   providers: [TimelineIconAttributeService],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrTimeline {
   @Input('clrLayout') layout: ClrTimelineLayout = ClrTimelineLayout.HORIZONTAL;

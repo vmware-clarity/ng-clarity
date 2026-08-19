@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, Component, ContentChildren, Input, OnDestroy, QueryList } from '@angular/core';
+import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  Component,
+  ContentChildren,
+  Input,
+  OnDestroy,
+  QueryList,
+} from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
@@ -48,6 +56,7 @@ import { Selection } from './providers/selection';
     role: 'row',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
   @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText: string;

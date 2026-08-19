@@ -6,6 +6,7 @@
  */
 
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
@@ -28,6 +29,7 @@ import { PropertyViewPropertyValueComponent } from '../property-view.model';
   selector: 'appfx-property-view-property-value-component',
   standalone: false,
   template: '',
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PropertyViewPropertyValueContainerComponent<T> implements OnInit, OnChanges, OnDestroy {
   @Input() componentType?: Type<PropertyViewPropertyValueComponent<T>> | null;

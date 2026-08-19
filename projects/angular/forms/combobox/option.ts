@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, HostBinding, HostListener, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 
 import { ComboboxFocusHandler, OptionData as OptionProxy } from './providers/combobox-focus-handler.service';
@@ -26,6 +34,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
     '[attr.id]': 'optionId',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrOption<T> implements OnInit {
   // A proxy with only the necessary data to be used for a11y and the focus handler service.

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, Inject } from '@angular/core';
 import { IF_ACTIVE_ID, IF_ACTIVE_ID_PROVIDER, IfActiveService } from '@clr/angular/utils';
 
 import { TabsService } from './providers/tabs.service';
@@ -17,6 +17,7 @@ import { ClrTabLink } from './tab-link.directive';
   template: `<ng-content></ng-content>`,
   providers: [IF_ACTIVE_ID_PROVIDER],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrTab {
   @ContentChild(ClrTabLink, { static: true }) tabLink: ClrTabLink;

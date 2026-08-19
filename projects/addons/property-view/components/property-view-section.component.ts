@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { PropertyViewStrings } from '../property-view-strings.service';
 import { PropertyViewActionModel, PropertyViewModelType, PropertyViewSectionModel } from '../property-view.model';
@@ -15,6 +15,7 @@ import { PropertyViewActionModel, PropertyViewModelType, PropertyViewSectionMode
   standalone: false,
   templateUrl: 'property-view-section.component.html',
   styleUrls: ['property-view-section.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PropertyViewSectionComponent {
   readonly PropertyViewModelType = PropertyViewModelType;

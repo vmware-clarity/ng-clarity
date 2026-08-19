@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ComponentRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ComponentRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 
 import { MenuOutlet } from './menu-outlet';
 import { MenuOutletService } from './menu-outlet.service';
@@ -14,6 +14,7 @@ import { MenuOutletService } from './menu-outlet.service';
   selector: 'menu-outlet',
   standalone: false,
   template: ` <ng-container #vc></ng-container>`,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 /**
  * Determines the location of a menu shown through instance of MenuOutletService.

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { DateNavigationService } from './providers/date-navigation.service';
@@ -17,6 +17,7 @@ import { ViewManagerService } from './providers/view-manager.service';
   templateUrl: './daypicker.html',
   host: { '[class.daypicker]': 'true', role: 'application' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrDaypicker {
   constructor(

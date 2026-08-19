@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
 
 @Component({
   template: `
@@ -14,6 +14,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
     </ng-template>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class TemplateRefContainer {
   @ViewChild(TemplateRef) template: TemplateRef<any>;

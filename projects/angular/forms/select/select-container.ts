@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, Optional } from '@angular/core';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import {
   ClrAbstractContainer,
@@ -44,6 +44,7 @@ import {
   },
   providers: [NgControlService, ControlIdService, ControlClassService],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrSelectContainer extends ClrAbstractContainer {
   @ContentChild(SelectMultipleControlValueAccessor, { static: false }) multiple: SelectMultipleControlValueAccessor;

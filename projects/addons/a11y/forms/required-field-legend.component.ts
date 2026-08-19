@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppfxTranslateService, appfxTranslationsToken } from '@clr/addons/translate';
 
 import { translations } from './required-field-legend.l10n';
@@ -22,5 +22,6 @@ import { translations } from './required-field-legend.l10n';
       useValue: translations,
     },
   ],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class RequiredFieldLegendComponent {}

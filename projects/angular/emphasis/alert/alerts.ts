@@ -7,6 +7,7 @@
 
 import {
   AfterContentInit,
+  ChangeDetectionStrategy,
   Component,
   ContentChildren,
   EventEmitter,
@@ -34,6 +35,7 @@ import { MultiAlertService } from './providers/multi-alert.service';
   },
   styles: [':host { display: block }'],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrAlerts implements AfterContentInit, OnDestroy {
   @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);

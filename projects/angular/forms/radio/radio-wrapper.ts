@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, OnInit } from '@angular/core';
 import { ClrControlLabel, ControlIdService } from '@clr/angular/forms/common';
 
 @Component({
@@ -22,6 +22,7 @@ import { ClrControlLabel, ControlIdService } from '@clr/angular/forms/common';
   },
   providers: [ControlIdService],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrRadioWrapper implements OnInit {
   @ContentChild(ClrControlLabel, { static: true }) label: ClrControlLabel;

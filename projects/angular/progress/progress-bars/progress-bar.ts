@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, HostBinding, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 import { isBooleanAttributeSet } from '@clr/angular/utils';
 
 @Component({
@@ -17,6 +17,7 @@ import { isBooleanAttributeSet } from '@clr/angular/utils';
     }
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrProgressBar {
   @Input('clrMax') max: number | string = 100;

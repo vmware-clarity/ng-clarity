@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { Items } from './providers/items';
 
@@ -25,6 +25,7 @@ import { Items } from './providers/items';
   `,
   host: { '[class.datagrid-placeholder-container]': 'true' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrDatagridPlaceholder<T = any> {
   constructor(private items: Items<T>) {}

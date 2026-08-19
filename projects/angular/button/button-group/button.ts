@@ -5,7 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Optional, Output, SkipSelf, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Optional,
+  Output,
+  SkipSelf,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { RouterLinkActive } from '@angular/router';
 import { ClrLoadingState, LoadingListener, uniqueIdFactory } from '@clr/angular/utils';
 
@@ -33,6 +43,7 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
   `,
   providers: [{ provide: LoadingListener, useExisting: ClrButton }],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrButton implements LoadingListener {
   @Output('click') _click = new EventEmitter<boolean>(false);
