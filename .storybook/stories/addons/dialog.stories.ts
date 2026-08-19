@@ -80,8 +80,8 @@ class DialogStoryWrapperComponent implements OnInit {
   @Input() size: string;
   @Input() defaultButton: 'submit' | 'close' = 'close';
   @Input() showTabLinks = true;
+  @Input() opened = true;
 
-  opened = false;
   steps: Step[] = [];
   model = new DialogWorkflowModel();
 
