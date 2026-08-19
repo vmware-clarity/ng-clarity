@@ -6,15 +6,11 @@
  */
 
 :host {
-  // Only force `.tab-content` visibility when this instance manages its own collapsible
-  // tab links (auto-collapse). When embedded in a host such as AppFx Dialog with
-  // `autoCollapseTabLinks="false"`, the host owns this responsibility and must not be
-  // overridden here.
-  .appfx-tabs.auto-collapse-tab-links {
+  .appfx-tabs {
     &.show-tab-content {
       ::ng-deep {
-        .tab-content.active {
-          display: flex !important;
+        .tab-content {
+          display: flex;
         }
       }
     }
