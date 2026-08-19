@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DebugElement, Directive, ElementRef, Input, SimpleChange } from '@angular/core';
+import { DebugElement, Directive, ElementRef, Host, Input, Self, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
@@ -21,7 +21,7 @@ import {
 } from '@clr/addons/var';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
 import { ClrIcon } from '@clr/angular/icon';
-import { ClrTabsModule } from '@clr/angular/layout/tabs';
+import { ClrTab, ClrTabsModule } from '@clr/angular/layout/tabs';
 import { of } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -59,14 +59,26 @@ class MockElementRef extends ElementRef {
   }
 }
 
-// XXX: using the real directive breaks 4 tests. Should be investigated.
+// Mirrors only the activation wiring of the real IfTabActiveDirective (so Clarity's native
+// [hidden]/`.active` tab-content state reflects `activeTabStep` in tests), without its
+// `currentChange` subscription: that subscription re-emits `appfxIfTabActiveChange` for every
+// tab on every activation, which double-invokes `onStepActiveChange` and corrupts the
+// step-validation assertions below.
 @Directive({
   selector: '[appfxIfTabActive]',
   standalone: false,
 })
 class DummyIfTabActiveDirective {
   @Input() activeClass: string;
-  @Input() activateTab: boolean;
+
+  constructor(@Host() @Self() private tab: ClrTab) {}
+
+  @Input()
+  set activateTab(value: boolean) {
+    if (value && this.tab.ifActiveService.current !== this.tab.id) {
+      this.tab.ifActiveService.current = this.tab.id;
+    }
+  }
 }
 
 interface ThisTest {
@@ -585,11 +597,11 @@ describe('Appfx Tabs', () => {
         expect(activeTabTitle).toEqual(this.steps[0].title);
       });
 
-      it('tab-content is visible by default', function (this: ThisTest) {
+      it('only the active tab-content is visible by default', function (this: ThisTest) {
         const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
-        tabContents.forEach(tabContent => {
+        tabContents.forEach((tabContent, index) => {
           const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
-          expect(isVisible).toBeTruthy();
+          expect(isVisible).toBe(index === 0);
         });
       });
 
@@ -645,11 +657,11 @@ describe('Appfx Tabs', () => {
             expect(this.component.tabLinksOpened).toBeFalsy();
           });
 
-          it('tab-content is visible', function (this: ThisTest) {
+          it('only the active tab-content is visible', function (this: ThisTest) {
             const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
-            tabContents.forEach(tabContent => {
+            tabContents.forEach((tabContent, index) => {
               const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
-              expect(isVisible).toBeTruthy();
+              expect(isVisible).toBe(index === 0);
             });
           });
 
@@ -689,11 +701,11 @@ describe('Appfx Tabs', () => {
         expect(activeTabTitle).toEqual(this.steps[0].title);
       });
 
-      it('tab-content is visible by default', function (this: ThisTest) {
+      it('only the active tab-content is visible by default', function (this: ThisTest) {
         const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
-        tabContents.forEach(tabContent => {
+        tabContents.forEach((tabContent, index) => {
           const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
-          expect(isVisible).toBeTruthy();
+          expect(isVisible).toBe(index === 0);
         });
       });
 
@@ -749,11 +761,11 @@ describe('Appfx Tabs', () => {
             expect(this.component.tabLinksOpened).toBeFalsy();
           });
 
-          it('tab-content is visible', function (this: ThisTest) {
+          it('only the active tab-content is visible', function (this: ThisTest) {
             const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
-            tabContents.forEach(tabContent => {
+            tabContents.forEach((tabContent, index) => {
               const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
-              expect(isVisible).toBeTruthy();
+              expect(isVisible).toBe(index === 0);
             });
           });
 
