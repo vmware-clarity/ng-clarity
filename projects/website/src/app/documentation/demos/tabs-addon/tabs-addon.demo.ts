@@ -8,6 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { AppfxTabsModule } from '@clr/addons/tabs';
 import { Step, TabLayout } from '@clr/addons/var';
 import { ClarityModule } from '@clr/angular';
@@ -16,9 +17,9 @@ import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
+import { SampleWorkflowModel } from '../_utils/sample-workflow/sample-workflow.model';
+import { SampleWorkflowService } from '../_utils/sample-workflow/sample-workflow.service';
 import { ClarityDocComponent } from '../clarity-doc';
-import { SampleWorkflowModel } from '../wizard-addon/sample/sample-workflow.model';
-import { SampleWorkflowService } from '../wizard-addon/sample/sample-workflow.service';
 
 const FullTabsHtml = require('!raw-loader!./ng/full-tabs.html').default;
 const FullTabsTs = require('!raw-loader!./ng/full-tabs.ts').default;
@@ -42,6 +43,7 @@ export class MyModule {}
     CommonModule,
     ClarityModule,
     FormsModule,
+    RouterModule,
     AppfxTabsModule,
     CodeSnippetComponent,
     DocTabComponent,

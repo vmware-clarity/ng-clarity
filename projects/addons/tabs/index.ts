@@ -5,7 +5,26 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export { IfTabActiveDirective, IfTabActiveDirective as IfTabActive } from './if-tab-active/if-tab-active.directive';
-export { TabLinksComponent, TabLinksComponent as TabLinks } from './tab-links/tab-links.component';
-export { TabsComponent, TabsComponent as AppfxTabsComponent, TabsComponent as Tabs } from './tabs.component';
+export {
+  IfTabActiveDirective,
+  /**
+   * @deprecated Use IfTabActiveDirective import instead.
+   */
+  IfTabActiveDirective as IfTabActive,
+} from './if-tab-active/if-tab-active.directive';
+export {
+  TabLinksComponent,
+  /**
+   * @deprecated Use TabLinksComponent import instead.
+   */
+  TabLinksComponent as TabLinks,
+} from './tab-links/tab-links.component';
+export {
+  TabsComponent,
+  TabsComponent as AppfxTabsComponent,
+  /**
+   * @deprecated Use TabsComponent import instead.
+   */
+  TabsComponent as Tabs,
+} from './tabs.component';
 export { AppfxTabsModule } from './tabs.module';
