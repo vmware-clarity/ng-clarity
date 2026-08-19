@@ -8,6 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { AppfxMultiPageDialogModule } from '@clr/addons/dialog';
 import { Step, TabLayout } from '@clr/addons/var';
 import { ClarityModule } from '@clr/angular';
@@ -31,6 +32,7 @@ const BasicDialogTs = require('!raw-loader!./ng/basic-dialog.ts').default;
     CommonModule,
     ClarityModule,
     FormsModule,
+    RouterModule,
     AppfxMultiPageDialogModule,
     CodeSnippetComponent,
     DocTabComponent,
