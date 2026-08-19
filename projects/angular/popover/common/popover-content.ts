@@ -35,6 +35,8 @@ import { Keys } from '@clr/angular/utils';
 import { fromEvent, merge, Subscription, switchMap, timer } from 'rxjs';
 
 import { ClrPopoverService } from './providers/popover.service';
+import { getCrossWindowOriginContext, resolveCrossWindowOrigin } from './utils/cross-window-origin';
+import { getFrameElement, isElementOrShadowRoot, isHtmlElement, isShadowRoot } from './utils/dom-realm';
 import {
   ClrPopoverPosition,
   ClrPopoverType,
@@ -149,7 +151,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
   @Input('clrPopoverContentOrigin')
   set contentOrigin(origin: FlexibleConnectedPositionStrategyOrigin) {
-    if (origin instanceof Element) {
+    // `instanceof Element` is realm-sensitive and misses a raw element belonging to
+    // another window, so a consumer passing one here would bypass the ElementRef wrap
+    // resolveCrossWindowOrigin() relies on to detect a cross-window origin.
+    if ((origin as Node)?.nodeType === Node.ELEMENT_NODE) {
       this.popoverService.origin = new ElementRef(origin as HTMLElement);
     } else {
       this.popoverService.origin = origin;
@@ -157,10 +162,12 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private get positionStrategy() {
+    const origin = resolveCrossWindowOrigin(this.popoverService.origin);
+
     return this.overlay
       .position()
-      .flexibleConnectedTo(this.popoverService.origin)
-      .setOrigin(this.popoverService.origin)
+      .flexibleConnectedTo(origin)
+      .setOrigin(origin)
       .withPush(true)
       .withPositions([this.preferredPosition, ...this._availablePositions])
       .withFlexibleDimensions(true);
@@ -213,12 +220,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       this.popoverService.updatePositionChange().subscribe(() => {
         this.overlayRef?.updatePosition();
       }),
-      this.overlayRef.keydownEvents().subscribe(event => {
-        if (event && event.key && event.key === Keys.Escape && !hasModifierKey(event)) {
-          event.preventDefault();
-          this.closePopover();
-        }
-      }),
+      this.createEscapeSubscription(),
 
       this.popoverService.originPoint
         ? this.createPointBasedOutsideClickSubscription()
@@ -231,17 +233,59 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    * mouseup from the same right-click that opened the popover.
    */
   private createPointBasedOutsideClickSubscription(): Subscription {
-    return timer(500)
+    const subscription = timer(500)
       .pipe(switchMap(() => this.overlayRef.outsidePointerEvents()))
-      .subscribe(event => {
-        if (this.elementRef?.nativeElement?.contains(event.target)) {
-          return;
-        }
+      .subscribe(event => this.handlePointOutsideClick(event));
 
-        if (this._outsideClickClose) {
-          this.closePopover();
-        }
-      });
+    const crossWindowSubscription = this.createCrossWindowPointOutsideClickSubscription();
+    if (crossWindowSubscription) {
+      subscription.add(crossWindowSubscription);
+    }
+
+    return subscription;
+  }
+
+  private handlePointOutsideClick(event: Event): void {
+    if (this.elementRef?.nativeElement?.contains(event.target as Node)) {
+      return;
+    }
+
+    if (this._outsideClickClose) {
+      this.closePopover();
+    }
+  }
+
+  /**
+   * Mirrors createCrossWindowOutsideClickSubscription for point-based origins (context
+   * menus): pointTargetElement - the element the point was derived from, e.g. the
+   * right-clicked element - can itself live inside a foreign iframe document, and CDK's
+   * outsidePointerEvents() only listens on this window's document, so a click elsewhere
+   * in that foreign document would otherwise never dismiss the menu. Delayed by the same
+   * 500ms as the same-window stream, for the same reason: avoid the click that opened the
+   * menu immediately closing it again.
+   */
+  private createCrossWindowPointOutsideClickSubscription(): Subscription | null {
+    const pointTargetElement = this.popoverService.pointTargetElement;
+    const crossWindowOrigin = pointTargetElement ? getCrossWindowOriginContext(pointTargetElement) : null;
+
+    if (!crossWindowOrigin) {
+      return null;
+    }
+
+    const originWindow = crossWindowOrigin.elementWindow;
+
+    return timer(500)
+      .pipe(
+        switchMap(() =>
+          this.zone.runOutsideAngular(() =>
+            merge(
+              fromEvent(originWindow.document, 'click', { capture: true }),
+              fromEvent(originWindow.document, 'auxclick', { capture: true })
+            )
+          )
+        )
+      )
+      .subscribe(event => this.zone.run(() => this.handlePointOutsideClick(event)));
   }
 
   /**
@@ -249,25 +293,128 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    * re-clicks so the popover doesn't immediately reopen.
    */
   private createElementBasedOutsideClickSubscription(): Subscription {
-    return this.overlayRef.outsidePointerEvents().subscribe(event => {
-      // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
-      if (this.elementRef?.nativeElement?.contains(event.target)) {
-        return;
-      }
+    const subscription = this.overlayRef.outsidePointerEvents().subscribe(event => this.handleOutsideClick(event));
 
-      // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
-      const isToggleButton =
-        this.popoverService.openEvent &&
-        ((this.popoverService.openEvent.target as Element).contains(event.target as Element) ||
-          (this.popoverService.openEvent.target as Element).parentElement.contains(event.target as Element) ||
-          this.popoverService.openEvent.target === event.target);
+    const crossWindowSubscription = this.createCrossWindowOutsideClickSubscription();
+    if (crossWindowSubscription) {
+      subscription.add(crossWindowSubscription);
+    }
 
-      if (isToggleButton) {
-        event.stopPropagation();
-      }
+    return subscription;
+  }
 
-      if (this._outsideClickClose || isToggleButton) {
-        this.closePopover();
+  private handleOutsideClick(event: Event): void {
+    // The very click that opened this popover must never be treated as an outside click.
+    // CDK's OverlayOutsideClickDispatcher listens in the capture phase on this window's
+    // document.body, so it normally runs *before* the trigger's own click handler has
+    // attached the overlay, and the opening click is therefore never delivered here.
+    // That ordering does not hold everywhere: when the trigger lives in a ShadowRoot
+    // owned by a separately bootstrapped Angular application (an ESM micro-frontend
+    // plugin with its own CDK instance), the overlay can already be attached by the time
+    // the dispatcher sees the click, which delivers the opening click straight back as an
+    // "outside" click and tears the popover down microseconds after it opened.
+    // Comparing against the stored open event is exact - CDK re-emits the same Event
+    // object - and it leaves toggle-to-close untouched, since a later click on the
+    // trigger is always a different Event instance.
+    if (event === this.popoverService.openEvent) {
+      return;
+    }
+
+    // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
+    if (this.elementRef?.nativeElement?.contains(event.target as Node)) {
+      return;
+    }
+
+    // Check if the same element that opened the popover is the same element triggering the outside pointer events (toggle button)
+    // openEvent.target can itself be null (e.g. the original toggle button was removed
+    // from the DOM before this handler runs), so every access below is optional - an
+    // unguarded `.contains()` call here throws and aborts the whole handler, which is
+    // exactly what stops closePopover() from ever running.
+    const openEventTarget = this.popoverService.openEvent?.target as Element | undefined;
+    const isToggleButton =
+      !!openEventTarget &&
+      (openEventTarget.contains(event.target as Element) ||
+        openEventTarget.parentElement?.contains(event.target as Element) ||
+        openEventTarget === event.target);
+
+    if (isToggleButton) {
+      event.stopPropagation();
+    }
+
+    if (this._outsideClickClose || isToggleButton) {
+      this.closePopover();
+    }
+  }
+
+  /**
+   * CDK's outsidePointerEvents() only listens on the document that owns the overlay
+   * (this window's), so clicks inside a cross-window origin's own document (e.g. a
+   * ShadowRoot hosted in an iframe) are invisible to it - see resolveCrossWindowOrigin
+   * for the same cross-window scenario affecting positioning instead. Any pointer event
+   * dispatched in that foreign document is guaranteed to be outside the overlay panel,
+   * since the panel always renders in this window's document, so this only needs the
+   * toggle-button exclusion handleOutsideClick already does, not the content-panel
+   * containment check (which can never be true across documents).
+   *
+   * Listens on capture-phase click/auxclick, mirroring CDK's own OverlayOutsideClickDispatcher.
+   * Capture phase matters: for a toggle re-click, this listener must run and
+   * stopPropagation() BEFORE the trigger's own bubble-phase click handler
+   * (ClrDropdownTrigger's toggleWithEvent) gets a chance to fire, otherwise the popover
+   * closes here and immediately reopens there. A bubble-phase or pointerdown-based
+   * listener can't suppress that handler at all, since pointerdown and click are separate
+   * events and stopping one doesn't affect the other.
+   *
+   * The foreign document's own addEventListener isn't zone-patched (zone.js only patches
+   * the window it's loaded into), so the listener is registered directly and the handler
+   * is explicitly run back inside NgZone.
+   */
+  private createCrossWindowOutsideClickSubscription(): Subscription | null {
+    // Same-window origins bail out here, so a popover that never crosses a window
+    // boundary registers no extra listeners at all.
+    const crossWindowOrigin = getCrossWindowOriginContext(this.popoverService.origin);
+
+    if (!crossWindowOrigin) {
+      return null;
+    }
+
+    const originWindow = crossWindowOrigin.elementWindow;
+
+    return this.zone.runOutsideAngular(() =>
+      merge(
+        fromEvent(originWindow.document, 'click', { capture: true }),
+        fromEvent(originWindow.document, 'auxclick', { capture: true })
+      ).subscribe(event => this.zone.run(() => this.handleOutsideClick(event)))
+    );
+  }
+
+  /**
+   * CDK's OverlayKeyboardDispatcher (the source behind `overlayRef.keydownEvents()`)
+   * attaches a single keydown listener on this window's document.body once, at app
+   * bootstrap - see its `add()`/`_keydownListener`. A keydown fired while focus sits
+   * inside a cross-window origin's own document (e.g. a ShadowRoot hosted in an iframe)
+   * never bubbles there, since events don't cross document boundaries, so Escape silently
+   * does nothing once the trigger (and focus) has moved into that foreign document. This
+   * mirrors createCrossWindowOutsideClickSubscription's rationale for outside clicks -
+   * merged into a single stream/handler here since both ultimately just detect Escape and
+   * close.
+   */
+  private createEscapeSubscription(): Subscription {
+    const crossWindowOrigin = getCrossWindowOriginContext(this.popoverService.origin);
+    const keydownEvents = crossWindowOrigin
+      ? merge(
+          this.overlayRef.keydownEvents(),
+          this.zone.runOutsideAngular(() =>
+            fromEvent<KeyboardEvent>(crossWindowOrigin.elementWindow.document, 'keydown')
+          )
+        )
+      : this.overlayRef.keydownEvents();
+
+    return keydownEvents.subscribe(event => {
+      if (isEscapeKey(event)) {
+        this.zone.run(() => {
+          event.preventDefault();
+          this.closePopover();
+        });
       }
     });
   }
@@ -369,23 +516,56 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.intersectionObserver = null;
   }
 
+  /**
+   * Walks ancestors looking for scrollable containers, following the node up through
+   * ShadowRoots and, when the node's own ancestry crosses into an iframe (a different
+   * window realm - e.g. a ShadowRoot hosted in a micro-frontend iframe), continuing the
+   * walk into the parent window via window.frameElement, all the way up to the true
+   * top-level document. Every embedded document passed through this way is added as its
+   * own scrollable parent, so page-level scrolling inside an iframe is tracked too.
+   *
+   * `instanceof` checks are realm-sensitive (they fail for nodes created by a different
+   * window's constructors), so this deliberately uses realm-independent shape checks
+   * (nodeType, tagName, duck-typing ShadowRoot via `host`) instead, and always resolves
+   * computed style through the node's own window rather than this one. This is what lets
+   * the walk safely continue across a same-origin realm boundary instead of just
+   * stopping at it.
+   */
   private getScrollableParents(node: HTMLElement) {
-    let parent = node;
     const overflowScrollKeys = ['auto', 'scroll', 'clip'];
-    const scrollableParents: (HTMLDocument | HTMLElement)[] = [window.document];
+    const scrollableParents: (Document | Element)[] = [window.document];
 
-    while (parent && !(parent instanceof HTMLHtmlElement)) {
-      if (parent instanceof ShadowRoot) {
-        parent = parent.host as HTMLElement;
+    let parent: Node | null = node;
+
+    while (parent && isElementOrShadowRoot(parent)) {
+      if (isShadowRoot(parent)) {
+        parent = parent.host;
+        continue;
       }
 
-      const { overflowY, overflowX } = window.getComputedStyle(parent);
+      const element = parent as Element;
+      const elementWindow = element.ownerDocument?.defaultView;
+
+      if (isHtmlElement(element)) {
+        const frameElement = elementWindow && elementWindow !== window ? getFrameElement(elementWindow) : null;
+
+        if (!frameElement) {
+          break;
+        }
+
+        // Leaving this document for its parent window - track its own page-level scroll too.
+        scrollableParents.push(element.ownerDocument);
+        parent = frameElement;
+        continue;
+      }
+
+      const { overflowY, overflowX } = (elementWindow ?? window).getComputedStyle(element);
 
       if (overflowScrollKeys.includes(overflowY) || overflowScrollKeys.includes(overflowX)) {
-        scrollableParents.push(parent);
+        scrollableParents.push(element);
       }
 
-      parent = parent.parentNode as HTMLElement;
+      parent = element.parentNode;
     }
 
     return scrollableParents;
@@ -452,4 +632,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     return popover;
   }
+}
+
+function isEscapeKey(event: KeyboardEvent): boolean {
+  return !!event && event.key === Keys.Escape && !hasModifierKey(event);
 }
