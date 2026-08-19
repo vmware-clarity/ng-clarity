@@ -5,8 +5,6 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<h1>Tabs</h1>
-
 <app-doc-tabs>
   <!-- ═══════════════ OVERVIEW ═══════════════ -->
   <app-doc-tab tab="overview">
@@ -89,57 +87,65 @@
 
   <!-- ═══════════════ CODE ═══════════════ -->
   <app-doc-tab tab="code">
-    <!-- Playground controls -->
-    <div class="tabs-playground-controls">
-      <clr-radio-container clrInline>
-        <label>Layout</label>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio name="layout" [value]="TabLayout.horizontal" [(ngModel)]="selectedLayout" />
-          <label>Horizontal</label>
-        </clr-radio-wrapper>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio name="layout" [value]="TabLayout.vertical" [(ngModel)]="selectedLayout" />
-          <label>Vertical</label>
-        </clr-radio-wrapper>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio name="layout" [value]="TabLayout.secondary" [(ngModel)]="selectedLayout" />
-          <label>Secondary</label>
-        </clr-radio-wrapper>
-      </clr-radio-container>
+    <h2 id="horizontal" class="clr-mt-24px" cds-text="title">Horizontal</h2>
+    <p cds-text="body" class="clr-mt-16px">Horizontal is the default <code cds-text="code">tabLayout</code>.</p>
 
-      <clr-toggle-wrapper>
-        <input type="checkbox" clrToggle [(ngModel)]="disableContent" />
-        <label>Disable tab content</label>
-      </clr-toggle-wrapper>
-
-      <clr-toggle-wrapper>
-        <input type="checkbox" clrToggle [(ngModel)]="showTabLinks" />
-        <label>Show tab links</label>
-      </clr-toggle-wrapper>
-    </div>
-
-    <!-- Live demo -->
     <div class="tabs-demo-container">
-      <appfx-tabs
-        [tabs]="steps"
-        [model]="tabsModel"
-        [tabLayout]="selectedLayout"
-        [disableTabsContent]="disableContent"
-        [showTabLinks]="showTabLinks"
-      >
-      </appfx-tabs>
+      <clr-horizontal-tabs-demo></clr-horizontal-tabs-demo>
     </div>
-
-    <h2 id="full-tabs" class="clr-mt-48px" cds-text="title">Full Tabs demo (code example)</h2>
-    <p cds-text="body" class="clr-mt-16px">
-      A self-contained Stackblitz example with the same layout, disable-content, and show-tab-links controls as the
-      playground above, wired to their own <code cds-text="code">appfx-tabs</code> instance.
-    </p>
 
     <app-stackblitz-example
-      name="full-tabs"
-      [componentTemplate]="fullTabsHtml"
-      [componentClass]="fullTabsTs"
+      name="tabs horizontal"
+      [componentTemplate]="horizontalTabsHtml"
+      [componentClass]="horizontalTabsTs"
+    ></app-stackblitz-example>
+
+    <h2 id="vertical" class="clr-mt-48px" cds-text="title">Vertical</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Set <code cds-text="code">tabLayout</code> to <code cds-text="code">TabLayout.vertical</code> to display the tab
+      links in a vertical nav.
+    </p>
+
+    <div class="tabs-demo-container">
+      <clr-vertical-tabs-demo></clr-vertical-tabs-demo>
+    </div>
+
+    <app-stackblitz-example
+      name="tabs vertical"
+      [componentTemplate]="verticalTabsHtml"
+      [componentClass]="verticalTabsTs"
+    ></app-stackblitz-example>
+
+    <h2 id="secondary" class="clr-mt-48px" cds-text="title">Secondary</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Set <code cds-text="code">tabLayout</code> to <code cds-text="code">TabLayout.secondary</code> to render the tabs
+      as a secondary tab strip within a horizontal layout.
+    </p>
+
+    <div class="tabs-demo-container">
+      <clr-secondary-tabs-demo></clr-secondary-tabs-demo>
+    </div>
+
+    <app-stackblitz-example
+      name="tabs secondary"
+      [componentTemplate]="secondaryTabsHtml"
+      [componentClass]="secondaryTabsTs"
+    ></app-stackblitz-example>
+
+    <h2 id="disabled-content" class="clr-mt-48px" cds-text="title">Disabled Tab Content</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      Set <code cds-text="code">disableTabsContent</code> to <code cds-text="code">true</code> to let the user click
+      around the tabs without being able to interact with, or trigger validation for, the step components.
+    </p>
+
+    <div class="tabs-demo-container">
+      <clr-disabled-tabs-demo></clr-disabled-tabs-demo>
+    </div>
+
+    <app-stackblitz-example
+      name="tabs disabled content"
+      [componentTemplate]="disabledTabsHtml"
+      [componentClass]="disabledTabsTs"
     ></app-stackblitz-example>
   </app-doc-tab>
 

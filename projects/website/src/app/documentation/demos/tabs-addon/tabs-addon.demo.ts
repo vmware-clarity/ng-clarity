@@ -6,23 +6,30 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AppfxTabsModule } from '@clr/addons/tabs';
-import { Step, TabLayout } from '@clr/addons/var';
 import { ClarityModule } from '@clr/angular';
 
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-import { SampleWorkflowModel } from '../_utils/sample-workflow/sample-workflow.model';
-import { SampleWorkflowService } from '../_utils/sample-workflow/sample-workflow.service';
 import { ClarityDocComponent } from '../clarity-doc';
+import { DisabledTabsDemoComponent } from './ng/disabled-tabs';
+import { HorizontalTabsDemoComponent } from './ng/horizontal-tabs';
+import { SecondaryTabsDemoComponent } from './ng/secondary-tabs';
+import { VerticalTabsDemoComponent } from './ng/vertical-tabs';
 
-const FullTabsHtml = require('!raw-loader!./ng/full-tabs.html').default;
-const FullTabsTs = require('!raw-loader!./ng/full-tabs.ts').default;
+const DisabledTabsHtml = require('!raw-loader!./ng/disabled-tabs.html').default;
+const DisabledTabsTs = require('!raw-loader!./ng/disabled-tabs.ts').default;
+const HorizontalTabsHtml = require('!raw-loader!./ng/horizontal-tabs.html').default;
+const HorizontalTabsTs = require('!raw-loader!./ng/horizontal-tabs.ts').default;
+const SecondaryTabsHtml = require('!raw-loader!./ng/secondary-tabs.html').default;
+const SecondaryTabsTs = require('!raw-loader!./ng/secondary-tabs.ts').default;
+const VerticalTabsHtml = require('!raw-loader!./ng/vertical-tabs.html').default;
+const VerticalTabsTs = require('!raw-loader!./ng/vertical-tabs.ts').default;
 
 const ModuleImportTs = `
 import { AppfxTabsModule } from '@clr/addons/tabs';
@@ -49,28 +56,24 @@ export class MyModule {}
     DocTabComponent,
     DocTabsComponent,
     StackblitzExampleComponent,
+    HorizontalTabsDemoComponent,
+    VerticalTabsDemoComponent,
+    SecondaryTabsDemoComponent,
+    DisabledTabsDemoComponent,
   ],
-  providers: [SampleWorkflowService],
 })
-export class TabsAddonDemoComponent extends ClarityDocComponent implements OnInit {
-  TabLayout = TabLayout;
+export class TabsAddonDemoComponent extends ClarityDocComponent {
   readonly moduleImportTs = ModuleImportTs;
-  readonly fullTabsHtml = FullTabsHtml;
-  readonly fullTabsTs = FullTabsTs;
+  readonly horizontalTabsHtml = HorizontalTabsHtml;
+  readonly horizontalTabsTs = HorizontalTabsTs;
+  readonly verticalTabsHtml = VerticalTabsHtml;
+  readonly verticalTabsTs = VerticalTabsTs;
+  readonly secondaryTabsHtml = SecondaryTabsHtml;
+  readonly secondaryTabsTs = SecondaryTabsTs;
+  readonly disabledTabsHtml = DisabledTabsHtml;
+  readonly disabledTabsTs = DisabledTabsTs;
 
-  steps: Step[] = [];
-  tabsModel: SampleWorkflowModel;
-
-  selectedLayout: TabLayout = TabLayout.horizontal;
-  disableContent = false;
-  showTabLinks = true;
-
-  constructor(private workflowService: SampleWorkflowService) {
+  constructor() {
     super('tabs-addon');
-  }
-
-  ngOnInit() {
-    this.tabsModel = this.workflowService.initModel('demo-datacenter-ref');
-    this.steps = this.workflowService.buildStepperSteps(this.tabsModel);
   }
 }

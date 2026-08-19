@@ -10,7 +10,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxTabsModule } from '@clr/addons/tabs';
 import { Step, StepModel, StepModelHolder, TabLayout, Var } from '@clr/addons/var';
-import { ClarityModule } from '@clr/angular';
 
 // ─── Step 1 model ─────────────────────────────────────────────────────────────
 export class NameModel implements StepModel {
@@ -20,21 +19,19 @@ export class NameModel implements StepModel {
 
 // ─── Step 1 component ─────────────────────────────────────────────────────────
 @Component({
-  selector: 'clr-full-tabs-name-step',
+  selector: 'clr-vertical-tabs-name-step',
   standalone: true,
   imports: [FormsModule],
   template: `
     <div style="padding: 1rem">
       <div class="clr-form-group">
         <label class="clr-control-label" for="res-name">Resource name</label>
-        <div class="clr-control-container">
-          <input id="res-name" type="text" class="clr-input" [(ngModel)]="model.name.value" placeholder="my-resource" />
-        </div>
+        <input id="res-name" type="text" class="clr-input" [(ngModel)]="model.name.value" placeholder="my-resource" />
       </div>
     </div>
   `,
 })
-export class FullTabsNameStepComponent implements StepModelHolder {
+export class VerticalTabsNameStepComponent implements StepModelHolder {
   model: NameModel;
 }
 
@@ -46,7 +43,7 @@ export class RegionModel implements StepModel {
 
 // ─── Step 2 component ─────────────────────────────────────────────────────────
 @Component({
-  selector: 'clr-full-tabs-region-step',
+  selector: 'clr-vertical-tabs-region-step',
   standalone: true,
   imports: [FormsModule],
   template: `
@@ -61,7 +58,7 @@ export class RegionModel implements StepModel {
     </div>
   `,
 })
-export class FullTabsRegionStepComponent implements StepModelHolder {
+export class VerticalTabsRegionStepComponent implements StepModelHolder {
   model: RegionModel;
 }
 
@@ -72,7 +69,7 @@ export class ReviewModel implements StepModel {
 
 // ─── Step 3 component ─────────────────────────────────────────────────────────
 @Component({
-  selector: 'clr-full-tabs-review-step',
+  selector: 'clr-vertical-tabs-review-step',
   standalone: true,
   template: `
     <div style="padding: 1rem">
@@ -81,7 +78,7 @@ export class ReviewModel implements StepModel {
     </div>
   `,
 })
-export class FullTabsReviewStepComponent implements StepModelHolder {
+export class VerticalTabsReviewStepComponent implements StepModelHolder {
   model: ReviewModel;
 }
 
@@ -93,70 +90,27 @@ export class TabsWorkflowModel {
 
 // ─── Root component ───────────────────────────────────────────────────────────
 @Component({
-  selector: 'clr-full-tabs-demo',
+  selector: 'clr-vertical-tabs-demo',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
-    ClarityModule,
     AppfxTabsModule,
-    FullTabsNameStepComponent,
-    FullTabsRegionStepComponent,
-    FullTabsReviewStepComponent,
+    VerticalTabsNameStepComponent,
+    VerticalTabsRegionStepComponent,
+    VerticalTabsReviewStepComponent,
   ],
-  template: `
-    <div class="tabs-playground-controls">
-      <clr-radio-container clrInline>
-        <label>Layout</label>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio name="layout" [value]="TabLayout.horizontal" [(ngModel)]="selectedLayout" />
-          <label>Horizontal</label>
-        </clr-radio-wrapper>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio name="layout" [value]="TabLayout.vertical" [(ngModel)]="selectedLayout" />
-          <label>Vertical</label>
-        </clr-radio-wrapper>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio name="layout" [value]="TabLayout.secondary" [(ngModel)]="selectedLayout" />
-          <label>Secondary</label>
-        </clr-radio-wrapper>
-      </clr-radio-container>
-
-      <clr-toggle-wrapper>
-        <input type="checkbox" clrToggle [(ngModel)]="disableContent" />
-        <label>Disable tab content</label>
-      </clr-toggle-wrapper>
-
-      <clr-toggle-wrapper>
-        <input type="checkbox" clrToggle [(ngModel)]="showTabLinks" />
-        <label>Show tab links</label>
-      </clr-toggle-wrapper>
-    </div>
-
-    <appfx-tabs
-      [tabs]="steps"
-      [model]="workflowModel"
-      [tabLayout]="selectedLayout"
-      [disableTabsContent]="disableContent"
-      [showTabLinks]="showTabLinks"
-    >
-    </appfx-tabs>
-  `,
+  template: `<appfx-tabs [tabs]="steps" [model]="workflowModel" [tabLayout]="TabLayout.vertical"></appfx-tabs>`,
 })
-export class FullTabsDemoComponent implements OnInit {
+export class VerticalTabsDemoComponent implements OnInit {
   TabLayout = TabLayout;
   workflowModel = new TabsWorkflowModel();
   steps: Step[] = [];
 
-  selectedLayout: TabLayout = TabLayout.horizontal;
-  disableContent = false;
-  showTabLinks = true;
-
   ngOnInit() {
     this.steps = [
-      { title: 'Name', componentClass: FullTabsNameStepComponent, model: new NameModel() } as Step,
-      { title: 'Region', componentClass: FullTabsRegionStepComponent, model: new RegionModel() } as Step,
-      { title: 'Review', componentClass: FullTabsReviewStepComponent, model: new ReviewModel() } as Step,
+      { title: 'Name', componentClass: VerticalTabsNameStepComponent, model: new NameModel() } as Step,
+      { title: 'Region', componentClass: VerticalTabsRegionStepComponent, model: new RegionModel() } as Step,
+      { title: 'Review', componentClass: VerticalTabsReviewStepComponent, model: new ReviewModel() } as Step,
     ];
   }
 }
