@@ -6,6 +6,7 @@
  */
 
 import {
+  ChangeDetectionStrategy,
   Component,
   ComponentRef,
   Input,
@@ -28,6 +29,7 @@ import { ColumnDefinition, ColumnRenderer } from './shared/column/column-definit
     <ng-template #cellContainer></ng-template>
   `,
   styles: [':host { width: 100%; }'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class DatagridCellContainerComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('cellContainer', { read: ViewContainerRef, static: true }) container: ViewContainerRef;

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener } from '@angular/core';
 import { ClrCommonStringsService, Keys } from '@clr/angular/utils';
 
 import { DateNavigationService } from './providers/date-navigation.service';
@@ -78,6 +78,7 @@ import { ViewManagerService } from './providers/view-manager.service';
     role: 'application',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrMonthpicker implements AfterViewInit {
   /**

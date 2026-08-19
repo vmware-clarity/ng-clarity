@@ -6,7 +6,7 @@
  */
 
 import { AnimationEvent, transition, trigger, useAnimation } from '@angular/animations';
-import { Component, HostBinding, HostListener, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Input } from '@angular/core';
 
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
 import { defaultExpandAnimation } from '../constants';
@@ -25,6 +25,7 @@ import { BaseExpandableAnimation } from './base-expandable-animation';
   animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])],
   providers: [DomAdapter],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrExpandableAnimation extends BaseExpandableAnimation {
   @Input() clrExpandTrigger = false;

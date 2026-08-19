@@ -5,7 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, forwardRef, Inject, InjectionToken, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChild,
+  forwardRef,
+  Inject,
+  InjectionToken,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { ClrControlLabel, ControlIdService } from '@clr/angular/forms/common';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
@@ -33,6 +42,7 @@ export const IS_TOGGLE_PROVIDER = { provide: IS_TOGGLE, useFactory: isToggleFact
   },
   providers: [ControlIdService, IS_TOGGLE_PROVIDER],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrCheckboxWrapper implements OnInit, OnDestroy {
   @ContentChild(ClrControlLabel, { static: true }) label: ClrControlLabel;

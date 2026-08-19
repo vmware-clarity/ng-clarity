@@ -5,7 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, ElementRef, Input, Optional, Renderer2, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  Optional,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import {
   ClrAbstractContainer,
   ControlClassService,
@@ -105,6 +114,7 @@ import { ViewManagerService } from './providers/view-manager.service';
     '[class.clr-row]': 'addGrid()',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;

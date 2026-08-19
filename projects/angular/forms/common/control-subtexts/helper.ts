@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Optional } from '@angular/core';
 
 import { ClrAbstractControl, CONTROL_SUFFIX } from '../abstract-control';
 import { ContainerIdService } from '../providers/container-id.service';
@@ -19,6 +19,7 @@ import { ControlIdService } from '../providers/control-id.service';
     '[attr.id]': 'id',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrControlHelper extends ClrAbstractControl {
   override controlIdSuffix = CONTROL_SUFFIX.HELPER;

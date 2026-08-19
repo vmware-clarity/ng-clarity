@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
 
 import { CertificateChain } from '../models/certificate-chain.model';
 import { CertificateField } from '../models/certificate-field.model';
@@ -29,6 +29,7 @@ import { TopHeadingLevel } from '../models/heading-level.model';
   standalone: false,
   templateUrl: 'certificate-viewer-details.component.html',
   styleUrls: ['certificate-viewer-details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CertificateViewerDetailsComponent implements OnChanges {
   @Input() certificateChain?: CertificateChain;

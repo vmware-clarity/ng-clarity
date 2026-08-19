@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { ExportType } from './export-type';
 import { ExportStatus } from './export.interface';
@@ -16,6 +16,7 @@ import { DatagridStrings } from '../../i18n/datagrid-strings.service';
   standalone: false,
   templateUrl: 'export-datagrid.component.html',
   styleUrls: ['export-datagrid.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ExportDatagridComponent {
   /**

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Inject, InjectionToken, Input, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, InjectionToken, Input, Optional } from '@angular/core';
 import {
   ClrAbstractContainer,
   ControlClassService,
@@ -62,6 +62,7 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
   },
   providers: [NgControlService, ControlIdService, ControlClassService, FormsFocusService, TOGGLE_SERVICE_PROVIDER],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrPasswordContainer extends ClrAbstractContainer {
   show = false;

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, forwardRef, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, forwardRef, Optional } from '@angular/core';
 import {
   ClrAbstractContainer,
   ControlClassService,
@@ -68,6 +68,7 @@ import { ClrNumberInput } from './number-input';
   },
   providers: [FormsFocusService, NgControlService, ControlIdService, ControlClassService],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrNumberInputContainer extends ClrAbstractContainer {
   focus = false;

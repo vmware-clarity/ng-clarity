@@ -9,6 +9,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -68,6 +69,7 @@ import { LayoutService } from '../services/layout.service';
       transition(':leave', [animate('200ms ease-in', style({ opacity: 0, transform: 'translateX(0%)' }))]),
     ]),
   ],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
   /**

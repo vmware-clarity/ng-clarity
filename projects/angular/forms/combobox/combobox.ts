@@ -9,6 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
   booleanAttribute,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -75,6 +76,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
     '[class.clr-combobox-disabled]': 'control?.disabled',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrCombobox<T>
   extends WrappedFormControl<ClrComboboxContainer>

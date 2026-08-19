@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
 import { ClrControlLabel } from '@clr/angular/forms/common';
 import { uniqueIdFactory } from '@clr/angular/utils';
 
@@ -24,6 +24,7 @@ import { Page } from './providers/page';
     </div>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrDatagridPageSize {
   @Input('clrPageSizeOptions') pageSizeOptions: number[];

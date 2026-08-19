@@ -6,7 +6,17 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, OnDestroy, Output, PLATFORM_ID, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnDestroy,
+  Output,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
 import {
   ClrPopoverHostDirective,
   ClrPopoverPosition,
@@ -62,6 +72,7 @@ let clrDgActionId = 0;
     </div>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrDatagridActionOverflow implements OnDestroy {
   @Input('clrDgActionOverflowButtonLabel') buttonLabel: string;

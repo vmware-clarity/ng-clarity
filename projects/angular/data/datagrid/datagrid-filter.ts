@@ -7,6 +7,7 @@
 
 import {
   booleanAttribute,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
@@ -72,6 +73,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
     </div>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrDatagridFilter<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>

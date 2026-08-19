@@ -5,7 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, ElementRef, forwardRef, inject, Input, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChild,
+  ElementRef,
+  forwardRef,
+  inject,
+  Input,
+  ViewChild,
+} from '@angular/core';
 import {
   ClrAbstractContainer,
   ControlClassService,
@@ -91,6 +100,7 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
   },
   providers: [NgControlService, ControlIdService, ControlClassService],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrFileInputContainer extends ClrAbstractContainer {
   @Input('clrButtonLabel') customButtonLabel: string;

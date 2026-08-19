@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, Input, OnDestroy, Optional, SkipSelf } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  Optional,
+  SkipSelf,
+} from '@angular/core';
 import { ClrPopoverHostDirective, ClrPopoverPoint, ClrPopoverService } from '@clr/angular/popover/common';
 import { FOCUS_SERVICE_PROVIDER } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
@@ -22,6 +30,7 @@ import { ROOT_DROPDOWN_PROVIDER, RootDropdownService } from './providers/dropdow
   providers: [ROOT_DROPDOWN_PROVIDER, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
   hostDirectives: [ClrPopoverHostDirective],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClrDropdown implements OnDestroy {
   @Input('clrCloseMenuOnItemClick') isMenuClosable = true;
