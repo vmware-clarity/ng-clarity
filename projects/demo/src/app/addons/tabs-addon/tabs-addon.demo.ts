@@ -12,8 +12,8 @@ import { AppfxTabsModule } from '@clr/addons/tabs';
 import { Step, TabLayout } from '@clr/addons/var';
 import { ClarityModule } from '@clr/angular';
 
-import { SampleWorkflowModel } from '../wizard-addon/sample/sample-workflow.model';
-import { SampleWorkflowService } from '../wizard-addon/sample/sample-workflow.service';
+import { SampleWorkflowModel } from '../_utils/sample-workflow/sample-workflow.model';
+import { SampleWorkflowService } from '../_utils/sample-workflow/sample-workflow.service';
 
 @Component({
   selector: 'clr-tabs-addon-demo',
