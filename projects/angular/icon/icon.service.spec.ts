@@ -20,33 +20,33 @@ describe('ClarityIcons service: ', () => {
   describe('addIcons: ', () => {
     it('should add icons to the registry using legacy call signature', () => {
       ClarityIcons.addIcons(['test01', 'testing']);
-      expect(ClarityIcons.registry['test01']).toEqual('testing');
+      expect(ClarityIcons.getIconShape('test01')).toEqual('testing');
     });
 
     it('should be able to add multiple icons to the registry using legacy call signature', () => {
       ClarityIcons.addIcons(['test02', 'testing'], ['test03', 'ohai']);
-      expect(ClarityIcons.registry['test02']).toEqual('testing');
-      expect(ClarityIcons.registry['test03']).toEqual('ohai');
+      expect(ClarityIcons.getIconShape('test02')).toEqual('testing');
+      expect(ClarityIcons.getIconShape('test03')).toEqual('ohai');
     });
 
     it('should add icons to the registry using icon shapes', () => {
       const [, testShape] = testIcons.justOutline;
       const expected = renderIcon(testShape);
       ClarityIcons.addIcons(['test04', testShape]);
-      expect(ClarityIcons.registry['test04']).toEqual(expected);
+      expect(ClarityIcons.getIconShape('test04')).toEqual(expected);
     });
 
     it('should add icons to the registry using strings', () => {
       ClarityIcons.addIcons(['test05', 'testing']);
-      expect(ClarityIcons.registry['test05']).toEqual('testing');
+      expect(ClarityIcons.getIconShape('test05')).toEqual('testing');
     });
 
     it('should not overwrite icons that have already been added to the registry (legacy api)', () => {
       const [, testShape] = testIcons.justOutline;
       ClarityIcons.addIcons(['test06', 'testing']);
-      expect(ClarityIcons.registry['test06']).toEqual('testing');
+      expect(ClarityIcons.getIconShape('test06')).toEqual('testing');
       ClarityIcons.addIcons(['test06', testShape]);
-      expect(ClarityIcons.registry['test06']).toEqual('testing');
+      expect(ClarityIcons.getIconShape('test06')).toEqual('testing');
     });
   });
 
@@ -55,19 +55,39 @@ describe('ClarityIcons service: ', () => {
       const [, testShape] = testIcons.badgedIcon;
       const expected = renderIcon(testShape);
       ClarityIcons.addIcons(['test07', testShape]);
-      expect(ClarityIcons.registry['test07']).toEqual(expected);
+      expect(ClarityIcons.getIconShape('test07')).toEqual(expected);
     });
 
     it('should add icons to the registry using string tuples', () => {
       ClarityIcons.addIcons(['test08', 'testing']);
-      expect(ClarityIcons.registry['test08']).toEqual('testing');
+      expect(ClarityIcons.getIconShape('test08')).toEqual('testing');
     });
 
     it('should not overwrite icons that have already been added to the registry (legacy api)', () => {
       ClarityIcons.addIcons(['test09', 'ohai']);
-      expect(ClarityIcons.registry['test09']).toEqual('ohai');
+      expect(ClarityIcons.getIconShape('test09')).toEqual('ohai');
       ClarityIcons.addIcons(['test09', 'kthxbye']);
-      expect(ClarityIcons.registry['test09']).toEqual('ohai');
+      expect(ClarityIcons.getIconShape('test09')).toEqual('ohai');
+    });
+  });
+
+  describe('getIconShape: ', () => {
+    it('should return the icon shape without copying the whole registry', () => {
+      const [, testShape] = testIcons.justOutline;
+      ClarityIcons.addIcons(['test10', testShape]);
+
+      const registrySpy = spyOnProperty(ClarityIcons, 'registry', 'get').and.callThrough();
+
+      expect(ClarityIcons.getIconShape('test10')).toEqual(renderIcon(testShape));
+      expect(registrySpy).not.toHaveBeenCalled();
+    });
+
+    it('should fall back to the unknown icon shape when the name is "unknown" and not registered', () => {
+      expect(ClarityIcons.getIconShape('unknown')).toEqual(ClarityIcons.registry['unknown']);
+    });
+
+    it('should return undefined for an unregistered icon name', () => {
+      expect(ClarityIcons.getIconShape('does-not-exist')).toBeUndefined();
     });
   });
 
@@ -88,11 +108,11 @@ describe('ClarityIcons service: ', () => {
         [iconName, ['ItsAMystery']],
       ];
 
-      const theUnknownIcon = ClarityIcons.registry[iconName];
+      const theUnknownIcon = ClarityIcons.getIconShape(iconName);
       ClarityIcons.addAliases(...aliases);
-      expect(ClarityIcons.registry['whut']).toEqual(theUnknownIcon);
-      expect(ClarityIcons.registry['huh']).toEqual(theUnknownIcon);
-      expect(ClarityIcons.registry['ItsAMystery']).toEqual(theUnknownIcon);
+      expect(ClarityIcons.getIconShape('whut')).toEqual(theUnknownIcon);
+      expect(ClarityIcons.getIconShape('huh')).toEqual(theUnknownIcon);
+      expect(ClarityIcons.getIconShape('ItsAMystery')).toEqual(theUnknownIcon);
     });
   });
 });
