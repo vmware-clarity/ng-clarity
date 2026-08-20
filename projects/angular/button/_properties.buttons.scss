@@ -116,7 +116,7 @@
       --clr-btn-info-hover-bg-color: #{tokens.$cds-alias-object-interaction-info-hover};
       --clr-btn-info-hover-color: var(--clr-btn-info-color);
       --clr-btn-info-active-color: #{tokens.$cds-alias-typography-color-100};
-      --clr-btn-info-active-bg-color: var(--cds-alias-object-interaction-info-active);
+      --clr-btn-info-active-bg-color: #{tokens.$cds-alias-object-interaction-info-active};
       --clr-btn-info-disabled-color: #{tokens.$cds-alias-typography-disabled-button};
       --clr-btn-info-disabled-bg-color: #{tokens.$cds-alias-status-disabled};
       --clr-btn-info-disabled-border-color: #{tokens.$cds-alias-status-disabled};
