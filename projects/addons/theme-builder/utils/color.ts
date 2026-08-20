@@ -113,7 +113,7 @@ export class Color {
     const l = (max + min) / 2;
 
     if (max === min) {
-      return new HslColor(0, 0, Math.round(l * 100));
+      return new HslColor(0, 0, Math.round(l * 10000) / 100);
     }
 
     const d = max - min;
@@ -127,7 +127,11 @@ export class Color {
       hue = ((r - g) / d + 4) / 6;
     }
 
-    return new HslColor(Math.round(hue * 360), Math.round(s * 100), Math.round(l * 100));
+    // Round to second decimal. `s` and `l` are between 0 and 1.
+    const saturation = Math.round(s * 10000) / 100;
+    const lightness = Math.round(l * 10000) / 100;
+
+    return new HslColor(Math.round(hue * 360), saturation, lightness);
   }
 
   hslToHex({ h, s, l }: HslColor): string {
