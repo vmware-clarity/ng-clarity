@@ -26,7 +26,7 @@ import { NO_OF_DAYS_IN_A_WEEK } from './utils/constants';
   selector: 'clr-calendar',
   templateUrl: './calendar.html',
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrCalendar implements OnDestroy {
   /**

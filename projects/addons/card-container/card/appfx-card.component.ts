@@ -69,7 +69,7 @@ import { LayoutService } from '../services/layout.service';
       transition(':leave', [animate('200ms ease-in', style({ opacity: 0, transform: 'translateX(0%)' }))]),
     ]),
   ],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
   /**

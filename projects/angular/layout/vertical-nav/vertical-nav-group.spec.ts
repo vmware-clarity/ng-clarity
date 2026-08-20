@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -246,6 +246,7 @@ export default function (): void {
       </clr-vertical-nav-group-children>
     </clr-vertical-nav-group>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class GroupInternalsTestComponent {
@@ -263,6 +264,7 @@ class GroupInternalsTestComponent {
       </ng-template>
     </clr-vertical-nav-group>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class IfExpandedTestComponent {
@@ -282,6 +284,7 @@ class IfExpandedTestComponent {
       </clr-vertical-nav-group-children>
     </clr-vertical-nav-group>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateAPITestComponent {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { Inventory } from '../inventory/inventory';
@@ -15,6 +15,7 @@ import { Inventory } from '../inventory/inventory';
   providers: [Inventory],
   templateUrl: './usage.html',
   styleUrl: '../datagrid.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink],
 })
 export class DatagridUsageDemo {}

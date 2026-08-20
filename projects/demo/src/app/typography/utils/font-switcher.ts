@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { checkForExistingPresetName, FontPreset, fontPresets, getPreset } from './font-presets';
@@ -14,6 +14,7 @@ import { checkForExistingPresetName, FontPreset, fontPresets, getPreset } from '
   selector: 'clr-typography-font-switcher',
   styleUrls: ['./font-switcher.scss'],
   templateUrl: './font-switcher.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FontSwitcher {

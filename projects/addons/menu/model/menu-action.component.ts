@@ -19,7 +19,7 @@ import { MenuItem, MenuItemType } from './menu-item.token';
       useExisting: forwardRef(() => MenuActionComponent),
     },
   ],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class MenuActionComponent extends MenuItem {
   override type = MenuItemType.action;

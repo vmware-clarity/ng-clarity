@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrTab, ClrTabLink, ClrTabs, ClrTabsModule } from '@clr/angular/layout/tabs';
@@ -54,6 +54,7 @@ import { ElementResizeService } from '../resize/element-resize.service';
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class ClrTabsHostComponent {
@@ -83,6 +84,7 @@ export class ClrTabsHostComponent {
       </clr-tab>
     </clr-tabs>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class ComponentWithoutDirective {

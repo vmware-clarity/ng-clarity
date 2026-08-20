@@ -65,7 +65,7 @@ import { DatagridFilterRegistrar } from '../../utils/datagrid-filter-registrar';
     </clr-dg-filter>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridNumericFilter<T = any>
   extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>>

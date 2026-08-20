@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, QueryList, Type, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, QueryList, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
@@ -145,6 +145,7 @@ export default function () {
 
 @Component({
   template: `<clr-alerts-pager [(clrCurrentAlertIndex)]="index"></clr-alerts-pager>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class TestIndex {
@@ -154,6 +155,7 @@ export class TestIndex {
 
 @Component({
   template: `<clr-alerts-pager [(clrCurrentAlert)]="currentAlert"></clr-alerts-pager>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class TestInstance {
@@ -163,6 +165,7 @@ export class TestInstance {
 
 @Component({
   template: `<clr-alerts-pager></clr-alerts-pager>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class TestBasics {

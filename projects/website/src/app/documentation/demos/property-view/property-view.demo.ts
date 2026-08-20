@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AppfxPropertyViewModule,
@@ -44,6 +44,7 @@ export class MyModule {}
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CommonModule,
     ClarityModule,

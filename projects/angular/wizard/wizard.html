@@ -81,7 +81,7 @@
     @if (headerActionService.showWizardHeaderActions) {
     <ng-content select="clr-wizard-header-action"></ng-content>
     } @if (headerActionService.currentPageHasHeaderActions) {
-    <ng-template [ngTemplateOutlet]="navService.currentPage?.headerActions"></ng-template>
+    <ng-template [ngTemplateOutlet]="$safeNavigationMigration(navService.currentPage?.headerActions)"></ng-template>
     }
   </div>
   } @if (closable && !inPage) {

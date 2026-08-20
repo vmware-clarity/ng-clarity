@@ -34,7 +34,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
     '[attr.id]': 'optionId',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrOption<T> implements OnInit {
   // A proxy with only the necessary data to be used for a11y and the focus handler service.

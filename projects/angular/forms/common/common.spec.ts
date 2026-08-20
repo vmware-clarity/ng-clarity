@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive, NgModule, Type, ViewContainerRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Directive, NgModule, Type, ViewContainerRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrHostWrappingModule } from '@clr/angular/utils';
@@ -25,6 +25,7 @@ import { WrappedFormControl } from './wrapped-control';
     <label id="container-view-label-after"></label>
   `,
   providers: [ControlIdService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class GenericWrapper {}
@@ -51,12 +52,14 @@ class CommonFormsTestModule {}
  */
 @Component({
   template: `<input genericControl />`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoWrapperNoId {}
 
 @Component({
   template: `<input genericControl id="hello" />`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoWrapperWithId {}
@@ -69,6 +72,7 @@ class NoWrapperWithId {}
       <label id="test-view-label-after"></label>
     </generic-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WithWrapperNoId {}
@@ -81,6 +85,7 @@ class WithWrapperNoId {}
       <label id="test-view-label-after"></label>
     </generic-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WithWrapperWithId {}

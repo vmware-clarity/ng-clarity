@@ -46,6 +46,6 @@ import {
   },
   providers: [NgControlService, ControlIdService, ControlClassService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrInputContainer extends ClrAbstractContainer {}

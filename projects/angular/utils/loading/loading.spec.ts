@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Injectable, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injectable, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ClrLoading, ClrLoadingState } from './loading';
@@ -104,6 +104,7 @@ describe('Loading directive without listener', function () {
   template: `@if (displayed) {
     <div [clrLoading]="loading"></div>
   }`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FullTest {

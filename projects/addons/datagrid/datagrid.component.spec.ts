@@ -9,7 +9,16 @@ import { A11yModule as CdkA11yModule } from '@angular/cdk/a11y';
 import { CdkDrag, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { Component, DebugElement, NgModule, SimpleChange, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  NgModule,
+  SimpleChange,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -2118,6 +2127,7 @@ class StatusComparator implements ClrDatagridComparatorInterface<any> {
       <span>Test</span>
     </ng-template>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 class DatagridHostComponent {
@@ -2201,6 +2211,7 @@ class DatagridHostComponent {
 @Component({
   selector: 'test-status-renderer',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div ng-non-bindable class="object">
       <span [attr.title]="label">
@@ -2243,6 +2254,7 @@ class StatusRendererComponent implements ColumnRenderer<any> {
 @Component({
   selector: 'row-detail-renderer',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: ` <div>some row detail</div>`,
 })
 class RowDetailRendererComponent implements ColumnRenderer<any> {
@@ -2270,6 +2282,7 @@ interface PowerStateObject {
 @Component({
   selector: 'custom-power-state-filter',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: ` <div>
     <clr-checkbox-container>
       <clr-checkbox-wrapper>

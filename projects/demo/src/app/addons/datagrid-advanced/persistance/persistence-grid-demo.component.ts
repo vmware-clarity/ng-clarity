@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition } from '@clr/addons/datagrid';
 import { ClrAlertModule, SelectionType } from '@clr/angular';
 
@@ -16,6 +16,7 @@ import { Inventory, VmItem } from '../inventory/inventory';
   imports: [AppfxDatagridModule, ClrAlertModule],
   standalone: true,
   templateUrl: 'persistence-grid-demo.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [Inventory],
 })
 export class PersistenceGridDemoComponent {

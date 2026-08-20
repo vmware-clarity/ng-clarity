@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
@@ -13,6 +13,7 @@ import { delay } from 'rxjs/operators';
   selector: 'clr-basic-button-group-demo',
   templateUrl: './basic-button-group.html',
   styleUrls: ['../../button-group.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class BasicButtonGroupDemo {

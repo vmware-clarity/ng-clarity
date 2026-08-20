@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrAlertModule, ClrIcon, ClrIconModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
@@ -112,6 +112,7 @@ const HTML_EXAMPLE = `
   selector: 'clr-alert-demo-styles',
   styleUrl: '../alerts.demo.scss',
   templateUrl: './alert-styles.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, ClrAlertModule, StackblitzExampleComponent],
 })
 export class AlertStylesDemo {

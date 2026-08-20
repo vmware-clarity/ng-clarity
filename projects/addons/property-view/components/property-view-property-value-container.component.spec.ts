@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, NgModule, SimpleChange } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NgModule, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -77,6 +77,7 @@ interface MockModel {
 @Component({
   selector: 'mock-first-component',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `{{ model.text }}`,
 })
 class MockComponent implements PropertyViewPropertyValueComponent<MockModel> {
@@ -86,6 +87,7 @@ class MockComponent implements PropertyViewPropertyValueComponent<MockModel> {
 @Component({
   selector: 'mock-second-component',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `{{ model.text }}`,
 })
 class Mock2Component implements PropertyViewPropertyValueComponent<MockModel> {

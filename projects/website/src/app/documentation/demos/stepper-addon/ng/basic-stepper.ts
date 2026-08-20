@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxStepperModule } from '@clr/addons/stepper';
 import { Out, Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
@@ -21,6 +21,7 @@ export class ProjectNameModel implements StepModel {
   selector: 'clr-demo-stepper-step1',
   standalone: true,
   imports: [FormsModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="clr-form-group">
       <label class="clr-control-label" for="proj-name">Project Name</label>
@@ -44,6 +45,7 @@ export class TeamModel implements StepModel {
   selector: 'clr-demo-stepper-step2',
   standalone: true,
   imports: [FormsModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="clr-form-group">
       <label class="clr-control-label" for="team-select">Assign Team</label>
@@ -73,6 +75,7 @@ export class ProjectWorkflowModel {
   selector: 'clr-basic-stepper-demo',
   standalone: true,
   imports: [CommonModule, AppfxStepperModule, StepperStep1Component, StepperStep2Component],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <appfx-stepper [steps]="steps" [wizardModel]="model" (onFinish)="onFinish()"></appfx-stepper>
 

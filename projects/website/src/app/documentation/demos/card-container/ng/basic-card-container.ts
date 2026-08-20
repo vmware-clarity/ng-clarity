@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppfxCardContainerModule } from '@clr/addons/card-container';
 
 @Component({
   selector: 'appfx-demo-summary-card',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="card">
       <div class="card-header">Summary</div>
@@ -26,6 +27,7 @@ export class SummaryCardComponent {}
 @Component({
   selector: 'appfx-demo-note-card',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="card">
       <div class="card-header">Notes</div>
@@ -41,6 +43,7 @@ export class NotesCardComponent {}
 @Component({
   selector: 'appfx-demo-tags-card',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="card">
       <div class="card-header">Tags</div>
@@ -56,6 +59,7 @@ export class TagsCardComponent {}
 @Component({
   selector: 'appfx-demo-dynamic-card',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="card">
       <div class="card-header">Dynamic</div>
@@ -75,6 +79,7 @@ export class DynamicCardComponent {}
     TagsCardComponent,
     DynamicCardComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './basic-card-container.html',
 })
 export class BasicCardContainerDemoComponent {

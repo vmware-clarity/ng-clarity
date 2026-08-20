@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   templateUrl: './input.demo.html',
   styles: '.custom-class { text-decoration: underline; width: 100%; }',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class InputDemo {

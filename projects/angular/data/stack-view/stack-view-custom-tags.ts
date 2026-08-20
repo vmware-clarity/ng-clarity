@@ -24,7 +24,7 @@ export class ClrStackViewCustomTags {
     '[attr.id]': 'id',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrStackViewLabel implements OnInit {
   private _generatedId: string = null;

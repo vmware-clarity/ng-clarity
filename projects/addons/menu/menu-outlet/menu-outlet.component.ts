@@ -14,7 +14,7 @@ import { MenuOutletService } from './menu-outlet.service';
   selector: 'menu-outlet',
   standalone: false,
   template: ` <ng-container #vc></ng-container>`,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 /**
  * Determines the location of a menu shown through instance of MenuOutletService.

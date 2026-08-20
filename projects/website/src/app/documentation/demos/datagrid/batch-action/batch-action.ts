@@ -6,7 +6,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClrDatagridModule,
   ClrDropdownModule,
@@ -191,6 +191,7 @@ export class ExampleComponent {
   providers: [Inventory],
   templateUrl: 'batch-action.html',
   styleUrl: '../datagrid.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrDatagridModule,
     ClrStopEscapePropagationDirective,

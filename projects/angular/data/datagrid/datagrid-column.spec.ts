@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TestContext } from '@clr/angular/testing';
@@ -523,6 +523,7 @@ class TestStringFilter implements ClrDatagridStringFilterInterface<number> {
       Hello world
     </clr-dg-column>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {
@@ -538,6 +539,7 @@ class SimpleTest {
       <clr-dg-filter class="my-filter" [clrDgFilter]="filter">Filter content</clr-dg-filter>
     </clr-dg-column>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FilterTest {
@@ -552,6 +554,7 @@ class FilterTest {
       <clr-dg-string-filter class="my-string-filter" [clrDgStringFilter]="filter"></clr-dg-string-filter>
     </clr-dg-column>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class StringFilterTest {
@@ -564,6 +567,7 @@ class StringFilterTest {
 
 @Component({
   template: `<clr-dg-column [(clrFilterValue)]="filterValue" [clrDgField]="field">Column Title</clr-dg-column>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class PreFilterTest {
@@ -580,6 +584,7 @@ class PreFilterTest {
       }
     </clr-dg-column>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class UnregisterTest {
@@ -590,6 +595,7 @@ class UnregisterTest {
 
 @Component({
   template: `<clr-dg-column [clrDgField]="field" [clrDgColType]="type">Column Title</clr-dg-column>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ColTypeTest {
@@ -601,6 +607,7 @@ class ColTypeTest {
 // as it tries to reflect view changes that's not dependent on input changes
 @Component({
   template: `<clr-dg-column [clrDgField]="'test'">Hello World</clr-dg-column>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class OnPushViewChangeTest {}

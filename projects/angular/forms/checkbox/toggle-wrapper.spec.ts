@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormsModule, NgControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -24,6 +24,7 @@ import { WrapperContainerSpec, WrapperFullSpec, WrapperNoLabelSpec } from '../te
       <input type="checkbox" clrToggle name="model" [(ngModel)]="model" />
     </clr-toggle-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FullTest {
@@ -36,6 +37,7 @@ class FullTest {
       <input type="checkbox" clrToggle name="model" [(ngModel)]="model" />
     </clr-toggle-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoLabelTest {
@@ -50,6 +52,7 @@ class NoLabelTest {
       </clr-toggle-wrapper>
     </clr-toggle-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ContainerTest {

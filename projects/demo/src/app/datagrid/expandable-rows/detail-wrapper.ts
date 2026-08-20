@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'detail-wrapper',
@@ -18,6 +18,7 @@ import { Component } from '@angular/core';
       <clr-dg-cell>Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.</clr-dg-cell>
     </clr-dg-row-detail>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DetailWrapper {}

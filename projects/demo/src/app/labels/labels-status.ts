@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrLabelColors } from '@clr/angular';
 
 @Component({
   selector: 'clr-labels-status-demo',
   templateUrl: './labels-status.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class LabelsStatusDemo {

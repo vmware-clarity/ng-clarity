@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrAlertModule } from '@clr/angular';
 
 import { DateRangePickerDateIODemo } from './date-range-picker-date-io.demo';
@@ -15,6 +15,7 @@ import { DateRangePickerTemplateDrivenFormsDemo } from './date-range-picker-temp
 @Component({
   selector: 'clr-date-range-picker-io-demo',
   templateUrl: './date-range-picker-io.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DateRangePickerDateIODemo,
     DateRangePickerTemplateDrivenFormsDemo,

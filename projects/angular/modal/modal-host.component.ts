@@ -16,6 +16,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     </div>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrModalHostComponent {}

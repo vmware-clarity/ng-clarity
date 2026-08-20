@@ -33,7 +33,7 @@ import { ClrNumberInput } from './number-input';
               type="button"
               class="clr-input-group-icon-action"
               (click)="input.stepDown()"
-              [disabled]="control?.disabled"
+              [disabled]="$safeNavigationMigration(control?.disabled)"
             >
               <cds-icon shape="minus" size="sm"></cds-icon>
             </button>
@@ -42,7 +42,7 @@ import { ClrNumberInput } from './number-input';
               type="button"
               class="clr-input-group-icon-action"
               (click)="input.stepUp()"
-              [disabled]="control?.disabled"
+              [disabled]="$safeNavigationMigration(control?.disabled)"
             >
               <cds-icon shape="plus" size="sm"></cds-icon>
             </button>
@@ -68,7 +68,7 @@ import { ClrNumberInput } from './number-input';
   },
   providers: [FormsFocusService, NgControlService, ControlIdService, ControlClassService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrNumberInputContainer extends ClrAbstractContainer {
   focus = false;

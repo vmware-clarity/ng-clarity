@@ -28,7 +28,7 @@ import { WrappedCell } from './wrapped-cell';
     role: 'gridcell',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridCell implements OnInit {
   /*********

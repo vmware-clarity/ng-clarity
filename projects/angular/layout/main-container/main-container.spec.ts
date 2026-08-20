@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrNavigationModule, ResponsiveNavCodes, ResponsiveNavControlMessage } from '@clr/angular/layout/nav';
 
@@ -14,6 +14,7 @@ import { ClrMainContainerModule } from './main-container.module';
 
 @Component({
   template: `<clr-main-container>Test</clr-main-container>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {

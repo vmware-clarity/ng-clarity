@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -27,6 +27,7 @@ import { AccordionService } from './providers/accordion.service';
       <clr-accordion-panel [clrAccordionPanelOpen]="openThirdStep">panel 3</clr-accordion-panel>
     </clr-accordion>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {

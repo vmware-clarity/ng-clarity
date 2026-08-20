@@ -31,7 +31,7 @@ import { DetailService } from './providers/detail.service';
     </div>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridDetailHeader implements AfterViewInit {
   @ViewChild('title') title: ElementRef<HTMLElement>;

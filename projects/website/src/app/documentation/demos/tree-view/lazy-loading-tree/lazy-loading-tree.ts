@@ -6,7 +6,7 @@
  */
 
 import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClrDatagridModule,
   ClrIcon,
@@ -67,6 +67,7 @@ export class ExampleComponent {
   selector: 'clr-lazy-loading-tree-demo',
   styleUrl: '../tree-view.demo.scss',
   templateUrl: './lazy-loading-tree.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrTreeViewModule,
     ClrLoadingModule,

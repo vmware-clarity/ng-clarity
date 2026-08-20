@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-wn-cotman-demo',
@@ -15,6 +15,7 @@ import { Component } from '@angular/core';
       Cotman Watercolour. Accessible but uncompromising on quality with good tinting strength. Available in 48 colours.
     </p>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class WNCotmanDemo {}

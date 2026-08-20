@@ -56,7 +56,7 @@ import { ClrRadio } from './radio';
   },
   providers: [NgControlService, ControlClassService, ContainerIdService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
   role: string;

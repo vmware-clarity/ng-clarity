@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { angleIcon, ClarityIcons, ClrIcon, ClrIconModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -48,6 +48,7 @@ const HTML_EXAMPLE = `
   selector: 'clr-card-dropdown-demo',
   styleUrl: './card.demo.scss',
   templateUrl: './card-dropdown.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, StackblitzExampleComponent],
 })
 export class CardDropdownDemo {

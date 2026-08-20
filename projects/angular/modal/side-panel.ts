@@ -30,7 +30,7 @@ import { ClrModalConfigurationService } from './modal-configuration.service';
     '[class.side-panel]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrSidePanel implements OnInit, OnDestroy {
   @Output('clrSidePanelOpenChange') openChange = new EventEmitter<boolean>(false);

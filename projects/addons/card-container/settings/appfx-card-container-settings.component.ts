@@ -45,7 +45,7 @@ const sortCardsByTitleFn = (a: AppfxCardInternal, b: AppfxCardInternal) => {
       useValue: translations,
     },
   ],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AppfxCardContainerSettingsComponent {
   cards: AppfxCardInternal[];

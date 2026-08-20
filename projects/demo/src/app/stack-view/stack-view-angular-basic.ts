@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { StackViewNgDemo } from './stack-view-ng-demo';
 
@@ -13,6 +13,7 @@ import { StackViewNgDemo } from './stack-view-ng-demo';
   selector: 'clr-stack-view-angular-basic-demo',
   templateUrl: './stack-view-angular-basic.html',
   styleUrls: ['./stack-view.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class StackViewAngularBasicDemo extends StackViewNgDemo {}

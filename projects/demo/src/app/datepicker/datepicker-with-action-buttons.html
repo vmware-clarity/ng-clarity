@@ -23,7 +23,7 @@
     <div class="flex-section">
       <div class="card" data-heading="Date Picker">
         <div class="card-content">
-          <clr-date-container [showActionButtons]="dateForm.get('showActionButtons')?.value">
+          <clr-date-container [showActionButtons]="$safeNavigationMigration(dateForm.get('showActionButtons')?.value)">
             <label for="dateControl">Date</label>
             <input
               id="dateControl"

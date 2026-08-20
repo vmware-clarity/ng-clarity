@@ -14,6 +14,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     '[class.dropdown-menu]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTabOverflowContent {}

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -17,6 +17,7 @@ import { PokemonFilter } from '../utils/pokemon-filter';
   providers: [Inventory],
   templateUrl: 'built-in-filters.html',
   styleUrls: ['../datagrid.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatagridBuiltInFiltersDemo {

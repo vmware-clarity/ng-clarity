@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
 import { ClrWizard, ClrWizardModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -91,6 +91,7 @@ const html = `
 @Component({
   selector: 'clr-wizard-nested-wizard',
   templateUrl: './wizard-nested-wizard.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrWizardModule, StackblitzExampleComponent],
 })
 export class WizardNestedWizardDemo {

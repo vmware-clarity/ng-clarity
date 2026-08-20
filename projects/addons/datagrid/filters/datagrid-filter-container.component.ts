@@ -31,7 +31,7 @@ import { ColumnFilter } from '../interfaces/column-filter';
   selector: 'appfx-dg-filter-container',
   standalone: false,
   template: ` <ng-template #filterContainer></ng-template>`,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridFilterContainerComponent implements AfterViewInit, OnDestroy {
   @ViewChild('filterContainer', { read: ViewContainerRef, static: true }) container: ViewContainerRef;

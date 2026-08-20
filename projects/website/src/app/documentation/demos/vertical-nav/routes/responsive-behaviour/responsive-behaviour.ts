@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { StackblitzExampleComponent } from '../../../../../shared/stackblitz-example/stackblitz-example.component';
@@ -72,6 +72,7 @@ const additionalFiles = {
   selector: 'clr-responsive-behaviour-vertical-nav-demo',
   templateUrl: './responsive-behaviour.html',
   styleUrl: '../../vertical-nav.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [StackblitzExampleComponent, RouterLink, ThemedImageComponent],
 })
 export class ResponsiveBehaviourDemo {

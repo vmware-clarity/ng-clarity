@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, OnInit } from '@angular/core';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
@@ -28,6 +28,7 @@ const sharedThemeObservable = new Observable<string>(observer => {
 @Component({
   selector: 'app-themed-image',
   template: `<img [src]="src | async" [attr.alt]="imageAlt()" [style]="imageStyle()" />`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule],
 })
 export class ThemedImageComponent implements OnInit {

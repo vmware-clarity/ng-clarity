@@ -72,7 +72,7 @@ let clrDgActionId = 0;
     </div>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridActionOverflow implements OnDestroy {
   @Input('clrDgActionOverflowButtonLabel') buttonLabel: string;

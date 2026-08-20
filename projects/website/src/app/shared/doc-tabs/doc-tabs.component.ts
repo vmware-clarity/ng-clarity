@@ -8,6 +8,7 @@
 import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
@@ -38,6 +39,7 @@ import { TableOfContentsComponent } from '../table-of-contents/table-of-contents
   host: {
     role: 'main',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CommonModule,
     RouterModule,

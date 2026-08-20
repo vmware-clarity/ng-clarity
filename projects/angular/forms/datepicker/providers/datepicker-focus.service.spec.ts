@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, EventEmitter, NgZone, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, NgZone, PLATFORM_ID } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 
 import { DatepickerFocusService } from './datepicker-focus.service';
@@ -87,6 +87,7 @@ class MockNgZone extends NgZone {
     <button id="1" [attr.tabindex]="tabIndex">Test Button</button>
     <input type="date" />
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {

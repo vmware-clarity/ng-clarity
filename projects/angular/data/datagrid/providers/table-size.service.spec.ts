@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DomAdapter } from '@clr/angular/utils';
 
@@ -29,6 +29,7 @@ import { DatagridRenderOrganizer } from '../render/render-organizer';
     </div>
   `,
   providers: [TableSizeService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {

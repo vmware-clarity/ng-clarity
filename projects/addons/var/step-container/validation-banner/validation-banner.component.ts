@@ -24,7 +24,7 @@ import { StepValidationState } from '../../model/step-validation-state';
       <span class="alert-text" [textContent]="item"></span>
     </clr-alert-item>
   </clr-alert>`,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ValidationBannerInternalComponent {
   @Input() type: string;
@@ -82,7 +82,7 @@ export class ValidationBannerInternalComponent {
       }
     `,
   ],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ValidationBannerComponent {
   @Input() state?: StepValidationState;

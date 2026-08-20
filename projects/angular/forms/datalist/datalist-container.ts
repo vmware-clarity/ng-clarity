@@ -50,7 +50,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
   },
   providers: [ControlClassService, ControlIdService, FormsFocusService, NgControlService, DatalistIdService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatalistContainer extends ClrAbstractContainer {
   focus = false;

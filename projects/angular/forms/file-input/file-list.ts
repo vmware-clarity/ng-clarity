@@ -60,7 +60,7 @@ import {
     '[class.clr-file-list]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrFileList {
   @ContentChild(ClrFileMessagesTemplate) protected readonly fileMessagesTemplate: ClrFileMessagesTemplate;

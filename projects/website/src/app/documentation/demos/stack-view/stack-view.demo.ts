@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrAlertModule, ClrIcon, ClrIconModule, ClrStackViewModule } from '@clr/angular';
 
 import { RemoveStackViewHeadingsDirective } from './remove-stack-view-headings.directive';
@@ -25,6 +25,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,

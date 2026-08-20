@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, ElementRef, Type, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, ElementRef, Type, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { addHelpers, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 import { ClrKeyFocus, IfActiveService } from '@clr/angular/utils';
@@ -49,6 +49,7 @@ import { ClrTabs } from './tabs';
       </clr-tab>
     </clr-tabs>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -73,6 +74,7 @@ class TestComponent {
       </clr-tab>
     </clr-tabs>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NgIfFirstTest {
@@ -94,6 +96,7 @@ class NgIfFirstTest {
       }
     </clr-tabs>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NgIfSecondTest {
@@ -126,6 +129,7 @@ class NgIfSecondTest {
       </clr-tab>
     </clr-tabs>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NestedTabsTest {
@@ -145,6 +149,7 @@ class NestedTabsTest {
       </clr-tab>
     </clr-tabs>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoClrIfActiveTest {
@@ -164,6 +169,7 @@ class NoClrIfActiveTest {
       </clr-tabs>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ScalingTestComponent {

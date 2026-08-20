@@ -100,7 +100,7 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
   },
   providers: [NgControlService, ControlIdService, ControlClassService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrFileInputContainer extends ClrAbstractContainer {
   @Input('clrButtonLabel') customButtonLabel: string;

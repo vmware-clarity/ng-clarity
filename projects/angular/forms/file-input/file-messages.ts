@@ -24,7 +24,7 @@ export const CLR_FILE_MESSAGES_TEMPLATE_CONTEXT = new InjectionToken<ClrFileMess
     '[class.clr-subtext-wrapper]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrFileInfo {}
 
@@ -45,7 +45,7 @@ export class ClrFileInfo {}
     '[class.success]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrFileSuccess {
   protected readonly context: ClrFileMessagesTemplateContext = inject(CLR_FILE_MESSAGES_TEMPLATE_CONTEXT);
@@ -65,6 +65,6 @@ export class ClrFileSuccess {
     '[class.error]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrFileError {}

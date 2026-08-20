@@ -19,7 +19,7 @@ import { ControlIdService } from '../providers/control-id.service';
     '[attr.id]': 'id',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrControlHelper extends ClrAbstractControl {
   override controlIdSuffix = CONTROL_SUFFIX.HELPER;

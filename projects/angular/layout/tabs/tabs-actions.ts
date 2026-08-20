@@ -20,7 +20,7 @@ export type ClrTabsActionsPosition = 'left' | 'right';
     '[class.tabs-actions]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTabsActions {
   @Input()

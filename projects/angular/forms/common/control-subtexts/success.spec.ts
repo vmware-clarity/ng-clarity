@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -16,6 +16,7 @@ import { ControlIdService } from '../providers/control-id.service';
 
 @Component({
   template: `<clr-control-success>Test success message</clr-control-success>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {}

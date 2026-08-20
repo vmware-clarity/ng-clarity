@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 import { commonStringsDefault } from '@clr/angular/utils';
@@ -137,6 +137,7 @@ export default function (): void {
       </clr-dg-action-overflow>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {

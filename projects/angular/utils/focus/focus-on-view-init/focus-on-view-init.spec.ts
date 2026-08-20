@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ApplicationRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { ApplicationRef, ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { expectActiveElementToBe } from '@clr/angular/testing';
 
@@ -34,6 +34,7 @@ const focusOnViewInitProvider = { provide: FOCUS_ON_VIEW_INIT, useValue: true };
       </div>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -56,6 +57,7 @@ class TestComponent {
     }
   `,
   providers: [focusOnViewInitProvider],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestDisablingViaInjection {

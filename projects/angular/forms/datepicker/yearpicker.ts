@@ -78,7 +78,7 @@ import { ViewManagerService } from './providers/view-manager.service';
     role: 'application',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrYearpicker implements AfterViewInit {
   /**

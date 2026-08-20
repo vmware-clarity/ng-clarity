@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { CSS_EXAMPLE } from './grid-css-example';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -45,6 +45,7 @@ const EXAMPLE = `
   selector: 'clr-grid-demo-auto-layout-1',
   templateUrl: './grid-auto-layout-1.html',
   styleUrl: './grid.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [StackblitzExampleComponent],
 })
 export class GridAutoLayout1Demo {

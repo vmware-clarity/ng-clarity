@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClrForm } from '@clr/angular';
 
 @Component({
   templateUrl: './reset.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FormsResetDemo {

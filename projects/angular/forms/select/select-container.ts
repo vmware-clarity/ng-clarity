@@ -44,7 +44,7 @@ import {
   },
   providers: [NgControlService, ControlIdService, ControlClassService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrSelectContainer extends ClrAbstractContainer {
   @ContentChild(SelectMultipleControlValueAccessor, { static: false }) multiple: SelectMultipleControlValueAccessor;

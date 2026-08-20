@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClrLoadingState } from '@clr/angular';
 
 @Component({
   templateUrl: 'stepper.demo.html',
   styleUrls: ['./stepper.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class StepperDemo {

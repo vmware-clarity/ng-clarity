@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService, Keys } from '@clr/angular/utils';
@@ -330,6 +330,7 @@ export default function () {
 
 @Component({
   template: `<clr-yearpicker></clr-yearpicker>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {}

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClrCommonFormsModule, ClrDatalistModule } from '@clr/angular';
 
@@ -55,6 +55,7 @@ export class ExampleComponent {
 @Component({
   selector: 'clr-datalist-reactive-validation-demo',
   templateUrl: './datalist-reactive-validation.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormsModule, ClrCommonFormsModule, ReactiveFormsModule, ClrDatalistModule, StackblitzExampleComponent],
 })
 export class DatalistReactiveValidationDemo {

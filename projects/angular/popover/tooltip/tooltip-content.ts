@@ -45,7 +45,7 @@ const defaultSize = 'sm';
   },
   standalone: false,
   hostDirectives: [ClrPopoverContent],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTooltipContent implements OnInit {
   private _id: string;

@@ -73,7 +73,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
     </div>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridFilter<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>

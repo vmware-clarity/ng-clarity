@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrSpinnerModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -81,6 +81,7 @@ export class ExampleComponent {
   selector: 'clr-spinner-component',
   templateUrl: './spinner-component.html',
   styleUrl: './spinner.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrSpinnerModule, StackblitzExampleComponent],
 })
 export class SpinnerComponentDemo {

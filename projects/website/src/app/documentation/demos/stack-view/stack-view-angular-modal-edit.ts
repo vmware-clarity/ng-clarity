@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrModalModule, ClrStackViewModule } from '@clr/angular';
 
@@ -120,6 +120,7 @@ export class ExampleComponent {
   selector: 'clr-stack-view-angular-modal-edit-demo',
   templateUrl: './stack-view-angular-modal-edit.html',
   styleUrl: './stack-view.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrStackViewModule,
     RemoveStackViewHeadingsDirective,

@@ -56,7 +56,7 @@ import { ClrCheckbox } from './checkbox';
   },
   providers: [NgControlService, ControlClassService, ContainerIdService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
   role: string;

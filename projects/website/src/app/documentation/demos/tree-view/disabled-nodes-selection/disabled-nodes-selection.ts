@@ -6,7 +6,7 @@
  */
 
 import { JsonPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrTreeViewModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
@@ -56,6 +56,7 @@ const additionalFiles = {
   selector: 'app-disabled-nodes-selection-demo',
   styleUrl: '../tree-view.demo.scss',
   templateUrl: 'disabled-nodes-selection.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrTreeViewModule, StackblitzExampleComponent, JsonPipe],
 })
 export class DisabledNodesSelectionDemo {

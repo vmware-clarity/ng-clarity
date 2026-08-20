@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -31,6 +31,7 @@ interface TestComponent {
       <clr-control-error>Error message</clr-control-error>
     </clr-file-input-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoLabelTest {
@@ -49,6 +50,7 @@ class NoLabelTest {
       </clr-file-input-container>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ReactiveTest implements TestComponent {
@@ -70,6 +72,7 @@ class ReactiveTest implements TestComponent {
       <clr-control-error>Error message</clr-control-error>
     </clr-file-input-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateDrivenTest implements TestComponent {
@@ -87,6 +90,7 @@ class TemplateDrivenTest implements TestComponent {
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-file-input-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoNgControlTest {}

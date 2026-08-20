@@ -129,7 +129,7 @@ import { Page } from './providers/page';
   `,
   host: { '[class.pagination]': 'true' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridPagination implements OnDestroy, OnInit {
   @Input('clrDgPageInputDisabled') disableCurrentPageInput: boolean;

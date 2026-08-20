@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DomAdapter } from '@clr/angular/utils';
@@ -167,6 +167,7 @@ export default function (): void {
 
 @Component({
   template: `<ng-container *clrDgHideableColumn>Why am I not inside a datagrid column?</ng-container>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class HideableNotInsideColumnTest {}
@@ -181,6 +182,7 @@ class HideableNotInsideColumnTest {}
     </clr-dg-column>
     <clr-dg-column></clr-dg-column>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class HideableSugaredTest {
@@ -197,6 +199,7 @@ class HideableSugaredTest {
       <ng-template clrDgHideableColumn [(clrDgHidden)]="hideSecond">Name</ng-template>
     </clr-dg-column>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class HideableDesugeredTest {

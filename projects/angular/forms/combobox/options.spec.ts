@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/common';
 import { TestContext } from '@clr/angular/testing';
@@ -27,6 +27,7 @@ const OPTION_PROVIDERS = [
 @Component({
   template: `<clr-options>Test</clr-options>`,
   providers: [...OPTION_PROVIDERS, { provide: POPOVER_HOST_ORIGIN, useExisting: ElementRef }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {}
@@ -40,6 +41,7 @@ class TestComponent {}
     </clr-options>
   `,
   providers: [...OPTION_PROVIDERS, { provide: POPOVER_HOST_ORIGIN, useExisting: ElementRef }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponentWithChild {
@@ -49,6 +51,7 @@ class TestComponentWithChild {
 @Component({
   template: `<clr-options>Test</clr-options>`,
   providers: OPTION_PROVIDERS,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponentWithError {}

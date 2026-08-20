@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { environment } from '../../environments/environment';
@@ -21,6 +21,7 @@ import { ThemedImageComponent } from '../shared/themed-image/themed-image.compon
   host: {
     '[class.content-container]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterModule, SiteNavComponent, SiteFooterComponent, ThemeToggleComponent, ThemedImageComponent],
 })
 export class HomeComponent implements OnInit, OnDestroy {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import {
   blockIcon,
   boltIcon,
@@ -26,6 +26,7 @@ import {
   selector: 'clr-vertical-nav-icons-demo',
   templateUrl: './icons.html',
   styleUrl: '../vertical-nav.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrVerticalNavModule, ClrIcon, ClrIconModule],
 })
 export class VerticalNavIconsDemo {

@@ -16,7 +16,7 @@ import { TimelineIconAttributeService } from './providers/timeline-icon-attribut
   host: { '[class.clr-timeline]': 'true', '[attr.role]': '"list"' },
   providers: [TimelineIconAttributeService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTimeline {
   @Input('clrLayout') layout: ClrTimelineLayout = ClrTimelineLayout.HORIZONTAL;

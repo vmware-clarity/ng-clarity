@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { FontPreset } from './utils/font-presets';
 
@@ -65,6 +65,7 @@ function updateFontProperties(fontObj: FontPreset): void {
   selector: 'clr-typography-line-height',
   styleUrls: ['./line-height.demo.scss'],
   templateUrl: './typography-line-height.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class TypographyLineHeightDemo {

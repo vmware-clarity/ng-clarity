@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-dropdown-static-icon-toggle-demo',
   styleUrls: ['./dropdown.demo.scss'],
   templateUrl: './dropdown-static-icon-toggle.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DropdownStaticIconToggleDemo {}

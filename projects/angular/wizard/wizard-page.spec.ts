@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -52,6 +52,7 @@ class MyPageCollectionMock extends PageCollectionMock {
       </ng-template>
     </clr-wizard-page>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TypescriptTestComponent {
@@ -75,6 +76,7 @@ class TypescriptTestComponent {
       <ng-template clrPageTitle>Other template API tests</ng-template>
     </clr-wizard-page>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateTestComponent {
@@ -196,6 +198,7 @@ class TemplateTestComponent {
       </clr-wizard-page>
     </clr-wizard>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ViewTestComponent {
@@ -239,6 +242,7 @@ class ViewTestComponent {
       <clr-wizard-page [id]="3 === page ? 'lastpage' : page">Content for page {{ page }}</clr-wizard-page>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class IdTestComponent {

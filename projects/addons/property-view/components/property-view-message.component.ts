@@ -14,7 +14,7 @@ import { PropertyViewMessageModel } from '../property-view.model';
   standalone: false,
   templateUrl: 'property-view-message.component.html',
   styleUrls: ['property-view-message.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PropertyViewMessageComponent {
   @Input() data: PropertyViewMessageModel;

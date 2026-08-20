@@ -6,7 +6,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Route, Router, RouterLink, RouterOutlet } from '@angular/router';
 import {
   angleIcon,
@@ -55,6 +55,7 @@ type DemoRoute = Route & { data: { demoName: string } };
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,

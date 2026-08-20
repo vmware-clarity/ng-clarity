@@ -46,7 +46,7 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
   hostDirectives: [ClrPopoverHostDirective],
   host: { '[class.btn-group]': 'true' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
   @Input('clrToggleButtonAriaLabel') clrToggleButtonAriaLabel: string = this.commonStrings.keys.rowActions;

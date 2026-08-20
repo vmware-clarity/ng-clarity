@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrSelectedState, ClrTreeViewModule } from '@clr/angular';
 
 import { groceries } from './groceries';
@@ -57,6 +57,7 @@ const additionalFiles = {
   selector: 'clr-selection-tree-demo',
   styleUrl: '../tree-view.demo.scss',
   templateUrl: 'selection-tree.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrTreeViewModule, StackblitzExampleComponent],
 })
 export class SelectionTreeDemo {

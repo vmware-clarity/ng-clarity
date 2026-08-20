@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ComponentRef,
+  Input,
+  OnInit,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
 
 /**
  * Component for unit testing purposes to provide a template for rendering datagrid cell content.
@@ -13,6 +21,7 @@ import { Component, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef } f
 @Component({
   selector: 'appfx-dg-cell-container',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @if (!column.columnRenderer) {
       {{ item?.[column.field] }}

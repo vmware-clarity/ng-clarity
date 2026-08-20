@@ -41,6 +41,6 @@ import { NgControlService } from './providers/ng-control.service';
   },
   providers: [NgControlService, ControlIdService, ControlClassService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrControlContainer extends ClrAbstractContainer {}

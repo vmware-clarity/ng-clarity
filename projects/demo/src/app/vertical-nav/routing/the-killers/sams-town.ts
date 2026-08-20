@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-sams-town-demo',
@@ -19,6 +19,7 @@ import { Component } from '@angular/core';
       to where I am today". Sam's Town has sold over 4.5 million copies worldwide.
     </p>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class SamsTownDemo {}

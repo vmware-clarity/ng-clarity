@@ -77,7 +77,7 @@ import { Selection } from './providers/selection';
     role: 'row',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
   @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText: string;

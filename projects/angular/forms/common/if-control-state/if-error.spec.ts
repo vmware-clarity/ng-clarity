@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClrInput, ClrInputContainer } from '@clr/angular/forms/input';
@@ -23,6 +23,7 @@ const maxLengthMessage = 'MAX_LENGTH_MESSAGE';
 
 @Component({
   template: ` <div *clrIfError></div>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class InvalidUseTest {}
@@ -30,6 +31,7 @@ class InvalidUseTest {}
 @Component({
   template: ` <clr-control-error *clrIfError>${errorMessage}</clr-control-error>`,
   providers: [NgControlService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class GeneralErrorTest {}
@@ -43,6 +45,7 @@ class GeneralErrorTest {}
     </clr-control-error>
   `,
   providers: [NgControlService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SpecificErrorTest {}
@@ -66,6 +69,7 @@ class SpecificErrorTest {}
     </form>
   `,
   providers: [NgControlService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DynamicErrorTypeTest implements OnInit {
