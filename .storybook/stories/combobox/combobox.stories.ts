@@ -102,7 +102,7 @@ export const SingleSelectionEditableWithObjectValues: StoryObj = {
     clrEditable: true,
     objectValues: true,
   },
-  render: (args: StorybookComboboxComponent) => {
+  render: (args: any) => {
     const transformedArgs = args;
     transformedArgs.singleModel = transformedArgs.objectValues
       ? { name: 'Americium', symbol: 'Am', number: 95, electronegativity: 1.3 }
@@ -124,7 +124,7 @@ export const SingleSelectionEditableWithIdentityFnAndResolver: StoryObj = {
     objectValues: true,
     useIdentityFn: true,
   },
-  render: (args: StorybookComboboxComponent) => {
+  render: (args: any) => {
     const transformedArgs = args;
     transformedArgs.singleModel = transformedArgs.objectValues
       ? { name: 'Americium', symbol: 'Am', number: 95, electronegativity: 1.3 }
@@ -143,7 +143,7 @@ export const SingleSelectionWithIdentityFn: StoryObj = {
     objectValues: true,
     useIdentityFn: true,
   },
-  render: (args: StorybookComboboxComponent) => {
+  render: (args: any) => {
     const transformedArgs = args;
     transformedArgs.singleModel = transformedArgs.objectValues
       ? { name: 'Americium', symbol: 'Am', number: 95, electronegativity: 1.3 }
@@ -197,7 +197,7 @@ export const MultiSelectionEditableWithObjectValues: StoryObj = {
     clrEditable: true,
     objectValues: true,
   },
-  render: (args: StorybookComboboxComponent) => {
+  render: (args: any) => {
     const transformedArgs = args;
     transformedArgs.multiModel = transformedArgs.objectValues
       ? [
@@ -228,7 +228,7 @@ export const MultiSelectionEditableWithIdentityFnAndResolver: StoryObj = {
       { name: 'Berkelium', symbol: 'Bk', number: 97, electronegativity: 1.3 },
     ],
   },
-  render: (args: StorybookComboboxComponent) => {
+  render: (args: any) => {
     const transformedArgs = args;
     transformedArgs.multiModel = transformedArgs.objectValues
       ? [
@@ -256,7 +256,7 @@ export const MultiSelectionWithIdentityFn: StoryObj = {
       { name: 'Berkelium', symbol: 'Bk', number: 97, electronegativity: 1.3 },
     ],
   },
-  render: (args: StorybookComboboxComponent) => {
+  render: (args: any) => {
     const transformedArgs = args;
     transformedArgs.multiModel = transformedArgs.objectValues
       ? [
@@ -302,7 +302,7 @@ export const MultiSelectionWithSelectAllAndIdentityFn: StoryObj = {
       { name: 'Berkelium', symbol: 'Bk', number: 97, electronegativity: 1.3 },
     ],
   },
-  render: (args: StorybookComboboxComponent) => {
+  render: (args: any) => {
     return {
       props: args,
       template: `
