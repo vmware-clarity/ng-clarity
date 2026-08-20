@@ -33,7 +33,7 @@ import {
   standalone: false,
   templateUrl: 'property-view-property.component.html',
   styleUrls: ['property-view-property.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PropertyViewPropertyComponent implements OnInit, OnChanges, OnDestroy {
   readonly PropertyViewModelType = PropertyViewModelType;

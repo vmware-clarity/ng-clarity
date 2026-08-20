@@ -32,7 +32,7 @@ import { StepModel } from '../model/step.model';
   selector: 'appfx-step-container',
   standalone: false,
   templateUrl: 'step-container.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class StepContainerComponent implements OnInit, OnDestroy {
   @Input() step: StepInternal;

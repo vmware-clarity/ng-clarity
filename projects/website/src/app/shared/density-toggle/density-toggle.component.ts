@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ClarityIcons, ClrIcon, landscapeIcon } from '@clr/angular';
 
 type DensityType = '' | 'compact';
@@ -54,6 +54,7 @@ const densityLocalStorageKey = 'density';
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon],
 })
 export class DensityToggleComponent implements OnInit {

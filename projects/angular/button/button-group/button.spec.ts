@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -26,6 +26,7 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
     <clr-button #button2 [clrInMenu]="button2InMenu" class="btn btn-primary">Button 2</clr-button>
     <clr-button #button3 disabled class="test">Button 3</clr-button>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestButtonComponent {
@@ -52,6 +53,7 @@ class TestButtonComponent {
       <ng-template [ngTemplateOutlet]="button3.templateRef"></ng-template>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ButtonViewTestComponent {
@@ -70,6 +72,7 @@ export class ButtonViewTestComponent {
       <clr-button id="button-two" routerLink="route-three" routerLinkActive="btn-primary">3</clr-button>
     </clr-button-group>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestButtonWithRouterLinkActiveComponent {}

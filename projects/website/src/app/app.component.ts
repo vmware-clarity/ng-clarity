@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
 
@@ -25,6 +25,7 @@ import { VersionSelectComponent } from './shared/version-select/version-select.c
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterModule,
     ClrMainContainerModule,

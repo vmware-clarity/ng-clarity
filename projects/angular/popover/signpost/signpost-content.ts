@@ -64,7 +64,7 @@ import { SignpostIdService } from './providers/signpost-id.service';
   },
   standalone: false,
   hostDirectives: [ClrPopoverContent],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;

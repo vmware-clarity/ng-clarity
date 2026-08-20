@@ -202,7 +202,7 @@
     <clr-dg-row [clrDgItem]="user" [clrDgSkeletonLoading]="!user">
       <clr-dg-cell>{{ user?.id }} index: {{ index }}</clr-dg-cell>
       <clr-dg-cell>{{ user?.name }}</clr-dg-cell>
-      <clr-dg-cell>{{ user?.creation | date }}</clr-dg-cell>
+      <clr-dg-cell>{{ $safeNavigationMigration(user?.creation) | date }}</clr-dg-cell>
       <clr-dg-cell>
         {{ user?.pokemon?.name }}
         <span class="badge badge-5">#{{ user?.pokemon?.number }}</span>

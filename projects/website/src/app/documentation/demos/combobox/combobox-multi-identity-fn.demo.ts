@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrComboboxModule } from '@clr/angular';
 
@@ -68,6 +68,7 @@ export class ExampleComponent {
 @Component({
   selector: 'clr-combobox-multi-identity-fn-demo',
   templateUrl: './combobox-multi-identity-fn.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule, FormsModule, ClrComboboxModule, StackblitzExampleComponent],
 })
 export class ComboboxMultiIdentityFnDemo {

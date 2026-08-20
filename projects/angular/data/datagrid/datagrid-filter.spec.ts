@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
@@ -206,6 +206,7 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
       </clr-dg-filter>
     </clr-dg-column>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FullTest {

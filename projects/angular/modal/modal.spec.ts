@@ -6,7 +6,7 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,6 +35,7 @@ import { ClrModalModule } from './modal.module';
       </div>
     </clr-modal>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -59,6 +60,7 @@ class TestComponent {
       </div>
     </clr-modal>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestDefaultsComponent {

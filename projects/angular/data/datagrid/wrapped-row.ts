@@ -23,7 +23,7 @@ import {
     </ng-template>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WrappedRow implements AfterViewInit, OnDestroy {
   @ViewChild('rowPortal') templateRef: TemplateRef<void>;

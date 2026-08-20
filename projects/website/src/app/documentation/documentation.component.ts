@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { checkboxListIcon, ClarityIcons, cogIcon, helpInfoIcon, homeIcon, libraryIcon } from '@clr/angular';
 
@@ -17,6 +17,7 @@ import { SiteNavComponent } from '../shared/site-nav/site-nav.component';
   host: {
     '[class.content-container]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterModule, SiteNavComponent],
 })
 export class DocumentationComponent {

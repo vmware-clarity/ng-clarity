@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrAlertModule,
@@ -125,6 +125,7 @@ export class ExampleComponent {
 @Component({
   selector: 'clr-datepicker-api-demo',
   templateUrl: './datepicker-api.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ClrCommonFormsModule,

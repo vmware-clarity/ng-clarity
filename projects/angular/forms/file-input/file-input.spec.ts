@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrFileInput } from './file-input';
@@ -14,6 +14,7 @@ import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../test
 
 @Component({
   template: `<input type="file" clrFileInput />`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class StandaloneUseTest {}
@@ -26,6 +27,7 @@ class StandaloneUseTest {}
       </clr-file-input-container>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ReactiveTest {
@@ -40,6 +42,7 @@ class ReactiveTest {
       <input class="test-class" type="file" clrFileInput name="model" [(ngModel)]="model" />
     </clr-file-input-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateDrivenTest {

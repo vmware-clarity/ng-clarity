@@ -114,7 +114,7 @@ import { ViewManagerService } from './providers/view-manager.service';
     '[class.clr-row]': 'addGrid()',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   focus = false;

@@ -16,7 +16,7 @@ import { DatagridStrings } from '../../i18n/datagrid-strings.service';
   standalone: false,
   templateUrl: 'export-datagrid.component.html',
   styleUrls: ['export-datagrid.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ExportDatagridComponent {
   /**

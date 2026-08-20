@@ -6,7 +6,7 @@
  */
 
 import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrDatagridModule, ClrIfExpanded, ClrTreeViewModule } from '@clr/angular';
 import { Observable } from 'rxjs';
 
@@ -66,6 +66,7 @@ const additionalFiles = {
   selector: 'clr-lazy-loading-selection-tree-demo',
   styleUrl: '../tree-view.demo.scss',
   templateUrl: './lazy-loading-selection-tree.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrTreeViewModule,
     ClrDatagridModule,

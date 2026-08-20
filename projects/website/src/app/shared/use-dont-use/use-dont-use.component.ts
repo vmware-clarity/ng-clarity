@@ -6,13 +6,14 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { ClarityIcons, ClrIcon, successStandardIcon, timesCircleIcon } from '@clr/angular';
 
 @Component({
   selector: 'app-use-dont-use',
   templateUrl: './use-dont-use.component.html',
   styleUrl: './use-dont-use.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule, ClrIcon],
 })
 export class UseDontUseComponent {

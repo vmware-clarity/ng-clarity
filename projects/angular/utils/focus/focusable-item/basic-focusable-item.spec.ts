@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { BASIC_FOCUSABLE_ITEM_PROVIDER } from './basic-focusable-item.service';
@@ -14,6 +14,7 @@ import { FocusableItem } from './focusable-item';
 @Component({
   template: '',
   providers: [BASIC_FOCUSABLE_ITEM_PROVIDER],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleHost {}

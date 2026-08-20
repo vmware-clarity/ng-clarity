@@ -7,7 +7,7 @@
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
-import { Component, Input, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
 
 import { CssVariablePipe } from '../pipes/css-variable.pipe';
 
@@ -15,6 +15,7 @@ import { CssVariablePipe } from '../pipes/css-variable.pipe';
   selector: 'app-color-example-item',
   templateUrl: './color-example-item.component.html',
   styleUrl: './color-example-item.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule, CssVariablePipe],
 })
 export class ColorExampleItemComponent {

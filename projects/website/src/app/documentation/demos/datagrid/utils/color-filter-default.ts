@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrDatagridFilter, ClrDatagridFilterInterface } from '@clr/angular';
 import { Observable, Subject } from 'rxjs';
 
@@ -51,6 +51,7 @@ import { User } from '../inventory/user';
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
     '[class.color-filter]': 'true',
   },

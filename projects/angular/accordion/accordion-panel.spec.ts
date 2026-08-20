@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -33,6 +33,7 @@ import { ClrAccordionModule } from './accordion.module';
       </clr-accordion-panel>
     </clr-accordion>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -61,6 +62,7 @@ class TestComponent {
       </clr-accordion-panel>
     </clr-accordion>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestNestedAccordionComponent {}
@@ -75,6 +77,7 @@ class TestNestedAccordionComponent {}
       </clr-accordion-panel>
     </clr-accordion>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestNoBindingComponent {

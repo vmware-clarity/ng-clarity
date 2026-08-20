@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 export const TITLE = 'Datagrid';
 
@@ -13,6 +13,7 @@ export const TITLE = 'Datagrid';
   selector: 'clr-datagrid-demo',
   templateUrl: './datagrid.demo.html',
   styleUrls: ['./datagrid.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatagridDemo {}

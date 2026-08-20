@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { AnimatedExampleComponent } from '../../../shared/animated-example/animated-example.component';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -20,6 +20,7 @@ const EXAMPLE2 = `<span class="spinner spinner-lg">Loading...</span>`;
   selector: 'clr-spinner-sizes',
   templateUrl: './spinner-sizes.html',
   styleUrl: './spinner.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [AnimatedExampleComponent, StackblitzExampleComponent],
 })
 export class SpinnerSizesDemo {

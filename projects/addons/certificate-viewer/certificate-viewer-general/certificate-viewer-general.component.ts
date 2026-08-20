@@ -29,7 +29,7 @@ import { TopHeadingLevel } from '../models/heading-level.model';
   standalone: false,
   templateUrl: 'certificate-viewer-general.component.html',
   styleUrls: ['certificate-viewer-general.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class CertificateViewerGeneralComponent {
   readonly KnownOids = KnownOids;

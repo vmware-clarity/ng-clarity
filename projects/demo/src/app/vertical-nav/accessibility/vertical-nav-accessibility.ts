@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-vertical-nav-accesibility-demo',
   templateUrl: './vertical-nav-accessibility.demo.html',
   styleUrls: ['../vertical-nav.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class VerticalNavAccessibilityDemo {}

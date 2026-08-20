@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, LOCALE_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, LOCALE_ID } from '@angular/core';
 
 @Component({
   selector: 'clr-datepicker-date-input-wrapper-present-demo',
   styleUrls: ['./datepicker.demo.scss'],
   templateUrl: './datepicker-date-input-explicit-wrapper.html',
   providers: [{ provide: LOCALE_ID, useValue: 'en' }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatepickerDateInputExplicitWrapperDemo {

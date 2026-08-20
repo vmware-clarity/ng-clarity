@@ -6,7 +6,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClarityIcons,
   ClrAlertModule,
@@ -52,6 +52,7 @@ const EXAMPLE_HTML = `
   providers: [Inventory],
   templateUrl: './binding-properties.html',
   styleUrl: '../datagrid.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrDatagridModule,
     ClrStopEscapePropagationDirective,

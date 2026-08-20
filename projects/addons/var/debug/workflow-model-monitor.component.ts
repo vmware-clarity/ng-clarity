@@ -23,7 +23,7 @@ import { ModelChange, StepWithChanges, WorkflowModelManager } from '../model/wor
   standalone: false,
   templateUrl: 'workflow-model-monitor.component.html',
   styleUrls: ['workflow-model-monitor.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
   @Input() modelMgr: WorkflowModelManager;

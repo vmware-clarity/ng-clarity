@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrSelect } from './select';
@@ -14,12 +14,14 @@ import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../test
 
 @Component({
   template: `<select clrSelect></select>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class StandaloneUseTest {}
 
 @Component({
   template: `<select clrSelect name="model" class="test-class" [(ngModel)]="model"></select>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateDrivenTest {}
@@ -30,6 +32,7 @@ class TemplateDrivenTest {}
       <select clrSelect name="model" class="test-class" formControlName="model"></select>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ReactiveTest {

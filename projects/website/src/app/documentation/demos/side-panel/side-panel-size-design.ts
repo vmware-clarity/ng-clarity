@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClarityIcons, ClrIcon, ClrIconModule, ClrSidePanelModule, resizeIcon } from '@clr/angular';
 
 @Component({
   selector: 'clr-side-panel-size-design-demo',
   templateUrl: './side-panel-size-design.demo.html',
   styleUrl: './side-panel-size-design-demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, ClrSidePanelModule],
 })
 export class SidePanelSizeDesignDemo {

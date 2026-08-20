@@ -6,7 +6,7 @@
  */
 
 import { JsonPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrCommonFormsModule, ClrFileInputModule } from '@clr/angular';
 
@@ -65,6 +65,7 @@ export class ExampleComponent {
 @Component({
   selector: 'app-file-picker-code-validation-example',
   templateUrl: './file-picker-code-validation-example.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ClrCommonFormsModule,

@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { AppfxMenuModule, MenuComponent } from '@clr/addons/menu';
 import { ClarityModule } from '@clr/angular';
 
@@ -14,6 +14,7 @@ import { ClarityModule } from '@clr/angular';
   selector: 'clr-button-menu-demo',
   standalone: true,
   imports: [CommonModule, ClarityModule, AppfxMenuModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: 'button-menu.html',
 })
 export class ButtonMenuDemoComponent {

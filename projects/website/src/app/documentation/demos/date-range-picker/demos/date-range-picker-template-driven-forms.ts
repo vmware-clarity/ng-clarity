@@ -6,7 +6,7 @@
  */
 
 import { JsonPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrCommonFormsModule,
@@ -50,6 +50,7 @@ export class ExampleComponent {
 @Component({
   selector: 'clr-date-range-picker-template-driven-forms-demo',
   templateUrl: './date-range-picker-template-driven-forms.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ClrCommonFormsModule,

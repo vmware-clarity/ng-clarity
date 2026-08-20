@@ -81,7 +81,7 @@ export const SELECT_ALL_ID = 'select-all-id';
     '[id]': 'optionsId',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
   @Input('id') optionsId: string;

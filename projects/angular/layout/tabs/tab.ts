@@ -17,7 +17,7 @@ import { ClrTabLink } from './tab-link.directive';
   template: `<ng-content></ng-content>`,
   providers: [IF_ACTIVE_ID_PROVIDER],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTab {
   @ContentChild(ClrTabLink, { static: true }) tabLink: ClrTabLink;

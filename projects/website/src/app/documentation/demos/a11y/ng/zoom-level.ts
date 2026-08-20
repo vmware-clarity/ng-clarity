@@ -7,7 +7,7 @@
 
 import { A11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppfxA11yModule } from '@clr/addons/a11y';
 import { ClrTabsModule } from '@clr/angular';
 
@@ -16,6 +16,7 @@ import { ClrTabsModule } from '@clr/angular';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [AppfxA11yModule, A11yModule, ClrTabsModule, CommonModule],
 })
 export class ExampleComponent {}

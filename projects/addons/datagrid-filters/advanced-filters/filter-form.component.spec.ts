@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -16,6 +16,7 @@ import { AppfxDatagridFiltersModule } from '../datagrid-filters.module';
 @Component({
   selector: 'appfx-filter-form-host-component',
   imports: [AppfxDatagridFiltersModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <appfx-filter-form [valid]="isFormValid" (cancel)="onCancelButtonClick()" (apply)="onApplyButtonClick()">
       <div></div>

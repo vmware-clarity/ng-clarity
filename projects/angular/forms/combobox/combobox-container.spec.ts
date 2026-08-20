@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -24,6 +24,7 @@ import { ComboboxContainerService } from './providers/combobox-container.service
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-combobox-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoLabelTest {}
@@ -38,6 +39,7 @@ class NoLabelTest {}
       <clr-control-success>Valid</clr-control-success>
     </clr-combobox-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateDrivenTest {
@@ -58,6 +60,7 @@ class TemplateDrivenTest {
       </clr-combobox-container>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ReactiveTest {

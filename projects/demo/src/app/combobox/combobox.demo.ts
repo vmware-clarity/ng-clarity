@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, timer } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -13,6 +13,7 @@ import { map, tap } from 'rxjs/operators';
 @Component({
   templateUrl: './combobox.demo.html',
   styles: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ComboboxDemo {

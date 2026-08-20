@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { LayoutNoSubnavDemo } from './layout-no-subnav';
 import { LayoutNoVerticalNavDemo } from './layout-no-vertical-nav';
@@ -16,6 +16,7 @@ import { LayoutVerticalNavPrimaryDemo } from './layout-vertical-nav-primary';
 @Component({
   selector: 'clr-navigation-types-demo',
   templateUrl: './navigation-types.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LayoutNoVerticalNavDemo,
     LayoutNoSubnavDemo,

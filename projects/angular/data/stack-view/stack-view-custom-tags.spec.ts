@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrStackViewModule } from './stack-view.module';
@@ -15,6 +15,7 @@ import { ClrStackViewModule } from './stack-view.module';
     <clr-stack-label class="one">Title</clr-stack-label>
     <clr-stack-label class="two" id="ohai">Title</clr-stack-label>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {}

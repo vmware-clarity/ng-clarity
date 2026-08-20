@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppfxDatagridModule, appfxDatagridPersistSettingsToken, ColumnDefinition } from '@clr/addons/datagrid';
 import { ClrAlertModule } from '@clr/angular';
 
@@ -17,6 +17,7 @@ import { DatagridLocalStorageService } from './persistance-datagrid-local-storag
   imports: [AppfxDatagridModule, ClrAlertModule],
   standalone: true,
   templateUrl: './persistance.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     Inventory,
     {

@@ -29,7 +29,7 @@ import { MultiAlertService } from './providers/multi-alert.service';
   providers: [AlertIconAndTypesService],
   templateUrl: './alert.html',
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrAlert implements OnInit, OnDestroy {
   @Input('clrAlertSizeSmall') isSmall = false;

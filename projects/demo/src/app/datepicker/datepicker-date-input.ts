@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 const date1: Date = new Date(2015, 1, 1);
 const date2: Date = new Date(2017, 4, 5);
@@ -14,6 +14,7 @@ const date2: Date = new Date(2017, 4, 5);
   selector: 'clr-datepicker-date-input-demo',
   styleUrls: ['./datepicker.demo.scss'],
   templateUrl: './datepicker-date-input.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatepickerDateInputDemo {

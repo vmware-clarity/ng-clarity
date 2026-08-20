@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-@Component({ template: '<p>Charizard</p>' })
+@Component({ changeDetection: ChangeDetectionStrategy.Eager, template: '<p>Charizard</p>' })
 export class CharizardComponent {}

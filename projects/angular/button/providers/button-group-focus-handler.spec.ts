@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { expectActiveElementToBe } from '@clr/angular/testing';
@@ -27,6 +27,7 @@ import { ClrButtonGroup } from '../button-group/button-group';
     </clr-button-group>
   `,
   providers: [BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FocusService, ClrPopoverService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class BtnGroupViewContainer {

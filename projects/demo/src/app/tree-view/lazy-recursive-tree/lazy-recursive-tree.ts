@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { AsyncInfiniteTree } from '../utils/async-infinite-tree';
 import { InfiniteTree } from '../utils/infinite-tree';
@@ -14,6 +14,7 @@ import { InfiniteTree } from '../utils/infinite-tree';
   selector: 'clr-lazy-recursive-tree-demo',
   styleUrls: ['../tree-view.demo.scss'],
   templateUrl: './lazy-recursive-tree.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class LazyRecursiveTreeDemo {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ColorExampleItemComponent } from '../../../../../shared/color-example-item/color-example-item.component';
 import { ThemedImageComponent } from '../../../../../shared/themed-image/themed-image.component';
@@ -13,6 +13,7 @@ import { ThemedImageComponent } from '../../../../../shared/themed-image/themed-
 @Component({
   selector: 'app-charts-colors-severity',
   templateUrl: './charts-colors-severity.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ColorExampleItemComponent, ThemedImageComponent],
 })
 export class ChartsColorsSeverity {}

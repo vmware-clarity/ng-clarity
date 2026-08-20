@@ -25,7 +25,7 @@ import { Items } from './providers/items';
   `,
   host: { '[class.datagrid-placeholder-container]': 'true' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridPlaceholder<T = any> {
   constructor(private items: Items<T>) {}

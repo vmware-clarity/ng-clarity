@@ -22,6 +22,7 @@ class BasicReactiveDemo {
 
 @Component({
   templateUrl: './reactive.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FormsReactiveDemo extends BasicReactiveDemo {}

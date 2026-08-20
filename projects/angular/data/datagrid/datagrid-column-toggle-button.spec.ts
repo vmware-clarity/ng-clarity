@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestContext } from '@clr/angular/testing';
 import { BehaviorSubject } from 'rxjs';
 
@@ -68,6 +68,7 @@ export default function (): void {
 
 @Component({
   template: `<clr-dg-column-toggle-button>Testing 1 2 3</clr-dg-column-toggle-button>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ButtonTest {}

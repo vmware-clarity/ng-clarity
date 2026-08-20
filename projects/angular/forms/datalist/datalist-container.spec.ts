@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrDatalistContainer } from './datalist-container';
@@ -27,6 +27,7 @@ import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests
       <clr-control-success>Valid</clr-control-success>
     </clr-datalist-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateDrivenTest {
@@ -46,6 +47,7 @@ class TemplateDrivenTest {
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-datalist-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoLabelTest {}
@@ -67,6 +69,7 @@ class NoLabelTest {}
       </clr-datalist-container>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ReactiveTest {

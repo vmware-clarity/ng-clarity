@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppfxCardContainerModule } from '@clr/addons/card-container';
 
 import { DynamicCardComponent } from './cards/dynamic/dynamic.component';
@@ -23,6 +23,7 @@ import { TagsCardComponent } from './cards/tags/tags.component';
     TagsCardComponent,
     DynamicCardComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './card-container.demo.html',
 })
 export class CardContainerDemo {

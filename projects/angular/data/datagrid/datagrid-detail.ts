@@ -39,7 +39,7 @@ import { DEFAULT_DETAIL_WIDTH, DetailService, MAX_DETAIL_WIDTH, MIN_DETAIL_WIDTH
     }
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridDetail {
   @Input('clrDetailAriaLabelledBy') ariaLabelledBy: string;

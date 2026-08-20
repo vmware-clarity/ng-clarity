@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, viewChild, viewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, viewChild, viewChildren } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import {
   boltIcon,
@@ -143,6 +143,7 @@ const defaultModel = {
     '[class.is-large]': 'true',
   },
   providers: [disableFocusTrapProvider],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrWizardModule,
     FormsModule,

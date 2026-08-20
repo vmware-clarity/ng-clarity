@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { TestContext } from '@clr/angular/testing';
 import { BehaviorSubject } from 'rxjs';
@@ -83,6 +83,7 @@ export default function (): void {
       }
     </clr-dg-row>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {

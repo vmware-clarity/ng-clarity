@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrLoadingState } from '@clr/angular';
 
 @Component({
   selector: 'clr-buttons-demo-button-loading',
   templateUrl: './button-loading.html',
   styleUrls: ['./buttons.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ButtonLoadingDemo {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { ClrModalModule, ClrSidePanelModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -49,6 +49,7 @@ export class ExampleComponent {
 @Component({
   selector: 'clr-side-panel-angular-inline-demo',
   templateUrl: './side-panel-angular-inline-demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrModalModule, ClrSidePanelModule, StackblitzExampleComponent],
 })
 export class SidePanelAngularInlineDemo {

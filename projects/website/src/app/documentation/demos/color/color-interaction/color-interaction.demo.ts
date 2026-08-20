@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { COLOR_INTERACTION } from './color-interaction';
 import { ColorExampleItemComponent } from '../../../../shared/color-example-item/color-example-item.component';
@@ -14,6 +14,7 @@ import { ThemedImageComponent } from '../../../../shared/themed-image/themed-ima
 @Component({
   selector: 'clr-color-interaction',
   templateUrl: './color-interaction.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ColorExampleItemComponent, ThemedImageComponent],
 })
 export class ColorInteractionDemo {

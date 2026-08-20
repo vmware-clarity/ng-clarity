@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrFocusOnViewInitModule } from '@clr/angular';
 
 import { CodeSnippetComponent } from '../../../../../shared/code-snippet/code-snippet.component';
@@ -34,6 +34,7 @@ const HTML_EXAMPLE = `
     <app-code-snippet [code]="htmlExample"></app-code-snippet>
   `,
   styleUrl: '../../vertical-nav.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrFocusOnViewInitModule, CodeSnippetComponent],
 })
 export class CharmanderDemo {

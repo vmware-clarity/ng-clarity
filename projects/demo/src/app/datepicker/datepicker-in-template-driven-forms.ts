@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-datepicker-in-template-driven-forms-demo',
   styleUrls: ['./datepicker.demo.scss'],
   templateUrl: './datepicker-in-template-driven-forms.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatepickerInTemplateDrivenFormsDemo {

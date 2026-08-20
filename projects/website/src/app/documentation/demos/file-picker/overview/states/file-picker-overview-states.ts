@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, ElementRef, viewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, viewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrCommonFormsModule, ClrFileInputModule } from '@clr/angular';
 
@@ -14,6 +14,7 @@ import { clearFiles, selectFiles } from '../file-picker.helpers';
 @Component({
   selector: 'app-file-picker-overview-states',
   templateUrl: './file-picker-overview-states.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormsModule, ClrCommonFormsModule, ReactiveFormsModule, ClrFileInputModule],
 })
 export class FilePickerOverviewStates implements AfterViewInit {

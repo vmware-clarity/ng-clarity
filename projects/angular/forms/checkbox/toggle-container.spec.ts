@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -23,6 +23,7 @@ import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-toggle-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoLabelTest {}
@@ -40,6 +41,7 @@ class NoLabelTest {}
       <clr-control-success>Valid</clr-control-success>
     </clr-toggle-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateDrivenTest {
@@ -67,6 +69,7 @@ class TemplateDrivenTest {
       </clr-toggle-container>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ReactiveTest {

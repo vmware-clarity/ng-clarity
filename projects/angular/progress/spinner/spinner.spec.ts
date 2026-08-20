@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -23,24 +23,28 @@ const SPINNER_LARGE_SIZE = 'spinner-lg';
 
 @Component({
   template: `<clr-spinner clrSmall clrMedium clrInline>Loading ...</clr-spinner>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {}
 
 @Component({
   template: `<clr-spinner clrSmall clrInverse>Loading ...</clr-spinner>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestSmallComponent {}
 
 @Component({
   template: `<clr-spinner clrMedium>Loading ...</clr-spinner>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestMediumComponent {}
 
 @Component({
   template: `<clr-spinner>Loading ...</clr-spinner>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestLargeComponent {}

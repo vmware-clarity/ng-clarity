@@ -44,7 +44,7 @@ export enum ErrorType {
   standalone: false,
   templateUrl: 'users-filter.component.html',
   styleUrls: ['users-filter.component.scss', '../common-styles.scss', 'enum-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() filterProperty: UserPropertyDefinition;

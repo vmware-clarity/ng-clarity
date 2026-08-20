@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { accessibility2Icon, ClarityIcons, colorPaletteIcon } from '@clr/angular';
 
@@ -15,6 +15,7 @@ import { ThemedImageComponent } from '../../../../shared/themed-image/themed-ima
 @Component({
   selector: 'app-charts-overview',
   templateUrl: './charts-overview.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ThemedImageComponent, RouterLink, LinkCardsComponent],
 })
 export class ChartsOverview {

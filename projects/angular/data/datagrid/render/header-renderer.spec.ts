@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { delay, TestContext } from '@clr/angular/testing';
 import { DomAdapter, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter } from '@clr/angular/utils';
@@ -31,6 +31,7 @@ import { TableSizeService } from '../providers/table-size.service';
 
 @Component({
   template: `<clr-dg-column>Hello world</clr-dg-column>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {}
@@ -56,6 +57,7 @@ class SimpleTest {}
       </clr-datagrid>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class HeaderResizeTestComponent {

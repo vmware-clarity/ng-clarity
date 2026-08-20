@@ -26,7 +26,7 @@ import { ColumnsService } from './providers/columns.service';
     </button>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridColumnToggleButton {
   private allSelected: Subject<boolean> = new EventEmitter();

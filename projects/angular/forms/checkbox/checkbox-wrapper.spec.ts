@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxContainer } from './checkbox-container';
@@ -19,6 +19,7 @@ import { WrapperContainerSpec, WrapperFullSpec, WrapperNoLabelSpec } from '../te
       <input type="checkbox" clrCheckbox name="model" [(ngModel)]="model" />
     </clr-checkbox-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FullTest {
@@ -31,6 +32,7 @@ class FullTest {
       <input type="checkbox" clrCheckbox name="model" [(ngModel)]="model" />
     </clr-checkbox-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoLabelTest {
@@ -45,6 +47,7 @@ class NoLabelTest {
       </clr-checkbox-wrapper>
     </clr-checkbox-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ContainerTest {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestContext } from '@clr/angular/testing';
 
 import { DatagridCellRenderer } from './cell-renderer';
@@ -17,6 +17,7 @@ import { DatagridRenderStep } from '../enums/render-step.enum';
 
 @Component({
   template: `<clr-dg-cell>Hello world</clr-dg-cell>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {}

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-hot-fuss-demo',
@@ -19,6 +19,7 @@ import { Component } from '@angular/core';
       Told Me", "All These Things That I've Done" and "Smile Like You Mean It".
     </p>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class HotFuss2Demo {}

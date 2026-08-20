@@ -6,7 +6,7 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import {
   ClrDatagrid,
   ClrDatagridItemsIdentityFunction,
@@ -22,6 +22,7 @@ import { User } from '../inventory/user';
   providers: [Inventory],
   templateUrl: './virtual-scroll-empty-rows.html',
   styleUrls: ['../datagrid.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatagridVirtualScrollEmptyRowsDemo {

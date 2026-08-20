@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Injectable, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injectable, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -23,6 +23,7 @@ import { ClrStepperModule } from './stepper.module';
       </clr-stepper-panel>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -39,6 +40,7 @@ class TestComponent {
       </clr-stepper-panel>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestPreviousButtonComponent {

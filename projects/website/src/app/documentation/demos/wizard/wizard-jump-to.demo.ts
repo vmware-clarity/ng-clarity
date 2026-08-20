@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
 import { ClrWizard, ClrWizardModule, ClrWizardPage } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -115,6 +115,7 @@ const html = `
 @Component({
   selector: 'clr-wizard-jump-to',
   templateUrl: './wizard-jump-to.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrWizardModule, StackblitzExampleComponent],
 })
 export class WizardJumpToDemo {

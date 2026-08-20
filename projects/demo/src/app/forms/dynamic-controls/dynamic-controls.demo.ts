@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClrForm } from '@clr/angular';
 import { Subject } from 'rxjs';
@@ -14,6 +14,7 @@ import { filter, takeUntil, tap } from 'rxjs/operators';
 @Component({
   selector: 'dynamic-controls-demo',
   templateUrl: './dynamic-controls.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DynamicControlsDemo {

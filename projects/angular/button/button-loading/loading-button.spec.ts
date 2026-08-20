@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay } from '@clr/angular/testing';
@@ -122,6 +122,7 @@ describe('Loading Buttons', () => {
 
 @Component({
   template: `<button [(clrLoading)]="buttonState" id="testBtn" [disabled]="disabled">{{ buttonContent }}</button>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestLoadingButtonComponent {

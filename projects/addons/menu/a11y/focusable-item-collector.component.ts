@@ -15,7 +15,7 @@ import { FocusableItemProvider } from './focusable-item-provider';
   selector: 'focusable-item-collector',
   standalone: false,
   template: '<ng-content></ng-content>',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 /**
  * Does the job of the parent ClrDropdownMenu which isn't able to collect the child FocusableItems

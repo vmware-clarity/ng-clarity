@@ -63,7 +63,7 @@ let nbRow = 0;
     { provide: LoadingListener, useExisting: DatagridIfExpandService },
   ],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
   @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<boolean>(false);

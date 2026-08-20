@@ -6,7 +6,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClrAlertModule,
   ClrDatagridModule,
@@ -26,6 +26,7 @@ import { CommonFiles } from '../utils/stackblitz-common-data';
   providers: [Inventory],
   templateUrl: 'single-selection.html',
   styleUrl: '../datagrid.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrDatagridModule,
     ClrStopEscapePropagationDirective,

@@ -47,7 +47,7 @@ import { NestedMenu } from './model/nested-menu';
       useExisting: forwardRef(() => MenuComponent),
     },
   ],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 /**
  * A contextual menu based on `clr-dropdown`

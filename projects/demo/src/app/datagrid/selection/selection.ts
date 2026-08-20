@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, TrackByFunction } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
 import { ClrDatagridItemsIdentityFunction, ClrDatagridStateInterface } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
@@ -16,6 +16,7 @@ import { User } from '../inventory/user';
   providers: [Inventory],
   templateUrl: 'selection.html',
   styleUrls: ['../datagrid.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatagridSelectionDemo {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, input, OnDestroy, OnInit, TemplateRef, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, OnDestroy, OnInit, TemplateRef, viewChild } from '@angular/core';
 
 import { DocTabsComponent } from './doc-tabs.component';
 
@@ -16,6 +16,7 @@ import { DocTabsComponent } from './doc-tabs.component';
       <ng-content></ng-content>
     </ng-template>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
     role: 'article',
   },

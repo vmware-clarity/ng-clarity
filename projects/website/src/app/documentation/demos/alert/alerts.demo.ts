@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ClrAlert, ClrAlertModule, ClrIcon, ClrIconModule, ClrModalModule, FOCUS_ON_VIEW_INIT } from '@clr/angular';
 
@@ -41,6 +41,7 @@ import { notificationsPatternLink } from '../pattern-links';
     '[class.dox-content-panel]': 'true',
   },
   providers: [disableFocusTrapProvider, { provide: FOCUS_ON_VIEW_INIT, useValue: false }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,

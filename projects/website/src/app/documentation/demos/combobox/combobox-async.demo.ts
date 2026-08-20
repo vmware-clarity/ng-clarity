@@ -6,7 +6,7 @@
  */
 
 import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrComboboxModule,
@@ -97,6 +97,7 @@ const additionalFiles = {
 @Component({
   selector: 'clr-combobox-async-demo',
   templateUrl: './combobox-async.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrComboboxModule,
     ClrCommonFormsModule,

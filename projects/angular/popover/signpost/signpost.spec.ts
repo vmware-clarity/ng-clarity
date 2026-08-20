@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { ClrPopoverPosition, ClrPopoverService, SIGNPOST_POSITIONS } from '@clr/angular/popover/common';
 import { delay, expectActiveElementNotToBe, expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
 
@@ -279,6 +279,7 @@ export default function (): void {
       <clr-signpost-content *clrIfOpen="openState">Signpost content</clr-signpost-content>
     </clr-signpost>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestCustomTriggerSignpost {
@@ -302,6 +303,7 @@ class TestCustomTriggerSignpost {
       </clr-signpost>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestDefaultSignpost {

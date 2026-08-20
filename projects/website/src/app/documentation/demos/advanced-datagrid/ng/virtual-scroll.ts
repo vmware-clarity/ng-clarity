@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition, ExportProviderService } from '@clr/addons/datagrid';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { SelectionType } from '@clr/angular/data/datagrid';
@@ -18,6 +18,7 @@ import { FetchResult, Inventory, VmItem } from './inventory/inventory';
   imports: [AppfxDatagridModule, GridConfigFormComponent],
   standalone: true,
   templateUrl: './virtual-scroll.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ExportProviderService, Inventory],
 })
 export class VirtualScrollGridDemoComponent {

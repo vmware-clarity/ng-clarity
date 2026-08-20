@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   checkIcon,
@@ -59,6 +59,7 @@ const ACCESSIBILITY_EXAMPLE = `
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,

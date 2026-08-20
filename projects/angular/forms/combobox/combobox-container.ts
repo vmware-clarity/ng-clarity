@@ -51,7 +51,7 @@ import { ComboboxContainerService } from './providers/combobox-container.service
   },
   providers: [NgControlService, ControlIdService, ControlClassService, ComboboxContainerService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
   @ViewChild('controlContainer') controlContainer: ElementRef<HTMLElement>;

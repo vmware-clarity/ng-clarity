@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 
 @Component({
   selector: 'regression-testing-demo',
   templateUrl: './regression-testing.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class RegressionTestingDemo implements OnInit {

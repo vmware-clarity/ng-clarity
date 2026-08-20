@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-tree-node-routing-revolver-demo',
@@ -20,6 +20,7 @@ import { Component } from '@angular/core';
       and content. In America, the album topped the Billboard Top LPs list for six weeks.
     </p>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class TreeNodeRoutingRevolverDemo {}

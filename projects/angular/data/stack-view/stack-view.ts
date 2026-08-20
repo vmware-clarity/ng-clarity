@@ -22,6 +22,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     `,
   ],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrStackView {}

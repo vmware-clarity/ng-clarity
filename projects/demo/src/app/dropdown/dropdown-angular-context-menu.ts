@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ClrDropdown } from '@clr/angular';
 
 @Component({
@@ -25,6 +25,7 @@ import { ClrDropdown } from '@clr/angular';
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DropdownAngularContextMenuDemo {

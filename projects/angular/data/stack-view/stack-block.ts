@@ -82,7 +82,7 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
     '[attr.aria-level]': 'ariaLevel ? ariaLevel : null',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrStackBlock implements OnInit {
   @Input('clrSbExpanded') @HostBinding('class.stack-block-expanded') expanded = false;

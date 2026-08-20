@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrDatagridFilter, ClrDatagridFilterInterface } from '@clr/angular';
 import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'z-index-custom-filter',
   template: `<z-index-various-content></z-index-various-content>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ZIndexCustomFilter<T> implements ClrDatagridFilterInterface<T> {

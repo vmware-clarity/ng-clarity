@@ -41,7 +41,7 @@ export enum ClrLabelColors {
     '[class]': 'colorClass',
   },
   imports: [ClrBadge],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrLabel {
   @Input('clrColor') color: ClrLabelColors | string = ClrLabelColors.None;

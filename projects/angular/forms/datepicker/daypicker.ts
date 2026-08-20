@@ -17,7 +17,7 @@ import { ViewManagerService } from './providers/view-manager.service';
   templateUrl: './daypicker.html',
   host: { '[class.daypicker]': 'true', role: 'application' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDaypicker {
   constructor(

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ClrCommonFormsModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -99,6 +99,7 @@ const EXAMPLE = `
   selector: 'clr-progress-bar-inline-demo',
   styleUrl: 'progress-bars.demo.scss',
   templateUrl: './progress-bar-inline.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrCommonFormsModule, StackblitzExampleComponent],
 })
 export class ProgressBarInlineDemo implements OnDestroy {
