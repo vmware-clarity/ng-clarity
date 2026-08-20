@@ -6,13 +6,14 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { AppfxMenuModule, MenuComponent } from '@clr/addons/menu';
 
 @Component({
   selector: 'clr-basic-menu-demo',
   standalone: true,
   imports: [CommonModule, AppfxMenuModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: 'basic-menu.html',
 })
 export class BasicMenuDemoComponent {

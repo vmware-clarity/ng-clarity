@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrComboboxModule,
@@ -61,6 +61,7 @@ const additionalFiles = {
 @Component({
   selector: 'clr-combobox-single-demo',
   templateUrl: './combobox-single.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrComboboxModule,
     ClrCommonFormsModule,

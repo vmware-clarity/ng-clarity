@@ -41,7 +41,7 @@ import { DatagridStrings } from '../i18n/datagrid-strings.service';
       />
     </clr-input-container>
   `,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridFilterComponent implements ClrDatagridFilterInterface<any>, OnInit, AfterViewInit {
   @Input() filterValue: any;

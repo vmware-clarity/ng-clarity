@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ClrAlertModule } from '@clr/angular';
 
@@ -22,6 +22,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     '[class.dox-content-panel]': 'true',
   },
   styleUrl: './notifications.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [DocTabsComponent, DocTabComponent, ClrAlertModule, ThemedImageComponent, RouterLink, UseDontUseComponent],
 })
 export class NotificationsDemo extends ClarityDocComponent {

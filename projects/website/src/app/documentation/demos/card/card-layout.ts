@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -33,6 +33,7 @@ const HTML_EXAMPLE = `
   selector: 'clr-card-layout-demo',
   styleUrl: './card.demo.scss',
   templateUrl: './card-layout.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [StackblitzExampleComponent],
 })
 export class CardLayoutDemo {

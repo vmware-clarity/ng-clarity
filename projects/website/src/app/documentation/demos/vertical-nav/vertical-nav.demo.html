@@ -310,7 +310,7 @@
         <ul class="list">
           @for (route of childRoutes; track route) {
           <li>
-            <a [routerLink]="[route?.path]">{{ route?.data?.demoName }}</a>
+            <a [routerLink]="[$safeNavigationMigration(route?.path)]">{{ route?.data?.demoName }}</a>
           </li>
           }
         </ul>

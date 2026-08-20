@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { Subscription } from 'rxjs';
 
@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
   selector: 'app-example',
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class ExampleComponent {

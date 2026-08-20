@@ -24,7 +24,7 @@ import { Page } from './providers/page';
     </div>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridPageSize {
   @Input('clrPageSizeOptions') pageSizeOptions: number[];

@@ -5,10 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-datagrid-detail-accessibility-guidance',
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './datagrid-detail-accessibility-guidance.component.html',
 })
 export class DatagridDetailAccessibilityGuidance {}

@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrSelectedState } from '@clr/angular';
 
 @Component({
   selector: 'clr-pre-selection-demo',
   styleUrls: ['../tree-view.demo.scss'],
   templateUrl: './pre-selection.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class PreSelectionDemo {

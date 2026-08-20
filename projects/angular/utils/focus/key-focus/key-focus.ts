@@ -28,7 +28,7 @@ import { Keys } from '../../enums/keys.enum';
   selector: '[clrKeyFocus]',
   template: '<ng-content></ng-content>',
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrKeyFocus {
   @Input('clrDirection') direction: ClrFocusDirection | string = ClrFocusDirection.VERTICAL;

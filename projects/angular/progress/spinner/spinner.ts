@@ -15,7 +15,7 @@ import { isBooleanAttributeSet } from '@clr/angular/utils';
     '[attr.aria-busy]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrSpinner {
   private _inline: boolean;

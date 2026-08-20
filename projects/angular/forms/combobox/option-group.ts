@@ -22,7 +22,7 @@ import { ClrOptionItems } from './option-items.directive';
     <ng-content></ng-content>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrOptionGroup<T> {
   @Input('clrOptionGroupLabel') label: string;

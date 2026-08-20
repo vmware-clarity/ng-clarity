@@ -20,7 +20,7 @@
           'title'
           | translate
             : {
-                title: certificateChain?.leafCertificate?.subject?.commonName,
+                title: $safeNavigationMigration(certificateChain?.leafCertificate?.subject?.commonName),
               },
         class: 'certificate-viewer-title',
       }
@@ -33,7 +33,7 @@
       <button clrTabLink>{{ 'general' | translate }}</button>
       <clr-tab-content *clrIfActive>
         <appfx-certificate-viewer-general
-          [certificate]="certificateChain?.leafCertificate"
+          [certificate]="$safeNavigationMigration(certificateChain?.leafCertificate)"
           [topHeadingLevel]="topHeadingLevel"
           [headingTemplate]="heading"
         >

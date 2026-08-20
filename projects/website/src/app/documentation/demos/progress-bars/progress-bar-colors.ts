@@ -6,7 +6,7 @@
  */
 
 import { NgClass } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrIcon, ClrIconModule } from '@clr/angular';
 
 import { ProgBarExample } from './progbar-example';
@@ -38,6 +38,7 @@ const EXAMPLE = `
   selector: 'clr-progress-bar-colors-demo',
   styleUrl: 'progress-bars.demo.scss',
   templateUrl: './progress-bar-colors.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgClass, ClrIcon, ClrIconModule, StackblitzExampleComponent],
 })
 export class ProgressBarColorsDemo {

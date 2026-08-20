@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrFocusOnViewInitModule } from '@clr/angular';
 
 @Component({
@@ -16,6 +16,7 @@ import { ClrFocusOnViewInitModule } from '@clr/angular';
     and
     <a target="_blank" href="https://pokemondb.net">PokémonDB</a>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrFocusOnViewInitModule],
 })
 export class PokedexComponent {}

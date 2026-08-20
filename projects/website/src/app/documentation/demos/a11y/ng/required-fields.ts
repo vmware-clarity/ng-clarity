@@ -6,7 +6,7 @@
  */
 
 import { A11yModule } from '@angular/cdk/a11y';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ClrCommonFormsModule, ClrInputModule, ClrTabsModule } from '@clr/angular';
 
@@ -15,6 +15,7 @@ import { ClrCommonFormsModule, ClrInputModule, ClrTabsModule } from '@clr/angula
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [A11yModule, ClrCommonFormsModule, ClrInputModule, ClrTabsModule],
 })
 export class ExampleComponent {

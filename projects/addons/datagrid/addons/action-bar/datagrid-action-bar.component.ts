@@ -38,7 +38,7 @@ const resources = {
   standalone: false,
   templateUrl: 'datagrid-action-bar.component.html',
   styleUrls: ['datagrid-action-bar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridActionBarComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @ViewChildren('actionBtn', { read: ElementRef }) queryActionBtnElementList: QueryList<ElementRef<HTMLButtonElement>>;
