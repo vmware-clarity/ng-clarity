@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxCertificateViewerModule } from '@clr/addons/certificate-viewer';
 import { ClarityModule } from '@clr/angular';
@@ -35,6 +35,7 @@ export interface HostEntry {
   templateUrl: './certificate-viewer.demo.html',
   styleUrls: ['./certificate-viewer.demo.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CommonModule,
     ClarityModule,

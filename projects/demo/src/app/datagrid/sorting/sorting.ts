@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrDatagridComparatorInterface, ClrDatagridSortOrder } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
@@ -23,6 +23,7 @@ export class UserCreationComparator implements ClrDatagridComparatorInterface<Us
   providers: [Inventory],
   templateUrl: './sorting.html',
   styleUrls: ['../datagrid.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatagridSortingDemo {

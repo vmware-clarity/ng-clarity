@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-rubber-soul-demo',
@@ -18,6 +18,7 @@ import { Component } from '@angular/core';
       several weeks, as well as in the United States, where it was issued with a different selection of tracks.
     </p>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class RubberSoulDemo {}

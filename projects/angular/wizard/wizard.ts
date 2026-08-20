@@ -53,7 +53,7 @@ import { ClrWizardTitle } from './wizard-title';
     '[class.wizard-horizontal]': 'stepnavLayout === ClrWizardStepnavLayout.HORIZONTAL',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   /**

@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ClarityIcons } from '@clr/angular';
 
 @Component({
   selector: 'clr-timeline-demo-static',
   templateUrl: './timeline-static.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class TimelineStaticDemo implements OnInit {

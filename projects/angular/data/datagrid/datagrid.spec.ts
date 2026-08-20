@@ -61,6 +61,7 @@ function getFixedColumnViews(datagrid: ClrDatagrid): EmbeddedViewRef<void>[] {
       </clr-datagrid>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FullTest {
@@ -105,6 +106,7 @@ class FullTest {
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NgForTest {
@@ -119,6 +121,7 @@ class NgForTest {
 // The secret here is OnPush only updates on input changes, hence the wrapper.
 @Component({
   template: `<multi-select-test [items]="items" [selected]="selected"></multi-select-test>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class OnPushTest {
@@ -169,6 +172,7 @@ class MultiSelectionTest {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class MultiSelectionSimpleTest {
@@ -190,6 +194,7 @@ class MultiSelectionSimpleTest {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class MultiSelectionNgForTest {
@@ -218,6 +223,7 @@ class MultiSelectionNgForTest {
       <clr-dg-footer (click)="selected = null">{{ selected }}</clr-dg-footer>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SingleSelectionTest {
@@ -246,6 +252,7 @@ class SingleSelectionTest {
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ActionableRowTest {
@@ -270,6 +277,7 @@ class ActionableRowTest {
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ExpandableRowTest {
@@ -291,6 +299,7 @@ class ExpandableRowTest {
       <clr-dg-footer></clr-dg-footer>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ExpandedOnInitTest {
@@ -319,6 +328,7 @@ class ExpandedOnInitTest {
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ChocolateClrDgItemsTest {
@@ -351,6 +361,7 @@ class ChocolateClrDgItemsTest {
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ChocolateNgForTest {
@@ -379,6 +390,7 @@ class ChocolateNgForTest {
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class MixedExpandableRowTest {
@@ -443,6 +455,7 @@ class TestStringFilter implements ClrDatagridStringFilterInterface<number> {
       }
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class HiddenColumnTest {
@@ -467,6 +480,7 @@ class HiddenColumnTest {
       }
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ProjectionTest {
@@ -508,6 +522,7 @@ class ProjectionTest {
       </ng-template>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ExpandedCellsTest {
@@ -540,6 +555,7 @@ class ExpandedCellsTest {
       </clr-tab>
     </clr-tabs>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TabsIntegrationTest {
@@ -558,6 +574,7 @@ class TabsIntegrationTest {
       <clr-dg-detail *clrIfDetail></clr-dg-detail>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class PanelTrackByTest {
@@ -582,6 +599,7 @@ class PanelTrackByTest {
       </ng-template>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class PanelInitializeOpenedTest {

@@ -15,7 +15,7 @@ import { Keys } from '../../enums/keys.enum';
   selector: '[clrRovingTabindex]',
   template: '<ng-content></ng-content>',
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrRovingTabindex extends ClrKeyFocus {
   private disabled = false;

@@ -18,7 +18,7 @@ import { PropertyViewCategoryModel, PropertyViewModel } from '../property-view.m
   templateUrl: 'property-view.component.html',
   styleUrls: ['property-view.component.scss'],
   providers: [PropertyViewConfigProvider, PropertyViewSectionsExpandedStateManager],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PropertyViewComponent implements DoCheck {
   private static idCounter = 0;

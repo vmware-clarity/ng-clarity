@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -426,6 +426,7 @@ export default function (): void {
       </clr-dropdown-menu>
     </clr-dropdown>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -465,6 +466,7 @@ class TestComponent {
     </clr-dropdown>
   `,
   encapsulation: ViewEncapsulation.ShadowDom,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestShadowDomComponent {
@@ -477,6 +479,7 @@ class TestShadowDomComponent {
 @Component({
   selector: 'destroy-tracking-leaf',
   template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DestroyTrackingLeaf implements OnDestroy {
@@ -503,6 +506,7 @@ class DestroyTrackingLeaf implements OnDestroy {
       </div>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DropdownItemThatDestroysAncestorTestComponent {
@@ -534,6 +538,7 @@ class DropdownItemThatDestroysAncestorTestComponent {
       </div>
     </clr-modal>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DropdownItemThatOpensModalTestComponent {

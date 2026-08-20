@@ -27,7 +27,7 @@ import { ColumnDefinition } from '../../shared/column/column-definitions';
   standalone: false,
   templateUrl: 'datagrid-column-toggle.component.html',
   styleUrls: ['datagrid-column-toggle.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridColumnToggleComponent implements OnDestroy {
   @HostBinding('class') layoutClass = 'column-switch-wrapper';

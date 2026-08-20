@@ -6,7 +6,7 @@
  */
 
 import { Location } from '@angular/common';
-import { Component, DebugElement } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -16,6 +16,7 @@ import { ClrLayoutModule } from '../layout.module';
 
 @Component({
   template: `<clr-breadcrumbs [items]="menuItems"></clr-breadcrumbs>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {

@@ -35,7 +35,7 @@ import { MultiAlertService } from './providers/multi-alert.service';
   },
   styles: [':host { display: block }'],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrAlerts implements AfterContentInit, OnDestroy {
   @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);

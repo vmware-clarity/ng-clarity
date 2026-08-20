@@ -5,10 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-breadcrumb-clarity-example',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<p>
     Clarity is an open-source design system that brings together UX guidelines, an HTML/CSS framework, and Angular
     components. Clarity is for both designers and developers. Clarity designs stem from continuous exploration and

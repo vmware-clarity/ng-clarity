@@ -14,7 +14,7 @@ import localeHi from '@angular/common/locales/hi';
 import localeHR from '@angular/common/locales/hr';
 import localeKKJ from '@angular/common/locales/kkj';
 import localeRu from '@angular/common/locales/ru';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 registerLocaleData(localeFr);
 registerLocaleData(localeRu);
@@ -29,6 +29,7 @@ registerLocaleData(localeHR);
   selector: 'clr-datepicker-demo',
   styleUrls: ['./datepicker.demo.scss'],
   templateUrl: './datepicker.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatepickerDemo {}

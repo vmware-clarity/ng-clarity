@@ -66,7 +66,7 @@ import { ClrWizardStepnavItem } from './wizard-stepnav-item';
   `,
   host: { class: 'clr-wizard-stepnav' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
   @Input() label: string;

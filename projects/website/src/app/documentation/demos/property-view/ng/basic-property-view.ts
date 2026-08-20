@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AppfxPropertyViewModule, PropertyViewBuilder, PropertyViewModel } from '@clr/addons/property-view';
 
 @Component({
   selector: 'clr-basic-property-view-demo',
   standalone: true,
   imports: [AppfxPropertyViewModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: 'basic-property-view.html',
 })
 export class BasicPropertyViewDemoComponent implements OnInit {

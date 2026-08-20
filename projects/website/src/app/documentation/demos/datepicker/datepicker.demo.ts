@@ -7,7 +7,7 @@
 
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { DatepickerAPIDemo } from './demos/datepicker-api.demo';
 import { DatepickerInternationalizationDemo } from './demos/datepicker-internationalization.demo';
@@ -31,6 +31,7 @@ registerLocaleData(localeFr);
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,

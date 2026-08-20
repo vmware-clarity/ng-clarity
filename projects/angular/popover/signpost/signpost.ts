@@ -33,7 +33,7 @@ import { ClrSignpostTrigger } from './signpost-trigger';
   providers: [SignpostFocusManager, SignpostIdService],
   hostDirectives: [ClrPopoverHostDirective],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 
 /*********

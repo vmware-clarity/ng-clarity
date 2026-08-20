@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormsModule } from '@angular/forms';
 import { ClrFormsModule } from '@clr/angular';
 
@@ -13,6 +13,7 @@ import { ClrFormsModule } from '@clr/angular';
   selector: 'app-example',
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormsModule, ClrFormsModule],
 })
 export class ExampleComponent {

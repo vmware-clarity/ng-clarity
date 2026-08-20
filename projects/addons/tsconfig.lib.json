@@ -24,6 +24,12 @@
     "annotateForClosureCompiler": false,
     "preserveWhitespaces": true,
     "enableResourceInlining": true,
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    },
     "strictTemplates": true,
     "strictInjectionParameters": true,
     "skipTemplateCodegen": true,
