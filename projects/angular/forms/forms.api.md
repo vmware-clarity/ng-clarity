@@ -19,16 +19,12 @@ import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { ChangeDetectorRef } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ControlValueAccessor } from '@angular/forms';
-import { Directionality } from '@angular/cdk/bidi';
 import { DoCheck } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DragDrop } from '@angular/cdk/drag-drop';
-import { DragDropConfig } from '@angular/cdk/drag-drop';
 import { ElementRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
-import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i1 from '@angular/common';
@@ -1058,7 +1054,7 @@ export interface ClrFileMaxFileSizeError {
 // @public (undocumented)
 export class ClrFileMessagesTemplate {
     // (undocumented)
-    static ngTemplateContextGuard(directive: ClrFileMessagesTemplate, context: unknown): context is ClrFileMessagesTemplateContext;
+    static ngTemplateContextGuard(_directive: ClrFileMessagesTemplate, _context: unknown): _context is ClrFileMessagesTemplateContext;
     // (undocumented)
     readonly templateRef: TemplateRef<ClrFileMessagesTemplateContext>;
     // (undocumented)

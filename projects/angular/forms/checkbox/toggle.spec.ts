@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, NgControlService } from '@clr/angular/forms/common';
 
@@ -58,7 +58,7 @@ export default function (): void {
       TestBed.configureTestingModule({
         imports: [ClrCommonFormsModule, FormsModule],
         declarations: [ClrCheckbox, TemplateDrivenTest],
-        providers: [NgControl, NgControlService],
+        providers: [NgControlService],
       });
 
       fixture = TestBed.createComponent(TemplateDrivenTest);

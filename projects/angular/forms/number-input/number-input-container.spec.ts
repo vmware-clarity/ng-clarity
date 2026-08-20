@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
   ClrCommonFormsModule,
@@ -106,7 +106,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ClrPopoverContent],
           declarations: [ClrNumberInputContainer, NoInputTest],
-          providers: [NgControl, NgControlService, LayoutService, MarkControlService, ControlIdService],
+          providers: [NgControlService, LayoutService, MarkControlService, ControlIdService],
         });
         fixture = TestBed.createComponent(NoInputTest);
         containerEl = fixture.debugElement.query(By.directive(ClrNumberInputContainer)).nativeElement;
