@@ -100,7 +100,7 @@
     "@playwright/test": "1.60.0",
     "@semantic-release/exec": "7.1.0",
     "@stackblitz/sdk": "1.11.1",
-    "@storybook/addon-a11y": "10.2.14",
+    "@storybook/addon-a11y": "10.5.8",
     "@storybook/addon-docs": "10.2.8",
     "@storybook/angular": "10.3.6",
     "@textlint/markdown-to-ast": "15.5.2",
@@ -109,13 +109,13 @@
     "@types/node-static": "0.7.12",
     "@types/prismjs": "1.26.6",
     "@typescript-eslint/eslint-plugin": "8.55.0",
-    "@typescript-eslint/parser": "8.63.0",
+    "@typescript-eslint/parser": "8.67.0",
     "ajv": "8.18.0",
     "asn1js": "^3.0.6",
     "autoprefixer": "10.5.2",
     "csso-cli": "4.0.2",
     "culori": "^4.0.2",
-    "domino": "2.1.6",
+    "domino": "2.1.7",
     "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-decorator-position": "6.0.0",
@@ -178,7 +178,7 @@
     "xml-js": "1.6.11",
     "xmlbuilder": "15.1.1",
     "yaml": "2.9.0",
-    "yargs": "18.0.0",
+    "yargs": "18.1.0",
     "zone.js": "0.16.0"
   }
 }
