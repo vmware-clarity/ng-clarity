@@ -814,6 +814,7 @@ export class ClarityIcons {
     static addIcons(...shapes: IconShapeTuple[]): void;
     // (undocumented)
     static getIconNameFromShape(iconShape: IconShapeTuple): string;
+    static getIconShape(name: string): IconRegistrySources[string] | undefined;
     static get registry(): Readonly<IconRegistry>;
 }
 
