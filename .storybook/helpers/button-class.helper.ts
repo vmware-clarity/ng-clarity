@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export const BUTTON_TYPES = ['primary', 'success', 'warning', 'danger', 'neutral'];
+export const BUTTON_TYPES = ['primary', 'info', 'success', 'warning', 'danger', 'neutral'];
 export const BUTTON_STYLES = ['outline', 'solid', 'flat'];
 
 export function getButtonClass({
