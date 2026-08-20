@@ -5,28 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ClarityModule } from '@clr/angular';
 
 import { ThemeBuilderAddonDemo } from './theme-builder.demo';
-import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
-import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
-import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ClarityModule,
-    RouterModule.forChild([{ path: '', component: ThemeBuilderAddonDemo }]),
-    DocTabsModule,
-    CodeSnippetComponent,
-    ThemedImageComponent,
-    ThemeBuilderAddonDemo,
-  ],
+  imports: [RouterModule.forChild([{ path: '', component: ThemeBuilderAddonDemo }]), ThemeBuilderAddonDemo],
   exports: [ThemeBuilderAddonDemo],
 })
 export class ThemeBuilderAddonDemoModule {}

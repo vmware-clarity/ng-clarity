@@ -23,9 +23,7 @@
     }
 
     .card-block .progress,
-    .card-block .progress-static,
-    .card-footer .progress,
-    .card-footer .progress-static {
+    .card-block .progress-static {
       position: relative;
       height: var(--clr-base-progress-bar-height);
       margin: 0;

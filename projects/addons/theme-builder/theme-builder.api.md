@@ -20,8 +20,6 @@ export class Color {
     // (undocumented)
     static hexToHsl(hex: string): HslColor;
     get hsl(): string;
-    // (undocumented)
-    hslToHex(input: HslColor): string;
     hslToOklch(hsl: HslColor): OklchColor;
     // (undocumented)
     static isHex(hex: string): boolean;

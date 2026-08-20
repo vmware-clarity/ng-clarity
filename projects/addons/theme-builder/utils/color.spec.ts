@@ -26,13 +26,19 @@ describe('Color', () => {
     it('converts pure red', () => {
       const hsl = Color.hexToHsl('#ff0000');
       expect(hsl).toEqual(new HslColor(0, 100, 50));
-      expect(new Color('--x', '').hslToHex(hsl)).toBe('#ff0000');
+
+      const color = new Color('--x', '');
+      color.color = hsl;
+      expect(color.hex).toBe('#ff0000');
     });
 
     it('converts pure white', () => {
       const hsl = Color.hexToHsl('#ffffff');
       expect(hsl).toEqual(new HslColor(0, 0, 100));
-      expect(new Color('--x', '').hslToHex(hsl)).toBe('#ffffff');
+
+      const color = new Color('--x', '');
+      color.color = hsl;
+      expect(color.hex).toBe('#ffffff');
     });
 
     it('expands 3-digit hex before converting', () => {
@@ -72,7 +78,7 @@ describe('Color', () => {
       const color = new Color('--cds-alias-primary', 'hsl(198deg 100% 59%)');
       color.color = new HslColor(10, 20, 30);
       expect(color.hsl).toBe('hsl(10deg, 20%, 30%)');
-      expect(color.hex).toBe(color.hslToHex(new HslColor(10, 20, 30)));
+      expect(color.hex).toBe('#5c423d');
     });
   });
 

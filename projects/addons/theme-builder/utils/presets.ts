@@ -10,7 +10,6 @@ import { DataRow, ThemePreset } from './types';
 
 export const DEFAULT_OVERRIDES = {
   // primary
-  // '--cds-alias-primary': ['--cds-alias-object-interaction-background-highlight'],
   '--cds-alias-primary-tint': ['--cds-alias-object-interaction-background-hover'],
   '--cds-alias-primary-shade': ['--cds-alias-typography-link-color', '--cds-alias-object-interaction-primary-hover'],
   '--cds-alias-primary-dark': [

@@ -134,19 +134,6 @@ export class Color {
     return new HslColor(Math.round(hue * 360), saturation, lightness);
   }
 
-  hslToHex({ h, s, l }: HslColor): string {
-    l /= 100;
-    const a = (s * Math.min(l, 1 - l)) / 100;
-    const f = (n: number) => {
-      const k = (n + h / 30) % 12;
-      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-      return Math.round(255 * color)
-        .toString(16)
-        .padStart(2, '0');
-    };
-    return `#${f(0)}${f(8)}${f(4)}`;
-  }
-
   /**
    * Converts HSL to OKLCH via linear sRGB and OKLab (CSS Color 4 / Björn Ottosson
    * formulas). Goes through OKLCH — not raw HSL — whenever perceptual uniformity
@@ -164,6 +151,19 @@ export class Color {
 
   reset(): void {
     this._color = undefined;
+  }
+
+  private hslToHex({ h, s, l }: HslColor): string {
+    l /= 100;
+    const a = (s * Math.min(l, 1 - l)) / 100;
+    const f = (n: number) => {
+      const k = (n + h / 30) % 12;
+      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      return Math.round(255 * color)
+        .toString(16)
+        .padStart(2, '0');
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
   }
 
   /** Converts HSL to RGB — use only for relative luminance calculations. */
