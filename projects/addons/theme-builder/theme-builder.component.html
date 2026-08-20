@@ -74,6 +74,7 @@
                     type="color"
                     class="tb-color-picker"
                     [value]="colorGroup.base.hex"
+                    [attr.aria-label]="colorGroup.key + ' ' + colorGroup.base.label + ' color picker'"
                     (input)="
                       setCurrentColor(
                         colorGroup.base,
@@ -82,7 +83,13 @@
                       )
                     "
                   />
-                  <input readonly type="text" class="tb-hex-input" [value]="colorGroup.base.hex" />
+                  <input
+                    readonly
+                    type="text"
+                    class="tb-hex-input"
+                    [value]="colorGroup.base.hex"
+                    [attr.aria-label]="colorGroup.key + ' ' + colorGroup.base.label + ' color hex value'"
+                  />
                   <button
                     *ngIf="!colorGroup.base.isOriginalColor"
                     class="btn btn-sm btn-icon btn-primary"
@@ -103,9 +110,16 @@
                         type="color"
                         class="tb-color-picker"
                         [value]="colorVariant.hex"
+                        [attr.aria-label]="colorGroup.key + ' ' + colorVariant.label + ' color picker'"
                         (input)="setCurrentColor(colorVariant, $any($event.target).value)"
                       />
-                      <input readonly type="text" class="tb-hex-input" [value]="colorVariant.hex" />
+                      <input
+                        readonly
+                        type="text"
+                        class="tb-hex-input"
+                        [value]="colorVariant.hex"
+                        [attr.aria-label]="colorGroup.key + ' ' + colorVariant.label + ' color hex value'"
+                      />
                       <button
                         *ngIf="!colorVariant.isOriginalColor"
                         class="btn btn-sm btn-icon btn-primary"
