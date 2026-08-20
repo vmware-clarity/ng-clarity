@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
@@ -137,7 +137,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrCheckboxContainer, ClrCheckboxWrapper, ClrCheckbox, testComponent],
-          providers: [NgControl, NgControlService, LayoutService],
+          providers: [NgControlService, LayoutService],
         });
         const fixture = TestBed.createComponent(testComponent);
         const containerEl = fixture.debugElement.query(By.directive(ClrCheckboxContainer)).nativeElement;
@@ -179,7 +179,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrCheckboxContainer, ClrCheckboxWrapper, ClrCheckbox, TemplateDrivenTest],
-          providers: [NgControl, NgControlService, LayoutService],
+          providers: [NgControlService, LayoutService],
         });
         fixture = TestBed.createComponent(TemplateDrivenTest);
 

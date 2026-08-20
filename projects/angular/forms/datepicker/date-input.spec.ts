@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, NgControl, NgForm, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
   ControlClassService,
@@ -46,7 +46,6 @@ export default function () {
     const DATEPICKER_PROVIDERS: any[] = [
       ControlClassService,
       NgControlService,
-      NgControl,
       LayoutService,
       ClrPopoverService,
       DatepickerFocusService,

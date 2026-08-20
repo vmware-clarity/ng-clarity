@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
@@ -82,7 +82,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrPasswordContainer, ClrPassword, TemplateDrivenTest],
-          providers: [NgControl, NgControlService, LayoutService],
+          providers: [NgControlService, LayoutService],
         });
         fixture = TestBed.createComponent(TemplateDrivenTest);
 
