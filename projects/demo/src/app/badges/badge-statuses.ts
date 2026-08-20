@@ -5,14 +5,3 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { ClrBadgeColors } from '@clr/angular/emphasis/badge';
-
-@Component({
-  selector: 'clr-badge-statuses-demo',
-  templateUrl: './badge-statuses.demo.html',
-  standalone: false,
-})
-export class BadgeStatusesDemo {
-  protected readonly ClrBadgeColors = ClrBadgeColors;
-}

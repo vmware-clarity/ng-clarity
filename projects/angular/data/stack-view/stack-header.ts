@@ -36,7 +36,7 @@ import { ClrStackView } from './stack-view';
     `,
   ],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrStackHeader {
   /**

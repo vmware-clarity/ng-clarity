@@ -31,7 +31,7 @@ import { VerticalNavGroupService } from './providers/vertical-nav-group.service'
     class: 'nav-link',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrVerticalNavLink implements OnDestroy {
   private destroy$ = new Subject<void>();

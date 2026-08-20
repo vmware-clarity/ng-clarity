@@ -47,7 +47,7 @@ let wizardPageIndex = 0;
     '[class.clr-wizard-page]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrWizardPage implements OnInit {
   /**

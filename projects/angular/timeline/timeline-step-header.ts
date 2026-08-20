@@ -12,6 +12,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   template: `<ng-content></ng-content>`,
   host: { '[class.clr-timeline-step-header]': 'true' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTimelineStepHeader {}

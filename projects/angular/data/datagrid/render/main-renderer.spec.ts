@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Needed to recreate issue #1084
@@ -399,6 +399,7 @@ export default function (): void {
       </clr-datagrid>
     </ng-template>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class RenderWidthTest {
@@ -438,6 +439,7 @@ class RenderWidthTest {
       }
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class StaticTest {
@@ -466,6 +468,7 @@ class StaticTest {
       }
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DynamicTest {
@@ -491,6 +494,7 @@ class DynamicTest {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ColumnsWidthTest {
@@ -516,6 +520,7 @@ class ColumnsWidthTest {
       </clr-dg-footer>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DatagridHeightTest {
@@ -555,6 +560,7 @@ class DatagridHeightTest {
       </clr-dg-footer>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DatagridDetailPaneTest {

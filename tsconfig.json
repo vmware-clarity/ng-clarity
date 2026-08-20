@@ -1,34 +1,3 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "declaration": false,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": true,
-    "importHelpers": true,
-    "lib": ["es2022", "dom", "dom.iterable"],
-    "module": "es2022",
-    "moduleResolution": "bundler",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "strict": false,
-    "target": "es2022",
-    "useDefineForClassFields": false,
-    "paths": {
-      "@clr/angular": ["./projects/angular/index.ts"],
-      "@clr/angular/*": ["./projects/angular/*"],
-      "@clr/addons": ["./projects/addons/index.ts"],
-      "@clr/addons/*": ["./projects/addons/*"],
-      "@clr/angular/testing": ["./projects/angular/utils/testing"]
-    }
-  },
-  "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
-    "strictTemplates": true,
-    "typeCheckHostBindings": false
-  },
-  "exclude": ["dist", "node_modules"]
-}

@@ -6,7 +6,7 @@
  */
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, Input, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
 import { ClarityIcons, ClrIcon, copyIcon } from '@clr/angular';
 import prismjs from 'prismjs';
 
@@ -35,6 +35,7 @@ type ESModuleImport = { default: string };
   styleUrl: './code-snippet.component.scss',
   standalone: true,
   imports: [ClrIcon],
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
     '[class.allow-copy]': 'copy()',
   },

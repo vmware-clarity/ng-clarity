@@ -16,7 +16,7 @@ import { PropertyViewCategoryModel, PropertyViewModelType, PropertyViewSectionMo
   standalone: false,
   templateUrl: 'property-view-category.component.html',
   styleUrls: ['property-view-category.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PropertyViewCategoryComponent {
   readonly PropertyViewModelType = PropertyViewModelType;

@@ -15,6 +15,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     '[attr.role]': '"list-item"',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrBreadcrumbItem {}

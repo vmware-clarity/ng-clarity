@@ -42,7 +42,7 @@ export const IS_TOGGLE_PROVIDER = { provide: IS_TOGGLE, useFactory: isToggleFact
   },
   providers: [ControlIdService, IS_TOGGLE_PROVIDER],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrCheckboxWrapper implements OnInit, OnDestroy {
   @ContentChild(ClrControlLabel, { static: true }) label: ClrControlLabel;

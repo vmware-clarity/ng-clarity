@@ -29,7 +29,7 @@ import { AlertIconAndTypesService } from './providers/icon-and-types.service';
   `,
   host: { class: 'alert-item' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrAlertItem {
   constructor(public iconService: AlertIconAndTypesService) {}

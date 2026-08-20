@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Injector, OnDestroy, OnInit, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit, Type } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,6 +29,7 @@ const PAGES = RAW_PAGES as Record<string, (typeof RAW_PAGES)[keyof typeof RAW_PA
   host: {
     '[class.content-container]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CommonModule,
     SiteNavComponent,

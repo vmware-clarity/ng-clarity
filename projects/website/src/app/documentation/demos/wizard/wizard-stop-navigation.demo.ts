@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrCommonFormsModule, ClrInputModule, ClrWizard, ClrWizardModule } from '@clr/angular';
 
@@ -173,6 +173,7 @@ const html = `
 @Component({
   selector: 'clr-wizard-stop-navigation',
   templateUrl: './wizard-stop-navigation.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrWizardModule, FormsModule, ClrCommonFormsModule, ClrInputModule, StackblitzExampleComponent],
 })
 export class WizardStopNavigation {

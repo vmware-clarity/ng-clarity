@@ -14,7 +14,7 @@ import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@ang
     </ng-template>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class TemplateRefContainer {
   @ViewChild(TemplateRef) template: TemplateRef<any>;
