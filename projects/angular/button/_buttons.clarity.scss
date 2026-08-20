@@ -36,7 +36,10 @@
   }
 
   .btn.btn-info,
-  .btn-info .btn,
+  .btn-info .btn {
+    @include button-mixins.populateButtonProperties(info);
+  }
+
   .btn.btn-primary,
   .btn-primary .btn {
     @include button-mixins.populateButtonProperties(primary);
@@ -73,15 +76,17 @@
   }
 
   .btn.btn-primary-outline,
-  .btn-outline-info .btn,
-  .btn-info-outline .btn,
-  .btn-primary-outline .btn,
-  .btn-outline-primary .btn,
   .btn.btn-outline-primary,
-  .btn.btn-outline-info,
-  .btn.btn-info-outline,
-  .btn.btn-info-outline {
+  .btn-primary-outline .btn,
+  .btn-outline-primary .btn {
     @include button-mixins.populateButtonProperties(primary-outline);
+  }
+
+  .btn.btn-info-outline,
+  .btn.btn-outline-info,
+  .btn-info-outline .btn,
+  .btn-outline-info .btn {
+    @include button-mixins.populateButtonProperties(info-outline);
   }
 
   .btn.btn-success-outline,
@@ -139,6 +144,11 @@
   .btn.btn-link-primary,
   .btn-link-primary .btn {
     @include button-mixins.populateButtonProperties(link-primary);
+  }
+
+  .btn.btn-link-info,
+  .btn-link-info .btn {
+    @include button-mixins.populateButtonProperties(link-info);
   }
 
   .btn.btn-link-success,
