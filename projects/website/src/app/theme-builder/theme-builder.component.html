@@ -13,6 +13,16 @@
     <p cds-text="body" cds-layout="m-t:lg">
       Customize Clarity colors and export a CSS override file for your environment.
     </p>
+    <div cds-layout="m-t:lg">
+      <clr-alert [clrAlertType]="'info'" [clrAlertClosable]="false">
+        <clr-alert-item>
+          <span class="alert-text">
+            Theme Builder only supports light mode for the outer shell. The theme toggle in header is disabled on this
+            page.
+          </span>
+        </clr-alert-item>
+      </clr-alert>
+    </div>
   </div>
 
   <clr-theme-builder [presets]="presets" (generatedCSS)="writeGeneratedCss($event)" />
