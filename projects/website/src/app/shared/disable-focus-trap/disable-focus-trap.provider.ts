@@ -37,7 +37,7 @@ class DisabledFocusTrap extends FocusTrap {
 class DisabledFocusTrapFactory extends FocusTrapFactory {
   override create(): FocusTrap {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return new DisabledFocusTrap(null!, null!, null!, null!, null!);
+    return new DisabledFocusTrap(null!, null!, null!, null!, null!, null!);
   }
 }
 
