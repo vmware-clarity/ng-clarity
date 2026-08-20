@@ -326,11 +326,11 @@ $cds-global-animation-easing-secondary: var(--cds-global-animation-easing-second
 $cds-global-animation-easing-loop: var(--cds-global-animation-easing-loop) !default;
 $cds-global-animation-easing-in-out: var(--cds-global-animation-easing-in-out) !default;
 $cds-global-animation-skeleton-duration: var(--cds-global-animation-skeleton-duration) !default;
-$cds-alias-primary-tint: var(--cds-alias-primary-tint);
-$cds-alias-primary-tint-dark: var(--cds-alias-primary-tint-dark);
-$cds-alias-primary: var(--cds-alias-primary);
-$cds-alias-primary-shade: var(--cds-alias-primary-shade);
-$cds-alias-primary-dark: var(--cds-alias-primary-dark);
+$cds-alias-primary-tint: var(--cds-alias-primary-tint) !default;
+$cds-alias-primary-tint-dark: var(--cds-alias-primary-tint-dark) !default;
+$cds-alias-primary: var(--cds-alias-primary) !default;
+$cds-alias-primary-shade: var(--cds-alias-primary-shade) !default;
+$cds-alias-primary-dark: var(--cds-alias-primary-dark) !default;
 $cds-alias-object-border-radius-100: var(--cds-alias-object-border-radius-100) !default;
 $cds-alias-object-border-radius-100-static: 4 !default;
 $cds-alias-object-border-radius-200: var(--cds-alias-object-border-radius-200) !default;

@@ -98,7 +98,7 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
         background-color: inherit;
 
         cds-icon {
-          color: wizard-variables.$clr-wizard-stepnav-selected-border-color;
+          color: wizard-variables.$clr-wizard-stepnav-link-selected-icon-color;
         }
       }
 
