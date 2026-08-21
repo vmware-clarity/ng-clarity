@@ -439,6 +439,31 @@ export default function (): void {
         expect(contentContainer.getAttribute('tabindex')).toBe('-1');
       });
 
+      it('calls broadcastFocusedNode synchronously inside focusTreeNode before calling focus()', function (this: Context) {
+        // Verify the fix for CDE-3007: broadcastFocusedNode() must be called synchronously
+        // inside focusTreeNode() so that peer nodes' checkTabIndex() fires before .focus() is called.
+        // This prevents a window where multiple nodes have tabindex=0.
+        const callOrder: string[] = [];
+        const originalFocus = contentContainer.focus.bind(contentContainer);
+        spyOn(contentContainer, 'focus').and.callFake(() => {
+          callOrder.push('focus');
+          originalFocus();
+        });
+        spyOn(focusManager, 'broadcastFocusedNode').and.callFake(() => {
+          callOrder.push('broadcast');
+        });
+
+        this.clarityDirective.focusTreeNode();
+
+        // broadcast must happen before focus so that peer nodes reset tabindex=-1 synchronously,
+        // preventing a window where multiple nodes have tabindex=0 (which causes the double-Tab bug).
+        const firstFocusIndex = callOrder.indexOf('focus');
+        const firstBroadcastIndex = callOrder.indexOf('broadcast');
+        expect(firstBroadcastIndex).toBeGreaterThanOrEqual(0);
+        expect(firstFocusIndex).toBeGreaterThanOrEqual(0);
+        expect(firstBroadcastIndex).toBeLessThan(firstFocusIndex);
+      });
+
       it('takes default action which is toggling selection state on Enter key if node is selectable', function (this: Context) {
         this.clarityDirective.selected = ClrSelectedState.UNSELECTED;
         expect(this.clarityDirective.selected as ClrSelectedState).toEqual(ClrSelectedState.UNSELECTED);
