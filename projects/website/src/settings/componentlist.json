@@ -358,19 +358,19 @@
     },
     {
       "url": "stepper-addon",
-      "text": "Stepper",
+      "text": "Advanced Stepper",
       "type": "addons",
       "storybookPath": "addons-stepper"
     },
     {
       "url": "wizard-addon",
-      "text": "Wizard",
+      "text": "Advanced Wizard",
       "type": "addons",
       "storybookPath": "addons-wizard"
     },
     {
       "url": "tabs-addon",
-      "text": "Tabs",
+      "text": "Advanced Tabs",
       "type": "addons",
       "storybookPath": "addons-tabs"
     },
