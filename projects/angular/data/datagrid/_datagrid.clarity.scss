@@ -180,10 +180,11 @@
     }
 
     .datagrid-row-detail {
+      border-top: tables-variables.$clr-table-borderwidth solid tables-variables.$clr-table-border-color;
+      min-height: tables-variables.$clr-table-row-height;
       width: auto;
 
       .datagrid-cell {
-        padding-top: 0;
         border: none;
 
         &.datagrid-container {
@@ -339,6 +340,10 @@
     &.is-replaced {
       flex-direction: row;
 
+      > .datagrid-row-detail {
+        border-top: none;
+      }
+
       .datagrid-scrolling-cells {
         flex: 0 0 auto;
       }
@@ -360,10 +365,6 @@
     .datagrid-row-detail {
       display: flex;
       flex-flow: row nowrap;
-
-      .datagrid-cell {
-        padding-top: 0;
-      }
     }
   }
 

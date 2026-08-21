@@ -5,8 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { Component, Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import { delay, TestContext } from '@clr/angular/testing';
+import { ClrLoading, ClrLoadingState } from '@clr/angular/utils';
 // import { ClrCommonStringsService } from '@clr/angular/utils'; // used by the disabled pin toggle suite
 
 import { ClrDatagrid } from './datagrid';
@@ -39,6 +40,35 @@ function cellsIn(root: HTMLElement, container: string): HTMLElement[][] {
 
 function cellTextsIn(root: HTMLElement, container: string): string[][] {
   return cellsIn(root, container).map(cells => cells.map(cell => cell.textContent.trim()));
+}
+
+function detailPinnedCells(root: HTMLElement): string[] {
+  return queryAll(root, `.datagrid-row-detail ${PINNED} > clr-dg-cell`).map(cell => cell.textContent.trim());
+}
+
+// Everything the detail did not move into the static container, whether it was moved into the
+// scrollable one or left where it was authored.
+function detailPlainCells(root: HTMLElement): string[] {
+  return queryAll(root, '.datagrid-row-detail > clr-dg-cell').map(cell => cell.textContent.trim());
+}
+
+function boxOf(element: HTMLElement) {
+  const rect = element.getBoundingClientRect();
+  return { left: Math.round(rect.left), width: Math.round(rect.width) };
+}
+
+function cellBoxes(root: HTMLElement, ...texts: string[]) {
+  const cells = queryAll(root, 'clr-dg-cell');
+  return texts.map(text => boxOf(cells.find(cell => cell.textContent.trim() === text)));
+}
+
+// The box of the column itself, not of the title inside it, which is inset by the padding of the
+// column.
+function columnBoxes(root: HTMLElement, ...titles: string[]) {
+  const columns = queryAll(root, 'clr-dg-column');
+  return titles.map(title =>
+    boxOf(columns.find(column => column.querySelector('.datagrid-column-title').textContent.trim() === title))
+  );
 }
 
 @Component({
@@ -223,6 +253,95 @@ class RowDetailTest {
   pinFirst = true;
   matchingCells = true;
   replace = false;
+}
+
+/**
+ * Stands in for the clrFakeLoader of the demo application: it reports the row detail as loading and
+ * only creates its content once that is over, so the cells of the detail turn up well after the
+ * columns have been sized. The latency is a task rather than the demo's two seconds.
+ */
+@Directive({
+  selector: '[testFakeLoader]',
+  standalone: false,
+})
+class TestFakeLoader implements OnInit {
+  @Input('testFakeLoader') slow = false;
+
+  constructor(
+    private template: TemplateRef<any>,
+    private container: ViewContainerRef,
+    private loading: ClrLoading
+  ) {}
+
+  ngOnInit() {
+    if (this.slow) {
+      this.loading.loadingState = ClrLoadingState.LOADING;
+      setTimeout(() => {
+        this.container.createEmbeddedView(this.template);
+        this.loading.loadingState = ClrLoadingState.DEFAULT;
+      });
+    } else {
+      this.container.createEmbeddedView(this.template);
+    }
+  }
+}
+
+@Component({
+  template: `
+    <div [style.width.px]="500">
+      <clr-datagrid [style.height.px]="300">
+        <clr-dg-column clrDgPinned [style.width.px]="150">A</clr-dg-column>
+        <clr-dg-column [style.width.px]="150">B</clr-dg-column>
+        <clr-dg-column [style.width.px]="300">C</clr-dg-column>
+        <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+          <clr-dg-cell>A{{ item }}</clr-dg-cell>
+          <clr-dg-cell>B{{ item }}</clr-dg-cell>
+          <clr-dg-cell>C{{ item }}</clr-dg-cell>
+          <clr-dg-row-detail *clrIfExpanded="true" [clrDgReplace]="replace">
+            <ng-template [testFakeLoader]="slow" clrLoading>
+              <clr-dg-cell>dA{{ item }}</clr-dg-cell>
+              <clr-dg-cell>dB{{ item }}</clr-dg-cell>
+              <clr-dg-cell>dC{{ item }}</clr-dg-cell>
+            </ng-template>
+          </clr-dg-row-detail>
+        </clr-dg-row>
+      </clr-datagrid>
+    </div>
+  `,
+  standalone: false,
+})
+class LoadingRowDetailTest {
+  items = [1];
+  slow = true;
+  replace = false;
+}
+
+@Component({
+  template: `
+    <div [style.width.px]="500">
+      <clr-datagrid [style.height.px]="300">
+        <clr-dg-column clrDgPinned [style.width.px]="150">A</clr-dg-column>
+        <clr-dg-column [style.width.px]="150">B</clr-dg-column>
+        <clr-dg-column [style.width.px]="300">C</clr-dg-column>
+        <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+          <clr-dg-cell>A{{ item }}</clr-dg-cell>
+          <clr-dg-cell>B{{ item }}</clr-dg-cell>
+          <clr-dg-cell>C{{ item }}</clr-dg-cell>
+          <clr-dg-row-detail *clrIfExpanded="true">
+            <clr-dg-cell>dA{{ item }}</clr-dg-cell>
+            <clr-dg-cell>dB{{ item }}</clr-dg-cell>
+            <clr-dg-cell>dC{{ item }}</clr-dg-cell>
+            <span [clrLoading]="loading"></span>
+          </clr-dg-row-detail>
+        </clr-dg-row>
+      </clr-datagrid>
+    </div>
+  `,
+  standalone: false,
+})
+class LoadingCellsRowDetailTest {
+  items = [1];
+  loading = true;
 }
 
 export default function (): void {
@@ -623,47 +742,18 @@ export default function (): void {
       let context: TestContext<ClrDatagrid, RowDetailTest>;
       let element: HTMLElement;
 
-      function detailPinnedCells(): string[] {
-        return queryAll(element, `.datagrid-row-detail ${PINNED} > clr-dg-cell`).map(cell => cell.textContent.trim());
-      }
-
-      // Everything the detail did not move into the static container, whether it was moved into the
-      // scrollable one or left where it was authored.
-      function detailPlainCells(): string[] {
-        return queryAll(element, '.datagrid-row-detail > clr-dg-cell').map(cell => cell.textContent.trim());
-      }
-
-      function boxOf(element: HTMLElement) {
-        const rect = element.getBoundingClientRect();
-        return { left: Math.round(rect.left), width: Math.round(rect.width) };
-      }
-
-      function cellBoxes(...texts: string[]) {
-        const cells = queryAll(element, 'clr-dg-cell');
-        return texts.map(text => boxOf(cells.find(cell => cell.textContent.trim() === text)));
-      }
-
-      // The box of the column itself, not of the title inside it, which is inset by the padding of
-      // the column.
-      function columnBoxes(...titles: string[]) {
-        const columns = queryAll(element, 'clr-dg-column');
-        return titles.map(title =>
-          boxOf(columns.find(column => column.querySelector('.datagrid-column-title').textContent.trim() === title))
-        );
-      }
-
       beforeEach(function () {
         context = this.create(ClrDatagrid, RowDetailTest);
         element = context.clarityElement;
       });
 
       it('moves the cell of a pinned column into the static container of the detail', function () {
-        expect(detailPinnedCells()).toEqual(['dA1']);
-        expect(detailPlainCells()).toEqual(['dB1', 'dC1']);
+        expect(detailPinnedCells(element)).toEqual(['dA1']);
+        expect(detailPlainCells(element)).toEqual(['dB1', 'dC1']);
       });
 
       it('lines the detail cells up with the cells of the row', function () {
-        expect(cellBoxes('dA1', 'dB1', 'dC1')).toEqual(cellBoxes('A1', 'B1', 'C1'));
+        expect(cellBoxes(element, 'dA1', 'dB1', 'dC1')).toEqual(cellBoxes(element, 'A1', 'B1', 'C1'));
       });
 
       it('freezes the pinned detail cell alongside the pinned cell of the row', function () {
@@ -678,11 +768,11 @@ export default function (): void {
         const scroller = queryAll(element, '.datagrid, .datagrid-table-wrapper, .datagrid-table').find(
           candidate => candidate.scrollWidth > candidate.clientWidth
         );
-        const before = cellBoxes('A1', 'dA1', 'C1', 'dC1');
+        const before = cellBoxes(element, 'A1', 'dA1', 'C1', 'dC1');
 
         scroller.scrollLeft = 80;
 
-        const after = cellBoxes('A1', 'dA1', 'C1', 'dC1');
+        const after = cellBoxes(element, 'A1', 'dA1', 'C1', 'dC1');
         // The pinned cells stay where they were, in the row and in the detail alike, while the
         // scrollable ones move with the scroll.
         expect([after[0].left, after[1].left]).toEqual([before[0].left, before[1].left]);
@@ -693,26 +783,26 @@ export default function (): void {
         context.testComponent.matchingCells = false;
         context.detectChanges();
 
-        expect(detailPinnedCells()).toEqual([]);
-        expect(detailPlainCells()).toEqual(['detail of 1']);
+        expect(detailPinnedCells(element)).toEqual([]);
+        expect(detailPlainCells(element)).toEqual(['detail of 1']);
       });
 
       it('leaves the detail alone when no column is pinned', function () {
         context.testComponent.pinFirst = false;
         context.detectChanges();
 
-        expect(detailPinnedCells()).toEqual([]);
-        expect(detailPlainCells()).toEqual(['dA1', 'dB1', 'dC1']);
+        expect(detailPinnedCells(element)).toEqual([]);
+        expect(detailPlainCells(element)).toEqual(['dA1', 'dB1', 'dC1']);
       });
 
       it('moves the detail cells back when the column stops being pinned', function () {
-        expect(detailPinnedCells()).toEqual(['dA1']);
+        expect(detailPinnedCells(element)).toEqual(['dA1']);
 
         context.testComponent.pinFirst = false;
         context.detectChanges();
 
-        expect(detailPinnedCells()).toEqual([]);
-        expect(detailPlainCells()).toEqual(['dA1', 'dB1', 'dC1']);
+        expect(detailPinnedCells(element)).toEqual([]);
+        expect(detailPlainCells(element)).toEqual(['dA1', 'dB1', 'dC1']);
       });
 
       describe('while it replaces the row', function () {
@@ -722,15 +812,86 @@ export default function (): void {
         });
 
         it('moves the cell of a pinned column into the static container of the detail', function () {
-          expect(detailPinnedCells()).toEqual(['dA1']);
-          expect(detailPlainCells()).toEqual(['dB1', 'dC1']);
+          expect(detailPinnedCells(element)).toEqual(['dA1']);
+          expect(detailPlainCells(element)).toEqual(['dB1', 'dC1']);
         });
 
         it('lines the detail cells up with the columns', function () {
           // The cells of the row are hidden in this mode, so the header is what is left to line up
           // with.
-          expect(cellBoxes('dA1', 'dB1', 'dC1')).toEqual(columnBoxes('A', 'B', 'C'));
+          expect(cellBoxes(element, 'dA1', 'dB1', 'dC1')).toEqual(columnBoxes(element, 'A', 'B', 'C'));
         });
+      });
+    });
+
+    // The detail turns up with no cells and receives them once it has loaded, which is the shape the
+    // clrLoading / clrFakeLoader combination of the demo application produces. The template holds
+    // the content of a detail without cells somewhere else than the content of one with cells, and
+    // creating either place projects the content into it - which takes the cells straight back out
+    // of the containers they were moved into.
+    describe('Row detail that loads its cells', function () {
+      let context: TestContext<ClrDatagrid, LoadingRowDetailTest>;
+      let element: HTMLElement;
+
+      async function load() {
+        context.detectChanges();
+        await delay();
+        context.detectChanges();
+      }
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, LoadingRowDetailTest, [], [TestFakeLoader]);
+        element = context.clarityElement;
+      });
+
+      it('holds no cells of its own while it is still loading', async function () {
+        context.detectChanges();
+
+        expect(detailPinnedCells(element)).toEqual([]);
+        expect(detailPlainCells(element)).toEqual([]);
+      });
+
+      it('moves the cell of a pinned column into the static container once it has loaded', async function () {
+        await load();
+
+        expect(detailPinnedCells(element)).toEqual(['dA1']);
+        expect(detailPlainCells(element)).toEqual(['dB1', 'dC1']);
+      });
+
+      it('lines the loaded detail cells up with the cells of the row', async function () {
+        await load();
+
+        expect(cellBoxes(element, 'dA1', 'dB1', 'dC1')).toEqual(cellBoxes(element, 'A1', 'B1', 'C1'));
+      });
+
+      it('lines the loaded detail cells up with the columns while it replaces the row', async function () {
+        context.testComponent.replace = true;
+        await load();
+
+        expect(detailPinnedCells(element)).toEqual(['dA1']);
+        expect(cellBoxes(element, 'dA1', 'dB1', 'dC1')).toEqual(columnBoxes(element, 'A', 'B', 'C'));
+      });
+    });
+
+    describe('Row detail that loads around its cells', function () {
+      let context: TestContext<ClrDatagrid, LoadingCellsRowDetailTest>;
+      let element: HTMLElement;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, LoadingCellsRowDetailTest);
+        element = context.clarityElement;
+      });
+
+      it('lines the detail cells up once the row stops loading', function () {
+        // The cells are there from the start here, only the row withholds the detail while it
+        // reports itself as loading.
+        expect(element.querySelector('.datagrid-row-detail')).toBeNull();
+
+        context.testComponent.loading = false;
+        context.detectChanges();
+
+        expect(detailPinnedCells(element)).toEqual(['dA1']);
+        expect(cellBoxes(element, 'dA1', 'dB1', 'dC1')).toEqual(cellBoxes(element, 'A1', 'B1', 'C1'));
       });
     });
 

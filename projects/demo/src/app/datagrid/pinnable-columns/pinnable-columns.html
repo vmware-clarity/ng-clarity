@@ -182,7 +182,6 @@
       <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="replace">
         <ng-template [clrFakeLoader]="slowLoad" clrLoading>
           @if (detail === 'default') {
-          <input type="checkbox" id="top-input" />
           <div>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
             Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
@@ -192,13 +191,27 @@
             velit pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis sit amet metus
             finibus hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit diam.
           </div>
-          <input type="checkbox" id="bottom-input" />
           } @if (detail === 'columns') {
-          <clr-dg-cell>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</clr-dg-cell>
-          <clr-dg-cell>Proin in neque in ante placerat mattis id sed quam.</clr-dg-cell>
-          <clr-dg-cell>Proin rhoncus lacus et tempor dignissim.</clr-dg-cell>
-          <clr-dg-cell>Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque sed arcu.</clr-dg-cell>
-          <clr-dg-cell>Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra.</clr-dg-cell>
+          <clr-dg-cell
+            >{{user.id}} <br />
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.</clr-dg-cell
+          >
+          <clr-dg-cell
+            >{{user.name}} <br />
+            Proin in neque in ante placerat mattis id sed quam.</clr-dg-cell
+          >
+          <clr-dg-cell
+            >{{user.creation | date}} <br />
+            Proin rhoncus lacus et tempor dignissim.</clr-dg-cell
+          >
+          <clr-dg-cell
+            >{{user.pokemon.name}} <br />
+            Vivamus sem quam, pellentesque pellentesque sed arcu.</clr-dg-cell
+          >
+          <clr-dg-cell
+            >COLOR <br />
+            Vivamus in dui lectus. Suspendisse cursus nisl imperdiet viverra.</clr-dg-cell
+          >
           }
         </ng-template>
       </clr-dg-row-detail>
@@ -222,9 +235,9 @@
 -->
 <div class="pinnable-columns-demo">
   <clr-datagrid>
-    <clr-dg-column clrDgPinned [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column [style.width.px]="200">Name</clr-dg-column>
     <clr-dg-column clrDgPinned [style.width.px]="120">User ID</clr-dg-column>
-    <clr-dg-column [style.width.px]="220">Creation date</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="220">Creation date</clr-dg-column>
 
     <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
       <clr-dg-cell>{{user.name}}</clr-dg-cell>

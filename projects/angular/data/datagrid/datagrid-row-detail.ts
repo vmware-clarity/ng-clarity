@@ -7,6 +7,7 @@
 
 import {
   AfterContentInit,
+  AfterViewChecked,
   AfterViewInit,
   Component,
   ContentChildren,
@@ -76,7 +77,7 @@ import { Selection } from './providers/selection';
   },
   standalone: false,
 })
-export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, OnDestroy {
+export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
   @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText: string;
   @Input('clrRowDetailEndAriaText') _endOfExpandableContentAriaText: string;
 
@@ -101,6 +102,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, On
   private subscriptions: Subscription[] = [];
   private cellsMoved = false;
   private lastLayout: string;
+  private hadCells: boolean;
 
   constructor(
     public selection: Selection,
@@ -148,6 +150,20 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, On
       this.displayMode.view.subscribe(() => this.syncColumnAlignment())
     );
     this.syncColumnAlignment(true);
+    this.hadCells = this.cells?.length > 0;
+  }
+
+  ngAfterViewChecked() {
+    // The template holds the content in one of two places, depending on whether the detail has cells
+    // of its own, and creating either of them projects the content into it - which takes the cells
+    // back out of the containers they were moved into. That happens when a detail turns up with no
+    // cells and receives them later, as it does when its content is behind a `clrLoading` template.
+    // By this point the swap has happened, so the move can be repeated for good.
+    const hasCells = this.cells?.length > 0;
+    if (hasCells !== this.hadCells) {
+      this.hadCells = hasCells;
+      this.syncColumnAlignment(true);
+    }
   }
 
   ngOnDestroy() {

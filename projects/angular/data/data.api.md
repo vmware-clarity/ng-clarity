@@ -831,7 +831,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
 }
 
 // @public
-export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, OnDestroy {
+export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
     constructor(selection: Selection_2, rowActionService: RowActionService, expand: DatagridIfExpandService, expandableRows: ExpandableRowsCount, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, displayMode: DisplayModeService);
     // (undocumented)
     get beginningOfExpandableContentAriaText(): string;
@@ -852,6 +852,8 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, On
     expandableRows: ExpandableRowsCount;
     // (undocumented)
     ngAfterContentInit(): void;
+    // (undocumented)
+    ngAfterViewChecked(): void;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
