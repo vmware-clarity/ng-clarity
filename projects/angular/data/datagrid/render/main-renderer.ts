@@ -159,16 +159,24 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     if (this.headers) {
       if (state && !this.columnsService.hasCache()) {
         this.columnsService.cache();
-        this.columnsService.visibleColumns.forEach((header, index) => {
-          if (index > 0) {
+
+        // The pane leaves room for a single column, and it should be the one the user was already
+        // looking at on the left of the row. Pinned columns are rendered before the rest, so that
+        // is the first pinned column whenever anything is pinned, and the first declared one
+        // otherwise.
+        const keptColumn =
+          this.columnsService.visibleColumns.find(column => column.pinned) || this.columnsService.visibleColumns[0];
+
+        this.columnsService.visibleColumns.forEach(header => {
+          if (header !== keptColumn) {
             this.columnsService.emitStateChangeAt(header.columnIndex, {
               changes: [DatagridColumnChanges.HIDDEN],
               hidden: state,
             });
           }
-          // The detail pane shows a single, full width column, so there is nothing to scroll and
-          // nothing to pin against. Pinning is suspended while the pane is open and restored from
-          // the cache when it closes.
+          // That single column is full width, so there is nothing to scroll and nothing to pin
+          // against - the column that stays included. Pinning is suspended while the pane is open
+          // and restored from the cache when it closes.
           if (header.pinned) {
             this.columnsService.emitStateChangeAt(header.columnIndex, {
               changes: [DatagridColumnChanges.PINNED],

@@ -14,7 +14,7 @@ import { ClrDatagrid } from './datagrid';
 // import { ClrDatagridSortOrder } from './enums/sort-order.enum'; // used by the disabled pin toggle suite
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
-import { PINNED_COLUMN_CLASS } from './render/constants';
+import { HIDDEN_COLUMN_CLASS, PINNED_COLUMN_CLASS } from './render/constants';
 
 const PINNED = '.datagrid-pinned-cells';
 const HEADER_PINNED = `.datagrid-header ${PINNED}`;
@@ -40,6 +40,14 @@ function cellsIn(root: HTMLElement, container: string): HTMLElement[][] {
 
 function cellTextsIn(root: HTMLElement, container: string): string[][] {
   return cellsIn(root, container).map(cells => cells.map(cell => cell.textContent.trim()));
+}
+
+// The columns the detail pane hides stay in the DOM, so they have to be filtered out by the class
+// that hides them.
+function visibleColumnTitles(root: HTMLElement): string[] {
+  return queryAll(root, `.datagrid-header clr-dg-column:not(.${HIDDEN_COLUMN_CLASS}) .datagrid-column-title`).map(
+    title => title.textContent.trim()
+  );
 }
 
 function detailPinnedCells(root: HTMLElement): string[] {
@@ -111,6 +119,33 @@ class PinnableTest {
 })
 class PinnableWithDetailTest {
   items = [1, 2, 3];
+}
+
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column>First</clr-dg-column>
+      <clr-dg-column [clrDgPinned]="pinSecond">Second</clr-dg-column>
+      <clr-dg-column [clrDgPinned]="pinThird">Third</clr-dg-column>
+      <clr-dg-column>Fourth</clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>a{{ item }}</clr-dg-cell>
+        <clr-dg-cell>b{{ item }}</clr-dg-cell>
+        <clr-dg-cell>c{{ item }}</clr-dg-cell>
+        <clr-dg-cell>d{{ item }}</clr-dg-cell>
+      </clr-dg-row>
+      <clr-dg-detail *clrIfDetail="let item">
+        <clr-dg-detail-header>{{ item }}</clr-dg-detail-header>
+        <clr-dg-detail-body>Detail of {{ item }}</clr-dg-detail-body>
+      </clr-dg-detail>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class PinnedNotFirstWithDetailTest {
+  items = [1, 2, 3];
+  pinSecond = true;
+  pinThird = true;
 }
 
 // Fixture for the 'Header pin toggle' suite below, disabled along with clrDgPinnable.
@@ -936,6 +971,70 @@ export default function (): void {
         expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
         expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['Second']);
         expect(context.clarityDirective.columns.first.isPinned).toBeTrue();
+      });
+    });
+
+    describe('With a detail pane and a pinned column that is not the first one', function () {
+      let context: TestContext<ClrDatagrid, PinnedNotFirstWithDetailTest>;
+      let detailService: DetailService;
+      let element: HTMLElement;
+
+      function openPane() {
+        detailService.open(context.testComponent.items[0]);
+        context.detectChanges();
+      }
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, PinnedNotFirstWithDetailTest);
+        detailService = context.getClarityProvider(DetailService);
+        element = context.clarityElement;
+      });
+
+      it('renders the pinned columns before the ones declared ahead of them', function () {
+        // Which is what makes the first pinned column the one on the left of the row, rather than
+        // the first declared one.
+        expect(columnTitles(element, HEADER_PINNED)).toEqual(['Second', 'Third']);
+        expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['First', 'Fourth']);
+      });
+
+      it('keeps the first pinned column visible while the pane is open', function () {
+        openPane();
+
+        expect(visibleColumnTitles(element)).toEqual(['Second']);
+      });
+
+      it('suspends pinning on the column it keeps', function () {
+        openPane();
+
+        // Nothing is left to scroll, so the column that stays is a plain full width one.
+        expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
+        expect(context.clarityDirective.columns.toArray().map(column => column.isPinned)).toEqual([
+          false,
+          false,
+          false,
+          false,
+        ]);
+      });
+
+      it('restores every column when the pane closes', function () {
+        openPane();
+        expect(visibleColumnTitles(element)).toEqual(['Second']);
+
+        detailService.close();
+        context.detectChanges();
+
+        expect(visibleColumnTitles(element)).toEqual(['Second', 'Third', 'First', 'Fourth']);
+        expect(columnTitles(element, HEADER_PINNED)).toEqual(['Second', 'Third']);
+      });
+
+      it('falls back to the first declared column when nothing is pinned', function () {
+        context.testComponent.pinSecond = false;
+        context.testComponent.pinThird = false;
+        context.detectChanges();
+
+        openPane();
+
+        expect(visibleColumnTitles(element)).toEqual(['First']);
       });
     });
   });
