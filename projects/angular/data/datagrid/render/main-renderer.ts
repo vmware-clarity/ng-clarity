@@ -295,7 +295,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
             if (wasPinned !== !!state.pinned) {
               this.updateColumnSeparatorsVisibility();
               this.keyNavigation.resetKeyGrid();
-              // The column and its cells have to move between the sticky and the scrollable
+              // The column and its cells have to move between the static and the scrollable
               // containers, which happens on the next CALCULATE/DISPLAY cycle. Widths are
               // recomputed there as well, since the flex context of the column changes.
               // Deferring to ngAfterViewChecked keeps us out of the change detection pass that
@@ -345,7 +345,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
 
   private updateColumnSeparatorsVisibility() {
     const visibleColumns = this.datagrid.columns.filter(column => !column.isHidden);
-    // Pinned columns are rendered in the sticky container, so they always have something after
+    // Pinned columns are rendered in the static container, so they always have something after
     // them and keep their separator - it is what marks the boundary with the scrollable columns.
     // Only the last scrollable column has nothing after it and must hide its separator.
     const scrollableColumns = visibleColumns.filter(column => !column.isPinned);

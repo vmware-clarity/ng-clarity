@@ -2757,14 +2757,15 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
 }
 
 // @public
-export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
-    constructor(selection: Selection_2, rowActionService: RowActionService, expand: DatagridIfExpandService, expandableRows: ExpandableRowsCount, commonStrings: ClrCommonStringsService);
+export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, OnDestroy {
+    constructor(selection: Selection_2, rowActionService: RowActionService, expand: DatagridIfExpandService, expandableRows: ExpandableRowsCount, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, displayMode: DisplayModeService);
     // (undocumented)
     get beginningOfExpandableContentAriaText(): string;
     // (undocumented)
     _beginningOfExpandableContentAriaText: string;
     // (undocumented)
     cells: QueryList<ClrDatagridCell>;
+    columnAligned: boolean;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -2777,6 +2778,8 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     expandableRows: ExpandableRowsCount;
     // (undocumented)
     ngAfterContentInit(): void;
+    // (undocumented)
+    ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)

@@ -22,6 +22,11 @@ export class DatagridPinnableColumnsDemo {
   manyUsers: User[];
   selected: User[] = [];
 
+  detail = 'columns';
+  replace = false;
+  slowLoad = false;
+  removeRowDetail = false;
+
   pinId = true;
   pinName = true;
   pinPokemon = false;

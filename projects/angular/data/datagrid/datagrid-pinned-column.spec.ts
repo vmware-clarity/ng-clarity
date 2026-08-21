@@ -15,21 +15,26 @@ import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
 import { PINNED_COLUMN_CLASS } from './render/constants';
 
-const HEADER_STICKY = '.datagrid-header .datagrid-row-sticky';
+const PINNED = '.datagrid-pinned-cells';
+const HEADER_PINNED = `.datagrid-header ${PINNED}`;
 const HEADER_SCROLLABLE = '.datagrid-header .datagrid-row-scrollable';
 
 function queryAll(root: HTMLElement, selector: string): HTMLElement[] {
   return Array.from<HTMLElement>(root.querySelectorAll(selector));
 }
 
+// The columns and cells are matched as direct children throughout: the container holding the pinned
+// ones lives inside .datagrid-row-scrollable, so a descendant query for the scrollable ones would
+// pick up the pinned ones as well.
+//
 // The title is read from .datagrid-column-title so the screen reader text of the column separator
 // does not end up in the comparison.
 function columnTitles(root: HTMLElement, container: string): string[] {
-  return queryAll(root, `${container} clr-dg-column .datagrid-column-title`).map(title => title.textContent.trim());
+  return queryAll(root, `${container} > clr-dg-column .datagrid-column-title`).map(title => title.textContent.trim());
 }
 
 function cellsIn(root: HTMLElement, container: string): HTMLElement[][] {
-  return queryAll(root, '.datagrid-rows .datagrid-row').map(row => queryAll(row, `${container} clr-dg-cell`));
+  return queryAll(root, '.datagrid-rows .datagrid-row').map(row => queryAll(row, `${container} > clr-dg-cell`));
 }
 
 function cellTextsIn(root: HTMLElement, container: string): string[][] {
@@ -170,6 +175,56 @@ class PinnedWidthCapVirtualScrollTest {
   pinnedWidth = 200;
 }
 
+@Component({
+  template: `
+    <clr-datagrid clrDgSelectionType="multi">
+      <clr-dg-column clrDgPinned>First</clr-dg-column>
+      <clr-dg-column>Second</clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item }}</clr-dg-cell>
+        <clr-dg-cell>{{ item * 2 }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class PinnedWithRowControlsTest {
+  items = [1, 2, 3];
+}
+
+@Component({
+  template: `
+    <div [style.width.px]="500">
+      <clr-datagrid [style.height.px]="300">
+        <clr-dg-column [clrDgPinned]="pinFirst" [style.width.px]="150">A</clr-dg-column>
+        <clr-dg-column [style.width.px]="150">B</clr-dg-column>
+        <clr-dg-column [style.width.px]="300">C</clr-dg-column>
+        <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+          <clr-dg-cell>A{{ item }}</clr-dg-cell>
+          <clr-dg-cell>B{{ item }}</clr-dg-cell>
+          <clr-dg-cell>C{{ item }}</clr-dg-cell>
+          <clr-dg-row-detail *clrIfExpanded="true" [clrDgReplace]="replace">
+            @if (matchingCells) {
+              <clr-dg-cell>dA{{ item }}</clr-dg-cell>
+              <clr-dg-cell>dB{{ item }}</clr-dg-cell>
+              <clr-dg-cell>dC{{ item }}</clr-dg-cell>
+            } @else {
+              <clr-dg-cell>detail of {{ item }}</clr-dg-cell>
+            }
+          </clr-dg-row-detail>
+        </clr-dg-row>
+      </clr-datagrid>
+    </div>
+  `,
+  standalone: false,
+})
+class RowDetailTest {
+  items = [1];
+  pinFirst = true;
+  matchingCells = true;
+  replace = false;
+}
+
 export default function (): void {
   describe('Pinnable columns', function () {
     describe('Reordering', function () {
@@ -197,14 +252,14 @@ export default function (): void {
         return root.querySelector(selector).getBoundingClientRect().width;
       }
 
-      // The cap is a share of the visible width of the datagrid, which is what the sticky container
+      // The cap is a share of the visible width of the datagrid, which is what the static container
       // resolves its `cqi` unit against - not the rows, which stretch to the scrollable content.
       function budget(root: HTMLElement): number {
         return widthOf(root, '.datagrid-table-wrapper') * MAX_SHARE;
       }
 
       function pinnedWidths(root: HTMLElement, container: string): number[] {
-        return queryAll(root, `${container} .datagrid-row-sticky .${PINNED_COLUMN_CLASS}`).map(column =>
+        return queryAll(root, `${container} ${PINNED} .${PINNED_COLUMN_CLASS}`).map(column =>
           Math.round(column.getBoundingClientRect().width)
         );
       }
@@ -220,7 +275,7 @@ export default function (): void {
 
         it('caps the pinned columns at their share of the datagrid width', function () {
           // 2 x 200px of pinned columns asked for all 400px of a 400px wide datagrid.
-          expect(widthOf(element, HEADER_STICKY)).toBeCloseTo(budget(element), 0);
+          expect(widthOf(element, HEADER_PINNED)).toBeCloseTo(budget(element), 0);
         });
 
         it('shrinks the pinned columns so they fit the cap instead of overflowing it', function () {
@@ -240,8 +295,13 @@ export default function (): void {
         });
 
         it('leaves the scrollable columns reachable', function () {
-          expect(widthOf(element, HEADER_SCROLLABLE)).toBeGreaterThan(0);
-          expect(widthOf(element, HEADER_STICKY)).toBeLessThan(widthOf(element, '.datagrid-table-wrapper'));
+          // The static container now sits inside .datagrid-row-scrollable, so the scrollable column
+          // is measured on its own rather than through the width of that container.
+          const scrollable = queryAll(element, `${HEADER_SCROLLABLE} > clr-dg-column`);
+
+          expect(scrollable.length).toBe(1);
+          expect(scrollable[0].getBoundingClientRect().width).toBeGreaterThan(0);
+          expect(widthOf(element, HEADER_PINNED)).toBeLessThan(widthOf(element, '.datagrid-table-wrapper'));
         });
 
         it('does not shrink pinned columns that already fit', function () {
@@ -249,7 +309,7 @@ export default function (): void {
           context.detectChanges();
 
           expect(pinnedWidths(element, '.datagrid-header')).toEqual([200, 200]);
-          expect(widthOf(element, HEADER_STICKY)).toBeLessThan(budget(element));
+          expect(widthOf(element, HEADER_PINNED)).toBeLessThan(budget(element));
         });
       });
 
@@ -263,7 +323,7 @@ export default function (): void {
         });
 
         it('caps the pinned columns at their share of the datagrid width', function () {
-          expect(widthOf(element, HEADER_STICKY)).toBeCloseTo(budget(element), 0);
+          expect(widthOf(element, HEADER_PINNED)).toBeCloseTo(budget(element), 0);
         });
 
         it('shrinks the pinned columns so they fit the cap instead of overflowing it', function () {
@@ -293,7 +353,7 @@ export default function (): void {
 
       it('keeps every column scrollable by default', function () {
         expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['First', 'Second', 'Third']);
-        expect(columnTitles(element, HEADER_STICKY)).toEqual([]);
+        expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
         expect(element.querySelector(`.${PINNED_COLUMN_CLASS}`)).toBeNull();
       });
 
@@ -301,19 +361,19 @@ export default function (): void {
         expect(context.clarityDirective.columns.map(column => column.pinned)).toEqual([false, false, false]);
       });
 
-      it('projects a pinned column header into the sticky container of the header', function () {
+      it('moves a pinned column header into the static container of the header', function () {
         context.testComponent.pinFirst = true;
         context.detectChanges();
 
-        expect(columnTitles(element, HEADER_STICKY)).toEqual(['First']);
+        expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
         expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['Second', 'Third']);
       });
 
-      it('projects the cells of a pinned column into the sticky container of every row', function () {
+      it('moves the cells of a pinned column into the static container of every row', function () {
         context.testComponent.pinFirst = true;
         context.detectChanges();
 
-        expect(cellTextsIn(element, '.datagrid-row-sticky')).toEqual([['1'], ['2'], ['3']]);
+        expect(cellTextsIn(element, PINNED)).toEqual([['1'], ['2'], ['3']]);
         expect(cellTextsIn(element, '.datagrid-scrolling-cells')).toEqual([
           ['2', '3'],
           ['4', '6'],
@@ -325,11 +385,11 @@ export default function (): void {
         context.testComponent.pinFirst = true;
         context.detectChanges();
 
-        const pinnedHeader: HTMLElement = element.querySelector(`${HEADER_STICKY} clr-dg-column`);
+        const pinnedHeader: HTMLElement = element.querySelector(`${HEADER_PINNED} clr-dg-column`);
         expect(pinnedHeader.classList).toContain(PINNED_COLUMN_CLASS);
         expect(context.clarityDirective.columns.first.isPinned).toBeTrue();
 
-        cellsIn(element, '.datagrid-row-sticky').forEach(cells => {
+        cellsIn(element, PINNED).forEach(cells => {
           expect(cells.length).toBe(1);
           expect(cells[0].classList).toContain(PINNED_COLUMN_CLASS);
         });
@@ -340,9 +400,9 @@ export default function (): void {
         context.testComponent.pinSecond = true;
         context.detectChanges();
 
-        expect(columnTitles(element, HEADER_STICKY)).toEqual(['First', 'Second']);
+        expect(columnTitles(element, HEADER_PINNED)).toEqual(['First', 'Second']);
         expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['Third']);
-        expect(cellTextsIn(element, '.datagrid-row-sticky')).toEqual([
+        expect(cellTextsIn(element, PINNED)).toEqual([
           ['1', '2'],
           ['2', '4'],
           ['3', '6'],
@@ -353,9 +413,9 @@ export default function (): void {
         context.testComponent.pinSecond = true;
         context.detectChanges();
 
-        expect(columnTitles(element, HEADER_STICKY)).toEqual(['Second']);
+        expect(columnTitles(element, HEADER_PINNED)).toEqual(['Second']);
         expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['First', 'Third']);
-        expect(cellTextsIn(element, '.datagrid-row-sticky')).toEqual([['2'], ['4'], ['6']]);
+        expect(cellTextsIn(element, PINNED)).toEqual([['2'], ['4'], ['6']]);
         expect(cellTextsIn(element, '.datagrid-scrolling-cells')).toEqual([
           ['1', '3'],
           ['2', '6'],
@@ -366,14 +426,14 @@ export default function (): void {
       it('moves the column and its cells back when it gets unpinned', function () {
         context.testComponent.pinFirst = true;
         context.detectChanges();
-        expect(columnTitles(element, HEADER_STICKY)).toEqual(['First']);
+        expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
 
         context.testComponent.pinFirst = false;
         context.detectChanges();
 
-        expect(columnTitles(element, HEADER_STICKY)).toEqual([]);
+        expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
         expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['First', 'Second', 'Third']);
-        expect(cellTextsIn(element, '.datagrid-row-sticky')).toEqual([[], [], []]);
+        expect(cellTextsIn(element, PINNED)).toEqual([[], [], []]);
         expect(element.querySelector(`.${PINNED_COLUMN_CLASS}`)).toBeNull();
       });
 
@@ -446,15 +506,15 @@ export default function (): void {
     //   });
     //
     //   it('pins and unpins the column when the toggle is clicked', function () {
-    //     expect(columnTitles(element, HEADER_STICKY)).toEqual([]);
+    //     expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
     //
     //     pinToggle().click();
     //     context.detectChanges();
-    //     expect(columnTitles(element, HEADER_STICKY)).toEqual(['First']);
+    //     expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
     //
     //     pinToggle().click();
     //     context.detectChanges();
-    //     expect(columnTitles(element, HEADER_STICKY)).toEqual([]);
+    //     expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
     //     expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['First', 'Second']);
     //   });
     //
@@ -473,7 +533,7 @@ export default function (): void {
     //     context.detectChanges();
     //
     //     expect(pinIconShape()).toBe('unpin');
-    //     expect(columnTitles(element, HEADER_STICKY)).toEqual(['First']);
+    //     expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
     //   });
     //
     //   it('does not sort the column when the toggle is clicked', function () {
@@ -498,6 +558,182 @@ export default function (): void {
     //   });
     // });
 
+    describe('Offset of the static container', function () {
+      let context: TestContext<ClrDatagrid, PinnedWithRowControlsTest>;
+      let element: HTMLElement;
+
+      // The container holding the pinned columns comes after the one holding the row controls,
+      // which does not scroll either, so it has to freeze where the controls end. The offsets of a
+      // sticky element are measured from the edge of the datagrid, so that distance is measured and
+      // published as a custom property instead.
+      function publishedWidth(scope: string): number {
+        return parseFloat(
+          getComputedStyle(element.querySelector(scope)).getPropertyValue('--clr-datagrid-row-controls-width')
+        );
+      }
+
+      function controlsWidth(scope: string): number {
+        return element.querySelector(`${scope} .datagrid-row-master > .datagrid-row-sticky`).getBoundingClientRect()
+          .width;
+      }
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, PinnedWithRowControlsTest);
+        element = context.clarityElement;
+      });
+
+      it('freezes the pinned columns where the row controls end', function () {
+        const pinned: HTMLElement = element.querySelector(HEADER_PINNED);
+
+        // The select column is what makes this more than a no-op.
+        expect(controlsWidth('.datagrid-header')).toBeGreaterThan(0);
+        expect(getComputedStyle(pinned).position).toBe('sticky');
+        expect(parseFloat(getComputedStyle(pinned).insetInlineStart)).toBeCloseTo(controlsWidth('.datagrid-header'), 1);
+      });
+
+      it('keeps the static container anchored while the expand animation runs', function () {
+        // CDE-3127: the animation clips its host for as long as it runs. Clipping with
+        // `overflow: hidden` would turn that host into a scroll container, and the static container
+        // - which sits inside it - anchors itself to the nearest one, so the pinned columns would
+        // come loose and scroll away for the length of the animation.
+        const scrollingOverflows = ['hidden', 'scroll', 'auto'];
+        const pinned: HTMLElement = element.querySelector(`.datagrid-rows ${PINNED}`);
+        const row = context.clarityDirective.rows.first;
+
+        row.expandAnimation.initAnimationEffects();
+
+        let ancestor = pinned.parentElement;
+        while (ancestor && ancestor !== element) {
+          expect(scrollingOverflows).not.toContain(ancestor.style.overflow);
+          ancestor = ancestor.parentElement;
+        }
+
+        row.expandAnimation.cleanupAnimationEffects();
+      });
+
+      it('measures the row controls separately from the ones in the header', function () {
+        // The header renders a single column for both kinds of caret where a row renders one cell
+        // per caret, so the two containers are not necessarily the same width.
+        expect(publishedWidth('.datagrid-header')).toBeCloseTo(controlsWidth('.datagrid-header'), 1);
+        expect(publishedWidth('.datagrid-rows')).toBeCloseTo(controlsWidth('.datagrid-rows'), 1);
+      });
+    });
+
+    describe('Row detail laid out in columns', function () {
+      let context: TestContext<ClrDatagrid, RowDetailTest>;
+      let element: HTMLElement;
+
+      function detailPinnedCells(): string[] {
+        return queryAll(element, `.datagrid-row-detail ${PINNED} > clr-dg-cell`).map(cell => cell.textContent.trim());
+      }
+
+      // Everything the detail did not move into the static container, whether it was moved into the
+      // scrollable one or left where it was authored.
+      function detailPlainCells(): string[] {
+        return queryAll(element, '.datagrid-row-detail > clr-dg-cell').map(cell => cell.textContent.trim());
+      }
+
+      function boxOf(element: HTMLElement) {
+        const rect = element.getBoundingClientRect();
+        return { left: Math.round(rect.left), width: Math.round(rect.width) };
+      }
+
+      function cellBoxes(...texts: string[]) {
+        const cells = queryAll(element, 'clr-dg-cell');
+        return texts.map(text => boxOf(cells.find(cell => cell.textContent.trim() === text)));
+      }
+
+      // The box of the column itself, not of the title inside it, which is inset by the padding of
+      // the column.
+      function columnBoxes(...titles: string[]) {
+        const columns = queryAll(element, 'clr-dg-column');
+        return titles.map(title =>
+          boxOf(columns.find(column => column.querySelector('.datagrid-column-title').textContent.trim() === title))
+        );
+      }
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, RowDetailTest);
+        element = context.clarityElement;
+      });
+
+      it('moves the cell of a pinned column into the static container of the detail', function () {
+        expect(detailPinnedCells()).toEqual(['dA1']);
+        expect(detailPlainCells()).toEqual(['dB1', 'dC1']);
+      });
+
+      it('lines the detail cells up with the cells of the row', function () {
+        expect(cellBoxes('dA1', 'dB1', 'dC1')).toEqual(cellBoxes('A1', 'B1', 'C1'));
+      });
+
+      it('freezes the pinned detail cell alongside the pinned cell of the row', function () {
+        const rowPinned: HTMLElement = element.querySelector(`.datagrid-rows .datagrid-row-master ${PINNED}`);
+        const detailPinned: HTMLElement = element.querySelector(`.datagrid-row-detail ${PINNED}`);
+
+        expect(getComputedStyle(detailPinned).position).toBe('sticky');
+        expect(getComputedStyle(detailPinned).insetInlineStart).toBe(getComputedStyle(rowPinned).insetInlineStart);
+      });
+
+      it('holds the pinned cells of the row and of the detail in place while scrolling sideways', function () {
+        const scroller = queryAll(element, '.datagrid, .datagrid-table-wrapper, .datagrid-table').find(
+          candidate => candidate.scrollWidth > candidate.clientWidth
+        );
+        const before = cellBoxes('A1', 'dA1', 'C1', 'dC1');
+
+        scroller.scrollLeft = 80;
+
+        const after = cellBoxes('A1', 'dA1', 'C1', 'dC1');
+        // The pinned cells stay where they were, in the row and in the detail alike, while the
+        // scrollable ones move with the scroll.
+        expect([after[0].left, after[1].left]).toEqual([before[0].left, before[1].left]);
+        expect([after[2].left, after[3].left]).toEqual([before[2].left - 80, before[3].left - 80]);
+      });
+
+      it('leaves the detail alone when it does not hold one cell per column', function () {
+        context.testComponent.matchingCells = false;
+        context.detectChanges();
+
+        expect(detailPinnedCells()).toEqual([]);
+        expect(detailPlainCells()).toEqual(['detail of 1']);
+      });
+
+      it('leaves the detail alone when no column is pinned', function () {
+        context.testComponent.pinFirst = false;
+        context.detectChanges();
+
+        expect(detailPinnedCells()).toEqual([]);
+        expect(detailPlainCells()).toEqual(['dA1', 'dB1', 'dC1']);
+      });
+
+      it('moves the detail cells back when the column stops being pinned', function () {
+        expect(detailPinnedCells()).toEqual(['dA1']);
+
+        context.testComponent.pinFirst = false;
+        context.detectChanges();
+
+        expect(detailPinnedCells()).toEqual([]);
+        expect(detailPlainCells()).toEqual(['dA1', 'dB1', 'dC1']);
+      });
+
+      describe('while it replaces the row', function () {
+        beforeEach(function () {
+          context.testComponent.replace = true;
+          context.detectChanges();
+        });
+
+        it('moves the cell of a pinned column into the static container of the detail', function () {
+          expect(detailPinnedCells()).toEqual(['dA1']);
+          expect(detailPlainCells()).toEqual(['dB1', 'dC1']);
+        });
+
+        it('lines the detail cells up with the columns', function () {
+          // The cells of the row are hidden in this mode, so the header is what is left to line up
+          // with.
+          expect(cellBoxes('dA1', 'dB1', 'dC1')).toEqual(columnBoxes('A', 'B', 'C'));
+        });
+      });
+    });
+
     describe('With a detail pane', function () {
       let context: TestContext<ClrDatagrid, PinnableWithDetailTest>;
       let detailService: DetailService;
@@ -510,7 +746,7 @@ export default function (): void {
       });
 
       it('pins the column through the attribute form of the input', function () {
-        expect(columnTitles(element, HEADER_STICKY)).toEqual(['First']);
+        expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
         expect(context.clarityDirective.columns.first.pinned).toBeTrue();
       });
 
@@ -520,7 +756,7 @@ export default function (): void {
 
         // Both columns are back in the scrollable container. The detail pane keeps only the first
         // one visible, the second one stays in the DOM but hidden - that behaviour is unchanged.
-        expect(columnTitles(element, HEADER_STICKY)).toEqual([]);
+        expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
         expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['First', 'Second']);
         expect(context.clarityDirective.columns.first.isPinned).toBeFalse();
         expect(context.clarityDirective.columns.last.isHidden).toBeTrue();
@@ -531,12 +767,12 @@ export default function (): void {
       it('restores pinning when the detail pane closes', function () {
         detailService.open(context.testComponent.items[0]);
         context.detectChanges();
-        expect(columnTitles(element, HEADER_STICKY)).toEqual([]);
+        expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
 
         detailService.close();
         context.detectChanges();
 
-        expect(columnTitles(element, HEADER_STICKY)).toEqual(['First']);
+        expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
         expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['Second']);
         expect(context.clarityDirective.columns.first.isPinned).toBeTrue();
       });

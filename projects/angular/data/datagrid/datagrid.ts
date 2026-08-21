@@ -23,6 +23,7 @@ import {
   Output,
   QueryList,
   Renderer2,
+  RendererStyleFlags2,
   TemplateRef,
   ViewChild,
   ViewChildren,
@@ -157,6 +158,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   SELECTION_TYPE = SelectionType;
 
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
+  @ViewChild('rowControls', { read: ElementRef }) private rowControls: ElementRef<HTMLElement>;
 
   /**
    * Subscriptions to all the services and queries changes
@@ -171,6 +173,12 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       this.handleResizeChanges(entries);
     });
   });
+
+  /**
+   * Watches the row controls for anything that changes their width without going through a render
+   * cycle - a density change, or an application restyling them.
+   */
+  private rowControlsObserver: ResizeObserver = new ResizeObserver(() => this.updateRowControlsWidth());
 
   constructor(
     private organizer: DatagridRenderOrganizer,
@@ -352,6 +360,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
 
     this.updateDetailState();
+    this.zone.runOutsideAngular(() => this.rowControlsObserver.observe(this.rowControls.nativeElement));
 
     // Emit the state only if it is not an empty object.
     // Default state of `ClrDatagridStateInterface` is an empty object.
@@ -402,7 +411,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         if (viewChange === DatagridDisplayMode.DISPLAY) {
           // Set state, style for the datagrid to DISPLAY and insert row & columns into containers
           this.renderer.removeClass(this.el.nativeElement, 'datagrid-calculate-mode');
-          // Pinned columns go into the sticky container so they stay visible during horizontal
+          // Pinned columns go into the pinned container so they stay visible during horizontal
           // scroll. Iterating in declaration order keeps both groups in their original order,
           // which is what matches them with the cells of every row.
           this.columns.forEach((column, index) => {
@@ -414,6 +423,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           this.rows.forEach(row => {
             this._displayedRows.insert(row._view);
           });
+          // The row controls are only laid out in this mode, and this is also the point where
+          // their number can have changed.
+          this.updateRowControlsWidth();
         } else {
           // Set state, style for the datagrid to CALCULATE and insert row & columns into containers
           this.renderer.addClass(this.el.nativeElement, 'datagrid-calculate-mode');
@@ -470,6 +482,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this.resizeObserver.disconnect();
+    this.rowControlsObserver.disconnect();
   }
 
   toggleAllSelected($event: any) {
@@ -560,6 +573,42 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
       this._virtualScrollSubscriptions = [];
     }
+  }
+
+  /**
+   * Publishes the width of the row controls - the static container holding the select, action and
+   * caret cells - as a custom property, which is where the pinned columns read the offset they
+   * became static at. They are static right after the controls rather than at the edge of the datagrid,
+   * and `position: sticky` always measures its offsets from that edge, so the distance between the
+   * two has to be measured and handed to the stylesheet.
+   *
+   * The header and the rows get their own value: the header renders one caret column for both
+   * kinds of caret where a row renders one cell per caret, so the two containers are not
+   * necessarily the same width.
+   */
+  private updateRowControlsWidth() {
+    const headerControls = this.rowControls?.nativeElement;
+    if (!headerControls || !this.datagridHeader) {
+      return;
+    }
+    const rowControls: HTMLElement = this.rowsWrapper.nativeElement.querySelector(
+      '.datagrid-row-master > .datagrid-row-sticky:not(.datagrid-row-sticky-scroll)'
+    );
+
+    this.setRowControlsWidth(this.datagridHeader.nativeElement, headerControls);
+    // Without a row there is nothing to line up with, so the header is a good enough stand-in.
+    this.setRowControlsWidth(this.rowsWrapper.nativeElement, rowControls || headerControls);
+  }
+
+  private setRowControlsWidth(target: HTMLElement, controls: HTMLElement) {
+    // Measured from the box rather than from offsetWidth, which is rounded to whole pixels and
+    // would leave the pinned columns off by up to a pixel.
+    this.renderer.setStyle(
+      target,
+      '--clr-datagrid-row-controls-width',
+      `${controls.getBoundingClientRect().width}px`,
+      RendererStyleFlags2.DashCase
+    );
   }
 
   private handleResizeChanges(entries: ResizeObserverEntry[]) {

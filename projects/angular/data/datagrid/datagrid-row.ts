@@ -267,7 +267,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
         for (let i = this._scrollableCells.length; i > 0; i--) {
           this._scrollableCells.detach();
         }
-        // remove cell views of pinned columns from the sticky container
+        // remove cell views of pinned columns from their static container
         for (let i = this._pinnedCells.length; i > 0; i--) {
           this._pinnedCells.detach();
         }
@@ -360,7 +360,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   }
 
   /**
-   * Projects the cells into the display containers. Cells of pinned columns go into the sticky
+   * Projects the cells into the display containers. Cells of pinned columns go into their static
    * container so they stay visible during horizontal scroll; the rest stay scrollable. Cells are
    * matched with their column by declaration index, and iterating in that order keeps both groups
    * aligned with the header.

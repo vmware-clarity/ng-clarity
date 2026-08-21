@@ -36,8 +36,8 @@ export class ColumnsService {
 
   /**
    * Tells whether the column at the given index is pinned (static). Columns and cells are
-   * matched by their declaration index, so this is what the header and the rows use to decide
-   * which views belong in the sticky container.
+   * matched by their declaration index, so this is what the header, the rows and a column aligned
+   * row detail use to decide which views belong in the static container.
    */
   isPinned(columnIndex: number): boolean {
     return !!this.columns[columnIndex]?.value.pinned;

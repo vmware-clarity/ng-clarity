@@ -87,10 +87,10 @@
   }
 
   .datagrid-overflow-ellipsis .datagrid-row {
-    // Pinned cells sit in the sticky container instead of .datagrid-scrolling-cells, but they
-    // have to truncate the same way as the scrollable ones.
+    // Pinned cells sit one level deeper, in their own static container, but they have to truncate
+    // the same way as the scrollable ones.
     .datagrid-scrolling-cells > .datagrid-cell,
-    .datagrid-row-sticky > .datagrid-pinned-column.datagrid-cell {
+    .datagrid-pinned-cells > .datagrid-cell {
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
@@ -115,31 +115,38 @@
       min-height: calc(tables-variables.$clr-table-row-height - tables-variables.$clr-table-borderwidth);
     }
 
+    // The two static containers scroll over the cells next to them, so they carry the background of
+    // the row rather than letting it show through.
     &:hover,
-    &:hover .datagrid-row-sticky {
+    &:hover .datagrid-row-sticky,
+    &:hover .datagrid-pinned-cells {
       background-color: datagrid-variables.$clr-datagrid-row-hover-color;
     }
 
     &.datagrid-selected,
-    &.datagrid-selected .datagrid-row-sticky {
+    &.datagrid-selected .datagrid-row-sticky,
+    &.datagrid-selected .datagrid-pinned-cells {
       color: datagrid-variables.$clr-datagrid-row-selected;
       background-color: datagrid-variables.$clr-datagrid-row-selected-background-color;
     }
 
     &.datagrid-selected {
       &:hover,
-      &:hover .datagrid-row-sticky {
+      &:hover .datagrid-row-sticky,
+      &:hover .datagrid-pinned-cells {
         background-color: datagrid-variables.$clr-datagrid-row-selected-hover-background-color;
       }
 
       &:active,
-      &:active .datagrid-row-sticky {
+      &:active .datagrid-row-sticky,
+      &:active .datagrid-pinned-cells {
         background-color: datagrid-variables.$clr-datagrid-row-selected-active-background-color;
       }
     }
 
     &:active,
-    &:active .datagrid-row-sticky {
+    &:active .datagrid-row-sticky,
+    &:active .datagrid-pinned-cells {
       background-color: datagrid-variables.$clr-datagrid-row-active-color;
     }
 
@@ -256,12 +263,6 @@
     left: 0;
     z-index: map.get(variables.$clr-layers, datagrid-row-sticky);
 
-    // The pinned columns can never take the whole datagrid, so there is always somewhere to scroll.
-    // The cap applies to the left sticky container only - the one holding the pinned columns.
-    &:not(.datagrid-row-sticky-scroll) {
-      max-width: datagrid-variables.$clr-datagrid-pinned-columns-max-width;
-    }
-
     &-scroll {
       right: 0;
 
@@ -282,16 +283,50 @@
     .datagrid-cell.datagrid-detail-caret {
       @include datagrid-mixins.datagrid-column-separator();
     }
+  }
 
-    .datagrid-column.datagrid-pinned-column:not(:last-child) .datagrid-column-separator::after {
-      background-color: datagrid-variables.$clr-datagrid-column-resize-handler-color;
-    }
+  .datagrid-pinned-cells {
+    // The container comes after the row controls, which do not scroll either, so it has to stop
+    // where they end instead of at the edge of the datagrid - the offsets of a sticky element are
+    // always measured from there. Their width is measured and published by the datagrid, see
+    // ClrDatagrid.updateRowControlsWidth.
+    inset-inline-start: var(--clr-datagrid-row-controls-width, 0);
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    position: sticky;
+    margin-right: density.$clr-base-gap-xs;
+    background-color: tables-variables.$clr-table-bgcolor;
+    z-index: map.get(variables.$clr-layers, datagrid-row-pinned);
 
-    .datagrid-column.datagrid-pinned-column:last-child .datagrid-column-separator::after,
-    .datagrid-cell.datagrid-pinned-column:last-child::after {
+    // The pinned columns can never take the whole datagrid, so there is always somewhere to scroll.
+    // The row controls are static as well, so they count against the same budget.
+    max-width: calc(
+      #{datagrid-variables.$clr-datagrid-pinned-columns-max-width} - var(--clr-datagrid-row-controls-width, 0px)
+    );
+
+    // The last pinned cell marks the boundary with the scrollable ones. Columns draw their own
+    // separator, cells have nothing to draw it with.
+    @include datagrid-mixins.datagrid-column-separator();
+
+    &::after {
       top: 0;
       width: density.$clr-base-layout-space-2xs;
       height: 100%;
+      right: calc(-1 * #{density.$clr-base-gap-xs});
+    }
+
+    // Nothing is pinned, or a row detail is not laid out in columns.
+    &:empty {
+      display: none;
+    }
+
+    .datagrid-column.datagrid-pinned-column:last-child .datagrid-column-separator::after {
+      right: calc(-1 * #{density.$clr-base-gap-xs});
+    }
+
+    .datagrid-column.datagrid-pinned-column:not(:last-child) .datagrid-column-separator::after {
+      background-color: datagrid-variables.$clr-datagrid-column-resize-handler-color;
     }
   }
 
@@ -309,10 +344,10 @@
       }
     }
 
-    .datagrid-column:last-child {
-      .datagrid-column-separator {
-        display: none;
-      }
+    // Only the last of the scrollable columns has nothing after it. A pinned column is never the
+    // last one on this side of the row, it lives one level deeper in .datagrid-pinned-cells.
+    > .datagrid-column:last-child .datagrid-column-separator {
+      display: none;
     }
   }
 
@@ -374,10 +409,17 @@
         z-index: map.get(variables.$clr-layers, datagrid-header-sticky);
       }
 
+      .datagrid-pinned-cells {
+        @include datagrid-mixins.clr-datagrid-header-bg;
+
+        z-index: map.get(variables.$clr-layers, datagrid-header-pinned);
+      }
+
       &:hover {
         @include datagrid-mixins.clr-datagrid-header-bg;
 
-        .datagrid-row-sticky {
+        .datagrid-row-sticky,
+        .datagrid-pinned-cells {
           @include datagrid-mixins.clr-datagrid-header-bg;
         }
       }
@@ -790,13 +832,13 @@
       }
     }
 
-    // Pinned (static) columns are projected into the sticky container, which sizes itself to its
-    // content. They keep the width computed for them and never grow, otherwise the pinned header
-    // and the pinned cells drift apart from each other. Scoped to the sticky container so cells of
-    // a pinned column inside a row detail keep their own layout.
+    // Pinned columns are moved into the static container, which sizes itself to its content.
+    // They keep the width computed for them and never grow, otherwise the pinned header
+    // and the pinned cells drift apart from each other. Scoped to that container so cells of a
+    // pinned column in a row detail that is not laid out in columns keep their own layout.
     // Shrinking is allowed so that the columns fit inside the max-width cap on the container rather
     // than spilling out of it.
-    .datagrid-row-sticky > .datagrid-pinned-column {
+    .datagrid-pinned-cells > .datagrid-pinned-column {
       &.datagrid-column,
       &.datagrid-cell {
         flex: 0 1 auto;
@@ -815,6 +857,12 @@
         &:not(.datagrid-expandable-caret, .datagrid-row-actions, .datagrid-select) {
           display: none;
         }
+      }
+
+      // The detail has taken the place of the cells of the row, pinned ones included, so the
+      // container they were static in has nothing left to hold.
+      .datagrid-pinned-cells {
+        display: none;
       }
     }
 
@@ -1417,7 +1465,8 @@
     &:not(:hover) {
       background-color: datagrid-variables.$clr-datagrid-detail-pane-open-row-bg-color;
 
-      .datagrid-row-sticky {
+      .datagrid-row-sticky,
+      .datagrid-pinned-cells {
         background-color: datagrid-variables.$clr-datagrid-detail-pane-open-row-bg-color;
       }
     }

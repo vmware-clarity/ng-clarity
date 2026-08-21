@@ -80,6 +80,8 @@
 | datagrid-footer-select           | Select checkbox in the footer.                                                                 |
 | datagrid-header                  | Header section of the datagrid.                                                                |
 | datagrid-calculate-mode          | Internal class used while datagrid is in calculation mode.                                     |
+| datagrid-pinned-cells            | Container that keeps the pinned (static) columns and their cells in place while scrolling.     |
+| datagrid-pinned-column           | Applied to a pinned (static) column and to the cells of that column.                           |
 | datagrid-placeholder             | Container for the datagrid placeholder image and content.                                      |
 | datagrid-placeholder-container   | Main datagrid placholder element.                                                              |
 | datagrid-placeholder-content     | Wrapper for datagrid placeholder content.                                                      |

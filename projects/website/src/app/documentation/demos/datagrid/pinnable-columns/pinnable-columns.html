@@ -155,6 +155,48 @@
   [additionalFiles]="commonFiles.additionalFiles"
 ></app-stackblitz-example>
 
+<h3 cds-text="section" class="clr-mt-32px">Pinned Columns in Expandable Rows</h3>
+
+<p class="clr-mt-16px" cds-text="body">
+  An expandable row whose <code cds-text="code">clr-dg-row-detail</code> holds one
+  <code cds-text="code">clr-dg-cell</code> per column is laid out in the same columns as the row above it, and the cells
+  of the pinned columns are pinned along with them. The detail then scrolls sideways together with the row, and the cell
+  that identifies it stays in view just like the one in the row.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  This applies whether the detail is added to the row or replaces it with
+  <code cds-text="code">clrDgReplace</code>. It only happens when the cell count matches the column count: a detail with
+  any other number of cells is free-form content and is left exactly as you wrote it, as is a detail in a datagrid with
+  no pinned columns. Note that a matching detail can only be laid out in columns if its cells are its direct children -
+  anything you put between them keeps its own place and is not moved with them.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">Scroll the datagrid below sideways with a row expanded.</p>
+
+<clr-datagrid>
+  <clr-dg-column clrDgPinned [style.width.px]="240">User ID</clr-dg-column>
+  <clr-dg-column [style.width.px]="240">Name</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+
+    <clr-dg-row-detail *clrIfExpanded>
+      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.creation | date : 'long' }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.pokemon.name }} ({{ user.pokemon.number }})</clr-dg-cell>
+    </clr-dg-row-detail>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
 <!--
   clrDgPinnable is disabled for now, so the whole section documenting it is commented out.
   Restoring it also needs the idPinned / namePinned fields and the pinnedColumns getter in
