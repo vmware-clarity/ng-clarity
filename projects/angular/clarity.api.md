@@ -5481,7 +5481,7 @@ export class ClrStartDateInputValidator implements Validator {
 export class ClrStepButton implements OnInit {
     constructor(clrStep: ClrStepperPanel, stepperService: StepperService);
     // (undocumented)
-    navigateToNextPanel(): void;
+    navigateToNextPanel(event: Event): void;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
