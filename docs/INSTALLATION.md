@@ -53,4 +53,5 @@ to npm.
 ```bash
 npm install @clr/ui@github:vmware-clarity/ng-clarity.git#preview-build/main/clr-ui --force
 npm install @clr/angular@github:vmware-clarity/ng-clarity.git#preview-build/main/clr-angular --force
+npm install @clr/angular@github:vmware-clarity/ng-clarity.git#preview-build/main/clr-addons --force
 ```

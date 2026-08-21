@@ -1,0 +1,65 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<tr *ngIf="data.title" class="pv-section-title-container" role="listitem">
+  <th colspan="2" class="pv-section-title-content left" role="presentation" scope="colgroup">
+    <button
+      class="pv-section-title-expand-button"
+      [attr.aria-expanded]="expanded"
+      [attr.aria-controls]="componentId"
+      [attr.aria-label]="getSectionTitleToggleButtonAriaLabel()"
+      (click)="toggleExpandedState()"
+    >
+      <cds-icon shape="angle" aria-hidden="true" [direction]="expanded ? 'down' : 'right'"></cds-icon>
+    </button>
+    <span *ngIf="data.titleIcon" class="pv-section-title-icon" aria-hidden="true" [ngClass]="data.titleIcon"></span>
+    <span
+      *ngIf="!data.renderAsHtml"
+      class="pv-section-title-text"
+      role="heading"
+      aria-level="3"
+      [innerText]="data.title"
+    ></span>
+    <span
+      *ngIf="data.renderAsHtml"
+      class="pv-section-title-text"
+      role="heading"
+      aria-level="3"
+      [innerHtml]="data.title"
+    ></span>
+    <clr-dropdown *ngIf="data.actions.length > 0" class="pv-section-actions-dropdown">
+      <button type="button" class="btn btn-link" clrDropdownTrigger>
+        {{ propertyViewStrings.actions }}
+        <cds-icon shape="angle" direction="down" aria-hidden="true"></cds-icon>
+      </button>
+      <clr-dropdown-menu *clrIfOpen>
+        <div
+          *ngFor="let action of data.actions"
+          clrDropdownItem
+          [innerText]="action.title"
+          [clrDisabled]="!action.isEnabled"
+          (click)="handleActionClick(action)"
+        ></div>
+      </clr-dropdown-menu>
+    </clr-dropdown>
+  </th>
+</tr>
+<ng-container *ngFor="let item of data.content; trackBy: getContentTrackingId">
+  <tr
+    *ngIf="item.type === PropertyViewModelType.Message"
+    appfx-property-view-message
+    [data]="item"
+    role="listitem"
+    [ngClass]="{ indented: !!data.title, collapsed: !expanded && !!data.title }"
+  ></tr>
+  <tr
+    *ngIf="item.type === PropertyViewModelType.Property"
+    appfx-property-view-property
+    [data]="item"
+    role="listitem"
+    [ngClass]="{ indented: !!data.title, collapsed: !expanded && !!data.title }"
+  ></tr>
+</ng-container>

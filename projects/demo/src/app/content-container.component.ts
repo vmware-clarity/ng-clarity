@@ -14,49 +14,51 @@ import { APP_ROUTES } from './app.routing';
   selector: 'my-app-content-container',
   template: `
     <clr-vertical-nav [clrVerticalNavCollapsible]="true">
-      @for (route of routes; track route) {
-        @if (route.path != '') {
-          <a clrVerticalNavLink clrAriaCurrentLink [routerLink]="[route.path]" [routerLinkActive]="['active']">
-            {{ route.path }}
-          </a>
-        }
-      }
+      <clr-vertical-nav-group>
+        <cds-icon shape="applications" clrVerticalNavIcon></cds-icon>
+        Components
+        <ng-template [clrIfExpanded]="componentsExpanded" (clrIfExpandedChange)="componentsExpanded = $event">
+          <clr-vertical-nav-group-children>
+            @for (route of componentRoutes; track route) {
+              <a clrVerticalNavLink clrAriaCurrentLink [routerLink]="[route.path]" routerLinkActive="active">
+                {{ formatLabel(route) }}
+              </a>
+            }
+          </clr-vertical-nav-group-children>
+        </ng-template>
+      </clr-vertical-nav-group>
+
+      <clr-vertical-nav-group>
+        <cds-icon shape="plugin" clrVerticalNavIcon></cds-icon>
+        Addons
+        <ng-template [clrIfExpanded]="addonsExpanded" (clrIfExpandedChange)="addonsExpanded = $event">
+          <clr-vertical-nav-group-children>
+            @for (route of addonRoutes; track route) {
+              <a clrVerticalNavLink clrAriaCurrentLink [routerLink]="[route.path]" routerLinkActive="active">
+                {{ route.data?.['label'] || formatLabel(route) }}
+              </a>
+            }
+          </clr-vertical-nav-group-children>
+        </ng-template>
+      </clr-vertical-nav-group>
     </clr-vertical-nav>
     <main class="content-area">
       <router-outlet></router-outlet>
     </main>
-
-    <!--DO NOT DELETE THE COMMENTS BELOW. Needed for testing the Vertical Nav-->
-    <!--clr-vertical-nav [clrVerticalNavCollapsible]="true" [clrVerticalNavCollapsed]="false" [clr-nav-level]="2">
-    <clr-vertical-nav-group>
-      <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
-      Home
-      @for (route of routes; track route) {
-        @if (route.path != '') {
-          <a clrVerticalNavLink ngProjectAs="[clrVerticalNavLink]"
-            [routerLink]="[route.path]"
-            [routerLinkActive]="['active']">
-            {{route.path}}
-          </a>
-        }
-      }
-    </clr-vertical-nav-group>
-    </clr-vertical-nav-->
-
-    <!--clr-vertical-nav [clrVerticalNavCollapsible]="true" [clrVerticalNavCollapsed]="false" [clr-nav-level]="2">
-    @for (route of routes; track route) {
-      @if (route.path != '') {
-        <a clrVerticalNavLink
-          [routerLink]="[route.path]"
-          [routerLinkActive]="['active']">
-          {{route.path}}
-        </a>
-      }
-    }
-    </clr-vertical-nav-->
   `,
   standalone: false,
 })
 export class AppContentContainerComponent {
-  routes: Route[] = APP_ROUTES;
+  componentRoutes: Route[] = APP_ROUTES.filter(r => r.path && !r.data?.['section']);
+  addonRoutes: Route[] = APP_ROUTES.filter(r => r.data?.['section'] === 'addons');
+
+  componentsExpanded = true;
+  addonsExpanded = true;
+
+  formatLabel(route: Route): string {
+    if (!route.path) {
+      return '';
+    }
+    return route.path.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  }
 }

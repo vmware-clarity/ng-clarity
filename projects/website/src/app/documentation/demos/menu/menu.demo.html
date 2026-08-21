@@ -1,0 +1,416 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<app-doc-tabs>
+  <!-- ═══════════════ OVERVIEW ═══════════════ -->
+  <app-doc-tab tab="overview">
+    <p>
+      <code cds-text="code">appfx-menu</code> provides a reusable contextual menu built on top of Clarity's
+      <code cds-text="code">clr-dropdown</code>. On top of the generic <code cds-text="code">clr-dropdown</code>, it
+      adds:
+    </p>
+    <ul>
+      <li>positioning based on an anchor point instead of an anchor button</li>
+      <li>positioning and scrolling that account for an encompassing container (typically the viewport)</li>
+      <li>a domain-specific declarative interface instead of custom HTML markup</li>
+      <li>support for 200% and 400% zoom</li>
+    </ul>
+
+    <h3>Anchor point</h3>
+    <p>
+      <code cds-text="code">clr-dropdown</code> supports displaying a menu anchored to a button but doesn't support the
+      pattern of showing it as a contextual menu. <code cds-text="code">appfx-menu</code> lets you show a menu at
+      specific coordinates without an anchor button, via <code cds-text="code">menu.show(event, x, y)</code>.
+    </p>
+
+    <h3>Restricting the overflow</h3>
+    <p>
+      It's typical to position a menu somewhere other than next to the anchor point when it would otherwise overflow the
+      viewport. This is handled similarly to what you'd see in a desktop application — when a menu positioned below its
+      anchor point would overflow:
+    </p>
+    <ul>
+      <li>if it overflows horizontally, it's shifted left</li>
+      <li>if it overflows vertically, it's shifted up</li>
+      <li>if it still overflows after being shifted to the top of the viewport, a scrollbar is displayed</li>
+      <li>if a submenu overflows horizontally, it's flipped to the left</li>
+    </ul>
+
+    <h3>Domain-specific declarative interface</h3>
+    <p>Menu content is composed declaratively out of:</p>
+    <ul>
+      <li>headers</li>
+      <li>separators</li>
+      <li>nested submenus</li>
+      <li>actions with text, icon, and shortcut</li>
+    </ul>
+  </app-doc-tab>
+
+  <!-- ═══════════════ CODE ═══════════════ -->
+  <app-doc-tab tab="code">
+    <h3>Import</h3>
+    <app-code-snippet
+      [code]="'import { AppfxMenuModule } from \'@clr/addons/menu\';'"
+      language="typescript"
+      [copy]="true"
+    ></app-code-snippet>
+
+    <h3>Setup</h3>
+    <p>
+      Declare <code cds-text="code">&lt;appfx-menu&gt;</code> and add exactly one
+      <code cds-text="code">&lt;menu-outlet&gt;</code> to your root layout. Call
+      <code cds-text="code">menu.show(event, x, y)</code> to position and open it. The menu content (actions, headers,
+      separators, submenus) must be declared statically — use <code cds-text="code">[enabled]="false"</code>
+      to disable items instead of adding/removing them.
+    </p>
+
+    <h3>Live demo</h3>
+    <!-- Mode buttons -->
+    <clr-button-group class="btn-secondary" cds-layout="m-b:xl">
+      @for (m of modes; track m.id) { @if (activeMode === m.id) {
+      <clr-button class="btn btn-primary">{{ m.label }}</clr-button>
+      } @else {
+      <clr-button class="btn" (click)="setMode(m.id)">{{ m.label }}</clr-button>
+      } }
+    </clr-button-group>
+
+    @if (lastAction) {
+    <div class="menu-last-action">Last action: <strong>{{ lastAction }}</strong></div>
+    }
+
+    <!-- ── Context Area ─────────────────────────────────────────────────── -->
+    @if (activeMode === 'context-area') {
+    <div class="menu-context-area" (contextmenu)="onOpenMenu($event)">
+      <p class="menu-hint">Right-click anywhere in this area to open the menu</p>
+    </div>
+    }
+
+    <!-- ── Tree ────────────────────────────────────────────────────────── -->
+    @if (activeMode === 'tree') {
+    <div class="menu-tree-container">
+      <p class="menu-hint">Right-click a node to open its context menu</p>
+      <clr-tree>
+        <clr-tree-node [clrExpanded]="true">
+          <cds-icon shape="building"></cds-icon>
+          Datacenter
+
+          <clr-tree-node [clrExpanded]="true">
+            <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
+              <cds-icon shape="cluster"></cds-icon>
+              Production Cluster
+            </button>
+
+            <clr-tree-node>
+              <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
+                <cds-icon shape="host" badge="warning-triangle"></cds-icon>
+                192.0.2.80
+              </button>
+            </clr-tree-node>
+
+            <clr-tree-node>
+              <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
+                <cds-icon shape="host" badge="danger"></cds-icon>
+                192.0.2.81 (disconnected)
+              </button>
+            </clr-tree-node>
+
+            <clr-tree-node>
+              <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
+                <cds-icon shape="host"></cds-icon>
+                192.0.2.82
+              </button>
+            </clr-tree-node>
+
+            <clr-tree-node>
+              <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
+                <cds-icon shape="host"></cds-icon>
+                192.0.2.83
+              </button>
+            </clr-tree-node>
+          </clr-tree-node>
+
+          <clr-tree-node>
+            <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
+              <cds-icon shape="host"></cds-icon>
+              192.0.2.98
+            </button>
+          </clr-tree-node>
+
+          <clr-tree-node>
+            <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
+              <cds-icon shape="host"></cds-icon>
+              192.0.2.103
+            </button>
+          </clr-tree-node>
+        </clr-tree-node>
+      </clr-tree>
+    </div>
+    }
+
+    <!-- ── Datagrid ─────────────────────────────────────────────────────── -->
+    @if (activeMode === 'datagrid') {
+    <div class="menu-datagrid-container">
+      <clr-datagrid [clrDgRowSelection]="true">
+        <clr-dg-column>Name</clr-dg-column>
+        <clr-dg-column>State</clr-dg-column>
+        <clr-dg-column>Status</clr-dg-column>
+        <clr-dg-column>Provisioned Space</clr-dg-column>
+        <clr-dg-column>Used Space</clr-dg-column>
+
+        @for (vm of vms; track vm.name) {
+        <clr-dg-row (contextmenu)="onOpenMenu($event)">
+          <clr-dg-cell><cds-icon shape="vm"></cds-icon> {{ vm.name }}</clr-dg-cell>
+          <clr-dg-cell>{{ vm.state }}</clr-dg-cell>
+          <clr-dg-cell>{{ vm.status }}</clr-dg-cell>
+          <clr-dg-cell>{{ vm.provisionedSpace }}</clr-dg-cell>
+          <clr-dg-cell>{{ vm.usedSpace }}</clr-dg-cell>
+        </clr-dg-row>
+        }
+
+        <clr-dg-footer>{{ vms.length }} VMs</clr-dg-footer>
+      </clr-datagrid>
+    </div>
+    }
+
+    <!-- ── Button ──────────────────────────────────────────────────────── -->
+    @if (activeMode === 'button') {
+    <div class="menu-button-container">
+      <p class="menu-hint">Click the button to open the actions menu</p>
+      <button class="btn btn-sm btn-action btn-link" aria-haspopup="menu" (click)="onOpenButtonMenu($event)">
+        <cds-icon shape="ellipsis-vertical" class="btn-action-icon"></cds-icon>
+        Actions
+      </button>
+    </div>
+    }
+
+    <!-- ── Icons ──────────────────────────────────────────────────────── -->
+    @if (activeMode === 'icons') {
+    <div class="menu-context-area" (contextmenu)="onOpenIconsMenu($event)">
+      <p class="menu-hint">Right-click anywhere in this area to open the icon-enhanced menu</p>
+    </div>
+    }
+
+    <!-- Shared menus, reused across all demo modes above -->
+    <appfx-menu #actionsMenu>
+      <appfx-menu-header [text]="'Actions demo menu'"></appfx-menu-header>
+      <appfx-menu-action [text]="'Action 1'" (handle)="handleAction('Action 1')"></appfx-menu-action>
+      <appfx-menu-separator></appfx-menu-separator>
+      <appfx-menu-action
+        [text]="'Action 2'"
+        [shortcut]="'ctrl + alt + B'"
+        (handle)="handleAction('Action 2')"
+      ></appfx-menu-action>
+      <appfx-menu-action
+        [text]="'Action 3'"
+        [shortcut]="'ctrl + alt + E'"
+        (handle)="handleAction('Action 3')"
+      ></appfx-menu-action>
+      <appfx-menu-action
+        [text]="'Action 4'"
+        [shortcut]="'ctrl + alt + Z'"
+        (handle)="handleAction('Action 4')"
+      ></appfx-menu-action>
+      <appfx-menu-action
+        [text]="'Action 5'"
+        [shortcut]="'ctrl + alt + T'"
+        (handle)="handleAction('Action 5')"
+      ></appfx-menu-action>
+      <appfx-menu-action [text]="'Action 6'" (handle)="handleAction('Action 6')"></appfx-menu-action>
+      <appfx-menu-action [text]="'Action 7'" (handle)="handleAction('Action 7')"></appfx-menu-action>
+      <appfx-menu [text]="'Submenu'">
+        <appfx-menu-header [text]="'SubMenu demo'"></appfx-menu-header>
+        <appfx-menu-action
+          [text]="'Action with relatively long label'"
+          (handle)="handleAction('Action with relatively long label')"
+        ></appfx-menu-action>
+        <appfx-menu-separator></appfx-menu-separator>
+        <appfx-menu-action [text]="'Action 2'" (handle)="handleAction('Submenu: Action 2')"></appfx-menu-action>
+        <appfx-menu [text]="'Submenu'">
+          <appfx-menu-header [text]="'next level of nesting'"></appfx-menu-header>
+          <appfx-menu-action [text]="'Action 1'"></appfx-menu-action>
+          <appfx-menu-separator></appfx-menu-separator>
+          <appfx-menu-action [text]="'Action 2'"></appfx-menu-action>
+        </appfx-menu>
+      </appfx-menu>
+      <appfx-menu-action [text]="'Action 8'" (handle)="handleAction('Action 8')"></appfx-menu-action>
+    </appfx-menu>
+
+    <appfx-menu #iconsMenu>
+      <appfx-menu-header [text]="'Actions demo menu'"></appfx-menu-header>
+      <appfx-menu-action [text]="'Action 1'" (handle)="handleAction('Action 1')"></appfx-menu-action>
+      <appfx-menu-separator></appfx-menu-separator>
+      <appfx-menu-action
+        [text]="'Action 2'"
+        [shortcut]="'ctrl + alt + B'"
+        (handle)="handleAction('Action 2')"
+      ></appfx-menu-action>
+      <appfx-menu-action
+        [text]="'Action 3'"
+        [shortcut]="'ctrl + alt + E'"
+        (handle)="handleAction('Action 3')"
+      ></appfx-menu-action>
+      <appfx-menu-action
+        [text]="'Action 4'"
+        [shortcut]="'ctrl + alt + Z'"
+        (handle)="handleAction('Action 4')"
+      ></appfx-menu-action>
+      <appfx-menu-action
+        [text]="'Action 5'"
+        [shortcut]="'ctrl + alt + T'"
+        (handle)="handleAction('Action 5')"
+      ></appfx-menu-action>
+      <appfx-menu-action [text]="'Action 6'" (handle)="handleAction('Action 6')"></appfx-menu-action>
+      <appfx-menu-action [text]="'Action 7'" (handle)="handleAction('Action 7')"></appfx-menu-action>
+      <appfx-menu [text]="'Submenu'">
+        <appfx-menu-header [text]="'SubMenu demo'"></appfx-menu-header>
+        <appfx-menu-action
+          [text]="'Action with relatively long label'"
+          (handle)="handleAction('Action with relatively long label')"
+        ></appfx-menu-action>
+        <appfx-menu-separator></appfx-menu-separator>
+        <appfx-menu-action [text]="'Action 2'" (handle)="handleAction('Submenu: Action 2')"></appfx-menu-action>
+        <appfx-menu [text]="'Submenu'">
+          <appfx-menu-header [text]="'next level of nesting'"></appfx-menu-header>
+          <appfx-menu-action [text]="'Action 1'"></appfx-menu-action>
+          <appfx-menu-separator></appfx-menu-separator>
+          <appfx-menu-action [text]="'Action 2'"></appfx-menu-action>
+        </appfx-menu>
+      </appfx-menu>
+      <appfx-menu-action [text]="'Action 8'" (handle)="handleAction('Action 8')"></appfx-menu-action>
+    </appfx-menu>
+
+    <!-- Single outlet for all modes -->
+    <menu-outlet></menu-outlet>
+
+    <app-stackblitz-example
+      [name]="activeStackblitzExample.name"
+      [componentTemplate]="activeStackblitzExample.html"
+      [componentClass]="activeStackblitzExample.ts"
+      [componentStyles]="activeStackblitzExample.styles"
+    ></app-stackblitz-example>
+  </app-doc-tab>
+
+  <!-- ═══════════════ API ═══════════════ -->
+  <app-doc-tab tab="api">
+    <h3>AppfxMenuModule</h3>
+    <p>
+      Exports: <code cds-text="code">appfx-menu</code>, <code cds-text="code">appfx-menu-action</code>,
+      <code cds-text="code">appfx-menu-header</code>, <code cds-text="code">appfx-menu-separator</code>,
+      <code cds-text="code">menu-outlet</code>.
+    </p>
+
+    <h3>MenuComponent <code cds-text="code">&lt;appfx-menu&gt;</code></h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Member</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">show(e, x, y, trigger?)</code></td>
+          <td>void</td>
+          <td>
+            Opens menu at given viewport coordinates. Optionally pass a trigger element to restore focus on close.
+          </td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">close(e)</code></td>
+          <td>void</td>
+          <td>Closes the menu</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">text</code></td>
+          <td>string</td>
+          <td>When used as a nested menu, sets the submenu label</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">opened</code></td>
+          <td>EventEmitter</td>
+          <td>Emits once when the menu opens</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">closed</code></td>
+          <td>EventEmitter</td>
+          <td>Emits once when the menu closes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>MenuActionComponent <code cds-text="code">&lt;appfx-menu-action&gt;</code></h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Input</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">text</code></td>
+          <td>string</td>
+          <td>Action label</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">iconClass</code></td>
+          <td>string</td>
+          <td>Optional icon CSS class</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">shortcut</code></td>
+          <td>string</td>
+          <td>Keyboard shortcut hint (right-aligned)</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">enabled</code></td>
+          <td>boolean</td>
+          <td>Default: true. Disabled items render but are unclickable.</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">handle</code></td>
+          <td>EventEmitter</td>
+          <td>Emits when the action is clicked while enabled</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>MenuHeaderComponent <code cds-text="code">&lt;appfx-menu-header&gt;</code></h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Input</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">text</code></td>
+          <td>string</td>
+          <td>Header label</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">iconClass</code></td>
+          <td>string</td>
+          <td>Optional icon CSS class</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>MenuSeparatorComponent <code cds-text="code">&lt;appfx-menu-separator&gt;</code></h3>
+    <p>Renders a horizontal divider between menu items. No inputs.</p>
+
+    <h3>Important: Static item constraint</h3>
+    <p>
+      The set of menu items must be declared statically — the menu will throw if items are added or removed after
+      initial render. Use <code cds-text="code">[enabled]="false"</code> to disable items asynchronously instead.
+    </p>
+  </app-doc-tab>
+</app-doc-tabs>

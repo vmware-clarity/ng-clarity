@@ -63,7 +63,7 @@ import { ClrNumberInput } from './number-input';
   host: {
     '[class.clr-form-control]': 'true',
     '[class.clr-form-control-disabled]': 'control?.disabled',
-    '[class.clr-form-control-readonly]': 'input.readonly',
+    '[class.clr-form-control-readonly]': 'input?.readonly',
     '[class.clr-row]': 'addGrid()',
   },
   providers: [FormsFocusService, NgControlService, ControlIdService, ControlClassService],

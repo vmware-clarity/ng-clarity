@@ -251,6 +251,46 @@ $clr-btn-primary-outline: (
   @return map.get($clr-btn-primary-outline, $property);
 }
 
+// Info button colors
+$clr-btn-info: (
+  color: var(--clr-btn-info-color),
+  bg-color: var(--clr-btn-info-bg-color),
+  border-color: var(--clr-btn-info-border-color),
+  hover-color: var(--clr-btn-info-hover-color),
+  hover-bg-color: var(--clr-btn-info-hover-bg-color),
+  active-color: var(--clr-btn-info-active-color),
+  active-bg-color: var(--clr-btn-info-active-bg-color),
+  disabled-color: var(--clr-btn-info-disabled-color),
+  disabled-bg-color: var(--clr-btn-info-disabled-bg-color),
+  disabled-border-color: var(--clr-btn-info-disabled-border-color),
+  checked-color: var(--clr-btn-info-checked-color),
+  checked-bg-color: var(--clr-btn-info-checked-bg-color),
+) !default;
+
+@function lookupFromInfoButtonColors($property: null) {
+  @return map.get($clr-btn-info, $property);
+}
+
+// Info button colors
+$clr-btn-info-outline: (
+  color: var(--clr-btn-info-outline-color),
+  bg-color: var(--clr-btn-info-outline-bg-color),
+  border-color: var(--clr-btn-info-outline-border-color),
+  hover-color: var(--clr-btn-info-outline-hover-color),
+  hover-bg-color: var(--clr-btn-info-outline-hover-bg-color),
+  active-color: var(--clr-btn-info-outline-active-color),
+  active-bg-color: var(--clr-btn-info-outline-active-bg-color),
+  disabled-color: var(--clr-btn-info-outline-disabled-color),
+  disabled-bg-color: var(--clr-btn-info-outline-disabled-bg-color),
+  disabled-border-color: var(--clr-btn-info-outline-disabled-border-color),
+  checked-color: var(--clr-btn-info-outline-checked-color),
+  checked-bg-color: var(--clr-btn-info-outline-checked-bg-color),
+) !default;
+
+@function lookupFromInfoOutlineButtonColors($property: null) {
+  @return map.get($clr-btn-info-outline, $property);
+}
+
 // Success button colors
 $clr-btn-success-color: var(--clr-btn-success-color) !default;
 $clr-btn-success-bg-color: var(--clr-btn-success-bg-color) !default;
@@ -694,6 +734,26 @@ $clr-btn-link-primary: (
 
 @function lookupFromLinkPrimaryButtonColors($property: null) {
   @return map.get($clr-btn-link-primary, $property);
+}
+
+// Link info button colors using map
+$clr-btn-link-info: (
+  color: var(--clr-btn-link-info-color),
+  bg-color: var(--clr-btn-link-info-bg-color),
+  border-color: var(--clr-btn-link-info-border-color),
+  hover-bg-color: var(--clr-btn-link-info-hover-bg-color),
+  hover-color: var(--clr-btn-link-info-hover-color),
+  disabled-color: var(--clr-btn-link-info-disabled-color),
+  active-color: var(--clr-btn-link-info-active-color),
+  active-bg-color: var(--clr-btn-link-info-active-bg-color),
+  disabled-bg-color: var(--clr-btn-link-info-disabled-bg-color),
+  disabled-border-color: var(--clr-btn-link-info-disabled-border-color),
+  checked-bg-color: var(--clr-btn-link-info-checked-bg-color),
+  checked-color: var(--clr-btn-link-info-checked-color),
+) !default;
+
+@function lookupFromLinkInfoButtonColors($property: null) {
+  @return map.get($clr-btn-link-info, $property);
 }
 
 // Link success button colors using map

@@ -202,7 +202,9 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     }
     if (this.pinned) {
       this.modal.stopClose = true;
-      this.updatePinnedClasses();
+      if (this.__open) {
+        this.updatePinnedClasses();
+      }
     } else {
       this.modal.stopClose = this.originalStopClose;
       this.cleanupPinnedClasses();

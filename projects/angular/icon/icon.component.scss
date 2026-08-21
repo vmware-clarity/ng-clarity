@@ -26,6 +26,11 @@
   color: var(--color); // See https://github.com/vmware/clarity/issues/5332
   contain: strict;
   cursor: inherit;
+
+  // @TODO - remove in v19 after `cds-icon` selector is removed.
+  & > svg:not([data-ng-owner]) {
+    display: none !important;
+  }
 }
 
 svg {

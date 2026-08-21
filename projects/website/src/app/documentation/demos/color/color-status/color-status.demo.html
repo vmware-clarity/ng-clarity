@@ -4,6 +4,20 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
+<h3 data-toc-item cds-text="section" id="color-system-primary" class="clr-mt-32px">Primary</h3>
+<p cds-text="body" class="clr-mt-16px">
+  The primary is Clarity's main call-to-action color, used by the primary button and other high-emphasis interactive
+  elements. It is defined independently from the Info status color below, although they have same base colors, so that
+  primary actions can be themed without changing the meaning of informational elements.
+</p>
+<div class="clr-row clr-mt-24px">
+  <div class="clr-col-3">
+    @for (item of colorStatus.primary; track item) {
+    <app-color-example-item [text]="item.text" [token]="item.color"></app-color-example-item>
+    }
+  </div>
+</div>
+
 <h3 data-toc-item cds-text="section" id="color-system-status" class="clr-mt-32px">Status</h3>
 <p cds-text="body" class="clr-mt-16px">
   Status is a method of visually coding a component to align with its intent or importance. Status colors are often

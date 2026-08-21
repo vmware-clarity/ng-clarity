@@ -416,7 +416,26 @@ export default function (): void {
       });
 
       it('contains expandable element', function () {
-        expect(context.clarityElement.children[0].classList.contains('clr-expandable-animation')).toBeTrue();
+        const scrollable: HTMLElement = context.clarityElement.querySelector('.datagrid-row-scrollable');
+        expect(scrollable.classList.contains('clr-expandable-animation')).toBeTrue();
+      });
+
+      // CDE-3127: the expand/collapse animation applies `overflow: hidden` to its host element for the
+      // duration of the animation. .datagrid-row-sticky relies on position:sticky against the datagrid's
+      // scroll container; if that overflow:hidden lands on one of its ancestors instead, it becomes the new
+      // sticky containing block and the locked column detaches from the viewport and disappears while
+      // horizontally scrolled. Guard against the animation host ever being an ancestor of the sticky column.
+      it('does not apply the expand animation overflow clip to an ancestor of the sticky column', function () {
+        const sticky: HTMLElement = context.clarityElement.querySelector('.datagrid-row-sticky');
+        context.clarityDirective.expandAnimation.initAnimationEffects();
+
+        let ancestor = sticky.parentElement;
+        while (ancestor && ancestor !== context.clarityElement) {
+          expect(ancestor.style.overflow).not.toBe('hidden');
+          ancestor = ancestor.parentElement;
+        }
+
+        context.clarityDirective.expandAnimation.cleanupAnimationEffects();
       });
 
       it('button must not contain aria-controls with template when not expanded', function () {

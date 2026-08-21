@@ -95,7 +95,7 @@ function getIconFileName(iconName: string, iconVariant: IconVariant) {
 }
 
 function getSelectedIconVariantSvg() {
-  const iconElement = document.querySelector('button.icon-detail-card__variant--selected cds-icon');
+  const iconElement = document.querySelector('button.icon-detail-card__variant--selected clr-icon');
 
   // This should never happen, but we need to make TypeScript happy.
   if (!iconElement || !iconElement.shadowRoot) {

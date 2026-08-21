@@ -6,7 +6,18 @@
  */
 
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import {
+  ClrCommonFormsModule,
+  ControlIdService,
+  LayoutService,
+  MarkControlService,
+  NgControlService,
+} from '@clr/angular/forms/common';
+import { ClrIcon } from '@clr/angular/icon';
+import { ClrPopoverContent } from '@clr/angular/popover';
 
 import { ClrNumberInput } from './number-input';
 import { ClrNumberInputContainer } from './number-input-container';
@@ -63,6 +74,16 @@ class ReactiveTest {
   });
 }
 
+@Component({
+  template: `
+    <clr-number-input-container>
+      <label>Test</label>
+    </clr-number-input-container>
+  `,
+  standalone: false,
+})
+class NoInputTest {}
+
 export default function (): void {
   describe('ClrNumberInput', () => {
     ContainerNoLabelSpec(ClrNumberInputContainer, ClrNumberInput, NoLabelTest);
@@ -73,5 +94,24 @@ export default function (): void {
       '.clr-number-input-wrapper [clrNumberInput]'
     );
     ReactiveSpec(ClrNumberInputContainer, ClrNumberInput, ReactiveTest, '.clr-number-input-wrapper  [clrNumberInput]');
+
+    describe('host binding with missing input', () => {
+      let fixture, containerEl;
+
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ClrPopoverContent],
+          declarations: [ClrNumberInputContainer, NoInputTest],
+          providers: [NgControl, NgControlService, LayoutService, MarkControlService, ControlIdService],
+        });
+        fixture = TestBed.createComponent(NoInputTest);
+        containerEl = fixture.debugElement.query(By.directive(ClrNumberInputContainer)).nativeElement;
+      });
+
+      it('should not throw when input ContentChild is undefined', () => {
+        expect(() => fixture.detectChanges()).not.toThrow();
+        expect(containerEl.classList.contains('clr-form-control-readonly')).toBeFalse();
+      });
+    });
   });
 }

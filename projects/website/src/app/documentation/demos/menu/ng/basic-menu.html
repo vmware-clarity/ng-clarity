@@ -1,0 +1,31 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div
+  class="menu-area"
+  (contextmenu)="onContextMenu($event)"
+  style="
+    border: var(--cds-alias-object-border-width-100) dashed var(--cds-alias-object-border-color);
+    padding: var(--clr-base-vertical-offset-2xl) var(--clr-base-horizontal-offset-2xl);
+    min-height: 120px;
+    text-align: center;
+    cursor: context-menu;
+  "
+>
+  Right-click here
+</div>
+
+<appfx-menu #demoMenu>
+  <appfx-menu-header [text]="'Actions'"></appfx-menu-header>
+  <appfx-menu-action [text]="'Action 1'" (handle)="handleAction('Action 1')"></appfx-menu-action>
+  <appfx-menu-action [text]="'Action 2'" (handle)="handleAction('Action 2')"></appfx-menu-action>
+  <appfx-menu-separator></appfx-menu-separator>
+  <appfx-menu [text]="'Submenu'">
+    <appfx-menu-action [text]="'Nested Action'" (handle)="handleAction('Nested Action')"></appfx-menu-action>
+  </appfx-menu>
+</appfx-menu>
+
+<menu-outlet></menu-outlet>

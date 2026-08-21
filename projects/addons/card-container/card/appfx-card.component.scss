@@ -1,0 +1,137 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+$cool-grey: var(--cds-global-color-cool-gray-500);
+$neutral-grey: var(--cds-global-color-construction-400);
+$purple-dark: var(--cds-global-color-lavender-400);
+$purple-medium: var(--cds-global-color-lavender-300);
+$purple-light: var(--cds-global-color-lavender-100);
+$card-container-card-margin: 7px;
+$card-container-card-border-width: 2px;
+$card-container-card-shadow-offset: 2px;
+$card-container-card-shadow-blur: 10px;
+$card-container-selected-card-opacity: 0.4;
+
+@mixin drop-indicator-solid {
+  border-right: $card-container-card-border-width solid $purple-medium;
+  position: relative;
+
+  &::before {
+    content: '\25CF';
+    color: $purple-medium;
+    position: absolute;
+    right: -5px;
+    top: -10px;
+  }
+}
+@mixin drop-indicator-dashed {
+  border-right: $card-container-card-border-width dashed $purple-light;
+}
+
+.draggable {
+  /* stylelint-disable-next-line declaration-property-value-no-unknown */
+  margin: 0 $card-container-card-margin;
+  position: relative;
+
+  .drag-handler-button {
+    position: absolute;
+    right: 0;
+    border: none;
+    margin: unset;
+    z-index: 1;
+
+    .drag-handle-icon {
+      position: absolute;
+      right: 0;
+      color: $neutral-grey;
+      cursor: grab;
+
+      &:hover {
+        color: $purple-dark;
+      }
+    }
+  }
+
+  ::ng-deep {
+    .card {
+      margin-top: 0;
+    }
+
+    .card-header {
+      border-bottom: none;
+    }
+  }
+}
+
+::ng-deep {
+  .draggable.cdk-drag-preview {
+    .card {
+      box-shadow: $card-container-card-shadow-offset $card-container-card-shadow-offset $card-container-card-shadow-blur
+        0 $cool-grey;
+    }
+
+    .draggable {
+      margin: 0;
+    }
+
+    .drag-handle-icon {
+      // Ignore pointer events on the dragged element to allow drop zone calculation.
+      pointer-events: none;
+      // FIXME: not working because ot the pointer-events.
+      cursor: grabbing;
+
+      :focus {
+        color: $purple-dark;
+      }
+    }
+  }
+}
+
+.droppable {
+  margin: $card-container-card-margin 0;
+  border: $card-container-card-border-width solid transparent;
+
+  &.cdk-drop-list-receiving {
+    @include drop-indicator-dashed;
+  }
+
+  &.cdk-drop-list-dragging {
+    @include drop-indicator-solid;
+
+    .draggable:not(.cdk-drag-placeholder, .cdk-drag-preview) {
+      // Override the transform that Angular CDK is adding to the element via JS as a direct style.
+      // The transform is meant to rearrange the targets so it makes space for the dragged item
+      // but our UX uses a border that shows where the item will be dropped instead of a placeholder item.
+      transform: unset !important;
+    }
+  }
+
+  // Used by the a11y service for keyboard navigation.
+  &.draggable-over {
+    @include drop-indicator-solid;
+  }
+}
+
+// Remove the placeholder item so it prevents the card rearrangement during drag.
+.custom-placeholder {
+  height: 0;
+  width: 0;
+}
+
+// Used by the a11y service for keyboard navigation.
+.selected-card {
+  opacity: $card-container-selected-card-opacity;
+  transition: 0.2s linear all;
+
+  &.draggable:focus {
+    outline: none;
+
+    .card {
+      box-shadow: none;
+    }
+  }
+}

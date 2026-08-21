@@ -1,0 +1,54 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-example squeeze dropdown-demo">
+  <p>
+    Reproduction for
+    <a href="https://github.com/vmware-clarity/ng-clarity/issues/2537" target="_blank" rel="noopener noreferrer"
+      >issue #2537</a
+    >. Open the "menu" dropdown below, then click "destroy subtree (from inside the open menu)". The leaf component's
+    <code cds-text="code">ngOnDestroy</code> should run and the counter should go back to
+    <code cds-text="code">live: 0</code>. Open the browser console to watch the heartbeat log stop as soon as the leaf
+    is destroyed.
+  </p>
+
+  <!-- Read counter state here, after the @if above, so it reflects the leaf mounted/destroyed by that same change detection pass. -->
+  <clr-alert [clrAlertType]="alertType" [clrAlertClosable]="false">
+    <clr-alert-item>
+      <span class="alert-text">
+        created: {{ counter.created }} · destroyed: {{ counter.destroyed }} · live: {{ counter.live }} — {{ statusText
+        }}
+      </span>
+    </clr-alert-item>
+  </clr-alert>
+
+  <button class="btn btn-outline-primary" type="button" (click)="destroySubtree()">
+    Destroy (control — popover closed)
+  </button>
+  <button class="btn btn-outline-primary" type="button" (click)="reset()">Reset</button>
+
+  @if (showSubtree) {
+  <div class="card">
+    <div class="card-block">
+      <div class="card-body">
+        <clr-dropdown>
+          <button class="btn btn-outline-primary" clrDropdownTrigger>
+            menu
+            <cds-icon shape="angle" direction="down"></cds-icon>
+          </button>
+          <clr-dropdown-menu *clrIfOpen>
+            <button clrDropdownItem (click)="destroySubtree()">destroy subtree (from inside the open menu)</button>
+          </clr-dropdown-menu>
+        </clr-dropdown>
+        <ng-container *ngIf="true">
+          <clr-dropdown-destroy-subtree-leaf-demo></clr-dropdown-destroy-subtree-leaf-demo>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  }
+</div>

@@ -9,12 +9,24 @@
 @use '../../mixins';
 
 @include mixins.root-or-host() {
-  --cds-alias-typography-color-100: var(--cds-global-color-white);
-  --cds-alias-typography-color-200: var(--cds-global-color-construction-600);
-  --cds-alias-typography-color-300: var(--cds-global-color-construction-800);
-  --cds-alias-typography-color-400: var(--cds-global-color-construction-900);
-  --cds-alias-typography-color-450: var(--cds-global-color-construction-1000);
-  --cds-alias-typography-color-500: var(--cds-global-color-black);
+  &,
+  & [cds-theme] {
+    --cds-alias-typography-primary-hover: var(--cds-alias-primary-shade);
+    --cds-alias-typography-info-hover: var(--cds-global-color-blue-800);
+    --cds-alias-typography-success-hover: var(--cds-global-color-green-800);
+    --cds-alias-typography-warning-hover: var(--cds-global-color-ochre-900);
+    --cds-alias-typography-danger-hover: var(--cds-global-color-red-800);
+    --cds-alias-typography-link-color: var(--cds-global-color-blue-800);
+    --cds-alias-typography-link-color-hover: var(--cds-global-color-blue-900);
+    --cds-alias-typography-color-100: var(--cds-global-color-white);
+    --cds-alias-typography-color-200: var(--cds-global-color-construction-600);
+    --cds-alias-typography-color-300: var(--cds-global-color-construction-800);
+    --cds-alias-typography-color-400: var(--cds-global-color-construction-900);
+    --cds-alias-typography-color-450: var(--cds-global-color-construction-1000);
+    --cds-alias-typography-color-500: var(--cds-global-color-black);
+    --cds-alias-typography-color-black: var(--cds-global-color-black);
+  }
+
   --cds-alias-typography-font-weight-light: 300;
   --cds-alias-typography-font-weight-regular: 400;
   --cds-alias-typography-font-weight-medium: 500;
@@ -37,8 +49,6 @@
   --cds-alias-typography-top-gap-height: 0.1475em;
   --cds-alias-typography-ascender-height: 0.1703em;
   --cds-alias-typography-x-height: 0.517em;
-  --cds-alias-typography-link-color: var(--cds-global-color-blue-800);
-  --cds-alias-typography-link-color-hover: var(--cds-global-color-blue-900);
   --cds-alias-typography-link-color-active: var(--cds-global-color-red-700);
   --cds-alias-typography-link-color-visited: var(--cds-global-color-violet-700);
   --cds-alias-typography-link-color-visited-hover: var(--cds-global-color-violet-1000);
@@ -47,8 +57,8 @@
   --cds-alias-typography-body-font-weight: 400;
   --cds-alias-typography-display-letter-spacing: -0.0125em;
   --cds-alias-typography-display-font-weight: 500;
-  --cds-alias-typography-heading-letter-spacing: -0.0125em;
-  --cds-alias-typography-heading-font-weight: 500;
+  --cds-alias-typography-heading-letter-spacing: -0.0125em; // deprecated. TO be removed in v18.0
+  --cds-alias-typography-heading-font-weight: 500; // deprecated. TO be removed in v18.0
   --cds-alias-typography-headline-letter-spacing: -0.0125em;
   --cds-alias-typography-headline-font-weight: 500;
   --cds-alias-typography-title-letter-spacing: -0.00833333em;
@@ -65,10 +75,6 @@
   --cds-alias-typography-caption-font-weight: 400;
   --cds-alias-typography-smallcaption-letter-spacing: 0.05em;
   --cds-alias-typography-smallcaption-font-weight: 500;
-  --cds-alias-typography-info-hover: var(--cds-global-color-blue-800);
-  --cds-alias-typography-success-hover: var(--cds-global-color-green-800);
-  --cds-alias-typography-warning-hover: var(--cds-global-color-ochre-900);
-  --cds-alias-typography-danger-hover: var(--cds-global-color-red-800);
   --cds-alias-typography-neutral-hover: var(--cds-global-color-construction-700);
   --cds-alias-typography-disabled: var(--cds-global-color-construction-500);
   --cds-alias-typography-disabled-button: var(--cds-global-color-construction-500);
@@ -79,11 +85,11 @@
     --cds-alias-typography-body-line-height: #{density.$clr-base-typography-line-height-20};
     --cds-alias-typography-display-font-size: #{density.$clr-base-typography-font-size-display};
     --cds-alias-typography-display-line-height: #{density.$clr-base-typography-line-height-44};
-    --cds-alias-typography-heading-font-size: #{density.$clr-base-typography-font-size-heading};
-    --cds-alias-typography-heading-line-height: #{density.$clr-base-typography-line-height-32};
+    --cds-alias-typography-heading-font-size: #{density.$clr-base-typography-font-size-heading}; // deprecated. TO be removed in v18.0
+    --cds-alias-typography-heading-line-height: #{density.$clr-base-typography-line-height-32}; // deprecated. TO be removed in v18.0
     --cds-alias-typography-headline-font-size: #{density.$clr-base-typography-font-size-headline};
     --cds-alias-typography-headline-line-height: #{density.$clr-base-typography-line-height-36};
-    --cds-alias-typography-title-font-size: #{density.$clr-base-typography-font-size-heading};
+    --cds-alias-typography-title-font-size: #{density.$clr-base-typography-font-size-title};
     --cds-alias-typography-title-line-height: #{density.$clr-base-typography-line-height-32};
     --cds-alias-typography-section-font-size: #{density.$clr-base-typography-font-size-section};
     --cds-alias-typography-section-line-height: #{density.$clr-base-typography-line-height-24};

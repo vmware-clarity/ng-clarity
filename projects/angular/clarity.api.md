@@ -814,6 +814,7 @@ export class ClarityIcons {
     static addIcons(...shapes: IconShapeTuple[]): void;
     // (undocumented)
     static getIconNameFromShape(iconShape: IconShapeTuple): string;
+    static getIconShape(name: string): IconRegistrySources[string] | undefined;
     static get registry(): Readonly<IconRegistry>;
 }
 
@@ -1517,6 +1518,8 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     // (undocumented)
     protected get allCheckboxesDisabled(): boolean;
     // (undocumented)
+    ariaLabelledBy: string;
+    // (undocumented)
     checkboxes: QueryList<ClrCheckbox>;
     // (undocumented)
     get clrInline(): boolean | string;
@@ -2086,6 +2089,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     _fixedColumnTemplate: TemplateRef<any>;
     // (undocumented)
     set identityFn(value: ClrDatagridItemsIdentityFunction<T>);
+    // (undocumented)
+    protected get isDetailOverlay(): boolean;
     // Warning: (ae-forgotten-export) The symbol "Items" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
@@ -2382,13 +2387,20 @@ export class ClrDatagridDetail {
     // (undocumented)
     detailService: DetailService;
     // (undocumented)
+    get detailWidth(): number;
+    set detailWidth(value: number | null | undefined);
+    // (undocumented)
     header: ClrDatagridDetailHeader;
+    // (undocumented)
+    get isCustomWidth(): boolean;
     // (undocumented)
     get label(): string;
     // (undocumented)
     get labelledBy(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": { "alias": "clrDetailAriaLabelledBy"; "required": false; }; "ariaLabel": { "alias": "clrDetailAriaLabel"; "required": false; }; }, {}, ["header"], ["*"], false, never>;
+    get width(): number | null;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": { "alias": "clrDetailAriaLabelledBy"; "required": false; }; "ariaLabel": { "alias": "clrDetailAriaLabel"; "required": false; }; "detailWidth": { "alias": "clrDetailWidth"; "required": false; }; }, {}, ["header"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetail, never>;
 }
@@ -3734,7 +3746,7 @@ export class ClrHostWrappingModule {
 }
 
 // @public (undocumented)
-export class ClrIcon implements OnInit, OnDestroy {
+export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     constructor(el: ElementRef<HTMLElement>, cdr: ChangeDetectorRef);
     // (undocumented)
     get badge(): string | boolean;
@@ -3758,6 +3770,8 @@ export class ClrIcon implements OnInit, OnDestroy {
     static ngAcceptInputType_inverse: unknown;
     // (undocumented)
     static ngAcceptInputType_solid: unknown;
+    // (undocumented)
+    ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -4938,8 +4952,6 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     // (undocumented)
     protected controlClassService: ControlClassService;
     // (undocumented)
-    groupLabel: ElementRef<HTMLElement>;
-    // (undocumented)
     protected layoutService: LayoutService;
     // (undocumented)
     ngAfterContentInit(): void;
@@ -4950,7 +4962,7 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     // (undocumented)
     role: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["groupLabel", "radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadioContainer, [{ optional: true; }, null, null]>;
 }

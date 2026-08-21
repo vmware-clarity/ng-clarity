@@ -1,0 +1,49 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+pre {
+  flex: 1 1 0;
+  margin: 0;
+  padding: 0 0.4rem;
+  overflow: auto;
+}
+
+clr-tree {
+  flex: 1 1 0;
+  border-color: var(--cds-alias-object-border-color, #ccc);
+  border-width: var(--cds-alias-object-border-width, 0.05rem);
+  border-radius: var(--cds-alias-object-border-radius, 0.15rem);
+  border-style: solid;
+  padding: 0 0.5rem;
+  overflow: auto;
+}
+
+// Increase specificity to override Clarity's `clr-tabs section`
+:host > section {
+  flex: 0 1 auto;
+  margin-top: 1.2rem;
+
+  /**
+     * Style the sections according to their size.
+     *
+     * $class - The section class name.
+     * $size - The flex-grow of the section. This represents how many "parts" the sections will take from the available space.
+     */
+  @mixin section($class, $size) {
+    &#{$class} {
+      flex: $size 1 0;
+
+      & > .content {
+        min-height: 3.5rem * $size;
+      }
+    }
+  }
+
+  @include section('.certificate-chain', 1);
+  @include section('.fields', 2);
+  @include section('.value', 1);
+}

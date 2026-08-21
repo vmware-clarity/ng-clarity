@@ -1257,6 +1257,19 @@
   }
 
   .datagrid-detail-open {
+    &:has(.datagrid-detail-pane.datagrid-detail-custom-width) .datagrid-inner-wrapper {
+      min-width: initial;
+      width: initial;
+
+      .datagrid-rows {
+        overflow-x: initial;
+      }
+    }
+
+    .datagrid-detail-pane.datagrid-detail-custom-width {
+      flex-grow: 0;
+    }
+
     & > .datagrid-outer-wrapper > .datagrid-inner-wrapper {
       div.datagrid-table {
         /**
@@ -1353,7 +1366,6 @@
     overflow: hidden;
     display: block;
     flex-grow: 2;
-    width: 66%;
   }
 
   .datagrid-detail-pane-content {
@@ -1490,6 +1502,7 @@
       border-left: tokens.$cds-alias-object-border-width-100 solid;
       border-color: datagrid-variables.$clr-datagrid-detail-pane-border-color;
       border-radius: density.$clr-base-border-radius-s;
+      width: 100% !important;
     }
   }
 
