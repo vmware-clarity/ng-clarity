@@ -442,6 +442,7 @@
       .datagrid-filter-toggle {
         @include mixins.clr-no-styles-button();
 
+        flex-shrink: 0; // prevent icon from being compressed when column is narrow
         cursor: pointer;
         float: right;
         vertical-align: middle;
@@ -486,6 +487,7 @@
       .datagrid-column-flex {
         display: flex;
         flex: 1 1 auto;
+        min-width: 0;
       }
 
       .datagrid-column-title {
@@ -494,9 +496,11 @@
         color: tables-variables.$clr-table-font-color;
         text-align: left;
         flex: 1 1 auto;
+        min-width: 0;
         align-items: center;
         align-self: center;
         display: flex;
+        overflow: hidden;
 
         .signpost .signpost-action.btn {
           height: inherit;
@@ -516,6 +520,7 @@
         }
 
         .sort-icon {
+          flex-shrink: 0; // prevent icon from being compressed when column is narrow
           color: tokens.$cds-alias-object-interaction-color;
           margin-left: auto; // pushes icon to rhs b/c of parents display: flex
 
