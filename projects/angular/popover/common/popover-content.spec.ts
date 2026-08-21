@@ -161,6 +161,52 @@ export default function (): void {
       });
     });
 
+    describe('origin visibility (IntersectionObserver)', function (this: Context) {
+      let observerCallback: (entries: Partial<IntersectionObserverEntry>[]) => void;
+      let observerOptions: IntersectionObserverInit;
+
+      beforeEach(function (this: Context) {
+        observerCallback = null;
+        observerOptions = null;
+        spyOn(window, 'IntersectionObserver').and.callFake(function (callback: any, options: any) {
+          observerCallback = callback;
+          observerOptions = options;
+          return { observe: () => {}, disconnect: () => {} } as unknown as IntersectionObserver;
+        } as any);
+      });
+
+      it('does not close the popover on the guaranteed baseline callback fired by observe(), even if it reports not-intersecting', function (this: Context) {
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+
+        expect(observerCallback).toBeTruthy();
+        observerCallback([{ isIntersecting: false } as IntersectionObserverEntry]);
+
+        expect(this.popoverService.open).toBe(true);
+      });
+
+      it('closes the popover when a callback after the baseline reports the origin left the viewport', function (this: Context) {
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+
+        observerCallback([{ isIntersecting: true } as IntersectionObserverEntry]); // baseline
+        observerCallback([{ isIntersecting: false } as IntersectionObserverEntry]); // real change
+
+        expect(this.popoverService.open).toBe(false);
+      });
+
+      it('registers a 0 threshold so an origin stuck below 0.8 for its entire visible life still gets a real callback when it fully leaves the viewport', function (this: Context) {
+        // With threshold 0.8 alone, an origin that starts already below 0.8 (e.g. still
+        // partially clipped) and only moves further away never re-crosses 0.8, so no
+        // callback ever fires for it leaving the viewport entirely - the popover would
+        // never close. 0 must stay in the threshold list to guarantee that checkpoint.
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+
+        expect(observerOptions.threshold).toContain(0);
+      });
+    });
+
     describe('getScrollableParents', function (this: Context) {
       let cleanupFns: (() => void)[];
 
