@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-icons-view-box-test-demo',
   styleUrls: ['./iconography.demo.scss'],
   templateUrl: './icons-view-box-test.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class IconsViewBoxTestDemo {}

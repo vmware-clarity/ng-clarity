@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrSelectedState, ClrTreeViewModule } from '@clr/angular';
 
 @Component({
   selector: 'app-interaction-checkbox-tree-demo',
   styleUrl: '../tree-view.demo.scss',
   templateUrl: './interaction-checkbox-tree.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrTreeViewModule],
 })
 export class InteractionCheckboxTreeDemo {

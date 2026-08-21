@@ -8,7 +8,7 @@
   <span *ngIf="description">{{ description }}</span>
   <appfx-validation-banner
     *ngIf="step.modelInstance?.validationState?.isEmpty() === false"
-    [state]="step.modelInstance?.validationState"
+    [state]="$safeNavigationMigration(step.modelInstance?.validationState)"
   >
   </appfx-validation-banner>
 </div>

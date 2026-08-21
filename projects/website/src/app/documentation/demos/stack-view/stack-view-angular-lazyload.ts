@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
 import { ClrSpinnerModule, ClrStackBlock, ClrStackViewModule } from '@clr/angular';
 
 import { RemoveStackViewHeadingsDirective } from './remove-stack-view-headings.directive';
@@ -106,6 +106,7 @@ export class ExampleComponent {
   selector: 'clr-stack-view-angular-lazyload-demo',
   templateUrl: './stack-view-angular-lazyload.html',
   styleUrl: './stack-view.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrStackViewModule, RemoveStackViewHeadingsDirective, ClrSpinnerModule, StackblitzExampleComponent],
 })
 export class StackViewAngularLazyloadDemo extends StackViewNgDemo {

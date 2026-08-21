@@ -5,7 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EmbeddedViewRef, Inject, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EmbeddedViewRef,
+  Inject,
+  Input,
+  OnDestroy,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { IF_ACTIVE_ID, IfActiveService } from '@clr/angular/utils';
 
 import { TabsService } from './providers/tabs.service';
@@ -30,6 +39,7 @@ let nbTabContentComponents = 0;
     </ng-template>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTabContent implements OnDestroy {
   @Input('id') tabContentId: string;

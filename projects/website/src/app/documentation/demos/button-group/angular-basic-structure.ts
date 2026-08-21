@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrButtonGroupModule, ClrPopoverHostDirective, ClrStopEscapePropagationDirective } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -23,6 +23,7 @@ const HTML_EXAMPLE = `
 @Component({
   selector: 'clr-button-group-angular-basic-structure-demo',
   templateUrl: './angular-basic-structure.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrStopEscapePropagationDirective,
     ClrPopoverHostDirective,

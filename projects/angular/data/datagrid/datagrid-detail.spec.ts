@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridDetail } from './datagrid-detail';
@@ -225,6 +225,7 @@ export default function (): void {
       <clr-dg-detail-body>${content}</clr-dg-detail-body>
     </clr-dg-detail>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FullTest {

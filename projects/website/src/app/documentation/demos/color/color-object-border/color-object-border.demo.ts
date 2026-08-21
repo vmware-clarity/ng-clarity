@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { COLOR_OBJECT_BORDER } from './color-object-border';
 import { ColorExampleItemComponent } from '../../../../shared/color-example-item/color-example-item.component';
@@ -13,6 +13,7 @@ import { ColorExampleItemComponent } from '../../../../shared/color-example-item
 @Component({
   selector: 'clr-color-object-border',
   templateUrl: './color-object-border.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ColorExampleItemComponent],
 })
 export class ColorObjectBorderDemo {

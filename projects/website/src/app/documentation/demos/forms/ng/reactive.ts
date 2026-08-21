@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClrFormsModule } from '@clr/angular';
 
@@ -14,6 +14,7 @@ import { ClrFormsModule } from '@clr/angular';
   selector: 'app-example',
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule, ReactiveFormsModule, ClrFormsModule],
 })
 export class ExampleComponent {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ClarityIcons, ClrIcon, moonIcon, sunIcon } from '@clr/angular';
 import { Observable, Subscription } from 'rxjs';
 
@@ -49,6 +49,7 @@ const themeLocalStorageKey = 'theme';
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon],
 })
 export class ThemeToggleComponent implements OnInit, OnDestroy {

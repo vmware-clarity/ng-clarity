@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { DoDontComponent } from '../../../../shared/do-dont/do-dont.component';
 import { ThemedImageComponent } from '../../../../shared/themed-image/themed-image.component';
@@ -22,6 +22,7 @@ interface ChartsAccessibilityExample {
   selector: 'app-charts-accessibility',
   templateUrl: './charts-accessibility.html',
   styleUrl: './charts-accessibility.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [DoDontComponent, ThemedImageComponent],
 })
 export class ChartsAccessibility {

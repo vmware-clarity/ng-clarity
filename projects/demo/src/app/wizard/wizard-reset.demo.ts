@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { ClrWizard } from '@clr/angular';
 
 @Component({
   selector: 'clr-wizard-reset',
   templateUrl: './wizard-reset.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class WizardResetDemo implements OnInit {

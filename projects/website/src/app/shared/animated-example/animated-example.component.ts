@@ -6,13 +6,14 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, input, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, input, viewChild } from '@angular/core';
 import { ClarityIcons, ClrIcon, eyeHideIcon } from '@clr/angular';
 
 @Component({
   selector: 'app-animated-example',
   templateUrl: './animated-example.component.html',
   styleUrl: './animated-example.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule, ClrIcon],
 })
 export class AnimatedExampleComponent {

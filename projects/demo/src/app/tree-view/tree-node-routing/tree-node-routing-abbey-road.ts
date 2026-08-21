@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-tree-node-routing-abbey-road-demo',
@@ -20,6 +20,7 @@ import { Component } from '@angular/core';
       "Something"/"Come Together", released in October, topped the Billboard chart in the US.
     </p>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class TreeNodeRoutingAbbeyRoadDemo {}

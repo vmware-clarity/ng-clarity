@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, HostBinding, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 
 export type ClrTabsActionsPosition = 'left' | 'right';
 
@@ -20,6 +20,7 @@ export type ClrTabsActionsPosition = 'left' | 'right';
     '[class.tabs-actions]': 'true',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTabsActions {
   @Input()

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
@@ -36,6 +36,7 @@ const TEST_ROOT: TestNode = {
 
 @Component({
   template: `<div *clrRecursiveFor="let node of root; getChildren: getChildren"></div>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {

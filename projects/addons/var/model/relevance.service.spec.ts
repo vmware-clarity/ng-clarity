@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { of } from 'rxjs';
 
 import { RelevanceService } from './relevance.service';
@@ -75,6 +75,7 @@ interface ThisTest {
 
 @Component({
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: ``,
 })
 class MockComponent {}

@@ -5,7 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  SimpleChanges,
+} from '@angular/core';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { Subscription } from 'rxjs';
 
@@ -23,6 +33,7 @@ import {
   standalone: false,
   templateUrl: 'property-view-property.component.html',
   styleUrls: ['property-view-property.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PropertyViewPropertyComponent implements OnInit, OnChanges, OnDestroy {
   readonly PropertyViewModelType = PropertyViewModelType;

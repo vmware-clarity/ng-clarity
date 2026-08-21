@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { expectActiveElementNotToBe, expectActiveElementToBe } from '@clr/angular/testing';
@@ -21,6 +21,7 @@ import { DatagridRenderOrganizer } from './render/render-organizer';
   template: `<clr-dg-column-separator></clr-dg-column-separator>`,
   styles: [':host { position: position; width: 200px; height: 400px;}'],
   providers: [ColumnResizerService, MOCK_TABLE_SIZE_PROVIDER],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {}

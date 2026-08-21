@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppfxDatagridModule, ColumnDefinition } from '@clr/addons/datagrid';
 import { ClrCheckboxModule, ClrInputModule, DatagridPropertyStringFilter } from '@clr/angular';
@@ -16,6 +16,7 @@ import { Inventory } from '../inventory/inventory';
   imports: [AppfxDatagridModule, ClrCheckboxModule, ClrInputModule, FormsModule, ReactiveFormsModule],
   standalone: true,
   templateUrl: 'custom-column-definitions-demo.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [Inventory],
 })
 export class CustomColumnDefinitionsDemoComponent {

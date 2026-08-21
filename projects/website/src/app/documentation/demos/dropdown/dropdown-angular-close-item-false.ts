@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClrCommonFormsModule,
   ClrDropdownModule,
@@ -40,6 +40,7 @@ const HTML_EXAMPLE = `
   selector: 'clr-dropdown-angular-close-item-false-demo',
   templateUrl: './dropdown-angular-close-item-false.demo.html',
   styleUrl: './dropdown.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrStopEscapePropagationDirective,
     ClrPopoverHostDirective,

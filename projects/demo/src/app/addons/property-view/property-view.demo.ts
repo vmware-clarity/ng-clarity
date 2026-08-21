@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AppfxPropertyViewModule,
@@ -21,6 +21,7 @@ import { ClarityModule } from '@clr/angular';
   selector: 'clr-property-view-demo',
   standalone: true,
   imports: [CommonModule, AppfxPropertyViewModule, ClarityModule, FormsModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './property-view.demo.html',
 })
 export class PropertyViewDemo implements OnInit {

@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
@@ -23,6 +23,7 @@ import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-radio-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoLabelTest {}
@@ -40,6 +41,7 @@ class NoLabelTest {}
       <clr-control-success>Valid</clr-control-success>
     </clr-radio-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateDrivenTest {
@@ -58,6 +60,7 @@ class TemplateDrivenTest {
       </clr-radio-wrapper>
     </clr-radio-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class AriaLabelledByTest {
@@ -71,6 +74,7 @@ class AriaLabelledByTest {
       <label>My Group</label>
     </clr-radio-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class AriaLabelledByNoRadiosTest {}
@@ -94,6 +98,7 @@ class AriaLabelledByNoRadiosTest {}
       </clr-radio-container>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ReactiveTest {
@@ -119,7 +124,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrRadioContainer, ClrRadioWrapper, ClrRadio, testComponent],
-          providers: [NgControl, NgControlService, LayoutService],
+          providers: [NgControlService, LayoutService],
         });
         const fixture = TestBed.createComponent(testComponent);
         const containerEl = fixture.debugElement.query(By.directive(ClrRadioContainer)).nativeElement;
@@ -161,7 +166,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrRadioContainer, ClrRadioWrapper, ClrRadio, TemplateDrivenTest],
-          providers: [NgControl, NgControlService, LayoutService],
+          providers: [NgControlService, LayoutService],
         });
         fixture = TestBed.createComponent(TemplateDrivenTest);
 

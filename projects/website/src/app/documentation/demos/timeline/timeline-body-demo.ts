@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 
@@ -19,6 +19,7 @@ const body = `
 @Component({
   selector: 'clr-timeline-body-demo',
   templateUrl: './timeline-body.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CodeSnippetComponent],
 })
 export class TimelineBodyDemo {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { StepValidationState } from '../../model/step-validation-state';
 
@@ -24,6 +24,7 @@ import { StepValidationState } from '../../model/step-validation-state';
       <span class="alert-text" [textContent]="item"></span>
     </clr-alert-item>
   </clr-alert>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ValidationBannerInternalComponent {
   @Input() type: string;
@@ -81,6 +82,7 @@ export class ValidationBannerInternalComponent {
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ValidationBannerComponent {
   @Input() state?: StepValidationState;

@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-layout-only-vertical-nav-primary',
   templateUrl: './layout-vertical-nav-primary.html',
   styleUrls: ['./layout.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class LayoutVerticalNavPrimaryDemo {}

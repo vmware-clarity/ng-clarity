@@ -6,6 +6,7 @@
  */
 
 import {
+  ChangeDetectionStrategy,
   Component,
   ComponentRef,
   Input,
@@ -23,11 +24,12 @@ import { ColumnDefinition, ColumnRenderer } from './shared/column/column-definit
   standalone: false,
   template: `
     @if (!column.columnRenderer) {
-      <span [title]="item?.[column.field]">{{ item?.[column.field] }}</span>
+      <span [title]="$safeNavigationMigration(item?.[column.field])">{{ item?.[column.field] }}</span>
     }
     <ng-template #cellContainer></ng-template>
   `,
   styles: [':host { width: 100%; }'],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridCellContainerComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('cellContainer', { read: ViewContainerRef, static: true }) container: ViewContainerRef;

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AppfxLocale,
@@ -26,6 +26,7 @@ import { ClrSelectModule } from '@clr/angular';
   styleUrl: './example.component.scss',
   standalone: true,
   imports: [AppfxTranslateModule, ClrSelectModule, FormsModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     AppfxTranslateService,
     {

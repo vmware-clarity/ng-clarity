@@ -295,6 +295,7 @@ export default function () {
       </clr-alert>
     </clr-alerts>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -329,6 +330,7 @@ class TestComponent {
       </clr-alert>
     </clr-alerts>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestAlertInstance {
@@ -352,7 +354,7 @@ class TestAlertInstance {
       }
     </clr-alerts>
   `,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DynamicAlerts {

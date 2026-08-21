@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Type } from '@clr/angular/emphasis/common';
 
@@ -13,6 +13,7 @@ import { ClrBadge, ClrBadgeColors } from './badge';
 
 @Component({
   template: ` <clr-badge [clrColor]="color" [clrType]="type">{{ content }}</clr-badge> `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {

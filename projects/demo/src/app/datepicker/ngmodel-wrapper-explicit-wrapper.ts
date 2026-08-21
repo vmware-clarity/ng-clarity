@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 const DATE1 = '01/02/2015';
 const DATE2 = '05/05/2017';
@@ -14,6 +14,7 @@ const DATE2 = '05/05/2017';
   selector: 'clr-ng-model-wrapped-present-datepicker-demo',
   styleUrls: ['./datepicker.demo.scss'],
   templateUrl: './ngmodel-wrapper-explicit-wrapper.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class NgModelExplicitWrapperDemo {

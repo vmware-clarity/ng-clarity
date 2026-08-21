@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClarityIcons,
   cloudIcon,
@@ -78,6 +78,7 @@ const HTML_EXAMPLE_2 = `
 @Component({
   selector: 'clr-button-group-icons-demo',
   templateUrl: './icons.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, StackblitzExampleComponent],
 })
 export class ButtonGroupIconsDemo {

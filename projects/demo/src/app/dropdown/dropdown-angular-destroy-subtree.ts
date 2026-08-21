@@ -5,7 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, ChangeDetectorRef, Component, Injectable, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injectable,
+  OnDestroy,
+} from '@angular/core';
 
 @Injectable()
 export class DropdownDestroySubtreeCounter {
@@ -30,6 +37,7 @@ export class DropdownDestroySubtreeCounter {
 @Component({
   selector: 'clr-dropdown-destroy-subtree-leaf-demo',
   template: `Leaf #{{ id }} mounted`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DropdownDestroySubtreeLeafDemo implements OnDestroy {
@@ -58,6 +66,7 @@ export class DropdownDestroySubtreeLeafDemo implements OnDestroy {
   templateUrl: './dropdown-angular-destroy-subtree.demo.html',
   styleUrls: ['./dropdown.demo.scss'],
   providers: [DropdownDestroySubtreeCounter],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DropdownAngularDestroySubtreeDemo implements AfterViewInit {

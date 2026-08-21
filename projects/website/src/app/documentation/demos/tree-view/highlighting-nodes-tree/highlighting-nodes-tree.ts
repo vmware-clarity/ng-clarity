@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrIcon, ClrIconModule, ClrTreeViewModule } from '@clr/angular';
 
 @Component({
   selector: 'app-highlighting-nodes-tree-demo',
   styleUrl: '../tree-view.demo.scss',
   templateUrl: './highlighting-nodes-tree.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrTreeViewModule, ClrIcon, ClrIconModule],
 })
 export class HighlightNodesTreeDemo {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -18,6 +18,7 @@ const testItemName = 'test-item';
 @Component({
   selector: 'test-mock-column-renderer',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: ` <span>{{ $any(item)[column.field] }}</span> `,
 })
 export class MockColumnRendererComponent {

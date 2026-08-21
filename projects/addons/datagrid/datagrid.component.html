@@ -116,7 +116,9 @@
       <clr-dg-row
         [clrDgItem]="item"
         [clrDgSelectable]="item | isRowSelectable: isRowLocked : rowsDisabled"
-        [clrDgRowSelectionLabel]="$any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1]"
+        [clrDgRowSelectionLabel]="
+          $safeNavigationMigration($any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1])
+        "
         (contextmenu)="onContextMenu($event, item)"
         [clrDgSkeletonLoading]="!item"
       >
@@ -142,7 +144,9 @@
         [clrDgDetailOpenLabel]="getExpandDetailsLabel(item)"
         [clrDgDetailCloseLabel]="getCollapseDetailsLabel(item)"
         [clrDgSelectable]="item | isRowSelectable: isRowLocked : rowsDisabled"
-        [clrDgRowSelectionLabel]="$any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1]"
+        [clrDgRowSelectionLabel]="
+          $safeNavigationMigration($any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1])
+        "
         (contextmenu)="onContextMenu($event, item)"
       >
         <clr-dg-action-overflow
@@ -197,7 +201,9 @@
       [clrDgDetailOpenLabel]="getExpandDetailsLabel(item)"
       [clrDgDetailCloseLabel]="getCollapseDetailsLabel(item)"
       [clrDgSelectable]="item | isRowSelectable: isRowLocked : rowsDisabled"
-      [clrDgRowSelectionLabel]="$any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1]"
+      [clrDgRowSelectionLabel]="
+        $safeNavigationMigration($any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1])
+      "
       (contextmenu)="onContextMenu($event, item)"
     >
       <clr-dg-action-overflow

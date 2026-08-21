@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrAlertModule } from '@clr/angular';
 
 import { DatepickerDateIODemo } from './datepicker-date-io.demo';
@@ -15,6 +15,7 @@ import { DatepickerTemplateDrivenFormsDemo } from './datepicker-template-driven-
 @Component({
   selector: 'clr-datepicker-io-demo',
   templateUrl: './datepicker-io.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [DatepickerDateIODemo, DatepickerTemplateDrivenFormsDemo, DatepickerReactiveFormsDemo, ClrAlertModule],
 })
 export class DatepickerIODemo {}

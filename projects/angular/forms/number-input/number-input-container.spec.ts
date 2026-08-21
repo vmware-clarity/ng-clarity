@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
   ClrCommonFormsModule,
@@ -33,6 +33,7 @@ import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests
       <clr-control-success>Valid</clr-control-success>
     </clr-number-input-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {
@@ -47,6 +48,7 @@ class SimpleTest {
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-number-input-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoLabelTest {
@@ -65,6 +67,7 @@ class NoLabelTest {
       </clr-number-input-container>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ReactiveTest {
@@ -80,6 +83,7 @@ class ReactiveTest {
       <label>Test</label>
     </clr-number-input-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoInputTest {}
@@ -102,7 +106,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ClrPopoverContent],
           declarations: [ClrNumberInputContainer, NoInputTest],
-          providers: [NgControl, NgControlService, LayoutService, MarkControlService, ControlIdService],
+          providers: [NgControlService, LayoutService, MarkControlService, ControlIdService],
         });
         fixture = TestBed.createComponent(NoInputTest);
         containerEl = fixture.debugElement.query(By.directive(ClrNumberInputContainer)).nativeElement;

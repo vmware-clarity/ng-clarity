@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ClrRadio } from './radio';
 import { ClrRadioContainer } from './radio-container';
@@ -19,6 +19,7 @@ import { WrapperContainerSpec, WrapperFullSpec, WrapperNoLabelSpec } from '../te
       <input type="radio" clrRadio name="model" [(ngModel)]="model" />
     </clr-radio-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FullTest {
@@ -31,6 +32,7 @@ class FullTest {
       <input type="radio" clrRadio name="model" [(ngModel)]="model" />
     </clr-radio-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoLabelTest {
@@ -45,6 +47,7 @@ class NoLabelTest {
       </clr-radio-wrapper>
     </clr-radio-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ContainerTest {

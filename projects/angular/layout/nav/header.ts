@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, HostBinding, Input, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnDestroy } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -41,6 +41,7 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
   `,
   host: { '[class.header]': 'true' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrHeader implements OnDestroy {
   @Input() @HostBinding('attr.role') role = 'banner';

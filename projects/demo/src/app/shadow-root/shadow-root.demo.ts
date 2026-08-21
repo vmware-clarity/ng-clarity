@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'shadow-root-demo',
   templateUrl: './shadow-root.demo.html',
   encapsulation: ViewEncapsulation.ShadowDom,
   styleUrls: ['shadow-root.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
     '[attr.cds-theme]': 'true',
     '[attr.cds-text]': 'true',

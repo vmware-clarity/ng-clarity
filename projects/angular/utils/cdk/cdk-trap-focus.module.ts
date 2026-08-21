@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CdkTrapFocus, FocusTrapFactory } from '@angular/cdk/a11y';
-import { Directive, DOCUMENT, ElementRef, Inject, NgModule, Optional } from '@angular/core';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
+import { Directive, NgModule } from '@angular/core';
 
 /**
  * This is just a copy of CdkTrapFocus so it can be used independent of the rest of the A11yModule.
@@ -15,20 +15,7 @@ import { Directive, DOCUMENT, ElementRef, Inject, NgModule, Optional } from '@an
   selector: '[cdkTrapFocus]',
   standalone: false,
 })
-export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
-  /**
-   * Include the constructor to forward all the dependencies to the base class
-   * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
-   * https://github.com/storybookjs/storybook/issues/23534
-   */
-  constructor(
-    elementRef: ElementRef<HTMLElement>,
-    focusTrapFactory: FocusTrapFactory,
-    @Optional() @Inject(DOCUMENT) document: any
-  ) {
-    super(elementRef, focusTrapFactory, document);
-  }
-}
+export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {}
 
 /**
  * This module allows us to avoid importing all of A11yModule which results in a smaller application bundle.

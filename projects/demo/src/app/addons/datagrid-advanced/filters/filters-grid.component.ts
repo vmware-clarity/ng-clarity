@@ -6,7 +6,7 @@
  */
 
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject, Injectable } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Injectable } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxDatagridModule, ColumnDefinition } from '@clr/addons/datagrid';
 import {
@@ -127,6 +127,7 @@ export class CustomUserService extends DatagridFiltersUserService {
   imports: [AppfxDatagridModule, ClarityModule, FormsModule],
   standalone: true,
   templateUrl: 'filters-grid.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [Inventory, { provide: DatagridFiltersUserService, useClass: CustomUserService }],
 })
 export class FiltersGridComponent {

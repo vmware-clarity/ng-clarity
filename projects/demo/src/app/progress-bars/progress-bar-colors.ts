@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ProgBarExample } from './progbar-example';
 
@@ -13,6 +13,7 @@ import { ProgBarExample } from './progbar-example';
   selector: 'clr-progress-bar-colors-demo',
   styleUrls: ['progress-bars.demo.scss'],
   templateUrl: './progress-bar-colors.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ProgressBarColorsDemo {

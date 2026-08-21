@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Keys } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
@@ -17,6 +17,7 @@ import { ClrPopoverModuleNext } from '../popover.module';
   selector: 'test-host',
   template: '',
   providers: [ClrPopoverService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestHost {}

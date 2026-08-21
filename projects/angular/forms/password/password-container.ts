@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Inject, InjectionToken, Input, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, InjectionToken, Input, Optional } from '@angular/core';
 import {
   ClrAbstractContainer,
   ControlClassService,
@@ -35,10 +35,19 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
         <div class="clr-input-group" [class.clr-focus]="focus">
           <ng-content select="[clrPassword]"></ng-content>
           @if (clrToggle) {
-            <button (click)="toggle()" [disabled]="control?.disabled" class="clr-input-group-icon-action" type="button">
+            <button
+              (click)="toggle()"
+              [disabled]="$safeNavigationMigration(control?.disabled)"
+              class="clr-input-group-icon-action"
+              type="button"
+            >
               <cds-icon class="clr-password-eye-icon" [shape]="show ? 'eye-hide' : 'eye'"></cds-icon>
               <span class="clr-sr-only">
-                {{ show ? hidePasswordText(label?.labelText) : showPasswordText(label?.labelText) }}
+                {{
+                  show
+                    ? hidePasswordText($safeNavigationMigration(label?.labelText))
+                    : showPasswordText($safeNavigationMigration(label?.labelText))
+                }}
               </span>
             </button>
           }
@@ -62,6 +71,7 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
   },
   providers: [NgControlService, ControlIdService, ControlClassService, FormsFocusService, TOGGLE_SERVICE_PROVIDER],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrPasswordContainer extends ClrAbstractContainer {
   show = false;

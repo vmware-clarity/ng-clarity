@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { ClarityIcons, ClrModalModule, ClrSidePanelModule, pinIcon, unpinIcon } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -58,6 +58,7 @@ export class ExampleComponent {
 @Component({
   selector: 'clr-side-panel-angular-pinned-demo',
   templateUrl: './side-panel-angular-pinned-demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrModalModule, ClrSidePanelModule, StackblitzExampleComponent],
 })
 export class SidePanelAngularPinnedDemo {

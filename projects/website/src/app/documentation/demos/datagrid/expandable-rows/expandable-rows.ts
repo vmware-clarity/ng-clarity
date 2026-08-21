@@ -6,7 +6,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrAlertModule,
@@ -41,6 +41,7 @@ class DateFilter implements ClrDatagridStringFilterInterface<User> {
   providers: [Inventory],
   templateUrl: 'expandable-rows.html',
   styleUrl: '../datagrid.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CodeSnippetComponent,
     FormsModule,

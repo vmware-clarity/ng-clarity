@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrButtonGroup } from './button-group';
@@ -505,6 +505,7 @@ export default function (): void {
       <clr-button>Button 5</clr-button>
     </clr-button-group>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class BtnGroupInlineViewContainer {
@@ -521,6 +522,7 @@ class BtnGroupInlineViewContainer {
       <clr-button [clrInMenu]="true">Button 5</clr-button>
     </clr-button-group>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class BtnGroupBothViewContainersTest {
@@ -539,6 +541,7 @@ class BtnGroupBothViewContainersTest {
       <clr-button [clrInMenu]="flip">Button 5</clr-button>
     </clr-button-group>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class BtnGroupFlipTest1 {
@@ -557,6 +560,7 @@ class BtnGroupFlipTest1 {
       <clr-button [clrInMenu]="true">Button 5</clr-button>
     </clr-button-group>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class BtnGroupFlipTest2 {
@@ -581,6 +585,7 @@ class BtnGroupFlipTest2 {
       }
     </clr-button-group>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class BtnGroupProjectionUpdateTest {
@@ -600,6 +605,7 @@ class BtnGroupProjectionUpdateTest {
       <clr-button [clrInMenu]="true">Button 5</clr-button>
     </clr-button-group>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class BtnGroupMenuViewContainer {
@@ -628,6 +634,7 @@ class BtnGroupMenuViewContainer {
       <clr-button [clrInMenu]="true">Button 10</clr-button>
     </clr-button-group>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class BtnGroupEHCAIWCTest {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import {
   ClrIcon,
   ClrIconModule,
@@ -70,6 +70,7 @@ export class ExampleComponent {
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrStopEscapePropagationDirective,
     ClrPopoverHostDirective,

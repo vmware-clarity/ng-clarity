@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, HostListener, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, OnDestroy } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { Keys } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
@@ -26,6 +26,7 @@ import { NO_OF_DAYS_IN_A_WEEK } from './utils/constants';
   selector: 'clr-calendar',
   templateUrl: './calendar.html',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrCalendar implements OnDestroy {
   /**

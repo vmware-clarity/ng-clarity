@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -94,6 +94,7 @@ export default function (): void {
     <clr-timeline #noLayout id="no-layout"></clr-timeline>
     <clr-timeline [clrLayout]="layout" #timeline id="timeline"></clr-timeline>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestTimeline {
@@ -111,6 +112,7 @@ class TestTimeline {
       <clr-timeline-step></clr-timeline-step>
     </clr-timeline>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestTimelineContent {}

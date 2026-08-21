@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
 import { ClarityIcons, ClrIcon, ClrIconModule, ClrWizard, ClrWizardModule, resizeIcon } from '@clr/angular';
 
 @Component({
   selector: 'clr-wizard-design-size-demo',
   templateUrl: './wizard-design-size.demo.html',
   styleUrl: './wizard-design-size.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, ClrWizardModule],
 })
 export class WizardDesignSizeDemo {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, Renderer2 } from '@angular/core';
 
 import { FocusableItem } from './interfaces';
 import { ClrKeyFocus } from './key-focus';
@@ -15,6 +15,7 @@ import { Keys } from '../../enums/keys.enum';
   selector: '[clrRovingTabindex]',
   template: '<ng-content></ng-content>',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrRovingTabindex extends ClrKeyFocus {
   private disabled = false;

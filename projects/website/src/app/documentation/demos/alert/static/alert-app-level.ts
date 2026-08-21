@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClarityIcons,
   ClrAlertModule,
@@ -148,6 +148,7 @@ const HTML_EXAMPLE_3 = `
   selector: 'clr-alert-demo-app-level',
   styleUrl: '../alerts.demo.scss',
   templateUrl: './alert-app-level.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, ClrAlertModule, StackblitzExampleComponent],
 })
 export class AlertAppLevelDemo {

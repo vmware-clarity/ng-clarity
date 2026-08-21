@@ -7,6 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -33,6 +34,7 @@ interface TableOfContentsEntry {
   selector: 'app-table-of-contents',
   templateUrl: './table-of-contents.component.html',
   styleUrl: './table-of-contents.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule, RouterModule, ClrIcon],
 })
 export class TableOfContentsComponent implements OnInit, OnChanges, OnDestroy {

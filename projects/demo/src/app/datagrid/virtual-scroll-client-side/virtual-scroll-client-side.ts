@@ -6,7 +6,14 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { AfterViewChecked, ApplicationRef, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  ApplicationRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { ClrDatagridItemsIdentityFunction, ClrDatagridSortOrder, SelectionType } from '@clr/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -25,6 +32,7 @@ class ChangeDetectionPerfRecord {
   providers: [DynamicData, Inventory],
   templateUrl: './virtual-scroll-client-side.html',
   styleUrls: ['../datagrid.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChecked {

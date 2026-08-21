@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
@@ -18,6 +18,7 @@ import { ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 
 @Component({
   template: `<input type="password" clrPassword />`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class InvalidUseTest {}
@@ -29,6 +30,7 @@ class InvalidUseTest {}
       <clr-control-success>Valid</clr-control-success>
     </clr-password-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateDrivenTest {}
@@ -42,6 +44,7 @@ class TemplateDrivenTest {}
       </clr-password-container>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ReactiveTest {
@@ -74,7 +77,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrPasswordContainer, ClrPassword, TemplateDrivenTest],
-          providers: [NgControl, NgControlService, LayoutService],
+          providers: [NgControlService, LayoutService],
         });
         fixture = TestBed.createComponent(TemplateDrivenTest);
         containerDE = fixture.debugElement.query(By.directive(ClrPasswordContainer));

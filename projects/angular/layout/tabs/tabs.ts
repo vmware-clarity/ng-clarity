@@ -7,6 +7,7 @@
 
 import {
   AfterContentInit,
+  ChangeDetectionStrategy,
   Component,
   ContentChildren,
   ElementRef,
@@ -95,6 +96,7 @@ import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
   providers: [IfActiveService, TabsService, TABS_ID_PROVIDER],
   hostDirectives: [ClrPopoverHostDirective],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTabs implements AfterContentInit, OnDestroy {
   tabLinkElements: HTMLElement[] = [];

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { PropertyViewMessageModel } from '../property-view.model';
 
@@ -14,6 +14,7 @@ import { PropertyViewMessageModel } from '../property-view.model';
   standalone: false,
   templateUrl: 'property-view-message.component.html',
   styleUrls: ['property-view-message.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PropertyViewMessageComponent {
   @Input() data: PropertyViewMessageModel;

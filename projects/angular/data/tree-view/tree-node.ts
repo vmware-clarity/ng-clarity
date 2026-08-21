@@ -10,6 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ContentChildren,
   ElementRef,
@@ -68,6 +69,7 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
     '[class.disabled]': 'this._model.disabled',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
   // Allows the consumer to override our logic deciding if a node is expandable.

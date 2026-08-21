@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverService } from '@clr/angular/popover/common';
@@ -95,6 +95,7 @@ export default function (): void {
       <cds-icon shape="info-circle"></cds-icon>
     </button>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestTrigger {

@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, OnInit } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -16,6 +16,7 @@ import { Group, Item, ITEMS_SERVICE } from './grocery-models';
 @Component({
   selector: 'my-grocery-items',
   imports: [CommonModule, ClarityModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <ng-container [clrLoading]="loading">
       @for (item of items$ | async; track item) {

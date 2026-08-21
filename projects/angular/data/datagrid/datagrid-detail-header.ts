@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { DetailService } from './providers/detail.service';
@@ -31,6 +31,7 @@ import { DetailService } from './providers/detail.service';
     </div>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridDetailHeader implements AfterViewInit {
   @ViewChild('title') title: ElementRef<HTMLElement>;

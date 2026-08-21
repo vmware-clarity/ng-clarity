@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NgModule } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 
 import { AppfxTranslateModule } from './translate.module';
@@ -43,6 +43,7 @@ interface TestTranslateComponent {
   selector: 'test-translate-component-one',
   standalone: false,
   template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [AppfxTranslateService, { provide: appfxTranslationsToken, useValue: testTranslations1 }],
 })
 class Test1Component implements TestTranslateComponent {
@@ -57,6 +58,7 @@ class Test1Component implements TestTranslateComponent {
   selector: 'test-translate-component-two',
   standalone: false,
   template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [AppfxTranslateService, { provide: appfxTranslationsToken, useValue: testTranslations2 }],
 })
 class Test2Component implements TestTranslateComponent {

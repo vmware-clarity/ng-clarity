@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { HeadingLevel } from '@clr/angular/utils';
@@ -20,6 +20,7 @@ import { ClrStackViewModule } from './stack-view.module';
       <a class="stack-action">Action</a>
     </clr-stack-header>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrCheckboxModule,
@@ -35,6 +35,7 @@ export interface GridConfigDemoOptions {
   selector: 'grid-confirm-form',
   imports: [ClrCheckboxModule, ClrDatagridModule, ClrInputModule, ClrNumberInputModule, ClrSelectModule, FormsModule],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: 'grid-config-form.component.html',
 })
 export class GridConfigFormComponent {

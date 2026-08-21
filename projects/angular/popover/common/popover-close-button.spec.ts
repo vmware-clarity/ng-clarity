@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrPopoverCloseButton } from './popover-close-button';
@@ -19,6 +19,7 @@ import { ClrPopoverService } from './providers/popover.service';
     <button #toggleButton clrPopoverOrigin>Toggle Button</button>
   `,
   providers: [ClrPopoverService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestHost {

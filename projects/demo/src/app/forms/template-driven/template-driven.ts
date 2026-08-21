@@ -21,6 +21,7 @@ class BasicTemplateDrivenDemo {
 
 @Component({
   templateUrl: './template-driven.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FormsTemplateDrivenDemo extends BasicTemplateDrivenDemo {}

@@ -6,7 +6,7 @@
  */
 
 import { CDK_DROP_LIST, CdkDragDrop, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, QueryList, ViewChildren } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition, DatagridDragConfig } from '@clr/addons/datagrid';
 import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
 import { SelectionType } from '@clr/angular/data/datagrid';
@@ -36,6 +36,7 @@ import { Inventory, VmItem } from '../inventory/inventory';
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [Inventory],
 })
 export class DragDropGridDemoComponent {

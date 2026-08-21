@@ -7,6 +7,7 @@
 
 import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
 import {
+  ChangeDetectionStrategy,
   Component,
   ContentChild,
   ElementRef,
@@ -59,6 +60,7 @@ import { ModalStackService } from './modal-stack.service';
     ]),
   ],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrModal implements OnChanges, OnDestroy {
   modalId = uniqueIdFactory();

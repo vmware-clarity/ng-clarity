@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, Component, DebugElement, ViewChild } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -26,6 +26,7 @@ const fakeOutPage = new MockPage(pageIndex);
     <div clr-wizard-stepnav-item [page]="page"></div>
     <ng-template clrPageNavTitle>This is my {{ projector }}</ng-template>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent implements AfterContentInit {

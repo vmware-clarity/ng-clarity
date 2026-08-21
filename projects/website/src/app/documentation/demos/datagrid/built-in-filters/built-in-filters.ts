@@ -6,7 +6,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClrAlertModule,
   ClrDatagridModule,
@@ -28,6 +28,7 @@ import { WinsFilter } from '../utils/wins-filter';
   providers: [Inventory],
   templateUrl: 'built-in-filters.html',
   styleUrl: '../datagrid.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CodeSnippetComponent,
     ClrDatagridModule,

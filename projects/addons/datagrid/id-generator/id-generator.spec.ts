@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { uniqueIdProvider, uniqueIdToken } from './id-generator';
@@ -14,6 +14,7 @@ import { uniqueIdProvider, uniqueIdToken } from './id-generator';
   selector: 'test-1',
   standalone: false,
   template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [uniqueIdProvider],
 })
 class TestOneComponent {
@@ -24,6 +25,7 @@ class TestOneComponent {
   selector: 'test-2',
   standalone: false,
   template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [uniqueIdProvider],
 })
 class TestTwoComponent {

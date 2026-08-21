@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClarityIcons,
   ClrIcon,
@@ -81,6 +81,7 @@ export class ExampleComponent {
 @Component({
   selector: 'clr-tabs-angular-actions-button',
   templateUrl: './tabs-angular-actions-button.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrStopEscapePropagationDirective,
     ClrPopoverHostDirective,

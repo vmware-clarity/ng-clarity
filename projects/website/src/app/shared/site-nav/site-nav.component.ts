@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { bookmarkIcon, ClarityIcons, ClrNavigationModule, ClrVerticalNavModule, objectsIcon } from '@clr/angular';
 
@@ -21,6 +21,7 @@ import COMPONENTS from '../../../settings/componentlist.json';
     '[style.display]': "'flex'",
     '[style.width]': "'fit-content'",
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule, RouterModule, ClrNavigationModule, ClrVerticalNavModule, UrlIsExternalPipe],
 })
 export class SiteNavComponent {

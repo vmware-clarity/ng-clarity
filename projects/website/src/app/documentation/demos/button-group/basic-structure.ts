@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClarityIcons, ClrIcon, ClrIconModule, ellipsisHorizontalIcon } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -38,6 +38,7 @@ const HTML_EXAMPLE_2 = `
 @Component({
   selector: 'clr-button-group-basic-structure-demo',
   templateUrl: './basic-structure.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [StackblitzExampleComponent, ClrIcon, ClrIconModule],
 })
 export class ButtonGroupBasicStructureDemo {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, TrackByFunction } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
 import { ClrDatagridItemsIdentityFunction } from '@clr/angular';
 
 import { User } from '../inventory/user';
@@ -15,6 +15,7 @@ import { DatagridKitchenSinkData } from '../kitchen-sink/kitchen-sink-data';
   selector: 'clr-datagrid-density-demo',
   templateUrl: './density.html',
   styleUrls: ['../datagrid.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatagridDensityDemo {

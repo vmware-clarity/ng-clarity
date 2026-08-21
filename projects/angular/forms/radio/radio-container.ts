@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, Component, ContentChildren, Input, Optional, QueryList } from '@angular/core';
+import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  Component,
+  ContentChildren,
+  Input,
+  Optional,
+  QueryList,
+} from '@angular/core';
 import {
   ClrAbstractContainer,
   ContainerIdService,
@@ -48,6 +56,7 @@ import { ClrRadio } from './radio';
   },
   providers: [NgControlService, ControlClassService, ContainerIdService],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
   role: string;
