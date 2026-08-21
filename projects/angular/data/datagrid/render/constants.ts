@@ -7,3 +7,4 @@
 
 export const STRICT_WIDTH_CLASS = 'datagrid-fixed-width';
 export const HIDDEN_COLUMN_CLASS = 'datagrid-hidden-column';
+export const PINNED_COLUMN_CLASS = 'datagrid-pinned-column';

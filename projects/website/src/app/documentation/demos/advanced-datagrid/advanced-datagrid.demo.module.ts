@@ -18,6 +18,7 @@ import { DetailPaneGridDemoComponent } from './ng/detail-pane';
 import { DragDropGridDemoComponent } from './ng/drag-drop';
 import { FiltersGridComponent } from './ng/filters';
 import { PersistenceGridDemoComponent } from './ng/persistance';
+import { PinnableColumnsGridDemoComponent } from './ng/pinnable-columns';
 import { ServerDrivenGridDemoComponent } from './ng/server-driven';
 import { VirtualScrollGridDemoComponent } from './ng/virtual-scroll';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
@@ -45,6 +46,7 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     DragDropGridDemoComponent,
     FiltersGridComponent,
     PersistenceGridDemoComponent,
+    PinnableColumnsGridDemoComponent,
     ServerDrivenGridDemoComponent,
     VirtualScrollGridDemoComponent,
     AdvancedDatagridDemo,

@@ -61,8 +61,13 @@ export class ColumnOrderDirective implements OnDestroy, OnInit {
     const isDown = event.code === 'ArrowDown';
     const isEsc = event.code === 'Escape';
     const isCurrentColumnGrabbed = isEqualColumns(this.columnData, this.columnOrderingService.grabbedColumn.value);
+    // A pinned column is rendered in the sticky container instead of the scrollable one, so it is
+    // not part of the reorderable group. Mouse dragging is refused through cdkDragDisabled, and
+    // keyboard reordering has to be refused here for the same reason. Releasing stays allowed, so a
+    // column that gets pinned while it is grabbed can still be let go of.
+    const isReorderable = !this.columnData?.pinned;
 
-    if (isCurrentColumnGrabbed && (isLeft || isRight)) {
+    if (isCurrentColumnGrabbed && (isLeft || isRight) && isReorderable) {
       event.stopImmediatePropagation();
       event.preventDefault();
       this.moveColumn(isLeft);
@@ -78,7 +83,7 @@ export class ColumnOrderDirective implements OnDestroy, OnInit {
       this.columnOrderingService.grabbedColumn.next(null);
     }
 
-    if (!isCurrentColumnGrabbed && isSpace) {
+    if (!isCurrentColumnGrabbed && isSpace && isReorderable) {
       // Set grabbed css of the column provided as parameter
       this.columnOrderingService.grabbedColumn.next(this.columnData);
     }

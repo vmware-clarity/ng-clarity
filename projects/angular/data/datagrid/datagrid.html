@@ -14,7 +14,7 @@
           <div role="rowgroup" class="datagrid-header" #datagridHeader>
             <div role="row" class="datagrid-row">
               <div class="datagrid-row-master datagrid-row-flex">
-                <div class="datagrid-row-sticky">
+                <div class="datagrid-row-sticky" #rowControls>
                   <!--header for datagrid where you can select multiple rows -->
                   @if (selection.selectionType === SELECTION_TYPE.Multi) {
                   <div
@@ -76,6 +76,9 @@
                   }
                 </div>
                 <div class="datagrid-row-scrollable">
+                  <div class="datagrid-pinned-cells">
+                    <ng-container #projectedStickyColumns></ng-container>
+                  </div>
                   <ng-container #projectedDisplayColumns></ng-container>
                 </div>
                 @if (virtualScroll) {
