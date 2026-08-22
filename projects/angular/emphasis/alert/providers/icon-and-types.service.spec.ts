@@ -8,20 +8,21 @@
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { AlertIconAndTypesService } from './icon-and-types.service';
+import { AlertType } from '../utils/alert-types';
 
 export default function (): void {
   describe('Alert Icon and Types Service', function () {
     let testMe: AlertIconAndTypesService;
 
-    function testShape(alertType: string): string {
+    function testShape(alertType: AlertType): string {
       return testMe.iconInfoFromType(alertType).shape;
     }
 
-    function testCssClass(alertType: string): string {
+    function testCssClass(alertType: AlertType): string {
       return testMe.iconInfoFromType(alertType).cssClass;
     }
 
-    function testTitle(alertType: string): string {
+    function testTitle(alertType: AlertType): string {
       return testMe.iconInfoFromType(alertType).title;
     }
 
@@ -46,7 +47,7 @@ export default function (): void {
 
       it('will not change alertType to an invalid type', function () {
         expect(testMe.alertType).toBe('info');
-        testMe.alertType = 'ohai';
+        testMe.alertType = 'ohai' as AlertType;
         expect(testMe.alertType).toBe('info');
         expect(testMe.alertType).not.toBe('ohai');
       });
@@ -81,18 +82,18 @@ export default function (): void {
 
     describe('iconInfoFromType()', function () {
       it('returns default shape as fallthrough', function () {
-        expect(testShape(null)).toBe('info-standard');
-        expect(testShape('ohai')).toBe('info-standard');
+        expect(testShape(null as AlertType)).toBe('info-standard');
+        expect(testShape('ohai' as AlertType)).toBe('info-standard');
       });
 
       it('returns .alert-info class as fallthrough', function () {
-        expect(testCssClass(null)).toBe('alert-info');
-        expect(testCssClass('ohai')).toBe('alert-info');
+        expect(testCssClass(null as AlertType)).toBe('alert-info');
+        expect(testCssClass('ohai' as AlertType)).toBe('alert-info');
       });
 
       it('returns info title as fallthrough', function () {
-        expect(testTitle(null)).toBe('Info');
-        expect(testTitle('ohai')).toBe('Info');
+        expect(testTitle(null as AlertType)).toBe('Info');
+        expect(testTitle('ohai' as AlertType)).toBe('Info');
       });
 
       it('returns warning icon', function () {

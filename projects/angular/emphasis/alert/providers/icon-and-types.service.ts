@@ -9,21 +9,21 @@ import { Injectable } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { AlertInfoObject } from '../utils/alert-info-object';
-import { ALERT_TYPES } from '../utils/alert-types';
+import { ALERT_TYPES, AlertType } from '../utils/alert-types';
 
 @Injectable()
 export class AlertIconAndTypesService {
   private defaultIconShape = 'info-standard';
   private _alertIconShape = '';
-  private _alertType = 'info';
+  private _alertType: AlertType = 'info';
 
   constructor(private commonStrings: ClrCommonStringsService) {}
 
-  get alertType(): string {
+  get alertType(): AlertType {
     return this._alertType;
   }
-  set alertType(val: string) {
-    if (ALERT_TYPES.indexOf(val) > -1) {
+  set alertType(val: AlertType) {
+    if (ALERT_TYPES.includes(val)) {
       this._alertType = val;
     }
   }
@@ -46,7 +46,7 @@ export class AlertIconAndTypesService {
     return this.iconInfoFromType(this._alertType).title;
   }
 
-  iconInfoFromType(type: string): AlertInfoObject {
+  iconInfoFromType(type: AlertType): AlertInfoObject {
     const returnObj = { shape: '', cssClass: '', title: '' };
 
     switch (type) {

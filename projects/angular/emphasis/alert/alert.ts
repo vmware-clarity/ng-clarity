@@ -22,6 +22,7 @@ import { Subscription } from 'rxjs';
 
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
 import { MultiAlertService } from './providers/multi-alert.service';
+import { AlertType } from './utils/alert-types';
 
 @Component({
   selector: 'clr-alert',
@@ -42,7 +43,7 @@ export class ClrAlert implements OnInit, OnDestroy {
   private _hidden: boolean;
   private subscriptions: Subscription[] = [];
   private _isLightweight = false;
-  private _origAlertType: string;
+  private _origAlertType: AlertType;
 
   constructor(
     private iconService: AlertIconAndTypesService,
@@ -64,10 +65,10 @@ export class ClrAlert implements OnInit, OnDestroy {
   }
 
   @Input('clrAlertType')
-  get alertType(): string {
+  get alertType(): AlertType {
     return this.iconService.alertType;
   }
-  set alertType(val: string) {
+  set alertType(val: AlertType) {
     this._origAlertType = val;
 
     this.configAlertType(val);
@@ -122,7 +123,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  configAlertType(val: string) {
+  configAlertType(val: AlertType) {
     this.iconService.alertType = val;
   }
 
