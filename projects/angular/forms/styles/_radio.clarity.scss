@@ -17,7 +17,6 @@
     @include mixins.clr-appearance-normal();
   }
 
-  // @TODO un-nest the radio inputs when old forms are removed
   .clr-radio-wrapper {
     @include forms-mixins.form-flatten-validate-text();
 
