@@ -7385,6 +7385,7 @@ class DatagridMainRenderer {
                                     expandableRow.setCellsState();
                                 });
                             });
+                            this.updateColumnSeparatorsVisibility();
                         }
                         break;
                     default:
