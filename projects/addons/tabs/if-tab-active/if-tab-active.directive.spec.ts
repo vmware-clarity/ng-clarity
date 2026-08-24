@@ -5,98 +5,99 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+import { TabsHelper } from '@clr/addons/testing';
 import { ClrTabsModule } from '@clr/angular/layout/tabs';
 
-import { IfTabActiveDirective } from './if-tab-active.directive';
+import { AppfxTabsModule } from '../tabs.module';
 
-@Component({
-  standalone: false,
-  template: `
-    <clr-tabs>
-      <clr-tab
-        appfxIfTabActive
-        activeClass="my-active-class"
-        [activateTab]="firstActive"
-        (appfxIfTabActiveChange)="firstChange($event)"
-      >
-        <button clrTabLink>Tab 1</button>
-        <clr-tab-content>content 1</clr-tab-content>
+describe('Directive: IfTabActive', () => {
+  let fixture: ComponentFixture<TestComponent>;
+  let component: TestComponent;
+  let tabHelper: TabsHelper;
+
+  @Component({
+    imports: [AppfxTabsModule, ClrTabsModule],
+    template: `<clr-tabs>
+      <clr-tab id="tab1" appfxIfTabActive [activateTab]="activate === 'first'" [activeClass]="'activeTab'">
+        <button clrTabLink>Tab1</button>
+        <clr-tab-content *clrIfActive> tab1 content </clr-tab-content>
       </clr-tab>
       <clr-tab
+        id="tab2"
         appfxIfTabActive
-        activeClass="my-active-class"
-        [activateTab]="secondActive"
-        (appfxIfTabActiveChange)="secondChange($event)"
+        [activateTab]="activate === 'second'"
+        [activeClass]="'activeTab'"
+        (appfxIfTabActiveChange)="onTabActiveChange($event)"
       >
-        <button clrTabLink>Tab 2</button>
-        <clr-tab-content>content 2</clr-tab-content>
+        <button clrTabLink>Tab2</button>
+        <clr-tab-content *clrIfActive> tab2 content </clr-tab-content>
       </clr-tab>
-    </clr-tabs>
-  `,
-})
-class TestHostComponent {
-  firstActive = true;
-  secondActive = false;
-
-  firstChange = jasmine.createSpy('firstChange');
-  secondChange = jasmine.createSpy('secondChange');
-}
-
-describe('IfTabActiveDirective', () => {
-  let fixture: ComponentFixture<TestHostComponent>;
-  let host: TestHostComponent;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [ClrTabsModule],
-      declarations: [TestHostComponent, IfTabActiveDirective],
-    });
-
-    fixture = TestBed.createComponent(TestHostComponent);
-    host = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  function tabLinkElements(): HTMLElement[] {
-    return fixture.debugElement.queryAll(By.css('[clrTabLink]')).map(debugEl => debugEl.nativeElement);
+    </clr-tabs>`,
+  })
+  class TestComponent {
+    @Input() activate: string;
+    onTabActiveChange: (isActive: boolean) => void = () => {
+      // no action
+    };
   }
 
-  it('activates the tab whose activateTab input is true', () => {
-    // Native Clarity `.active` state is derived reactively (a getter), so it's correct
-    // immediately. The directive's own `activeClass`/output only react to *changes* on
-    // IfActiveService's currentChange, which is a plain Subject: it can't replay the
-    // activation that happened synchronously while the directive was still being
-    // constructed, so those only reflect transitions that occur after init (see below).
-    const [firstLink, secondLink] = tabLinkElements();
-
-    expect(firstLink.classList).toContain('active');
-    expect(secondLink.classList).not.toContain('active');
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    tabHelper = new TabsHelper(fixture.debugElement);
   });
 
-  it('switches the active tab when activateTab flips on another tab', () => {
-    host.firstActive = false;
-    host.secondActive = true;
-    fixture.detectChanges();
-
-    const [firstLink, secondLink] = tabLinkElements();
-
-    expect(firstLink.classList).not.toContain('my-active-class');
-    expect(secondLink.classList).toContain('my-active-class');
-    expect(host.secondChange).toHaveBeenCalledWith(true);
+  afterEach(() => {
+    if (fixture) {
+      fixture.destroy();
+    }
   });
 
-  it('activates the tab when its link is clicked directly', () => {
-    const [, secondLink] = tabLinkElements();
+  describe('When active tab changes', () => {
+    it('sets specified class to active tab', () => {
+      const tab1 = tabHelper.getLinkList()[0];
+      const tab2 = tabHelper.getLinkList()[1];
+      const toggleClass = 'activeTab';
 
-    secondLink.click();
+      expect(tab1.nativeElement.className).toContain(toggleClass);
+      expect(tab2.nativeElement.className).not.toContain(toggleClass);
+
+      tabHelper.clickLink(1);
+      fixture.detectChanges();
+
+      expect(tab1.nativeElement.className).not.toContain(toggleClass);
+      expect(tab2.nativeElement.className).toContain(toggleClass);
+    });
+
+    it('notifies subscribers for active tab change', () => {
+      spyOn(component, 'onTabActiveChange').and.callThrough();
+      tabHelper.clickLink(1);
+      fixture.detectChanges();
+      expect(component.onTabActiveChange).toHaveBeenCalledWith(true);
+      tabHelper.clickLink(0);
+      fixture.detectChanges();
+      expect(component.onTabActiveChange).toHaveBeenCalledWith(false);
+    });
+  });
+
+  it('can activate tab from parent component by set activateTab to true', () => {
+    spyOn(component, 'onTabActiveChange').and.callThrough();
+    const tab1 = tabHelper.getLinkList()[0];
+    const tab2 = tabHelper.getLinkList()[1];
+    const toggleClass = 'activeTab';
+
+    component.activate = 'second';
     fixture.detectChanges();
+    expect(component.onTabActiveChange).toHaveBeenCalledWith(true);
+    expect(tab1.nativeElement.className).not.toContain(toggleClass);
+    expect(tab2.nativeElement.className).toContain(toggleClass);
 
-    const [firstLink, refreshedSecondLink] = tabLinkElements();
-    expect(firstLink.classList).not.toContain('my-active-class');
-    expect(refreshedSecondLink.classList).toContain('my-active-class');
-    expect(host.secondChange).toHaveBeenCalledWith(true);
+    component.activate = 'first';
+    fixture.detectChanges();
+    expect(tab1.nativeElement.className).toContain(toggleClass);
+    expect(tab2.nativeElement.className).not.toContain(toggleClass);
   });
 });

@@ -12,67 +12,73 @@ import { ClrIcon } from '@clr/angular/icon';
 
 import { TabLinksComponent } from './tab-links.component';
 
-describe('TabLinksComponent', () => {
-  let fixture: ComponentFixture<TabLinksComponent>;
-  let component: TabLinksComponent;
+interface ThisTest {
+  fixture: ComponentFixture<TabLinksComponent>;
+  component: TabLinksComponent;
+  title: string;
+}
 
-  beforeEach(() => {
+describe('TabLinks', () => {
+  beforeEach(function (this: ThisTest) {
     TestBed.configureTestingModule({
       imports: [ClrIcon],
       declarations: [TabLinksComponent],
       providers: [WorkflowStrings],
     });
-
-    fixture = TestBed.createComponent(TabLinksComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('starts closed', () => {
-    expect(component.opened).toBe(false);
-    expect(fixture.debugElement.classes['opened']).toBeFalsy();
+  beforeEach(function (this: ThisTest) {
+    this.fixture = TestBed.createComponent(TabLinksComponent);
+    this.component = this.fixture.componentInstance;
+    this.title = 'Step Title';
+    this.component.title = this.title;
+
+    spyOn(this.component.openedChange, 'emit').and.callThrough();
+    this.fixture.detectChanges();
   });
 
-  it('sets the title', () => {
-    component.title = 'My Step';
-    fixture.detectChanges();
-
-    const title = fixture.debugElement.query(By.css('.nav-step-title'));
-    expect(title.nativeElement.textContent).toBe('My Step');
+  afterEach(function (this: ThisTest) {
+    this.fixture.destroy();
   });
 
-  it('opens and emits openedChange when the show-tabs button is clicked', () => {
-    const emitted: boolean[] = [];
-    component.openedChange.subscribe((value: boolean) => emitted.push(value));
-
-    fixture.debugElement.query(By.css('.btn-show-tabs')).nativeElement.click();
-    fixture.detectChanges();
-
-    expect(component.opened).toBe(true);
-    expect(fixture.debugElement.classes['opened']).toBe(true);
-    expect(emitted).toEqual([true]);
+  it('showTabLinks is false by default', function (this: ThisTest) {
+    expect(this.component.opened).toBeFalsy();
   });
 
-  it('closes and emits openedChange when the close-tabs button is clicked', () => {
-    component.changeOpened(true);
-    fixture.detectChanges();
-
-    const emitted: boolean[] = [];
-    component.openedChange.subscribe((value: boolean) => emitted.push(value));
-
-    fixture.debugElement.query(By.css('.btn-close-tabs')).nativeElement.click();
-    fixture.detectChanges();
-
-    expect(component.opened).toBe(false);
-    expect(fixture.debugElement.classes['opened']).toBeFalsy();
-    expect(emitted).toEqual([false]);
+  it('`Show tabs` burger icon is visible by default', function (this: ThisTest) {
+    const showTabsIcon = this.fixture.debugElement.query(By.css(`.btn-show-tabs`));
+    const isVisible = getComputedStyle(showTabsIcon.nativeElement)['display'] !== 'none';
+    expect(isVisible).toBeTruthy();
   });
 
-  it('exposes the workflow strings used for the aria-labels', () => {
-    const showButton = fixture.debugElement.query(By.css('.btn-show-tabs'));
-    const closeButton = fixture.debugElement.query(By.css('.btn-close-tabs'));
+  it('tab name is visible in the header', function (this: ThisTest) {
+    const activeTabTitle = this.fixture.debugElement.query(By.css(`.nav-step-title`)).nativeElement.innerText;
+    expect(activeTabTitle).toEqual(this.title);
+  });
 
-    expect(showButton.attributes['aria-label']).toBe(component.workflowStrings.openStepNavAriaLabel);
-    expect(closeButton.attributes['aria-label']).toBe(component.workflowStrings.closeStepNavAriaLabel);
+  describe('when `Show tabs` burger icon is clicked', () => {
+    beforeEach(function (this: ThisTest) {
+      const showTabsIcon = this.fixture.debugElement.query(By.css(`.btn-show-tabs`));
+      showTabsIcon.nativeElement.click();
+      this.fixture.detectChanges();
+    });
+
+    it('showTabLinks should emit true', function (this: ThisTest) {
+      expect(this.component.opened).toBeTruthy();
+      expect(this.component.openedChange.emit).toHaveBeenCalledWith(true);
+    });
+
+    describe('when `Close tabs` icon is clicked', () => {
+      beforeEach(function (this: ThisTest) {
+        const closeTabsIcon = this.fixture.debugElement.query(By.css(`.btn-close-tabs`));
+        closeTabsIcon.nativeElement.click();
+        this.fixture.detectChanges();
+      });
+
+      it('showTabLinks should emit false', function (this: ThisTest) {
+        expect(this.component.opened).toBeFalsy();
+        expect(this.component.openedChange.emit).toHaveBeenCalledWith(false);
+      });
+    });
   });
 });

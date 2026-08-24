@@ -5,67 +5,83 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { ClrTabsModule } from '@clr/angular/layout/tabs';
+import { ElementRef, Renderer2 } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { ClrTabLink } from '@clr/angular/layout/tabs';
 
 import { RenderAsButtonDirective } from './render-as-button.directive';
 
-@Component({
-  standalone: false,
-  template: `
-    <clr-tabs>
-      <clr-tab>
-        <button clrTabLink [renderAsButton]="renderAsButton">Tab 1</button>
-        <clr-tab-content>content</clr-tab-content>
-      </clr-tab>
-    </clr-tabs>
-  `,
-})
-class TestHostComponent {
-  renderAsButton = true;
-}
-
 describe('RenderAsButtonDirective', () => {
-  let fixture: ComponentFixture<TestHostComponent>;
-  let host: TestHostComponent;
+  let directive: RenderAsButtonDirective;
+  let mockElementRef: ElementRef;
+  let mockRenderer: Renderer2;
+  let mockClrTabLink: ClrTabLink;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrTabsModule],
-      declarations: [TestHostComponent, RenderAsButtonDirective],
+      providers: [
+        { provide: ElementRef, useValue: { nativeElement: document.createElement('div') } },
+        { provide: Renderer2, useValue: { addClass: () => {}, removeClass: () => {} } },
+        { provide: ClrTabLink, useValue: { inOverflow: false } },
+        RenderAsButtonDirective,
+      ],
     });
 
-    fixture = TestBed.createComponent(TestHostComponent);
-    host = fixture.componentInstance;
-    fixture.detectChanges();
+    mockElementRef = TestBed.inject(ElementRef);
+    mockRenderer = TestBed.inject(Renderer2);
+    mockClrTabLink = TestBed.inject(ClrTabLink);
+    directive = new RenderAsButtonDirective(mockClrTabLink, mockRenderer, mockElementRef);
   });
 
-  function tabLinkElement(): HTMLElement {
-    return fixture.debugElement.query(By.css('[clrTabLink]')).nativeElement;
-  }
-
-  it('strips the nav-link classes when renderAsButton is true', () => {
-    expect(tabLinkElement().classList).not.toContain('nav-link');
-    expect(tabLinkElement().classList).not.toContain('btn-link');
+  it('should create an instance', () => {
+    expect(directive).toBeTruthy();
   });
 
-  it('restores the nav-link classes when renderAsButton is set to false', () => {
-    host.renderAsButton = false;
-    fixture.detectChanges();
+  it('should toggle classes based on renderAsButton value', () => {
+    const testElement = mockElementRef.nativeElement;
+    spyOn(mockRenderer, 'addClass');
+    spyOn(mockRenderer, 'removeClass');
 
-    expect(tabLinkElement().classList).toContain('nav-link');
-    expect(tabLinkElement().classList).toContain('btn-link');
+    directive.renderAsButton = true;
+    directive.ngOnChanges();
+    expect(mockRenderer.removeClass).toHaveBeenCalledWith(testElement, 'nav-link');
+    expect(mockRenderer.removeClass).toHaveBeenCalledWith(testElement, 'btn-link');
+
+    directive.renderAsButton = false;
+    directive.ngOnChanges();
+    expect(mockRenderer.addClass).toHaveBeenCalledWith(testElement, 'nav-link');
+    expect(mockRenderer.addClass).toHaveBeenCalledWith(testElement, 'btn-link');
   });
 
-  it('re-applies the classes again once renderAsButton flips back to true', () => {
-    host.renderAsButton = false;
-    fixture.detectChanges();
-    host.renderAsButton = true;
-    fixture.detectChanges();
+  it('should not modify classes if in overflow', () => {
+    spyOn(mockRenderer, 'addClass');
+    spyOn(mockRenderer, 'removeClass');
 
-    expect(tabLinkElement().classList).not.toContain('nav-link');
-    expect(tabLinkElement().classList).not.toContain('btn-link');
+    mockClrTabLink.inOverflow = true;
+
+    directive.renderAsButton = true;
+    directive.ngOnChanges();
+    expect(mockRenderer.addClass).not.toHaveBeenCalled();
+    expect(mockRenderer.removeClass).not.toHaveBeenCalled();
+  });
+
+  it('should handle the case when the element is not found', () => {
+    const mockInvalidElementRef = new ElementRef(null);
+    const directiveWithInvalidRef = new RenderAsButtonDirective(mockClrTabLink, mockRenderer, mockInvalidElementRef);
+
+    spyOn(console, 'error');
+    directiveWithInvalidRef.ngOnChanges();
+    expect(console.error).toHaveBeenCalledWith('RenderAsButtonDirective: Unable to find the element');
+  });
+
+  it('should not modify classes if renderAsButton value does not change', () => {
+    spyOn(mockRenderer, 'addClass');
+    spyOn(mockRenderer, 'removeClass');
+
+    directive.renderAsButton = false;
+    directive.ngOnChanges(); // First call to set initial state
+    directive.ngOnChanges(); // Second call without changing renderAsButton value
+
+    expect(mockRenderer.removeClass).not.toHaveBeenCalled();
   });
 });
