@@ -81,22 +81,22 @@ const PinnedColumnsTemplate: StoryFn = args => ({
             <clr-dg-column>Key</clr-dg-column>
             <clr-dg-column>Value</clr-dg-column>
 
-            <clr-dg-row clrDgItem="name">
+            <clr-dg-row [clrDgItem]="element">
               <clr-dg-cell>Name</clr-dg-cell>
               <clr-dg-cell>{{ element.name }}</clr-dg-cell>
             </clr-dg-row>
 
-            <clr-dg-row clrDgItem="symbol">
+            <clr-dg-row [clrDgItem]="element">
               <clr-dg-cell>Symbol</clr-dg-cell>
               <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
             </clr-dg-row>
 
-            <clr-dg-row clrDgItem="number">
+            <clr-dg-row [clrDgItem]="element">
               <clr-dg-cell>Number</clr-dg-cell>
               <clr-dg-cell>{{ element.number }}</clr-dg-cell>
             </clr-dg-row>
 
-            <clr-dg-row clrDgItem="electronegativity">
+            <clr-dg-row [clrDgItem]="element">
               <clr-dg-cell>Electronegativity</clr-dg-cell>
               <clr-dg-cell>{{ element.electronegativity }}</clr-dg-cell>
             </clr-dg-row>
