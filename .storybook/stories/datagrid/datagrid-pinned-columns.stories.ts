@@ -114,16 +114,14 @@ export const PinnedColumns: StoryObj = {
   render: PinnedColumnsTemplate,
 };
 
-// Every column pinned at once. The five columns ask for more than the datagrid width, so they are
+// The first four columns pinned at once. They ask for more than the datagrid width, so they are
 // capped at 85% of it and shrink to fit - there is always something left of the scrollable region.
-export const AllColumnsPinned: StoryObj = {
+export const MostColumnsPinned: StoryObj = {
   render: PinnedColumnsTemplate,
   args: {
-    pinName: true,
     pinSymbol: true,
     pinNumber: true,
     pinElectronegativity: true,
-    pinAtomicMass: true,
   },
 };
 
