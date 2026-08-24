@@ -1505,10 +1505,230 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+class MockAppfxWizardComponent {
+    constructor() {
+        this.openedChange = new EventEmitter();
+        this.onModelChange = new EventEmitter();
+        this.onFinish = new EventEmitter();
+        this.onClose = new EventEmitter();
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxWizardComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockAppfxWizardComponent, isStandalone: false, selector: "appfx-wizard", inputs: { title: "title", pages: "pages", wizardModel: "wizardModel", loading: "loading", size: "size", opened: "opened" }, outputs: { openedChange: "openedChange", onModelChange: "onModelChange", onFinish: "onFinish", onClose: "onClose" }, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxWizardComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-wizard',
+                    standalone: false,
+                    template: '',
+                }]
+        }], propDecorators: { title: [{
+                type: Input
+            }], pages: [{
+                type: Input
+            }], wizardModel: [{
+                type: Input
+            }], loading: [{
+                type: Input
+            }], size: [{
+                type: Input
+            }], opened: [{
+                type: Input
+            }], openedChange: [{
+                type: Output
+            }], onModelChange: [{
+                type: Output
+            }], onFinish: [{
+                type: Output
+            }], onClose: [{
+                type: Output
+            }] } });
+class MockWizardStandaloneComponent extends MockAppfxWizardComponent {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockWizardStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockWizardStandaloneComponent, isStandalone: true, selector: "appfx-wizard", usesInheritance: true, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockWizardStandaloneComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-wizard',
+                    standalone: true,
+                    template: '',
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class MockWorkflowConfigurationService {
+    constructor() {
+        this.debugValue = false;
+    }
+    get debug() {
+        return this.debugValue;
+    }
+    set debug(newValue) {
+        this.debugValue = newValue;
+    }
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class WizardHelper {
+    #navPanelSelector = '.clr-wizard-stepnav-wrapper';
+    #navitemSelector = 'clr-wizard-stepnav .clr-wizard-stepnav-item';
+    #showStepNavBinSelector = '.btn-show-stepnav';
+    #closeStepNavBinSelector = '.btn-close-stepnav';
+    constructor(wizard) {
+        this.wizard = wizard;
+    }
+    get pageNavTitles() {
+        // getlastTextNode is needed because cds-icon contains a span with text labels for
+        // the icons which we don't care about.
+        return this.wizard
+            .queryAll(By.css(this.#navitemSelector + ' .clr-wizard-stepnav-link-title'))
+            .map((v) => this.getLastTextNode(v));
+    }
+    get isVisible() {
+        return getComputedStyle(this.wizard.nativeElement)['visibility'] === 'visible';
+    }
+    get activePageNavTitle() {
+        const activeNavItem = this.wizard.query(By.css(this.#navitemSelector + '.active .clr-wizard-stepnav-link-title'));
+        if (!activeNavItem) {
+            return '';
+        }
+        return this.getLastTextNode(activeNavItem);
+    }
+    get activePageTitle() {
+        return this.wizard.query(By.css('.clr-wizard-page-title')).nativeElement.innerText.trim();
+    }
+    get size() {
+        return Array.from(this.wizard.nativeElement.classList)
+            .map((value) => {
+            const matches = value.match(/^wizard-(sm|md|lg|xl)$/);
+            return (matches || [])[1];
+        })
+            .filter(v => !!v)
+            .pop();
+    }
+    get buttons() {
+        return this.wizard.queryAll(By.css('clr-wizard-button button'));
+    }
+    get visibleButtons() {
+        return this.buttons.filter((value) => {
+            return value.nativeElement.parentElement.getAttribute('aria-hidden') === 'false';
+        });
+    }
+    get cancelButton() {
+        return this.buttons[0];
+    }
+    get cancelButtonText() {
+        return this.cancelButton.nativeElement.innerText.trim();
+    }
+    get backButton() {
+        return this.buttons[1];
+    }
+    get backButtonText() {
+        return this.backButton.nativeElement.innerText.trim();
+    }
+    get nextButton() {
+        return this.buttons[2];
+    }
+    get nextButtonText() {
+        return this.nextButton.nativeElement.innerText.trim();
+    }
+    get finishButton() {
+        return this.buttons[3];
+    }
+    get finishButtonText() {
+        return this.finishButton.nativeElement.innerText.trim();
+    }
+    get stepNavPanel() {
+        return this.wizard.query(By.css(this.#navPanelSelector));
+    }
+    get stepNavs() {
+        return this.wizard.queryAll(By.css(this.#navitemSelector + ' .clr-wizard-stepnav-link'));
+    }
+    get showStepNavBtn() {
+        return this.wizard.query(By.css(this.#showStepNavBinSelector));
+    }
+    get closeStepNavBtn() {
+        return this.wizard.query(By.css(this.#closeStepNavBinSelector));
+    }
+    navigateToStep(stepIndex) {
+        this.click(this.stepNavs[stepIndex]);
+    }
+    isNavVisible() {
+        return getComputedStyle(this.stepNavPanel.nativeElement)['display'] !== 'none';
+    }
+    isStepNavEnabled(stepIndex) {
+        return this.stepNavs[stepIndex].attributes['disabled'] === undefined;
+    }
+    isShowNavIconVisible() {
+        return getComputedStyle(this.showStepNavBtn.nativeElement)['display'] !== 'none';
+    }
+    showNavigator() {
+        this.click(this.showStepNavBtn);
+    }
+    closeNavigator() {
+        this.click(this.closeStepNavBtn);
+    }
+    cancel() {
+        this.click(this.cancelButton);
+    }
+    back() {
+        this.click(this.backButton);
+    }
+    next() {
+        this.click(this.nextButton);
+    }
+    finish() {
+        this.click(this.finishButton);
+    }
+    click(el) {
+        el.triggerEventHandler('click', null);
+    }
+    getLastTextNode(debugElement) {
+        // Find the last child node of type text (3)
+        const childNodes = debugElement.nativeElement.childNodes;
+        let result = '';
+        childNodes.forEach((node) => {
+            if (node.nodeType === 3) {
+                const text = node.textContent?.trim() || '';
+                // comments included by Angular are seen as text nodes, but terxtContent returns
+                // an empty string. We should ignore those.
+                if (text !== '') {
+                    result = text;
+                }
+            }
+        });
+        return result;
+    }
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 
 /**
  * Generated bundle index. Do not edit.
  */
 
-export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, MockStepperComponent, MockStepperStandaloneComponent, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
+export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockAppfxWizardComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, MockStepperComponent, MockStepperStandaloneComponent, MockWizardStandaloneComponent, MockWorkflowConfigurationService, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, WizardHelper, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
 //# sourceMappingURL=clr-addons-testing.mjs.map

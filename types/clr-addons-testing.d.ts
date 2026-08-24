@@ -10,6 +10,7 @@ import { ComponentFixture } from '@angular/core/testing';
 import { FilterMode, FilterablePropertyDefinition, PropertyFilter } from '@clr/addons/datagrid-filters';
 import { PropertyViewStrings, PropertyViewMessageModel, PropertyViewPropertyModel } from '@clr/addons/property-view';
 import { Step, WorkflowModel, ModelChange } from '@clr/addons/var';
+import { Reason } from '@clr/addons/wizard';
 
 declare class MockRequiredFieldLegendComponent {
     static ɵfac: i0.ɵɵFactoryDeclaration<MockRequiredFieldLegendComponent, never>;
@@ -417,4 +418,66 @@ declare class MockStepperStandaloneComponent extends MockStepperComponent {
     static ɵcmp: i0.ɵɵComponentDeclaration<MockStepperStandaloneComponent, "appfx-stepper", never, {}, {}, never, ["*"], true, never>;
 }
 
-export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, MockStepperComponent, MockStepperStandaloneComponent, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
+declare class MockAppfxWizardComponent {
+    title: string;
+    pages: Step[];
+    wizardModel: WorkflowModel;
+    loading: boolean;
+    size: string;
+    opened: boolean;
+    openedChange: EventEmitter<boolean>;
+    onModelChange: EventEmitter<ModelChange[]>;
+    onFinish: EventEmitter<void>;
+    onClose: EventEmitter<Reason>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxWizardComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxWizardComponent, "appfx-wizard", never, { "title": { "alias": "title"; "required": false; }; "pages": { "alias": "pages"; "required": false; }; "wizardModel": { "alias": "wizardModel"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "size": { "alias": "size"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "openedChange": "openedChange"; "onModelChange": "onModelChange"; "onFinish": "onFinish"; "onClose": "onClose"; }, never, never, false, never>;
+}
+declare class MockWizardStandaloneComponent extends MockAppfxWizardComponent {
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockWizardStandaloneComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockWizardStandaloneComponent, "appfx-wizard", never, {}, {}, never, never, true, never>;
+}
+
+declare class MockWorkflowConfigurationService {
+    private debugValue;
+    get debug(): boolean;
+    set debug(newValue: boolean);
+}
+
+declare class WizardHelper {
+    #private;
+    private wizard;
+    constructor(wizard: DebugElement);
+    get pageNavTitles(): Array<string | undefined>;
+    get isVisible(): boolean;
+    get activePageNavTitle(): string | undefined;
+    get activePageTitle(): string;
+    get size(): string | undefined;
+    get buttons(): DebugElement[];
+    get visibleButtons(): DebugElement[];
+    get cancelButton(): DebugElement;
+    get cancelButtonText(): string;
+    get backButton(): DebugElement;
+    get backButtonText(): string;
+    get nextButton(): DebugElement;
+    get nextButtonText(): string;
+    get finishButton(): DebugElement;
+    get finishButtonText(): string;
+    private get stepNavPanel();
+    private get stepNavs();
+    private get showStepNavBtn();
+    private get closeStepNavBtn();
+    navigateToStep(stepIndex: number): void;
+    isNavVisible(): boolean;
+    isStepNavEnabled(stepIndex: number): boolean;
+    isShowNavIconVisible(): boolean;
+    showNavigator(): void;
+    closeNavigator(): void;
+    cancel(): void;
+    back(): void;
+    next(): void;
+    finish(): void;
+    private click;
+    private getLastTextNode;
+}
+
+export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockAppfxWizardComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, MockStepperComponent, MockStepperStandaloneComponent, MockWizardStandaloneComponent, MockWorkflowConfigurationService, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, WizardHelper, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
