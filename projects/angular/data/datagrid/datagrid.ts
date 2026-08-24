@@ -585,30 +585,36 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * The header and the rows get their own value: the header renders one caret column for both
    * kinds of caret where a row renders one cell per caret, so the two containers are not
    * necessarily the same width.
+   *
+   * Nothing reads this property unless a column is pinned - `.datagrid-pinned-cells` is the only
+   * consumer, and it is `display: none` while empty - so the measurement is skipped entirely
+   * otherwise. It matters on a datagrid with many rows: `getBoundingClientRect()` forces the
+   * browser to resolve any pending layout first, and on a large datagrid that resolution is not
+   * cheap. Both boxes are read before either write for the same reason - writing the custom
+   * property is itself layout-affecting (`.datagrid-pinned-cells` reads it back for its own
+   * position and width), so reading again in between would force that resolution twice.
    */
   private updateRowControlsWidth() {
     const headerControls = this.rowControls?.nativeElement;
-    if (!headerControls || !this.datagridHeader) {
+    if (!headerControls || !this.datagridHeader || !this.columnsService.hasPinnedColumns) {
       return;
     }
     const rowControls: HTMLElement = this.rowsWrapper.nativeElement.querySelector(
       '.datagrid-row-master > .datagrid-row-sticky:not(.datagrid-row-sticky-scroll)'
     );
 
-    this.setRowControlsWidth(this.datagridHeader.nativeElement, headerControls);
-    // Without a row there is nothing to line up with, so the header is a good enough stand-in.
-    this.setRowControlsWidth(this.rowsWrapper.nativeElement, rowControls || headerControls);
-  }
-
-  private setRowControlsWidth(target: HTMLElement, controls: HTMLElement) {
     // Measured from the box rather than from offsetWidth, which is rounded to whole pixels and
     // would leave the pinned columns off by up to a pixel.
-    this.renderer.setStyle(
-      target,
-      '--clr-datagrid-row-controls-width',
-      `${controls.getBoundingClientRect().width}px`,
-      RendererStyleFlags2.DashCase
-    );
+    const headerWidth = headerControls.getBoundingClientRect().width;
+    // Without a row there is nothing to line up with, so the header is a good enough stand-in.
+    const rowWidth = (rowControls || headerControls).getBoundingClientRect().width;
+
+    this.setRowControlsWidth(this.datagridHeader.nativeElement, headerWidth);
+    this.setRowControlsWidth(this.rowsWrapper.nativeElement, rowWidth);
+  }
+
+  private setRowControlsWidth(target: HTMLElement, width: number) {
+    this.renderer.setStyle(target, '--clr-datagrid-row-controls-width', `${width}px`, RendererStyleFlags2.DashCase);
   }
 
   private handleResizeChanges(entries: ResizeObserverEntry[]) {

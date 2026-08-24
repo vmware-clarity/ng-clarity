@@ -80,7 +80,12 @@ const PinnedColumnsTemplate: StoryFn = args => ({
         </clr-dg-detail-body>
       </clr-dg-detail>
 
-      <clr-dg-footer>{{ elements.length }} elements</clr-dg-footer>
+      <clr-dg-footer>
+        <clr-dg-pagination #pagination>
+          <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Elements per page</clr-dg-page-size>
+          {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} elements
+        </clr-dg-pagination>
+      </clr-dg-footer>
     </clr-datagrid>
   `,
   props: { ...args },
