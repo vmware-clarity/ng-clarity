@@ -76,7 +76,7 @@ const PinnedColumnsTemplate: StoryFn = args => ({
       <clr-dg-detail *clrIfDetail="let element">
         <clr-dg-detail-header>{{ element.name }}</clr-dg-detail-header>
         <clr-dg-detail-body>
-          <pre>{{element | json}}</pre>
+          <pre>{{ element | json }}</pre>
         </clr-dg-detail-body>
       </clr-dg-detail>
 
