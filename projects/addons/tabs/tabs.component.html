@@ -1,0 +1,73 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div
+  class="appfx-tabs"
+  [class.div-disabled]="isLoading"
+  [ngClass]="tabLayout"
+  [class.show-tab-nav]="showTabNav"
+  [class.show-tab-content]="!tabLinksOpened"
+>
+  <appfx-tab-links
+    #appfxTabLinks
+    *ngIf="showAppfxTabLinks"
+    [(opened)]="tabLinksOpened"
+    (openedChange)="tabLinksOpenedChange.emit($event)"
+    [title]="activeTabStep.title"
+  >
+  </appfx-tab-links>
+  <appfx-spinner
+    *ngIf="showLoadingIndicator && isLoading"
+    [message]="workflowStrings.loading"
+    [isModal]="false"
+  ></appfx-spinner>
+  <clr-tabs
+    *ngIf="tabs"
+    [clrLayout]="clrTabsLayout"
+    appfxOverflowTabs
+    [ngClass]="{
+      'appfx-secondary-tabs': isSecondaryLayout,
+    }"
+  >
+    <ng-container *ngFor="let step of tabsInternal; let stepIndex = index">
+      <clr-tab
+        *ngIf="!step.isSkipped"
+        appfxIfTabActive
+        [activeClass]="'activeTab'"
+        [activateTab]="isTabActive(step)"
+        (appfxIfTabActiveChange)="onStepActiveChange(step, $event)"
+      >
+        <button
+          clrTabLink
+          [renderAsButton]="isSecondaryLayout"
+          [ngClass]="{
+            'btn-primary': isSecondaryLayout && isTabActive(step),
+            'btn-sm appfx-tab-button': isSecondaryLayout,
+          }"
+        >
+          {{ step.title }}
+          <cds-icon
+            *ngIf="errorIconVisibleList[stepIndex]"
+            class="alert-icon"
+            shape="exclamation-circle"
+            status="danger"
+            size="md"
+          >
+          </cds-icon>
+        </button>
+        <clr-tab-content>
+          <appfx-step-container
+            [step]="step"
+            [class.div-disabled]="disableTabsContent"
+            class="content-container clr-flex-column"
+          >
+          </appfx-step-container>
+        </clr-tab-content>
+      </clr-tab>
+    </ng-container>
+  </clr-tabs>
+</div>

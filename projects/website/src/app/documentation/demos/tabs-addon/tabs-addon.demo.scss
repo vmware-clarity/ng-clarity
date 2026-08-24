@@ -1,0 +1,14 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+.tabs-demo-container {
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+  border-radius: var(--cds-alias-object-border-radius-100);
+  padding: var(--clr-base-vertical-offset-l) var(--clr-base-horizontal-offset-l);
+  margin: var(--clr-base-vertical-offset-l) 0;
+  min-height: 300px;
+}

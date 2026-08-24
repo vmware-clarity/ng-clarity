@@ -12,8 +12,8 @@ import { Observable, of, timer } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { CustomFooterComponent } from './custom-footer/custom-footer.component';
-import { SampleWorkflowModel } from './sample-workflow.model';
-import { SampleWorkflowService } from './sample-workflow.service';
+import { SampleWorkflowModel } from '../../_utils/sample-workflow/sample-workflow.model';
+import { SampleWorkflowService } from '../../_utils/sample-workflow/sample-workflow.service';
 
 @Component({
   selector: 'clr-demo-sample-wizard',
