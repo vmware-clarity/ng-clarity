@@ -5,15 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-.tabs-playground-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--clr-base-gap-xl);
-  margin-bottom: var(--clr-base-vertical-offset-xl);
-  padding: var(--clr-base-vertical-offset-l) var(--clr-base-horizontal-offset-l);
-}
-
 .tabs-demo-container {
   border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
   border-radius: var(--cds-alias-object-border-radius-100);

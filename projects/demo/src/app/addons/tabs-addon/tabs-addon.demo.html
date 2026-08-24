@@ -7,7 +7,7 @@
 
 <h1>Tabs</h1>
 
-<div class="tabs-playground-controls">
+<form clrForm class="clr-form-compact">
   <clr-radio-container clrInline>
     <label>Layout</label>
     <clr-radio-wrapper>
@@ -24,16 +24,20 @@
     </clr-radio-wrapper>
   </clr-radio-container>
 
-  <clr-toggle-wrapper>
-    <input type="checkbox" clrToggle [(ngModel)]="disableContent" />
+  <clr-toggle-container>
     <label>Disable tab content</label>
-  </clr-toggle-wrapper>
+    <clr-toggle-wrapper>
+      <input type="checkbox" name="disable-content" clrToggle [(ngModel)]="disableContent" />
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
 
-  <clr-toggle-wrapper>
-    <input type="checkbox" clrToggle [(ngModel)]="showTabLinks" />
+  <clr-toggle-container>
     <label>Show tab links</label>
-  </clr-toggle-wrapper>
-</div>
+    <clr-toggle-wrapper>
+      <input type="checkbox" name="show-tabs" clrToggle [(ngModel)]="showTabLinks" />
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
+</form>
 
 <div class="tabs-demo-container">
   <appfx-tabs
