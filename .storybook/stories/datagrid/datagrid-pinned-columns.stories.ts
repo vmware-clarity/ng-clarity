@@ -36,7 +36,6 @@ export default {
     pinSymbol: false,
     pinNumber: false,
     pinElectronegativity: false,
-    pinAtomicMass: false,
     // story helpers
     elements,
     behaviorElements,
@@ -61,7 +60,7 @@ const PinnedColumnsTemplate: StoryFn = args => ({
       <clr-dg-column [clrDgPinned]="pinSymbol" [style.width.px]="500">Symbol</clr-dg-column>
       <clr-dg-column [clrDgPinned]="pinNumber" [style.width.px]="500">Number</clr-dg-column>
       <clr-dg-column [clrDgPinned]="pinElectronegativity" [style.width.px]="500">Electronegativity</clr-dg-column>
-      <clr-dg-column [clrDgPinned]="pinAtomicMass" [style.width.px]="400">Mass</clr-dg-column>
+      <clr-dg-column [style.width.px]="400">Mass</clr-dg-column>
 
       <clr-dg-row *clrDgItems="let element of elements" [clrDgItem]="element">
         <clr-dg-cell>{{ element.name }}</clr-dg-cell>
@@ -77,30 +76,7 @@ const PinnedColumnsTemplate: StoryFn = args => ({
       <clr-dg-detail *clrIfDetail="let element">
         <clr-dg-detail-header>{{ element.name }}</clr-dg-detail-header>
         <clr-dg-detail-body>
-          <clr-datagrid>
-            <clr-dg-column>Key</clr-dg-column>
-            <clr-dg-column>Value</clr-dg-column>
-
-            <clr-dg-row>
-              <clr-dg-cell>Name</clr-dg-cell>
-              <clr-dg-cell>{{ element.name }}</clr-dg-cell>
-            </clr-dg-row>
-
-            <clr-dg-row>
-              <clr-dg-cell>Symbol</clr-dg-cell>
-              <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
-            </clr-dg-row>
-
-            <clr-dg-row>
-              <clr-dg-cell>Number</clr-dg-cell>
-              <clr-dg-cell>{{ element.number }}</clr-dg-cell>
-            </clr-dg-row>
-
-            <clr-dg-row>
-              <clr-dg-cell>Electronegativity</clr-dg-cell>
-              <clr-dg-cell>{{ element.electronegativity }}</clr-dg-cell>
-            </clr-dg-row>
-          </clr-datagrid>
+          <pre>{{element | json}}</pre>
         </clr-dg-detail-body>
       </clr-dg-detail>
 
@@ -143,7 +119,7 @@ const VirtualScrollTemplate: StoryFn = args => ({
         <clr-dg-column [clrDgPinned]="pinSymbol" [style.width.px]="500">Symbol</clr-dg-column>
         <clr-dg-column [clrDgPinned]="pinNumber" [style.width.px]="500">Number</clr-dg-column>
         <clr-dg-column [clrDgPinned]="pinElectronegativity" [style.width.px]="500">Electronegativity</clr-dg-column>
-        <clr-dg-column [clrDgPinned]="pinAtomicMass" [style.width.px]="400">Mass</clr-dg-column>
+        <clr-dg-column [style.width.px]="400">Mass</clr-dg-column>
 
         @if (data.elements) {
           <ng-template clrVirtualScroll let-element [clrVirtualRowsOf]="data.elements">
@@ -157,14 +133,12 @@ const VirtualScrollTemplate: StoryFn = args => ({
               </clr-dg-cell>
               <clr-dg-cell>{{ element.number * 2 }}</clr-dg-cell>
 
-              <ng-container ngProjectAs="clr-dg-row-detail">
-                <clr-dg-row-detail
-                  [clrIfExpanded]="!!element.expanded"
-                  (clrIfExpandedChange)="setExpanded($event, element)"
-                >
-                  {{ element | json }} {{ element.expanded }}
-                </clr-dg-row-detail>
-              </ng-container>
+              <clr-dg-row-detail
+                [clrIfExpanded]="!!element.expanded"
+                (clrIfExpandedChange)="setExpanded($event, element)"
+              >
+                {{ element | json }}
+              </clr-dg-row-detail>
             </clr-dg-row>
           </ng-template>
         }
