@@ -1419,6 +1419,16 @@ export default function (): void {
           const context = this.create(ClrDatagrid, HiddenColumnTest);
           expect(() => context.detectChanges()).not.toThrow();
         });
+
+        it('hides the separator on the last visible column', function () {
+          const context = this.create(ClrDatagrid, HiddenColumnTest);
+          context.detectChanges();
+          const visibleHeaders = context.clarityElement.querySelectorAll(
+            '[role=columnheader].datagrid-column:not(.datagrid-hidden-column)'
+          );
+          expect(visibleHeaders.length).toEqual(1);
+          expect(visibleHeaders[0].querySelector('clr-dg-column-separator')).toBeFalsy();
+        });
       });
     });
 

@@ -27,7 +27,8 @@ export function getIconBadgeSVG(icon: ClrIcon) {
 }
 
 export function getIconSVG(icon: ClrIcon) {
-  const iconShape = (ClarityIcons.registry[icon.shape] ?? ClarityIcons.registry['unknown']) as IconShapeCollection;
+  const iconShape = (ClarityIcons.getIconShape(icon.shape) ??
+    ClarityIcons.getIconShape('unknown')) as IconShapeCollection;
   let shape = icon.solid && iconShape.solid ? iconShape.solid : iconShape.outline;
 
   if (icon.badge && !hasAlertBadge(icon)) {
