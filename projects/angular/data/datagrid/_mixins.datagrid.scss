@@ -67,6 +67,10 @@
   .action-item {
     @include menu-mixins.generate-dropdown-item();
     @include menu-mixins.generate-dropdown-item-height();
+
+    &:focus {
+      outline: auto;
+    }
   }
 }
 @mixin datagrid-action-button-styles(
