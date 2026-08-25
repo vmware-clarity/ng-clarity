@@ -4,10 +4,10 @@ import { ReplaySubject, of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { ClrDatagrid } from '@clr/angular/data/datagrid';
 import { FilterMode } from '@clr/addons/datagrid-filters';
+import { StepValidationState } from '@clr/addons/var';
 import { PropertyViewStrings, PropertyViewModelType } from '@clr/addons/property-view';
 import { ClrTabs } from '@clr/angular/layout/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { StepValidationState } from '@clr/addons/var';
 import { tap } from 'rxjs/operators';
 
 /*
@@ -1277,6 +1277,116 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+class MockAppfxDialogComponent {
+    constructor() {
+        this.onModelChange = new EventEmitter();
+        this.onClose = new EventEmitter();
+        this.openedChange = new EventEmitter();
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxDialogComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockAppfxDialogComponent, isStandalone: false, selector: "appfx-dialog", inputs: { title: "title", subTitle: "subTitle", size: "size", height: "height", defaultButton: "defaultButton", cancelButtonLabel: "cancelButtonLabel", okButtonLabel: "okButtonLabel", tabLayout: "tabLayout", disableTabsContent: "disableTabsContent", loading: "loading", steps: "steps", model: "model", closeHandler: "closeHandler", showTabLinks: "showTabLinks", opened: "opened" }, outputs: { onModelChange: "onModelChange", onClose: "onClose", openedChange: "openedChange" }, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxDialogComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-dialog',
+                    standalone: false,
+                    template: '',
+                }]
+        }], propDecorators: { title: [{
+                type: Input
+            }], subTitle: [{
+                type: Input
+            }], size: [{
+                type: Input
+            }], height: [{
+                type: Input
+            }], defaultButton: [{
+                type: Input
+            }], cancelButtonLabel: [{
+                type: Input
+            }], okButtonLabel: [{
+                type: Input
+            }], tabLayout: [{
+                type: Input
+            }], disableTabsContent: [{
+                type: Input
+            }], loading: [{
+                type: Input
+            }], steps: [{
+                type: Input
+            }], model: [{
+                type: Input
+            }], closeHandler: [{
+                type: Input
+            }], showTabLinks: [{
+                type: Input
+            }], opened: [{
+                type: Input
+            }], onModelChange: [{
+                type: Output
+            }], onClose: [{
+                type: Output
+            }], openedChange: [{
+                type: Output
+            }] } });
+class MockAppfxDialogStandaloneComponent extends MockAppfxDialogComponent {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxDialogStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockAppfxDialogStandaloneComponent, isStandalone: true, selector: "appfx-dialog", usesInheritance: true, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxDialogStandaloneComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-dialog',
+                    standalone: true,
+                    template: '',
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class MockAppfxDialogHeaderComponent {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxDialogHeaderComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockAppfxDialogHeaderComponent, isStandalone: false, selector: "appfx-dialog-header", ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxDialogHeaderComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-dialog-header',
+                    standalone: false,
+                    template: `<ng-content></ng-content>`,
+                }]
+        }] });
+class MockAppfxDialogHeaderStandaloneComponent extends MockAppfxDialogHeaderComponent {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxDialogHeaderStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockAppfxDialogHeaderStandaloneComponent, isStandalone: true, selector: "appfx-dialog-header", usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockAppfxDialogHeaderStandaloneComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-dialog-header',
+                    standalone: true,
+                    template: `<ng-content></ng-content>`,
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 class MockAppfxMenuActionComponent {
     constructor() {
         this.enabled = true;
@@ -1896,5 +2006,5 @@ class WizardHelper {
  * Generated bundle index. Do not edit.
  */
 
-export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, InvalidMockComponent, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockAppfxWizardComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, MockStepComponent, MockStepModel, MockStepperComponent, MockStepperStandaloneComponent, MockWizardStandaloneComponent, MockWorkflowConfigurationService, MockWorkflowTestModule, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, TabsHelper, WizardHelper, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
+export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, InvalidMockComponent, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxDialogComponent, MockAppfxDialogHeaderComponent, MockAppfxDialogHeaderStandaloneComponent, MockAppfxDialogStandaloneComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockAppfxWizardComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, MockStepComponent, MockStepModel, MockStepperComponent, MockStepperStandaloneComponent, MockWizardStandaloneComponent, MockWorkflowConfigurationService, MockWorkflowTestModule, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, TabsHelper, WizardHelper, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
 //# sourceMappingURL=clr-addons-testing.mjs.map

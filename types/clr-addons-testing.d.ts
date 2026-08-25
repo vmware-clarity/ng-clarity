@@ -8,8 +8,9 @@ import { ClrDatagridVirtualScrollRangeInterface, ClrDatagrid } from '@clr/angula
 import { ActionDefinition } from '@clr/addons/datagrid';
 import { ComponentFixture } from '@angular/core/testing';
 import { FilterMode, FilterablePropertyDefinition, PropertyFilter } from '@clr/addons/datagrid-filters';
+import { DefaultButton } from '@clr/addons/dialog';
+import { TabLayout, Step, WorkflowModel, CloseHandler, ModelChange, OnStepValidate, OnStepActivate, StepModel, StepValidationState } from '@clr/addons/var';
 import { PropertyViewStrings, PropertyViewMessageModel, PropertyViewPropertyModel } from '@clr/addons/property-view';
-import { Step, WorkflowModel, ModelChange, OnStepValidate, OnStepActivate, StepModel, StepValidationState } from '@clr/addons/var';
 import { ClrTab } from '@clr/angular/layout/tabs';
 import * as i1 from '@angular/platform-browser/animations';
 import { Reason } from '@clr/addons/wizard';
@@ -353,6 +354,42 @@ declare class MockDatagridFiltersStandaloneComponent extends MockDatagridFilters
     static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersStandaloneComponent, "appfx-datagrid-filters", never, {}, {}, never, never, true, never>;
 }
 
+declare class MockAppfxDialogComponent {
+    title: string;
+    subTitle: string;
+    size: string;
+    height: string;
+    defaultButton: DefaultButton;
+    cancelButtonLabel: string;
+    okButtonLabel: string;
+    tabLayout: TabLayout;
+    disableTabsContent: boolean;
+    loading: boolean;
+    steps: Step[];
+    model: WorkflowModel;
+    closeHandler: CloseHandler;
+    showTabLinks: boolean;
+    opened: boolean;
+    readonly onModelChange: EventEmitter<ModelChange[]>;
+    onClose: EventEmitter<void>;
+    openedChange: EventEmitter<boolean>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDialogComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDialogComponent, "appfx-dialog", never, { "title": { "alias": "title"; "required": false; }; "subTitle": { "alias": "subTitle"; "required": false; }; "size": { "alias": "size"; "required": false; }; "height": { "alias": "height"; "required": false; }; "defaultButton": { "alias": "defaultButton"; "required": false; }; "cancelButtonLabel": { "alias": "cancelButtonLabel"; "required": false; }; "okButtonLabel": { "alias": "okButtonLabel"; "required": false; }; "tabLayout": { "alias": "tabLayout"; "required": false; }; "disableTabsContent": { "alias": "disableTabsContent"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "steps": { "alias": "steps"; "required": false; }; "model": { "alias": "model"; "required": false; }; "closeHandler": { "alias": "closeHandler"; "required": false; }; "showTabLinks": { "alias": "showTabLinks"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "onModelChange": "onModelChange"; "onClose": "onClose"; "openedChange": "openedChange"; }, never, never, false, never>;
+}
+declare class MockAppfxDialogStandaloneComponent extends MockAppfxDialogComponent {
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDialogStandaloneComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDialogStandaloneComponent, "appfx-dialog", never, {}, {}, never, never, true, never>;
+}
+
+declare class MockAppfxDialogHeaderComponent {
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDialogHeaderComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDialogHeaderComponent, "appfx-dialog-header", never, {}, {}, never, ["*"], false, never>;
+}
+declare class MockAppfxDialogHeaderStandaloneComponent extends MockAppfxDialogHeaderComponent {
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDialogHeaderStandaloneComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDialogHeaderStandaloneComponent, "appfx-dialog-header", never, {}, {}, never, ["*"], true, never>;
+}
+
 declare class MockAppfxMenuActionComponent {
     actionId: string;
     iconClass?: string;
@@ -551,4 +588,4 @@ declare class WizardHelper {
     private getLastTextNode;
 }
 
-export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, InvalidMockComponent, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockAppfxWizardComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, MockStepComponent, MockStepModel, MockStepperComponent, MockStepperStandaloneComponent, MockWizardStandaloneComponent, MockWorkflowConfigurationService, MockWorkflowTestModule, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, TabsHelper, WizardHelper, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
+export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, InvalidMockComponent, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxDialogComponent, MockAppfxDialogHeaderComponent, MockAppfxDialogHeaderStandaloneComponent, MockAppfxDialogStandaloneComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockAppfxWizardComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, MockStepComponent, MockStepModel, MockStepperComponent, MockStepperStandaloneComponent, MockWizardStandaloneComponent, MockWorkflowConfigurationService, MockWorkflowTestModule, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, TabsHelper, WizardHelper, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
