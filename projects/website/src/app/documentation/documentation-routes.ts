@@ -351,6 +351,12 @@ export const documentationRoutes: Routes = [
       },
       {
         matcher: documentationRouteMatcher,
+        data: { routePath: 'theme-builder/:tab?' },
+        loadChildren: () =>
+          import('./demos/theme-builder/theme-builder.demo.module').then(m => m.ThemeBuilderAddonDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
         data: { routePath: 'translate/:tab?' },
         loadChildren: () => import('./demos/translate/translate.demo.module').then(m => m.TranslateAddonDemoModule),
       },

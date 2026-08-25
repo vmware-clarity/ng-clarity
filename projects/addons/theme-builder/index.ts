@@ -5,11 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export function getFeatureFlags() {
-  const queryParams = new URLSearchParams(window.location.search);
-
-  return {
-    accessibility: queryParams.get('accessibility') === 'true',
-    themeBuilderOnly: queryParams.get('themeBuilderOnly') === 'true',
-  };
-}
+export { ThemeBuilderComponent } from './theme-builder.component';
+export { Color } from './utils/color';
+export { PRESETS } from './utils/presets';
+export { ThemeColor, ThemeColors, ThemePreset } from './utils/types';
