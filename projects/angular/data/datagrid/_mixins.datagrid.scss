@@ -69,7 +69,7 @@
     @include menu-mixins.generate-dropdown-item-height();
 
     &:focus {
-      outline: var(--cds-alias-object-interaction-outline);
+      outline: tokens.$cds-alias-object-interaction-outline;
       outline-color: -webkit-focus-ring-color;
     }
   }
