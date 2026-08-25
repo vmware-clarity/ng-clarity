@@ -92,6 +92,10 @@
       "types": "./types/clr-addons-testing.d.ts",
       "default": "./fesm2022/clr-addons-testing.mjs"
     },
+    "./theme-builder": {
+      "types": "./types/clr-addons-theme-builder.d.ts",
+      "default": "./fesm2022/clr-addons-theme-builder.mjs"
+    },
     "./translate": {
       "types": "./types/clr-addons-translate.d.ts",
       "default": "./fesm2022/clr-addons-translate.mjs"
@@ -118,5 +122,5 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "version": "0.0.0-preview.1ac3c22"
+  "version": "0.0.0-preview.65fa320"
 }
