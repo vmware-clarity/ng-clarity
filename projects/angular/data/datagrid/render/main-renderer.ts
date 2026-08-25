@@ -276,6 +276,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
                   expandableRow.setCellsState();
                 });
               });
+              this.updateColumnSeparatorsVisibility();
             }
             break;
           default:

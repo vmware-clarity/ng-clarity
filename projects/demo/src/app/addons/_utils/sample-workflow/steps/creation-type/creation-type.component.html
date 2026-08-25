@@ -1,0 +1,28 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<clr-radio-container>
+  <clr-radio-wrapper>
+    <input
+      type="radio"
+      clrRadio
+      name="creationType"
+      [value]="CreationType.newVM"
+      [(ngModel)]="model.creationType.value"
+    />
+    <label>Create a new virtual machine</label>
+  </clr-radio-wrapper>
+  <clr-radio-wrapper>
+    <input
+      type="radio"
+      clrRadio
+      name="creationType"
+      [value]="CreationType.cloneExistingVM"
+      [(ngModel)]="model.creationType.value"
+    />
+    <label>Clone an existing virtual machine</label>
+  </clr-radio-wrapper>
+</clr-radio-container>

@@ -361,6 +361,18 @@
       "text": "Stepper",
       "type": "addons",
       "storybookPath": "addons-stepper"
+    },
+    {
+      "url": "wizard-addon",
+      "text": "Wizard",
+      "type": "addons",
+      "storybookPath": "addons-wizard"
+    },
+    {
+      "url": "tabs-addon",
+      "text": "Tabs",
+      "type": "addons",
+      "storybookPath": "addons-tabs"
     }
   ]
 }
