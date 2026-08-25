@@ -436,11 +436,10 @@ describe('Appfx Multi Page Dialog', () => {
       });
 
       it('tab-content is visible by default', function (this: ThisTest) {
-        const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
-        tabContents.forEach(tabContent => {
-          const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
-          expect(isVisible).toBeTruthy();
-        });
+        const activeTabContent = this.fixture.debugElement.query(By.css('.tab-content.active'));
+        expect(activeTabContent).toBeTruthy();
+        const isVisible = getComputedStyle(activeTabContent.nativeElement)['display'] !== 'none';
+        expect(isVisible).toBeTruthy();
       });
 
       it('tab nav is not visible by default', function (this: ThisTest) {
@@ -497,10 +496,16 @@ describe('Appfx Multi Page Dialog', () => {
           });
 
           it('tab-content is visible', function (this: ThisTest) {
-            const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
-            tabContents.forEach(tabContent => {
-              const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
-              expect(isVisible).toBeTruthy();
+            const activeTabContent = this.fixture.debugElement.query(By.css('.tab-content.active'));
+            expect(activeTabContent).toBeTruthy();
+            const isVisible = getComputedStyle(activeTabContent.nativeElement)['display'] !== 'none';
+            expect(isVisible).toBeTruthy();
+
+            const inactiveTabContents = this.fixture.debugElement.queryAll(By.css('.tab-content:not(.active)'));
+            expect(inactiveTabContents.length).toBeGreaterThan(0);
+            inactiveTabContents.forEach(tabContent => {
+              const isInactiveVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
+              expect(isInactiveVisible).toBeFalsy();
             });
           });
 
@@ -541,11 +546,10 @@ describe('Appfx Multi Page Dialog', () => {
       });
 
       it('tab-content is visible by default', function (this: ThisTest) {
-        const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
-        tabContents.forEach(tabContent => {
-          const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
-          expect(isVisible).toBeTruthy();
-        });
+        const activeTabContent = this.fixture.debugElement.query(By.css('.tab-content.active'));
+        expect(activeTabContent).toBeTruthy();
+        const isVisible = getComputedStyle(activeTabContent.nativeElement)['display'] !== 'none';
+        expect(isVisible).toBeTruthy();
       });
 
       it('tab nav is not visible by default', function (this: ThisTest) {
@@ -602,10 +606,16 @@ describe('Appfx Multi Page Dialog', () => {
           });
 
           it('tab-content is visible', function (this: ThisTest) {
-            const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
-            tabContents.forEach(tabContent => {
-              const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
-              expect(isVisible).toBeTruthy();
+            const activeTabContent = this.fixture.debugElement.query(By.css('.tab-content.active'));
+            expect(activeTabContent).toBeTruthy();
+            const isVisible = getComputedStyle(activeTabContent.nativeElement)['display'] !== 'none';
+            expect(isVisible).toBeTruthy();
+
+            const inactiveTabContents = this.fixture.debugElement.queryAll(By.css('.tab-content:not(.active)'));
+            expect(inactiveTabContents.length).toBeGreaterThan(0);
+            inactiveTabContents.forEach(tabContent => {
+              const isInactiveVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
+              expect(isInactiveVisible).toBeFalsy();
             });
           });
 

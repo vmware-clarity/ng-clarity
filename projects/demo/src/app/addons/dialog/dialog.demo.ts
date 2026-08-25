@@ -12,8 +12,8 @@ import { AppfxMultiPageDialogModule } from '@clr/addons/dialog';
 import { Step, TabLayout } from '@clr/addons/var';
 import { ClarityModule } from '@clr/angular';
 
-import type { SampleWorkflowModel } from '../wizard-addon/sample/sample-workflow.model';
-import { SampleWorkflowService } from '../wizard-addon/sample/sample-workflow.service';
+import type { SampleWorkflowModel } from '../_utils/sample-workflow/sample-workflow.model';
+import { SampleWorkflowService } from '../_utils/sample-workflow/sample-workflow.service';
 
 @Component({
   selector: 'clr-dialog-demo',

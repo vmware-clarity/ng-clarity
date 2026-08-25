@@ -5,8 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-/* eslint-disable @typescript-eslint/member-ordering */
-
 import {
   ChangeDetectorRef,
   Component,
@@ -75,18 +73,6 @@ export class DialogComponent implements OnInit, OnDestroy {
   /** The title of the dialog. */
   @Input() title: string;
 
-  /**
-   * The sub title of the dialog.
-   */
-  @Input()
-  set subTitle(subTitle: string | Observable<string>) {
-    if (typeof subTitle === 'string') {
-      this.#subTitle$ = of(subTitle);
-    } else if (isObservable(subTitle)) {
-      this.#subTitle$ = subTitle;
-    }
-  }
-
   /** Dialog's clarity size ("xl" | "lg" | "md" | "sm" | "full-screen"). */
   @Input() size: ModalSize;
 
@@ -140,20 +126,6 @@ export class DialogComponent implements OnInit, OnDestroy {
    */
   @Input() showTabLinks = true;
 
-  /** Controls dialog open/close state. */
-  @Input()
-  get opened(): boolean {
-    return this.#opened;
-  }
-
-  set opened(value: boolean) {
-    this.#opened = value;
-    this.openedChange.emit(value);
-    if (!value) {
-      this.onClose.emit();
-    }
-  }
-
   /** Dispatches when any of the workflow state's variables changes. */
   @Output() readonly onModelChange: EventEmitter<ModelChange[]> = new EventEmitter<ModelChange[]>();
 
@@ -199,6 +171,32 @@ export class DialogComponent implements OnInit, OnDestroy {
     }
     this.cancelButtonLabel = workflowStrings.defaultCancelButtonLabel ?? '';
     this.okButtonLabel = workflowStrings.defaultOkButtonLabel ?? '';
+  }
+
+  /**
+   * The sub title of the dialog.
+   */
+  @Input()
+  set subTitle(subTitle: string | Observable<string>) {
+    if (typeof subTitle === 'string') {
+      this.#subTitle$ = of(subTitle);
+    } else if (isObservable(subTitle)) {
+      this.#subTitle$ = subTitle;
+    }
+  }
+
+  /** Controls dialog open/close state. */
+  @Input()
+  get opened(): boolean {
+    return this.#opened;
+  }
+
+  set opened(value: boolean) {
+    this.#opened = value;
+    this.openedChange.emit(value);
+    if (!value) {
+      this.onClose.emit();
+    }
   }
 
   get subTitle$(): Observable<string> {

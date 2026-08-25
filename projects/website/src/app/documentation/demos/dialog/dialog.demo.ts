@@ -17,8 +17,8 @@ import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
+import { SampleWorkflowService } from '../_utils/sample-workflow/sample-workflow.service';
 import { ClarityDocComponent } from '../clarity-doc';
-import { SampleWorkflowService } from '../wizard-addon/sample/sample-workflow.service';
 
 const BasicDialogHtml = require('!raw-loader!./ng/basic-dialog.html').default;
 const BasicDialogTs = require('!raw-loader!./ng/basic-dialog.ts').default;
