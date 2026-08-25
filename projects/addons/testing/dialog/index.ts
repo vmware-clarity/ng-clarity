@@ -5,22 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-:host {
-  .appfx-tabs {
-    &.show-tab-content {
-      ::ng-deep {
-        .tab-content {
-          display: flex;
-        }
-      }
-    }
-
-    &:not(.show-tab-content) {
-      ::ng-deep {
-        .tab-content {
-          display: none;
-        }
-      }
-    }
-  }
-}
+export { MockAppfxDialogComponent, MockAppfxDialogStandaloneComponent } from './multi-page-dialog.component.mock';
+export {
+  MockAppfxDialogHeaderComponent,
+  MockAppfxDialogHeaderStandaloneComponent,
+} from './multi-page-dialog-header.component.mock';

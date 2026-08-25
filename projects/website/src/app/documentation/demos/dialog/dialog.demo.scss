@@ -4,23 +4,11 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-
-:host {
-  .appfx-tabs {
-    &.show-tab-content {
-      ::ng-deep {
-        .tab-content {
-          display: flex;
-        }
-      }
-    }
-
-    &:not(.show-tab-content) {
-      ::ng-deep {
-        .tab-content {
-          display: none;
-        }
-      }
-    }
-  }
+.dialog-playground-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--clr-base-gap-xl);
+  margin-bottom: var(--clr-base-vertical-offset-xl);
+  padding: var(--clr-base-vertical-offset-l) var(--clr-base-horizontal-offset-l);
 }

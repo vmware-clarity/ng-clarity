@@ -28,6 +28,15 @@ type ScreenshotOptions = {
  * If a component name is used, all stories under that component name will use the options specified.
  */
 export const screenshotOptions: ScreenshotOptions = {
+  'dialog--default': {
+    fullPageScreenshot: true,
+  },
+  'dialog--vertical-tabs': {
+    fullPageScreenshot: true,
+  },
+  'dialog--submit-default': {
+    fullPageScreenshot: true,
+  },
   dropdown: {
     fullPageScreenshot: true,
   },
