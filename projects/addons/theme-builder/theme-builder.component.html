@@ -15,7 +15,7 @@
         [class.tb-preset-card-active]="activePreset?.name === preset.name"
         (click)="applyPreset(preset)"
       >
-        <div class="tb-preset-swatch" [style.background-color]="preset.light?.primary?.hex"></div>
+        <div class="tb-preset-swatch" [style.background-color]="presetSwatchColor(preset)"></div>
         <div class="card-text">{{ preset.name }}</div>
       </a>
     }

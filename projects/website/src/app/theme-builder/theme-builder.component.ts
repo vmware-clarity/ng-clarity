@@ -6,9 +6,10 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
-import { ThemeBuilderComponent as ClrThemeBuilder, PRESETS } from '@clr/addons/theme-builder';
-import { ClrAlertModule } from '@clr/angular';
+import { ChangeDetectorRef, Component, inject, OnDestroy, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ThemeBuilderComponent as ClrThemeBuilder, PRESETS, ThemePreset } from '@clr/addons/theme-builder';
+import { ClrAlertModule, ClrModalModule } from '@clr/angular';
 
 import { getFeatureFlags } from '../feature-flags';
 import { CodeSnippetComponent } from '../shared/code-snippet/code-snippet.component';
@@ -16,17 +17,35 @@ import { SiteFooterComponent } from '../shared/site-footer/site-footer.component
 import { SiteNavComponent } from '../shared/site-nav/site-nav.component';
 import { ThemeLockService } from '../shared/theme-toggle/theme-lock.service';
 
+const CUSTOM_PRESETS_STORAGE_KEY = 'clr-theme-builder-custom-presets';
+
 @Component({
   selector: 'app-theme-builder',
   templateUrl: './theme-builder.component.html',
   styleUrl: './theme-builder.component.scss',
   host: { '[class.content-container]': 'true' },
-  imports: [ClrAlertModule, ClrThemeBuilder, CodeSnippetComponent, CommonModule, SiteFooterComponent, SiteNavComponent],
+  imports: [
+    ClrAlertModule,
+    ClrModalModule,
+    ClrThemeBuilder,
+    CodeSnippetComponent,
+    CommonModule,
+    FormsModule,
+    SiteFooterComponent,
+    SiteNavComponent,
+  ],
 })
 export class ThemeBuilderComponent implements OnDestroy {
-  presets = PRESETS;
   generatedCss = '';
   copied = false;
+
+  saveModalOpen = false;
+  presetNameInput = '';
+
+  importModalOpen = false;
+  cssToImportInput = '';
+
+  @ViewChild(ClrThemeBuilder) themeBuilder!: ClrThemeBuilder;
 
   protected readonly themeBuilderOnly = getFeatureFlags().themeBuilderOnly;
 
@@ -35,8 +54,20 @@ export class ThemeBuilderComponent implements OnDestroy {
   private copiedTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(public cd: ChangeDetectorRef) {
-    localStorage.setItem('theme', 'light');
     this.themeLockService.lockLightTheme();
+  }
+
+  get presets(): ThemePreset[] {
+    return [...PRESETS, ...this.savedPresets];
+  }
+
+  get savedPresets(): ThemePreset[] {
+    try {
+      const raw = localStorage.getItem(CUSTOM_PRESETS_STORAGE_KEY);
+      return raw ? (JSON.parse(raw) as ThemePreset[]) : [];
+    } catch {
+      return [];
+    }
   }
 
   ngOnDestroy(): void {
@@ -50,6 +81,43 @@ export class ThemeBuilderComponent implements OnDestroy {
   writeGeneratedCss(css: string) {
     this.generatedCss = css;
     this.cd.detectChanges();
+  }
+
+  openSaveModal(): void {
+    this.presetNameInput = '';
+    this.saveModalOpen = true;
+  }
+
+  confirmSavePreset(): void {
+    const name = this.presetNameInput.trim();
+    if (!name) {
+      return;
+    }
+
+    const preset: ThemePreset = {
+      name: name,
+      light: this.themeBuilder.colorStruct.light,
+      dark: this.themeBuilder.colorStruct.dark,
+    };
+    const withoutExistingNamesake = this.savedPresets.filter(saved => saved.name !== name);
+
+    localStorage.setItem(CUSTOM_PRESETS_STORAGE_KEY, JSON.stringify([...withoutExistingNamesake, preset]));
+
+    this.saveModalOpen = false;
+  }
+
+  openImportModal(): void {
+    this.cssToImportInput = '';
+    this.importModalOpen = true;
+  }
+
+  confirmImportCss(): void {
+    if (!this.cssToImportInput.trim()) {
+      return;
+    }
+
+    this.themeBuilder.importCSS(this.cssToImportInput);
+    this.importModalOpen = false;
   }
 
   async copyCSS(): Promise<void> {

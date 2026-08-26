@@ -31,9 +31,13 @@
   <div class="card tb-output-card">
     <div class="card-header tb-output-header-row">
       <h2 cds-text="section">Generated CSS</h2>
-      <button class="btn btn-sm btn-outline" (click)="copyCSS()">
-        {{ copied ? 'Copied!' : 'Copy' }}
-      </button>
+      <div>
+        <button class="btn btn-sm btn-outline" (click)="openSaveModal()">Save current preset</button>
+        <button class="btn btn-sm btn-outline" (click)="openImportModal()">Import CSS</button>
+        <button class="btn btn-sm btn-outline" (click)="copyCSS()">
+          {{ copied ? 'Copied!' : 'Copy' }}
+        </button>
+      </div>
     </div>
 
     <app-code-snippet [code]="generatedCss" language="css"></app-code-snippet>
@@ -41,3 +45,46 @@
 
   <app-site-footer></app-site-footer>
 </main>
+
+<clr-modal [(clrModalOpen)]="saveModalOpen">
+  <div class="modal-title">Save current preset</div>
+  <div class="modal-body">
+    <div class="clr-form-control">
+      <label for="preset-name-input" class="clr-control-label">Preset name</label>
+      <div class="clr-control-container">
+        <div class="clr-input-wrapper">
+          <input id="preset-name-input" type="text" class="clr-input" required [(ngModel)]="presetNameInput" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="saveModalOpen = false">Cancel</button>
+    <button type="button" class="btn btn-primary" [disabled]="!presetNameInput.trim()" (click)="confirmSavePreset()">
+      Save
+    </button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="importModalOpen">
+  <div class="modal-title">Import generated CSS</div>
+  <div class="modal-body">
+    <div class="clr-form-control">
+      <label for="css-import-input" class="clr-control-label">Paste previously generated CSS</label>
+      <div class="clr-control-container">
+        <textarea
+          id="css-import-input"
+          class="clr-textarea tb-import-textarea"
+          rows="12"
+          [(ngModel)]="cssToImportInput"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="importModalOpen = false">Cancel</button>
+    <button type="button" class="btn btn-primary" [disabled]="!cssToImportInput.trim()" (click)="confirmImportCss()">
+      Import
+    </button>
+  </div>
+</clr-modal>

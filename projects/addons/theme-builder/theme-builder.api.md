@@ -33,6 +33,7 @@ export class Color {
     get oklchString(): string;
     // (undocumented)
     originalColor: string;
+    static parseHsl(input: string): HslColor;
     // (undocumented)
     reset(): void;
     // Warning: (ae-forgotten-export) The symbol "RgbColor" needs to be exported by the entry point clr-addons-theme-builder.d.ts
@@ -68,9 +69,11 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     colorStruct: CdsThemeStructure;
     // (undocumented)
     description: string;
+    exportPreset(name: string): ThemePreset;
     generatedCSS: EventEmitter<string>;
     // (undocumented)
     get generatedCss(): string;
+    importCSS(css: string): void;
     // (undocumented)
     get isDarkTheme(): boolean;
     // (undocumented)
@@ -81,6 +84,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     onWarningTextOverrideChange(): void;
     get presets(): ThemePreset[];
     set presets(value: ThemePreset[]);
+    presetSwatchColor(preset: ThemePreset): string | undefined;
     // (undocumented)
     previewDarkWrapper: ElementRef<HTMLElement>;
     // (undocumented)
@@ -139,15 +143,17 @@ export interface ThemeColor {
 // @public (undocumented)
 export interface ThemeColors {
     // (undocumented)
-    danger?: Color;
+    danger?: ThemeColorValue;
     // (undocumented)
-    info?: Color;
+    info?: ThemeColorValue;
+    // Warning: (ae-forgotten-export) The symbol "ThemeColorValue" needs to be exported by the entry point clr-addons-theme-builder.d.ts
+    //
     // (undocumented)
-    primary?: Color;
+    primary?: ThemeColorValue;
     // (undocumented)
-    success?: Color;
+    success?: ThemeColorValue;
     // (undocumented)
-    warning?: Color;
+    warning?: ThemeColorValue;
 }
 
 // @public (undocumented)

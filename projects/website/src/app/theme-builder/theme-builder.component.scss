@@ -36,7 +36,19 @@
   .card-header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: var(--clr-base-gap-l);
     flex-wrap: wrap;
+
+    > div {
+      display: flex;
+      gap: var(--clr-base-gap-sm);
+    }
   }
+}
+
+.tb-import-textarea {
+  width: 100%;
+  min-height: 200px;
+  font-family: monospace;
 }

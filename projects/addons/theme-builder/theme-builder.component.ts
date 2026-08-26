@@ -22,6 +22,7 @@ import {
 
 import { Color } from './utils/color';
 import { generateCSS } from './utils/css-generator';
+import { parseGeneratedCSS } from './utils/css-parser';
 import {
   BACKGROUND_TOKENS,
   CLARITY_DEFAULT_PRESET,
@@ -164,6 +165,69 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
       }
     }
 
+    this.applyPreviewStyles();
+    this.refreshThemeColors();
+  }
+
+  /** Swatch color for a preset card — `light.primary` may be a plain `ThemeColorValue`, not a `Color`, so `.hex` isn't available directly. */
+  presetSwatchColor(preset: ThemePreset): string | undefined {
+    const primary = preset.light?.primary;
+
+    if (!primary) {
+      return undefined;
+    }
+
+    console.log(primary);
+
+    return primary[0].hex;
+  }
+
+  /**
+   * Re-applies previously generated CSS (e.g. the output of the `generatedCSS` event,
+   * pasted back in by the user) by parsing it into a `CdsThemeStructure` (see
+   * `parseGeneratedCSS`), grouped exactly like `colorStruct`. For each group present in
+   * the parsed CSS, the base token (if included) is applied first and drives
+   * `colorBuilder`'s tint/shade/dark derivation; any other token in that group is then
+   * applied on top, so a variant that was hand-edited independently of its base isn't
+   * lost to that derivation.
+   */
+  importCSS(css: string): void {
+    const parsed = parseGeneratedCSS(css);
+
+    for (const theme of ['light', 'dark'] as const) {
+      this.resetAllThemeColors(theme);
+
+      for (const key of Object.keys(parsed[theme])) {
+        const overrides = parsed[theme][key];
+        const colorGroup = this.colorStruct[theme][key];
+
+        if (!colorGroup) {
+          continue;
+        }
+
+        const base = overrides.find(c => TOKEN_KEYS.baseTokens.includes(c.name));
+
+        if (base) {
+          const activeBase = colorGroup.find(c => c.name === base.name);
+          activeBase.color = base.color;
+          this.colorBuilder(activeBase, colorGroup, theme === 'dark');
+        }
+
+        for (const override of overrides) {
+          if (override === base) {
+            continue;
+          }
+
+          const activeColor = colorGroup.find(c => c.name === override.name);
+
+          if (activeColor) {
+            activeColor.color = override.color;
+          }
+        }
+      }
+    }
+
+    this.activePreset = null;
     this.applyPreviewStyles();
     this.refreshThemeColors();
   }

@@ -18,8 +18,8 @@ const testPresets: ThemePreset[] = [
   { name: 'Default', light: null, dark: null },
   {
     name: 'Custom',
-    light: { primary: new Color('--cds-alias-primary', 'hsl(160deg 69% 36%)') },
-    dark: { primary: new Color('--cds-alias-primary', 'hsl(160deg 69% 53%)') },
+    light: { primary: [new Color('--cds-alias-primary', 'hsl(160deg 69% 36%)')] },
+    dark: { primary: [new Color('--cds-alias-primary', 'hsl(160deg 69% 53%)')] },
   },
 ];
 
@@ -175,6 +175,49 @@ describe('ThemeBuilderComponent', () => {
     this.component.onWarningTextOverrideChange();
 
     expect(this.component.generatedCss).not.toContain('--cds-alias-typography-color-black');
+  });
+
+  describe('importCSS', () => {
+    it('re-applies a color exported via generatedCss, deriving its variants', function (this: ThisTest) {
+      this.fixture.detectChanges(false);
+
+      const primaryGroup = this.component.colorStruct['light']['primary'];
+      const primaryBase = primaryGroup.find(c => c.label === 'Base');
+      this.component.setCurrentColor(primaryBase, '#112233', primaryGroup);
+
+      const css = this.component.generatedCss;
+
+      this.component.resetAllThemeColors('light');
+      expect(primaryBase.isOriginalColor).toBe(true);
+
+      this.component.importCSS(css);
+
+      const shade = primaryGroup.find(c => c.label === 'Shade');
+      expect(primaryBase.isOriginalColor).toBe(false);
+      expect(primaryBase.hex).toBe('#112233');
+      expect(shade.color.h).toBe(primaryBase.color.h);
+      expect(this.component.activePreset).toBeNull();
+    });
+
+    it('clears colors not present in the imported CSS', function (this: ThisTest) {
+      this.fixture.detectChanges(false);
+
+      const primaryGroup = this.component.colorStruct['light']['primary'];
+      const primaryBase = primaryGroup.find(c => c.label === 'Base');
+      this.component.setCurrentColor(primaryBase, '#112233', primaryGroup);
+
+      const infoGroup = this.component.colorStruct['light']['info'];
+      const infoBase = infoGroup.find(c => c.label === 'Base');
+      this.component.setCurrentColor(infoBase, '#332211', infoGroup);
+
+      // CSS mentioning only the primary change — info should be reset back to original.
+      const css = `[cds-theme~='light'] {\n  ${primaryBase.name}: ${primaryBase.hsl};\n}`;
+
+      this.component.importCSS(css);
+
+      expect(primaryBase.isOriginalColor).toBe(false);
+      expect(infoBase.isOriginalColor).toBe(true);
+    });
   });
 });
 
