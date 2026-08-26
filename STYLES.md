@@ -748,6 +748,7 @@
 | --clr-datagrid-filter-toggle-size                    | Width and Height for filter toggle button                                |
 | --clr-datagrid-row-active-color                      | Background color for active state on rows                                |
 | --clr-datagrid-fixed-column-size                     | Size for fixed columns inside datagrid                                   |
+| --clr-datagrid-pinned-columns-max-width              | Largest share of the datagrid the pinned columns may occupy              |
 
 ## CSS Classes
 
@@ -779,6 +780,8 @@
 | datagrid-footer-select           | Select checkbox in the footer.                                                                 |
 | datagrid-header                  | Header section of the datagrid.                                                                |
 | datagrid-calculate-mode          | Internal class used while datagrid is in calculation mode.                                     |
+| datagrid-pinned-cells            | Container that keeps the pinned (static) columns and their cells in place while scrolling.     |
+| datagrid-pinned-column           | Applied to a pinned (static) column and to the cells of that column.                           |
 | datagrid-placeholder             | Container for the datagrid placeholder image and content.                                      |
 | datagrid-placeholder-container   | Main datagrid placholder element.                                                              |
 | datagrid-placeholder-content     | Wrapper for datagrid placeholder content.                                                      |
