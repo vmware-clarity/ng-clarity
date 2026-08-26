@@ -141,27 +141,28 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Applies a preset. Each group in `preset.light`/`preset.dark` is a `Color[]` — the
+   * same shape as `colorStruct` — since a preset can now specify a full set of variants
+   * per group, not just the base color. The base token (if included) is applied first
+   * and drives `colorBuilder`'s tint/shade/dark derivation; any other color present in
+   * the group is then applied on top, so an explicit variant override isn't lost to
+   * that derivation.
+   */
   applyPreset(preset: ThemePreset): void {
     this.activePreset = preset;
 
-    for (const theme of Object.keys(this.activePreset)) {
-      if (theme === 'name') {
-        continue;
-      }
-
+    for (const theme of ['light', 'dark'] as const) {
       this.resetAllThemeColors(theme);
 
-      if (!this.activePreset[theme]) {
+      const themeColors = preset[theme];
+
+      if (!themeColors) {
         continue;
       }
 
-      for (const activePresetKey of Object.keys(this.activePreset[theme])) {
-        const presetColor = this.activePreset[theme][activePresetKey];
-        const activeColor = this.colorStruct[theme][activePresetKey].find(c => c.name === presetColor.name);
-
-        activeColor.color = presetColor.color;
-
-        this.colorBuilder(activeColor, this.colorStruct[theme][activePresetKey], theme === 'dark');
+      for (const key of Object.keys(themeColors)) {
+        this.applyGroupOverrides(theme, key, themeColors[key]);
       }
     }
 
@@ -169,7 +170,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     this.refreshThemeColors();
   }
 
-  /** Swatch color for a preset card — `light.primary` may be a plain `ThemeColorValue`, not a `Color`, so `.hex` isn't available directly. */
+  /** Swatch color for a preset card. */
   presetSwatchColor(preset: ThemePreset): string | undefined {
     const primary = preset.light?.primary;
 
@@ -177,19 +178,14 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
       return undefined;
     }
 
-    console.log(primary);
-
     return primary[0].hex;
   }
 
   /**
    * Re-applies previously generated CSS (e.g. the output of the `generatedCSS` event,
    * pasted back in by the user) by parsing it into a `CdsThemeStructure` (see
-   * `parseGeneratedCSS`), grouped exactly like `colorStruct`. For each group present in
-   * the parsed CSS, the base token (if included) is applied first and drives
-   * `colorBuilder`'s tint/shade/dark derivation; any other token in that group is then
-   * applied on top, so a variant that was hand-edited independently of its base isn't
-   * lost to that derivation.
+   * `parseGeneratedCSS`), grouped exactly like `colorStruct`. Applied the same way as a
+   * preset (see `applyGroupOverrides`).
    */
   importCSS(css: string): void {
     const parsed = parseGeneratedCSS(css);
@@ -198,32 +194,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
       this.resetAllThemeColors(theme);
 
       for (const key of Object.keys(parsed[theme])) {
-        const overrides = parsed[theme][key];
-        const colorGroup = this.colorStruct[theme][key];
-
-        if (!colorGroup) {
-          continue;
-        }
-
-        const base = overrides.find(c => TOKEN_KEYS.baseTokens.includes(c.name));
-
-        if (base) {
-          const activeBase = colorGroup.find(c => c.name === base.name);
-          activeBase.color = base.color;
-          this.colorBuilder(activeBase, colorGroup, theme === 'dark');
-        }
-
-        for (const override of overrides) {
-          if (override === base) {
-            continue;
-          }
-
-          const activeColor = colorGroup.find(c => c.name === override.name);
-
-          if (activeColor) {
-            activeColor.color = override.color;
-          }
-        }
+        this.applyGroupOverrides(theme, key, parsed[theme][key]);
       }
     }
 
@@ -296,6 +267,41 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
             el.style.setProperty(override, `var(${color.name})`);
           }
         });
+      }
+    }
+  }
+
+  /**
+   * Applies a set of color overrides (from a preset or imported CSS) onto one token
+   * group of `colorStruct`. The base token (if present among `overrides`) is applied
+   * first and drives `colorBuilder`'s tint/shade/dark derivation; any other override
+   * present is then applied on top, so an explicit variant override isn't lost to that
+   * derivation. Assumes the theme's colors were already reset by the caller.
+   */
+  private applyGroupOverrides(theme: 'light' | 'dark', key: string, overrides: Color[]): void {
+    const colorGroup = this.colorStruct[theme][key];
+
+    if (!colorGroup) {
+      return;
+    }
+
+    const base = overrides.find(c => TOKEN_KEYS.baseTokens.includes(c.name));
+
+    if (base) {
+      const activeBase = colorGroup.find(c => c.name === base.name);
+      activeBase.color = base.color;
+      this.colorBuilder(activeBase, colorGroup, theme === 'dark');
+    }
+
+    for (const override of overrides) {
+      if (override === base) {
+        continue;
+      }
+
+      const activeColor = colorGroup.find(c => c.name === override.name);
+
+      if (activeColor) {
+        activeColor.color = override.color;
       }
     }
   }

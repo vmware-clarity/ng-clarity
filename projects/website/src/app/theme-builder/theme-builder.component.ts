@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, OnDestroy, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ThemeBuilderComponent as ClrThemeBuilder, PRESETS, ThemePreset } from '@clr/addons/theme-builder';
+import { ThemeBuilderComponent as ClrThemeBuilder, Color, PRESETS, ThemePreset } from '@clr/addons/theme-builder';
 import { ClrAlertModule, ClrModalModule } from '@clr/angular';
 
 import { getFeatureFlags } from '../feature-flags';
@@ -64,7 +64,9 @@ export class ThemeBuilderComponent implements OnDestroy {
   get savedPresets(): ThemePreset[] {
     try {
       const raw = localStorage.getItem(CUSTOM_PRESETS_STORAGE_KEY);
-      return raw ? (JSON.parse(raw) as ThemePreset[]) : [];
+      const parsed = raw ? (JSON.parse(raw) as ThemePreset[]) : [];
+
+      return this.rehydratePreset(parsed);
     } catch {
       return [];
     }
@@ -137,5 +139,25 @@ export class ThemeBuilderComponent implements OnDestroy {
     } catch {
       // clipboard not available — silently ignore
     }
+  }
+
+  /**
+   * Reattaches `Color.prototype` to every color in a preset loaded back from `localStorage`.
+   * `JSON.parse` recovers `Color`'s own data properties (`name`, `originalColor`, and
+   * `_color` when set) as plain objects, but not the class's prototype — so its
+   * `.color`/`.hex` getters are missing until the prototype is restored. Only the `Color`
+   * objects need this; `preset`/`light`/`dark` are plain data already, so it's mutated
+   * in place rather than rebuilt.
+   */
+  private rehydratePreset(presets: ThemePreset[]): ThemePreset[] {
+    for (const preset of presets) {
+      for (const themeColors of [preset.light, preset.dark]) {
+        for (const colors of Object.values(themeColors ?? {})) {
+          colors.forEach((color: any) => Object.setPrototypeOf(color, Color.prototype));
+        }
+      }
+    }
+
+    return presets;
   }
 }

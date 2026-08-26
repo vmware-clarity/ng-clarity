@@ -138,6 +138,33 @@ describe('ThemeBuilderComponent', () => {
     expect(lightPrimary.isOriginalColor).toBe(true);
   });
 
+  it('applies a preset that specifies a full set of variants for a group, not just the base', function (this: ThisTest) {
+    const fullVariantPreset: ThemePreset = {
+      name: 'Full variants',
+      light: {
+        primary: [
+          new Color('--cds-alias-primary', 'hsl(160deg 69% 36%)'),
+          new Color('--cds-alias-primary-shade', 'hsl(200deg 50% 20%)'),
+        ],
+      },
+      dark: {},
+    };
+    this.fixture.detectChanges(false);
+
+    this.component.applyPreset(fullVariantPreset);
+
+    const primaryGroup = this.component.colorStruct['light']['primary'];
+    const base = primaryGroup.find(c => c.label === 'Base');
+    const shade = primaryGroup.find(c => c.label === 'Shade');
+    const tint = primaryGroup.find(c => c.label === 'Tint');
+
+    expect(base.hsl).toBe('hsl(160deg, 69%, 36%)');
+    // The preset's explicit shade overrides what colorBuilder would have derived from the base.
+    expect(shade.hsl).toBe('hsl(200deg, 50%, 20%)');
+    // Variants not specified by the preset are still derived from the base as usual.
+    expect(tint.color.h).toBe(base.color.h);
+  });
+
   it('resets an individual color back to its original value', function (this: ThisTest) {
     this.fixture.detectChanges(false);
 
