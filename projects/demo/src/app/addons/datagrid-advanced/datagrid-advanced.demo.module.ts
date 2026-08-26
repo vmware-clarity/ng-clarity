@@ -56,6 +56,13 @@ const ROUTES: Routes = [
         loadComponent: () =>
           import('./persistance/persistence-grid-demo.component').then(m => m.PersistenceGridDemoComponent),
       },
+      {
+        path: 'pinnable-columns',
+        loadComponent: () =>
+          import('./pinnable-columns/pinnable-columns-grid-demo.component').then(
+            m => m.PinnableColumnsGridDemoComponent
+          ),
+      },
     ],
   },
 ];

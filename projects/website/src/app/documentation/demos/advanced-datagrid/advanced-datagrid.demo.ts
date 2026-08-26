@@ -24,6 +24,7 @@ import { DetailPaneGridDemoComponent } from './ng/detail-pane';
 import { DragDropGridDemoComponent } from './ng/drag-drop';
 import { FiltersGridComponent } from './ng/filters';
 import { PersistenceGridDemoComponent } from './ng/persistance';
+import { PinnableColumnsGridDemoComponent } from './ng/pinnable-columns';
 import { ServerDrivenGridDemoComponent } from './ng/server-driven';
 import { VirtualScrollGridDemoComponent } from './ng/virtual-scroll';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
@@ -54,6 +55,8 @@ const FiltersHtml = require('!raw-loader!./ng/filters.html').default;
 const FiltersTs = replaceComponentName(require('!raw-loader!./ng/filters.ts').default);
 const PersistanceHtml = require('!raw-loader!./ng/persistance.html').default;
 const PersistanceTs = replaceComponentName(require('!raw-loader!./ng/persistance.ts').default);
+const PinnableColumnsHtml = require('!raw-loader!./ng/pinnable-columns.html').default;
+const PinnableColumnsTs = replaceComponentName(require('!raw-loader!./ng/pinnable-columns.ts').default);
 const ServerDrivenHtml = require('!raw-loader!./ng/server-driven.html').default;
 const ServerDrivenTs = replaceComponentName(require('!raw-loader!./ng/server-driven.ts').default);
 const VirtualScrollHtml = require('!raw-loader!./ng/virtual-scroll.html').default;
@@ -251,6 +254,7 @@ const additionalFiles = {
     FiltersGridComponent,
     ClrAlertModule,
     PersistenceGridDemoComponent,
+    PinnableColumnsGridDemoComponent,
   ],
 })
 export class AdvancedDatagridDemo extends ClarityDocComponent {
@@ -273,6 +277,9 @@ export class AdvancedDatagridDemo extends ClarityDocComponent {
 
   persistanceHtml = PersistanceHtml;
   persistanceTs = PersistanceTs;
+
+  pinnableColumnsHtml = PinnableColumnsHtml;
+  pinnableColumnsTs = PinnableColumnsTs;
 
   serverDrivenHtml = ServerDrivenHtml;
   serverDrivenTs = ServerDrivenTs;

@@ -24,7 +24,11 @@ export class BaseExpandableAnimation {
   }
 
   initAnimationEffects() {
-    this.renderer.setStyle(this.element.nativeElement, 'overflow', 'hidden');
+    // `clip` rather than `hidden`: both clip the content that grows past the animated height, but
+    // `hidden` also turns this element into a scroll container, and a scroll container is what a
+    // `position: sticky` descendant anchors itself to. Anything sticky inside would come loose for
+    // the length of the animation - which is what the datagrid's static columns do. See CDE-3127.
+    this.renderer.setStyle(this.element.nativeElement, 'overflow', 'clip');
   }
 
   cleanupAnimationEffects(cancelAnimations = false) {
