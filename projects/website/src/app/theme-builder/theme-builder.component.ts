@@ -9,7 +9,14 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, OnDestroy, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ThemeBuilderComponent as ClrThemeBuilder, Color, PRESETS, ThemePreset } from '@clr/addons/theme-builder';
-import { ClrAlertModule, ClrModalModule } from '@clr/angular';
+import {
+  ClarityIcons,
+  ClrAlertModule,
+  ClrInputModule,
+  ClrModalModule,
+  ClrTextareaModule,
+  trashIcon,
+} from '@clr/angular';
 
 import { getFeatureFlags } from '../feature-flags';
 import { CodeSnippetComponent } from '../shared/code-snippet/code-snippet.component';
@@ -33,6 +40,8 @@ const CUSTOM_PRESETS_STORAGE_KEY = 'clr-theme-builder-custom-presets';
     FormsModule,
     SiteFooterComponent,
     SiteNavComponent,
+    ClrTextareaModule,
+    ClrInputModule,
   ],
 })
 export class ThemeBuilderComponent implements OnDestroy {
@@ -40,10 +49,12 @@ export class ThemeBuilderComponent implements OnDestroy {
   copied = false;
 
   saveModalOpen = false;
-  presetNameInput = '';
+  presetName = '';
 
   importModalOpen = false;
-  cssToImportInput = '';
+  cssToImport = '';
+
+  clearPresetsModalOpen = false;
 
   @ViewChild(ClrThemeBuilder) themeBuilder!: ClrThemeBuilder;
 
@@ -54,6 +65,7 @@ export class ThemeBuilderComponent implements OnDestroy {
   private copiedTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(public cd: ChangeDetectorRef) {
+    ClarityIcons.addIcons(trashIcon);
     this.themeLockService.lockLightTheme();
   }
 
@@ -86,12 +98,12 @@ export class ThemeBuilderComponent implements OnDestroy {
   }
 
   openSaveModal(): void {
-    this.presetNameInput = '';
+    this.presetName = '';
     this.saveModalOpen = true;
   }
 
   confirmSavePreset(): void {
-    const name = this.presetNameInput.trim();
+    const name = this.presetName.trim();
     if (!name) {
       return;
     }
@@ -109,17 +121,27 @@ export class ThemeBuilderComponent implements OnDestroy {
   }
 
   openImportModal(): void {
-    this.cssToImportInput = '';
+    this.cssToImport = '';
     this.importModalOpen = true;
   }
 
   confirmImportCss(): void {
-    if (!this.cssToImportInput.trim()) {
+    if (!this.cssToImport.trim()) {
       return;
     }
 
-    this.themeBuilder.importCSS(this.cssToImportInput);
+    this.themeBuilder.importCSS(this.cssToImport);
     this.importModalOpen = false;
+  }
+
+  openClearPresetsModal(): void {
+    this.clearPresetsModalOpen = true;
+  }
+
+  clearCustomPresets(): void {
+    localStorage.removeItem(CUSTOM_PRESETS_STORAGE_KEY);
+    this.clearPresetsModalOpen = false;
+    this.cd.detectChanges();
   }
 
   async copyCSS(): Promise<void> {

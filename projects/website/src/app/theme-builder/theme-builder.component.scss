@@ -22,6 +22,14 @@
   }
 }
 
+// ── Preset actions ──
+
+.tb-preset-actions {
+  display: flex;
+  gap: var(--clr-base-gap-sm);
+  flex-wrap: wrap;
+}
+
 // ── Generated CSS card ──
 
 .tb-output-card {
@@ -32,23 +40,11 @@
     margin-bottom: var(--clr-base-vertical-offset-l);
   }
 
-  // Card-header contains title + tab buttons + copy button in a flex row
+  // Card-header contains title + copy button in a flex row
   .card-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: var(--clr-base-gap-l);
     flex-wrap: wrap;
-
-    > div {
-      display: flex;
-      gap: var(--clr-base-gap-sm);
-    }
   }
-}
-
-.tb-import-textarea {
-  width: 100%;
-  min-height: 200px;
-  font-family: monospace;
 }
