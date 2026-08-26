@@ -9,8 +9,8 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { AppfxStepperModule } from '@clr/addons/stepper';
 import { ModelChange, Step } from '@clr/addons/var';
 
-import { SampleWorkflowModel } from './sample-workflow.model';
-import { SampleWorkflowService } from './sample-workflow.service';
+import { SampleWorkflowModel } from '../../_utils/sample-workflow/sample-workflow.model';
+import { SampleWorkflowService } from '../../_utils/sample-workflow/sample-workflow.service';
 
 @Component({
   selector: 'clr-demo-sample-stepper',

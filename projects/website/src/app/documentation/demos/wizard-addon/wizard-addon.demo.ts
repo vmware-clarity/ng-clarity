@@ -19,10 +19,10 @@ import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
+import { SampleWorkflowService } from '../_utils/sample-workflow/sample-workflow.service';
 import { ClarityDocComponent } from '../clarity-doc';
 import { SampleStepperComponent } from './sample/sample-stepper.component';
 import { SampleWizardComponent } from './sample/sample-wizard.component';
-import { SampleWorkflowService } from './sample/sample-workflow.service';
 
 const BasicWizardHtml = require('!raw-loader!./ng/basic-wizard.html').default;
 const BasicWizardTs = require('!raw-loader!./ng/basic-wizard.ts').default;

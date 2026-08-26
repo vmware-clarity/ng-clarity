@@ -14,7 +14,7 @@ import { ClarityModule } from '@clr/angular';
 
 import { SampleStepperComponent } from './sample/sample-stepper.component';
 import { SampleWizardComponent } from './sample/sample-wizard.component';
-import { SampleWorkflowService } from './sample/sample-workflow.service';
+import { SampleWorkflowService } from '../_utils/sample-workflow/sample-workflow.service';
 
 @Component({
   selector: 'clr-wizard-addon-demo',
