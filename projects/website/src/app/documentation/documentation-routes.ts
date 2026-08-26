@@ -351,6 +351,12 @@ export const documentationRoutes: Routes = [
       },
       {
         matcher: documentationRouteMatcher,
+        data: { routePath: 'theme-builder/:tab?' },
+        loadChildren: () =>
+          import('./demos/theme-builder/theme-builder.demo.module').then(m => m.ThemeBuilderAddonDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
         data: { routePath: 'translate/:tab?' },
         loadChildren: () => import('./demos/translate/translate.demo.module').then(m => m.TranslateAddonDemoModule),
       },
@@ -392,6 +398,11 @@ export const documentationRoutes: Routes = [
         matcher: documentationRouteMatcher,
         data: { routePath: 'tabs-addon/:tab?' },
         loadChildren: () => import('./demos/tabs-addon/tabs-addon.demo.module').then(m => m.TabsAddonDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
+        data: { routePath: 'dialog/:tab?' },
+        loadChildren: () => import('./demos/dialog/dialog.demo.module').then(m => m.DialogDemoModule),
       },
     ],
   },

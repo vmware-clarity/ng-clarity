@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
 
+import { getFeatureFlags } from './feature-flags';
 import { DensityToggleComponent } from './shared/density-toggle/density-toggle.component';
 import { SkipLinkComponent } from './shared/skip-link/skip-link.component';
 import { ThemeToggleComponent } from './shared/theme-toggle/theme-toggle.component';
@@ -35,4 +36,6 @@ import { VersionSelectComponent } from './shared/version-select/version-select.c
     VersionSelectComponent,
   ],
 })
-export class AppComponent {}
+export class AppComponent {
+  protected readonly themeBuilderOnly = getFeatureFlags().themeBuilderOnly;
+}

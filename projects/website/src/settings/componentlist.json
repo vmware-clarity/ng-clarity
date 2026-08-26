@@ -323,6 +323,11 @@
       "type": "addons"
     },
     {
+      "url": "theme-builder",
+      "text": "Theme Builder",
+      "type": "addons"
+    },
+    {
       "url": "translate",
       "text": "Translate",
       "type": "addons"
@@ -368,6 +373,12 @@
       "text": "Tabs",
       "type": "addons",
       "storybookPath": "addons-tabs"
+    },
+    {
+      "url": "dialog",
+      "text": "Multi-Page Dialog",
+      "type": "addons",
+      "storybookPath": "addons-dialog"
     }
   ]
 }
