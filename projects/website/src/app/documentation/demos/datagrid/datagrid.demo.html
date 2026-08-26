@@ -397,6 +397,105 @@
       </clr-datagrid>
     </div>
 
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="pinnable-columns">Pinnable Columns</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      When a datagrid is wider than the space it has, the columns scroll horizontally and the user can lose track of
+      which row they are reading. Pinning keeps a column to the left of the scrollable ones, so the column that
+      identifies the row stays in view while the user reads the rest.
+    </p>
+    <p cds-text="body" class="clr-mt-8px">
+      Pin the column or columns that let a user recognize a record. Pinned columns take space away from the scrollable
+      ones, so pinning too many leaves little room for the data the user came to read.
+    </p>
+    <p cds-text="body" class="clr-mt-8px">
+      Pinning can be fixed by the application or handed to the user. A pinnable column carries a pin toggle in front of
+      its title, which lets a user keep whichever column matters to their task in view - useful when different people
+      read the same datagrid for different reasons.
+    </p>
+
+    <h4 data-toc-item cds-text="subsection" class="clr-mt-16px">Pinned Columns and Row Detail</h4>
+    <p class="clr-mt-16px" cds-text="body">
+      A pinned column is there to identify the row, so it is rendered <em>outside</em> the scrolling container - that is
+      what lets it stay put while everything else scrolls. A <code cds-text="code">clr-dg-row-detail</code> is rendered
+      <em>inside</em> the scrolling container, so the two do not share a horizontal starting point. Pinned columns
+      therefore do not combine with a row detail that is laid out in columns.
+    </p>
+
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        A row detail holding several <code cds-text="code">clr-dg-cell</code> elements is given the widths of the
+        columns once its cell count matches the number of columns. Those cells are still laid out from the start of the
+        scrolling area, so each one is offset by the combined width of the pinned columns and ends up under the wrong
+        column.
+      </li>
+      <li>
+        With <code cds-text="code">clrDgReplace</code> there is a second problem on top of the first. The cells of the
+        row itself are replaced by the detail, but the pinned ones sit outside the container being replaced and stay
+        visible while the detail renders its own cell for the same column - so the pinned column is shown twice.
+      </li>
+    </ul>
+
+    <p class="clr-mt-16px" cds-text="body">
+      Keep the row detail free-form when the datagrid has pinned columns: a single
+      <code cds-text="code">clr-dg-cell</code>, or any content whose number of cells does not match the number of
+      columns. The datagrid then renders the detail as one full width cell that lines up with the scrollable columns,
+      which is not affected by either problem. Avoid pairing pinned columns with a column-aligned row detail, and avoid
+      <code cds-text="code">clrDgReplace</code> altogether.
+    </p>
+
+    <h4 data-toc-item cds-text="subsection" class="clr-mt-16px">Considerations</h4>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        Pinned columns take space away from the scrollable ones. They cannot take more than 85% of the datagrid and
+        shrink to fit that cap, but a column squeezed down to its minimum width is hard to read - so pin only the
+        columns a user needs to keep their place, and give them explicit widths.
+      </li>
+      <li>
+        The detail pane shows a single, full width column, so there is nothing left to scroll. Pinning is suspended for
+        as long as the pane is open and restored when it closes. The <code cds-text="code">clrDgPinned</code> input
+        itself is not changed.
+      </li>
+      <li>
+        Arrow key navigation follows the columns in the order they appear on screen, so pinning a column also moves it
+        in the keyboard order.
+      </li>
+      <!--
+        Disabled with clrDgPinnable:
+
+        <li>
+          The pin toggle is a button in the header, so it takes focus and is reachable with the keyboard. Its accessible
+          name comes from the <code cds-text="code">pinColumn</code> and <code cds-text="code">unpinColumn</code> common
+          strings - see the <a routerLink="/documentation/internationalization">internationalization documentation</a> for
+          how to translate them.
+        </li>
+        <li>
+          A pinnable column keeps its toggle while the detail pane is open, even though pinning itself is suspended for as
+          long as the pane shows a single column.
+        </li>
+      -->
+    </ul>
+    <div class="clr-mt-16px">
+      <clr-datagrid>
+        <clr-dg-column clrDgPinned [style.width.px]="140">User ID</clr-dg-column>
+        <clr-dg-column clrDgPinned [style.width.px]="240">Name</clr-dg-column>
+        <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
+        <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
+        <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let user of exampleData4" [clrDgItem]="user">
+          <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+          <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+          <clr-dg-cell>
+            <span class="color-square" [style.backgroundColor]="user.color"></span>
+          </clr-dg-cell>
+          <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>{{ exampleData4.length }} users</clr-dg-footer>
+      </clr-datagrid>
+    </div>
+
     <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="scrolling">Scrolling</h3>
     <p cds-text="body" class="clr-mt-16px">
       Datagrids scroll easily if you set their height. The header and footer stay fixed, only the body containing the

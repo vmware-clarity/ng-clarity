@@ -37,6 +37,7 @@ import DatagridItemsSpecs from './datagrid-items.spec';
 import DatagridPageSizeSpecs from './datagrid-page-size.spec';
 import DatagridPaginationIntegrationSpecs from './datagrid-pagination.integration.spec';
 import DatagridPaginationSpecs from './datagrid-pagination.spec';
+import DatagridPinnedColumnSpecs from './datagrid-pinned-column.spec';
 import DatagridPlaceholderSpecs from './datagrid-placeholder.spec';
 import DatagridRowDetailSpecs from './datagrid-row-detail.spec';
 import DatagridRowSpecs from './datagrid-row.spec';
@@ -101,6 +102,7 @@ describe('Datagrid', function () {
     DatagridColumnToggleSpecs();
     DatagridColumnToggleButtonSpecs();
     DatagridHideableColumnDirectiveSpec();
+    DatagridPinnedColumnSpecs();
     WrappedCellSpec();
     WrappedColumnSpec();
     WrappedRowSpec();

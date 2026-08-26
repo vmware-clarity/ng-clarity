@@ -195,6 +195,7 @@ export interface ColumnDefinition<T> {
     filter?: Type<ColumnFilter<T>>;
     hidden?: boolean;
     hideable?: boolean;
+    pinned?: boolean;
     sortAndFilterByField?: string;
     // Warning: (ae-forgotten-export) The symbol "ClrDatagridComparatorInterface" needs to be exported by the entry point clr-addons-datagrid.d.ts
     sortComparator?: ClrDatagridComparatorInterface<T> | string;

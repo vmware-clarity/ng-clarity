@@ -21,9 +21,11 @@ import {
   ellipsisVerticalIcon,
   filterGridCircleIcon,
   filterGridIcon,
+  // pinIcon, // disabled with clrDgPinnable
   stepForward2Icon,
   timesIcon,
   twoWayArrowsIcon,
+  // unpinIcon, // disabled with clrDgPinnable
   viewColumnsIcon,
   windowCloseIcon,
 } from '@clr/angular/icon';
@@ -166,6 +168,9 @@ export class ClrDatagridModule {
       angleDoubleIcon,
       filterGridCircleIcon,
       filterGridIcon
+      // Only the clrDgPinnable toggle used these, so they are disabled along with it.
+      // pinIcon,
+      // unpinIcon
     );
   }
 }
