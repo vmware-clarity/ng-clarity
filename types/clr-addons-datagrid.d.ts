@@ -145,6 +145,14 @@ interface ColumnDefinition<T> {
      */
     hidden?: boolean;
     /**
+     * Pins the column to the left of the Datagrid, so it stays visible while the remaining columns
+     * are scrolled horizontally. Pinned columns keep the order they are defined in and are rendered
+     * after the built-in row controls.
+     *
+     * @default false - Columns are not pinned by default.
+     */
+    pinned?: boolean;
+    /**
      * Defines string filter for data in this column.
      */
     stringFilter?: ClrDatagridStringFilterInterface<T>;
@@ -1470,6 +1478,14 @@ declare class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChan
     setDgColumnsContainer(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
+    /**
+     * A pinned column is rendered in the datagrid's sticky container while the others are rendered in
+     * the scrollable one. Changing the relative order of the two groups cannot be re-rendered: the
+     * column elements are moved against a sibling that now lives in the other container, and the DOM
+     * insert throws. Until the datagrid can render that, a reorder that would cross a pinned column is
+     * refused rather than applied.
+     */
+    private isReorderAllowed;
     private reorderColumn;
     private getColumnIndices;
     private findColumnIndices;
