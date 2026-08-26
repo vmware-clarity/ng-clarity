@@ -22,6 +22,11 @@
     --clr-datagrid-compact-margin-top: #{tokens.$cds-global-space-5};
     --clr-datagrid-compact-action-bar-offset: #{mixins.baselinePx(20)};
 
+    // The largest share of the datagrid that the sticky container can occupy.
+    // The unit is `cqi` resolves against the nearest inline-size container which is `.datagrid-table-wrapper`.
+    // A percentage would resolve against `.datagrid-row-flex` instead which is the full scrollable content width.
+    --clr-datagrid-pinned-columns-max-width: 85cqi;
+
     &,
     [clr-density] {
       --clr-datagrid-margin-top: #{density.$clr-base-vertical-offset-l};
