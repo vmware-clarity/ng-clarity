@@ -1,8 +1,8 @@
 import * as i0 from '@angular/core';
-import { OnDestroy, OnInit, OnChanges, EventEmitter, ElementRef, ViewContainerRef, ChangeDetectorRef, SimpleChanges, DoCheck, TemplateRef, IterableDiffers, TrackByFunction, QueryList, AfterContentInit, AfterViewInit, Renderer2, NgZone, EnvironmentInjector, EmbeddedViewRef, AfterViewChecked, Type } from '@angular/core';
+import { TemplateRef, OnDestroy, OnInit, OnChanges, EventEmitter, ElementRef, ViewContainerRef, ChangeDetectorRef, SimpleChanges, DoCheck, IterableDiffers, TrackByFunction, QueryList, AfterContentInit, AfterViewInit, Renderer2, NgZone, EnvironmentInjector, AfterViewChecked, EmbeddedViewRef, Type } from '@angular/core';
 import * as i39 from '@clr/angular/utils';
 import { ClrCommonStringsService, IfExpandService, ClrLoadingState, ClrExpandableAnimationDirective, DomAdapter, WillyWonka, OompaLoompa } from '@clr/angular/utils';
-import { Observable, Subject, BehaviorSubject, ReplaySubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject, ReplaySubject } from 'rxjs';
 import { ModalStackService } from '@clr/angular/modal';
 import * as i1 from '@clr/angular/popover/common';
 import { ClrPopoverPosition, ClrPopoverService, ClrPopoverType } from '@clr/angular/popover/common';
@@ -43,6 +43,27 @@ declare enum ClrDatagridAriaSortOrder {
     DESC = "descending"
 }
 
+declare enum DatagridColumnChanges {
+    WIDTH = 0,
+    HIDDEN = 1,
+    INITIALIZE = 2,
+    PINNED = 3
+}
+
+interface ColumnState {
+    columnIndex?: number;
+    changes?: DatagridColumnChanges[];
+    width?: number;
+    strictWidth?: number;
+    hideable?: boolean;
+    hidden?: boolean;
+    pinned?: boolean;
+    titleTemplateRef?: TemplateRef<any>;
+}
+interface ColumnStateDiff extends ColumnState {
+    changes: DatagridColumnChanges[];
+}
+
 interface ClrDatagridComparatorInterface<T> {
     compare(a: T, b: T): number;
 }
@@ -53,6 +74,29 @@ interface ClrDatagridFilterInterface<T, S = any> {
     isActive(): boolean;
     accepts(item: T): boolean;
     equals?(other: ClrDatagridFilterInterface<T, any>): boolean;
+}
+
+declare class ColumnsService {
+    columns: BehaviorSubject<ColumnState>[];
+    columnsStateChange: BehaviorSubject<ColumnState>;
+    private _cache;
+    get columnStates(): ColumnState[];
+    get hasHideableColumns(): boolean;
+    get visibleColumns(): ColumnState[];
+    get hasPinnedColumns(): boolean;
+    /**
+     * Tells whether the column at the given index is pinned (static). Columns and cells are
+     * matched by their declaration index, so this is what the header, the rows and a column aligned
+     * row detail use to decide which views belong in the static container.
+     */
+    isPinned(columnIndex: number): boolean;
+    cache(): void;
+    hasCache(): boolean;
+    resetToLastCache(): void;
+    emitStateChangeAt(columnIndex: number, diff: ColumnStateDiff): void;
+    emitStateChange(column: BehaviorSubject<ColumnState>, diff: ColumnStateDiff): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ColumnsService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ColumnsService>;
 }
 
 declare class DetailService {
@@ -257,7 +301,9 @@ declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrD
     private vcr;
     private detailService;
     private changeDetectorRef;
-    private commonStrings;
+    protected commonStrings: ClrCommonStringsService;
+    private columnsService;
+    private columnState;
     filterStringPlaceholder: string;
     filterNumberMaxPlaceholder: string;
     filterNumberMinPlaceholder: string;
@@ -287,10 +333,24 @@ declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrD
      */
     private subscriptions;
     private _showSeparator;
-    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService);
+    private _pinned;
+    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
     get isHidden(): boolean;
+    /**
+     * Whether the column is currently rendered as pinned. This can differ from the `pinned` input
+     * while the detail pane is open, because pinning is suspended for as long as it shows a single
+     * column.
+     */
+    get isPinned(): boolean;
     get showSeparator(): boolean;
     set showSeparator(value: boolean);
+    /**
+     * Pins the column to the left of the datagrid, so it stays visible while the remaining
+     * columns are scrolled horizontally. Pinned columns keep their declaration order and are
+     * rendered before the scrollable ones, right after the built-in row controls.
+     */
+    get pinned(): boolean;
+    set pinned(value: boolean);
     get colType(): "string" | "number";
     set colType(value: 'string' | 'number');
     get field(): string;
@@ -330,8 +390,9 @@ declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrD
     private setFilterToggleAriaLabel;
     private listenForSortingChanges;
     private setupDefaultFilter;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, [null, null, null, null, null, null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "pinned": { "alias": "clrDgPinned"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ngAcceptInputType_pinned: unknown;
 }
 
 type ClrDatagridItemsIdentityFunction<T> = (item: T) => any;
@@ -664,6 +725,7 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
     el: ElementRef<HTMLElement>;
     commonStrings: ClrCommonStringsService;
     private items;
+    private columnsService;
     private document;
     selectedChanged: EventEmitter<boolean>;
     expandedChange: EventEmitter<boolean>;
@@ -693,6 +755,7 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
     expandAnimation: ClrExpandableAnimationDirective;
     detailButton: ElementRef<HTMLButtonElement>;
     _stickyCells: ViewContainerRef;
+    _pinnedCells: ViewContainerRef;
     _scrollableCells: ViewContainerRef;
     _calculatedCells: ViewContainerRef;
     _fixedCellTemplate: TemplateRef<any>;
@@ -704,7 +767,7 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
     private wrappedInjector;
     private subscriptions;
     private _selectable;
-    constructor(selection: Selection<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, document: any);
+    constructor(selection: Selection<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, columnsService: ColumnsService, document: any);
     /**
      * Model of the row, to use for selection
      */
@@ -745,6 +808,13 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
      * @deprecated related to clrDgRowSelection, which is deprecated
      */
     protected selectRow(selected: boolean, $event: any): void;
+    /**
+     * Projects the cells into the display containers. Cells of pinned columns go into their static
+     * container so they stay visible during horizontal scroll; the rest stay scrollable. Cells are
+     * matched with their column by declaration index, and iterating in that order keeps both groups
+     * aligned with the header.
+     */
+    private insertCellViews;
     private rangeSelect;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRow<any>, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "detailDisabled": { "alias": "clrDgDetailDisabled"; "required": false; }; "detailHidden": { "alias": "clrDgDetailHidden"; "required": false; }; "skeletonLoading": { "alias": "clrDgSkeletonLoading"; "required": false; }; "item": { "alias": "clrDgItem"; "required": false; }; "clrDgSelectable": { "alias": "clrDgSelectable"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "expanded": { "alias": "clrDgExpanded"; "required": false; }; "clrDgDetailOpenLabel": { "alias": "clrDgDetailOpenLabel"; "required": false; }; "clrDgDetailCloseLabel": { "alias": "clrDgDetailCloseLabel"; "required": false; }; "clrDgRowSelectionLabel": { "alias": "clrDgRowSelectionLabel"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-action-overflow", "clr-dg-cell", "clr-dg-row-detail"], false, never>;
@@ -903,6 +973,7 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
     commonStrings: ClrCommonStringsService;
     keyNavigation: KeyNavigationGridController;
     private zone;
+    private columnsService;
     loadingMoreItems: boolean;
     clrDgSingleSelectionAriaLabel: string;
     clrDgSingleActionableAriaLabel: string;
@@ -948,6 +1019,7 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
     rowsWrapper: ElementRef<HTMLElement>;
     scrollableColumns: ViewContainerRef;
     _projectedDisplayColumns: ViewContainerRef;
+    _projectedStickyColumns: ViewContainerRef;
     _projectedCalculationColumns: ViewContainerRef;
     _displayedRows: ViewContainerRef;
     _calculationRows: ViewContainerRef;
@@ -957,6 +1029,7 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
     activeCellCoords: CellCoordinates;
     SELECTION_TYPE: typeof SelectionType;
     private selectAllCheckbox;
+    private rowControls;
     /**
      * Subscriptions to all the services and queries changes
      */
@@ -965,7 +1038,12 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
     private cachedRowsHeight;
     private cachedContentHeight;
     private resizeObserver;
-    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
+    /**
+     * Watches the row controls for anything that changes their width without going through a render
+     * cycle - a density change, or an application restyling them.
+     */
+    private rowControlsObserver;
+    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService, keyNavigation: KeyNavigationGridController, zone: NgZone, columnsService: ColumnsService);
     /**
      * Freezes the datagrid while data is loading
      */
@@ -1019,6 +1097,27 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
      */
     dataChanged(): void;
     private toggleVirtualScrollSubscriptions;
+    /**
+     * Publishes the width of the row controls - the static container holding the select, action and
+     * caret cells - as a custom property, which is where the pinned columns read the offset they
+     * became static at. They are static right after the controls rather than at the edge of the datagrid,
+     * and `position: sticky` always measures its offsets from that edge, so the distance between the
+     * two has to be measured and handed to the stylesheet.
+     *
+     * The header and the rows get their own value: the header renders one caret column for both
+     * kinds of caret where a row renders one cell per caret, so the two containers are not
+     * necessarily the same width.
+     *
+     * Nothing reads this property unless a column is pinned - `.datagrid-pinned-cells` is the only
+     * consumer, and it is `display: none` while empty - so the measurement is skipped entirely
+     * otherwise. It matters on a datagrid with many rows: `getBoundingClientRect()` forces the
+     * browser to resolve any pending layout first, and on a large datagrid that resolution is not
+     * cheap. Both boxes are read before either write for the same reason - writing the custom
+     * property is itself layout-affecting (`.datagrid-pinned-cells` reads it back for its own
+     * position and width), so reading again in between would force that resolution twice.
+     */
+    private updateRowControlsWidth;
+    private setRowControlsWidth;
     private handleResizeChanges;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagrid<any>, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": { "alias": "clrLoadingMoreItems"; "required": false; }; "clrDgSingleSelectionAriaLabel": { "alias": "clrDgSingleSelectionAriaLabel"; "required": false; }; "clrDgSingleActionableAriaLabel": { "alias": "clrDgSingleActionableAriaLabel"; "required": false; }; "clrDetailExpandableAriaLabel": { "alias": "clrDetailExpandableAriaLabel"; "required": false; }; "clrDgDisablePageFocus": { "alias": "clrDgDisablePageFocus"; "required": false; }; "customSelectAllEnabled": { "alias": "clrDgCustomSelectAllEnabled"; "required": false; }; "selectAllDisabled": { "alias": "clrDgSelectAllDisabled"; "required": false; }; "loading": { "alias": "clrDgLoading"; "required": false; }; "selectionType": { "alias": "clrDgSelectionType"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "clrDgPreserveSelection": { "alias": "clrDgPreserveSelection"; "required": false; }; "rowSelectionMode": { "alias": "clrDgRowSelection"; "required": false; }; "identityFn": { "alias": "clrDgItemsIdentityFn"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
@@ -1051,41 +1150,6 @@ declare class ClrDatagridActionOverflow implements OnDestroy {
     private initializeFocus;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridActionOverflow, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "buttonLabel": { "alias": "clrDgActionOverflowButtonLabel"; "required": false; }; "open": { "alias": "clrDgActionOverflowOpen"; "required": false; }; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
-}
-
-declare enum DatagridColumnChanges {
-    WIDTH = 0,
-    HIDDEN = 1,
-    INITIALIZE = 2
-}
-
-interface ColumnState {
-    columnIndex?: number;
-    changes?: DatagridColumnChanges[];
-    width?: number;
-    strictWidth?: number;
-    hideable?: boolean;
-    hidden?: boolean;
-    titleTemplateRef?: TemplateRef<any>;
-}
-interface ColumnStateDiff extends ColumnState {
-    changes: DatagridColumnChanges[];
-}
-
-declare class ColumnsService {
-    columns: BehaviorSubject<ColumnState>[];
-    columnsStateChange: BehaviorSubject<ColumnState>;
-    private _cache;
-    get columnStates(): ColumnState[];
-    get hasHideableColumns(): boolean;
-    get visibleColumns(): ColumnState[];
-    cache(): void;
-    hasCache(): boolean;
-    resetToLastCache(): void;
-    emitStateChangeAt(columnIndex: number, diff: ColumnStateDiff): void;
-    emitStateChange(column: BehaviorSubject<ColumnState>, diff: ColumnStateDiff): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ColumnsService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ColumnsService>;
 }
 
 declare class ClrDatagridColumnToggle implements OnDestroy {
@@ -1326,24 +1390,46 @@ declare class ClrIfDetail implements OnInit, OnDestroy {
  * Generic bland container serving various purposes for Datagrid.
  * For instance, it can help span a text over multiple rows in detail view.
  */
-declare class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
+declare class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
     selection: Selection;
     rowActionService: RowActionService;
     expand: DatagridIfExpandService;
     expandableRows: ExpandableRowsCount;
     commonStrings: ClrCommonStringsService;
+    private columnsService;
+    private displayMode;
     _beginningOfExpandableContentAriaText: string;
     _endOfExpandableContentAriaText: string;
     replacedRow: boolean;
+    /**
+     * Whether the detail lays its cells out in the same columns as the row, which it does when it
+     * holds one cell per column and at least one of those columns is pinned. The cells of the pinned
+     * columns are then static alongside the ones in the row above.
+     */
+    columnAligned: boolean;
     SELECTION_TYPE: typeof SelectionType;
     cells: QueryList<ClrDatagridCell>;
+    private _pinnedCells;
+    private _scrollableCells;
+    private _plainCells;
     private subscriptions;
-    constructor(selection: Selection, rowActionService: RowActionService, expand: DatagridIfExpandService, expandableRows: ExpandableRowsCount, commonStrings: ClrCommonStringsService);
+    private cellsMoved;
+    private lastLayout;
+    private hadCells;
+    constructor(selection: Selection, rowActionService: RowActionService, expand: DatagridIfExpandService, expandableRows: ExpandableRowsCount, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, displayMode: DisplayModeService);
     set replace(value: boolean);
     get beginningOfExpandableContentAriaText(): string;
     get endOfExpandableContentAriaText(): string;
     ngAfterContentInit(): void;
+    ngAfterViewInit(): void;
+    ngAfterViewChecked(): void;
     ngOnDestroy(): void;
+    /**
+     * Moves the cells into the containers that lay them out in the same columns as the row, or back
+     * out of them once that stops making sense.
+     */
+    private syncColumnAlignment;
+    private moveCell;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRowDetail, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRowDetail, "clr-dg-row-detail", never, { "_beginningOfExpandableContentAriaText": { "alias": "clrRowDetailBeginningAriaText"; "required": false; }; "_endOfExpandableContentAriaText": { "alias": "clrRowDetailEndAriaText"; "required": false; }; "replace": { "alias": "clrDgReplace"; "required": false; }; }, {}, ["cells"], ["*"], false, never>;
 }
@@ -1714,6 +1800,7 @@ declare class DatagridCellRenderer implements OnDestroy {
     resetState(state: ColumnState): void;
     setWidth(state: ColumnState): void;
     setHidden(state: ColumnState): void;
+    setPinned(state: ColumnState): void;
     private clearWidth;
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridCellRenderer, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridCellRenderer, "clr-dg-cell", never, {}, {}, never, never, false, never>;
@@ -1739,6 +1826,7 @@ declare class DatagridHeaderRenderer implements OnDestroy {
     setColumnState(index: number): void;
     setWidth(state: ColumnState): void;
     setHidden(state: ColumnState): void;
+    setPinned(state: ColumnState): void;
     private clearWidth;
     private detectStrictWidth;
     private computeWidth;

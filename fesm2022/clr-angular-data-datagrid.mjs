@@ -1,14 +1,14 @@
 import * as i0 from '@angular/core';
-import { Injectable, Directive, ViewChild, Component, PLATFORM_ID, Inject, DOCUMENT, EventEmitter, ElementRef, booleanAttribute, Input, Output, Optional, ContentChild, ChangeDetectionStrategy, ContentChildren, forwardRef, HostListener, ViewContainerRef, runInInjectionContext, Injector, ChangeDetectorRef, NgZone, Renderer2, inject, EnvironmentInjector, TemplateRef, IterableDiffers, afterNextRender, ViewChildren, InjectionToken, NgModule } from '@angular/core';
+import { InjectionToken, Injectable, Directive, ViewChild, Component, PLATFORM_ID, Inject, DOCUMENT, EventEmitter, ElementRef, booleanAttribute, Input, Output, Optional, ContentChild, ChangeDetectionStrategy, ContentChildren, forwardRef, HostListener, ViewContainerRef, runInInjectionContext, Injector, ChangeDetectorRef, NgZone, Renderer2, inject, EnvironmentInjector, TemplateRef, IterableDiffers, afterNextRender, RendererStyleFlags2, ViewChildren, NgModule } from '@angular/core';
 import * as i2 from '@clr/angular/utils';
 import { uniqueIdFactory, Keys, HostWrapper, IfExpandService, ClrLoadingState, ClrExpandableAnimationDirective, LoadingListener, WillyWonka, OompaLoompa, ClrKeyFocus, DomAdapter, ClrIfExpanded, CdkDragModule, CdkTrapFocusModule, ClrLoadingModule, ClrConditionalModule, ClrOutsideClickModule, ClrExpandableAnimationModule, ClrKeyFocusModule } from '@clr/angular/utils';
-import * as i2$2 from 'rxjs';
+import * as i12 from 'rxjs';
 import { Subject, BehaviorSubject, fromEvent, ReplaySubject, combineLatest, merge, of } from 'rxjs';
 import { filter, takeUntil, delay, debounceTime, map, switchMap } from 'rxjs/operators';
 import * as i3 from '@clr/angular/popover/common';
 import { ClrPopoverPosition, ClrPopoverType, ClrPopoverHostDirective, mapPopoverKeyToPosition, ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import * as i1 from '@clr/angular/modal';
-import * as i9 from '@angular/common';
+import * as i10 from '@angular/common';
 import { isPlatformBrowser, NgForOf, CommonModule } from '@angular/common';
 import * as i5 from '@clr/angular/icon';
 import { ClarityIcons, ellipsisVerticalIcon, viewColumnsIcon, windowCloseIcon, arrowIcon, timesIcon, twoWayArrowsIcon, stepForward2Icon, angleDoubleIcon, filterGridCircleIcon, filterGridIcon, ClrIcon } from '@clr/angular/icon';
@@ -16,14 +16,14 @@ import * as i4 from '@clr/angular/forms/common';
 import { ClrControlLabel } from '@clr/angular/forms/common';
 import * as i5$1 from '@clr/angular/forms/number-input';
 import { ClrNumberInputModule } from '@clr/angular/forms/number-input';
-import * as i13 from '@angular/forms';
+import * as i14 from '@angular/forms';
 import { NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import * as i5$2 from '@clr/angular/forms/input';
 import { ClrInputModule } from '@clr/angular/forms/input';
 import { ClrSignpost } from '@clr/angular/popover/signpost';
-import * as i12 from '@clr/angular/forms/radio';
+import * as i13 from '@clr/angular/forms/radio';
 import { ClrRadioModule } from '@clr/angular/forms/radio';
-import * as i14 from '@clr/angular/progress/spinner';
+import * as i15 from '@clr/angular/progress/spinner';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import * as i2$1 from '@angular/cdk/bidi';
 import { Directionality } from '@angular/cdk/bidi';
@@ -347,6 +347,23 @@ class DatagridStringFilterImpl {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+var DatagridColumnChanges;
+(function (DatagridColumnChanges) {
+    DatagridColumnChanges[DatagridColumnChanges["WIDTH"] = 0] = "WIDTH";
+    DatagridColumnChanges[DatagridColumnChanges["HIDDEN"] = 1] = "HIDDEN";
+    DatagridColumnChanges[DatagridColumnChanges["INITIALIZE"] = 2] = "INITIALIZE";
+    DatagridColumnChanges[DatagridColumnChanges["PINNED"] = 3] = "PINNED";
+})(DatagridColumnChanges || (DatagridColumnChanges = {}));
+const ALL_COLUMN_CHANGES = Object.keys(DatagridColumnChanges)
+    .map(key => DatagridColumnChanges[key])
+    .filter(key => key === parseInt(key, 10) && key !== DatagridColumnChanges.INITIALIZE); // extracts only integer keys
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 /**
  * Enumeration representing the sorting order of a datagrid column. It is a constant Enum,
  * i.e. each value needs to be treated as a `number`, starting at index 0.
@@ -373,6 +390,23 @@ var ClrDatagridAriaSortOrder;
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+const COLUMN_STATE = new InjectionToken('COLUMN_STATE');
+function columnStateFactory() {
+    return new BehaviorSubject({
+        changes: [],
+    });
+}
+const COLUMN_STATE_PROVIDER = {
+    provide: COLUMN_STATE,
+    useFactory: columnStateFactory,
+};
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 class CustomFilter {
 }
 
@@ -384,6 +418,7 @@ class CustomFilter {
  */
 const STRICT_WIDTH_CLASS = 'datagrid-fixed-width';
 const HIDDEN_COLUMN_CLASS = 'datagrid-hidden-column';
+const PINNED_COLUMN_CLASS = 'datagrid-pinned-column';
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -917,6 +952,76 @@ class DetailService {
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DetailService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: i1.ModalStackService }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ColumnsService {
+    constructor() {
+        this.columns = [];
+        this.columnsStateChange = new BehaviorSubject(null);
+        this._cache = [];
+    }
+    get columnStates() {
+        return this.columns.map(column => column.value);
+    }
+    get hasHideableColumns() {
+        return this.columnStates.filter(state => state.hideable).length > 0;
+    }
+    get visibleColumns() {
+        return this.columnStates.filter(state => !state.hidden);
+    }
+    get hasPinnedColumns() {
+        return this.columnStates.some(state => state.pinned);
+    }
+    /**
+     * Tells whether the column at the given index is pinned (static). Columns and cells are
+     * matched by their declaration index, so this is what the header, the rows and a column aligned
+     * row detail use to decide which views belong in the static container.
+     */
+    isPinned(columnIndex) {
+        return !!this.columns[columnIndex]?.value.pinned;
+    }
+    cache() {
+        this._cache = this.columns.map(subject => {
+            const value = { ...subject.value };
+            delete value.changes;
+            return value;
+        });
+    }
+    hasCache() {
+        return !!this._cache.length;
+    }
+    resetToLastCache() {
+        this._cache.forEach((state, index) => {
+            // Just emit the exact value from the cache
+            const cachedState = { ...state, changes: ALL_COLUMN_CHANGES };
+            this.columns[index].next(cachedState);
+            this.columnsStateChange.next(cachedState);
+        });
+        this._cache = [];
+    }
+    // Helper method to emit a change to a column only when there is an actual diff to process for that column
+    emitStateChangeAt(columnIndex, diff) {
+        if (!this.columns[columnIndex]) {
+            return;
+        }
+        this.emitStateChange(this.columns[columnIndex], diff);
+    }
+    emitStateChange(column, diff) {
+        const changedState = { ...column.value, ...diff };
+        column.next(changedState);
+        this.columnsStateChange.next(changedState);
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService, decorators: [{
+            type: Injectable
+        }] });
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -2239,7 +2344,7 @@ class DatagridNumericFilter extends DatagridFilterRegistrar {
         </clr-number-input-container>
       </div>
     </clr-dg-filter>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i5$1.ClrNumberInput, selector: "input[type=\"number\"][clrNumberInput]" }, { kind: "component", type: i5$1.ClrNumberInputContainer, selector: "clr-number-input-container" }, { kind: "directive", type: i13.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i13.NumberValueAccessor, selector: "input[type=number][formControlName],input[type=number][formControl],input[type=number][ngModel]" }, { kind: "directive", type: i13.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i13.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: ClrDatagridFilter, selector: "clr-dg-filter", inputs: ["clrDgFilterOpen", "clrDgFilter"], outputs: ["clrDgFilterOpenChange"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i5$1.ClrNumberInput, selector: "input[type=\"number\"][clrNumberInput]" }, { kind: "component", type: i5$1.ClrNumberInputContainer, selector: "clr-number-input-container" }, { kind: "directive", type: i14.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i14.NumberValueAccessor, selector: "input[type=number][formControlName],input[type=number][formControl],input[type=number][ngModel]" }, { kind: "directive", type: i14.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i14.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: ClrDatagridFilter, selector: "clr-dg-filter", inputs: ["clrDgFilterOpen", "clrDgFilter"], outputs: ["clrDgFilterOpenChange"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridNumericFilter, decorators: [{
             type: Component,
@@ -2432,7 +2537,7 @@ class DatagridStringFilter extends DatagridFilterRegistrar {
         />
       </clr-input-container>
     </clr-dg-filter>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i5$2.ClrInput, selector: "[clrInput]" }, { kind: "component", type: i5$2.ClrInputContainer, selector: "clr-input-container" }, { kind: "directive", type: i13.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i13.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i13.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: ClrDatagridFilter, selector: "clr-dg-filter", inputs: ["clrDgFilterOpen", "clrDgFilter"], outputs: ["clrDgFilterOpenChange"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i5$2.ClrInput, selector: "[clrInput]" }, { kind: "component", type: i5$2.ClrInputContainer, selector: "clr-input-container" }, { kind: "directive", type: i14.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i14.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i14.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: ClrDatagridFilter, selector: "clr-dg-filter", inputs: ["clrDgFilterOpen", "clrDgFilter"], outputs: ["clrDgFilterOpenChange"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DatagridStringFilter, decorators: [{
             type: Component,
@@ -2488,7 +2593,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrDatagridColumn extends DatagridFilterRegistrar {
-    constructor(el, _sort, filters, vcr, detailService, changeDetectorRef, commonStrings) {
+    constructor(el, _sort, filters, vcr, detailService, changeDetectorRef, commonStrings, columnsService, columnState) {
         super(filters);
         this.el = el;
         this._sort = _sort;
@@ -2496,8 +2601,21 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
         this.detailService = detailService;
         this.changeDetectorRef = changeDetectorRef;
         this.commonStrings = commonStrings;
+        this.columnsService = columnsService;
+        this.columnState = columnState;
         this.disableUnsort = false;
+        // Disabled for now, together with the toggle in the template above and togglePinned() below.
+        // Kept as a line comment rather than a doc comment, so api-extractor does not attach it to the
+        // next declaration.
+        //
+        // /**
+        //  * Shows a pin toggle in the column header, letting the user pin and unpin the column from within
+        //  * the datagrid. It only adds the control - the pinned state itself stays on `clrDgPinned`.
+        //  */
+        // @Input({ alias: 'clrDgPinnable', transform: booleanAttribute }) pinnable = false;
         this.sortOrderChange = new EventEmitter();
+        // Only togglePinned() ever emitted this, so it is disabled along with the pin toggle.
+        // @Output('clrDgPinnedChange') pinnedChange = new EventEmitter<boolean>();
         this.filterValueChange = new EventEmitter();
         /**
          * A custom filter for this column that can be provided in the projected content
@@ -2518,11 +2636,20 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
          */
         this.subscriptions = [];
         this._showSeparator = true;
+        this._pinned = false;
         this.subscriptions.push(this.listenForSortingChanges());
         this.subscriptions.push(this.listenForDetailPaneChanges());
     }
     get isHidden() {
         return this.el.nativeElement.classList.contains(HIDDEN_COLUMN_CLASS);
+    }
+    /**
+     * Whether the column is currently rendered as pinned. This can differ from the `pinned` input
+     * while the detail pane is open, because pinning is suspended for as long as it shows a single
+     * column.
+     */
+    get isPinned() {
+        return this.el.nativeElement.classList.contains(PINNED_COLUMN_CLASS);
     }
     get showSeparator() {
         return this._showSeparator;
@@ -2530,6 +2657,29 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
     set showSeparator(value) {
         this._showSeparator = value;
         this.changeDetectorRef.markForCheck();
+    }
+    /**
+     * Pins the column to the left of the datagrid, so it stays visible while the remaining
+     * columns are scrolled horizontally. Pinned columns keep their declaration order and are
+     * rendered before the scrollable ones, right after the built-in row controls.
+     */
+    get pinned() {
+        return this._pinned;
+    }
+    set pinned(value) {
+        if (this._pinned === value) {
+            return;
+        }
+        this._pinned = value;
+        // The column state is what the header and the rows read to decide where to project the
+        // column and its cells. It is optional only so the column keeps working when it is used
+        // outside the render directives, e.g. in isolated tests.
+        if (this.columnState) {
+            this.columnsService.emitStateChange(this.columnState, {
+                pinned: value,
+                changes: [DatagridColumnChanges.PINNED],
+            });
+        }
     }
     // TODO: We might want to make this an enum in the future
     get colType() {
@@ -2709,6 +2859,21 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
         this._sortDirection = this._sortOrder === ClrDatagridSortOrder.DESC ? 'down' : 'up';
         this.sortOrderChange.emit(this._sortOrder);
     }
+    // Disabled for now, together with the pin toggle in the template and the clrDgPinnable input.
+    //
+    // /**
+    //  * Pins or unpins the column from the header control. Going through the `pinned` setter keeps the
+    //  * rendering in sync, and the output lets the application follow a change it did not initiate -
+    //  * without it a one-way [clrDgPinned] binding would write the old value straight back.
+    //  */
+    // protected togglePinned(event: MouseEvent) {
+    //   // The header is a drop target for the column ordering addon and a click target for the sort
+    //   // button next to us, so the toggle keeps its click to itself.
+    //   event.stopPropagation();
+    //
+    //   this.pinned = !this.pinned;
+    //   this.pinnedChange.emit(this.pinned);
+    // }
     listenForDetailPaneChanges() {
         return this.detailService.stateChange.subscribe(state => {
             if (this.showSeparator !== !state) {
@@ -2752,9 +2917,26 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
             delete this.initFilterValue;
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridColumn, deps: [{ token: i0.ElementRef }, { token: Sort }, { token: FiltersProvider }, { token: i0.ViewContainerRef }, { token: DetailService }, { token: i0.ChangeDetectorRef }, { token: i2.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrDatagridColumn, isStandalone: false, selector: "clr-dg-column", inputs: { filterStringPlaceholder: ["clrFilterStringPlaceholder", "filterStringPlaceholder"], filterNumberMaxPlaceholder: ["clrFilterNumberMaxPlaceholder", "filterNumberMaxPlaceholder"], filterNumberMinPlaceholder: ["clrFilterNumberMinPlaceholder", "filterNumberMinPlaceholder"], disableUnsort: ["clrDgDisableUnsort", "disableUnsort"], colType: ["clrDgColType", "colType"], field: ["clrDgField", "field"], sortBy: ["clrDgSortBy", "sortBy"], sortOrder: ["clrDgSortOrder", "sortOrder"], updateFilterValue: ["clrFilterValue", "updateFilterValue"] }, outputs: { sortOrderChange: "clrDgSortOrderChange", filterValueChange: "clrFilterValueChange" }, host: { attributes: { "role": "columnheader" }, properties: { "class.datagrid-column": "true", "attr.aria-sort": "ariaSort" } }, queries: [{ propertyName: "projectedFilter", first: true, predicate: CustomFilter, descendants: true }], viewQueries: [{ propertyName: "titleContainer", first: true, predicate: ["titleContainer"], descendants: true, read: ElementRef }], usesInheritance: true, usesOnChanges: true, hostDirectives: [{ directive: i3.ClrPopoverHostDirective }], ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridColumn, deps: [{ token: i0.ElementRef }, { token: Sort }, { token: FiltersProvider }, { token: i0.ViewContainerRef }, { token: DetailService }, { token: i0.ChangeDetectorRef }, { token: i2.ClrCommonStringsService }, { token: ColumnsService }, { token: COLUMN_STATE, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrDatagridColumn, isStandalone: false, selector: "clr-dg-column", inputs: { filterStringPlaceholder: ["clrFilterStringPlaceholder", "filterStringPlaceholder"], filterNumberMaxPlaceholder: ["clrFilterNumberMaxPlaceholder", "filterNumberMaxPlaceholder"], filterNumberMinPlaceholder: ["clrFilterNumberMinPlaceholder", "filterNumberMinPlaceholder"], disableUnsort: ["clrDgDisableUnsort", "disableUnsort"], pinned: ["clrDgPinned", "pinned", booleanAttribute], colType: ["clrDgColType", "colType"], field: ["clrDgField", "field"], sortBy: ["clrDgSortBy", "sortBy"], sortOrder: ["clrDgSortOrder", "sortOrder"], updateFilterValue: ["clrFilterValue", "updateFilterValue"] }, outputs: { sortOrderChange: "clrDgSortOrderChange", filterValueChange: "clrFilterValueChange" }, host: { attributes: { "role": "columnheader" }, properties: { "class.datagrid-column": "true", "attr.aria-sort": "ariaSort" } }, queries: [{ propertyName: "projectedFilter", first: true, predicate: CustomFilter, descendants: true }], viewQueries: [{ propertyName: "titleContainer", first: true, predicate: ["titleContainer"], descendants: true, read: ElementRef }], usesInheritance: true, usesOnChanges: true, hostDirectives: [{ directive: i3.ClrPopoverHostDirective }], ngImport: i0, template: `
     <div class="datagrid-column-flex">
+      <!--
+        clrDgPinnable is disabled for now. Restoring it means uncommenting this block together with
+        the pinnable input, the clrDgPinnedChange output and togglePinned() below, the
+        .datagrid-column-pin styles, the pin/unpin icons in ClrDatagridModule and the
+        pinColumn/unpinColumn common strings.
+
+        @if (pinnable) {
+          <button
+            class="datagrid-column-pin"
+            type="button"
+            [attr.aria-label]="pinned ? commonStrings.keys.unpinColumn : commonStrings.keys.pinColumn"
+            (click)="togglePinned($event)"
+          >
+            <cds-icon [size]="'12'" [shape]="pinned ? 'unpin' : 'pin'" solid aria-hidden="true"></cds-icon>
+          </button>
+        }
+      -->
       @if (sortable) {
         <button class="datagrid-column-title" (click)="sort()" type="button" #titleContainer>
           <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
@@ -2798,7 +2980,7 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
         <clr-dg-column-separator></clr-dg-column-separator>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i9.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: ClrDatagridColumnSeparator, selector: "clr-dg-column-separator" }, { kind: "component", type: DatagridNumericFilter, selector: "clr-dg-numeric-filter", inputs: ["clrFilterMinPlaceholder", "clrFilterMaxPlaceholder", "clrFilterFromLabel", "clrFilterToLabel", "clrFilterValue", "clrDgNumericFilter"], outputs: ["clrFilterValueChange"] }, { kind: "component", type: DatagridStringFilter, selector: "clr-dg-string-filter", inputs: ["clrFilterPlaceholder", "clrFilterLabel", "clrDgStringFilter", "clrFilterValue"], outputs: ["clrFilterValueChange"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i10.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "component", type: ClrDatagridColumnSeparator, selector: "clr-dg-column-separator" }, { kind: "component", type: DatagridNumericFilter, selector: "clr-dg-numeric-filter", inputs: ["clrFilterMinPlaceholder", "clrFilterMaxPlaceholder", "clrFilterFromLabel", "clrFilterToLabel", "clrFilterValue", "clrDgNumericFilter"], outputs: ["clrFilterValueChange"] }, { kind: "component", type: DatagridStringFilter, selector: "clr-dg-string-filter", inputs: ["clrFilterPlaceholder", "clrFilterLabel", "clrDgStringFilter", "clrFilterValue"], outputs: ["clrFilterValueChange"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridColumn, decorators: [{
             type: Component,
@@ -2806,6 +2988,23 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     selector: 'clr-dg-column',
                     template: `
     <div class="datagrid-column-flex">
+      <!--
+        clrDgPinnable is disabled for now. Restoring it means uncommenting this block together with
+        the pinnable input, the clrDgPinnedChange output and togglePinned() below, the
+        .datagrid-column-pin styles, the pin/unpin icons in ClrDatagridModule and the
+        pinColumn/unpinColumn common strings.
+
+        @if (pinnable) {
+          <button
+            class="datagrid-column-pin"
+            type="button"
+            [attr.aria-label]="pinned ? commonStrings.keys.unpinColumn : commonStrings.keys.pinColumn"
+            (click)="togglePinned($event)"
+          >
+            <cds-icon [size]="'12'" [shape]="pinned ? 'unpin' : 'pin'" solid aria-hidden="true"></cds-icon>
+          </button>
+        }
+      -->
       @if (sortable) {
         <button class="datagrid-column-title" (click)="sort()" type="button" #titleContainer>
           <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
@@ -2859,7 +3058,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     changeDetection: ChangeDetectionStrategy.OnPush,
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: Sort }, { type: FiltersProvider }, { type: i0.ViewContainerRef }, { type: DetailService }, { type: i0.ChangeDetectorRef }, { type: i2.ClrCommonStringsService }], propDecorators: { filterStringPlaceholder: [{
+        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: Sort }, { type: FiltersProvider }, { type: i0.ViewContainerRef }, { type: DetailService }, { type: i0.ChangeDetectorRef }, { type: i2.ClrCommonStringsService }, { type: ColumnsService }, { type: i12.BehaviorSubject, decorators: [{
+                    type: Optional
+                }, {
+                    type: Inject,
+                    args: [COLUMN_STATE]
+                }] }], propDecorators: { filterStringPlaceholder: [{
                 type: Input,
                 args: ['clrFilterStringPlaceholder']
             }], filterNumberMaxPlaceholder: [{
@@ -2880,6 +3084,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], titleContainer: [{
                 type: ViewChild,
                 args: ['titleContainer', { read: ElementRef }]
+            }], pinned: [{
+                type: Input,
+                args: [{ alias: 'clrDgPinned', transform: booleanAttribute }]
             }], colType: [{
                 type: Input,
                 args: ['clrDgColType']
@@ -3941,7 +4148,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  */
 let nbRow = 0;
 class ClrDatagridRow {
-    constructor(selection, rowActionService, globalExpandable, expand, detailService, displayMode, vcr, renderer, el, commonStrings, items, document) {
+    constructor(selection, rowActionService, globalExpandable, expand, detailService, displayMode, vcr, renderer, el, commonStrings, items, columnsService, document) {
         this.selection = selection;
         this.rowActionService = rowActionService;
         this.globalExpandable = globalExpandable;
@@ -3952,6 +4159,7 @@ class ClrDatagridRow {
         this.el = el;
         this.commonStrings = commonStrings;
         this.items = items;
+        this.columnsService = columnsService;
         this.document = document;
         this.selectedChanged = new EventEmitter(false);
         this.expandedChange = new EventEmitter(false);
@@ -4079,11 +4287,7 @@ class ClrDatagridRow {
     }
     ngAfterContentInit() {
         this.dgCells.changes.subscribe(() => {
-            this.dgCells.forEach(cell => {
-                if (!cell._view.destroyed) {
-                    this._scrollableCells.insert(cell._view);
-                }
-            });
+            this.insertCellViews();
         });
     }
     ngAfterViewInit() {
@@ -4092,6 +4296,10 @@ class ClrDatagridRow {
             // remove cell views from display view
             for (let i = this._scrollableCells.length; i > 0; i--) {
                 this._scrollableCells.detach();
+            }
+            // remove cell views of pinned columns from their static container
+            for (let i = this._pinnedCells.length; i > 0; i--) {
+                this._pinnedCells.detach();
             }
             // remove cell views from calculated view
             for (let i = this._calculatedCells.length; i > 0; i--) {
@@ -4117,11 +4325,7 @@ class ClrDatagridRow {
             }
             else {
                 this.displayCells = true;
-                this.dgCells.forEach(cell => {
-                    if (!cell._view.destroyed) {
-                        this._scrollableCells.insert(cell._view);
-                    }
-                });
+                this.insertCellViews();
             }
         }), this.expand.animate.subscribe(() => {
             this.expandAnimationTrigger = !this.expandAnimationTrigger;
@@ -4178,6 +4382,21 @@ class ClrDatagridRow {
             this.toggle(selected);
         }
     }
+    /**
+     * Projects the cells into the display containers. Cells of pinned columns go into their static
+     * container so they stay visible during horizontal scroll; the rest stay scrollable. Cells are
+     * matched with their column by declaration index, and iterating in that order keeps both groups
+     * aligned with the header.
+     */
+    insertCellViews() {
+        this.dgCells.forEach((cell, index) => {
+            if (cell._view.destroyed) {
+                return;
+            }
+            const container = this.columnsService.isPinned(index) ? this._pinnedCells : this._scrollableCells;
+            container.insert(cell._view);
+        });
+    }
     rangeSelect() {
         const items = this.items.displayed;
         if (!items) {
@@ -4200,12 +4419,12 @@ class ClrDatagridRow {
             this.selection.rangeStart = this.item;
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridRow, deps: [{ token: Selection }, { token: RowActionService }, { token: ExpandableRowsCount }, { token: DatagridIfExpandService }, { token: DetailService }, { token: DisplayModeService }, { token: i0.ViewContainerRef }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: i2.ClrCommonStringsService }, { token: Items }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridRow, deps: [{ token: Selection }, { token: RowActionService }, { token: ExpandableRowsCount }, { token: DatagridIfExpandService }, { token: DetailService }, { token: DisplayModeService }, { token: i0.ViewContainerRef }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: i2.ClrCommonStringsService }, { token: Items }, { token: ColumnsService }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrDatagridRow, isStandalone: false, selector: "clr-dg-row", inputs: { detailDisabled: ["clrDgDetailDisabled", "detailDisabled"], detailHidden: ["clrDgDetailHidden", "detailHidden"], skeletonLoading: ["clrDgSkeletonLoading", "skeletonLoading"], item: ["clrDgItem", "item"], clrDgSelectable: "clrDgSelectable", selected: ["clrDgSelected", "selected"], expanded: ["clrDgExpanded", "expanded"], clrDgDetailOpenLabel: "clrDgDetailOpenLabel", clrDgDetailCloseLabel: "clrDgDetailCloseLabel", clrDgRowSelectionLabel: "clrDgRowSelectionLabel" }, outputs: { selectedChanged: "clrDgSelectedChange", expandedChange: "clrDgExpandedChange" }, host: { attributes: { "role": "rowgroup" }, properties: { "class.datagrid-row": "true", "class.datagrid-row-skeleton": "skeletonLoading", "class.datagrid-selected": "selected", "attr.aria-owns": "id" } }, providers: [
             DatagridIfExpandService,
             { provide: IfExpandService, useExisting: DatagridIfExpandService },
             { provide: LoadingListener, useExisting: DatagridIfExpandService },
-        ], queries: [{ propertyName: "dgCells", predicate: ClrDatagridCell }], viewQueries: [{ propertyName: "expandAnimation", first: true, predicate: ClrExpandableAnimationDirective, descendants: true }, { propertyName: "detailButton", first: true, predicate: ["detailButton"], descendants: true }, { propertyName: "_stickyCells", first: true, predicate: ["stickyCells"], descendants: true, read: ViewContainerRef }, { propertyName: "_scrollableCells", first: true, predicate: ["scrollableCells"], descendants: true, read: ViewContainerRef }, { propertyName: "_calculatedCells", first: true, predicate: ["calculatedCells"], descendants: true, read: ViewContainerRef }, { propertyName: "_fixedCellTemplate", first: true, predicate: ["fixedCellTemplate"], descendants: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div\n  role=\"row\"\n  [id]=\"id\"\n  class=\"datagrid-row-master datagrid-row-flex\"\n  (mousedown)=\"clearRanges($event)\"\n  (click)=\"selectRow(!selected, $event)\"\n  [class.datagrid-row-clickable]=\"selection.rowSelectionMode\"\n  [class.datagrid-row-detail-open]=\"detailService.isRowOpen(item)\"\n>\n  <div class=\"datagrid-row-sticky\">\n    <!-- Sticky elements here -->\n    <ng-container #stickyCells>\n      @if (selection.selectionType === SELECTION_TYPE.Multi) {\n      <div\n        class=\"datagrid-select datagrid-fixed-column datagrid-cell\"\n        [ngClass]=\"{ 'clr-form-control-disabled': !clrDgSelectable }\"\n        role=\"gridcell\"\n      >\n        <div class=\"clr-checkbox-wrapper\">\n          <input\n            tabindex=\"-1\"\n            type=\"checkbox\"\n            [ngModel]=\"selected\"\n            (ngModelChange)=\"toggle($event)\"\n            [id]=\"checkboxId\"\n            [disabled]=\"clrDgSelectable ? null : true\"\n            [attr.aria-disabled]=\"clrDgSelectable ? null : true\"\n          />\n          <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->\n          <label [for]=\"checkboxId\" class=\"clr-control-label clr-col-null\" (click)=\"clearRanges($event)\">\n            <span class=\"clr-sr-only\">{{clrDgRowSelectionLabel || commonStrings.keys.select}}</span>\n          </label>\n        </div>\n      </div>\n      } @if (selection.selectionType === SELECTION_TYPE.Single) {\n      <div\n        class=\"datagrid-select datagrid-fixed-column datagrid-cell\"\n        [ngClass]=\"{ 'clr-form-control-disabled': !clrDgSelectable }\"\n        role=\"gridcell\"\n      >\n        <clr-radio-wrapper>\n          <input\n            tabindex=\"-1\"\n            type=\"radio\"\n            clrRadio\n            clrDgSingleSelectionRadio\n            [clrDgIdentityFn]=\"identifyBy\"\n            [id]=\"radioId\"\n            [name]=\"selection.id + '-radio'\"\n            [value]=\"item\"\n            [ngModel]=\"selection.currentSingle\"\n            (ngModelChange)=\"selection.current = [$event]\"\n            [disabled]=\"clrDgSelectable ? null : true\"\n            [attr.aria-disabled]=\"clrDgSelectable ? null : true\"\n          />\n          <label class=\"clr-control-label clr-col-null\" [for]=\"radioId\">\n            <span class=\"clr-sr-only\">{{ clrDgRowSelectionLabel || commonStrings.keys.select }}</span>\n          </label>\n        </clr-radio-wrapper>\n      </div>\n      } @if (rowActionService.hasActionableRow) {\n      <div class=\"datagrid-row-actions datagrid-fixed-column datagrid-cell\" role=\"gridcell\">\n        <ng-content select=\"clr-dg-action-overflow\"></ng-content>\n      </div>\n      } @if (globalExpandable.hasExpandableRow) {\n      <div class=\"datagrid-expandable-caret datagrid-fixed-column datagrid-cell\" role=\"gridcell\">\n        @if (expand.expandable) { @if (!expand.loading) {\n        <button\n          tabindex=\"-1\"\n          (click)=\"toggleExpand($event)\"\n          type=\"button\"\n          class=\"datagrid-expandable-caret-button\"\n          [attr.aria-expanded]=\"expand.expanded\"\n          [attr.aria-label]=\"expand.expanded ? clrDgDetailCloseLabel : clrDgDetailOpenLabel\"\n          [attr.aria-controls]=\"expand.hasExpandTemplate && !expand.expanded ? null : expandableId\"\n        >\n          <cds-icon\n            shape=\"angle\"\n            class=\"datagrid-expandable-caret-icon\"\n            [direction]=\"expand.expanded ? 'down' : 'right'\"\n            [attr.title]=\"expand.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand\"\n          ></cds-icon>\n        </button>\n        } @if (expand.loading) {\n        <clr-spinner clrSmall>{{ commonStrings.keys.loading }}</clr-spinner>\n        } }\n      </div>\n      } @if (detailService.enabled) {\n      <div class=\"datagrid-detail-caret datagrid-fixed-column datagrid-cell\" role=\"gridcell\">\n        @if (!detailHidden) {\n        <button\n          tabindex=\"-1\"\n          (click)=\"openDetails($event, detailButton)\"\n          type=\"button\"\n          #detailButton\n          class=\"datagrid-detail-caret-button\"\n          [disabled]=\"detailDisabled\"\n          [class.is-open]=\"detailService.isRowOpen(item)\"\n          [attr.aria-label]=\"detailService.isRowOpen(item) ? clrDgDetailCloseLabel : clrDgDetailOpenLabel\"\n          [attr.aria-expanded]=\"detailService.isRowOpen(item)\"\n          [attr.aria-controls]=\"detailService.id\"\n          aria-haspopup=\"dialog\"\n        >\n          <cds-icon\n            shape=\"angle-double\"\n            [direction]=\"detailService.isRowOpen(item) ? 'left' : 'right'\"\n            class=\"datagrid-detail-caret-icon\"\n            [attr.title]=\"detailService.isRowOpen(item) ? commonStrings.keys.close: commonStrings.keys.open\"\n          ></cds-icon>\n        </button>\n        }\n      </div>\n      }\n    </ng-container>\n    <!-- placeholder for projecting other sticky cells as pinned-->\n  </div>\n  <div\n    class=\"datagrid-row-scrollable\"\n    [ngClass]=\"{'is-replaced': replaced && expanded}\"\n    [clrExpandableAnimation]=\"expandAnimationTrigger\"\n  >\n    <div class=\"datagrid-scrolling-cells\">\n      <ng-content select=\"clr-dg-cell\"></ng-content>\n      <ng-container #scrollableCells></ng-container>\n    </div>\n    <!-- details here when replace, re-visit when sticky container is used for pinned cells -->\n    @if (replaced && !expand.loading) {\n    <ng-template [ngTemplateOutlet]=\"detail\"></ng-template>\n    } @if (!replaced && !expand.loading) {\n    <ng-template [ngTemplateOutlet]=\"detail\"></ng-template>\n    }\n  </div>\n</div>\n<!--\nWe need the \"project into template\" hacks because we need this in 2 different places\ndepending on whether the details replace the row or not.\n-->\n<ng-template #detail>\n  <ng-content select=\"clr-dg-row-detail\"></ng-content>\n</ng-template>\n\n<ng-container #calculatedCells></ng-container>\n\n<ng-template #fixedCellTemplate>\n  <div class=\"datagrid-fixed-column datagrid-cell\" role=\"gridcell\"></div>\n</ng-template>\n", dependencies: [{ kind: "directive", type: i9.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i9.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i12.ClrRadio, selector: "[clrRadio]" }, { kind: "component", type: i12.ClrRadioWrapper, selector: "clr-radio-wrapper" }, { kind: "directive", type: i13.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i13.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i13.RadioControlValueAccessor, selector: "input[type=radio][formControlName],input[type=radio][formControl],input[type=radio][ngModel]", inputs: ["name", "formControlName", "value"] }, { kind: "directive", type: i13.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i13.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "directive", type: i2.ClrExpandableAnimationDirective, selector: "[clrExpandableAnimation]", inputs: ["clrExpandableAnimation"] }, { kind: "component", type: i14.ClrSpinner, selector: "clr-spinner", inputs: ["clrInline", "clrInverse", "clrSmall", "clrMedium"] }, { kind: "directive", type: ClrDatagridSingleSelectionValueAccessor, selector: "input[type=radio][clrDgSingleSelectionRadio]", inputs: ["value", "clrDgIdentityFn"] }, { kind: "directive", type: ClrDatagridSelectionCellDirective, selector: ".datagrid-select" }] }); }
+        ], queries: [{ propertyName: "dgCells", predicate: ClrDatagridCell }], viewQueries: [{ propertyName: "expandAnimation", first: true, predicate: ClrExpandableAnimationDirective, descendants: true }, { propertyName: "detailButton", first: true, predicate: ["detailButton"], descendants: true }, { propertyName: "_stickyCells", first: true, predicate: ["stickyCells"], descendants: true, read: ViewContainerRef }, { propertyName: "_pinnedCells", first: true, predicate: ["pinnedCells"], descendants: true, read: ViewContainerRef }, { propertyName: "_scrollableCells", first: true, predicate: ["scrollableCells"], descendants: true, read: ViewContainerRef }, { propertyName: "_calculatedCells", first: true, predicate: ["calculatedCells"], descendants: true, read: ViewContainerRef }, { propertyName: "_fixedCellTemplate", first: true, predicate: ["fixedCellTemplate"], descendants: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div\n  role=\"row\"\n  [id]=\"id\"\n  class=\"datagrid-row-master datagrid-row-flex\"\n  (mousedown)=\"clearRanges($event)\"\n  (click)=\"selectRow(!selected, $event)\"\n  [class.datagrid-row-clickable]=\"selection.rowSelectionMode\"\n  [class.datagrid-row-detail-open]=\"detailService.isRowOpen(item)\"\n>\n  <div class=\"datagrid-row-sticky\">\n    <!-- Sticky elements here -->\n    <ng-container #stickyCells>\n      @if (selection.selectionType === SELECTION_TYPE.Multi) {\n      <div\n        class=\"datagrid-select datagrid-fixed-column datagrid-cell\"\n        [ngClass]=\"{ 'clr-form-control-disabled': !clrDgSelectable }\"\n        role=\"gridcell\"\n      >\n        <div class=\"clr-checkbox-wrapper\">\n          <input\n            tabindex=\"-1\"\n            type=\"checkbox\"\n            [ngModel]=\"selected\"\n            (ngModelChange)=\"toggle($event)\"\n            [id]=\"checkboxId\"\n            [disabled]=\"clrDgSelectable ? null : true\"\n            [attr.aria-disabled]=\"clrDgSelectable ? null : true\"\n          />\n          <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->\n          <label [for]=\"checkboxId\" class=\"clr-control-label clr-col-null\" (click)=\"clearRanges($event)\">\n            <span class=\"clr-sr-only\">{{clrDgRowSelectionLabel || commonStrings.keys.select}}</span>\n          </label>\n        </div>\n      </div>\n      } @if (selection.selectionType === SELECTION_TYPE.Single) {\n      <div\n        class=\"datagrid-select datagrid-fixed-column datagrid-cell\"\n        [ngClass]=\"{ 'clr-form-control-disabled': !clrDgSelectable }\"\n        role=\"gridcell\"\n      >\n        <clr-radio-wrapper>\n          <input\n            tabindex=\"-1\"\n            type=\"radio\"\n            clrRadio\n            clrDgSingleSelectionRadio\n            [clrDgIdentityFn]=\"identifyBy\"\n            [id]=\"radioId\"\n            [name]=\"selection.id + '-radio'\"\n            [value]=\"item\"\n            [ngModel]=\"selection.currentSingle\"\n            (ngModelChange)=\"selection.current = [$event]\"\n            [disabled]=\"clrDgSelectable ? null : true\"\n            [attr.aria-disabled]=\"clrDgSelectable ? null : true\"\n          />\n          <label class=\"clr-control-label clr-col-null\" [for]=\"radioId\">\n            <span class=\"clr-sr-only\">{{ clrDgRowSelectionLabel || commonStrings.keys.select }}</span>\n          </label>\n        </clr-radio-wrapper>\n      </div>\n      } @if (rowActionService.hasActionableRow) {\n      <div class=\"datagrid-row-actions datagrid-fixed-column datagrid-cell\" role=\"gridcell\">\n        <ng-content select=\"clr-dg-action-overflow\"></ng-content>\n      </div>\n      } @if (globalExpandable.hasExpandableRow) {\n      <div class=\"datagrid-expandable-caret datagrid-fixed-column datagrid-cell\" role=\"gridcell\">\n        @if (expand.expandable) { @if (!expand.loading) {\n        <button\n          tabindex=\"-1\"\n          (click)=\"toggleExpand($event)\"\n          type=\"button\"\n          class=\"datagrid-expandable-caret-button\"\n          [attr.aria-expanded]=\"expand.expanded\"\n          [attr.aria-label]=\"expand.expanded ? clrDgDetailCloseLabel : clrDgDetailOpenLabel\"\n          [attr.aria-controls]=\"expand.hasExpandTemplate && !expand.expanded ? null : expandableId\"\n        >\n          <cds-icon\n            shape=\"angle\"\n            class=\"datagrid-expandable-caret-icon\"\n            [direction]=\"expand.expanded ? 'down' : 'right'\"\n            [attr.title]=\"expand.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand\"\n          ></cds-icon>\n        </button>\n        } @if (expand.loading) {\n        <clr-spinner clrSmall>{{ commonStrings.keys.loading }}</clr-spinner>\n        } }\n      </div>\n      } @if (detailService.enabled) {\n      <div class=\"datagrid-detail-caret datagrid-fixed-column datagrid-cell\" role=\"gridcell\">\n        @if (!detailHidden) {\n        <button\n          tabindex=\"-1\"\n          (click)=\"openDetails($event, detailButton)\"\n          type=\"button\"\n          #detailButton\n          class=\"datagrid-detail-caret-button\"\n          [disabled]=\"detailDisabled\"\n          [class.is-open]=\"detailService.isRowOpen(item)\"\n          [attr.aria-label]=\"detailService.isRowOpen(item) ? clrDgDetailCloseLabel : clrDgDetailOpenLabel\"\n          [attr.aria-expanded]=\"detailService.isRowOpen(item)\"\n          [attr.aria-controls]=\"detailService.id\"\n          aria-haspopup=\"dialog\"\n        >\n          <cds-icon\n            shape=\"angle-double\"\n            [direction]=\"detailService.isRowOpen(item) ? 'left' : 'right'\"\n            class=\"datagrid-detail-caret-icon\"\n            [attr.title]=\"detailService.isRowOpen(item) ? commonStrings.keys.close: commonStrings.keys.open\"\n          ></cds-icon>\n        </button>\n        }\n      </div>\n      }\n    </ng-container>\n  </div>\n  <div\n    class=\"datagrid-row-scrollable\"\n    [ngClass]=\"{'is-replaced': replaced && expanded}\"\n    [clrExpandableAnimation]=\"expandAnimationTrigger\"\n  >\n    <div class=\"datagrid-scrolling-cells\">\n      <div class=\"datagrid-pinned-cells\">\n        <ng-container #pinnedCells></ng-container>\n      </div>\n      <ng-content select=\"clr-dg-cell\"></ng-content>\n      <ng-container #scrollableCells></ng-container>\n    </div>\n\n    @if (!expand.loading) {\n    <ng-template [ngTemplateOutlet]=\"detail\"></ng-template>\n    }\n  </div>\n</div>\n<!--\nWe need the \"project into template\" hacks because we need this in 2 different places\ndepending on whether the details replace the row or not.\n-->\n<ng-template #detail>\n  <ng-content select=\"clr-dg-row-detail\"></ng-content>\n</ng-template>\n\n<ng-container #calculatedCells></ng-container>\n\n<ng-template #fixedCellTemplate>\n  <div class=\"datagrid-fixed-column datagrid-cell\" role=\"gridcell\"></div>\n</ng-template>\n", dependencies: [{ kind: "directive", type: i10.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i10.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i13.ClrRadio, selector: "[clrRadio]" }, { kind: "component", type: i13.ClrRadioWrapper, selector: "clr-radio-wrapper" }, { kind: "directive", type: i14.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { kind: "directive", type: i14.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i14.RadioControlValueAccessor, selector: "input[type=radio][formControlName],input[type=radio][formControl],input[type=radio][ngModel]", inputs: ["name", "formControlName", "value"] }, { kind: "directive", type: i14.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i14.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "directive", type: i2.ClrExpandableAnimationDirective, selector: "[clrExpandableAnimation]", inputs: ["clrExpandableAnimation"] }, { kind: "component", type: i15.ClrSpinner, selector: "clr-spinner", inputs: ["clrInline", "clrInverse", "clrSmall", "clrMedium"] }, { kind: "directive", type: ClrDatagridSingleSelectionValueAccessor, selector: "input[type=radio][clrDgSingleSelectionRadio]", inputs: ["value", "clrDgIdentityFn"] }, { kind: "directive", type: ClrDatagridSelectionCellDirective, selector: ".datagrid-select" }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridRow, decorators: [{
             type: Component,
@@ -4219,8 +4438,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                         DatagridIfExpandService,
                         { provide: IfExpandService, useExisting: DatagridIfExpandService },
                         { provide: LoadingListener, useExisting: DatagridIfExpandService },
-                    ], standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div\n  role=\"row\"\n  [id]=\"id\"\n  class=\"datagrid-row-master datagrid-row-flex\"\n  (mousedown)=\"clearRanges($event)\"\n  (click)=\"selectRow(!selected, $event)\"\n  [class.datagrid-row-clickable]=\"selection.rowSelectionMode\"\n  [class.datagrid-row-detail-open]=\"detailService.isRowOpen(item)\"\n>\n  <div class=\"datagrid-row-sticky\">\n    <!-- Sticky elements here -->\n    <ng-container #stickyCells>\n      @if (selection.selectionType === SELECTION_TYPE.Multi) {\n      <div\n        class=\"datagrid-select datagrid-fixed-column datagrid-cell\"\n        [ngClass]=\"{ 'clr-form-control-disabled': !clrDgSelectable }\"\n        role=\"gridcell\"\n      >\n        <div class=\"clr-checkbox-wrapper\">\n          <input\n            tabindex=\"-1\"\n            type=\"checkbox\"\n            [ngModel]=\"selected\"\n            (ngModelChange)=\"toggle($event)\"\n            [id]=\"checkboxId\"\n            [disabled]=\"clrDgSelectable ? null : true\"\n            [attr.aria-disabled]=\"clrDgSelectable ? null : true\"\n          />\n          <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->\n          <label [for]=\"checkboxId\" class=\"clr-control-label clr-col-null\" (click)=\"clearRanges($event)\">\n            <span class=\"clr-sr-only\">{{clrDgRowSelectionLabel || commonStrings.keys.select}}</span>\n          </label>\n        </div>\n      </div>\n      } @if (selection.selectionType === SELECTION_TYPE.Single) {\n      <div\n        class=\"datagrid-select datagrid-fixed-column datagrid-cell\"\n        [ngClass]=\"{ 'clr-form-control-disabled': !clrDgSelectable }\"\n        role=\"gridcell\"\n      >\n        <clr-radio-wrapper>\n          <input\n            tabindex=\"-1\"\n            type=\"radio\"\n            clrRadio\n            clrDgSingleSelectionRadio\n            [clrDgIdentityFn]=\"identifyBy\"\n            [id]=\"radioId\"\n            [name]=\"selection.id + '-radio'\"\n            [value]=\"item\"\n            [ngModel]=\"selection.currentSingle\"\n            (ngModelChange)=\"selection.current = [$event]\"\n            [disabled]=\"clrDgSelectable ? null : true\"\n            [attr.aria-disabled]=\"clrDgSelectable ? null : true\"\n          />\n          <label class=\"clr-control-label clr-col-null\" [for]=\"radioId\">\n            <span class=\"clr-sr-only\">{{ clrDgRowSelectionLabel || commonStrings.keys.select }}</span>\n          </label>\n        </clr-radio-wrapper>\n      </div>\n      } @if (rowActionService.hasActionableRow) {\n      <div class=\"datagrid-row-actions datagrid-fixed-column datagrid-cell\" role=\"gridcell\">\n        <ng-content select=\"clr-dg-action-overflow\"></ng-content>\n      </div>\n      } @if (globalExpandable.hasExpandableRow) {\n      <div class=\"datagrid-expandable-caret datagrid-fixed-column datagrid-cell\" role=\"gridcell\">\n        @if (expand.expandable) { @if (!expand.loading) {\n        <button\n          tabindex=\"-1\"\n          (click)=\"toggleExpand($event)\"\n          type=\"button\"\n          class=\"datagrid-expandable-caret-button\"\n          [attr.aria-expanded]=\"expand.expanded\"\n          [attr.aria-label]=\"expand.expanded ? clrDgDetailCloseLabel : clrDgDetailOpenLabel\"\n          [attr.aria-controls]=\"expand.hasExpandTemplate && !expand.expanded ? null : expandableId\"\n        >\n          <cds-icon\n            shape=\"angle\"\n            class=\"datagrid-expandable-caret-icon\"\n            [direction]=\"expand.expanded ? 'down' : 'right'\"\n            [attr.title]=\"expand.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand\"\n          ></cds-icon>\n        </button>\n        } @if (expand.loading) {\n        <clr-spinner clrSmall>{{ commonStrings.keys.loading }}</clr-spinner>\n        } }\n      </div>\n      } @if (detailService.enabled) {\n      <div class=\"datagrid-detail-caret datagrid-fixed-column datagrid-cell\" role=\"gridcell\">\n        @if (!detailHidden) {\n        <button\n          tabindex=\"-1\"\n          (click)=\"openDetails($event, detailButton)\"\n          type=\"button\"\n          #detailButton\n          class=\"datagrid-detail-caret-button\"\n          [disabled]=\"detailDisabled\"\n          [class.is-open]=\"detailService.isRowOpen(item)\"\n          [attr.aria-label]=\"detailService.isRowOpen(item) ? clrDgDetailCloseLabel : clrDgDetailOpenLabel\"\n          [attr.aria-expanded]=\"detailService.isRowOpen(item)\"\n          [attr.aria-controls]=\"detailService.id\"\n          aria-haspopup=\"dialog\"\n        >\n          <cds-icon\n            shape=\"angle-double\"\n            [direction]=\"detailService.isRowOpen(item) ? 'left' : 'right'\"\n            class=\"datagrid-detail-caret-icon\"\n            [attr.title]=\"detailService.isRowOpen(item) ? commonStrings.keys.close: commonStrings.keys.open\"\n          ></cds-icon>\n        </button>\n        }\n      </div>\n      }\n    </ng-container>\n    <!-- placeholder for projecting other sticky cells as pinned-->\n  </div>\n  <div\n    class=\"datagrid-row-scrollable\"\n    [ngClass]=\"{'is-replaced': replaced && expanded}\"\n    [clrExpandableAnimation]=\"expandAnimationTrigger\"\n  >\n    <div class=\"datagrid-scrolling-cells\">\n      <ng-content select=\"clr-dg-cell\"></ng-content>\n      <ng-container #scrollableCells></ng-container>\n    </div>\n    <!-- details here when replace, re-visit when sticky container is used for pinned cells -->\n    @if (replaced && !expand.loading) {\n    <ng-template [ngTemplateOutlet]=\"detail\"></ng-template>\n    } @if (!replaced && !expand.loading) {\n    <ng-template [ngTemplateOutlet]=\"detail\"></ng-template>\n    }\n  </div>\n</div>\n<!--\nWe need the \"project into template\" hacks because we need this in 2 different places\ndepending on whether the details replace the row or not.\n-->\n<ng-template #detail>\n  <ng-content select=\"clr-dg-row-detail\"></ng-content>\n</ng-template>\n\n<ng-container #calculatedCells></ng-container>\n\n<ng-template #fixedCellTemplate>\n  <div class=\"datagrid-fixed-column datagrid-cell\" role=\"gridcell\"></div>\n</ng-template>\n" }]
-        }], ctorParameters: () => [{ type: Selection }, { type: RowActionService }, { type: ExpandableRowsCount }, { type: DatagridIfExpandService }, { type: DetailService }, { type: DisplayModeService }, { type: i0.ViewContainerRef }, { type: i0.Renderer2 }, { type: i0.ElementRef }, { type: i2.ClrCommonStringsService }, { type: Items }, { type: undefined, decorators: [{
+                    ], standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div\n  role=\"row\"\n  [id]=\"id\"\n  class=\"datagrid-row-master datagrid-row-flex\"\n  (mousedown)=\"clearRanges($event)\"\n  (click)=\"selectRow(!selected, $event)\"\n  [class.datagrid-row-clickable]=\"selection.rowSelectionMode\"\n  [class.datagrid-row-detail-open]=\"detailService.isRowOpen(item)\"\n>\n  <div class=\"datagrid-row-sticky\">\n    <!-- Sticky elements here -->\n    <ng-container #stickyCells>\n      @if (selection.selectionType === SELECTION_TYPE.Multi) {\n      <div\n        class=\"datagrid-select datagrid-fixed-column datagrid-cell\"\n        [ngClass]=\"{ 'clr-form-control-disabled': !clrDgSelectable }\"\n        role=\"gridcell\"\n      >\n        <div class=\"clr-checkbox-wrapper\">\n          <input\n            tabindex=\"-1\"\n            type=\"checkbox\"\n            [ngModel]=\"selected\"\n            (ngModelChange)=\"toggle($event)\"\n            [id]=\"checkboxId\"\n            [disabled]=\"clrDgSelectable ? null : true\"\n            [attr.aria-disabled]=\"clrDgSelectable ? null : true\"\n          />\n          <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->\n          <label [for]=\"checkboxId\" class=\"clr-control-label clr-col-null\" (click)=\"clearRanges($event)\">\n            <span class=\"clr-sr-only\">{{clrDgRowSelectionLabel || commonStrings.keys.select}}</span>\n          </label>\n        </div>\n      </div>\n      } @if (selection.selectionType === SELECTION_TYPE.Single) {\n      <div\n        class=\"datagrid-select datagrid-fixed-column datagrid-cell\"\n        [ngClass]=\"{ 'clr-form-control-disabled': !clrDgSelectable }\"\n        role=\"gridcell\"\n      >\n        <clr-radio-wrapper>\n          <input\n            tabindex=\"-1\"\n            type=\"radio\"\n            clrRadio\n            clrDgSingleSelectionRadio\n            [clrDgIdentityFn]=\"identifyBy\"\n            [id]=\"radioId\"\n            [name]=\"selection.id + '-radio'\"\n            [value]=\"item\"\n            [ngModel]=\"selection.currentSingle\"\n            (ngModelChange)=\"selection.current = [$event]\"\n            [disabled]=\"clrDgSelectable ? null : true\"\n            [attr.aria-disabled]=\"clrDgSelectable ? null : true\"\n          />\n          <label class=\"clr-control-label clr-col-null\" [for]=\"radioId\">\n            <span class=\"clr-sr-only\">{{ clrDgRowSelectionLabel || commonStrings.keys.select }}</span>\n          </label>\n        </clr-radio-wrapper>\n      </div>\n      } @if (rowActionService.hasActionableRow) {\n      <div class=\"datagrid-row-actions datagrid-fixed-column datagrid-cell\" role=\"gridcell\">\n        <ng-content select=\"clr-dg-action-overflow\"></ng-content>\n      </div>\n      } @if (globalExpandable.hasExpandableRow) {\n      <div class=\"datagrid-expandable-caret datagrid-fixed-column datagrid-cell\" role=\"gridcell\">\n        @if (expand.expandable) { @if (!expand.loading) {\n        <button\n          tabindex=\"-1\"\n          (click)=\"toggleExpand($event)\"\n          type=\"button\"\n          class=\"datagrid-expandable-caret-button\"\n          [attr.aria-expanded]=\"expand.expanded\"\n          [attr.aria-label]=\"expand.expanded ? clrDgDetailCloseLabel : clrDgDetailOpenLabel\"\n          [attr.aria-controls]=\"expand.hasExpandTemplate && !expand.expanded ? null : expandableId\"\n        >\n          <cds-icon\n            shape=\"angle\"\n            class=\"datagrid-expandable-caret-icon\"\n            [direction]=\"expand.expanded ? 'down' : 'right'\"\n            [attr.title]=\"expand.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand\"\n          ></cds-icon>\n        </button>\n        } @if (expand.loading) {\n        <clr-spinner clrSmall>{{ commonStrings.keys.loading }}</clr-spinner>\n        } }\n      </div>\n      } @if (detailService.enabled) {\n      <div class=\"datagrid-detail-caret datagrid-fixed-column datagrid-cell\" role=\"gridcell\">\n        @if (!detailHidden) {\n        <button\n          tabindex=\"-1\"\n          (click)=\"openDetails($event, detailButton)\"\n          type=\"button\"\n          #detailButton\n          class=\"datagrid-detail-caret-button\"\n          [disabled]=\"detailDisabled\"\n          [class.is-open]=\"detailService.isRowOpen(item)\"\n          [attr.aria-label]=\"detailService.isRowOpen(item) ? clrDgDetailCloseLabel : clrDgDetailOpenLabel\"\n          [attr.aria-expanded]=\"detailService.isRowOpen(item)\"\n          [attr.aria-controls]=\"detailService.id\"\n          aria-haspopup=\"dialog\"\n        >\n          <cds-icon\n            shape=\"angle-double\"\n            [direction]=\"detailService.isRowOpen(item) ? 'left' : 'right'\"\n            class=\"datagrid-detail-caret-icon\"\n            [attr.title]=\"detailService.isRowOpen(item) ? commonStrings.keys.close: commonStrings.keys.open\"\n          ></cds-icon>\n        </button>\n        }\n      </div>\n      }\n    </ng-container>\n  </div>\n  <div\n    class=\"datagrid-row-scrollable\"\n    [ngClass]=\"{'is-replaced': replaced && expanded}\"\n    [clrExpandableAnimation]=\"expandAnimationTrigger\"\n  >\n    <div class=\"datagrid-scrolling-cells\">\n      <div class=\"datagrid-pinned-cells\">\n        <ng-container #pinnedCells></ng-container>\n      </div>\n      <ng-content select=\"clr-dg-cell\"></ng-content>\n      <ng-container #scrollableCells></ng-container>\n    </div>\n\n    @if (!expand.loading) {\n    <ng-template [ngTemplateOutlet]=\"detail\"></ng-template>\n    }\n  </div>\n</div>\n<!--\nWe need the \"project into template\" hacks because we need this in 2 different places\ndepending on whether the details replace the row or not.\n-->\n<ng-template #detail>\n  <ng-content select=\"clr-dg-row-detail\"></ng-content>\n</ng-template>\n\n<ng-container #calculatedCells></ng-container>\n\n<ng-template #fixedCellTemplate>\n  <div class=\"datagrid-fixed-column datagrid-cell\" role=\"gridcell\"></div>\n</ng-template>\n" }]
+        }], ctorParameters: () => [{ type: Selection }, { type: RowActionService }, { type: ExpandableRowsCount }, { type: DatagridIfExpandService }, { type: DetailService }, { type: DisplayModeService }, { type: i0.ViewContainerRef }, { type: i0.Renderer2 }, { type: i0.ElementRef }, { type: i2.ClrCommonStringsService }, { type: Items }, { type: ColumnsService }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [DOCUMENT]
                 }] }], propDecorators: { selectedChanged: [{
@@ -4250,6 +4469,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], _stickyCells: [{
                 type: ViewChild,
                 args: ['stickyCells', { read: ViewContainerRef }]
+            }], _pinnedCells: [{
+                type: ViewChild,
+                args: ['pinnedCells', { read: ViewContainerRef }]
             }], _scrollableCells: [{
                 type: ViewChild,
                 args: ['scrollableCells', { read: ViewContainerRef }]
@@ -4597,81 +4819,6 @@ function createCdkVirtualForOfDirective(viewContainerRef, templateRef, iterableD
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-var DatagridColumnChanges;
-(function (DatagridColumnChanges) {
-    DatagridColumnChanges[DatagridColumnChanges["WIDTH"] = 0] = "WIDTH";
-    DatagridColumnChanges[DatagridColumnChanges["HIDDEN"] = 1] = "HIDDEN";
-    DatagridColumnChanges[DatagridColumnChanges["INITIALIZE"] = 2] = "INITIALIZE";
-})(DatagridColumnChanges || (DatagridColumnChanges = {}));
-const ALL_COLUMN_CHANGES = Object.keys(DatagridColumnChanges)
-    .map(key => DatagridColumnChanges[key])
-    .filter(key => key === parseInt(key, 10) && key !== DatagridColumnChanges.INITIALIZE); // extracts only integer keys
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ColumnsService {
-    constructor() {
-        this.columns = [];
-        this.columnsStateChange = new BehaviorSubject(null);
-        this._cache = [];
-    }
-    get columnStates() {
-        return this.columns.map(column => column.value);
-    }
-    get hasHideableColumns() {
-        return this.columnStates.filter(state => state.hideable).length > 0;
-    }
-    get visibleColumns() {
-        return this.columnStates.filter(state => !state.hidden);
-    }
-    cache() {
-        this._cache = this.columns.map(subject => {
-            const value = { ...subject.value };
-            delete value.changes;
-            return value;
-        });
-    }
-    hasCache() {
-        return !!this._cache.length;
-    }
-    resetToLastCache() {
-        this._cache.forEach((state, index) => {
-            // Just emit the exact value from the cache
-            const cachedState = { ...state, changes: ALL_COLUMN_CHANGES };
-            this.columns[index].next(cachedState);
-            this.columnsStateChange.next(cachedState);
-        });
-        this._cache = [];
-    }
-    // Helper method to emit a change to a column only when there is an actual diff to process for that column
-    emitStateChangeAt(columnIndex, diff) {
-        if (!this.columns[columnIndex]) {
-            return;
-        }
-        this.emitStateChange(this.columns[columnIndex], diff);
-    }
-    emitStateChange(column, diff) {
-        const changedState = { ...column.value, ...diff };
-        column.next(changedState);
-        this.columnsStateChange.next(changedState);
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ColumnsService, decorators: [{
-            type: Injectable
-        }] });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 /**
  * This provider aggregates state changes from the various providers of the Datagrid
  */
@@ -4755,6 +4902,7 @@ class DatagridCellRenderer {
     resetState(state) {
         this.setWidth(state);
         this.setHidden(state);
+        this.setPinned(state);
     }
     setWidth(state) {
         if (state.strictWidth) {
@@ -4771,6 +4919,14 @@ class DatagridCellRenderer {
         }
         else {
             this.renderer.removeClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
+        }
+    }
+    setPinned(state) {
+        if (state.pinned) {
+            this.renderer.addClass(this.el.nativeElement, PINNED_COLUMN_CLASS);
+        }
+        else {
+            this.renderer.removeClass(this.el.nativeElement, PINNED_COLUMN_CLASS);
         }
     }
     clearWidth() {
@@ -4946,7 +5102,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrDatagrid {
-    constructor(organizer, items, expandableRows, selection, rowActionService, stateProvider, displayMode, renderer, detailService, document, el, page, commonStrings, keyNavigation, zone) {
+    constructor(organizer, items, expandableRows, selection, rowActionService, stateProvider, displayMode, renderer, detailService, document, el, page, commonStrings, keyNavigation, zone, columnsService) {
         this.organizer = organizer;
         this.items = items;
         this.expandableRows = expandableRows;
@@ -4962,6 +5118,7 @@ class ClrDatagrid {
         this.commonStrings = commonStrings;
         this.keyNavigation = keyNavigation;
         this.zone = zone;
+        this.columnsService = columnsService;
         this.clrDgSingleSelectionAriaLabel = this.commonStrings.keys.singleSelectionAriaLabel;
         this.clrDgSingleActionableAriaLabel = this.commonStrings.keys.singleActionableAriaLabel;
         this.clrDetailExpandableAriaLabel = this.commonStrings.keys.detailExpandableAriaLabel;
@@ -4992,6 +5149,11 @@ class ClrDatagrid {
                 this.handleResizeChanges(entries);
             });
         });
+        /**
+         * Watches the row controls for anything that changes their width without going through a render
+         * cycle - a density change, or an application restyling them.
+         */
+        this.rowControlsObserver = new ResizeObserver(() => this.updateRowControlsWidth());
         const datagridId = uniqueIdFactory();
         this.selectAllId = 'clr-dg-select-all-' + datagridId;
         detailService.id = datagridId;
@@ -5117,6 +5279,7 @@ class ClrDatagrid {
     ngAfterViewInit() {
         this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
         this.updateDetailState();
+        this.zone.runOutsideAngular(() => this.rowControlsObserver.observe(this.rowControls.nativeElement));
         // Emit the state only if it is not an empty object.
         // Default state of `ClrDatagridStateInterface` is an empty object.
         // The refresh emit is needed in Server-driven datagrid when pagination is set, but the data is still not requested.
@@ -5143,6 +5306,10 @@ class ClrDatagrid {
             for (let i = this._projectedDisplayColumns.length; i > 0; i--) {
                 this._projectedDisplayColumns.detach();
             }
+            // Remove any projected columns from the projectedStickyColumns container
+            for (let i = this._projectedStickyColumns.length; i > 0; i--) {
+                this._projectedStickyColumns.detach();
+            }
             // Remove any projected columns from the projectedCalculationColumns container
             for (let i = this._projectedCalculationColumns.length; i > 0; i--) {
                 this._projectedCalculationColumns.detach();
@@ -5158,12 +5325,21 @@ class ClrDatagrid {
             if (viewChange === DatagridDisplayMode.DISPLAY) {
                 // Set state, style for the datagrid to DISPLAY and insert row & columns into containers
                 this.renderer.removeClass(this.el.nativeElement, 'datagrid-calculate-mode');
-                this.columns.forEach(column => {
-                    this._projectedDisplayColumns.insert(column._view);
+                // Pinned columns go into the pinned container so they stay visible during horizontal
+                // scroll. Iterating in declaration order keeps both groups in their original order,
+                // which is what matches them with the cells of every row.
+                this.columns.forEach((column, index) => {
+                    const container = this.columnsService.isPinned(index)
+                        ? this._projectedStickyColumns
+                        : this._projectedDisplayColumns;
+                    container.insert(column._view);
                 });
                 this.rows.forEach(row => {
                     this._displayedRows.insert(row._view);
                 });
+                // The row controls are only laid out in this mode, and this is also the point where
+                // their number can have changed.
+                this.updateRowControlsWidth();
             }
             else {
                 // Set state, style for the datagrid to CALCULATE and insert row & columns into containers
@@ -5211,6 +5387,7 @@ class ClrDatagrid {
         this._subscriptions.forEach((sub) => sub.unsubscribe());
         this._virtualScrollSubscriptions.forEach((sub) => sub.unsubscribe());
         this.resizeObserver.disconnect();
+        this.rowControlsObserver.disconnect();
     }
     toggleAllSelected($event) {
         $event.preventDefault();
@@ -5285,6 +5462,42 @@ class ClrDatagrid {
             this._virtualScrollSubscriptions = [];
         }
     }
+    /**
+     * Publishes the width of the row controls - the static container holding the select, action and
+     * caret cells - as a custom property, which is where the pinned columns read the offset they
+     * became static at. They are static right after the controls rather than at the edge of the datagrid,
+     * and `position: sticky` always measures its offsets from that edge, so the distance between the
+     * two has to be measured and handed to the stylesheet.
+     *
+     * The header and the rows get their own value: the header renders one caret column for both
+     * kinds of caret where a row renders one cell per caret, so the two containers are not
+     * necessarily the same width.
+     *
+     * Nothing reads this property unless a column is pinned - `.datagrid-pinned-cells` is the only
+     * consumer, and it is `display: none` while empty - so the measurement is skipped entirely
+     * otherwise. It matters on a datagrid with many rows: `getBoundingClientRect()` forces the
+     * browser to resolve any pending layout first, and on a large datagrid that resolution is not
+     * cheap. Both boxes are read before either write for the same reason - writing the custom
+     * property is itself layout-affecting (`.datagrid-pinned-cells` reads it back for its own
+     * position and width), so reading again in between would force that resolution twice.
+     */
+    updateRowControlsWidth() {
+        const headerControls = this.rowControls?.nativeElement;
+        if (!headerControls || !this.datagridHeader || !this.columnsService.hasPinnedColumns) {
+            return;
+        }
+        const rowControls = this.rowsWrapper.nativeElement.querySelector('.datagrid-row-master > .datagrid-row-sticky:not(.datagrid-row-sticky-scroll)');
+        // Measured from the box rather than from offsetWidth, which is rounded to whole pixels and
+        // would leave the pinned columns off by up to a pixel.
+        const headerWidth = headerControls.getBoundingClientRect().width;
+        // Without a row there is nothing to line up with, so the header is a good enough stand-in.
+        const rowWidth = (rowControls || headerControls).getBoundingClientRect().width;
+        this.setRowControlsWidth(this.datagridHeader.nativeElement, headerWidth);
+        this.setRowControlsWidth(this.rowsWrapper.nativeElement, rowWidth);
+    }
+    setRowControlsWidth(target, width) {
+        this.renderer.setStyle(target, '--clr-datagrid-row-controls-width', `${width}px`, RendererStyleFlags2.DashCase);
+    }
     handleResizeChanges(entries) {
         const rowsWrapper = this.rowsWrapper.nativeElement;
         for (const entry of entries) {
@@ -5303,7 +5516,7 @@ class ClrDatagrid {
             this.renderer.removeClass(rowsWrapper, scrollClass);
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagrid, deps: [{ token: DatagridRenderOrganizer }, { token: Items }, { token: ExpandableRowsCount }, { token: Selection }, { token: RowActionService }, { token: StateProvider }, { token: DisplayModeService }, { token: i0.Renderer2 }, { token: DetailService }, { token: DOCUMENT }, { token: i0.ElementRef }, { token: Page }, { token: i2.ClrCommonStringsService }, { token: KeyNavigationGridController }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagrid, deps: [{ token: DatagridRenderOrganizer }, { token: Items }, { token: ExpandableRowsCount }, { token: Selection }, { token: RowActionService }, { token: StateProvider }, { token: DisplayModeService }, { token: i0.Renderer2 }, { token: DetailService }, { token: DOCUMENT }, { token: i0.ElementRef }, { token: Page }, { token: i2.ClrCommonStringsService }, { token: KeyNavigationGridController }, { token: i0.NgZone }, { token: ColumnsService }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrDatagrid, isStandalone: false, selector: "clr-datagrid", inputs: { loadingMoreItems: ["clrLoadingMoreItems", "loadingMoreItems"], clrDgSingleSelectionAriaLabel: "clrDgSingleSelectionAriaLabel", clrDgSingleActionableAriaLabel: "clrDgSingleActionableAriaLabel", clrDetailExpandableAriaLabel: "clrDetailExpandableAriaLabel", clrDgDisablePageFocus: "clrDgDisablePageFocus", customSelectAllEnabled: ["clrDgCustomSelectAllEnabled", "customSelectAllEnabled"], selectAllDisabled: ["clrDgSelectAllDisabled", "selectAllDisabled"], loading: ["clrDgLoading", "loading"], selectionType: ["clrDgSelectionType", "selectionType", selectionTypeAttribute], selected: ["clrDgSelected", "selected"], clrDgPreserveSelection: "clrDgPreserveSelection", rowSelectionMode: ["clrDgRowSelection", "rowSelectionMode"], identityFn: ["clrDgItemsIdentityFn", "identityFn"] }, outputs: { selectedChanged: "clrDgSelectedChange", refresh: "clrDgRefresh", customSelectAll: "clrDgCustomSelectAll" }, host: { properties: { "class.datagrid-host": "true", "class.datagrid-detail-open": "detailService.isOpen", "class.datagrid-detail-overlay": "isDetailOverlay", "class.datagrid-virtual-scroll": "!!virtualScroll" } }, providers: [
             Selection,
             Sort,
@@ -5320,7 +5533,7 @@ class ClrDatagrid {
             ColumnsService,
             DisplayModeService,
             KeyNavigationGridController,
-        ], queries: [{ propertyName: "iterator", first: true, predicate: ClrDatagridItems, descendants: true }, { propertyName: "placeholder", first: true, predicate: ClrDatagridPlaceholder, descendants: true }, { propertyName: "_virtualScroll", predicate: i0.forwardRef(() => ClrDatagridVirtualScrollDirective) }, { propertyName: "columns", predicate: ClrDatagridColumn }, { propertyName: "rows", predicate: ClrDatagridRow, emitDistinctChangesOnly: false }], viewQueries: [{ propertyName: "datagrid", first: true, predicate: ["datagrid"], descendants: true, read: ElementRef }, { propertyName: "datagridTable", first: true, predicate: ["datagridTable"], descendants: true, read: ElementRef }, { propertyName: "datagridHeader", first: true, predicate: ["datagridHeader"], descendants: true, read: ElementRef }, { propertyName: "contentWrapper", first: true, predicate: ["contentWrapper"], descendants: true, read: ElementRef, static: true }, { propertyName: "rowsWrapper", first: true, predicate: ["rowsWrapper"], descendants: true, read: ElementRef, static: true }, { propertyName: "scrollableColumns", first: true, predicate: ["scrollableColumns"], descendants: true, read: ViewContainerRef }, { propertyName: "_projectedDisplayColumns", first: true, predicate: ["projectedDisplayColumns"], descendants: true, read: ViewContainerRef }, { propertyName: "_projectedCalculationColumns", first: true, predicate: ["projectedCalculationColumns"], descendants: true, read: ViewContainerRef }, { propertyName: "_displayedRows", first: true, predicate: ["displayedRows"], descendants: true, read: ViewContainerRef }, { propertyName: "_calculationRows", first: true, predicate: ["calculationRows"], descendants: true, read: ViewContainerRef }, { propertyName: "_fixedColumnTemplate", first: true, predicate: ["fixedColumnTemplate"], descendants: true }, { propertyName: "selectAllCheckbox", first: true, predicate: ["selectAllCheckbox"], descendants: true }, { propertyName: "stickyHeaders", predicate: ["stickyHeader"], descendants: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-content select=\"clr-dg-action-bar\"></ng-content>\n<div class=\"datagrid-outer-wrapper\">\n  <div class=\"datagrid-inner-wrapper\">\n    <div class=\"datagrid\" #datagrid [attr.aria-hidden]=\"detailService.isOpen ? true : null\">\n      <div class=\"datagrid-table-wrapper\">\n        <div role=\"grid\" class=\"datagrid-table\" tabindex=\"-1\" #datagridTable>\n          <div role=\"rowgroup\" class=\"datagrid-header\" #datagridHeader>\n            <div role=\"row\" class=\"datagrid-row\">\n              <div class=\"datagrid-row-master datagrid-row-flex\">\n                <div class=\"datagrid-row-sticky\">\n                  <!--header for datagrid where you can select multiple rows -->\n                  @if (selection.selectionType === SELECTION_TYPE.Multi) {\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-select datagrid-fixed-column\"\n                    (keydown.space)=\"toggleAllSelected($event)\"\n                  >\n                    @if (!virtualScroll || customSelectAllEnabled) {\n                    <div class=\"clr-checkbox-wrapper\">\n                      <!-- We need to move focus and space-key handling to the parent because of keyboard arrow key navigation,\n                          which is not able to transfer focus directly on the input when focused with the tab key -->\n                      <input\n                        #selectAllCheckbox\n                        type=\"checkbox\"\n                        [id]=\"selectAllId\"\n                        [(ngModel)]=\"allSelected\"\n                        [attr.aria-label]=\"commonStrings.keys.selectAll\"\n                        tabindex=\"-1\"\n                        [attr.disabled]=\"selectAllDisabled ? true : null\"\n                      />\n                      <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->\n                      <label [for]=\"selectAllId\" class=\"clr-control-label clr-col-null\">\n                        <span class=\"clr-sr-only\">{{commonStrings.keys.selectAll}}</span>\n                      </label>\n                    </div>\n                    }\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                  <!-- header for datagrid where you can select one row only -->\n                  @if (selection.selectionType === SELECTION_TYPE.Single) {\n                  <div #stickyHeader role=\"columnheader\" class=\"datagrid-column datagrid-select datagrid-fixed-column\">\n                    <div class=\"clr-sr-only\">{{clrDgSingleSelectionAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                  <!-- header for single row action; only displayType if we have at least one actionable row in datagrid -->\n                  @if (rowActionService.hasActionableRow) {\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-row-actions datagrid-fixed-column\"\n                  >\n                    <div class=\"clr-sr-only\">{{clrDgSingleActionableAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                  <!-- header for carets; only displayType if we have at least one expandable row in datagrid -->\n                  @if (expandableRows.hasExpandableRow || detailService.enabled) {\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-expandable-caret datagrid-fixed-column\"\n                  >\n                    <div class=\"clr-sr-only\">{{clrDetailExpandableAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                </div>\n                <div class=\"datagrid-row-scrollable\">\n                  <ng-container #projectedDisplayColumns></ng-container>\n                </div>\n                @if (virtualScroll) {\n                <div class=\"datagrid-row-sticky datagrid-row-sticky-scroll\">\n                  <div class=\"datagrid-column\"></div>\n                </div>\n                }\n              </div>\n            </div>\n          </div>\n\n          <div class=\"datagrid-content\" [class.datagrid-content-virtual]=\"virtualScroll\" #contentWrapper>\n            @if (virtualScroll) {\n            <div class=\"datagrid-content-virtual-spacer\" [style.height]=\"virtualScroll?.totalContentHeight\"></div>\n            }\n            <div role=\"presentation\" #rowsWrapper class=\"datagrid-rows\">\n              @if (loadingMoreItems) {\n              <clr-dg-row class=\"datagrid-row-loading\">\n                <clr-dg-cell>\n                  <clr-spinner clrMedium></clr-spinner>\n                  <span>{{ commonStrings.keys.loading }}</span>\n                </clr-dg-cell>\n              </clr-dg-row>\n              }\n\n              <ng-container #displayedRows></ng-container>\n\n              @if (loadingMoreItems) {\n              <clr-dg-row class=\"datagrid-row-loading\">\n                <clr-dg-cell>\n                  <clr-spinner clrMedium></clr-spinner>\n                  <span>{{ commonStrings.keys.loading }}</span>\n                </clr-dg-cell>\n              </clr-dg-row>\n              }\n\n              <!-- Custom placeholder overrides the default empty one -->\n              <ng-content select=\"clr-dg-placeholder\"></ng-content>\n              @if (!placeholder) {\n              <clr-dg-placeholder></clr-dg-placeholder>\n              }\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <ng-content select=\"clr-dg-footer\"></ng-content>\n    @if (loading) {\n    <div class=\"datagrid-spinner\">\n      <clr-spinner clrMedium>Loading</clr-spinner>\n    </div>\n    }\n  </div>\n  <ng-content select=\"[clrIfDetail],clr-dg-detail\"></ng-content>\n</div>\n\n<div class=\"datagrid-calculation-table\">\n  <div class=\"datagrid-calculation-header\">\n    <ng-container #projectedCalculationColumns></ng-container>\n  </div>\n  <ng-container #calculationRows></ng-container>\n</div>\n\n<ng-template #fixedColumnTemplate>\n  <div class=\"datagrid-column datagrid-fixed-column\"></div>\n</ng-template>\n", dependencies: [{ kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i13.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i13.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i13.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: i14.ClrSpinner, selector: "clr-spinner", inputs: ["clrInline", "clrInverse", "clrSmall", "clrMedium"] }, { kind: "component", type: ClrDatagridCell, selector: "clr-dg-cell" }, { kind: "component", type: ClrDatagridPlaceholder, selector: "clr-dg-placeholder" }, { kind: "component", type: ClrDatagridRow, selector: "clr-dg-row", inputs: ["clrDgDetailDisabled", "clrDgDetailHidden", "clrDgSkeletonLoading", "clrDgItem", "clrDgSelectable", "clrDgSelected", "clrDgExpanded", "clrDgDetailOpenLabel", "clrDgDetailCloseLabel", "clrDgRowSelectionLabel"], outputs: ["clrDgSelectedChange", "clrDgExpandedChange"] }, { kind: "directive", type: ClrDatagridSelectionCellDirective, selector: ".datagrid-select" }, { kind: "directive", type: DatagridCellRenderer, selector: "clr-dg-cell" }, { kind: "directive", type: DatagridRowRenderer, selector: "clr-dg-row" }, { kind: "directive", type: ActionableOompaLoompa, selector: "clr-datagrid, clr-dg-row" }, { kind: "directive", type: ExpandableOompaLoompa, selector: "clr-datagrid, clr-dg-row" }] }); }
+        ], queries: [{ propertyName: "iterator", first: true, predicate: ClrDatagridItems, descendants: true }, { propertyName: "placeholder", first: true, predicate: ClrDatagridPlaceholder, descendants: true }, { propertyName: "_virtualScroll", predicate: i0.forwardRef(() => ClrDatagridVirtualScrollDirective) }, { propertyName: "columns", predicate: ClrDatagridColumn }, { propertyName: "rows", predicate: ClrDatagridRow, emitDistinctChangesOnly: false }], viewQueries: [{ propertyName: "datagrid", first: true, predicate: ["datagrid"], descendants: true, read: ElementRef }, { propertyName: "datagridTable", first: true, predicate: ["datagridTable"], descendants: true, read: ElementRef }, { propertyName: "datagridHeader", first: true, predicate: ["datagridHeader"], descendants: true, read: ElementRef }, { propertyName: "contentWrapper", first: true, predicate: ["contentWrapper"], descendants: true, read: ElementRef, static: true }, { propertyName: "rowsWrapper", first: true, predicate: ["rowsWrapper"], descendants: true, read: ElementRef, static: true }, { propertyName: "scrollableColumns", first: true, predicate: ["scrollableColumns"], descendants: true, read: ViewContainerRef }, { propertyName: "_projectedDisplayColumns", first: true, predicate: ["projectedDisplayColumns"], descendants: true, read: ViewContainerRef }, { propertyName: "_projectedStickyColumns", first: true, predicate: ["projectedStickyColumns"], descendants: true, read: ViewContainerRef }, { propertyName: "_projectedCalculationColumns", first: true, predicate: ["projectedCalculationColumns"], descendants: true, read: ViewContainerRef }, { propertyName: "_displayedRows", first: true, predicate: ["displayedRows"], descendants: true, read: ViewContainerRef }, { propertyName: "_calculationRows", first: true, predicate: ["calculationRows"], descendants: true, read: ViewContainerRef }, { propertyName: "_fixedColumnTemplate", first: true, predicate: ["fixedColumnTemplate"], descendants: true }, { propertyName: "selectAllCheckbox", first: true, predicate: ["selectAllCheckbox"], descendants: true }, { propertyName: "rowControls", first: true, predicate: ["rowControls"], descendants: true, read: ElementRef }, { propertyName: "stickyHeaders", predicate: ["stickyHeader"], descendants: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-content select=\"clr-dg-action-bar\"></ng-content>\n<div class=\"datagrid-outer-wrapper\">\n  <div class=\"datagrid-inner-wrapper\">\n    <div class=\"datagrid\" #datagrid [attr.aria-hidden]=\"detailService.isOpen ? true : null\">\n      <div class=\"datagrid-table-wrapper\">\n        <div role=\"grid\" class=\"datagrid-table\" tabindex=\"-1\" #datagridTable>\n          <div role=\"rowgroup\" class=\"datagrid-header\" #datagridHeader>\n            <div role=\"row\" class=\"datagrid-row\">\n              <div class=\"datagrid-row-master datagrid-row-flex\">\n                <div class=\"datagrid-row-sticky\" #rowControls>\n                  <!--header for datagrid where you can select multiple rows -->\n                  @if (selection.selectionType === SELECTION_TYPE.Multi) {\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-select datagrid-fixed-column\"\n                    (keydown.space)=\"toggleAllSelected($event)\"\n                  >\n                    @if (!virtualScroll || customSelectAllEnabled) {\n                    <div class=\"clr-checkbox-wrapper\">\n                      <!-- We need to move focus and space-key handling to the parent because of keyboard arrow key navigation,\n                          which is not able to transfer focus directly on the input when focused with the tab key -->\n                      <input\n                        #selectAllCheckbox\n                        type=\"checkbox\"\n                        [id]=\"selectAllId\"\n                        [(ngModel)]=\"allSelected\"\n                        [attr.aria-label]=\"commonStrings.keys.selectAll\"\n                        tabindex=\"-1\"\n                        [attr.disabled]=\"selectAllDisabled ? true : null\"\n                      />\n                      <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->\n                      <label [for]=\"selectAllId\" class=\"clr-control-label clr-col-null\">\n                        <span class=\"clr-sr-only\">{{commonStrings.keys.selectAll}}</span>\n                      </label>\n                    </div>\n                    }\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                  <!-- header for datagrid where you can select one row only -->\n                  @if (selection.selectionType === SELECTION_TYPE.Single) {\n                  <div #stickyHeader role=\"columnheader\" class=\"datagrid-column datagrid-select datagrid-fixed-column\">\n                    <div class=\"clr-sr-only\">{{clrDgSingleSelectionAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                  <!-- header for single row action; only displayType if we have at least one actionable row in datagrid -->\n                  @if (rowActionService.hasActionableRow) {\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-row-actions datagrid-fixed-column\"\n                  >\n                    <div class=\"clr-sr-only\">{{clrDgSingleActionableAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                  <!-- header for carets; only displayType if we have at least one expandable row in datagrid -->\n                  @if (expandableRows.hasExpandableRow || detailService.enabled) {\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-expandable-caret datagrid-fixed-column\"\n                  >\n                    <div class=\"clr-sr-only\">{{clrDetailExpandableAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                </div>\n                <div class=\"datagrid-row-scrollable\">\n                  <div class=\"datagrid-pinned-cells\">\n                    <ng-container #projectedStickyColumns></ng-container>\n                  </div>\n                  <ng-container #projectedDisplayColumns></ng-container>\n                </div>\n                @if (virtualScroll) {\n                <div class=\"datagrid-row-sticky datagrid-row-sticky-scroll\">\n                  <div class=\"datagrid-column\"></div>\n                </div>\n                }\n              </div>\n            </div>\n          </div>\n\n          <div class=\"datagrid-content\" [class.datagrid-content-virtual]=\"virtualScroll\" #contentWrapper>\n            @if (virtualScroll) {\n            <div class=\"datagrid-content-virtual-spacer\" [style.height]=\"virtualScroll?.totalContentHeight\"></div>\n            }\n            <div role=\"presentation\" #rowsWrapper class=\"datagrid-rows\">\n              @if (loadingMoreItems) {\n              <clr-dg-row class=\"datagrid-row-loading\">\n                <clr-dg-cell>\n                  <clr-spinner clrMedium></clr-spinner>\n                  <span>{{ commonStrings.keys.loading }}</span>\n                </clr-dg-cell>\n              </clr-dg-row>\n              }\n\n              <ng-container #displayedRows></ng-container>\n\n              @if (loadingMoreItems) {\n              <clr-dg-row class=\"datagrid-row-loading\">\n                <clr-dg-cell>\n                  <clr-spinner clrMedium></clr-spinner>\n                  <span>{{ commonStrings.keys.loading }}</span>\n                </clr-dg-cell>\n              </clr-dg-row>\n              }\n\n              <!-- Custom placeholder overrides the default empty one -->\n              <ng-content select=\"clr-dg-placeholder\"></ng-content>\n              @if (!placeholder) {\n              <clr-dg-placeholder></clr-dg-placeholder>\n              }\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <ng-content select=\"clr-dg-footer\"></ng-content>\n    @if (loading) {\n    <div class=\"datagrid-spinner\">\n      <clr-spinner clrMedium>Loading</clr-spinner>\n    </div>\n    }\n  </div>\n  <ng-content select=\"[clrIfDetail],clr-dg-detail\"></ng-content>\n</div>\n\n<div class=\"datagrid-calculation-table\">\n  <div class=\"datagrid-calculation-header\">\n    <ng-container #projectedCalculationColumns></ng-container>\n  </div>\n  <ng-container #calculationRows></ng-container>\n</div>\n\n<ng-template #fixedColumnTemplate>\n  <div class=\"datagrid-column datagrid-fixed-column\"></div>\n</ng-template>\n", dependencies: [{ kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i14.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i14.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i14.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "component", type: i15.ClrSpinner, selector: "clr-spinner", inputs: ["clrInline", "clrInverse", "clrSmall", "clrMedium"] }, { kind: "component", type: ClrDatagridCell, selector: "clr-dg-cell" }, { kind: "component", type: ClrDatagridPlaceholder, selector: "clr-dg-placeholder" }, { kind: "component", type: ClrDatagridRow, selector: "clr-dg-row", inputs: ["clrDgDetailDisabled", "clrDgDetailHidden", "clrDgSkeletonLoading", "clrDgItem", "clrDgSelectable", "clrDgSelected", "clrDgExpanded", "clrDgDetailOpenLabel", "clrDgDetailCloseLabel", "clrDgRowSelectionLabel"], outputs: ["clrDgSelectedChange", "clrDgExpandedChange"] }, { kind: "directive", type: ClrDatagridSelectionCellDirective, selector: ".datagrid-select" }, { kind: "directive", type: DatagridCellRenderer, selector: "clr-dg-cell" }, { kind: "directive", type: DatagridRowRenderer, selector: "clr-dg-row" }, { kind: "directive", type: ActionableOompaLoompa, selector: "clr-datagrid, clr-dg-row" }, { kind: "directive", type: ExpandableOompaLoompa, selector: "clr-datagrid, clr-dg-row" }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagrid, decorators: [{
             type: Component,
@@ -5345,11 +5558,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                         '[class.datagrid-detail-open]': 'detailService.isOpen',
                         '[class.datagrid-detail-overlay]': 'isDetailOverlay',
                         '[class.datagrid-virtual-scroll]': '!!virtualScroll',
-                    }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-content select=\"clr-dg-action-bar\"></ng-content>\n<div class=\"datagrid-outer-wrapper\">\n  <div class=\"datagrid-inner-wrapper\">\n    <div class=\"datagrid\" #datagrid [attr.aria-hidden]=\"detailService.isOpen ? true : null\">\n      <div class=\"datagrid-table-wrapper\">\n        <div role=\"grid\" class=\"datagrid-table\" tabindex=\"-1\" #datagridTable>\n          <div role=\"rowgroup\" class=\"datagrid-header\" #datagridHeader>\n            <div role=\"row\" class=\"datagrid-row\">\n              <div class=\"datagrid-row-master datagrid-row-flex\">\n                <div class=\"datagrid-row-sticky\">\n                  <!--header for datagrid where you can select multiple rows -->\n                  @if (selection.selectionType === SELECTION_TYPE.Multi) {\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-select datagrid-fixed-column\"\n                    (keydown.space)=\"toggleAllSelected($event)\"\n                  >\n                    @if (!virtualScroll || customSelectAllEnabled) {\n                    <div class=\"clr-checkbox-wrapper\">\n                      <!-- We need to move focus and space-key handling to the parent because of keyboard arrow key navigation,\n                          which is not able to transfer focus directly on the input when focused with the tab key -->\n                      <input\n                        #selectAllCheckbox\n                        type=\"checkbox\"\n                        [id]=\"selectAllId\"\n                        [(ngModel)]=\"allSelected\"\n                        [attr.aria-label]=\"commonStrings.keys.selectAll\"\n                        tabindex=\"-1\"\n                        [attr.disabled]=\"selectAllDisabled ? true : null\"\n                      />\n                      <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->\n                      <label [for]=\"selectAllId\" class=\"clr-control-label clr-col-null\">\n                        <span class=\"clr-sr-only\">{{commonStrings.keys.selectAll}}</span>\n                      </label>\n                    </div>\n                    }\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                  <!-- header for datagrid where you can select one row only -->\n                  @if (selection.selectionType === SELECTION_TYPE.Single) {\n                  <div #stickyHeader role=\"columnheader\" class=\"datagrid-column datagrid-select datagrid-fixed-column\">\n                    <div class=\"clr-sr-only\">{{clrDgSingleSelectionAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                  <!-- header for single row action; only displayType if we have at least one actionable row in datagrid -->\n                  @if (rowActionService.hasActionableRow) {\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-row-actions datagrid-fixed-column\"\n                  >\n                    <div class=\"clr-sr-only\">{{clrDgSingleActionableAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                  <!-- header for carets; only displayType if we have at least one expandable row in datagrid -->\n                  @if (expandableRows.hasExpandableRow || detailService.enabled) {\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-expandable-caret datagrid-fixed-column\"\n                  >\n                    <div class=\"clr-sr-only\">{{clrDetailExpandableAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                </div>\n                <div class=\"datagrid-row-scrollable\">\n                  <ng-container #projectedDisplayColumns></ng-container>\n                </div>\n                @if (virtualScroll) {\n                <div class=\"datagrid-row-sticky datagrid-row-sticky-scroll\">\n                  <div class=\"datagrid-column\"></div>\n                </div>\n                }\n              </div>\n            </div>\n          </div>\n\n          <div class=\"datagrid-content\" [class.datagrid-content-virtual]=\"virtualScroll\" #contentWrapper>\n            @if (virtualScroll) {\n            <div class=\"datagrid-content-virtual-spacer\" [style.height]=\"virtualScroll?.totalContentHeight\"></div>\n            }\n            <div role=\"presentation\" #rowsWrapper class=\"datagrid-rows\">\n              @if (loadingMoreItems) {\n              <clr-dg-row class=\"datagrid-row-loading\">\n                <clr-dg-cell>\n                  <clr-spinner clrMedium></clr-spinner>\n                  <span>{{ commonStrings.keys.loading }}</span>\n                </clr-dg-cell>\n              </clr-dg-row>\n              }\n\n              <ng-container #displayedRows></ng-container>\n\n              @if (loadingMoreItems) {\n              <clr-dg-row class=\"datagrid-row-loading\">\n                <clr-dg-cell>\n                  <clr-spinner clrMedium></clr-spinner>\n                  <span>{{ commonStrings.keys.loading }}</span>\n                </clr-dg-cell>\n              </clr-dg-row>\n              }\n\n              <!-- Custom placeholder overrides the default empty one -->\n              <ng-content select=\"clr-dg-placeholder\"></ng-content>\n              @if (!placeholder) {\n              <clr-dg-placeholder></clr-dg-placeholder>\n              }\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <ng-content select=\"clr-dg-footer\"></ng-content>\n    @if (loading) {\n    <div class=\"datagrid-spinner\">\n      <clr-spinner clrMedium>Loading</clr-spinner>\n    </div>\n    }\n  </div>\n  <ng-content select=\"[clrIfDetail],clr-dg-detail\"></ng-content>\n</div>\n\n<div class=\"datagrid-calculation-table\">\n  <div class=\"datagrid-calculation-header\">\n    <ng-container #projectedCalculationColumns></ng-container>\n  </div>\n  <ng-container #calculationRows></ng-container>\n</div>\n\n<ng-template #fixedColumnTemplate>\n  <div class=\"datagrid-column datagrid-fixed-column\"></div>\n</ng-template>\n" }]
+                    }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<ng-content select=\"clr-dg-action-bar\"></ng-content>\n<div class=\"datagrid-outer-wrapper\">\n  <div class=\"datagrid-inner-wrapper\">\n    <div class=\"datagrid\" #datagrid [attr.aria-hidden]=\"detailService.isOpen ? true : null\">\n      <div class=\"datagrid-table-wrapper\">\n        <div role=\"grid\" class=\"datagrid-table\" tabindex=\"-1\" #datagridTable>\n          <div role=\"rowgroup\" class=\"datagrid-header\" #datagridHeader>\n            <div role=\"row\" class=\"datagrid-row\">\n              <div class=\"datagrid-row-master datagrid-row-flex\">\n                <div class=\"datagrid-row-sticky\" #rowControls>\n                  <!--header for datagrid where you can select multiple rows -->\n                  @if (selection.selectionType === SELECTION_TYPE.Multi) {\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-select datagrid-fixed-column\"\n                    (keydown.space)=\"toggleAllSelected($event)\"\n                  >\n                    @if (!virtualScroll || customSelectAllEnabled) {\n                    <div class=\"clr-checkbox-wrapper\">\n                      <!-- We need to move focus and space-key handling to the parent because of keyboard arrow key navigation,\n                          which is not able to transfer focus directly on the input when focused with the tab key -->\n                      <input\n                        #selectAllCheckbox\n                        type=\"checkbox\"\n                        [id]=\"selectAllId\"\n                        [(ngModel)]=\"allSelected\"\n                        [attr.aria-label]=\"commonStrings.keys.selectAll\"\n                        tabindex=\"-1\"\n                        [attr.disabled]=\"selectAllDisabled ? true : null\"\n                      />\n                      <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->\n                      <label [for]=\"selectAllId\" class=\"clr-control-label clr-col-null\">\n                        <span class=\"clr-sr-only\">{{commonStrings.keys.selectAll}}</span>\n                      </label>\n                    </div>\n                    }\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                  <!-- header for datagrid where you can select one row only -->\n                  @if (selection.selectionType === SELECTION_TYPE.Single) {\n                  <div #stickyHeader role=\"columnheader\" class=\"datagrid-column datagrid-select datagrid-fixed-column\">\n                    <div class=\"clr-sr-only\">{{clrDgSingleSelectionAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                  <!-- header for single row action; only displayType if we have at least one actionable row in datagrid -->\n                  @if (rowActionService.hasActionableRow) {\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-row-actions datagrid-fixed-column\"\n                  >\n                    <div class=\"clr-sr-only\">{{clrDgSingleActionableAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                  <!-- header for carets; only displayType if we have at least one expandable row in datagrid -->\n                  @if (expandableRows.hasExpandableRow || detailService.enabled) {\n                  <div\n                    #stickyHeader\n                    role=\"columnheader\"\n                    class=\"datagrid-column datagrid-expandable-caret datagrid-fixed-column\"\n                  >\n                    <div class=\"clr-sr-only\">{{clrDetailExpandableAriaLabel}}</div>\n                    <div class=\"datagrid-column-separator\"></div>\n                  </div>\n                  }\n                </div>\n                <div class=\"datagrid-row-scrollable\">\n                  <div class=\"datagrid-pinned-cells\">\n                    <ng-container #projectedStickyColumns></ng-container>\n                  </div>\n                  <ng-container #projectedDisplayColumns></ng-container>\n                </div>\n                @if (virtualScroll) {\n                <div class=\"datagrid-row-sticky datagrid-row-sticky-scroll\">\n                  <div class=\"datagrid-column\"></div>\n                </div>\n                }\n              </div>\n            </div>\n          </div>\n\n          <div class=\"datagrid-content\" [class.datagrid-content-virtual]=\"virtualScroll\" #contentWrapper>\n            @if (virtualScroll) {\n            <div class=\"datagrid-content-virtual-spacer\" [style.height]=\"virtualScroll?.totalContentHeight\"></div>\n            }\n            <div role=\"presentation\" #rowsWrapper class=\"datagrid-rows\">\n              @if (loadingMoreItems) {\n              <clr-dg-row class=\"datagrid-row-loading\">\n                <clr-dg-cell>\n                  <clr-spinner clrMedium></clr-spinner>\n                  <span>{{ commonStrings.keys.loading }}</span>\n                </clr-dg-cell>\n              </clr-dg-row>\n              }\n\n              <ng-container #displayedRows></ng-container>\n\n              @if (loadingMoreItems) {\n              <clr-dg-row class=\"datagrid-row-loading\">\n                <clr-dg-cell>\n                  <clr-spinner clrMedium></clr-spinner>\n                  <span>{{ commonStrings.keys.loading }}</span>\n                </clr-dg-cell>\n              </clr-dg-row>\n              }\n\n              <!-- Custom placeholder overrides the default empty one -->\n              <ng-content select=\"clr-dg-placeholder\"></ng-content>\n              @if (!placeholder) {\n              <clr-dg-placeholder></clr-dg-placeholder>\n              }\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <ng-content select=\"clr-dg-footer\"></ng-content>\n    @if (loading) {\n    <div class=\"datagrid-spinner\">\n      <clr-spinner clrMedium>Loading</clr-spinner>\n    </div>\n    }\n  </div>\n  <ng-content select=\"[clrIfDetail],clr-dg-detail\"></ng-content>\n</div>\n\n<div class=\"datagrid-calculation-table\">\n  <div class=\"datagrid-calculation-header\">\n    <ng-container #projectedCalculationColumns></ng-container>\n  </div>\n  <ng-container #calculationRows></ng-container>\n</div>\n\n<ng-template #fixedColumnTemplate>\n  <div class=\"datagrid-column datagrid-fixed-column\"></div>\n</ng-template>\n" }]
         }], ctorParameters: () => [{ type: DatagridRenderOrganizer }, { type: Items }, { type: ExpandableRowsCount }, { type: Selection }, { type: RowActionService }, { type: StateProvider }, { type: DisplayModeService }, { type: i0.Renderer2 }, { type: DetailService }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [DOCUMENT]
-                }] }, { type: i0.ElementRef }, { type: Page }, { type: i2.ClrCommonStringsService }, { type: KeyNavigationGridController }, { type: i0.NgZone }], propDecorators: { loadingMoreItems: [{
+                }] }, { type: i0.ElementRef }, { type: Page }, { type: i2.ClrCommonStringsService }, { type: KeyNavigationGridController }, { type: i0.NgZone }, { type: ColumnsService }], propDecorators: { loadingMoreItems: [{
                 type: Input,
                 args: ['clrLoadingMoreItems']
             }], clrDgSingleSelectionAriaLabel: [{
@@ -5411,6 +5624,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], _projectedDisplayColumns: [{
                 type: ViewChild,
                 args: ['projectedDisplayColumns', { read: ViewContainerRef }]
+            }], _projectedStickyColumns: [{
+                type: ViewChild,
+                args: ['projectedStickyColumns', { read: ViewContainerRef }]
             }], _projectedCalculationColumns: [{
                 type: ViewChild,
                 args: ['projectedCalculationColumns', { read: ViewContainerRef }]
@@ -5429,6 +5645,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], selectAllCheckbox: [{
                 type: ViewChild,
                 args: ['selectAllCheckbox']
+            }], rowControls: [{
+                type: ViewChild,
+                args: ['rowControls', { read: ElementRef }]
             }], loading: [{
                 type: Input,
                 args: ['clrDgLoading']
@@ -5813,7 +6032,7 @@ class ClrDatagridColumnToggle {
         <clr-dg-column-toggle-button (clrAllSelected)="allColumnsSelected()"></clr-dg-column-toggle-button>
       </div>
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i9.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i2.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i7.ClrCheckbox, selector: "[clrCheckbox],[clrToggle]" }, { kind: "component", type: i7.ClrCheckboxWrapper, selector: "clr-checkbox-wrapper,clr-toggle-wrapper" }, { kind: "directive", type: i13.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i13.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i13.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "directive", type: i3.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i3.ClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: i3.ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }, { kind: "component", type: ClrDatagridColumnToggleButton, selector: "clr-dg-column-toggle-button", outputs: ["clrAllSelected"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i10.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i2.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i7.ClrCheckbox, selector: "[clrCheckbox],[clrToggle]" }, { kind: "component", type: i7.ClrCheckboxWrapper, selector: "clr-checkbox-wrapper,clr-toggle-wrapper" }, { kind: "directive", type: i14.CheckboxControlValueAccessor, selector: "input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]" }, { kind: "directive", type: i14.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i14.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }, { kind: "directive", type: i3.ClrPopoverOrigin, selector: "[clrPopoverOrigin]" }, { kind: "directive", type: i3.ClrPopoverCloseButton, selector: "[clrPopoverCloseButton]", outputs: ["clrPopoverOnCloseChange"] }, { kind: "directive", type: i3.ClrPopoverOpenCloseButton, selector: "[clrPopoverOpenCloseButton]", outputs: ["clrPopoverOpenCloseChange"] }, { kind: "directive", type: i3.ClrPopoverContent, selector: "[clrPopoverContent]", inputs: ["clrPopoverContent", "clrPopoverContentAt", "clrPopoverContentAvailablePositions", "clrPopoverContentType", "clrPopoverContentOutsideClickToClose", "clrPopoverContentScrollToClose", "clrPopoverContentOrigin"] }, { kind: "component", type: ClrDatagridColumnToggleButton, selector: "clr-dg-column-toggle-button", outputs: ["clrAllSelected"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridColumnToggle, decorators: [{
             type: Component,
@@ -6116,23 +6335,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-const COLUMN_STATE = new InjectionToken('COLUMN_STATE');
-function columnStateFactory() {
-    return new BehaviorSubject({
-        changes: [],
-    });
-}
-const COLUMN_STATE_PROVIDER = {
-    provide: COLUMN_STATE,
-    useFactory: columnStateFactory,
-};
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 /**
  *
  * @description
@@ -6212,7 +6414,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     selector: '[clrDgHideableColumn]',
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i0.TemplateRef }, { type: i0.ViewContainerRef }, { type: ColumnsService }, { type: i2$2.BehaviorSubject, decorators: [{
+        }], ctorParameters: () => [{ type: i0.TemplateRef }, { type: i0.ViewContainerRef }, { type: ColumnsService }, { type: i12.BehaviorSubject, decorators: [{
                     type: Optional
                 }, {
                     type: Inject,
@@ -6333,16 +6535,25 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * For instance, it can help span a text over multiple rows in detail view.
  */
 class ClrDatagridRowDetail {
-    constructor(selection, rowActionService, expand, expandableRows, commonStrings) {
+    constructor(selection, rowActionService, expand, expandableRows, commonStrings, columnsService, displayMode) {
         this.selection = selection;
         this.rowActionService = rowActionService;
         this.expand = expand;
         this.expandableRows = expandableRows;
         this.commonStrings = commonStrings;
+        this.columnsService = columnsService;
+        this.displayMode = displayMode;
         this.replacedRow = false;
+        /**
+         * Whether the detail lays its cells out in the same columns as the row, which it does when it
+         * holds one cell per column and at least one of those columns is pinned. The cells of the pinned
+         * columns are then static alongside the ones in the row above.
+         */
+        this.columnAligned = false;
         /* reference to the enum so that template can access it */
         this.SELECTION_TYPE = SelectionType;
         this.subscriptions = [];
+        this.cellsMoved = false;
     }
     set replace(value) {
         this.expand.setReplace(!!value);
@@ -6358,19 +6569,93 @@ class ClrDatagridRowDetail {
     ngAfterContentInit() {
         this.subscriptions.push(this.expand.replace.subscribe(replaceChange => {
             this.replacedRow = replaceChange;
-        }));
+        }), 
+        // New cells have to be moved even when the columns did not change.
+        this.cells.changes.subscribe(() => this.syncColumnAlignment(true)));
+    }
+    ngAfterViewInit() {
+        this.subscriptions.push(
+        // The columns are set up after the detail's content, and pinning one happens later still.
+        // Both land as a new render cycle, which is where the cells are moved.
+        this.displayMode.view.subscribe(() => this.syncColumnAlignment()));
+        this.syncColumnAlignment(true);
+        this.hadCells = this.cells?.length > 0;
+    }
+    ngAfterViewChecked() {
+        // The template holds the content in one of two places, depending on whether the detail has cells
+        // of its own, and creating either of them projects the content into it - which takes the cells
+        // back out of the containers they were moved into. That happens when a detail turns up with no
+        // cells and receives them later, as it does when its content is behind a `clrLoading` template.
+        // By this point the swap has happened, so the move can be repeated for good.
+        const hasCells = this.cells?.length > 0;
+        if (hasCells !== this.hadCells) {
+            this.hadCells = hasCells;
+            this.syncColumnAlignment(true);
+        }
     }
     ngOnDestroy() {
         this.subscriptions.forEach(sub => sub.unsubscribe());
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridRowDetail, deps: [{ token: Selection }, { token: RowActionService }, { token: DatagridIfExpandService }, { token: ExpandableRowsCount }, { token: i2.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrDatagridRowDetail, isStandalone: false, selector: "clr-dg-row-detail", inputs: { _beginningOfExpandableContentAriaText: ["clrRowDetailBeginningAriaText", "_beginningOfExpandableContentAriaText"], _endOfExpandableContentAriaText: ["clrRowDetailEndAriaText", "_endOfExpandableContentAriaText"], replace: ["clrDgReplace", "replace"] }, host: { attributes: { "role": "row" }, properties: { "class.datagrid-row-flex": "true", "class.datagrid-row-detail": "true", "attr.id": "expand.expandableId" } }, queries: [{ propertyName: "cells", predicate: ClrDatagridCell }], ngImport: i0, template: `
+    /**
+     * Moves the cells into the containers that lay them out in the same columns as the row, or back
+     * out of them once that stops making sense.
+     */
+    syncColumnAlignment(force = false) {
+        if (!this._pinnedCells || !this._scrollableCells) {
+            return;
+        }
+        const columns = this.columnsService.columnStates;
+        const cells = this.cells ? this.cells.toArray() : [];
+        // One cell per column is what makes the two comparable. Pinning is what makes the split worth
+        // doing at all: with nothing pinned there is nothing to line up with, and the detail is left
+        // exactly as it was authored.
+        const columnAligned = cells.length > 0 && cells.length === columns.length && columns.some(column => column.pinned);
+        const layout = columnAligned ? columns.map(column => (column.pinned ? '1' : '0')).join('') : '';
+        if (!force && layout === this.lastLayout) {
+            return;
+        }
+        this.lastLayout = layout;
+        this.columnAligned = columnAligned;
+        if (!columnAligned) {
+            // Only worth doing if the cells were moved in the first place. Leaving an untouched detail
+            // alone keeps whatever the author wrote between the cells where they wrote it.
+            if (this.cellsMoved) {
+                cells.forEach(cell => this.moveCell(this._plainCells, cell));
+                this.cellsMoved = false;
+            }
+            return;
+        }
+        cells.forEach((cell, index) => this.moveCell(this.columnsService.isPinned(index) ? this._pinnedCells : this._scrollableCells, cell));
+        this.cellsMoved = true;
+    }
+    moveCell(container, cell) {
+        if (container && !cell._view.destroyed) {
+            container.insert(cell._view);
+        }
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridRowDetail, deps: [{ token: Selection }, { token: RowActionService }, { token: DatagridIfExpandService }, { token: ExpandableRowsCount }, { token: i2.ClrCommonStringsService }, { token: ColumnsService }, { token: DisplayModeService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.1.3", type: ClrDatagridRowDetail, isStandalone: false, selector: "clr-dg-row-detail", inputs: { _beginningOfExpandableContentAriaText: ["clrRowDetailBeginningAriaText", "_beginningOfExpandableContentAriaText"], _endOfExpandableContentAriaText: ["clrRowDetailEndAriaText", "_endOfExpandableContentAriaText"], replace: ["clrDgReplace", "replace"] }, host: { attributes: { "role": "row" }, properties: { "class.datagrid-row-flex": "true", "class.datagrid-row-detail": "true", "attr.id": "expand.expandableId" } }, queries: [{ propertyName: "cells", predicate: ClrDatagridCell }], viewQueries: [{ propertyName: "_pinnedCells", first: true, predicate: ["pinnedCells"], descendants: true, read: ViewContainerRef }, { propertyName: "_scrollableCells", first: true, predicate: ["scrollableCells"], descendants: true, read: ViewContainerRef }, { propertyName: "_plainCells", first: true, predicate: ["plainCells"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: `
     <div class="clr-sr-only">
       {{ beginningOfExpandableContentAriaText }}
       {{ commonStrings.keys.datagridExpandableRowsHelperText }}
     </div>
+    <!--
+      These two containers mirror the ones in the row above and are only used while the detail is
+      column aligned - see columnAligned. They are always rendered so the cells always have
+      somewhere to be moved into, and the pinned one takes itself out of the layout while empty.
+    -->
+    <div class="datagrid-pinned-cells">
+      <ng-container #pinnedCells></ng-container>
+    </div>
+    <ng-container #scrollableCells></ng-container>
     @if (this.cells?.length > 0) {
       <ng-container [ngTemplateOutlet]="noCells"></ng-container>
+      <!--
+        Where the cells go back to when the detail stops being column aligned, because a column was
+        unpinned. A view that has been moved into a container cannot be handed back to the content
+        projection it came from, so it needs a container of its own in the same place.
+      -->
+      <ng-container #plainCells></ng-container>
     }
     @if (this.cells?.length === 0) {
       <clr-dg-cell class="datagrid-container">
@@ -6382,7 +6667,7 @@ class ClrDatagridRowDetail {
       <ng-content></ng-content>
     </ng-template>
     <div class="clr-sr-only">{{ endOfExpandableContentAriaText }}</div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i9.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: ClrDatagridCell, selector: "clr-dg-cell" }, { kind: "directive", type: DatagridCellRenderer, selector: "clr-dg-cell" }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i10.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: ClrDatagridCell, selector: "clr-dg-cell" }, { kind: "directive", type: DatagridCellRenderer, selector: "clr-dg-cell" }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridRowDetail, decorators: [{
             type: Component,
@@ -6393,8 +6678,23 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
       {{ beginningOfExpandableContentAriaText }}
       {{ commonStrings.keys.datagridExpandableRowsHelperText }}
     </div>
+    <!--
+      These two containers mirror the ones in the row above and are only used while the detail is
+      column aligned - see columnAligned. They are always rendered so the cells always have
+      somewhere to be moved into, and the pinned one takes itself out of the layout while empty.
+    -->
+    <div class="datagrid-pinned-cells">
+      <ng-container #pinnedCells></ng-container>
+    </div>
+    <ng-container #scrollableCells></ng-container>
     @if (this.cells?.length > 0) {
       <ng-container [ngTemplateOutlet]="noCells"></ng-container>
+      <!--
+        Where the cells go back to when the detail stops being column aligned, because a column was
+        unpinned. A view that has been moved into a container cannot be handed back to the content
+        projection it came from, so it needs a container of its own in the same place.
+      -->
+      <ng-container #plainCells></ng-container>
     }
     @if (this.cells?.length === 0) {
       <clr-dg-cell class="datagrid-container">
@@ -6415,7 +6715,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     },
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: Selection }, { type: RowActionService }, { type: DatagridIfExpandService }, { type: ExpandableRowsCount }, { type: i2.ClrCommonStringsService }], propDecorators: { _beginningOfExpandableContentAriaText: [{
+        }], ctorParameters: () => [{ type: Selection }, { type: RowActionService }, { type: DatagridIfExpandService }, { type: ExpandableRowsCount }, { type: i2.ClrCommonStringsService }, { type: ColumnsService }, { type: DisplayModeService }], propDecorators: { _beginningOfExpandableContentAriaText: [{
                 type: Input,
                 args: ['clrRowDetailBeginningAriaText']
             }], _endOfExpandableContentAriaText: [{
@@ -6424,6 +6724,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
             }], cells: [{
                 type: ContentChildren,
                 args: [ClrDatagridCell]
+            }], _pinnedCells: [{
+                type: ViewChild,
+                args: ['pinnedCells', { read: ViewContainerRef }]
+            }], _scrollableCells: [{
+                type: ViewChild,
+                args: ['scrollableCells', { read: ViewContainerRef }]
+            }], _plainCells: [{
+                type: ViewChild,
+                args: ['plainCells', { read: ViewContainerRef }]
             }], replace: [{
                 type: Input,
                 args: ['clrDgReplace']
@@ -6531,7 +6840,7 @@ class ClrDatagridPageSize {
         }
       </select>
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i13.NgSelectOption, selector: "option", inputs: ["ngValue", "value"] }, { kind: "directive", type: i13.ɵNgSelectMultipleOption, selector: "option", inputs: ["ngValue", "value"] }, { kind: "directive", type: i13.SelectControlValueAccessor, selector: "select:not([multiple])[formControlName],select:not([multiple])[formControl],select:not([multiple])[ngModel]", inputs: ["compareWith"] }, { kind: "directive", type: i13.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i13.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i4.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "directive", type: i14.NgSelectOption, selector: "option", inputs: ["ngValue", "value"] }, { kind: "directive", type: i14.ɵNgSelectMultipleOption, selector: "option", inputs: ["ngValue", "value"] }, { kind: "directive", type: i14.SelectControlValueAccessor, selector: "select:not([multiple])[formControlName],select:not([multiple])[formControl],select:not([multiple])[ngModel]", inputs: ["compareWith"] }, { kind: "directive", type: i14.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { kind: "directive", type: i14.NgModel, selector: "[ngModel]:not([formControlName]):not([formControl])", inputs: ["name", "disabled", "ngModel", "ngModelOptions"], outputs: ["ngModelChange"], exportAs: ["ngModel"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridPageSize, decorators: [{
             type: Component,
@@ -7086,6 +7395,14 @@ class DatagridHeaderRenderer {
             this.renderer.removeClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
         }
     }
+    setPinned(state) {
+        if (state.pinned) {
+            this.renderer.addClass(this.el.nativeElement, PINNED_COLUMN_CLASS);
+        }
+        else {
+            this.renderer.removeClass(this.el.nativeElement, PINNED_COLUMN_CLASS);
+        }
+    }
     clearWidth() {
         // remove the width only if we set it, and it is not changed by dragging.
         if (this.widthSet && !this.columnResizerService.resizedBy) {
@@ -7123,7 +7440,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     providers: [ColumnResizerService, COLUMN_STATE_PROVIDER],
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: i0.Renderer2 }, { type: DatagridRenderOrganizer }, { type: i2.DomAdapter }, { type: ColumnResizerService }, { type: ColumnsService }, { type: i2$2.BehaviorSubject, decorators: [{
+        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: i0.Renderer2 }, { type: DatagridRenderOrganizer }, { type: i2.DomAdapter }, { type: ColumnResizerService }, { type: ColumnsService }, { type: i12.BehaviorSubject, decorators: [{
                     type: Inject,
                     args: [COLUMN_STATE]
                 }] }], propDecorators: { resizeEmitter: [{
@@ -7277,11 +7594,25 @@ class DatagridMainRenderer {
         if (this.headers) {
             if (state && !this.columnsService.hasCache()) {
                 this.columnsService.cache();
-                this.columnsService.visibleColumns.forEach((header, index) => {
-                    if (index > 0) {
+                // The pane leaves room for a single column, and it should be the one the user was already
+                // looking at on the left of the row. Pinned columns are rendered before the rest, so that
+                // is the first pinned column whenever anything is pinned, and the first declared one
+                // otherwise.
+                const keptColumn = this.columnsService.visibleColumns.find(column => column.pinned) || this.columnsService.visibleColumns[0];
+                this.columnsService.visibleColumns.forEach(header => {
+                    if (header !== keptColumn) {
                         this.columnsService.emitStateChangeAt(header.columnIndex, {
                             changes: [DatagridColumnChanges.HIDDEN],
                             hidden: state,
+                        });
+                    }
+                    // That single column is full width, so there is nothing to scroll and nothing to pin
+                    // against - the column that stays included. Pinning is suspended while the pane is open
+                    // and restored from the cache when it closes.
+                    if (header.pinned) {
+                        this.columnsService.emitStateChangeAt(header.columnIndex, {
+                            changes: [DatagridColumnChanges.PINNED],
+                            pinned: false,
                         });
                     }
                 });
@@ -7376,9 +7707,40 @@ class DatagridMainRenderer {
                         this.updateColumnSeparatorsVisibility();
                         this.keyNavigation.resetKeyGrid();
                         break;
+                    case DatagridColumnChanges.PINNED: {
+                        // Read before the class is updated below. The state can be re-emitted with the same
+                        // value, e.g. by resetToLastCache, and relocating the views then is pure overhead.
+                        const wasPinned = this.datagrid.columns.get(columnIndex)?.isPinned;
+                        this.headers.get(columnIndex).setPinned(state);
+                        this.rows.forEach(row => {
+                            if (row.cells && row.cells.length) {
+                                row.cells.get(columnIndex)?.setPinned(state);
+                                row.expandableRows.forEach(expandableRow => {
+                                    expandableRow.cells.get(columnIndex)?.setPinned(state);
+                                });
+                            }
+                        });
+                        if (wasPinned !== !!state.pinned) {
+                            this.updateColumnSeparatorsVisibility();
+                            this.keyNavigation.resetKeyGrid();
+                            // The column and its cells have to move between the static and the scrollable
+                            // containers, which happens on the next CALCULATE/DISPLAY cycle. Widths are
+                            // recomputed there as well, since the flex context of the column changes.
+                            // Deferring to ngAfterViewChecked keeps us out of the change detection pass that
+                            // the `clrDgPinned` input setter runs in.
+                            this.columnsSizesStable = false;
+                            this.shouldStabilizeColumns = true;
+                        }
+                        break;
+                    }
                     case DatagridColumnChanges.INITIALIZE:
+                        if (state.pinned) {
+                            this.headers.get(columnIndex).setPinned(state);
+                        }
                         if (state.hideable && state.hidden) {
                             this.headers.get(columnIndex).setHidden(state);
+                        }
+                        if (state.pinned || (state.hideable && state.hidden)) {
                             this.rows.forEach(row => {
                                 row.setCellsState();
                                 row.expandableRows.forEach(expandableRow => {
@@ -7410,12 +7772,15 @@ class DatagridMainRenderer {
     }
     updateColumnSeparatorsVisibility() {
         const visibleColumns = this.datagrid.columns.filter(column => !column.isHidden);
-        visibleColumns.forEach((column, index) => {
-            if (index === visibleColumns.length - 1) {
-                column.showSeparator = false;
-            }
-            else if (!column.showSeparator) {
-                column.showSeparator = true;
+        // Pinned columns are rendered in the static container, so they always have something after
+        // them and keep their separator - it is what marks the boundary with the scrollable columns.
+        // Only the last scrollable column has nothing after it and must hide its separator.
+        const scrollableColumns = visibleColumns.filter(column => !column.isPinned);
+        const lastScrollableColumn = scrollableColumns[scrollableColumns.length - 1];
+        visibleColumns.forEach(column => {
+            const showSeparator = column !== lastScrollableColumn;
+            if (column.showSeparator !== showSeparator) {
+                column.showSeparator = showSeparator;
             }
         });
     }
@@ -7516,7 +7881,11 @@ const CLR_DATAGRID_STANDALONE_DIRECTIVES = [ClrDatagridSingleSelectionValueAcces
 const CLR_DATAGRID_SHARED_DIRECTIVES = [ClrIfExpanded];
 class ClrDatagridModule {
     constructor() {
-        ClarityIcons.addIcons(ellipsisVerticalIcon, viewColumnsIcon, windowCloseIcon, arrowIcon, timesIcon, twoWayArrowsIcon, stepForward2Icon, angleDoubleIcon, filterGridCircleIcon, filterGridIcon);
+        ClarityIcons.addIcons(ellipsisVerticalIcon, viewColumnsIcon, windowCloseIcon, arrowIcon, timesIcon, twoWayArrowsIcon, stepForward2Icon, angleDoubleIcon, filterGridCircleIcon, filterGridIcon
+        // Only the clrDgPinnable toggle used these, so they are disabled along with it.
+        // pinIcon,
+        // unpinIcon
+        );
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrDatagridModule, declarations: [
