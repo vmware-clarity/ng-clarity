@@ -68,6 +68,10 @@
       "types": "./types/clr-addons-datagrid-filters.d.ts",
       "default": "./fesm2022/clr-addons-datagrid-filters.mjs"
     },
+    "./dialog": {
+      "types": "./types/clr-addons-dialog.d.ts",
+      "default": "./fesm2022/clr-addons-dialog.mjs"
+    },
     "./drag-and-drop": {
       "types": "./types/clr-addons-drag-and-drop.d.ts",
       "default": "./fesm2022/clr-addons-drag-and-drop.mjs"
@@ -122,5 +126,5 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "version": "0.0.0-preview.b2b1ff9"
+  "version": "0.0.0-preview.9e764ec"
 }
