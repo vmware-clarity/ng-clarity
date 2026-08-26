@@ -165,6 +165,23 @@ describe('ThemeBuilderComponent', () => {
     expect(tint.color.h).toBe(base.color.h);
   });
 
+  it('ignores a group override whose base token name has no match in that color group', function (this: ThisTest) {
+    // A malformed/stale preset: the "primary" group's override is tagged as a base
+    // token (its name is one of TOKEN_KEYS.baseTokens), but it's actually the "info"
+    // group's base token name, so it has no match inside colorStruct['light']['primary'].
+    const malformedPreset: ThemePreset = {
+      name: 'Malformed',
+      light: { primary: [new Color('--cds-alias-status-info', 'hsl(160deg 69% 36%)')] },
+      dark: {},
+    };
+    this.fixture.detectChanges(false);
+
+    expect(() => this.component.applyPreset(malformedPreset)).not.toThrow();
+
+    const base = this.component.colorStruct['light']['primary'].find(c => c.label === 'Base');
+    expect(base.isOriginalColor).toBe(true);
+  });
+
   it('resets an individual color back to its original value', function (this: ThisTest) {
     this.fixture.detectChanges(false);
 
@@ -244,6 +261,37 @@ describe('ThemeBuilderComponent', () => {
 
       expect(primaryBase.isOriginalColor).toBe(false);
       expect(infoBase.isOriginalColor).toBe(true);
+    });
+  });
+
+  describe('presetSwatchColor', () => {
+    it("returns the preset's light primary base color as a hex string", function (this: ThisTest) {
+      this.fixture.detectChanges(false);
+
+      const primaryColor = new Color('--cds-alias-primary', 'hsl(160deg 69% 36%)');
+      const preset: ThemePreset = { name: 'Swatch test', light: { primary: [primaryColor] }, dark: {} };
+
+      expect(this.component.presetSwatchColor(preset)).toBe(primaryColor.hex);
+    });
+
+    it('returns undefined when the preset has no light colors (e.g. Clarity Default)', function (this: ThisTest) {
+      this.fixture.detectChanges(false);
+
+      const preset: ThemePreset = { name: 'Clarity Default', light: null, dark: null };
+
+      expect(this.component.presetSwatchColor(preset)).toBeUndefined();
+    });
+
+    it("returns undefined when the preset's light colors don't include a primary group", function (this: ThisTest) {
+      this.fixture.detectChanges(false);
+
+      const preset: ThemePreset = {
+        name: 'No primary',
+        light: { info: [new Color('--cds-alias-status-info', 'hsl(200deg 80% 50%)')] },
+        dark: {},
+      };
+
+      expect(this.component.presetSwatchColor(preset)).toBeUndefined();
     });
   });
 });

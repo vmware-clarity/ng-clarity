@@ -286,9 +286,9 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     }
 
     const base = overrides.find(c => TOKEN_KEYS.baseTokens.includes(c.name));
+    const activeBase = base ? colorGroup.find(c => c.name === base.name) : undefined;
 
-    if (base) {
-      const activeBase = colorGroup.find(c => c.name === base.name);
+    if (activeBase) {
       activeBase.color = base.color;
       this.colorBuilder(activeBase, colorGroup, theme === 'dark');
     }
