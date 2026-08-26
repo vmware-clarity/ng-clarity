@@ -84,6 +84,10 @@
       "types": "./types/clr-addons-stepper.d.ts",
       "default": "./fesm2022/clr-addons-stepper.mjs"
     },
+    "./tabs": {
+      "types": "./types/clr-addons-tabs.d.ts",
+      "default": "./fesm2022/clr-addons-tabs.mjs"
+    },
     "./testing": {
       "types": "./types/clr-addons-testing.d.ts",
       "default": "./fesm2022/clr-addons-testing.mjs"
@@ -118,5 +122,5 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "version": "0.0.0-preview.297bb90"
+  "version": "0.0.0-preview.b2b1ff9"
 }

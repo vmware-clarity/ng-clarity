@@ -1,7 +1,7 @@
 import * as i0 from '@angular/core';
-import { ViewContainerRef, ElementRef, EmbeddedViewRef, TemplateRef, EventEmitter, OnInit, ComponentFactoryResolver, DebugElement, PipeTransform } from '@angular/core';
+import { ViewContainerRef, ElementRef, EmbeddedViewRef, TemplateRef, EventEmitter, OnInit, ComponentFactoryResolver, DebugElement, PipeTransform, Predicate } from '@angular/core';
 import * as rxjs from 'rxjs';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, Observable } from 'rxjs';
 import { ZoomLevel } from '@clr/addons/a11y';
 import { AppfxCard } from '@clr/addons/card-container';
 import { ClrDatagridVirtualScrollRangeInterface, ClrDatagrid } from '@clr/angular/data/datagrid';
@@ -9,7 +9,9 @@ import { ActionDefinition } from '@clr/addons/datagrid';
 import { ComponentFixture } from '@angular/core/testing';
 import { FilterMode, FilterablePropertyDefinition, PropertyFilter } from '@clr/addons/datagrid-filters';
 import { PropertyViewStrings, PropertyViewMessageModel, PropertyViewPropertyModel } from '@clr/addons/property-view';
-import { Step, WorkflowModel, ModelChange } from '@clr/addons/var';
+import { Step, WorkflowModel, ModelChange, OnStepValidate, OnStepActivate, StepModel, StepValidationState } from '@clr/addons/var';
+import { ClrTab } from '@clr/angular/layout/tabs';
+import * as i1 from '@angular/platform-browser/animations';
 import { Reason } from '@clr/addons/wizard';
 
 declare class MockRequiredFieldLegendComponent {
@@ -418,6 +420,81 @@ declare class MockStepperStandaloneComponent extends MockStepperComponent {
     static ɵcmp: i0.ɵɵComponentDeclaration<MockStepperStandaloneComponent, "appfx-stepper", never, {}, {}, never, ["*"], true, never>;
 }
 
+declare class TabsHelper {
+    private tabs;
+    private component;
+    constructor(contextDebugElement: DebugElement);
+    /**
+     * Discover clarity tab links of (zero or more) items within the tabs.
+     */
+    getLinkList(): Array<DebugElement>;
+    /**
+     * A DOM pointer to a tab link, as afforded by supplied index into collection.
+     */
+    findLink(linkIndex: number): DebugElement | undefined;
+    /**
+     * Retrieves the active Clarity Tab instance.
+     */
+    getActiveTab(): ClrTab;
+    /**
+     * Determines the active shown tab using relative sequences that map directly to DOM source order.
+     */
+    getActiveTabIndex(): number;
+    /**
+     * Extract located projected content as provided for the active tab.
+     */
+    getActiveTabContentElement(): HTMLElement | undefined;
+    /**
+     * Clicks a tab link given the tab index.
+     */
+    clickLink(linkIndex: number): void;
+    /**
+     * Searches for tab link text, as applied to a tab button.
+     */
+    findLinkText(linkIndex: number): string | undefined;
+    /**
+     * Debug element for the icon found inside the tab link.
+     */
+    findLinkIcon(linkIndex: number): DebugElement | undefined;
+    /**
+     * Optionally find the custom component or desired HTML element within the active panel.
+     */
+    findContentView(childTabContentQuery?: Predicate<DebugElement>): DebugElement | undefined;
+    areTabsVisible(): boolean;
+}
+
+declare class MockStepComponent implements OnStepValidate, OnStepActivate {
+    model: MockStepModel;
+    activate(): void;
+    validate(): Observable<boolean>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockStepComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockStepComponent, "appfx-mock-page-page", never, {}, {}, never, never, false, never>;
+}
+declare class InvalidMockComponent extends MockStepComponent {
+    validate(): Observable<boolean>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<InvalidMockComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<InvalidMockComponent, "appfx-invalid-mock-page-page", never, {}, {}, never, never, false, never>;
+}
+declare class MockStepModel implements StepModel {
+    mockPropertyValue: string;
+    isActivated: boolean;
+    isValidated: boolean;
+    readyToComplete: boolean;
+    validationState: StepValidationState;
+    constructor(mockPropertyValue: string);
+}
+/** Simple mock of {@link WorkflowConfigurationService} used by workflow-dependent tests. */
+declare class MockWorkflowConfigurationService {
+    private debugValue;
+    get debug(): boolean;
+    set debug(newValue: boolean);
+}
+declare class MockWorkflowTestModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockWorkflowTestModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<MockWorkflowTestModule, [typeof InvalidMockComponent, typeof MockStepComponent], [typeof i1.NoopAnimationsModule], never>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<MockWorkflowTestModule>;
+}
+
 declare class MockAppfxWizardComponent {
     title: string;
     pages: Step[];
@@ -435,12 +512,6 @@ declare class MockAppfxWizardComponent {
 declare class MockWizardStandaloneComponent extends MockAppfxWizardComponent {
     static ɵfac: i0.ɵɵFactoryDeclaration<MockWizardStandaloneComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<MockWizardStandaloneComponent, "appfx-wizard", never, {}, {}, never, never, true, never>;
-}
-
-declare class MockWorkflowConfigurationService {
-    private debugValue;
-    get debug(): boolean;
-    set debug(newValue: boolean);
 }
 
 declare class WizardHelper {
@@ -480,4 +551,4 @@ declare class WizardHelper {
     private getLastTextNode;
 }
 
-export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockAppfxWizardComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, MockStepperComponent, MockStepperStandaloneComponent, MockWizardStandaloneComponent, MockWorkflowConfigurationService, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, WizardHelper, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
+export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, InvalidMockComponent, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockAppfxWizardComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, MockStepComponent, MockStepModel, MockStepperComponent, MockStepperStandaloneComponent, MockWizardStandaloneComponent, MockWorkflowConfigurationService, MockWorkflowTestModule, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, TabsHelper, WizardHelper, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };

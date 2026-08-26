@@ -1,10 +1,14 @@
 import * as i0 from '@angular/core';
-import { Component, Input, ViewContainerRef, ViewChild, ElementRef, EventEmitter, Output, Directive, Pipe, Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { Component, Input, ViewContainerRef, ViewChild, ElementRef, EventEmitter, Output, Directive, Pipe, Injectable, NgModule } from '@angular/core';
+import { ReplaySubject, of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { ClrDatagrid } from '@clr/angular/data/datagrid';
 import { FilterMode } from '@clr/addons/datagrid-filters';
 import { PropertyViewStrings, PropertyViewModelType } from '@clr/addons/property-view';
+import { ClrTabs } from '@clr/angular/layout/tabs';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { StepValidationState } from '@clr/addons/var';
+import { tap } from 'rxjs/operators';
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -1505,6 +1509,186 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+class TabsHelper {
+    constructor(contextDebugElement) {
+        const tabsElementMatches = contextDebugElement.queryAll(By.directive(ClrTabs));
+        if (!tabsElementMatches.length) {
+            throw Error('No tabs found under passed context element');
+        }
+        else if (tabsElementMatches.length > 1) {
+            throw Error('Unable to isolate targeted instance of tabs widget');
+        }
+        else {
+            this.tabs = tabsElementMatches[0];
+            this.component = this.tabs.injector.get(ClrTabs);
+        }
+    }
+    /**
+     * Discover clarity tab links of (zero or more) items within the tabs.
+     */
+    getLinkList() {
+        return this.tabs.queryAll(By.css(`[role="tablist"] > [role="presentation"] > [clrTabLink]`));
+    }
+    /**
+     * A DOM pointer to a tab link, as afforded by supplied index into collection.
+     */
+    findLink(linkIndex) {
+        return this.getLinkList()[linkIndex];
+    }
+    /**
+     * Retrieves the active Clarity Tab instance.
+     */
+    getActiveTab() {
+        return this.component.tabsService.activeTab;
+    }
+    /**
+     * Determines the active shown tab using relative sequences that map directly to DOM source order.
+     */
+    getActiveTabIndex() {
+        return this.component.tabLinkDirectives.findIndex(tabLink => tabLink.tabLinkId === this.component.tabsService.activeTab.tabLink.tabLinkId);
+    }
+    /**
+     * Extract located projected content as provided for the active tab.
+     */
+    getActiveTabContentElement() {
+        const evr = this.getActiveTab().tabContent['viewRef'];
+        return evr ? evr.rootNodes[0].firstElementChild || undefined : undefined;
+    }
+    /**
+     * Clicks a tab link given the tab index.
+     */
+    clickLink(linkIndex) {
+        const tabLink = this.component.tabLinkDirectives[linkIndex];
+        try {
+            tabLink.activate();
+        }
+        catch {
+            throw Error('No tab link found at index ' + linkIndex);
+        }
+    }
+    /**
+     * Searches for tab link text, as applied to a tab button.
+     */
+    findLinkText(linkIndex) {
+        const tabLinkElement = this.findLink(linkIndex);
+        return tabLinkElement ? tabLinkElement.nativeElement.textContent.trim() : undefined;
+    }
+    /**
+     * Debug element for the icon found inside the tab link.
+     */
+    findLinkIcon(linkIndex) {
+        const tabLinkElement = this.findLink(linkIndex);
+        return (tabLinkElement && tabLinkElement.query(By.css('cds-icon'))) || undefined;
+    }
+    /**
+     * Optionally find the custom component or desired HTML element within the active panel.
+     */
+    findContentView(childTabContentQuery) {
+        const panel = this.tabs.query(By.css(`section.active`));
+        return panel && childTabContentQuery ? panel.query(childTabContentQuery) || undefined : panel || undefined;
+    }
+    areTabsVisible() {
+        const tabsPanel = this.tabs.query(By.css(`.nav`));
+        return getComputedStyle(tabsPanel.nativeElement)['display'] !== 'none';
+    }
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class MockStepComponent {
+    activate() {
+        this.model.isActivated = true;
+    }
+    validate() {
+        return of(true).pipe(tap(() => {
+            this.model.isValidated = true;
+        }));
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockStepComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MockStepComponent, isStandalone: false, selector: "appfx-mock-page-page", ngImport: i0, template: '<div>{{ model.mockPropertyValue }}</div>', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockStepComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-mock-page-page',
+                    standalone: false,
+                    template: '<div>{{ model.mockPropertyValue }}</div>',
+                }]
+        }] });
+class InvalidMockComponent extends MockStepComponent {
+    validate() {
+        return of(false).pipe(tap(() => {
+            this.model.isValidated = true;
+        }));
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: InvalidMockComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: InvalidMockComponent, isStandalone: false, selector: "appfx-invalid-mock-page-page", usesInheritance: true, ngImport: i0, template: '<div></div>', isInline: true, preserveWhitespaces: true }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: InvalidMockComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'appfx-invalid-mock-page-page',
+                    standalone: false,
+                    template: '<div></div>',
+                }]
+        }] });
+class MockStepModel {
+    constructor(mockPropertyValue) {
+        this.mockPropertyValue = mockPropertyValue;
+        this.isActivated = false;
+        this.isValidated = false;
+        this.validationState = new StepValidationState();
+    }
+}
+/** Simple mock of {@link WorkflowConfigurationService} used by workflow-dependent tests. */
+class MockWorkflowConfigurationService {
+    constructor() {
+        this.debugValue = false;
+    }
+    get debug() {
+        return this.debugValue;
+    }
+    set debug(newValue) {
+        this.debugValue = newValue;
+    }
+}
+class MockWorkflowTestModule {
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockWorkflowTestModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: MockWorkflowTestModule, declarations: [InvalidMockComponent, MockStepComponent], imports: [NoopAnimationsModule] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockWorkflowTestModule, imports: [NoopAnimationsModule] }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MockWorkflowTestModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    imports: [NoopAnimationsModule],
+                    declarations: [InvalidMockComponent, MockStepComponent],
+                }]
+        }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 class MockAppfxWizardComponent {
     constructor() {
         this.openedChange = new EventEmitter();
@@ -1555,24 +1739,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
                     template: '',
                 }]
         }] });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class MockWorkflowConfigurationService {
-    constructor() {
-        this.debugValue = false;
-    }
-    get debug() {
-        return this.debugValue;
-    }
-    set debug(newValue) {
-        this.debugValue = newValue;
-    }
-}
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -1730,5 +1896,5 @@ class WizardHelper {
  * Generated bundle index. Do not edit.
  */
 
-export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockAppfxWizardComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, MockStepperComponent, MockStepperStandaloneComponent, MockWizardStandaloneComponent, MockWorkflowConfigurationService, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, WizardHelper, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
+export { FilterInputTestHelper, GridCellTestHelper, GridFooterTestHelper, GridHelper, GridPlaceholder, GridRowTestHelper, InvalidMockComponent, MockA11yService, MockAppfxCardContainerComponent, MockAppfxCardContainerStandaloneComponent, MockAppfxDatagridComponent, MockAppfxMenuActionComponent, MockAppfxMenuActionStandaloneComponent, MockAppfxMenuComponent, MockAppfxMenuStandaloneComponent, MockAppfxWizardComponent, MockCardContainerComponent, MockContainerService, MockDatagridActionBarComponent, MockDatagridCellContainerComponent, MockDatagridColumnToggleComponent, MockDatagridFiltersComponent, MockDatagridFiltersStandaloneComponent, MockDatagridPersistSettingsDirective, MockDatagridPreserveSelectionDirective, MockDragDropService, MockElementRef, MockIsRowSelectablePipe, MockLayoutService, MockPropertyViewComponent, MockPropertyViewStandaloneComponent, MockPropertyViewStrings, MockRenderer2, MockRequiredFieldLegendComponent, MockRequiredFieldLegendStandaloneComponent, MockStandaloneDatagridComponent, MockStepComponent, MockStepModel, MockStepperComponent, MockStepperStandaloneComponent, MockWizardStandaloneComponent, MockWorkflowConfigurationService, MockWorkflowTestModule, SampleCardComponent, SampleCardWithoutFooterComponent, SampleCardWithoutHeaderComponent, TabsHelper, WizardHelper, ZoomLevelServiceMock, cardIdToOrder, sampleCards, sampleCardsSettings, sortCardsFn, verifyPropertyViewMessage, verifyPropertyViewProperty };
 //# sourceMappingURL=clr-addons-testing.mjs.map
