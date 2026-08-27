@@ -70,7 +70,7 @@
     "_figma:push": "node figma/index.mjs",
     "_figma:push:preview": "node figma/index.mjs --preview",
     "figma:push": "npm-run-all _test:figma _figma:push",
-    "figma:push:preview": "npm-run-all _figma:push:preview",
+    "figma:push:preview": "npm-run-all _test:figma _figma:push:preview",
     "figma:push:dry-run": "node figma/index.mjs --dry-run",
     "figma:extract": "node figma/index.mjs --extract figma-tokens.extract.json"
   },

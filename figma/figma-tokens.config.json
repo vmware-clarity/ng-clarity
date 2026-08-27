@@ -105,10 +105,10 @@
       "name": "Colors",
       "hiddenFromPublishing": false,
       "humanReadable": {
-        "Primary/Body text": "--cds-alias-typography-color-400",
-        "Primary/Body text (Secondary)": "--cds-alias-typography-color-400",
-        "Primary/Body text (Disabled)": "--cds-alias-typography-disabled",
-        "Primary/Link": "--cds-alias-typography-link-color",
+        "Text/Body": "--cds-alias-typography-color-400",
+        "Text/Secondary": "--cds-alias-typography-color-200",
+        "Text/Disabled": "--cds-alias-typography-disabled",
+        "Text/Link": "--cds-alias-typography-link-color",
         "Container/App Background": "--cds-alias-object-app-background",
         "Container/Container Background": "--cds-alias-object-container-background",
         "Container/Container Background (Tinted)": "--cds-alias-object-container-background-tint",
@@ -294,6 +294,41 @@
       "_comment": "Generic color tokens (palette, status colours, etc.)",
       "pattern": "*-color*",
       "scopes": ["ALL_FILLS", "STROKE_COLOR", "EFFECT_COLOR"]
+    },
+    {
+      "_comment": "humanReadable display-name override — Context Colors tokens",
+      "pattern": "^Context Colors\/*",
+      "scopes": ["ALL_SCOPES"]
+    },
+    {
+      "_comment": "humanReadable display-name override — Interactive Text & Icon tokens",
+      "pattern": "^Interactive Text & Icon\/*",
+      "scopes": ["TEXT_FILL", "SHAPE_FILL"]
+    },
+    {
+      "_comment": "humanReadable display-name override — Interactive Background tokens",
+      "pattern": "^Interactive Background\/*",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL"]
+    },
+    {
+      "_comment": "humanReadable display-name override — Container tokens",
+      "pattern": "^Container\/*",
+      "scopes": ["FRAME_FILL", "SHAPE_FILL", "STROKE_COLOR"]
+    },
+    {
+      "_comment": "humanReadable display-name override — Border tokens",
+      "pattern": "^Border\/*",
+      "scopes": ["STROKE_COLOR"]
+    },
+    {
+      "_comment": "humanReadable display-name override — Text/Link tokens",
+      "pattern": "^Text\/*",
+      "scopes": ["TEXT_FILL"]
+    },
+    {
+      "_comment": "humanReadable display-name override — Spacings collection entries are bare numbers (e.g. \"8 (6)\"); no CSS var name starts with a digit, so this only ever matches those display names.",
+      "pattern": "^[0-9]",
+      "scopes": ["GAP", "WIDTH_HEIGHT"]
     },
     {
       "_comment": "Global layout spacing tokens",
