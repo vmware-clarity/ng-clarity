@@ -114,7 +114,7 @@ const html = `
     <ng-template clrPageTitle>Form question</ng-template>
 
     <clr-alert
-      [clrAlertType]="'alert-info'"
+      [clrAlertType]="'info'"
       [clrAlertClosable]="false"
       [clrCloseButtonAriaLabel]="'Close Wiki alert'"
     >
@@ -146,7 +146,7 @@ const html = `
     <ng-template clrPageTitle>Async validation on finish</ng-template>
 
     @if (errorFlag) {
-      <clr-alert [clrAlertType]="'alert-danger'" [clrCloseButtonAriaLabel]="'Close Answer alert'">
+      <clr-alert [clrAlertType]="'danger'" [clrCloseButtonAriaLabel]="'Close Answer alert'">
         <div class="alert-item">Your answer is incorrect.</div>
       </clr-alert>
     }
