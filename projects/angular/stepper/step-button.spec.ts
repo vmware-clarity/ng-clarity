@@ -88,6 +88,47 @@ describe('ClrStepButton Next', () => {
     fixture.detectChanges();
     expect(stepperService.navigateToNextPanel).toHaveBeenCalled();
   });
+
+  it('should have type="button" attribute set on the host element', () => {
+    const btn = fixture.debugElement.query(By.directive(ClrStepButton));
+    expect(btn.nativeElement.getAttribute('type')).toBe('button');
+  });
+
+  it('should prevent default on click to avoid form submission', () => {
+    const btn = fixture.debugElement.query(By.directive(ClrStepButton));
+    const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+    const preventDefaultSpy = spyOn(event, 'preventDefault');
+    btn.nativeElement.dispatchEvent(event);
+    expect(preventDefaultSpy).toHaveBeenCalled();
+  });
+});
+
+describe('ClrStepButton Custom type', () => {
+  let fixture: ComponentFixture<any>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      providers: [StepperService, { provide: StepperService, useClass: MockStepperService }],
+      imports: [ReactiveFormsModule, NoopAnimationsModule, ClrStepperModule],
+    });
+
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.componentInstance.buttonType = 'custom' as ClrStepButtonType;
+    fixture.detectChanges();
+  });
+
+  it('should not navigate when button type is not next, previous, or submit', () => {
+    const stepperService = fixture.debugElement.query(By.directive(ClrStepButton)).injector.get(StepperService);
+    spyOn(stepperService, 'navigateToNextPanel');
+    spyOn(stepperService, 'navigateToPreviousPanel');
+
+    fixture.nativeElement.querySelector('.clr-step-button').click();
+    fixture.detectChanges();
+
+    expect(stepperService.navigateToNextPanel).not.toHaveBeenCalled();
+    expect(stepperService.navigateToPreviousPanel).not.toHaveBeenCalled();
+  });
 });
 
 describe('ClrStepButton Previous', () => {

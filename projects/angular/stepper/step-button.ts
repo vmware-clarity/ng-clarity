@@ -21,7 +21,7 @@ export enum ClrStepButtonType {
   host: {
     '[class.clr-step-button]': 'true',
     '[class.btn]': 'true',
-    '[type]': "'button'",
+    '[attr.type]': "'button'",
   },
   standalone: false,
 })
@@ -40,13 +40,13 @@ export class ClrStepButton implements OnInit {
     this.previousButton = this.type === ClrStepButtonType.Previous;
   }
 
-  @HostListener('click')
-  navigateToNextPanel() {
-    if (this.previousButton) {
+  @HostListener('click', ['$event'])
+  navigateToNextPanel(event: Event) {
+    event.preventDefault();
+    if (this.type === ClrStepButtonType.Previous) {
       this.stepperService.navigateToPreviousPanel(this.clrStep.id);
-      return;
+    } else if (this.type === ClrStepButtonType.Next || this.type === ClrStepButtonType.Submit) {
+      this.stepperService.navigateToNextPanel(this.clrStep.id, this.clrStep.formGroup.valid);
     }
-
-    this.stepperService.navigateToNextPanel(this.clrStep.id, this.clrStep.formGroup.valid);
   }
 }
