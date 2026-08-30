@@ -580,16 +580,35 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       return;
     }
 
+    // The spec guarantees the callback fires once immediately when observe() is called,
+    // reporting the origin's current visibility as a baseline - not because it scrolled
+    // out of view. If that baseline lands before the origin's scrollIntoView/layout has
+    // settled, it can read as not-intersecting and close the popover instants after it
+    // opened. Only real visibility changes reported after that first callback should close it.
+    let isBaselineCallback = true;
+
     this.intersectionObserver = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
+          if (isBaselineCallback) {
+            isBaselineCallback = false;
+            return;
+          }
+
           // If the origin is no longer visible (scrolled out of view)
           if (!entry.isIntersecting && this.popoverService.open) {
             this.zone.run(() => this.closePopover());
           }
         });
       },
-      { root: null, threshold: 0.8 }
+      // threshold 0.8 alone only fires when the ratio crosses 0.8 - if the origin is
+      // already below 0.8 when the popover opens (e.g. still partially clipped after
+      // scrollIntoView can't fully reveal it) and then scrolls further away without ever
+      // going back above 0.8, no callback fires again and it never gets a chance to close.
+      // Threshold 0 adds a checkpoint at true zero-visibility so leaving the viewport
+      // entirely always fires a real (non-baseline) callback, regardless of what happens
+      // at 0.8.
+      { root: null, threshold: [0, 0.8] }
     );
 
     this.intersectionObserver.observe(this.popoverService.originElement.nativeElement);
