@@ -24,10 +24,8 @@ export interface ClrRecursiveForOfContext<T> {
   standalone: false,
 })
 export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
-  // TODO: accept NgIterable<T>
-  @Input('clrRecursiveForOf') nodes: T | T[];
+  @Input('clrRecursiveForOf') nodes: T | T[] | Iterable<T>;
 
-  // TODO: accept NgIterable<T> return type
   @Input('clrRecursiveForGetChildren') getChildren: (node: T) => AsyncArray<T>;
 
   private childrenFetchSubscription: Subscription;
@@ -43,8 +41,14 @@ export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
     let wrapped: RecursiveTreeNodeModel<T>[];
     if (Array.isArray(this.nodes)) {
       wrapped = this.nodes.map(node => new RecursiveTreeNodeModel(node, null, this.getChildren, this.featuresService));
+    } else if (this.nodes !== null && this.nodes !== undefined && typeof this.nodes[Symbol.iterator] === 'function') {
+      wrapped = Array.from(this.nodes as Iterable<T>).map(
+        node => new RecursiveTreeNodeModel(node, null, this.getChildren, this.featuresService)
+      );
+    } else if (this.nodes !== null && this.nodes !== undefined) {
+      wrapped = [new RecursiveTreeNodeModel(this.nodes as T, null, this.getChildren, this.featuresService)];
     } else {
-      wrapped = [new RecursiveTreeNodeModel(this.nodes, null, this.getChildren, this.featuresService)];
+      wrapped = [];
     }
     if (!this.childrenFetchSubscription) {
       this.childrenFetchSubscription = this.featuresService.childrenFetched.pipe(debounceTime(0)).subscribe(() => {
