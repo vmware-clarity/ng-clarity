@@ -60,7 +60,7 @@ export interface Cells {
           >
             <clr-dg-row [clrDgItem]="row">
               @for (col of cols; track colByIndex($index, col)) {
-                <clr-dg-cell>{{ row?.cells[col.name] }}</clr-dg-cell>
+                <clr-dg-cell style="white-space: nowrap">{{ row?.cells[col.name] }}</clr-dg-cell>
               }
               <ng-container ngProjectAs="clr-dg-row-detail">
                 <clr-dg-row-detail *clrIfExpanded>
@@ -304,6 +304,131 @@ export default function (): void {
         // Row 19
         expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[16], 'PageUp, cells[16], Row 19');
         fixture.changeDetectorRef.detach();
+      });
+    });
+
+    describe('Expanded row virtual scroll (CDE-3126)', function () {
+      let fixture: ComponentFixture<any>;
+      let instance: any;
+
+      beforeEach(async function () {
+        await TestBed.configureTestingModule({
+          imports: [ClarityModule, NoopAnimationsModule],
+          declarations: [FullTest, ClrDatagridVirtualScrollDirective],
+          schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          providers: DATAGRID_SPEC_PROVIDERS,
+        }).compileComponents();
+
+        fixture = TestBed.createComponent(FullTest);
+        instance = fixture.componentInstance;
+      });
+
+      afterEach(() => {
+        fixture.destroy();
+      });
+
+      async function expandFirstRow(compiled: any, fixture: ComponentFixture<any>) {
+        const caretButton: HTMLButtonElement = compiled.querySelector('button.datagrid-expandable-caret-button');
+        caretButton.click();
+        fixture.detectChanges();
+        await delay(50);
+        fixture.detectChanges();
+        await delay(50);
+        fixture.detectChanges();
+      }
+
+      it('grows and shrinks the total scrollable content size to match an expanded row real height', async function () {
+        const compiled = fixture.nativeElement;
+
+        fixture.detectChanges();
+        await delay();
+        fixture.detectChanges();
+        await delay();
+
+        const virtualScroll = instance.virtualScroll as ClrDatagridVirtualScrollDirective<any>;
+        const rowMaster: HTMLElement = compiled.querySelector('.datagrid-row-master[role="row"]');
+
+        const collapsedTotalHeight = parseFloat(virtualScroll.totalContentHeight);
+        const collapsedRowHeight = rowMaster.getBoundingClientRect().height;
+
+        await expandFirstRow(compiled, fixture);
+
+        const expandedRowHeight = rowMaster.getBoundingClientRect().height;
+        const expandedTotalHeight = parseFloat(virtualScroll.totalContentHeight);
+
+        // Sanity check: the row detail actually added real height in the DOM.
+        expect(expandedRowHeight).toBeGreaterThan(collapsedRowHeight);
+
+        // The bug: FixedSizeVirtualScrollStrategy's total content size is dataLength * itemSize,
+        // a value with no dependency on any row's real DOM height, so it never changes here.
+        // The fix must make it track the real height that was just added.
+        expect(expandedTotalHeight - collapsedTotalHeight).toBeCloseTo(expandedRowHeight - collapsedRowHeight, -1);
+
+        // Collapse it again and confirm the total size comes back down.
+        await expandFirstRow(compiled, fixture);
+        const collapsedAgainTotalHeight = parseFloat(virtualScroll.totalContentHeight);
+        expect(collapsedAgainTotalHeight).toBeCloseTo(collapsedTotalHeight, -1);
+      });
+
+      it('accounts for an expanded row extra height when scrolling to an index past it', async function () {
+        const compiled = fixture.nativeElement;
+
+        fixture.detectChanges();
+        await delay();
+        fixture.detectChanges();
+        await delay();
+
+        const virtualScroll = instance.virtualScroll as ClrDatagridVirtualScrollDirective<any>;
+        const viewport = (virtualScroll as any).virtualScrollViewport;
+        const rowMaster: HTMLElement = compiled.querySelector('.datagrid-row-master[role="row"]');
+        const collapsedRowHeight = rowMaster.getBoundingClientRect().height;
+
+        await expandFirstRow(compiled, fixture);
+        const expandedRowHeight = rowMaster.getBoundingClientRect().height;
+        const extraHeight = expandedRowHeight - collapsedRowHeight;
+
+        // Scroll to a nearby index, still past the expanded row but well within the initial
+        // render/buffer window, so this stays a pure "did the offset account for the expanded
+        // row" check without picking up unrelated row-height variance (e.g. text wrapping) that
+        // can show up once virtual scroll has to render a completely different, far-away part of
+        // the (deliberately unstyled/no-fixed-column-width) test data set.
+        virtualScroll.scrollToIndex(5);
+        await delay(50);
+        fixture.detectChanges();
+        await delay(50);
+
+        // The bug: scrollToIndex(index) computes index * itemSize, ignoring the extra height any
+        // earlier row picked up from being expanded, so the viewport lands short of where it
+        // should. The fix must offset by the real extra height of rows scrolled past.
+        expect(viewport.measureScrollOffset()).toBeCloseTo(5 * virtualScroll.itemSize + extraHeight, -1);
+      });
+
+      it('disconnects the ResizeObserver on ngOnDestroy', async function () {
+        let capturedDisconnect: jasmine.Spy | null = null;
+
+        const originalResizeObserver = (window as any).ResizeObserver;
+        (window as any).ResizeObserver = jasmine.createSpy('ResizeObserver').and.callFake(function (
+          _cb: ResizeObserverCallback
+        ) {
+          const disconnectSpy = jasmine.createSpy('disconnect');
+          capturedDisconnect = disconnectSpy;
+          return { observe: () => {}, disconnect: disconnectSpy };
+        });
+
+        try {
+          fixture.detectChanges();
+          await delay();
+          fixture.detectChanges();
+
+          expect(capturedDisconnect).not.toBeNull();
+          expect(capturedDisconnect as jasmine.Spy).not.toHaveBeenCalled();
+
+          fixture.destroy();
+
+          expect(capturedDisconnect as jasmine.Spy).toHaveBeenCalledTimes(1);
+        } finally {
+          (window as any).ResizeObserver = originalResizeObserver;
+        }
       });
     });
   });
