@@ -409,6 +409,18 @@ export default function (): void {
         expectActiveElementToBe(contentContainer);
       });
 
+      it('assigns tabindex of 0 to content container when focusTreeNode() runs after the browser already focused it directly (e.g. mousedown over non-focusable content)', function (this: Context) {
+        // Regression test: clicking content with no focusable descendant (e.g. plain text) makes the
+        // browser focus the container itself on mousedown, since it carries a tabindex attribute.
+        // The follow-up mouseup still calls focusTreeNode(), but its "already focused" guard used to
+        // skip setTabIndex(0) entirely in that case, leaving tabindex stuck at -1 forever and making
+        // the node unreachable by Tab/Shift+Tab afterwards.
+        contentContainer.focus();
+        this.clarityDirective.focusTreeNode();
+        expect(this.clarityDirective.contentContainerTabindex).toBe(0);
+        expect(contentContainer.getAttribute('tabindex')).toBe('0');
+      });
+
       it('assigns tabindex of -1 to content container by default', function (this: Context) {
         expect(this.clarityDirective.contentContainerTabindex).toBe(-1);
         expect(contentContainer.getAttribute('tabindex')).toBe('-1');
