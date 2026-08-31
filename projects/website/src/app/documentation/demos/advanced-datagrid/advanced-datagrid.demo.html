@@ -592,6 +592,67 @@
         </clr-accordion-panel>
       </clr-accordion>
     </div>
+
+    <!-- Pinnable Columns -->
+    <div class="demo-section">
+      <h3 data-toc-item id="pinnable-columns" cds-text="section" class="clr-mt-32px">Pinnable Columns</h3>
+      <p cds-text="body" class="clr-mt-16px">
+        Pinning keeps a column to the left of the scrollable ones, so the column that identifies a row stays in view
+        while the user reads the columns further to the right. The initial state is set per column definition.
+      </p>
+
+      <h2 class="clr-mt-48px" cds-text="subsection">Key Features</h2>
+      <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg m-b:lg">
+        <li>
+          <strong cds-text="medium">Fixed Pinning:</strong> A column definition with
+          <code cds-text="code">pinned: true</code> starts pinned and stays that way unless the application changes it.
+        </li>
+        <!--
+          Disabled with clrDgPinnable:
+
+          <li>
+            <strong cds-text="medium">User Pinning:</strong> Adding <code cds-text="code">pinnable: true</code> puts a
+            pin toggle in the column header. The two flags are independent, so a column can be pinned without being
+            pinnable, or pinnable without starting out pinned.
+          </li>
+          <li>
+            <strong cds-text="medium">Change Notification:</strong> When the user works the toggle, the grid updates
+            <code cds-text="code">pinned</code> on the column definition and emits
+            <code cds-text="code">(columnPinnedChange)</code> with the column and its new state - use it to persist the
+            choice.
+          </li>
+        -->
+      </ul>
+
+      <clr-alert [clrAlertClosable]="false" clrAlertType="info">
+        <clr-alert-item>
+          <span class="alert-text">
+            Pinned columns take their width out of the scrollable region, so give them explicit widths and pin only the
+            columns a user needs to keep their place. They cannot take more than 85% of the grid width - past that they
+            shrink to fit, so the scrollable columns stay reachable - but a column squeezed to its minimum width is hard
+            to read. Pinning is also suspended for as long as the detail pane is open, because the pane shows a single,
+            full width column.
+          </span>
+        </clr-alert-item>
+      </clr-alert>
+
+      <clr-accordion cds-layout="m-t:md">
+        <clr-accordion-panel>
+          <clr-accordion-title>Example</clr-accordion-title>
+          <clr-accordion-content *clrIfExpanded>
+            <div class="clr-mt-16px">
+              <app-pinnable-columns-advanced-grid-demo></app-pinnable-columns-advanced-grid-demo>
+            </div>
+            <app-stackblitz-example
+              name="pinnable-columns-demo"
+              [componentTemplate]="pinnableColumnsHtml"
+              [componentClass]="pinnableColumnsTs"
+              [additionalFiles]="additionalFiles"
+            ></app-stackblitz-example>
+          </clr-accordion-content>
+        </clr-accordion-panel>
+      </clr-accordion>
+    </div>
   </app-doc-tab>
 
   <app-doc-tab tab="api">
@@ -680,6 +741,19 @@
           <td>Input</td>
           <td><code cds-text="code">boolean</code></td>
           <td>Enables row selection on click. Defaults to <code cds-text="code">true</code>.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">disableUnsort</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>
+            Removes the unsort step from the sort cycle for every column. When
+            <code cds-text="code">true</code> (default), clicking a sorted column header toggles ascending/descending
+            only; when <code cds-text="code">false</code>, it cycles ascending &rarr; descending &rarr; unsorted. Can be
+            overridden per column via <code cds-text="code">ColumnDefinition.disableUnsort</code>. Defaults to
+            <code cds-text="code">true</code>.
+          </td>
           <td>No</td>
         </tr>
         <tr>
@@ -838,6 +912,20 @@
           <td>Emits on advanced filter change.</td>
           <td>No</td>
         </tr>
+        <!--
+          Disabled with clrDgPinnable:
+
+          <tr>
+            <td><code cds-text="code">columnPinnedChange</code></td>
+            <td>Output</td>
+            <td><code cds-text="code">EventEmitter&lt;ColumnPinnedState&gt;</code></td>
+            <td>
+              Emits when the user pins or unpins a column from its header toggle. The
+              <code cds-text="code">pinned</code> flag on the column definition is updated before the event is emitted.
+            </td>
+            <td>No</td>
+          </tr>
+        -->
         <tr>
           <td><code cds-text="code">toggleAll</code></td>
           <td>Method</td>
@@ -890,6 +978,30 @@
           <td>No</td>
         </tr>
         <tr>
+          <td><code cds-text="code">pinned</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>
+            Pins the column to the left of the scrollable columns, so it stays visible during horizontal scroll. The
+            pinned columns cannot take more than 85% of the grid width - past that they shrink to fit. Defaults to
+            <code cds-text="code">false</code>.
+          </td>
+          <td>No</td>
+        </tr>
+        <!--
+          Disabled with clrDgPinnable:
+
+          <tr>
+            <td><code cds-text="code">pinnable</code></td>
+            <td><code cds-text="code">boolean</code></td>
+            <td>
+              Adds a pin toggle to the column header so the user can pin and unpin the column. It only adds the control
+              - the state itself is held by <code cds-text="code">pinned</code>. Defaults to
+              <code cds-text="code">false</code>.
+            </td>
+            <td>No</td>
+          </tr>
+        -->
+        <tr>
           <td><code cds-text="code">stringFilter</code></td>
           <td><code cds-text="code">ClrDatagridStringFilterInterface&lt;T&gt;</code></td>
           <td>String filter definition.</td>
@@ -941,6 +1053,17 @@
           <td><code cds-text="code">sortAndFilterByField</code></td>
           <td><code cds-text="code">string</code></td>
           <td>Field to filter/sort by.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">disableUnsort</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>
+            Overrides the grid-level <code cds-text="code">disableUnsort</code> for this column. When
+            <code cds-text="code">true</code>, sorting toggles ascending/descending only; when
+            <code cds-text="code">false</code>, it cycles ascending &rarr; descending &rarr; unsorted. When omitted, the
+            grid-level value is used.
+          </td>
           <td>No</td>
         </tr>
       </tbody>

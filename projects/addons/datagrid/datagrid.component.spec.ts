@@ -6,7 +6,7 @@
  */
 
 import { A11yModule as CdkA11yModule } from '@angular/cdk/a11y';
-import { CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { Component, DebugElement, NgModule, SimpleChange, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
@@ -28,6 +28,7 @@ import {
   ZoomLevelServiceMock,
 } from '@clr/addons/testing';
 import {
+  ClrDatagridColumn,
   ClrDatagridComparatorInterface,
   ClrDatagridFilterInterface,
   ClrDatagridSortOrder,
@@ -664,6 +665,128 @@ describe('DatagridComponent', () => {
           };
           expect(this.component.columnSortOrderChange).toHaveBeenCalledWith(expectedColumnSortOrdeChange);
         });
+      });
+    });
+
+    describe('pinned columns', () => {
+      // Keyed by column instead of by position: a pinned column is projected into the sticky
+      // container, which comes before the scrollable one, so DOM order stops matching the order the
+      // columns are defined in.
+      function getDragDisabledByColumn(
+        fixture: ComponentFixture<DatagridHostComponent>
+      ): Record<string, boolean | undefined> {
+        const disabledByColumn: Record<string, boolean | undefined> = {};
+
+        fixture.debugElement.queryAll(By.directive(CdkDrag)).forEach((dragDebugEl: DebugElement) => {
+          const cdkDrag = dragDebugEl.injector.get(CdkDrag);
+          const column = cdkDrag.data as ColumnDefinition<any>;
+          disabledByColumn[column.displayName] = cdkDrag.disabled;
+        });
+
+        return disabledByColumn;
+      }
+
+      beforeEach(function (this: DatagridSpecContext) {
+        this.component.data = this.data;
+      });
+
+      it('keeps every column draggable when none is pinned', function (this: DatagridSpecContext) {
+        this.component.columnsDefs = this.columnsDefs;
+        this.fixture.detectChanges(false);
+
+        expect(getDragDisabledByColumn(this.fixture)).toEqual({ Name: false, State: false, Status: false });
+      });
+
+      // A pinned column is rendered in the sticky container, outside the group the reorder addon
+      // drags within, so it must not be a drag source.
+      it('turns off dragging for a pinned column only', function (this: DatagridSpecContext) {
+        this.columnsDefs[1].pinned = true;
+        this.component.columnsDefs = [...this.columnsDefs];
+        this.fixture.detectChanges(false);
+
+        expect(getDragDisabledByColumn(this.fixture)).toEqual({ Name: false, State: true, Status: false });
+      });
+
+      it('makes the column draggable again once it is unpinned', function (this: DatagridSpecContext) {
+        this.columnsDefs[1].pinned = true;
+        this.component.columnsDefs = [...this.columnsDefs];
+        this.fixture.detectChanges(false);
+        expect(getDragDisabledByColumn(this.fixture)).toEqual({ Name: false, State: true, Status: false });
+
+        this.columnsDefs[1].pinned = false;
+        this.component.columnsDefs = [...this.columnsDefs];
+        this.fixture.detectChanges(false);
+
+        expect(getDragDisabledByColumn(this.fixture)).toEqual({ Name: false, State: false, Status: false });
+      });
+    });
+
+    describe('disableUnsort', () => {
+      function getColumnDisableUnsort(fixture: ComponentFixture<DatagridHostComponent>): boolean[] {
+        return fixture.debugElement
+          .queryAll(By.directive(ClrDatagridColumn))
+          .map((columnDebugEl: DebugElement) => columnDebugEl.componentInstance.disableUnsort);
+      }
+
+      beforeEach(function (this: DatagridSpecContext) {
+        this.component.columnsDefs = this.columnsDefs;
+        this.component.data = this.data;
+      });
+
+      it('disables unsort for every column by default', function (this: DatagridSpecContext) {
+        this.fixture.detectChanges(false);
+        expect(this.component.appfxDatagridComponent.disableUnsort).toBe(true);
+        expect(getColumnDisableUnsort(this.fixture)).toEqual([true, true, true]);
+      });
+
+      it('enables unsort for every column when the grid input is false', function (this: DatagridSpecContext) {
+        this.component.disableUnsort = false;
+        this.fixture.detectChanges(false);
+        expect(getColumnDisableUnsort(this.fixture)).toEqual([false, false, false]);
+      });
+
+      it('lets a column re-enable unsort when the grid disables it', function (this: DatagridSpecContext) {
+        this.component.disableUnsort = true;
+        this.columnsDefs[2].disableUnsort = false;
+        this.component.columnsDefs = [...this.columnsDefs];
+        this.fixture.detectChanges(false);
+        expect(getColumnDisableUnsort(this.fixture)).toEqual([true, true, false]);
+      });
+
+      it('lets a column disable unsort when the grid enables it', function (this: DatagridSpecContext) {
+        this.component.disableUnsort = false;
+        this.columnsDefs[2].disableUnsort = true;
+        this.component.columnsDefs = [...this.columnsDefs];
+        this.fixture.detectChanges(false);
+        expect(getColumnDisableUnsort(this.fixture)).toEqual([false, false, true]);
+      });
+
+      it('keeps a sorted column sorted on the third click when unsort is disabled', function (this: DatagridSpecContext) {
+        const sortableColumnIndex = 2; // "Status" column defines a sortComparator
+        this.component.disableUnsort = true;
+        this.fixture.detectChanges(false);
+        const gridHelper = new GridHelper(this.fixture.debugElement);
+
+        gridHelper.sortByColumnIndex(sortableColumnIndex); // ascending
+        gridHelper.sortByColumnIndex(sortableColumnIndex); // descending
+        gridHelper.sortByColumnIndex(sortableColumnIndex); // back to ascending (never unsorted)
+        this.fixture.detectChanges(false);
+
+        expect(this.columnsDefs[sortableColumnIndex].defaultSortOrder).toEqual(ClrDatagridSortOrder.ASC);
+      });
+
+      it('returns a sorted column to unsorted on the third click when unsort is enabled', function (this: DatagridSpecContext) {
+        const sortableColumnIndex = 2; // "Status" column defines a sortComparator
+        this.component.disableUnsort = false;
+        this.fixture.detectChanges(false);
+        const gridHelper = new GridHelper(this.fixture.debugElement);
+
+        gridHelper.sortByColumnIndex(sortableColumnIndex); // ascending
+        gridHelper.sortByColumnIndex(sortableColumnIndex); // descending
+        gridHelper.sortByColumnIndex(sortableColumnIndex); // unsorted
+        this.fixture.detectChanges(false);
+
+        expect(this.columnsDefs[sortableColumnIndex].defaultSortOrder).toEqual(ClrDatagridSortOrder.UNSORTED);
       });
     });
 
@@ -1961,6 +2084,7 @@ class StatusComparator implements ClrDatagridComparatorInterface<any> {
       [trackByGridItemProperty]="trackByProperty"
       [isRowLocked]="isRowLocked"
       [virtualScrolling]="virtualScrolling"
+      [disableUnsort]="disableUnsort"
       [serverDrivenDatagrid]="serverDrivenDatagrid"
       [dataRange]="dataRange"
       [(detailState)]="detailState"
@@ -2016,6 +2140,7 @@ class DatagridHostComponent {
   detailState: any = null;
   rowsExpandedByDefault?: boolean = false;
   virtualScrolling = false;
+  disableUnsort = true;
   serverDrivenDatagrid = false;
   dataRange: ClrDatagridVirtualScrollRangeInterface<any> = {
     total: 100,

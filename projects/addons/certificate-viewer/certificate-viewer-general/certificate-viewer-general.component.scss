@@ -1,0 +1,38 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+// Increase specificity to override Clarity's `clr-tabs section`
+:host > section {
+  flex: 0 1 auto;
+  margin-top: 1.2rem;
+
+  &.fingerprints {
+    .key-value + .key-value {
+      // Separate the hex values for better readability
+      margin-top: 0.6rem;
+    }
+  }
+}
+
+// TODO: Consider using a dedicated property viewer component instead of a table-based layout.
+// The table style shrinks the text and it's semantically wrong as the key-value pairs are a list inside a section.
+.key-value {
+  display: flex;
+  margin: 0;
+
+  > *:first-child {
+    flex: 0 0 12rem;
+  }
+
+  > *:last-child {
+    flex: 1 1 auto;
+  }
+}
+
+.pre-wrap {
+  white-space: pre-wrap;
+}

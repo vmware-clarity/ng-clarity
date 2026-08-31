@@ -60,18 +60,20 @@ $clr-layers: (
   select-box: 2,
   datalist-box: 2,
   datagrid-row: 500,
+  // The pinned columns are static next to the row controls, which stay on top of them if the two
+  // ever overlap, so they sit one layer below.
+  datagrid-row-pinned: 499,
   datagrid-row-sticky: 500,
   datagrid-row-skeleton: 501,
   datagrid-header: 501,
+  datagrid-header-pinned: 501,
   datagrid-header-sticky: 502,
   datagrid-host: 590,
   alert: 1033,
-  // Used by responsive nav sidepanel
-  sidepanel-bg: 1038,
+  /* Used by responsive nav sidepanel*/ sidepanel-bg: 1038,
   sidepanel: 1039,
-  // Not used in Clarity but released by mistake in 17.2.0 and already consumed by teams through NGX
-  // see https://jira.eng.vmware.com/browse/CDE-2109
-  side-panel-bg: 1038,
+  /* Not used in Clarity but released by mistake in 17.2.0 and already consumed by teams through NGX*/
+  /* see https://jira.eng.vmware.com/browse/CDE-2109*/ side-panel-bg: 1038,
   side-panel: 1039,
   modal-bg: 1040,
   modal: 1050,

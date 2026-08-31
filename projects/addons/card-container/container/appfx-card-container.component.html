@@ -1,0 +1,16 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div class="content-container clr-flex-row">
+  <div class="card-container clr-flex-grow-1">
+    <ng-template #cardContainer> </ng-template>
+  </div>
+  <appfx-card-container-settings
+    *ngIf="showCardContainerSettings"
+    [containerCards]="containerCards"
+    (toggleCardVisibility)="onToggleCardVisibility($event)"
+  ></appfx-card-container-settings>
+</div>

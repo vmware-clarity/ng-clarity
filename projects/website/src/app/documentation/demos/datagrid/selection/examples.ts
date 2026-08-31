@@ -50,6 +50,7 @@ const singleRow = `
 const rowSelection = `
 <clr-datagrid
   [(clrDgSelected)]="selected"
+  [clrDgSelectionType]="'multi'"
   [clrDgRowSelection]="true"
   [clrDgItemsIdentityFn]="trackUserItemById"
 >
@@ -124,6 +125,7 @@ const fullHtml = `
 
 <clr-datagrid
   [(clrDgSelected)]="selected"
+  [clrDgSelectionType]="'multi'"
   [clrDgItemsIdentityFn]="trackUserItemById"
   (clrDgSelectedChange)="selectionChanged($event)"
 >

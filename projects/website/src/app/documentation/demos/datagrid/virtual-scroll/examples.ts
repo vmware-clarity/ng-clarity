@@ -103,6 +103,7 @@ const EXAMPLE_STATIC = `
   [clrDgItemsIdentityFn]="trackItemById"
   [clrLoadingMoreItems]="loadingMoreItems"
   [(clrDgSelected)]="selected"
+  [clrDgSelectionType]="'multi'"
   (clrDgRefresh)="refresh($event)"
   [class.datagrid-compact]="rowSize === 'compact'"
 >
@@ -167,6 +168,7 @@ const EXAMPLE_ASYNC = `
     [clrDgItemsIdentityFn]="trackItemById"
     [clrLoadingMoreItems]="loadingMoreItems"
     [(clrDgSelected)]="selected"
+    [clrDgSelectionType]="'multi'"
     (clrDgRefresh)="refresh($event)"
     [class.datagrid-compact]="rowSize === 'compact'"
     style="height: 24rem"
@@ -267,6 +269,7 @@ const dataDrivenHtml = `
 <clr-datagrid
   #datagrid
   [(clrDgSelected)]="selected"
+  [clrDgSelectionType]="'multi'"
   [clrDgItemsIdentityFn]="trackItemById"
   (clrDgRefresh)="refresh($event)"
   class="datagrid-compact"

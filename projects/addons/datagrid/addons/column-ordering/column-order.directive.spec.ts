@@ -167,6 +167,64 @@ describe('ColumnOrderDirective', () => {
     expect(this.datagridHostComponent.content.columnOrderDirectives.get(2).isGrabbed).toEqual(false);
   });
 
+  describe('pinned columns', () => {
+    function keydown(this: any, index: number, code: string) {
+      this.datagridHostComponent.content.elementRefs
+        .get(index)
+        .nativeElement.dispatchEvent(new KeyboardEvent('keydown', { code: code }));
+    }
+
+    beforeEach(function (this: any) {
+      // A pinned column is rendered in the sticky container, outside the reorderable group.
+      this.datagridHostComponent.columns[1].pinned = true;
+      this.fixture.detectChanges();
+    });
+
+    it('cannot be grabbed with the keyboard', function (this: any) {
+      const grabbed: any[] = [];
+      service.grabbedColumn.subscribe(data => grabbed.push(data));
+
+      keydown.call(this, 1, 'Space');
+
+      // Only the initial null of the BehaviorSubject, no grab.
+      expect(grabbed).toEqual([null]);
+    });
+
+    it('cannot be moved with the arrow keys', function (this: any) {
+      const moves: any[] = [];
+      service.grabbedColumn.next(this.datagridHostComponent.columns[1]);
+      service.moveVisibleColumn.subscribe(data => moves.push(data));
+
+      keydown.call(this, 1, 'ArrowLeft');
+      keydown.call(this, 1, 'ArrowRight');
+
+      expect(moves).toEqual([]);
+    });
+
+    it('can still be released when it gets pinned while grabbed', function (this: any) {
+      const grabbed: any[] = [];
+      service.grabbedColumn.next(this.datagridHostComponent.columns[1]);
+      service.grabbedColumn.subscribe(data => grabbed.push(data));
+
+      keydown.call(this, 1, 'Escape');
+
+      expect(grabbed.length).toEqual(2);
+      expect(grabbed[1]).toBeNull();
+    });
+
+    it('leaves the columns that are not pinned reorderable', function (this: any) {
+      const moves: any[] = [];
+      service.grabbedColumn.next(this.datagridHostComponent.columns[2]);
+      service.moveVisibleColumn.subscribe(data => moves.push(data));
+
+      keydown.call(this, 2, 'ArrowLeft');
+
+      expect(moves.length).toEqual(1);
+      expect(moves[0].visibleColumnIndex).toEqual(2);
+      expect(moves[0].moveLeft).toEqual(true);
+    });
+  });
+
   it('focus grabbed column when focus grabbed column event is received', function (this: any) {
     this.fixture.detectChanges();
     const firstColumnElement = this.datagridHostComponent.content.elementRefs.get(0).nativeElement;

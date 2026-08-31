@@ -1,0 +1,26 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<section class="overlay-spinner" *ngIf="!isModal; else spinner">
+  <ng-template [ngTemplateOutlet]="spinner"></ng-template>
+</section>
+
+<ng-template #spinner>
+  <clr-spinner>
+    {{ message }}
+  </clr-spinner>
+  <span [attr.aria-live]="politeness" class="clr-sr-only">
+    {{ message }}
+  </span>
+
+  <span *ngIf="progressDetails" class="progress-item" aria-live="polite">
+    {{ progressDetails }}
+  </span>
+
+  <button *ngIf="showActionButton" class="btn btn-link btn-sm" (click)="invokeAction()">
+    {{ actionButtonLabel }}
+  </button>
+</ng-template>

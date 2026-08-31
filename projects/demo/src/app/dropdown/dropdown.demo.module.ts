@@ -11,6 +11,7 @@ import { ClarityModule } from '@clr/angular';
 
 import { DropdownAngularCloseItemFalseDemo } from './dropdown-angular-close-item-false';
 import { DropdownAngularContextMenuDemo } from './dropdown-angular-context-menu';
+import { DropdownAngularDestroySubtreeDemo, DropdownDestroySubtreeLeafDemo } from './dropdown-angular-destroy-subtree';
 import { DropdownAngularNestedDemo } from './dropdown-angular-nested';
 import { DropdownAngularPositioningDemo } from './dropdown-angular-positioning';
 import { DropdownAngularShadowRootDemo } from './dropdown-angular-shadow-root';
@@ -36,6 +37,8 @@ import { ROUTING } from './dropdown.demo.routing';
     DropdownAngularCloseItemFalseDemo,
     DropdownHeaderDemo,
     DropdownAngularContextMenuDemo,
+    DropdownAngularDestroySubtreeDemo,
+    DropdownDestroySubtreeLeafDemo,
   ],
   exports: [
     DropdownDemo,
@@ -49,6 +52,8 @@ import { ROUTING } from './dropdown.demo.routing';
     DropdownAngularCloseItemFalseDemo,
     DropdownHeaderDemo,
     DropdownAngularContextMenuDemo,
+    DropdownAngularDestroySubtreeDemo,
+    DropdownDestroySubtreeLeafDemo,
   ],
 })
 export class DropdownDemoModule {}

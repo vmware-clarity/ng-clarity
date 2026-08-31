@@ -15,7 +15,10 @@ import { screenshotOptions } from './screenshot-options';
 const browser = process.env['CLARITY_VRT_BROWSER'];
 const theme = process.env['CLARITY_VRT_THEME'];
 const density = process.env['CLARITY_VRT_DENSITY'];
-const matrixKey = `${browser}-${theme}-${density}`;
+const shard = process.env['CLARITY_VRT_SHARD'];
+// The used-screenshot-paths file only needs to be unique per CI job; shard is appended so
+// parallel shards of the same browser/theme/density combo don't write the same filename.
+const matrixKey = shard ? `${browser}-${theme}-${density}-${shard}` : `${browser}-${theme}-${density}`;
 
 const usedScreenshotPaths: string[] = [];
 const indexFilePath = path.join('.', 'dist', 'docs', 'index.json');

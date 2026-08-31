@@ -409,6 +409,20 @@ export default function (): void {
         expect(overflowMenu.textContent).toMatch(/Button 4/);
         expect(overflowMenu.textContent).toMatch(/Button 5/);
       });
+
+      it('does not throw when popoverVisible fires before the menu view query has resolved', () => {
+        // Regression: `menu`/`menuToggle` sit on the *clrPopoverContent element, so the
+        // queries only resolve once that embedded view exists and change detection has
+        // refreshed them. popoverVisible is emitted from a setTimeout inside showOverlay(),
+        // which is normally late enough - but when it isn't, dereferencing the ElementRefs
+        // unguarded threw "Cannot read properties of undefined (reading 'nativeElement')"
+        // and aborted the handler.
+        const popoverService = (testBtnGroup as any).popoverService;
+        testBtnGroup.menu = undefined;
+        testBtnGroup.menuToggle = undefined;
+
+        expect(() => popoverService.popoverVisibleEmit(true)).not.toThrow();
+      });
     });
 
     describe('Toggling Button Group Overflow Menus', () => {

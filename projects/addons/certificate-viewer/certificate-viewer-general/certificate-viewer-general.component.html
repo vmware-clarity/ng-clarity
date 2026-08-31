@@ -1,0 +1,112 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<section>
+  <ng-container
+    *ngTemplateOutlet="
+      headingTemplate;
+      context: {
+        level: topHeadingLevel + 1,
+        textContent: 'issued-to' | translate,
+        class: 'certificate-viewer-general-subtitle',
+      }
+    "
+  >
+  </ng-container>
+
+  <ng-container
+    *ngTemplateOutlet="relativeDistinguishedNames; context: { certificate: certificate?.subject }"
+  ></ng-container>
+</section>
+
+<section>
+  <ng-container
+    *ngTemplateOutlet="
+      headingTemplate;
+      context: {
+        level: topHeadingLevel + 1,
+        textContent: 'issued-by' | translate,
+        class: 'certificate-viewer-general-subtitle',
+      }
+    "
+  >
+  </ng-container>
+
+  <ng-container
+    *ngTemplateOutlet="relativeDistinguishedNames; context: { certificate: certificate?.issuer }"
+  ></ng-container>
+</section>
+
+<section>
+  <ng-container
+    *ngTemplateOutlet="
+      headingTemplate;
+      context: {
+        level: topHeadingLevel + 1,
+        textContent: 'validity-period' | translate,
+        class: 'certificate-viewer-general-subtitle',
+      }
+    "
+  >
+  </ng-container>
+
+  <dl class="key-value">
+    <dt>{{ 'issued-on' | translate }}</dt>
+    <dd id="issue-date">
+      {{ certificate?.certificate?.notBefore?.value | dateTime: dateTimeFormat }}
+    </dd>
+  </dl>
+  <dl class="key-value">
+    <dt>{{ 'expires-on' | translate }}</dt>
+    <dd id="expiry-date">
+      {{ certificate?.certificate?.notAfter?.value | dateTime: dateTimeFormat }}
+    </dd>
+  </dl>
+</section>
+
+<section class="fingerprints">
+  <ng-container
+    *ngTemplateOutlet="
+      headingTemplate;
+      context: {
+        level: topHeadingLevel + 1,
+        textContent: 'fingerprints' | translate,
+        class: 'certificate-viewer-general-subtitle',
+      }
+    "
+  >
+  </ng-container>
+
+  <dl class="key-value">
+    <dt>{{ 'sha-256-fingerprint' | translate }}</dt>
+    <dd class="pre-wrap">{{ certificate?.fingerprints?.sha256 }}</dd>
+  </dl>
+  <dl class="key-value">
+    <dt>{{ 'sha-1-fingerprint' | translate }}</dt>
+    <dd class="pre-wrap">{{ certificate?.fingerprints?.sha1 }}</dd>
+  </dl>
+</section>
+
+<ng-template #relativeDistinguishedNames let-certificate="certificate">
+  <dl class="key-value">
+    <dt>{{ KnownOids.CommonName | translate }}</dt>
+    <dd id="issued-cn">
+      {{ certificate?.commonName || ('not-part-of-certificate' | translate) }}
+    </dd>
+  </dl>
+  <dl class="key-value">
+    <dt>{{ KnownOids.Organization | translate }}</dt>
+    <dd id="issued-o">
+      {{ certificate?.organization || ('not-part-of-certificate' | translate) }}
+    </dd>
+  </dl>
+  <dl class="key-value">
+    <dt>{{ KnownOids.OrganizationalUnit | translate }}</dt>
+    <dd id="issued-ou">
+      {{ certificate?.organizationalUnit || ('not-part-of-certificate' | translate) }}
+    </dd>
+  </dl>
+</ng-template>

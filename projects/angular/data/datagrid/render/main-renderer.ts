@@ -159,11 +159,28 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     if (this.headers) {
       if (state && !this.columnsService.hasCache()) {
         this.columnsService.cache();
-        this.columnsService.visibleColumns.forEach((header, index) => {
-          if (index > 0) {
+
+        // The pane leaves room for a single column, and it should be the one the user was already
+        // looking at on the left of the row. Pinned columns are rendered before the rest, so that
+        // is the first pinned column whenever anything is pinned, and the first declared one
+        // otherwise.
+        const keptColumn =
+          this.columnsService.visibleColumns.find(column => column.pinned) || this.columnsService.visibleColumns[0];
+
+        this.columnsService.visibleColumns.forEach(header => {
+          if (header !== keptColumn) {
             this.columnsService.emitStateChangeAt(header.columnIndex, {
               changes: [DatagridColumnChanges.HIDDEN],
               hidden: state,
+            });
+          }
+          // That single column is full width, so there is nothing to scroll and nothing to pin
+          // against - the column that stays included. Pinning is suspended while the pane is open
+          // and restored from the cache when it closes.
+          if (header.pinned) {
+            this.columnsService.emitStateChangeAt(header.columnIndex, {
+              changes: [DatagridColumnChanges.PINNED],
+              pinned: false,
             });
           }
         });
@@ -267,15 +284,50 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
             this.updateColumnSeparatorsVisibility();
             this.keyNavigation.resetKeyGrid();
             break;
+          case DatagridColumnChanges.PINNED: {
+            // Read before the class is updated below. The state can be re-emitted with the same
+            // value, e.g. by resetToLastCache, and relocating the views then is pure overhead.
+            const wasPinned = this.datagrid.columns.get(columnIndex)?.isPinned;
+
+            this.headers.get(columnIndex).setPinned(state);
+            this.rows.forEach(row => {
+              if (row.cells && row.cells.length) {
+                row.cells.get(columnIndex)?.setPinned(state);
+
+                row.expandableRows.forEach(expandableRow => {
+                  expandableRow.cells.get(columnIndex)?.setPinned(state);
+                });
+              }
+            });
+
+            if (wasPinned !== !!state.pinned) {
+              this.updateColumnSeparatorsVisibility();
+              this.keyNavigation.resetKeyGrid();
+              // The column and its cells have to move between the static and the scrollable
+              // containers, which happens on the next CALCULATE/DISPLAY cycle. Widths are
+              // recomputed there as well, since the flex context of the column changes.
+              // Deferring to ngAfterViewChecked keeps us out of the change detection pass that
+              // the `clrDgPinned` input setter runs in.
+              this.columnsSizesStable = false;
+              this.shouldStabilizeColumns = true;
+            }
+            break;
+          }
           case DatagridColumnChanges.INITIALIZE:
+            if (state.pinned) {
+              this.headers.get(columnIndex).setPinned(state);
+            }
             if (state.hideable && state.hidden) {
               this.headers.get(columnIndex).setHidden(state);
+            }
+            if (state.pinned || (state.hideable && state.hidden)) {
               this.rows.forEach(row => {
                 row.setCellsState();
                 row.expandableRows.forEach(expandableRow => {
                   expandableRow.setCellsState();
                 });
               });
+              this.updateColumnSeparatorsVisibility();
             }
             break;
           default:
@@ -302,11 +354,15 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
 
   private updateColumnSeparatorsVisibility() {
     const visibleColumns = this.datagrid.columns.filter(column => !column.isHidden);
-    visibleColumns.forEach((column, index) => {
-      if (index === visibleColumns.length - 1) {
-        column.showSeparator = false;
-      } else if (!column.showSeparator) {
-        column.showSeparator = true;
+    // Pinned columns are rendered in the static container, so they always have something after
+    // them and keep their separator - it is what marks the boundary with the scrollable columns.
+    // Only the last scrollable column has nothing after it and must hide its separator.
+    const scrollableColumns = visibleColumns.filter(column => !column.isPinned);
+    const lastScrollableColumn = scrollableColumns[scrollableColumns.length - 1];
+    visibleColumns.forEach(column => {
+      const showSeparator = column !== lastScrollableColumn;
+      if (column.showSeparator !== showSeparator) {
+        column.showSeparator = showSeparator;
       }
     });
   }

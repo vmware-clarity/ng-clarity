@@ -23,6 +23,7 @@ import {
   Output,
   QueryList,
   Renderer2,
+  RendererStyleFlags2,
   TemplateRef,
   ViewChild,
   ViewChildren,
@@ -41,7 +42,7 @@ import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType, selectionTypeAttribute } from './enums/selection-type';
 import { ClrDatagridStateInterface } from './interfaces/state.interface';
 import { ColumnsService } from './providers/columns.service';
-import { DetailService } from './providers/detail.service';
+import { DetailService, MAX_DETAIL_WIDTH } from './providers/detail.service';
 import { DisplayModeService } from './providers/display-mode.service';
 import { FiltersProvider } from './providers/filters';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
@@ -79,6 +80,7 @@ import { CellCoordinates, KeyNavigationGridController } from './utils/key-naviga
   host: {
     '[class.datagrid-host]': 'true',
     '[class.datagrid-detail-open]': 'detailService.isOpen',
+    '[class.datagrid-detail-overlay]': 'isDetailOverlay',
     '[class.datagrid-virtual-scroll]': '!!virtualScroll',
   },
   standalone: false,
@@ -142,6 +144,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChild('rowsWrapper', { read: ElementRef, static: true }) rowsWrapper: ElementRef<HTMLElement>;
   @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
   @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
+  @ViewChild('projectedStickyColumns', { read: ViewContainerRef }) _projectedStickyColumns: ViewContainerRef;
   @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
   @ViewChild('displayedRows', { read: ViewContainerRef }) _displayedRows: ViewContainerRef;
   @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows: ViewContainerRef;
@@ -155,6 +158,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   SELECTION_TYPE = SelectionType;
 
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
+  @ViewChild('rowControls', { read: ElementRef }) private rowControls: ElementRef<HTMLElement>;
 
   /**
    * Subscriptions to all the services and queries changes
@@ -169,6 +173,12 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       this.handleResizeChanges(entries);
     });
   });
+
+  /**
+   * Watches the row controls for anything that changes their width without going through a render
+   * cycle - a density change, or an application restyling them.
+   */
+  private rowControlsObserver: ResizeObserver = new ResizeObserver(() => this.updateRowControlsWidth());
 
   constructor(
     private organizer: DatagridRenderOrganizer,
@@ -185,7 +195,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     private page: Page,
     public commonStrings: ClrCommonStringsService,
     public keyNavigation: KeyNavigationGridController,
-    private zone: NgZone
+    private zone: NgZone,
+    private columnsService: ColumnsService
   ) {
     const datagridId = uniqueIdFactory();
 
@@ -277,6 +288,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     return this._virtualScroll?.get(0);
   }
 
+  protected get isDetailOverlay(): boolean {
+    return this.detailService.detailWidth === MAX_DETAIL_WIDTH;
+  }
+
   ngAfterContentInit() {
     if (!this.items.smart) {
       this.items.all = this.rows.map((row: ClrDatagridRow<T>) => row.item);
@@ -345,6 +360,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this.keyNavigation.initializeKeyGrid(this.el.nativeElement);
 
     this.updateDetailState();
+    this.zone.runOutsideAngular(() => this.rowControlsObserver.observe(this.rowControls.nativeElement));
 
     // Emit the state only if it is not an empty object.
     // Default state of `ClrDatagridStateInterface` is an empty object.
@@ -376,6 +392,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         for (let i = this._projectedDisplayColumns.length; i > 0; i--) {
           this._projectedDisplayColumns.detach();
         }
+        // Remove any projected columns from the projectedStickyColumns container
+        for (let i = this._projectedStickyColumns.length; i > 0; i--) {
+          this._projectedStickyColumns.detach();
+        }
         // Remove any projected columns from the projectedCalculationColumns container
         for (let i = this._projectedCalculationColumns.length; i > 0; i--) {
           this._projectedCalculationColumns.detach();
@@ -391,12 +411,21 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         if (viewChange === DatagridDisplayMode.DISPLAY) {
           // Set state, style for the datagrid to DISPLAY and insert row & columns into containers
           this.renderer.removeClass(this.el.nativeElement, 'datagrid-calculate-mode');
-          this.columns.forEach(column => {
-            this._projectedDisplayColumns.insert(column._view);
+          // Pinned columns go into the pinned container so they stay visible during horizontal
+          // scroll. Iterating in declaration order keeps both groups in their original order,
+          // which is what matches them with the cells of every row.
+          this.columns.forEach((column, index) => {
+            const container = this.columnsService.isPinned(index)
+              ? this._projectedStickyColumns
+              : this._projectedDisplayColumns;
+            container.insert(column._view);
           });
           this.rows.forEach(row => {
             this._displayedRows.insert(row._view);
           });
+          // The row controls are only laid out in this mode, and this is also the point where
+          // their number can have changed.
+          this.updateRowControlsWidth();
         } else {
           // Set state, style for the datagrid to CALCULATE and insert row & columns into containers
           this.renderer.addClass(this.el.nativeElement, 'datagrid-calculate-mode');
@@ -453,6 +482,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this.resizeObserver.disconnect();
+    this.rowControlsObserver.disconnect();
   }
 
   toggleAllSelected($event: any) {
@@ -543,6 +573,48 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
       this._virtualScrollSubscriptions = [];
     }
+  }
+
+  /**
+   * Publishes the width of the row controls - the static container holding the select, action and
+   * caret cells - as a custom property, which is where the pinned columns read the offset they
+   * became static at. They are static right after the controls rather than at the edge of the datagrid,
+   * and `position: sticky` always measures its offsets from that edge, so the distance between the
+   * two has to be measured and handed to the stylesheet.
+   *
+   * The header and the rows get their own value: the header renders one caret column for both
+   * kinds of caret where a row renders one cell per caret, so the two containers are not
+   * necessarily the same width.
+   *
+   * Nothing reads this property unless a column is pinned - `.datagrid-pinned-cells` is the only
+   * consumer, and it is `display: none` while empty - so the measurement is skipped entirely
+   * otherwise. It matters on a datagrid with many rows: `getBoundingClientRect()` forces the
+   * browser to resolve any pending layout first, and on a large datagrid that resolution is not
+   * cheap. Both boxes are read before either write for the same reason - writing the custom
+   * property is itself layout-affecting (`.datagrid-pinned-cells` reads it back for its own
+   * position and width), so reading again in between would force that resolution twice.
+   */
+  private updateRowControlsWidth() {
+    const headerControls = this.rowControls?.nativeElement;
+    if (!headerControls || !this.datagridHeader || !this.columnsService.hasPinnedColumns) {
+      return;
+    }
+    const rowControls: HTMLElement = this.rowsWrapper.nativeElement.querySelector(
+      '.datagrid-row-master > .datagrid-row-sticky:not(.datagrid-row-sticky-scroll)'
+    );
+
+    // Measured from the box rather than from offsetWidth, which is rounded to whole pixels and
+    // would leave the pinned columns off by up to a pixel.
+    const headerWidth = headerControls.getBoundingClientRect().width;
+    // Without a row there is nothing to line up with, so the header is a good enough stand-in.
+    const rowWidth = (rowControls || headerControls).getBoundingClientRect().width;
+
+    this.setRowControlsWidth(this.datagridHeader.nativeElement, headerWidth);
+    this.setRowControlsWidth(this.rowsWrapper.nativeElement, rowWidth);
+  }
+
+  private setRowControlsWidth(target: HTMLElement, width: number) {
+    this.renderer.setStyle(target, '--clr-datagrid-row-controls-width', `${width}px`, RendererStyleFlags2.DashCase);
   }
 
   private handleResizeChanges(entries: ResizeObserverEntry[]) {

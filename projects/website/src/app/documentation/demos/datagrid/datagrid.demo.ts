@@ -294,6 +294,24 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           description: 'Set the model property that represents data in the column.',
         },
         {
+          // Documented one-way while clrDgPinnable is disabled: nothing inside the datagrid can
+          // change the pinned state, and clrDgPinnedChange is commented out with the toggle, so a
+          // two-way [(clrDgPinned)] binding does not compile.
+          name: '[clrDgPinned]',
+          type: 'boolean',
+          defaultValue: 'false',
+          description:
+            'Pins the column to the left of the datagrid, so it stays visible while the remaining columns are scrolled horizontally. Pinned columns keep their declaration order and are rendered after the built-in row controls. The pinned columns cannot take more than 85% of the datagrid width - past that they shrink to fit. Pinning is suspended while the detail pane is open.',
+        },
+        // Disabled with clrDgPinnable:
+        // {
+        //   name: '[clrDgPinnable]',
+        //   type: 'boolean',
+        //   defaultValue: 'false',
+        //   description:
+        //     'Adds a pin toggle to the column header, letting the user pin and unpin the column from within the datagrid. It only adds the control - the pinned state itself stays on [clrDgPinned].',
+        // },
+        {
           name: '[clrFilterNumberMaxPlaceholder]',
           type: 'string',
           defaultValue: 'undefined',
@@ -360,6 +378,32 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           type: 'boolean',
           defaultValue: 'false',
           description: 'Input/Output for the hidden state of a column.',
+        },
+      ],
+    },
+    {
+      name: 'ClrDatagridDetail',
+      selector: 'clr-dg-detail',
+      props: [
+        {
+          name: '[clrDetailWidth]',
+          type: 'number',
+          defaultValue: '66',
+          description:
+            'Sets the width of the detail pane as a percentage of the datagrid width. Accepts values from 0 to 100 (inclusive). Values outside this range are clamped to the nearest boundary and a warning is emitted in development mode. Setting null or undefined restores the default of 66. At 100 the detail pane enters overlay mode and covers the entire datagrid.',
+        },
+        {
+          name: '[clrDetailAriaLabel]',
+          type: 'string',
+          defaultValue: 'undefined',
+          description: 'Sets aria-label on the detail pane dialog. Use when no visible header title is present.',
+        },
+        {
+          name: '[clrDetailAriaLabelledBy]',
+          type: 'string',
+          defaultValue: 'undefined',
+          description:
+            'One or more space-separated element IDs to append to the auto-generated aria-labelledby on the detail pane dialog.',
         },
       ],
     },

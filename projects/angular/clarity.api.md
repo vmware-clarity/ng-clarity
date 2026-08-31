@@ -814,6 +814,7 @@ export class ClarityIcons {
     static addIcons(...shapes: IconShapeTuple[]): void;
     // (undocumented)
     static getIconNameFromShape(iconShape: IconShapeTuple): string;
+    static getIconShape(name: string): IconRegistrySources[string] | undefined;
     static get registry(): Readonly<IconRegistry>;
 }
 
@@ -1517,6 +1518,8 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     // (undocumented)
     protected get allCheckboxesDisabled(): boolean;
     // (undocumented)
+    ariaLabelledBy: string;
+    // (undocumented)
     checkboxes: QueryList<ClrCheckbox>;
     // (undocumented)
     get clrInline(): boolean | string;
@@ -2036,7 +2039,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // Warning: (ae-forgotten-export) The symbol "StateProvider" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "DisplayModeService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "Page" needs to be exported by the entry point clr-angular.d.ts
-    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService, keyNavigation: KeyNavigationGridController, zone: NgZone);
+    // Warning: (ae-forgotten-export) The symbol "ColumnsService" needs to be exported by the entry point clr-angular.d.ts
+    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection_2<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService, keyNavigation: KeyNavigationGridController, zone: NgZone, columnsService: ColumnsService);
     // Warning: (ae-forgotten-export) The symbol "CellCoordinates" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
@@ -2086,6 +2090,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     _fixedColumnTemplate: TemplateRef<any>;
     // (undocumented)
     set identityFn(value: ClrDatagridItemsIdentityFunction<T>);
+    // (undocumented)
+    protected get isDetailOverlay(): boolean;
     // Warning: (ae-forgotten-export) The symbol "Items" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
@@ -2113,6 +2119,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     _projectedCalculationColumns: ViewContainerRef;
     // (undocumented)
     _projectedDisplayColumns: ViewContainerRef;
+    // (undocumented)
+    _projectedStickyColumns: ViewContainerRef;
     refresh: EventEmitter<ClrDatagridStateInterface<T>>;
     // (undocumented)
     resize(): void;
@@ -2218,12 +2226,15 @@ export class ClrDatagridCell implements OnInit {
 export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements OnDestroy, OnInit, OnChanges {
     // Warning: (ae-forgotten-export) The symbol "Sort" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "FiltersProvider" needs to be exported by the entry point clr-angular.d.ts
-    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService);
+    // Warning: (ae-forgotten-export) The symbol "ColumnState" needs to be exported by the entry point clr-angular.d.ts
+    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
     // (undocumented)
     get ariaSort(): ClrDatagridAriaSortOrder;
     // (undocumented)
     get colType(): "string" | "number";
     set colType(value: 'string' | 'number');
+    // (undocumented)
+    protected commonStrings: ClrCommonStringsService;
     customFilter: boolean;
     // (undocumented)
     disableUnsort: boolean;
@@ -2242,6 +2253,9 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     filterValueChange: EventEmitter<any>;
     // (undocumented)
     get isHidden(): boolean;
+    get isPinned(): boolean;
+    // (undocumented)
+    static ngAcceptInputType_pinned: unknown;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -2250,6 +2264,8 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
+    get pinned(): boolean;
+    set pinned(value: boolean);
     // (undocumented)
     set projectedFilter(custom: any);
     // (undocumented)
@@ -2274,9 +2290,9 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*"], false, [{ directive: typeof i15.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "pinned": { "alias": "clrDgPinned"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*"], false, [{ directive: typeof i15.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, [null, null, null, null, null, null, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -2308,7 +2324,6 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrDatagridColumnToggle implements OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "ColumnsService" needs to be exported by the entry point clr-angular.d.ts
     constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, popoverService: ClrPopoverService);
     // (undocumented)
     allColumnsSelected(): void;
@@ -2335,8 +2350,6 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     toggleColumnState(columnState: ColumnState, event: boolean): void;
     // (undocumented)
     toggleSwitchPanel(): void;
-    // Warning: (ae-forgotten-export) The symbol "ColumnState" needs to be exported by the entry point clr-angular.d.ts
-    //
     // (undocumented)
     readonly trackByFn: i0.TrackByFunction<ColumnState>;
     // (undocumented)
@@ -2382,13 +2395,20 @@ export class ClrDatagridDetail {
     // (undocumented)
     detailService: DetailService;
     // (undocumented)
+    get detailWidth(): number;
+    set detailWidth(value: number | null | undefined);
+    // (undocumented)
     header: ClrDatagridDetailHeader;
+    // (undocumented)
+    get isCustomWidth(): boolean;
     // (undocumented)
     get label(): string;
     // (undocumented)
     get labelledBy(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": { "alias": "clrDetailAriaLabelledBy"; "required": false; }; "ariaLabel": { "alias": "clrDetailAriaLabel"; "required": false; }; }, {}, ["header"], ["*"], false, never>;
+    get width(): number | null;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": { "alias": "clrDetailAriaLabelledBy"; "required": false; }; "ariaLabel": { "alias": "clrDetailAriaLabel"; "required": false; }; "detailWidth": { "alias": "clrDetailWidth"; "required": false; }; }, {}, ["header"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetail, never>;
 }
@@ -2629,7 +2649,7 @@ export class ClrDatagridPlaceholder<T = any> {
 
 // @public (undocumented)
 export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
-    constructor(selection: Selection_2<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, document: any);
+    constructor(selection: Selection_2<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, columnsService: ColumnsService, document: any);
     // (undocumented)
     _calculatedCells: ViewContainerRef;
     // (undocumented)
@@ -2702,6 +2722,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     openDetails(event: MouseEvent, detailButton: HTMLButtonElement): void;
     // (undocumented)
+    _pinnedCells: ViewContainerRef;
+    // (undocumented)
     radioId: string;
     // (undocumented)
     replaced: boolean;
@@ -2736,14 +2758,15 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
 }
 
 // @public
-export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
-    constructor(selection: Selection_2, rowActionService: RowActionService, expand: DatagridIfExpandService, expandableRows: ExpandableRowsCount, commonStrings: ClrCommonStringsService);
+export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
+    constructor(selection: Selection_2, rowActionService: RowActionService, expand: DatagridIfExpandService, expandableRows: ExpandableRowsCount, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, displayMode: DisplayModeService);
     // (undocumented)
     get beginningOfExpandableContentAriaText(): string;
     // (undocumented)
     _beginningOfExpandableContentAriaText: string;
     // (undocumented)
     cells: QueryList<ClrDatagridCell>;
+    columnAligned: boolean;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -2756,6 +2779,10 @@ export class ClrDatagridRowDetail implements AfterContentInit, OnDestroy {
     expandableRows: ExpandableRowsCount;
     // (undocumented)
     ngAfterContentInit(): void;
+    // (undocumented)
+    ngAfterViewChecked(): void;
+    // (undocumented)
+    ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -3734,7 +3761,7 @@ export class ClrHostWrappingModule {
 }
 
 // @public (undocumented)
-export class ClrIcon implements OnInit, OnDestroy {
+export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     constructor(el: ElementRef<HTMLElement>, cdr: ChangeDetectorRef);
     // (undocumented)
     get badge(): string | boolean;
@@ -3758,6 +3785,8 @@ export class ClrIcon implements OnInit, OnDestroy {
     static ngAcceptInputType_inverse: unknown;
     // (undocumented)
     static ngAcceptInputType_solid: unknown;
+    // (undocumented)
+    ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -4938,8 +4967,6 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     // (undocumented)
     protected controlClassService: ControlClassService;
     // (undocumented)
-    groupLabel: ElementRef<HTMLElement>;
-    // (undocumented)
     protected layoutService: LayoutService;
     // (undocumented)
     ngAfterContentInit(): void;
@@ -4950,7 +4977,7 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     // (undocumented)
     role: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["groupLabel", "radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadioContainer, [{ optional: true; }, null, null]>;
 }
@@ -7027,6 +7054,8 @@ export class DatagridCellRenderer implements OnDestroy {
     // (undocumented)
     setHidden(state: ColumnState): void;
     // (undocumented)
+    setPinned(state: ColumnState): void;
+    // (undocumented)
     setWidth(state: ColumnState): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridCellRenderer, "clr-dg-cell", never, {}, {}, never, never, false, never>;
@@ -7058,6 +7087,8 @@ export class DatagridHeaderRenderer implements OnDestroy {
     setColumnState(index: number): void;
     // (undocumented)
     setHidden(state: ColumnState): void;
+    // (undocumented)
+    setPinned(state: ColumnState): void;
     // (undocumented)
     setWidth(state: ColumnState): void;
     // (undocumented)

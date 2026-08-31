@@ -1,0 +1,17 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+// to remove margin added by cards on left and right
+// so that card container can use fill width
+$card-container-margin-reset: -5px;
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  /* stylelint-disable-next-line declaration-property-value-no-unknown */
+  margin: auto $card-container-margin-reset;
+}

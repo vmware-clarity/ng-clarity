@@ -1,0 +1,46 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<table
+  *ngIf="data.content.length > 0"
+  class="pv-sections-table table table-compact table-noborder"
+  role="presentation"
+  tabindex="0"
+  [attr.aria-label]="getCategoryListItemsAreaLabel()"
+>
+  <ng-container *ngFor="let section of data.content; first as first; trackBy: getSectionTrackingId">
+    <tbody class="section-spacer" *ngIf="!first" aria-hidden="true">
+      <tr>
+        <th scope="colgroup"></th>
+      </tr>
+    </tbody>
+    <!-- Due to bug in NVDA we need to put the labelling element next to
+      the labelled element. In some cases NVDA does not announce
+      the labelled element text when the labelling element is a child
+      of the labelled element.-->
+    <tbody
+      *ngIf="section.type === PropertyViewModelType.Section && section.title"
+      class="pv-section-visually-hidden"
+      [attr.id]="getSectionComponentAriaLabelId(section)"
+    >
+      <tr>
+        <th *ngIf="!section.renderAsHtml" [innerText]="section.title" scope="colgroup"></th>
+        <th *ngIf="section.renderAsHtml" [innerHTML]="section.title" scope="colgroup"></th>
+      </tr>
+    </tbody>
+    <tbody
+      *ngIf="section.type === PropertyViewModelType.Section"
+      appfx-property-view-section
+      role="list"
+      [attr.aria-labelledby]="getSectionComponentAriaLabelId(section)"
+      [attr.id]="getSectionComponentId(section)"
+      [componentId]="getSectionComponentId(section)"
+      [data]="section"
+      [expanded]="getSectionExpandedState(section.id)"
+      (expandedChange)="onSectionExpandedStateChange(section.id, $event)"
+    ></tbody>
+  </ng-container>
+</table>

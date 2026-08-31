@@ -50,6 +50,7 @@ import {
   ColumnFilterChange,
   ColumnHiddenState,
   ColumnOrderChanged,
+  // ColumnPinnedState, // disabled with clrDgPinnable
   ColumnResize,
   ColumnSortOrder,
 } from './interfaces/column-state';
@@ -352,6 +353,20 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   @Input() virtualScrolling = false;
 
   /**
+   * Controls whether the "unsort" step is removed from the column sort cycle for
+   * every column in the grid.
+   * - `true` (default): sorting toggles ASC ↔ DESC only; a sorted column cannot
+   *   be returned to the unsorted state by clicking its header.
+   * - `false`: sorting cycles ASC → DESC → unsorted (Clarity's default behavior).
+   *
+   * A column may override this grid-level default via
+   * {@link ColumnDefinition.disableUnsort}.
+   *
+   * @default true
+   */
+  @Input() disableUnsort = true;
+
+  /**
    * Input for providing data when virtual scrolling is enabled.
    * <code>gridItems</code> should not be used in this case.
    */
@@ -419,6 +434,16 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * Event emitter to tell hosting view that hidden state of column has changed.
    */
   @Output() columnHiddenStateChange: EventEmitter<ColumnHiddenState> = new EventEmitter<ColumnHiddenState>();
+
+  // Disabled for now: only the clrDgPinnable header toggle could ever raise this, so it is
+  // commented out along with the toggle, onPinnedChange() below and the ColumnPinnedState
+  // interface. Kept as a line comment rather than a doc comment, so api-extractor does not attach
+  // it to the next output.
+  //
+  // /**
+  //  * Event emitter to tell hosting view that the user pinned or unpinned a column.
+  //  */
+  // @Output() columnPinnedChange: EventEmitter<ColumnPinnedState> = new EventEmitter<ColumnPinnedState>();
 
   /**
    * Event emitter to tell hosting view that column filtering has changed.
@@ -924,6 +949,14 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   protected onColumnResize(columnSize: number, column: ColumnDefinition<T>): void {
     this.columnResize.emit({ columnSize: columnSize, column: column });
   }
+
+  // Disabled along with clrDgPinnable, which was the only thing that called this.
+  // protected onPinnedChange(pinned: boolean, column: ColumnDefinition<T>): void {
+  //   // The column definition is the source of truth for the binding, so it has to be updated or the
+  //   // next change detection would push the previous value back onto the column.
+  //   column.pinned = pinned;
+  //   this.columnPinnedChange.emit({ pinned: pinned, column: column });
+  // }
 
   protected onSortOrderChange(sortOrder: ClrDatagridSortOrder, column: ColumnDefinition<T>): void {
     const columnSortOrder = {

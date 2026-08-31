@@ -323,9 +323,62 @@
       "type": "addons"
     },
     {
+      "url": "theme-builder",
+      "text": "Theme Builder",
+      "type": "addons"
+    },
+    {
       "url": "translate",
       "text": "Translate",
       "type": "addons"
+    },
+    {
+      "url": "menu",
+      "text": "Menu",
+      "type": "addons",
+      "storybookPath": "addons-menu"
+    },
+    {
+      "url": "certificate-viewer",
+      "text": "Certificate Viewer",
+      "type": "addons",
+      "storybookPath": "addons-certificate-viewer"
+    },
+    {
+      "url": "property-view",
+      "text": "Property View",
+      "type": "addons",
+      "storybookPath": "addons-property-view"
+    },
+    {
+      "url": "card-container",
+      "text": "Card Container",
+      "type": "addons",
+      "storybookPath": "addons-card-container"
+    },
+    {
+      "url": "stepper-addon",
+      "text": "Advanced Stepper",
+      "type": "addons",
+      "storybookPath": "addons-stepper"
+    },
+    {
+      "url": "wizard-addon",
+      "text": "Advanced Wizard",
+      "type": "addons",
+      "storybookPath": "addons-wizard"
+    },
+    {
+      "url": "tabs-addon",
+      "text": "Advanced Tabs",
+      "type": "addons",
+      "storybookPath": "addons-tabs"
+    },
+    {
+      "url": "dialog",
+      "text": "Multi-Page Dialog",
+      "type": "addons",
+      "storybookPath": "addons-dialog"
     }
   ]
 }

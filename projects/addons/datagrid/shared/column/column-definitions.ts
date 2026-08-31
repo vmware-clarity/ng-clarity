@@ -50,6 +50,28 @@ export interface ColumnDefinition<T> {
   hidden?: boolean;
 
   /**
+   * Pins the column to the left of the Datagrid, so it stays visible while the remaining columns
+   * are scrolled horizontally. Pinned columns keep the order they are defined in and are rendered
+   * after the built-in row controls.
+   *
+   * @default false - Columns are not pinned by default.
+   */
+  pinned?: boolean;
+
+  // Disabled for now, along with the clrDgPinnable toggle in the core datagrid that renders it.
+  // Kept as a line comment rather than a doc comment, so api-extractor does not attach it to the
+  // next property.
+  //
+  // /**
+  //  * Determines whether the user can pin and unpin the column from a control in its header. It only
+  //  * adds the control - the pinned state itself is held by `pinned`, which is kept up to date when
+  //  * the user toggles it.
+  //  *
+  //  * @default false - Columns cannot be pinned by the user by default.
+  //  */
+  // pinnable?: boolean;
+
+  /**
    * Defines string filter for data in this column.
    */
   stringFilter?: ClrDatagridStringFilterInterface<T>;
@@ -93,6 +115,16 @@ export interface ColumnDefinition<T> {
    * The field by which the column will be filtered and sorted.
    */
   sortAndFilterByField?: string;
+
+  /**
+   * Controls whether the "unsort" step is removed from this column's sort cycle,
+   * overriding the grid-level `disableUnsort` default.
+   * - `true`: this column toggles ascending ↔ descending only.
+   * - `false`: this column cycles ascending → descending → unsorted.
+   *
+   * When omitted, the grid-level `disableUnsort` value is used.
+   */
+  disableUnsort?: boolean;
 }
 
 /**

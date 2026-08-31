@@ -1,0 +1,62 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+$neutral-grey-6: #ccc;
+$container-settings-label-spacing: 18px;
+$container-settings-max-width: 250px;
+$container-settings-list-max-height: 350px;
+
+.settings-btn {
+  padding: 0;
+}
+
+.container-settings {
+  margin-top: 7px;
+  max-height: $container-settings-list-max-height;
+  overflow-y: auto;
+
+  .disabled-item {
+    input[type='checkbox'] + label::before {
+      background-color: $neutral-grey-6;
+    }
+
+    label {
+      color: $neutral-grey-6;
+      cursor: not-allowed;
+    }
+  }
+
+  .container-settings-list {
+    max-height: $container-settings-list-max-height;
+    overflow-y: auto;
+  }
+
+  .dropdown-item {
+    .clr-checkbox-wrapper {
+      padding: 0 var(--cds-global-space-3);
+
+      label.clr-control-label {
+        padding-left: $container-settings-label-spacing;
+        padding-right: $container-settings-label-spacing;
+        max-width: $container-settings-max-width;
+        flex: 1 1 100%;
+      }
+    }
+  }
+}
+
+clr-dropdown {
+  .settings-btn {
+    margin-top: 10px;
+    padding-right: 0;
+  }
+}
+
+:host ::ng-deep .dropdown-menu .dropdown-item {
+  flex: 1 0;
+  padding: 0;
+}

@@ -1,0 +1,285 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Datagrid: Pinnable columns</h2>
+
+<p>
+  A column with <code class="clr-code">clrDgPinned</code> is rendered to the left of the scrollable columns and stays
+  visible while the rest of the datagrid is scrolled horizontally. Pinned columns keep their declaration order and are
+  placed after the built-in row controls.
+</p>
+
+<!--
+  clrDgPinnable is disabled for now, so the section that exercised the header pin toggle is
+  commented out below, and the clrDgPinnable attributes are commented off the datagrids further
+  down. Everything here that only uses clrDgPinned is still live.
+
+  <p>
+    <code class="clr-code">clrDgPinnable</code> adds a pin toggle to the column header, so the user can pin and unpin
+    the column from inside the datagrid instead of the application driving it.
+  </p>
+
+  <h3>Pin from the column header</h3>
+
+  <p>
+    Every column here is <code class="clr-code">clrDgPinnable</code> and none starts pinned. Scroll the datagrid
+    sideways and use the pin icon in front of a column title. The columns are also sortable, so this is where to check
+    that clicking the pin does not sort the column.
+  </p>
+
+  <div class="pinnable-columns-demo">
+    <clr-datagrid>
+      <clr-dg-column [clrDgField]="'id'" clrDgPinnable [style.width.px]="160">User ID</clr-dg-column>
+      <clr-dg-column [clrDgField]="'name'" clrDgPinnable [style.width.px]="200">Name</clr-dg-column>
+      <clr-dg-column [clrDgField]="'creation'" clrDgPinnable [style.width.px]="220">Creation date</clr-dg-column>
+      <clr-dg-column [clrDgField]="'pokemon.name'" clrDgPinnable [style.width.px]="1200">Pokemon</clr-dg-column>
+      <clr-dg-column [clrDgField]="'color'" [style.width.px]="1200">Favorite color</clr-dg-column>
+
+      <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+        <clr-dg-cell>{{user.id}}</clr-dg-cell>
+        <clr-dg-cell>{{user.name}}</clr-dg-cell>
+        <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+        <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
+        <clr-dg-cell>
+          <span class="color-square" [style.backgroundColor]="user.color"></span>
+        </clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>{{users.length}} users</clr-dg-footer>
+    </clr-datagrid>
+  </div>
+-->
+
+<h3>Keeping the pinned state in sync</h3>
+
+<p>
+  The columns below bind <code class="clr-code">[clrDgPinned]</code>, so ticking a checkbox pins the matching column.
+  The binding is one-way while <code class="clr-code">clrDgPinnable</code> is disabled: with no pin toggle, nothing
+  inside the datagrid can change the pinned state, and without <code class="clr-code">clrDgPinnedChange</code> a two-way
+  <code class="clr-code">[(clrDgPinned)]</code> binding will not compile.
+</p>
+
+<!--
+  Disabled with clrDgPinnable. This section also demonstrated the toggle keeping the checkboxes in
+  sync through clrDgPinnedChange. Restoring it means putting clrDgPinnable back on the User ID, Name
+  and Pokemon columns below, and restoring this paragraph:
+
+  <p>
+    The columns below combine <code class="clr-code">clrDgPinnable</code> with a two-way
+    <code class="clr-code">[(clrDgPinned)]</code> binding. Ticking a checkbox pins the column and clicking a pin icon
+    ticks the matching checkbox, which is what <code class="clr-code">clrDgPinnedChange</code> is for. The last column
+    has no <code class="clr-code">clrDgPinnable</code>, so it can only be pinned from here.
+  </p>
+-->
+
+<clr-checkbox-container clrInline>
+  <label>Pinned columns</label>
+  <clr-checkbox-wrapper>
+    <input type="checkbox" clrCheckbox name="pin-id" [(ngModel)]="pinId" />
+    <label>User ID</label>
+  </clr-checkbox-wrapper>
+  <clr-checkbox-wrapper>
+    <input type="checkbox" clrCheckbox name="pin-name" [(ngModel)]="pinName" />
+    <label>Name</label>
+  </clr-checkbox-wrapper>
+  <clr-checkbox-wrapper>
+    <input type="checkbox" clrCheckbox name="pin-pokemon" [(ngModel)]="pinPokemon" />
+    <label>Pokemon</label>
+  </clr-checkbox-wrapper>
+  <clr-checkbox-wrapper>
+    <input type="checkbox" clrCheckbox name="pin-color" [(ngModel)]="pinColor" />
+    <label>Favorite color</label>
+  </clr-checkbox-wrapper>
+</clr-checkbox-container>
+
+<div class="pinnable-columns-demo">
+  <clr-datagrid>
+    <clr-dg-column [clrDgPinned]="pinId" [style.width.px]="120">User ID</clr-dg-column>
+    <clr-dg-column [clrDgPinned]="pinName" [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column [style.width.px]="220">Creation date</clr-dg-column>
+    <clr-dg-column [clrDgPinned]="pinPokemon" [style.width.px]="1200">Pokemon</clr-dg-column>
+    <clr-dg-column [clrDgPinned]="pinColor" [style.width.px]="1200">Favorite color</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+      <clr-dg-cell>{{user.id}}</clr-dg-cell>
+      <clr-dg-cell>{{user.name}}</clr-dg-cell>
+      <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+      <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
+      <clr-dg-cell>
+        <span class="color-square" [style.backgroundColor]="user.color"></span>
+      </clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>{{users.length}} users</clr-dg-footer>
+  </clr-datagrid>
+</div>
+
+<h3>With row controls</h3>
+
+<p>
+  Selection, row actions and the expand caret keep their place at the very left. The pinned columns follow them, and the
+  separator after the last pinned column marks the boundary with the scrollable ones.
+</p>
+
+<!--
+  Disabled with clrDgPinnable: the User ID and Name columns below also carried clrDgPinnable, which
+  checked that the pin toggle does not select the row or open the action overflow.
+-->
+
+<form clrForm>
+  <clr-radio-container>
+    <label>Type of detail</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="detail" value="default" [(ngModel)]="detail" />
+      <label>Default</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="detail" value="columns" [(ngModel)]="detail" />
+      <label>Columns</label>
+    </clr-radio-wrapper>
+    <clr-control-helper>Helper text</clr-control-helper>
+    <clr-control-error>This field is required!</clr-control-error>
+  </clr-radio-container>
+
+  <clr-checkbox-container>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="replace" [(ngModel)]="replace" />
+      <label>Replace row</label>
+    </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="slow-load" [(ngModel)]="slowLoad" />
+      <label>Slow load</label>
+    </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="remove-row-detail" [(ngModel)]="removeRowDetail" />
+      <label>Remove Row Detail</label>
+    </clr-checkbox-wrapper>
+  </clr-checkbox-container>
+</form>
+
+<clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column clrDgPinned [clrDgField]="'name'">Name</clr-dg-column>
+  <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
+  <clr-dg-column [clrDgField]="'pokemon.name'">Pokemon</clr-dg-column>
+  <clr-dg-column [clrDgField]="'color'">Favorite color</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{user.id}}</clr-dg-cell>
+    <clr-dg-cell>{{user.name}}</clr-dg-cell>
+    <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+    <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+
+    @if (!removeRowDetail) {
+    <ng-container ngProjectAs="clr-dg-row-detail">
+      <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="replace">
+        <ng-template [clrFakeLoader]="slowLoad" clrLoading>
+          @if (detail === 'default') {
+          <div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed quam.
+            Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget, pellentesque
+            sed arcu. Vivamus in dui lectus. Suspendisse cursus est ac nisl imperdiet viverra. Aenean sagittis nibh
+            lacus, in eleifend urna ultrices et. Mauris porttitor nisi nec velit pharetra porttitor. Vestibulum
+            vulputate sollicitudin dolor ut tincidunt. Phasellus vitae blandit felis. Nullam posuere ipsum tincidunt
+            velit pellentesque rhoncus. Morbi faucibus ut ipsum at malesuada. Nam vestibulum felis sit amet metus
+            finibus hendrerit. Fusce faucibus odio eget ex vulputate rhoncus. Fusce nec aliquam leo, at suscipit diam.
+          </div>
+          } @if (detail === 'columns') {
+          <clr-dg-cell
+            >{{user.id}} <br />
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.</clr-dg-cell
+          >
+          <clr-dg-cell
+            >{{user.name}} <br />
+            Proin in neque in ante placerat mattis id sed quam.</clr-dg-cell
+          >
+          <clr-dg-cell
+            >{{user.creation | date}} <br />
+            Proin rhoncus lacus et tempor dignissim.</clr-dg-cell
+          >
+          <clr-dg-cell
+            >{{user.pokemon.name}} <br />
+            Vivamus sem quam, pellentesque pellentesque sed arcu.</clr-dg-cell
+          >
+          <clr-dg-cell
+            >COLOR <br />
+            Vivamus in dui lectus. Suspendisse cursus nisl imperdiet viverra.</clr-dg-cell
+          >
+          }
+        </ng-template>
+      </clr-dg-row-detail>
+    </ng-container>
+    }
+  </clr-dg-row>
+  <clr-dg-footer>{{users.length}} users</clr-dg-footer>
+</clr-datagrid>
+
+<h3>With the detail pane</h3>
+
+<p>
+  The detail pane shows a single, full width column, so there is nothing left to scroll. Pinning is suspended for as
+  long as the pane is open and restored when it closes - the <code class="clr-code">clrDgPinned</code> input itself is
+  not touched.
+</p>
+
+<!--
+  Disabled with clrDgPinnable: all three columns below also carried clrDgPinnable, which checked that
+  the toggle stays in the header while the detail pane is open.
+-->
+<div class="pinnable-columns-demo">
+  <clr-datagrid>
+    <clr-dg-column [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="120">User ID</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="220">Creation date</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+      <clr-dg-cell>{{user.name}}</clr-dg-cell>
+      <clr-dg-cell>{{user.id}}</clr-dg-cell>
+      <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-detail *clrIfDetail="let detail">
+      <clr-dg-detail-header>{{detail.name}}</clr-dg-detail-header>
+      <clr-dg-detail-body>
+        <pre>{{detail | json}}</pre>
+      </clr-dg-detail-body>
+    </clr-dg-detail>
+
+    <clr-dg-footer>{{users.length}} users</clr-dg-footer>
+  </clr-datagrid>
+</div>
+
+<h3>With virtual scroll</h3>
+
+<p>
+  Virtual scroll puts the header and the rows in two separate scroll containers that are kept in sync. The pinned
+  columns have to stay aligned across both while scrolling in either direction.
+</p>
+
+<!-- Disabled with clrDgPinnable: all three columns below also carried clrDgPinnable. -->
+<div class="pinnable-columns-demo">
+  <clr-datagrid [style.height.rem]="24">
+    <clr-dg-column clrDgPinned [style.width.px]="120">User ID</clr-dg-column>
+    <clr-dg-column clrDgPinned [style.width.px]="200">Name</clr-dg-column>
+    <clr-dg-column [style.width.px]="1220">Creation date</clr-dg-column>
+    <clr-dg-column [style.width.px]="1200">Pokemon</clr-dg-column>
+
+    <ng-template clrVirtualScroll let-user [clrVirtualRowsOf]="manyUsers">
+      <clr-dg-row [clrDgItem]="user">
+        <clr-dg-cell>{{user.id}}</clr-dg-cell>
+        <clr-dg-cell>{{user.name}}</clr-dg-cell>
+        <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+        <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
+      </clr-dg-row>
+    </ng-template>
+
+    <clr-dg-footer>{{manyUsers.length}} users</clr-dg-footer>
+  </clr-datagrid>
+</div>

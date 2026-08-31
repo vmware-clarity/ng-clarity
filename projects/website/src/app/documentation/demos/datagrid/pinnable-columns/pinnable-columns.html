@@ -1,0 +1,260 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2 class="clr-mt-48px" cds-text="title">Pinnable Columns</h2>
+
+<p class="clr-mt-16px" cds-text="body">
+  A <code cds-text="code">clr-dg-column</code> with <code cds-text="code">clrDgPinned</code> is rendered to the left of
+  the scrollable columns and stays visible while the rest of the datagrid is scrolled horizontally. Useful to keep the
+  column that identifies a row in view while the user reads the columns further to the right.
+</p>
+
+<clr-datagrid>
+  <clr-dg-column clrDgPinned [style.width.px]="140">User ID</clr-dg-column>
+  <clr-dg-column clrDgPinned [style.width.px]="240">Name</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Pinnable Columns"
+  [componentTemplate]="examples.basicExample"
+  [componentClass]="commonFiles.exampleTs"
+  [showComponentClass]="false"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>
+
+<h3 cds-text="section" class="clr-mt-32px">Pinning More Than One Column</h3>
+
+<p class="clr-mt-16px" cds-text="body">
+  There is no limit on how many columns you can pin. Pinned columns keep the order they are declared in and are placed
+  after the built-in row controls - selection, row actions and the expand caret - which always stay at the very left.
+  Pinning a column does not move it in the declaration order of the others, so the remaining columns keep their relative
+  order as well.
+</p>
+
+<h3 cds-text="section" class="clr-mt-32px">Maximum Width of Pinned Columns</h3>
+
+<p class="clr-mt-16px" cds-text="body">
+  While there is no limit on the number of pinned columns, there is one on their total width. The pinned region - the
+  built-in row controls together with the pinned columns - is capped at 85% of the visible width of the datagrid, so the
+  scrollable columns always keep a remainder. The user can therefore always see that the datagrid scrolls sideways and
+  can reach the rest of the data.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  When the pinned columns ask for more than the cap, they shrink to fit it instead of spilling past it. They give up
+  room in proportion to the widths you set, so a wide pinned column loses more than a narrow one, and no column shrinks
+  below the minimum width of a datagrid column. Pinned columns that already fit are left exactly at the widths you gave
+  them.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  The cap is a share of the current width of the datagrid, so it applies just as much when the datagrid becomes narrower
+  as when a column becomes wider - a layout that fits on a wide screen shrinks its pinned columns on a small one.
+  Because the columns shrink instead of the pinned state changing,
+  <code cds-text="code">clrDgPinned</code> is never written back to and a column you pinned stays pinned.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  In the datagrid below, three pinned columns of 400px each ask for far more than the datagrid can give them, so all
+  three are shrunk to fit the cap. Scroll it sideways to see that the scrollable columns are still reachable.
+</p>
+
+<clr-datagrid>
+  <clr-dg-column clrDgPinned [style.width.px]="400">User ID</clr-dg-column>
+  <clr-dg-column clrDgPinned [style.width.px]="400">Name</clr-dg-column>
+  <clr-dg-column clrDgPinned [style.width.px]="400">Creation date</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<p class="clr-mt-16px" cds-text="body">
+  The share is the <code cds-text="code">--clr-datagrid-pinned-columns-max-width</code> CSS custom property and defaults
+  to <code cds-text="code">85cqi</code>. Override it with a <code cds-text="code">cqi</code> value rather than a
+  percentage: <code cds-text="code">cqi</code> resolves against the visible width of the datagrid, while a percentage
+  would resolve against the full scrollable width of a row and so would not cap anything once the columns overflow.
+</p>
+
+<h3 cds-text="section" class="clr-mt-32px">Changing the Pinned State at Runtime</h3>
+
+<p class="clr-mt-16px" cds-text="body">
+  <code cds-text="code">clrDgPinned</code> can be bound to an expression, so a column can be pinned and unpinned while
+  the datagrid is on screen. Scroll the datagrid below sideways and then change the checkboxes.
+</p>
+
+<clr-checkbox-container clrInline>
+  <label>Pinned columns</label>
+  <clr-checkbox-wrapper>
+    <input type="checkbox" clrCheckbox name="pin-id" [(ngModel)]="pinId" />
+    <label>User ID</label>
+  </clr-checkbox-wrapper>
+  <clr-checkbox-wrapper>
+    <input type="checkbox" clrCheckbox name="pin-name" [(ngModel)]="pinName" />
+    <label>Name</label>
+  </clr-checkbox-wrapper>
+</clr-checkbox-container>
+
+<clr-datagrid>
+  <clr-dg-column [clrDgPinned]="pinId" [style.width.px]="140">User ID</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
+  <clr-dg-column [clrDgPinned]="pinName" [style.width.px]="240">Name</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Pinnable Columns at Runtime"
+  [componentTemplate]="examples.runtimeExample"
+  [componentClass]="examples.runtimeComponentTS"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>
+
+<h3 cds-text="section" class="clr-mt-32px">Pinned Columns in Expandable Rows</h3>
+
+<p class="clr-mt-16px" cds-text="body">
+  An expandable row whose <code cds-text="code">clr-dg-row-detail</code> holds one
+  <code cds-text="code">clr-dg-cell</code> per column is laid out in the same columns as the row above it, and the cells
+  of the pinned columns are pinned along with them. The detail then scrolls sideways together with the row, and the cell
+  that identifies it stays in view just like the one in the row.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  This applies whether the detail is added to the row or replaces it with
+  <code cds-text="code">clrDgReplace</code>. It only happens when the cell count matches the column count: a detail with
+  any other number of cells is free-form content and is left exactly as you wrote it, as is a detail in a datagrid with
+  no pinned columns. Note that a matching detail can only be laid out in columns if its cells are its direct children -
+  anything you put between them keeps its own place and is not moved with them.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">Scroll the datagrid below sideways with a row expanded.</p>
+
+<clr-datagrid>
+  <clr-dg-column clrDgPinned [style.width.px]="240">User ID</clr-dg-column>
+  <clr-dg-column [style.width.px]="240">Name</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+
+    <clr-dg-row-detail *clrIfExpanded>
+      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.creation | date : 'long' }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.pokemon.name }} ({{ user.pokemon.number }})</clr-dg-cell>
+    </clr-dg-row-detail>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<!--
+  clrDgPinnable is disabled for now, so the whole section documenting it is commented out.
+  Restoring it also needs the idPinned / namePinned fields and the pinnedColumns getter in
+  pinnable-columns.ts, and the pinnableExample / pinnableComponentTS entries in examples.ts.
+
+  <h3 cds-text="section" class="clr-mt-32px">Letting the User Pin Columns</h3>
+
+  <p class="clr-mt-16px" cds-text="body">
+    Add <code cds-text="code">clrDgPinnable</code> to put a pin toggle in the column header, so the user can pin and
+    unpin the column from inside the datagrid instead of the application driving it. The toggle sits in front of the
+    column title, and its icon shows the action it performs - a pin while the column is loose, an unpin once it is
+    pinned.
+  </p>
+
+  <p class="clr-mt-16px" cds-text="body">
+    The two inputs are independent and do different jobs. <code cds-text="code">clrDgPinnable</code> only adds the
+    control; the pinned state itself stays on <code cds-text="code">clrDgPinned</code>. A column can therefore be
+    pinned without being user-pinnable, and pinnable without starting out pinned.
+  </p>
+
+  <p class="clr-mt-16px" cds-text="body">
+    When the user works the toggle, the column reports the new state through
+    <code cds-text="code">clrDgPinnedChange</code>. Bind both halves with
+    <code cds-text="code">[(clrDgPinned)]</code> so the application follows along - the example below uses it to list
+    which columns are pinned. A one-way <code cds-text="code">[clrDgPinned]</code> binding would write its old value
+    straight back on the next change detection, and the toggle would appear to do nothing.
+  </p>
+
+  <p class="clr-mt-16px" cds-text="body">
+    Pinned from the header: <b cds-text="medium">{{ pinnedColumns || 'none' }}</b>
+  </p>
+
+  <clr-datagrid>
+    <clr-dg-column clrDgPinnable [(clrDgPinned)]="idPinned" [style.width.px]="140">User ID</clr-dg-column>
+    <clr-dg-column clrDgPinnable [(clrDgPinned)]="namePinned" [style.width.px]="240">Name</clr-dg-column>
+    <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
+    <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
+    <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+      <clr-dg-cell>
+        <span class="color-square" [style.backgroundColor]="user.color"></span>
+      </clr-dg-cell>
+      <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+  </clr-datagrid>
+
+  <app-stackblitz-example
+    name="Datagrid User Pinnable Columns"
+    [componentTemplate]="examples.pinnableExample"
+    [componentClass]="examples.pinnableComponentTS"
+    [componentStyles]="commonFiles.exampleCss"
+    [showComponentStyles]="false"
+    [additionalFiles]="commonFiles.additionalFiles"
+  ></app-stackblitz-example>
+-->

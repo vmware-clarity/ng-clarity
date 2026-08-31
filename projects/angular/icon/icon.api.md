@@ -4,6 +4,7 @@
 
 ```ts
 
+import { AfterViewInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ElementRef } from '@angular/core';
@@ -528,6 +529,7 @@ export class ClarityIcons {
     static addIcons(...shapes: IconShapeTuple[]): void;
     // (undocumented)
     static getIconNameFromShape(iconShape: IconShapeTuple): string;
+    static getIconShape(name: string): IconRegistrySources[string] | undefined;
     static get registry(): Readonly<IconRegistry>;
 }
 
@@ -583,7 +585,7 @@ export const cloudTrafficIconName = "cloud-traffic";
 export const CLR_ICON_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
-export class ClrIcon implements OnInit, OnDestroy {
+export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     constructor(el: ElementRef<HTMLElement>, cdr: ChangeDetectorRef);
     // (undocumented)
     get badge(): string | boolean;
@@ -607,6 +609,8 @@ export class ClrIcon implements OnInit, OnDestroy {
     static ngAcceptInputType_inverse: unknown;
     // (undocumented)
     static ngAcceptInputType_solid: unknown;
+    // (undocumented)
+    ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
