@@ -71,3 +71,8 @@
 .bump-down {
   margin-top: var(--cds-global-space-9) !important;
 }
+
+// Adds extra padding to the bottom of the nav to prevent the bottom entry from being obscured by browser content
+.nav-content {
+  padding-bottom: tokens.$cds-global-space-10;
+}

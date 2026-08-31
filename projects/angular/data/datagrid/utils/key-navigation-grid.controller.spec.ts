@@ -1325,6 +1325,12 @@ export default function (): void {
       //      .........
       // |59c|60e|61d|62d|63d| -> row 9
 
+      // How far PageUp and PageDown travel is not a constant: the strategies move by
+      // KeyNavigationUtils.itemsPerPage, which divides the height of the datagrid by the measured
+      // average height of a row. A row detail counts as a row there, so a stylesheet change to the
+      // height of either shifts every index expected below. At the time of writing a page is 4 rows
+      // with three expanded details and 5 with two replaced ones.
+
       // Covers key navigation over data cells
       // PageUp and PageDown from NOT expanded row to expanded column row
       // PageUp and PageDown from expanded column row to NOT expanded row
@@ -1339,7 +1345,7 @@ export default function (): void {
         cells[0].focus();
 
         // check cell flow: start at index
-        // 0 -> 5 -> 6 -> 7 -> 8 -> 31 -> 13 -> 36 -> 57 -> 39 -> 36 -> 57 -> 39 -> 23
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 28 -> 13 -> 31 -> 47 -> 36 -> 31 -> 47 -> 36 -> 23
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -1356,7 +1362,7 @@ export default function (): void {
 
         // PageDown: from not expanded row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[31], 'PageDown, cell[31]');
+        expectActiveElementToBe(cells[28], 'PageDown, cell[28]');
 
         // PageUp: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
@@ -1364,27 +1370,27 @@ export default function (): void {
 
         // PageDown: from not expanded row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[36], 'PageDown, cell[36]');
+        expectActiveElementToBe(cells[31], 'PageDown, cell[31]');
 
-        // PageDown: from expanded sub row to not expanded row
+        // PageDown: from expanded sub row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[57], 'PageDown, cell[57]');
+        expectActiveElementToBe(cells[47], 'PageDown, cell[47]');
 
-        // PageUp: from not expanded row to expanded sub row
+        // PageUp: from expanded sub row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[39], 'PageUp, cell[39]');
-
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
         expectActiveElementToBe(cells[36], 'PageUp, cell[36]');
 
-        // PageDown: from expanded main row to not expanded row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expectActiveElementToBe(cells[31], 'ArrowUp, cell[31]');
+
+        // PageDown: from expanded sub row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[57], 'PageDown, cell[57]');
+        expectActiveElementToBe(cells[47], 'PageDown, cell[47]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[39], 'PageUp, cell[39]');
+        expectActiveElementToBe(cells[36], 'PageUp, cell[36]');
 
-        // PageUp: from expanded sub row to not expanded row
+        // PageUp: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         expectActiveElementToBe(cells[23], 'PageUp, cell[23]');
       });
@@ -1403,7 +1409,7 @@ export default function (): void {
         cells[0].focus();
 
         // check cell flow: start at index
-        // 0 -> 5 -> 33 -> 10 -> 33 -> 59 -> 33 -> 59 -> 54 -> 33
+        // 0 -> 5 -> 25 -> 10 -> 15 -> 33 -> 49 -> 33 -> 49 -> 54 -> 41
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -1415,10 +1421,10 @@ export default function (): void {
 
         // PageUp: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[5].querySelector('[type=checkbox]'), 'PageUp, cells[5]');
+        expectActiveElementToBe(cells[10].querySelector('[type=checkbox]'), 'PageUp, cells[10]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        expectActiveElementToBe(cells[10].querySelector('[type=checkbox]'));
+        expectActiveElementToBe(cells[15].querySelector('[type=checkbox]'));
 
         // PageDown: from not expanded row to expanded sub row (goes to main row)
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
@@ -1426,7 +1432,7 @@ export default function (): void {
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[54].querySelector('[type=checkbox]'), 'PageDown, cells[54]');
+        expectActiveElementToBe(cells[49].querySelector('[type=checkbox]'), 'PageDown, cells[49]');
 
         // PageUp: from not expanded row to expanded sub row (goes to main row)
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
@@ -1434,10 +1440,10 @@ export default function (): void {
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[54].querySelector('[type=checkbox]'), 'PageDown, cells[54]');
+        expectActiveElementToBe(cells[49].querySelector('[type=checkbox]'), 'PageDown, cells[49]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        expectActiveElementToBe(cells[59].querySelector('[type=checkbox]'));
+        expectActiveElementToBe(cells[54].querySelector('[type=checkbox]'));
 
         // PageUp: from not expanded row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
@@ -1615,7 +1621,7 @@ export default function (): void {
         cells[0].focus();
 
         // check cell flow: start at index
-        // 0 -> 5 -> 6 -> 7 -> 8 -> 39 -> 18 -> 13 -> 39 -> 59 -> 54 -> 49 -> 39 -> 59 -> 54 -> 31
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 31 -> 13 -> 8 -> 31 -> 54 -> 49 -> 44 -> 31 -> 54 -> 49 -> 31
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -1632,42 +1638,42 @@ export default function (): void {
 
         // PageDown: from NOT expanded row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[39]);
+        expectActiveElementToBe(cells[31], 'PageDown, cells[31]');
 
         // PageUp: from replaced row to NOT expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[18]);
+        expectActiveElementToBe(cells[13], 'PageUp, cells[13]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expectActiveElementToBe(cells[13]);
+        expectActiveElementToBe(cells[8]);
 
         // PageDown: from NOT expanded row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[39]);
+        expectActiveElementToBe(cells[31], 'PageDown, cells[31]');
 
         // PageDown: from replaced row to NOT expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[59]);
+        expectActiveElementToBe(cells[54], 'PageDown, cells[54]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expectActiveElementToBe(cells[54]);
+        expectActiveElementToBe(cells[49]);
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expectActiveElementToBe(cells[44]);
+
+        // PageUp: from NOT expanded row to replaced row
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+        expectActiveElementToBe(cells[31], 'PageUp, cells[31]');
+
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+        expectActiveElementToBe(cells[54], 'PageDown, cells[54]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
         expectActiveElementToBe(cells[49]);
 
         // PageUp: from NOT expanded row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[31]);
-
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[59]);
-
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expectActiveElementToBe(cells[54]);
-
-        // PageUp: from NOT expanded row to replaced row
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[31]);
+        expectActiveElementToBe(cells[31], 'PageUp, cells[31]');
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header
@@ -1757,7 +1763,7 @@ export default function (): void {
         cells[0].focus();
 
         // check cell flow: start at index
-        // 0 -> 5 -> 6 -> 7 -> 8 -> 34 -> 13 -> 36 -> 56 -> 36 -> 34 -> 56 -> 36 -> 18
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 28 -> 13 -> 14 -> 30 -> 42 -> 33 -> 30 -> 30 -> 42 -> 33 -> 22
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -1774,44 +1780,45 @@ export default function (): void {
 
         // PageDown: from not expanded row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[30], 'PageDown, cells[30]');
+        expectActiveElementToBe(cells[28], 'PageDown, cells[28]');
 
         // PageUp: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[12], 'PageUp, cells[12]');
+        expectActiveElementToBe(cells[13], 'PageUp, cells[13]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        expectActiveElementToBe(cells[13]);
+        expectActiveElementToBe(cells[14]);
 
         // PageDown: from not expanded row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[34], 'PageDown, cells[34]');
+        expectActiveElementToBe(cells[30], 'PageDown, cells[30]');
 
-        // PageDown: from expanded sub row to not expanded row
+        // PageDown: from expanded sub row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[51], 'PageDown, cells[51]');
+        expectActiveElementToBe(cells[42], 'PageDown, cells[42]');
 
         // grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         // expectActiveElementToBe(cells[55]);
 
-        // PageUp: from not expanded row to expanded sub row
+        // PageUp: from expanded sub row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[36], 'PageUp, cells[36]');
+        expectActiveElementToBe(cells[33], 'PageUp, cells[33]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expectActiveElementToBe(cells[33]);
+        expectActiveElementToBe(cells[30]);
 
+        // The detail holds a single cell that spans the row, so there is nowhere to the right of it.
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        expectActiveElementToBe(cells[34]);
+        expectActiveElementToBe(cells[30]);
 
-        // PageDown: from expanded main row to not expanded row
+        // PageDown: from expanded sub row to expanded sub row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[51], 'PageDown, cells[51]');
+        expectActiveElementToBe(cells[42], 'PageDown, cells[42]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[36], 'PageUp, cells[36]');
+        expectActiveElementToBe(cells[33], 'PageUp, cells[33]');
 
-        // PageUp: from expanded sub row to not expanded row
+        // PageUp: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
         expectActiveElementToBe(cells[22], 'PageUp, cells[22]');
       });
@@ -1831,7 +1838,7 @@ export default function (): void {
         cells[0].focus();
 
         // check cell flow: start at index
-        // 0 -> 5 -> 31 -> 10 -> 31 -> 53 -> 31 -> 53 -> 48 -> 31
+        // 0 -> 5 -> 25 -> 10 -> 15 -> 31 -> 43 -> 31 -> 43 -> 48 -> 37
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -1843,10 +1850,10 @@ export default function (): void {
 
         // PageUp: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[5].querySelector('[type=checkbox]'), 'PageUp, cells[5]');
+        expectActiveElementToBe(cells[10].querySelector('[type=checkbox]'), 'PageUp, cells[10]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        expectActiveElementToBe(cells[10].querySelector('[type=checkbox]'));
+        expectActiveElementToBe(cells[15].querySelector('[type=checkbox]'));
 
         // PageDown: from not expanded row to expanded sub row (goes to main row)
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
@@ -1854,7 +1861,7 @@ export default function (): void {
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[48].querySelector('[type=checkbox]'), 'PageDown, cells[48]');
+        expectActiveElementToBe(cells[43].querySelector('[type=checkbox]'), 'PageDown, cells[43]');
 
         // PageUp: from not expanded row to expanded sub row (goes to main row)
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
@@ -1862,10 +1869,10 @@ export default function (): void {
 
         // PageDown: from expanded main row to not expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[48].querySelector('[type=checkbox]'), 'PageDown, cells[48]');
+        expectActiveElementToBe(cells[43].querySelector('[type=checkbox]'), 'PageDown, cells[43]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        expectActiveElementToBe(cells[53].querySelector('[type=checkbox]'));
+        expectActiveElementToBe(cells[48].querySelector('[type=checkbox]'));
 
         // PageUp: from not expanded row to expanded main row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
@@ -2045,7 +2052,7 @@ export default function (): void {
         cells[0].focus();
 
         // check cell flow: start at index
-        // 0 -> 5 -> 6 -> 7 -> 8 -> 36 -> 17 -> 12 -> 13 -> 36 -> 54 -> 55 -> 50 -> 45 -> 36 -> 54 -> 55 -> 50 -> 30
+        // 0 -> 5 -> 6 -> 7 -> 8 -> 30 -> 12 -> 7 -> 8 -> 30 -> 49 -> 50 -> 45 -> 40 -> 30 -> 49 -> 50 -> 45 -> 30
         // end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -2062,51 +2069,51 @@ export default function (): void {
 
         // PageDown: from NOT expanded row to replaced details row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[36]);
+        expectActiveElementToBe(cells[30], 'PageDown, cells[30]');
 
         // PageUp: from replaced details row to NOT expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[17]);
+        expectActiveElementToBe(cells[12], 'PageUp, cells[12]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expectActiveElementToBe(cells[12]);
+        expectActiveElementToBe(cells[7]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        expectActiveElementToBe(cells[13]);
+        expectActiveElementToBe(cells[8]);
 
         // PageDown: from NOT expanded row to replaced details row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[36]);
+        expectActiveElementToBe(cells[30], 'PageDown, cells[30]');
 
         // PageDown: from replaced details row to NOT expanded row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[54]);
+        expectActiveElementToBe(cells[49], 'PageDown, cells[49]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        expectActiveElementToBe(cells[55]);
-
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
         expectActiveElementToBe(cells[50]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
         expectActiveElementToBe(cells[45]);
 
+        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
+        expectActiveElementToBe(cells[40]);
+
         // PageUp: from NOT expanded row to replaced details row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[30]);
+        expectActiveElementToBe(cells[30], 'PageUp, cells[30]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        expectActiveElementToBe(cells[54]);
+        expectActiveElementToBe(cells[49], 'PageDown, cells[49]');
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-        expectActiveElementToBe(cells[55]);
+        expectActiveElementToBe(cells[50]);
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowUp }));
-        expectActiveElementToBe(cells[50]);
+        expectActiveElementToBe(cells[45]);
 
         // PageUp: from NOT expanded row to replaced row
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        expectActiveElementToBe(cells[30]);
+        expectActiveElementToBe(cells[30], 'PageUp, cells[30]');
       });
 
       // | 0h| 1h| 2h| 3h| 4h| -> row header

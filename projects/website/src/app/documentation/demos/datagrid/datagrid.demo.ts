@@ -294,6 +294,24 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           description: 'Set the model property that represents data in the column.',
         },
         {
+          // Documented one-way while clrDgPinnable is disabled: nothing inside the datagrid can
+          // change the pinned state, and clrDgPinnedChange is commented out with the toggle, so a
+          // two-way [(clrDgPinned)] binding does not compile.
+          name: '[clrDgPinned]',
+          type: 'boolean',
+          defaultValue: 'false',
+          description:
+            'Pins the column to the left of the datagrid, so it stays visible while the remaining columns are scrolled horizontally. Pinned columns keep their declaration order and are rendered after the built-in row controls. The pinned columns cannot take more than 85% of the datagrid width - past that they shrink to fit. Pinning is suspended while the detail pane is open.',
+        },
+        // Disabled with clrDgPinnable:
+        // {
+        //   name: '[clrDgPinnable]',
+        //   type: 'boolean',
+        //   defaultValue: 'false',
+        //   description:
+        //     'Adds a pin toggle to the column header, letting the user pin and unpin the column from within the datagrid. It only adds the control - the pinned state itself stays on [clrDgPinned].',
+        // },
+        {
           name: '[clrFilterNumberMaxPlaceholder]',
           type: 'string',
           defaultValue: 'undefined',

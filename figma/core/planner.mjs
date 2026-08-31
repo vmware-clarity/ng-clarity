@@ -387,7 +387,7 @@ function planHumanReadableCollection({ colDef, colId, modeIds, hiddenFromPublish
       continue;
     }
 
-    const scopes = resolveFigmaScopes(cssName);
+    const scopes = resolveFigmaScopes(displayName);
     const codeSyntax = buildCodeSyntax(cssName);
     const resolvedType = idMap.getMeta(refId)?.type ?? 'STRING';
     const aliasValue = { type: 'VARIABLE_ALIAS', id: refId };

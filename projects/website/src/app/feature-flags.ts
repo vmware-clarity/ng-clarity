@@ -10,5 +10,6 @@ export function getFeatureFlags() {
 
   return {
     accessibility: queryParams.get('accessibility') === 'true',
+    themeBuilderOnly: queryParams.get('themeBuilderOnly') === 'true',
   };
 }
