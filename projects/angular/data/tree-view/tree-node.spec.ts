@@ -584,6 +584,11 @@ export default function (): void {
         expect(contentContainer.getAttribute('aria-selected')).toBeNull();
         expect(contentContainer.textContent.trim()).toBe('Hello world');
       });
+
+      it('removes the tree node link from the native tab sequence to prevent a double-Tab stop', function (this: Context) {
+        const link: HTMLElement = this.clarityElement.querySelector('.clr-treenode-link');
+        expect(link.getAttribute('tabindex')).toBe('-1');
+      });
     });
   });
 }
