@@ -100,7 +100,7 @@
     "@playwright/test": "1.62.1",
     "@semantic-release/exec": "7.1.0",
     "@stackblitz/sdk": "1.11.1",
-    "@storybook/addon-a11y": "10.5.0",
+    "@storybook/addon-a11y": "10.5.10",
     "@storybook/addon-docs": "10.2.8",
     "@storybook/angular": "10.3.6",
     "@textlint/markdown-to-ast": "15.5.2",
