@@ -13,7 +13,12 @@ import { ClarityModule } from '@clr/angular';
 import googleCerts from './google-certs.json';
 
 export type DemoMode =
-  'fill-parent' | 'fixed-height' | 'heading-level-1' | 'heading-level-7' | 'modal' | 'details-pane';
+  | 'fill-parent'
+  | 'fixed-height'
+  | 'heading-level-1'
+  | 'heading-level-7'
+  | 'modal'
+  | 'details-pane';
 
 export interface HostEntry {
   name: string;

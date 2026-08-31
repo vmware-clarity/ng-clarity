@@ -22,7 +22,12 @@ const BasicCertHtml = require('!raw-loader!./ng/basic-cert.html').default;
 const BasicCertTs = require('!raw-loader!./ng/basic-cert.ts').default;
 
 export type DemoMode =
-  'fill-parent' | 'fixed-height' | 'heading-level-1' | 'heading-level-7' | 'modal' | 'details-pane';
+  | 'fill-parent'
+  | 'fixed-height'
+  | 'heading-level-1'
+  | 'heading-level-7'
+  | 'modal'
+  | 'details-pane';
 
 export interface HostEntry {
   name: string;
