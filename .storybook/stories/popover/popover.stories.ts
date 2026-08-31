@@ -38,7 +38,7 @@ export default {
   providers: [ClrPopoverService],
   render: (args: StorybookPopoverComponent) => ({
     template: `
-      <div style="height: 100vh; width: 100%; display: flex; padding: 50px; justify-content: center">
+      <div style="height: 100vh; width: 100%; display: flex; padding: 50px; justify-content: center;">
         <storybook-popover ${argsToTemplate(args)}></storybook-popover>
       </div>
     `,
