@@ -25,6 +25,15 @@
     </div>
   </div>
 
+  <!-- ── Preset actions  ── -->
+  <div class="tb-preset-actions" cds-layout="m-t:lg">
+    <button class="btn btn-sm btn-outline" (click)="openImportModal()">Import CSS</button>
+    <button class="btn btn-sm btn-outline" (click)="openSaveModal()">Save current theme as preset</button>
+    <button class="btn btn-sm btn-outline" [disabled]="!savedPresets.length" (click)="openClearPresetsModal()">
+      Clear custom presets
+    </button>
+  </div>
+
   <clr-theme-builder [presets]="presets" (generatedCSS)="writeGeneratedCss($event)" />
 
   <!-- ── Generated CSS card (full width below grid) ── -->
@@ -41,3 +50,50 @@
 
   <app-site-footer></app-site-footer>
 </main>
+
+<clr-modal [(clrModalOpen)]="saveModalOpen">
+  <div class="modal-title">Save current theme configuration as preset</div>
+  <div class="modal-body">
+    <clr-input-container cds-layout="m-t:none">
+      <label>Preset name</label>
+      <input clrInput [(ngModel)]="presetName" />
+    </clr-input-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="saveModalOpen = false">Cancel</button>
+    <button type="button" class="btn btn-primary" [disabled]="!presetName.trim()" (click)="confirmSavePreset()">
+      Save
+    </button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="importModalOpen" [clrModalSize]="'xl'">
+  <div class="modal-title">Import generated CSS</div>
+  <div class="modal-body">
+    <clr-textarea-container cds-layout="m-t:none">
+      <label>Paste generated CSS</label>
+      <textarea clrTextarea [(ngModel)]="cssToImport" rows="12" cols="120" name="cssToImportInput"></textarea>
+    </clr-textarea-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="importModalOpen = false">Cancel</button>
+    <button type="button" class="btn btn-primary" [disabled]="!cssToImport.trim()" (click)="confirmImportCss()">
+      Import
+    </button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="clearPresetsModalOpen">
+  <div class="modal-title">Clear custom presets</div>
+  <div class="modal-body">
+    This will permanently delete all your saved custom presets from this browser. Built-in Clarity presets aren't
+    affected. This can't be undone.
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="clearPresetsModalOpen = false">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="clearCustomPresets()">
+      <cds-icon shape="trash" solid />
+      Confirm
+    </button>
+  </div>
+</clr-modal>
