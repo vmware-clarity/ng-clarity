@@ -21,9 +21,10 @@ type WebsiteScreenshotOptions = {
  * Each key is a page name as generated in tests/website/visual-snapshots.spec.ts:
  * the route with slashes replaced by dashes, e.g.
  *
- * /documentation/button  => documentation-button
- * /pages/introduction    => pages-introduction
- * /                      => home
+ * /documentation/button      => documentation-button (the overview tab)
+ * /documentation/button/code => documentation-button-code
+ * /pages/introduction        => pages-introduction
+ * /                          => home
  *
  * Available options:
  * - fullPageScreenshot: pages are captured full page by default; set to false to capture
@@ -38,6 +39,11 @@ export const websiteScreenshotOptions: WebsiteScreenshotOptions = {
     // /documentation/accessibility redirects to /pages/accessibility, which is already covered
     // by the pages-accessibility screenshot.
     exclude: true,
+  },
+  'documentation-translate-code': {
+    // The interactive demo formats the current time ("Formatted Date: ..."), which changes
+    // between runs.
+    maskSelectors: ['p:has-text("Formatted Date:")'],
   },
   'documentation-theme-builder': {
     // The table of contents on this page renders nondeterministically: TableOfContentsComponent

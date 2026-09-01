@@ -21,8 +21,9 @@ const deviceMap = {
 export default defineConfig({
   testDir: './tests/website',
   snapshotPathTemplate: './tests/snapshots/{arg}{ext}',
-  // Full-page screenshots of long documentation pages take longer than story screenshots.
-  timeout: 60 * 1000,
+  // Each test captures full-page screenshots of every tab of a documentation page, which
+  // takes longer than a story screenshot.
+  timeout: 120 * 1000,
   expect: {
     timeout: 10000,
   },
