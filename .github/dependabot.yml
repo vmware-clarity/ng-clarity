@@ -5,6 +5,11 @@ updates:
     target-branch: 'next'
     schedule:
       interval: 'weekly'
+    open-pull-requests-limit: 20
+    groups:
+      dev-dependencies:
+        dependency-type: 'development'
+        update-types: ['minor', 'patch']
     # Ignore major version bumps for all dependencies
     ignore:
       - dependency-name: '*'
@@ -15,6 +20,11 @@ updates:
     target-branch: 'main'
     schedule:
       interval: 'weekly'
+    open-pull-requests-limit: 20
+    groups:
+      dev-dependencies:
+        dependency-type: 'development'
+        update-types: ['minor', 'patch']
     # Ignore major version bumps for all dependencies
     ignore:
       - dependency-name: '*'
