@@ -163,22 +163,46 @@
   resolves its dropdown from where it is declared, which is outside the menu in the component's own template.
 </p>
 
+<p>
+  Custom items take an icon the same way the built-in ones do, which is what keeps the labels in the menu aligned with
+  each other.
+</p>
+
 <p>Exported columns: <strong>{{exported.length ? exported.join(', ') : 'none'}}</strong></p>
+<p>Copied: <strong>{{copied}}</strong></p>
 
 <clr-datagrid>
   <clr-dg-column [clrDgField]="'id'" clrDgPinnable>
     User ID
     <clr-dg-column-actions>
       <div class="dropdown-divider" role="separator"></div>
-      <button type="button" clrDgColumnAction (click)="export('User ID')">Export column</button>
-      <button type="button" clrDgColumnAction clrDisabled>Unavailable action</button>
+      <button type="button" clrDgColumnAction (click)="export('User ID')">
+        <cds-icon shape="export" aria-hidden="true"></cds-icon>
+        Export column
+      </button>
+      <button type="button" clrDgColumnAction (click)="copyColumn('User ID', 'id')">
+        <cds-icon shape="copy" aria-hidden="true"></cds-icon>
+        Copy values
+      </button>
+      <!-- clrDisabled keeps the item in the menu but out of the arrow key order. -->
+      <button type="button" clrDgColumnAction clrDisabled>
+        <cds-icon shape="trash" aria-hidden="true"></cds-icon>
+        Delete column
+      </button>
     </clr-dg-column-actions>
   </clr-dg-column>
   <clr-dg-column [clrDgField]="'name'">
     Name
     <clr-dg-column-actions>
       <div class="dropdown-divider" role="separator"></div>
-      <button type="button" clrDgColumnAction (click)="export('Name')">Export column</button>
+      <button type="button" clrDgColumnAction (click)="export('Name')">
+        <cds-icon shape="export" aria-hidden="true"></cds-icon>
+        Export column
+      </button>
+      <button type="button" clrDgColumnAction (click)="copyColumn('Name', 'name')">
+        <cds-icon shape="copy" aria-hidden="true"></cds-icon>
+        Copy values
+      </button>
     </clr-dg-column-actions>
   </clr-dg-column>
 

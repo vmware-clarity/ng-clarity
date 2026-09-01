@@ -29,6 +29,7 @@ export class DatagridColumnActionsDemo {
   lastSort = 'none';
 
   exported: string[] = [];
+  copied = 'nothing yet';
 
   constructor(inventory: Inventory) {
     inventory.size = 10;
@@ -42,5 +43,9 @@ export class DatagridColumnActionsDemo {
 
   export(column: string) {
     this.exported = [...this.exported, column];
+  }
+
+  copyColumn(label: string, field: string) {
+    this.copied = `${label}: ${this.users.map(user => user[field]).join(', ')}`;
   }
 }
