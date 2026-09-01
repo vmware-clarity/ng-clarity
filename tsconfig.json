@@ -20,8 +20,8 @@
     "paths": {
       "@clr/angular": ["projects/angular/index.ts"],
       "@clr/angular/*": ["projects/angular/*"],
-      "@clr/contextual": ["projects/contextual/index.ts"],
-      "@clr/contextual/*": ["projects/contextual/*"],
+      "@clr/ai": ["projects/ai/index.ts"],
+      "@clr/ai/*": ["projects/ai/*"],
       "@clr/addons": ["projects/addons/index.ts"],
       "@clr/addons/*": ["projects/addons/*"],
       "@clr/angular/testing": ["projects/angular/utils/testing"]
