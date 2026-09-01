@@ -114,7 +114,10 @@ const CLARITY_DOM_EXTRACTORS: ClrContextDomExtractor[] = [
         state.sortedBy = textOf(sortedColumn.querySelector('.datagrid-column-title') || sortedColumn, options);
         state.sortOrder = sortedColumn.getAttribute('aria-sort');
       }
-      const footer = textOf(element.querySelector('clr-dg-footer'), options);
+      const footer = textOf(
+        element.querySelector('.datagrid-footer-description') || element.querySelector('clr-dg-footer'),
+        options
+      );
       if (footer) {
         state.footer = footer;
       }
