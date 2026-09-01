@@ -144,8 +144,7 @@ const ProjectedActionTemplate: StoryFn = args => ({
       </clr-dg-row>
 
       <clr-dg-footer>
-        {{ elements.length }} elements
-        Last exported column: {{ exported || 'none' }}
+        {{ elements.length }} elements Last exported column: {{ exported || 'none' }}
         <clr-dg-pagination #pagination>
           <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Elements per page</clr-dg-page-size>
           {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} elements
