@@ -4,9 +4,10 @@
 
 ```ts
 
+import { ApplicationRef } from '@angular/core';
 import * as i0 from '@angular/core';
 import * as i2 from '@angular/common';
-import { NgZone } from '@angular/core';
+import { Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
@@ -137,7 +138,7 @@ export interface ClrContextSnapshotOptions {
 
 // @public
 export class ClrContextTrackerService implements OnDestroy {
-    constructor(platformId: unknown, contextEngine: ClrContextualEngineService, zone: NgZone, router: Router | null);
+    constructor(platformId: unknown, contextEngine: ClrContextualEngineService, applicationRef: ApplicationRef, injector: Injector, router: Router | null);
     readonly context$: Observable<ClrPageContext>;
     get currentContext(): ClrPageContext | null;
     // (undocumented)
@@ -146,15 +147,16 @@ export class ClrContextTrackerService implements OnDestroy {
     start(options?: ClrContextTrackingOptions): void;
     stop(): void;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextTrackerService, [null, null, null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextTrackerService, [null, null, null, null, { optional: true; }]>;
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextTrackerService>;
 }
 
 // @public (undocumented)
 export interface ClrContextTrackingOptions {
-    settleMs?: number;
+    awaitStability?: boolean;
     snapshot?: ClrContextSnapshotOptions;
+    stabilityTimeoutMs?: number;
 }
 
 // @public
