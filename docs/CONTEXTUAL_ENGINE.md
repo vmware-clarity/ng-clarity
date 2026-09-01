@@ -1,6 +1,6 @@
 # Contextual Engine
 
-`@clr/contextual` gives AI agents structured, up-to-date context about the page a Clarity
+`@clr/ai` gives AI agents structured, up-to-date context about the page a Clarity
 application is currently showing: the active route, the components rendered right now and their
 state, the actions currently available, and any semantic annotations the application provides.
 
@@ -23,7 +23,7 @@ described by reading the rendered DOM, so the engine works alongside any Clarity
 ## Taking a snapshot
 
 ```ts
-import { ClrContextualEngineService } from '@clr/contextual';
+import { ClrContextualEngineService } from '@clr/ai';
 
 constructor(private contextEngine: ClrContextualEngineService) {}
 
@@ -87,7 +87,7 @@ const hostContext = await this.contextEngine.requestHostContext();
 ```
 
 Non-Angular UI can speak the protocol directly — it is two plain JSON messages over `postMessage`
-(see `CLR_CONTEXT_PROTOCOL` in `@clr/contextual`):
+(see `CLR_CONTEXT_PROTOCOL` in `@clr/ai`):
 
 ```js
 // iframe -> parent

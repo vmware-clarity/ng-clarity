@@ -15,8 +15,8 @@
     "useDefineForClassFields": false,
     "baseUrl": ".",
     "paths": {
-      "@clr/contextual": ["./index.ts"],
-      "@clr/contextual/*": ["./*"]
+      "@clr/ai": ["./index.ts"],
+      "@clr/ai/*": ["./*"]
     }
   },
   "angularCompilerOptions": {

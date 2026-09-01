@@ -226,21 +226,21 @@
         }
       }
     },
-    "clr-contextual": {
+    "clr-ai": {
       "projectType": "library",
-      "root": "projects/contextual",
-      "sourceRoot": "projects/contextual",
+      "root": "projects/ai",
+      "sourceRoot": "projects/ai",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",
           "options": {
-            "tsConfig": "projects/contextual/tsconfig.lib.json",
-            "project": "projects/contextual/ng-package.json"
+            "tsConfig": "projects/ai/tsconfig.lib.json",
+            "project": "projects/ai/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/contextual/tsconfig.lib.prod.json"
+              "tsConfig": "projects/ai/tsconfig.lib.prod.json"
             }
           }
         },
@@ -248,8 +248,8 @@
           "builder": "@angular/build:karma",
           "options": {
             "styles": ["projects/ui/src/clr-ui.scss"],
-            "main": "projects/contextual/test.ts",
-            "tsConfig": "projects/contextual/tsconfig.spec.json",
+            "main": "projects/ai/test.ts",
+            "tsConfig": "projects/ai/tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "codeCoverage": true,
             "watch": true,

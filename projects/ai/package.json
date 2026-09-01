@@ -1,6 +1,6 @@
 {
-  "name": "@clr/contextual",
-  "description": "Contextual engine that gives AI agents structured, current context about the page: routes, rendered components and their state, available actions and application-provided annotations. Standalone package with no dependency on @clr/angular — it reads the rendered DOM, so it works alongside any Clarity version and other UI libraries.",
+  "name": "@clr/ai",
+  "description": "AI building blocks for Clarity applications: a contextual engine that gives AI agents structured, current context about the page: routes, rendered components and their state, available actions and application-provided annotations. Standalone package with no dependency on @clr/angular — it reads the rendered DOM, so it works alongside any Clarity version and other UI libraries.",
   "homepage": "https://clarity.design",
   "keywords": [
     "clarity",
