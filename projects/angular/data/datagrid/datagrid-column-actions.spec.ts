@@ -28,10 +28,12 @@ function columnTitles(root: HTMLElement, container: string): string[] {
 
 // The menu content is rendered into a CDK overlay attached to the body, so it is not reachable from
 // the datagrid element once it is open.
+//
+// A global query is safe because clrIfOpen keeps closed menus out of the DOM entirely - only the open
+// one is ever present. Before that, every column's menu stayed rendered and merely hidden, which made
+// both the "omits" assertions and the open/closed checks meaningless.
 function menuItems(): HTMLElement[] {
-  return Array.from<HTMLElement>(
-    document.querySelectorAll('.dropdown-menu [clrdropdownitem], .dropdown-menu .dropdown-item')
-  );
+  return Array.from<HTMLElement>(document.querySelectorAll('.dropdown-menu .dropdown-item'));
 }
 
 function menuItemLabels(): string[] {
@@ -40,6 +42,10 @@ function menuItemLabels(): string[] {
 
 function itemLabelled(label: string): HTMLElement {
   return menuItems().find(item => item.textContent.trim() === label);
+}
+
+function menuIsOpen(): boolean {
+  return menuItems().length > 0;
 }
 
 @Component({
@@ -139,6 +145,13 @@ export default function (): void {
       let context: TestContext<ClrDatagrid, ColumnActionsTest>;
       let element: HTMLElement;
 
+      function closeMenu() {
+        if (menuIsOpen()) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
+      }
+
       beforeEach(function () {
         context = this.create(ClrDatagrid, ColumnActionsTest);
         element = context.clarityElement;
@@ -146,10 +159,7 @@ export default function (): void {
 
       afterEach(function () {
         // The menu lives in an overlay outside the fixture, so it has to be closed between tests.
-        if (menuItems().length) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
-          context.detectChanges();
-        }
+        closeMenu();
       });
 
       it('only renders a trigger on columns that asked for the menu', function () {
@@ -189,9 +199,20 @@ export default function (): void {
       let element: HTMLElement;
       let commonStrings: ClrCommonStringsService;
 
+      // The trigger toggles, so opening has to be conditional. Several tests open the menu, act on an
+      // item and then want it open again, and an unconditional click would close it instead.
       function openMenu() {
-        element.querySelector<HTMLButtonElement>(TOGGLE).click();
-        context.detectChanges();
+        if (!menuIsOpen()) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
+      }
+
+      function closeMenu() {
+        if (menuIsOpen()) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
       }
 
       beforeEach(function () {
@@ -201,10 +222,7 @@ export default function (): void {
       });
 
       afterEach(function () {
-        if (menuItems().length) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
-          context.detectChanges();
-        }
+        closeMenu();
       });
 
       it('offers both sort directions on a sortable column', function () {
@@ -224,18 +242,20 @@ export default function (): void {
         expect(menuItemLabels()).not.toContain(commonStrings.keys.sortColumnDescending);
       });
 
-      it('offers clearing the sort only once the column is sorted', function () {
+      // Clear Sort always sits in the menu and is disabled instead of removed, so its position does
+      // not shift as the sort state changes.
+      it('enables clearing the sort only once the column is sorted', function () {
         openMenu();
-        expect(menuItemLabels()).not.toContain(commonStrings.keys.clearColumnSort);
+        expect(itemLabelled(commonStrings.keys.clearColumnSort).hasAttribute('disabled')).toBeTrue();
 
         itemLabelled(commonStrings.keys.sortColumnAscending).click();
         context.detectChanges();
 
         openMenu();
-        expect(menuItemLabels()).toContain(commonStrings.keys.clearColumnSort);
+        expect(itemLabelled(commonStrings.keys.clearColumnSort).hasAttribute('disabled')).toBeFalse();
       });
 
-      it('never offers clearing the sort when the column disabled unsorting', function () {
+      it('never enables clearing the sort when the column disabled unsorting', function () {
         context.testComponent.disableUnsort = true;
         context.detectChanges();
 
@@ -244,7 +264,7 @@ export default function (): void {
         context.detectChanges();
 
         openMenu();
-        expect(menuItemLabels()).not.toContain(commonStrings.keys.clearColumnSort);
+        expect(itemLabelled(commonStrings.keys.clearColumnSort).hasAttribute('disabled')).toBeTrue();
       });
 
       it('omits the pin action when the column is not pinnable', function () {
@@ -267,15 +287,23 @@ export default function (): void {
       });
 
       afterEach(function () {
-        if (menuItems().length) {
+        closeMenu();
+      });
+
+      // The trigger toggles, so opening has to be conditional. Several tests open the menu, act on an
+      // item and then want it open again, and an unconditional click would close it instead.
+      function openMenu() {
+        if (!menuIsOpen()) {
           element.querySelector<HTMLButtonElement>(TOGGLE).click();
           context.detectChanges();
         }
-      });
+      }
 
-      function openMenu() {
-        element.querySelector<HTMLButtonElement>(TOGGLE).click();
-        context.detectChanges();
+      function closeMenu() {
+        if (menuIsOpen()) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
       }
 
       it('appends projected actions after the built-in ones', function () {
@@ -336,15 +364,29 @@ export default function (): void {
       let element: HTMLElement;
       let commonStrings: ClrCommonStringsService;
 
+      // The trigger toggles, so opening has to be conditional. Several tests open the menu, act on an
+      // item and then want it open again, and an unconditional click would close it instead.
       function openMenu() {
-        element.querySelector<HTMLButtonElement>(TOGGLE).click();
-        context.detectChanges();
+        if (!menuIsOpen()) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
+      }
+
+      function closeMenu() {
+        if (menuIsOpen()) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
       }
 
       function invoke(label: string) {
         openMenu();
         itemLabelled(label).click();
         context.detectChanges();
+        // clrDropdownItem closes the menu in a setTimeout, which a synchronous test never reaches, so
+        // the next invoke() would otherwise start from an already open menu.
+        closeMenu();
       }
 
       beforeEach(function () {
@@ -354,10 +396,7 @@ export default function (): void {
       });
 
       afterEach(function () {
-        if (menuItems().length) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
-          context.detectChanges();
-        }
+        closeMenu();
       });
 
       it('sorts ascending and descending', function () {
@@ -440,9 +479,20 @@ export default function (): void {
       let element: HTMLElement;
       let commonStrings: ClrCommonStringsService;
 
+      // The trigger toggles, so opening has to be conditional. Several tests open the menu, act on an
+      // item and then want it open again, and an unconditional click would close it instead.
       function openMenu() {
-        element.querySelector<HTMLButtonElement>(TOGGLE).click();
-        context.detectChanges();
+        if (!menuIsOpen()) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
+      }
+
+      function closeMenu() {
+        if (menuIsOpen()) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
       }
 
       function filterPanel(): HTMLElement {
@@ -461,10 +511,7 @@ export default function (): void {
           document.body.click();
           context.detectChanges();
         }
-        if (menuItems().length) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
-          context.detectChanges();
-        }
+        closeMenu();
       });
 
       it('hides the filter toggle on a column that has the menu, and keeps it on one that does not', function () {
@@ -514,10 +561,14 @@ export default function (): void {
         context.detectChanges();
         expect(filterPanel()).not.toBeNull();
 
+        // clrDropdownItem closes the menu on a timer that a synchronous test never reaches, so the
+        // menu is still open here where the user would find it closed. Closing and reopening covers
+        // the same ground: the trigger click is the outside click that dismisses the filter.
+        closeMenu();
         openMenu();
 
         expect(filterPanel()).toBeNull();
-        expect(menuItems().length).toBeGreaterThan(0);
+        expect(menuIsOpen()).toBeTrue();
       });
 
       // Mirrors the real interaction: the value is typed into the input inside the filter popover, and
@@ -558,16 +609,20 @@ export default function (): void {
       let context: TestContext<ClrDatagrid, NoFilterTest>;
       let element: HTMLElement;
 
+      function closeMenu() {
+        if (menuIsOpen()) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
+      }
+
       beforeEach(function () {
         context = this.create(ClrDatagrid, NoFilterTest);
         element = context.clarityElement;
       });
 
       afterEach(function () {
-        if (menuItems().length) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
-          context.detectChanges();
-        }
+        closeMenu();
       });
 
       it('omits the filter action when the column has no filter', function () {

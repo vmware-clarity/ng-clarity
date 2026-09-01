@@ -57,7 +57,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
         <cds-icon shape="ellipsis-vertical" size="14" [badge]="filterActive ? 'info' : null" aria-hidden="true" />
       </button>
 
-      <clr-dropdown-menu clrPosition="bottom-right">
+      <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
         @if (column.sortable) {
           <button
             type="button"
@@ -77,12 +77,10 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
             <cds-icon shape="arrow" direction="down" aria-hidden="true"></cds-icon>
             {{ commonStrings.keys.sortColumnDescending }}
           </button>
-          @if (canClearSort) {
-            <button type="button" clrDropdownItem (click)="column.clearSort()">
-              <cds-icon shape="times" aria-hidden="true"></cds-icon>
-              {{ commonStrings.keys.clearColumnSort }}
-            </button>
-          }
+          <button type="button" clrDropdownItem [disabled]="canClearSort ? null : true" (click)="column.clearSort()">
+            <cds-icon shape="times" aria-hidden="true"></cds-icon>
+            {{ commonStrings.keys.clearColumnSort }}
+          </button>
         }
 
         @if (column.pinnable) {
@@ -123,9 +121,10 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
 
   @ViewChild(ClrDropdown) private dropdown: ClrDropdown;
 
-  @ViewChild(ClrDropdownMenu) private menu: ClrDropdownMenu;
+  private menuInstance: ClrDropdownMenu;
 
   private subscriptions: Subscription[] = [];
+  private menuItemsSubscription: Subscription;
   private projectedActions: FocusableItem[] = [];
   private viewReady = false;
 
@@ -180,6 +179,29 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     return !!this.columnActions.filter()?.active;
   }
 
+  /**
+   * clrIfOpen destroys the menu on close and builds a fresh one on open, so this runs with a new
+   * instance every time and its items have to be picked up again.
+   *
+   * A setter rather than the clrIfOpenChange output: that output fires the moment ClrIfOpen creates
+   * the view, which is before Angular refreshes this query, so the instance is not reachable from it
+   * yet. A query setter runs exactly when the result changes.
+   *
+   * ClrDropdownMenu registers only the items declared in this template, and re-registers them
+   * whenever they change, so the full list including the projected ones has to be applied after it.
+   */
+  @ViewChild(ClrDropdownMenu)
+  private set menu(menu: ClrDropdownMenu) {
+    this.menuInstance = menu;
+    this.menuItemsSubscription?.unsubscribe();
+
+    if (menu) {
+      this.menuItemsSubscription = menu.items.changes.subscribe(() => this.linkMenuItems());
+    }
+
+    this.linkMenuItems();
+  }
+
   ngAfterViewInit() {
     // The grid owns arrow key handling for the header, so it has to stand down while either overlay
     // has focus - the menu, or the filter this menu opens. ClrDatagridFilter normally does the second
@@ -197,16 +219,13 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
       this.subscriptions.push(this.filters.change.subscribe(() => this.changeDetectorRef.markForCheck()));
     }
 
-    // ClrDropdownMenu re-registers only the items declared in this template whenever they change, and
-    // the built-in items do come and go with the column state. Following that with the full list
-    // keeps the projected items in the arrow key order.
+    // The menu is rebuilt on every open, and clrIfOpenChange is what reports that.
     this.viewReady = true;
-    this.subscriptions.push(this.menu.items.changes.subscribe(() => this.linkMenuItems()));
-    this.linkMenuItems();
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.menuItemsSubscription?.unsubscribe();
     // Hands the filter back its own toggle, in case the menu is removed while the column stays.
     this.columnActions.present.set(false);
   }
@@ -277,10 +296,12 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
   }
 
   private linkMenuItems() {
-    if (!this.viewReady) {
+    // The projected items register from their own constructor, which runs while the view is still
+    // being created, and the menu itself only exists while it is open.
+    if (!this.viewReady || !this.menuInstance) {
       return;
     }
 
-    this.dropdown.focusHandler.addChildren([...this.menu.items.toArray(), ...this.projectedActions]);
+    this.dropdown.focusHandler.addChildren([...this.menuInstance.items.toArray(), ...this.projectedActions]);
   }
 }
