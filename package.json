@@ -103,7 +103,7 @@
     "@storybook/addon-a11y": "10.5.0",
     "@storybook/addon-docs": "10.2.8",
     "@storybook/angular": "10.3.6",
-    "@textlint/markdown-to-ast": "15.5.2",
+    "@textlint/markdown-to-ast": "15.8.0",
     "@types/culori": "^4.0.1",
     "@types/jasmine": "6.0.0",
     "@types/node-static": "0.7.12",
