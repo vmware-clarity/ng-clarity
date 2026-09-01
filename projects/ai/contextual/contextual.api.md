@@ -6,6 +6,8 @@
 
 import * as i0 from '@angular/core';
 import * as i2 from '@angular/common';
+import { NgZone } from '@angular/core';
+import { Observable } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -131,6 +133,28 @@ export interface ClrContextSnapshotOptions {
     maxComponents?: number;
     maxItemsPerCollection?: number;
     maxTextLength?: number;
+}
+
+// @public
+export class ClrContextTrackerService implements OnDestroy {
+    constructor(platformId: unknown, contextEngine: ClrContextualEngineService, zone: NgZone, router: Router | null);
+    readonly context$: Observable<ClrPageContext>;
+    get currentContext(): ClrPageContext | null;
+    // (undocumented)
+    ngOnDestroy(): void;
+    refresh(): void;
+    start(options?: ClrContextTrackingOptions): void;
+    stop(): void;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextTrackerService, [null, null, null, { optional: true; }]>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextTrackerService>;
+}
+
+// @public (undocumented)
+export interface ClrContextTrackingOptions {
+    settleMs?: number;
+    snapshot?: ClrContextSnapshotOptions;
 }
 
 // @public
