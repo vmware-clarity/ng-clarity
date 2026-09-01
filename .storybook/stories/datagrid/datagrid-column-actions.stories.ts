@@ -70,7 +70,13 @@ const ColumnActionsTemplate: StoryFn = args => ({
         <clr-dg-cell>{{ element.electronegativity }}</clr-dg-cell>
       </clr-dg-row>
 
-      <clr-dg-footer>{{ elements.length }} elements</clr-dg-footer>
+      <clr-dg-footer>
+        {{ elements.length }} elements
+        <clr-dg-pagination #pagination>
+          <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Elements per page</clr-dg-page-size>
+          {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} elements
+        </clr-dg-pagination>
+      </clr-dg-footer>
     </clr-datagrid>
   `,
   props: { ...args },
@@ -98,6 +104,14 @@ const UnsortableTemplate: StoryFn = args => ({
         <clr-dg-cell>{{ element.name }}</clr-dg-cell>
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
       </clr-dg-row>
+
+      <clr-dg-footer>
+        {{ elements.length }} elements
+        <clr-dg-pagination #pagination>
+          <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Elements per page</clr-dg-page-size>
+          {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} elements
+        </clr-dg-pagination>
+      </clr-dg-footer>
     </clr-datagrid>
   `,
   props: { ...args },
@@ -129,7 +143,14 @@ const ProjectedActionTemplate: StoryFn = args => ({
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
       </clr-dg-row>
 
-      <clr-dg-footer>Last exported column: {{ exported || 'none' }}</clr-dg-footer>
+      <clr-dg-footer>
+        {{ elements.length }} elements
+        Last exported column: {{ exported || 'none' }}
+        <clr-dg-pagination #pagination>
+          <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Elements per page</clr-dg-page-size>
+          {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} elements
+        </clr-dg-pagination>
+      </clr-dg-footer>
     </clr-datagrid>
   `,
   props: { ...args, exported: '' },
@@ -160,6 +181,14 @@ const FilterInMenuTemplate: StoryFn = args => ({
         <clr-dg-cell>{{ element.number }}</clr-dg-cell>
         <clr-dg-cell>{{ element.symbol }}</clr-dg-cell>
       </clr-dg-row>
+
+      <clr-dg-footer>
+        {{ elements.length }} elements
+        <clr-dg-pagination #pagination>
+          <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Elements per page</clr-dg-page-size>
+          {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} elements
+        </clr-dg-pagination>
+      </clr-dg-footer>
     </clr-datagrid>
   `,
   props: { ...args },
