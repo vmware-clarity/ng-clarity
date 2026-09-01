@@ -26,28 +26,16 @@ const densityLocalStorageValue = density === 'compact' ? 'compact' : '';
 const baseUrl = 'http://localhost:8081';
 
 /**
- * Pilot page set for the initial rollout of the website visual tests. The pages are chosen to
- * cover the likeliest sources of flakiness: overlays, popovers, async demos, and charts.
- *
- * Set to null to generate tests for the full page inventory (every page in componentlist.json
- * plus the static pages below).
+ * Restricts the generated tests to a subset of pages, e.g. while stabilizing newly added
+ * pages. Null covers the full page inventory (every page in componentlist.json plus the
+ * static pages below).
  */
-const pilotPages: string[] | null = [
-  'home',
-  'pages-introduction',
-  'documentation-button',
-  'documentation-charts',
-  'documentation-combobox',
-  'documentation-datagrid',
-  'documentation-datepicker',
-  'documentation-forms',
-  'documentation-modal',
-  'documentation-tabs',
-];
+const pilotPages: string[] | null = null;
 
 // Routes that exist outside the component list.
 const staticPages = [
   { name: 'home', route: '/' },
+  { name: 'theme-builder', route: '/theme-builder' },
   ...fs
     .readdirSync(path.join('.', 'projects', 'website', 'content', 'pages'))
     .filter(fileName => fileName.endsWith('.md'))
@@ -71,6 +59,11 @@ const documentationPages = componentList.list.map(component => ({
 const pages = [...staticPages, ...documentationPages].filter(
   sitePage => !pilotPages || pilotPages.includes(sitePage.name)
 );
+
+// Regions that can never render deterministically, masked on every page: animated GIFs and
+// native indeterminate <progress> bars keep animating regardless of animations: 'disabled',
+// and app-animated-example wraps demos (spinners, progress bars) that animate via JavaScript.
+const defaultMaskSelectors = ['img[src*=".gif"]', 'progress:not([value])', 'app-animated-example'];
 
 const usedScreenshotPaths: string[] = [];
 
@@ -127,6 +120,9 @@ for (const sitePage of pages) {
         /* min-width: 0 preserves the flex sizing the content area has as a scroll container,
            so wide content overflows (and is clipped) instead of widening the page. */
         .content-area { overflow-y: visible !important; overflow-x: clip !important; min-width: 0 !important; }
+        /* The floating scroll-to-top button is driven by an IntersectionObserver that flaps
+           once the viewport is resized to the full content height; hide it. */
+        app-table-of-contents .scroll-to-top { display: none !important; }
       `,
     });
 
@@ -141,7 +137,12 @@ for (const sitePage of pages) {
       const viewportWidth = page.viewportSize()?.width ?? 1280;
       let viewportHeight = 0;
 
-      for (let attempt = 0; attempt < 5; attempt++) {
+      for (let attempt = 0; attempt < 8; attempt++) {
+        // Give content that renders late (for example the table of contents) or reacts to the
+        // previous resize a moment to settle before measuring; the loop only exits once a
+        // measurement taken after such a pause still matches the viewport height.
+        await page.waitForTimeout(250);
+
         const contentHeight = Math.min(
           await page.evaluate(() => Math.max(document.body.scrollHeight, document.documentElement.scrollHeight)),
           20000
@@ -153,8 +154,6 @@ for (const sitePage of pages) {
 
         viewportHeight = contentHeight;
         await page.setViewportSize({ width: viewportWidth, height: viewportHeight });
-        // Wait two frames so content that reacts to the resize has rendered before re-measuring.
-        await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
       }
     }
 
@@ -162,7 +161,7 @@ for (const sitePage of pages) {
       animations: 'disabled',
       caret: 'hide',
       threshold: 0.01,
-      mask: (options?.maskSelectors ?? []).map(selector => page.locator(selector)),
+      mask: [...defaultMaskSelectors, ...(options?.maskSelectors ?? [])].map(selector => page.locator(selector)),
     });
   });
 }

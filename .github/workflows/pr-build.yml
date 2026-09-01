@@ -106,7 +106,7 @@ jobs:
       matrix:
         browser: ['chromium']
         theme: ['light', 'dark']
-        density: ['default']
+        density: ['default', 'compact']
     env:
       CLARITY_VRT_BROWSER: ${{matrix.browser}}
       CLARITY_VRT_THEME: ${{matrix.theme}}

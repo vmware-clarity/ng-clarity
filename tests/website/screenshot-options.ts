@@ -33,4 +33,17 @@ type WebsiteScreenshotOptions = {
  * - maskSelectors: CSS selectors for regions that render non-deterministically and should
  *   be masked out of the screenshot.
  */
-export const websiteScreenshotOptions: WebsiteScreenshotOptions = {};
+export const websiteScreenshotOptions: WebsiteScreenshotOptions = {
+  'documentation-accessibility': {
+    // /documentation/accessibility redirects to /pages/accessibility, which is already covered
+    // by the pages-accessibility screenshot.
+    exclude: true,
+  },
+  'documentation-theme-builder': {
+    // The table of contents on this page renders nondeterministically: TableOfContentsComponent
+    // queries the headings when the route params emit, which races the lazy-loaded demo content,
+    // and it never re-queries. Roughly half of all direct page loads end up without the CONTENT
+    // box. Re-enable this page once the component re-queries after the content has rendered.
+    exclude: true,
+  },
+};
