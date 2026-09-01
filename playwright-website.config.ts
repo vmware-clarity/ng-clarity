@@ -15,16 +15,16 @@ const deviceMap = {
 };
 
 /**
+ * Visual regression tests for the website (projects/website).
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './tests',
-  // The website visual tests live in tests/website and run with playwright-website.config.ts.
-  testIgnore: '**/website/**',
+  testDir: './tests/website',
   snapshotPathTemplate: './tests/snapshots/{arg}{ext}',
-  timeout: 30 * 1000,
+  // Full-page screenshots of long documentation pages take longer than story screenshots.
+  timeout: 60 * 1000,
   expect: {
-    timeout: 5000,
+    timeout: 10000,
   },
   fullyParallel: true,
   forbidOnly: true,
@@ -34,11 +34,14 @@ export default defineConfig({
   projects: [
     {
       name: browser,
-      use: deviceMap[browser],
+      use: {
+        ...deviceMap[browser],
+        serviceWorkers: 'block',
+      },
     },
   ],
   webServer: {
-    command: 'npm run ts-node -- ./scripts/start-storybook-server.ts',
-    port: 8080,
+    command: 'npm run ts-node -- ./scripts/start-website-server.ts',
+    port: 8081,
   },
 });
