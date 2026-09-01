@@ -39,6 +39,27 @@ const snapshot = this.contextEngine.getSnapshot();
 // }
 ```
 
+## Keeping a live "current page" context
+
+For consumers that want to always hold the context of the page the user is currently on — an AI
+chat panel, for example — `ClrContextTrackerService` turns the pull-based engine into a stream. It
+scrapes the page when tracking starts and again after every completed router navigation, once the
+new page has had a moment to render (`settleMs`, default 100):
+
+```ts
+import { ClrContextTrackerService } from '@clr/ai';
+
+constructor(tracker: ClrContextTrackerService) {
+  tracker.start({ settleMs: 150, snapshot: { maxComponents: 50 } });
+  tracker.context$.subscribe(context => this.chatPanel.setPageContext(context));
+}
+```
+
+Every emission is a freshly computed snapshot — the tracker keeps only the latest one and never
+merges, so context from a page the user left can never leak into the current one. In-page changes
+between navigations (a modal opening, rows selected) do not emit on their own; call
+`tracker.refresh()` on such events, or use `getSnapshot()` when exactness at read time matters.
+
 For browser-driving agents that have no application API, the engine can expose a global accessor:
 
 ```ts

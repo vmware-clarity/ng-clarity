@@ -7,6 +7,7 @@
 
 export * from './interfaces/context.interface';
 export * from './providers/context-registry.service';
+export * from './providers/context-tracker.service';
 export * from './providers/contextual-engine.service';
 export * from './dom/dom-context-collector';
 export * from './iframe/context-frame-bridge';
