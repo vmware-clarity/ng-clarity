@@ -1,0 +1,82 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Contextual Engine</h2>
+<p>
+  <code class="clr-code">@clr/ai</code> gives AI agents a structured, always-current snapshot of the page: route,
+  rendered components and their state, available actions, and application annotations. The panel on the right shows the
+  live snapshot of everything on this page — including the demo app's own navigation.
+</p>
+
+<div class="clr-row">
+  <div class="clr-col-lg-7 clr-col-12">
+    <section
+      clrContext="Host inventory for the selected datacenter"
+      clrContextType="section"
+      [clrContextState]="{ datacenter: 'eu-west', selectedHosts: selectedHosts.length }"
+    >
+      <h3>Host inventory</h3>
+
+      @if (alertVisible) {
+      <clr-alert clrAlertType="warning" (clrAlertClosedChange)="alertVisible = false">
+        <clr-alert-item>
+          <span class="alert-text">esx-edge-01 has been disconnected for 3 hours</span>
+        </clr-alert-item>
+      </clr-alert>
+      }
+
+      <clr-datagrid [(clrDgSelected)]="selectedHosts" [clrDgSelectionType]="'multi'">
+        <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+        <clr-dg-column [clrDgField]="'cluster'">Cluster</clr-dg-column>
+        <clr-dg-column>Status</clr-dg-column>
+        <clr-dg-row *clrDgItems="let host of hosts" [clrDgItem]="host">
+          <clr-dg-cell>{{ host.name }}</clr-dg-cell>
+          <clr-dg-cell>{{ host.cluster }}</clr-dg-cell>
+          <clr-dg-cell>{{ host.status }}</clr-dg-cell>
+        </clr-dg-row>
+        <clr-dg-footer>{{ hosts.length }} hosts</clr-dg-footer>
+      </clr-datagrid>
+
+      <button type="button" class="btn btn-primary" (click)="addHostOpen = true">Add host</button>
+      <button type="button" class="btn" [disabled]="selectedHosts.length === 0">Enter maintenance mode</button>
+    </section>
+
+    <section clrContext="Chat assistant embedded from another UI library" clrContextType="section">
+      <h3>Embedded frame (chat UI) receiving host context</h3>
+      <iframe class="embedded-frame" title="Embedded chat demo" [srcdoc]="embeddedPage"></iframe>
+    </section>
+  </div>
+
+  <div class="clr-col-lg-5 clr-col-12">
+    <div class="snapshot-panel card">
+      <div class="card-header">
+        Live context snapshot
+        <span class="label">{{ snapshotBytes }} bytes</span>
+      </div>
+      <div class="card-block">
+        <button type="button" class="btn btn-sm" (click)="takeSnapshot()">Take snapshot</button>
+        <pre>{{ snapshotJson }}</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<clr-modal [(clrModalOpen)]="addHostOpen" (clrModalOpenChange)="refreshSnapshotAfterRender()">
+  <h3 class="modal-title">Add host</h3>
+  <div class="modal-body">
+    <form clrForm clrLayout="vertical">
+      <clr-input-container>
+        <label>Host name</label>
+        <input clrInput required name="hostName" [(ngModel)]="newHostName" placeholder="esx-prod-04" />
+      </clr-input-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="addHostOpen = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="addHostOpen = false">Add</button>
+  </div>
+</clr-modal>
