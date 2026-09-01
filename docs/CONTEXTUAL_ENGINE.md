@@ -42,15 +42,22 @@ const snapshot = this.contextEngine.getSnapshot();
 ## Keeping a live "current page" context
 
 For consumers that want to always hold the context of the page the user is currently on — an AI
-chat panel, for example — `ClrContextTrackerService` turns the pull-based engine into a stream. It
-scrapes the page when tracking starts and again after every completed router navigation, once the
-new page has had a moment to render (`settleMs`, default 100):
+chat panel, for example — `ClrContextTrackerService` turns the pull-based engine into a stream,
+timed by Angular's own rendering lifecycle rather than by guessed delays:
+
+- after every completed router navigation, the page is scraped in an `afterNextRender` callback —
+  after the change detection cycle that actually painted the newly activated route, however long
+  that took (works in zone-based and zoneless applications);
+- because data often arrives after the first paint, a follow-up scrape runs when
+  `ApplicationRef.whenStable()` resolves (in-flight HTTP finished), capped by
+  `stabilityTimeoutMs` (default 5000) so never-stable apps still get it, and is emitted only if
+  the context actually changed.
 
 ```ts
 import { ClrContextTrackerService } from '@clr/ai';
 
 constructor(tracker: ClrContextTrackerService) {
-  tracker.start({ settleMs: 150, snapshot: { maxComponents: 50 } });
+  tracker.start({ snapshot: { maxComponents: 50 } });
   tracker.context$.subscribe(context => this.chatPanel.setPageContext(context));
 }
 ```

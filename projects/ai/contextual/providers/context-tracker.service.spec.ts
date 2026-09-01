@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ApplicationRef, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 
@@ -19,8 +19,10 @@ describe('ClrContextTrackerService', () => {
   let tracker: ClrContextTrackerService;
   let emitted: ClrPageContext[];
 
-  function waitForScrape(): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, 30));
+  /** Forces a render so afterNextRender fires, then lets the stability pass settle. */
+  async function renderAndSettle(): Promise<void> {
+    TestBed.inject(ApplicationRef).tick();
+    await new Promise(resolve => setTimeout(resolve, 30));
   }
 
   beforeEach(() => {
@@ -63,26 +65,31 @@ describe('ClrContextTrackerService', () => {
     expect(late).toEqual([emitted[0]]);
   });
 
-  it('scrapes the page again after each completed navigation', async () => {
-    tracker.start({ settleMs: 1 });
+  it('scrapes the page again after each completed navigation, once it has rendered', async () => {
+    tracker.start();
 
     await TestBed.inject(Router).navigateByUrl('/inventory');
-    await waitForScrape();
-    await TestBed.inject(Router).navigateByUrl('/settings');
-    await waitForScrape();
+    await renderAndSettle();
 
-    expect(emitted.length).toBe(3);
-    expect(emitted[1].route?.url).toBe('/inventory');
-    expect(emitted[2].route?.url).toBe('/settings');
+    expect(tracker.currentContext?.route?.url).toBe('/inventory');
+
+    await TestBed.inject(Router).navigateByUrl('/settings');
+    await renderAndSettle();
+
     expect(tracker.currentContext?.route?.url).toBe('/settings');
   });
 
-  it('waits for the page to settle before scraping', async () => {
-    tracker.start({ settleMs: 1000 });
+  it('does not emit duplicate context from the stability pass when nothing changed', async () => {
+    tracker.start();
 
     await TestBed.inject(Router).navigateByUrl('/inventory');
+    await renderAndSettle();
+    const countAfterNavigation = emitted.length;
+    await renderAndSettle();
 
-    expect(emitted.length).toBe(1);
+    expect(emitted.length).toBe(countAfterNavigation);
+    const routes = emitted.filter(context => context.route?.url === '/inventory');
+    expect(routes.length).toBe(1);
   });
 
   it('applies the configured snapshot budgets', () => {
@@ -93,24 +100,26 @@ describe('ClrContextTrackerService', () => {
   });
 
   it('stops emitting once stopped', async () => {
-    tracker.start({ settleMs: 1 });
+    tracker.start();
     tracker.stop();
+    const countWhenStopped = emitted.length;
 
     await TestBed.inject(Router).navigateByUrl('/inventory');
-    await waitForScrape();
+    await renderAndSettle();
 
-    expect(emitted.length).toBe(1);
+    expect(emitted.length).toBe(countWhenStopped);
+    expect(tracker.currentContext?.route?.url).not.toBe('/inventory');
   });
 
   it('restarts with new options when started again', async () => {
-    tracker.start({ settleMs: 1 });
-    tracker.start({ settleMs: 1, snapshot: { includeDomComponents: false } });
+    tracker.start();
+    tracker.start({ snapshot: { includeDomComponents: false } });
 
     await TestBed.inject(Router).navigateByUrl('/inventory');
-    await waitForScrape();
+    await renderAndSettle();
 
-    expect(emitted.length).toBe(3);
-    expect(emitted[2].components).toEqual([]);
+    expect(tracker.currentContext?.route?.url).toBe('/inventory');
+    expect(tracker.currentContext?.components).toEqual([]);
   });
 
   it('emits fresh snapshots on manual refresh', () => {
@@ -119,5 +128,14 @@ describe('ClrContextTrackerService', () => {
 
     expect(emitted.length).toBe(2);
     expect(emitted[1]).not.toBe(emitted[0]);
+  });
+
+  it('can skip the stability pass entirely', async () => {
+    tracker.start({ awaitStability: false });
+
+    await TestBed.inject(Router).navigateByUrl('/inventory');
+    await renderAndSettle();
+
+    expect(tracker.currentContext?.route?.url).toBe('/inventory');
   });
 });
