@@ -8,10 +8,10 @@
 import { Component, Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { delay, TestContext } from '@clr/angular/testing';
 import { ClrLoading, ClrLoadingState } from '@clr/angular/utils';
-// import { ClrCommonStringsService } from '@clr/angular/utils'; // used by the disabled pin toggle suite
+// import { ClrCommonStringsService } from '@clr/angular/utils'; // used by the disabled inline pin toggle suite
 
 import { ClrDatagrid } from './datagrid';
-// import { ClrDatagridSortOrder } from './enums/sort-order.enum'; // used by the disabled pin toggle suite
+// import { ClrDatagridSortOrder } from './enums/sort-order.enum'; // used by the disabled inline pin toggle suite
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
 import { HIDDEN_COLUMN_CLASS, PINNED_COLUMN_CLASS } from './render/constants';
@@ -148,7 +148,7 @@ class PinnedNotFirstWithDetailTest {
   pinThird = true;
 }
 
-// Fixture for the 'Header pin toggle' suite below, disabled along with clrDgPinnable.
+// Fixture for the 'Header pin toggle' suite below, disabled along with the inline pin toggle.
 // @Component({
 //   template: `
 //     <clr-datagrid>
@@ -614,8 +614,10 @@ export default function (): void {
       });
     });
 
-    // Disabled along with clrDgPinnable. Restoring it also needs the PinToggleTest fixture above
-    // and the ClrCommonStringsService / ClrDatagridSortOrder imports at the top of the file.
+    // Disabled along with the inline .datagrid-column-pin toggle. clrDgPinnable itself is live -
+    // pinning is reached through clr-dg-column-actions now, and datagrid-column-actions.spec.ts
+    // covers it there. Restoring the inline toggle also needs the PinToggleTest fixture above and
+    // the ClrCommonStringsService / ClrDatagridSortOrder imports at the top of the file.
     // describe('Header pin toggle', function () {
     //   let context: TestContext<ClrDatagrid, PinToggleTest>;
     //   let element: HTMLElement;

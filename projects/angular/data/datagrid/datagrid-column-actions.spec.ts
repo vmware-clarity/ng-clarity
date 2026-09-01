@@ -1,0 +1,559 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { ClrPopoverService } from '@clr/angular/popover/common';
+import { TestContext } from '@clr/angular/testing';
+import { ClrCommonStringsService } from '@clr/angular/utils';
+
+import { ClrDatagrid } from './datagrid';
+import { ClrDatagridColumn } from './datagrid-column';
+import { ClrDatagridSortOrder } from './enums/sort-order.enum';
+
+const HEADER_PINNED = '.datagrid-header .datagrid-pinned-cells';
+const TOGGLE = '.datagrid-header .datagrid-column-actions-toggle';
+
+function queryAll(root: HTMLElement, selector: string): HTMLElement[] {
+  return Array.from<HTMLElement>(root.querySelectorAll(selector));
+}
+
+function columnTitles(root: HTMLElement, container: string): string[] {
+  return queryAll(root, `${container} > clr-dg-column .datagrid-column-title`).map(title => title.textContent.trim());
+}
+
+// The menu content is rendered into a CDK overlay attached to the body, so it is not reachable from
+// the datagrid element once it is open.
+function menuItems(): HTMLElement[] {
+  return Array.from<HTMLElement>(
+    document.querySelectorAll('.dropdown-menu [clrdropdownitem], .dropdown-menu .dropdown-item')
+  );
+}
+
+function menuItemLabels(): string[] {
+  return menuItems().map(item => item.textContent.trim());
+}
+
+function itemLabelled(label: string): HTMLElement {
+  return menuItems().find(item => item.textContent.trim() === label);
+}
+
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column
+        [clrDgSortBy]="sortBy"
+        [clrDgDisableUnsort]="disableUnsort"
+        [clrDgPinnable]="pinnable"
+        [(clrDgPinned)]="firstPinned"
+      >
+        First
+        <clr-dg-column-actions></clr-dg-column-actions>
+      </clr-dg-column>
+      <clr-dg-column>Second</clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items">
+        <clr-dg-cell>{{ item }}</clr-dg-cell>
+        <clr-dg-cell>{{ item * 2 }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class ColumnActionsTest {
+  items = [1, 2, 3];
+  sortBy = 'x';
+  disableUnsort = false;
+  pinnable = true;
+  firstPinned = false;
+}
+
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column>
+        First
+        <clr-dg-column-actions>
+          <button type="button" clrDgColumnAction [clrDisabled]="customDisabled" class="custom-action">Custom</button>
+        </clr-dg-column-actions>
+      </clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items">
+        <clr-dg-cell>{{ item }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class ProjectedActionTest {
+  items = [1];
+  customDisabled = false;
+}
+
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column clrDgField="name">
+        Filtered
+        <clr-dg-column-actions></clr-dg-column-actions>
+      </clr-dg-column>
+      <clr-dg-column clrDgField="other">Plain</clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.other }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class AutoFilterTest {
+  items = [
+    { name: 'aaa', other: 'x' },
+    { name: 'bbb', other: 'y' },
+  ];
+}
+
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column>
+        No filter
+        <clr-dg-column-actions></clr-dg-column-actions>
+      </clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items">
+        <clr-dg-cell>{{ item }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class NoFilterTest {
+  items = [1];
+}
+
+export default function (): void {
+  describe('ClrDatagridColumnActions', function () {
+    describe('rendering', function () {
+      let context: TestContext<ClrDatagrid, ColumnActionsTest>;
+      let element: HTMLElement;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, ColumnActionsTest);
+        element = context.clarityElement;
+      });
+
+      afterEach(function () {
+        // The menu lives in an overlay outside the fixture, so it has to be closed between tests.
+        if (menuItems().length) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
+      });
+
+      it('only renders a trigger on columns that asked for the menu', function () {
+        expect(queryAll(element, TOGGLE).length).toBe(1);
+      });
+
+      it('renders the trigger at the trailing edge of the header, not inside the sort button', function () {
+        const headerCell = element.querySelector<HTMLElement>('.datagrid-header clr-dg-column .datagrid-column-flex');
+        const actions = headerCell.querySelector('clr-dg-column-actions');
+
+        expect(actions).not.toBeNull();
+        expect(actions.parentElement).toBe(headerCell);
+        expect(headerCell.querySelector('.datagrid-column-title clr-dg-column-actions')).toBeNull();
+      });
+
+      it('labels the trigger with the column it belongs to', function () {
+        const commonStrings = new ClrCommonStringsService();
+
+        expect(element.querySelector(TOGGLE).getAttribute('aria-label')).toBe(
+          commonStrings.parse(commonStrings.keys.datagridColumnActionsAriaLabel, { COLUMN: 'First' })
+        );
+      });
+
+      it('leaves the column title sortable', function () {
+        const title = element.querySelector<HTMLButtonElement>('.datagrid-header .datagrid-column-title');
+        expect(title.tagName).toBe('BUTTON');
+
+        title.click();
+        context.detectChanges();
+
+        expect(context.clarityDirective.columns.first.sortOrder).toBe(ClrDatagridSortOrder.ASC);
+      });
+    });
+
+    describe('item visibility', function () {
+      let context: TestContext<ClrDatagrid, ColumnActionsTest>;
+      let element: HTMLElement;
+      let commonStrings: ClrCommonStringsService;
+
+      function openMenu() {
+        element.querySelector<HTMLButtonElement>(TOGGLE).click();
+        context.detectChanges();
+      }
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, ColumnActionsTest);
+        element = context.clarityElement;
+        commonStrings = new ClrCommonStringsService();
+      });
+
+      afterEach(function () {
+        if (menuItems().length) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
+      });
+
+      it('offers both sort directions on a sortable column', function () {
+        openMenu();
+
+        expect(menuItemLabels()).toContain(commonStrings.keys.sortColumnAscending);
+        expect(menuItemLabels()).toContain(commonStrings.keys.sortColumnDescending);
+      });
+
+      it('omits the sort actions when the column cannot be sorted', function () {
+        context.testComponent.sortBy = undefined;
+        context.detectChanges();
+
+        openMenu();
+
+        expect(menuItemLabels()).not.toContain(commonStrings.keys.sortColumnAscending);
+        expect(menuItemLabels()).not.toContain(commonStrings.keys.sortColumnDescending);
+      });
+
+      it('offers clearing the sort only once the column is sorted', function () {
+        openMenu();
+        expect(menuItemLabels()).not.toContain(commonStrings.keys.clearColumnSort);
+
+        itemLabelled(commonStrings.keys.sortColumnAscending).click();
+        context.detectChanges();
+
+        openMenu();
+        expect(menuItemLabels()).toContain(commonStrings.keys.clearColumnSort);
+      });
+
+      it('never offers clearing the sort when the column disabled unsorting', function () {
+        context.testComponent.disableUnsort = true;
+        context.detectChanges();
+
+        openMenu();
+        itemLabelled(commonStrings.keys.sortColumnAscending).click();
+        context.detectChanges();
+
+        openMenu();
+        expect(menuItemLabels()).not.toContain(commonStrings.keys.clearColumnSort);
+      });
+
+      it('omits the pin action when the column is not pinnable', function () {
+        context.testComponent.pinnable = false;
+        context.detectChanges();
+
+        openMenu();
+
+        expect(menuItemLabels()).not.toContain(commonStrings.keys.pinColumn);
+      });
+    });
+
+    describe('projected actions', function () {
+      let context: TestContext<ClrDatagrid, ProjectedActionTest>;
+      let element: HTMLElement;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, ProjectedActionTest);
+        element = context.clarityElement;
+      });
+
+      afterEach(function () {
+        if (menuItems().length) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
+      });
+
+      function openMenu() {
+        element.querySelector<HTMLButtonElement>(TOGGLE).click();
+        context.detectChanges();
+      }
+
+      it('appends projected actions after the built-in ones', function () {
+        openMenu();
+
+        const labels = menuItemLabels();
+        expect(labels).toContain('Custom');
+        expect(labels.indexOf('Custom')).toBe(labels.length - 1);
+      });
+
+      it('styles a projected action as a menu item', function () {
+        openMenu();
+
+        const custom = itemLabelled('Custom');
+        expect(custom.classList).toContain('dropdown-item');
+        expect(custom.getAttribute('role')).toBe('menuitem');
+      });
+
+      // The whole point of clrDgColumnAction over a plain button: ClrDropdownMenu collects its items
+      // through @ContentChildren, which never sees projected content, so the directive has to hand
+      // itself to the dropdown's focus handler to take part in arrow key navigation.
+      it('joins a projected action to the arrow key order', function () {
+        openMenu();
+
+        expect(itemLabelled('Custom').getAttribute('tabindex')).toBe('-1');
+        expect(itemLabelled('Custom').getAttribute('id')).toBeTruthy();
+      });
+
+      it('closes the menu when a projected action is picked', function () {
+        openMenu();
+        expect(menuItems().length).toBeGreaterThan(0);
+
+        itemLabelled('Custom').click();
+        context.detectChanges();
+
+        expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('false');
+      });
+
+      it('marks a disabled projected action and leaves the menu open', function () {
+        context.testComponent.customDisabled = true;
+        context.detectChanges();
+
+        openMenu();
+
+        const custom = itemLabelled('Custom');
+        expect(custom.classList).toContain('disabled');
+        expect(custom.getAttribute('aria-disabled')).toBe('true');
+
+        custom.click();
+        context.detectChanges();
+
+        expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('true');
+      });
+    });
+
+    describe('actions', function () {
+      let context: TestContext<ClrDatagrid, ColumnActionsTest>;
+      let element: HTMLElement;
+      let commonStrings: ClrCommonStringsService;
+
+      function openMenu() {
+        element.querySelector<HTMLButtonElement>(TOGGLE).click();
+        context.detectChanges();
+      }
+
+      function invoke(label: string) {
+        openMenu();
+        itemLabelled(label).click();
+        context.detectChanges();
+      }
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, ColumnActionsTest);
+        element = context.clarityElement;
+        commonStrings = new ClrCommonStringsService();
+      });
+
+      afterEach(function () {
+        if (menuItems().length) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
+      });
+
+      it('sorts ascending and descending', function () {
+        const column = context.clarityDirective.columns.first;
+
+        invoke(commonStrings.keys.sortColumnAscending);
+        expect(column.sortOrder).toBe(ClrDatagridSortOrder.ASC);
+
+        invoke(commonStrings.keys.sortColumnDescending);
+        expect(column.sortOrder).toBe(ClrDatagridSortOrder.DESC);
+      });
+
+      it('re-selecting the active direction keeps it, rather than cycling to unsorted', function () {
+        const column = context.clarityDirective.columns.first;
+
+        invoke(commonStrings.keys.sortColumnAscending);
+        invoke(commonStrings.keys.sortColumnAscending);
+
+        expect(column.sortOrder).toBe(ClrDatagridSortOrder.ASC);
+      });
+
+      it('clears the sort', function () {
+        const column = context.clarityDirective.columns.first;
+
+        invoke(commonStrings.keys.sortColumnAscending);
+        expect(column.sortOrder).toBe(ClrDatagridSortOrder.ASC);
+
+        invoke(commonStrings.keys.clearColumnSort);
+        expect(column.sortOrder).toBe(ClrDatagridSortOrder.UNSORTED);
+      });
+
+      it('marks the active sort direction', function () {
+        invoke(commonStrings.keys.sortColumnAscending);
+        openMenu();
+
+        expect(itemLabelled(commonStrings.keys.sortColumnAscending).classList).toContain('active');
+        expect(itemLabelled(commonStrings.keys.sortColumnDescending).classList).not.toContain('active');
+      });
+
+      it('pins and unpins the column', function () {
+        expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
+
+        invoke(commonStrings.keys.pinColumn);
+        expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
+
+        invoke(commonStrings.keys.unpinColumn);
+        expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
+      });
+
+      it('writes the new pinned state back through the two-way binding', function () {
+        invoke(commonStrings.keys.pinColumn);
+        expect(context.testComponent.firstPinned).toBeTrue();
+
+        invoke(commonStrings.keys.unpinColumn);
+        expect(context.testComponent.firstPinned).toBeFalse();
+      });
+
+      it('follows the binding when the application pins the column itself', function () {
+        context.testComponent.firstPinned = true;
+        context.detectChanges();
+
+        openMenu();
+
+        expect(menuItemLabels()).toContain(commonStrings.keys.unpinColumn);
+        expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
+      });
+
+      it('does not sort the column when the pin action is used', function () {
+        const column = context.clarityDirective.columns.first;
+        expect(column.sortable).toBeTrue();
+
+        invoke(commonStrings.keys.pinColumn);
+
+        expect(column.sortOrder).toBe(ClrDatagridSortOrder.UNSORTED);
+      });
+    });
+
+    describe('filter integration', function () {
+      let context: TestContext<ClrDatagrid, AutoFilterTest>;
+      let element: HTMLElement;
+      let commonStrings: ClrCommonStringsService;
+
+      function openMenu() {
+        element.querySelector<HTMLButtonElement>(TOGGLE).click();
+        context.detectChanges();
+      }
+
+      function filterPanel(): HTMLElement {
+        return document.querySelector('.datagrid-filter');
+      }
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, AutoFilterTest);
+        element = context.clarityElement;
+        commonStrings = new ClrCommonStringsService();
+      });
+
+      afterEach(function () {
+        // Both overlays live outside the fixture, so neither may leak into the next test.
+        if (filterPanel()) {
+          document.body.click();
+          context.detectChanges();
+        }
+        if (menuItems().length) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
+      });
+
+      it('hides the filter toggle on a column that has the menu, and keeps it on one that does not', function () {
+        const columns = queryAll(element, '.datagrid-header clr-dg-column');
+
+        expect(columns[0].querySelector('.datagrid-filter-toggle')).toBeNull();
+        expect(columns[1].querySelector('.datagrid-filter-toggle')).not.toBeNull();
+      });
+
+      it('offers the filter action for a column that has a filter', function () {
+        openMenu();
+
+        expect(menuItemLabels()).toContain(commonStrings.keys.filterColumn);
+      });
+
+      // The click that opens the popover is also an outside click as far as the popover is concerned.
+      // ClrPopoverService.openEvent is what makes it ignore that one event, so this is the regression
+      // test for the filter opening and instantly closing again.
+      it('opens the filter and leaves it open', function () {
+        openMenu();
+        itemLabelled(commonStrings.keys.filterColumn).click();
+        context.detectChanges();
+
+        expect(filterPanel()).not.toBeNull();
+      });
+
+      it('anchors the filter popover to the menu trigger rather than the removed toggle', function () {
+        // The column owns the popover service its filter uses, so this is the anchor the filter
+        // popover positions against.
+        const popover = context.fixture.debugElement
+          .query(By.directive(ClrDatagridColumn))
+          .injector.get(ClrPopoverService);
+
+        openMenu();
+        itemLabelled(commonStrings.keys.filterColumn).click();
+        context.detectChanges();
+
+        expect(popover.originElement.nativeElement.classList).toContain('datagrid-column-actions-toggle');
+      });
+
+      // The menu and the filter are two separate overlays, so nothing structurally stops both being
+      // open at once. Clicking the trigger is an outside click for the filter, which is what keeps
+      // them from overlapping.
+      it('dismisses the filter when the menu is opened again', function () {
+        openMenu();
+        itemLabelled(commonStrings.keys.filterColumn).click();
+        context.detectChanges();
+        expect(filterPanel()).not.toBeNull();
+
+        openMenu();
+
+        expect(filterPanel()).toBeNull();
+        expect(menuItems().length).toBeGreaterThan(0);
+      });
+
+      it('marks the trigger and the action once the column is filtered', function () {
+        const filter: any = context.clarityDirective.columns.first.filter;
+        filter.value = 'aaa';
+        context.detectChanges();
+
+        expect(element.querySelector(TOGGLE).classList).toContain('datagrid-column-actions-filtered');
+
+        openMenu();
+        expect(itemLabelled(commonStrings.keys.filterColumn).classList).toContain('active');
+      });
+    });
+
+    describe('filter integration without a filter', function () {
+      let context: TestContext<ClrDatagrid, NoFilterTest>;
+      let element: HTMLElement;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, NoFilterTest);
+        element = context.clarityElement;
+      });
+
+      afterEach(function () {
+        if (menuItems().length) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
+      });
+
+      it('omits the filter action when the column has no filter', function () {
+        element.querySelector<HTMLButtonElement>(TOGGLE).click();
+        context.detectChanges();
+
+        expect(menuItemLabels()).not.toContain(new ClrCommonStringsService().keys.filterColumn);
+      });
+    });
+  });
+}

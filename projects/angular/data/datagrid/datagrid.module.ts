@@ -21,15 +21,16 @@ import {
   ellipsisVerticalIcon,
   filterGridCircleIcon,
   filterGridIcon,
-  // pinIcon, // disabled with clrDgPinnable
+  pinIcon,
   stepForward2Icon,
   timesIcon,
   twoWayArrowsIcon,
-  // unpinIcon, // disabled with clrDgPinnable
+  unpinIcon,
   viewColumnsIcon,
   windowCloseIcon,
 } from '@clr/angular/icon';
 import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import {
   CdkDragModule,
@@ -52,6 +53,8 @@ import { ClrDatagridActionBar } from './datagrid-action-bar';
 import { ClrDatagridActionOverflow } from './datagrid-action-overflow';
 import { ClrDatagridCell } from './datagrid-cell';
 import { ClrDatagridColumn } from './datagrid-column';
+import { ClrDatagridColumnAction } from './datagrid-column-action';
+import { ClrDatagridColumnActions } from './datagrid-column-actions';
 import { ClrDatagridColumnSeparator } from './datagrid-column-separator';
 import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
 import { ClrDatagridColumnToggleButton } from './datagrid-column-toggle-button';
@@ -88,6 +91,8 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   ClrDatagridActionOverflow,
   ClrDatagridCell,
   ClrDatagridColumn,
+  ClrDatagridColumnAction,
+  ClrDatagridColumnActions,
   ClrDatagridColumnSeparator,
   ClrDatagridDetail,
   ClrDatagridDetailBody,
@@ -148,6 +153,7 @@ const CLR_DATAGRID_SHARED_DIRECTIVES = [ClrIfExpanded];
     ClrExpandableAnimationModule,
     ClrSpinnerModule,
     ClrPopoverModuleNext,
+    ClrDropdownModule,
     ClrKeyFocusModule,
     CLR_DATAGRID_STANDALONE_DIRECTIVES,
     CLR_DATAGRID_SHARED_DIRECTIVES,
@@ -167,10 +173,9 @@ export class ClrDatagridModule {
       stepForward2Icon,
       angleDoubleIcon,
       filterGridCircleIcon,
-      filterGridIcon
-      // Only the clrDgPinnable toggle used these, so they are disabled along with it.
-      // pinIcon,
-      // unpinIcon
+      filterGridIcon,
+      pinIcon,
+      unpinIcon
     );
   }
 }
