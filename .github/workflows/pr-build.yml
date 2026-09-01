@@ -99,6 +99,8 @@ jobs:
   pr-website-visual-regression-test:
     name: PR Website Visual Regression Test (${{matrix.browser}}, ${{matrix.theme}}, ${{matrix.density}})
     timeout-minutes: 40
+    permissions:
+      contents: read
     # This job intentionally does not use the `ubuntu-latest` image.
     # An updated image could generate different snapshots, so we should explicitly update the image version.
     runs-on: ubuntu-24.04
