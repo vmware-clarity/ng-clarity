@@ -520,6 +520,28 @@ export default function (): void {
         expect(menuItems().length).toBeGreaterThan(0);
       });
 
+      // Mirrors the real interaction: the value is typed into the input inside the filter popover, and
+      // then nothing forces a full change detection pass. An explicit fixture.detectChanges() would
+      // check every view and hide the bug this guards against - the trigger updating only on the next
+      // unrelated interaction.
+      it('marks the trigger as soon as a value is typed into the filter', async () => {
+        openMenu();
+        itemLabelled(commonStrings.keys.filterColumn).click();
+        context.detectChanges();
+
+        // autoDetectChanges leaves refreshing to Angular's scheduler, the way the running app does.
+        // Calling fixture.detectChanges() by hand would check every view and hide the bug this
+        // guards against: the trigger keeping a stale icon until an unrelated interaction.
+        context.fixture.autoDetectChanges(true);
+
+        const input: HTMLInputElement = filterPanel().querySelector('input');
+        input.value = 'aaa';
+        input.dispatchEvent(new Event('input'));
+        await context.fixture.whenStable();
+
+        expect(element.querySelector(TOGGLE).classList).toContain('datagrid-column-actions-filtered');
+      });
+
       it('marks the trigger and the action once the column is filtered', function () {
         const filter: any = context.clarityDirective.columns.first.filter;
         filter.value = 'aaa';

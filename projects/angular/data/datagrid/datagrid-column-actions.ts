@@ -28,7 +28,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
 
 /**
  * Groups the actions of a single column behind one menu in the column header. It only gathers
- * controls that already exist on the column - the behaviour itself stays on `ClrDatagridColumn`,
+ * controls that already exist on the column - the behavior itself stays on `ClrDatagridColumn`,
  * so the menu and the header controls can never drift apart.
  *
  * Each item is rendered only when the column can actually perform it, so the menu never offers a
@@ -54,7 +54,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
         [class.datagrid-column-actions-filtered]="filterActive"
         [attr.aria-label]="triggerLabel"
       >
-        <cds-icon shape="ellipsis-vertical" [attr.title]="triggerLabel" aria-hidden="true"></cds-icon>
+        <cds-icon shape="ellipsis-vertical" size="14" [badge]="filterActive ? 'info' : null" aria-hidden="true" />
       </button>
 
       <clr-dropdown-menu clrPosition="bottom-right">

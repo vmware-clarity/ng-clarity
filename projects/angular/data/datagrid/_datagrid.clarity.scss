@@ -583,15 +583,18 @@
             color: tokens.$cds-alias-object-interaction-color-hover;
           }
 
-          &:active cds-icon,
-          &.active cds-icon {
+          &:active cds-icon {
             color: tokens.$cds-alias-object-interaction-color-active;
           }
 
           // With the filter toggle gone, the trigger is the only place left to show that the column
           // is filtered, so it borrows the colour the toggle used for that.
-          &.datagrid-column-actions-filtered cds-icon {
-            color: tokens.$cds-alias-object-interaction-color-selected;
+          &.datagrid-column-actions-filtered {
+            padding: tokens.$cds-global-space-1;
+
+            cds-icon {
+              color: tokens.$cds-alias-object-interaction-color-selected;
+            }
           }
         }
       }
