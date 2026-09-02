@@ -14,8 +14,9 @@ described by reading the rendered DOM, so the engine works alongside any Clarity
   destroyed or navigated away from.
 - **Budgeted output.** Text is truncated, lists are capped and hidden elements are skipped
   (see `ClrContextSnapshotOptions`), so snapshots stay small enough for an agent's context window.
-- **No user data by default.** Form fields are described by label, type and validation state —
-  their values are never collected.
+- **No user data by default.** Form fields are described by name, label, type and validation
+  state; values and selectable options are collected only on explicit opt-in
+  (`includeFormValues`), and passwords are redacted unconditionally.
 - **UI-library agnostic core.** The context model, the DOM extraction and the cross-frame protocol
   are plain TypeScript and plain JSON. Clarity's component extractors are just the built-in set;
   any other UI library can plug in its own.
@@ -75,6 +76,32 @@ For browser-driving agents that have no application API, the engine can expose a
 ```ts
 this.contextEngine.enableGlobalAccess(); // window.clrContext() now returns a fresh snapshot
 ```
+
+## Filling forms with an agent
+
+For agents that complete forms on the user's behalf, opt into full form context: every control is
+then reported with its `name`, current `value` and the `options` it offers (select options, radio
+choices, datalist entries). Password and file inputs are always redacted, and embedded frames can
+never request values through the frame bridge — only the hosting application can opt in.
+
+```ts
+const context = engine.getSnapshot({ includeFormValues: true });
+// field example: { type: 'select', label: 'Cluster', state: {
+//   name: 'cluster', value: 'beta',
+//   options: [{ value: 'alpha', label: 'Alpha' }, { value: 'beta', label: 'Beta' }] } }
+
+// The agent answers with JSON keyed by control name...
+const answer = { hostName: 'esx-prod-04', cluster: 'beta', tier: 'silver', enabled: true };
+
+// ...which is applied back through real DOM events, so Angular template-driven and
+// reactive forms react as if the user had typed. Nothing is submitted automatically.
+const result = engine.applyFormValues(answer);
+// { applied: ['hostName', 'cluster', 'tier', 'enabled'], skipped: [] }
+```
+
+`applyClrFormValues(form, values)` is also exported for applying to a specific form element.
+Unknown names, non-matching options and password fields are reported in `skipped` rather than
+guessed at.
 
 ## Annotating the application
 

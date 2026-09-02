@@ -105,4 +105,15 @@ export interface ClrContextSnapshotOptions {
   includeDomComponents?: boolean;
   /** Whether to collect currently available actions (buttons and links). Default `true`. */
   includeActions?: boolean;
+  /**
+   * Whether to include the current value and the selectable options of every form
+   * control, keyed by control `name` — what a form-filling agent needs to produce a
+   * JSON answer that can be applied back with `applyClrFormValues`. Password and file
+   * inputs are always redacted, opted in or not.
+   *
+   * Default `false`: turning this on puts user-typed data into snapshots, so it must
+   * be a deliberate application decision. Embedded frames can never turn it on through
+   * the frame bridge; only the hosting application can.
+   */
+  includeFormValues?: boolean;
 }

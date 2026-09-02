@@ -17,6 +17,7 @@ export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions> = 
   maxComponents: 100,
   includeDomComponents: true,
   includeActions: true,
+  includeFormValues: false,
 };
 
 /**
@@ -196,6 +197,10 @@ const CLARITY_DOM_EXTRACTORS: ClrContextDomExtractor[] = [
         .map(field => {
           const control = field.querySelector<HTMLElement>('input, select, textarea, [role=combobox]');
           const state: Record<string, unknown> = {};
+          const name = control?.getAttribute('name') || control?.id;
+          if (name) {
+            state.name = name;
+          }
           if (control?.hasAttribute('required')) {
             state.required = true;
           }
@@ -206,14 +211,17 @@ const CLARITY_DOM_EXTRACTORS: ClrContextDomExtractor[] = [
             state.invalid = true;
             state.error = textOf(field.querySelector('clr-control-error'), options);
           }
+          // Values and options are collected only on explicit opt-in: they contain
+          // user-typed data, so putting them into snapshots is an application decision.
+          if (options.includeFormValues && control) {
+            Object.assign(state, describeControlValue(field, control, options));
+          }
           return {
             type: controlType(control),
             label: textOf(field.querySelector('.clr-control-label'), options),
             state: Object.keys(state).length ? state : undefined,
           };
         });
-      // Field values are intentionally never collected: they can contain sensitive user
-      // input, and agents that need them can read the focused control directly.
       return {
         type: 'form',
         label: element.getAttribute('aria-label') || undefined,
@@ -354,6 +362,70 @@ function collectActions(root: Element | null, options: Required<ClrContextSnapsh
     .filter(element => isVisible(element))
     .slice(0, options.maxItemsPerCollection)
     .map(element => buttonOrLinkAction(element, options));
+}
+
+/**
+ * Reads a control's current value and its selectable options — the material a
+ * form-filling agent needs. Password and file inputs are always redacted.
+ */
+function describeControlValue(
+  field: Element,
+  control: HTMLElement,
+  options: Required<ClrContextSnapshotOptions>
+): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
+  const tagName = control.tagName.toLowerCase();
+
+  if (tagName === 'select') {
+    const select = control as HTMLSelectElement;
+    result.options = Array.from(select.options)
+      .slice(0, options.maxItemsPerCollection)
+      .map(option => ({ value: option.value, label: textOf(option, options) }));
+    result.value = select.multiple ? Array.from(select.selectedOptions).map(option => option.value) : select.value;
+    return result;
+  }
+
+  if (tagName === 'textarea') {
+    result.value = truncate((control as HTMLTextAreaElement).value, options.maxTextLength);
+    return result;
+  }
+
+  if (tagName === 'input') {
+    const input = control as HTMLInputElement;
+    if (input.type === 'password' || input.type === 'file') {
+      result.redacted = true;
+      return result;
+    }
+    if (input.type === 'checkbox') {
+      result.value = input.checked;
+      return result;
+    }
+    if (input.type === 'radio') {
+      const radios = Array.from(field.querySelectorAll<HTMLInputElement>('input[type=radio]'));
+      result.options = radios
+        .slice(0, options.maxItemsPerCollection)
+        .map(radio => ({ value: radio.value, label: radioLabel(radio, options) }));
+      result.value = radios.find(radio => radio.checked)?.value ?? null;
+      return result;
+    }
+    result.value = truncate(input.value, options.maxTextLength);
+    const datalistId = input.getAttribute('list');
+    const datalist = datalistId && field.ownerDocument?.getElementById(datalistId);
+    if (datalist) {
+      result.options = Array.from(datalist.querySelectorAll('option'))
+        .slice(0, options.maxItemsPerCollection)
+        .map(option => ({ value: option.value, label: textOf(option, options) || option.value }));
+    }
+  }
+
+  return result;
+}
+
+function radioLabel(radio: HTMLInputElement, options: Required<ClrContextSnapshotOptions>): string {
+  const wrapperLabel =
+    (radio.id && radio.ownerDocument.querySelector(`label[for="${CSS.escape(radio.id)}"]`)) ||
+    radio.closest('.clr-radio-wrapper')?.querySelector('label');
+  return textOf(wrapperLabel, options) || radio.value;
 }
 
 function controlType(control: HTMLElement | null): string {

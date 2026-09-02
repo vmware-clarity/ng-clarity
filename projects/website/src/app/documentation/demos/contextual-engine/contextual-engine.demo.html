@@ -80,6 +80,19 @@
       <app-code-snippet [code]="directiveModuleExample" language="typescript"></app-code-snippet>
     </div>
 
+    <h2 id="form-filling" class="clr-mt-48px" cds-text="title">Filling forms with an agent</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      For agents that complete forms on the user's behalf, opt into full form context with
+      <code cds-text="code">includeFormValues</code>: every control is then reported with its
+      <code cds-text="code">name</code>, current <code cds-text="code">value</code> and the
+      <code cds-text="code">options</code> it offers (select options, radio choices, datalist entries). The agent's JSON
+      answer is applied back with <code cds-text="code">applyFormValues</code>; unknown names, non-matching options and
+      password fields are reported as skipped rather than guessed at.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="formFillingExample" language="typescript"></app-code-snippet>
+    </div>
+
     <h2 id="other-ui-libraries" class="clr-mt-48px" cds-text="title">Teaching the engine about other UI libraries</h2>
     <p class="clr-mt-16px" cds-text="body">
       Components that are not Clarity components can be described by registering a DOM extractor. The returned function
@@ -116,10 +129,12 @@
 
     <h2 id="privacy-and-budgets" class="clr-mt-48px" cds-text="title">Privacy and budgets</h2>
     <p class="clr-mt-16px" cds-text="body">
-      Form fields are described by label, type and validation state —
-      <strong cds-text="medium">their values are never collected</strong>. Hidden elements and ignore-marked regions are
-      skipped, text is truncated and lists are capped, so snapshots stay small enough for an agent's context window.
-      Every budget can be tuned per call:
+      By default, form fields are described by name, label, type and validation state —
+      <strong cds-text="medium"
+        >values are collected only with the explicit <code cds-text="code">includeFormValues</code> opt-in</strong
+      >, passwords and file inputs are redacted unconditionally, and embedded frames can never request values through
+      the frame bridge. Hidden elements and ignore-marked regions are skipped, text is truncated and lists are capped,
+      so snapshots stay small enough for an agent's context window. Every budget can be tuned per call:
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="budgetsExample" language="typescript"></app-code-snippet>

@@ -90,6 +90,25 @@ describe('ClrContextualEngineService', () => {
       expect(await engine.requestHostContext()).toBeNull();
     });
 
+    it('applies agent form answers to the first matching form', () => {
+      const form = document.createElement('form');
+      form.id = 'engine-apply-form';
+      form.innerHTML = '<input type="text" name="city" />';
+      document.body.appendChild(form);
+
+      try {
+        const result = engine.applyFormValues({ city: 'Sofia' }, '#engine-apply-form');
+
+        expect(result.applied).toEqual(['city']);
+        expect(form.querySelector<HTMLInputElement>('[name=city]')?.value).toBe('Sofia');
+        expect(engine.applyFormValues({ city: 'Sofia' }, '#no-such-form').skipped).toEqual([
+          { name: 'city', reason: 'no form matches the selector' },
+        ]);
+      } finally {
+        form.remove();
+      }
+    });
+
     it('serves snapshots to embedded frames only while the frame bridge is enabled', () => {
       const postMessage = spyOn(window, 'postMessage');
       const request = {
