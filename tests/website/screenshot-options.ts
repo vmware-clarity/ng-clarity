@@ -33,16 +33,13 @@ export const websiteScreenshotOptions: ScreenshotOptions = {
     // by the pages-accessibility screenshot.
     exclude: true,
   },
+  'documentation-modal-code': {
+    // The animation demo toggles its modal in and out every two seconds.
+    maskSelectors: ['clr-modal-animation-demo'],
+  },
   'documentation-translate-code': {
     // The interactive demo formats the current time ("Formatted Date: ..."), which changes
     // between runs.
     maskSelectors: ['p:has-text("Formatted Date:")'],
-  },
-  'documentation-theme-builder': {
-    // The table of contents on this page renders nondeterministically: TableOfContentsComponent
-    // queries the headings when the route params emit, which races the lazy-loaded demo content,
-    // and it never re-queries. Roughly half of all direct page loads end up without the CONTENT
-    // box. Re-enable this page once the component re-queries after the content has rendered.
-    exclude: true,
   },
 };

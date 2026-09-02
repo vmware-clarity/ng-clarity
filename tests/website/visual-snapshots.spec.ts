@@ -27,17 +27,21 @@ const defaultMaskSelectors = ['img[src*=".gif"]', 'progress:not([value])', 'app-
 
 // The website scrolls inside Clarity's content area rather than the document, so without these
 // overrides nothing beyond the first viewport height is capturable. They let the app shell grow
-// vertically with its content while keeping horizontal overflow clipped (as users see it), and
-// hide the scroll-to-top button, which flaps once the viewport matches the content height. The
+// vertically with its content while keeping horizontal overflow clipped (as users see it). The
 // direct-child scoping matters: some demos (app-layout, navigation, ...) embed their own
 // .main-container/.content-area shells that must keep their production rendering.
+//
+// The table of contents is hidden entirely: TableOfContentsComponent races the lazy-loaded
+// content and renders its CONTENT box on only some page loads (issue #2678), which would make
+// any documentation page's screenshot nondeterministic. Remove the rule once #2678 is fixed to
+// restore visual coverage of the table of contents.
 function growPageWithContentStyles(minHeightPx: number) {
   return `
     html, body { height: auto !important; overflow-x: clip !important; }
     app-root > .main-container { height: auto !important; min-height: ${minHeightPx}px; overflow-x: clip !important; }
     app-root > .main-container > .content-container { height: auto !important; }
     app-root > .main-container > .content-container > .content-area { overflow-y: visible !important; overflow-x: clip !important; min-width: 0 !important; }
-    app-table-of-contents .scroll-to-top { display: none !important; }
+    app-table-of-contents { display: none !important; }
   `;
 }
 
