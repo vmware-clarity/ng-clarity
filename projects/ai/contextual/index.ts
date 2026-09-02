@@ -10,6 +10,7 @@ export * from './providers/context-registry.service';
 export * from './providers/context-tracker.service';
 export * from './providers/contextual-engine.service';
 export * from './dom/dom-context-collector';
+export * from './dom/element-context';
 export * from './dom/form-value-applier';
 export * from './iframe/context-frame-bridge';
 export * from './context.directive';

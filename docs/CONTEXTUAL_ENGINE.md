@@ -116,6 +116,33 @@ is destroyed, and their inputs are read at snapshot time, so they are never stal
 Anything can also implement `ClrContextProvider` and register with `ClrContextRegistryService` for
 fully dynamic context.
 
+## Component-published context: state the DOM cannot show
+
+Some state lives only inside component instances — a combobox's options render in a popover, yet
+the component always knows them. Any component can publish that truth by assigning a callback to
+its own host element under the `clrElementContext` property (exported as
+`CLR_ELEMENT_CONTEXT_PROPERTY`, with a `setClrElementContext` helper). The collector calls it
+while scraping and merges the result over what the DOM shows — published values win. Because the
+contract is a plain element property with plain data, publishing requires no dependency on
+`@clr/ai`: Clarity components, other UI libraries and application components all use the same
+mechanism.
+
+```ts
+setClrElementContext(hostElement, snapshotOptions => ({
+  type: 'combobox',
+  state: {
+    options: this.choices.map(choice => choice.label),
+    // Callbacks receive the snapshot budgets and must honor includeFormValues
+    // before exposing anything user-typed.
+    value: snapshotOptions.includeFormValues ? this.selection : undefined,
+  },
+}));
+```
+
+`ClrCombobox` ships this integration built in: its options and selection are reported even while
+the popover is closed (selection only under `includeFormValues`). A callback that throws is
+treated as having nothing to add.
+
 ## Teaching the engine about other UI libraries
 
 Components that are not Clarity components can be described by registering a DOM extractor:

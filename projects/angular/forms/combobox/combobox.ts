@@ -52,6 +52,7 @@ import { ClrComboboxContainer } from './combobox-container';
 import { ClrComboboxIdentityFunction, ClrComboboxResolverFunction, ComboboxModel } from './model/combobox.model';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
+import { ClrOption } from './option';
 import { ClrOptionSelected } from './option-selected.directive';
 import { ClrOptions } from './options';
 import { ComboboxContainerService } from './providers/combobox-container.service';
@@ -115,6 +116,8 @@ export class ClrCombobox<T>
   private resizeObserver: ResizeObserver;
   private containerWidthChange = new Subject();
   @ContentChild(ClrOptions) private options: ClrOptions<T>;
+
+  private contextHostElement: HTMLElement | null = null;
 
   private _searchText = '';
   private onTouchedCallback: () => any;
@@ -273,6 +276,8 @@ export class ClrCombobox<T>
 
   ngAfterContentInit() {
     this.initializeSubscriptions();
+    // Captured before ngAfterViewInit reassigns `el` to the wrapped text input.
+    this.publishElementContext(this.el.nativeElement);
 
     // Initialize with preselected value
     if (!this.optionSelectionService.selectionModel.isEmpty()) {
@@ -299,6 +304,10 @@ export class ClrCombobox<T>
 
   override ngOnDestroy(): void {
     super.ngOnDestroy();
+    if (this.contextHostElement) {
+      delete (this.contextHostElement as HTMLElement & { clrElementContext?: unknown }).clrElementContext;
+      this.contextHostElement = null;
+    }
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
@@ -580,6 +589,60 @@ export class ClrCombobox<T>
     if (this.onChangeCallback) {
       this.onChangeCallback(this.optionSelectionService.selectionModel.model);
     }
+  }
+
+  /**
+   * Publishes instance state the rendered DOM cannot show — the selection model and,
+   * while the options popover is instantiated, the option list — through the plain
+   * `clrElementContext` element property, where page-context tooling such as @clr/ai
+   * discovers it. Using a plain property keeps this free of any package dependency;
+   * readers that do not know the property simply ignore it.
+   */
+  private publishElementContext(host: HTMLElement) {
+    this.contextHostElement = host;
+    (host as HTMLElement & { clrElementContext?: unknown }).clrElementContext = (snapshotOptions: {
+      includeFormValues?: boolean;
+      maxItemsPerCollection?: number;
+    }) => {
+      const maxItems = snapshotOptions?.maxItemsPerCollection ?? 25;
+      const state: Record<string, unknown> = { multiSelect: this.multiSelect };
+      const items = this.options?.items;
+      if (items?.length) {
+        // Option content children exist even while the popover is closed, so the
+        // choices are available regardless of what the DOM currently shows.
+        state.options = items
+          .toArray()
+          .slice(0, maxItems)
+          .map(option => this.optionLabel(option));
+      } else {
+        // Async comboboxes have no option list until a search loads one.
+        state.optionsAvailable = false;
+      }
+      if (snapshotOptions?.includeFormValues) {
+        const model = this.optionSelectionService.selectionModel?.model;
+        if (model === null || model === undefined) {
+          state.value = null;
+        } else {
+          const displayNames = this.getDisplayNames(model);
+          state.value = this.multiSelect ? displayNames : (displayNames[0] ?? null);
+        }
+      }
+      return { type: 'combobox', state };
+    };
+  }
+
+  /** An option's visible label, without screen-reader-only additions such as "Selected". */
+  private optionLabel(option: ClrOption<T>): string {
+    let text = '';
+    option.elRef.nativeElement.childNodes.forEach(node => {
+      const isPlainText = node.nodeType === Node.TEXT_NODE;
+      const isVisibleElement =
+        node.nodeType === Node.ELEMENT_NODE && !(node as Element).classList.contains('clr-sr-only');
+      if (isPlainText || isVisibleElement) {
+        text += node.textContent ?? '';
+      }
+    });
+    return text.replace(/\s+/g, ' ').trim() || String(option.value);
   }
 
   private getDisplayNames(model: T | T[]) {

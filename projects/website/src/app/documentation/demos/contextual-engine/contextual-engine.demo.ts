@@ -96,6 +96,16 @@ import { ClrContextualModule } from '@clr/ai';
 export class AppModule {}
 `;
 
+const ELEMENT_CONTEXT_EXAMPLE = `
+setClrElementContext(hostElement, snapshotOptions => ({
+  type: 'combobox',
+  state: {
+    options: this.choices.map(choice => choice.label),
+    value: snapshotOptions.includeFormValues ? this.selection : undefined,
+  },
+}));
+`;
+
 const EXTRACTOR_EXAMPLE = `
 const unregister = this.contextEngine.registerDomExtractor({
   selector: 'chat-message-list',
@@ -163,6 +173,7 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   ignoreExample = IGNORE_EXAMPLE;
   directiveExample = DIRECTIVE_EXAMPLE;
   directiveModuleExample = DIRECTIVE_MODULE_EXAMPLE;
+  elementContextExample = ELEMENT_CONTEXT_EXAMPLE;
   extractorExample = EXTRACTOR_EXAMPLE;
   formFillingExample = FORM_FILLING_EXAMPLE;
   frameHostExample = FRAME_HOST_EXAMPLE;
