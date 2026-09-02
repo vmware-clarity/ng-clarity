@@ -11,6 +11,7 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextDomExtractor, collectClrDomActions, collectClrDomContexts } from '../dom/dom-context-collector';
+import { applyClrFormValues, ClrFormApplyResult } from '../dom/form-value-applier';
 import {
   ClrContextFrameHost,
   ClrContextFrameHostOptions,
@@ -78,6 +79,26 @@ export class ClrContextualEngineService implements OnDestroy {
       }
     }
     return snapshot;
+  }
+
+  /**
+   * Applies a form-filling agent's answer — a JSON object keyed by control `name`,
+   * matching the keys snapshots report when `includeFormValues` is on — to the first
+   * form matching `formSelector`. Values are written through real DOM events, so
+   * Angular forms pick them up as if the user had typed; nothing is submitted.
+   */
+  applyFormValues(values: Record<string, unknown>, formSelector = 'form[clrForm]'): ClrFormApplyResult {
+    if (!isPlatformBrowser(this.platformId)) {
+      return { applied: [], skipped: Object.keys(values).map(name => ({ name, reason: 'not running in a browser' })) };
+    }
+    const form = this.document.querySelector(formSelector);
+    if (!form) {
+      return {
+        applied: [],
+        skipped: Object.keys(values).map(name => ({ name, reason: 'no form matches the selector' })),
+      };
+    }
+    return applyClrFormValues(form, values);
   }
 
   /**
