@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { Injectable, Optional, SkipSelf, Directive, Input, Component, EventEmitter, PLATFORM_ID, ElementRef, ContentChildren, ViewChild, Output, Inject, NgModule } from '@angular/core';
+import { Injectable, Optional, SkipSelf, HostBinding, Directive, Input, Component, EventEmitter, PLATFORM_ID, ElementRef, ContentChildren, ViewChild, Output, Inject, NgModule } from '@angular/core';
 import { Subject, BehaviorSubject, fromEvent, isObservable } from 'rxjs';
 import { trigger, transition, style, animate, state } from '@angular/animations';
 import * as i3 from '@angular/common';
@@ -408,6 +408,10 @@ class DeclarativeTreeNodeModel extends TreeNodeModel {
 class ClrTreeNodeLink {
     constructor(el) {
         this.el = el;
+        // The tree node's content container owns the roving tabindex for the whole treeitem, so
+        // the link itself must be removed from the natural tab sequence to avoid a double Tab stop.
+        // It remains mouse-clickable and can still be activated programmatically via .click().
+        this.tabindex = -1;
     }
     get active() {
         return this.el.nativeElement.classList.contains('active');
@@ -418,7 +422,7 @@ class ClrTreeNodeLink {
         }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ClrTreeNodeLink, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.22", type: ClrTreeNodeLink, isStandalone: false, selector: ".clr-treenode-link", ngImport: i0 }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.22", type: ClrTreeNodeLink, isStandalone: false, selector: ".clr-treenode-link", host: { properties: { "attr.tabindex": "this.tabindex" } }, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ClrTreeNodeLink, decorators: [{
             type: Directive,
@@ -426,7 +430,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImpo
                     selector: '.clr-treenode-link',
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i0.ElementRef }] });
+        }], ctorParameters: () => [{ type: i0.ElementRef }], propDecorators: { tabindex: [{
+                type: HostBinding,
+                args: ['attr.tabindex']
+            }] } });
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -659,9 +666,13 @@ class ClrTreeNode {
         return this.featuresService.selectable;
     }
     focusTreeNode() {
+        if (!isPlatformBrowser(this.platformId)) {
+            return;
+        }
         const containerEl = this.contentContainer.nativeElement;
-        if (isPlatformBrowser(this.platformId) && document.activeElement !== containerEl) {
-            this.setTabIndex(0);
+        this.setTabIndex(0);
+        if (document.activeElement !== containerEl) {
+            this.focusManager.broadcastFocusedNode(this.nodeId);
             containerEl.focus();
             containerEl.scrollIntoView({ block: 'nearest', inline: 'nearest' });
         }

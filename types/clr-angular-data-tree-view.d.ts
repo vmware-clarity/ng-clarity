@@ -133,6 +133,7 @@ declare class ClrTree<T> implements AfterContentInit, OnDestroy {
 
 declare class ClrTreeNodeLink {
     private el;
+    tabindex: number;
     constructor(el: ElementRef<HTMLElement>);
     get active(): boolean;
     activate(): void;
