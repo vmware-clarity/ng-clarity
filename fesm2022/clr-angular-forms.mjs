@@ -35,8 +35,8 @@ import { NgModule } from '@angular/core';
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrFormsModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFormsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrFormsModule, imports: [CommonModule], exports: [ClrCommonFormsModule,
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ClrFormsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.22", ngImport: i0, type: ClrFormsModule, imports: [CommonModule], exports: [ClrCommonFormsModule,
             ClrCheckboxModule,
             ClrComboboxModule,
             ClrDatepickerModule,
@@ -49,7 +49,7 @@ class ClrFormsModule {
             ClrRangeModule,
             ClrDatalistModule,
             ClrNumberInputModule] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFormsModule, imports: [CommonModule, ClrCommonFormsModule,
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ClrFormsModule, imports: [CommonModule, ClrCommonFormsModule,
             ClrCheckboxModule,
             ClrComboboxModule,
             ClrDatepickerModule,
@@ -63,7 +63,7 @@ class ClrFormsModule {
             ClrDatalistModule,
             ClrNumberInputModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrFormsModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ClrFormsModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
