@@ -82,5 +82,5 @@ export const StackViewExpanded: StoryObj = {
 
 export const StackViewNotifyChange: StoryObj = {
   render: StackViewTemplate,
-  args: { clrSbNotifyChange: true },
+  args: { clrSbNotifyChange: true as any },
 };
