@@ -33,6 +33,11 @@ export const websiteScreenshotOptions: ScreenshotOptions = {
     // by the pages-accessibility screenshot.
     exclude: true,
   },
+  'documentation-theme-builder': {
+    // The page throws a router NG04005 error on load and intermittently renders as a blank
+    // shell, observed consistently on the CI runners (issue #2680). Re-enable once fixed.
+    exclude: true,
+  },
   'documentation-modal-code': {
     // The animation demo toggles its modal in and out every two seconds.
     maskSelectors: ['clr-modal-animation-demo'],
