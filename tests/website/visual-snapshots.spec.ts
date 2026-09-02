@@ -101,8 +101,8 @@ for (const sitePage of pages) {
     continue;
   }
 
-  test(screenshotPathFor(sitePage.name), async ({ page }) => {
-    await capturePage(page, sitePage.name, sitePage.route);
+  test(path.join(browser, 'website', sitePage.name), async ({ page }) => {
+    await capturePage(page, sitePage.name, 'overview', sitePage.route);
 
     // Documentation pages have additional tabs (code, api, accessibility, ...) next to the
     // default overview tab captured above. The available tabs vary per page, so discover them
@@ -116,22 +116,42 @@ for (const sitePage of pages) {
         continue; // the overview tab links to the base route and is already captured
       }
 
-      const tabName = `${sitePage.name}-${tabRoute.split('/').pop()}`;
+      const tab = tabRoute.split('/').pop();
+      await captureView(page, sitePage.name, tab, tabRoute);
 
-      if (!websiteScreenshotOptions[tabName]?.exclude) {
-        await capturePage(page, tabName, tabRoute);
+      // Some tabs split their examples into section subpages linked from the tab's landing
+      // page (for example /documentation/datagrid/code/pagination). Capture each link that
+      // sits exactly one level below the tab; deeper links are an embedded demo's own
+      // navigation states (for example vertical-nav's example pages), not documentation.
+      for (const sectionRoute of await discoverSectionRoutes(page, tabRoute)) {
+        await captureView(page, sitePage.name, `${tab}-${sectionRoute.split('/').pop()}`, sectionRoute);
       }
     }
   });
 }
 
-function screenshotPathFor(name: string) {
-  return path.join(browser, 'website', `${name}-${theme}-${density}.png`);
+async function discoverSectionRoutes(page: Page, tabRoute: string) {
+  const hrefs: (string | null)[] = await page
+    .locator('a[href]')
+    .evaluateAll(anchors => anchors.map(anchor => anchor.getAttribute('href')));
+
+  return [...new Set(hrefs)].filter(
+    href => href?.startsWith(`${tabRoute}/`) && !href.slice(tabRoute.length + 1).match(/[/#?]/)
+  );
 }
 
-async function capturePage(page: Page, name: string, route: string) {
-  const options: ScreenshotOptions[string] = websiteScreenshotOptions[name] ?? {};
-  const screenshotPath = screenshotPathFor(name);
+async function captureView(page: Page, pageName: string, view: string, route: string) {
+  if (!websiteScreenshotOptions[`${pageName}-${view}`]?.exclude) {
+    await capturePage(page, pageName, view, route);
+  }
+}
+
+async function capturePage(page: Page, pageName: string, view: string, route: string) {
+  // Screenshots are grouped in one directory per page, mirroring the Storybook suite's
+  // one directory per component.
+  const options: ScreenshotOptions[string] =
+    websiteScreenshotOptions[view === 'overview' ? pageName : `${pageName}-${view}`] ?? {};
+  const screenshotPath = path.join(browser, 'website', pageName, `${view}-${theme}-${density}.png`);
   fs.appendFileSync(usedScreenshotsFilePath, screenshotPath + '\n');
 
   const viewport = options.viewport ?? defaultViewport;

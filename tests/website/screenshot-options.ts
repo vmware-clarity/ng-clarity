@@ -14,10 +14,11 @@ import { ScreenshotOptions } from '../helpers/screenshot-options.interface';
  * Each key is a page name as generated in tests/website/visual-snapshots.spec.ts:
  * the route with slashes replaced by dashes, e.g.
  *
- * /documentation/button      => documentation-button (the overview tab)
- * /documentation/button/code => documentation-button-code
- * /pages/introduction        => pages-introduction
- * /                          => home
+ * /documentation/button                 => documentation-button (the overview tab)
+ * /documentation/button/code           => documentation-button-code
+ * /documentation/datagrid/code/full    => documentation-datagrid-code-full
+ * /pages/introduction                  => pages-introduction
+ * /                                    => home
  *
  * Available options:
  * - fullPageScreenshot: pages are captured full page by default; set to false to capture
@@ -37,6 +38,10 @@ export const websiteScreenshotOptions: ScreenshotOptions = {
     // The page throws a router NG04005 error on load and intermittently renders as a blank
     // shell, observed consistently on the CI runners (issue #2680). Re-enable once fixed.
     exclude: true,
+  },
+  'documentation-datagrid-code-virtual-scroll': {
+    // The live demo generates random rows (dates, wins) on every load.
+    maskSelectors: ['clr-datagrid'],
   },
   'documentation-modal-code': {
     // The animation demo toggles its modal in and out every two seconds.

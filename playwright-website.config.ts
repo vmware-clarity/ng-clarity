@@ -12,9 +12,10 @@ import { createVrtConfig } from './tests/helpers/create-vrt-config';
  */
 export default createVrtConfig({
   testDir: './tests/website',
-  // Each test captures full-page screenshots of every tab of a documentation page, which
-  // takes longer than a story screenshot.
-  timeout: 120 * 1000,
+  // Each test captures full-page screenshots of every tab of a documentation page, including
+  // section subpages (the datagrid code tab alone has over twenty), which takes far longer
+  // than a story screenshot.
+  timeout: 300 * 1000,
   expectTimeout: 10000,
   webServerCommand: 'npm run ts-node -- ./scripts/start-static-server.ts ./dist/website 8081 --spa',
   webServerPort: 8081,
