@@ -87,10 +87,10 @@ class OverrideClrStringsDirective {
             keys: keys,
         };
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: OverrideClrStringsDirective, deps: [{ token: i1.ClrStepperPanel }, { token: i2.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: OverrideClrStringsDirective, isStandalone: false, selector: "clr-stepper-panel [appfxOverrideClrStrings]", inputs: { appfxOverrideClrStrings: "appfxOverrideClrStrings" }, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: OverrideClrStringsDirective, deps: [{ token: i1.ClrStepperPanel }, { token: i2.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.22", type: OverrideClrStringsDirective, isStandalone: false, selector: "clr-stepper-panel [appfxOverrideClrStrings]", inputs: { appfxOverrideClrStrings: "appfxOverrideClrStrings" }, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: OverrideClrStringsDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: OverrideClrStringsDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-stepper-panel [appfxOverrideClrStrings]',
@@ -119,10 +119,10 @@ class ElementResizeService {
             };
         });
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ElementResizeService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ElementResizeService, providedIn: 'root' }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ElementResizeService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ElementResizeService, providedIn: 'root' }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ElementResizeService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ElementResizeService, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }] });
@@ -284,10 +284,10 @@ class OverflowClrTabsDirective {
     removeTabLinkClasses(tabLink) {
         resources.clrTabLinkClasses.forEach((cssClass) => this.renderer.removeClass(tabLink.el.nativeElement, cssClass));
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: OverflowClrTabsDirective, deps: [{ token: i0.ChangeDetectorRef }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i1$1.ClrTabs }, { token: ElementResizeService }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: OverflowClrTabsDirective, isStandalone: false, selector: "clr-tabs [appfxOverflowTabs]", ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: OverflowClrTabsDirective, deps: [{ token: i0.ChangeDetectorRef }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i1$1.ClrTabs }, { token: ElementResizeService }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.22", type: OverflowClrTabsDirective, isStandalone: false, selector: "clr-tabs [appfxOverflowTabs]", ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: OverflowClrTabsDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: OverflowClrTabsDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-tabs [appfxOverflowTabs]',
@@ -327,8 +327,8 @@ const translations = {
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class RequiredFieldLegendComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: RequiredFieldLegendComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: RequiredFieldLegendComponent, isStandalone: false, selector: "appfx-required-field-legend", providers: [
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: RequiredFieldLegendComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.22", type: RequiredFieldLegendComponent, isStandalone: false, selector: "appfx-required-field-legend", providers: [
             AppfxTranslateService,
             {
                 provide: appfxTranslationsToken,
@@ -336,7 +336,7 @@ class RequiredFieldLegendComponent {
             },
         ], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div class=\"legend-wrapper\">\n  <span>{{ 'legendPrefix' | translate }}</span>\n  <span class=\"icon-margin clr-required-mark\"></span>\n  <span>{{ 'legendSuffix' | translate }}</span>\n</div>\n", styles: [".legend-wrapper{display:inline-block;position:relative;height:1.5rem;font-style:italic}.legend-wrapper .icon-margin{margin-right:.3rem}\n"], dependencies: [{ kind: "pipe", type: i1$2.TranslatePipe, name: "translate" }], preserveWhitespaces: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: RequiredFieldLegendComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: RequiredFieldLegendComponent, decorators: [{
             type: Component,
             args: [{ selector: 'appfx-required-field-legend', standalone: false, providers: [
                         AppfxTranslateService,
@@ -444,10 +444,10 @@ class ZoomLevelService {
         this.lastZoomLevel = newResponsiveBreakpoint?.zoomLevel;
         this.resizeSubject.next(this.lastZoomLevel);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ZoomLevelService, deps: [{ token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ZoomLevelService }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ZoomLevelService, deps: [{ token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ZoomLevelService }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ZoomLevelService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ZoomLevelService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: Document, decorators: [{
                     type: Inject,
@@ -476,10 +476,10 @@ class ZoomLevelIndicatorDirective {
             this.subscription.unsubscribe();
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ZoomLevelIndicatorDirective, deps: [{ token: ZoomLevelService, optional: true }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: ZoomLevelIndicatorDirective, isStandalone: false, selector: "[zoomLevelIndicator]", host: { properties: { "class": "this.zoomLevel" } }, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ZoomLevelIndicatorDirective, deps: [{ token: ZoomLevelService, optional: true }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.22", type: ZoomLevelIndicatorDirective, isStandalone: false, selector: "[zoomLevelIndicator]", host: { properties: { "class": "this.zoomLevel" } }, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ZoomLevelIndicatorDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ZoomLevelIndicatorDirective, decorators: [{
             type: Directive,
             args: [{ selector: '[zoomLevelIndicator]', standalone: false }]
         }], ctorParameters: () => [{ type: ZoomLevelService, decorators: [{
@@ -499,17 +499,17 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * Provides accessibility related services.
  */
 class AppfxA11yModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxA11yModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: AppfxA11yModule, declarations: [OverflowClrTabsDirective,
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxA11yModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.22", ngImport: i0, type: AppfxA11yModule, declarations: [OverflowClrTabsDirective,
             OverrideClrStringsDirective,
             RequiredFieldLegendComponent,
             ZoomLevelIndicatorDirective], imports: [AppfxTranslateModule], exports: [OverflowClrTabsDirective,
             OverrideClrStringsDirective,
             RequiredFieldLegendComponent,
             ZoomLevelIndicatorDirective] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxA11yModule, providers: [ZoomLevelService], imports: [AppfxTranslateModule] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxA11yModule, providers: [ZoomLevelService], imports: [AppfxTranslateModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxA11yModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxA11yModule, decorators: [{
             type: NgModule,
             args: [{
                     declarations: [

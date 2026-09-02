@@ -20,13 +20,13 @@ function workflowStringsServiceFactory(existing) {
     return existing || new WorkflowStrings();
 }
 class AppfxWorkflowsModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxWorkflowsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: AppfxWorkflowsModule, imports: [AppfxMultiPageDialogModule,
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxWorkflowsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.22", ngImport: i0, type: AppfxWorkflowsModule, imports: [AppfxMultiPageDialogModule,
             AppfxStepperModule,
             AppfxTabsModule,
             AppfxWizardModule,
             AppfxWorkflowCoreModule], exports: [AppfxMultiPageDialogModule, AppfxStepperModule, AppfxTabsModule, AppfxWizardModule] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxWorkflowsModule, providers: [
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxWorkflowsModule, providers: [
             {
                 // This pattern allows the importer of this module to specify its own WorkflowConfigurationService.
                 provide: WorkflowConfigurationService,
@@ -45,7 +45,7 @@ class AppfxWorkflowsModule {
             AppfxWizardModule,
             AppfxWorkflowCoreModule, AppfxMultiPageDialogModule, AppfxStepperModule, AppfxTabsModule, AppfxWizardModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxWorkflowsModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxWorkflowsModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [

@@ -136,10 +136,10 @@ class PersistenceService {
         // all cardsInfo's - existing with updated cardInfo's and newly added cardInfo's
         return [...updatedCardSettings, ...newCardSettings];
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: PersistenceService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: PersistenceService }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: PersistenceService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: PersistenceService }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: PersistenceService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: PersistenceService, decorators: [{
             type: Injectable
         }] });
 
@@ -332,10 +332,10 @@ class ContainerService {
             return card;
         });
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ContainerService, deps: [{ token: PersistenceService }], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ContainerService }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ContainerService, deps: [{ token: PersistenceService }], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ContainerService }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ContainerService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ContainerService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: PersistenceService }] });
 
@@ -420,10 +420,10 @@ class A11yService {
         const cardOrder = this.containerService.getCardOrder(cardId);
         return cardOrder !== cardDefaults.order && this.a11yDropOrder === cardOrder;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: A11yService, deps: [{ token: ContainerService }], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: A11yService }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: A11yService, deps: [{ token: ContainerService }], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: A11yService }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: A11yService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: A11yService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: ContainerService }] });
 
@@ -460,10 +460,10 @@ class DragDropService {
         }
         this.containerService.moveCard(this.dragOrder, dropOrder);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DragDropService, deps: [{ token: ContainerService }], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DragDropService }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: DragDropService, deps: [{ token: ContainerService }], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: DragDropService }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: DragDropService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: DragDropService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: ContainerService }] });
 
@@ -546,10 +546,10 @@ class LayoutService {
     calculateCardHeight(unitHeight) {
         return unitHeight * cardSize.unitHeightInPixels + (unitHeight - 1) * cardSize.unitGutterSizeInPixels;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: LayoutService, deps: [{ token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: LayoutService }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: LayoutService, deps: [{ token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: LayoutService }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: LayoutService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: LayoutService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: i0.Renderer2 }] });
 
@@ -667,8 +667,8 @@ class AppfxCardComponent {
         event.preventDefault();
         event.stopImmediatePropagation();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxCardComponent, deps: [{ token: i0.ElementRef }, { token: i1.DragAndDropGroupService }, { token: LayoutService }, { token: DragDropService }, { token: A11yService }, { token: i0.ChangeDetectorRef }, { token: i5.ZoomLevelService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: AppfxCardComponent, isStandalone: false, selector: "appfx-card", inputs: { card: "card", dropGroup: "dropGroup" }, providers: [
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxCardComponent, deps: [{ token: i0.ElementRef }, { token: i1.DragAndDropGroupService }, { token: LayoutService }, { token: DragDropService }, { token: A11yService }, { token: i0.ChangeDetectorRef }, { token: i5.ZoomLevelService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.22", type: AppfxCardComponent, isStandalone: false, selector: "appfx-card", inputs: { card: "card", dropGroup: "dropGroup" }, providers: [
             AppfxTranslateService,
             {
                 provide: appfxMissingTranslationToken,
@@ -688,7 +688,7 @@ class AppfxCardComponent {
             ]),
         ], preserveWhitespaces: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxCardComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxCardComponent, decorators: [{
             type: Component,
             args: [{ selector: 'appfx-card', standalone: false, providers: [
                         AppfxTranslateService,
@@ -841,8 +841,8 @@ class AppfxCardContainerSettingsComponent {
     trackByFn(index, item) {
         return item.id;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxCardContainerSettingsComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: AppfxCardContainerSettingsComponent, isStandalone: false, selector: "appfx-card-container-settings", inputs: { containerCards: "containerCards" }, outputs: { toggleCardVisibility: "toggleCardVisibility" }, providers: [
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxCardContainerSettingsComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.22", type: AppfxCardContainerSettingsComponent, isStandalone: false, selector: "appfx-card-container-settings", inputs: { containerCards: "containerCards" }, outputs: { toggleCardVisibility: "toggleCardVisibility" }, providers: [
             AppfxTranslateService,
             {
                 provide: appfxMissingTranslationToken,
@@ -854,7 +854,7 @@ class AppfxCardContainerSettingsComponent {
             },
         ], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<clr-dropdown [clrCloseMenuOnItemClick]=\"false\">\n  <button class=\"settings-btn\" clrDropdownTrigger>\n    <cds-icon shape=\"cog\" size=\"24\" data-test-id=\"toggleContainerSettingsDropDown\"> </cds-icon>\n    <span class=\"clr-sr-only\">\n      {{ 'settingsCog' | translate }}\n    </span>\n  </button>\n  <clr-dropdown-menu class=\"container-settings\" clrPosition=\"bottom-right\" *clrIfOpen>\n    <div *ngFor=\"let card of cards; trackBy: trackByFn\" clrDropdownItem>\n      <clr-checkbox-wrapper\n        [class.disabled-item]=\"card.canHide === false\"\n        (keydown.space)=\"toggleShowHide(card)\"\n        (keydown.enter)=\"toggleShowHide(card)\"\n      >\n        <input\n          type=\"checkbox\"\n          clrCheckbox\n          name=\"cards\"\n          (change)=\"toggleShowHide(card)\"\n          [checked]=\"!card.hidden\"\n          [disabled]=\"card.canHide === false\"\n          tabindex=\"-1\"\n        />\n        <label [title]=\"card.title\" cds-text=\"truncate\">{{ card.title }}</label>\n      </clr-checkbox-wrapper>\n    </div>\n  </clr-dropdown-menu>\n</clr-dropdown>\n", styles: [".settings-btn{padding:0}.container-settings{margin-top:7px;max-height:350px;overflow-y:auto}.container-settings .disabled-item input[type=checkbox]+label:before{background-color:#ccc}.container-settings .disabled-item label{color:#ccc;cursor:not-allowed}.container-settings .container-settings-list{max-height:350px;overflow-y:auto}.container-settings .dropdown-item .clr-checkbox-wrapper{padding:0 var(--cds-global-space-3)}.container-settings .dropdown-item .clr-checkbox-wrapper label.clr-control-label{padding-left:18px;padding-right:18px;max-width:250px;flex:1 1 100%}clr-dropdown .settings-btn{margin-top:10px;padding-right:0}:host ::ng-deep .dropdown-menu .dropdown-item{flex:1 0;padding:0}\n"], dependencies: [{ kind: "directive", type: i1$1.ClrControlLabel, selector: "label", inputs: ["id", "for"] }, { kind: "component", type: i6.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i3.ClrCheckbox, selector: "[clrCheckbox],[clrToggle]" }, { kind: "component", type: i3.ClrCheckboxWrapper, selector: "clr-checkbox-wrapper,clr-toggle-wrapper" }, { kind: "component", type: i4.ClrDropdown, selector: "clr-dropdown", inputs: ["clrCloseMenuOnItemClick"] }, { kind: "component", type: i4.ClrDropdownMenu, selector: "clr-dropdown-menu", inputs: ["clrPosition"] }, { kind: "directive", type: i4.ClrDropdownTrigger, selector: "[clrDropdownTrigger],[clrDropdownToggle]" }, { kind: "directive", type: i4.ClrDropdownItem, selector: "[clrDropdownItem]", inputs: ["clrDisabled", "id"] }, { kind: "directive", type: i5$1.ClrIfOpen, selector: "[clrIfOpen]", inputs: ["clrIfOpen"], outputs: ["clrIfOpenChange"] }, { kind: "directive", type: i6$1.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "pipe", type: i8.TranslatePipe, name: "translate" }], preserveWhitespaces: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxCardContainerSettingsComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxCardContainerSettingsComponent, decorators: [{
             type: Component,
             args: [{ selector: 'appfx-card-container-settings', standalone: false, providers: [
                         AppfxTranslateService,
@@ -1022,10 +1022,10 @@ class AppfxCardContainerComponent {
     trackByFn(index, item) {
         return item.id;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxCardContainerComponent, deps: [{ token: ContainerService }, { token: PersistenceService }, { token: i0.IterableDiffers }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: AppfxCardContainerComponent, isStandalone: false, selector: "appfx-card-container", inputs: { containerId: "containerId", cards: "cards", persistenceStore: "persistenceStore", showCardContainerSettings: "showCardContainerSettings", dragDropEnabled: "dragDropEnabled" }, providers: [A11yService, ContainerService, DragDropService, LayoutService, PersistenceService], viewQueries: [{ propertyName: "cardContainer", first: true, predicate: ["cardContainer"], descendants: true, read: ViewContainerRef, static: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div class=\"content-container clr-flex-row\">\n  <div class=\"card-container clr-flex-grow-1\">\n    <ng-template #cardContainer> </ng-template>\n  </div>\n  <appfx-card-container-settings\n    *ngIf=\"showCardContainerSettings\"\n    [containerCards]=\"containerCards\"\n    (toggleCardVisibility)=\"onToggleCardVisibility($event)\"\n  ></appfx-card-container-settings>\n</div>\n", styles: [".card-container{display:flex;flex-wrap:wrap;margin:auto -5px}\n"], dependencies: [{ kind: "directive", type: i6$1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "component", type: AppfxCardContainerSettingsComponent, selector: "appfx-card-container-settings", inputs: ["containerCards"], outputs: ["toggleCardVisibility"] }], preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxCardContainerComponent, deps: [{ token: ContainerService }, { token: PersistenceService }, { token: i0.IterableDiffers }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.22", type: AppfxCardContainerComponent, isStandalone: false, selector: "appfx-card-container", inputs: { containerId: "containerId", cards: "cards", persistenceStore: "persistenceStore", showCardContainerSettings: "showCardContainerSettings", dragDropEnabled: "dragDropEnabled" }, providers: [A11yService, ContainerService, DragDropService, LayoutService, PersistenceService], viewQueries: [{ propertyName: "cardContainer", first: true, predicate: ["cardContainer"], descendants: true, read: ViewContainerRef, static: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div class=\"content-container clr-flex-row\">\n  <div class=\"card-container clr-flex-grow-1\">\n    <ng-template #cardContainer> </ng-template>\n  </div>\n  <appfx-card-container-settings\n    *ngIf=\"showCardContainerSettings\"\n    [containerCards]=\"containerCards\"\n    (toggleCardVisibility)=\"onToggleCardVisibility($event)\"\n  ></appfx-card-container-settings>\n</div>\n", styles: [".card-container{display:flex;flex-wrap:wrap;margin:auto -5px}\n"], dependencies: [{ kind: "directive", type: i6$1.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "component", type: AppfxCardContainerSettingsComponent, selector: "appfx-card-container-settings", inputs: ["containerCards"], outputs: ["toggleCardVisibility"] }], preserveWhitespaces: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxCardContainerComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxCardContainerComponent, decorators: [{
             type: Component,
             args: [{ selector: 'appfx-card-container', standalone: false, providers: [A11yService, ContainerService, DragDropService, LayoutService, PersistenceService], template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div class=\"content-container clr-flex-row\">\n  <div class=\"card-container clr-flex-grow-1\">\n    <ng-template #cardContainer> </ng-template>\n  </div>\n  <appfx-card-container-settings\n    *ngIf=\"showCardContainerSettings\"\n    [containerCards]=\"containerCards\"\n    (toggleCardVisibility)=\"onToggleCardVisibility($event)\"\n  ></appfx-card-container-settings>\n</div>\n", styles: [".card-container{display:flex;flex-wrap:wrap;margin:auto -5px}\n"] }]
         }], ctorParameters: () => [{ type: ContainerService }, { type: PersistenceService }, { type: i0.IterableDiffers }], propDecorators: { containerId: [{
@@ -1054,11 +1054,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * declaration and exports of needed components
  */
 class AppfxCardContainerModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxCardContainerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: AppfxCardContainerModule, declarations: [AppfxCardComponent, AppfxCardContainerComponent, AppfxCardContainerSettingsComponent], imports: [AppfxTranslateModule, ClrCheckboxModule, ClrDropdownModule, CommonModule, DragDropModule], exports: [AppfxCardComponent, AppfxCardContainerComponent, AppfxCardContainerSettingsComponent] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxCardContainerModule, imports: [AppfxTranslateModule, ClrCheckboxModule, ClrDropdownModule, CommonModule, DragDropModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxCardContainerModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.22", ngImport: i0, type: AppfxCardContainerModule, declarations: [AppfxCardComponent, AppfxCardContainerComponent, AppfxCardContainerSettingsComponent], imports: [AppfxTranslateModule, ClrCheckboxModule, ClrDropdownModule, CommonModule, DragDropModule], exports: [AppfxCardComponent, AppfxCardContainerComponent, AppfxCardContainerSettingsComponent] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxCardContainerModule, imports: [AppfxTranslateModule, ClrCheckboxModule, ClrDropdownModule, CommonModule, DragDropModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxCardContainerModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxCardContainerModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [AppfxTranslateModule, ClrCheckboxModule, ClrDropdownModule, CommonModule, DragDropModule],
