@@ -10,6 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   ElementRef,
@@ -41,7 +42,7 @@ import { debounceTime, filter } from 'rxjs/operators';
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { ClrSelectedState } from './models/selected-state.enum';
 import { TreeNodeModel } from './models/tree-node.model';
-import { TREE_FEATURES_PROVIDER, TreeFeaturesService } from './tree-features.service';
+import { isTreeNodeInScope, TREE_FEATURES_PROVIDER, TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNodeLink } from './tree-node-link';
 
@@ -76,6 +77,11 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
   @Output('clrSelectedChange') selectedChange = new EventEmitter<ClrSelectedState>(false);
   @Output('clrExpandedChange') expandedChange = new EventEmitter<boolean>();
+  /**
+   * Emits `false` as soon as this node or any of its descendants gets collapsed after an expand all,
+   * and `true` when the whole subtree gets expanded through the `expandAll()` method.
+   */
+  @Output('clrExpandAllChange') expandAllChange = new EventEmitter<boolean>(true);
 
   STATES = ClrSelectedState;
   isModelLoading = false;
@@ -83,6 +89,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   contentContainerTabindex = -1;
   _model: TreeNodeModel<T>;
 
+  private _allExpanded = false;
   private skipEmitChange = false;
   private typeAheadKeyBuffer = '';
   private typeAheadKeyEvent = new Subject<string>();
@@ -104,7 +111,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     public commonStrings: ClrCommonStringsService,
     private focusManager: TreeFocusManagerService<T>,
     private elementRef: ElementRef<HTMLElement>,
-    injector: Injector
+    private injector: Injector,
+    private cdr: ChangeDetectorRef
   ) {
     if (featuresService.recursion) {
       // I'm completely stuck, we have to hack into private properties until either
@@ -165,6 +173,26 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     this.expandService.expanded = value;
   }
 
+  /**
+   * Two-way binding to expand or collapse this node and all of its descendants at once.
+   * Descendants added later on, including lazy-loaded children, come in expanded while this is `true`.
+   */
+  @Input('clrExpandAll')
+  get allExpanded(): boolean {
+    return this._allExpanded;
+  }
+  set allExpanded(value: boolean) {
+    value = !!value;
+    if (value === this._allExpanded) {
+      return;
+    }
+    this._allExpanded = value;
+    // Same reasoning as in ClrTree: store the scope right away for nodes initializing in this change detection
+    // pass, but only flip existing nodes once the pass is over to avoid ExpressionChangedAfterItHasBeenChecked.
+    this.featuresService.setExpandedScope(this._model, value);
+    Promise.resolve().then(() => this.requestExpandAll(value));
+  }
+
   @Input('clrForTypeAhead')
   set clrForTypeAhead(value: string) {
     this._model.textContent = trimAndLowerCase(value || this.elementRef.nativeElement.textContent);
@@ -189,6 +217,12 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   ngOnInit() {
+    // Nodes created inside a scope that is currently fully expanded (lazy-loaded children, dynamic nodes)
+    // come in expanded, the same way a [clrExpanded]="true" input would initialize them.
+    // Children are not necessarily known yet at this point, so only an explicit [clrExpandable]="false" opts out.
+    if (this.expandable !== false && this.featuresService.isInExpandedScope(this._model)) {
+      this.expandService.expanded = true;
+    }
     this._model.expanded = this.expanded;
     this._model.disabled = this.disabled;
     this.subscriptions.push(
@@ -200,6 +234,24 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       this.expandService.expandChange.subscribe(value => {
         this.expandedChange.emit(value);
         this._model.expanded = value;
+        if (!value) {
+          this.featuresService.clearExpandedScopesContaining(this._model);
+        }
+      }),
+      this.featuresService.expandAllRequest.subscribe(({ scope, expanded }) => {
+        if (!isTreeNodeInScope(this._model, scope)) {
+          return;
+        }
+        // Leaves are left alone when expanding, so that they don't emit a meaningless clrExpandedChange.
+        if (!expanded || this.isExpandable()) {
+          this.expandService.expanded = expanded;
+        }
+      }),
+      this.featuresService.expandedScopeCleared.subscribe(scope => {
+        if (scope === this._model && this._allExpanded) {
+          this._allExpanded = false;
+          this.expandAllChange.emit(false);
+        }
       })
     );
     this.subscriptions.push(
@@ -235,6 +287,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   ngOnDestroy() {
+    this.featuresService.expandedScopes.delete(this._model);
     this._model.destroy();
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
@@ -248,6 +301,20 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
   isSelectable() {
     return this.featuresService.selectable;
+  }
+
+  /**
+   * Expands this node and every expandable node below it, in a single change detection pass and without animations.
+   */
+  expandAll() {
+    this.setAllExpanded(true);
+  }
+
+  /**
+   * Collapses this node and every node below it, in a single change detection pass and without animations.
+   */
+  collapseAll() {
+    this.setAllExpanded(false);
   }
 
   focusTreeNode(): void {
@@ -312,6 +379,18 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
     // if non-letter keys are pressed, do reset.
     this.typeAheadKeyBuffer = '';
+  }
+
+  private setAllExpanded(expanded: boolean) {
+    if (this._allExpanded !== expanded) {
+      this._allExpanded = expanded;
+      this.expandAllChange.emit(expanded);
+    }
+    this.requestExpandAll(expanded);
+  }
+
+  private requestExpandAll(expanded: boolean) {
+    this.featuresService.requestExpandAll(this._model, expanded, this.injector, this.cdr);
   }
 
   private setTabIndex(value: number) {
