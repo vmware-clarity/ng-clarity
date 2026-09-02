@@ -116,6 +116,22 @@ parent.postMessage({ protocol: 'ui-context/v1', kind: 'context-request', request
 // { protocol: 'ui-context/v1', kind: 'context-response', requestId: 'r1', context: { ... } }
 `;
 
+const FORM_FILLING_EXAMPLE = `
+// 1. Opt into full form context: names, current values, selectable options.
+const context = contextEngine.getSnapshot({ includeFormValues: true });
+// field example: { type: 'select', label: 'Cluster', state: {
+//   name: 'cluster', value: 'beta',
+//   options: [{ value: 'alpha', label: 'Alpha' }, { value: 'beta', label: 'Beta' }] } }
+
+// 2. The agent answers with JSON keyed by control name...
+const answer = { hostName: 'esx-prod-04', cluster: 'beta', tier: 'silver', enabled: true };
+
+// 3. ...which is applied back through real DOM events, so Angular forms
+//    react as if the user had typed. Nothing is submitted automatically.
+const result = contextEngine.applyFormValues(answer);
+// { applied: ['hostName', 'cluster', 'tier', 'enabled'], skipped: [] }
+`;
+
 const GLOBAL_ACCESS_EXAMPLE = `
 this.contextEngine.enableGlobalAccess();
 // Browser-driving agents can now call window.clrContext() for a fresh snapshot.
@@ -148,6 +164,7 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   directiveExample = DIRECTIVE_EXAMPLE;
   directiveModuleExample = DIRECTIVE_MODULE_EXAMPLE;
   extractorExample = EXTRACTOR_EXAMPLE;
+  formFillingExample = FORM_FILLING_EXAMPLE;
   frameHostExample = FRAME_HOST_EXAMPLE;
   frameClientExample = FRAME_CLIENT_EXAMPLE;
   globalAccessExample = GLOBAL_ACCESS_EXAMPLE;

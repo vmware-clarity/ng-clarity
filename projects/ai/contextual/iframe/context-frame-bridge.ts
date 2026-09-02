@@ -54,7 +54,12 @@ export interface ClrContextFrameRequestOptions {
   options?: ClrContextSnapshotOptions;
 }
 
-/** Snapshot option keys an embedded frame is allowed to set on the host. */
+/**
+ * Snapshot option keys an embedded frame is allowed to set on the host.
+ * `includeFormValues` is deliberately absent: an embedded frame must never be able to
+ * pull user-typed form data out of the hosting page — only the host application can
+ * opt into that for snapshots it takes itself.
+ */
 const SAFE_OPTION_KEYS: (keyof ClrContextSnapshotOptions)[] = [
   'maxTextLength',
   'maxItemsPerCollection',

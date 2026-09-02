@@ -121,10 +121,10 @@ describe('DOM context collector', () => {
     expect(datagrid?.state?.footer).toContain('2 items');
   });
 
-  it('describes form fields without ever collecting their values', () => {
+  it('describes form fields without collecting their values by default', () => {
     const form = contextOfType('form');
 
-    expect(form?.children).toEqual([{ type: 'text', label: 'Username', state: { required: true } }]);
+    expect(form?.children).toEqual([{ type: 'text', label: 'Username', state: { name: 'username', required: true } }]);
     expect(JSON.stringify(collectClrDomContexts(root))).not.toContain('top-secret-value');
   });
 
@@ -385,6 +385,68 @@ describe('DOM context collector - hand-authored markup', () => {
 
     expect(modal?.label).toBe('Bare modal');
     expect(modal?.actions).toBeUndefined();
+  });
+
+  it('collects control names, values and options only on explicit opt-in', () => {
+    root.innerHTML = `
+      <form clrForm>
+        <div class="clr-form-control">
+          <label class="clr-control-label">Host name</label>
+          <input type="text" name="hostName" value="esx-prod-04" />
+        </div>
+        <div class="clr-form-control">
+          <label class="clr-control-label">Cluster</label>
+          <select name="cluster">
+            <option value="alpha">Alpha</option>
+            <option value="beta" selected>Beta</option>
+          </select>
+        </div>
+        <div class="clr-form-control">
+          <label class="clr-control-label">Tier</label>
+          <div class="clr-radio-wrapper">
+            <input type="radio" id="tier-gold" name="tier" value="gold" />
+            <label for="tier-gold">Gold</label>
+          </div>
+          <div class="clr-radio-wrapper">
+            <input type="radio" id="tier-silver" name="tier" value="silver" checked />
+            <label for="tier-silver">Silver</label>
+          </div>
+        </div>
+        <div class="clr-form-control">
+          <label class="clr-control-label">Enabled</label>
+          <input type="checkbox" name="enabled" checked />
+        </div>
+        <div class="clr-form-control">
+          <label class="clr-control-label">Root password</label>
+          <input type="password" name="secret" value="hunter2" />
+        </div>
+      </form>
+    `;
+
+    const withValues = collectClrDomContexts(root, { includeFormValues: true }).find(c => c.type === 'form');
+    const fieldByName = (name: string) => withValues?.children?.find(child => child.state?.name === name);
+
+    expect(fieldByName('hostName')?.state?.value).toBe('esx-prod-04');
+    expect(fieldByName('cluster')?.state?.value).toBe('beta');
+    expect(fieldByName('cluster')?.state?.options).toEqual([
+      { value: 'alpha', label: 'Alpha' },
+      { value: 'beta', label: 'Beta' },
+    ]);
+    expect(fieldByName('tier')?.state?.value).toBe('silver');
+    expect(fieldByName('tier')?.state?.options).toEqual([
+      { value: 'gold', label: 'Gold' },
+      { value: 'silver', label: 'Silver' },
+    ]);
+    expect(fieldByName('enabled')?.state?.value).toBe(true);
+
+    // Passwords are redacted even with the opt-in.
+    expect(fieldByName('secret')?.state?.redacted).toBe(true);
+    expect(JSON.stringify(withValues)).not.toContain('hunter2');
+
+    // Without the opt-in, names remain but no value appears anywhere.
+    const withoutValues = collectClrDomContexts(root).find(c => c.type === 'form');
+    expect(withoutValues?.children?.find(child => child.state?.name === 'hostName')?.state?.value).toBeUndefined();
+    expect(JSON.stringify(withoutValues)).not.toContain('esx-prod-04');
   });
 
   it('never describes elements inside ignore-marked regions', () => {

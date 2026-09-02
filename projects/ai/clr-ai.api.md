@@ -13,6 +13,9 @@ import { OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 // @public
+export function applyClrFormValues(form: Element, values: Record<string, unknown>): ClrFormApplyResult;
+
+// @public
 export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions>;
 
 // @public
@@ -133,6 +136,7 @@ export class ClrContextRegistryService {
 export interface ClrContextSnapshotOptions {
     includeActions?: boolean;
     includeDomComponents?: boolean;
+    includeFormValues?: boolean;
     maxComponents?: number;
     maxItemsPerCollection?: number;
     maxTextLength?: number;
@@ -164,6 +168,7 @@ export interface ClrContextTrackingOptions {
 // @public
 export class ClrContextualEngineService implements OnDestroy {
     constructor(platformId: unknown, document: Document, contextRegistry: ClrContextRegistryService, router: Router | null);
+    applyFormValues(values: Record<string, unknown>, formSelector?: string): ClrFormApplyResult;
     // (undocumented)
     disableFrameBridge(): void;
     // (undocumented)
@@ -189,6 +194,15 @@ export class ClrContextualModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrContextualModule>;
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrContextualModule, [typeof ClrContext], [typeof i2.CommonModule], [typeof ClrContext]>;
+}
+
+// @public
+export interface ClrFormApplyResult {
+    applied: string[];
+    skipped: {
+        name: string;
+        reason: string;
+    }[];
 }
 
 // @public
