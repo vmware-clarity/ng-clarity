@@ -14,11 +14,11 @@ export * from '@clr/angular/data/tree-view';
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrDataModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDataModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrDataModule, exports: [ClrDatagridModule, ClrStackViewModule, ClrTreeViewModule] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDataModule, imports: [ClrDatagridModule, ClrStackViewModule, ClrTreeViewModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ClrDataModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.22", ngImport: i0, type: ClrDataModule, exports: [ClrDatagridModule, ClrStackViewModule, ClrTreeViewModule] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ClrDataModule, imports: [ClrDatagridModule, ClrStackViewModule, ClrTreeViewModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrDataModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ClrDataModule, decorators: [{
             type: NgModule,
             args: [{
                     exports: [ClrDatagridModule, ClrStackViewModule, ClrTreeViewModule],

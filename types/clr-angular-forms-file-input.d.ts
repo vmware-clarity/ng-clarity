@@ -72,7 +72,7 @@ interface ClrFileMessagesTemplateContext {
 }
 declare class ClrFileMessagesTemplate {
     readonly templateRef: TemplateRef<ClrFileMessagesTemplateContext>;
-    static ngTemplateContextGuard(directive: ClrFileMessagesTemplate, context: unknown): context is ClrFileMessagesTemplateContext;
+    static ngTemplateContextGuard(_directive: ClrFileMessagesTemplate, _context: unknown): _context is ClrFileMessagesTemplateContext;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileMessagesTemplate, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFileMessagesTemplate, "ng-template[clr-file-messages]", never, {}, {}, never, never, false, never>;
 }

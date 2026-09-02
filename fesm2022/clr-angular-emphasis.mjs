@@ -14,11 +14,11 @@ export * from '@clr/angular/emphasis/label';
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrEmphasisModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrEmphasisModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: ClrEmphasisModule, imports: [ClrBadge, ClrLabel], exports: [ClrAlertModule, ClrBadge, ClrLabel] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrEmphasisModule, imports: [ClrBadge, ClrLabel, ClrAlertModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ClrEmphasisModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.22", ngImport: i0, type: ClrEmphasisModule, imports: [ClrBadge, ClrLabel], exports: [ClrAlertModule, ClrBadge, ClrLabel] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ClrEmphasisModule, imports: [ClrBadge, ClrLabel, ClrAlertModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: ClrEmphasisModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: ClrEmphasisModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [ClrBadge, ClrLabel],
