@@ -7,7 +7,8 @@
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { ClrContextualEngineService } from '@clr/ai';
+import { ClrContextTrackerService, ClrContextualEngineService } from '@clr/ai';
+import { Subscription } from 'rxjs';
 
 interface DemoHost {
   name: string;
@@ -73,10 +74,14 @@ export class ContextualDemo implements OnInit, OnDestroy {
   newHostName = '';
   snapshotJson = '';
   snapshotBytes = 0;
+  snapshotCount = 0;
   embeddedPage: SafeHtml;
+
+  private trackingSubscription: Subscription | null = null;
 
   constructor(
     private contextEngine: ClrContextualEngineService,
+    private contextTracker: ClrContextTrackerService,
     sanitizer: DomSanitizer
   ) {
     this.embeddedPage = sanitizer.bypassSecurityTrustHtml(EMBEDDED_CHAT_PAGE);
@@ -87,21 +92,25 @@ export class ContextualDemo implements OnInit, OnDestroy {
     // agents query the page through window.clrContext().
     this.contextEngine.enableFrameBridge();
     this.contextEngine.enableGlobalAccess();
-    this.takeSnapshot();
+    // The panel on the right updates by itself: the tracker watches the DOM and emits
+    // whenever the page context changes. The panel is marked data-clr-context-ignore,
+    // so its own re-renders neither re-trigger tracking nor appear in the context.
+    this.trackingSubscription = this.contextTracker.context$.subscribe(snapshot => {
+      this.snapshotCount++;
+      this.snapshotBytes = JSON.stringify(snapshot).length;
+      this.snapshotJson = JSON.stringify(snapshot, null, 2);
+    });
+    this.contextTracker.start();
   }
 
   ngOnDestroy(): void {
+    this.trackingSubscription?.unsubscribe();
+    this.contextTracker.stop();
     this.contextEngine.disableFrameBridge();
     this.contextEngine.disableGlobalAccess();
   }
 
-  takeSnapshot(): void {
-    const snapshot = this.contextEngine.getSnapshot();
-    this.snapshotBytes = JSON.stringify(snapshot).length;
-    this.snapshotJson = JSON.stringify(snapshot, null, 2);
-  }
-
-  refreshSnapshotAfterRender(): void {
-    setTimeout(() => this.takeSnapshot());
+  refreshNow(): void {
+    this.contextTracker.refresh();
   }
 }

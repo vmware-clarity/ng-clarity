@@ -6,65 +6,50 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import {
-  afterNextRender,
-  AfterRenderRef,
-  ApplicationRef,
-  Inject,
-  Injectable,
-  Injector,
-  OnDestroy,
-  Optional,
-  PLATFORM_ID,
-} from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { Observable, ReplaySubject, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { DOCUMENT, Inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { Observable, ReplaySubject } from 'rxjs';
 
 import { ClrContextualEngineService } from './contextual-engine.service';
+import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '../dom/dom-context-collector';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 
 export interface ClrContextTrackingOptions {
   /** Budgets applied to every snapshot the tracker takes. */
   snapshot?: ClrContextSnapshotOptions;
   /**
-   * After the first-paint scrape, take one more scrape when the application becomes
-   * stable (pending tasks such as in-flight HTTP have finished) and emit it if the
-   * page context changed — this is how data that arrives after navigation gets picked
-   * up. Default `true`.
+   * Quiet window: the page is scraped this many milliseconds after the last observed
+   * DOM change, so one user action (which typically produces a short burst of
+   * mutations) results in one scrape. Default `300`.
    */
-  awaitStability?: boolean;
+  debounceMs?: number;
   /**
-   * Upper bound on waiting for stability, in milliseconds. Applications that are never
-   * stable (long-polling, recurring timers) get their follow-up scrape when this cap
-   * elapses instead. Default `5000`.
+   * Upper bound between the first unprocessed DOM change and the scrape, so pages
+   * that never go quiet (animations, tickers) still get tracked. Default `2000`.
    */
-  stabilityTimeoutMs?: number;
+  maxWaitMs?: number;
 }
 
-const DEFAULT_STABILITY_TIMEOUT_MS = 5000;
+const DEFAULT_DEBOUNCE_MS = 300;
+const DEFAULT_MAX_WAIT_MS = 2000;
+const IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
 
 /**
- * Maintains the current page context as a stream, timed by the framework's own
- * rendering lifecycle rather than by guessing:
+ * Maintains the current page context as a stream by watching the DOM itself: a
+ * `MutationObserver` sees every change — route navigations, data arriving into a
+ * datagrid, a modal opening, rows being selected — and the page is re-scraped after a
+ * short quiet window, then emitted only if the context actually changed. Consumers
+ * such as an AI chat panel subscribe to {@link context$} and always hold context
+ * describing what the user currently sees, without polling and without any coupling to
+ * the router or the rendering framework.
  *
- * - On every completed router navigation, the page is scraped in an `afterNextRender`
- *   callback — after the change detection cycle that actually painted the newly
- *   activated route, however long that took. This works in zone-based and zoneless
- *   applications alike.
- * - Because data often arrives after the first paint, a follow-up scrape runs when
- *   `ApplicationRef.whenStable()` resolves (capped by `stabilityTimeoutMs`) and is
- *   emitted only if the context actually changed.
- *
- * Consumers such as an AI chat panel subscribe to {@link context$} and always hold
- * context describing the page the user is currently on, without polling.
+ * Mutations inside elements marked with {@link CLR_CONTEXT_IGNORE_ATTRIBUTE} are
+ * ignored (and the collector never describes those elements), so UI that renders the
+ * context — the chat panel itself — neither triggers feedback loops nor describes
+ * itself into the page context.
  *
  * Every emission is a freshly computed snapshot of the live DOM at that moment — the
  * tracker stores only the latest emission and never merges or accumulates, so context
  * from a page that was navigated away from can never leak into the current one.
- * In-page changes between navigations (a modal opening, rows selected) do not emit on
- * their own; call {@link refresh} for an on-demand update, or use
- * `ClrContextualEngineService.getSnapshot()` when exactness at read time matters.
  */
 @Injectable({ providedIn: 'root' })
 export class ClrContextTrackerService implements OnDestroy {
@@ -74,19 +59,16 @@ export class ClrContextTrackerService implements OnDestroy {
   private readonly contextSubject = new ReplaySubject<ClrPageContext>(1);
   private trackingOptions: ClrContextTrackingOptions = {};
   private tracking = false;
-  private navigationSubscription: Subscription | null = null;
-  private pendingRender: AfterRenderRef | null = null;
-  private stabilityTimer: ReturnType<typeof setTimeout> | null = null;
-  /** Invalidates scrapes scheduled for a page the user has already left. */
-  private scrapeSequence = 0;
+  private observer: MutationObserver | null = null;
+  private quietTimer: ReturnType<typeof setTimeout> | null = null;
+  private maxWaitTimer: ReturnType<typeof setTimeout> | null = null;
   private latest: ClrPageContext | null = null;
 
   constructor(
     @Inject(PLATFORM_ID) private readonly platformId: unknown,
+    @Inject(DOCUMENT) private readonly document: Document,
     private readonly contextEngine: ClrContextualEngineService,
-    private readonly applicationRef: ApplicationRef,
-    private readonly injector: Injector,
-    @Optional() private readonly router: Router | null
+    private readonly zone: NgZone
   ) {
     this.context$ = this.contextSubject.asObservable();
   }
@@ -101,8 +83,8 @@ export class ClrContextTrackerService implements OnDestroy {
   }
 
   /**
-   * Starts tracking: takes an initial snapshot immediately and re-scrapes the page
-   * after every completed navigation. Calling it again restarts with the new options.
+   * Starts tracking: takes an initial snapshot immediately, then re-scrapes whenever
+   * the DOM changes. Calling it again restarts with the new options.
    */
   start(options: ClrContextTrackingOptions = {}): void {
     if (!isPlatformBrowser(this.platformId)) {
@@ -112,26 +94,25 @@ export class ClrContextTrackerService implements OnDestroy {
     this.tracking = true;
     this.trackingOptions = options;
     this.refresh();
-    this.scheduleStabilityScrape(++this.scrapeSequence);
-    if (this.router) {
-      this.navigationSubscription = this.router.events
-        .pipe(filter(event => event instanceof NavigationEnd))
-        .subscribe(() => this.onNavigationEnd());
-    }
+    // Created outside the Angular zone: zone.js patches MutationObserver, and an
+    // in-zone observer would trigger change detection on every mutation batch.
+    this.zone.runOutsideAngular(() => {
+      this.observer = new MutationObserver(records => this.onMutations(records));
+      this.observer.observe(this.document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        characterData: true,
+      });
+    });
   }
 
   /** Stops tracking. The last emitted context stays available to subscribers. */
   stop(): void {
     this.tracking = false;
-    this.scrapeSequence++;
-    this.navigationSubscription?.unsubscribe();
-    this.navigationSubscription = null;
-    this.pendingRender?.destroy();
-    this.pendingRender = null;
-    if (this.stabilityTimer !== null) {
-      clearTimeout(this.stabilityTimer);
-      this.stabilityTimer = null;
-    }
+    this.observer?.disconnect();
+    this.observer = null;
+    this.clearTimers();
   }
 
   /** Takes a fresh snapshot immediately and emits it. */
@@ -140,51 +121,27 @@ export class ClrContextTrackerService implements OnDestroy {
     this.contextSubject.next(this.latest);
   }
 
-  private onNavigationEnd(): void {
-    const sequence = ++this.scrapeSequence;
-    // First paint: runs after the change detection cycle that rendered the newly
-    // activated route, regardless of how long that render took.
-    this.pendingRender?.destroy();
-    this.pendingRender = afterNextRender(
-      {
-        read: () => {
-          this.pendingRender = null;
-          if (this.tracking && sequence === this.scrapeSequence) {
-            this.refresh();
-          }
-        },
-      },
-      { injector: this.injector }
-    );
-    this.scheduleStabilityScrape(sequence);
-  }
-
-  /**
-   * Once the application settles (or the cap elapses), scrape again and emit only if
-   * the page context actually changed since the last emission.
-   */
-  private scheduleStabilityScrape(sequence: number): void {
-    if (this.trackingOptions.awaitStability === false) {
+  private onMutations(records: MutationRecord[]): void {
+    if (records.every(record => isInsideIgnoredRegion(record.target))) {
       return;
     }
-    if (this.stabilityTimer !== null) {
-      clearTimeout(this.stabilityTimer);
-      this.stabilityTimer = null;
+    if (this.quietTimer !== null) {
+      clearTimeout(this.quietTimer);
     }
-    const cap = new Promise<void>(resolve => {
-      this.stabilityTimer = setTimeout(
-        resolve,
-        this.trackingOptions.stabilityTimeoutMs ?? DEFAULT_STABILITY_TIMEOUT_MS
-      );
-    });
-    Promise.race([this.applicationRef.whenStable(), cap]).then(() => {
-      if (this.stabilityTimer !== null) {
-        clearTimeout(this.stabilityTimer);
-        this.stabilityTimer = null;
-      }
-      if (!this.tracking || sequence !== this.scrapeSequence) {
-        return;
-      }
+    this.quietTimer = setTimeout(() => this.scrape(), this.trackingOptions.debounceMs ?? DEFAULT_DEBOUNCE_MS);
+    if (this.maxWaitTimer === null) {
+      this.maxWaitTimer = setTimeout(() => this.scrape(), this.trackingOptions.maxWaitMs ?? DEFAULT_MAX_WAIT_MS);
+    }
+  }
+
+  /** Scrapes the page and emits only if the context actually changed. */
+  private scrape(): void {
+    this.clearTimers();
+    if (!this.tracking) {
+      return;
+    }
+    // Re-enter the zone for the emission so subscribers' views update normally.
+    this.zone.run(() => {
       const snapshot = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
       if (!contextEquals(snapshot, this.latest)) {
         this.latest = snapshot;
@@ -192,6 +149,23 @@ export class ClrContextTrackerService implements OnDestroy {
       }
     });
   }
+
+  private clearTimers(): void {
+    if (this.quietTimer !== null) {
+      clearTimeout(this.quietTimer);
+      this.quietTimer = null;
+    }
+    if (this.maxWaitTimer !== null) {
+      clearTimeout(this.maxWaitTimer);
+      this.maxWaitTimer = null;
+    }
+  }
+}
+
+/** Whether a mutated node lives inside a region the engine is told not to look at. */
+function isInsideIgnoredRegion(node: Node): boolean {
+  const element = node instanceof Element ? node : node.parentElement;
+  return !!element?.closest(IGNORE_SELECTOR);
 }
 
 /** Compares two snapshots for meaningful equality, ignoring the capture timestamp. */

@@ -20,6 +20,16 @@ export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions> = 
 };
 
 /**
+ * Elements carrying this attribute — and everything inside them — are invisible to the
+ * engine: the DOM collector never describes them and the context tracker ignores their
+ * mutations. Put it on UI that consumes context (an AI chat panel, a debug view) so it
+ * neither describes itself into the page context nor triggers tracking feedback loops.
+ */
+export const CLR_CONTEXT_IGNORE_ATTRIBUTE = 'data-clr-context-ignore';
+
+const IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
+
+/**
  * Teaches the collector how to describe one kind of component found in the DOM.
  *
  * Extractors are what make the engine UI-library agnostic: Clarity ships a built-in set
@@ -247,7 +257,7 @@ export function collectClrDomContexts(
       // An extractor owns every element its selector matches: when it reports nothing
       // (e.g. a closed wizard), the element must not resurface as a generic entry.
       handledElements.push(element);
-      if (!isVisible(element)) {
+      if (!isVisible(element) || element.closest(IGNORE_SELECTOR)) {
         continue;
       }
       const context = extractor.extract(element, resolved);
@@ -275,7 +285,7 @@ export function collectClrDomContexts(
       // Only report the outermost element of nested same-type structures.
       continue;
     }
-    if (!isVisible(element)) {
+    if (!isVisible(element) || element.closest(IGNORE_SELECTOR)) {
       continue;
     }
     contexts.push(
@@ -301,7 +311,11 @@ export function collectClrDomContexts(
 export function collectClrDomActions(root: ParentNode, options?: ClrContextSnapshotOptions): ClrContextAction[] {
   const resolved: Required<ClrContextSnapshotOptions> = { ...CLR_CONTEXT_DEFAULT_OPTIONS, ...options };
   return Array.from(root.querySelectorAll<HTMLElement>('button.btn, a.btn'))
-    .filter(element => isVisible(element) && !element.closest('.modal-footer, .clr-wizard-footer, clr-vertical-nav'))
+    .filter(
+      element =>
+        isVisible(element) &&
+        !element.closest(`.modal-footer, .clr-wizard-footer, clr-vertical-nav, ${IGNORE_SELECTOR}`)
+    )
     .slice(0, resolved.maxItemsPerCollection)
     .map(element => buttonOrLinkAction(element, resolved));
 }

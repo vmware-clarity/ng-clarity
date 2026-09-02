@@ -52,20 +52,23 @@
   </div>
 
   <div class="clr-col-lg-5 clr-col-12">
-    <div class="snapshot-panel card">
+    <!-- data-clr-context-ignore: the panel renders the context, so the engine must not
+         describe it and the tracker must not react to its re-renders. -->
+    <div class="snapshot-panel card" data-clr-context-ignore>
       <div class="card-header">
-        Live context snapshot
+        Live context — updates as the page changes
         <span class="label">{{ snapshotBytes }} bytes</span>
+        <span class="label">update #{{ snapshotCount }}</span>
       </div>
       <div class="card-block">
-        <button type="button" class="btn btn-sm" (click)="takeSnapshot()">Take snapshot</button>
+        <button type="button" class="btn btn-sm" (click)="refreshNow()">Refresh now</button>
         <pre>{{ snapshotJson }}</pre>
       </div>
     </div>
   </div>
 </div>
 
-<clr-modal [(clrModalOpen)]="addHostOpen" (clrModalOpenChange)="refreshSnapshotAfterRender()">
+<clr-modal [(clrModalOpen)]="addHostOpen">
   <h3 class="modal-title">Add host</h3>
   <div class="modal-body">
     <form clrForm clrLayout="vertical">
