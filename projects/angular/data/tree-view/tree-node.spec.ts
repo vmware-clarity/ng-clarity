@@ -409,6 +409,18 @@ export default function (): void {
         expectActiveElementToBe(contentContainer);
       });
 
+      it('assigns tabindex of 0 to content container when focusTreeNode() runs after the browser already focused it directly (e.g. mousedown over non-focusable content)', function (this: Context) {
+        // Regression test: clicking content with no focusable descendant (e.g. plain text) makes the
+        // browser focus the container itself on mousedown, since it carries a tabindex attribute.
+        // The follow-up mouseup still calls focusTreeNode(), but its "already focused" guard used to
+        // skip setTabIndex(0) entirely in that case, leaving tabindex stuck at -1 forever and making
+        // the node unreachable by Tab/Shift+Tab afterwards.
+        contentContainer.focus();
+        this.clarityDirective.focusTreeNode();
+        expect(this.clarityDirective.contentContainerTabindex).toBe(0);
+        expect(contentContainer.getAttribute('tabindex')).toBe('0');
+      });
+
       it('assigns tabindex of -1 to content container by default', function (this: Context) {
         expect(this.clarityDirective.contentContainerTabindex).toBe(-1);
         expect(contentContainer.getAttribute('tabindex')).toBe('-1');
@@ -437,6 +449,31 @@ export default function (): void {
         expect(this.clarityDirective.contentContainerTabindex).toBe(-1);
         this.detectChanges();
         expect(contentContainer.getAttribute('tabindex')).toBe('-1');
+      });
+
+      it('calls broadcastFocusedNode synchronously inside focusTreeNode before calling focus()', function (this: Context) {
+        // Verify the fix for CDE-3007: broadcastFocusedNode() must be called synchronously
+        // inside focusTreeNode() so that peer nodes' checkTabIndex() fires before .focus() is called.
+        // This prevents a window where multiple nodes have tabindex=0.
+        const callOrder: string[] = [];
+        const originalFocus = contentContainer.focus.bind(contentContainer);
+        spyOn(contentContainer, 'focus').and.callFake(() => {
+          callOrder.push('focus');
+          originalFocus();
+        });
+        spyOn(focusManager, 'broadcastFocusedNode').and.callFake(() => {
+          callOrder.push('broadcast');
+        });
+
+        this.clarityDirective.focusTreeNode();
+
+        // broadcast must happen before focus so that peer nodes reset tabindex=-1 synchronously,
+        // preventing a window where multiple nodes have tabindex=0 (which causes the double-Tab bug).
+        const firstFocusIndex = callOrder.indexOf('focus');
+        const firstBroadcastIndex = callOrder.indexOf('broadcast');
+        expect(firstBroadcastIndex).toBeGreaterThanOrEqual(0);
+        expect(firstFocusIndex).toBeGreaterThanOrEqual(0);
+        expect(firstBroadcastIndex).toBeLessThan(firstFocusIndex);
       });
 
       it('takes default action which is toggling selection state on Enter key if node is selectable', function (this: Context) {
@@ -574,6 +611,11 @@ export default function (): void {
         this.detectChanges();
         expect(contentContainer.getAttribute('aria-selected')).toBeNull();
         expect(contentContainer.textContent.trim()).toBe('Hello world');
+      });
+
+      it('removes the tree node link from the native tab sequence to prevent a double-Tab stop', function (this: Context) {
+        const link: HTMLElement = this.clarityElement.querySelector('.clr-treenode-link');
+        expect(link.getAttribute('tabindex')).toBe('-1');
       });
     });
   });
