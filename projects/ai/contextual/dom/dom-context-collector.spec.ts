@@ -12,6 +12,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityModule } from '@clr/angular';
 
 import { collectClrDomActions, collectClrDomContexts } from './dom-context-collector';
+import { setClrElementContext } from './element-context';
 import { ClrComponentContext } from '../interfaces/context.interface';
 
 @Component({
@@ -447,6 +448,53 @@ describe('DOM context collector - hand-authored markup', () => {
     const withoutValues = collectClrDomContexts(root).find(c => c.type === 'form');
     expect(withoutValues?.children?.find(child => child.state?.name === 'hostName')?.state?.value).toBeUndefined();
     expect(JSON.stringify(withoutValues)).not.toContain('esx-prod-04');
+  });
+
+  it('merges context a component publishes on its host element over DOM guesswork', () => {
+    root.innerHTML = '<clr-fake-widget aria-label="DOM label">content</clr-fake-widget>';
+    setClrElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
+      label: 'Component label',
+      state: { options: ['a', 'b', 'c'], loaded: true },
+    }));
+
+    const widget = collectClrDomContexts(root, { maxItemsPerCollection: 2 }).find(c => c.type === 'fake-widget');
+
+    expect(widget?.label).toBe('Component label');
+    expect(widget?.state?.loaded).toBe(true);
+    expect(widget?.state?.options).toEqual(['a', 'b']);
+  });
+
+  it('merges published context into the form field that contains the publisher', () => {
+    root.innerHTML = `
+      <form clrForm>
+        <div class="clr-form-control">
+          <label class="clr-control-label">Fruit</label>
+          <fake-combobox><input role="combobox" name="fruit" /></fake-combobox>
+        </div>
+      </form>
+    `;
+    setClrElementContext(root.querySelector('fake-combobox') as Element, options => ({
+      type: 'combobox',
+      state: { options: ['Apple', 'Pear'], value: options.includeFormValues ? 'Apple' : undefined },
+    }));
+
+    const field = collectClrDomContexts(root, { includeFormValues: true })
+      .find(c => c.type === 'form')
+      ?.children?.find(child => child.state?.name === 'fruit');
+
+    expect(field?.type).toBe('combobox');
+    expect(field?.label).toBe('Fruit');
+    expect(field?.state?.options).toEqual(['Apple', 'Pear']);
+    expect(field?.state?.value).toBe('Apple');
+  });
+
+  it('treats a publisher that throws as having nothing to add', () => {
+    root.innerHTML = '<clr-fake-widget aria-label="DOM label">content</clr-fake-widget>';
+    setClrElementContext(root.querySelector('clr-fake-widget') as Element, () => {
+      throw new Error('broken publisher');
+    });
+
+    expect(collectClrDomContexts(root)).toEqual([{ type: 'fake-widget', label: 'DOM label' }]);
   });
 
   it('never describes elements inside ignore-marked regions', () => {

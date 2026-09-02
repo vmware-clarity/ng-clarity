@@ -93,6 +93,20 @@
       <app-code-snippet [code]="formFillingExample" language="typescript"></app-code-snippet>
     </div>
 
+    <h2 id="element-context" class="clr-mt-48px" cds-text="title">State the DOM cannot show</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Some state lives only inside component instances — a combobox's options render in a popover, yet the component
+      always knows them. Any component can publish that truth by assigning a callback to its own host element under the
+      <code cds-text="code">clrElementContext</code> property (helper:
+      <code cds-text="code">setClrElementContext</code>). The collector calls it while scraping and merges the result
+      over what the DOM shows. Because the contract is a plain element property, publishing requires no dependency on
+      <code cds-text="code">&#64;clr/ai</code>. <code cds-text="code">ClrCombobox</code> ships this integration built
+      in: its options and selection are reported even while the popover is closed.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="elementContextExample" language="typescript"></app-code-snippet>
+    </div>
+
     <h2 id="other-ui-libraries" class="clr-mt-48px" cds-text="title">Teaching the engine about other UI libraries</h2>
     <p class="clr-mt-16px" cds-text="body">
       Components that are not Clarity components can be described by registering a DOM extractor. The returned function

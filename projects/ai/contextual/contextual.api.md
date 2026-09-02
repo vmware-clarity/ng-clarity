@@ -28,6 +28,9 @@ export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
 export const CLR_CONTEXTUAL_DIRECTIVES: any[];
 
 // @public
+export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
+
+// @public
 export interface ClrComponentContext {
     actions?: ClrContextAction[];
     children?: ClrComponentContext[];
@@ -197,6 +200,9 @@ export class ClrContextualModule {
 }
 
 // @public
+export type ClrElementContextCallback = (options: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
+
+// @public
 export interface ClrFormApplyResult {
     applied: string[];
     skipped: {
@@ -232,7 +238,19 @@ export function collectClrDomActions(root: ParentNode, options?: ClrContextSnaps
 export function collectClrDomContexts(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrComponentContext[];
 
 // @public
+export function findPublishingElement(root: Element): Element | null;
+
+// @public
+export function mergeElementContext(base: ClrComponentContext, element: Element, options: Required<ClrContextSnapshotOptions>): ClrComponentContext;
+
+// @public
+export function readClrElementContext(element: Element, options: Required<ClrContextSnapshotOptions>): Partial<ClrComponentContext> | null;
+
+// @public
 export function requestClrContextFromHost(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
+
+// @public
+export function setClrElementContext(element: Element, callback: ClrElementContextCallback | null): void;
 
 // (No @packageDocumentation comment for this package)
 
