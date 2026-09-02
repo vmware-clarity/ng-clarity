@@ -39,10 +39,10 @@ class FocusableDropdownItemDirective {
     getFocusableItem() {
         return this.menu.focusableItem;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: FocusableDropdownItemDirective, deps: [{ token: i2.ClrDropdownItem }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: FocusableDropdownItemDirective, isStandalone: false, selector: "[clrDropdownItem][appfxFocusableDropdownItem]", providers: [{ provide: FocusableItemProvider, useExisting: FocusableDropdownItemDirective }], ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: FocusableDropdownItemDirective, deps: [{ token: i2.ClrDropdownItem }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.22", type: FocusableDropdownItemDirective, isStandalone: false, selector: "[clrDropdownItem][appfxFocusableDropdownItem]", providers: [{ provide: FocusableItemProvider, useExisting: FocusableDropdownItemDirective }], ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: FocusableDropdownItemDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: FocusableDropdownItemDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrDropdownItem][appfxFocusableDropdownItem]',
@@ -71,10 +71,10 @@ class FocusableItemCollectorComponent {
         this.items.changes.subscribe(() => originalAddChildren.call(focusHandler, this.items.map(item => item.getFocusableItem())));
         this.items.notifyOnChanges();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: FocusableItemCollectorComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: FocusableItemCollectorComponent, isStandalone: false, selector: "focusable-item-collector", inputs: { parentMenu: "parentMenu" }, queries: [{ propertyName: "items", predicate: FocusableItemProvider, descendants: true }], ngImport: i0, template: '<ng-content></ng-content>', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: FocusableItemCollectorComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.22", type: FocusableItemCollectorComponent, isStandalone: false, selector: "focusable-item-collector", inputs: { parentMenu: "parentMenu" }, queries: [{ propertyName: "items", predicate: FocusableItemProvider, descendants: true }], ngImport: i0, template: '<ng-content></ng-content>', isInline: true, preserveWhitespaces: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: FocusableItemCollectorComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: FocusableItemCollectorComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'focusable-item-collector',
@@ -104,10 +104,10 @@ class FocusableMenuDirective {
     getFocusableItem() {
         return this.menu.focusHandler;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: FocusableMenuDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.1.3", type: FocusableMenuDirective, isStandalone: false, selector: "clr-dropdown-menu[appfxFocusableMenu]", providers: [{ provide: FocusableItemProvider, useExisting: FocusableMenuDirective }], ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: FocusableMenuDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.22", type: FocusableMenuDirective, isStandalone: false, selector: "clr-dropdown-menu[appfxFocusableMenu]", providers: [{ provide: FocusableItemProvider, useExisting: FocusableMenuDirective }], ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: FocusableMenuDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: FocusableMenuDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-dropdown-menu[appfxFocusableMenu]',
@@ -140,10 +140,10 @@ class MenuOutletService {
     closeMenu() {
         this.menuOutlet.detachMenu();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MenuOutletService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MenuOutletService, providedIn: 'root' }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: MenuOutletService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: MenuOutletService, providedIn: 'root' }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MenuOutletService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: MenuOutletService, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }] });
@@ -178,10 +178,10 @@ class MenuOutletComponent {
     detachMenu() {
         this.vc.clear();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MenuOutletComponent, deps: [{ token: MenuOutletService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MenuOutletComponent, isStandalone: false, selector: "menu-outlet", viewQueries: [{ propertyName: "vc", first: true, predicate: ["vc"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: ` <ng-container #vc></ng-container>`, isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: MenuOutletComponent, deps: [{ token: MenuOutletService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.22", type: MenuOutletComponent, isStandalone: false, selector: "menu-outlet", viewQueries: [{ propertyName: "vc", first: true, predicate: ["vc"], descendants: true, read: ViewContainerRef }], ngImport: i0, template: ` <ng-container #vc></ng-container>`, isInline: true, preserveWhitespaces: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MenuOutletComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: MenuOutletComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'menu-outlet',
@@ -345,15 +345,15 @@ class MenuComponent extends NestedMenu {
         }
         return '';
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MenuComponent, deps: [{ token: i0.ChangeDetectorRef }, { token: i1.ZoomLevelService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MenuComponent, isStandalone: false, selector: "appfx-menu", inputs: { text: "text" }, outputs: { opened: "opened", closed: "closed" }, host: { listeners: { "document:contextmenu": "documentContextMenu($event)" } }, providers: [
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: MenuComponent, deps: [{ token: i0.ChangeDetectorRef }, { token: i1.ZoomLevelService, optional: true }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.22", type: MenuComponent, isStandalone: false, selector: "appfx-menu", inputs: { text: "text" }, outputs: { opened: "opened", closed: "closed" }, host: { listeners: { "document:contextmenu": "documentContextMenu($event)" } }, providers: [
             {
                 provide: MenuItem,
                 useExisting: forwardRef(() => MenuComponent),
             },
         ], queries: [{ propertyName: "menuItems", predicate: MenuItem }], viewQueries: [{ propertyName: "dropdown", first: true, predicate: ClrDropdown, descendants: true }, { propertyName: "dropdownElRef", first: true, predicate: ClrDropdown, descendants: true, read: ElementRef }], usesInheritance: true, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<clr-dropdown class=\"app-menu\" [class.zoom4x]=\"currentZoomLevel === ZoomLevel.x4\">\n  <!-- hidden clrDropdownTrigger so the DropdownFocusHandler is instantiated before ClrDropdownMenu-->\n  <!-- otherwise DropdownFocusHandler will miss the openChange emission and won't move the focus to the first item -->\n  <button class=\"appfx-menu-trigger\" clrDropdownTrigger></button>\n  <clr-dropdown-menu #rootDropdownMenu *clrIfOpen [class.fullscreen]=\"currentZoomLevel === ZoomLevel.x4\">\n    <ng-template\n      #menuTemplate\n      let-items\n      let-hasIcons=\"hasIcons\"\n      let-parentMenu=\"parentMenu\"\n      let-parentDropdown=\"parentDropdown\"\n      let-parentText=\"parentText\"\n    >\n      <div class=\"scrollable-content\">\n        <focusable-item-collector [parentMenu]=\"parentMenu\">\n          <ng-container *ngIf=\"parentMenu !== rootDropdownMenu && currentZoomLevel === ZoomLevel.x4\">\n            <div class=\"dropdown-header\" aria-hidden=\"true\">\n              <button class=\"btn-close-submenu\" (click)=\"parentDropdown.popoverService.toggleWithEvent($event)\">\n                <cds-icon size=\"18\" shape=\"angle\" direction=\"left\"></cds-icon>\n              </button>\n              <span class=\"submenu-header-text\">{{ parentText }}</span>\n              <button type=\"button\" class=\"close\" (click)=\"this.close($event)\">\n                <cds-icon class=\"btn-close-menu\" shape=\"window-close\"></cds-icon>\n              </button>\n            </div>\n          </ng-container>\n\n          <ng-container *ngFor=\"let menuItem of $any(items)\" [ngSwitch]=\"menuItem.type\">\n            <ng-container *ngIf=\"!menuItem.hidden\">\n              <!-- header item template -->\n              <div *ngSwitchCase=\"itemTypes.header\" class=\"dropdown-header\" aria-hidden=\"true\">\n                <span class=\"menu-item-icon\" [ngClass]=\"menuItem.iconClass\"></span>\n                <span class=\"title-text\">{{ menuItem.text }}</span>\n                <button\n                  *ngIf=\"currentZoomLevel === ZoomLevel.x4\"\n                  type=\"button\"\n                  class=\"close\"\n                  (click)=\"this.close($event)\"\n                >\n                  <cds-icon class=\"btn-close-menu\" shape=\"window-close\"></cds-icon>\n                </button>\n              </div>\n\n              <!-- action item template -->\n              <button\n                *ngSwitchCase=\"itemTypes.action\"\n                clrDropdownItem\n                appfxFocusableDropdownItem\n                [clrDisabled]=\"!menuItem.enabled\"\n                (click)=\"handleAction(menuItem)\"\n                class=\"menu-item-action\"\n                [attr.data-test-id]=\"menuItem.text\"\n              >\n                <span class=\"menu-item-icon\" [ngClass]=\"getIconClass(menuItem.iconClass, hasIcons)\"></span>\n                <span class=\"menu-item-text\">{{ menuItem.text }}</span>\n                <span class=\"menu-item-shortcut\">{{ menuItem.shortcut }}</span>\n              </button>\n\n              <!-- separator item template -->\n              <div\n                *ngSwitchCase=\"itemTypes.separator\"\n                class=\"dropdown-divider\"\n                role=\"separator\"\n                aria-hidden=\"true\"\n              ></div>\n\n              <!-- nested menu item template -->\n              <ng-container *ngSwitchCase=\"itemTypes.menu\">\n                <clr-dropdown #nestedDropdown>\n                  <button clrDropdownTrigger>\n                    <span class=\"menu-item-icon\" [ngClass]=\"getIconClass(menuItem.iconClass, hasIcons)\"></span\n                    >{{ menuItem.text }}\n                  </button>\n                  <clr-dropdown-menu\n                    #nestedDropdownMenu\n                    appfxFocusableMenu\n                    [class.fullscreen]=\"currentZoomLevel === ZoomLevel.x4\"\n                  >\n                    <ng-template\n                      [ngTemplateOutlet]=\"menuTemplate\"\n                      [ngTemplateOutletContext]=\"{\n                        $implicit: menuItem.menuItems,\n                        hasIcons: menuHasIcons(menuItem.menuItems),\n                        parentMenu: nestedDropdownMenu,\n                        parentDropdown: nestedDropdown,\n                        parentText: menuItem.text,\n                      }\"\n                    >\n                    </ng-template>\n                  </clr-dropdown-menu>\n                </clr-dropdown>\n              </ng-container>\n            </ng-container>\n          </ng-container>\n        </focusable-item-collector>\n      </div>\n    </ng-template>\n    <ng-container\n      [ngTemplateOutlet]=\"menuTemplate\"\n      [ngTemplateOutletContext]=\"{\n        $implicit: menuItems,\n        hasIcons: menuHasIcons(menuItems),\n        parentMenu: rootDropdownMenu,\n        parentDropdown: dropdown,\n        parentText: text,\n      }\"\n    >\n    </ng-container>\n  </clr-dropdown-menu>\n</clr-dropdown>\n", styles: ["clr-dropdown-menu div.scrollable-content{position:static;overflow:hidden auto}clr-dropdown-menu .dropdown-header{display:flex}clr-dropdown-menu .dropdown-header .title-text{overflow-wrap:break-word;white-space:normal;min-width:11rem;max-height:21rem}clr-dropdown-menu .dropdown-item.menu-item-action{height:auto}clr-dropdown-menu .dropdown-item.menu-item-action .dropdown-item-content{display:contents}clr-dropdown-menu .dropdown-divider{margin:5px var(--clr-base-horizontal-offset-l)}clr-dropdown{display:block;position:static}.appfx-menu-trigger{display:none}.menu-item-action{display:flex;align-items:center}.menu-item-text{flex:1 1 auto;white-space:pre-line;overflow-wrap:break-word;width:max-content}.menu-item-icon{margin-right:4px;margin-left:0;display:inline-block;flex:0 0 auto}.no-icon-item{width:18px}.menu-item-shortcut{flex:0 0 auto;padding-left:.5rem;opacity:.6}.app-menu .fullscreen{width:100vw;height:100vh}.app-menu.zoom4x clr-dropdown-menu{position:fixed!important;max-width:none;margin:0;border-width:0;border-radius:0;transform:none!important}.app-menu.zoom4x .submenu-header-text{vertical-align:middle}.app-menu.zoom4x .btn-close-submenu{cursor:pointer;margin-right:4px;margin-left:0;margin-top:1px;display:inline-block;border:0;background:transparent;padding:0}.app-menu.zoom4x .btn-close-submenu cds-icon{fill:var(--cds-alias-typography-color-400)}.app-menu.zoom4x .btn-close-menu{margin-top:2px;display:block}\n"], dependencies: [{ kind: "component", type: i2.ClrDropdown, selector: "clr-dropdown", inputs: ["clrCloseMenuOnItemClick"] }, { kind: "component", type: i2.ClrDropdownMenu, selector: "clr-dropdown-menu", inputs: ["clrPosition"] }, { kind: "directive", type: i2.ClrDropdownTrigger, selector: "[clrDropdownTrigger],[clrDropdownToggle]" }, { kind: "directive", type: i2.ClrDropdownItem, selector: "[clrDropdownItem]", inputs: ["clrDisabled", "id"] }, { kind: "directive", type: i3.ClrIfOpen, selector: "[clrIfOpen]", inputs: ["clrIfOpen"], outputs: ["clrIfOpenChange"] }, { kind: "component", type: i4.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge"] }, { kind: "directive", type: i5.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i5.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i5.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i5.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i5.NgSwitch, selector: "[ngSwitch]", inputs: ["ngSwitch"] }, { kind: "directive", type: i5.NgSwitchCase, selector: "[ngSwitchCase]", inputs: ["ngSwitchCase"] }, { kind: "directive", type: FocusableDropdownItemDirective, selector: "[clrDropdownItem][appfxFocusableDropdownItem]" }, { kind: "component", type: FocusableItemCollectorComponent, selector: "focusable-item-collector", inputs: ["parentMenu"] }, { kind: "directive", type: FocusableMenuDirective, selector: "clr-dropdown-menu[appfxFocusableMenu]" }], preserveWhitespaces: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MenuComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: MenuComponent, decorators: [{
             type: Component,
             args: [{ selector: 'appfx-menu', standalone: false, providers: [
                         {
@@ -396,15 +396,15 @@ class MenuActionComponent extends MenuItem {
         this.enabled = true;
         this.handle = new EventEmitter(true);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MenuActionComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MenuActionComponent, isStandalone: false, selector: "appfx-menu-action", inputs: { iconClass: "iconClass", text: "text", shortcut: "shortcut", enabled: "enabled" }, outputs: { handle: "handle" }, providers: [
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: MenuActionComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.22", type: MenuActionComponent, isStandalone: false, selector: "appfx-menu-action", inputs: { iconClass: "iconClass", text: "text", shortcut: "shortcut", enabled: "enabled" }, outputs: { handle: "handle" }, providers: [
             {
                 provide: MenuItem,
                 useExisting: forwardRef(() => MenuActionComponent),
             },
         ], usesInheritance: true, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MenuActionComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: MenuActionComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-menu-action',
@@ -440,15 +440,15 @@ class MenuHeaderComponent extends MenuItem {
         super(...arguments);
         this.type = MenuItemType.header;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MenuHeaderComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MenuHeaderComponent, isStandalone: false, selector: "appfx-menu-header", inputs: { iconClass: "iconClass", text: "text" }, providers: [
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: MenuHeaderComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.22", type: MenuHeaderComponent, isStandalone: false, selector: "appfx-menu-header", inputs: { iconClass: "iconClass", text: "text" }, providers: [
             {
                 provide: MenuItem,
                 useExisting: forwardRef(() => MenuHeaderComponent),
             },
         ], usesInheritance: true, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MenuHeaderComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: MenuHeaderComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-menu-header',
@@ -478,15 +478,15 @@ class MenuSeparatorComponent extends MenuItem {
         super(...arguments);
         this.type = MenuItemType.separator;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MenuSeparatorComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.1.3", type: MenuSeparatorComponent, isStandalone: false, selector: "appfx-menu-separator", providers: [
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: MenuSeparatorComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.22", type: MenuSeparatorComponent, isStandalone: false, selector: "appfx-menu-separator", providers: [
             {
                 provide: MenuItem,
                 useExisting: forwardRef(() => MenuSeparatorComponent),
             },
         ], usesInheritance: true, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: MenuSeparatorComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: MenuSeparatorComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-menu-separator',
@@ -508,8 +508,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImpor
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class AppfxMenuModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxMenuModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.1.3", ngImport: i0, type: AppfxMenuModule, declarations: [FocusableDropdownItemDirective,
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxMenuModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.22", ngImport: i0, type: AppfxMenuModule, declarations: [FocusableDropdownItemDirective,
             FocusableItemCollectorComponent,
             FocusableMenuDirective,
             MenuActionComponent,
@@ -517,12 +517,12 @@ class AppfxMenuModule {
             MenuHeaderComponent,
             MenuOutletComponent,
             MenuSeparatorComponent], imports: [ClrDropdownModule, CommonModule], exports: [MenuActionComponent, MenuComponent, MenuHeaderComponent, MenuOutletComponent, MenuSeparatorComponent] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxMenuModule, providers: [
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxMenuModule, providers: [
             // Enable 200% and 400% zoom support
             ZoomLevelService,
         ], imports: [ClrDropdownModule, CommonModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.1.3", ngImport: i0, type: AppfxMenuModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: AppfxMenuModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [ClrDropdownModule, CommonModule],
