@@ -77,10 +77,12 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
             <cds-icon shape="arrow" direction="down" aria-hidden="true"></cds-icon>
             {{ commonStrings.keys.sortColumnDescending }}
           </button>
-          <button type="button" clrDropdownItem [disabled]="canClearSort ? null : true" (click)="column.clearSort()">
-            <cds-icon shape="times" aria-hidden="true"></cds-icon>
-            {{ commonStrings.keys.clearColumnSort }}
-          </button>
+          @if (!column.disableUnsort) {
+            <button type="button" clrDropdownItem [disabled]="canClearSort ? null : true" (click)="column.clearSort()">
+              <cds-icon shape="times" aria-hidden="true"></cds-icon>
+              {{ commonStrings.keys.clearColumnSort }}
+            </button>
+          }
         }
 
         @if (column.pinnable) {
@@ -159,12 +161,8 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     return this.column.sortOrder;
   }
 
-  /**
-   * Clearing the sort is only offered when there is a sort to clear, and never when the column opted
-   * out of the unsorted state - otherwise the menu would undo what `clrDgDisableUnsort` asked for.
-   */
   protected get canClearSort(): boolean {
-    return this.sortOrder !== ClrDatagridSortOrder.UNSORTED && !this.column.disableUnsort;
+    return this.sortOrder !== ClrDatagridSortOrder.UNSORTED;
   }
 
   protected get hasFilter(): boolean {

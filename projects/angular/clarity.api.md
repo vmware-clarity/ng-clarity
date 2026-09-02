@@ -2334,6 +2334,7 @@ export class ClrDatagridColumnAction implements OnDestroy {
 export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ColumnActionsService" needs to be exported by the entry point clr-angular.d.ts
     constructor(column: ClrDatagridColumn, commonStrings: ClrCommonStringsService, columnActions: ColumnActionsService, columnPopover: ClrPopoverService, changeDetectorRef: ChangeDetectorRef, keyNavigation: KeyNavigationGridController, filters: FiltersProvider);
+    // (undocumented)
     protected get canClearSort(): boolean;
     closeMenu(): void;
     // (undocumented)
