@@ -386,4 +386,22 @@ describe('DOM context collector - hand-authored markup', () => {
     expect(modal?.label).toBe('Bare modal');
     expect(modal?.actions).toBeUndefined();
   });
+
+  it('never describes elements inside ignore-marked regions', () => {
+    root.innerHTML = `
+      <div data-clr-context-ignore>
+        <clr-modal>
+          <div class="modal-dialog"><div class="modal-title">Chat panel internals</div></div>
+        </clr-modal>
+        <clr-fake-widget aria-label="Panel widget">panel widget</clr-fake-widget>
+        <button type="button" class="btn">Panel action</button>
+      </div>
+      <clr-fake-widget aria-label="Page widget">page widget</clr-fake-widget>
+    `;
+
+    const contexts = collectClrDomContexts(root);
+
+    expect(contexts).toEqual([{ type: 'fake-widget', label: 'Page widget' }]);
+    expect(collectClrDomActions(root).map(action => action.label)).not.toContain('Panel action');
+  });
 });
