@@ -139,6 +139,25 @@ class NoFilterTest {
   items = [1];
 }
 
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column clrDgField="name">
+        Filtered
+        <clr-dg-column-actions [clrDgKeepFilterInHeader]="keepInHeader"></clr-dg-column-actions>
+      </clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class KeepFilterInHeaderTest {
+  items = [{ name: 'aaa' }, { name: 'bbb' }];
+  keepInHeader = true;
+}
+
 export default function (): void {
   describe('ClrDatagridColumnActions', function () {
     describe('rendering', function () {
@@ -332,14 +351,17 @@ export default function (): void {
         expect(itemLabelled('Custom').getAttribute('id')).toBeTruthy();
       });
 
-      it('closes the menu when a projected action is picked', function () {
+      // clr-dropdown-menu is opened with [clrCloseMenuOnItemClick]="false", so a built-in item like
+      // Sort Ascending does not close the menu either. closeMenu() checks the same isMenuClosable flag
+      // clrDropdownItem does, so a projected action follows suit rather than closing on its own.
+      it('leaves the menu open when a projected action is picked', function () {
         openMenu();
         expect(menuItems().length).toBeGreaterThan(0);
 
         itemLabelled('Custom').click();
         context.detectChanges();
 
-        expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('false');
+        expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('true');
       });
 
       it('marks a disabled projected action and leaves the menu open', function () {
@@ -538,7 +560,7 @@ export default function (): void {
         expect(filterPanel()).not.toBeNull();
       });
 
-      it('anchors the filter popover to the menu trigger rather than the removed toggle', function () {
+      it('anchors the filter popover to the filter menu item rather than the removed toggle', function () {
         // The column owns the popover service its filter uses, so this is the anchor the filter
         // popover positions against.
         const popover = context.fixture.debugElement
@@ -546,10 +568,11 @@ export default function (): void {
           .injector.get(ClrPopoverService);
 
         openMenu();
-        itemLabelled(commonStrings.keys.filterColumn).click();
+        const filterItem = itemLabelled(commonStrings.keys.filterColumn);
+        filterItem.click();
         context.detectChanges();
 
-        expect(popover.originElement.nativeElement.classList).toContain('datagrid-column-actions-toggle');
+        expect(popover.originElement.nativeElement).toBe(filterItem);
       });
 
       // The menu and the filter are two separate overlays, so nothing structurally stops both being
@@ -630,6 +653,64 @@ export default function (): void {
         context.detectChanges();
 
         expect(menuItemLabels()).not.toContain(new ClrCommonStringsService().keys.filterColumn);
+      });
+    });
+
+    describe('clrDgKeepFilterInHeader', function () {
+      let context: TestContext<ClrDatagrid, KeepFilterInHeaderTest>;
+      let element: HTMLElement;
+      let commonStrings: ClrCommonStringsService;
+
+      function openMenu() {
+        if (!menuIsOpen()) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
+      }
+
+      function closeMenu() {
+        if (menuIsOpen()) {
+          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          context.detectChanges();
+        }
+      }
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, KeepFilterInHeaderTest);
+        element = context.clarityElement;
+        commonStrings = new ClrCommonStringsService();
+      });
+
+      afterEach(function () {
+        closeMenu();
+      });
+
+      it('keeps the filter toggle in the header instead of moving it into the menu', function () {
+        expect(element.querySelector('.datagrid-header .datagrid-filter-toggle')).not.toBeNull();
+      });
+
+      // The column title stays sortable alongside the sort actions in the menu, and the filter
+      // toggle staying put follows the same dual-access pattern.
+      it('still offers the filter action in the menu', function () {
+        openMenu();
+
+        expect(menuItemLabels()).toContain(commonStrings.keys.filterColumn);
+      });
+
+      it('moves the filter into the menu once the input is turned off', function () {
+        context.testComponent.keepInHeader = false;
+        context.detectChanges();
+
+        expect(element.querySelector('.datagrid-header .datagrid-filter-toggle')).toBeNull();
+      });
+
+      it('moves the filter back into the header when the input is turned on again', function () {
+        context.testComponent.keepInHeader = false;
+        context.detectChanges();
+        context.testComponent.keepInHeader = true;
+        context.detectChanges();
+
+        expect(element.querySelector('.datagrid-header .datagrid-filter-toggle')).not.toBeNull();
       });
     });
   });

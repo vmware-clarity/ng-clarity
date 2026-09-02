@@ -564,6 +564,7 @@
         flex: 0 0 auto;
         align-items: center;
         margin-left: auto;
+        order: 99;
 
         .datagrid-column-actions-toggle {
           @include mixins.clr-no-styles-button();

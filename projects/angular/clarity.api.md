@@ -2346,6 +2346,10 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     protected get filterActive(): boolean;
     // (undocumented)
     protected get hasFilter(): boolean;
+    get keepFilterInHeader(): boolean;
+    set keepFilterInHeader(value: boolean);
+    // (undocumented)
+    static ngAcceptInputType_keepFilterInHeader: unknown;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -2359,7 +2363,7 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     // (undocumented)
     unregisterAction(item: FocusableItem): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnActions, "clr-dg-column-actions", never, {}, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnActions, "clr-dg-column-actions", never, { "keepFilterInHeader": { "alias": "clrDgKeepFilterInHeader"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnActions, [null, null, null, null, null, { optional: true; }, { optional: true; }]>;
 }

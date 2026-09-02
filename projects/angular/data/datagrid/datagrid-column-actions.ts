@@ -7,10 +7,12 @@
 
 import {
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
+  Input,
   OnDestroy,
   Optional,
   ViewChild,
@@ -37,20 +39,21 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
  * A column that has a filter gets a filter action automatically, and the filter drops its own toggle
  * for as long as this menu is present - the header keeps one control per column rather than two. The
  * trigger also takes over showing that the column is filtered, which the toggle used to do.
+ * `clrDgKeepFilterInHeader` opts back into the toggle, the same way the column title stays sortable
+ * alongside the sort actions in the menu.
  *
- * Projected items should carry `clrDgColumnAction`, which registers them here so they join the
- * arrow key order and close the menu when picked. `clrDropdownItem` cannot be used from the outside -
- * see `ClrDatagridColumnAction` for why.
+ * Projected items should carry `clrDgColumnAction`, which registers them here so they join the arrow
+ * key order and follow the same close-on-click behavior as the built-in items. `clrDropdownItem`
+ * cannot be used from the outside - see `ClrDatagridColumnAction` for why.
  */
 @Component({
   selector: 'clr-dg-column-actions',
   template: `
-    <clr-dropdown>
+    <clr-dropdown [clrCloseMenuOnItemClick]="false">
       <button
         class="datagrid-column-actions-toggle"
         type="button"
         clrDropdownTrigger
-        #trigger
         [class.datagrid-column-actions-filtered]="filterActive"
         [attr.aria-label]="triggerLabel"
       >
@@ -77,8 +80,8 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
             <cds-icon shape="arrow" direction="down" aria-hidden="true"></cds-icon>
             {{ commonStrings.keys.sortColumnDescending }}
           </button>
-          @if (!column.disableUnsort) {
-            <button type="button" clrDropdownItem [disabled]="canClearSort ? null : true" (click)="column.clearSort()">
+          @if (canClearSort) {
+            <button type="button" clrDropdownItem (click)="column.clearSort()">
               <cds-icon shape="times" aria-hidden="true"></cds-icon>
               {{ commonStrings.keys.clearColumnSort }}
             </button>
@@ -90,16 +93,22 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
             <div class="dropdown-divider" role="separator"></div>
           }
           <button type="button" clrDropdownItem (click)="column.togglePinned()">
-            <cds-icon [shape]="column.pinned ? 'unpin' : 'pin'" solid aria-hidden="true"></cds-icon>
+            <cds-icon
+              [shape]="column.pinned ? 'unpin' : 'pin'"
+              solid
+              size="12"
+              style="margin: 2px;"
+              aria-hidden="true"
+            ></cds-icon>
             {{ column.pinned ? commonStrings.keys.unpinColumn : commonStrings.keys.pinColumn }}
           </button>
         }
 
-        @if (hasFilter) {
+        @if (hasFilter && !keepFilterInHeader) {
           @if (column.sortable || column.pinnable) {
             <div class="dropdown-divider" role="separator"></div>
           }
-          <button type="button" clrDropdownItem [class.active]="filterActive" (click)="openFilter($event)">
+          <button type="button" #trigger clrDropdownItem [class.active]="filterActive" (click)="openFilter($event)">
             <cds-icon [shape]="filterActive ? 'filter-grid-circle' : 'filter-grid'" solid aria-hidden="true"></cds-icon>
             {{ commonStrings.keys.filterColumn }}
           </button>
@@ -118,6 +127,8 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
 export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
   // Exposed so the template can compare against the enum.
   protected readonly ClrDatagridSortOrder = ClrDatagridSortOrder;
+
+  private _keepFilterInHeader = false;
 
   @ViewChild('trigger', { read: ElementRef }) private trigger: ElementRef<HTMLButtonElement>;
 
@@ -141,8 +152,25 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     @Optional() private keyNavigation: KeyNavigationGridController,
     @Optional() private filters: FiltersProvider
   ) {
-    // Tells the filter to drop its own toggle - from here on this menu is the only way to open it.
-    columnActions.present.set(true);
+    // Tells the filter to drop its own toggle - from here on this menu is the only way to open it,
+    // unless clrDgKeepFilterInHeader asked to keep both. Reading the backing field rather than the
+    // getter covers the default: Angular only invokes the setter above when the input is actually
+    // bound, and by then the field initializer has already run.
+    columnActions.present.set(!this._keepFilterInHeader);
+  }
+
+  /**
+   * Keeps the filter's own toggle in the column header instead of moving it into this menu. The
+   * filter action stays offered here regardless, the same way the column title stays sortable
+   * alongside the sort actions.
+   */
+  @Input({ alias: 'clrDgKeepFilterInHeader', transform: booleanAttribute })
+  get keepFilterInHeader(): boolean {
+    return this._keepFilterInHeader;
+  }
+  set keepFilterInHeader(value: boolean) {
+    this._keepFilterInHeader = value;
+    this.columnActions.present.set(!value);
   }
 
   /**
@@ -162,7 +190,7 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
   }
 
   protected get canClearSort(): boolean {
-    return this.sortOrder !== ClrDatagridSortOrder.UNSORTED;
+    return this.sortOrder !== ClrDatagridSortOrder.UNSORTED && !this.column.disableUnsort;
   }
 
   protected get hasFilter(): boolean {
@@ -174,7 +202,7 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
    * the filter action carry that state instead.
    */
   protected get filterActive(): boolean {
-    return !!this.columnActions.filter()?.active;
+    return !!this.columnActions.filter()?.active && !this.keepFilterInHeader;
   }
 
   /**
@@ -248,8 +276,17 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
   /**
    * Returns focus to the trigger before closing, the same order `clrDropdownItem` uses - moving focus
    * first means it lands correctly even when the action opens a modal.
+   *
+   * Checks `isMenuClosable` because this is the only path a projected `clrDgColumnAction` item has to
+   * close the menu. `clrDropdownItem` checks the same flag on its own click handler, so without this
+   * check here a projected item would close the menu on click while a built-in one, with
+   * `[clrCloseMenuOnItemClick]="false"`, would not.
    */
   closeMenu() {
+    if (!this.dropdown.isMenuClosable) {
+      return;
+    }
+
     this.dropdown.focusHandler.focus();
     this.dropdown.popoverService.open = false;
   }
@@ -272,7 +309,8 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
   }
 
   /**
-   * Opens the filter of this column, anchored to the menu trigger.
+   * Opens the filter of this column, anchored to the "Filter Column" menu item itself (`#trigger`
+   * above), so the popover positions off the item that was actually clicked rather than the kebab.
    *
    * The popover is driven through the column's ClrPopoverService rather than through
    * `ClrDatagridFilter.open`, because that is the one thing every filter flavour has in common - a

@@ -42,7 +42,6 @@
     Name
     <clr-dg-column-actions></clr-dg-column-actions>
   </clr-dg-column>
-  <!-- clrDgDisableUnsort takes no booleanAttribute transform, so it needs an explicit binding. -->
   <clr-dg-column
     [clrDgField]="'creation'"
     [clrDgDisableUnsort]="true"
@@ -61,100 +60,7 @@
   <clr-dg-footer>{{users.length}} users</clr-dg-footer>
 </clr-datagrid>
 
-<h3>Pinning from the menu</h3>
-
-<p>
-  A column marked <code class="clr-code">clrDgPinnable</code> adds <em>Pin Column</em> to its menu, and
-  <em>Unpin Column</em> once it is pinned. The pinned state itself stays on <code class="clr-code">clrDgPinned</code>,
-  so the two-way <code class="clr-code">[(clrDgPinned)]</code> binding below keeps the checkboxes and the menu in sync
-  in both directions - that is what <code class="clr-code">clrDgPinnedChange</code> is for.
-</p>
-
-<p>
-  The last two columns have no <code class="clr-code">clrDgPinnable</code>, so their menus omit the pin action and they
-  can only be pinned by the application.
-</p>
-
-<clr-checkbox-container clrInline>
-  <label>Pinned columns</label>
-  <clr-checkbox-wrapper>
-    <input type="checkbox" clrCheckbox name="pin-id" [(ngModel)]="pinId" />
-    <label>User ID</label>
-  </clr-checkbox-wrapper>
-  <clr-checkbox-wrapper>
-    <input type="checkbox" clrCheckbox name="pin-name" [(ngModel)]="pinName" />
-    <label>Name</label>
-  </clr-checkbox-wrapper>
-</clr-checkbox-container>
-
-<clr-datagrid>
-  <clr-dg-column [clrDgField]="'id'" clrDgPinnable [(clrDgPinned)]="pinId" [style.width.px]="140">
-    User ID
-    <clr-dg-column-actions></clr-dg-column-actions>
-  </clr-dg-column>
-  <clr-dg-column [clrDgField]="'name'" clrDgPinnable [(clrDgPinned)]="pinName" [style.width.px]="200">
-    Name
-    <clr-dg-column-actions></clr-dg-column-actions>
-  </clr-dg-column>
-  <clr-dg-column [clrDgField]="'pokemon.name'" [style.width.px]="1200">
-    Pokemon
-    <clr-dg-column-actions></clr-dg-column-actions>
-  </clr-dg-column>
-  <clr-dg-column [clrDgField]="'color'" [style.width.px]="1200">
-    Favorite color
-    <clr-dg-column-actions></clr-dg-column-actions>
-  </clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-    <clr-dg-cell>{{user.id}}</clr-dg-cell>
-    <clr-dg-cell>{{user.name}}</clr-dg-cell>
-    <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{users.length}} users</clr-dg-footer>
-</clr-datagrid>
-
-<h3>Only the actions the column can perform</h3>
-
-<p>
-  The menu never shows a dead option. The first column has neither <code class="clr-code">clrDgField</code> nor
-  <code class="clr-code">clrDgSortBy</code>, so it cannot be sorted and offers only the pin action. The second is
-  sortable but not pinnable. The third is both, and the fourth has nothing to offer at all - worth checking that its
-  menu is not left empty and pointless.
-</p>
-
-<clr-datagrid>
-  <clr-dg-column clrDgPinnable>
-    Not sortable
-    <clr-dg-column-actions></clr-dg-column-actions>
-  </clr-dg-column>
-  <clr-dg-column [clrDgField]="'name'">
-    Not pinnable
-    <clr-dg-column-actions></clr-dg-column-actions>
-  </clr-dg-column>
-  <clr-dg-column [clrDgField]="'creation'" clrDgPinnable>
-    Sortable and pinnable
-    <clr-dg-column-actions></clr-dg-column-actions>
-  </clr-dg-column>
-  <clr-dg-column>
-    Neither
-    <clr-dg-column-actions></clr-dg-column-actions>
-  </clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-    <clr-dg-cell>{{user.id}}</clr-dg-cell>
-    <clr-dg-cell>{{user.name}}</clr-dg-cell>
-    <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
-    <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{users.length}} users</clr-dg-footer>
-</clr-datagrid>
-
-<h3>Application supplied actions</h3>
+<h3>Custom column actions</h3>
 
 <p>
   Items projected into <code class="clr-code">clr-dg-column-actions</code> are appended after the built-in ones and have
@@ -174,7 +80,7 @@
 <clr-datagrid>
   <clr-dg-column [clrDgField]="'id'" clrDgPinnable>
     User ID
-    <clr-dg-column-actions>
+    <clr-dg-column-actions [clrDgKeepFilterInHeader]="true">
       <div class="dropdown-divider" role="separator"></div>
       <button type="button" clrDgColumnAction (click)="export('User ID')">
         <cds-icon shape="export" aria-hidden="true"></cds-icon>
