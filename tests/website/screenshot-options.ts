@@ -5,14 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-type WebsiteScreenshotOptions = {
-  [pageName: string]: {
-    fullPageScreenshot?: boolean;
-    viewport?: { width: number; height: number };
-    exclude?: boolean;
-    maskSelectors?: string[];
-  };
-};
+import { ScreenshotOptions } from '../helpers/screenshot-options.interface';
 
 /**
  * This config is a rudimentary method of changing how the screenshots are taken for specific
@@ -34,7 +27,7 @@ type WebsiteScreenshotOptions = {
  * - maskSelectors: CSS selectors for regions that render non-deterministically and should
  *   be masked out of the screenshot.
  */
-export const websiteScreenshotOptions: WebsiteScreenshotOptions = {
+export const websiteScreenshotOptions: ScreenshotOptions = {
   'documentation-accessibility': {
     // /documentation/accessibility redirects to /pages/accessibility, which is already covered
     // by the pages-accessibility screenshot.

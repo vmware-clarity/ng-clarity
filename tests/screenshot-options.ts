@@ -5,13 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-type ScreenshotOptions = {
-  [componentOrStoryName: string]: {
-    fullPageScreenshot?: boolean;
-    viewport?: { width: number; height: number };
-    exclude?: boolean;
-  };
-};
+import { ScreenshotOptions } from './helpers/screenshot-options.interface';
 
 /**
  * This config is a rudimentary method of changing how the screenshots are taken for specific stories.

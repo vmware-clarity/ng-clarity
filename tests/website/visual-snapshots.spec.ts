@@ -10,15 +10,12 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { websiteScreenshotOptions } from './screenshot-options';
+import { ScreenshotOptions } from '../helpers/screenshot-options.interface';
+import { browser, density, matrixKey, screenshotExpectOptions, theme } from '../helpers/vrt';
 
-const browser = process.env['CLARITY_VRT_BROWSER'];
-const theme = process.env['CLARITY_VRT_THEME'];
-const density = process.env['CLARITY_VRT_DENSITY'];
-const shard = process.env['CLARITY_VRT_SHARD'];
 // The used-screenshot-paths file only needs to be unique per CI job and worker process; the
 // screenshots taken per test are discovered at runtime (the documentation tabs), so each worker
 // appends the paths it captured to its own file as it goes.
-const matrixKey = shard ? `${browser}-${theme}-${density}-${shard}` : `${browser}-${theme}-${density}`;
 const workerId = process.env['TEST_PARALLEL_INDEX'] ?? 'main';
 const usedScreenshotsFilePath = path.join(
   '.',
@@ -129,12 +126,7 @@ for (const sitePage of pages) {
   });
 }
 
-async function capturePage(
-  page: Page,
-  route: string,
-  screenshotPath: string,
-  options: (typeof websiteScreenshotOptions)[string] | undefined
-) {
+async function capturePage(page: Page, route: string, screenshotPath: string, options: ScreenshotOptions[string]) {
   fs.appendFileSync(usedScreenshotsFilePath, screenshotPath + '\n');
 
   await page.goto(`${baseUrl}${route}`);
@@ -201,9 +193,7 @@ async function capturePage(
   }
 
   await expect(page).toHaveScreenshot(screenshotPath.split(path.sep), {
-    animations: 'disabled',
-    caret: 'hide',
-    threshold: 0.01,
+    ...screenshotExpectOptions,
     mask: [...defaultMaskSelectors, ...(options?.maskSelectors ?? [])].map(selector => page.locator(selector)),
   });
 }
