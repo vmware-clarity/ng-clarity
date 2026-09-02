@@ -1,0 +1,128 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary" id="summary">
+      The <code cds-text="code">&#64;clr/ai</code> package gives AI agents structured, always-current context about the
+      page your application is showing: the active route, the components rendered right now and their state, the actions
+      currently available, and any semantic annotations the application provides.
+    </p>
+
+    <p class="clr-mt-16px" cds-text="body">
+      <code cds-text="code">&#64;clr/ai</code> is a standalone package that does not depend on
+      <code cds-text="code">&#64;clr/angular</code>: Clarity components are described by reading the rendered DOM, so
+      the engine works alongside any Clarity version — and, through custom extractors and a framework-agnostic
+      <code cds-text="code">postMessage</code> protocol, with other UI libraries and with UI embedded in iframes, such
+      as chat assistants.
+    </p>
+
+    <h2 id="installing" class="clr-mt-48px" cds-text="title">Installing</h2>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="installExample" language="bash"></app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      The only peer dependencies are <code cds-text="code">&#64;angular/common</code>,
+      <code cds-text="code">&#64;angular/core</code>, <code cds-text="code">&#64;angular/router</code> and
+      <code cds-text="code">rxjs</code> — already present in every Angular application.
+    </p>
+
+    <h2 id="taking-a-snapshot" class="clr-mt-48px" cds-text="title">Taking a snapshot</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      <code cds-text="code">ClrContextualEngineService.getSnapshot()</code> computes a snapshot on demand from the live
+      DOM and live registrations. Nothing is cached, so a snapshot can never describe UI that has been closed, destroyed
+      or navigated away from.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="snapshotExample" language="typescript"></app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">A snapshot is a small, serializable object:</p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="snapshotShapeExample" language="typescript"></app-code-snippet>
+    </div>
+
+    <h2 id="live-context" class="clr-mt-48px" cds-text="title">Keeping a live page context</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Consumers that always want the context of the page the user is currently on — an AI chat panel, for example —
+      subscribe to <code cds-text="code">ClrContextTrackerService</code>. It watches the DOM with a
+      <code cds-text="code">MutationObserver</code> (created outside the Angular zone, so it triggers no change
+      detection) and re-scrapes after a quiet window of <code cds-text="code">debounceMs</code> (default 300), bounded
+      by <code cds-text="code">maxWaitMs</code> (default 2000) for pages that never go quiet. An emission happens only
+      when the context actually changed, and each emission is a complete fresh snapshot.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="trackerExample" language="typescript"></app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      Mark UI that renders the context with the <code cds-text="code">data-clr-context-ignore</code> attribute (exported
+      as <code cds-text="code">CLR_CONTEXT_IGNORE_ATTRIBUTE</code>). Such regions are invisible to the engine end to
+      end: the collector never describes them and the tracker ignores their mutations, so a panel re-rendering the
+      context cannot re-trigger tracking or describe itself into the page context.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="ignoreExample" language="html"></app-code-snippet>
+    </div>
+
+    <h2 id="annotating" class="clr-mt-48px" cds-text="title">Annotating the application</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      The DOM only knows <em>what</em> is on the page. The <code cds-text="code">clrContext</code> directive lets the
+      application add the <em>why</em> — knowledge only it has. Annotations register when the element appears,
+      unregister when it is destroyed, and are read at snapshot time, so they are never stale.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="directiveExample" language="html"></app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">The directive ships in <code cds-text="code">ClrContextualModule</code>:</p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="directiveModuleExample" language="typescript"></app-code-snippet>
+    </div>
+
+    <h2 id="other-ui-libraries" class="clr-mt-48px" cds-text="title">Teaching the engine about other UI libraries</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Components that are not Clarity components can be described by registering a DOM extractor. The returned function
+      removes it again.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="extractorExample" language="typescript"></app-code-snippet>
+    </div>
+
+    <h2 id="iframes" class="clr-mt-48px" cds-text="title">Serving context to embedded frames</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      UI embedded in an iframe — such as a chat assistant built with a separate UI library — can receive the hosting
+      page's context. The hosting application opts in, and by default only frames from the page's own origin are served:
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="frameHostExample" language="typescript"></app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      The protocol is two plain JSON messages over <code cds-text="code">postMessage</code> (see
+      <code cds-text="code">CLR_CONTEXT_PROTOCOL</code>), so the embedded page needs neither Angular nor Clarity.
+      Requests are answered per frame and per request with a freshly computed snapshot — context is never broadcast.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="frameClientExample" language="typescript"></app-code-snippet>
+    </div>
+
+    <h2 id="browser-agents" class="clr-mt-48px" cds-text="title">Browser-driving agents</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Agents that drive the browser directly and have no application API can be given a global accessor:
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="globalAccessExample" language="typescript"></app-code-snippet>
+    </div>
+
+    <h2 id="privacy-and-budgets" class="clr-mt-48px" cds-text="title">Privacy and budgets</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Form fields are described by label, type and validation state —
+      <strong cds-text="medium">their values are never collected</strong>. Hidden elements and ignore-marked regions are
+      skipped, text is truncated and lists are capped, so snapshots stay small enough for an agent's context window.
+      Every budget can be tuned per call:
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="budgetsExample" language="typescript"></app-code-snippet>
+    </div>
+  </app-doc-tab>
+</app-doc-tabs>
