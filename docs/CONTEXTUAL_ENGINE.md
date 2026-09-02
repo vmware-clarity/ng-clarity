@@ -42,16 +42,13 @@ const snapshot = this.contextEngine.getSnapshot();
 ## Keeping a live "current page" context
 
 For consumers that want to always hold the context of the page the user is currently on — an AI
-chat panel, for example — `ClrContextTrackerService` turns the pull-based engine into a stream,
-timed by Angular's own rendering lifecycle rather than by guessed delays:
-
-- after every completed router navigation, the page is scraped in an `afterNextRender` callback —
-  after the change detection cycle that actually painted the newly activated route, however long
-  that took (works in zone-based and zoneless applications);
-- because data often arrives after the first paint, a follow-up scrape runs when
-  `ApplicationRef.whenStable()` resolves (in-flight HTTP finished), capped by
-  `stabilityTimeoutMs` (default 5000) so never-stable apps still get it, and is emitted only if
-  the context actually changed.
+chat panel, for example — `ClrContextTrackerService` turns the pull-based engine into a stream by
+watching the DOM itself. A `MutationObserver` (created outside the Angular zone, so it triggers no
+change detection) sees every change — route navigations, data arriving into a datagrid, a modal
+opening, rows being selected. The page is re-scraped after a quiet window of `debounceMs`
+(default 300, which covers a typical interaction burst in one scrape), bounded by `maxWaitMs`
+(default 2000) so pages that never go quiet still get tracked, and an emission happens only when
+the context actually changed:
 
 ```ts
 import { ClrContextTrackerService } from '@clr/ai';
@@ -63,9 +60,15 @@ constructor(tracker: ClrContextTrackerService) {
 ```
 
 Every emission is a freshly computed snapshot — the tracker keeps only the latest one and never
-merges, so context from a page the user left can never leak into the current one. In-page changes
-between navigations (a modal opening, rows selected) do not emit on their own; call
-`tracker.refresh()` on such events, or use `getSnapshot()` when exactness at read time matters.
+merges, so context from a page the user left can never leak into the current one.
+
+Mark UI that renders the context — the chat panel itself, a debug view — with the
+`data-clr-context-ignore` attribute (exported as `CLR_CONTEXT_IGNORE_ATTRIBUTE`). Such regions are
+invisible to the engine end to end: the collector never describes them and the tracker ignores
+their mutations, so a panel re-rendering the context cannot re-trigger tracking or describe itself
+into the page context. Note that input _values_ change without DOM mutations — irrelevant today,
+since values are never collected — and `tracker.refresh()` remains available for on-demand
+updates.
 
 For browser-driving agents that have no application API, the engine can expose a global accessor:
 

@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ApplicationRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 
 import { ClrContextTrackerService } from './context-tracker.service';
+import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '../dom/dom-context-collector';
 import { ClrPageContext } from '../interfaces/context.interface';
 
 @Component({ template: '' })
@@ -18,29 +19,38 @@ class RoutedComponent {}
 describe('ClrContextTrackerService', () => {
   let tracker: ClrContextTrackerService;
   let emitted: ClrPageContext[];
+  let addedElements: Element[];
 
-  /** Forces a render so afterNextRender fires, then lets the stability pass settle. */
-  async function renderAndSettle(): Promise<void> {
-    TestBed.inject(ApplicationRef).tick();
-    await new Promise(resolve => setTimeout(resolve, 30));
+  function wait(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  function addWidget(label: string, parent: Element = document.body): Element {
+    const widget = document.createElement('clr-fake-widget');
+    widget.setAttribute('aria-label', label);
+    widget.textContent = label;
+    parent.appendChild(widget);
+    addedElements.push(widget);
+    return widget;
+  }
+
+  function widgetLabels(context: ClrPageContext | null): (string | undefined)[] {
+    return (context?.components ?? []).filter(component => component.type === 'fake-widget').map(c => c.label);
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        provideRouter([
-          { path: 'inventory', component: RoutedComponent },
-          { path: 'settings', component: RoutedComponent },
-        ]),
-      ],
-    });
+    TestBed.configureTestingModule({});
     tracker = TestBed.inject(ClrContextTrackerService);
     emitted = [];
+    addedElements = [];
     tracker.context$.subscribe(context => emitted.push(context));
   });
 
   afterEach(() => {
     tracker.stop();
+    for (const element of addedElements) {
+      element.remove();
+    }
   });
 
   it('has no context before tracking starts', () => {
@@ -65,60 +75,101 @@ describe('ClrContextTrackerService', () => {
     expect(late).toEqual([emitted[0]]);
   });
 
-  it('scrapes the page again after each completed navigation, once it has rendered', async () => {
-    tracker.start();
+  it('scrapes and emits after the DOM changes', async () => {
+    tracker.start({ debounceMs: 20 });
 
-    await TestBed.inject(Router).navigateByUrl('/inventory');
-    await renderAndSettle();
+    addWidget('Chat widget');
+    await wait(120);
 
-    expect(tracker.currentContext?.route?.url).toBe('/inventory');
-
-    await TestBed.inject(Router).navigateByUrl('/settings');
-    await renderAndSettle();
-
-    expect(tracker.currentContext?.route?.url).toBe('/settings');
+    expect(widgetLabels(tracker.currentContext)).toContain('Chat widget');
   });
 
-  it('does not emit duplicate context from the stability pass when nothing changed', async () => {
-    tracker.start();
+  it('coalesces a burst of changes into a single emission', async () => {
+    tracker.start({ debounceMs: 60 });
+    const countAfterStart = emitted.length;
 
-    await TestBed.inject(Router).navigateByUrl('/inventory');
-    await renderAndSettle();
-    const countAfterNavigation = emitted.length;
-    await renderAndSettle();
+    addWidget('First');
+    await wait(15);
+    addWidget('Second');
+    await wait(200);
 
-    expect(emitted.length).toBe(countAfterNavigation);
-    const routes = emitted.filter(context => context.route?.url === '/inventory');
-    expect(routes.length).toBe(1);
+    expect(emitted.length).toBe(countAfterStart + 1);
+    expect(widgetLabels(tracker.currentContext)).toEqual(['First', 'Second']);
   });
 
-  it('applies the configured snapshot budgets', () => {
-    tracker.start({ snapshot: { includeDomComponents: false, includeActions: false } });
+  it('does not emit when the page context did not meaningfully change', async () => {
+    tracker.start({ debounceMs: 20 });
+    const countAfterStart = emitted.length;
 
-    expect(emitted[0].components).toEqual([]);
-    expect(emitted[0].actions).toBeUndefined();
+    // A plain div is a DOM change but contributes nothing to the context.
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+    addedElements.push(div);
+    await wait(120);
+
+    expect(emitted.length).toBe(countAfterStart);
   });
 
-  it('stops emitting once stopped', async () => {
-    tracker.start();
+  it('ignores mutations inside ignore-marked regions', async () => {
+    const ignored = document.createElement('div');
+    ignored.setAttribute(CLR_CONTEXT_IGNORE_ATTRIBUTE, '');
+    document.body.appendChild(ignored);
+    addedElements.push(ignored);
+    tracker.start({ debounceMs: 20 });
+    const countAfterStart = emitted.length;
+
+    addWidget('Panel internals', ignored);
+    await wait(120);
+
+    expect(emitted.length).toBe(countAfterStart);
+    expect(widgetLabels(tracker.currentContext)).toEqual([]);
+  });
+
+  it('still scrapes at the max-wait bound when the page never goes quiet', async () => {
+    tracker.start({ debounceMs: 80, maxWaitMs: 200 });
+
+    const noise = document.createElement('div');
+    document.body.appendChild(noise);
+    addedElements.push(noise);
+    addWidget('Appears despite noise');
+    const interval = setInterval(() => noise.setAttribute('data-tick', String(Date.now())), 30);
+
+    try {
+      await wait(350);
+      expect(widgetLabels(tracker.currentContext)).toContain('Appears despite noise');
+    } finally {
+      clearInterval(interval);
+    }
+  });
+
+  it('stops reacting to DOM changes once stopped', async () => {
+    tracker.start({ debounceMs: 20 });
     tracker.stop();
     const countWhenStopped = emitted.length;
 
-    await TestBed.inject(Router).navigateByUrl('/inventory');
-    await renderAndSettle();
+    addWidget('Too late');
+    await wait(120);
 
     expect(emitted.length).toBe(countWhenStopped);
-    expect(tracker.currentContext?.route?.url).not.toBe('/inventory');
+  });
+
+  it('applies the configured snapshot budgets to tracked scrapes', async () => {
+    tracker.start({ debounceMs: 20, snapshot: { includeDomComponents: false, includeActions: false } });
+
+    addWidget('Never collected');
+    await wait(120);
+
+    expect(tracker.currentContext?.components).toEqual([]);
+    expect(tracker.currentContext?.actions).toBeUndefined();
   });
 
   it('restarts with new options when started again', async () => {
-    tracker.start();
-    tracker.start({ snapshot: { includeDomComponents: false } });
+    tracker.start({ debounceMs: 20 });
+    tracker.start({ debounceMs: 20, snapshot: { includeDomComponents: false } });
 
-    await TestBed.inject(Router).navigateByUrl('/inventory');
-    await renderAndSettle();
+    addWidget('Ignored by new budget');
+    await wait(120);
 
-    expect(tracker.currentContext?.route?.url).toBe('/inventory');
     expect(tracker.currentContext?.components).toEqual([]);
   });
 
@@ -130,12 +181,25 @@ describe('ClrContextTrackerService', () => {
     expect(emitted[1]).not.toBe(emitted[0]);
   });
 
-  it('can skip the stability pass entirely', async () => {
-    tracker.start({ awaitStability: false });
+  describe('with a router', () => {
+    it('reads the current route at scrape time, so navigations are tracked through their DOM changes', async () => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [provideRouter([{ path: 'inventory', component: RoutedComponent }])],
+      });
+      const routedTracker = TestBed.inject(ClrContextTrackerService);
+      routedTracker.start({ debounceMs: 20 });
 
-    await TestBed.inject(Router).navigateByUrl('/inventory');
-    await renderAndSettle();
+      try {
+        await TestBed.inject(Router).navigateByUrl('/inventory');
+        // In a real app the navigation itself mutates the DOM; simulate that render.
+        addWidget('Rendered by the new page');
+        await wait(120);
 
-    expect(tracker.currentContext?.route?.url).toBe('/inventory');
+        expect(routedTracker.currentContext?.route?.url).toBe('/inventory');
+      } finally {
+        routedTracker.stop();
+      }
+    });
   });
 });
