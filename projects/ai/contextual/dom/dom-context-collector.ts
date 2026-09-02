@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { findPublishingElement, mergeElementContext } from './element-context';
 import { ClrComponentContext, ClrContextAction, ClrContextSnapshotOptions } from '../interfaces/context.interface';
 
 /**
@@ -216,11 +217,15 @@ const CLARITY_DOM_EXTRACTORS: ClrContextDomExtractor[] = [
           if (options.includeFormValues && control) {
             Object.assign(state, describeControlValue(field, control, options));
           }
-          return {
+          const fieldContext: ClrComponentContext = {
             type: controlType(control),
             label: textOf(field.querySelector('.clr-control-label'), options),
             state: Object.keys(state).length ? state : undefined,
           };
+          // A component inside the field (e.g. a combobox) may publish instance state
+          // the DOM cannot show, such as options that only render while open.
+          const publisher = findPublishingElement(field);
+          return publisher ? mergeElementContext(fieldContext, publisher, options) : fieldContext;
         });
       return {
         type: 'form',
@@ -270,7 +275,9 @@ export function collectClrDomContexts(
       }
       const context = extractor.extract(element, resolved);
       if (context) {
-        contexts.push(pruneEmpty(context));
+        // Components can publish instance state the DOM cannot show (see
+        // CLR_ELEMENT_CONTEXT_PROPERTY); what they publish wins over DOM guesswork.
+        contexts.push(pruneEmpty(mergeElementContext(context, element, resolved)));
         capturedElements.push(element);
       }
     }
@@ -297,12 +304,18 @@ export function collectClrDomContexts(
       continue;
     }
     contexts.push(
-      pruneEmpty({
-        type: tagName.replace(/^clr-/, ''),
-        label:
-          element.getAttribute('aria-label') ||
-          textOf(element.querySelector('h1, h2, h3, h4, h5, h6, label, .nav-text, .dropdown-toggle'), resolved),
-      })
+      pruneEmpty(
+        mergeElementContext(
+          {
+            type: tagName.replace(/^clr-/, ''),
+            label:
+              element.getAttribute('aria-label') ||
+              textOf(element.querySelector('h1, h2, h3, h4, h5, h6, label, .nav-text, .dropdown-toggle'), resolved),
+          },
+          element,
+          resolved
+        )
+      )
     );
     if (!GENERIC_TRANSPARENT_LIST.includes(tagName)) {
       capturedElements.push(element);
