@@ -1196,7 +1196,12 @@ export class ClrStackViewModule {
 // @public (undocumented)
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "TreeFocusManagerService" needs to be exported by the entry point clr-angular-data.d.ts
-    constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone);
+    constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone, injector: Injector, cdr: ChangeDetectorRef);
+    get allExpanded(): boolean;
+    set allExpanded(value: boolean);
+    collapseAll(): void;
+    expandAll(): void;
+    expandAllChange: EventEmitter<boolean>;
     // (undocumented)
     featuresService: TreeFeaturesService<T>;
     // (undocumented)
@@ -1208,20 +1213,23 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTree<any>, "clr-tree", never, { "lazy": { "alias": "clrLazy"; "required": false; }; }, {}, ["rootNodes"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTree<any>, "clr-tree", never, { "lazy": { "alias": "clrLazy"; "required": false; }; "allExpanded": { "alias": "clrExpandAll"; "required": false; }; }, { "expandAllChange": "clrExpandAllChange"; }, ["rootNodes"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTree<any>, never>;
 }
 
 // @public (undocumented)
 export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
-    constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
+    constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, elementRef: ElementRef<HTMLElement>, injector: Injector, cdr: ChangeDetectorRef);
+    get allExpanded(): boolean;
+    set allExpanded(value: boolean);
     // (undocumented)
     get ariaSelected(): boolean;
     // (undocumented)
     broadcastFocusOnContainer(): void;
     // (undocumented)
     set clrForTypeAhead(value: string);
+    collapseAll(): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -1231,6 +1239,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     set disabled(value: boolean);
     // (undocumented)
     expandable: boolean | undefined;
+    expandAll(): void;
+    expandAllChange: EventEmitter<boolean>;
     // (undocumented)
     get expanded(): boolean;
     set expanded(value: boolean);
@@ -1274,9 +1284,9 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     get treeNodeLink(): ClrTreeNodeLink;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": { "alias": "clrExpandable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "selected": { "alias": "clrSelected"; "required": false; }; "expanded": { "alias": "clrExpanded"; "required": false; }; "clrForTypeAhead": { "alias": "clrForTypeAhead"; "required": false; }; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": { "alias": "clrExpandable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "selected": { "alias": "clrSelected"; "required": false; }; "expanded": { "alias": "clrExpanded"; "required": false; }; "allExpanded": { "alias": "clrExpandAll"; "required": false; }; "clrForTypeAhead": { "alias": "clrForTypeAhead"; "required": false; }; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; "expandAllChange": "clrExpandAllChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, { optional: true; skipSelf: true; }, null, null, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, { optional: true; skipSelf: true; }, null, null, null, null, null, null, null]>;
 }
 
 // @public (undocumented)

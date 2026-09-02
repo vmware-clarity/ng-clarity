@@ -84,7 +84,7 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
     }
   }
 
-  private wrapChildren(rawModels: T[]) {
-    return rawModels.map(m => new RecursiveTreeNodeModel(m, this, this.getChildren, this.featuresService));
+  private wrapChildren(rawModels: T[] | null | undefined) {
+    return (rawModels || []).map(m => new RecursiveTreeNodeModel(m, this, this.getChildren, this.featuresService));
   }
 }
