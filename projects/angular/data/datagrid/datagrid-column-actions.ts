@@ -295,6 +295,18 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
   }
 
   /**
+   * Re-anchors the open menu to the trigger, for an action that moves the column it belongs to
+   * instead of closing the menu behind it.
+   *
+   * Deferred to after the next render rather than run straight away, because the action that asked
+   * for this has only just been clicked - the column is relocated by the change detection that
+   * follows, so measuring the trigger now would re-anchor the menu to where it already is.
+   */
+  repositionMenu() {
+    afterNextRender(() => this.dropdown.popoverService.updatePosition(), { injector: this.injector });
+  }
+
+  /**
    * The menu states a direction rather than cycling through them, so asking for the direction the
    * column already has is a no-op.
    *
@@ -320,13 +332,12 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
    * it now offers is the one that undoes the pin the user just applied.
    *
    * The columns are relocated on the render cycle the pinned state change schedules, not while this
-   * runs, so the overlay can only be re-anchored once that has happened - hence `afterNextRender`
-   * rather than an immediate call.
+   * runs, so the overlay can only be re-anchored once that has happened - which `repositionMenu`
+   * takes care of.
    */
   protected togglePinned() {
     this.column.togglePinned();
-
-    afterNextRender(() => this.dropdown.popoverService.updatePosition(), { injector: this.injector });
+    this.repositionMenu();
   }
 
   /**
