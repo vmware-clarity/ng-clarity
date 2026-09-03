@@ -56,12 +56,6 @@
     <clr-dg-column class="draggableCell" style="width: 20px"></clr-dg-column>
   }
   @for (column of visibleColumns; track trackByColumnId(index, column); let index = $index) {
-    <!--
-      clrDgPinnable is disabled for now, so these two bindings are commented out. Restoring them
-      means putting them back on the clr-dg-column below, next to [clrDgPinned]:
-        [clrDgPinnable]="!!column.pinnable"
-        (clrDgPinnedChange)="onPinnedChange($event, column)"
-    -->
     <clr-dg-column
       cdkDrag
       [cdkDragLockAxis]="'x'"
@@ -77,7 +71,9 @@
       [clrDgSortOrder]="column.defaultSortOrder || defaultUnsortedOrder"
       (clrDgSortOrderChange)="onSortOrderChange($event, column)"
       [clrDgDisableUnsort]="column.disableUnsort ?? disableUnsort"
+      [clrDgPinnable]="!!column.pinnable"
       [clrDgPinned]="!!column.pinned"
+      (clrDgPinnedChange)="onPinnedChange($event, column)"
     >
       <clr-dg-filter
         *ngIf="column.stringFilter || column.sortAndFilterByField"
@@ -99,6 +95,79 @@
         ></appfx-dg-filter-container>
       </clr-dg-filter>
       {{ column.displayName }}
+      @if (enableColumnActions) {
+        <!--
+          clrDgKeepFilterInHeader keeps the existing filter toggle in the header rather than moving
+          it into this menu - appfx-datagrid already shipped that toggle, and existing consumers and
+          tests expect it to stay there. The Filter Column action is still offered here too, the same
+          dual access every other action in this menu already has.
+        -->
+        <clr-dg-column-actions [clrDgKeepFilterInHeader]="true">
+          @if (
+            column.sortComparator ||
+            column.sortAndFilterByField ||
+            column.pinnable ||
+            column.stringFilter ||
+            column.filter
+          ) {
+            <div class="dropdown-divider" role="separator"></div>
+          }
+          <!--
+            Move to Start and Move to End are not needed for now. The 'start' and 'end' directions
+            themselves are still supported by appfxColumnMoveAction, so restoring these two buttons
+            is all it takes to bring them back.
+
+            <button
+              type="button"
+              clrDgColumnAction
+              appfxColumnMoveAction="start"
+              #moveToStart="appfxColumnMoveAction"
+              [columnIndex]="index"
+              [clrDisabled]="moveToStart.disabled"
+            >
+              <cds-icon shape="angle-double" direction="left" aria-hidden="true"></cds-icon>
+              {{ dgStrings.moveColumnToStart }}
+            </button>
+          -->
+          <button
+            type="button"
+            clrDgColumnAction
+            appfxColumnMoveAction="left"
+            #moveLeft="appfxColumnMoveAction"
+            [columnIndex]="index"
+            [clrDisabled]="moveLeft.disabled"
+          >
+            <cds-icon shape="angle" direction="left" aria-hidden="true"></cds-icon>
+            {{ dgStrings.moveColumnLeft }}
+          </button>
+          <button
+            type="button"
+            clrDgColumnAction
+            appfxColumnMoveAction="right"
+            #moveRight="appfxColumnMoveAction"
+            [columnIndex]="index"
+            [clrDisabled]="moveRight.disabled"
+          >
+            <cds-icon shape="angle" direction="right" aria-hidden="true"></cds-icon>
+            {{ dgStrings.moveColumnRight }}
+          </button>
+          <!--
+            Disabled along with Move to Start above.
+
+            <button
+              type="button"
+              clrDgColumnAction
+              appfxColumnMoveAction="end"
+              #moveToEnd="appfxColumnMoveAction"
+              [columnIndex]="index"
+              [clrDisabled]="moveToEnd.disabled"
+            >
+              <cds-icon shape="angle-double" direction="right" aria-hidden="true"></cds-icon>
+              {{ dgStrings.moveColumnToEnd }}
+            </button>
+          -->
+        </clr-dg-column-actions>
+      }
     </clr-dg-column>
   }
   <clr-dg-placeholder>

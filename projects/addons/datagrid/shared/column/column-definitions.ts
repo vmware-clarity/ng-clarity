@@ -58,18 +58,14 @@ export interface ColumnDefinition<T> {
    */
   pinned?: boolean;
 
-  // Disabled for now, along with the clrDgPinnable toggle in the core datagrid that renders it.
-  // Kept as a line comment rather than a doc comment, so api-extractor does not attach it to the
-  // next property.
-  //
-  // /**
-  //  * Determines whether the user can pin and unpin the column from a control in its header. It only
-  //  * adds the control - the pinned state itself is held by `pinned`, which is kept up to date when
-  //  * the user toggles it.
-  //  *
-  //  * @default false - Columns cannot be pinned by the user by default.
-  //  */
-  // pinnable?: boolean;
+  /**
+   * Determines whether the user can pin and unpin the column from a control in its header. It only
+   * adds the control - the pinned state itself is held by `pinned`, which is kept up to date when
+   * the user toggles it.
+   *
+   * @default false - Columns cannot be pinned by the user by default.
+   */
+  pinnable?: boolean;
 
   /**
    * Defines string filter for data in this column.
@@ -82,7 +78,8 @@ export interface ColumnDefinition<T> {
   filter?: Type<ColumnFilter<T>>;
 
   /**
-   * Default filter value for the column's filter.
+   * Default filter value for the column's filter. It is kept up to date when the user changes the
+   * filter, so it also holds the currently applied value.
    */
   defaultFilterValue?: any;
 

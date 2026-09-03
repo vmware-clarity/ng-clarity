@@ -63,6 +63,11 @@ const ROUTES: Routes = [
             m => m.PinnableColumnsGridDemoComponent
           ),
       },
+      {
+        path: 'column-actions',
+        loadComponent: () =>
+          import('./column-actions/column-actions-grid-demo.component').then(m => m.ColumnActionsGridDemoComponent),
+      },
     ],
   },
 ];

@@ -6,32 +6,39 @@
  */
 
 import { Component } from '@angular/core';
-import { AppfxDatagridModule, ColumnDefinition, ColumnPinnedState } from '@clr/addons/datagrid';
+import { FormsModule } from '@angular/forms';
+import { AppfxDatagridModule, ColumnDefinition, ColumnOrderChanged, ColumnPinnedState } from '@clr/addons/datagrid';
 import { SelectionType } from '@clr/angular/data/datagrid';
+import { ClrCheckboxModule } from '@clr/angular/forms';
 
 import { Inventory, VmItem } from '../inventory/inventory';
 
 @Component({
-  imports: [AppfxDatagridModule],
+  imports: [AppfxDatagridModule, ClrCheckboxModule, FormsModule],
   standalone: true,
-  templateUrl: 'pinnable-columns-grid-demo.component.html',
+  templateUrl: 'column-actions-grid-demo.component.html',
   providers: [Inventory],
 })
-export class PinnableColumnsGridDemoComponent {
+export class ColumnActionsGridDemoComponent {
   vms: VmItem[];
   selectedVms: VmItem[] = [];
   lastPinnedChange = '';
+  lastOrderChange = '';
   SelectionType = SelectionType;
 
-  // The columns are wide on purpose, so the grid scrolls horizontally and the pinned ones have
-  // something to stay in front of.
+  // Drives enableColumnActions on the grid, so the menu can be turned on and off here. The input
+  // itself defaults to false - this demo just starts with it on, since it is what the page is about.
+  protected enableColumnActions = true;
+
+  // enableColumnActions on the grid below turns the per-column menu on; it is off by default. Sort
+  // and Filter join the menu automatically whenever the column itself is sortable/filterable, and
+  // pinnable adds Pin Column.
   protected columns: ColumnDefinition<VmItem>[] = [
     {
       displayName: 'VM Name',
       field: 'name',
-      pinned: true,
       pinnable: true,
-      width: '200px',
+      width: '220px',
     },
     {
       displayName: 'State',
@@ -42,9 +49,7 @@ export class PinnableColumnsGridDemoComponent {
     {
       displayName: 'Status',
       field: 'status',
-      pinned: true,
-      pinnable: true,
-      width: '200px',
+      width: '160px',
     },
     {
       displayName: 'Used space',
@@ -54,12 +59,12 @@ export class PinnableColumnsGridDemoComponent {
     {
       displayName: 'CPUs',
       field: 'cpus',
-      width: '200px',
+      width: '160px',
     },
     {
       displayName: 'Creation date',
       field: 'creation',
-      width: '200px',
+      width: '220px',
     },
   ];
 
@@ -69,20 +74,16 @@ export class PinnableColumnsGridDemoComponent {
     this.vms = inventory.allItems;
   }
 
-  get pinnedColumns(): string {
-    return this.columns
-      .filter(column => column.pinned)
-      .map(column => column.displayName)
-      .join(', ');
-  }
-
   onSelectedItemsChange(selectedItems: VmItem[]): void {
     this.selectedVms = [...selectedItems];
   }
 
-  // The grid writes the new state onto the column definition before emitting, so this only has to
-  // report it. Use the event to persist the choice for the next visit.
   onColumnPinnedChange(event: ColumnPinnedState): void {
     this.lastPinnedChange = `${event.column.displayName} was ${event.pinned ? 'pinned' : 'unpinned'}`;
+  }
+
+  onColumnOrderChange(event: ColumnOrderChanged): void {
+    const columnOrder = event.columns.map(column => column.displayName).join(', ');
+    this.lastOrderChange = `New order: ${columnOrder}`;
   }
 }
