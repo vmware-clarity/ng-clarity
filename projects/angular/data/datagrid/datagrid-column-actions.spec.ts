@@ -5,7 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ApplicationRef, Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { TestContext } from '@clr/angular/testing';
@@ -484,6 +485,27 @@ export default function (): void {
 
         expect(menuItemLabels()).toContain(commonStrings.keys.unpinColumn);
         expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
+      });
+
+      // Pinning moves the column into the static container, so the trigger this menu is anchored to
+      // travels with it. The menu is deliberately left open - the action it now offers is the one
+      // that undoes the pin - so it has to be re-anchored rather than left hanging next to where the
+      // column used to be. The relocation happens on the render cycle the pin schedules, which is
+      // why the hook runs after it rather than during the click.
+      it('re-anchors the open menu after pinning moves the column', function () {
+        const popoverService = context.fixture.debugElement
+          .query(By.css('clr-dropdown'))
+          .injector.get(ClrPopoverService);
+        const updatePosition = spyOn(popoverService, 'updatePosition').and.callThrough();
+
+        openMenu();
+        itemLabelled(commonStrings.keys.pinColumn).click();
+        context.detectChanges();
+        TestBed.inject(ApplicationRef).tick();
+
+        expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
+        expect(updatePosition).toHaveBeenCalled();
+        expect(menuItemLabels()).toContain(commonStrings.keys.unpinColumn);
       });
 
       it('does not sort the column when the pin action is used', function () {

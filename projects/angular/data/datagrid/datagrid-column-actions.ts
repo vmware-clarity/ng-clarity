@@ -6,12 +6,14 @@
  */
 
 import {
+  afterNextRender,
   AfterViewInit,
   booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
+  Injector,
   Input,
   OnDestroy,
   Optional,
@@ -92,7 +94,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
           @if (column.sortable) {
             <div class="dropdown-divider" role="separator"></div>
           }
-          <button type="button" clrDropdownItem (click)="column.togglePinned()">
+          <button type="button" clrDropdownItem (click)="togglePinned()">
             <cds-icon
               [shape]="column.pinned ? 'unpin' : 'pin'"
               solid
@@ -149,6 +151,7 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     // brings its own, so the menu and the filter never fight over one overlay.
     private columnPopover: ClrPopoverService,
     private changeDetectorRef: ChangeDetectorRef,
+    private injector: Injector,
     @Optional() private keyNavigation: KeyNavigationGridController,
     @Optional() private filters: FiltersProvider
   ) {
@@ -306,6 +309,24 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     if (this.sortOrder !== requested) {
       this.column.sort(descending);
     }
+  }
+
+  /**
+   * Pins or unpins the column, then re-anchors this menu to the trigger.
+   *
+   * Pinning moves the column between the datagrid's static and scrollable containers, and the
+   * trigger this menu is anchored to travels with it - far enough that the menu would otherwise be
+   * left hanging next to where the column used to be. The menu stays open on purpose, so the action
+   * it now offers is the one that undoes the pin the user just applied.
+   *
+   * The columns are relocated on the render cycle the pinned state change schedules, not while this
+   * runs, so the overlay can only be re-anchored once that has happened - hence `afterNextRender`
+   * rather than an immediate call.
+   */
+  protected togglePinned() {
+    this.column.togglePinned();
+
+    afterNextRender(() => this.dropdown.popoverService.updatePosition(), { injector: this.injector });
   }
 
   /**
