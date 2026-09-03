@@ -18,8 +18,9 @@
     & [clr-density] {
       --clr-timeline-icon-size: #{density.$clr-base-icon-size-3xl};
 
-      // internal property cannot be exposed
+      // internal properties cannot be exposed
       --clr-timeline-step-internal-spacing: #{density.$clr-base-vertical-offset-l};
+      --clr-timeline-step-gap: #{density.$clr-base-gap-s};
     }
 
     &,
