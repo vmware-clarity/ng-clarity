@@ -89,6 +89,7 @@ export default function (): void {
           stringsService,
           this.focusManagerService,
           { nativeElement: document.createElement('div') },
+          null,
           null
         );
         this.node = new ClrTreeNode(
@@ -99,6 +100,7 @@ export default function (): void {
           stringsService,
           this.focusManagerService,
           { nativeElement: document.createElement('div') },
+          null,
           null
         );
       });

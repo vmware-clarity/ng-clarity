@@ -62,3 +62,22 @@ export const TreeViewAsLinkHasIcon: StoryObj = {
     hasIcon: true,
   },
 };
+
+const ExpandAllTemplate: StoryFn = args => ({
+  template: `
+    <div class="btn-group btn-sm">
+      <button type="button" class="btn" (click)="tree.expandAll()">Expand all</button>
+      <button type="button" class="btn" (click)="tree.collapseAll()">Collapse all</button>
+    </div>
+    <p cds-text="body">All expanded: {{ allExpanded }}</p>
+    <clr-tree #tree [(clrExpandAll)]="allExpanded">${getFileTreeNodeMarkup(filesRoot, args)}</clr-tree>
+  `,
+  props: args,
+});
+
+export const TreeViewExpandAll: StoryObj = {
+  render: ExpandAllTemplate,
+  args: {
+    allExpanded: false,
+  },
+};
