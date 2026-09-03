@@ -51,16 +51,24 @@ const contentPagesDirPath = path.join('.', 'projects', 'website', 'content', 'pa
 const componentListFilePath = path.join('.', 'projects', 'website', 'src', 'settings', 'componentlist.json');
 const componentList: { list: { url: string }[] } = JSON.parse(fs.readFileSync(componentListFilePath).toString());
 
-const pages = [
+const staticPages = [
   { name: 'home', route: '/' },
   { name: 'theme-builder', route: '/theme-builder' },
   ...fs
     .readdirSync(contentPagesDirPath)
     .filter(fileName => fileName.endsWith('.md'))
     .map(fileName => fileName.replace(/\.md$/, ''))
-    .map(slug => ({ name: `pages-${slug}`, route: `/pages/${slug}` })),
+    .map(slug => ({ name: slug, route: `/pages/${slug}` })),
+];
+
+const staticPageNames = new Set(staticPages.map(staticPage => staticPage.name));
+
+const pages = [
+  ...staticPages,
   ...componentList.list.map(component => ({
-    name: `documentation-${component.url}`,
+    // A documentation page whose slug collides with a static page's name (the theme-builder
+    // tool, the accessibility content page) gets a -docs suffix so page names stay unique.
+    name: staticPageNames.has(component.url) ? `${component.url}-docs` : component.url,
     route: `/documentation/${component.url}`,
   })),
 ];

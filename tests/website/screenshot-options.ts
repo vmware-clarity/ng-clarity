@@ -11,14 +11,14 @@ import { ScreenshotOptions } from '../helpers/screenshot-options.interface';
  * This config is a rudimentary method of changing how the screenshots are taken for specific
  * website pages, mirroring tests/screenshot-options.ts for the Storybook visual tests.
  *
- * Each key is a page name as generated in tests/website/visual-snapshots.spec.ts:
- * the route with slashes replaced by dashes, e.g.
+ * Each key is a page name plus the view within it, as generated in
+ * tests/website/visual-snapshots.spec.ts, e.g.
  *
- * /documentation/button                 => documentation-button (the overview tab)
- * /documentation/button/code           => documentation-button-code
- * /documentation/datagrid/code/full    => documentation-datagrid-code-full
- * /pages/introduction                  => pages-introduction
- * /                                    => home
+ * /documentation/button              => button (the overview tab)
+ * /documentation/button/code        => button-code
+ * /documentation/datagrid/code/full => datagrid-code-full
+ * /pages/introduction               => introduction
+ * /                                 => home
  *
  * Available options:
  * - fullPageScreenshot: pages are captured full page by default; set to false to capture
@@ -29,25 +29,25 @@ import { ScreenshotOptions } from '../helpers/screenshot-options.interface';
  *   be masked out of the screenshot.
  */
 export const websiteScreenshotOptions: ScreenshotOptions = {
-  'documentation-accessibility': {
+  'accessibility-docs': {
     // /documentation/accessibility redirects to /pages/accessibility, which is already covered
-    // by the pages-accessibility screenshot.
+    // by the accessibility content page screenshots.
     exclude: true,
   },
-  'documentation-theme-builder': {
+  'theme-builder-docs': {
     // The page throws a router NG04005 error on load and intermittently renders as a blank
     // shell, observed consistently on the CI runners (issue #2680). Re-enable once fixed.
     exclude: true,
   },
-  'documentation-datagrid-code-virtual-scroll': {
+  'datagrid-code-virtual-scroll': {
     // The live demo generates random rows (dates, wins) on every load.
     maskSelectors: ['clr-datagrid'],
   },
-  'documentation-modal-code': {
+  'modal-code': {
     // The animation demo toggles its modal in and out every two seconds.
     maskSelectors: ['clr-modal-animation-demo'],
   },
-  'documentation-translate-code': {
+  'translate-code': {
     // The interactive demo formats the current time ("Formatted Date: ..."), which changes
     // between runs.
     maskSelectors: ['p:has-text("Formatted Date:")'],
