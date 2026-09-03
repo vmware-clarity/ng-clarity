@@ -47,6 +47,10 @@ for (const story of stories) {
 
     await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
+    for (const selector of getWaitForSelectors(componentParsed, storyName)) {
+      await page.locator(selector).waitFor();
+    }
+
     const fullPage = takeFullPageScreenshot(componentParsed, storyName);
     const screenshotTarget = fullPage ? page : page.locator('body');
 
@@ -68,6 +72,10 @@ function takeFullPageScreenshot(component: string, storyName: string) {
 
 function getPageViewPort(component: string, storyName: string) {
   return screenshotOptions[component]?.viewport || screenshotOptions[storyName]?.viewport;
+}
+
+function getWaitForSelectors(component: string, storyName: string) {
+  return screenshotOptions[component]?.waitForSelectors || screenshotOptions[storyName]?.waitForSelectors || [];
 }
 
 function getMaskSelectors(component: string, storyName: string) {

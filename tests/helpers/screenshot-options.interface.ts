@@ -18,5 +18,8 @@ export type ScreenshotOptions = {
     exclude?: boolean;
     /** CSS selectors for regions that render non-deterministically and should be masked. */
     maskSelectors?: string[];
+    /** Selectors that must be visible before the screenshot is taken, for content that
+     * renders asynchronously (for example a popover overlay attaching after render). */
+    waitForSelectors?: string[];
   };
 };

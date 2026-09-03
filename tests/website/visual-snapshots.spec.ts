@@ -171,6 +171,10 @@ async function capturePage(page: Page, pageName: string, view: string, route: st
   await page.addStyleTag({ content: growPageWithContentStyles(viewport.height) });
   await page.evaluate(() => document.fonts.ready);
 
+  for (const selector of options.waitForSelectors ?? []) {
+    await page.locator(selector).waitFor();
+  }
+
   if (options.fullPageScreenshot ?? true) {
     await fitViewportToContent(page, viewport.width);
   }
