@@ -75,6 +75,16 @@ export class ClrDatagridColumnAction implements OnDestroy {
     }
   }
 
+  /**
+   * Focus can arrive from anywhere - the arrow keys, or a plain `focus()` from an application that
+   * moved the column this action belongs to and rebuilt the menu. Reporting it keeps space and enter
+   * acting on this item rather than on whatever the menu focused when it opened.
+   */
+  @HostListener('focus')
+  protected onFocus() {
+    this.columnActions.focusAction(this.focusableItem);
+  }
+
   // A disabled item still receives the keydown, so it has to swallow it before it turns into a click.
   @HostListener('keydown.space', ['$event'])
   @HostListener('keydown.enter', ['$event'])

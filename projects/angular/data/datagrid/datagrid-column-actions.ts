@@ -307,6 +307,18 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
   }
 
   /**
+   * Moves focus to one of the projected actions, keeping the menu's keyboard handling in step with
+   * it.
+   *
+   * Called by `clrDgColumnAction` when the item takes focus, so that focusing an item by any means -
+   * including a plain `focus()` from outside, after an action rebuilt the menu - leaves space and
+   * enter acting on that same item rather than on whatever the menu focused when it opened.
+   */
+  focusAction(item: FocusableItem) {
+    this.dropdown?.focusHandler.moveTo(item);
+  }
+
+  /**
    * The menu states a direction rather than cycling through them, so asking for the direction the
    * column already has is a no-op.
    *

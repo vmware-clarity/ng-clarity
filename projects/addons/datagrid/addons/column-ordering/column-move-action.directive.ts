@@ -55,12 +55,12 @@ export class ColumnMoveActionDirective {
     }
 
     // Normally the menu survives the move and `clrCanClosePopover="false"` re-anchors it to the
-    // trigger, so focus is still on this item, which is where it belongs. Once a column is pinned
-    // though, applying the move rebuilds the column views, and this very button is destroyed with the
-    // column it belonged to - taking focus to the body with it. Then it has to be handed to the same
-    // trigger in the column's new place.
+    // trigger, so it is still open with focus on this item, which is where it belongs. Once a column
+    // is pinned though, applying the move rebuilds the column views, and this very button is
+    // destroyed with the column it belonged to - there is no menu left to re-anchor, so the one on
+    // the column in its new place is opened instead to end up in the same state.
     if (!this.elementRef.nativeElement.isConnected) {
-      this.columnsOrderDirective.focusColumnActions(column);
+      this.columnsOrderDirective.reopenColumnActions(column, this.direction);
     }
   }
 }

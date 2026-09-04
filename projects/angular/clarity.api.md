@@ -2313,9 +2313,12 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
 // @public
 export class ClrDatagridColumnAction implements OnDestroy {
     constructor(columnActions: ClrDatagridColumnActions, focusableItem: FocusableItem);
+    canClosePopover: boolean;
     // (undocumented)
     get disabled(): boolean;
     set disabled(value: boolean);
+    // (undocumented)
+    static ngAcceptInputType_canClosePopover: unknown;
     // (undocumented)
     static ngAcceptInputType_disabled: unknown;
     // (undocumented)
@@ -2324,8 +2327,9 @@ export class ClrDatagridColumnAction implements OnDestroy {
     protected onActivate(event: KeyboardEvent): void;
     // (undocumented)
     protected onClick(): void;
+    protected onFocus(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridColumnAction, "[clrDgColumnAction]", never, { "disabled": { "alias": "clrDisabled"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridColumnAction, "[clrDgColumnAction]", never, { "canClosePopover": { "alias": "clrCanClosePopover"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnAction, never>;
 }
@@ -2333,7 +2337,7 @@ export class ClrDatagridColumnAction implements OnDestroy {
 // @public
 export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ColumnActionsService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(column: ClrDatagridColumn, commonStrings: ClrCommonStringsService, columnActions: ColumnActionsService, columnPopover: ClrPopoverService, changeDetectorRef: ChangeDetectorRef, keyNavigation: KeyNavigationGridController, filters: FiltersProvider);
+    constructor(column: ClrDatagridColumn, commonStrings: ClrCommonStringsService, columnActions: ColumnActionsService, columnPopover: ClrPopoverService, changeDetectorRef: ChangeDetectorRef, injector: Injector, keyNavigation: KeyNavigationGridController, filters: FiltersProvider);
     // (undocumented)
     protected get canClearSort(): boolean;
     closeMenu(): void;
@@ -2344,6 +2348,7 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     // (undocumented)
     protected commonStrings: ClrCommonStringsService;
     protected get filterActive(): boolean;
+    focusAction(item: FocusableItem): void;
     // (undocumented)
     protected get hasFilter(): boolean;
     get keepFilterInHeader(): boolean;
@@ -2356,16 +2361,18 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     ngOnDestroy(): void;
     protected openFilter(event: Event): void;
     registerAction(item: FocusableItem): void;
+    repositionMenu(): void;
     protected sort(descending: boolean): void;
     // (undocumented)
     protected get sortOrder(): ClrDatagridSortOrder;
+    protected togglePinned(): void;
     protected get triggerLabel(): string;
     // (undocumented)
     unregisterAction(item: FocusableItem): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnActions, "clr-dg-column-actions", never, { "keepFilterInHeader": { "alias": "clrDgKeepFilterInHeader"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnActions, [null, null, null, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnActions, [null, null, null, null, null, null, { optional: true; }, { optional: true; }]>;
 }
 
 // @public (undocumented)

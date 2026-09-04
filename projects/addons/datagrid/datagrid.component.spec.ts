@@ -9,7 +9,16 @@ import { A11yModule as CdkA11yModule } from '@angular/cdk/a11y';
 import { CdkDrag, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { Component, DebugElement, NgModule, SimpleChange, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  DebugElement,
+  NgModule,
+  SimpleChange,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -975,23 +984,79 @@ describe('DatagridComponent', () => {
         expect(this.component.columnsDefs[3].defaultFilterValue).toBe('vm0');
       });
 
-      // Rebuilding the column views destroys the menu along with the column it belongs to, so the
-      // menu cannot follow the column the way it does when a column is pinned. It closes instead, and
-      // focus has to be handed to the trigger of the column in its new place - otherwise it falls
-      // back to the body and keyboard users lose their position in the header.
-      it('closes the menu and focuses the moved column trigger', function (this: DatagridSpecContext) {
+      // Rebuilding the column views destroys the menu along with the column it belongs to, so it
+      // cannot be re-anchored the way it is when nothing is pinned. The menu on the column in its new
+      // place is opened instead, which ends up in the same state - open, attached to the moved
+      // column - rather than leaving the user with no menu and focus on the body.
+      it('reopens the menu on the moved column', function (this: DatagridSpecContext) {
         toggleMenu(this.fixture, 2);
         expect(document.querySelectorAll('.dropdown-menu').length).toBe(1);
 
         moveButton('Move Right').click();
         this.fixture.detectChanges();
+        // The reopen is deferred past the click that triggered it, so the render hooks have to run.
+        TestBed.inject(ApplicationRef).tick();
+        this.fixture.detectChanges();
 
-        expect(document.querySelectorAll('.dropdown-menu').length).toBe(0);
         // C2 moved past C4, so it is the second of the three scrollable columns now.
         expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C2', 'C5']);
+        expect(document.querySelectorAll('.dropdown-menu').length).toBe(1);
+        // Anchored to the moved column, so stepping again acts on C2 rather than on whatever took
+        // its old place.
         const triggers = this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'));
-        expect(document.activeElement).toBe(triggers[3].nativeElement);
+        expect(triggers[3].nativeElement.getAttribute('aria-expanded')).toBe('true');
       });
+
+      // Opening a menu focuses its first item, which here is Pin Column - not the action that was
+      // just used. Repeating a move would mean navigating back to it every time.
+      it('leaves focus on the move action that was used, not the first item', fakeAsync(function (
+        this: DatagridSpecContext
+      ) {
+        toggleMenu(this.fixture, 2);
+        moveButton('Move Right').click();
+        this.fixture.detectChanges();
+
+        // The render hooks reopen the menu, and the timers then settle focus - the dropdown's own
+        // move to its first item first, ours back onto Move Right after it.
+        TestBed.inject(ApplicationRef).tick();
+        this.fixture.detectChanges();
+        tick();
+        this.fixture.detectChanges();
+
+        expect(document.activeElement).toBe(moveButton('Move Right'));
+      }));
+
+      // Space and enter activate whatever the menu's focus service considers current, not what the
+      // browser has focused. Reopening the menu focuses the move action directly, so without that
+      // being reported back the keys would fire the menu's first item - Pin Column - and pin the
+      // column instead of moving it again.
+      it('repeats the move when the reopened action is activated by keyboard', fakeAsync(function (
+        this: DatagridSpecContext
+      ) {
+        toggleMenu(this.fixture, 2);
+        moveButton('Move Right').click();
+        this.fixture.detectChanges();
+        TestBed.inject(ApplicationRef).tick();
+        this.fixture.detectChanges();
+        tick();
+        this.fixture.detectChanges();
+
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C2', 'C5']);
+
+        // Carry on from the keyboard, on the action the reopened menu left focused.
+        (document.activeElement as HTMLElement).dispatchEvent(
+          new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })
+        );
+        this.fixture.detectChanges();
+        TestBed.inject(ApplicationRef).tick();
+        this.fixture.detectChanges();
+        tick();
+        this.fixture.detectChanges();
+
+        // Moved once more, rather than pinned.
+        expect(this.component.columnsDefs.find(column => column.displayName === 'C2').pinned).toBeFalsy();
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C5', 'C2']);
+      }));
 
       it('never moves a column out of its own container', function (this: DatagridSpecContext) {
         const pinnedHeaders = () =>
