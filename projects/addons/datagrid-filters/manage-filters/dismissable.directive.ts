@@ -63,9 +63,7 @@ export class DismissableDirective implements AfterViewInit {
     this.renderer.setAttribute(icon, 'role', 'button');
     this.renderer.setAttribute(icon, 'tabindex', '0');
     this.renderer.setAttribute(icon, 'aria-label', this.dismissAriaLabel);
-    this.renderer.setStyle(icon, 'margin', '1rem');
-    this.renderer.setStyle(icon, 'margin-left', '0.5rem');
-    this.renderer.setStyle(icon, 'margin-right', '0rem');
+    this.renderer.setStyle(icon, 'margin-left', 'var(--clr-base-gap-s)');
     this.renderer.setStyle(icon, 'cursor', 'pointer');
     this.renderer.appendChild(this.elRef.nativeElement, icon);
     this.renderer.listen(icon, 'click', () => {
