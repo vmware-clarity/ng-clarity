@@ -6,14 +6,11 @@
   -->
 
 <div class="card card-block">
-  <p class="card-text">Pinned columns: {{ pinnedColumns || 'none' }}</p>
-  <p class="card-text">Last change: {{ lastPinnedChange || 'none yet' }}</p>
+  <p class="card-text">Last pin change: {{ lastPinnedChange || 'none yet' }}</p>
+  <p class="card-text">Last order change: {{ lastOrderChange || 'none yet' }}</p>
+  <p class="card-text">Last action: {{ lastActionClick || 'none yet' }}</p>
 </div>
 
-<!--
-  enableColumnActions is what renders the menu that carries Pin Column, so a pinnable column needs it
-  to give the user anything to work.
--->
 <appfx-datagrid
   [gridItems]="vms"
   [columns]="columns"
@@ -23,7 +20,10 @@
   [footerModel]="{ showFooter: true }"
   [pageSize]="10"
   [enableColumnActions]="true"
+  [columnActions]="columnActions"
   (selectedItemsChange)="onSelectedItemsChange($event)"
   (columnPinnedChange)="onColumnPinnedChange($event)"
+  (columnOrderChange)="onColumnOrderChange($event)"
+  (actionClick)="onActionClick($event)"
 >
 </appfx-datagrid>
