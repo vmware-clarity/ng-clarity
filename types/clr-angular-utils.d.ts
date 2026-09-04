@@ -315,7 +315,9 @@ interface ClrCommonStrings {
      */
     datagridFilterLabel: string;
     /**
-     * Datagrid filter dialog
+     * Datagrid filter dialog.
+     * The popover already has `role="dialog"`, so this label should not include the word "dialog"
+     * to avoid screen readers announcing it twice.
      */
     datagridFilterDialogAriaLabel: string;
     /**
