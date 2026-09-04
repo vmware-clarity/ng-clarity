@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { OnInit, EventEmitter, ChangeDetectorRef, OnDestroy, AfterViewInit, OnChanges, Renderer2, ElementRef, PipeTransform, SimpleChanges } from '@angular/core';
+import { OnInit, EventEmitter, ChangeDetectorRef, OnDestroy, AfterViewInit, OnChanges, Renderer2, ElementRef, ViewContainerRef, EnvironmentInjector, Injector, PipeTransform, SimpleChanges } from '@angular/core';
 import * as i17 from '@angular/common';
 import { DatePipe } from '@angular/common';
 import * as i18 from '@angular/forms';
@@ -629,9 +629,12 @@ declare class DateTimeFilterComponent implements OnInit, OnChanges {
 declare class DismissableDirective implements AfterViewInit {
     private renderer;
     private elRef;
+    private viewContainerRef;
+    private environmentInjector;
+    private injector;
     dismissAriaLabel: string;
     dismiss: EventEmitter<any>;
-    constructor(renderer: Renderer2, elRef: ElementRef);
+    constructor(renderer: Renderer2, elRef: ElementRef, viewContainerRef: ViewContainerRef, environmentInjector: EnvironmentInjector, injector: Injector);
     ngAfterViewInit(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<DismissableDirective, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<DismissableDirective, "[dismissable]", never, { "dismissAriaLabel": { "alias": "dismissAriaLabel"; "required": false; }; }, { "dismiss": "dismiss"; }, never, never, false, never>;

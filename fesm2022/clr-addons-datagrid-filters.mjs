@@ -1,10 +1,10 @@
 import * as i0 from '@angular/core';
-import { Injectable, EventEmitter, Output, Input, ChangeDetectionStrategy, Component, Directive, Pipe, Optional, SkipSelf, NgModule } from '@angular/core';
+import { Injectable, EventEmitter, Output, Input, ChangeDetectionStrategy, Component, Directive, createComponent, Pipe, Optional, SkipSelf, NgModule } from '@angular/core';
 import * as i2$1 from '@angular/cdk/a11y';
 import { A11yModule } from '@angular/cdk/a11y';
 import * as i3 from '@clr/angular/forms/common';
 import * as i4 from '@clr/angular/icon';
-import { ClarityIcons, angleIcon, filterGridIcon, plusIcon, searchIcon, windowCloseIcon, ClrIcon } from '@clr/angular/icon';
+import { ClrIcon, ClarityIcons, angleIcon, filterGridIcon, plusIcon, searchIcon, windowCloseIcon } from '@clr/angular/icon';
 import * as i5 from '@clr/angular/forms';
 import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
 import * as i4$1 from '@clr/angular/popover/signpost';
@@ -1794,21 +1794,32 @@ const spaceKey$1 = 'Space';
  * which are displayed in Clarity label badges.
  */
 class DismissableDirective {
-    constructor(renderer, elRef) {
+    constructor(renderer, elRef, viewContainerRef, environmentInjector, injector) {
         this.renderer = renderer;
         this.elRef = elRef;
+        this.viewContainerRef = viewContainerRef;
+        this.environmentInjector = environmentInjector;
+        this.injector = injector;
         this.dismiss = new EventEmitter();
     }
     ngAfterViewInit() {
-        const icon = this.renderer.createElement('cds-icon');
-        icon.setAttribute('shape', 'window-close');
-        icon.setAttribute('class', 'remove-filter');
-        icon.setAttribute('role', 'button');
-        icon.setAttribute('tabindex', '0');
-        icon.setAttribute('aria-label', this.dismissAriaLabel);
-        icon.style.margin = '1rem';
-        this.renderer.setStyle(icon, 'margin-left', '0.5rem');
-        this.renderer.setStyle(icon, 'margin-right', '0rem');
+        // `cds-icon` is an Angular component (ClrIcon), so it has to be created through Angular
+        // instead of as a plain DOM element, otherwise the icon SVG is never rendered.
+        // Inserting the host view into the view container ties its lifecycle and change detection
+        // to the host view; the rendered element is then moved inside the badge.
+        const iconRef = createComponent(ClrIcon, {
+            hostElement: this.renderer.createElement('cds-icon'),
+            environmentInjector: this.environmentInjector,
+            elementInjector: this.injector,
+        });
+        iconRef.setInput('shape', 'window-close');
+        this.viewContainerRef.insert(iconRef.hostView);
+        const icon = iconRef.location.nativeElement;
+        this.renderer.addClass(icon, 'remove-filter');
+        this.renderer.setAttribute(icon, 'role', 'button');
+        this.renderer.setAttribute(icon, 'tabindex', '0');
+        this.renderer.setAttribute(icon, 'aria-label', this.dismissAriaLabel);
+        this.renderer.setStyle(icon, 'margin-left', 'var(--clr-base-gap-s)');
         this.renderer.setStyle(icon, 'cursor', 'pointer');
         this.renderer.appendChild(this.elRef.nativeElement, icon);
         this.renderer.listen(icon, 'click', () => {
@@ -1822,7 +1833,7 @@ class DismissableDirective {
             return true;
         });
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: DismissableDirective, deps: [{ token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: DismissableDirective, deps: [{ token: i0.Renderer2 }, { token: i0.ElementRef }, { token: i0.ViewContainerRef }, { token: i0.EnvironmentInjector }, { token: i0.Injector }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.22", type: DismissableDirective, isStandalone: false, selector: "[dismissable]", inputs: { dismissAriaLabel: "dismissAriaLabel" }, outputs: { dismiss: "dismiss" }, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImport: i0, type: DismissableDirective, decorators: [{
@@ -1831,7 +1842,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.22", ngImpo
                     selector: '[dismissable]',
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i0.Renderer2 }, { type: i0.ElementRef }], propDecorators: { dismissAriaLabel: [{
+        }], ctorParameters: () => [{ type: i0.Renderer2 }, { type: i0.ElementRef }, { type: i0.ViewContainerRef }, { type: i0.EnvironmentInjector }, { type: i0.Injector }], propDecorators: { dismissAriaLabel: [{
                 type: Input
             }], dismiss: [{
                 type: Output
