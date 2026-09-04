@@ -368,7 +368,7 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           type: 'boolean',
           defaultValue: 'false',
           description:
-            "Keeps the filter's own toggle in the column header instead of moving it into the menu. Filter Column is still offered in the menu either way, the same as the column title stays sortable alongside the sort actions.",
+            "Keeps the filter's own toggle in the column header instead of moving it into the menu, and the menu drops its Filter Column action in exchange. A column offers one way to reach its filter at a time, never two.",
         },
         {
           name: 'repositionMenu()',

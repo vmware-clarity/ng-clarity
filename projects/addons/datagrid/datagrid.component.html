@@ -99,8 +99,8 @@
         <!--
           clrDgKeepFilterInHeader keeps the existing filter toggle in the header rather than moving
           it into this menu - appfx-datagrid already shipped that toggle, and existing consumers and
-          tests expect it to stay there. The Filter Column action is still offered here too, the same
-          dual access every other action in this menu already has.
+          tests expect it to stay there. The menu gives up its own filter action in exchange, so a
+          column offers one way to reach its filter rather than two.
         -->
         <clr-dg-column-actions [clrDgKeepFilterInHeader]="true">
           @if (

@@ -262,20 +262,20 @@ export default function (): void {
         expect(menuItemLabels()).not.toContain(commonStrings.keys.sortColumnDescending);
       });
 
-      // Clear Sort always sits in the menu and is disabled instead of removed, so its position does
-      // not shift as the sort state changes.
-      it('enables clearing the sort only once the column is sorted', function () {
+      // The menu never offers a dead option, so Clear Sort is absent until there is a sort to clear
+      // rather than sitting there disabled.
+      it('offers clearing the sort only once the column is sorted', function () {
         openMenu();
-        expect(itemLabelled(commonStrings.keys.clearColumnSort).hasAttribute('disabled')).toBeTrue();
+        expect(menuItemLabels()).not.toContain(commonStrings.keys.clearColumnSort);
 
         itemLabelled(commonStrings.keys.sortColumnAscending).click();
         context.detectChanges();
 
         openMenu();
-        expect(itemLabelled(commonStrings.keys.clearColumnSort).hasAttribute('disabled')).toBeFalse();
+        expect(menuItemLabels()).toContain(commonStrings.keys.clearColumnSort);
       });
 
-      it('never enables clearing the sort when the column disabled unsorting', function () {
+      it('never offers clearing the sort when the column disabled unsorting', function () {
         context.testComponent.disableUnsort = true;
         context.detectChanges();
 
@@ -284,7 +284,7 @@ export default function (): void {
         context.detectChanges();
 
         openMenu();
-        expect(itemLabelled(commonStrings.keys.clearColumnSort).hasAttribute('disabled')).toBeTrue();
+        expect(menuItemLabels()).not.toContain(commonStrings.keys.clearColumnSort);
       });
 
       it('omits the pin action when the column is not pinnable', function () {
@@ -711,9 +711,18 @@ export default function (): void {
         expect(element.querySelector('.datagrid-header .datagrid-filter-toggle')).not.toBeNull();
       });
 
-      // The column title stays sortable alongside the sort actions in the menu, and the filter
-      // toggle staying put follows the same dual-access pattern.
-      it('still offers the filter action in the menu', function () {
+      // A column offers one way to reach its filter at a time, so the menu gives the filter action up
+      // in exchange for the toggle staying in the header.
+      it('drops the filter action from the menu', function () {
+        openMenu();
+
+        expect(menuItemLabels()).not.toContain(commonStrings.keys.filterColumn);
+      });
+
+      it('offers the filter action in the menu once the input is turned off', function () {
+        context.testComponent.keepInHeader = false;
+        context.detectChanges();
+
         openMenu();
 
         expect(menuItemLabels()).toContain(commonStrings.keys.filterColumn);

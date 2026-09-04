@@ -662,9 +662,16 @@
       <h2 class="clr-mt-48px" cds-text="subsection">Key Features</h2>
       <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg m-b:lg">
         <li>
-          <strong cds-text="medium">Built-in Items:</strong> Sorting and filtering appear on their own once the column
-          is sortable or filterable, and <code cds-text="code">pinnable: true</code> adds Pin Column. The column title
-          stays sortable and the filter keeps its own icon, so nothing that worked before goes away.
+          <strong cds-text="medium">Built-in Items:</strong> Sort Ascending and Sort Descending appear on their own once
+          the column is sortable, along with Clear Sort while there is a sort to clear, and
+          <code cds-text="code">pinnable: true</code> adds Pin Column. An item is only ever offered when the column can
+          act on it, so the menu never shows a dead option.
+        </li>
+        <li>
+          <strong cds-text="medium">Filtering:</strong> A filterable column keeps its own filter icon in the header
+          rather than moving it into the menu, so the menu offers no filter action of its own - a column always has
+          exactly one way to reach its filter. The column title also stays sortable, so nothing that worked before goes
+          away.
         </li>
         <li>
           <strong cds-text="medium">Moving Columns:</strong> <em>Move Left</em> and <em>Move Right</em> reorder a column

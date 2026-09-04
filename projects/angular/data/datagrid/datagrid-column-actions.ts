@@ -36,13 +36,15 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
  * so the menu and the header controls can never drift apart.
  *
  * Each item is rendered only when the column can actually perform it, so the menu never offers a
- * dead option. Anything projected into the component is appended after the built-in items.
+ * dead option - that covers both what the column can never do, such as sorting when it is not
+ * sortable, and what it cannot do right now, such as clearing a sort while nothing is sorted.
+ * Anything projected into the component is appended after the built-in items.
  *
  * A column that has a filter gets a filter action automatically, and the filter drops its own toggle
  * for as long as this menu is present - the header keeps one control per column rather than two. The
  * trigger also takes over showing that the column is filtered, which the toggle used to do.
- * `clrDgKeepFilterInHeader` opts back into the toggle, the same way the column title stays sortable
- * alongside the sort actions in the menu.
+ * `clrDgKeepFilterInHeader` opts back into the toggle, and then the menu drops the filter action in
+ * exchange: a column offers one way to reach its filter, never both at once.
  *
  * Projected items should carry `clrDgColumnAction`, which registers them here so they join the arrow
  * key order and follow the same close-on-click behavior as the built-in items. `clrDropdownItem`
@@ -163,9 +165,9 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
   }
 
   /**
-   * Keeps the filter's own toggle in the column header instead of moving it into this menu. The
-   * filter action stays offered here regardless, the same way the column title stays sortable
-   * alongside the sort actions.
+   * Keeps the filter's own toggle in the column header instead of moving it into this menu, and the
+   * menu drops its filter action in exchange - a column offers one way to reach its filter at a
+   * time, never two.
    */
   @Input({ alias: 'clrDgKeepFilterInHeader', transform: booleanAttribute })
   get keepFilterInHeader(): boolean {
