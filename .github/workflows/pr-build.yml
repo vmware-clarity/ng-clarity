@@ -95,3 +95,54 @@ jobs:
         with:
           name: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}-${{matrix.shard}}.diff
           path: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}-${{matrix.shard}}.diff
+
+  pr-website-visual-regression-test:
+    name: PR Website Visual Regression Test (${{matrix.browser}}, ${{matrix.theme}}, ${{matrix.density}})
+    timeout-minutes: 40
+    permissions:
+      contents: read
+    # This job intentionally does not use the `ubuntu-latest` image.
+    # An updated image could generate different snapshots, so we should explicitly update the image version.
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        browser: ['chromium']
+        theme: ['light', 'dark']
+        density: ['default', 'compact']
+    env:
+      CLARITY_VRT_BROWSER: ${{matrix.browser}}
+      CLARITY_VRT_THEME: ${{matrix.theme}}
+      CLARITY_VRT_DENSITY: ${{matrix.density}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps ${{matrix.browser}}
+      - name: Cache Website Build
+        id: website-cache
+        uses: actions/cache@v4
+        with:
+          path: dist/website
+          key: website-build-${{hashFiles('package-lock.json', 'projects/website/**', 'projects/angular/**', 'projects/ui/**', 'angular.json')}}
+      - name: Build Website
+        if: steps.website-cache.outputs.cache-hit != 'true'
+        run: npm run _build:website
+      - name: Update Visual Snapshots
+        run: npx playwright test --config playwright-website.config.ts --update-snapshots
+      - name: Collect Changes
+        id: diff
+        run: |
+          git add .
+          git diff --cached --binary > visual-snapshot-changes-website-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}.diff
+      - name: Upload Changes
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-snapshot-changes-website-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}.diff
+          path: visual-snapshot-changes-website-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}.diff
