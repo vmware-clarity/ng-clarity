@@ -89,8 +89,8 @@
     &:visited {
       color: label-variables.$clr-label-font-color;
 
-      cds-icon,
-      clr-icon {
+      & > cds-icon,
+      & > clr-icon {
         color: label-variables.$clr-label-font-color;
       }
     }
@@ -115,8 +115,8 @@
           color: badges-variables.$clr-badge-color;
         }
 
-        cds-icon,
-        clr-icon {
+        & > cds-icon,
+        & > clr-icon {
           color: label-variables.$clr-label-hover-color;
         }
       }
@@ -132,8 +132,8 @@
           color: badges-variables.$clr-badge-color;
         }
 
-        cds-icon,
-        clr-icon {
+        & > cds-icon,
+        & > clr-icon {
           color: label-variables.$clr-label-active-color;
         }
       }
@@ -164,8 +164,8 @@
       color: label-variables.$clr-label-disabled-color;
       border-color: label-variables.$clr-label-disabled-border-color;
 
-      cds-icon,
-      clr-icon {
+      & > cds-icon,
+      & > clr-icon {
         color: label-variables.$clr-label-disabled-color;
       }
 
