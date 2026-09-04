@@ -39,6 +39,13 @@
       color: badges-variables.$clr-badge-outline-color;
     }
 
+    // Icons nested inside a badge (e.g. a dismiss icon in a label's badge) use the badge color,
+    // not the color of the surrounding element.
+    cds-icon,
+    clr-icon {
+      color: inherit;
+    }
+
     &:visited {
       color: badges-variables.$clr-badge-color;
     }
