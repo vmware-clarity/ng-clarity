@@ -25,6 +25,16 @@
   and State, and they can be reordered with each other while the loose columns keep stepping among themselves.
 </p>
 
+<p>
+  An application can add its own items after the built-in ones, from either level of the configuration.
+  <code class="clr-code">columnActions</code> on the grid applies to every column - <em>Copy column values</em> and the
+  disabled <em>Column details</em> below - while <code class="clr-code">actions</code> on a single column definition
+  applies only to that one, which is how <em>Show as relative time</em> appears on Creation date alone. Column actions
+  are appended after the grid ones, and both are reported through the grid's
+  <code class="clr-code">actionClick</code> output with the column definition as the event context. An action naming an
+  <code class="clr-code">icon</code> shape needs that shape registered by the application.
+</p>
+
 <!--
   A bare clr-toggle-wrapper rather than a clr-toggle-container: the container is a form field wrapper
   and expects a <form clrForm> around it, which this page has no other use for.
@@ -39,6 +49,7 @@
 <div class="card card-block">
   <p class="card-text">Last pin change: {{ lastPinnedChange || 'none yet' }}</p>
   <p class="card-text">Last order change: {{ lastOrderChange || 'none yet' }}</p>
+  <p class="card-text">Last action: {{ lastActionClick || 'none yet' }}</p>
 </div>
 
 <hr />
@@ -52,8 +63,10 @@
   [footerModel]="{ showFooter: true }"
   [pageSize]="10"
   [enableColumnActions]="enableColumnActions"
+  [columnActions]="columnActions"
   (selectedItemsChange)="onSelectedItemsChange($event)"
   (columnPinnedChange)="onColumnPinnedChange($event)"
   (columnOrderChange)="onColumnOrderChange($event)"
+  (actionClick)="onActionClick($event)"
 >
 </appfx-datagrid>

@@ -59,6 +59,8 @@ import { DatagridComponent } from './datagrid.component';
 import { AppfxDatagridModule } from './datagrid.module';
 import { DatagridStrings } from './i18n/datagrid-strings.service';
 import { ColumnSortOrder } from './interfaces/column-state';
+import { ActionDefinition } from './shared/action/action-definition';
+import { ActionClickEvent } from './shared/action/actions-event-types';
 import { ColumnDefinition, ColumnRenderer } from './shared/column/column-definitions';
 
 interface DatagridSpecContext {
@@ -812,6 +814,105 @@ describe('DatagridComponent', () => {
         this.fixture.detectChanges();
 
         expect(this.columnsDefs[1].pinned).toBeFalse();
+      });
+    });
+
+    describe('custom column actions', () => {
+      function toggleMenu(fixture: ComponentFixture<DatagridHostComponent>, columnIndex: number) {
+        fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[columnIndex].nativeElement.click();
+        fixture.detectChanges();
+      }
+
+      function menuItemLabels(): string[] {
+        return Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item')).map(item =>
+          item.textContent.trim()
+        );
+      }
+
+      function menuItem(label: string): HTMLElement {
+        return Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item')).find(
+          item => item.textContent.trim() === label
+        );
+      }
+
+      beforeEach(function (this: DatagridSpecContext) {
+        this.component.data = this.data;
+        this.component.enableColumnActions = true;
+        this.component.columnActions = [
+          // 'angle' rather than something like 'copy' because cds-icon rewrites the shape of an icon
+          // that is not registered to 'unknown', and this asserts the binding, not the icon registry.
+          // An application does have to register whatever shape it names here.
+          { id: 'copy', label: 'Copy values', enabled: true, icon: 'angle' },
+          { id: 'about', label: 'About column', enabled: false },
+        ];
+        this.columnsDefs[1].actions = [{ id: 'reset', label: 'Reset State', enabled: true }];
+        this.component.columnsDefs = this.columnsDefs;
+        this.fixture.detectChanges(false);
+      });
+
+      it('offers the grid actions on every column, after the built-in ones', function (this: DatagridSpecContext) {
+        toggleMenu(this.fixture, 0);
+        const labels = menuItemLabels();
+
+        expect(labels).toContain('Copy values');
+        expect(labels).toContain('About column');
+        // Last, so the built-in items keep the same place in every menu.
+        expect(labels.indexOf('Copy values')).toBeGreaterThan(labels.indexOf('Move Right'));
+      });
+
+      it('appends the actions of a single column after the grid ones', function (this: DatagridSpecContext) {
+        toggleMenu(this.fixture, 0);
+        expect(menuItemLabels()).not.toContain('Reset State');
+        toggleMenu(this.fixture, 0);
+
+        toggleMenu(this.fixture, 1);
+        const labels = menuItemLabels();
+        expect(labels).toContain('Reset State');
+        expect(labels.indexOf('Reset State')).toBeGreaterThan(labels.indexOf('About column'));
+      });
+
+      it('reports a click through actionClick with the column as context', function (this: DatagridSpecContext) {
+        const received: ActionClickEvent[] = [];
+        this.component.appfxDatagridComponent.actionClick.subscribe((event: ActionClickEvent) => received.push(event));
+
+        toggleMenu(this.fixture, 1);
+        menuItem('Reset State').click();
+        this.fixture.detectChanges();
+
+        expect(received.length).toBe(1);
+        expect(received[0].action.id).toBe('reset');
+        expect(received[0].context).toBe(this.columnsDefs[1]);
+      });
+
+      it('does not report a disabled action', function (this: DatagridSpecContext) {
+        const received: ActionClickEvent[] = [];
+        this.component.appfxDatagridComponent.actionClick.subscribe((event: ActionClickEvent) => received.push(event));
+
+        toggleMenu(this.fixture, 0);
+        expect(menuItem('About column').getAttribute('aria-disabled')).toBe('true');
+        menuItem('About column').click();
+        this.fixture.detectChanges();
+
+        expect(received).toEqual([]);
+      });
+
+      it('leads an action with its icon when one is given', function (this: DatagridSpecContext) {
+        toggleMenu(this.fixture, 0);
+
+        expect(menuItem('Copy values').querySelector('cds-icon')?.getAttribute('shape')).toBe('angle');
+        expect(menuItem('About column').querySelector('cds-icon')).toBeNull();
+      });
+
+      it('adds nothing to the menu when no actions are configured', function (this: DatagridSpecContext) {
+        this.component.columnActions = null;
+        this.columnsDefs[1].actions = undefined;
+        this.fixture.detectChanges();
+
+        toggleMenu(this.fixture, 1);
+        const labels = menuItemLabels();
+        expect(labels).not.toContain('Copy values');
+        expect(labels).not.toContain('Reset State');
+        expect(document.querySelectorAll('.dropdown-menu .dropdown-divider').length).toBe(0);
       });
     });
 
@@ -2439,6 +2540,7 @@ class StatusComparator implements ClrDatagridComparatorInterface<any> {
       [virtualScrolling]="virtualScrolling"
       [disableUnsort]="disableUnsort"
       [enableColumnActions]="enableColumnActions"
+      [columnActions]="columnActions"
       [serverDrivenDatagrid]="serverDrivenDatagrid"
       [dataRange]="dataRange"
       [(detailState)]="detailState"
@@ -2497,6 +2599,7 @@ class DatagridHostComponent {
   virtualScrolling = false;
   disableUnsort = true;
   enableColumnActions = false;
+  columnActions: ActionDefinition[] | null = null;
   serverDrivenDatagrid = false;
   dataRange: ClrDatagridVirtualScrollRangeInterface<any> = {
     total: 100,

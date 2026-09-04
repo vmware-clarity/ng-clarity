@@ -13,6 +13,7 @@ import {
 } from '@clr/angular/data/datagrid';
 
 import { ColumnFilter } from '../../interfaces/column-filter';
+import { ActionDefinition } from '../action/action-definition';
 
 /**
  * Defines a column in the Datagrid.
@@ -66,6 +67,16 @@ export interface ColumnDefinition<T> {
    * @default false - Columns cannot be pinned by the user by default.
    */
   pinnable?: boolean;
+
+  /**
+   * Application actions to offer in this column's actions menu, after the built-in ones and after
+   * any actions given to the grid as a whole through `columnActions`. Use these for something that
+   * only applies to this column - anything that applies to every column belongs on the grid instead.
+   *
+   * Clicking one reports it through the grid's `actionClick` output, with this column definition as
+   * the event's context. Requires `enableColumnActions` on the grid, which is what renders the menu.
+   */
+  actions?: ActionDefinition[];
 
   /**
    * Defines string filter for data in this column.

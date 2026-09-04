@@ -378,6 +378,19 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   @Input() enableColumnActions = false;
 
   /**
+   * Application actions to offer in the actions menu of every column, after the built-in ones.
+   *
+   * The same list is used for all columns, so these are the actions that apply to whichever column
+   * they are invoked from - "Copy column values", say. Clicking one reports it through
+   * {@link actionClick} with the {@link ColumnDefinition} it was invoked from as the event's context,
+   * which is how the handler knows the column. For an action that only belongs on one column, use
+   * {@link ColumnDefinition.actions} instead; those are appended after these.
+   *
+   * Requires {@link enableColumnActions}, which is what renders the menu in the first place.
+   */
+  @Input() columnActions: ActionDefinition[] | null;
+
+  /**
    * Input for providing data when virtual scrolling is enabled.
    * <code>gridItems</code> should not be used in this case.
    */
@@ -1081,6 +1094,31 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
         datagridItemSet
       );
     }
+  }
+
+  /**
+   * The actions to offer in one column's menu: the grid-wide ones first, then the column's own, so a
+   * column adds to the shared set rather than reordering it.
+   */
+  protected getColumnActions(column: ColumnDefinition<T>): ActionDefinition[] {
+    return [...(this.columnActions || []), ...(column.actions || [])];
+  }
+
+  /**
+   * Reported through the same output as the action bar and row actions, with the column as the
+   * context - the menu is per column, so that is what identifies where the action was invoked.
+   *
+   * Kept separate from `onActionClick` because that one falls back to the selected items when it has
+   * no context, which is not a sensible default for a column.
+   */
+  protected onColumnActionClick(action: ActionDefinition, column: ColumnDefinition<T>): void {
+    // A disabled menu item is styled and announced as disabled but still receives the click - it is
+    // not a disabled button - so every handler in this menu turns the click away itself.
+    if (!action.enabled) {
+      return;
+    }
+
+    this.actionClick.emit({ action: action, context: column });
   }
 
   protected onActionClick(action: ActionDefinition, context?: T | T[]): void {

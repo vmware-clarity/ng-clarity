@@ -5,8 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AppfxDatagridModule, ColumnDefinition, ColumnOrderChanged, ColumnPinnedState } from '@clr/addons/datagrid';
+import {
+  ActionClickEvent,
+  ActionDefinition,
+  AppfxDatagridModule,
+  ColumnDefinition,
+  ColumnOrderChanged,
+  ColumnPinnedState,
+} from '@clr/addons/datagrid';
 import { SelectionType } from '@clr/angular/data/datagrid';
+import { ClarityIcons, copyIcon, infoStandardIcon } from '@clr/angular/icon';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 interface VmItem {
@@ -26,10 +34,31 @@ const vms: VmItem[] = Array.from({ length: 12 }, (_, i) => ({
   cpus: `${(i % 4) + 1}`,
 }));
 
+// An action names an icon shape, so whoever configures it registers the shape, the same as for a
+// cds-icon of its own.
+ClarityIcons.addIcons(copyIcon, infoStandardIcon);
+
+// Offered in every column's menu, after the built-in items. The disabled one is here to show that a
+// disabled action is announced as such and cannot be invoked.
+const gridColumnActions: ActionDefinition[] = [
+  { id: 'copy-values', label: 'Copy column values', enabled: true, icon: 'copy' },
+  {
+    id: 'column-details',
+    label: 'Column details',
+    enabled: false,
+    tooltip: 'Nothing to show for this column yet',
+    icon: 'info-standard',
+  },
+];
+
 // The menu is opt-in through enableColumnActions on appfx-datagrid, and off by default. Sort and
 // Filter join it automatically once the column is sortable/filterable; pinnable adds Pin Column.
 // Move Left and Move Right step the column within its own group - pinned columns reorder among the
 // pinned ones, loose columns among the loose ones.
+//
+// An application adds items of its own after those, from either level of the configuration:
+// columnActions on the grid for every column, and actions on a column definition for just that one.
+// Both report through the grid's actionClick output, with the column definition as the context.
 export default {
   title: 'Addons/Datagrid Column Actions',
   decorators: [
@@ -58,28 +87,43 @@ const ColumnActionsTemplate: StoryFn = args => ({
       [selectionType]="selectionType"
       [footerModel]="{ showFooter: true }"
       [enableColumnActions]="enableColumnActions"
+      [columnActions]="columnActions"
       (columnPinnedChange)="onColumnPinnedChange($event)"
       (columnOrderChange)="onColumnOrderChange($event)"
+      (actionClick)="onActionClick($event)"
     ></appfx-datagrid>
     <p>Last pin change: {{ lastPinnedChange || 'none yet' }}</p>
     <p>Last order change: {{ lastOrderChange || 'none yet' }}</p>
+    <p>Last action: {{ lastActionClick || 'none yet' }}</p>
   `,
   props: {
     ...args,
     selectionType: SelectionType.None,
+    columnActions: gridColumnActions,
     columns: [
       { displayName: 'Name', field: 'name', pinnable: args.pinnable, width: '200px' },
       { displayName: 'State', field: 'state', pinnable: args.pinnable, width: '200px' },
       { displayName: 'Status', field: 'status', width: '160px' },
-      { displayName: 'CPUs', field: 'cpus', width: '160px' },
+      {
+        displayName: 'CPUs',
+        field: 'cpus',
+        width: '160px',
+        // Only offered on this column, and appended after the grid-wide ones. No icon on this one,
+        // which is allowed - it just does not line up with the items that have one.
+        actions: [{ id: 'reset-cpus', label: 'Reset CPU filter', enabled: true }],
+      },
     ] as ColumnDefinition<VmItem>[],
     lastPinnedChange: '',
     lastOrderChange: '',
+    lastActionClick: '',
     onColumnPinnedChange(event: ColumnPinnedState) {
       this['lastPinnedChange'] = `${event.column.displayName} was ${event.pinned ? 'pinned' : 'unpinned'}`;
     },
     onColumnOrderChange(event: ColumnOrderChanged) {
       this['lastOrderChange'] = `New order: ${event.columns.map(column => column.displayName).join(', ')}`;
+    },
+    onActionClick(event: ActionClickEvent<ColumnDefinition<VmItem>>) {
+      this['lastActionClick'] = `${event.action.label} on ${event.context.displayName}`;
     },
   },
 });

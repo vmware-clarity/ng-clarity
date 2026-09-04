@@ -170,6 +170,31 @@
               {{ dgStrings.moveColumnToEnd }}
             </button>
           -->
+          @if (getColumnActions(column); as customColumnActions) {
+            @if (customColumnActions.length) {
+              <div class="dropdown-divider" role="separator"></div>
+              <!--
+                Application actions come last, so the built-in ones keep the same place in every menu
+                whatever a column adds. clrCanClosePopover is left at its default, so these close the
+                menu on click - unlike the move actions, they are not expected to be repeated.
+              -->
+              @for (action of customColumnActions; track action.id) {
+                <button
+                  type="button"
+                  clrDgColumnAction
+                  [clrDisabled]="!action.enabled"
+                  [attr.aria-label]="action.ariaLabel"
+                  [title]="action.tooltip"
+                  (click)="onColumnActionClick(action, column)"
+                >
+                  @if (action.icon) {
+                    <cds-icon [shape]="action.icon" aria-hidden="true"></cds-icon>
+                  }
+                  {{ action.label }}
+                </button>
+              }
+            }
+          }
         </clr-dg-column-actions>
       }
     </clr-dg-column>

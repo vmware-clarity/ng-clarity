@@ -109,6 +109,7 @@ export interface ActionDefinition<T = string> {
     class?: string;
     // (undocumented)
     enabled: boolean;
+    icon?: string;
     // (undocumented)
     id: string;
     isVisible?: boolean;
@@ -184,6 +185,7 @@ export interface ClientSideExportConfig {
 
 // @public
 export interface ColumnDefinition<T> {
+    actions?: ActionDefinition[];
     columnRenderer?: Type<ColumnRenderer<T>>;
     columnRendererConfig?: any;
     defaultFilterValue?: any;
@@ -343,6 +345,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     //
     // (undocumented)
     clrDatagridPagination: ClrDatagridPagination;
+    columnActions: ActionDefinition[] | null;
     columnDefsChange: EventEmitter<ColumnDefinition<T>[]>;
     columnFilterChange: EventEmitter<ColumnFilterChange>;
     columnHiddenStateChange: EventEmitter<ColumnHiddenState>;
@@ -392,6 +395,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     set footerModel(config: GridFooterModel);
     // (undocumented)
     protected getCollapseDetailsLabel(item: T): string;
+    protected getColumnActions(column: ColumnDefinition<T>): ActionDefinition[];
     // (undocumented)
     protected getExpandDetailsLabel(item: T): string;
     getFooterMessage(totalItems: number, pageSize?: number, firstItem?: number, lastItem?: number): string;
@@ -424,6 +428,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     onAdvancedFilterCriteriaChange(filterCriteria: PropertyFilter[]): void;
     // (undocumented)
     protected onAdvancedSearchTermChange(searchTerm: string): void;
+    protected onColumnActionClick(action: ActionDefinition, column: ColumnDefinition<T>): void;
     // (undocumented)
     protected onColumnHiddenStateChange(value: ColumnHiddenState): void;
     // (undocumented)
@@ -513,7 +518,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     // (undocumented)
     protected zoomLevel: ZoomLevel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridComponent<any>, "appfx-datagrid", never, { "loading": { "alias": "loading"; "required": false; }; "loadingMoreItems": { "alias": "loadingMoreItems"; "required": false; }; "preSelectFirstItem": { "alias": "preSelectFirstItem"; "required": false; }; "pageSizeOptions": { "alias": "pageSizeOptions"; "required": false; }; "totalItems": { "alias": "totalItems"; "required": false; }; "showCustomPagination": { "alias": "showCustomPagination"; "required": false; }; "serverDrivenDatagrid": { "alias": "serverDrivenDatagrid"; "required": false; }; "listItemsCount": { "alias": "listItemsCount"; "required": false; }; "rowDetailContent": { "alias": "rowDetailContent"; "required": false; }; "rowsExpandedByDefault": { "alias": "rowsExpandedByDefault"; "required": false; }; "trackByFunction": { "alias": "trackByFunction"; "required": false; }; "trackByGridItemProperty": { "alias": "trackByGridItemProperty"; "required": false; }; "detailHeader": { "alias": "detailHeader"; "required": false; }; "detailBody": { "alias": "detailBody"; "required": false; }; "detailState": { "alias": "detailState"; "required": false; }; "isRowLocked": { "alias": "isRowLocked"; "required": false; }; "dragConfig": { "alias": "dragConfig"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; "singleRowActions": { "alias": "singleRowActions"; "required": false; }; "preserveExistingSelectionOnFilter": { "alias": "preserveExistingSelectionOnFilter"; "required": false; }; "virtualScrolling": { "alias": "virtualScrolling"; "required": false; }; "disableUnsort": { "alias": "disableUnsort"; "required": false; }; "enableColumnActions": { "alias": "enableColumnActions"; "required": false; }; "dataRange": { "alias": "dataRange"; "required": false; }; "gridItems": { "alias": "gridItems"; "required": false; }; "layoutModel": { "alias": "layoutModel"; "required": false; }; "footerModel": { "alias": "footerModel"; "required": false; }; "columns": { "alias": "columns"; "required": false; }; "selectionType": { "alias": "selectionType"; "required": false; }; "selectedItems": { "alias": "selectedItems"; "required": false; }; "rowSelectionMode": { "alias": "rowSelectionMode"; "required": false; }; "actionBarActions": { "alias": "actionBarActions"; "required": false; }; "pageSize": { "alias": "pageSize"; "required": false; }; "datagridLabels": { "alias": "datagridLabels"; "required": false; }; }, { "detailStateChange": "detailStateChange"; "pageSizeChange": "pageSizeChange"; "gridItemsChange": "gridItemsChange"; "advancedFilterChange": "advancedFilterChange"; "columnDefsChange": "columnDefsChange"; "selectedItemsChange": "selectedItemsChange"; "exportDataEvent": "exportDataEvent"; "searchTermChange": "searchTermChange"; "columnResize": "columnResize"; "columnSortOrderChange": "columnSortOrderChange"; "columnHiddenStateChange": "columnHiddenStateChange"; "columnPinnedChange": "columnPinnedChange"; "columnFilterChange": "columnFilterChange"; "refreshGridData": "refreshGridData"; "refreshVirtualGridData": "refreshVirtualGridData"; "actionClick": "actionClick"; "rowActionMenuOpenChange": "rowActionMenuOpenChange"; "openContextMenu": "openContextMenu"; "columnOrderChange": "columnOrderChange"; }, never, [".custom-placeholder-content", ".custom-footer-content", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridComponent<any>, "appfx-datagrid", never, { "loading": { "alias": "loading"; "required": false; }; "loadingMoreItems": { "alias": "loadingMoreItems"; "required": false; }; "preSelectFirstItem": { "alias": "preSelectFirstItem"; "required": false; }; "pageSizeOptions": { "alias": "pageSizeOptions"; "required": false; }; "totalItems": { "alias": "totalItems"; "required": false; }; "showCustomPagination": { "alias": "showCustomPagination"; "required": false; }; "serverDrivenDatagrid": { "alias": "serverDrivenDatagrid"; "required": false; }; "listItemsCount": { "alias": "listItemsCount"; "required": false; }; "rowDetailContent": { "alias": "rowDetailContent"; "required": false; }; "rowsExpandedByDefault": { "alias": "rowsExpandedByDefault"; "required": false; }; "trackByFunction": { "alias": "trackByFunction"; "required": false; }; "trackByGridItemProperty": { "alias": "trackByGridItemProperty"; "required": false; }; "detailHeader": { "alias": "detailHeader"; "required": false; }; "detailBody": { "alias": "detailBody"; "required": false; }; "detailState": { "alias": "detailState"; "required": false; }; "isRowLocked": { "alias": "isRowLocked"; "required": false; }; "dragConfig": { "alias": "dragConfig"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; "singleRowActions": { "alias": "singleRowActions"; "required": false; }; "preserveExistingSelectionOnFilter": { "alias": "preserveExistingSelectionOnFilter"; "required": false; }; "virtualScrolling": { "alias": "virtualScrolling"; "required": false; }; "disableUnsort": { "alias": "disableUnsort"; "required": false; }; "enableColumnActions": { "alias": "enableColumnActions"; "required": false; }; "columnActions": { "alias": "columnActions"; "required": false; }; "dataRange": { "alias": "dataRange"; "required": false; }; "gridItems": { "alias": "gridItems"; "required": false; }; "layoutModel": { "alias": "layoutModel"; "required": false; }; "footerModel": { "alias": "footerModel"; "required": false; }; "columns": { "alias": "columns"; "required": false; }; "selectionType": { "alias": "selectionType"; "required": false; }; "selectedItems": { "alias": "selectedItems"; "required": false; }; "rowSelectionMode": { "alias": "rowSelectionMode"; "required": false; }; "actionBarActions": { "alias": "actionBarActions"; "required": false; }; "pageSize": { "alias": "pageSize"; "required": false; }; "datagridLabels": { "alias": "datagridLabels"; "required": false; }; }, { "detailStateChange": "detailStateChange"; "pageSizeChange": "pageSizeChange"; "gridItemsChange": "gridItemsChange"; "advancedFilterChange": "advancedFilterChange"; "columnDefsChange": "columnDefsChange"; "selectedItemsChange": "selectedItemsChange"; "exportDataEvent": "exportDataEvent"; "searchTermChange": "searchTermChange"; "columnResize": "columnResize"; "columnSortOrderChange": "columnSortOrderChange"; "columnHiddenStateChange": "columnHiddenStateChange"; "columnPinnedChange": "columnPinnedChange"; "columnFilterChange": "columnFilterChange"; "refreshGridData": "refreshGridData"; "refreshVirtualGridData": "refreshVirtualGridData"; "actionClick": "actionClick"; "rowActionMenuOpenChange": "rowActionMenuOpenChange"; "openContextMenu": "openContextMenu"; "columnOrderChange": "columnOrderChange"; }, never, [".custom-placeholder-content", ".custom-footer-content", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridComponent<any>, [null, null, null, null, { optional: true; }, { optional: true; }]>;
 }
