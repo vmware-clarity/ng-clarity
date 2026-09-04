@@ -9,7 +9,16 @@ import { A11yModule as CdkA11yModule } from '@angular/cdk/a11y';
 import { CdkDrag, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { Component, DebugElement, NgModule, SimpleChange, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  DebugElement,
+  NgModule,
+  SimpleChange,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -29,6 +38,7 @@ import {
 } from '@clr/addons/testing';
 import {
   ClrDatagridColumn,
+  ClrDatagridColumnActions,
   ClrDatagridComparatorInterface,
   ClrDatagridFilterInterface,
   ClrDatagridSortOrder,
@@ -49,6 +59,8 @@ import { DatagridComponent } from './datagrid.component';
 import { AppfxDatagridModule } from './datagrid.module';
 import { DatagridStrings } from './i18n/datagrid-strings.service';
 import { ColumnSortOrder } from './interfaces/column-state';
+import { ActionDefinition } from './shared/action/action-definition';
+import { ActionClickEvent } from './shared/action/actions-event-types';
 import { ColumnDefinition, ColumnRenderer } from './shared/column/column-definitions';
 
 interface DatagridSpecContext {
@@ -718,6 +730,448 @@ describe('DatagridComponent', () => {
         this.fixture.detectChanges(false);
 
         expect(getDragDisabledByColumn(this.fixture)).toEqual({ Name: false, State: false, Status: false });
+      });
+    });
+
+    describe('enableColumnActions', () => {
+      beforeEach(function (this: DatagridSpecContext) {
+        this.component.data = this.data;
+        this.component.columnsDefs = this.columnsDefs;
+      });
+
+      it('renders no column actions menu by default', function (this: DatagridSpecContext) {
+        this.fixture.detectChanges(false);
+
+        expect(this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle')).length).toBe(0);
+      });
+
+      it('renders one menu per column once it is turned on', function (this: DatagridSpecContext) {
+        this.component.enableColumnActions = true;
+        this.fixture.detectChanges(false);
+
+        expect(this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle')).length).toBe(
+          this.columnsDefs.length
+        );
+      });
+    });
+
+    describe('pin toggle in the column actions menu', () => {
+      // The menu is rendered into a CDK overlay attached to document.body, outside the fixture's own
+      // DOM subtree, so it has to be read through plain document queries once it is open.
+      function toggleMenu(fixture: ComponentFixture<DatagridHostComponent>, columnIndex: number) {
+        fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[columnIndex].nativeElement.click();
+        fixture.detectChanges();
+      }
+
+      function menuItem(label: string): HTMLElement {
+        return Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item')).find(
+          item => item.textContent.trim() === label
+        );
+      }
+
+      beforeEach(function (this: DatagridSpecContext) {
+        this.component.data = this.data;
+        // The menu is opt-in, so it has to be switched on for these tests.
+        this.component.enableColumnActions = true;
+        this.columnsDefs[1].pinnable = true;
+        this.component.columnsDefs = this.columnsDefs;
+        this.fixture.detectChanges(false);
+      });
+
+      it('offers Pin Column only on a column marked pinnable', function (this: DatagridSpecContext) {
+        toggleMenu(this.fixture, 0);
+        expect(menuItem('Pin Column')).toBeUndefined();
+        toggleMenu(this.fixture, 0);
+
+        toggleMenu(this.fixture, 1);
+        expect(menuItem('Pin Column')).not.toBeUndefined();
+      });
+
+      it('pins the column and reports it through columnPinnedChange', function (this: DatagridSpecContext) {
+        spyOn(this.component, 'columnPinnedChange');
+
+        toggleMenu(this.fixture, 1);
+        menuItem('Pin Column').click();
+        this.fixture.detectChanges();
+
+        expect(this.columnsDefs[1].pinned).toBeTrue();
+        expect(this.component.columnPinnedChange).toHaveBeenCalledWith({
+          pinned: true,
+          column: this.columnsDefs[1],
+        });
+      });
+
+      it('unpins the column once it is pinned', function (this: DatagridSpecContext) {
+        toggleMenu(this.fixture, 1);
+        menuItem('Pin Column').click();
+        this.fixture.detectChanges();
+        expect(this.columnsDefs[1].pinned).toBeTrue();
+
+        // The menu stays open after Pin Column is clicked ([clrCloseMenuOnItemClick]="false"), and
+        // its label is reactive to the pinned state, so the same still-open menu now offers Unpin
+        // Column - no need to close and reopen anything.
+        menuItem('Unpin Column').click();
+        this.fixture.detectChanges();
+
+        expect(this.columnsDefs[1].pinned).toBeFalse();
+      });
+    });
+
+    describe('custom column actions', () => {
+      function toggleMenu(fixture: ComponentFixture<DatagridHostComponent>, columnIndex: number) {
+        fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[columnIndex].nativeElement.click();
+        fixture.detectChanges();
+      }
+
+      function menuItemLabels(): string[] {
+        return Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item')).map(item =>
+          item.textContent.trim()
+        );
+      }
+
+      function menuItem(label: string): HTMLElement {
+        return Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item')).find(
+          item => item.textContent.trim() === label
+        );
+      }
+
+      beforeEach(function (this: DatagridSpecContext) {
+        this.component.data = this.data;
+        this.component.enableColumnActions = true;
+        this.component.columnActions = [
+          // 'angle' rather than something like 'copy' because cds-icon rewrites the shape of an icon
+          // that is not registered to 'unknown', and this asserts the binding, not the icon registry.
+          // An application does have to register whatever shape it names here.
+          { id: 'copy', label: 'Copy values', enabled: true, icon: 'angle' },
+          { id: 'about', label: 'About column', enabled: false },
+        ];
+        this.columnsDefs[1].actions = [{ id: 'reset', label: 'Reset State', enabled: true }];
+        this.component.columnsDefs = this.columnsDefs;
+        this.fixture.detectChanges(false);
+      });
+
+      it('offers the grid actions on every column, after the built-in ones', function (this: DatagridSpecContext) {
+        toggleMenu(this.fixture, 0);
+        const labels = menuItemLabels();
+
+        expect(labels).toContain('Copy values');
+        expect(labels).toContain('About column');
+        // Last, so the built-in items keep the same place in every menu.
+        expect(labels.indexOf('Copy values')).toBeGreaterThan(labels.indexOf('Move Right'));
+      });
+
+      it('appends the actions of a single column after the grid ones', function (this: DatagridSpecContext) {
+        toggleMenu(this.fixture, 0);
+        expect(menuItemLabels()).not.toContain('Reset State');
+        toggleMenu(this.fixture, 0);
+
+        toggleMenu(this.fixture, 1);
+        const labels = menuItemLabels();
+        expect(labels).toContain('Reset State');
+        expect(labels.indexOf('Reset State')).toBeGreaterThan(labels.indexOf('About column'));
+      });
+
+      it('reports a click through actionClick with the column as context', function (this: DatagridSpecContext) {
+        const received: ActionClickEvent[] = [];
+        this.component.appfxDatagridComponent.actionClick.subscribe((event: ActionClickEvent) => received.push(event));
+
+        toggleMenu(this.fixture, 1);
+        menuItem('Reset State').click();
+        this.fixture.detectChanges();
+
+        expect(received.length).toBe(1);
+        expect(received[0].action.id).toBe('reset');
+        expect(received[0].context).toBe(this.columnsDefs[1]);
+      });
+
+      it('does not report a disabled action', function (this: DatagridSpecContext) {
+        const received: ActionClickEvent[] = [];
+        this.component.appfxDatagridComponent.actionClick.subscribe((event: ActionClickEvent) => received.push(event));
+
+        toggleMenu(this.fixture, 0);
+        expect(menuItem('About column').getAttribute('aria-disabled')).toBe('true');
+        menuItem('About column').click();
+        this.fixture.detectChanges();
+
+        expect(received).toEqual([]);
+      });
+
+      it('leads an action with its icon when one is given', function (this: DatagridSpecContext) {
+        toggleMenu(this.fixture, 0);
+
+        expect(menuItem('Copy values').querySelector('cds-icon')?.getAttribute('shape')).toBe('angle');
+        expect(menuItem('About column').querySelector('cds-icon')).toBeNull();
+      });
+
+      it('adds nothing to the menu when no actions are configured', function (this: DatagridSpecContext) {
+        this.component.columnActions = null;
+        this.columnsDefs[1].actions = undefined;
+        this.fixture.detectChanges();
+
+        toggleMenu(this.fixture, 1);
+        const labels = menuItemLabels();
+        expect(labels).not.toContain('Copy values');
+        expect(labels).not.toContain('Reset State');
+        expect(document.querySelectorAll('.dropdown-menu .dropdown-divider').length).toBe(0);
+      });
+    });
+
+    // No pinned column here, which is the ordinary case and a different rendering path: nothing is
+    // rebuilt, so the menu survives the move along with the column it belongs to. It used to be left
+    // anchored to where the trigger was before the move, which is what clrCanClosePopover fixes.
+    describe('column moves without pinned columns', () => {
+      function toggleMenu(fixture: ComponentFixture<DatagridHostComponent>, columnIndex: number) {
+        fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[columnIndex].nativeElement.click();
+        fixture.detectChanges();
+      }
+
+      function moveButton(label: string): HTMLElement {
+        return Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item')).find(
+          item => item.textContent.trim() === label
+        );
+      }
+
+      beforeEach(function (this: DatagridSpecContext) {
+        this.component.data = this.data;
+        this.component.enableColumnActions = true;
+        this.component.columnsDefs = this.columnsDefs;
+        this.fixture.detectChanges(false);
+      });
+
+      it('re-anchors the menu to the moved column instead of closing it', function (this: DatagridSpecContext) {
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
+
+        const columnActions = this.fixture.debugElement.queryAll(By.directive(ClrDatagridColumnActions))[0]
+          .componentInstance as ClrDatagridColumnActions;
+        const repositionMenu = spyOn(columnActions, 'repositionMenu').and.callThrough();
+
+        toggleMenu(this.fixture, 0);
+        expect(document.querySelectorAll('.dropdown-menu').length).toBe(1);
+
+        moveButton('Move Right').click();
+        this.fixture.detectChanges();
+
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['State', 'Name', 'Status']);
+        // Still open, and re-anchored rather than left where the trigger used to be, so the next step
+        // can be taken without reopening it.
+        expect(document.querySelectorAll('.dropdown-menu').length).toBe(1);
+        expect(repositionMenu).toHaveBeenCalled();
+      });
+
+      it('keeps the menu usable for a second step', function (this: DatagridSpecContext) {
+        toggleMenu(this.fixture, 0);
+        moveButton('Move Right').click();
+        this.fixture.detectChanges();
+
+        moveButton('Move Right').click();
+        this.fixture.detectChanges();
+
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['State', 'Status', 'Name']);
+      });
+    });
+
+    // Five columns with the first and the third pinned, so the array order and the rendered order do
+    // not agree: the pinned pair is rendered in the sticky container ahead of the rest. Every move
+    // here goes through the rebuild in DatagridComponent, which is what makes it renderable at all -
+    // relocating the existing column views across the two containers throws and drops columns out of
+    // the header.
+    describe('column moves with pinned columns', () => {
+      function toggleMenu(fixture: ComponentFixture<DatagridHostComponent>, columnIndex: number) {
+        fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[columnIndex].nativeElement.click();
+        fixture.detectChanges();
+      }
+
+      function moveButton(label: string): HTMLElement {
+        return Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item')).find(
+          item => item.textContent.trim() === label
+        );
+      }
+
+      function clickMove(fixture: ComponentFixture<DatagridHostComponent>, columnIndex: number, label: string) {
+        toggleMenu(fixture, columnIndex);
+        moveButton(label).click();
+        fixture.detectChanges();
+      }
+
+      function disabledStateOf(fixture: ComponentFixture<DatagridHostComponent>, columnIndex: number) {
+        toggleMenu(fixture, columnIndex);
+        const state = {
+          left: moveButton('Move Left').getAttribute('aria-disabled'),
+          right: moveButton('Move Right').getAttribute('aria-disabled'),
+        };
+        toggleMenu(fixture, columnIndex);
+        return state;
+      }
+
+      beforeEach(function (this: DatagridSpecContext) {
+        this.component.data = this.data;
+        this.component.enableColumnActions = true;
+        this.component.columnsDefs = [
+          { displayName: 'C1', field: 'name', pinnable: true, pinned: true },
+          { displayName: 'C2', field: 'powerState', pinnable: true },
+          { displayName: 'C3', field: 'status', pinnable: true, pinned: true },
+          { displayName: 'C4', field: 'host', sortAndFilterByField: 'host', pinnable: true },
+          { displayName: 'C5', field: 'extra', pinnable: true },
+        ] as Array<ColumnDefinition<any>>;
+        this.fixture.detectChanges(false);
+      });
+
+      function columnByField(fixture: ComponentFixture<DatagridHostComponent>, field: string) {
+        return fixture.debugElement
+          .queryAll(By.directive(ClrDatagridColumn))
+          .map((columnDebugEl: DebugElement) => columnDebugEl.componentInstance)
+          .find(column => column.field === field);
+      }
+
+      it('renders the pinned columns ahead of the rest', function (this: DatagridSpecContext) {
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C2', 'C4', 'C5']);
+      });
+
+      // Each column steps within its own rendered group, so only the real edges are disabled. The
+      // regression was that C2 had both directions disabled and C4 had Move Left disabled, because
+      // any move spanning a pinned column was refused.
+      it('only disables a move at the edges of its own group', function (this: DatagridSpecContext) {
+        // Sticky container: C1 C3.
+        expect(disabledStateOf(this.fixture, 0)).toEqual({ left: 'true', right: 'false' });
+        expect(disabledStateOf(this.fixture, 1)).toEqual({ left: 'false', right: 'true' });
+        // Scrollable container: C2 C4 C5.
+        expect(disabledStateOf(this.fixture, 2)).toEqual({ left: 'true', right: 'false' });
+        expect(disabledStateOf(this.fixture, 3)).toEqual({ left: 'false', right: 'false' });
+        expect(disabledStateOf(this.fixture, 4)).toEqual({ left: 'false', right: 'true' });
+      });
+
+      it('steps the first loose column past the next one', function (this: DatagridSpecContext) {
+        clickMove(this.fixture, 2, 'Move Right');
+
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C2', 'C5']);
+      });
+
+      // The last loose column used to be movable left exactly once, because the second step would
+      // have spanned the pinned column sitting between the two loose ones in the array.
+      it('walks the last loose column across its whole group', function (this: DatagridSpecContext) {
+        clickMove(this.fixture, 4, 'Move Left');
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C2', 'C5', 'C4']);
+
+        clickMove(this.fixture, 3, 'Move Left');
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C5', 'C2', 'C4']);
+      });
+
+      it('reorders the two pinned columns with each other', function (this: DatagridSpecContext) {
+        clickMove(this.fixture, 0, 'Move Right');
+
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C3', 'C1', 'C2', 'C4', 'C5']);
+      });
+
+      // Rebuilding the column views throws the ClrDatagridColumn instances away, so anything the
+      // user set has to be held by the column definitions to come back with the new ones.
+      it('keeps an active sort when a column is moved', function (this: DatagridSpecContext) {
+        columnByField(this.fixture, 'host').sort();
+        this.fixture.detectChanges();
+        expect(columnByField(this.fixture, 'host').sortOrder).toBe(ClrDatagridSortOrder.ASC);
+
+        clickMove(this.fixture, 2, 'Move Right');
+
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C2', 'C5']);
+        expect(columnByField(this.fixture, 'host').sortOrder).toBe(ClrDatagridSortOrder.ASC);
+      });
+
+      it('keeps an applied filter value when a column is moved', function (this: DatagridSpecContext) {
+        this.component.appfxDatagridComponent['onFilterChange']('vm0', this.component.columnsDefs[3]);
+        this.fixture.detectChanges();
+
+        clickMove(this.fixture, 2, 'Move Right');
+
+        // The filter is bound to the column definition, so the rebuilt column picks it back up.
+        expect(this.component.columnsDefs[3].defaultFilterValue).toBe('vm0');
+      });
+
+      // Rebuilding the column views destroys the menu along with the column it belongs to, so it
+      // cannot be re-anchored the way it is when nothing is pinned. The menu on the column in its new
+      // place is opened instead, which ends up in the same state - open, attached to the moved
+      // column - rather than leaving the user with no menu and focus on the body.
+      it('reopens the menu on the moved column', function (this: DatagridSpecContext) {
+        toggleMenu(this.fixture, 2);
+        expect(document.querySelectorAll('.dropdown-menu').length).toBe(1);
+
+        moveButton('Move Right').click();
+        this.fixture.detectChanges();
+        // The reopen is deferred past the click that triggered it, so the render hooks have to run.
+        TestBed.inject(ApplicationRef).tick();
+        this.fixture.detectChanges();
+
+        // C2 moved past C4, so it is the second of the three scrollable columns now.
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C2', 'C5']);
+        expect(document.querySelectorAll('.dropdown-menu').length).toBe(1);
+        // Anchored to the moved column, so stepping again acts on C2 rather than on whatever took
+        // its old place.
+        const triggers = this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'));
+        expect(triggers[3].nativeElement.getAttribute('aria-expanded')).toBe('true');
+      });
+
+      // Opening a menu focuses its first item, which here is Pin Column - not the action that was
+      // just used. Repeating a move would mean navigating back to it every time.
+      it('leaves focus on the move action that was used, not the first item', fakeAsync(function (
+        this: DatagridSpecContext
+      ) {
+        toggleMenu(this.fixture, 2);
+        moveButton('Move Right').click();
+        this.fixture.detectChanges();
+
+        // The render hooks reopen the menu, and the timers then settle focus - the dropdown's own
+        // move to its first item first, ours back onto Move Right after it.
+        TestBed.inject(ApplicationRef).tick();
+        this.fixture.detectChanges();
+        tick();
+        this.fixture.detectChanges();
+
+        expect(document.activeElement).toBe(moveButton('Move Right'));
+      }));
+
+      // Space and enter activate whatever the menu's focus service considers current, not what the
+      // browser has focused. Reopening the menu focuses the move action directly, so without that
+      // being reported back the keys would fire the menu's first item - Pin Column - and pin the
+      // column instead of moving it again.
+      it('repeats the move when the reopened action is activated by keyboard', fakeAsync(function (
+        this: DatagridSpecContext
+      ) {
+        toggleMenu(this.fixture, 2);
+        moveButton('Move Right').click();
+        this.fixture.detectChanges();
+        TestBed.inject(ApplicationRef).tick();
+        this.fixture.detectChanges();
+        tick();
+        this.fixture.detectChanges();
+
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C2', 'C5']);
+
+        // Carry on from the keyboard, on the action the reopened menu left focused.
+        (document.activeElement as HTMLElement).dispatchEvent(
+          new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })
+        );
+        this.fixture.detectChanges();
+        TestBed.inject(ApplicationRef).tick();
+        this.fixture.detectChanges();
+        tick();
+        this.fixture.detectChanges();
+
+        // Moved once more, rather than pinned.
+        expect(this.component.columnsDefs.find(column => column.displayName === 'C2').pinned).toBeFalsy();
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C5', 'C2']);
+      }));
+
+      it('never moves a column out of its own container', function (this: DatagridSpecContext) {
+        const pinnedHeaders = () =>
+          Array.from(
+            this.fixture.nativeElement.querySelectorAll('.datagrid-pinned-cells clr-dg-column .datagrid-column-title')
+          ).map((element: HTMLElement) => element.textContent.trim());
+
+        expect(pinnedHeaders()).toEqual(['C1', 'C3']);
+
+        clickMove(this.fixture, 2, 'Move Right');
+        clickMove(this.fixture, 0, 'Move Right');
+
+        expect(pinnedHeaders()).toEqual(['C3', 'C1']);
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C3', 'C1', 'C4', 'C2', 'C5']);
       });
     });
 
@@ -2085,12 +2539,15 @@ class StatusComparator implements ClrDatagridComparatorInterface<any> {
       [isRowLocked]="isRowLocked"
       [virtualScrolling]="virtualScrolling"
       [disableUnsort]="disableUnsort"
+      [enableColumnActions]="enableColumnActions"
+      [columnActions]="columnActions"
       [serverDrivenDatagrid]="serverDrivenDatagrid"
       [dataRange]="dataRange"
       [(detailState)]="detailState"
       (actionClick)="onActionClick($event)"
       (rowActionMenuOpenChange)="onRowActionOverflowOpen($event)"
       (columnSortOrderChange)="columnSortOrderChange($event)"
+      (columnPinnedChange)="columnPinnedChange($event)"
       (columnHiddenStateChange)="onColumnHiddenStateChange($event)"
       (columnFilterChange)="onColumnFilterChange($event)"
       (selectedItemsChange)="changeSelection($event)"
@@ -2141,6 +2598,8 @@ class DatagridHostComponent {
   rowsExpandedByDefault?: boolean = false;
   virtualScrolling = false;
   disableUnsort = true;
+  enableColumnActions = false;
+  columnActions: ActionDefinition[] | null = null;
   serverDrivenDatagrid = false;
   dataRange: ClrDatagridVirtualScrollRangeInterface<any> = {
     total: 100,
@@ -2153,6 +2612,9 @@ class DatagridHostComponent {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   columnSortOrderChange(event: any) {}
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  columnPinnedChange(event: any) {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onColumnHiddenStateChange(event: any) {}

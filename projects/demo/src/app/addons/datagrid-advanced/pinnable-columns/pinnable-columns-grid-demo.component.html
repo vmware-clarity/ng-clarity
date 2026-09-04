@@ -14,24 +14,26 @@
 
 <p>VM Name and Status start pinned, and the remaining columns are scrollable.</p>
 
-<!--
-  Disabled with clrDgPinnable. Restoring it means putting pinnable back on the State and Status
-  column definitions, restoring (columnPinnedChange) on the grid below, and restoring this copy:
+<p>
+  Adding <code class="clr-code">pinnable</code> adds Pin Column / Unpin Column to that column's actions menu, so the
+  user can pin and unpin the column themselves.
+</p>
 
-  <p>
-    Adding <code class="clr-code">pinnable</code> puts a pin toggle in the column header, so the user can pin and unpin
-    the column themselves.
-  </p>
+<p>
+  VM Name and Status start pinned and are both pinnable, State is pinnable but starts loose, and Used space, CPUs and
+  Creation date cannot be pinned at all.
+</p>
 
-  <p>
-    VM Name starts pinned and is pinnable, State and Status are pinnable but start loose, and the remaining columns
-    cannot be pinned at all.
-  </p>
--->
+<p>
+  The pinned columns are rendered together in front of the rest, whatever order they are defined in, so the order on
+  screen is not the order of the column definitions. <em>Move Left</em> and <em>Move Right</em> follow what is on
+  screen: each column moves within its own group, so the pinned columns reorder with each other and the scrollable ones
+  among themselves, and only the real edges of a group are disabled.
+</p>
 
 <div class="card card-block">
   <p class="card-text">Pinned columns: {{ pinnedColumns || 'none' }}</p>
-  <!-- Disabled with clrDgPinnable: <p class="card-text">Last change: {{ lastPinnedChange || 'none yet' }}</p> -->
+  <p class="card-text">Last change: {{ lastPinnedChange || 'none yet' }}</p>
 </div>
 
 <hr />
@@ -44,6 +46,8 @@
   [layoutModel]="{ stretchToParentHeight: false }"
   [footerModel]="{ showFooter: true }"
   [pageSize]="10"
+  [enableColumnActions]="true"
   (selectedItemsChange)="onSelectedItemsChange($event)"
+  (columnPinnedChange)="onColumnPinnedChange($event)"
 >
 </appfx-datagrid>

@@ -19,6 +19,7 @@ import {
 } from '@clr/angular';
 
 import { ClientSideDatagridDemoComponent } from './ng/client-side';
+import { ColumnActionsGridDemoComponent } from './ng/column-actions';
 import { CustomColumnDefinitionsDemoComponent } from './ng/custom-column-definitions';
 import { DetailPaneGridDemoComponent } from './ng/detail-pane';
 import { DragDropGridDemoComponent } from './ng/drag-drop';
@@ -43,6 +44,8 @@ const replaceComponentName = (file: string) => {
 
 const ClientSideHtml = require('!raw-loader!./ng/client-side.html').default;
 const ClientSideTs = replaceComponentName(require('!raw-loader!./ng/client-side.ts').default);
+const ColumnActionsHtml = require('!raw-loader!./ng/column-actions.html').default;
+const ColumnActionsTs = replaceComponentName(require('!raw-loader!./ng/column-actions.ts').default);
 const CustomColumnDefinitionsHtml = require('!raw-loader!./ng/custom-column-definitions.html').default;
 const CustomColumnDefinitionsTs = replaceComponentName(
   require('!raw-loader!./ng/custom-column-definitions.ts').default
@@ -255,6 +258,7 @@ const additionalFiles = {
     ClrAlertModule,
     PersistenceGridDemoComponent,
     PinnableColumnsGridDemoComponent,
+    ColumnActionsGridDemoComponent,
   ],
 })
 export class AdvancedDatagridDemo extends ClarityDocComponent {
@@ -262,6 +266,9 @@ export class AdvancedDatagridDemo extends ClarityDocComponent {
 
   clientSideHtml = ClientSideHtml;
   clientSideTs = ClientSideTs;
+
+  columnActionsHtml = ColumnActionsHtml;
+  columnActionsTs = ColumnActionsTs;
 
   customColumnDefinitionsHtml = CustomColumnDefinitionsHtml;
   customColumnDefinitionsTs = CustomColumnDefinitionsTs;

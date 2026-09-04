@@ -294,23 +294,19 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           description: 'Set the model property that represents data in the column.',
         },
         {
-          // Documented one-way while clrDgPinnable is disabled: nothing inside the datagrid can
-          // change the pinned state, and clrDgPinnedChange is commented out with the toggle, so a
-          // two-way [(clrDgPinned)] binding does not compile.
-          name: '[clrDgPinned]',
+          name: '[(clrDgPinned)]',
           type: 'boolean',
           defaultValue: 'false',
           description:
-            'Pins the column to the left of the datagrid, so it stays visible while the remaining columns are scrolled horizontally. Pinned columns keep their declaration order and are rendered after the built-in row controls. The pinned columns cannot take more than 85% of the datagrid width - past that they shrink to fit. Pinning is suspended while the detail pane is open.',
+            'Pins the column to the left of the datagrid, so it stays visible while the remaining columns are scrolled horizontally. Pinned columns keep their declaration order and are rendered after the built-in row controls. The pinned columns cannot take more than 85% of the datagrid width - past that they shrink to fit. Pinning is suspended while the detail pane is open. Two-way, so a Pin Column action inside the datagrid writes the new state back.',
         },
-        // Disabled with clrDgPinnable:
-        // {
-        //   name: '[clrDgPinnable]',
-        //   type: 'boolean',
-        //   defaultValue: 'false',
-        //   description:
-        //     'Adds a pin toggle to the column header, letting the user pin and unpin the column from within the datagrid. It only adds the control - the pinned state itself stays on [clrDgPinned].',
-        // },
+        {
+          name: '[clrDgPinnable]',
+          type: 'boolean',
+          defaultValue: 'false',
+          description:
+            'Offers Pin Column in the column actions menu, letting the user pin and unpin the column from within the datagrid. It only adds the control - the pinned state itself stays on [clrDgPinned] - and it needs a clr-dg-column-actions in the column to render the menu.',
+        },
         {
           name: '[clrFilterNumberMaxPlaceholder]',
           type: 'string',
@@ -360,6 +356,53 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           type: '',
           defaultValue: '',
           description: '',
+        },
+      ],
+    },
+    {
+      name: 'ClrDatagridColumnActions',
+      selector: 'clr-dg-column-actions',
+      props: [
+        {
+          name: '[clrDgKeepFilterInHeader]',
+          type: 'boolean',
+          defaultValue: 'false',
+          description:
+            "Keeps the filter's own toggle in the column header instead of moving it into the menu, and the menu drops its Filter Column action in exchange. A column offers one way to reach its filter at a time, never two.",
+        },
+        {
+          name: 'repositionMenu()',
+          type: 'void',
+          defaultValue: 'n/a',
+          description:
+            'Method. Re-anchors the open menu to its trigger, for an action that moved the column the menu belongs to. Called for you by an item with [clrCanClosePopover]="false", so an application only needs it when it moves a column by some other means.',
+        },
+        {
+          name: 'focusAction(item)',
+          type: 'void',
+          defaultValue: 'n/a',
+          description:
+            'Method. Moves focus to one of the projected actions, keeping the keyboard in step with it - space and enter act on the item the menu considers current, not on whatever the browser has focused. Called for you when a clrDgColumnAction takes focus, so focusing an item by any means, including a plain focus() from outside, stays consistent.',
+        },
+      ],
+    },
+    {
+      name: 'ClrDatagridColumnAction',
+      selector: '[clrDgColumnAction]',
+      props: [
+        {
+          name: '[clrDisabled]',
+          type: 'boolean',
+          defaultValue: 'false',
+          description:
+            'Disables the item. It stays in the menu, announced as disabled and skipped by activation, rather than being hidden.',
+        },
+        {
+          name: '[clrCanClosePopover]',
+          type: 'boolean',
+          defaultValue: 'true',
+          description:
+            'Whether activating the item closes the menu. Set it to false for an action that moves the column the menu belongs to: the menu is anchored to a trigger that travels with the column, so it is re-anchored to the trigger in its new place instead of being left behind. This is what the built-in Pin Column action does.',
         },
       ],
     },

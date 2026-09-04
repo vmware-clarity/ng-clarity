@@ -24,6 +24,14 @@ export interface ActionDefinition<T = string> {
   enabled: boolean;
   tooltip?: T;
   /**
+   * Name of a registered Clarity icon shape to lead the action with.
+   * @note Applicable only for column actions, where the built-in items all carry an icon and a
+   * label-only entry would not line up with them. The shape has to be registered by the application,
+   * the same way it would be for a `cds-icon` of its own.
+   */
+  icon?: string;
+
+  /**
    * Specify style class to be applied.
    * @note Applicable only for ActionBar actions.
    * Footer actions are with default style for footer actions - ('btn btn-sm column-toggle-action').

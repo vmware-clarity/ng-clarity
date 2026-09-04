@@ -157,12 +157,14 @@ export interface ClrCommonStrings {
     // (undocumented)
     browse: string;
     cancel: string;
+    clearColumnSort: string;
     // (undocumented)
     clearFile: string;
     // (undocumented)
     clearFiles: string;
     close: string;
     collapse: string;
+    columnActions: string;
     columnSeparatorAriaLabel: string;
     columnSeparatorDescription: string;
     // (undocumented)
@@ -189,6 +191,7 @@ export interface ClrCommonStrings {
     current: string;
     currentPage: string;
     danger: string;
+    datagridColumnActionsAriaLabel: string;
     // (undocumented)
     datagridExpandableBeginningOf: string;
     // (undocumented)
@@ -231,6 +234,7 @@ export interface ClrCommonStrings {
     expandBreadcrumbsLabel: string;
     // (undocumented)
     fileCount: string;
+    filterColumn: string;
     filterItems: string;
     firstPage: string;
     fromLabel: string;
@@ -252,6 +256,7 @@ export interface ClrCommonStrings {
     // (undocumented)
     passwordShow: string;
     pickColumns: string;
+    pinColumn: string;
     previous: string;
     previousPage: string;
     // (undocumented)
@@ -277,6 +282,8 @@ export interface ClrCommonStrings {
     singleActionableAriaLabel: string;
     singleSelectionAriaLabel: string;
     sortColumn: string;
+    sortColumnAscending: string;
+    sortColumnDescending: string;
     stackViewChanged: string;
     // (undocumented)
     stepComplete: string;
@@ -295,6 +302,7 @@ export interface ClrCommonStrings {
     toLabel: string;
     totalPages: string;
     unknown: string;
+    unpinColumn: string;
     // (undocumented)
     unselectedTreeNode: string;
     // (undocumented)

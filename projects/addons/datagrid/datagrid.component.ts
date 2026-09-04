@@ -50,7 +50,7 @@ import {
   ColumnFilterChange,
   ColumnHiddenState,
   ColumnOrderChanged,
-  // ColumnPinnedState, // disabled with clrDgPinnable
+  ColumnPinnedState,
   ColumnResize,
   ColumnSortOrder,
 } from './interfaces/column-state';
@@ -367,6 +367,30 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   @Input() disableUnsort = true;
 
   /**
+   * Adds a column actions menu to the header of every column in the grid.
+   *
+   * The menu gathers actions the column can already perform: sorting and filtering when the column
+   * is sortable/filterable, Pin Column when it is {@link ColumnDefinition.pinnable}, and moving the
+   * column left or right.
+   *
+   * @default false - the menu is opt-in.
+   */
+  @Input() enableColumnActions = false;
+
+  /**
+   * Application actions to offer in the actions menu of every column, after the built-in ones.
+   *
+   * The same list is used for all columns, so these are the actions that apply to whichever column
+   * they are invoked from - "Copy column values", say. Clicking one reports it through
+   * {@link actionClick} with the {@link ColumnDefinition} it was invoked from as the event's context,
+   * which is how the handler knows the column. For an action that only belongs on one column, use
+   * {@link ColumnDefinition.actions} instead; those are appended after these.
+   *
+   * Requires {@link enableColumnActions}, which is what renders the menu in the first place.
+   */
+  @Input() columnActions: ActionDefinition[] | null;
+
+  /**
    * Input for providing data when virtual scrolling is enabled.
    * <code>gridItems</code> should not be used in this case.
    */
@@ -435,15 +459,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    */
   @Output() columnHiddenStateChange: EventEmitter<ColumnHiddenState> = new EventEmitter<ColumnHiddenState>();
 
-  // Disabled for now: only the clrDgPinnable header toggle could ever raise this, so it is
-  // commented out along with the toggle, onPinnedChange() below and the ColumnPinnedState
-  // interface. Kept as a line comment rather than a doc comment, so api-extractor does not attach
-  // it to the next output.
-  //
-  // /**
-  //  * Event emitter to tell hosting view that the user pinned or unpinned a column.
-  //  */
-  // @Output() columnPinnedChange: EventEmitter<ColumnPinnedState> = new EventEmitter<ColumnPinnedState>();
+  /**
+   * Event emitter to tell hosting view that the user pinned or unpinned a column.
+   */
+  @Output() columnPinnedChange: EventEmitter<ColumnPinnedState> = new EventEmitter<ColumnPinnedState>();
 
   /**
    * Event emitter to tell hosting view that column filtering has changed.
@@ -797,11 +816,17 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
   onColumnOrderChange(data: ColumnOrderChanged) {
     this.columns = data.columns;
-    this.visibleColumns = this.columns.filter((column: ColumnDefinition<T>) => !column.hidden);
-    this.cdr.detectChanges();
-    //Without resize when the grid is empty and column is moved
-    //the columns are not displayed correctly
-    this.resize();
+
+    if (this.columns.some((column: ColumnDefinition<T>) => column.pinned)) {
+      this.rebuildColumnViews();
+    } else {
+      this.visibleColumns = this.columns.filter((column: ColumnDefinition<T>) => !column.hidden);
+      this.cdr.detectChanges();
+      //Without resize when the grid is empty and column is moved
+      //the columns are not displayed correctly
+      this.resize();
+    }
+
     this.columnOrderChange.emit(data);
   }
 
@@ -950,13 +975,12 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     this.columnResize.emit({ columnSize: columnSize, column: column });
   }
 
-  // Disabled along with clrDgPinnable, which was the only thing that called this.
-  // protected onPinnedChange(pinned: boolean, column: ColumnDefinition<T>): void {
-  //   // The column definition is the source of truth for the binding, so it has to be updated or the
-  //   // next change detection would push the previous value back onto the column.
-  //   column.pinned = pinned;
-  //   this.columnPinnedChange.emit({ pinned: pinned, column: column });
-  // }
+  protected onPinnedChange(pinned: boolean, column: ColumnDefinition<T>): void {
+    // The column definition is the source of truth for the binding, so it has to be updated or the
+    // next change detection would push the previous value back onto the column.
+    column.pinned = pinned;
+    this.columnPinnedChange.emit({ pinned: pinned, column: column });
+  }
 
   protected onSortOrderChange(sortOrder: ClrDatagridSortOrder, column: ColumnDefinition<T>): void {
     const columnSortOrder = {
@@ -1011,6 +1035,11 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
 
   protected onFilterChange(filterValue: unknown, column: ColumnDefinition<T>): void {
+    // The column definition is what the filter is bound to, so the active value is kept there the
+    // same way the active sort order is. Otherwise reordering a column, which rebuilds the column
+    // views, would bind the filter back to the value it started with and silently drop the filter
+    // the user typed.
+    column.defaultFilterValue = filterValue;
     this.columnFilterChange.emit({
       filterValue: filterValue,
       column: column,
@@ -1065,6 +1094,31 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
         datagridItemSet
       );
     }
+  }
+
+  /**
+   * The actions to offer in one column's menu: the grid-wide ones first, then the column's own, so a
+   * column adds to the shared set rather than reordering it.
+   */
+  protected getColumnActions(column: ColumnDefinition<T>): ActionDefinition[] {
+    return [...(this.columnActions || []), ...(column.actions || [])];
+  }
+
+  /**
+   * Reported through the same output as the action bar and row actions, with the column as the
+   * context - the menu is per column, so that is what identifies where the action was invoked.
+   *
+   * Kept separate from `onActionClick` because that one falls back to the selected items when it has
+   * no context, which is not a sensible default for a column.
+   */
+  protected onColumnActionClick(action: ActionDefinition, column: ColumnDefinition<T>): void {
+    // A disabled menu item is styled and announced as disabled but still receives the click - it is
+    // not a disabled button - so every handler in this menu turns the click away itself.
+    if (!action.enabled) {
+      return;
+    }
+
+    this.actionClick.emit({ action: action, context: column });
   }
 
   protected onActionClick(action: ActionDefinition, context?: T | T[]): void {
@@ -1132,6 +1186,33 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
   protected dropGroup(group: string): CdkDropList[] {
     return (this.groupService?.getGroupItems(group) || []) as CdkDropList[];
+  }
+
+  /**
+   * Renders a new column order by throwing the current column views away and building them again,
+   * rather than letting Angular relocate the existing ones. Only needed once a column is pinned,
+   * which is also why a move then closes the column actions menu instead of re-anchoring it.
+   *
+   * The datagrid renders the pinned columns in its sticky container and the rest in the scrollable
+   * one, so one declared list of columns is split across two DOM parents. Reordering that list makes
+   * Angular's `@for` reconciliation relocate a column against a reference node that lives in the
+   * other container, and the DOM insert throws - which leaves the header short of columns, since
+   * change detection gives up half way through. Emptying `visibleColumns` first destroys every
+   * column view, so the reconciliation has nothing left to relocate and the new order is rendered
+   * from scratch. That is what makes reordering work with a pinned column anywhere in the list, and
+   * it is also the only way the pinned columns can be reordered with each other.
+   *
+   * Column state that has to survive this lives on the column definitions - `defaultSortOrder` and
+   * `defaultFilterValue` - so the rebuilt views bind it straight back.
+   */
+  private rebuildColumnViews(): void {
+    this.visibleColumns = [];
+    this.cdr.detectChanges();
+    this.visibleColumns = this.columns.filter((column: ColumnDefinition<T>) => !column.hidden);
+    this.cdr.detectChanges();
+    // The columns are measured from scratch, and this also covers an empty grid, where the datagrid
+    // does not re-render the columns on its own.
+    this.resize();
   }
 
   private hasExpandableRows(item: T): boolean {
