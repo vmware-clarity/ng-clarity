@@ -122,6 +122,35 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
     return true;
   }
 
+  /**
+   * Puts focus on the column actions trigger of the given column, wherever it ended up.
+   *
+   * A move rebuilds the column views, which destroys the menu along with the column it belonged to,
+   * so focus falls back to the body and a keyboard user loses their place in the header. Unlike
+   * pinning, the menu cannot simply follow the column - there is no menu left to move.
+   *
+   * The trigger is found by position rather than by identity, because the rebuilt elements are not
+   * the ones the caller was holding. Pinned columns are rendered in the static container ahead of the
+   * rest, so the rendered order has to be reconstructed instead of read off the column array.
+   */
+  focusColumnActions(column: ColumnDefinition<any>): void {
+    const visibleColumns = this.dgColumnsOrderColumns.filter(other => !other.hidden);
+    const renderedColumns = [
+      ...visibleColumns.filter(other => other.pinned),
+      ...visibleColumns.filter(other => !other.pinned),
+    ];
+    const renderedIndex = renderedColumns.findIndex(other => isEqualColumns(column, other));
+
+    if (renderedIndex < 0) {
+      return;
+    }
+
+    this.elementRef.nativeElement
+      .querySelectorAll<HTMLElement>('.datagrid-column-actions-toggle')
+      .item(renderedIndex)
+      ?.focus();
+  }
+
   setDgColumnsContainer(): void {
     // Clarity doesn't expose the scrollable datagrid container, and I didn't find a way to
     // get it from the parent component or directive, so we need to use querySelector

@@ -29,6 +29,7 @@ import {
 } from '@clr/addons/testing';
 import {
   ClrDatagridColumn,
+  ClrDatagridColumnActions,
   ClrDatagridComparatorInterface,
   ClrDatagridFilterInterface,
   ClrDatagridSortOrder,
@@ -805,6 +806,60 @@ describe('DatagridComponent', () => {
       });
     });
 
+    // No pinned column here, which is the ordinary case and a different rendering path: nothing is
+    // rebuilt, so the menu survives the move along with the column it belongs to. It used to be left
+    // anchored to where the trigger was before the move, which is what clrCanClosePopover fixes.
+    describe('column moves without pinned columns', () => {
+      function toggleMenu(fixture: ComponentFixture<DatagridHostComponent>, columnIndex: number) {
+        fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[columnIndex].nativeElement.click();
+        fixture.detectChanges();
+      }
+
+      function moveButton(label: string): HTMLElement {
+        return Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item')).find(
+          item => item.textContent.trim() === label
+        );
+      }
+
+      beforeEach(function (this: DatagridSpecContext) {
+        this.component.data = this.data;
+        this.component.enableColumnActions = true;
+        this.component.columnsDefs = this.columnsDefs;
+        this.fixture.detectChanges(false);
+      });
+
+      it('re-anchors the menu to the moved column instead of closing it', function (this: DatagridSpecContext) {
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
+
+        const columnActions = this.fixture.debugElement.queryAll(By.directive(ClrDatagridColumnActions))[0]
+          .componentInstance as ClrDatagridColumnActions;
+        const repositionMenu = spyOn(columnActions, 'repositionMenu').and.callThrough();
+
+        toggleMenu(this.fixture, 0);
+        expect(document.querySelectorAll('.dropdown-menu').length).toBe(1);
+
+        moveButton('Move Right').click();
+        this.fixture.detectChanges();
+
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['State', 'Name', 'Status']);
+        // Still open, and re-anchored rather than left where the trigger used to be, so the next step
+        // can be taken without reopening it.
+        expect(document.querySelectorAll('.dropdown-menu').length).toBe(1);
+        expect(repositionMenu).toHaveBeenCalled();
+      });
+
+      it('keeps the menu usable for a second step', function (this: DatagridSpecContext) {
+        toggleMenu(this.fixture, 0);
+        moveButton('Move Right').click();
+        this.fixture.detectChanges();
+
+        moveButton('Move Right').click();
+        this.fixture.detectChanges();
+
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['State', 'Status', 'Name']);
+      });
+    });
+
     // Five columns with the first and the third pinned, so the array order and the rendered order do
     // not agree: the pinned pair is rendered in the sticky container ahead of the rest. Every move
     // here goes through the rebuild in DatagridComponent, which is what makes it renderable at all -
@@ -918,6 +973,24 @@ describe('DatagridComponent', () => {
 
         // The filter is bound to the column definition, so the rebuilt column picks it back up.
         expect(this.component.columnsDefs[3].defaultFilterValue).toBe('vm0');
+      });
+
+      // Rebuilding the column views destroys the menu along with the column it belongs to, so the
+      // menu cannot follow the column the way it does when a column is pinned. It closes instead, and
+      // focus has to be handed to the trigger of the column in its new place - otherwise it falls
+      // back to the body and keyboard users lose their position in the header.
+      it('closes the menu and focuses the moved column trigger', function (this: DatagridSpecContext) {
+        toggleMenu(this.fixture, 2);
+        expect(document.querySelectorAll('.dropdown-menu').length).toBe(1);
+
+        moveButton('Move Right').click();
+        this.fixture.detectChanges();
+
+        expect(document.querySelectorAll('.dropdown-menu').length).toBe(0);
+        // C2 moved past C4, so it is the second of the three scrollable columns now.
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C2', 'C5']);
+        const triggers = this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'));
+        expect(document.activeElement).toBe(triggers[3].nativeElement);
       });
 
       it('never moves a column out of its own container', function (this: DatagridSpecContext) {

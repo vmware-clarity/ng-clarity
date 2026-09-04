@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 import { ColumnMoveDirection, DatagridColumnsOrderDirective } from './datagrid-columns-order.directive';
 
@@ -32,7 +32,10 @@ export class ColumnMoveActionDirective {
 
   @Input() columnIndex: number;
 
-  constructor(private readonly columnsOrderDirective: DatagridColumnsOrderDirective) {}
+  constructor(
+    private readonly columnsOrderDirective: DatagridColumnsOrderDirective,
+    private readonly elementRef: ElementRef<HTMLElement>
+  ) {}
 
   get disabled(): boolean {
     return !this.columnsOrderDirective.canMoveColumn(this.columnIndex, this.direction);
@@ -40,8 +43,24 @@ export class ColumnMoveActionDirective {
 
   @HostListener('click')
   protected onClick() {
-    if (!this.disabled) {
-      this.columnsOrderDirective.moveColumnTo(this.columnIndex, this.direction);
+    if (this.disabled) {
+      return;
+    }
+
+    // Read before the move, because afterwards this index points at whichever column took its place.
+    const column = this.columnsOrderDirective.dgColumnsOrderColumns.filter(other => !other.hidden)[this.columnIndex];
+
+    if (!this.columnsOrderDirective.moveColumnTo(this.columnIndex, this.direction) || !column) {
+      return;
+    }
+
+    // Normally the menu survives the move and `clrCanClosePopover="false"` re-anchors it to the
+    // trigger, so focus is still on this item, which is where it belongs. Once a column is pinned
+    // though, applying the move rebuilds the column views, and this very button is destroyed with the
+    // column it belonged to - taking focus to the body with it. Then it has to be handed to the same
+    // trigger in the column's new place.
+    if (!this.elementRef.nativeElement.isConnected) {
+      this.columnsOrderDirective.focusColumnActions(column);
     }
   }
 }

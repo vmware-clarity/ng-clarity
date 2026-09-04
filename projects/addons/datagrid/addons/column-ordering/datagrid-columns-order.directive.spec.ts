@@ -549,20 +549,15 @@ class TestClrDatagridHostComponent {
     return column.uid || column.displayName;
   }
 
-  // Mirrors DatagridComponent.onColumnOrderChange, including the rebuild it does once a column is
-  // pinned. Without it the pinned columns here would never be re-rendered in their new order, and
-  // these tests would only be checking the directive's index arithmetic.
+  // Mirrors DatagridComponent.onColumnOrderChange, including the rebuild of the column views.
+  // Without it the pinned columns here would never be re-rendered in their new order, and these
+  // tests would only be checking the directive's index arithmetic.
   onColumnOrderChange(data: ColumnOrderChanged) {
     this.#columns = data.columns;
-
-    if (this.#columns.some((column: ColumnDefinition<any>) => column.pinned)) {
-      this.visibleColumns = [];
-      this.cdr.detectChanges();
-      this.visibleColumns = this.#columns.filter((column: ColumnDefinition<any>) => !column.hidden);
-      this.cdr.detectChanges();
-      this.clrDatagrid.resize();
-    } else {
-      this.visibleColumns = this.#columns.filter((column: ColumnDefinition<any>) => !column.hidden);
-    }
+    this.visibleColumns = [];
+    this.cdr.detectChanges();
+    this.visibleColumns = this.#columns.filter((column: ColumnDefinition<any>) => !column.hidden);
+    this.cdr.detectChanges();
+    this.clrDatagrid.resize();
   }
 }

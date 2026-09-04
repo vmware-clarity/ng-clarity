@@ -173,19 +173,14 @@ class TestClrDatagridHostComponent {
     return column.uid || column.displayName;
   }
 
-  // Mirrors DatagridComponent.onColumnOrderChange. None of these columns is pinned, so the rebuild
-  // branch does not run here, but the host has to behave like the real one for a pinned column added
-  // to this suite later to be rendered the way it is in the datagrid.
+  // Mirrors DatagridComponent.onColumnOrderChange, which rebuilds the column views on every move so
+  // that the order renders and the actions menu does not outlive the trigger it is anchored to.
   onColumnOrderChange(data: ColumnOrderChanged) {
-    this.columns = data.columns;
-
-    if (this.columns.some((column: ColumnDefinition<any>) => column.pinned)) {
-      const reordered = this.columns;
-      this.columns = [];
-      this.cdr.detectChanges();
-      this.columns = reordered;
-      this.cdr.detectChanges();
-      this.clrDatagrid.resize();
-    }
+    const reordered = data.columns;
+    this.columns = [];
+    this.cdr.detectChanges();
+    this.columns = reordered;
+    this.cdr.detectChanges();
+    this.clrDatagrid.resize();
   }
 }

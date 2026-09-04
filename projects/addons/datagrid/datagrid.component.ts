@@ -1152,7 +1152,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
   /**
    * Renders a new column order by throwing the current column views away and building them again,
-   * rather than letting Angular relocate the existing ones.
+   * rather than letting Angular relocate the existing ones. Only needed once a column is pinned,
+   * which is also why a move then closes the column actions menu instead of re-anchoring it.
    *
    * The datagrid renders the pinned columns in its sticky container and the rest in the scrollable
    * one, so one declared list of columns is split across two DOM parents. Reordering that list makes
