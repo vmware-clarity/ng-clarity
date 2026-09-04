@@ -1363,6 +1363,8 @@ export class ClrTreeNodeLink {
     // (undocumented)
     get active(): boolean;
     // (undocumented)
+    tabindex: number;
+    // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTreeNodeLink, ".clr-treenode-link", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNodeLink, never>;

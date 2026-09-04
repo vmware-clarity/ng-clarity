@@ -153,7 +153,7 @@ export default function (): void {
         context.detectChanges();
         const popoverContent = document.querySelector('.datagrid-filter');
         expect(popoverContent.getAttribute('role')).toBe('dialog');
-        expect(popoverContent.getAttribute('aria-label')).toBe('Filter dialog');
+        expect(popoverContent.getAttribute('aria-label')).toBe('Filter');
       });
 
       it('projects content into the dropdown', function () {

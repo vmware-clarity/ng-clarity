@@ -65,7 +65,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   detailExpandableAriaLabel: 'Toggle more row content',
   datagridFilterAriaLabel: '{COLUMN} filter',
   datagridFilterLabel: '{COLUMN} filter',
-  datagridFilterDialogAriaLabel: 'Filter dialog',
+  datagridFilterDialogAriaLabel: 'Filter',
   columnSeparatorAriaLabel: 'Column resize handle',
   columnSeparatorDescription: 'Use left or right key to resize the column',
   fromLabel: 'From',

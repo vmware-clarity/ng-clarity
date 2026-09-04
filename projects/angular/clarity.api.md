@@ -3684,7 +3684,7 @@ export interface ClrFileMaxFileSizeError {
 // @public (undocumented)
 export class ClrFileMessagesTemplate {
     // (undocumented)
-    static ngTemplateContextGuard(directive: ClrFileMessagesTemplate, context: unknown): context is ClrFileMessagesTemplateContext;
+    static ngTemplateContextGuard(_directive: ClrFileMessagesTemplate, _context: unknown): _context is ClrFileMessagesTemplateContext;
     // (undocumented)
     readonly templateRef: TemplateRef<ClrFileMessagesTemplateContext>;
     // (undocumented)
@@ -6184,6 +6184,8 @@ export class ClrTreeNodeLink {
     activate(): void;
     // (undocumented)
     get active(): boolean;
+    // (undocumented)
+    tabindex: number;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTreeNodeLink, ".clr-treenode-link", never, {}, {}, never, never, false, never>;
     // (undocumented)
