@@ -21,7 +21,10 @@
         <code cds-text="code">[presets]</code> &mdash; the list of named color presets shown in the preset selector.
         Defaults to Clarity's built-in preset list (<code cds-text="code">PRESETS</code>), exported from
         <code cds-text="code">&#64;clr/addons/theme-builder</code> so consumers can extend it (e.g.
-        <code cds-text="code">[...PRESETS, myPreset]</code>) instead of replacing it outright.
+        <code cds-text="code">[...PRESETS, myPreset]</code>) instead of replacing it outright. Each preset's
+        <code cds-text="code">light</code>/<code cds-text="code">dark</code> color groups are a
+        <code cds-text="code">Color[]</code> &mdash; the same shape used internally &mdash; so a preset can specify a
+        full set of tint/shade/dark variants for a group, not just its base color.
       </li>
       <li>
         <code cds-text="code">(generatedCSS)</code> &mdash; emits the generated CSS override text (a
@@ -35,11 +38,31 @@
       </li>
     </ul>
 
+    <h3 class="clr-mt-32px" cds-text="section" id="methods">Methods</h3>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        <code cds-text="code">applyPreset(preset)</code> &mdash; applies a <code cds-text="code">ThemePreset</code>
+        programmatically, the same way clicking a preset card does.
+      </li>
+      <li>
+        <code cds-text="code">importCSS(css)</code> &mdash; re-applies previously generated CSS (e.g. the value a
+        consumer saved from an earlier <code cds-text="code">generatedCSS</code> event) by parsing its per-theme
+        override blocks and applying every token they contain, deriving tint/shade/dark variants for any base color that
+        changed.
+      </li>
+      <li>
+        <code cds-text="code">presetSwatchColor(preset)</code> &mdash; returns the hex color for a preset's swatch (its
+        light-theme primary base color), or <code cds-text="code">undefined</code> if the preset doesn't set one. Useful
+        when rendering a custom preset picker instead of the built-in cards.
+      </li>
+    </ul>
+
     <h4 class="clr-mt-24px" cds-text="subsection">Limitations</h4>
     <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
       <li>
-        Persisting the generated CSS is the consumer's responsibility &mdash; display, copy, or save the value emitted
-        through <code cds-text="code">generatedCSS</code>.
+        The addon doesn't persist the generated CSS itself &mdash; display, copy, or save the value emitted through
+        <code cds-text="code">generatedCSS</code>, and hand it back to <code cds-text="code">importCSS()</code> later to
+        restore it.
       </li>
       <li>
         Only the five status/primary aliases (primary, info, success, warning, danger) and their computed
@@ -101,6 +124,45 @@
             changes.
           </td>
           <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="methods" cds-text="section" class="clr-mt-32px">Methods</h3>
+    <table class="table clr-mt-16px">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Returns</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">applyPreset(preset)</code></td>
+          <td><code cds-text="code">void</code></td>
+          <td>
+            Applies a <code cds-text="code">ThemePreset</code>, resetting each token group first. A group's colors are a
+            <code cds-text="code">Color[]</code>, so a preset can specify a full set of tint/shade/dark variants, not
+            just the base color &mdash; an explicit variant wins over what would otherwise be derived from the base.
+          </td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">importCSS(css)</code></td>
+          <td><code cds-text="code">void</code></td>
+          <td>
+            Re-applies previously generated CSS by parsing its per-theme override blocks and applying every token they
+            contain, the same way a preset is applied.
+          </td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">presetSwatchColor(preset)</code></td>
+          <td><code cds-text="code">string | undefined</code></td>
+          <td>
+            The hex color for a preset's swatch (its light-theme primary base color), or
+            <code cds-text="code">undefined</code>
+            if the preset doesn't set one.
+          </td>
         </tr>
       </tbody>
     </table>
