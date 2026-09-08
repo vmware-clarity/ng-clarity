@@ -244,13 +244,13 @@ export function findPublishingElement(root: Element): Element | null;
 export function mergeElementContext(base: ClrComponentContext, element: Element, options: Required<ClrContextSnapshotOptions>): ClrComponentContext;
 
 // @public
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
+// @public
 export function readClrElementContext(element: Element, options: Required<ClrContextSnapshotOptions>): Partial<ClrComponentContext> | null;
 
 // @public
 export function requestClrContextFromHost(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
-
-// @public
-export function setClrElementContext(element: Element, callback: ClrElementContextCallback | null): void;
 
 // (No @packageDocumentation comment for this package)
 

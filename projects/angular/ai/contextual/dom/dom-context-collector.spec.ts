@@ -10,9 +10,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityModule } from '@clr/angular';
+import { publishElementContext } from '@clr/angular/utils';
 
 import { collectClrDomActions, collectClrDomContexts } from './dom-context-collector';
-import { setClrElementContext } from './element-context';
 import { ClrComponentContext } from '../interfaces/context.interface';
 
 @Component({
@@ -452,7 +452,7 @@ describe('DOM context collector - hand-authored markup', () => {
 
   it('merges context a component publishes on its host element over DOM guesswork', () => {
     root.innerHTML = '<clr-fake-widget aria-label="DOM label">content</clr-fake-widget>';
-    setClrElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
+    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
       label: 'Component label',
       state: { options: ['a', 'b', 'c'], loaded: true },
     }));
@@ -473,7 +473,7 @@ describe('DOM context collector - hand-authored markup', () => {
         </div>
       </form>
     `;
-    setClrElementContext(root.querySelector('fake-combobox') as Element, options => ({
+    publishElementContext(root.querySelector('fake-combobox') as Element, options => ({
       type: 'combobox',
       state: { options: ['Apple', 'Pear'], value: options.includeFormValues ? 'Apple' : undefined },
     }));
@@ -490,7 +490,7 @@ describe('DOM context collector - hand-authored markup', () => {
 
   it('treats a publisher that throws as having nothing to add', () => {
     root.innerHTML = '<clr-fake-widget aria-label="DOM label">content</clr-fake-widget>';
-    setClrElementContext(root.querySelector('clr-fake-widget') as Element, () => {
+    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => {
       throw new Error('broken publisher');
     });
 

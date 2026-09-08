@@ -5,41 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComponentContext, ClrContextSnapshotOptions } from '../interfaces/context.interface';
+import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 /**
- * Name of the element property through which a component publishes instance state the
- * DOM cannot show — a combobox's options and selection model, lazily rendered choices,
- * anything living only inside the component.
- *
- * The property is the whole contract: a component assigns a function to
- * `element.clrElementContext` on its own host element (and removes it on destroy), and
- * the collector calls it while scraping, merging the result into what it extracted from
- * the DOM. Because it is a plain property with plain data, publishing requires no
- * dependency on this package — Clarity components, other UI libraries and application
- * components can all use it, and readers that do not know the property ignore it.
+ * Re-exported so readers of page context can import the whole contract from
+ * `@clr/angular/ai`. Components that *publish* context import `publishElementContext`
+ * from `@clr/angular/utils` instead, which keeps them free of this entry point.
  */
-export const CLR_ELEMENT_CONTEXT_PROPERTY = 'clrElementContext';
-
-/**
- * The callback a component assigns to its host element. It receives the resolved
- * snapshot budgets — including `includeFormValues`, which the callback must honor
- * before exposing anything user-typed — and returns the context to merge, or
- * `null`/`undefined` when it currently has nothing to add.
- */
-export type ClrElementContextCallback = (
-  options: Required<ClrContextSnapshotOptions>
-) => Partial<ClrComponentContext> | null | undefined;
-
-/** Assigns (or, with `null`, removes) an element's context callback. */
-export function setClrElementContext(element: Element, callback: ClrElementContextCallback | null): void {
-  const carrier = element as Element & { [CLR_ELEMENT_CONTEXT_PROPERTY]?: ClrElementContextCallback };
-  if (callback) {
-    carrier[CLR_ELEMENT_CONTEXT_PROPERTY] = callback;
-  } else {
-    delete carrier[CLR_ELEMENT_CONTEXT_PROPERTY];
-  }
-}
+export { CLR_ELEMENT_CONTEXT_PROPERTY, publishElementContext } from '@clr/angular/utils';
+export type { ClrElementContextCallback } from '@clr/angular/utils';
 
 /**
  * Reads an element's published context, if any. A callback that throws is treated as

@@ -9,7 +9,7 @@
  * API Extractor Runner
  *
  * Runs Microsoft's API Extractor against every public entry point of each
- * library in this monorepo (@clr/angular, @clr/ai and @clr/addons).
+ * library in this monorepo (@clr/angular and @clr/addons).
  * It operates in two modes controlled by the --local flag:
  *
  *   npm run public-api:update   (--local)  — Regenerates .api.md report files
@@ -71,15 +71,6 @@ const LIBRARIES = [
     srcRoot: path.join(CWD, 'projects/angular'),
     tsconfig: 'tsconfig.lib.prod.json',
     reportName: 'clarity.api.md',
-  },
-  {
-    id: 'ai',
-    pkgName: '@clr/ai',
-    distDir: path.join(CWD, 'dist/clr-ai'),
-    typesDir: path.join(CWD, 'dist/clr-ai/types'),
-    srcRoot: path.join(CWD, 'projects/ai'),
-    tsconfig: 'tsconfig.lib.prod.json',
-    reportName: 'clr-ai.api.md',
   },
   {
     id: 'addons',

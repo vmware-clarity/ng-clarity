@@ -12,10 +12,10 @@ import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ClarityDocComponent } from '../clarity-doc';
 
-const INSTALL_EXAMPLE = `npm install @clr/ai --save`;
+const INSTALL_EXAMPLE = `npm install @clr/angular --save`;
 
 const SNAPSHOT_EXAMPLE = `
-import { ClrContextualEngineService } from '@clr/ai';
+import { ClrContextualEngineService } from '@clr/angular/ai';
 
 @Component({
   // ...
@@ -53,7 +53,7 @@ const SNAPSHOT_SHAPE_EXAMPLE = `
 `;
 
 const TRACKER_EXAMPLE = `
-import { ClrContextTrackerService } from '@clr/ai';
+import { ClrContextTrackerService } from '@clr/angular/ai';
 
 @Component({
   // ...
@@ -88,7 +88,7 @@ const DIRECTIVE_EXAMPLE = `
 `;
 
 const DIRECTIVE_MODULE_EXAMPLE = `
-import { ClrContextualModule } from '@clr/ai';
+import { ClrContextualModule } from '@clr/angular/ai';
 
 @NgModule({
   imports: [ClrContextualModule],
@@ -97,7 +97,7 @@ export class AppModule {}
 `;
 
 const ELEMENT_CONTEXT_EXAMPLE = `
-setClrElementContext(hostElement, snapshotOptions => ({
+publishElementContext(hostElement, snapshotOptions => ({
   type: 'combobox',
   state: {
     options: this.choices.map(choice => choice.label),

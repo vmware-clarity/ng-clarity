@@ -594,7 +594,7 @@ export class ClrCombobox<T>
   /**
    * Publishes instance state the rendered DOM cannot show — the selection model and,
    * while the options popover is instantiated, the option list — through the plain
-   * `clrElementContext` element property, where page-context tooling such as @clr/ai
+   * `clrElementContext` element property, where page-context tooling such as @clr/angular/ai
    * discovers it. Using a plain property keeps this free of any package dependency;
    * readers that do not know the property simply ignore it.
    */

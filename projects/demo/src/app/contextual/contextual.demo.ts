@@ -7,7 +7,7 @@
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { ClrContextTrackerService, ClrContextualEngineService } from '@clr/ai';
+import { ClrContextTrackerService, ClrContextualEngineService } from '@clr/angular/ai';
 import { Subscription } from 'rxjs';
 
 interface DemoHost {
