@@ -88,9 +88,14 @@ this.contextEngine.enableGlobalAccess(); // window.clrContext() now returns a fr
 
 ## Filling forms with an agent
 
-For agents that complete forms on the user's behalf, opt into full form context: every control is
-then reported with its `name`, current `value` and the `options` it offers (select options, radio
-choices, datalist entries). Password and file inputs are always redacted, and embedded frames can
+What a control _permits_ is always reported: the `options` it offers (select options, radio
+choices, datalist entries, a combobox's owned listbox) alongside `min`, `max`, `step`, `pattern`
+and `maxLength`. These describe the markup, not the user, and without them an agent cannot propose
+a legal value at all. Helper text and validation messages arrive as `description`, resolved from
+`aria-describedby`, so they are attached to the field they belong to.
+
+What the user _entered_ waits for an explicit opt-in. With `includeFormValues`, each control also
+reports its current `value`. Password and file inputs are always redacted, and embedded frames can
 never request values through the frame bridge — only the hosting application can opt in.
 
 ```ts

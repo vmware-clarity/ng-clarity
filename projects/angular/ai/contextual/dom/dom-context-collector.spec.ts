@@ -155,6 +155,12 @@ describe('DOM context collector - Clarity Angular components', () => {
     expect(select?.state?.options).toEqual(['One', 'Two', 'Three']);
   });
 
+  it('attaches the helper text to the field it describes', () => {
+    const select = contextOfType('form')?.children?.find(child => child.element === 'clr-select-container');
+
+    expect(select?.state?.description).toBe('Helper Subtext');
+  });
+
   it('does not report which choice is currently selected until form values are opted into', async () => {
     // ngModel applies its value asynchronously, so wait for the select to settle.
     await fixture.whenStable();
@@ -306,6 +312,18 @@ describe('DOM context collector - hand-authored markup', () => {
     const field = collectClrDomContexts(root).find(c => c.type === 'textbox');
 
     expect(field?.state).toEqual({ invalid: true, disabled: true, required: true });
+  });
+
+  it('attaches a validation message to the field, so an agent learns why it is invalid', () => {
+    root.innerHTML = `
+      <label for="h">Host</label>
+      <input id="h" aria-invalid="true" aria-describedby="h-err" />
+      <span id="h-err">Name is already taken</span>
+    `;
+    const field = collectClrDomContexts(root).find(c => c.type === 'textbox');
+
+    expect(field?.state?.invalid).toBe(true);
+    expect(field?.state?.description).toBe('Name is already taken');
   });
 
   it('collects control values only on explicit opt-in', () => {
