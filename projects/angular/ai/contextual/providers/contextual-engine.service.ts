@@ -19,6 +19,7 @@ import {
   requestClrContextFromHost,
 } from '../iframe/context-frame-bridge';
 import { ClrContextSnapshotOptions, ClrPageContext, ClrRouteContext } from '../interfaces/context.interface';
+import { sanitizeUntrustedSnapshotOptions } from '../untrusted-options';
 
 const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
 
@@ -127,16 +128,22 @@ export class ClrContextualEngineService implements OnDestroy {
   /**
    * Exposes the engine on `window` (as `window.clrContext()` by default) so AI agents
    * driving the browser can query the page context without an application API.
+   *
+   * Anything running on the page can call this, including a third-party script, so the
+   * caller is treated as untrusted: its options are reduced to the budgets a caller may
+   * set, and `hostOptions` is applied over the top. Whether typed values are exposed
+   * therefore stays the application's decision — pass
+   * `{ includeFormValues: true }` here to allow it deliberately.
    */
-  enableGlobalAccess(propertyName: string = DEFAULT_GLOBAL_PROPERTY): void {
+  enableGlobalAccess(propertyName: string = DEFAULT_GLOBAL_PROPERTY, hostOptions?: ClrContextSnapshotOptions): void {
     const window = this.browserWindow();
     if (!window) {
       return;
     }
     this.disableGlobalAccess();
     this.globalProperty = propertyName;
-    (window as unknown as Record<string, unknown>)[propertyName] = (options?: ClrContextSnapshotOptions) =>
-      this.getSnapshot(options);
+    (window as unknown as Record<string, unknown>)[propertyName] = (options?: unknown) =>
+      this.getSnapshot({ ...sanitizeUntrustedSnapshotOptions(options), ...hostOptions });
   }
 
   disableGlobalAccess(): void {

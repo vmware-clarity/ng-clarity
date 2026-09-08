@@ -208,9 +208,48 @@ parent.postMessage({ protocol: 'ui-context/v1', kind: 'context-request', request
 // { protocol: 'ui-context/v1', kind: 'context-response', requestId: 'r1', context: { ...ClrPageContext } }
 ```
 
-Requests are answered per frame and per request — context is never broadcast — and only origins the
-host allows are served. Embedded frames can pass snapshot budgets (`options`) with their request;
-unknown option keys are discarded by the host.
+A hand-written implementation gets none of the protections `requestClrContextFromHost` applies, so
+reproduce two of them: accept a response only when `event.source === parent`, and use an
+unguessable `requestId` (`crypto.randomUUID()`). Sibling frames can reach each other through
+`parent.frames`, so a listener that matches on `requestId` alone can be answered by any frame on the
+page — which for an AI surface means fabricated page context reaching a model.
+
+### What a frame is trusted with
+
+An embedded document is trusted less than the application that embeds it, so the bridge is
+deliberately narrow. Requests are answered per frame and per request — context is never broadcast —
+and the answer is addressed to the origin that asked, never to `'*'`.
+
+| Control        | Behaviour                                                                                                                                                                                                                |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Origin         | Same-origin only by default. Cross-origin frames must be named in `allowedOrigins`.                                                                                                                                      |
+| Any origin     | Requires `allowAnyOrigin: true`. A `'*'` entry in `allowedOrigins` is ignored, so a permissive config cannot be copied in by accident.                                                                                   |
+| Opaque origins | Refused. A sandboxed or `data:` frame reports itself as `"null"`, which cannot be named as a `postMessage` target, so answering one would mean posting to `'*'`. Give such a frame `allow-same-origin` or a real origin. |
+| Form values    | A frame can never ask for them. Only the hosting application can opt in, for snapshots it takes itself.                                                                                                                  |
+| URL            | The query string and fragment are withheld, as is `route.queryParams`, because they routinely carry tenant identifiers, record identifiers and occasionally credentials. Pass `shareFullUrl: true` to share them.        |
+| Request rate   | One snapshot per frame per `minRequestIntervalMs` (default 200). Every request walks the document, so without a floor a frame in a loop could keep the host's main thread busy.                                          |
+| Budgets        | Frames may pass snapshot budgets; anything else in `options` is discarded.                                                                                                                                               |
+
+On the requesting side, an answer is accepted **only from the window that was asked**. A browser
+sets `event.source` and a page cannot forge it, which matters because sibling frames can reach each
+other through `parent.frames` — without that check, a third-party frame elsewhere on the page could
+answer in the host's place and feed fabricated page context to whatever consumes it. Pass
+`hostOrigin` to require a specific origin as well:
+
+```ts
+const hostContext = await this.contextEngine.requestHostContext({ hostOrigin: 'https://app.example' });
+```
+
+### The global accessor
+
+`enableGlobalAccess()` is subject to the same reasoning: anything on the page can call
+`window.clrContext()`, including a third-party script, so the caller's options are reduced to
+budgets and the application's own choices are applied over the top.
+
+```ts
+this.contextEngine.enableGlobalAccess(); // window.clrContext(), caller cannot widen it
+this.contextEngine.enableGlobalAccess('clrContext', { includeFormValues: true }); // deliberate
+```
 
 ## Keeping snapshots lean
 
