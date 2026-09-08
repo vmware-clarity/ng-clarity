@@ -24,8 +24,14 @@ export interface ClrContextAction {
  * should ever be placed here.
  */
 export interface ClrComponentContext {
-  /** Kind of UI this context describes, e.g. `'modal'`, `'datagrid'`, `'region'`. */
+  /** ARIA role describing what this piece of UI is, e.g. `'dialog'`, `'grid'`, `'tablist'`. */
   type: string;
+  /**
+   * Tag name, when it says something the role cannot — most usefully the custom element
+   * that renders a role-bearing node, so a `clr-side-panel` and a `clr-modal` remain
+   * distinguishable even though both are dialogs.
+   */
+  element?: string;
   /** Human-readable label: a title, heading or accessible name. */
   label?: string;
   /** Current state that is relevant right now, e.g. `{ open: true }` or `{ selectedRows: 3 }`. */

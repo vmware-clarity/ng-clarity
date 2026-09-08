@@ -57,20 +57,3 @@ export function mergeElementContext(
   }
   return merged;
 }
-
-/**
- * Finds the first element at or below `root` that publishes context. Used for form
- * fields, where the publishing component (e.g. a combobox) sits inside the field
- * container the collector describes.
- */
-export function findPublishingElement(root: Element): Element | null {
-  if (typeof (root as Element & Record<string, unknown>)[CLR_ELEMENT_CONTEXT_PROPERTY] === 'function') {
-    return root;
-  }
-  for (const element of Array.from(root.querySelectorAll('*'))) {
-    if (typeof (element as Element & Record<string, unknown>)[CLR_ELEMENT_CONTEXT_PROPERTY] === 'function') {
-      return element;
-    }
-  }
-  return null;
-}

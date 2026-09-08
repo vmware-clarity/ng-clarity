@@ -327,6 +327,7 @@ export class ClrCommonStringsService {
 export interface ClrComponentContext {
     actions?: ClrContextAction[];
     children?: ClrComponentContext[];
+    element?: string;
     label?: string;
     state?: Record<string, unknown>;
     type: string;

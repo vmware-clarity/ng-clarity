@@ -5,8 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { findPublishingElement, mergeElementContext } from './element-context';
-import { ClrComponentContext, ClrContextAction, ClrContextSnapshotOptions } from '../interfaces/context.interface';
+import { ClrComponentContext, ClrContextAction, ClrContextSnapshotOptions } from '@clr/angular/utils';
+
+import { collectContextTree } from './walk';
 
 /**
  * Default budgets applied while building a snapshot, tuned to keep snapshots compact
@@ -21,470 +22,87 @@ export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions> = 
   includeFormValues: false,
 };
 
+export { CLR_CONTEXT_IGNORE_ATTRIBUTE } from './walk';
+export type { ClrContextDomExtractor } from './walk';
+
+/** Roles that describe something a user can invoke. */
+const ACTION_ROLES = new Set(['button', 'link']);
+
 /**
- * Elements carrying this attribute — and everything inside them — are invisible to the
- * engine: the DOM collector never describes them and the context tracker ignores their
- * mutations. Put it on UI that consumes context (an AI chat panel, a debug view) so it
- * neither describes itself into the page context nor triggers tracking feedback loops.
+ * Roles that own the actions inside them. A dialog's buttons belong to the dialog, and a
+ * navigation's links belong to the navigation, so neither is reported again as a
+ * page-level action.
  */
-export const CLR_CONTEXT_IGNORE_ATTRIBUTE = 'data-clr-context-ignore';
-
-const IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
+const ACTION_OWNING_ROLES = new Set(['dialog', 'alertdialog', 'navigation', 'menu', 'listbox']);
 
 /**
- * Teaches the collector how to describe one kind of component found in the DOM.
+ * Describes everything currently rendered, as a tree, by reading the accessibility tree.
  *
- * Extractors are what make the engine UI-library agnostic: Clarity ships a built-in set
- * for its own components, and any other UI library rendering on the same page can
- * contribute extractors for its components through
- * `ClrContextualEngineService.registerDomExtractor`.
- */
-export interface ClrContextDomExtractor {
-  /** CSS selector matching the elements this extractor understands. */
-  selector: string;
-  /** Describes the element's current state, or returns `null` when there is nothing to report. */
-  extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrComponentContext | null;
-}
-
-const ALERT_TYPE_CLASSES = ['danger', 'warning', 'success', 'info', 'neutral', 'loading'];
-
-/**
- * The built-in extractors for Clarity's own components. They only report state that is
- * true at the moment they run, reading it from the live DOM: components that are
- * destroyed, hidden or closed simply produce nothing.
- */
-const CLARITY_DOM_EXTRACTORS: ClrContextDomExtractor[] = [
-  {
-    selector: 'clr-modal, clr-side-panel',
-    extract: (element, options) => {
-      const dialog = element.querySelector('.modal-dialog');
-      if (!dialog) {
-        // The dialog content only exists in the DOM while the modal is open.
-        return null;
-      }
-      return {
-        type: element.tagName.toLowerCase() === 'clr-side-panel' ? 'side-panel' : 'modal',
-        label: textOf(element.querySelector('.modal-title'), options),
-        state: { open: true },
-        actions: collectActions(element.querySelector('.modal-footer'), options),
-      };
-    },
-  },
-  {
-    selector: 'clr-wizard',
-    extract: (element, options) => {
-      const dialog = element.querySelector('.modal-dialog');
-      if (!dialog) {
-        return null;
-      }
-      const steps = Array.from(element.querySelectorAll('.clr-wizard-stepnav-link-title'))
-        .slice(0, options.maxItemsPerCollection)
-        .map(step => textOf(step, options));
-      return {
-        type: 'wizard',
-        label: textOf(element.querySelector('clr-wizard-title'), options),
-        state: {
-          open: true,
-          steps,
-          currentStep: textOf(element.querySelector('.clr-nav-link.active .clr-wizard-stepnav-link-title'), options),
-        },
-        actions: collectActions(element.querySelector('.clr-wizard-footer'), options),
-      };
-    },
-  },
-  {
-    selector: 'clr-alert',
-    extract: (element, options) => {
-      const alert = element.querySelector('.alert');
-      if (!alert) {
-        return null;
-      }
-      const severity = ALERT_TYPE_CLASSES.find(type => alert.classList.contains(`alert-${type}`));
-      return {
-        type: 'alert',
-        label: textOf(element.querySelector('.alert-text') || element.querySelector('.alert-items'), options),
-        state: severity ? { severity } : undefined,
-      };
-    },
-  },
-  {
-    selector: 'clr-datagrid',
-    extract: (element, options) => {
-      const columns = Array.from(element.querySelectorAll('clr-dg-column'))
-        .slice(0, options.maxItemsPerCollection)
-        .map(column => textOf(column.querySelector('.datagrid-column-title') || column, options));
-      const rows = element.querySelectorAll('clr-dg-row:not(.datagrid-row-loading)');
-      const sortedColumn = element.querySelector(
-        'clr-dg-column[aria-sort="ascending"], clr-dg-column[aria-sort="descending"]'
-      );
-      const state: Record<string, unknown> = {
-        columns,
-        visibleRows: rows.length,
-        selectedRows: element.querySelectorAll('clr-dg-row.datagrid-selected').length,
-      };
-      if (sortedColumn) {
-        state.sortedBy = textOf(sortedColumn.querySelector('.datagrid-column-title') || sortedColumn, options);
-        state.sortOrder = sortedColumn.getAttribute('aria-sort');
-      }
-      const footer = textOf(
-        element.querySelector('.datagrid-footer-description') || element.querySelector('clr-dg-footer'),
-        options
-      );
-      if (footer) {
-        state.footer = footer;
-      }
-      return {
-        type: 'datagrid',
-        label: element.getAttribute('aria-label') || undefined,
-        state,
-      };
-    },
-  },
-  {
-    selector: 'clr-tabs',
-    extract: (element, options) => {
-      const tabs = Array.from(element.querySelectorAll('[role=tab]')).slice(0, options.maxItemsPerCollection);
-      return {
-        type: 'tabs',
-        state: {
-          tabs: tabs.map(tab => textOf(tab, options)),
-          activeTab: textOf(
-            tabs.find(tab => tab.getAttribute('aria-selected') === 'true'),
-            options
-          ),
-        },
-      };
-    },
-  },
-  {
-    selector: 'clr-accordion, clr-stepper',
-    extract: (element, options) => {
-      const panels = Array.from(element.querySelectorAll('.clr-accordion-header-button'))
-        .slice(0, options.maxItemsPerCollection)
-        .map(button => ({
-          type: 'panel',
-          label: textOf(button, options),
-          state: { expanded: button.getAttribute('aria-expanded') === 'true' },
-        }));
-      return {
-        type: element.tagName.toLowerCase() === 'clr-stepper' ? 'stepper' : 'accordion',
-        children: panels,
-      };
-    },
-  },
-  {
-    selector: 'clr-vertical-nav',
-    extract: (element, options) => {
-      const links = Array.from(element.querySelectorAll<HTMLAnchorElement>('a.nav-link'))
-        .filter(link => isVisible(link))
-        .slice(0, options.maxItemsPerCollection);
-      return {
-        type: 'navigation',
-        state: {
-          activeLink: textOf(
-            links.find(link => link.classList.contains('active')),
-            options
-          ),
-        },
-        actions: links.map(link => linkAction(link, options)),
-      };
-    },
-  },
-  {
-    selector: 'form[clrForm]',
-    extract: (element, options) => {
-      const fields = Array.from(element.querySelectorAll('.clr-form-control'))
-        .slice(0, options.maxItemsPerCollection)
-        .map(field => {
-          const control = field.querySelector<HTMLElement>('input, select, textarea, [role=combobox]');
-          const state: Record<string, unknown> = {};
-          const name = control?.getAttribute('name') || control?.id;
-          if (name) {
-            state.name = name;
-          }
-          if (control?.hasAttribute('required')) {
-            state.required = true;
-          }
-          if (field.classList.contains('clr-form-control-disabled')) {
-            state.disabled = true;
-          }
-          if (field.querySelector('.clr-error')) {
-            state.invalid = true;
-            state.error = textOf(field.querySelector('clr-control-error'), options);
-          }
-          // Values and options are collected only on explicit opt-in: they contain
-          // user-typed data, so putting them into snapshots is an application decision.
-          if (options.includeFormValues && control) {
-            Object.assign(state, describeControlValue(field, control, options));
-          }
-          const fieldContext: ClrComponentContext = {
-            type: controlType(control),
-            label: textOf(field.querySelector('.clr-control-label'), options),
-            state: Object.keys(state).length ? state : undefined,
-          };
-          // A component inside the field (e.g. a combobox) may publish instance state
-          // the DOM cannot show, such as options that only render while open.
-          const publisher = findPublishingElement(field);
-          return publisher ? mergeElementContext(fieldContext, publisher, options) : fieldContext;
-        });
-      return {
-        type: 'form',
-        label: element.getAttribute('aria-label') || undefined,
-        children: fields,
-      };
-    },
-  },
-];
-
-/** Clarity elements that are presentational or structural only and never carry useful context. */
-const GENERIC_DENY_LIST = ['clr-icon', 'clr-spinner', 'clr-main-container'];
-
-/**
- * Clarity elements that are reported but do not hide the elements nested inside them,
- * because they are containers whose content is independently interesting.
- */
-const GENERIC_TRANSPARENT_LIST = ['clr-header'];
-
-/**
- * Scans the rendered DOM for Clarity components and describes their current state.
+ * Clarity components, `@clr/ui` CSS-only markup, other component libraries and plain
+ * semantic HTML are all described by the same code: a role means the same thing wherever
+ * it appears. Components contribute only what a role cannot express, by publishing
+ * through `publishElementContext`.
  *
- * The scan is a pure function of the DOM at the moment of the call: only visible,
- * attached elements are reported, so the result can never describe UI that has been
- * closed, destroyed or navigated away from.
+ * `customExtractors` cover the remainder — markup carrying neither a role nor an
+ * accessible name, such as a bare `<div class="card">`.
  */
 export function collectClrDomContexts(
   root: ParentNode,
   options?: ClrContextSnapshotOptions,
-  customExtractors: ClrContextDomExtractor[] = []
+  customExtractors: import('./walk').ClrContextDomExtractor[] = []
 ): ClrComponentContext[] {
-  const resolved: Required<ClrContextSnapshotOptions> = { ...CLR_CONTEXT_DEFAULT_OPTIONS, ...options };
-  const contexts: ClrComponentContext[] = [];
-  const capturedElements: HTMLElement[] = [];
-  const handledElements: HTMLElement[] = [];
-
-  for (const extractor of [...customExtractors, ...CLARITY_DOM_EXTRACTORS]) {
-    for (const element of Array.from(root.querySelectorAll<HTMLElement>(extractor.selector))) {
-      if (contexts.length >= resolved.maxComponents) {
-        return contexts;
-      }
-      // An extractor owns every element its selector matches: when it reports nothing
-      // (e.g. a closed wizard), the element must not resurface as a generic entry.
-      handledElements.push(element);
-      if (!isVisible(element) || element.closest(IGNORE_SELECTOR)) {
-        continue;
-      }
-      const context = extractor.extract(element, resolved);
-      if (context) {
-        // Components can publish instance state the DOM cannot show (see
-        // CLR_ELEMENT_CONTEXT_PROPERTY); what they publish wins over DOM guesswork.
-        contexts.push(pruneEmpty(mergeElementContext(context, element, resolved)));
-        capturedElements.push(element);
-      }
-    }
-  }
-
-  // Any other visible Clarity element gets a generic entry, unless it is part of a
-  // component that was already described above.
-  for (const element of Array.from(root.querySelectorAll<HTMLElement>('*'))) {
-    if (contexts.length >= resolved.maxComponents) {
-      return contexts;
-    }
-    const tagName = element.tagName.toLowerCase();
-    if (!tagName.startsWith('clr-') || GENERIC_DENY_LIST.includes(tagName)) {
-      continue;
-    }
-    if (handledElements.includes(element) || capturedElements.some(captured => captured.contains(element))) {
-      continue;
-    }
-    if (element.parentElement?.closest(tagName)) {
-      // Only report the outermost element of nested same-type structures.
-      continue;
-    }
-    if (!isVisible(element) || element.closest(IGNORE_SELECTOR)) {
-      continue;
-    }
-    contexts.push(
-      pruneEmpty(
-        mergeElementContext(
-          {
-            type: tagName.replace(/^clr-/, ''),
-            label:
-              element.getAttribute('aria-label') ||
-              textOf(element.querySelector('h1, h2, h3, h4, h5, h6, label, .nav-text, .dropdown-toggle'), resolved),
-          },
-          element,
-          resolved
-        )
-      )
-    );
-    if (!GENERIC_TRANSPARENT_LIST.includes(tagName)) {
-      capturedElements.push(element);
-    }
-  }
-
-  return contexts;
+  return collectContextTree(root, { ...CLR_CONTEXT_DEFAULT_OPTIONS, ...options }, customExtractors);
 }
 
 /**
- * Collects the currently visible page-level buttons and links. Actions inside modal and
- * wizard footers are skipped because those components already report their own actions.
+ * Flattens the actions a user can currently invoke out of an already-described tree, so
+ * an agent can see what is clickable without walking the whole structure itself.
+ *
+ * Derived from the tree rather than scanned separately: the walk has already decided what
+ * is visible and what is ignored, and re-querying the DOM would risk disagreeing with it.
  */
-export function collectClrDomActions(root: ParentNode, options?: ClrContextSnapshotOptions): ClrContextAction[] {
-  const resolved: Required<ClrContextSnapshotOptions> = { ...CLR_CONTEXT_DEFAULT_OPTIONS, ...options };
-  return Array.from(root.querySelectorAll<HTMLElement>('button.btn, a.btn'))
-    .filter(
-      element =>
-        isVisible(element) &&
-        !element.closest(`.modal-footer, .clr-wizard-footer, clr-vertical-nav, ${IGNORE_SELECTOR}`)
-    )
-    .slice(0, resolved.maxItemsPerCollection)
-    .map(element => buttonOrLinkAction(element, resolved));
+export function collectClrDomActions(
+  components: ClrComponentContext[],
+  options?: ClrContextSnapshotOptions
+): ClrContextAction[] {
+  const resolved = { ...CLR_CONTEXT_DEFAULT_OPTIONS, ...options };
+  const actions: ClrContextAction[] = [];
+  appendActions(components, actions, resolved.maxItemsPerCollection);
+  return actions;
 }
 
-function buttonOrLinkAction(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrContextAction {
-  if (element.tagName.toLowerCase() === 'a') {
-    return linkAction(element as HTMLAnchorElement, options);
+function appendActions(nodes: ClrComponentContext[], actions: ClrContextAction[], limit: number): void {
+  for (const node of nodes) {
+    if (actions.length >= limit) {
+      return;
+    }
+    if (ACTION_OWNING_ROLES.has(node.type)) {
+      continue;
+    }
+    if (ACTION_ROLES.has(node.type)) {
+      const action = toAction(node);
+      if (action.label || action.href) {
+        actions.push(action);
+      }
+      continue;
+    }
+    if (node.children?.length) {
+      appendActions(node.children, actions, limit);
+    }
   }
+}
+
+function toAction(node: ClrComponentContext): ClrContextAction {
   const action: ClrContextAction = {
-    label: textOf(element, options) || element.getAttribute('aria-label') || '',
-    kind: 'button',
+    label: node.label ?? '',
+    kind: node.type === 'link' ? 'link' : 'button',
   };
-  if ((element as HTMLButtonElement).disabled) {
+  const href = node.state?.['href'];
+  if (typeof href === 'string') {
+    action.href = href;
+  }
+  if (node.state?.['disabled'] === true) {
     action.disabled = true;
   }
   return action;
-}
-
-function linkAction(link: HTMLAnchorElement, options: Required<ClrContextSnapshotOptions>): ClrContextAction {
-  const action: ClrContextAction = {
-    label: textOf(link, options) || link.getAttribute('aria-label') || '',
-    kind: 'link',
-  };
-  const href = link.getAttribute('href');
-  if (href) {
-    action.href = truncate(href, options.maxTextLength);
-  }
-  return action;
-}
-
-function collectActions(root: Element | null, options: Required<ClrContextSnapshotOptions>): ClrContextAction[] {
-  if (!root) {
-    return [];
-  }
-  return Array.from(root.querySelectorAll<HTMLElement>('button, a'))
-    .filter(element => isVisible(element))
-    .slice(0, options.maxItemsPerCollection)
-    .map(element => buttonOrLinkAction(element, options));
-}
-
-/**
- * Reads a control's current value and its selectable options — the material a
- * form-filling agent needs. Password and file inputs are always redacted.
- */
-function describeControlValue(
-  field: Element,
-  control: HTMLElement,
-  options: Required<ClrContextSnapshotOptions>
-): Record<string, unknown> {
-  const result: Record<string, unknown> = {};
-  const tagName = control.tagName.toLowerCase();
-
-  if (tagName === 'select') {
-    const select = control as HTMLSelectElement;
-    result.options = Array.from(select.options)
-      .slice(0, options.maxItemsPerCollection)
-      .map(option => ({ value: option.value, label: textOf(option, options) }));
-    result.value = select.multiple ? Array.from(select.selectedOptions).map(option => option.value) : select.value;
-    return result;
-  }
-
-  if (tagName === 'textarea') {
-    result.value = truncate((control as HTMLTextAreaElement).value, options.maxTextLength);
-    return result;
-  }
-
-  if (tagName === 'input') {
-    const input = control as HTMLInputElement;
-    if (input.type === 'password' || input.type === 'file') {
-      result.redacted = true;
-      return result;
-    }
-    if (input.type === 'checkbox') {
-      result.value = input.checked;
-      return result;
-    }
-    if (input.type === 'radio') {
-      const radios = Array.from(field.querySelectorAll<HTMLInputElement>('input[type=radio]'));
-      result.options = radios
-        .slice(0, options.maxItemsPerCollection)
-        .map(radio => ({ value: radio.value, label: radioLabel(radio, options) }));
-      result.value = radios.find(radio => radio.checked)?.value ?? null;
-      return result;
-    }
-    result.value = truncate(input.value, options.maxTextLength);
-    const datalistId = input.getAttribute('list');
-    const datalist = datalistId && field.ownerDocument?.getElementById(datalistId);
-    if (datalist) {
-      result.options = Array.from(datalist.querySelectorAll('option'))
-        .slice(0, options.maxItemsPerCollection)
-        .map(option => ({ value: option.value, label: textOf(option, options) || option.value }));
-    }
-  }
-
-  return result;
-}
-
-function radioLabel(radio: HTMLInputElement, options: Required<ClrContextSnapshotOptions>): string {
-  const wrapperLabel =
-    (radio.id && radio.ownerDocument.querySelector(`label[for="${CSS.escape(radio.id)}"]`)) ||
-    radio.closest('.clr-radio-wrapper')?.querySelector('label');
-  return textOf(wrapperLabel, options) || radio.value;
-}
-
-function controlType(control: HTMLElement | null): string {
-  if (!control) {
-    return 'field';
-  }
-  const tagName = control.tagName.toLowerCase();
-  if (tagName === 'input') {
-    return control.getAttribute('type') || 'text';
-  }
-  return tagName === 'select' || tagName === 'textarea' ? tagName : 'combobox';
-}
-
-function isVisible(element: HTMLElement): boolean {
-  if (typeof element.checkVisibility === 'function') {
-    return element.checkVisibility();
-  }
-  return element.getClientRects().length > 0;
-}
-
-function textOf(element: Element | null | undefined, options: Required<ClrContextSnapshotOptions>): string {
-  return truncate(element?.textContent || '', options.maxTextLength);
-}
-
-function truncate(text: string, maxLength: number): string {
-  const normalized = text.replace(/\s+/g, ' ').trim();
-  return normalized.length > maxLength ? `${normalized.slice(0, maxLength - 1)}…` : normalized;
-}
-
-/** Removes empty labels, states, actions and children so snapshots stay minimal. */
-function pruneEmpty(context: ClrComponentContext): ClrComponentContext {
-  const pruned: ClrComponentContext = { type: context.type };
-  if (context.label) {
-    pruned.label = context.label;
-  }
-  if (context.state && Object.keys(context.state).length) {
-    pruned.state = context.state;
-  }
-  if (context.actions?.length) {
-    pruned.actions = context.actions.filter(action => action.label || action.href);
-    if (!pruned.actions.length) {
-      delete pruned.actions;
-    }
-  }
-  if (context.children?.length) {
-    pruned.children = context.children.map(child => pruneEmpty(child));
-  }
-  return pruned;
 }
