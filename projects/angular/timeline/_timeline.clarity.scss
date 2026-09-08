@@ -15,6 +15,7 @@
 @include mixins.exports('timeline.clarity') {
   .clr-timeline {
     display: flex;
+    gap: timeline-variables.$clr-timeline-step-gap;
     padding: timeline-variables.$clr-timeline-step-internal-spacing;
   }
 
@@ -64,7 +65,8 @@
       content: '';
       background: timeline-variables.$clr-timeline-line-color;
       height: timeline-variables.$clr-timeline-line-thickness;
-      width: calc(100% - timeline-variables.$clr-timeline-icon-size);
+      // spans the gap between steps so the line reaches the next step's icon
+      width: calc(100% + timeline-variables.$clr-timeline-step-gap - timeline-variables.$clr-timeline-icon-size);
       transform: translate(
         timeline-variables.$clr-timeline-icon-size,
         calc(
@@ -122,16 +124,13 @@
 
   .clr-timeline.clr-timeline-vertical {
     flex-direction: column;
+    gap: timeline-variables.$clr-timeline-step-internal-spacing;
     min-width: mixins.baselinePx(320);
 
     .clr-timeline-step {
       flex-direction: row;
       margin-left: 0;
       position: relative; // required for vertical line to get 100% height of step body it belongs to
-
-      &:not(:last-of-type) {
-        margin-bottom: timeline-variables.$clr-timeline-step-internal-spacing;
-      }
 
       // style for the connecting line between icons
       &:not(:last-of-type) .clr-timeline-step-body::before {

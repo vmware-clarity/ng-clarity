@@ -5,7 +5,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
+import {
+  AfterViewInit,
+  createComponent,
+  Directive,
+  ElementRef,
+  EnvironmentInjector,
+  EventEmitter,
+  Injector,
+  Input,
+  Output,
+  Renderer2,
+  ViewContainerRef,
+} from '@angular/core';
+import { ClrIcon } from '@clr/angular/icon';
 
 const enterKey = 'Enter';
 const spaceKey = 'Space';
@@ -26,19 +39,31 @@ export class DismissableDirective implements AfterViewInit {
 
   constructor(
     private renderer: Renderer2,
-    private elRef: ElementRef
+    private elRef: ElementRef,
+    private viewContainerRef: ViewContainerRef,
+    private environmentInjector: EnvironmentInjector,
+    private injector: Injector
   ) {}
 
   ngAfterViewInit() {
-    const icon = this.renderer.createElement('cds-icon');
-    icon.setAttribute('shape', 'window-close');
-    icon.setAttribute('class', 'remove-filter');
-    icon.setAttribute('role', 'button');
-    icon.setAttribute('tabindex', '0');
-    icon.setAttribute('aria-label', this.dismissAriaLabel);
-    icon.style.margin = '1rem';
-    this.renderer.setStyle(icon, 'margin-left', '0.5rem');
-    this.renderer.setStyle(icon, 'margin-right', '0rem');
+    // `cds-icon` is an Angular component (ClrIcon), so it has to be created through Angular
+    // instead of as a plain DOM element, otherwise the icon SVG is never rendered.
+    // Inserting the host view into the view container ties its lifecycle and change detection
+    // to the host view; the rendered element is then moved inside the badge.
+    const iconRef = createComponent(ClrIcon, {
+      hostElement: this.renderer.createElement('cds-icon'),
+      environmentInjector: this.environmentInjector,
+      elementInjector: this.injector,
+    });
+    iconRef.setInput('shape', 'window-close');
+    this.viewContainerRef.insert(iconRef.hostView);
+
+    const icon: HTMLElement = iconRef.location.nativeElement;
+    this.renderer.addClass(icon, 'remove-filter');
+    this.renderer.setAttribute(icon, 'role', 'button');
+    this.renderer.setAttribute(icon, 'tabindex', '0');
+    this.renderer.setAttribute(icon, 'aria-label', this.dismissAriaLabel);
+    this.renderer.setStyle(icon, 'margin-left', 'var(--clr-base-gap-s)');
     this.renderer.setStyle(icon, 'cursor', 'pointer');
     this.renderer.appendChild(this.elRef.nativeElement, icon);
     this.renderer.listen(icon, 'click', () => {

@@ -198,6 +198,22 @@ describe('ManageFilterComponent', () => {
     expect(this.component.secondaryConditionDisplayText).toEqual('Greater than: 50 GB');
     expect(this.component.filterStrings.getConjoinerDisplayName).toHaveBeenCalledWith(numericPropertyFilter.operator);
   });
+  it('renders the remove filter icons with their SVG content', function (this: ThisTest) {
+    this.component.propertyFilter = stringPropertyFilter;
+    stringPropertyFilter.criteria = [stringPredicate1, stringPredicate2];
+    this.fixture.detectChanges();
+    const removeFilterIcons: NodeListOf<HTMLElement> =
+      this.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
+    expect(removeFilterIcons.length).toEqual(2);
+    removeFilterIcons.forEach(icon => {
+      expect(icon.tagName.toLowerCase()).toEqual('cds-icon');
+      expect(icon.getAttribute('shape')).toEqual('window-close');
+      expect(icon.closest('.badge')).toBeTruthy();
+      const svg = (icon.shadowRoot ?? icon).querySelector('svg');
+      expect(svg).toBeTruthy();
+      expect(svg.innerHTML).toContain('path');
+    });
+  });
   it('removes string property filter', function (this: ThisTest) {
     spyOn(this.component.filterCriteriaChange, 'emit');
     this.component.propertyFilter = stringPropertyFilter;
