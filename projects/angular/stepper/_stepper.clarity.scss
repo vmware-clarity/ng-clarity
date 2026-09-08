@@ -115,7 +115,6 @@
       > .clr-step-title-wrapper {
         display: inline-flex;
         min-width: panel-variables.$clr-collapsible-panel-title-min-width;
-        max-width: calc(264 * (1rem / var(--cds-global-base)));
         width: 100%;
         gap: density.$clr-base-gap-xs;
         align-items: center;
