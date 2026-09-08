@@ -77,9 +77,11 @@ export class ClrStepDescription {
 
 // @public (undocumented)
 export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-    constructor(formGroup: FormGroupDirective, ngForm: NgForm, stepperService: StepperService);
+    constructor(formGroup: FormGroupDirective, ngForm: NgForm, stepperService: StepperService, cdr: ChangeDetectorRef);
     // (undocumented)
     form: FormGroupDirective | NgForm;
+    // (undocumented)
+    hasStepDescription: boolean;
     // (undocumented)
     initialPanel: string;
     // (undocumented)
@@ -95,7 +97,7 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepper, "form[clrStepper]", never, { "initialPanel": { "alias": "clrInitialStep"; "required": false; }; }, {}, ["panels"], ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepper, [{ optional: true; }, { optional: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepper, [{ optional: true; }, { optional: true; }, null, null]>;
 }
 
 // @public (undocumented)
