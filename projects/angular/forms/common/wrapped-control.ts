@@ -60,7 +60,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     protected vcr: ViewContainerRef,
     protected wrapperType: Type<W>,
     injector: Injector,
-    protected ngControl: NgControl | null,
+    private ngControl: NgControl | null,
     protected renderer: Renderer2,
     protected el: ElementRef<HTMLElement>
   ) {

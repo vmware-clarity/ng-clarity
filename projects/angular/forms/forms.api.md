@@ -281,8 +281,11 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     get ariaControls(): string;
     // (undocumented)
     get ariaDescribedBySelection(): string;
+    protected get ariaInvalid(): true | null;
     // (undocumented)
     get ariaOwns(): string;
+    // (undocumented)
+    protected get ariaRequired(): true | null;
     // (undocumented)
     protected calculatedLimit: number | undefined;
     // (undocumented)
@@ -329,6 +332,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     protected index: number;
     // (undocumented)
     inputId(): string;
+    get isRequired(): boolean;
     // (undocumented)
     protected isTotalSelection: boolean;
     // Warning: (ae-forgotten-export) The symbol "ClrLoadingState" needs to be exported by the entry point clr-angular-forms.d.ts
@@ -1920,6 +1924,8 @@ export function ToggleServiceFactory(): BehaviorSubject<boolean>;
 // @public (undocumented)
 export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
+    protected get ariaInvalid(): true | null;
+    protected get ariaRequired(): true | null;
     // (undocumented)
     protected controlIdService: ControlIdService;
     // (undocumented)
@@ -1959,7 +1965,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:263:657 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
+// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:281:657 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
 
 // (No @packageDocumentation comment for this package)
 

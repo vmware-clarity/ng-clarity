@@ -1116,6 +1116,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     get alertType(): string;
     set alertType(val: string);
+    get ariaRole(): 'alert' | 'status';
     // (undocumented)
     closable: boolean;
     // (undocumented)
@@ -1585,8 +1586,11 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     get ariaControls(): string;
     // (undocumented)
     get ariaDescribedBySelection(): string;
+    protected get ariaInvalid(): true | null;
     // (undocumented)
     get ariaOwns(): string;
+    // (undocumented)
+    protected get ariaRequired(): true | null;
     // (undocumented)
     protected calculatedLimit: number | undefined;
     // (undocumented)
@@ -1631,6 +1635,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     protected index: number;
     // (undocumented)
     inputId(): string;
+    get isRequired(): boolean;
     // (undocumented)
     protected isTotalSelection: boolean;
     // (undocumented)
@@ -9998,6 +10003,8 @@ export class WrappedColumn implements AfterViewInit, OnDestroy {
 // @public (undocumented)
 export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
+    protected get ariaInvalid(): true | null;
+    protected get ariaRequired(): true | null;
     // (undocumented)
     protected controlIdService: ControlIdService;
     // (undocumented)
