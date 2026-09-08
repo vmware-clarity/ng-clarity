@@ -37,6 +37,7 @@ const ROLE_SELECTORS: Record<string, string> = {
 };
 
 const ROLE_SUMMARIZERS: Record<string, RoleSummarizer> = {
+  combobox: summarizeCombobox,
   grid: summarizeGrid,
   table: summarizeGrid,
   treegrid: summarizeGrid,
@@ -118,6 +119,54 @@ function summarizeList(element: Element, options: Required<ClrContextSnapshotOpt
     itemCount: items.length,
     items: items.slice(0, options.maxItemsPerCollection).map(item => nameOf(item, options)),
   };
+}
+
+/**
+ * A collapsed dropdown's choices, which are the whole point of it and are not otherwise
+ * reachable: `combobox` is a leaf role, so nothing descends into a `<select>`'s options.
+ *
+ * The choices are reported whether or not form values were opted into. They are authored
+ * markup describing what the UI permits, not anything a user typed — the same reasoning
+ * that reports `min`, `max` and `pattern`. An agent needs them to propose a legal value
+ * at all.
+ *
+ * Three shapes are covered: a native `<select>`, a combobox that owns a separate listbox
+ * through `aria-owns`/`aria-controls`, and an input backed by a `<datalist>`.
+ */
+function summarizeCombobox(element: Element, options: Required<ClrContextSnapshotOptions>): Record<string, unknown> {
+  const choices = comboboxChoices(element);
+  if (!choices.length) {
+    return {};
+  }
+  return { options: choices.slice(0, options.maxItemsPerCollection).map(choice => nameOf(choice, options)) };
+}
+
+function comboboxChoices(element: Element): Element[] {
+  const own = queryRole(element, 'option');
+  if (own.length) {
+    return own;
+  }
+
+  const document = element.ownerDocument;
+
+  const listId = element.getAttribute('list');
+  if (listId) {
+    const datalist = document.getElementById(listId);
+    if (datalist) {
+      return Array.from(datalist.querySelectorAll('option'));
+    }
+  }
+
+  const ownedIds = `${element.getAttribute('aria-owns') ?? ''} ${element.getAttribute('aria-controls') ?? ''}`.trim();
+  for (const id of ownedIds.split(/\s+/).filter(Boolean)) {
+    const owned = document.getElementById(id);
+    const listed = owned ? queryRole(owned, 'option') : [];
+    if (listed.length) {
+      return listed;
+    }
+  }
+
+  return [];
 }
 
 function summarizeOptions(element: Element, options: Required<ClrContextSnapshotOptions>): Record<string, unknown> {
