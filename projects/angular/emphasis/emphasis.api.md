@@ -48,6 +48,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     get alertType(): string;
     set alertType(val: string);
+    get ariaRole(): 'alert' | 'status';
     // (undocumented)
     closable: boolean;
     // (undocumented)
