@@ -22,7 +22,7 @@ import {
   Type,
   ViewContainerRef,
 } from '@angular/core';
-import { NgControl } from '@angular/forms';
+import { NgControl, Validators } from '@angular/forms';
 import { HostWrapper } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
@@ -60,7 +60,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     protected vcr: ViewContainerRef,
     protected wrapperType: Type<W>,
     injector: Injector,
-    private ngControl: NgControl | null,
+    protected ngControl: NgControl | null,
     protected renderer: Renderer2,
     protected el: ElementRef<HTMLElement>
   ) {
@@ -89,6 +89,30 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     if (this.controlIdService) {
       this.controlIdService.id = value;
     }
+  }
+
+  /**
+   * Whether the control is currently in error, as assistive technology should hear it.
+   *
+   * Gated on the control having been touched, which is the same rule the container uses
+   * to decide whether to show the error (see `ClrAbstractContainer`): a field the user
+   * has not reached yet should not be announced as wrong.
+   */
+  @HostBinding('attr.aria-invalid')
+  protected get ariaInvalid(): true | null {
+    return this.ngControl?.invalid && this.ngControl?.touched ? true : null;
+  }
+
+  /**
+   * Whether a value is required.
+   *
+   * A `required` attribute in the template is already exposed by the browser, but a
+   * reactive `Validators.required` is not — nothing in the DOM conveys it — so this
+   * reports it explicitly.
+   */
+  @HostBinding('attr.aria-required')
+  protected get ariaRequired(): true | null {
+    return this.ngControl?.control?.hasValidator(Validators.required) ? true : null;
   }
 
   @HostBinding('attr.aria-describedby')

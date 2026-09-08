@@ -63,6 +63,18 @@ export class ClrAlert implements OnInit, OnDestroy {
     this.configAlertType(this._origAlertType);
   }
 
+  /**
+   * How this alert should be announced. Danger and warning describe something the user
+   * has to deal with, so they interrupt; everything else is reported politely and waits
+   * its turn.
+   *
+   * Without a role an alert is announced by nothing at all, and its severity lives only
+   * in a CSS class, which neither assistive technology nor page-context tooling can read.
+   */
+  get ariaRole(): 'alert' | 'status' {
+    return this.alertType === 'danger' || this.alertType === 'warning' ? 'alert' : 'status';
+  }
+
   @Input('clrAlertType')
   get alertType(): string {
     return this.iconService.alertType;

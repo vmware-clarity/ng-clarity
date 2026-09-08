@@ -62,6 +62,34 @@ export default function (): void {
       fixture.destroy();
     });
 
+    it('announces an error as an assertive alert', () => {
+      fixture.componentInstance.type = 'danger';
+      fixture.detectChanges();
+
+      expect(compiled.querySelector('.alert').getAttribute('role')).toBe('alert');
+    });
+
+    it('announces a warning as an assertive alert', () => {
+      fixture.componentInstance.type = 'warning';
+      fixture.detectChanges();
+
+      expect(compiled.querySelector('.alert').getAttribute('role')).toBe('alert');
+    });
+
+    it('announces informational content politely, so it does not interrupt', () => {
+      fixture.componentInstance.type = 'info';
+      fixture.detectChanges();
+
+      expect(compiled.querySelector('.alert').getAttribute('role')).toBe('status');
+    });
+
+    it('announces success politely', () => {
+      fixture.componentInstance.type = 'success';
+      fixture.detectChanges();
+
+      expect(compiled.querySelector('.alert').getAttribute('role')).toBe('status');
+    });
+
     it('projects content', () => {
       const newAlertMsg = 'OHAI';
       expect(compiled.textContent).toMatch(/This is an alert!/);

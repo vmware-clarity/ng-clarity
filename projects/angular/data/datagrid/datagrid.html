@@ -10,7 +10,13 @@
   <div class="datagrid-inner-wrapper">
     <div class="datagrid" #datagrid [attr.aria-hidden]="detailService.isOpen ? true : null">
       <div class="datagrid-table-wrapper">
-        <div role="grid" class="datagrid-table" tabindex="-1" #datagridTable>
+        <div
+          role="grid"
+          class="datagrid-table"
+          tabindex="-1"
+          [attr.aria-multiselectable]="selection.selectionType === SELECTION_TYPE.Multi ? true : null"
+          #datagridTable
+        >
           <div role="rowgroup" class="datagrid-header" #datagridHeader>
             <div role="row" class="datagrid-row">
               <div class="datagrid-row-master datagrid-row-flex">
