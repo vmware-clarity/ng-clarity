@@ -119,6 +119,12 @@ describe('DOM context collector - Clarity Angular components', () => {
     expect(alert?.label).toBe('Disk almost full');
   });
 
+  it("reports an alert's exact severity, which no ARIA attribute can express", () => {
+    // role="alert" only distinguishes important from informational; danger from warning
+    // is something only the component knows, so it publishes it.
+    expect(contextOfType('alert')?.state?.severity).toBe('danger');
+  });
+
   it('describes tabs and which one is active', () => {
     expect(contextOfType('tablist')?.state).toEqual({ tabs: ['Details', 'Settings'], activeTab: 'Details' });
   });

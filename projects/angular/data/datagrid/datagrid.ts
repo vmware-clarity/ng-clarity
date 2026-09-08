@@ -28,7 +28,7 @@ import {
   ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
-import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
+import { ClrCommonStringsService, publishElementContext, uniqueIdFactory } from '@clr/angular/utils';
 import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 
@@ -154,6 +154,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
+
+  private teardownElementContext?: () => void;
 
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
 
@@ -283,6 +285,16 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   ngAfterContentInit() {
+    // A paginated or server-driven grid holds only the current page, so the total is
+    // something only the component knows. ARIA's aria-rowcount would be the natural home
+    // for it, but it is only meaningful alongside aria-rowindex on every row, which
+    // Clarity does not set — so reporting it here avoids half-implemented ARIA that would
+    // mislead a screen reader.
+    this.teardownElementContext = publishElementContext(this.el.nativeElement, () => {
+      const total = this.page.size > 0 ? this.page.totalItems : 0;
+      return total > 0 ? { state: { rowCount: total } } : null;
+    });
+
     if (!this.items.smart) {
       this.items.all = this.rows.map((row: ClrDatagridRow<T>) => row.item);
     }
@@ -455,6 +467,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   ngOnDestroy() {
+    this.teardownElementContext?.();
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this.resizeObserver.disconnect();
