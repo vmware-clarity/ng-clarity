@@ -8,6 +8,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   Input,
@@ -20,7 +21,7 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { CollapsiblePanelService } from '@clr/angular/collapsible-panel';
-import { Observable, Subscription } from 'rxjs';
+import { merge, Observable, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 import { StepperService } from './providers/stepper.service';
@@ -31,6 +32,7 @@ import { ClrStepperPanel } from './stepper-panel';
   template: `<ng-content></ng-content>`,
   host: {
     '[class.clr-stepper-forms]': 'true',
+    '[class.clr-stepper-has-step-description]': 'hasStepDescription',
   },
   providers: [StepperService, { provide: CollapsiblePanelService, useExisting: StepperService }],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,12 +42,15 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input('clrInitialStep') initialPanel: string;
   @ContentChildren(ClrStepperPanel) panels: QueryList<ClrStepperPanel>;
   form: FormGroupDirective | NgForm;
+  hasStepDescription = false;
   private subscriptions: Subscription[] = [];
+  private stepDescriptionSubscription: Subscription;
 
   constructor(
     @Optional() private formGroup: FormGroupDirective,
     @Optional() private ngForm: NgForm,
-    private stepperService: StepperService
+    private stepperService: StepperService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -74,6 +79,7 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach(s => s.unsubscribe());
+    this.stepDescriptionSubscription?.unsubscribe();
   }
 
   private listenForFormResetChanges() {
@@ -102,7 +108,27 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
       if (this.initialPanel) {
         this.stepperService.overrideInitialPanel(this.initialPanel);
       }
+
+      this.listenForStepDescriptionChanges(panels.toArray());
     });
+  }
+
+  private listenForStepDescriptionChanges(panels: ClrStepperPanel[]) {
+    this.stepDescriptionSubscription?.unsubscribe();
+
+    if (!panels.length) {
+      this.updateHasStepDescription(panels);
+      return;
+    }
+
+    this.stepDescriptionSubscription = merge(
+      ...panels.map(panel => panel.stepDescription.changes.pipe(startWith(panel.stepDescription)))
+    ).subscribe(() => this.updateHasStepDescription(panels));
+  }
+
+  private updateHasStepDescription(panels: ClrStepperPanel[]) {
+    this.hasStepDescription = panels.some(panel => panel.stepDescription.length > 0);
+    this.cdr.markForCheck();
   }
 }
 

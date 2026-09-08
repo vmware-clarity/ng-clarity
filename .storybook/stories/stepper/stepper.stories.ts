@@ -39,6 +39,7 @@ export default {
     ngSubmit: action('ngSubmit'),
     alignmentTest: false,
     showPreviousButton: false,
+    showDescriptions: true,
   },
 };
 
@@ -48,7 +49,9 @@ const StepperTemplate: StoryFn = args => ({
       @for (_ of createArray(stepCount); track $index; let i = $index) {
         <clr-stepper-panel formGroupName="step{{ i + 1 }}">
           <clr-step-title>Step {{ i + 1 }} {{ alignmentTest && i === 2 ? '(alignment test)' : '' }}</clr-step-title>
-          <clr-step-description>Step {{ i + 1 }} description.</clr-step-description>
+          @if (showDescriptions) {
+            <clr-step-description>Step {{ i + 1 }} description.</clr-step-description>
+          }
           <clr-step-content *clrIfExpanded>
             <clr-input-container>
               <label>Value</label>
@@ -104,6 +107,58 @@ export const StepperAlignmentTest: StoryObj = {
   render: StepperTemplate,
   args: {
     alignmentTest: true,
+  },
+};
+
+export const StepperWithoutDescriptions: StoryObj = {
+  render: StepperTemplate,
+  args: {
+    showDescriptions: false,
+  },
+};
+
+const StepperSingleDescriptionTemplate: StoryFn = args => ({
+  template: `
+    <form clrStepper [formGroup]="form">
+      <clr-stepper-panel formGroupName="step1">
+        <clr-step-title>Step 1</clr-step-title>
+        <clr-step-content *clrIfExpanded>
+          <button clrStepButton="next">next</button>
+        </clr-step-content>
+      </clr-stepper-panel>
+
+      <clr-stepper-panel formGroupName="step2">
+        <clr-step-title>Step 2 (has a description)</clr-step-title>
+        <clr-step-description>Only this step has a description.</clr-step-description>
+        <clr-step-content *clrIfExpanded>
+          <button clrStepButton="previous">previous</button>
+          <button clrStepButton="next">next</button>
+        </clr-step-content>
+      </clr-stepper-panel>
+
+      <clr-stepper-panel formGroupName="step3">
+        <clr-step-title>Step 3</clr-step-title>
+        <clr-step-content *clrIfExpanded>
+          <button clrStepButton="previous">previous</button>
+          <button clrStepButton="submit">submit</button>
+        </clr-step-content>
+      </clr-stepper-panel>
+    </form>
+  `,
+  props: { ...args },
+});
+
+export const StepperPartialDescription: StoryObj = {
+  render: StepperSingleDescriptionTemplate,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'When at least one step panel has a `clr-step-description`, the stepper container gets the ' +
+          '`clr-stepper-has-step-description` class, which constrains the width of every step title — even for ' +
+          "steps that don't have a description themselves.",
+      },
+    },
   },
 };
 
