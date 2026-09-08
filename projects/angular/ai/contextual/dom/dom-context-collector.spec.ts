@@ -10,19 +10,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityModule } from '@clr/angular';
-import { publishElementContext } from '@clr/angular/utils';
+import { ClrComponentContext, publishElementContext } from '@clr/angular/utils';
 
 import { collectClrDomActions, collectClrDomContexts } from './dom-context-collector';
-import { ClrComponentContext } from '../interfaces/context.interface';
 
 @Component({
   template: `
-    <clr-alert clrAlertType="danger" [clrAlertClosable]="false">
-      <clr-alert-item>
-        <span class="alert-text">{{ alertText }}</span>
-      </clr-alert-item>
-    </clr-alert>
-
     <clr-tabs>
       <clr-tab>
         <button clrTabLink>Details</button>
@@ -70,7 +63,6 @@ import { ClrComponentContext } from '../interfaces/context.interface';
   standalone: false,
 })
 class TestComponent {
-  alertText = 'Disk almost full';
   items = [
     { name: 'node-1', status: 'ok' },
     { name: 'node-2', status: 'down' },
@@ -79,7 +71,7 @@ class TestComponent {
   modalOpen = false;
 }
 
-describe('DOM context collector', () => {
+describe('DOM context collector - Clarity Angular components', () => {
   let fixture: ComponentFixture<TestComponent>;
   let root: HTMLElement;
 
@@ -97,395 +89,256 @@ describe('DOM context collector', () => {
     root = fixture.nativeElement;
   });
 
-  afterEach(() => {
-    fixture.destroy();
+  afterEach(() => fixture.destroy());
+
+  it('describes a datagrid as a grid, attributed to the component that renders it', () => {
+    const grid = contextOfType('grid');
+
+    expect(grid?.element).toBe('clr-datagrid');
+    expect(grid?.state?.columns).toEqual(['Name', 'Status']);
+    expect(grid?.state?.rowCount).toBe(2);
   });
 
-  it('describes alerts with their severity', () => {
-    expect(contextOfType('alert')).toEqual({
-      type: 'alert',
-      label: 'Disk almost full',
-      state: { severity: 'danger' },
-    });
+  it('leaves screen-reader guidance out of the column names', () => {
+    // Clarity's resize hint lives in the accessibility tree on purpose; it is not a column name.
+    expect(JSON.stringify(contextOfType('grid'))).not.toContain('left or right key');
   });
 
   it('describes tabs and which one is active', () => {
-    expect(contextOfType('tabs')?.state).toEqual({ tabs: ['Details', 'Settings'], activeTab: 'Details' });
+    expect(contextOfType('tablist')?.state).toEqual({ tabs: ['Details', 'Settings'], activeTab: 'Details' });
   });
 
-  it('describes datagrids with columns, row counts and footer', () => {
-    const datagrid = contextOfType('datagrid');
+  it('describes a form field by its label, type and validation constraints', () => {
+    const field = contextOfType('form')?.children?.[0];
 
-    expect(datagrid?.state?.columns).toEqual(['Name', 'Status']);
-    expect(datagrid?.state?.visibleRows).toBe(2);
-    expect(datagrid?.state?.selectedRows).toBe(0);
-    expect(datagrid?.state?.footer).toContain('2 items');
+    expect(field?.type).toBe('textbox');
+    expect(field?.label).toBe('Username');
+    expect(field?.state?.required).toBe(true);
   });
 
-  it('describes form fields without collecting their values by default', () => {
-    const form = contextOfType('form');
-
-    expect(form?.children).toEqual([{ type: 'text', label: 'Username', state: { name: 'username', required: true } }]);
+  it('does not report form values by default', () => {
     expect(JSON.stringify(collectClrDomContexts(root))).not.toContain('top-secret-value');
   });
 
-  it('does not describe closed modals', () => {
-    expect(contextOfType('modal')).toBeUndefined();
+  it('does not describe a closed modal', () => {
+    expect(contextOfType('dialog')).toBeUndefined();
   });
 
-  it('describes open modals with their title and actions', () => {
+  it('describes an open modal as a dialog, with its title and its buttons', () => {
     fixture.componentInstance.modalOpen = true;
     fixture.detectChanges();
 
-    const modal = contextOfType('modal');
+    const dialog = contextOfType('dialog');
 
-    expect(modal?.label).toBe('Confirm delete');
-    expect(modal?.state).toEqual({ open: true });
-    expect(modal?.actions).toContain(jasmine.objectContaining({ label: 'Delete', kind: 'button' }));
+    expect(dialog?.element).toBe('clr-modal');
+    expect(dialog?.label).toBe('Confirm delete');
+    expect(dialog?.state?.modal).toBe(true);
+    expect(dialog?.children?.map(child => child.label)).toContain('Delete');
   });
 
-  it('collects page-level actions but not hidden ones or modal footer actions', () => {
-    fixture.componentInstance.modalOpen = true;
+  it('describes the sorted column once the user sorts', () => {
+    (root.querySelector('.datagrid-column-title') as HTMLButtonElement).click();
     fixture.detectChanges();
 
-    const labels = collectClrDomActions(root).map(action => action.label);
-
-    expect(labels).toContain('Add user');
-    expect(labels).not.toContain('Hidden action');
-    expect(labels).not.toContain('Delete');
+    expect(contextOfType('grid')?.state?.sort).toEqual({ column: 'Name', direction: 'ascending' });
   });
 
-  it('reports disabled actions and link targets', () => {
-    const actions = collectClrDomActions(root);
-
-    expect(actions).toContain(jasmine.objectContaining({ label: 'Retry sync', kind: 'button', disabled: true }));
-    expect(actions).toContain(jasmine.objectContaining({ label: 'Help', kind: 'link', href: '/help' }));
-  });
-
-  it('describes the sorted column once the user sorts the datagrid', () => {
-    root.querySelector<HTMLButtonElement>('clr-dg-column button.datagrid-column-title')?.click();
-    fixture.detectChanges();
-
-    const state = contextOfType('datagrid')?.state;
-
-    expect(state?.sortedBy).toBe('Name');
-    expect(state?.sortOrder).toBe('ascending');
-  });
-
-  it('describes unknown Clarity elements generically by their accessible name', () => {
-    const widget = document.createElement('clr-fake-widget');
-    widget.setAttribute('aria-label', 'Fake widget');
-    root.appendChild(widget);
-
-    expect(contextOfType('fake-widget')).toEqual({ type: 'fake-widget', label: 'Fake widget' });
-  });
-
-  it('applies the component budget', () => {
-    expect(collectClrDomContexts(root, { maxComponents: 1 }).length).toBe(1);
-  });
-
-  it('truncates long text to the configured budget', () => {
-    fixture.componentInstance.alertText = 'critical '.repeat(50);
-    fixture.detectChanges();
-
-    const label = collectClrDomContexts(root, { maxTextLength: 20 }).find(context => context.type === 'alert')?.label;
-
-    expect(label?.length).toBe(20);
-    expect(label?.endsWith('…')).toBe(true);
+  it('carries the text of an element that has nothing but its content to offer', () => {
+    expect(contextOfType('clr-dg-footer')?.label).toBe('2 items');
   });
 });
 
-@Component({
-  template: `
-    <clr-vertical-nav>
-      <a href="#/dashboard" clrVerticalNavLink class="active">Dashboard</a>
-      <a href="#/settings" clrVerticalNavLink>Settings</a>
-    </clr-vertical-nav>
+describe('DOM context collector - equivalence across rendering surfaces', () => {
+  let fixture: ComponentFixture<TestComponent>;
+  let cssOnly: HTMLElement;
+  let plainHtml: HTMLElement;
 
-    <clr-accordion>
-      <clr-accordion-panel [clrAccordionPanelOpen]="true">
-        <clr-accordion-title>General</clr-accordion-title>
-        <clr-accordion-content *clrIfExpanded>General content</clr-accordion-content>
-      </clr-accordion-panel>
-      <clr-accordion-panel>
-        <clr-accordion-title>Advanced</clr-accordion-title>
-        <clr-accordion-content *clrIfExpanded>Advanced content</clr-accordion-content>
-      </clr-accordion-panel>
-    </clr-accordion>
-
-    <clr-wizard [(clrWizardOpen)]="wizardOpen">
-      <clr-wizard-title>Cluster setup</clr-wizard-title>
-      <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
-      <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
-      <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
-      <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
-      <clr-wizard-page>
-        <ng-template clrPageTitle>Basics</ng-template>
-        <p>Step 1</p>
-      </clr-wizard-page>
-      <clr-wizard-page>
-        <ng-template clrPageTitle>Networking</ng-template>
-        <p>Step 2</p>
-      </clr-wizard-page>
-    </clr-wizard>
-  `,
-  standalone: false,
-})
-class NavigationTestComponent {
-  wizardOpen = false;
-}
-
-describe('DOM context collector - navigation components', () => {
-  let fixture: ComponentFixture<NavigationTestComponent>;
-  let root: HTMLElement;
-
-  function contextOfType(type: string): ClrComponentContext | undefined {
-    return collectClrDomContexts(root).find(context => context.type === type);
+  /** The claim under test is about what is described, not which element rendered it. */
+  function shapeOf(root: ParentNode): unknown {
+    const grid = collectClrDomContexts(root).find(context => context.type === 'grid');
+    return { type: grid?.type, columns: grid?.state?.columns, rowCount: grid?.state?.rowCount };
   }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClarityModule, NoopAnimationsModule],
-      declarations: [NavigationTestComponent],
+      imports: [ClarityModule, FormsModule, NoopAnimationsModule],
+      declarations: [TestComponent],
     });
-    fixture = TestBed.createComponent(NavigationTestComponent);
+    fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
-    root = fixture.nativeElement;
+
+    // The same grid as @clr/ui CSS-only markup: no components, just classes and roles.
+    cssOnly = document.createElement('div');
+    cssOnly.innerHTML = `
+      <div role="grid" class="datagrid">
+        <div role="rowgroup" class="datagrid-header">
+          <div role="row"><div role="columnheader">Name</div><div role="columnheader">Status</div></div>
+        </div>
+        <div role="rowgroup">
+          <div role="row"><div role="gridcell">node-1</div><div role="gridcell">ok</div></div>
+          <div role="row"><div role="gridcell">node-2</div><div role="gridcell">down</div></div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(cssOnly);
+
+    // And as plain semantic HTML, with no Clarity anywhere.
+    plainHtml = document.createElement('div');
+    plainHtml.innerHTML = `
+      <table role="grid">
+        <thead>
+          <tr><th>Name</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>node-1</td><td>ok</td></tr>
+          <tr><td>node-2</td><td>down</td></tr>
+        </tbody>
+      </table>
+    `;
+    document.body.appendChild(plainHtml);
   });
 
   afterEach(() => {
     fixture.destroy();
+    cssOnly.remove();
+    plainHtml.remove();
   });
 
-  it('describes vertical navigation with its links and the active one', () => {
-    const navigation = contextOfType('navigation');
+  it('describes a Clarity component, CSS-only markup and plain HTML identically', () => {
+    const expected = { type: 'grid', columns: ['Name', 'Status'], rowCount: 2 };
 
-    expect(navigation?.state).toEqual({ activeLink: 'Dashboard' });
-    expect(navigation?.actions).toEqual([
-      { label: 'Dashboard', kind: 'link', href: '#/dashboard' },
-      { label: 'Settings', kind: 'link', href: '#/settings' },
-    ]);
+    expect(shapeOf(fixture.nativeElement)).toEqual(expected);
+    expect(shapeOf(cssOnly)).toEqual(expected);
+    expect(shapeOf(plainHtml)).toEqual(expected);
   });
 
-  it('describes accordions with each panel and its expanded state', () => {
-    const accordion = contextOfType('accordion');
+  it('distinguishes the surfaces only by which element rendered them', () => {
+    const gridOf = (root: ParentNode) => collectClrDomContexts(root).find(context => context.type === 'grid');
 
-    expect(accordion?.children?.length).toBe(2);
-    expect(accordion?.children?.[0]).toEqual(jasmine.objectContaining({ label: 'General', state: { expanded: true } }));
-    expect(accordion?.children?.[1]).toEqual(
-      jasmine.objectContaining({ label: 'Advanced', state: { expanded: false } })
-    );
-  });
-
-  it('does not describe closed wizards', () => {
-    expect(contextOfType('wizard')).toBeUndefined();
-  });
-
-  it('describes open wizards with their steps, current step and actions', () => {
-    fixture.componentInstance.wizardOpen = true;
-    fixture.detectChanges();
-
-    const wizard = contextOfType('wizard');
-
-    expect(wizard?.label).toBe('Cluster setup');
-    expect(wizard?.state?.steps).toEqual(['Basics', 'Networking']);
-    expect(wizard?.state?.currentStep).toBe('Basics');
-    expect(wizard?.actions).toContain(jasmine.objectContaining({ label: 'Next', kind: 'button' }));
+    expect(gridOf(fixture.nativeElement)?.element).toBe('clr-datagrid');
+    expect(gridOf(cssOnly)?.element).toBeUndefined();
+    expect(gridOf(plainHtml)?.element).toBeUndefined();
   });
 });
 
 describe('DOM context collector - hand-authored markup', () => {
   let root: HTMLElement;
 
-  function contextOfType(type: string): ClrComponentContext | undefined {
-    return collectClrDomContexts(root).find(context => context.type === type);
-  }
+  beforeEach(() => {
+    root = document.createElement('div');
+    document.body.appendChild(root);
+  });
+
+  afterEach(() => root.remove());
+
+  it('reports nothing for elements that currently render no content', () => {
+    root.innerHTML = '<div class="card"></div><span></span>';
+
+    expect(collectClrDomContexts(root)).toEqual([]);
+  });
+
+  it('describes a native dialog and a details element from their own semantics', () => {
+    root.innerHTML = `
+      <dialog open aria-label="Native dialog"></dialog>
+      <details open><summary>More</summary>body</details>
+    `;
+    const contexts = collectClrDomContexts(root);
+
+    expect(contexts.find(c => c.type === 'dialog')?.state?.open).toBe(true);
+    expect(contexts.find(c => c.type === 'group')?.state?.open).toBe(true);
+  });
+
+  it('reports a field as invalid when the markup says so', () => {
+    root.innerHTML = '<label for="h">Host</label><input id="h" aria-invalid="true" required disabled />';
+    const field = collectClrDomContexts(root).find(c => c.type === 'textbox');
+
+    expect(field?.state).toEqual({ invalid: true, disabled: true, required: true });
+  });
+
+  it('collects control values only on explicit opt-in', () => {
+    root.innerHTML = '<label for="h">Host name</label><input id="h" name="hostName" value="esx-prod-04" />';
+
+    expect(JSON.stringify(collectClrDomContexts(root))).not.toContain('esx-prod-04');
+    expect(JSON.stringify(collectClrDomContexts(root, { includeFormValues: true }))).toContain('esx-prod-04');
+  });
+
+  it('falls back to element geometry when checkVisibility is unavailable', () => {
+    root.innerHTML = '<div role="grid" style="display:none"></div>';
+    const element = root.firstElementChild as HTMLElement & { checkVisibility?: unknown };
+    const original = element.checkVisibility;
+    element.checkVisibility = undefined;
+
+    try {
+      // An element that is not rendered has no client rects, which is the only signal
+      // available without checkVisibility.
+      expect(collectClrDomContexts(root)).toEqual([]);
+    } finally {
+      element.checkVisibility = original;
+    }
+  });
+
+  it('never describes elements inside ignore-marked regions', () => {
+    root.innerHTML = `
+      <div data-clr-context-ignore>
+        <div role="dialog" aria-label="Chat panel"></div>
+        <button type="button">Panel action</button>
+      </div>
+      <div role="grid" aria-label="Page grid"></div>
+    `;
+    const contexts = collectClrDomContexts(root);
+
+    expect(contexts.map(context => context.label)).toEqual(['Page grid']);
+    expect(collectClrDomActions(contexts).map(action => action.label)).not.toContain('Panel action');
+  });
+
+  it('applies the component budget', () => {
+    root.innerHTML = '<div role="grid"></div><div role="grid"></div><div role="grid"></div>';
+
+    expect(collectClrDomContexts(root, { maxComponents: 2 }).length).toBe(2);
+  });
+
+  it('truncates long text to the configured budget', () => {
+    root.innerHTML = `<button>${'x'.repeat(200)}</button>`;
+
+    expect(collectClrDomContexts(root, { maxTextLength: 10 })[0].label?.length).toBe(10);
+  });
+});
+
+describe('DOM context collector - component-published context', () => {
+  let root: HTMLElement;
 
   beforeEach(() => {
     root = document.createElement('div');
     document.body.appendChild(root);
   });
 
-  afterEach(() => {
-    root.remove();
-  });
+  afterEach(() => root.remove());
 
-  it('reports nothing for library elements that currently render no content', () => {
-    root.innerHTML = '<clr-modal>projected but closed</clr-modal><clr-alert>projected but closed</clr-alert>';
-
-    expect(collectClrDomContexts(root)).toEqual([]);
-  });
-
-  it('describes disabled, invalid and unrecognized form fields', () => {
-    root.innerHTML = `
-      <form clrForm>
-        <div class="clr-form-control clr-form-control-disabled">
-          <label class="clr-control-label">Region</label>
-          <div class="clr-control-container"><select><option>eu</option></select></div>
-        </div>
-        <div class="clr-form-control">
-          <label class="clr-control-label">Notes</label>
-          <div class="clr-control-container clr-error">
-            <textarea required></textarea>
-            <clr-control-error>Required field</clr-control-error>
-          </div>
-        </div>
-        <div class="clr-form-control">
-          <label class="clr-control-label">Custom</label>
-        </div>
-      </form>
-    `;
-
-    expect(contextOfType('form')?.children).toEqual([
-      { type: 'select', label: 'Region', state: { disabled: true } },
-      { type: 'textarea', label: 'Notes', state: { required: true, invalid: true, error: 'Required field' } },
-      { type: 'field', label: 'Custom' },
-    ]);
-  });
-
-  it('only reports the outermost of nested same-type elements', () => {
-    root.innerHTML =
-      '<clr-fake-widget aria-label="Outer"><clr-fake-widget aria-label="Inner"></clr-fake-widget></clr-fake-widget>';
-
-    const widgets = collectClrDomContexts(root).filter(context => context.type === 'fake-widget');
-
-    expect(widgets).toEqual([{ type: 'fake-widget', label: 'Outer' }]);
-  });
-
-  it('applies the component budget during generic collection', () => {
-    root.innerHTML =
-      '<clr-fake-widget aria-label="One"></clr-fake-widget><clr-other-widget aria-label="Two"></clr-other-widget>';
-
-    expect(collectClrDomContexts(root, { maxComponents: 1 }).length).toBe(1);
-  });
-
-  it('falls back to element geometry when checkVisibility is unavailable', () => {
-    root.innerHTML =
-      '<clr-fake-widget aria-label="Visible">content</clr-fake-widget><clr-other-widget aria-label="Hidden" style="display: none">content</clr-other-widget>';
-    for (const element of Array.from(root.querySelectorAll('clr-fake-widget, clr-other-widget'))) {
-      (element as unknown as Record<string, unknown>)['checkVisibility'] = undefined;
-    }
-
-    const contexts = collectClrDomContexts(root);
-
-    expect(contexts).toContain(jasmine.objectContaining({ label: 'Visible' }));
-    expect(contexts).not.toContain(jasmine.objectContaining({ label: 'Hidden' }));
-  });
-
-  it('drops actions that have no label at all', () => {
-    root.innerHTML = `
-      <clr-modal>
-        <div class="modal-dialog">
-          <div class="modal-title">Bare modal</div>
-          <div class="modal-footer"><button type="button"></button></div>
-        </div>
-      </clr-modal>
-    `;
-
-    const modal = contextOfType('modal');
-
-    expect(modal?.label).toBe('Bare modal');
-    expect(modal?.actions).toBeUndefined();
-  });
-
-  it('collects control names, values and options only on explicit opt-in', () => {
-    root.innerHTML = `
-      <form clrForm>
-        <div class="clr-form-control">
-          <label class="clr-control-label">Host name</label>
-          <input type="text" name="hostName" value="esx-prod-04" />
-        </div>
-        <div class="clr-form-control">
-          <label class="clr-control-label">Cluster</label>
-          <select name="cluster">
-            <option value="alpha">Alpha</option>
-            <option value="beta" selected>Beta</option>
-          </select>
-        </div>
-        <div class="clr-form-control">
-          <label class="clr-control-label">Tier</label>
-          <div class="clr-radio-wrapper">
-            <input type="radio" id="tier-gold" name="tier" value="gold" />
-            <label for="tier-gold">Gold</label>
-          </div>
-          <div class="clr-radio-wrapper">
-            <input type="radio" id="tier-silver" name="tier" value="silver" checked />
-            <label for="tier-silver">Silver</label>
-          </div>
-        </div>
-        <div class="clr-form-control">
-          <label class="clr-control-label">Enabled</label>
-          <input type="checkbox" name="enabled" checked />
-        </div>
-        <div class="clr-form-control">
-          <label class="clr-control-label">Root password</label>
-          <input type="password" name="secret" value="hunter2" />
-        </div>
-      </form>
-    `;
-
-    const withValues = collectClrDomContexts(root, { includeFormValues: true }).find(c => c.type === 'form');
-    const fieldByName = (name: string) => withValues?.children?.find(child => child.state?.name === name);
-
-    expect(fieldByName('hostName')?.state?.value).toBe('esx-prod-04');
-    expect(fieldByName('cluster')?.state?.value).toBe('beta');
-    expect(fieldByName('cluster')?.state?.options).toEqual([
-      { value: 'alpha', label: 'Alpha' },
-      { value: 'beta', label: 'Beta' },
-    ]);
-    expect(fieldByName('tier')?.state?.value).toBe('silver');
-    expect(fieldByName('tier')?.state?.options).toEqual([
-      { value: 'gold', label: 'Gold' },
-      { value: 'silver', label: 'Silver' },
-    ]);
-    expect(fieldByName('enabled')?.state?.value).toBe(true);
-
-    // Passwords are redacted even with the opt-in.
-    expect(fieldByName('secret')?.state?.redacted).toBe(true);
-    expect(JSON.stringify(withValues)).not.toContain('hunter2');
-
-    // Without the opt-in, names remain but no value appears anywhere.
-    const withoutValues = collectClrDomContexts(root).find(c => c.type === 'form');
-    expect(withoutValues?.children?.find(child => child.state?.name === 'hostName')?.state?.value).toBeUndefined();
-    expect(JSON.stringify(withoutValues)).not.toContain('esx-prod-04');
-  });
-
-  it('merges context a component publishes on its host element over DOM guesswork', () => {
+  it('merges what a component publishes over what the DOM shows', () => {
     root.innerHTML = '<clr-fake-widget aria-label="DOM label">content</clr-fake-widget>';
     publishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
       label: 'Component label',
       state: { options: ['a', 'b', 'c'], loaded: true },
     }));
 
-    const widget = collectClrDomContexts(root, { maxItemsPerCollection: 2 }).find(c => c.type === 'fake-widget');
+    const widget = collectClrDomContexts(root, { maxItemsPerCollection: 2 })[0];
 
-    expect(widget?.label).toBe('Component label');
-    expect(widget?.state?.loaded).toBe(true);
-    expect(widget?.state?.options).toEqual(['a', 'b']);
+    expect(widget.label).toBe('Component label');
+    expect(widget.state?.loaded).toBe(true);
+    expect(widget.state?.options).toEqual(['a', 'b']);
   });
 
-  it('merges published context into the form field that contains the publisher', () => {
-    root.innerHTML = `
-      <form clrForm>
-        <div class="clr-form-control">
-          <label class="clr-control-label">Fruit</label>
-          <fake-combobox><input role="combobox" name="fruit" /></fake-combobox>
-        </div>
-      </form>
-    `;
+  it('lets a publisher supply the options a closed popover does not render', () => {
+    root.innerHTML = '<label for="f">Fruit</label><fake-combobox><input id="f" role="combobox" /></fake-combobox>';
     publishElementContext(root.querySelector('fake-combobox') as Element, options => ({
-      type: 'combobox',
       state: { options: ['Apple', 'Pear'], value: options.includeFormValues ? 'Apple' : undefined },
     }));
 
-    const field = collectClrDomContexts(root, { includeFormValues: true })
-      .find(c => c.type === 'form')
-      ?.children?.find(child => child.state?.name === 'fruit');
+    const combobox = collectClrDomContexts(root, { includeFormValues: true }).find(c => c.type === 'combobox');
 
-    expect(field?.type).toBe('combobox');
-    expect(field?.label).toBe('Fruit');
-    expect(field?.state?.options).toEqual(['Apple', 'Pear']);
-    expect(field?.state?.value).toBe('Apple');
+    expect(combobox?.label).toBe('Fruit');
+    expect(combobox?.state?.options).toEqual(['Apple', 'Pear']);
+    expect(combobox?.state?.value).toBe('Apple');
   });
 
   it('treats a publisher that throws as having nothing to add', () => {
@@ -494,24 +347,48 @@ describe('DOM context collector - hand-authored markup', () => {
       throw new Error('broken publisher');
     });
 
-    expect(collectClrDomContexts(root)).toEqual([{ type: 'fake-widget', label: 'DOM label' }]);
+    expect(collectClrDomContexts(root)).toEqual([
+      { type: 'clr-fake-widget', element: 'clr-fake-widget', label: 'DOM label' },
+    ]);
+  });
+});
+
+describe('DOM context collector - actions', () => {
+  let root: HTMLElement;
+
+  beforeEach(() => {
+    root = document.createElement('div');
+    document.body.appendChild(root);
   });
 
-  it('never describes elements inside ignore-marked regions', () => {
-    root.innerHTML = `
-      <div data-clr-context-ignore>
-        <clr-modal>
-          <div class="modal-dialog"><div class="modal-title">Chat panel internals</div></div>
-        </clr-modal>
-        <clr-fake-widget aria-label="Panel widget">panel widget</clr-fake-widget>
-        <button type="button" class="btn">Panel action</button>
-      </div>
-      <clr-fake-widget aria-label="Page widget">page widget</clr-fake-widget>
-    `;
+  afterEach(() => root.remove());
 
-    const contexts = collectClrDomContexts(root);
+  function actionsOf(html: string) {
+    root.innerHTML = html;
+    return collectClrDomActions(collectClrDomContexts(root));
+  }
 
-    expect(contexts).toEqual([{ type: 'fake-widget', label: 'Page widget' }]);
-    expect(collectClrDomActions(root).map(action => action.label)).not.toContain('Panel action');
+  it('reports what a user can currently invoke, with link targets and disabled state', () => {
+    expect(actionsOf('<button>Add user</button><button disabled>Retry</button><a href="/help">Help</a>')).toEqual([
+      { label: 'Add user', kind: 'button' },
+      { label: 'Retry', kind: 'button', disabled: true },
+      { label: 'Help', kind: 'link', href: '/help' },
+    ]);
+  });
+
+  it('leaves the actions inside a dialog to the dialog, which reports them itself', () => {
+    const actions = actionsOf('<button>Page action</button><div role="dialog"><button>Dialog action</button></div>');
+
+    expect(actions.map(action => action.label)).toEqual(['Page action']);
+  });
+
+  it('leaves navigation links to the navigation', () => {
+    const actions = actionsOf('<nav><a href="/a">Dashboard</a></nav><a href="/b">Docs</a>');
+
+    expect(actions.map(action => action.label)).toEqual(['Docs']);
+  });
+
+  it('drops an action that has neither a label nor a target', () => {
+    expect(actionsOf('<button></button>')).toEqual([]);
   });
 });

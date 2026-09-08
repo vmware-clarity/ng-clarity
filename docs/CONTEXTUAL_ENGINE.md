@@ -19,9 +19,13 @@ and plain semantic HTML alike.
 - **No user data by default.** Form fields are described by name, label, type and validation
   state; values and selectable options are collected only on explicit opt-in
   (`includeFormValues`), and passwords are redacted unconditionally.
-- **UI-library agnostic core.** The context model, the DOM extraction and the cross-frame protocol
-  are plain TypeScript and plain JSON. Clarity's component extractors are just the built-in set;
-  any other UI library can plug in its own.
+- **Described by role, not by selector.** The engine reads the accessibility tree: an ARIA role,
+  an accessible name and ARIA state mean the same thing on a Clarity Angular component, on
+  `@clr/ui` CSS-only markup, in another component library and in plain semantic HTML. There are no
+  Clarity selectors or class names in the engine, so nothing has to be taught about a component
+  before it can be described.
+- **Components add only what a role cannot say.** A combobox's options while its popover is closed,
+  a datagrid's total row count while paginated. Everything else already lives in the markup.
 
 ## Taking a snapshot
 
@@ -35,8 +39,11 @@ const snapshot = this.contextEngine.getSnapshot();
 //   title: 'Cluster overview',
 //   url: 'https://app.example/clusters/42',
 //   route: { url: '/clusters/42', path: 'clusters/:id', params: { id: '42' } },
-//   regions: [{ type: 'section', label: 'Firewall rules for cluster 42' }],
-//   components: [{ type: 'datagrid', state: { columns: [...], visibleRows: 20, selectedRows: 2 } }],
+//   regions: [{ type: 'region', label: 'Firewall rules for cluster 42' }],
+//   components: [
+//     { type: 'grid', element: 'clr-datagrid',
+//       state: { columns: ['Name', 'Status'], rowCount: 20, selectedRows: 2 } },
+//   ],
 //   actions: [{ label: 'Add rule', kind: 'button' }],
 //   collectedAt: '2026-08-18T10:00:00.000Z'
 // }
@@ -88,9 +95,8 @@ never request values through the frame bridge — only the hosting application c
 
 ```ts
 const context = engine.getSnapshot({ includeFormValues: true });
-// field example: { type: 'select', label: 'Cluster', state: {
-//   name: 'cluster', value: 'beta',
-//   options: [{ value: 'alpha', label: 'Alpha' }, { value: 'beta', label: 'Beta' }] } }
+// field example: { type: 'combobox', element: 'clr-select-container', label: 'Cluster',
+//   state: { value: 'beta', options: ['Alpha', 'Beta'] } }
 
 // The agent answers with JSON keyed by control name...
 const answer = { hostName: 'esx-prod-04', cluster: 'beta', tier: 'silver', enabled: true };
@@ -146,9 +152,18 @@ publishElementContext(hostElement, snapshotOptions => ({
 the popover is closed (selection only under `includeFormValues`). A callback that throws is
 treated as having nothing to add.
 
-## Teaching the engine about other UI libraries
+Publishing happens on the component's own host element, while the node the engine describes is
+usually the role-bearing element inside it — the `<div role="grid">` within a `<clr-datagrid>`.
+Both are merged into one description, and what the host publishes is attributed to it through the
+`element` field, so a `clr-side-panel` and a `clr-modal` stay distinguishable even though both are
+dialogs.
 
-Components that are not Clarity components can be described by registering a DOM extractor:
+## Describing markup that carries no semantics
+
+Well-formed markup needs no help: anything with an ARIA role, an accessible name or a custom
+element tag is described automatically, whatever library rendered it. What the engine cannot
+describe is markup that says nothing about itself — a bare `<div class="card">` with no role and no
+name. Register an extractor for those:
 
 ```ts
 const unregister = this.contextEngine.registerDomExtractor({

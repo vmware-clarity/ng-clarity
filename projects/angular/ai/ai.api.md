@@ -34,6 +34,7 @@ export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
 export interface ClrComponentContext {
     actions?: ClrContextAction[];
     children?: ClrComponentContext[];
+    element?: string;
     label?: string;
     state?: Record<string, unknown>;
     type: string;
@@ -232,13 +233,10 @@ export interface ClrRouteContext {
 }
 
 // @public
-export function collectClrDomActions(root: ParentNode, options?: ClrContextSnapshotOptions): ClrContextAction[];
+export function collectClrDomActions(components: ClrComponentContext[], options?: ClrContextSnapshotOptions): ClrContextAction[];
 
 // @public
 export function collectClrDomContexts(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrComponentContext[];
-
-// @public
-export function findPublishingElement(root: Element): Element | null;
 
 // @public
 export function mergeElementContext(base: ClrComponentContext, element: Element, options: Required<ClrContextSnapshotOptions>): ClrComponentContext;

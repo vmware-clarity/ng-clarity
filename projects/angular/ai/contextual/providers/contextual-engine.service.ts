@@ -68,13 +68,20 @@ export class ClrContextualEngineService implements OnDestroy {
       snapshot.route = route;
     }
     if (isPlatformBrowser(this.platformId)) {
-      if (options?.includeDomComponents !== false) {
-        snapshot.components = collectClrDomContexts(this.document, options, this.customExtractors);
-      }
-      if (options?.includeActions !== false) {
-        const actions = collectClrDomActions(this.document, options);
-        if (actions.length) {
-          snapshot.actions = actions;
+      const wantsComponents = options?.includeDomComponents !== false;
+      const wantsActions = options?.includeActions !== false;
+      if (wantsComponents || wantsActions) {
+        // One walk serves both: the actions are flattened out of the same tree, so they
+        // can never disagree with it about what is currently visible.
+        const components = collectClrDomContexts(this.document, options, this.customExtractors);
+        if (wantsComponents) {
+          snapshot.components = components;
+        }
+        if (wantsActions) {
+          const actions = collectClrDomActions(components, options);
+          if (actions.length) {
+            snapshot.actions = actions;
+          }
         }
       }
     }
