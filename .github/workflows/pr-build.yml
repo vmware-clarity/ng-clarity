@@ -106,7 +106,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        browser: ['chromium']
+        browser: ['chromium', 'firefox']
         theme: ['light', 'dark']
         density: ['default', 'compact']
     env:

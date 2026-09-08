@@ -11,7 +11,16 @@ const browser = process.env['CLARITY_VRT_BROWSER'];
 
 const deviceMap = {
   chromium: { ...devices['Desktop Chrome'], channel: 'chromium' },
-  firefox: { ...devices['Desktop Firefox'] },
+  firefox: {
+    ...devices['Desktop Firefox'],
+    launchOptions: {
+      firefoxUserPrefs: {
+        // Firefox shares :visited state across browser contexts, so a link's color would
+        // depend on which pages the other tests in the run had already visited.
+        'layout.css.visited_links_enabled': false,
+      },
+    },
+  },
 };
 
 /**

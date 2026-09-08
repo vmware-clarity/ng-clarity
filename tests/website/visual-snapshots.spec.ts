@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { expect, Page, test } from '@playwright/test';
+import { expect, Page, Request, test } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -35,6 +35,10 @@ const defaultMaskSelectors = ['img[src*=".gif"]', 'progress:not([value])', 'app-
 // content and renders its CONTENT box on only some page loads (issue #2678), which would make
 // any documentation page's screenshot nondeterministic. Remove the rule once #2678 is fixed to
 // restore visual coverage of the table of contents.
+//
+// The login demos' min-height is pinned to the original viewport height: the .login form is
+// min-height: 100vh, so it would otherwise grow along with the viewport resizes below and
+// re-center its content nondeterministically mid-capture.
 function growPageWithContentStyles(minHeightPx: number) {
   return `
     html, body { height: auto !important; overflow-x: clip !important; }
@@ -42,6 +46,7 @@ function growPageWithContentStyles(minHeightPx: number) {
     app-root > .main-container > .content-container { height: auto !important; }
     app-root > .main-container > .content-container > .content-area { overflow-y: visible !important; overflow-x: clip !important; min-width: 0 !important; }
     app-table-of-contents { display: none !important; }
+    .clr-example .login-wrapper .login { min-height: ${minHeightPx}px !important; }
   `;
 }
 
@@ -84,7 +89,15 @@ const usedScreenshotsFilePath = path.join(
 );
 fs.writeFileSync(usedScreenshotsFilePath, '');
 
+// The requests currently in flight on the page under test, tracked for waitForQuietNetwork().
+const inFlightRequests = new Set<Request>();
+
 test.beforeEach(async ({ page, context }) => {
+  inFlightRequests.clear();
+  page.on('request', request => inFlightRequests.add(request));
+  page.on('requestfinished', request => inFlightRequests.delete(request));
+  page.on('requestfailed', request => inFlightRequests.delete(request));
+
   // The website makes a few requests to external services (Google Tag Manager, the version
   // switcher's versions.json). Block everything that isn't served locally so the screenshots
   // are deterministic and unaffected by network conditions.
@@ -167,7 +180,7 @@ async function capturePage(page: Page, pageName: string, view: string, route: st
   await page.goto(`${baseUrl}${route}`);
   // The documentation demos are lazy-loaded modules; wait until all chunks have loaded so the
   // page has its final content (and therefore its final height) before capturing.
-  await page.waitForLoadState('networkidle');
+  await waitForQuietNetwork(page);
   await page.addStyleTag({ content: growPageWithContentStyles(viewport.height) });
   await page.evaluate(() => document.fonts.ready);
 
@@ -185,22 +198,62 @@ async function capturePage(page: Page, pageName: string, view: string, route: st
   });
 }
 
+// How long the network must stay free of in-flight requests to count as quiet (the same
+// 500ms Playwright's networkidle load state uses), and how long to wait for that at most.
+const networkQuietMs = 500;
+const networkQuietTimeoutMs = 30 * 1000;
+const networkQuietCheckIntervalMs = 50;
+
+/**
+ * Resolves once no request has been in flight for half a second. This is the semantics of
+ * page.waitForLoadState('networkidle'), reimplemented on the public request events because
+ * the networkidle lifecycle event is unreliable in Firefox: on request-heavy pages (the
+ * datagrid documentation) it can fire before 'load' and never fire again, hanging the wait
+ * even though the network has long gone quiet.
+ */
+async function waitForQuietNetwork(page: Page) {
+  const deadline = Date.now() + networkQuietTimeoutMs;
+
+  for (let quietForMs = 0; quietForMs < networkQuietMs;) {
+    if (Date.now() > deadline) {
+      throw new Error(`network requests still in flight after ${networkQuietTimeoutMs}ms: ${inFlightRequests.size}`);
+    }
+
+    await page.waitForTimeout(networkQuietCheckIntervalMs);
+    quietForMs = inFlightRequests.size > 0 ? 0 : quietForMs + networkQuietCheckIntervalMs;
+  }
+}
+
+// Upper bound for the viewport height a page can grow to. Some demos react to the viewport
+// size, so a page's content height can keep increasing on every resize (a resize feedback
+// loop); the bound keeps such a page finite instead of letting it grow without limit.
+const maxViewportHeightPx = 20000;
+// How long reflowing content (lazy-loaded demos, virtual-scroll datagrids) may keep changing
+// the content height before the current height is accepted, re-measured at this interval.
+const resizeSettleTimeoutMs = 2000;
+const resizeSettleCheckIntervalMs = 250;
+
 /**
  * Resizes the viewport to the full content height so a regular viewport screenshot captures the
  * whole page. Playwright's fullPage screenshots expand the render surface mid-capture, which
  * reflows demos that render based on available space (virtual-scroll datagrids) and produces
  * flaky captures; resizing up front lets such content settle first. The loop exits once a
- * measurement taken 250ms after the last resize still matches the viewport height.
+ * measurement taken one check interval after the last resize still matches the viewport height,
+ * or when the settle timeout elapses.
  */
 async function fitViewportToContent(page: Page, viewportWidth: number) {
   const measureContentHeight = () =>
-    page.evaluate(() => Math.min(Math.max(document.body.scrollHeight, document.documentElement.scrollHeight), 20000));
+    page.evaluate(
+      maxHeightPx => Math.min(Math.max(document.body.scrollHeight, document.documentElement.scrollHeight), maxHeightPx),
+      maxViewportHeightPx
+    );
 
+  const deadline = Date.now() + resizeSettleTimeoutMs;
   let viewportHeight = await measureContentHeight();
 
-  for (let attempt = 0; attempt < 8; attempt++) {
+  do {
     await page.setViewportSize({ width: viewportWidth, height: viewportHeight });
-    await page.waitForTimeout(250);
+    await page.waitForTimeout(resizeSettleCheckIntervalMs);
 
     const contentHeight = await measureContentHeight();
 
@@ -209,5 +262,5 @@ async function fitViewportToContent(page: Page, viewportWidth: number) {
     }
 
     viewportHeight = contentHeight;
-  }
+  } while (Date.now() < deadline);
 }
