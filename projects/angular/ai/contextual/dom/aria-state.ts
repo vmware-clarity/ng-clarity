@@ -7,7 +7,7 @@
 
 import { ClrContextSnapshotOptions } from '@clr/angular/utils';
 
-import { truncate } from './text';
+import { accessibleText, truncate } from './text';
 
 /**
  * ARIA attributes that are only worth reporting when they are on, reported as a flag.
@@ -93,6 +93,15 @@ export function ariaState(
     state.level = level;
   }
 
+  // Helper guidance and validation messages are wired to a control with
+  // aria-describedby, which is where an agent should read them from too — otherwise they
+  // surface as unattached nodes beside the field and it has to guess which one they
+  // belong to.
+  const description = describedByText(element, options);
+  if (description) {
+    state.description = description;
+  }
+
   assignNativeState(element, state, options);
   assignValueState(element, role, state, options);
 
@@ -165,6 +174,22 @@ function assignValueState(
   if ('value' in element && typeof (element as HTMLInputElement).value === 'string') {
     state.value = truncate((element as HTMLInputElement).value, options.maxTextLength);
   }
+}
+
+/** The joined text of every element that describes this one. */
+function describedByText(element: Element, options: Required<ClrContextSnapshotOptions>): string {
+  const ids = element.getAttribute('aria-describedby')?.trim();
+  if (!ids) {
+    return '';
+  }
+  const document = element.ownerDocument;
+  const described = ids
+    .split(/\s+/)
+    .map(id => document.getElementById(id))
+    .map(target => (target ? accessibleText(target).trim() : ''))
+    .filter(text => text)
+    .join(' ');
+  return truncate(described, options.maxTextLength);
 }
 
 function numberAttribute(element: Element, attribute: string): number | undefined {

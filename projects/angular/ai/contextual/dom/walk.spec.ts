@@ -131,4 +131,21 @@ describe('collectContextTree', () => {
     const [node] = collect('<clr-dg-footer>2 items</clr-dg-footer>');
     expect(node).toEqual({ type: 'clr-dg-footer', element: 'clr-dg-footer', label: '2 items' });
   });
+
+  it('does not describe text that exists only to describe another element', () => {
+    const nodes = collect(
+      '<my-field><input role="textbox" aria-describedby="hint" /><my-hint id="hint">Lowercase only</my-hint></my-field>'
+    );
+
+    // The hint reaches the field as its description, so a node of its own would only
+    // repeat it and leave an agent guessing which field it belonged to.
+    expect(nodes.map(node => node.type)).toEqual(['textbox']);
+    expect(nodes[0].state?.description).toBe('Lowercase only');
+  });
+
+  it('still describes an element that is referenced as a label, which is real content', () => {
+    const nodes = collect('<h2 id="t">Add rule</h2><div role="dialog" aria-labelledby="t"></div>');
+
+    expect(nodes.map(node => node.type)).toEqual(['heading', 'dialog']);
+  });
 });

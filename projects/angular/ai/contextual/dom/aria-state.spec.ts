@@ -20,11 +20,25 @@ describe('ariaState', () => {
     includeFormValues,
   });
 
+  let container: HTMLElement;
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => container.remove());
+
   function stateOf(html: string, includeFormValues = false): Record<string, unknown> {
-    const container = document.createElement('div');
     container.innerHTML = html;
     const element = container.firstElementChild as HTMLElement;
     return ariaState(element, resolveRole(element), budgets(includeFormValues));
+  }
+
+  function stateOfSelected(html: string, selector: string): Record<string, unknown> {
+    container.innerHTML = html;
+    const element = container.querySelector(selector) as HTMLElement;
+    return ariaState(element, resolveRole(element), budgets());
   }
 
   it('reports aria-expanded as a boolean in both states', () => {
@@ -100,5 +114,31 @@ describe('ariaState', () => {
 
   it('reports no href for an element that has none', () => {
     expect('href' in stateOf('<button>x</button>')).toBe(false);
+  });
+
+  it('resolves the text describing a control, so helper guidance reaches the field', () => {
+    const state = stateOfSelected(
+      '<input id="h" aria-describedby="hint" /><span id="hint">Lowercase letters only</span>',
+      '#h'
+    );
+
+    expect(state.description).toBe('Lowercase letters only');
+  });
+
+  it('joins every element that describes a control, so an error joins the helper text', () => {
+    const state = stateOfSelected(
+      '<input id="h" aria-describedby="hint err" /><span id="hint">Lowercase only</span><span id="err">Name is taken</span>',
+      '#h'
+    );
+
+    expect(state.description).toBe('Lowercase only Name is taken');
+  });
+
+  it('reports no description when nothing describes the control', () => {
+    expect('description' in stateOf('<input />')).toBe(false);
+  });
+
+  it('reports no description when aria-describedby points at nothing', () => {
+    expect('description' in stateOfSelected('<input id="h" aria-describedby="missing" />', '#h')).toBe(false);
   });
 });

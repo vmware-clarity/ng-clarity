@@ -43,6 +43,8 @@ const SKIPPED_TAGS = new Set(['script', 'style', 'template', 'link', 'meta', 'no
 interface Walk {
   readonly options: Required<ClrContextSnapshotOptions>;
   readonly extractors: ClrContextDomExtractor[];
+  /** Ids of elements that exist only to describe another element. */
+  readonly describedByIds: ReadonlySet<string>;
   /** Components still within budget. Shared across the whole walk. */
   remaining: number;
 }
@@ -65,7 +67,34 @@ export function collectContextTree(
   options: Required<ClrContextSnapshotOptions>,
   extractors: ClrContextDomExtractor[] = []
 ): ClrComponentContext[] {
-  return describeChildren(root, { options, extractors, remaining: options.maxComponents }, null);
+  return describeChildren(
+    root,
+    { options, extractors, describedByIds: describedByTargets(root), remaining: options.maxComponents },
+    null
+  );
+}
+
+/**
+ * Ids referenced by an `aria-describedby` anywhere under `root`.
+ *
+ * Elements referenced this way — helper text, a validation message — are supplementary
+ * text belonging to the control they describe, and that control reports them as its
+ * `description`. Describing them again on their own would repeat the text and leave an
+ * agent to work out which field it belonged to.
+ *
+ * `aria-labelledby` targets are deliberately not collected: those are usually real
+ * content, such as a heading that also names a dialog.
+ */
+function describedByTargets(root: ParentNode): ReadonlySet<string> {
+  const ids = new Set<string>();
+  for (const element of Array.from(root.querySelectorAll('[aria-describedby]'))) {
+    for (const id of (element.getAttribute('aria-describedby') ?? '').trim().split(/\s+/)) {
+      if (id) {
+        ids.add(id);
+      }
+    }
+  }
+  return ids;
 }
 
 /**
@@ -81,7 +110,7 @@ export function collectContextTree(
  * role-bearing element inside it.
  */
 function describeElement(element: Element, walk: Walk, owner: Element | null): ClrComponentContext[] {
-  if (shouldSkipSubtree(element)) {
+  if (shouldSkipSubtree(element, walk)) {
     return [];
   }
 
@@ -177,8 +206,11 @@ function describeChildren(parent: ParentNode, walk: Walk, owner: Element | null)
 }
 
 /** Whether an element and everything inside it is invisible to the engine. */
-function shouldSkipSubtree(element: Element): boolean {
+function shouldSkipSubtree(element: Element, walk: Walk): boolean {
   if (SKIPPED_TAGS.has(element.tagName.toLowerCase())) {
+    return true;
+  }
+  if (element.id && walk.describedByIds.has(element.id)) {
     return true;
   }
   if (element.hasAttribute(CLR_CONTEXT_IGNORE_ATTRIBUTE)) {
