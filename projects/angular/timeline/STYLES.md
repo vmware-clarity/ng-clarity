@@ -13,6 +13,7 @@
 | --clr-timeline-success-step-color     | Successful timeline step circle color |
 | --clr-timeline-error-step-color       | Failed timeline step circle color     |
 | --clr-timeline-step-title-font-weight | Timeline step title font weight       |
+| --clr-timeline-step-gap               | Gap between horizontal timeline steps |
 
 ## CSS Classes
 

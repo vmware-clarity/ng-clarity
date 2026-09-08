@@ -28,10 +28,14 @@ export default {
     // inputs
     clrLayout: ClrTimelineLayout.HORIZONTAL,
     showBodyIcons: false,
+    longText: false,
     // story helpers
     ClrTimelineStepState,
   },
 };
+
+const longText =
+  'This step has a long description that wraps onto several lines, so the spacing between neighbouring steps is visible.';
 
 const TimelineTempate: StoryFn = args => ({
   template: `
@@ -41,6 +45,9 @@ const TimelineTempate: StoryFn = args => ({
         <clr-timeline-step-title>Success</clr-timeline-step-title>
         <clr-timeline-step-description>
           This is step was successful.
+          @if (longText) {
+            {{ longText }}
+          }
           @if (showBodyIcons) {
             <div>
               Color 'danger' and size 'lg' of icon should not change:
@@ -55,6 +62,9 @@ const TimelineTempate: StoryFn = args => ({
         <clr-timeline-step-title>Error</clr-timeline-step-title>
         <clr-timeline-step-description>
           There was an error on this step.
+          @if (longText) {
+            {{ longText }}
+          }
           @if (showBodyIcons) {
             <div>
               Color 'warning' and size 'md' of icon should not change:
@@ -69,6 +79,9 @@ const TimelineTempate: StoryFn = args => ({
         <clr-timeline-step-title>Processing</clr-timeline-step-title>
         <clr-timeline-step-description>
           This step is being processed.
+          @if (longText) {
+            {{ longText }}
+          }
           @if (showBodyIcons) {
             <div>
               Color 'info' and size 'xxl' of icon should not change:
@@ -89,6 +102,9 @@ const TimelineTempate: StoryFn = args => ({
             </div>
           }
           This is the current step.
+          @if (longText) {
+            {{ longText }}
+          }
           <button class="btn btn-sm">Action</button>
         </clr-timeline-step-description>
       </clr-timeline-step>
@@ -97,6 +113,9 @@ const TimelineTempate: StoryFn = args => ({
         <clr-timeline-step-title>Not Started</clr-timeline-step-title>
         <clr-timeline-step-description>
           This step has not been started.
+          @if (longText) {
+            {{ longText }}
+          }
           @if (showBodyIcons) {
             <div>
               Color 'neutral' and size of icon should not change:
@@ -108,7 +127,7 @@ const TimelineTempate: StoryFn = args => ({
       </clr-timeline-step>
     </clr-timeline>
   `,
-  props: args,
+  props: { ...args, longText: args['longText'] ? longText : '' },
 });
 
 export const HorizontalLayout: StoryObj = {
@@ -130,5 +149,13 @@ export const HorizontalLayoutWithIconsInBody: StoryObj = {
   args: {
     clrLayout: ClrTimelineLayout.HORIZONTAL,
     showBodyIcons: true,
+  },
+};
+
+export const HorizontalLayoutWithLongText: StoryObj = {
+  render: TimelineTempate,
+  args: {
+    clrLayout: ClrTimelineLayout.HORIZONTAL,
+    longText: true,
   },
 };

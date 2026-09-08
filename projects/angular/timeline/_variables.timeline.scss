@@ -24,6 +24,7 @@ $clr-timeline-spinner-size: calc(#{$clr-timeline-icon-size} - #{tokens.$cds-glob
 $clr-timeline-default-icon-size: #{density.$clr-base-icon-size-s};
 $clr-timeline-line-thickness: #{tokens.$cds-alias-object-border-width-200};
 $clr-timeline-step-internal-spacing: var(--clr-timeline-step-internal-spacing);
+$clr-timeline-step-gap: var(--clr-timeline-step-gap);
 
 // body (title)
 $clr-timeline-step-title-font-weight: var(--clr-timeline-step-title-font-weight);
