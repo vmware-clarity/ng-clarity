@@ -39,6 +39,11 @@ export const websiteScreenshotOptions: ScreenshotOptions = {
     // shell, observed consistently on the CI runners (issue #2680). Re-enable once fixed.
     exclude: true,
   },
+  'datagrid-code-full': {
+    // The full demo populates its rows through a simulated-latency fetch after the page has
+    // loaded, so wait for a cell of the (deterministic) first row before capturing.
+    waitForSelectors: ['clr-dg-cell:has-text("Venusaur")'],
+  },
   'datagrid-code-virtual-scroll': {
     // The live demo generates random rows (dates, wins) on every load.
     maskSelectors: ['clr-datagrid'],

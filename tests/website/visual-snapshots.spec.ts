@@ -39,6 +39,12 @@ const defaultMaskSelectors = ['img[src*=".gif"]', 'progress:not([value])', 'app-
 // The login demos' min-height is pinned to the original viewport height: the .login form is
 // min-height: 100vh, so it would otherwise grow along with the viewport resizes below and
 // re-center its content nondeterministically mid-capture.
+//
+// On the datagrid page the clr-mt-* margin utilities are re-asserted with !important: they
+// compete at equal specificity with cds-text margin rules in the lazily injected demo styles,
+// and with the datagrid page's many parallel demo chunks the injection order (and therefore
+// the winning rule) varies between loads. Other pages resolve that order consistently, so the
+// pins are scoped to the datagrid demo to leave their production rendering untouched.
 function growPageWithContentStyles(minHeightPx: number) {
   return `
     html, body { height: auto !important; overflow-x: clip !important; }
@@ -47,6 +53,12 @@ function growPageWithContentStyles(minHeightPx: number) {
     app-root > .main-container > .content-container > .content-area { overflow-y: visible !important; overflow-x: clip !important; min-width: 0 !important; }
     app-table-of-contents { display: none !important; }
     .clr-example .login-wrapper .login { min-height: ${minHeightPx}px !important; }
+    clr-datagrid-demo .clr-mt-0px { margin-top: 0 !important; }
+    clr-datagrid-demo .clr-mt-8px { margin-top: var(--cds-global-layout-space-xs) !important; }
+    clr-datagrid-demo .clr-mt-16px { margin-top: var(--cds-global-layout-space-md) !important; }
+    clr-datagrid-demo .clr-mt-24px { margin-top: var(--cds-global-space-9) !important; }
+    clr-datagrid-demo .clr-mt-32px { margin-top: var(--cds-global-layout-space-xl) !important; }
+    clr-datagrid-demo .clr-mt-48px { margin-top: var(--cds-global-space-12) !important; }
   `;
 }
 
