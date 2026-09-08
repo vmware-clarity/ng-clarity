@@ -16,6 +16,12 @@ import { collectClrDomActions, collectClrDomContexts } from './dom-context-colle
 
 @Component({
   template: `
+    <clr-alert clrAlertType="danger" [clrAlertClosable]="false">
+      <clr-alert-item>
+        <span class="alert-text">Disk almost full</span>
+      </clr-alert-item>
+    </clr-alert>
+
     <clr-tabs>
       <clr-tab>
         <button clrTabLink>Details</button>
@@ -102,6 +108,15 @@ describe('DOM context collector - Clarity Angular components', () => {
   it('leaves screen-reader guidance out of the column names', () => {
     // Clarity's resize hint lives in the accessibility tree on purpose; it is not a column name.
     expect(JSON.stringify(contextOfType('grid'))).not.toContain('left or right key');
+  });
+
+  it('describes an alert and its message', () => {
+    // Regression guard for the engine benefit of giving clr-alert a role: before it had
+    // one, an alert contributed nothing but a stray icon node and its message was absent.
+    const alert = contextOfType('alert');
+
+    expect(alert?.element).toBe('clr-alert');
+    expect(alert?.label).toBe('Disk almost full');
   });
 
   it('describes tabs and which one is active', () => {

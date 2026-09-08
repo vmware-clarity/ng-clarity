@@ -138,6 +138,7 @@ width of the component, after being wrapped to a new line -->
     aria-autocomplete="list"
     autocomplete="off"
     [attr.aria-invalid]="control?.invalid? true: null"
+    [attr.aria-required]="isRequired? true: null"
     [disabled]="control?.disabled? true: null"
     [attr.aria-activedescendant]="getActiveDescendant()"
     [attr.placeholder]="placeholder"

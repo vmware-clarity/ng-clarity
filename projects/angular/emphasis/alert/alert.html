@@ -8,6 +8,7 @@
 @if (!_closed) {
 <div
   class="alert"
+  [attr.role]="ariaRole"
   [ngClass]="alertClass"
   [class.alert-sm]="isSmall"
   [class.alert-lightweight]="isLightweight"
