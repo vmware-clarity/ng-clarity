@@ -40,11 +40,13 @@ import {
 } from '@clr/angular/popover/common';
 import {
   ClrCommonStringsService,
+  ClrElementContextCallback,
   ClrLoadingState,
   FOCUS_SERVICE_PROVIDER,
   IF_ACTIVE_ID_PROVIDER,
   Keys,
   LoadingListener,
+  publishElementContext,
 } from '@clr/angular/utils';
 import { debounceTime, Subject } from 'rxjs';
 
@@ -116,7 +118,7 @@ export class ClrCombobox<T>
   private containerWidthChange = new Subject();
   @ContentChild(ClrOptions) private options: ClrOptions<T>;
 
-  private contextHostElement: HTMLElement | null = null;
+  private teardownElementContext?: () => void;
 
   private _searchText = '';
   private onTouchedCallback: () => any;
@@ -309,7 +311,7 @@ export class ClrCombobox<T>
   ngAfterContentInit() {
     this.initializeSubscriptions();
     // Captured before ngAfterViewInit reassigns `el` to the wrapped text input.
-    this.publishElementContext(this.el.nativeElement);
+    this.publishContext(this.el.nativeElement);
 
     // Initialize with preselected value
     if (!this.optionSelectionService.selectionModel.isEmpty()) {
@@ -336,10 +338,7 @@ export class ClrCombobox<T>
 
   override ngOnDestroy(): void {
     super.ngOnDestroy();
-    if (this.contextHostElement) {
-      delete (this.contextHostElement as HTMLElement & { clrElementContext?: unknown }).clrElementContext;
-      this.contextHostElement = null;
-    }
+    this.teardownElementContext?.();
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
@@ -626,17 +625,13 @@ export class ClrCombobox<T>
   /**
    * Publishes instance state the rendered DOM cannot show — the selection model and,
    * while the options popover is instantiated, the option list — through the plain
-   * `clrElementContext` element property, where page-context tooling such as @clr/angular/ai
-   * discovers it. Using a plain property keeps this free of any package dependency;
-   * readers that do not know the property simply ignore it.
+   * element context contract in `@clr/angular/utils`, where page-context tooling such as
+   * `@clr/angular/ai` discovers it. The contract lives in utils rather than in the engine
+   * so publishing costs this component nothing but one import.
    */
-  private publishElementContext(host: HTMLElement) {
-    this.contextHostElement = host;
-    (host as HTMLElement & { clrElementContext?: unknown }).clrElementContext = (snapshotOptions: {
-      includeFormValues?: boolean;
-      maxItemsPerCollection?: number;
-    }) => {
-      const maxItems = snapshotOptions?.maxItemsPerCollection ?? 25;
+  private publishContext(host: HTMLElement) {
+    const describe: ClrElementContextCallback = snapshotOptions => {
+      const maxItems = snapshotOptions.maxItemsPerCollection;
       const state: Record<string, unknown> = { multiSelect: this.multiSelect };
       const items = this.options?.items;
       if (items?.length) {
@@ -650,7 +645,7 @@ export class ClrCombobox<T>
         // Async comboboxes have no option list until a search loads one.
         state.optionsAvailable = false;
       }
-      if (snapshotOptions?.includeFormValues) {
+      if (snapshotOptions.includeFormValues) {
         const model = this.optionSelectionService.selectionModel?.model;
         if (model === null || model === undefined) {
           state.value = null;
@@ -661,6 +656,8 @@ export class ClrCombobox<T>
       }
       return { type: 'combobox', state };
     };
+
+    this.teardownElementContext = publishElementContext(host, describe);
   }
 
   /** An option's visible label, without screen-reader-only additions such as "Selected". */

@@ -17,7 +17,7 @@ import {
   Output,
   Renderer2,
 } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/utils';
+import { ClrCommonStringsService, publishElementContext } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
@@ -43,6 +43,7 @@ export class ClrAlert implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   private _isLightweight = false;
   private _origAlertType: string;
+  private teardownElementContext?: () => void;
 
   constructor(
     private iconService: AlertIconAndTypesService,
@@ -121,6 +122,13 @@ export class ClrAlert implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // role="alert" versus role="status" only says important versus informational. Which
+    // of danger, warning, success, info or neutral this is lives in a CSS class, which
+    // nothing can read semantically, so the component reports it directly.
+    this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => ({
+      state: { severity: this.alertType },
+    }));
+
     if (this.multiAlertService) {
       this.subscriptions.push(
         this.multiAlertService.changes.subscribe(() => {
@@ -131,6 +139,7 @@ export class ClrAlert implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.teardownElementContext?.();
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
