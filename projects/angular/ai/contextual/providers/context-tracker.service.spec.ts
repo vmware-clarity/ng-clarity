@@ -202,4 +202,84 @@ describe('ClrContextTrackerService', () => {
       }
     });
   });
+
+  describe('when form values are tracked', () => {
+    function addInput(value: string, parent: Element = document.body): HTMLInputElement {
+      const label = document.createElement('label');
+      label.setAttribute('for', 'tracked-host');
+      label.textContent = 'Host';
+      const input = document.createElement('input');
+      input.id = 'tracked-host';
+      input.value = value;
+      parent.appendChild(label);
+      parent.appendChild(input);
+      addedElements.push(label, input);
+      return input;
+    }
+
+    function trackedValue(context: ClrPageContext | null): unknown {
+      return (context?.components ?? []).find(component => component.type === 'textbox')?.state?.value;
+    }
+
+    it('re-emits when a value changes, which mutates no DOM', async () => {
+      const input = addInput('original');
+      tracker.start({ snapshot: { includeFormValues: true }, debounceMs: 20, maxWaitMs: 60 });
+      await wait(60);
+      const before = emitted.length;
+
+      // Typing changes the property, never the attribute, so a DOM observer sees nothing.
+      input.value = 'typed-by-user';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      await wait(120);
+
+      expect(emitted.length).toBeGreaterThan(before);
+      expect(trackedValue(tracker.currentContext)).toBe('typed-by-user');
+    });
+
+    it('coalesces a burst of typing into a single scrape', async () => {
+      const input = addInput('a');
+      tracker.start({ snapshot: { includeFormValues: true }, debounceMs: 40, maxWaitMs: 500 });
+      await wait(80);
+      const before = emitted.length;
+
+      for (const value of ['ab', 'abc', 'abcd']) {
+        input.value = value;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      await wait(150);
+
+      expect(emitted.length).toBe(before + 1);
+      expect(trackedValue(tracker.currentContext)).toBe('abcd');
+    });
+
+    it('ignores typing inside a region the engine is told to skip', async () => {
+      const ignored = document.createElement('div');
+      ignored.setAttribute(CLR_CONTEXT_IGNORE_ATTRIBUTE, '');
+      document.body.appendChild(ignored);
+      addedElements.push(ignored);
+      const input = addInput('original', ignored);
+      tracker.start({ snapshot: { includeFormValues: true }, debounceMs: 20, maxWaitMs: 60 });
+      await wait(60);
+      const before = emitted.length;
+
+      input.value = 'typed-in-panel';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      await wait(120);
+
+      expect(emitted.length).toBe(before);
+    });
+
+    it('does not listen for values when they are not being collected', async () => {
+      const input = addInput('original');
+      tracker.start({ snapshot: { includeFormValues: false }, debounceMs: 20, maxWaitMs: 60 });
+      await wait(60);
+      const before = emitted.length;
+
+      input.value = 'typed-by-user';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      await wait(120);
+
+      expect(emitted.length).toBe(before);
+    });
+  });
 });

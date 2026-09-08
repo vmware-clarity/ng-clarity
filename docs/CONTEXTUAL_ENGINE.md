@@ -76,9 +76,13 @@ Mark UI that renders the context — the chat panel itself, a debug view — wit
 `data-clr-context-ignore` attribute (exported as `CLR_CONTEXT_IGNORE_ATTRIBUTE`). Such regions are
 invisible to the engine end to end: the collector never describes them and the tracker ignores
 their mutations, so a panel re-rendering the context cannot re-trigger tracking or describe itself
-into the page context. Note that input _values_ change without DOM mutations — irrelevant today,
-since values are never collected — and `tracker.refresh()` remains available for on-demand
-updates.
+into the page context.
+
+An input's _value_ changes its property, never its attribute, so a `MutationObserver` never sees
+typing. When snapshots carry values, the tracker therefore also listens for `input` and `change`,
+feeding the same quiet window — a burst of typing still results in one scrape. Those listeners are
+attached only when values are collected, so tracking costs nothing extra otherwise.
+`tracker.refresh()` remains available for on-demand updates.
 
 For browser-driving agents that have no application API, the engine can expose a global accessor:
 

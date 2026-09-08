@@ -10,7 +10,7 @@ import { DOCUMENT, Inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@a
 import { Observable, ReplaySubject } from 'rxjs';
 
 import { ClrContextualEngineService } from './contextual-engine.service';
-import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '../dom/dom-context-collector';
+import { CLR_CONTEXT_DEFAULT_OPTIONS, CLR_CONTEXT_IGNORE_ATTRIBUTE } from '../dom/dom-context-collector';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 
 export interface ClrContextTrackingOptions {
@@ -47,6 +47,10 @@ const IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
  * context — the chat panel itself — neither triggers feedback loops nor describes
  * itself into the page context.
  *
+ * When snapshots carry form values, `input` and `change` are watched as well, because
+ * typing changes a property rather than an attribute and is invisible to a
+ * `MutationObserver`.
+ *
  * Every emission is a freshly computed snapshot of the live DOM at that moment — the
  * tracker stores only the latest emission and never merges or accumulates, so context
  * from a page that was navigated away from can never leak into the current one.
@@ -62,6 +66,7 @@ export class ClrContextTrackerService implements OnDestroy {
   private observer: MutationObserver | null = null;
   private quietTimer: ReturnType<typeof setTimeout> | null = null;
   private maxWaitTimer: ReturnType<typeof setTimeout> | null = null;
+  private valueListener: ((event: Event) => void) | null = null;
   private latest: ClrPageContext | null = null;
 
   constructor(
@@ -104,6 +109,17 @@ export class ClrContextTrackerService implements OnDestroy {
         attributes: true,
         characterData: true,
       });
+
+      // Typing changes an input's `value` property, never its attribute, so a
+      // MutationObserver never sees it. Without these listeners a subscriber tracking
+      // form values would hold whatever they were at the last unrelated DOM change.
+      // Attached only when values are actually collected, so tracking costs nothing
+      // extra otherwise.
+      if (this.tracksFormValues()) {
+        this.valueListener = event => this.onValueChange(event);
+        this.document.body.addEventListener('input', this.valueListener, true);
+        this.document.body.addEventListener('change', this.valueListener, true);
+      }
     });
   }
 
@@ -112,6 +128,11 @@ export class ClrContextTrackerService implements OnDestroy {
     this.tracking = false;
     this.observer?.disconnect();
     this.observer = null;
+    if (this.valueListener) {
+      this.document.body.removeEventListener('input', this.valueListener, true);
+      this.document.body.removeEventListener('change', this.valueListener, true);
+      this.valueListener = null;
+    }
     this.clearTimers();
   }
 
@@ -125,6 +146,27 @@ export class ClrContextTrackerService implements OnDestroy {
     if (records.every(record => isInsideIgnoredRegion(record.target))) {
       return;
     }
+    this.scheduleScrape();
+  }
+
+  private onValueChange(event: Event): void {
+    const target = event.target;
+    if (target instanceof Node && isInsideIgnoredRegion(target)) {
+      return;
+    }
+    this.scheduleScrape();
+  }
+
+  /** Whether snapshots will carry values, and so whether value changes matter. */
+  private tracksFormValues(): boolean {
+    return this.trackingOptions.snapshot?.includeFormValues ?? CLR_CONTEXT_DEFAULT_OPTIONS.includeFormValues;
+  }
+
+  /**
+   * Queues a scrape for after the page goes quiet. Mutations and value changes share one
+   * window, so a burst of typing still results in a single scrape.
+   */
+  private scheduleScrape(): void {
     if (this.quietTimer !== null) {
       clearTimeout(this.quietTimer);
     }
