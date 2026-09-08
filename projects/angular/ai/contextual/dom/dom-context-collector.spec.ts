@@ -48,6 +48,15 @@ import { collectClrDomActions, collectClrDomContexts } from './dom-context-colle
         <label>Username</label>
         <input clrInput required name="username" [(ngModel)]="username" />
       </clr-input-container>
+      <clr-select-container>
+        <label>Basic select</label>
+        <select clrSelect name="options" [(ngModel)]="selectedOption">
+          <option value="one">One</option>
+          <option value="two">Two</option>
+          <option value="three">Three</option>
+        </select>
+        <clr-control-helper>Helper Subtext</clr-control-helper>
+      </clr-select-container>
     </form>
 
     <button type="button" class="btn btn-primary">Add user</button>
@@ -74,6 +83,7 @@ class TestComponent {
     { name: 'node-2', status: 'down' },
   ];
   username = 'top-secret-value';
+  selectedOption = 'two';
   modalOpen = false;
 }
 
@@ -135,6 +145,28 @@ describe('DOM context collector - Clarity Angular components', () => {
     expect(field?.type).toBe('textbox');
     expect(field?.label).toBe('Username');
     expect(field?.state?.required).toBe(true);
+  });
+
+  it('reports the choices a dropdown offers, which a collapsed dropdown cannot show', () => {
+    const select = contextOfType('form')?.children?.find(child => child.element === 'clr-select-container');
+
+    expect(select?.type).toBe('combobox');
+    expect(select?.label).toBe('Basic select');
+    expect(select?.state?.options).toEqual(['One', 'Two', 'Three']);
+  });
+
+  it('does not report which choice is currently selected until form values are opted into', async () => {
+    // ngModel applies its value asynchronously, so wait for the select to settle.
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const selectOf = (options?: { includeFormValues: boolean }) =>
+      collectClrDomContexts(root, options)
+        .find(context => context.type === 'form')
+        ?.children?.find(child => child.element === 'clr-select-container');
+
+    expect(selectOf()?.state?.value).toBeUndefined();
+    expect(selectOf({ includeFormValues: true })?.state?.value).toBe('two');
   });
 
   it('does not report form values by default', () => {

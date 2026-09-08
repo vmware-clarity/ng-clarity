@@ -113,4 +113,44 @@ describe('summarizeRole', () => {
     expect(summarize(markup, 'radiogroup')?.value).toBeUndefined();
     expect(summarize(markup, 'radiogroup', { includeFormValues: true })?.value).toBe('Gold');
   });
+
+  it('summarises a native dropdown by the choices it offers', () => {
+    const state = summarize(
+      '<select><option value="one">One</option><option value="two">Two</option></select>',
+      'combobox'
+    );
+
+    expect(state?.options).toEqual(['One', 'Two']);
+  });
+
+  it("reports a dropdown's choices without opting into form values, because they are authored not typed", () => {
+    const state = summarize('<select><option value="one">One</option></select>', 'combobox');
+
+    expect(state?.options).toEqual(['One']);
+    expect('value' in (state ?? {})).toBe(false);
+  });
+
+  it('summarises a combobox that owns a separate listbox', () => {
+    container.innerHTML = `
+      <div>
+        <input role="combobox" aria-owns="opts" />
+        <div id="opts" role="listbox"><div role="option">Alpha</div><div role="option">Beta</div></div>
+      </div>
+    `;
+    const input = container.querySelector('[role="combobox"]') as HTMLElement;
+
+    expect(summarizeRole(input, 'combobox', budgets())?.options).toEqual(['Alpha', 'Beta']);
+  });
+
+  it('summarises an input backed by a datalist', () => {
+    container.innerHTML = `
+      <div>
+        <input role="combobox" list="tiers" />
+        <datalist id="tiers"><option value="gold">Gold</option><option value="silver">Silver</option></datalist>
+      </div>
+    `;
+    const input = container.querySelector('[role="combobox"]') as HTMLElement;
+
+    expect(summarizeRole(input, 'combobox', budgets())?.options).toEqual(['Gold', 'Silver']);
+  });
 });
