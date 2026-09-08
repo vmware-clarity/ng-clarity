@@ -86,6 +86,53 @@ describe('ClrContextualEngineService', () => {
       expect((window as unknown as Record<string, unknown>)['testClrContext']).toBeUndefined();
     });
 
+    describe('the global accessor', () => {
+      let form: HTMLElement;
+
+      function snapshotVia(options?: unknown) {
+        const accessor = (window as unknown as Record<string, unknown>)['testClrContext'] as (options?: unknown) => {
+          components: { type: string; state?: Record<string, unknown> }[];
+        };
+        return accessor(options);
+      }
+
+      function reportedValue(snapshot: { components: { type: string; state?: Record<string, unknown> }[] }) {
+        return snapshot.components.find(component => component.type === 'textbox')?.state?.value;
+      }
+
+      beforeEach(() => {
+        form = document.createElement('div');
+        form.innerHTML = '<label for="secret">Token</label><input id="secret" value="user-typed-secret" />';
+        document.body.appendChild(form);
+      });
+
+      afterEach(() => {
+        engine.disableGlobalAccess();
+        form.remove();
+      });
+
+      it('does not let a caller on the page turn on form values', () => {
+        // Any script on the page can call this, including a third-party tag, so whether
+        // typed values are exposed cannot be the caller's decision. Stated against an
+        // explicit host choice so the assertion holds whatever the library default is.
+        engine.enableGlobalAccess('testClrContext', { includeFormValues: false });
+
+        expect(reportedValue(snapshotVia({ includeFormValues: true }))).toBeUndefined();
+      });
+
+      it('applies the budgets the host chose, whatever the caller asks for', () => {
+        engine.enableGlobalAccess('testClrContext', { includeFormValues: true });
+
+        expect(reportedValue(snapshotVia({ includeFormValues: false }))).toBe('user-typed-secret');
+      });
+
+      it('still honours a caller budget the host left open', () => {
+        engine.enableGlobalAccess('testClrContext');
+
+        expect(snapshotVia({ maxComponents: 1 }).components.length).toBe(1);
+      });
+    });
+
     it('resolves host context with null when the page is not embedded', async () => {
       expect(await engine.requestHostContext()).toBeNull();
     });

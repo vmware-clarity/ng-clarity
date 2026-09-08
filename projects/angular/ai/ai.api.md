@@ -85,7 +85,10 @@ export class ClrContextFrameHost {
 
 // @public (undocumented)
 export interface ClrContextFrameHostOptions {
+    allowAnyOrigin?: boolean;
     allowedOrigins?: string[];
+    minRequestIntervalMs?: number;
+    shareFullUrl?: boolean;
 }
 
 // @public
@@ -100,6 +103,7 @@ export interface ClrContextFrameRequest {
 
 // @public (undocumented)
 export interface ClrContextFrameRequestOptions {
+    hostOrigin?: string;
     options?: ClrContextSnapshotOptions;
     targetOrigin?: string;
     targetWindow?: Window;
@@ -178,7 +182,7 @@ export class ClrContextualEngineService implements OnDestroy {
     // (undocumented)
     disableGlobalAccess(): void;
     enableFrameBridge(options?: ClrContextFrameHostOptions): void;
-    enableGlobalAccess(propertyName?: string): void;
+    enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextSnapshotOptions): void;
     getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext;
     // (undocumented)
     ngOnDestroy(): void;
