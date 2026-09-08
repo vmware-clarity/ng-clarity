@@ -226,45 +226,6 @@
         }
       }
     },
-    "clr-ai": {
-      "projectType": "library",
-      "root": "projects/ai",
-      "sourceRoot": "projects/ai",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular/build:ng-packagr",
-          "options": {
-            "tsConfig": "projects/ai/tsconfig.lib.json",
-            "project": "projects/ai/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/ai/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "styles": ["projects/ui/src/clr-ui.scss"],
-            "main": "projects/ai/test.ts",
-            "tsConfig": "projects/ai/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "codeCoverage": true,
-            "watch": true,
-            "sourceMap": true
-          },
-          "configurations": {
-            "ci": {
-              "watch": false,
-              "sourceMap": false,
-              "browsers": "ChromeHeadless"
-            }
-          }
-        }
-      }
-    },
     "clr-addons": {
       "projectType": "library",
       "root": "projects/addons",

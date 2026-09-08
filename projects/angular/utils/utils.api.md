@@ -142,6 +142,9 @@ export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
     static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule_CdkTrapFocus, [null, null, { optional: true; }]>;
 }
 
+// @public
+export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
+
 // @public (undocumented)
 export const CLR_LOADING_DIRECTIVES: Type<any>[];
 
@@ -320,6 +323,15 @@ export class ClrCommonStringsService {
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrCommonStringsService>;
 }
 
+// @public
+export interface ClrComponentContext {
+    actions?: ClrContextAction[];
+    children?: ClrComponentContext[];
+    label?: string;
+    state?: Record<string, unknown>;
+    type: string;
+}
+
 // @public (undocumented)
 export class ClrConditionalModule {
     // (undocumented)
@@ -331,6 +343,26 @@ export class ClrConditionalModule {
 }
 
 // @public
+export interface ClrContextAction {
+    // (undocumented)
+    disabled?: boolean;
+    href?: string;
+    // (undocumented)
+    kind: 'button' | 'link';
+    label: string;
+}
+
+// @public
+export interface ClrContextSnapshotOptions {
+    includeActions?: boolean;
+    includeDomComponents?: boolean;
+    includeFormValues?: boolean;
+    maxComponents?: number;
+    maxItemsPerCollection?: number;
+    maxTextLength?: number;
+}
+
+// @public
 export class ClrDestroyService extends Subject<void> implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
@@ -339,6 +371,9 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrDestroyService>;
 }
+
+// @public
+export type ClrElementContextCallback = (options: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
 
 // @public (undocumented)
 export class ClrExpandableAnimation extends BaseExpandableAnimation {
@@ -976,6 +1011,9 @@ export class OutsideClick implements OnDestroy {
 
 // @public (undocumented)
 export function preventArrowKeyScroll(event: KeyboardEvent): void;
+
+// @public
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
 
 // @public (undocumented)
 export class ScrollingService {

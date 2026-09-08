@@ -1,11 +1,13 @@
 # Contextual Engine
 
-`@clr/ai` gives AI agents structured, up-to-date context about the page a Clarity
+`@clr/angular/ai` gives AI agents structured, up-to-date context about the page a Clarity
 application is currently showing: the active route, the components rendered right now and their
 state, the actions currently available, and any semantic annotations the application provides.
 
-It is a standalone package that does not depend on `@clr/angular`: Clarity components are
-described by reading the rendered DOM, so the engine works alongside any Clarity version.
+It ships as a secondary entry point of `@clr/angular`, so it needs nothing extra installed.
+Components are described by reading the rendered DOM — specifically the accessibility tree — so
+the engine covers Clarity Angular components, `@clr/ui` CSS-only markup, other component libraries
+and plain semantic HTML alike.
 
 ## Design principles
 
@@ -24,7 +26,7 @@ described by reading the rendered DOM, so the engine works alongside any Clarity
 ## Taking a snapshot
 
 ```ts
-import { ClrContextualEngineService } from '@clr/ai';
+import { ClrContextualEngineService } from '@clr/angular/ai';
 
 constructor(private contextEngine: ClrContextualEngineService) {}
 
@@ -52,7 +54,7 @@ opening, rows being selected. The page is re-scraped after a quiet window of `de
 the context actually changed:
 
 ```ts
-import { ClrContextTrackerService } from '@clr/ai';
+import { ClrContextTrackerService } from '@clr/angular/ai';
 
 constructor(tracker: ClrContextTrackerService) {
   tracker.start({ snapshot: { maxComponents: 50 } });
@@ -121,14 +123,15 @@ fully dynamic context.
 Some state lives only inside component instances — a combobox's options render in a popover, yet
 the component always knows them. Any component can publish that truth by assigning a callback to
 its own host element under the `clrElementContext` property (exported as
-`CLR_ELEMENT_CONTEXT_PROPERTY`, with a `setClrElementContext` helper). The collector calls it
+`CLR_ELEMENT_CONTEXT_PROPERTY`, with a `publishElementContext` helper in `@clr/angular/utils`).
+The collector calls it
 while scraping and merges the result over what the DOM shows — published values win. Because the
 contract is a plain element property with plain data, publishing requires no dependency on
-`@clr/ai`: Clarity components, other UI libraries and application components all use the same
+this entry point: Clarity components, other UI libraries and application components all use the same
 mechanism.
 
 ```ts
-setClrElementContext(hostElement, snapshotOptions => ({
+publishElementContext(hostElement, snapshotOptions => ({
   type: 'combobox',
   state: {
     options: this.choices.map(choice => choice.label),
@@ -172,7 +175,7 @@ const hostContext = await this.contextEngine.requestHostContext();
 ```
 
 Non-Angular UI can speak the protocol directly — it is two plain JSON messages over `postMessage`
-(see `CLR_CONTEXT_PROTOCOL` in `@clr/ai`):
+(see `CLR_CONTEXT_PROTOCOL` in `@clr/angular/ai`):
 
 ```js
 // iframe -> parent
