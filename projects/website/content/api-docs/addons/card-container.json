@@ -1,0 +1,81 @@
+{
+  "entryPoint": "@clr/addons/card-container",
+  "components": [
+    {
+      "name": "AppfxCardComponent",
+      "kind": "component",
+      "selector": "appfx-card",
+      "description": "Appfx Container Card\nHandles user interactions like drag and drop and a11y support for same through keyboard events\n\nUsed internally in Appfx Card Container @see(AppfxCardContainer)",
+      "inputs": [
+        {
+          "name": "card",
+          "type": "AppfxCardInternal",
+          "description": "The descriptor of the step being rendered."
+        },
+        {
+          "name": "dropGroup",
+          "type": "string",
+          "description": "Specifics which dropGroup card belongs to as card drop should happen within specific container\nused to distinguish drag and drop cards from multiple containers"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "AppfxCardContainerComponent",
+      "kind": "component",
+      "selector": "appfx-card-container",
+      "description": "Appfx Card Container\n\nProvides container for cards with below functionalities\n\nDynamic card insertion and removal\nShow/Hide cards through settings menu\nDrag an Drop Cards to change order\nKeyboard a11y events handling\nCard order and hidden property persistence\n\n @Usages\n <appfx-card-container\n    [containerId]=\"example-container\"\n    [cards]=\"container cards\"\n    [persistenceStore]=\"AppfxContainerPersistenceStore\"> // optional if none provided local storage is used\n </",
+      "inputs": [
+        {
+          "name": "cards",
+          "type": "AppfxCardInternal[]",
+          "default": "[]",
+          "description": ""
+        },
+        {
+          "name": "containerId",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "dragDropEnabled",
+          "type": "boolean",
+          "default": "true",
+          "description": ""
+        },
+        {
+          "name": "persistenceStore",
+          "type": "AppfxContainerPersistenceStore",
+          "description": ""
+        },
+        {
+          "name": "showCardContainerSettings",
+          "type": "boolean",
+          "default": "true",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "AppfxCardContainerSettingsComponent",
+      "kind": "component",
+      "selector": "appfx-card-container-settings",
+      "description": "Component to display container settings menu to show/hide cards.\nShows card list alphabetically according to title with checkboxes.",
+      "inputs": [
+        {
+          "name": "containerCards",
+          "type": "AppfxCardInternal[]",
+          "description": "Cards list to display in settings dropdown menu."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "toggleCardVisibility",
+          "type": "EventEmitter<string>",
+          "description": "Event Emitter when user wants to show/hide card."
+        }
+      ]
+    }
+  ]
+}

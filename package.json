@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "npm-run-all _build:angular _build:addons _build:ui _build:storybook _build:demo _build:website",
-    "build:ci": "npm-run-all clean lint build test public-api:check",
+    "build:ci": "npm-run-all clean lint build test public-api:check website-api:check",
     "clean": "rimraf dist",
     "commit": "cz --signoff",
     "lint": "npm-run-all _lint:code _lint:styles _lint:format _lint:format-stories _lint:format-code-examples",
@@ -18,6 +18,8 @@
     "prepare": "husky install && patch-package",
     "public-api:check": "node scripts/api-extractor.js",
     "public-api:update": "node scripts/api-extractor.js --local",
+    "website-api:check": "node scripts/website-api-docs.js",
+    "website-api:update": "node scripts/website-api-docs.js --local",
     "start": "npm run clean && ng run clr-angular:storybook",
     "start:demo": "npm run clean && ng serve clr-demo",
     "start:website": "npm-run-all prebuild:website --parallel start:website:*",

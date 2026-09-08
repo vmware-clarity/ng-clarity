@@ -1,0 +1,363 @@
+{
+  "entryPoint": "@clr/angular/wizard",
+  "components": [
+    {
+      "name": "ClrWizard",
+      "kind": "component",
+      "selector": "clr-wizard",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrWizardClosable",
+          "type": "boolean",
+          "default": "true",
+          "description": "Tells the modal part of the wizard whether it should have a close \"X\"\nin the top right corner. Set using [clrWizardClosable] input."
+        },
+        {
+          "name": "clrWizardDisableStepnav",
+          "type": "boolean",
+          "description": "Prevents clicks on the links in the stepnav from working.\nSet using [clrWizardDisableStepnav] input.\nA more granular bypassing of navigation which can be useful when your\nClrWizard is in a state of completion and you don't want users to be\nable to jump backwards and change things."
+        },
+        {
+          "name": "clrWizardFooterAlign",
+          "type": "ClrWizardFooterAlign | null",
+          "default": "null",
+          "description": "Align the footer buttons to 'start' (left) or 'end' (right).\nBy default, modal wizards align to 'end' and in-page wizards align to 'start'.\nNested wizards inherit the default unless this input is explicitly set.\nSet using [clrWizardFooterAlign] input."
+        },
+        {
+          "name": "clrWizardForceForwardNavigation",
+          "type": "boolean",
+          "description": "Resets page completed states when navigating backwards.\nSet using [clrWizardForceForwardNavigation] input."
+        },
+        {
+          "name": "clrWizardHideFooter",
+          "type": "boolean",
+          "default": "false",
+          "description": "Hide the wizard footer entirely. Set using [clrWizardHideFooter] input.\nUseful when a nested wizard or stepper handles its own navigation."
+        },
+        {
+          "name": "clrWizardInPage",
+          "type": "boolean",
+          "default": "false",
+          "description": "Enable \"in page\" wizard. Set using [clrWizardInPage] input."
+        },
+        {
+          "name": "clrWizardInPageFillContentArea",
+          "type": "boolean",
+          "default": "false",
+          "description": "Make an \"in page\" wizard fill the .content-area. Set using [clrWizardInPageFillContentArea] input.\nIf you can't use this option, you will likely need to provide custom CSS to set the wizard's height and margins."
+        },
+        {
+          "name": "clrWizardOpen",
+          "type": "boolean",
+          "description": "Toggles open/close of the wizard component.\nSet using the [clrWizardOpen] input."
+        },
+        {
+          "name": "clrWizardPreventDefaultCancel",
+          "type": "boolean",
+          "description": "Prevents ClrWizard from closing when the cancel button or close \"X\" is clicked.\nSet using the [clrWizardPreventDefaultCancel] input.\n\nNote that using stopCancel will require you to create your own calls to close() in your host compone`nt\nto make the ClrWizard work as expected. Useful for doing checks or prompts\nbefore closing a ClrWizard."
+        },
+        {
+          "name": "clrWizardPreventDefaultNext",
+          "type": "boolean",
+          "description": "Prevents ClrWizard from moving to the next page or closing itself on finishing.\nSet using the [clrWizardPreventDefaultNext] input. Note that using stopNext\nwill require you to create your own calls to .next() and .finish() in your\nhost component to make the ClrWizard work as expected."
+        },
+        {
+          "name": "clrWizardPreventModalAnimation",
+          "type": "boolean",
+          "default": "false",
+          "description": "Used to communicate to the underlying modal that animations are not\nwanted. Primary use is for the display of static/inline wizards.\nSet using [clrWizardPreventModalAnimation] input."
+        },
+        {
+          "name": "clrWizardPreventNavigation",
+          "type": "boolean",
+          "description": "Prevents ClrWizard from performing any form of navigation away from the current\npage. Set using the [clrWizardPreventNavigation] input.\nNote that stopNavigation is meant to freeze the wizard in place, typically\nduring a long validation or background action where you want the wizard to\ndisplay loading content but not allow the user to execute navigation in\nthe stepnav, close X, or the  back, finish, or next buttons."
+        },
+        {
+          "name": "clrWizardSize",
+          "type": "string",
+          "default": "'xl'",
+          "description": "Set the modal size of the wizard. Set using [clrWizardSize] input."
+        },
+        {
+          "name": "clrWizardStepnavAriaLabel",
+          "type": "any",
+          "default": "this.commonStrings.keys.wizardStepnavAriaLabel",
+          "description": "Set the aria-label for the stepnav section of the wizard. Set using [clrWizardStepnavAriaLabel] input."
+        },
+        {
+          "name": "clrWizardStepnavLayout",
+          "type": "any",
+          "default": "ClrWizardStepnavLayout.VERTICAL",
+          "description": "Set the wizard stepnav layout to 'vertical' (default) or 'horizontal'. Set using [clrWizardStepnavLayout] input."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrWizardCurrentPageChange",
+          "type": "any",
+          "description": "Emits when the current page has changed. Listen via (clrWizardCurrentPageChange) event.\noutput. Useful for non-blocking validation."
+        },
+        {
+          "name": "clrWizardOnCancel",
+          "type": "any",
+          "description": "Emits when the wizard is canceled. Listen via (clrWizardOnCancel) event.\nCan be combined with the [clrWizardPreventDefaultCancel] input to create\nwizard-level custom cancel routines."
+        },
+        {
+          "name": "clrWizardOnFinish",
+          "type": "any",
+          "description": "Emits when the wizard is completed. Listen via (clrWizardOnFinish) event.\nCan be combined with the [clrWizardPreventDefaultNext] input to create\nwizard-level custom completion routines."
+        },
+        {
+          "name": "clrWizardOnNext",
+          "type": "any",
+          "description": "Emits when the wizard moves to the next page. Listen via (clrWizardOnNext) event.\nCan be combined with the [clrWizardPreventDefaultNext] input to create\nwizard-level custom navigation routines, which are useful for validation."
+        },
+        {
+          "name": "clrWizardOnPrevious",
+          "type": "any",
+          "description": "Emits when the wizard moves to the previous page. Can be useful for validation.\nListen via (clrWizardOnPrevious) event."
+        },
+        {
+          "name": "clrWizardOnReset",
+          "type": "any",
+          "description": "Emits when the wizard is reset. Listen via (clrWizardOnReset) event."
+        },
+        {
+          "name": "clrWizardOpenChange",
+          "type": "boolean",
+          "description": "Emits when the wizard is opened or closed.\nListen via (clrWizardOpenChange) event."
+        }
+      ]
+    },
+    {
+      "name": "ClrWizardButton",
+      "kind": "component",
+      "selector": "clr-wizard-button",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrWizardButtonDisabled",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrWizardButtonHidden",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "default": "''",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrWizardButtonClicked",
+          "type": "string",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrWizardHeaderAction",
+      "kind": "component",
+      "selector": "clr-wizard-header-action",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrWizardHeaderActionDisabled",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "default": "(wizardHeaderActionIndex++).toString()",
+          "description": ""
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "default": "''",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "actionClicked",
+          "type": "string",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrWizardPage",
+      "kind": "component",
+      "selector": "clr-wizard-page",
+      "description": "The ClrWizardPage component is responsible for displaying the content of each step\nin the wizard workflow.\n\nClrWizardPage component has hooks into the navigation service (ClrWizardPage.navService),\npage collection (ClrWizardPage.pageCollection), and button service\n(ClrWizardPage.buttonService). These three providers are shared across the components\nwithin each instance of a Wizard.",
+      "inputs": [
+        {
+          "name": "clrWizardPageHasError",
+          "type": "boolean",
+          "description": "Whether the page has an error and also resolve the \"falsy\" value. The\ncurrent logic treat a \"0\" or an empty string as false and likewise will treat any\n\"truthy\" value as true."
+        },
+        {
+          "name": "clrWizardPageNextDisabled",
+          "type": "boolean",
+          "description": "A property that tells whether or not the wizard should be allowed\nto move to the next page.\n\nUseful for in-page validation because it prevents forward navigation\nand visibly disables the next button.\n\nDoes not require that you re-implement navigation routines like you\nwould if you were using ClrWizardPage.preventDefault or\nWizard.preventDefault."
+        },
+        {
+          "name": "clrWizardPagePreventDefault",
+          "type": "boolean | string",
+          "default": "false",
+          "description": "Overrides all actions from the page level, so you can use an alternate function for\nvalidation or data-munging with a ClrWizardPage.onCommit (clrWizardPageOnCommit output),\nClrWizardPage.onCancel (clrWizardPageOnCancel output), or one\nof the granular page-level button click event emitters."
+        },
+        {
+          "name": "clrWizardPagePreventDefaultCancel",
+          "type": "boolean",
+          "description": "Overrides the cancel action from the page level. Allows you to use an\nalternate function for validation or data-munging before cancelling the\nwizard when combined with the ClrWizardPage.onCancel\n(the clrWizardPageOnCancel output).\n\nRequires that you manually close the wizard from your host component,\nusually with a call to Wizard.forceNext() or wizard.next();"
+        },
+        {
+          "name": "clrWizardPagePreventDefaultNext",
+          "type": "boolean",
+          "description": "Overrides forward navigation from the page level. Allows you to use an\nalternate function for validation or data-munging before moving the\nwizard to the next pagewhen combined with the ClrWizardPage.onCommit\n(clrWizardPageOnCommit) or ClrWizardPage.nextButtonClicked\n(clrWizardPageNext) outputs.\n\nRequires that you manually tell the wizard to navigate forward from\nthe hostComponent, usually with a call to Wizard.forceNext() or\nwizard.next();"
+        },
+        {
+          "name": "clrWizardPagePreviousDisabled",
+          "type": "boolean",
+          "description": "A property that tells whether or not the wizard should be allowed\nto move to the previous page.\n\nUseful for in-page validation because it prevents backward navigation\nand visibly disables the previous button.\n\nDoes not require that you re-implement navigation routines like you\nwould if you were using ClrWizardPage.preventDefault or\nWizard.preventDefault."
+        },
+        {
+          "name": "id",
+          "type": "any",
+          "default": "(wizardPageIndex++).toString()",
+          "description": "An input value that is used internally to generate the ClrWizardPage ID as\nwell as the step nav item ID.\n\nTyped as any because it should be able to accept numbers as well as\nstrings. Passing an index for wizard whose pages are created with an\nngFor loop is a common use case."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrWizardPageCustomButton",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrWizardPageDanger",
+          "type": "ClrWizardPage",
+          "description": "Emits an event when a danger button is clicked and the ClrWizardPage is\nthe wizard's current page. By default, a danger button will act as\neither a \"next\" or \"finish\" button depending on if the ClrWizardPage is the\nlast page or not.\n\nCan be used in conjunction with the ClrWizardPage.preventDefault\n(clrWizardPagePagePreventDefault) input to implement custom forwards\nor finish navigation at the page level when the danger button is clicked.\nThis is useful if you would like to do validation, save data, or warn\nusers before allowing them to go to the next page in the wizard or\nfinish the wizard.\n\nNote that this requires you to call Wizard.finish(), Wizard.forceFinish(),\nWizard.forceNext() or Wizard.next() from the host component. This\ncombination creates a full replacement of the forward navigation and\nfinish functionality."
+        },
+        {
+          "name": "clrWizardPageFinish",
+          "type": "ClrWizardPage",
+          "description": "Emits an event when the finish button is clicked and the ClrWizardPage is\nthe wizard's current page.\n\nCan be used in conjunction with the ClrWizardPage.preventDefault\n(clrWizardPagePagePreventDefault) input to implement custom finish\nfunctionality at the page level. This is useful if you would like to do\nvalidation, save data, or warn users before allowing them to complete\nthe wizard.\n\nNote that this requires you to call Wizard.finish() or Wizard.forceFinish()\nfrom the host component. This combination creates a full replacement of\nthe finish functionality."
+        },
+        {
+          "name": "clrWizardPageNext",
+          "type": "ClrWizardPage",
+          "description": "Emits an event when the next button is clicked and the ClrWizardPage is\nthe wizard's current page.\n\nCan be used in conjunction with the ClrWizardPage.preventDefault\n(clrWizardPagePagePreventDefault) input to implement custom forwards\nnavigation at the page level. This is useful if you would like to do\nvalidation, save data, or warn users before allowing them to go\nto the next page in the wizard.\n\nNote that this requires you to call Wizard.forceNext() or Wizard.next()\nfrom the host component. This combination creates a full replacement of\nthe forward navigation functionality."
+        },
+        {
+          "name": "clrWizardPageNextDisabledChange",
+          "type": "boolean",
+          "description": "Emits when the value of ClrWizardPage.nextStepDisabled changes.\nShould emit the new value of nextStepDisabled."
+        },
+        {
+          "name": "clrWizardPageOnCancel",
+          "type": "ClrWizardPage",
+          "description": "Emits an event when the ClrWizardPage invokes the cancel routine for the wizard.\n\nCan be used in conjunction with the ClrWizardPage.stopCancel\n(clrWizardPagePreventDefaultCancel) or ClrWizardPage.preventDefault\n(clrWizardPagePagePreventDefault) inputs to implement custom cancel\nfunctionality at the page level. This is useful if you would like to do\nvalidation, save data, or warn users before cancelling the wizard.\n\nNote that this requires you to call Wizard.close() from the host component.\nThis constitues a full replacement of the cancel functionality."
+        },
+        {
+          "name": "clrWizardPageOnCommit",
+          "type": "string",
+          "description": "An event emitter carried over from a legacy version of ClrWizardPage.\nFires an event on ClrWizardPage whenever the next or finish buttons\nare clicked and the page is the current page of the Wizard.\n\nNote that this does not automatically emit an event when a custom\nbutton is used in place of a next or finish button."
+        },
+        {
+          "name": "clrWizardPageOnLoad",
+          "type": "string",
+          "description": "Emits an event when ClrWizardPage becomes the current page of the\nWizard."
+        },
+        {
+          "name": "clrWizardPagePreventDefaultCancelChange",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrWizardPagePrevious",
+          "type": "ClrWizardPage",
+          "description": "Emits an event when the previous button is clicked and the ClrWizardPage is\nthe wizard's current page.\n\nCan be used in conjunction with the ClrWizardPage.preventDefault\n(clrWizardPagePagePreventDefault) input to implement custom backwards\nnavigation at the page level. This is useful if you would like to do\nvalidation, save data, or warn users before allowing them to go\nbackwards in the wizard.\n\nNote that this requires you to call Wizard.previous()\nfrom the host component. This combination creates a full replacement of\nthe backwards navigation functionality."
+        },
+        {
+          "name": "clrWizardPagePreviousDisabledChange",
+          "type": "boolean",
+          "description": "Emits when the value of ClrWizardPage.previousStepDisabled changes.\nShould emit the new value of previousStepDisabled."
+        },
+        {
+          "name": "clrWizardPagePrimary",
+          "type": "string",
+          "description": "Emits an event when a next, finish, or danger button is clicked and the\nClrWizardPage is the wizard's current page.\n\nCan be used in conjunction with the ClrWizardPage.preventDefault\n(clrWizardPagePagePreventDefault) input to implement custom forwards\nor finish navigation at the page level, regardless of the type of\nprimary button.\n\nThis is useful if you would like to do validation, save data, or warn\nusers before allowing them to go to the next page in the wizard or\nfinish the wizard.\n\nNote that this requires you to call Wizard.finish(), Wizard.forceFinish(),\nWizard.forceNext() or Wizard.next() from the host component. This\ncombination creates a full replacement of the forward navigation and\nfinish functionality."
+        }
+      ]
+    },
+    {
+      "name": "ClrWizardPageTitle",
+      "kind": "directive",
+      "selector": "[clrPageTitle]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrHeadingLevel",
+          "type": "HeadingLevel",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrWizardStepnav",
+      "kind": "component",
+      "selector": "clr-wizard-stepnav",
+      "description": "",
+      "inputs": [
+        {
+          "name": "label",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrWizardStepnavItem",
+      "kind": "component",
+      "selector": "[clr-wizard-stepnav-item]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "page",
+          "type": "ClrWizardPage",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrWizardTitle",
+      "kind": "directive",
+      "selector": "clr-wizard-title",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrHeadingLevel",
+          "type": "HeadingLevel",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}

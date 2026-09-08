@@ -1,0 +1,35 @@
+{
+  "entryPoint": "@clr/angular/timeline",
+  "components": [
+    {
+      "name": "ClrTimeline",
+      "kind": "component",
+      "selector": "clr-timeline",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrLayout",
+          "type": "ClrTimelineLayout",
+          "default": "ClrTimelineLayout.HORIZONTAL",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrTimelineStep",
+      "kind": "component",
+      "selector": "clr-timeline-step",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrState",
+          "type": "ClrTimelineStepState",
+          "default": "ClrTimelineStepState.NOT_STARTED",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}

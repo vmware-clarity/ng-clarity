@@ -1,0 +1,20 @@
+{
+  "entryPoint": "@clr/addons/a11y",
+  "components": [
+    {
+      "name": "OverrideClrStringsDirective",
+      "kind": "directive",
+      "selector": "clr-stepper-panel [appfxOverrideClrStrings]",
+      "description": "This directive overrides strings used in ClrStepperPanel. It creates a copy of the strings, returned by\nClrCommonStringsService and does not modify the original resources.\n\nThis directive relies on the following Clarity internals:\n\nexport class ClrStepperPanel extends ClrAccordionPanel implements OnInit {\n    public constructor(\n       public commonStrings: ClrCommonStringsService,\n       ...\n    ) {}\n    ...\n}\n\n\ncommon-strings.default.ts:\n\n  // Accordion/Stepper\n  stepComplete: 'Step {STEP} complete',\n  stepError: 'Error in step {STEP}',\n\n\nUsage:\n\n   \n   ...\n   \n\n   const stepPanelOverriddenStrings: Partial = {\n      success: \"The step is successfully completed\",\n      danger: \"The step is in serious danger\",\n   };",
+      "inputs": [
+        {
+          "name": "appfxOverrideClrStrings",
+          "type": "Partial<ClrCommonStrings>",
+          "default": "{}",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}

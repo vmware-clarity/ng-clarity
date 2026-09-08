@@ -81,6 +81,37 @@ To update the API files follow these steps:
 1.  Make public API change
 2.  Run `npm run build`
 3.  Run `npm run public-api:update` this should fail
+4.  Run `npm run website-api:update` to update the API tables shown on the website (see below)
+
+### Website API Docs
+
+The API tab of each component page on the website is rendered from the report
+files under `projects/website/content/api-docs/`. The structure of those files
+(which components are public, their selectors, inputs, outputs, types and default
+values) is generated from the library sources with [Compodoc](https://compodoc.app/),
+so it cannot drift from the code. `npm run website-api:check` runs in CI and fails
+when the files are out of date, in the same way `npm run public-api:check` guards the
+`*.api.md` reports.
+
+Descriptions are written by hand and are never generated. They come from one of two places:
+
+- A JSDoc comment on the `@Input()` / `@Output()` declaration in the library source.
+  When present, it always wins and also shows up in Storybook.
+- The `description` field of the binding in the report file. Edit it directly when
+  the source has no JSDoc comment; `npm run website-api:update` preserves it.
+
+When you add or change an input or output:
+
+1.  Run `npm run website-api:update`
+2.  Fill in the `description` of any new binding (the script lists bindings without
+    one when run with `--verbose`)
+3.  Commit the updated files under `projects/website/content/api-docs/`
+
+To render the tables on a page, use the shared component with the class names to document:
+
+```html
+<app-api-docs [components]="['ClrAccordion', 'ClrAccordionPanel']"></app-api-docs>
+```
 
 ### Commits
 

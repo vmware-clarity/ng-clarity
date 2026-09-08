@@ -1,0 +1,85 @@
+{
+  "entryPoint": "@clr/addons/menu",
+  "components": [
+    {
+      "name": "MenuActionComponent",
+      "kind": "component",
+      "selector": "appfx-menu-action",
+      "description": "",
+      "inputs": [
+        {
+          "name": "enabled",
+          "type": "boolean",
+          "default": "true",
+          "description": ""
+        },
+        {
+          "name": "iconClass",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "shortcut",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "handle",
+          "type": "void",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "MenuComponent",
+      "kind": "component",
+      "selector": "appfx-menu",
+      "description": "",
+      "inputs": [
+        {
+          "name": "text",
+          "type": "string",
+          "description": "The text that will be displayed as label of a nested menu"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "closed",
+          "type": "void",
+          "description": ""
+        },
+        {
+          "name": "opened",
+          "type": "void",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "MenuHeaderComponent",
+      "kind": "component",
+      "selector": "appfx-menu-header",
+      "description": "",
+      "inputs": [
+        {
+          "name": "iconClass",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}

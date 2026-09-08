@@ -1,0 +1,172 @@
+{
+  "entryPoint": "@clr/angular/layout",
+  "components": [
+    {
+      "name": "ClrBreadcrumbs",
+      "kind": "component",
+      "selector": "clr-breadcrumbs",
+      "description": "",
+      "inputs": [
+        {
+          "name": "items",
+          "type": "BreadcrumbItem[]",
+          "default": "[]",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrBreadcrumbItemClick",
+          "type": "BreadcrumbItem",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrHeader",
+      "kind": "component",
+      "selector": "clr-header",
+      "description": "",
+      "inputs": [
+        {
+          "name": "role",
+          "type": "string",
+          "default": "'banner'",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrNavLevel",
+      "kind": "directive",
+      "selector": "[clr-nav-level]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "closeAriaLabel",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clr-nav-level",
+          "type": "number",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrTabContent",
+      "kind": "component",
+      "selector": "clr-tab-content",
+      "description": "",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrTabLink",
+      "kind": "directive",
+      "selector": "[clrTabLink]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrTabLinkInOverflow",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrTabs",
+      "kind": "component",
+      "selector": "clr-tabs",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrLayout",
+          "type": "TabsLayout | string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrTabsActions",
+      "kind": "component",
+      "selector": "clr-tabs-actions",
+      "description": "",
+      "inputs": [
+        {
+          "name": "position",
+          "type": "ClrTabsActionsPosition",
+          "default": "'right'",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrVerticalNav",
+      "kind": "component",
+      "selector": "clr-vertical-nav",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrVerticalNavCollapsed",
+          "type": "boolean | string",
+          "description": ""
+        },
+        {
+          "name": "clrVerticalNavCollapsible",
+          "type": "boolean | string",
+          "description": ""
+        },
+        {
+          "name": "clrVerticalNavToggleLabel",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrVerticalNavCollapsedChange",
+          "type": "boolean",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrVerticalNavGroup",
+      "kind": "component",
+      "selector": "clr-vertical-nav-group",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrVerticalNavGroupExpanded",
+          "type": "boolean | string",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrVerticalNavGroupExpandedChange",
+          "type": "boolean",
+          "description": ""
+        }
+      ]
+    }
+  ]
+}

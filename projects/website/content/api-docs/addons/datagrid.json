@@ -1,0 +1,416 @@
+{
+  "entryPoint": "@clr/addons/datagrid",
+  "components": [
+    {
+      "name": "DatagridActionBarComponent",
+      "kind": "component",
+      "selector": "appfx-datagrid-action-bar",
+      "description": "",
+      "inputs": [
+        {
+          "name": "actions",
+          "type": "ActionDefinition[]",
+          "description": ""
+        },
+        {
+          "name": "btnLayout",
+          "type": "string",
+          "default": "'flex'",
+          "description": ""
+        },
+        {
+          "name": "dropdownOrientation",
+          "type": "string",
+          "default": "'bottom-left'",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "invokeAction",
+          "type": "EventEmitter<ActionDefinition>",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "DatagridComponent",
+      "kind": "component",
+      "selector": "appfx-datagrid",
+      "description": "DatagridComponent represents a data-bound list control that displays items from an array-based source in the form of columns and rows.\nThe component is built on top of the ClrDatagrid component from Clarity\nand provides additional functionality and customization options on top of the base ClrDatagrid.\n\nThis allows the datagrid to enforce type safety for the items passed to it, ensuring\nthat the gridItems and other related inputs conform to a specific structure.\nExample :<appfx-datagrid [gridItems]=\"data\" [columns]=\"columns\"></appfx-datagrid>",
+      "inputs": [
+        {
+          "name": "actionBarActions",
+          "type": "ActionDefinition[]",
+          "description": "Action definitions for the action bar."
+        },
+        {
+          "name": "columns",
+          "type": "ColumnDefinition<T>[]",
+          "description": "Array of column definitions that configure the appearance and behavior of each column in the Datagrid.\n\nEach object in this array represents a column {@link ColumnDefinition}.\nThe required ColumnDefinition properties are:\n\ndisplayName: The text for the column header.\nfield: The name of the property in the data source to be shown in the column."
+        },
+        {
+          "name": "datagridLabels",
+          "type": "Partial<DatagridStrings>",
+          "description": ""
+        },
+        {
+          "name": "dataRange",
+          "type": "ClrDatagridVirtualScrollRangeInterface<T>",
+          "default": "{\n    total: 100,\n    skip: 0,\n    data: [],\n  }",
+          "description": "Input for providing data when virtual scrolling is enabled.\ngridItems should not be used in this case."
+        },
+        {
+          "name": "detailBody",
+          "type": "TemplateRef<unknown>",
+          "description": "Reference to the template containing the detail content."
+        },
+        {
+          "name": "detailHeader",
+          "type": "TemplateRef<unknown>",
+          "description": "Reference to the template containing the content for the header\ndisplayed on top of the detail content."
+        },
+        {
+          "name": "detailState",
+          "type": "T | null",
+          "default": "null",
+          "description": "The state passed to the detail pane. Contains the gridItem for which\ndetail is shown or null in case detail pane is hidden."
+        },
+        {
+          "name": "disableUnsort",
+          "type": "boolean",
+          "default": "true",
+          "description": "Controls whether the \"unsort\" step is removed from the column sort cycle for\nevery column in the grid.\n\ntrue (default): sorting toggles ASC ↔ DESC only; a sorted column cannot\nbe returned to the unsorted state by clicking its header.\nfalse: sorting cycles ASC → DESC → unsorted (Clarity's default behavior).\n\nA column may override this grid-level default via\n{@link ColumnDefinition.disableUnsort}."
+        },
+        {
+          "name": "dragConfig",
+          "type": "DatagridDragConfig",
+          "description": "Configuration for enabling drag-and-drop functionality within the datagrid.\nBy default, drag and drop is disabled. To enable it, provide a valid configuration object\nimplementing the @see DatagridDragConfig interface."
+        },
+        {
+          "name": "filterableProperties",
+          "type": "FilterablePropertyDefinition[]",
+          "default": "[]",
+          "description": "An array of properties used for advanced filtering in FilterMode.Advanced"
+        },
+        {
+          "name": "filterMode",
+          "type": "FilterMode",
+          "description": "Specifies the type of global filter to enable.\n\nFilterMode.Quick: Enables the quick filter.\nFilterMode.Advanced: Enables the advanced filter.\nFilterMode.AdvancedOnly: Enables only the advanced filter.\n\nWhen the filter is enabled, the component will emit the searchTermChange/advancedFilterChange event whenever the filter changes.\nIf not set, no filter will be displayed."
+        },
+        {
+          "name": "footerModel",
+          "type": "GridFooterModel",
+          "description": "Input property for the footer configuration.\nAllows the consumer of the component to provide configuration values."
+        },
+        {
+          "name": "gridItems",
+          "type": "T[]",
+          "description": "Data source for the Datagrid, represented as an array of row objects.\n\nEach object in this array corresponds to a row in the Datagrid, where\nindividual fields map to columns based on each column's field property\nas defined in {@link ColumnDefinition}."
+        },
+        {
+          "name": "isRowLocked",
+          "type": "function",
+          "description": "A function that determines if a specific row is locked (disabled).\n\nThis function receives a row item as an argument and returns a boolean indicating\nwhether the row should be locked (true) or enabled (false)."
+        },
+        {
+          "name": "layoutModel",
+          "type": "GridLayoutModel",
+          "description": "Input property for the grid layout configuration.\nAllows the consumer of the component to provide configuration values."
+        },
+        {
+          "name": "listItemsCount",
+          "type": "number",
+          "default": "0",
+          "deprecated": "To be removed with VSUIP-4776",
+          "description": "All grid items count when no filter is added.\nUsed for Export functionality when showExport is true.\nShould be provided only when the grid is server driven datagrid\n(serverDrivenDatagrid = true), otherwise the listItemsCount is calculated\ninternally and shouldn't be set."
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "default": "false",
+          "description": "Shows loading indicator inside the datagrid to prevent user interactions while data is loading.\nSet to true to display loading; set to false to hide the loading indicator.\nDefaults to false."
+        },
+        {
+          "name": "loadingMoreItems",
+          "type": "boolean",
+          "default": "false",
+          "description": "Indicates if additional records are currently being fetched during infinite scrolling.\nWhen true, a loading indicator is appended to the end of the datagrid rows."
+        },
+        {
+          "name": "pageSize",
+          "type": "number",
+          "description": "Sets the number of items displayed per page in the datagrid.\nBy default, no page size is set."
+        },
+        {
+          "name": "pageSizeOptions",
+          "type": "number[]",
+          "description": "Defines the selectable page size options displayed in the grid footer.\nUsers can choose from these options to control the number of items shown per page."
+        },
+        {
+          "name": "preSelectFirstItem",
+          "type": "boolean",
+          "default": "false",
+          "description": "When set to true, automatically selects the first item in the datagrid upon initialization.\nDefaults to false."
+        },
+        {
+          "name": "preserveExistingSelectionOnFilter",
+          "type": "boolean",
+          "description": "Controls whether the datagrid selection should be preserved on filtering."
+        },
+        {
+          "name": "rowDetailContent",
+          "type": "TemplateRef<unknown>",
+          "description": "Template for the content displayed when a row expands. Enables expandable row functionality."
+        },
+        {
+          "name": "rowSelectionMode",
+          "type": "boolean",
+          "description": "Enables or disables selection/deselection of rows when a row is clicked.\nIf SelectionType is set to NONE, row selection is automatically disabled, regardless of this setting.\nDefaults to true."
+        },
+        {
+          "name": "rowsExpandedByDefault",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "selectedItems",
+          "type": "T[]",
+          "description": "Array of grid items {@link gridItems} which to be selected."
+        },
+        {
+          "name": "selectionType",
+          "type": "SelectionType",
+          "description": "Defines the grid selection type.\nAccepts a value from SelectionType enum {@link SelectionType}, which specifies the row selection behavior:\n\nSelectionType.NONE: No rows are selectable.\nSelectionType.SINGLE_SELECT (default): Only one row can be selected at a time.\nSelectionType.MULTI_SELECT: Multiple rows can be selected.\n\nDefaults to SelectionType.SINGLE_SELECT."
+        },
+        {
+          "name": "serverDrivenDatagrid",
+          "type": "boolean",
+          "default": "false",
+          "description": "Enables or disables server-driven mode for the datagrid.\nWhen set to true, pagination and filtering should be managed externally.\nDefaults to false."
+        },
+        {
+          "name": "showCustomPagination",
+          "type": "boolean",
+          "default": "false",
+          "description": "Shows the projected custom pagination component from the host component.\nUsed for infinite pagination scenarios.\nDefault: false"
+        },
+        {
+          "name": "singleRowActions",
+          "type": "ActionDefinition[] | null",
+          "description": "Action definitions for the single row actions."
+        },
+        {
+          "name": "totalItems",
+          "type": "number",
+          "default": "0",
+          "description": "The totalItems should be provided when the grid is server driven datagrid\n(serverDrivenDatagrid = true), otherwise the totalItems is calculated\ninternally and shouldn't be set."
+        },
+        {
+          "name": "trackByFunction",
+          "type": "TrackByFunction<T>",
+          "description": "A function that defines how to be tracked the changes for items in the grid."
+        },
+        {
+          "name": "trackByGridItemProperty",
+          "type": "string",
+          "description": "property expression which defines the item property which to be\nused for tracking changes of items in in the grid. May be deep with \"a.b.c\" notation."
+        },
+        {
+          "name": "virtualScrolling",
+          "type": "boolean",
+          "default": "false",
+          "description": "Controls whether the datagrid uses virtual scrolling to render data.\nVirtual scrolling improves performance with large datasets by only rendering\nrows that are currently visible in the viewport.\n\nVirtual scrolling has the following limitations:\n\nRequires fixed row height for accurate scroll position calculations\nCell text is always truncated to maintain consistent row heights\nExpandable rows are not supported due to height constraints\nOnly works with server-driven data mode"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "actionClick",
+          "type": "ActionClickEvent",
+          "description": "Event emitter triggered when a single-row action or actionbar action is clicked.\nThe emitted event contains information about the action that was clicked. {@link ActionClickEvent}"
+        },
+        {
+          "name": "advancedFilterChange",
+          "type": "PropertyFilter[]",
+          "description": "Emits when advanced filter criteria changes."
+        },
+        {
+          "name": "columnDefsChange",
+          "type": "ColumnDefinition<T>[]",
+          "description": "Emits the updated column definitions {@link columns} to the parent component when changed."
+        },
+        {
+          "name": "columnFilterChange",
+          "type": "ColumnFilterChange",
+          "description": "Event emitter to tell hosting view that column filtering has changed."
+        },
+        {
+          "name": "columnHiddenStateChange",
+          "type": "ColumnHiddenState",
+          "description": "Event emitter to tell hosting view that hidden state of column has changed."
+        },
+        {
+          "name": "columnOrderChange",
+          "type": "ColumnOrderChanged",
+          "description": "Event emitter to tell hosting view that column order has changed."
+        },
+        {
+          "name": "columnResize",
+          "type": "ColumnResize",
+          "description": "Event emitter to tell hosting view that size of column has changed."
+        },
+        {
+          "name": "columnSortOrderChange",
+          "type": "ColumnSortOrder",
+          "description": "Event emitter to tell hosting view that sort order of column has changed."
+        },
+        {
+          "name": "detailStateChange",
+          "type": "T",
+          "description": "Used to notify the hosting view that the detailState value has changed\n( to enable two way data binding )"
+        },
+        {
+          "name": "exportDataEvent",
+          "type": "ExportStatus",
+          "description": "Event emitter to tell the hosting view that user has requested to export list data"
+        },
+        {
+          "name": "gridItemsChange",
+          "type": "T[]",
+          "description": "Emits the updated gridItems to the parent component when changed."
+        },
+        {
+          "name": "openContextMenu",
+          "type": "ContextMenuEvent",
+          "description": "Event emitter triggered when a right-click event is performed on a grid row."
+        },
+        {
+          "name": "pageSizeChange",
+          "type": "number",
+          "description": "Emits the updated page size {@link pageSize} to the parent component when changed."
+        },
+        {
+          "name": "refreshGridData",
+          "type": "ClrDatagridStateInterface",
+          "description": "Event emitter emitted when the data needs to be refreshed,\nbased on user action or external ones."
+        },
+        {
+          "name": "refreshVirtualGridData",
+          "type": "ClrDatagridStateInterface",
+          "description": "Event emitter emits when data in the grid with virtual scrolling needs to be refreshed."
+        },
+        {
+          "name": "rowActionMenuOpenChange",
+          "type": "SingleRowActionOpen",
+          "description": "Event emitter triggered when the single-row action menu is opened.\nThe emitted event contains information about the open state and the actions associated with the menu. {@link SingleRowActionOpen}"
+        },
+        {
+          "name": "searchTermChange",
+          "type": "string",
+          "description": "Event emitter to tell hosting view that search term, used for filtering has changed."
+        },
+        {
+          "name": "selectedItemsChange",
+          "type": "T[]",
+          "description": "Emits the updated selected items {@link selectedItems} when changed."
+        }
+      ]
+    },
+    {
+      "name": "DatagridFilterComponent",
+      "kind": "component",
+      "selector": "appfx-datagrid-filter",
+      "description": "",
+      "inputs": [
+        {
+          "name": "fieldName",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "filterValue",
+          "type": "any",
+          "description": ""
+        },
+        {
+          "name": "stringFilterType",
+          "type": "ClrDatagridStringFilterInterface<any>",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "filterValueChange",
+          "type": "any",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "DatagridPageDirective",
+      "kind": "directive",
+      "selector": "[datagridPage]",
+      "description": "Datagrid page directive which set the page which to be shown when the appfx datagrid is display.\nSupports  setting of arbitrary grid page as current page and emits the new page\nnumber when the page is change.\nSupports this functionality for server side and client side grids.",
+      "inputs": [
+        {
+          "name": "datagridPage",
+          "type": "number",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "datagridPageChange",
+          "type": "number",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "DatagridPersistSettingsDirective",
+      "kind": "directive",
+      "selector": "appfx-datagrid[appfxPersistDatagridSettings]",
+      "description": "Sets the grid up with page size, column visibility and width from user-defined storage that is provided\nReacts to user changes in the Clarity datagrid to notify the injected storage to persist the grid properties\nSo reloading the application in automatically restore these preferences as a convenience",
+      "inputs": [
+        {
+          "name": "appfxPersistDatagridSettings",
+          "type": "string",
+          "description": "Directive takes unique identifier input to describe the grid"
+        },
+        {
+          "name": "persistPageSize",
+          "type": "boolean",
+          "description": "Flag indicates whether to be persisted the grid page size."
+        },
+        {
+          "name": "persistSortOrder",
+          "type": "boolean",
+          "description": "Flag indicates whether to be persisted the grid page size."
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "DatagridPreserveSelectionDirective",
+      "kind": "directive",
+      "selector": "[appfxPreserveSelection]",
+      "description": "Preserves selection of datagrid and datagrid-detail by tracking whether some\ngrid item should be selected on the base of the a set \"trackByGridItemProperty\"\ninput of the datagrid or with the help of the \"trackByFunction\" function\ninput of the datagrid.\n\nAfter global refresh the data grid receives new items and the selection is lost\nbecause the grid doesn't know how to recognize which of the new items are the old one\nselected before global refresh. This directive tracks the selected items by property and\nwhen the grid receives new data update the selected items array with the items from the\nthe new grid data.\n\nThe server-side driven data grid doesn't receive all data. The directive in this case will\nupdate only the items which can be found among the new grid items and leave\nthe old ones which it can't find in the selected grid items array. In this case, the component\nwhich host the appfx datagrid has responsibility to remove the old selected items which are\nnot applicable for selection after grid data has been updated.\n\nHow to use it\n\n <appfx-datagrid [appfxPreserveSelection] =\"'hostObjectId'\" [gridItems]=\"gridItems\" ....>\n\n <appfx-datagrid appfxPreserveSelection [trackByGridItemProperty]=\"'hostObjectId'\" [gridItems]=\"gridItems\" ....>\n\n <appfx-datagrid appfxPreserveSelection [trackByFunction]=\"\" [gridItems]=\"gridItems\" ....>\n\nWhere function receives as an argument datagrid item and returns unique identifier for it.",
+      "inputs": [
+        {
+          "name": "preserveExistingSelection",
+          "type": "boolean",
+          "default": "true",
+          "description": "preserveSelection - needed mainly because of list-view component and\nindicates whether grid should preserve the selection based on 'trackByFunction' or\n'trackByGridItemProperty'."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "selectedItemsUpdated",
+          "type": "any[]",
+          "description": ""
+        }
+      ]
+    }
+  ]
+}

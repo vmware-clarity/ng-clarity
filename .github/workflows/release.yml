@@ -30,6 +30,8 @@ jobs:
         run: npm run test
       - name: Public Api Check
         run: npm run public-api:check
+      - name: Website Api Check
+        run: npm run website-api:check
       - name: Release
         env:
           BD_ACCESS_TOKEN: ${{ secrets.BD_ACCESS_TOKEN }}

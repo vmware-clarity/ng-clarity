@@ -1,0 +1,90 @@
+{
+  "entryPoint": "@clr/addons/datagrid-filters",
+  "components": [
+    {
+      "name": "CompositeFiltersComponent",
+      "kind": "component",
+      "selector": "appfx-composite-filter",
+      "description": "Composite filters component renders different filters based on the type of\nthe corresponding filterable property, e.g., string, enum, number, etc.",
+      "inputs": [
+        {
+          "name": "filterableProperties",
+          "type": "FilterablePropertyDefinition[]",
+          "description": ""
+        },
+        {
+          "name": "presetFilters",
+          "type": "PropertyFilter[]",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "propertyFiltersChange",
+          "type": "PropertyFilter[]",
+          "description": "Event emitter to tell hosting view that the filtering conditions have changed"
+        }
+      ]
+    },
+    {
+      "name": "DataGridFiltersComponent",
+      "kind": "component",
+      "selector": "appfx-datagrid-filters",
+      "description": "Component provides the ability to choose from quick filter (search)\nand advanced filter (composite filters).",
+      "inputs": [
+        {
+          "name": "filterableProperties",
+          "type": "FilterablePropertyDefinition[]",
+          "description": "Array of filterable properties"
+        },
+        {
+          "name": "filterMode",
+          "type": "FilterMode",
+          "description": "Quick, Advanced or AdvancedOnly. Default Quick."
+        },
+        {
+          "name": "presetFilters",
+          "type": "PropertyFilter[]",
+          "description": "Array of pre-selected filters"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "propertyFiltersChange",
+          "type": "PropertyFilter[]",
+          "description": ""
+        },
+        {
+          "name": "searchTermChange",
+          "type": "string",
+          "description": "Event emitter to tell hosting view that search term, used for filtering\nhas changed."
+        }
+      ]
+    },
+    {
+      "name": "FilterFormComponent",
+      "kind": "component",
+      "selector": "appfx-filter-form",
+      "description": "Reusable form component.",
+      "inputs": [
+        {
+          "name": "valid",
+          "type": "boolean",
+          "description": "Hosting view form status"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "apply",
+          "type": "void",
+          "description": "Event emitter to tell hosting view that apply button was clicked"
+        },
+        {
+          "name": "cancel",
+          "type": "void",
+          "description": "Event emitter to tell hosting view that cancel button was clicked"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "entryPoint": "@clr/addons/var",
+  "components": [
+    {
+      "name": "ErrorComponent",
+      "kind": "component",
+      "selector": "appfx-error",
+      "description": "",
+      "inputs": [
+        {
+          "name": "error",
+          "type": "ActivationError",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "onRetry",
+          "type": "EventEmitter<any>",
+          "description": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "entryPoint": "@clr/addons/theme-builder",
+  "components": [
+    {
+      "name": "ThemeBuilderComponent",
+      "kind": "component",
+      "selector": "clr-theme-builder",
+      "description": "",
+      "inputs": [
+        {
+          "name": "presets",
+          "type": "ThemePreset[]",
+          "description": "Presets available in the preset selector. Defaults to Clarity's built-in preset list.\nThe Clarity Default preset is always prepended, so it's guaranteed to remain available\nas a fallback even when a custom list is provided."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "generatedCSS",
+          "type": "string",
+          "description": "Emits the generated CSS override text whenever a color, preset, reset, or override toggle changes."
+        }
+      ]
+    }
+  ]
+}

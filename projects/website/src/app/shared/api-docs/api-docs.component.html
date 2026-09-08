@@ -1,0 +1,53 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+@if (heading) {
+  <h2 id="summary-of-options" cds-text="title" class="clr-mt-24px">{{ heading }}</h2>
+}
+
+@for (table of tables; track table.name) {
+  <h3 cds-text="section" class="clr-mt-32px">
+    <code cds-text="code">{{ table.usage }}</code>
+    {{ table.kind }}
+  </h3>
+  @if (table.description) {
+    <p cds-text="body" class="clr-mt-16px">{{ table.description }}</p>
+  }
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="left">Input / Output</th>
+        <th class="left clr-hidden-xs-down">Values</th>
+        <th class="left clr-hidden-xs-down">Default</th>
+        <th class="left">Effect</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of table.rows; track row.binding) {
+        <tr>
+          <td class="left">
+            <b cds-text="medium">{{ row.binding }}</b>
+            @if (row.deprecated) {
+              <span class="label label-warning">Deprecated</span>
+            }
+            <div class="clr-hidden-sm-up">Type: {{ row.type }}</div>
+            @if (row.default) {
+              <div class="clr-hidden-sm-up">Default: {{ row.default }}</div>
+            }
+          </td>
+          <td class="left clr-hidden-xs-down">{{ row.type }}</td>
+          <td class="left clr-hidden-xs-down">{{ row.default }}</td>
+          <td class="left">
+            {{ row.description }}
+            @if (row.deprecated && row.deprecated !== true) {
+              <div>{{ row.deprecated }}</div>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

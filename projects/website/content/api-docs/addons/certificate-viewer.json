@@ -1,0 +1,25 @@
+{
+  "entryPoint": "@clr/addons/certificate-viewer",
+  "components": [
+    {
+      "name": "CertificateViewerComponent",
+      "kind": "component",
+      "selector": "appfx-certificate-viewer",
+      "description": "Displays detailed information about a X.509 certificate chain.\n\nThe component renders information for a PEM encoded certificate chain in two separate sections.\n\nThe former is the general tab which contains common information for the leaf certificate\nlike validity, subject, issuer and fingerprints.\nThe latter is the details tab contains the whole certificate chain with each individual\ncertificate's fields and their corresponding values. The most common fields are presented\nin a localized human readable format. The rest of the fields are presented as PKI object\nidentifiers (OIDs) and their values are rendered as a formatted hex string.\n\nExample :<appfx-certificate-viewer [pemEncodedCertificatesChain]=\"pemEncodedCertificatesChain\">\n</appfx-certificate-viewer>",
+      "inputs": [
+        {
+          "name": "pemEncodedCertificatesChain",
+          "type": "string[]",
+          "description": "Accepts a certificate chain where each certificate is PEM encoded.\nThe first element is the leaf certificate and the last element is the root certificate.\nThis order is described in the TLS 1.2 RFC section 7.4.2."
+        },
+        {
+          "name": "topHeadingLevel",
+          "type": "TopHeadingLevel",
+          "default": "5",
+          "description": "The top heading level for this component.\nAll nested headings are incremented automatically. Use to satisfy WCAG heading hierarchy."
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}

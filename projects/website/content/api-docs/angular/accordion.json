@@ -1,0 +1,52 @@
+{
+  "entryPoint": "@clr/angular/accordion",
+  "components": [
+    {
+      "name": "ClrAccordion",
+      "kind": "component",
+      "selector": "clr-accordion",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrAccordionMultiPanel",
+          "type": "boolean | string",
+          "default": "false",
+          "description": "Override default behavior to allow multiple panels open at one time."
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrAccordionPanel",
+      "kind": "component",
+      "selector": "clr-accordion-panel",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrAccordionPanelDisabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "Disable a given panel from being opened or closed."
+        },
+        {
+          "name": "clrAccordionPanelHeadingLevel",
+          "type": "HeadingLevel",
+          "description": "Level of the accordion heading from 1 to 6."
+        },
+        {
+          "name": "clrAccordionPanelOpen",
+          "type": "boolean",
+          "default": "false",
+          "description": "Set and listen for open changes to a given panel."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrAccordionPanelOpenChange",
+          "type": "boolean",
+          "description": "Emits when the panel is opened or closed."
+        }
+      ]
+    }
+  ]
+}

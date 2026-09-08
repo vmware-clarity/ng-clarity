@@ -1,0 +1,190 @@
+{
+  "entryPoint": "@clr/angular/emphasis",
+  "components": [
+    {
+      "name": "ClrAlert",
+      "kind": "component",
+      "selector": "clr-alert",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrAlertAppLevel",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrAlertClosable",
+          "type": "boolean",
+          "default": "true",
+          "description": ""
+        },
+        {
+          "name": "clrAlertClosed",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrAlertIcon",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrAlertLightweight",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrAlertSizeSmall",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrAlertType",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrCloseButtonAriaLabel",
+          "type": "string",
+          "default": "this.commonStrings.keys.alertCloseButtonAriaLabel",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrAlertClosedChange",
+          "type": "boolean",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrAlerts",
+      "kind": "component",
+      "selector": "clr-alerts",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrCurrentAlert",
+          "type": "ClrAlert",
+          "description": "Input/Output to support two way binding on current alert instance"
+        },
+        {
+          "name": "clrCurrentAlertIndex",
+          "type": "number",
+          "description": "Input/Output to support two way binding on current alert index"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrCurrentAlertChange",
+          "type": "ClrAlert",
+          "description": ""
+        },
+        {
+          "name": "clrCurrentAlertIndexChange",
+          "type": "number",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrAlertsPager",
+      "kind": "component",
+      "selector": "clr-alerts-pager",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrCurrentAlert",
+          "type": "ClrAlert",
+          "description": "Input/Output to support two way binding on current alert instance"
+        },
+        {
+          "name": "clrCurrentAlertIndex",
+          "type": "number",
+          "description": "Input/Output to support two way binding on current alert index"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrCurrentAlertChange",
+          "type": "ClrAlert",
+          "description": ""
+        },
+        {
+          "name": "clrCurrentAlertIndexChange",
+          "type": "number",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrBadge",
+      "kind": "component",
+      "selector": "clr-badge",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrColor",
+          "type": "ClrBadgeColors | string",
+          "default": "ClrBadgeColors.None",
+          "description": ""
+        },
+        {
+          "name": "clrType",
+          "type": "Type | string",
+          "default": "Type.Solid",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrLabel",
+      "kind": "component",
+      "selector": "clr-label",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrBadgeText",
+          "type": "string",
+          "default": "''",
+          "description": ""
+        },
+        {
+          "name": "clrClickable",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrColor",
+          "type": "ClrLabelColors | string",
+          "default": "ClrLabelColors.None",
+          "description": ""
+        },
+        {
+          "name": "clrDisabled",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrText",
+          "type": "string",
+          "default": "''",
+          "description": ""
+        },
+        {
+          "name": "clrType",
+          "type": "Type | string",
+          "default": "Type.Outlined",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}

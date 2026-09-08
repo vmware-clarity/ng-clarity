@@ -1,0 +1,34 @@
+{
+  "entryPoint": "@clr/angular/stepper",
+  "components": [
+    {
+      "name": "ClrStepButton",
+      "kind": "directive",
+      "selector": "[clrStepButton]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrStepButton",
+          "type": "ClrStepButtonType | string",
+          "default": "ClrStepButtonType.Next",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrStepper",
+      "kind": "component",
+      "selector": "form[clrStepper]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrInitialStep",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}

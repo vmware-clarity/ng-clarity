@@ -1,0 +1,208 @@
+{
+  "entryPoint": "@clr/angular/popover",
+  "components": [
+    {
+      "name": "ClrDropdown",
+      "kind": "component",
+      "selector": "clr-dropdown",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrCloseMenuOnItemClick",
+          "type": "boolean",
+          "default": "true",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrDropdownItem",
+      "kind": "directive",
+      "selector": "[clrDropdownItem]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDisabled",
+          "type": "string | boolean",
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "description": "Let you overwrite the focusable auto increment id."
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrDropdownMenu",
+      "kind": "component",
+      "selector": "clr-dropdown-menu",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrPosition",
+          "type": "string | ClrPopoverPosition",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrIfOpen",
+      "kind": "directive",
+      "selector": "[clrIfOpen]",
+      "description": "A structural directive that controls whether or not the associated TemplateRef is instantiated or not.\nIt makes use of a Component instance level service: ClrPopoverService to maintain state between itself and the component\nusing it in the component template.",
+      "inputs": [
+        {
+          "name": "clrIfOpen",
+          "type": "string | boolean",
+          "description": "A property that gets/sets ClrPopoverService.open with value."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrIfOpenChange",
+          "type": "boolean",
+          "description": "An event emitter that emits when the open property is set to allow for 2way binding when the directive is\nused with de-structured / de-sugared syntax."
+        }
+      ]
+    },
+    {
+      "name": "ClrPopoverCloseButton",
+      "kind": "directive",
+      "selector": "[clrPopoverCloseButton]",
+      "description": "",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "clrPopoverOnCloseChange",
+          "type": "void",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrPopoverContent",
+      "kind": "directive",
+      "selector": "[clrPopoverContent]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrPopoverContent",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrPopoverContentAt",
+          "type": "string | ClrPopoverPosition | ConnectedPosition",
+          "description": ""
+        },
+        {
+          "name": "clrPopoverContentAvailablePositions",
+          "type": "ConnectedPosition[]",
+          "description": ""
+        },
+        {
+          "name": "clrPopoverContentOrigin",
+          "type": "FlexibleConnectedPositionStrategyOrigin",
+          "description": ""
+        },
+        {
+          "name": "clrPopoverContentOutsideClickToClose",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrPopoverContentScrollToClose",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrPopoverContentType",
+          "type": "ClrPopoverType",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrPopoverOpenCloseButton",
+      "kind": "directive",
+      "selector": "[clrPopoverOpenCloseButton]",
+      "description": "",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "clrPopoverOpenCloseChange",
+          "type": "boolean",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrSignpost",
+      "kind": "component",
+      "selector": "clr-signpost",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrSignpostHideTrigger",
+          "type": "boolean",
+          "default": "false",
+          "description": "Hides the default trigger button. Use when the signpost is opened\nprogrammatically via openAtPoint() and no trigger icon is needed."
+        },
+        {
+          "name": "clrSignpostTriggerAriaLabel",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrSignpostContent",
+      "kind": "component",
+      "selector": "clr-signpost-content",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrPosition",
+          "type": "any",
+          "description": "A setter for the position of the ClrSignpostContent popover. This is a combination of the following:\n\noriginPoint - where on the trigger to position the content\npopoverPoint - where on the content container to align with the origin\noffsetY - where on the Y axis to align the ClrSignpostContent so it meets specs\noffsetX - where on the X axis to align the ClrSignpostContent so it meets specs\nThere are 12 possible positions to place a ClrSignpostContent container:\ntop-left\ntop-middle\ntop-right\nright-top\nright-middle\nright-bottom\nbottom-right\nbottom-middle\nbottom-left\nleft-bottom\nleft-middle\nleft-top\n\nI think of it as follows for 'top-left' -> CONTAINER_SIDE-SIDE_POSITION. In this case CONTAINER_SIDE is 'top'\nmeaning the top of the trigger icon (above the icon that hides/shows) the ClrSignpostContent. And, SIDE_POSITION\nis 'left' meaning two things: 1) the ClrSignpostContent container extends to the left and 2) the 'arrow/pointer'\nlinking the SignpostContent to the trigger points down at the horizontal center of the trigger icon."
+        },
+        {
+          "name": "clrSignpostCloseAriaLabel",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrTooltipContent",
+      "kind": "component",
+      "selector": "clr-tooltip-content",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrPosition",
+          "type": "any",
+          "description": ""
+        },
+        {
+          "name": "clrSize",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}

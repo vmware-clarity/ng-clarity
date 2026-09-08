@@ -1,0 +1,162 @@
+{
+  "entryPoint": "@clr/angular/modal",
+  "components": [
+    {
+      "name": "ClrModal",
+      "kind": "component",
+      "selector": "clr-modal",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrModalClosable",
+          "type": "boolean",
+          "default": "true",
+          "description": ""
+        },
+        {
+          "name": "clrModalCloseButtonAriaLabel",
+          "type": "any",
+          "default": "this.commonStrings.keys.close",
+          "description": ""
+        },
+        {
+          "name": "clrModalLabelledById",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrModalOpen",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrModalOverrideScrollService",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrModalPreventClose",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrModalSize",
+          "type": "string",
+          "default": "'md'",
+          "description": ""
+        },
+        {
+          "name": "clrModalSkipAnimation",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrModalStaticBackdrop",
+          "type": "boolean",
+          "default": "true",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrModalAlternateClose",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrModalOpenChange",
+          "type": "boolean",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrSidePanel",
+      "kind": "component",
+      "selector": "clr-side-panel",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrSidePanelBackdrop",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrSidePanelClosable",
+          "type": "boolean",
+          "default": "true",
+          "description": ""
+        },
+        {
+          "name": "clrSidePanelCloseButtonAriaLabel",
+          "type": "string | undefined",
+          "description": ""
+        },
+        {
+          "name": "clrSidePanelLabelledById",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrSidePanelOpen",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrSidePanelPinnable",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrSidePanelPinned",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrSidePanelPosition",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrSidePanelPreventClose",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrSidePanelSize",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrSidePanelSkipAnimation",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrSidePanelStaticBackdrop",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrSidePanelAlternateClose",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrSidePanelOpenChange",
+          "type": "boolean",
+          "description": ""
+        }
+      ]
+    }
+  ]
+}

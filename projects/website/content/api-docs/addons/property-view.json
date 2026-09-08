@@ -1,0 +1,24 @@
+{
+  "entryPoint": "@clr/addons/property-view",
+  "components": [
+    {
+      "name": "PropertyViewComponent",
+      "kind": "component",
+      "selector": "appfx-property-view",
+      "description": "",
+      "inputs": [
+        {
+          "name": "config",
+          "type": "PropertyViewConfig | undefined",
+          "description": ""
+        },
+        {
+          "name": "data",
+          "type": "PropertyViewModel | null | undefined",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}

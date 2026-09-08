@@ -13,7 +13,6 @@ import { ClarityModule } from '@clr/angular';
 
 import { AccordionDemo } from './accordion.demo';
 import { AngularAccordionDemo } from './angular-accordion.demo';
-import { ApiAccordionDemo } from './api-accordion.demo';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
 import { NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -34,7 +33,6 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     StackblitzExampleComponent,
     AccordionDemo,
     AngularAccordionDemo,
-    ApiAccordionDemo,
   ],
 })
 export class AccordionDemoModule {}

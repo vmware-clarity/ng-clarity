@@ -1,0 +1,799 @@
+{
+  "entryPoint": "@clr/angular/data",
+  "components": [
+    {
+      "name": "ClrDatagrid",
+      "kind": "component",
+      "selector": "clr-datagrid",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDetailExpandableAriaLabel",
+          "type": "string",
+          "default": "this.commonStrings.keys.detailExpandableAriaLabel",
+          "description": ""
+        },
+        {
+          "name": "clrDgCustomSelectAllEnabled",
+          "type": "boolean",
+          "default": "false",
+          "description": "The application can provide custom select all logic."
+        },
+        {
+          "name": "clrDgDisablePageFocus",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrDgItemsIdentityFn",
+          "type": "ClrDatagridItemsIdentityFunction<T>",
+          "description": ""
+        },
+        {
+          "name": "clrDgLoading",
+          "type": "boolean",
+          "description": "Freezes the datagrid while data is loading"
+        },
+        {
+          "name": "clrDgPreserveSelection",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrDgRowSelection",
+          "type": "boolean",
+          "deprecated": "since 2.0, remove in 3.0\n\nSelection/Deselection on row click mode",
+          "description": "Selection/Deselection on row click mode"
+        },
+        {
+          "name": "clrDgSelectAllDisabled",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrDgSelected",
+          "type": "T[]",
+          "description": "Array of all selected items"
+        },
+        {
+          "name": "clrDgSelectionType",
+          "type": "SelectionType",
+          "description": "Selection type\n\nNone: No rows are selectable.\nSingle: Only one row can be selected at a time.\nMulti: Multiple rows can be selected.\n\nDefaults to None."
+        },
+        {
+          "name": "clrDgSingleActionableAriaLabel",
+          "type": "string",
+          "default": "this.commonStrings.keys.singleActionableAriaLabel",
+          "description": ""
+        },
+        {
+          "name": "clrDgSingleSelectionAriaLabel",
+          "type": "string",
+          "default": "this.commonStrings.keys.singleSelectionAriaLabel",
+          "description": ""
+        },
+        {
+          "name": "clrLoadingMoreItems",
+          "type": "boolean",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrDgCustomSelectAll",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrDgRefresh",
+          "type": "ClrDatagridStateInterface<T>",
+          "description": "Output emitted whenever the data needs to be refreshed, based on user action or external ones"
+        },
+        {
+          "name": "clrDgSelectedChange",
+          "type": "T[]",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrDatagridActionOverflow",
+      "kind": "component",
+      "selector": "clr-dg-action-overflow",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDgActionOverflowButtonLabel",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrDgActionOverflowOpen",
+          "type": "boolean",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrDgActionOverflowOpenChange",
+          "type": "boolean",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrDatagridColumn",
+      "kind": "component",
+      "selector": "clr-dg-column",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDgColType",
+          "type": "\"string\" | \"number\"",
+          "description": ""
+        },
+        {
+          "name": "clrDgDisableUnsort",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrDgField",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrDgPinned",
+          "type": "boolean",
+          "description": "Pins the column to the left of the datagrid, so it stays visible while the remaining\ncolumns are scrolled horizontally. Pinned columns keep their declaration order and are\nrendered before the scrollable ones, right after the built-in row controls."
+        },
+        {
+          "name": "clrDgSortBy",
+          "type": "any",
+          "description": ""
+        },
+        {
+          "name": "clrDgSortOrder",
+          "type": "ClrDatagridSortOrder",
+          "description": ""
+        },
+        {
+          "name": "clrFilterNumberMaxPlaceholder",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrFilterNumberMinPlaceholder",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrFilterStringPlaceholder",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrFilterValue",
+          "type": "string | unknown",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrDgSortOrderChange",
+          "type": "ClrDatagridSortOrder",
+          "description": ""
+        },
+        {
+          "name": "clrFilterValueChange",
+          "type": "EventEmitter",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrDatagridColumnToggleButton",
+      "kind": "component",
+      "selector": "clr-dg-column-toggle-button",
+      "description": "",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "clrAllSelected",
+          "type": "Observable<boolean>",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrDatagridDetail",
+      "kind": "component",
+      "selector": "clr-dg-detail",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDetailAriaLabel",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrDetailAriaLabelledBy",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrDetailWidth",
+          "type": "number",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrDatagridFilter",
+      "kind": "component",
+      "selector": "clr-dg-filter",
+      "description": "Custom filter that can be added in any column to override the default object property string filter.\nThe reason this is not just an input on DatagridColumn is because we need the filter's template to be projected,\nsince it can be anything (not just a text input).",
+      "inputs": [
+        {
+          "name": "clrDgFilter",
+          "type": "ClrDatagridFilterInterface | RegisteredFilter",
+          "description": ""
+        },
+        {
+          "name": "clrDgFilterOpen",
+          "type": "boolean",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrDgFilterOpenChange",
+          "type": "boolean",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrDatagridHideableColumn",
+      "kind": "directive",
+      "selector": "[clrDgHideableColumn]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDgHidden",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrDgHideableColumn",
+          "type": "literal type | string",
+          "description": "Setter fn for the @Input with the same name as this structural directive.\nIt allows the user to pre-configure the column's hide/show state. { hidden: true }\nIt's more verbose but has more Clarity.\nExample :*clrDgHideableColumn\n*clrDgHideableColumn={hidden: false}\n*clrDgHideableColumn={hidden: true}"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrDgHiddenChange",
+          "type": "boolean",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrDatagridItems",
+      "kind": "directive",
+      "selector": "[clrDgItems][clrDgItemsOf]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDgItemsOf",
+          "type": "T[]",
+          "description": ""
+        },
+        {
+          "name": "clrDgItemsTrackBy",
+          "type": "TrackByFunction<T>",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrDatagridPageSize",
+      "kind": "component",
+      "selector": "clr-dg-page-size",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrPageSizeOptions",
+          "type": "number[]",
+          "description": ""
+        },
+        {
+          "name": "clrPageSizeOptionsId",
+          "type": "any",
+          "default": "uniqueIdFactory()",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrDatagridPagination",
+      "kind": "component",
+      "selector": "clr-dg-pagination",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDgLastPage",
+          "type": "number",
+          "description": "Last page"
+        },
+        {
+          "name": "clrDgPage",
+          "type": "number",
+          "description": "Current page"
+        },
+        {
+          "name": "clrDgPageInputDisabled",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrDgPageSize",
+          "type": "number",
+          "description": "Page size"
+        },
+        {
+          "name": "clrDgTotalItems",
+          "type": "number",
+          "description": "Total items (needed to guess the last page)"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrDgPageChange",
+          "type": "number",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrDatagridRow",
+      "kind": "component",
+      "selector": "clr-dg-row",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDgDetailCloseLabel",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrDgDetailDisabled",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrDgDetailHidden",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrDgDetailOpenLabel",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrDgExpanded",
+          "type": "string | boolean",
+          "description": ""
+        },
+        {
+          "name": "clrDgItem",
+          "type": "T",
+          "description": "Model of the row, to use for selection"
+        },
+        {
+          "name": "clrDgRowSelectionLabel",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrDgSelectable",
+          "type": "string | boolean",
+          "description": ""
+        },
+        {
+          "name": "clrDgSelected",
+          "type": "string | boolean",
+          "description": "Indicates if the row is selected"
+        },
+        {
+          "name": "clrDgSkeletonLoading",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrDgExpandedChange",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrDgSelectedChange",
+          "type": "boolean",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrDatagridRowDetail",
+      "kind": "component",
+      "selector": "clr-dg-row-detail",
+      "description": "Generic bland container serving various purposes for Datagrid.\nFor instance, it can help span a text over multiple rows in detail view.",
+      "inputs": [
+        {
+          "name": "clrDgReplace",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrRowDetailBeginningAriaText",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrRowDetailEndAriaText",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrDatagridSingleSelectionValueAccessor",
+      "kind": "directive",
+      "selector": "input[type=radio][clrDgSingleSelectionRadio]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDgIdentityFn",
+          "type": "function",
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "any",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrDatagridVirtualScrollDirective",
+      "kind": "directive",
+      "selector": "[clrVirtualScroll],[ClrVirtualScroll]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrVirtualDataRange",
+          "type": "ClrDatagridVirtualScrollRangeInterface<T>",
+          "description": ""
+        },
+        {
+          "name": "clrVirtualPersistItems",
+          "type": "boolean",
+          "default": "true",
+          "description": ""
+        },
+        {
+          "name": "clrVirtualRowsItemSize",
+          "type": "Pick<CdkFixedSizeVirtualScroll, \"itemSize\" | \"minBufferPx\" | \"maxBufferPx\">",
+          "description": ""
+        },
+        {
+          "name": "clrVirtualRowsMaxBufferPx",
+          "type": "Pick<CdkFixedSizeVirtualScroll, \"itemSize\" | \"minBufferPx\" | \"maxBufferPx\">",
+          "description": ""
+        },
+        {
+          "name": "clrVirtualRowsMinBufferPx",
+          "type": "Pick<CdkFixedSizeVirtualScroll, \"itemSize\" | \"minBufferPx\" | \"maxBufferPx\">",
+          "description": ""
+        },
+        {
+          "name": "clrVirtualRowsOf",
+          "type": "Partial<Pick<CdkVirtualForOf<T>, CdkVirtualForInputKey>>",
+          "description": ""
+        },
+        {
+          "name": "clrVirtualRowsTemplate",
+          "type": "Partial<Pick<CdkVirtualForOf<T>, CdkVirtualForInputKey>>",
+          "description": ""
+        },
+        {
+          "name": "clrVirtualRowsTemplateCacheSize",
+          "type": "Partial<Pick<CdkVirtualForOf<T>, CdkVirtualForInputKey>>",
+          "description": ""
+        },
+        {
+          "name": "clrVirtualRowsTrackBy",
+          "type": "Partial<Pick<CdkVirtualForOf<T>, CdkVirtualForInputKey>>",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "renderedRangeChange",
+          "type": "ListRange",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrIfDetail",
+      "kind": "directive",
+      "selector": "[clrIfDetail]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrIfDetail",
+          "type": "any",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrIfDetailChange",
+          "type": "any",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrRecursiveForOf",
+      "kind": "directive",
+      "selector": "[clrRecursiveFor][clrRecursiveForOf]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrRecursiveForGetChildren",
+          "type": "function",
+          "description": ""
+        },
+        {
+          "name": "clrRecursiveForOf",
+          "type": "T | T[]",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrStackBlock",
+      "kind": "component",
+      "selector": "clr-stack-block",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrSbExpandable",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrSbExpanded",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrSbNotifyChange",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrStackViewLevel",
+          "type": "HeadingLevel",
+          "description": "Depth of the stack view starting from 1 for first level"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrSbExpandedChange",
+          "type": "boolean",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrStackHeader",
+      "kind": "component",
+      "selector": "clr-stack-header",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrStackHeaderLevel",
+          "type": "HeadingLevel",
+          "description": "Depth of the stack view header starting from 1 for first level"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrStackViewLabel",
+      "kind": "component",
+      "selector": "clr-stack-label",
+      "description": "",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrTree",
+      "kind": "component",
+      "selector": "clr-tree",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrLazy",
+          "type": "boolean",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrTreeNode",
+      "kind": "component",
+      "selector": "clr-tree-node",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDisabled",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrExpandable",
+          "type": "boolean | undefined",
+          "description": ""
+        },
+        {
+          "name": "clrExpanded",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrForTypeAhead",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrSelected",
+          "type": "ClrSelectedState | boolean",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrExpandedChange",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrSelectedChange",
+          "type": "ClrSelectedState",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "DatagridHeaderRenderer",
+      "kind": "directive",
+      "selector": "clr-dg-column",
+      "description": "",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "clrDgColumnResize",
+          "type": "number",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "DatagridNumericFilter",
+      "kind": "component",
+      "selector": "clr-dg-numeric-filter",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDgNumericFilter",
+          "type": "ClrDatagridNumericFilterInterface | RegisteredFilter",
+          "description": "Customizable filter logic based on high and low values"
+        },
+        {
+          "name": "clrFilterFromLabel",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrFilterMaxPlaceholder",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrFilterMinPlaceholder",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrFilterToLabel",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrFilterValue",
+          "type": "[number, number]",
+          "description": "Common setter for the input values"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrFilterValueChange",
+          "type": "EventEmitter",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "DatagridStringFilter",
+      "kind": "component",
+      "selector": "clr-dg-string-filter",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDgStringFilter",
+          "type": "ClrDatagridStringFilterInterface | RegisteredFilter",
+          "description": "Customizable filter logic based on a search text"
+        },
+        {
+          "name": "clrFilterLabel",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrFilterPlaceholder",
+          "type": "string",
+          "description": "Provide a way to pass external placeholder and aria-label to the filter input"
+        },
+        {
+          "name": "clrFilterValue",
+          "type": "string",
+          "description": "Common setter for the input value"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrFilterValueChange",
+          "type": "EventEmitter",
+          "description": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,693 @@
+{
+  "entryPoint": "@clr/angular/forms",
+  "components": [
+    {
+      "name": "ClrCheckbox",
+      "kind": "directive",
+      "selector": "[clrCheckbox],[clrToggle]",
+      "description": "This implements both the clrCheckbox and clrToggle functionality, since they are both just checkboxes with different\nvisual styling. The challenge is that the container needs to know which selector was used, which the @Attribute\ndecorator gets for us to determine if the toggle is used, and emits a value to the wrapper container to tell it\nthere is a toggle switch instead.",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrCheckboxContainer",
+      "kind": "component",
+      "selector": "clr-checkbox-container,clr-toggle-container",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrInline",
+          "type": "string | boolean",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrCombobox",
+      "kind": "component",
+      "selector": "clr-combobox",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrComboboxIdentityFn",
+          "type": "ClrComboboxIdentityFunction<T>",
+          "description": ""
+        },
+        {
+          "name": "clrEditable",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "clrEditableResolverFn",
+          "type": "ClrComboboxResolverFunction | undefined",
+          "description": ""
+        },
+        {
+          "name": "clrMulti",
+          "type": "string | boolean",
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "default": "''",
+          "description": ""
+        },
+        {
+          "name": "showSelectAll",
+          "type": "boolean",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrInputChange",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrOpenChange",
+          "type": "any",
+          "description": ""
+        },
+        {
+          "name": "clrSelectionChange",
+          "type": "any",
+          "description": "This output should be used to set up a live region using aria-live and populate it with updates that reflect each combobox change."
+        }
+      ]
+    },
+    {
+      "name": "ClrControl",
+      "kind": "directive",
+      "selector": "[clrControl]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrControlLabel",
+      "kind": "directive",
+      "selector": "label",
+      "description": "",
+      "inputs": [
+        {
+          "name": "for",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrDatalist",
+      "kind": "directive",
+      "selector": "datalist",
+      "description": "",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrDatalistInput",
+      "kind": "directive",
+      "selector": "[clrDatalistInput]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrDateContainer",
+      "kind": "component",
+      "selector": "clr-date-container, clr-date-range-container",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrFirstDayOfWeek",
+          "type": "ClrWeekday | null",
+          "description": "Overrides the locale-derived first day of the week for the calendar.\nAccepts a ClrWeekday value (Sunday=0 through Saturday=6).\nWhen not set, the first day of the week is determined by the Angular locale."
+        },
+        {
+          "name": "clrPosition",
+          "type": "string | ClrPopoverPosition",
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "rangeOptions",
+          "type": "any",
+          "description": ""
+        },
+        {
+          "name": "showActionButtons",
+          "type": "boolean",
+          "description": "For date range picker actions buttons are shown by default"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrDateInput",
+      "kind": "directive",
+      "selector": "[clrDate]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDate",
+          "type": "Date | string",
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | string",
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrDateChange",
+          "type": "Date",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrDateInputBase",
+      "kind": "directive",
+      "selector": "",
+      "description": "",
+      "inputs": [
+        {
+          "name": "disabled",
+          "type": "boolean | string",
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrDay",
+      "kind": "component",
+      "selector": "clr-day",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDayView",
+          "type": "DayViewModel",
+          "description": "DayViewModel input which is used to build the Day View."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "selectDay",
+          "type": "DayModel",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrEndDateInput",
+      "kind": "directive",
+      "selector": "[clrEndDate]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrEndDate",
+          "type": "Date | string",
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | string",
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "inputWidth",
+          "type": "number",
+          "default": "13",
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrEndDateChange",
+          "type": "Date",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrFileInput",
+      "kind": "directive",
+      "selector": "input[type=\"file\"][clrFileInput]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrFileInputContainer",
+      "kind": "component",
+      "selector": "clr-file-input-container",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrButtonLabel",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrFileInputValidator",
+      "kind": "directive",
+      "selector": "input[type=\"file\"][clrFileInput]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrMaxFileSize",
+          "type": "number",
+          "description": ""
+        },
+        {
+          "name": "clrMinFileSize",
+          "type": "number",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrForm",
+      "kind": "directive",
+      "selector": "[clrForm]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrLabelSize",
+          "type": "number | string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrIfError",
+      "kind": "directive",
+      "selector": "[clrIfError]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrIfError",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrInput",
+      "kind": "directive",
+      "selector": "[clrInput]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrLayout",
+      "kind": "directive",
+      "selector": "[clrForm][clrLayout]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrLayout",
+          "type": "ClrFormLayout | string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrNumberInput",
+      "kind": "directive",
+      "selector": "input[type=\"number\"][clrNumberInput]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrOption",
+      "kind": "component",
+      "selector": "clr-option",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrValue",
+          "type": "T",
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrOptionGroup",
+      "kind": "component",
+      "selector": "clr-option-group",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrOptionGroupLabel",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrOptionItems",
+      "kind": "directive",
+      "selector": "[clrOptionItems][clrOptionItemsOf]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrOptionItemsField",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrOptionItemsOf",
+          "type": "T[]",
+          "description": ""
+        },
+        {
+          "name": "clrOptionItemsTrackBy",
+          "type": "TrackByFunction<T>",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrOptions",
+      "kind": "component",
+      "selector": "clr-options",
+      "description": "",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrOptionSelected",
+      "kind": "directive",
+      "selector": "[clrOptionSelected]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrOptionSelected",
+          "type": "T",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrPassword",
+      "kind": "directive",
+      "selector": "[clrPassword]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrPasswordContainer",
+      "kind": "component",
+      "selector": "clr-password-container",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrToggle",
+          "type": "boolean",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrRadio",
+      "kind": "directive",
+      "selector": "[clrRadio]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrRadioContainer",
+      "kind": "component",
+      "selector": "clr-radio-container",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrInline",
+          "type": "string | boolean",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrRange",
+      "kind": "directive",
+      "selector": "[clrRange]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrRangeContainer",
+      "kind": "component",
+      "selector": "clr-range-container",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrRangeHasProgress",
+          "type": "boolean",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrSelect",
+      "kind": "directive",
+      "selector": "[clrSelect]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrStartDateInput",
+      "kind": "directive",
+      "selector": "[clrStartDate]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrStartDate",
+          "type": "Date | string",
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | string",
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "inputWidth",
+          "type": "number",
+          "default": "13",
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrStartDateChange",
+          "type": "Date",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrTextarea",
+      "kind": "directive",
+      "selector": "[clrTextarea]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "WrappedFormControl",
+      "kind": "directive",
+      "selector": "",
+      "description": "",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}

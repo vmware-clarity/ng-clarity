@@ -1,0 +1,95 @@
+{
+  "entryPoint": "@clr/angular/button",
+  "components": [
+    {
+      "name": "ClrButton",
+      "kind": "component",
+      "selector": "clr-button",
+      "description": "",
+      "inputs": [
+        {
+          "name": "class",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrInMenu",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "any",
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "routerLinkActive",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "click",
+          "type": "boolean",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrButtonGroup",
+      "kind": "component",
+      "selector": "clr-button-group",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrMenuPosition",
+          "type": "ClrPopoverPosition",
+          "description": ""
+        },
+        {
+          "name": "clrToggleButtonAriaLabel",
+          "type": "string",
+          "default": "this.commonStrings.keys.rowActions",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrLoadingButton",
+      "kind": "component",
+      "selector": "button[clrLoading]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrLoadingChange",
+          "type": "ClrLoadingState",
+          "description": ""
+        }
+      ]
+    }
+  ]
+}

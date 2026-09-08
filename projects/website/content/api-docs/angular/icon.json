@@ -1,0 +1,54 @@
+{
+  "entryPoint": "@clr/angular/icon",
+  "components": [
+    {
+      "name": "ClrIcon",
+      "kind": "component",
+      "selector": "clr-icon, cds-icon",
+      "description": "",
+      "inputs": [
+        {
+          "name": "badge",
+          "type": "any",
+          "description": ""
+        },
+        {
+          "name": "direction",
+          "type": "any",
+          "description": ""
+        },
+        {
+          "name": "flip",
+          "type": "Orientations",
+          "description": ""
+        },
+        {
+          "name": "inverse",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "shape",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "solid",
+          "type": "boolean",
+          "description": ""
+        },
+        {
+          "name": "status",
+          "type": "any",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "entryPoint": "@clr/angular",
+  "components": [
+    {
+      "name": "ClrProgressBar",
+      "kind": "component",
+      "selector": "clr-progress-bar",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrColor",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrCompact",
+          "type": "boolean | string",
+          "description": ""
+        },
+        {
+          "name": "clrDisplayval",
+          "type": "string",
+          "description": ""
+        },
+        {
+          "name": "clrFade",
+          "type": "boolean | string",
+          "description": ""
+        },
+        {
+          "name": "clrFlash",
+          "type": "boolean | string",
+          "description": ""
+        },
+        {
+          "name": "clrFlashDanger",
+          "type": "boolean | string",
+          "deprecated": "since 2.0, remove in 4.0",
+          "description": ""
+        },
+        {
+          "name": "clrLabeled",
+          "type": "boolean | string",
+          "description": ""
+        },
+        {
+          "name": "clrLoop",
+          "type": "boolean | string",
+          "description": ""
+        },
+        {
+          "name": "clrMax",
+          "type": "number | string",
+          "default": "100",
+          "description": ""
+        },
+        {
+          "name": "clrValue",
+          "type": "number | string",
+          "default": "0",
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrSpinner",
+      "kind": "component",
+      "selector": "clr-spinner",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrInline",
+          "type": "boolean | string",
+          "description": ""
+        },
+        {
+          "name": "clrInverse",
+          "type": "boolean | string",
+          "description": ""
+        },
+        {
+          "name": "clrMedium",
+          "type": "boolean | string",
+          "description": ""
+        },
+        {
+          "name": "clrSmall",
+          "type": "boolean | string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}

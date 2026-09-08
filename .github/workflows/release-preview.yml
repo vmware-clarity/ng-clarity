@@ -27,6 +27,8 @@ jobs:
         run: npm run test
       - name: Public Api Check
         run: npm run public-api:check
+      - name: Website Api Check
+        run: npm run website-api:check
       - name: Preview Figma Token Changes
         env:
           FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}

@@ -13,6 +13,7 @@
 
 # API extractor temporary files
 .api-temp/
+.website-api-temp/
 temp-tsconfig-*.json
 temp-extractor-*.json
 

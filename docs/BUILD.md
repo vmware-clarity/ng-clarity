@@ -45,6 +45,8 @@ The build process consists of the following five stages. Each stage can be ran i
 
 5. `npm run public-api:check`: verifies the public API has not changed
    - `npm run public-api:update`: updates the public api "golden file" and accepts the changes to the public API allowing the CI build to pass.
+6. `npm run website-api:check`: verifies the API tables on the website match the inputs and outputs of the libraries
+   - `npm run website-api:update`: regenerates the API report files under `projects/website/content/api-docs/` from the library sources, preserving hand-written descriptions.
 
 Other commands
 

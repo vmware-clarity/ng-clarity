@@ -1,0 +1,198 @@
+{
+  "entryPoint": "@clr/angular/utils",
+  "components": [
+    {
+      "name": "ClrExpandableAnimation",
+      "kind": "component",
+      "selector": "clr-expandable-animation",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrExpandTrigger",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrExpandableAnimationDirective",
+      "kind": "directive",
+      "selector": "[clrExpandableAnimation]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrExpandableAnimation",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrFocusOnViewInit",
+      "kind": "directive",
+      "selector": "[clrFocusOnViewInit]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrFocusOnViewInit",
+          "type": "boolean | string",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrIfActive",
+      "kind": "directive",
+      "selector": "[clrIfActive]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrIfActive",
+          "type": "string | boolean",
+          "description": "A property that gets/sets IfActiveService.active with value."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrIfActiveChange",
+          "type": "boolean",
+          "description": "An event emitter that emits when the active property is set to allow for 2way binding when the directive is\nused with de-structured / de-sugared syntax."
+        }
+      ]
+    },
+    {
+      "name": "ClrIfExpanded",
+      "kind": "directive",
+      "selector": "[clrIfExpanded]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrIfExpanded",
+          "type": "boolean | string",
+          "description": "Two-way binding DOM rendering optimization for collapsed state."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrIfExpandedChange",
+          "type": "boolean",
+          "description": "Emits when the expanded state changes."
+        }
+      ]
+    },
+    {
+      "name": "ClrKeyFocus",
+      "kind": "component",
+      "selector": "[clrKeyFocus]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDirection",
+          "type": "ClrFocusDirection | string",
+          "default": "ClrFocusDirection.VERTICAL",
+          "description": ""
+        },
+        {
+          "name": "clrFocusOnLoad",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrKeyFocus",
+          "type": "any",
+          "description": "Here we use any cause any other type require reworking all methods below and a lot of more ifs.\nthis method will only work with array with FocusableItems anyway so any other value will be ignored."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrFocusChange",
+          "type": "number",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "ClrLoading",
+      "kind": "directive",
+      "selector": "[clrLoading]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrLoading",
+          "type": "string | boolean | ClrLoadingState",
+          "description": ""
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "ClrRovingTabindex",
+      "kind": "component",
+      "selector": "[clrRovingTabindex]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrDirection",
+          "type": "ClrFocusDirection | string",
+          "default": "ClrFocusDirection.VERTICAL",
+          "description": ""
+        },
+        {
+          "name": "clrFocusOnLoad",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        },
+        {
+          "name": "clrKeyFocus",
+          "type": "any",
+          "description": "Here we use any cause any other type require reworking all methods below and a lot of more ifs.\nthis method will only work with array with FocusableItems anyway so any other value will be ignored."
+        },
+        {
+          "name": "clrRovingTabindex",
+          "type": "Array<FocusableItem> | string",
+          "description": ""
+        },
+        {
+          "name": "clrRovingTabindexDisabled",
+          "type": "boolean",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrFocusChange",
+          "type": "number",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "name": "OutsideClick",
+      "kind": "directive",
+      "selector": "[clrOutsideClick]",
+      "description": "",
+      "inputs": [
+        {
+          "name": "clrStrict",
+          "type": "boolean",
+          "default": "false",
+          "description": ""
+        }
+      ],
+      "outputs": [
+        {
+          "name": "clrOutsideClick",
+          "type": "any",
+          "description": ""
+        }
+      ]
+    }
+  ]
+}

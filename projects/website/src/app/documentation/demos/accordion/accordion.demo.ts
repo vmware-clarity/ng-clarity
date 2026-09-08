@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 import { ClrAccordionModule, ClrDatagridModule, ClrIfExpanded } from '@clr/angular';
 
 import { AngularAccordionDemo } from './angular-accordion.demo';
-import { ApiAccordionDemo } from './api-accordion.demo';
+import { ApiDocsComponent } from '../../../shared/api-docs/api-docs.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ComponentList, NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
@@ -33,7 +33,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     ClrIfExpanded,
     ThemedImageComponent,
     AngularAccordionDemo,
-    ApiAccordionDemo,
+    ApiDocsComponent,
     StyleDocsComponent,
     NestingTableComponent,
   ],
