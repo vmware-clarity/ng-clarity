@@ -33,6 +33,7 @@ import { BooleanSelectionTreeDemo } from './boolean-selection-tree/boolean-selec
 import { DisabledNodesDemo } from './disabled-nodes/disabled-nodes';
 import { DisabledNodesOverviewDemo } from './disabled-nodes-overview/disabled-nodes-overview';
 import { DisabledNodesSelectionDemo } from './disabled-nodes-selection/disabled-nodes-selection';
+import { ExpandAllTreeDemo } from './expand-all-tree/expand-all-tree';
 import { HighlightNodesTreeDemo } from './highlighting-nodes-tree/highlighting-nodes-tree';
 import { InteractionCheckboxTreeDemo } from './interaction-checkbox-tree/interaction-checkbox-tree';
 import { TreeNodeLabelChangeOnExpandDemo } from './label-change-on-expand/label-change-on-expand';
@@ -82,6 +83,7 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     TreeBasicDMDemo,
     DisabledNodesDemo,
     TreeNodeLabelChangeOnExpandDemo,
+    ExpandAllTreeDemo,
     TreeNodeRoutingDemo,
     SelectionTreeDemo,
     DisabledNodesSelectionDemo,
