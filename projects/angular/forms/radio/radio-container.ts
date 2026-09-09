@@ -13,7 +13,7 @@ import {
   LayoutService,
   NgControlService,
 } from '@clr/angular/forms/common';
-import { uniqueIdFactory } from '@clr/angular/utils';
+import { hasRequiredValidator, uniqueIdFactory } from '@clr/angular/utils';
 
 import { ClrRadio } from './radio';
 
@@ -45,6 +45,8 @@ import { ClrRadio } from './radio';
     '[class.clr-row]': 'addGrid()',
     '[attr.role]': 'role',
     '[attr.aria-labelledby]': 'ariaLabelledBy',
+    '[attr.aria-required]': 'ariaRequired',
+    '[attr.aria-invalid]': 'ariaInvalid',
   },
   providers: [NgControlService, ControlClassService, ContainerIdService],
   standalone: false,
@@ -82,6 +84,18 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     } else {
       this.inline = !!value;
     }
+  }
+
+  /**
+   * The group's requirement and validity, reported once on the `radiogroup` — which is
+   * where ARIA puts them — rather than on each radio, all of which share one control.
+   */
+  protected get ariaRequired(): true | null {
+    return this.role && hasRequiredValidator(this.control?.control) ? true : null;
+  }
+
+  protected get ariaInvalid(): true | null {
+    return this.role && this.showInvalid ? true : null;
   }
 
   ngAfterContentInit() {

@@ -30,7 +30,7 @@ import {
   ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
-import { ControlValueAccessor, NgControl, Validators } from '@angular/forms';
+import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { WrappedFormControl } from '@clr/angular/forms/common';
 import {
   ClrPopoverHostDirective,
@@ -43,6 +43,7 @@ import {
   ClrElementContextCallback,
   ClrLoadingState,
   FOCUS_SERVICE_PROVIDER,
+  hasRequiredValidator,
   IF_ACTIVE_ID_PROVIDER,
   Keys,
   LoadingListener,
@@ -285,10 +286,17 @@ export class ClrCombobox<T>
    * directive rather than the validator function this could otherwise look for.
    */
   get isRequired(): boolean {
-    return (
-      (this.control?.control?.hasValidator(Validators.required) ?? false) ||
-      this.comboboxHostElement.hasAttribute('required')
-    );
+    return hasRequiredValidator(this.control?.control) || this.comboboxHostElement.hasAttribute('required');
+  }
+
+  /**
+   * Whether the field is in error, as assistive technology should hear it: gated on the
+   * control having been touched, like every other Clarity control (see
+   * `WrappedFormControl`), so a required field is not announced as wrong before the user
+   * has reached it.
+   */
+  get isInvalid(): boolean {
+    return !!this.control?.invalid && !!this.control?.touched;
   }
 
   /**
@@ -631,7 +639,9 @@ export class ClrCombobox<T>
    */
   private publishContext(host: HTMLElement) {
     const describe: ClrElementContextCallback = snapshotOptions => {
-      const maxItems = snapshotOptions.maxItemsPerCollection;
+      // The contract is a plain element property that any page tooling may call, not
+      // only the engine that passes budgets, so a missing argument must not throw.
+      const maxItems = snapshotOptions?.maxItemsPerCollection ?? 25;
       const state: Record<string, unknown> = { multiSelect: this.multiSelect };
       const items = this.options?.items;
       if (items?.length) {

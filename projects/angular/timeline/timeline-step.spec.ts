@@ -46,10 +46,15 @@ export default function (): void {
       let step: ClrTimelineStep;
 
       beforeEach(() => {
-        step = new ClrTimelineStep(
-          new TimelineIconAttributeService(new ClrCommonStringsService()),
-          new TimelineStepIdService(),
-          new ElementRef(document.createElement('clr-timeline-step'))
+        TestBed.configureTestingModule({
+          providers: [{ provide: ElementRef, useValue: new ElementRef(document.createElement('clr-timeline-step')) }],
+        });
+        step = TestBed.runInInjectionContext(
+          () =>
+            new ClrTimelineStep(
+              new TimelineIconAttributeService(new ClrCommonStringsService()),
+              new TimelineStepIdService()
+            )
         );
       });
 

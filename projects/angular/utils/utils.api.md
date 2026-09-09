@@ -4,6 +4,7 @@
 
 ```ts
 
+import { AbstractControl } from '@angular/forms';
 import { AfterContentChecked } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
@@ -794,6 +795,9 @@ export class FocusService {
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<FocusService>;
 }
+
+// @public
+export function hasRequiredValidator(control: AbstractControl | null | undefined): boolean;
 
 // @public (undocumented)
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';

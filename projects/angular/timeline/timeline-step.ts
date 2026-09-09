@@ -6,7 +6,7 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Component, ContentChild, ElementRef, Inject, Input, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { Component, ContentChild, ElementRef, inject, Inject, Input, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { publishElementContext } from '@clr/angular/utils';
 
 import { ClrTimelineStepState } from './enums/timeline-step-state.enum';
@@ -38,12 +38,13 @@ export class ClrTimelineStep implements OnDestroy {
 
   stepTitleText: string;
 
+  // Injected as a field rather than through the constructor, whose signature is public API.
+  private readonly hostElement = inject(ElementRef<HTMLElement>);
   private teardownElementContext?: () => void;
 
   constructor(
     private iconAttributeService: TimelineIconAttributeService,
-    @Inject(PLATFORM_ID) private platformId: any,
-    private hostElement: ElementRef<HTMLElement>
+    @Inject(PLATFORM_ID) private platformId: any
   ) {}
 
   get iconAriaLabel(): string {
