@@ -1,8 +1,9 @@
 # Contextual Engine
 
 `@clr/angular/ai` gives AI agents structured, up-to-date context about the page a Clarity
-application is currently showing: the active route, the components rendered right now and their
-state, the actions currently available, and any semantic annotations the application provides.
+application is currently showing: the active route, the components rendered right now, their
+state and whatever actions they own, as a tree, and any semantic annotations the application
+provides.
 
 It ships as a secondary entry point of `@clr/angular`, so it needs nothing extra installed.
 Components are described by reading the rendered DOM — specifically the accessibility tree — so
@@ -16,9 +17,12 @@ and plain semantic HTML alike.
   destroyed or navigated away from.
 - **Budgeted output.** Text is truncated, lists are capped and hidden elements are skipped
   (see `ClrContextSnapshotOptions`), so snapshots stay small enough for an agent's context window.
-- **No user data by default.** Form fields are described by name, label, type and validation
-  state; values and selectable options are collected only on explicit opt-in
-  (`includeFormValues`), and passwords are redacted unconditionally.
+- **Read-only.** The engine describes the page and never changes it. Applying a value an agent
+  proposes needs a person to approve it, which belongs to a review surface rather than here.
+- **Sensitive values never leave.** Passwords, file inputs and anything whose `autocomplete`
+  declares a credential or payment card are reported as `redacted` rather than by value, as is
+  anything marked `data-clr-context-redact`. Embedded frames and the browser-agent accessor receive
+  no form values at all unless the application deliberately shares them.
 - **Described by role, not by selector.** The engine reads the accessibility tree: an ARIA role,
   an accessible name and ARIA state mean the same thing on a Clarity Angular component, on
   `@clr/ui` CSS-only markup, in another component library and in plain semantic HTML. There are no
@@ -43,11 +47,16 @@ const snapshot = this.contextEngine.getSnapshot();
 //   components: [
 //     { type: 'grid', element: 'clr-datagrid',
 //       state: { columns: ['Name', 'Status'], rowCount: 20, selectedRows: 2 } },
+//     { type: 'button', label: 'Add rule' },
 //   ],
-//   actions: [{ label: 'Add rule', kind: 'button' }],
 //   collectedAt: '2026-08-18T10:00:00.000Z'
 // }
 ```
+
+A button or link is reported exactly where it is in the DOM — inside the dialog, the heading, the
+alert that owns it — never pulled out into a separate flat list. Nesting is the only representation
+of "this belongs to that": to find what a specific dialog offers, read that dialog's own
+`children`, the same way you would read the rendered page.
 
 ## Keeping a live "current page" context
 
@@ -90,35 +99,33 @@ For browser-driving agents that have no application API, the engine can expose a
 this.contextEngine.enableGlobalAccess(); // window.clrContext() now returns a fresh snapshot
 ```
 
-## Filling forms with an agent
+## Reading form context
 
 What a control _permits_ is always reported: the `options` it offers (select options, radio
 choices, datalist entries, a combobox's owned listbox) alongside `min`, `max`, `step`, `pattern`
-and `maxLength`. These describe the markup, not the user, and without them an agent cannot propose
-a legal value at all. Helper text and validation messages arrive as `description`, resolved from
-`aria-describedby`, so they are attached to the field they belong to.
+and `maxLength`. These describe the markup, not the user, and without them an agent cannot reason
+about what a legal value would be. Helper text and validation messages arrive as `description`,
+resolved from `aria-describedby`, so they are attached to the field they belong to.
 
-What the user _entered_ waits for an explicit opt-in. With `includeFormValues`, each control also
-reports its current `value`. Password and file inputs are always redacted, and embedded frames can
-never request values through the frame bridge — only the hosting application can opt in.
+What the user _entered_ is reported too — it is part of what the page is showing, and an assistant
+asked "what is wrong with this form?" cannot answer without it. What must never be reported is
+withheld instead: password and file inputs, fields whose `autocomplete` declares a credential or a
+payment card, and anything the application marks with `data-clr-context-redact` (a single control
+or a whole region). Those are reported as `redacted: true`, so an agent knows a value exists rather
+than assuming the field is empty.
+
+Consumers the application does not control are treated separately: an embedded frame and
+`window.clrContext()` receive no values at all unless the application shares them explicitly.
 
 ```ts
-const context = engine.getSnapshot({ includeFormValues: true });
+const context = engine.getSnapshot();
 // field example: { type: 'combobox', element: 'clr-select-container', label: 'Cluster',
-//   state: { value: 'beta', options: ['Alpha', 'Beta'] } }
-
-// The agent answers with JSON keyed by control name...
-const answer = { hostName: 'esx-prod-04', cluster: 'beta', tier: 'silver', enabled: true };
-
-// ...which is applied back through real DOM events, so Angular template-driven and
-// reactive forms react as if the user had typed. Nothing is submitted automatically.
-const result = engine.applyFormValues(answer);
-// { applied: ['hostName', 'cluster', 'tier', 'enabled'], skipped: [] }
+//   state: { value: 'beta', options: ['Alpha', 'Beta'], description: 'Pick a target cluster' } }
 ```
 
-`applyClrFormValues(form, values)` is also exported for applying to a specific form element.
-Unknown names, non-matching options and password fields are reported in `skipped` rather than
-guessed at.
+The engine only reads. It describes the form and never changes it: applying a value is a decision
+that needs a person to approve it, which means a review surface rather than an API on a context
+engine.
 
 ## Annotating the application
 
@@ -146,20 +153,25 @@ this entry point: Clarity components, other UI libraries and application compone
 mechanism.
 
 ```ts
-publishElementContext(hostElement, snapshotOptions => ({
+publishElementContext(hostElement, () => ({
   type: 'combobox',
   state: {
     options: this.choices.map(choice => choice.label),
-    // Callbacks receive the snapshot budgets and must honor includeFormValues
-    // before exposing anything user-typed.
-    value: snapshotOptions.includeFormValues ? this.selection : undefined,
+    value: this.selection,
   },
 }));
 ```
 
-`ClrCombobox` ships this integration built in: its options and selection are reported even while
-the popover is closed (selection only under `includeFormValues`). A callback that throws is
-treated as having nothing to add.
+Seven Clarity components ship this integration: `ClrCombobox` (its options while the popover is
+closed), `ClrDatagrid` (total rows while paginated, plus which columns are filtered or hidden),
+`ClrAlert` (exact severity), `ClrWizard` (per-step completion, error and navigability),
+`ClrTreeNode` (whether a collapsed node has children, and whether they are loading),
+`ClrStepperPanel` (step status) and `ClrTimelineStep` (step outcome). Every other component is
+described from its role and ARIA state alone — see
+[the component audit](./CONTEXTUAL_ENGINE_COMPONENT_AUDIT.md) for the full reasoning, including the
+components with no gap. A callback
+that throws is treated as having nothing to add, and a value the engine withheld as sensitive is
+removed again after merging, so publishing cannot reinstate one.
 
 Publishing happens on the component's own host element, while the node the engine describes is
 usually the role-bearing element inside it — the `<div role="grid">` within a `<clr-datagrid>`.
@@ -248,7 +260,7 @@ budgets and the application's own choices are applied over the top.
 
 ```ts
 this.contextEngine.enableGlobalAccess(); // window.clrContext(), caller cannot widen it
-this.contextEngine.enableGlobalAccess('clrContext', { includeFormValues: true }); // deliberate
+this.contextEngine.enableGlobalAccess('clrContext', { shareFormValues: true }); // deliberate
 ```
 
 ## Keeping snapshots lean
@@ -258,9 +270,8 @@ Everything in a snapshot is bounded. Tune the budgets per call when needed:
 ```ts
 this.contextEngine.getSnapshot({
   maxTextLength: 60, // truncate any text beyond 60 characters
-  maxItemsPerCollection: 10, // at most 10 rows/tabs/links/actions per component
-  maxComponents: 30, // at most 30 components overall
-  includeActions: false, // skip page-level action collection
+  maxItemsPerCollection: 10, // at most 10 rows/tabs/links/options per component
+  maxComponents: 30, // at most 30 components overall, counted across the whole tree
   includeDomComponents: false, // skip DOM scanning entirely (regions + route only)
 });
 ```

@@ -5,22 +5,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrContextSnapshotOptions } from './interfaces/context.interface';
+import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
 
 /**
  * Snapshot budgets a caller the application does not control — an embedded frame, a
  * script calling the global accessor — is allowed to set.
  *
- * `includeFormValues` is deliberately absent. Exposing what a user has typed is a
- * decision only the hosting application can make, so it can never be turned on by
- * whoever is asking.
+ * Budgets are all a caller may influence. What a snapshot is allowed to contain is not
+ * negotiable from the outside — see {@link withoutFormValues}.
  */
 export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: (keyof ClrContextSnapshotOptions)[] = [
   'maxTextLength',
   'maxItemsPerCollection',
   'maxComponents',
   'includeDomComponents',
-  'includeActions',
 ];
 
 /**
@@ -41,4 +39,37 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
     }
   }
   return sanitized;
+}
+
+/**
+ * The same context with everything the user typed taken out, for a consumer the
+ * application does not control — an embedded frame, a script calling the global
+ * accessor.
+ *
+ * Fields keep their label, type, constraints and validation state, so such a consumer
+ * still learns the shape of a form; it just does not learn its contents.
+ *
+ * Regions are left as they are: those come from the application's own `clrContext`
+ * annotations, so whatever is in them was put there deliberately.
+ */
+export function withoutFormValues(context: ClrPageContext): ClrPageContext {
+  return { ...context, components: context.components.map(withoutValue) };
+}
+
+function withoutValue(component: ClrComponentContext): ClrComponentContext {
+  const reduced: ClrComponentContext = { ...component };
+
+  if (reduced.state && 'value' in reduced.state) {
+    const state = { ...reduced.state };
+    delete state.value;
+    if (Object.keys(state).length) {
+      reduced.state = state;
+    } else {
+      delete reduced.state;
+    }
+  }
+  if (reduced.children?.length) {
+    reduced.children = reduced.children.map(withoutValue);
+  }
+  return reduced;
 }

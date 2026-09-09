@@ -12,7 +12,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrComboboxModule } from './combobox.module';
 
-type ElementContextCallback = (options: { includeFormValues?: boolean; maxItemsPerCollection?: number }) => {
+type ElementContextCallback = (options: { maxItemsPerCollection?: number }) => {
   type: string;
   state: Record<string, unknown>;
 };
@@ -74,9 +74,8 @@ describe('ClrCombobox element context', () => {
     expect(context.state.optionsAvailable).toBeUndefined();
   });
 
-  it('exposes the selection only when form values are opted in', () => {
-    expect(publishedContext().state.value).toBeUndefined();
-    expect(publishedContext({ includeFormValues: true }).state.value).toBe('apple');
+  it('exposes the current selection, which a closed popover does not show', () => {
+    expect(publishedContext().state.value).toBe('apple');
   });
 
   it('lists the same options while the popover is open, without screen reader additions', () => {

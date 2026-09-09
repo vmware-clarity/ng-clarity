@@ -45,8 +45,35 @@ const ENUM_ATTRIBUTES: { attribute: string; key: string; empty: string }[] = [
   { attribute: 'aria-invalid', key: 'invalid', empty: 'false' },
 ];
 
-/** Roles whose value is rendered output rather than something the user typed. */
-const DISPLAYED_VALUE_ROLES = new Set(['progressbar', 'meter']);
+/**
+ * Marks a control, or a region containing controls, whose value must never appear in a
+ * snapshot. Use it for anything sensitive that the input type alone does not reveal — an
+ * account number or an API token in a plain text field.
+ *
+ * The field itself is still described, so an agent knows it exists and that its value is
+ * being withheld rather than being absent.
+ */
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = 'data-clr-context-redact';
+
+/** Input types whose value is never reported, whatever the caller asked for. */
+const REDACTED_INPUT_TYPES = new Set(['password', 'file']);
+
+/**
+ * `autocomplete` tokens that declare a field holds a credential or a payment
+ * instrument. The author has already told the browser what this field is for; that is
+ * reason enough not to put it in a snapshot.
+ */
+const REDACTED_AUTOCOMPLETE_TOKENS = new Set([
+  'current-password',
+  'new-password',
+  'one-time-code',
+  'cc-number',
+  'cc-exp',
+  'cc-exp-month',
+  'cc-exp-year',
+  'cc-csc',
+  'cc-name',
+]);
 
 /**
  * Everything the accessibility tree and native HTML say about an element's current state,
@@ -56,14 +83,12 @@ const DISPLAYED_VALUE_ROLES = new Set(['progressbar', 'meter']);
  * `aria-expanded` means the same thing on a Clarity accordion, a `@clr/ui` CSS-only
  * dropdown and a plain `<details>`.
  *
- * Values a user typed are withheld unless `includeFormValues` is set. A progress bar or
- * meter is exempt: its value is displayed content, not user input.
+ * A control's current value is part of what the page is showing, so it is reported like
+ * any other state — except where it must never be: see {@link isRedacted}. Which
+ * consumers are allowed to see values is decided at the boundary that serves them, not
+ * here.
  */
-export function ariaState(
-  element: Element,
-  role: string | null,
-  options: Required<ClrContextSnapshotOptions>
-): Record<string, unknown> {
+export function ariaState(element: Element, options: Required<ClrContextSnapshotOptions>): Record<string, unknown> {
   const state: Record<string, unknown> = {};
 
   for (const [attribute, key] of Object.entries(TRISTATE_ATTRIBUTES)) {
@@ -103,7 +128,7 @@ export function ariaState(
   }
 
   assignNativeState(element, state, options);
-  assignValueState(element, role, state, options);
+  assignValueState(element, state, options);
 
   return state;
 }
@@ -150,21 +175,22 @@ function assignNativeState(
   }
 }
 
-/** The element's current value, gated on the application opting into user data. */
+/** The element's current value, unless it is one that must never be reported. */
 function assignValueState(
   element: Element,
-  role: string | null,
   state: Record<string, unknown>,
   options: Required<ClrContextSnapshotOptions>
 ): void {
-  const displayed = !!role && DISPLAYED_VALUE_ROLES.has(role);
-  const ariaValue = numberAttribute(element, 'aria-valuenow');
-
-  if (ariaValue !== undefined && (displayed || options.includeFormValues)) {
-    state.value = ariaValue;
+  // Reported as withheld rather than left out, so an agent can tell a field it may not
+  // see from one that happens to be empty — and does not go looking for it elsewhere.
+  if (isRedacted(element)) {
+    state.redacted = true;
+    return;
   }
 
-  if (!options.includeFormValues) {
+  const ariaValue = numberAttribute(element, 'aria-valuenow');
+  if (ariaValue !== undefined) {
+    state.value = ariaValue;
     return;
   }
   if ('checked' in element && (element as HTMLInputElement).type === 'checkbox') {
@@ -190,6 +216,26 @@ function describedByText(element: Element, options: Required<ClrContextSnapshotO
     .filter(text => text)
     .join(' ');
   return truncate(described, options.maxTextLength);
+}
+
+/**
+ * Whether this control's value must be withheld. Independent of what the caller asked
+ * for: some values have no business being in a snapshot at all.
+ */
+function isRedacted(element: Element): boolean {
+  if (element.closest(`[${CLR_CONTEXT_REDACT_ATTRIBUTE}]`)) {
+    return true;
+  }
+  const type = element.getAttribute('type')?.toLowerCase();
+  if (type && REDACTED_INPUT_TYPES.has(type)) {
+    return true;
+  }
+  const autocomplete = element.getAttribute('autocomplete')?.toLowerCase().trim();
+  if (!autocomplete) {
+    return false;
+  }
+  // `autocomplete` may be a space-separated list with section and address hints.
+  return autocomplete.split(/\s+/).some(token => REDACTED_AUTOCOMPLETE_TOKENS.has(token));
 }
 
 function numberAttribute(element: Element, attribute: string): number | undefined {

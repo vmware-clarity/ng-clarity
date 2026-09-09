@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { isLeafRole, isNameFromContents, isPresentationalRole, resolveRole } from './roles';
+import { isLeafRole, isNameFromContents, isPresentationalRole, mayContainControls, resolveRole } from './roles';
 
 describe('resolveRole', () => {
   function roleOf(html: string): string | null {
@@ -105,5 +105,26 @@ describe('isLeafRole and isNameFromContents are different questions', () => {
 
   it('terminates the walk at an alert, whose content is its message', () => {
     expect(isLeafRole('alert')).toBe(true);
+  });
+});
+
+describe('mayContainControls', () => {
+  it('lets a heading contain a genuinely separate control, such as a button', () => {
+    // <h2>Combobox <button>Toggle Disabled</button></h2> is ordinary, valid markup: the
+    // button is a real, independently focusable control, not part of the heading's own
+    // widget. Swallowing it into the heading's label would make it invisible everywhere,
+    // not just under-described.
+    expect(mayContainControls('heading')).toBe(true);
+  });
+
+  it('lets an alert or a status contain its own dismiss or undo action', () => {
+    expect(mayContainControls('alert')).toBe(true);
+    expect(mayContainControls('status')).toBe(true);
+  });
+
+  it('does not apply to a widget leaf, where nothing inside has independent semantics', () => {
+    expect(mayContainControls('button')).toBe(false);
+    expect(mayContainControls('link')).toBe(false);
+    expect(mayContainControls('checkbox')).toBe(false);
   });
 });

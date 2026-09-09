@@ -8,16 +8,13 @@
 import { ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { ariaState } from './aria-state';
-import { resolveRole } from './roles';
 
 describe('ariaState', () => {
-  const budgets = (includeFormValues = false): Required<ClrContextSnapshotOptions> => ({
+  const budgets = (): Required<ClrContextSnapshotOptions> => ({
     maxTextLength: 100,
     maxItemsPerCollection: 25,
     maxComponents: 100,
     includeDomComponents: true,
-    includeActions: true,
-    includeFormValues,
   });
 
   let container: HTMLElement;
@@ -29,16 +26,16 @@ describe('ariaState', () => {
 
   afterEach(() => container.remove());
 
-  function stateOf(html: string, includeFormValues = false): Record<string, unknown> {
+  function stateOf(html: string): Record<string, unknown> {
     container.innerHTML = html;
     const element = container.firstElementChild as HTMLElement;
-    return ariaState(element, resolveRole(element), budgets(includeFormValues));
+    return ariaState(element, budgets());
   }
 
   function stateOfSelected(html: string, selector: string): Record<string, unknown> {
     container.innerHTML = html;
     const element = container.querySelector(selector) as HTMLElement;
-    return ariaState(element, resolveRole(element), budgets());
+    return ariaState(element, budgets());
   }
 
   it('reports aria-expanded as a boolean in both states', () => {
@@ -92,12 +89,8 @@ describe('ariaState', () => {
     expect(state.maxLength).toBe(24);
   });
 
-  it("withholds a control's value unless form values were opted into", () => {
-    expect('value' in stateOf('<input value="esx-prod-04" />')).toBe(false);
-  });
-
-  it("reports a control's value once form values are opted into", () => {
-    expect(stateOf('<input value="esx-prod-04" />', true).value).toBe('esx-prod-04');
+  it("reports a control's current value", () => {
+    expect(stateOf('<input value="esx-prod-04" />').value).toBe('esx-prod-04');
   });
 
   it("reports a progress bar's value without opting into form values, because it is displayed not typed", () => {
@@ -140,5 +133,56 @@ describe('ariaState', () => {
 
   it('reports no description when aria-describedby points at nothing', () => {
     expect('description' in stateOfSelected('<input id="h" aria-describedby="missing" />', '#h')).toBe(false);
+  });
+
+  describe('sensitive values', () => {
+    it('never reports a password, even when values are collected', () => {
+      const state = stateOf('<input type="password" value="hunter2" />');
+
+      expect(state.value).toBeUndefined();
+      expect(JSON.stringify(state)).not.toContain('hunter2');
+    });
+
+    it('says a value is withheld rather than silently omitting it', () => {
+      expect(stateOf('<input type="password" value="hunter2" />').redacted).toBe(true);
+    });
+
+    it('never reports a file selection', () => {
+      const state = stateOf('<input type="file" />');
+
+      expect(state.value).toBeUndefined();
+      expect(state.redacted).toBe(true);
+    });
+
+    it('withholds a value the application marked as sensitive', () => {
+      const state = stateOf('<input data-clr-context-redact value="tok_live_abc123" />');
+
+      expect(state.value).toBeUndefined();
+      expect(state.redacted).toBe(true);
+    });
+
+    it('withholds a value inside a region the application marked as sensitive', () => {
+      container.innerHTML = '<div data-clr-context-redact><input id="t" value="tok_live_abc123" /></div>';
+      const input = container.querySelector('#t') as HTMLElement;
+      const state = ariaState(input, budgets());
+
+      expect(state.value).toBeUndefined();
+      expect(state.redacted).toBe(true);
+    });
+
+    it('withholds a value the markup says is a credential', () => {
+      const state = stateOf('<input autocomplete="current-password" value="hunter2" />');
+
+      expect(state.value).toBeUndefined();
+      expect(state.redacted).toBe(true);
+    });
+
+    it('withholds a value the markup says is a payment card', () => {
+      expect(stateOf('<input autocomplete="cc-number" value="4111111111111111" />').redacted).toBe(true);
+    });
+
+    it('still reports an ordinary value', () => {
+      expect(stateOf('<input value="esx-prod-04" />').value).toBe('esx-prod-04');
+    });
   });
 });

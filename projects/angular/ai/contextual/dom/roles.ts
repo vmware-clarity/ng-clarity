@@ -152,6 +152,18 @@ const LEAF_ROLES = new Set([
   'treeitem',
 ]);
 
+/**
+ * Leaf roles that describe a unit of content rather than a single interactive widget.
+ * A heading's, an alert's or a status's accessible name subsumes all descendant text —
+ * that is correct, unlike-role computation — but ordinary markup routinely nests a
+ * genuinely separate, independently focusable control inside one anyway: a heading with
+ * a button, an alert with a dismiss action, a status with an undo action. That control
+ * keeps its own role and state regardless of its container's, so the walk must still
+ * find it. A widget leaf (`button`, `link`, `checkbox`, ...) has no such exception:
+ * nothing inside it has independent semantics, so it stays fully terminal.
+ */
+const CONTENT_LEAF_ROLES = new Set(['heading', 'status', 'alert', 'term', 'caption', 'definition', 'tooltip']);
+
 /** The two spellings of "this element carries no semantics of its own". */
 const PRESENTATIONAL_ROLES = new Set(['presentation', 'none']);
 
@@ -177,6 +189,11 @@ export function isLeafRole(role: string): boolean {
 /** Whether a role may take its accessible name from its own text content. */
 export function isNameFromContents(role: string): boolean {
   return NAME_FROM_CONTENTS.has(role);
+}
+
+/** Whether a leaf role may still contain a genuinely separate, independent control. */
+export function mayContainControls(role: string): boolean {
+  return CONTENT_LEAF_ROLES.has(role);
 }
 
 /** Whether a role means "ignore this element but keep looking at its children". */

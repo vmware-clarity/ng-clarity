@@ -17,8 +17,6 @@ describe('collectContextTree', () => {
     maxItemsPerCollection: 25,
     maxComponents: 100,
     includeDomComponents: true,
-    includeActions: true,
-    includeFormValues: false,
     ...overrides,
   });
 
@@ -147,5 +145,63 @@ describe('collectContextTree', () => {
     const nodes = collect('<h2 id="t">Add rule</h2><div role="dialog" aria-labelledby="t"></div>');
 
     expect(nodes.map(node => node.type)).toEqual(['heading', 'dialog']);
+  });
+
+  it('reports a control nested inside a heading, rather than swallowing it into the label', () => {
+    // The literal case this guards: a heading whose text is a name plus a genuinely
+    // separate, independently focusable button — ordinary, valid markup.
+    const [heading] = collect('<h2>Combobox <button>Toggle Disabled</button></h2>');
+
+    expect(heading.type).toBe('heading');
+    expect(heading.label).toBe('Combobox Toggle Disabled');
+    expect(heading.children?.length).toBe(1);
+    expect(heading.children?.[0].type).toBe('button');
+    expect(heading.children?.[0].label).toBe('Toggle Disabled');
+  });
+
+  it('reports a dismiss action nested inside an alert or a status', () => {
+    const [alert] = collect('<div role="alert">Disk almost full <button>Dismiss</button></div>');
+    const [status] = collect('<div role="status">Saved <button>Undo</button></div>');
+
+    expect(alert.children?.[0].type).toBe('button');
+    expect(alert.children?.[0].label).toBe('Dismiss');
+    expect(status.children?.[0].type).toBe('button');
+    expect(status.children?.[0].label).toBe('Undo');
+  });
+
+  it('does not grow children on a widget leaf, where nothing inside has independent semantics', () => {
+    // A button's own icon and text are decoration for the button itself, not a
+    // separate control — unlike a heading, a button legitimately terminates the walk.
+    const [button] = collect('<button><span aria-hidden="true">icon</span> Save</button>');
+
+    expect(button.type).toBe('button');
+    expect(button.label).toBe('Save');
+    expect(button.children).toBeUndefined();
+  });
+
+  it("keeps a component's parts together when it renders more than one of them", () => {
+    // A custom element with no role of its own is normally transparent — its lone
+    // reportable descendant stands in for it directly. But when it renders more than
+    // one independently reportable piece, flattening them out would scatter one
+    // component into unrelated-looking siblings. This is deliberately generic markup —
+    // no Clarity tag names — because the rule has to hold for any component shaped
+    // this way, not just the ones we happened to test.
+    const nodes = collect('<my-widget><div role="grid"></div><my-widget-footer>3 items</my-widget-footer></my-widget>');
+
+    expect(nodes.length).toBe(1);
+    expect(nodes[0].type).toBe('my-widget');
+    expect(nodes[0].element).toBe('my-widget');
+    expect(nodes[0].children?.map(child => child.type)).toEqual(['grid', 'my-widget-footer']);
+    expect(nodes[0].children?.[1].label).toBe('3 items');
+  });
+
+  it('stays transparent when a component renders exactly one reportable piece', () => {
+    // Regression guard: this is the existing, already-tested single-branch case and
+    // must not start wrapping unnecessarily.
+    const [node] = collect('<my-widget><div role="grid"></div></my-widget>');
+
+    expect(node.type).toBe('grid');
+    expect(node.element).toBe('my-widget');
+    expect(node.children).toBeUndefined();
   });
 });

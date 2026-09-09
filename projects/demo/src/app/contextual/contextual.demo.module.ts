@@ -7,7 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { ClrContextualModule } from '@clr/angular/ai';
 
@@ -15,7 +15,7 @@ import { ContextualDemo } from './contextual.demo';
 import { ROUTING } from './contextual.demo.routing';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ClarityModule, ClrContextualModule, ROUTING],
+  imports: [CommonModule, FormsModule, ClarityModule, ClrContextualModule, ROUTING, ReactiveFormsModule],
   declarations: [ContextualDemo],
   exports: [ContextualDemo],
 })

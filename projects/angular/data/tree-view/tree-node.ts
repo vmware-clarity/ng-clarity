@@ -33,6 +33,7 @@ import {
   Keys,
   LoadingListener,
   preventArrowKeyScroll,
+  publishElementContext,
   uniqueIdFactory,
 } from '@clr/angular/utils';
 import { Subject, Subscription } from 'rxjs';
@@ -79,10 +80,12 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
   STATES = ClrSelectedState;
   isModelLoading = false;
+
   nodeId = uniqueIdFactory();
   contentContainerTabindex = -1;
   _model: TreeNodeModel<T>;
 
+  private teardownElementContext?: () => void;
   private skipEmitChange = false;
   private typeAheadKeyBuffer = '';
   private typeAheadKeyEvent = new Subject<string>();
@@ -189,6 +192,16 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   ngOnInit() {
+    // aria-expanded says collapsed; it cannot say whether anything is under the node, and
+    // a lazily loaded subtree is absent from the DOM until it arrives. The loading
+    // indicator is a bare span with no aria-busy, so neither fact is otherwise readable.
+    this.teardownElementContext = publishElementContext(this.elementRef.nativeElement, () => {
+      const loading = this.expandService.loading || this.isModelLoading;
+      return {
+        state: loading ? { expandable: this.isExpandable(), loading: true } : { expandable: this.isExpandable() },
+      };
+    });
+
     this._model.expanded = this.expanded;
     this._model.disabled = this.disabled;
     this.subscriptions.push(
@@ -235,6 +248,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   ngOnDestroy() {
+    this.teardownElementContext?.();
     this._model.destroy();
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }

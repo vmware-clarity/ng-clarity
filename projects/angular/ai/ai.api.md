@@ -13,9 +13,6 @@ import { OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 // @public
-export function applyClrFormValues(form: Element, values: Record<string, unknown>): ClrFormApplyResult;
-
-// @public
 export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions>;
 
 // @public
@@ -23,6 +20,9 @@ export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
 
 // @public
 export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
+
+// @public
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 
 // @public (undocumented)
 export const CLR_CONTEXTUAL_DIRECTIVES: any[];
@@ -32,7 +32,6 @@ export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
 
 // @public
 export interface ClrComponentContext {
-    actions?: ClrContextAction[];
     children?: ClrComponentContext[];
     element?: string;
     label?: string;
@@ -59,16 +58,6 @@ export class ClrContext implements OnInit, OnDestroy, ClrContextProvider {
 }
 
 // @public
-export interface ClrContextAction {
-    // (undocumented)
-    disabled?: boolean;
-    href?: string;
-    // (undocumented)
-    kind: 'button' | 'link';
-    label: string;
-}
-
-// @public
 export interface ClrContextDomExtractor {
     extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrComponentContext | null;
     selector: string;
@@ -88,6 +77,7 @@ export interface ClrContextFrameHostOptions {
     allowAnyOrigin?: boolean;
     allowedOrigins?: string[];
     minRequestIntervalMs?: number;
+    shareFormValues?: boolean;
     shareFullUrl?: boolean;
 }
 
@@ -123,6 +113,11 @@ export interface ClrContextFrameResponse {
 }
 
 // @public
+export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions {
+    shareFormValues?: boolean;
+}
+
+// @public
 export interface ClrContextProvider {
     // (undocumented)
     getClrContext(): ClrComponentContext | null;
@@ -142,9 +137,7 @@ export class ClrContextRegistryService {
 
 // @public
 export interface ClrContextSnapshotOptions {
-    includeActions?: boolean;
     includeDomComponents?: boolean;
-    includeFormValues?: boolean;
     maxComponents?: number;
     maxItemsPerCollection?: number;
     maxTextLength?: number;
@@ -176,13 +169,12 @@ export interface ClrContextTrackingOptions {
 // @public
 export class ClrContextualEngineService implements OnDestroy {
     constructor(platformId: unknown, document: Document, contextRegistry: ClrContextRegistryService, router: Router | null);
-    applyFormValues(values: Record<string, unknown>, formSelector?: string): ClrFormApplyResult;
     // (undocumented)
     disableFrameBridge(): void;
     // (undocumented)
     disableGlobalAccess(): void;
     enableFrameBridge(options?: ClrContextFrameHostOptions): void;
-    enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextSnapshotOptions): void;
+    enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextGlobalAccessOptions): void;
     getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext;
     // (undocumented)
     ngOnDestroy(): void;
@@ -208,17 +200,7 @@ export class ClrContextualModule {
 export type ClrElementContextCallback = (options: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
 
 // @public
-export interface ClrFormApplyResult {
-    applied: string[];
-    skipped: {
-        name: string;
-        reason: string;
-    }[];
-}
-
-// @public
 export interface ClrPageContext {
-    actions?: ClrContextAction[];
     collectedAt: string;
     components: ClrComponentContext[];
     regions: ClrComponentContext[];
@@ -235,9 +217,6 @@ export interface ClrRouteContext {
     queryParams?: Record<string, string>;
     url: string;
 }
-
-// @public
-export function collectClrDomActions(components: ClrComponentContext[], options?: ClrContextSnapshotOptions): ClrContextAction[];
 
 // @public
 export function collectClrDomContexts(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrComponentContext[];

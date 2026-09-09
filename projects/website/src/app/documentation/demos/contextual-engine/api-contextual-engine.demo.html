@@ -1,0 +1,385 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h2 id="summary-of-options" cds-text="title" class="clr-mt-24px">Services</h2>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrContextualEngineService</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  Root-provided. Builds snapshots on demand and owns the two ways context leaves the application.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Returns</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">getSnapshot(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrPageContext</code></td>
+      <td class="left">
+        Describes the page as it is at this moment. Nothing is cached, so a snapshot cannot report UI that has been
+        closed, destroyed or navigated away from.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">registerDomExtractor(extractor)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
+      <td class="left">
+        Teaches the collector about markup that carries neither an ARIA role nor an accessible name. Returns a function
+        that removes it again.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">enableFrameBridge(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">
+        Starts answering context requests from embedded frames. Same-origin only unless told otherwise, and a frame
+        receives neither form values nor the URL's query string unless the host shares them.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">disableFrameBridge()</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">Stops answering frames.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">requestHostContext(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Promise&lt;ClrPageContext | null&gt;</code></td>
+      <td class="left">
+        For an application that is itself embedded: asks the hosting page for its context. Resolves with
+        <code cds-text="code">null</code> when the host does not answer, so embedded UI degrades gracefully.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">enableGlobalAccess(propertyName?, options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">
+        Exposes <code cds-text="code">window.clrContext()</code> for agents driving the browser. Caller options are
+        reduced to budgets and form values are withheld unless <code cds-text="code">shareFormValues</code> is set,
+        because any script on the page can call it.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">disableGlobalAccess()</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">Removes the global accessor.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrContextTrackerService</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  Root-provided. Turns the pull-based engine into a stream for consumers that always want the current page.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">context$</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Observable&lt;ClrPageContext&gt;</code></td>
+      <td class="left">
+        Emits whenever the page context actually changes, replaying the most recent snapshot to new subscribers.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">currentContext</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrPageContext | null</code></td>
+      <td class="left">The most recent snapshot, or <code cds-text="code">null</code> before tracking starts.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">start(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">
+        Takes a snapshot immediately, then watches the DOM for changes and <code cds-text="code">input</code> /
+        <code cds-text="code">change</code> for typing. Calling it again restarts with the new options.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">stop()</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">Stops tracking. The last emitted context stays available.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">refresh()</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">Takes a snapshot immediately and emits it.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrContextRegistryService</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  Root-provided. Holds whatever can contribute application knowledge to a snapshot. Providers are polled at snapshot
+  time and nothing is stored, so an annotation cannot go stale.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Returns</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">register(provider)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
+      <td class="left">
+        Registers a <code cds-text="code">ClrContextProvider</code>. Returns a function that unregisters it.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">unregister(provider)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">Removes a provider, typically from <code cds-text="code">ngOnDestroy</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="directives" cds-text="title" class="clr-mt-48px">Directives</h2>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">[clrContext]</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  Annotates a region with the knowledge only the application has. Ships in
+  <code cds-text="code">ClrContextualModule</code>.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Input</th>
+      <th class="left clr-hidden-xs-down">Values</th>
+      <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">clrContext</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left clr-hidden-xs-down">—</td>
+      <td class="left">What this region is about, in words an agent can use.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrContextType</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">'region'</code></td>
+      <td class="left">The kind of UI this annotation describes.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">[clrContextState]</b></td>
+      <td class="left clr-hidden-xs-down">Object</td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">null</code></td>
+      <td class="left">
+        Application state worth knowing, read at snapshot time rather than stored, so it is never out of date.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="attributes" cds-text="title" class="clr-mt-48px">Attributes</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Attribute</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">data-clr-context-ignore</b></td>
+      <td class="left">
+        The element and everything inside it is invisible to the engine: never described, and its mutations never
+        trigger a re-scrape. Put it on UI that renders the context, so a panel cannot describe itself or loop. Exported
+        as <code cds-text="code">CLR_CONTEXT_IGNORE_ATTRIBUTE</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">data-clr-context-redact</b></td>
+      <td class="left">
+        The control, or every control in the region, is still described — label, type, what it permits — but its value
+        is never reported. Exported as <code cds-text="code">CLR_CONTEXT_REDACT_ATTRIBUTE</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="snapshot-options" cds-text="title" class="clr-mt-48px">Snapshot options</h2>
+<p class="clr-mt-16px" cds-text="body">
+  <code cds-text="code">ClrContextSnapshotOptions</code>. Defaults are in
+  <code cds-text="code">CLR_CONTEXT_DEFAULT_OPTIONS</code>.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Option</th>
+      <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">maxTextLength</b></td>
+      <td class="left clr-hidden-xs-down">100</td>
+      <td class="left">Longest any single string may be. Anything longer is truncated with an ellipsis.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">maxItemsPerCollection</b></td>
+      <td class="left clr-hidden-xs-down">25</td>
+      <td class="left">Most items reported per collection — rows, tabs, links, options, actions.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">maxComponents</b></td>
+      <td class="left clr-hidden-xs-down">100</td>
+      <td class="left">
+        Most components described in total. The walk stops when the budget is spent, so a low value drops whatever comes
+        last in the document.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">includeDomComponents</b></td>
+      <td class="left clr-hidden-xs-down">true</td>
+      <td class="left">Whether to describe the rendered page at all. Turn it off for route and annotations only.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="context-shape" cds-text="title" class="clr-mt-48px">Context shape</h2>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrPageContext</code></h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Property</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">title</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">The document title.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">url</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">The current URL. Frames receive it without its query string or fragment.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">route</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrRouteContext</code></td>
+      <td class="left">
+        Present when the application uses the router: the path pattern, route and query parameters, and the
+        JSON-serializable part of the route data.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">regions</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrComponentContext[]</code></td>
+      <td class="left">What the application said about itself, through <code cds-text="code">clrContext</code>.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">components</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrComponentContext[]</code></td>
+      <td class="left">What is rendered right now, as a tree.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">collectedAt</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">ISO timestamp of the moment the snapshot was taken.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrComponentContext</code></h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Property</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">type</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">
+        The ARIA role describing what this is — <code cds-text="code">grid</code>, <code cds-text="code">dialog</code>,
+        <code cds-text="code">tablist</code>, <code cds-text="code">combobox</code>. The same word whatever library
+        rendered it.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">element</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">
+        The tag that rendered it, when that says something the role cannot — so a
+        <code cds-text="code">clr-side-panel</code> and a <code cds-text="code">clr-modal</code> stay distinguishable
+        while both being dialogs.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">label</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">Its accessible name.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">state</b></td>
+      <td class="left clr-hidden-xs-down">Object</td>
+      <td class="left">
+        What is true of it right now: <code cds-text="code">expanded</code>, <code cds-text="code">selected</code>,
+        <code cds-text="code">invalid</code>, <code cds-text="code">sort</code>, <code cds-text="code">value</code>,
+        <code cds-text="code">options</code>, <code cds-text="code">description</code>, and
+        <code cds-text="code">redacted</code> where a value is withheld.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">children</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrComponentContext[]</code></td>
+      <td class="left">
+        What it contains, where that structure matters. A button or link is a node here, not a separate top-level list:
+        to find what a dialog offers, read the dialog's own <code cds-text="code">children</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="publishing" cds-text="title" class="clr-mt-48px">Publishing from a component</h2>
+<p class="clr-mt-16px" cds-text="body">
+  A component that knows more than its markup shows can say so. The contract lives in
+  <code cds-text="code">&#64;clr/angular/utils</code> rather than here, so publishing costs a component nothing but one
+  import.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Returns</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">publishElementContext(host, callback)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
+      <td class="left">
+        Publishes a callback on the host element, returning the teardown to run on destroy. The teardown removes only
+        the callback it published, so republishing is safe. What a component publishes wins over what the markup showed
+        — except a value the engine withheld as sensitive, which is removed again.
+      </td>
+    </tr>
+  </tbody>
+</table>

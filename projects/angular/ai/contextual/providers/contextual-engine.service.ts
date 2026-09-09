@@ -10,8 +10,7 @@ import { DOCUMENT, Inject, Injectable, OnDestroy, Optional, PLATFORM_ID } from '
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { ClrContextRegistryService } from './context-registry.service';
-import { ClrContextDomExtractor, collectClrDomActions, collectClrDomContexts } from '../dom/dom-context-collector';
-import { applyClrFormValues, ClrFormApplyResult } from '../dom/form-value-applier';
+import { ClrContextDomExtractor, collectClrDomContexts } from '../dom/dom-context-collector';
 import {
   ClrContextFrameHost,
   ClrContextFrameHostOptions,
@@ -19,17 +18,29 @@ import {
   requestClrContextFromHost,
 } from '../iframe/context-frame-bridge';
 import { ClrContextSnapshotOptions, ClrPageContext, ClrRouteContext } from '../interfaces/context.interface';
-import { sanitizeUntrustedSnapshotOptions } from '../untrusted-options';
+import { sanitizeUntrustedSnapshotOptions, withoutFormValues } from '../untrusted-options';
 
 const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
 
+/** How the engine should behave when exposed on `window`. */
+export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions {
+  /**
+   * Include what the user has typed. Off by default, because any script on the page can
+   * call the global accessor — including one the application did not write.
+   */
+  shareFormValues?: boolean;
+}
+
 /**
  * Builds on-demand snapshots of everything useful an AI agent can know about the current
- * page: the active route, the components rendered right now and their state, the actions
- * currently available, and whatever semantic context the application registered.
+ * page: the active route, and the components rendered right now, their state, and
+ * whatever actions they own, as a tree — plus whatever semantic context the application
+ * registered.
  *
  * Snapshots are always computed at call time from the live application — nothing is
  * cached — so they can never contain obsolete information about UI that no longer exists.
+ *
+ * The engine only ever reads. It describes the page and never changes it.
  *
  * The engine can also serve snapshots across an iframe boundary (see
  * {@link enableFrameBridge} and {@link requestHostContext}), so embedded UI such as a
@@ -68,45 +79,10 @@ export class ClrContextualEngineService implements OnDestroy {
     if (route) {
       snapshot.route = route;
     }
-    if (isPlatformBrowser(this.platformId)) {
-      const wantsComponents = options?.includeDomComponents !== false;
-      const wantsActions = options?.includeActions !== false;
-      if (wantsComponents || wantsActions) {
-        // One walk serves both: the actions are flattened out of the same tree, so they
-        // can never disagree with it about what is currently visible.
-        const components = collectClrDomContexts(this.document, options, this.customExtractors);
-        if (wantsComponents) {
-          snapshot.components = components;
-        }
-        if (wantsActions) {
-          const actions = collectClrDomActions(components, options);
-          if (actions.length) {
-            snapshot.actions = actions;
-          }
-        }
-      }
+    if (isPlatformBrowser(this.platformId) && options?.includeDomComponents !== false) {
+      snapshot.components = collectClrDomContexts(this.document, options, this.customExtractors);
     }
     return snapshot;
-  }
-
-  /**
-   * Applies a form-filling agent's answer — a JSON object keyed by control `name`,
-   * matching the keys snapshots report when `includeFormValues` is on — to the first
-   * form matching `formSelector`. Values are written through real DOM events, so
-   * Angular forms pick them up as if the user had typed; nothing is submitted.
-   */
-  applyFormValues(values: Record<string, unknown>, formSelector = 'form[clrForm]'): ClrFormApplyResult {
-    if (!isPlatformBrowser(this.platformId)) {
-      return { applied: [], skipped: Object.keys(values).map(name => ({ name, reason: 'not running in a browser' })) };
-    }
-    const form = this.document.querySelector(formSelector);
-    if (!form) {
-      return {
-        applied: [],
-        skipped: Object.keys(values).map(name => ({ name, reason: 'no form matches the selector' })),
-      };
-    }
-    return applyClrFormValues(form, values);
   }
 
   /**
@@ -130,20 +106,25 @@ export class ClrContextualEngineService implements OnDestroy {
    * driving the browser can query the page context without an application API.
    *
    * Anything running on the page can call this, including a third-party script, so the
-   * caller is treated as untrusted: its options are reduced to the budgets a caller may
-   * set, and `hostOptions` is applied over the top. Whether typed values are exposed
-   * therefore stays the application's decision — pass
-   * `{ includeFormValues: true }` here to allow it deliberately.
+   * caller is treated as untrusted: its options are reduced to budgets, the
+   * application's own budgets are applied over the top, and what the user has typed is
+   * withheld unless {@link ClrContextGlobalAccessOptions.shareFormValues} says otherwise.
    */
-  enableGlobalAccess(propertyName: string = DEFAULT_GLOBAL_PROPERTY, hostOptions?: ClrContextSnapshotOptions): void {
+  enableGlobalAccess(
+    propertyName: string = DEFAULT_GLOBAL_PROPERTY,
+    hostOptions: ClrContextGlobalAccessOptions = {}
+  ): void {
     const window = this.browserWindow();
     if (!window) {
       return;
     }
+    const { shareFormValues, ...budgets } = hostOptions;
     this.disableGlobalAccess();
     this.globalProperty = propertyName;
-    (window as unknown as Record<string, unknown>)[propertyName] = (options?: unknown) =>
-      this.getSnapshot({ ...sanitizeUntrustedSnapshotOptions(options), ...hostOptions });
+    (window as unknown as Record<string, unknown>)[propertyName] = (options?: unknown) => {
+      const snapshot = this.getSnapshot({ ...sanitizeUntrustedSnapshotOptions(options), ...budgets });
+      return shareFormValues ? snapshot : withoutFormValues(snapshot);
+    };
   }
 
   disableGlobalAccess(): void {

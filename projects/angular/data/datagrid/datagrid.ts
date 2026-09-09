@@ -17,6 +17,7 @@ import {
   EventEmitter,
   forwardRef,
   Inject,
+  inject,
   Input,
   NgZone,
   OnDestroy,
@@ -156,6 +157,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   SELECTION_TYPE = SelectionType;
 
   private teardownElementContext?: () => void;
+  // Injected rather than taken as a constructor parameter, so the public signature of a
+  // shipped component does not change for an internal read.
+  private readonly columnsService = inject(ColumnsService);
 
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
 
@@ -291,8 +295,38 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // Clarity does not set — so reporting it here avoids half-implemented ARIA that would
     // mislead a screen reader.
     this.teardownElementContext = publishElementContext(this.el.nativeElement, () => {
+      const state: Record<string, unknown> = {};
+
       const total = this.page.size > 0 ? this.page.totalItems : 0;
-      return total > 0 ? { state: { rowCount: total } } : null;
+      if (total > 0) {
+        state.rowCount = total;
+      }
+
+      // A filter's state is a CSS class on its toggle, and the value it holds lives
+      // inside a popover that is absent from the DOM while closed.
+      const filtered = this.columns
+        .toArray()
+        .filter(column => column.filter?.isActive?.())
+        .map(column => column.field)
+        .filter((field): field is string => !!field);
+      if (filtered.length) {
+        state.filteredColumns = filtered;
+      }
+
+      // A hidden column is not rendered at all, so nothing in the DOM says it exists or
+      // that it could be shown again. Column states are created per column in order, so
+      // they pair with the columns by index.
+      const columnStates = this.columnsService.columnStates;
+      const hidden = this.columns
+        .toArray()
+        .filter((_column, index) => columnStates[index]?.hidden)
+        .map(column => column.field)
+        .filter((field): field is string => !!field);
+      if (hidden.length) {
+        state.hiddenColumns = hidden;
+      }
+
+      return Object.keys(state).length ? { state } : null;
     });
 
     if (!this.items.smart) {

@@ -154,13 +154,12 @@ describe('ClrContextTrackerService', () => {
   });
 
   it('applies the configured snapshot budgets to tracked scrapes', async () => {
-    tracker.start({ debounceMs: 20, snapshot: { includeDomComponents: false, includeActions: false } });
+    tracker.start({ debounceMs: 20, snapshot: { includeDomComponents: false } });
 
     addWidget('Never collected');
     await wait(120);
 
     expect(tracker.currentContext?.components).toEqual([]);
-    expect(tracker.currentContext?.actions).toBeUndefined();
   });
 
   it('restarts with new options when started again', async () => {
@@ -203,7 +202,7 @@ describe('ClrContextTrackerService', () => {
     });
   });
 
-  describe('when form values are tracked', () => {
+  describe('tracking what a user types', () => {
     function addInput(value: string, parent: Element = document.body): HTMLInputElement {
       const label = document.createElement('label');
       label.setAttribute('for', 'tracked-host');
@@ -223,7 +222,7 @@ describe('ClrContextTrackerService', () => {
 
     it('re-emits when a value changes, which mutates no DOM', async () => {
       const input = addInput('original');
-      tracker.start({ snapshot: { includeFormValues: true }, debounceMs: 20, maxWaitMs: 60 });
+      tracker.start({ debounceMs: 20, maxWaitMs: 60 });
       await wait(60);
       const before = emitted.length;
 
@@ -238,7 +237,7 @@ describe('ClrContextTrackerService', () => {
 
     it('coalesces a burst of typing into a single scrape', async () => {
       const input = addInput('a');
-      tracker.start({ snapshot: { includeFormValues: true }, debounceMs: 40, maxWaitMs: 500 });
+      tracker.start({ debounceMs: 40, maxWaitMs: 500 });
       await wait(80);
       const before = emitted.length;
 
@@ -258,24 +257,11 @@ describe('ClrContextTrackerService', () => {
       document.body.appendChild(ignored);
       addedElements.push(ignored);
       const input = addInput('original', ignored);
-      tracker.start({ snapshot: { includeFormValues: true }, debounceMs: 20, maxWaitMs: 60 });
+      tracker.start({ debounceMs: 20, maxWaitMs: 60 });
       await wait(60);
       const before = emitted.length;
 
       input.value = 'typed-in-panel';
-      input.dispatchEvent(new Event('input', { bubbles: true }));
-      await wait(120);
-
-      expect(emitted.length).toBe(before);
-    });
-
-    it('does not listen for values when they are not being collected', async () => {
-      const input = addInput('original');
-      tracker.start({ snapshot: { includeFormValues: false }, debounceMs: 20, maxWaitMs: 60 });
-      await wait(60);
-      const before = emitted.length;
-
-      input.value = 'typed-by-user';
       input.dispatchEvent(new Event('input', { bubbles: true }));
       await wait(120);
 

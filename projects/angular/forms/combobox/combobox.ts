@@ -645,14 +645,12 @@ export class ClrCombobox<T>
         // Async comboboxes have no option list until a search loads one.
         state.optionsAvailable = false;
       }
-      if (snapshotOptions.includeFormValues) {
-        const model = this.optionSelectionService.selectionModel?.model;
-        if (model === null || model === undefined) {
-          state.value = null;
-        } else {
-          const displayNames = this.getDisplayNames(model);
-          state.value = this.multiSelect ? displayNames : (displayNames[0] ?? null);
-        }
+      const model = this.optionSelectionService.selectionModel?.model;
+      if (model === null || model === undefined) {
+        state.value = null;
+      } else {
+        const displayNames = this.getDisplayNames(model);
+        state.value = this.multiSelect ? displayNames : (displayNames[0] ?? null);
       }
       return { type: 'combobox', state };
     };

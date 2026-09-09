@@ -5,14 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComponentContext, ClrContextAction } from '@clr/angular/utils';
+import { ClrComponentContext } from '@clr/angular/utils';
 
 /**
  * Re-exported so `@clr/angular/ai` remains a complete public surface. The shared context
  * contracts live in `@clr/angular/utils` because components publish through them and must
  * not depend on this entry point — see `publishElementContext`.
  */
-export type { ClrComponentContext, ClrContextAction, ClrContextSnapshotOptions } from '@clr/angular/utils';
+export type { ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 /**
  * Information about the currently active route, when the application uses the Angular router.
@@ -48,10 +48,13 @@ export interface ClrPageContext {
    * application has, e.g. "this section manages firewall rules".
    */
   regions: ClrComponentContext[];
-  /** Clarity components discovered in the rendered DOM, with their current state. */
+  /**
+   * Clarity components discovered in the rendered DOM, with their current state, as a
+   * tree. A button or link is wherever it actually is in the DOM — inside the dialog,
+   * the heading, the alert that owns it — there is no separate top-level list of
+   * actions, so nesting is never discarded in favor of a flat array.
+   */
   components: ClrComponentContext[];
-  /** Page-level actions (buttons and links) currently available to the user. */
-  actions?: ClrContextAction[];
   /** ISO timestamp of the moment the snapshot was taken. */
   collectedAt: string;
 }

@@ -23,9 +23,12 @@ export const CLR_ELEMENT_CONTEXT_PROPERTY = 'clrElementContext';
 
 /**
  * The callback a component assigns to its host element. It receives the resolved
- * snapshot budgets — including `includeFormValues`, which the callback must honor
- * before exposing anything user-typed — and returns the context to merge, or
- * `null`/`undefined` when it currently has nothing to add.
+ * snapshot budgets and returns the context to merge, or `null`/`undefined` when it
+ * currently has nothing to add.
+ *
+ * A callback may report the component's current value; which consumers see it is decided
+ * by the boundary serving them, not here. A value the engine withheld as sensitive is
+ * removed again after merging, so publishing cannot reinstate one.
  */
 export type ClrElementContextCallback = (
   options: Required<ClrContextSnapshotOptions>

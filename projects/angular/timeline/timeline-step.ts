@@ -6,7 +6,8 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Component, ContentChild, ElementRef, Inject, Input, PLATFORM_ID } from '@angular/core';
+import { Component, ContentChild, ElementRef, Inject, Input, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { publishElementContext } from '@clr/angular/utils';
 
 import { ClrTimelineStepState } from './enums/timeline-step-state.enum';
 import { TimelineIconAttributeService } from './providers/timeline-icon-attribute.service';
@@ -30,16 +31,19 @@ import { ClrTimelineStepTitle } from './timeline-step-title';
   host: { '[class.clr-timeline-step]': 'true', '[attr.role]': '"listitem"' },
   standalone: false,
 })
-export class ClrTimelineStep {
+export class ClrTimelineStep implements OnDestroy {
   @Input('clrState') state: ClrTimelineStepState = ClrTimelineStepState.NOT_STARTED;
 
   @ContentChild(ClrTimelineStepTitle, { read: ElementRef }) stepTitle: ElementRef<HTMLElement>;
 
   stepTitleText: string;
 
+  private teardownElementContext?: () => void;
+
   constructor(
     private iconAttributeService: TimelineIconAttributeService,
-    @Inject(PLATFORM_ID) private platformId: any
+    @Inject(PLATFORM_ID) private platformId: any,
+    private hostElement: ElementRef<HTMLElement>
   ) {}
 
   get iconAriaLabel(): string {
@@ -62,5 +66,16 @@ export class ClrTimelineStep {
     if (this.stepTitle && isPlatformBrowser(this.platformId)) {
       this.stepTitleText = this.stepTitle.nativeElement.innerText;
     }
+
+    // The outcome is announced through the icon's accessible name, but a timeline is a
+    // list and its steps are list items: page-context tooling summarises a list by item
+    // name and never descends to the icon. Reported here so the outcome survives.
+    this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => ({
+      state: { status: this.state },
+    }));
+  }
+
+  ngOnDestroy() {
+    this.teardownElementContext?.();
   }
 }
