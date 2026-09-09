@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrComboboxModule } from './combobox.module';
@@ -59,5 +59,58 @@ describe('ClrCombobox required state', () => {
     // The host used to carry `class="aria-required"`, which no stylesheet defines and no
     // assistive technology reads — a `[class.…]` binding where `[attr.…]` was intended.
     expect(fixture.nativeElement.querySelector('clr-combobox').classList).not.toContain('aria-required');
+  });
+});
+
+@Component({
+  template: `
+    <clr-combobox [(ngModel)]="fruit" [required]="mandatory">
+      <clr-options>
+        <clr-option clrValue="apple">Apple</clr-option>
+      </clr-options>
+    </clr-combobox>
+  `,
+  standalone: false,
+})
+class TemplateDrivenTestComponent {
+  fruit: string | null = null;
+  mandatory = true;
+}
+
+describe('ClrCombobox required state, template-driven', () => {
+  let fixture: ComponentFixture<TemplateDrivenTestComponent>;
+
+  function comboboxInput(): HTMLElement {
+    return fixture.nativeElement.querySelector('[role="combobox"]');
+  }
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
+      declarations: [TemplateDrivenTestComponent],
+    });
+    fixture = TestBed.createComponent(TemplateDrivenTestComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('recognises a [required] binding, which writes no attribute and registers no Validators.required', () => {
+    expect(comboboxInput().getAttribute('aria-required')).toBe('true');
+  });
+
+  it('drops the requirement when the binding turns false', async () => {
+    fixture.componentInstance.mandatory = false;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(comboboxInput().hasAttribute('aria-required')).toBe(false);
+  });
+
+  it('does not call the field invalid before the user has touched it, like every other control', () => {
+    expect(comboboxInput().hasAttribute('aria-invalid')).toBe(false);
   });
 });

@@ -22,8 +22,8 @@ import {
   Type,
   ViewContainerRef,
 } from '@angular/core';
-import { NgControl, Validators } from '@angular/forms';
-import { HostWrapper } from '@clr/angular/utils';
+import { NgControl } from '@angular/forms';
+import { hasRequiredValidator, HostWrapper } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { CONTROL_SUFFIX } from './abstract-control';
@@ -112,7 +112,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
    */
   @HostBinding('attr.aria-required')
   protected get ariaRequired(): true | null {
-    return this.ngControl?.control?.hasValidator(Validators.required) ? true : null;
+    return hasRequiredValidator(this.ngControl?.control) ? true : null;
   }
 
   @HostBinding('attr.aria-describedby')

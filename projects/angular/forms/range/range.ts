@@ -29,6 +29,11 @@ export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
     super(vcr, ClrRangeContainer, injector, control, renderer, el);
   }
 
+  /** Suppressed: `aria-required` is not among the attributes a `slider` supports. */
+  protected override get ariaRequired(): true | null {
+    return null;
+  }
+
   // Notes: We need an output here EventEmitter for the value
   // Does this implementation also need a display for the value?
 }

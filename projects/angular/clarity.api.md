@@ -1635,6 +1635,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     protected index: number;
     // (undocumented)
     inputId(): string;
+    get isInvalid(): boolean;
     get isRequired(): boolean;
     // (undocumented)
     protected isTotalSelection: boolean;
@@ -4962,6 +4963,9 @@ export class ClrProgressBarModule {
 // @public (undocumented)
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    protected get ariaInvalid(): true | null;
+    // (undocumented)
+    protected get ariaRequired(): true | null;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRadio, "[clrRadio]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -4972,7 +4976,10 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     // (undocumented)
+    protected get ariaInvalid(): true | null;
+    // (undocumented)
     ariaLabelledBy: string;
+    protected get ariaRequired(): true | null;
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
@@ -5020,6 +5027,7 @@ export class ClrRadioWrapper implements OnInit {
 // @public (undocumented)
 export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    protected get ariaRequired(): true | null;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRange, "[clrRange]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -5903,7 +5911,7 @@ export class ClrTimelineModule {
 // @public (undocumented)
 export class ClrTimelineStep implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "TimelineIconAttributeService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(iconAttributeService: TimelineIconAttributeService, platformId: any, hostElement: ElementRef<HTMLElement>);
+    constructor(iconAttributeService: TimelineIconAttributeService, platformId: any);
     // (undocumented)
     get iconAriaLabel(): string;
     // (undocumented)
@@ -7893,6 +7901,9 @@ export const hashtagIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const hashtagIconName = "hashtag";
+
+// @public
+export function hasRequiredValidator(control: AbstractControl | null | undefined): boolean;
 
 // @public (undocumented)
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
