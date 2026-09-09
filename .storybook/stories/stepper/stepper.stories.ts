@@ -112,7 +112,7 @@ const StepperSingleDescriptionTemplate: StoryFn = args => ({
   template: `
     <form clrStepper [formGroup]="form">
       <clr-stepper-panel formGroupName="step1">
-        <clr-step-title>Step 1: Have a reallly long title that will wrap if any step have description.</clr-step-title>
+        <clr-step-title>Step 1: Have a realy long title that will wrap if any step have description.</clr-step-title>
         <clr-step-content *clrIfExpanded>
           <button clrStepButton="next">next</button>
         </clr-step-content>
