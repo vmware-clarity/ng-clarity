@@ -70,3 +70,45 @@ describe('ClrContext directive', () => {
     expect(registry.collect()).toEqual([{ type: 'region', label: 'still here' }]);
   });
 });
+
+describe('ClrContext directive, announcing its changes', () => {
+  let fixture: ComponentFixture<TestComponent>;
+  let registry: ClrContextRegistryService;
+  let changes: number;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({ imports: [ClrContextualModule], declarations: [TestComponent] });
+    registry = TestBed.inject(ClrContextRegistryService);
+    changes = 0;
+    registry.changes.subscribe(() => changes++);
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('announces a state object replaced by the application', () => {
+    const before = changes;
+    fixture.componentInstance.state = { cluster: 'omega' };
+    fixture.detectChanges();
+
+    expect(changes).toBe(before + 1);
+  });
+
+  it('announces a state object edited in place, which no input setter sees', () => {
+    const before = changes;
+    (fixture.componentInstance.state as Record<string, unknown>).cluster = 'omega';
+    fixture.detectChanges();
+
+    expect(changes).toBe(before + 1);
+    expect(registry.collect()[0].state).toEqual({ cluster: 'omega' });
+  });
+
+  it('stays quiet while nothing changed', () => {
+    const before = changes;
+    fixture.detectChanges();
+    fixture.detectChanges();
+
+    expect(changes).toBe(before);
+  });
+});

@@ -40,7 +40,8 @@
       <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
       <td class="left">
         Starts answering context requests from embedded frames. Same-origin only unless told otherwise, and a frame
-        receives neither form values nor the URL's query string unless the host shares them.
+        receives neither form values nor the URL's query string unless the host shares them. A frame's budgets are
+        capped at the host's own <code cds-text="code">snapshot</code> budgets.
       </td>
     </tr>
     <tr>
@@ -237,7 +238,7 @@
     <tr>
       <td class="left"><b cds-text="medium">maxItemsPerCollection</b></td>
       <td class="left clr-hidden-xs-down">25</td>
-      <td class="left">Most items reported per collection — rows, tabs, links, options, actions.</td>
+      <td class="left">Most items reported per collection — rows, tabs, list items, options, menu items.</td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">maxComponents</b></td>

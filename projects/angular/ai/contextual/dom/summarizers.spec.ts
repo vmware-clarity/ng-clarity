@@ -152,3 +152,76 @@ describe('summarizeRole', () => {
     expect(summarizeRole(input, 'combobox', budgets())?.options).toEqual(['Gold', 'Silver']);
   });
 });
+
+describe('summarizeRole, collections the first version misread', () => {
+  let container: HTMLElement;
+
+  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> => ({
+    maxTextLength: 100,
+    maxItemsPerCollection: 25,
+    maxComponents: 100,
+    includeDomComponents: true,
+    ...overrides,
+  });
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => container.remove());
+
+  function summarize(html: string, role: string, overrides: Partial<ClrContextSnapshotOptions> = {}) {
+    container.innerHTML = html;
+    const element = container.firstElementChild as HTMLElement;
+    return summarizeRole(element, role, budgets(overrides));
+  }
+
+  it('summarises a menu by its items, which are not options', () => {
+    const state = summarize(
+      `<div role="menu">
+         <div role="menuitem">Rename</div>
+         <div role="menuitemcheckbox" aria-checked="true">Pin</div>
+       </div>`,
+      'menu'
+    );
+    expect(state?.options).toEqual(['Rename', 'Pin']);
+    expect(state?.selected).toEqual(['Pin']);
+  });
+
+  it('has no summary for a list whose items it does not recognise, so the list is walked instead', () => {
+    expect(summarize('<div role="list"><my-crumb>Paints</my-crumb></div>', 'list')).toBeNull();
+  });
+
+  it("reads a native multiple select's selection, which the browser never spells as aria-selected", () => {
+    const state = summarize(
+      '<select multiple><option selected>alpha</option><option>beta</option><option selected>gamma</option></select>',
+      'listbox'
+    );
+    expect(state?.selected).toEqual(['alpha', 'gamma']);
+  });
+
+  it('finds the active tab even when it lies beyond the reported few', () => {
+    const state = summarize(
+      `<div role="tablist">
+         <button role="tab">One</button><button role="tab">Two</button><button role="tab" aria-selected="true">Three</button>
+       </div>`,
+      'tablist',
+      { maxItemsPerCollection: 2 }
+    );
+    expect(state?.tabs).toEqual(['One', 'Two']);
+    expect(state?.activeTab).toBe('Three');
+  });
+
+  it('counts rows that start with a row header as data rows', () => {
+    const state = summarize(
+      `<table>
+         <thead><tr><th>Name</th><th>Size</th></tr></thead>
+         <tbody><tr><th scope="row">alpha</th><td>1</td></tr><tr><th scope="row">beta</th><td>2</td></tr></tbody>
+       </table>`,
+      'table'
+    );
+    expect(state?.columns).toEqual(['Name', 'Size']);
+    expect(state?.rowCount).toBe(2);
+  });
+});

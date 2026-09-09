@@ -339,10 +339,11 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
       if (!pages.length) {
         return null;
       }
+      const currentStepIndex = pages.findIndex(page => page.current);
       return {
         state: {
           stepCount: pages.length,
-          currentStepIndex: pages.findIndex(page => page.current),
+          ...(currentStepIndex >= 0 ? { currentStepIndex } : {}),
           steps: pages.map((page, index) => ({
             index,
             current: page.current,

@@ -18,9 +18,17 @@ import {
   requestClrContextFromHost,
 } from '../iframe/context-frame-bridge';
 import { ClrContextSnapshotOptions, ClrPageContext, ClrRouteContext } from '../interfaces/context.interface';
+import { capSnapshotOptions } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues } from '../untrusted-options';
 
 const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
+
+/**
+ * What a global accessor may be called: a plain identifier. Anything else — a name with
+ * a dot, an empty string, the name of something `window` already has — would either
+ * fail to be reachable as `window.<name>()` or overwrite something the page relies on.
+ */
+const GLOBAL_PROPERTY_PATTERN = /^[A-Za-z_$][\w$]*$/;
 
 /** How the engine should behave when exposed on `window`. */
 export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions {
@@ -33,9 +41,9 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
 
 /**
  * Builds on-demand snapshots of everything useful an AI agent can know about the current
- * page: the active route, and the components rendered right now, their state, and
- * whatever actions they own, as a tree — plus whatever semantic context the application
- * registered.
+ * page: the active route, and the components rendered right now with their state, as a
+ * tree in which every control sits where it is on the page — plus whatever semantic
+ * context the application registered.
  *
  * Snapshots are always computed at call time from the live application — nothing is
  * cached — so they can never contain obsolete information about UI that no longer exists.
@@ -114,15 +122,23 @@ export class ClrContextualEngineService implements OnDestroy {
     propertyName: string = DEFAULT_GLOBAL_PROPERTY,
     hostOptions: ClrContextGlobalAccessOptions = {}
   ): void {
+    if (!GLOBAL_PROPERTY_PATTERN.test(propertyName)) {
+      throw new Error(`ClrContextualEngineService: "${propertyName}" is not a valid name for a global accessor.`);
+    }
     const window = this.browserWindow();
     if (!window) {
       return;
     }
     const { shareFormValues, ...budgets } = hostOptions;
     this.disableGlobalAccess();
+    const host = window as unknown as Record<string, unknown>;
+    if (propertyName in host) {
+      throw new Error(`ClrContextualEngineService: window.${propertyName} already exists and will not be replaced.`);
+    }
     this.globalProperty = propertyName;
-    (window as unknown as Record<string, unknown>)[propertyName] = (options?: unknown) => {
-      const snapshot = this.getSnapshot({ ...sanitizeUntrustedSnapshotOptions(options), ...budgets });
+    host[propertyName] = (options?: unknown) => {
+      // The caller may ask for less than the application allows, never for more.
+      const snapshot = this.getSnapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), budgets));
       return shareFormValues ? snapshot : withoutFormValues(snapshot);
     };
   }

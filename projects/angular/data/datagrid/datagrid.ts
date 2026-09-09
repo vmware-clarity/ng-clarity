@@ -17,7 +17,6 @@ import {
   EventEmitter,
   forwardRef,
   Inject,
-  inject,
   Input,
   NgZone,
   OnDestroy,
@@ -157,9 +156,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   SELECTION_TYPE = SelectionType;
 
   private teardownElementContext?: () => void;
-  // Injected rather than taken as a constructor parameter, so the public signature of a
-  // shipped component does not change for an internal read.
-  private readonly columnsService = inject(ColumnsService);
 
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
 
@@ -314,12 +310,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       }
 
       // A hidden column is not rendered at all, so nothing in the DOM says it exists or
-      // that it could be shown again. Column states are created per column in order, so
-      // they pair with the columns by index.
-      const columnStates = this.columnsService.columnStates;
+      // that it could be shown again. Each column knows its own state, so nothing has
+      // to be paired up by position.
       const hidden = this.columns
         .toArray()
-        .filter((_column, index) => columnStates[index]?.hidden)
+        .filter(column => column.isHidden)
         .map(column => column.field)
         .filter((field): field is string => !!field);
       if (hidden.length) {

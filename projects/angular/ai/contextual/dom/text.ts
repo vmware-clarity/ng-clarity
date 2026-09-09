@@ -37,29 +37,59 @@ export function isVisuallyHidden(element: Element): boolean {
   if (!view) {
     return false;
   }
+  return isClipped(element, view.getComputedStyle(element));
+}
+
+/**
+ * Whether an element contributes nothing to a name: hidden from assistive technology,
+ * not rendered at all, or rendered out of sight. The same rule the walk applies when it
+ * decides what to describe, so a control that keeps both variants of its label in the
+ * DOM and shows one at a time is named by the visible one only.
+ */
+function isExcludedFromName(element: Element): boolean {
+  if (element.getAttribute('aria-hidden') === 'true' || element.hasAttribute('hidden')) {
+    return true;
+  }
+  const view = element.ownerDocument.defaultView;
+  if (!view) {
+    return false;
+  }
   const style = view.getComputedStyle(element);
+  if (style.display === 'none' || style.visibility === 'hidden') {
+    return true;
+  }
+  return isClipped(element, style);
+}
+
+function isClipped(element: Element, style: CSSStyleDeclaration): boolean {
   if (style.clipPath && style.clipPath !== 'none') {
     return true;
   }
   if (style.clip && style.clip !== 'auto') {
     return true;
   }
+  if (style.overflow !== 'hidden') {
+    return false;
+  }
   const rect = element.getBoundingClientRect();
-  return style.overflow === 'hidden' && rect.width <= 1 && rect.height <= 1;
+  return rect.width <= 1 && rect.height <= 1;
 }
 
 /**
  * An element's text as it should be read for a name: content hidden from the
  * accessibility tree, and content hidden from sight, are both left out.
+ *
+ * `exclude` leaves one descendant out — the control a wrapping `<label>` names, whose
+ * own options or content are not part of its name.
  */
-export function accessibleText(element: Element): string {
+export function accessibleText(element: Element, exclude?: Element): string {
   let text = '';
   for (const node of Array.from(element.childNodes)) {
     if (node.nodeType === Node.TEXT_NODE) {
       text += node.textContent ?? '';
       continue;
     }
-    if (!(node instanceof Element)) {
+    if (!(node instanceof Element) || node === exclude) {
       continue;
     }
     // Nothing to contribute, and checking style for an empty element would be a layout
@@ -67,10 +97,10 @@ export function accessibleText(element: Element): string {
     if (!node.textContent?.trim()) {
       continue;
     }
-    if (node.getAttribute('aria-hidden') === 'true' || node.hasAttribute('hidden') || isVisuallyHidden(node)) {
+    if (isExcludedFromName(node)) {
       continue;
     }
-    text += accessibleText(node);
+    text += accessibleText(node, exclude);
   }
   return text;
 }

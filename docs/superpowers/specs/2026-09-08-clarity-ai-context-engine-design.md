@@ -1,9 +1,20 @@
 # Design: ARIA-first context engine, shipped as `@clr/angular/ai`
 
 Date: 2026-09-08
-Status: approved for planning
+Status: implemented on `dtsanevmw/ai-assist-poc`; see the note below for where the implementation departed.
 Supersedes the packaging and DOM-extraction design of the `@clr/ai` POC on `dtsanevmw/ai-assist-poc`.
-Companion analysis: [`docs/CONTEXTUAL_ENGINE_GAP_ANALYSIS.md`](../../CONTEXTUAL_ENGINE_GAP_ANALYSIS.md)
+
+> **Where the implementation departs from this document (2026-09-09).** Form values are always
+> collected, with redaction (password and file inputs, credential and payment `autocomplete`, and
+> `data-clr-context-redact`) rather than an `includeFormValues` switch; a consumer the application
+> does not control — an embedded frame, the global accessor — is served without values unless the
+> application shares them. The `input`/`change` listeners (C3) are therefore always attached. There
+> is no flat `actions` list: controls are reported where they sit in the tree. Form write-back (C4)
+> was removed rather than deferred. The component changes of step 4 were reviewed for accessibility
+> regressions after the fact (radio groups, `[required]` bindings, the combobox's touched gate);
+> a VRT run is still outstanding. Read the tables below with `includeFormValues` understood as
+> "unless withheld at the boundary serving the consumer".
+> Companion analysis: [`docs/CONTEXTUAL_ENGINE_GAP_ANALYSIS.md`](../../CONTEXTUAL_ENGINE_GAP_ANALYSIS.md)
 
 ## Context
 

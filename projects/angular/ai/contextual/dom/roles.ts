@@ -29,7 +29,6 @@ const IMPLICIT_ROLES_BY_TAG: Record<string, string> = {
   dt: 'term',
   fieldset: 'group',
   figure: 'figure',
-  footer: 'contentinfo',
   form: 'form',
   h1: 'heading',
   h2: 'heading',
@@ -37,7 +36,6 @@ const IMPLICIT_ROLES_BY_TAG: Record<string, string> = {
   h4: 'heading',
   h5: 'heading',
   h6: 'heading',
-  header: 'banner',
   hr: 'separator',
   li: 'listitem',
   main: 'main',
@@ -57,19 +55,29 @@ const IMPLICIT_ROLES_BY_TAG: Record<string, string> = {
   td: 'cell',
   textarea: 'textbox',
   tfoot: 'rowgroup',
-  th: 'columnheader',
   thead: 'rowgroup',
   tr: 'row',
   ul: 'list',
 };
 
-/** Roles an `<input>` carries, by its `type`. Types absent here have no ARIA role. */
+/**
+ * Roles an `<input>` carries, by its `type`. Types absent here have no ARIA role.
+ *
+ * Two entries go beyond HTML-AAM, which gives password and file inputs no role at all. A
+ * field with no role and no label would vanish from a snapshot, and an agent asked to
+ * fill a login form must at least learn that a password field exists — its value is
+ * withheld regardless (see `isRedacted`). A password field behaves as a textbox for the
+ * user typing into it; a file input is exposed by browsers as the button that opens the
+ * picker.
+ */
 const INPUT_ROLES_BY_TYPE: Record<string, string> = {
   button: 'button',
   checkbox: 'checkbox',
   email: 'textbox',
+  file: 'button',
   image: 'button',
   number: 'spinbutton',
+  password: 'textbox',
   radio: 'radio',
   range: 'slider',
   reset: 'button',
@@ -81,7 +89,13 @@ const INPUT_ROLES_BY_TYPE: Record<string, string> = {
 };
 
 /** `<input>` types that deliberately have no role: they expose no useful semantics. */
-const ROLELESS_INPUT_TYPES = new Set(['hidden', 'file', 'password', 'color', 'image-map']);
+const ROLELESS_INPUT_TYPES = new Set(['hidden', 'color', 'image-map']);
+
+/**
+ * Sectioning ancestors that turn a `<header>` or `<footer>` into a plain container: only
+ * a page-level one is the banner or contentinfo landmark, per HTML-AAM.
+ */
+const SECTIONING_SELECTOR = 'article, aside, main, nav, section';
 
 /**
  * Roles that may take their accessible name from their own text, per ARIA's
@@ -224,6 +238,15 @@ function implicitRole(element: Element): string | null {
       // A generic landmark only earns its role once it is named, otherwise every
       // wrapper section would surface as an indistinguishable region.
       return tagName === 'aside' || hasNameAttribute(element) ? IMPLICIT_ROLES_BY_TAG[tagName] : null;
+    case 'th': {
+      // A header cell at the start of a row names that row, not a column.
+      const scope = element.getAttribute('scope')?.toLowerCase();
+      return scope === 'row' || scope === 'rowgroup' ? 'rowheader' : 'columnheader';
+    }
+    case 'header':
+      return element.parentElement?.closest(SECTIONING_SELECTOR) ? null : 'banner';
+    case 'footer':
+      return element.parentElement?.closest(SECTIONING_SELECTOR) ? null : 'contentinfo';
     default:
       return IMPLICIT_ROLES_BY_TAG[tagName] ?? null;
   }

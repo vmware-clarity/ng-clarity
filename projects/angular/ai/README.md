@@ -6,8 +6,8 @@ with nothing extra to install.
 
 The entry point currently ships the **contextual engine**: it gives AI agents structured,
 up-to-date context about the page an application is currently showing — the active route, the
-components rendered right now and their state, the actions currently available, and any semantic
-annotations the application provides. UI building blocks for AI chat surfaces are planned under
+components rendered right now and their state, as a tree in which every control sits where it is
+on the page, and any semantic annotations the application provides. UI building blocks for AI chat surfaces are planned under
 the same entry point.
 
 The engine describes UI by reading the **accessibility tree** rather than Clarity-specific

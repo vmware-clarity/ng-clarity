@@ -6,6 +6,7 @@
  */
 
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 
 import { ClrComponentContext, ClrContextProvider } from '../interfaces/context.interface';
 
@@ -19,7 +20,19 @@ import { ClrComponentContext, ClrContextProvider } from '../interfaces/context.i
  */
 @Injectable({ providedIn: 'root' })
 export class ClrContextRegistryService {
+  /**
+   * Emits whenever a provider joins, leaves, or reports that what it contributes has
+   * changed. Context that lives only in application state changes without touching the
+   * DOM, so anything keeping a snapshot current has nothing else to watch for it.
+   */
+  readonly changes: Observable<void>;
+
   private readonly providers: ClrContextProvider[] = [];
+  private readonly changesSubject = new Subject<void>();
+
+  constructor() {
+    this.changes = this.changesSubject.asObservable();
+  }
 
   /**
    * Registers a context provider. Call the returned function (or `unregister`) when the
@@ -28,6 +41,7 @@ export class ClrContextRegistryService {
   register(provider: ClrContextProvider): () => void {
     if (!this.providers.includes(provider)) {
       this.providers.push(provider);
+      this.changesSubject.next();
     }
     return () => this.unregister(provider);
   }
@@ -36,7 +50,13 @@ export class ClrContextRegistryService {
     const index = this.providers.indexOf(provider);
     if (index > -1) {
       this.providers.splice(index, 1);
+      this.changesSubject.next();
     }
+  }
+
+  /** Tells whoever is keeping a snapshot current that a provider's contribution changed. */
+  notifyChanged(): void {
+    this.changesSubject.next();
   }
 
   /**

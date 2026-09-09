@@ -1,9 +1,9 @@
 # Contextual Engine
 
 `@clr/angular/ai` gives AI agents structured, up-to-date context about the page a Clarity
-application is currently showing: the active route, the components rendered right now, their
-state and whatever actions they own, as a tree, and any semantic annotations the application
-provides.
+application is currently showing: the active route, the components rendered right now and their
+state, as a tree in which every button, link and field sits where it is on the page, and any
+semantic annotations the application provides.
 
 It ships as a secondary entry point of `@clr/angular`, so it needs nothing extra installed.
 Components are described by reading the rendered DOM — specifically the accessibility tree — so
@@ -88,10 +88,10 @@ their mutations, so a panel re-rendering the context cannot re-trigger tracking 
 into the page context.
 
 An input's _value_ changes its property, never its attribute, so a `MutationObserver` never sees
-typing. When snapshots carry values, the tracker therefore also listens for `input` and `change`,
-feeding the same quiet window — a burst of typing still results in one scrape. Those listeners are
-attached only when values are collected, so tracking costs nothing extra otherwise.
-`tracker.refresh()` remains available for on-demand updates.
+typing. The tracker therefore also listens for `input` and `change`, feeding the same quiet window
+— a burst of typing still results in one scrape. A `clrContext` annotation whose state changes —
+whether the object was replaced or edited in place — is picked up the same way, since that changes
+no DOM either. `tracker.refresh()` remains available for on-demand updates.
 
 For browser-driving agents that have no application API, the engine can expose a global accessor:
 
@@ -108,11 +108,19 @@ about what a legal value would be. Helper text and validation messages arrive as
 resolved from `aria-describedby`, so they are attached to the field they belong to.
 
 What the user _entered_ is reported too — it is part of what the page is showing, and an assistant
-asked "what is wrong with this form?" cannot answer without it. What must never be reported is
-withheld instead: password and file inputs, fields whose `autocomplete` declares a credential or a
-payment card, and anything the application marks with `data-clr-context-redact` (a single control
-or a whole region). Those are reported as `redacted: true`, so an agent knows a value exists rather
-than assuming the field is empty.
+asked "what is wrong with this form?" cannot answer without it. A text field reports its `value`; a
+checkbox or radio reports `checked`, the same key an ARIA widget uses; a `<select>` reports the
+text of the chosen option rather than its `value` attribute, which under an `[ngValue]` binding is
+an internal key. What must never be reported is withheld instead: password and file inputs, fields
+whose `autocomplete` declares a credential or a payment card, and anything the application marks
+with `data-clr-context-redact` (a single control or a whole region). Those are still described — a
+password field is a `textbox` — and reported as `redacted: true`, so an agent knows a value exists
+rather than assuming the field is empty or missing.
+
+Collections are summarised rather than listed: a menu reports its `options` (and any
+`disabledOptions`), a listbox its `options` and `selected` entries, a grid its columns and row
+count. A list is the one collection that is also walked, because the links inside a navigation
+list are the point of it: they are reported as the list's children, with their `href`.
 
 Consumers the application does not control are treated separately: an embedded frame and
 `window.clrContext()` receive no values at all unless the application shares them explicitly.
@@ -239,14 +247,17 @@ and the answer is addressed to the origin that asked, never to `'*'`.
 | Opaque origins | Refused. A sandboxed or `data:` frame reports itself as `"null"`, which cannot be named as a `postMessage` target, so answering one would mean posting to `'*'`. Give such a frame `allow-same-origin` or a real origin. |
 | Form values    | A frame can never ask for them. Only the hosting application can opt in, for snapshots it takes itself.                                                                                                                  |
 | URL            | The query string and fragment are withheld, as is `route.queryParams`, because they routinely carry tenant identifiers, record identifiers and occasionally credentials. Pass `shareFullUrl: true` to share them.        |
-| Request rate   | One snapshot per frame per `minRequestIntervalMs` (default 200). Every request walks the document, so without a floor a frame in a loop could keep the host's main thread busy.                                          |
-| Budgets        | Frames may pass snapshot budgets; anything else in `options` is discarded.                                                                                                                                               |
+| Request rate   | One snapshot per frame per `minRequestIntervalMs` (default 200), and at most ten to all frames together per interval, so nesting frames cannot multiply past the floor. Every request walks the document.                |
+| Budgets        | Frames may pass snapshot budgets, capped at whatever the host sets in `snapshot` — a frame can ask for a smaller snapshot than the host allows, never a larger one. Anything else in `options` is discarded.             |
 
-On the requesting side, an answer is accepted **only from the window that was asked**. A browser
-sets `event.source` and a page cannot forge it, which matters because sibling frames can reach each
-other through `parent.frames` — without that check, a third-party frame elsewhere on the page could
-answer in the host's place and feed fabricated page context to whatever consumes it. Pass
-`hostOrigin` to require a specific origin as well:
+On the requesting side, an answer is accepted **only from the window that was asked, and only from
+the origin the request was addressed to**. A browser sets `event.source` and a page cannot forge
+it, which matters because sibling frames can reach each other through `parent.frames` — without
+that check, a third-party frame elsewhere on the page could answer in the host's place and feed
+fabricated page context to whatever consumes it. The request is addressed to `hostOrigin` when
+given, otherwise to the origin of the document that embedded this one (its referrer), otherwise to
+the document's own origin — so a cross-origin embedding works without configuration as long as the
+embedder discloses its origin, which the default referrer policy does. Pass `hostOrigin` to pin it:
 
 ```ts
 const hostContext = await this.contextEngine.requestHostContext({ hostOrigin: 'https://app.example' });
