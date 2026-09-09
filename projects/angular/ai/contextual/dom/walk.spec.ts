@@ -205,3 +205,161 @@ describe('collectContextTree', () => {
     expect(node.children).toBeUndefined();
   });
 });
+
+describe('collectContextTree, what a summary must not hide', () => {
+  let container: HTMLElement;
+
+  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> => ({
+    maxTextLength: 100,
+    maxItemsPerCollection: 25,
+    maxComponents: 100,
+    includeDomComponents: true,
+    ...overrides,
+  });
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => {
+    container.remove();
+  });
+
+  function collect(html: string, overrides: Partial<ClrContextSnapshotOptions> = {}): ClrComponentContext[] {
+    container.innerHTML = html;
+    return collectContextTree(container, budgets(overrides));
+  }
+
+  function types(nodes: ClrComponentContext[] | undefined): string[] {
+    return (nodes ?? []).map(node => node.type);
+  }
+
+  it('reports the commands a menu offers', () => {
+    const [menu] = collect(
+      `<div role="menu">
+         <div role="menuitem">Rename</div>
+         <div role="menuitem" aria-disabled="true">Delete</div>
+       </div>`
+    );
+    expect(menu.type).toBe('menu');
+    expect(menu.state?.options).toEqual(['Rename', 'Delete']);
+    expect(menu.state?.disabledOptions).toEqual(['Delete']);
+    expect(menu.children).toBeUndefined();
+  });
+
+  it('walks a collection whose summary said nothing, rather than dropping its contents', () => {
+    // A breadcrumb trail: role="list" around custom elements that are not list items.
+    const [list] = collect(
+      `<div role="list">
+         <my-crumb><a href="/paints">Paints</a></my-crumb>
+         <my-crumb><a href="/paints/watercolor" aria-current="page">Watercolor</a></my-crumb>
+       </div>`
+    );
+    expect(list.type).toBe('list');
+    expect(types(list.children)).toEqual(['link', 'link']);
+    expect(list.children?.[1].state?.current).toBe('page');
+  });
+
+  it('keeps the links inside a summarised list, which are the point of a navigation list', () => {
+    const [list] = collect('<ul><li><a href="/home">Home</a></li><li><a href="/hosts">Hosts</a></li></ul>');
+    expect(list.state?.itemCount).toBe(2);
+    expect(list.state?.items).toEqual(['Home', 'Hosts']);
+    expect(types(list.children)).toEqual(['link', 'link']);
+    expect(list.children?.[0].state?.href).toBe('/home');
+  });
+
+  it('does not repeat a plain list item as a node of its own', () => {
+    const [list] = collect('<ul><li>one</li><li>two</li></ul>');
+    expect(list.state?.items).toEqual(['one', 'two']);
+    expect(list.children).toBeUndefined();
+  });
+
+  it('keeps a list item that has state of its own to report', () => {
+    container.innerHTML = '<ul><li>Provision</li><li>Configure</li></ul>';
+    (container.querySelector('li') as HTMLElement & { clrElementContext?: unknown }).clrElementContext = () => ({
+      state: { status: 'success' },
+    });
+    const [list] = collectContextTree(container, budgets());
+    expect(list.children?.length).toBe(1);
+    expect(list.children?.[0]).toEqual({ type: 'listitem', label: 'Provision', state: { status: 'success' } });
+  });
+
+  it('still describes an unlabeled password field, with its value withheld', () => {
+    const [field] = collect('<input type="password" value="hunter2" />');
+    expect(field.type).toBe('textbox');
+    expect(field.state?.redacted).toBe(true);
+    expect(JSON.stringify(field)).not.toContain('hunter2');
+  });
+
+  it('withholds a value an extractor reports for an element inside a sensitive region', () => {
+    container.innerHTML = '<div data-clr-context-redact><my-field data-value="4111 1111"></my-field></div>';
+    const [node] = collectContextTree(container, budgets(), [
+      {
+        selector: 'my-field',
+        extract: element => ({ type: 'textbox', state: { value: element.getAttribute('data-value') } }),
+      },
+    ]);
+    expect(node.state?.redacted).toBe(true);
+    expect('value' in (node.state ?? {})).toBe(false);
+  });
+
+  it('counts a wrapper node against the budget, so the budget is a real bound', () => {
+    const nodes = collect(
+      `<my-widget><div role="grid"></div><my-widget-footer>1</my-widget-footer></my-widget>
+       <my-widget><div role="grid"></div><my-widget-footer>2</my-widget-footer></my-widget>`,
+      { maxComponents: 3 }
+    );
+    const count = (list: ClrComponentContext[]): number =>
+      list.reduce((total, node) => total + 1 + count(node.children ?? []), 0);
+    expect(count(nodes)).toBeLessThanOrEqual(3);
+  });
+
+  it('merges what a multi-part component publishes onto the component, not onto each part', () => {
+    container.innerHTML = '<my-grid><div role="grid"></div><my-grid-footer>2 of 40</my-grid-footer></my-grid>';
+    (container.querySelector('my-grid') as HTMLElement & { clrElementContext?: unknown }).clrElementContext = () => ({
+      state: { rowCount: 40 },
+    });
+    const [widget] = collectContextTree(container, budgets());
+    expect(widget.type).toBe('my-grid');
+    expect(widget.state).toEqual({ rowCount: 40 });
+    expect(widget.children?.[1].state).toBeUndefined();
+  });
+
+  it('gives what a single-part component publishes to the part that stands in for it', () => {
+    container.innerHTML = '<my-picker><input role="combobox" aria-label="Cluster" /></my-picker>';
+    (container.querySelector('my-picker') as HTMLElement & { clrElementContext?: unknown }).clrElementContext = () => ({
+      state: { options: ['Alpha', 'Beta'] },
+    });
+    const [node] = collectContextTree(container, budgets());
+    expect(node.type).toBe('combobox');
+    expect(node.element).toBe('my-picker');
+    expect(node.state?.options).toEqual(['Alpha', 'Beta']);
+  });
+
+  it('still walks a described-by target that holds controls, such as a dialog described by its body', () => {
+    const [dialog] = collect(
+      `<div role="dialog" aria-label="Add host" aria-describedby="body">
+         <div id="body"><p>Fill in the host.</p><input aria-label="Host name" /></div>
+       </div>`
+    );
+    expect(types(dialog.children)).toEqual(['textbox']);
+  });
+
+  it('does not let an ignored region hide the content it describes itself with', () => {
+    const nodes = collect(
+      `<h1 id="title">Hosts</h1>
+       <div data-clr-context-ignore aria-describedby="title">assistant</div>`
+    );
+    expect(types(nodes)).toEqual(['heading']);
+  });
+
+  it('skips content hidden with visibility rather than display', () => {
+    expect(collect('<div role="tooltip" style="visibility: hidden">hint</div>')).toEqual([]);
+    expect(collect('<div role="tooltip" style="opacity: 0">hint</div>')).toEqual([]);
+  });
+
+  it('skips an inert subtree, which a user cannot reach', () => {
+    expect(collect('<div inert><button>Behind the modal</button></div>')).toEqual([]);
+  });
+});

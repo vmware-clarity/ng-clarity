@@ -87,8 +87,15 @@ const REDACTED_AUTOCOMPLETE_TOKENS = new Set([
  * any other state — except where it must never be: see {@link isRedacted}. Which
  * consumers are allowed to see values is decided at the boundary that serves them, not
  * here.
+ *
+ * `insideRedactedRegion` is what the walk already knows about the element's ancestry;
+ * when it is omitted the ancestry is checked here.
  */
-export function ariaState(element: Element, options: Required<ClrContextSnapshotOptions>): Record<string, unknown> {
+export function ariaState(
+  element: Element,
+  options: Required<ClrContextSnapshotOptions>,
+  insideRedactedRegion?: boolean
+): Record<string, unknown> {
   const state: Record<string, unknown> = {};
 
   for (const [attribute, key] of Object.entries(TRISTATE_ATTRIBUTES)) {
@@ -128,7 +135,7 @@ export function ariaState(element: Element, options: Required<ClrContextSnapshot
   }
 
   assignNativeState(element, state, options);
-  assignValueState(element, state, options);
+  assignValueState(element, state, options, insideRedactedRegion);
 
   return state;
 }
@@ -175,30 +182,71 @@ function assignNativeState(
   }
 }
 
-/** The element's current value, unless it is one that must never be reported. */
+/** Input types whose `value` is a submission detail or a caption, never something typed. */
+const VALUELESS_INPUT_TYPES = new Set(['button', 'submit', 'reset', 'image', 'checkbox', 'radio', 'hidden']);
+
+/**
+ * The element's current value, unless it is one that must never be reported.
+ *
+ * A native checked state is reported as `checked`, the same key `aria-checked` uses, so
+ * a native and an ARIA checkbox read alike — and so that a consumer served without form
+ * values still sees whether a box is ticked, which is UI state rather than something
+ * typed.
+ */
 function assignValueState(
   element: Element,
   state: Record<string, unknown>,
-  options: Required<ClrContextSnapshotOptions>
+  options: Required<ClrContextSnapshotOptions>,
+  insideRedactedRegion?: boolean
 ): void {
   // Reported as withheld rather than left out, so an agent can tell a field it may not
   // see from one that happens to be empty — and does not go looking for it elsewhere.
-  if (isRedacted(element)) {
+  if (isRedacted(element, insideRedactedRegion)) {
     state.redacted = true;
     return;
   }
 
+  // The value as it is shown to the user, when the author spelled it out: a slider
+  // displaying "Large" rather than 3.
+  const valueText = element.getAttribute('aria-valuetext')?.trim();
+  if (valueText) {
+    state.value = truncate(valueText, options.maxTextLength);
+    return;
+  }
   const ariaValue = numberAttribute(element, 'aria-valuenow');
   if (ariaValue !== undefined) {
     state.value = ariaValue;
     return;
   }
-  if ('checked' in element && (element as HTMLInputElement).type === 'checkbox') {
-    state.value = (element as HTMLInputElement).checked;
+
+  const tagName = element.tagName.toLowerCase();
+  if (tagName === 'input') {
+    const input = element as HTMLInputElement;
+    const type = (input.getAttribute('type') || 'text').toLowerCase();
+    if (type === 'checkbox' || type === 'radio') {
+      state.checked = type === 'checkbox' && input.indeterminate ? 'mixed' : input.checked;
+      return;
+    }
+    if (!VALUELESS_INPUT_TYPES.has(type)) {
+      state.value = truncate(input.value, options.maxTextLength);
+    }
     return;
   }
-  if ('value' in element && typeof (element as HTMLInputElement).value === 'string') {
-    state.value = truncate((element as HTMLInputElement).value, options.maxTextLength);
+  if (tagName === 'textarea') {
+    state.value = truncate((element as HTMLTextAreaElement).value, options.maxTextLength);
+    return;
+  }
+  if (tagName === 'select') {
+    // What the user sees is the option's text; its `value` may be an internal key — an
+    // Angular `[ngValue]` binding renders as "3: Object" — that means nothing to an agent.
+    const chosen = Array.from((element as HTMLSelectElement).selectedOptions).map(option =>
+      truncate(option.label || option.text, options.maxTextLength)
+    );
+    if ((element as HTMLSelectElement).multiple) {
+      state.value = chosen.slice(0, options.maxItemsPerCollection);
+    } else if (chosen.length) {
+      state.value = chosen[0];
+    }
   }
 }
 
@@ -221,9 +269,12 @@ function describedByText(element: Element, options: Required<ClrContextSnapshotO
 /**
  * Whether this control's value must be withheld. Independent of what the caller asked
  * for: some values have no business being in a snapshot at all.
+ *
+ * `insideRedactedRegion` says whether an ancestor carries the redaction attribute, when
+ * the caller already knows; the ancestry is only searched when it does not.
  */
-function isRedacted(element: Element): boolean {
-  if (element.closest(`[${CLR_CONTEXT_REDACT_ATTRIBUTE}]`)) {
+export function isRedacted(element: Element, insideRedactedRegion?: boolean): boolean {
+  if (insideRedactedRegion ?? !!element.closest(`[${CLR_CONTEXT_REDACT_ATTRIBUTE}]`)) {
     return true;
   }
   const type = element.getAttribute('type')?.toLowerCase();

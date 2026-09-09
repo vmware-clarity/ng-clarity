@@ -128,3 +128,33 @@ describe('mayContainControls', () => {
     expect(mayContainControls('checkbox')).toBe(false);
   });
 });
+
+describe('resolveRole, beyond HTML-AAM where an agent needs it', () => {
+  function roleOf(html: string, selector = '*'): string | null {
+    const host = document.createElement('div');
+    host.innerHTML = html;
+    return resolveRole(host.querySelector(selector) as Element);
+  }
+
+  it('describes a password field as a textbox, so it does not vanish when unlabeled', () => {
+    expect(roleOf('<input type="password" />')).toBe('textbox');
+  });
+
+  it('describes a file input as the button that opens the picker', () => {
+    expect(roleOf('<input type="file" />')).toBe('button');
+  });
+
+  it('still gives a hidden input no role', () => {
+    expect(roleOf('<input type="hidden" />')).toBeNull();
+  });
+
+  it('recognises a row header by its scope', () => {
+    expect(roleOf('<table><tr><th scope="row">a</th></tr></table>', 'th')).toBe('rowheader');
+    expect(roleOf('<table><tr><th>a</th></tr></table>', 'th')).toBe('columnheader');
+  });
+
+  it('only treats a page-level header or footer as a landmark', () => {
+    expect(roleOf('<header>top</header>', 'header')).toBe('banner');
+    expect(roleOf('<article><footer>meta</footer></article>', 'footer')).toBeNull();
+  });
+});

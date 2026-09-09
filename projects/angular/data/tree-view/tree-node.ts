@@ -198,7 +198,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     this.teardownElementContext = publishElementContext(this.elementRef.nativeElement, () => {
       const loading = this.expandService.loading || this.isModelLoading;
       return {
-        state: loading ? { expandable: this.isExpandable(), loading: true } : { expandable: this.isExpandable() },
+        state: loading ? { expandable: !!this.isExpandable(), loading: true } : { expandable: !!this.isExpandable() },
       };
     });
 

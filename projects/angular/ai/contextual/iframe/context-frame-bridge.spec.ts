@@ -132,13 +132,11 @@ describe('Context frame bridge', () => {
     });
 
     it('does not honour a wildcard origin on its own', () => {
-      host.stop();
-      host = new ClrContextFrameHost(getSnapshot, window, { allowedOrigins: ['*'], minRequestIntervalMs: 0 });
-      host.start();
-
-      dispatchRequest(frameRequest('request-4'), 'https://trusted.example');
-
-      expect(frame.postMessage).not.toHaveBeenCalled();
+      // A list that only says '*' names nobody to serve; refused rather than silently
+      // serving nobody, or worse, everybody.
+      expect(
+        () => new ClrContextFrameHost(getSnapshot, window, { allowedOrigins: ['*'], minRequestIntervalMs: 0 })
+      ).toThrowError(/allowAnyOrigin/);
     });
 
     it('serves any origin only when that is acknowledged explicitly', () => {
@@ -420,5 +418,123 @@ describe('Context frame bridge', () => {
     it('resolves with null when there is no separate host window', async () => {
       expect(await requestClrContextFromHost({ targetWindow: window })).toBeNull();
     });
+  });
+});
+
+describe('Context frame bridge, what the host stays in charge of', () => {
+  const pageContext: ClrPageContext = {
+    title: 'Host page',
+    regions: [],
+    components: [],
+    collectedAt: '2026-01-01T00:00:00.000Z',
+  };
+
+  function frameRequest(requestId: string, options?: unknown): unknown {
+    return { protocol: CLR_CONTEXT_PROTOCOL, kind: 'context-request', requestId, options };
+  }
+
+  function dispatchRequest(request: unknown, source: unknown) {
+    const event = new Event('message') as Event & { data: unknown; origin: string; source: unknown };
+    event.data = request;
+    event.origin = window.location.origin;
+    event.source = source;
+    window.dispatchEvent(event);
+  }
+
+  let host: ClrContextFrameHost | null;
+  let getSnapshot: jasmine.Spy;
+
+  beforeEach(() => {
+    host = null;
+    getSnapshot = jasmine.createSpy('getSnapshot').and.callFake(() => JSON.parse(JSON.stringify(pageContext)));
+  });
+
+  afterEach(() => host?.stop());
+
+  it('caps the budgets a frame asks for at what the host allows', () => {
+    host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: 0, snapshot: { maxComponents: 20 } });
+    host.start();
+
+    dispatchRequest(frameRequest('big', { maxComponents: 5000 }), { postMessage: jasmine.createSpy() });
+    expect(getSnapshot).toHaveBeenCalledWith({ maxComponents: 20 });
+
+    dispatchRequest(frameRequest('small', { maxComponents: 3 }), { postMessage: jasmine.createSpy() });
+    expect(getSnapshot).toHaveBeenCalledWith({ maxComponents: 3 });
+  });
+
+  it('drops a budget that is not a finite number rather than walking without bound', () => {
+    host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: 0 });
+    host.start();
+
+    dispatchRequest(frameRequest('nan', { maxComponents: Number.NaN }), { postMessage: jasmine.createSpy() });
+
+    expect(getSnapshot).toHaveBeenCalledWith({});
+  });
+
+  it('refuses a configuration that would serve nobody, rather than doing so silently', () => {
+    expect(() => new ClrContextFrameHost(getSnapshot, window, { allowedOrigins: ['*'] })).toThrowError(
+      /allowAnyOrigin/
+    );
+    expect(() => new ClrContextFrameHost(getSnapshot, window, { allowedOrigins: [] })).toThrowError(/allowAnyOrigin/);
+  });
+
+  it('keeps the default throttle when given an interval that is not a number', () => {
+    host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: Number.NaN });
+    host.start();
+    const frame = { postMessage: jasmine.createSpy() };
+
+    dispatchRequest(frameRequest('first'), frame);
+    dispatchRequest(frameRequest('second'), frame);
+
+    expect(getSnapshot).toHaveBeenCalledTimes(1);
+  });
+
+  it('bounds the requests served to all frames together, so nesting frames cannot multiply past the floor', () => {
+    host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: 10_000 });
+    host.start();
+
+    for (let index = 0; index < 25; index++) {
+      dispatchRequest(frameRequest(`frame-${index}`), { postMessage: jasmine.createSpy() });
+    }
+
+    expect(getSnapshot.calls.count()).toBe(10);
+  });
+
+  it('keeps serving after one request blows up', () => {
+    getSnapshot.and.callFake(() => {
+      if (getSnapshot.calls.count() === 1) {
+        throw new Error('broken publisher');
+      }
+      return JSON.parse(JSON.stringify(pageContext));
+    });
+    host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: 0 });
+    host.start();
+    const frame = { postMessage: jasmine.createSpy() };
+
+    expect(() => dispatchRequest(frameRequest('first'), frame)).not.toThrow();
+    dispatchRequest(frameRequest('second'), frame);
+
+    expect(frame.postMessage).toHaveBeenCalledTimes(1);
+  });
+
+  it('ignores an answer from the right window but an origin other than the one it asked', async () => {
+    const target = { postMessage: jasmine.createSpy() };
+    target.postMessage.and.callFake((message: ClrContextFrameRequest) => {
+      setTimeout(() => {
+        const event = new Event('message') as Event & { data: unknown; origin: string; source: unknown };
+        event.data = {
+          protocol: CLR_CONTEXT_PROTOCOL,
+          kind: 'context-response',
+          requestId: message.requestId,
+          context: pageContext,
+        };
+        event.origin = 'https://elsewhere.example';
+        event.source = target;
+        window.dispatchEvent(event);
+      });
+    });
+
+    // No hostOrigin given: the origin the request was addressed to is still the one required.
+    expect(await requestClrContextFromHost({ targetWindow: target as unknown as Window, timeoutMs: 50 })).toBeNull();
   });
 });

@@ -30,7 +30,7 @@ import {
   triggerAllFormControlValidation,
 } from '@clr/angular/utils';
 import { Observable, Subscription } from 'rxjs';
-import { filter, map, pairwise, startWith, tap } from 'rxjs/operators';
+import { filter, map, pairwise, startWith, take, tap } from 'rxjs/operators';
 
 import { StepperPanelStatus } from './enums/stepper-panel-status.enum';
 import { StepperPanelModel } from './models/stepper-panel.model';
@@ -55,7 +55,6 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   override panel: Observable<StepperPanelModel>;
 
   private readonly hostElement = inject(ElementRef<HTMLElement>);
-  private currentStatus: StepperPanelStatus = StepperPanelStatus.Inactive;
   private teardownElementContext?: () => void;
   private subscriptions: Subscription[] = [];
 
@@ -107,20 +106,13 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
 
     // The status is otherwise announced only as a transient live-region message beside
     // the step, and only when it is complete or in error — so a step that is simply not
-    // started, or currently open, says nothing about itself.
-    //
-    // Captured through the existing pipe rather than a subscription of its own: an extra
-    // subscriber here renders the template before ngAfterContentInit, when the content
-    // children it reads do not exist yet.
+    // started, or currently open, says nothing about itself. Read at snapshot time from
+    // the service, which always holds the current model, rather than remembered from the
+    // template's stream — which has not emitted yet between init and first render.
     this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => ({
-      state: { status: this.currentStatus },
+      state: { status: this.currentStatus() },
     }));
-    this.panel = this.panel.pipe(
-      tap(panel => {
-        this.currentStatus = panel.status;
-        this.triggerAllFormControlValidationIfError(panel);
-      })
-    );
+    this.panel = this.panel.pipe(tap(panel => this.triggerAllFormControlValidationIfError(panel)));
     this.stepperService.disablePanel(this.id, true);
     this.listenToFocusChanges();
 
@@ -166,6 +158,20 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
 
   protected stepErrorText(panelNumber: number) {
     return this.commonStrings.parse(this.commonStrings.keys.stepError, { STEP: panelNumber.toString() });
+  }
+
+  private currentStatus(): StepperPanelStatus {
+    let status = StepperPanelStatus.Inactive;
+    // Synchronous: the service's panel stream replays its current value on subscription.
+    this.stepperService
+      .getPanelChanges(this.id)
+      .pipe(take(1))
+      .subscribe(panel => {
+        if (panel) {
+          status = (panel as StepperPanelModel).status;
+        }
+      });
+    return status;
   }
 
   private listenToFocusChanges() {

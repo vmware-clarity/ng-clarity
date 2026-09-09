@@ -98,3 +98,44 @@ describe('accessibleName', () => {
     ).toBe('Name');
   });
 });
+
+describe('accessibleName, sources the first version missed', () => {
+  let container: HTMLElement;
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => container.remove());
+
+  function nameOf(html: string, selector: string): string {
+    container.innerHTML = html;
+    const element = container.querySelector(selector) as HTMLElement;
+    return accessibleName(element, resolveRole(element), 100);
+  }
+
+  it('falls back to a placeholder, which is often all a search box has', () => {
+    expect(nameOf('<input type="search" placeholder="Search hosts" />', 'input')).toBe('Search hosts');
+  });
+
+  it('prefers a real label over a placeholder', () => {
+    expect(nameOf('<input aria-label="Filter" placeholder="Search hosts" />', 'input')).toBe('Filter');
+  });
+
+  it("does not take a wrapping label's name from the control's own options", () => {
+    expect(nameOf('<label>Tier <select><option>Gold</option><option>Silver</option></select></label>', 'select')).toBe(
+      'Tier'
+    );
+  });
+
+  it('names a control by the label the browser associates with it', () => {
+    expect(nameOf('<label for="h">Host</label><input id="h" />', 'input')).toBe('Host');
+  });
+
+  it('leaves out label text that is not rendered, so a toggled label variant names by the visible one', () => {
+    expect(
+      nameOf('<label for="h"><span style="display: none">Show</span><span>Hide</span></label><input id="h" />', 'input')
+    ).toBe('Hide');
+  });
+});

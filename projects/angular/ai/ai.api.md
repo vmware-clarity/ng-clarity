@@ -4,6 +4,7 @@
 
 ```ts
 
+import { DoCheck } from '@angular/core';
 import * as i0 from '@angular/core';
 import * as i2 from '@angular/common';
 import { NgZone } from '@angular/core';
@@ -40,11 +41,13 @@ export interface ClrComponentContext {
 }
 
 // @public
-export class ClrContext implements OnInit, OnDestroy, ClrContextProvider {
+export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvider {
     constructor(contextRegistry: ClrContextRegistryService);
     // (undocumented)
     getClrContext(): ClrComponentContext | null;
     label: string;
+    // (undocumented)
+    ngDoCheck(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -79,6 +82,7 @@ export interface ClrContextFrameHostOptions {
     minRequestIntervalMs?: number;
     shareFormValues?: boolean;
     shareFullUrl?: boolean;
+    snapshot?: ClrContextSnapshotOptions;
 }
 
 // @public
@@ -125,7 +129,10 @@ export interface ClrContextProvider {
 
 // @public
 export class ClrContextRegistryService {
+    constructor();
+    readonly changes: Observable<void>;
     collect(): ClrComponentContext[];
+    notifyChanged(): void;
     register(provider: ClrContextProvider): () => void;
     // (undocumented)
     unregister(provider: ClrContextProvider): void;
@@ -145,7 +152,7 @@ export interface ClrContextSnapshotOptions {
 
 // @public
 export class ClrContextTrackerService implements OnDestroy {
-    constructor(platformId: unknown, document: Document, contextEngine: ClrContextualEngineService, zone: NgZone);
+    constructor(platformId: unknown, document: Document, contextEngine: ClrContextualEngineService, contextRegistry: ClrContextRegistryService, zone: NgZone);
     readonly context$: Observable<ClrPageContext>;
     get currentContext(): ClrPageContext | null;
     // (undocumented)

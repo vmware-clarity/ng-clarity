@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 
+import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextTrackerService } from './context-tracker.service';
 import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '../dom/dom-context-collector';
 import { ClrPageContext } from '../interfaces/context.interface';
@@ -267,5 +268,50 @@ describe('ClrContextTrackerService', () => {
 
       expect(emitted.length).toBe(before);
     });
+  });
+});
+
+describe('ClrContextTrackerService, tracking application context', () => {
+  let tracker: ClrContextTrackerService;
+  let registry: ClrContextRegistryService;
+  let emitted: ClrPageContext[];
+
+  function wait(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    tracker = TestBed.inject(ClrContextTrackerService);
+    registry = TestBed.inject(ClrContextRegistryService);
+    emitted = [];
+    tracker.context$.subscribe(context => emitted.push(context));
+  });
+
+  afterEach(() => tracker.stop());
+
+  it('re-scrapes when an annotation reports a change, which mutates no DOM', async () => {
+    const state: Record<string, unknown> = { cluster: 'alpha' };
+    const unregister = registry.register({ getClrContext: () => ({ type: 'region', state }) });
+    tracker.start({ debounceMs: 10 });
+    expect(emitted[emitted.length - 1].regions[0].state).toEqual({ cluster: 'alpha' });
+
+    state.cluster = 'omega';
+    registry.notifyChanged();
+    await wait(50);
+
+    expect(emitted[emitted.length - 1].regions[0].state).toEqual({ cluster: 'omega' });
+    unregister();
+  });
+
+  it('re-scrapes when a provider leaves', async () => {
+    const unregister = registry.register({ getClrContext: () => ({ type: 'region', label: 'transient' }) });
+    tracker.start({ debounceMs: 10 });
+    expect(emitted[emitted.length - 1].regions.length).toBe(1);
+
+    unregister();
+    await wait(50);
+
+    expect(emitted[emitted.length - 1].regions.length).toBe(0);
   });
 });

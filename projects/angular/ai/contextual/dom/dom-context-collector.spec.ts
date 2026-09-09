@@ -192,7 +192,8 @@ describe('DOM context collector - Clarity Angular components', () => {
       .find(context => context.type === 'form')
       ?.children?.find(child => child.element === 'clr-select-container');
 
-    expect(select?.state?.value).toBe('two');
+    // The option's text, as the user sees it, rather than its value attribute.
+    expect(select?.state?.value).toBe('Two');
   });
 
   it('reports what the user typed, which is part of what the page is showing', async () => {

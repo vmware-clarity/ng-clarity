@@ -186,3 +186,66 @@ describe('ariaState', () => {
     });
   });
 });
+
+describe('ariaState, native values as an agent should read them', () => {
+  const budgets = (): Required<ClrContextSnapshotOptions> => ({
+    maxTextLength: 100,
+    maxItemsPerCollection: 25,
+    maxComponents: 100,
+    includeDomComponents: true,
+  });
+
+  let container: HTMLElement;
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => container.remove());
+
+  function stateOf(html: string): Record<string, unknown> {
+    container.innerHTML = html;
+    return ariaState(container.firstElementChild as HTMLElement, budgets());
+  }
+
+  it('reports a native checkbox as checked, the same way an ARIA one reads', () => {
+    expect(stateOf('<input type="checkbox" checked />').checked).toBe(true);
+    expect(stateOf('<input type="checkbox" />').checked).toBe(false);
+    expect('value' in stateOf('<input type="checkbox" checked />')).toBe(false);
+  });
+
+  it('reports a native radio as checked too', () => {
+    expect(stateOf('<input type="radio" checked />').checked).toBe(true);
+  });
+
+  it('reports no value for a button, whose value is a submission detail', () => {
+    expect('value' in stateOf('<button type="submit" value="go">Go</button>')).toBe(false);
+    expect('value' in stateOf('<input type="submit" value="Go" />')).toBe(false);
+  });
+
+  it("reports a select's chosen option by its text, not by an internal key", () => {
+    const state = stateOf(
+      '<select><option value="0: Object">Alpha</option><option value="1: Object" selected>Beta</option></select>'
+    );
+    expect(state.value).toBe('Beta');
+  });
+
+  it("reports a multiple select's choices as a list", () => {
+    const state = stateOf(
+      '<select multiple><option selected>a</option><option>b</option><option selected>c</option></select>'
+    );
+    expect(state.value).toEqual(['a', 'c']);
+  });
+
+  it('prefers the value as displayed over the number behind it', () => {
+    expect(stateOf('<div role="slider" aria-valuenow="3" aria-valuetext="Large"></div>').value).toBe('Large');
+  });
+
+  it('trusts the caller about a sensitive region, without searching the ancestry again', () => {
+    container.innerHTML = '<input value="4111" />';
+    const state = ariaState(container.firstElementChild as HTMLElement, budgets(), true);
+    expect(state.redacted).toBe(true);
+    expect('value' in state).toBe(false);
+  });
+});

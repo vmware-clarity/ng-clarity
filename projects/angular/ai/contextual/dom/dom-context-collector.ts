@@ -7,19 +7,10 @@
 
 import { ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
-import { collectContextTree } from './walk';
+import { ClrContextDomExtractor, collectContextTree } from './walk';
+import { resolveSnapshotOptions } from '../snapshot-options';
 
-/**
- * Default budgets applied while building a snapshot, tuned to keep snapshots compact
- * enough for an AI agent's context window.
- */
-export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions> = {
-  maxTextLength: 100,
-  maxItemsPerCollection: 25,
-  maxComponents: 100,
-  includeDomComponents: true,
-};
-
+export { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
 export { CLR_CONTEXT_REDACT_ATTRIBUTE } from './aria-state';
 export { CLR_CONTEXT_IGNORE_ATTRIBUTE } from './walk';
 export type { ClrContextDomExtractor } from './walk';
@@ -44,7 +35,7 @@ export type { ClrContextDomExtractor } from './walk';
 export function collectClrDomContexts(
   root: ParentNode,
   options?: ClrContextSnapshotOptions,
-  customExtractors: import('./walk').ClrContextDomExtractor[] = []
+  customExtractors: ClrContextDomExtractor[] = []
 ): ClrComponentContext[] {
-  return collectContextTree(root, { ...CLR_CONTEXT_DEFAULT_OPTIONS, ...options }, customExtractors);
+  return collectContextTree(root, resolveSnapshotOptions(options), customExtractors);
 }

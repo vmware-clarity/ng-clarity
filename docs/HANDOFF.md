@@ -12,7 +12,7 @@ below. Everything here is verified against the repo, not recalled.
    would be committed and wait. This is in the user's global `CLAUDE.md`.
 2. **`TOTAL: N of N SUCCESS` from karma can be a crash, not a pass.** A browser disconnect prints a
    full-looking summary. Always compare the executed count against the expected total:
-   **the suite is 3744 tests** as of this commit. If you see a smaller number, something hung —
+   **the suite is 3819 tests** as of this commit. If you see a smaller number, something hung —
    grep the log for `Disconnected` and `Executed .* of`.
 3. **Don't touch `.worktrees/`.** It holds unrelated worktrees for other in-flight work (PR
    reviews, backports, other features) and is untracked on purpose. It has nothing to do with
@@ -27,7 +27,7 @@ below. Everything here is verified against the repo, not recalled.
 
 Branch `dtsanevmw/ai-assist-poc`, session started at `a884b88b1`. Everything through the most
 recent commit on this branch is **committed** — check `git log --oneline -15` for the exact list;
-nothing described in this file is pending. Last full verification, all green: `3744 of 3744` tests
+nothing described in this file is pending. Last full verification, all green: `3819 of 3819` tests
 (executed count matched), `eslint` and `prettier` clean, all affected API reports regenerated
 (`ai.api.md`, `clarity.api.md`, `data.api.md`, `timeline.api.md`, `utils.api.md` — the `clr-addons`
 entry points fail `public-api:update` locally because `dist/clr-addons` isn't built; that's
@@ -195,8 +195,8 @@ Not done, in rough priority order:
    each other's traffic. An `audience` field would fix it if the user wants.
 4. Declare `@angular/router` as an optional peer dependency of `@clr/angular` (pre-existing gap the
    engine inherits).
-5. `projects/demo/src/app/contextual/contextual.demo.*` (the user's own WIP form) is unfinished —
-   check with the user before extending it.
+5. `projects/demo/src/app/contextual/contextual.demo.*` is the original demo page for the engine
+   (form, modal, embedded frame, global accessor) — extend it rather than replacing it.
 
 ### Recorded but deliberately unfixed
 
@@ -207,7 +207,75 @@ list item. Fixing the first would make `clr-wizard`'s publisher redundant.
 
 ---
 
-## 8. Mistakes made in earlier sessions — do not repeat
+## 8. Post-audit fixes (2026-09-09)
+
+An audit of the commits above (three independent reviews plus a live check against the demo)
+found the following, all fixed in the commit that also updates this file. The behaviours are
+the contract now; the specs named enforce them.
+
+**Engine (`walk.spec.ts`, `summarizers.spec.ts`, `aria-state.spec.ts`, `roles.spec.ts`,
+`accessible-name.spec.ts`, `snapshot-options.spec.ts`):**
+
+- A summarizer that finds nothing no longer terminates the walk: the element is walked
+  instead. This is what made every Clarity dropdown menu (`menuitem`s are not `option`s) and
+  every breadcrumb trail (`role="list"` around custom elements) disappear. Menus now have a
+  summarizer of their own (`options`, `selected`, `disabledOptions`).
+- A `list` is summarised _and_ walked: its links are reported as children. A plain list item
+  is not repeated as a node; one with state to add (a timeline step's status) is kept.
+- `input[type=password]` is a `textbox` and `input[type=file]` a `button`, so an unlabeled
+  password field is still described (`redacted: true`) rather than dropped.
+- Extractor results go through the same owner merge and redaction scrub as everything else.
+- What a multi-part component publishes lands on the component's wrapper node, not on each
+  part. Wrapper nodes count against `maxComponents`.
+- Budgets are held to finite ranges everywhere (`snapshot-options.ts`): a `NaN`/`Infinity`
+  from a frame or the global accessor no longer disables the stop condition, and the host's
+  own budgets act as a ceiling on what a frame or the accessor may ask for.
+- `th[scope=row]` is a `rowheader`; `header`/`footer` are landmarks only at page level;
+  `aria-describedby` targets that hold controls are walked, and targets referenced from an
+  ignored region are not hidden; `visibility:hidden`, `opacity:0` and `inert` are skipped;
+  names fall back to `placeholder`, exclude a wrapped control's own options, come from
+  `element.labels` (no per-field document query), and ignore `display:none` text.
+- Native checked state is `checked` (not `value`), buttons carry no `value`, a `<select>`
+  reports the chosen option's text (not an `[ngValue]` key), `aria-valuetext` wins over
+  `aria-valuenow`.
+
+**Bridge / tracker / directive (`context-frame-bridge.spec.ts`, `context-tracker.service.spec.ts`,
+`context.directive.spec.ts`, `contextual-engine.service.spec.ts`):**
+
+- `requestClrContextFromHost` addresses the request to `hostOrigin`, else the embedder's
+  origin from `document.referrer`, else its own origin — and accepts an answer only from the
+  origin it addressed. Previously a cross-origin embedding silently failed unless
+  `hostOrigin` was passed.
+- The host caps frame budgets (`snapshot` option), throttles all frames together (ten per
+  interval) as well as per frame, survives a request that throws, refuses a configuration
+  that names no origin (`allowedOrigins: ['*']` or `[]`), and treats a non-finite
+  `minRequestIntervalMs` as the default.
+- `enableGlobalAccess` refuses a name that is not an identifier or already exists on
+  `window`.
+- `ClrContextRegistryService.changes` emits on register/unregister and when a `clrContext`
+  annotation's state changes (replaced or edited in place — `ngDoCheck` compares the
+  serialised form); the tracker re-scrapes on it. The tracker completes its subject on
+  destroy and treats an unserialisable snapshot as changed.
+
+**Components (`radio-group-aria.spec.ts`, `combobox-aria.spec.ts`, `validation.spec.ts`):**
+
+- `hasRequiredValidator` (in `@clr/angular/utils`) recognises `[required]="expr"` bindings,
+  which register `RequiredValidator.validate` rather than `Validators.required`; used by
+  `WrappedFormControl`, the combobox and the radio container.
+- `aria-required`/`aria-invalid` are reported once on the `radiogroup`, not on every radio;
+  `aria-required` is not put on a range (`slider` does not support it).
+- The combobox's `aria-invalid` is gated on `touched` like every other control.
+- `ClrTimelineStep`'s public constructor signature is restored (`inject(ElementRef)`).
+- The datagrid reads hidden columns from each column (`isHidden`) instead of pairing two
+  lists by index; the stepper panel reads its status from the service at snapshot time; the
+  tree node publishes a real boolean; the wizard omits `currentStepIndex` when no step is
+  current; the combobox's element-context callback tolerates being called without options.
+
+Still open: a VRT run for the attribute-only a11y changes, and the alert's `role` being
+swapped on a live element when `clrAlertType` changes (left as is; the old template had no
+role at all).
+
+## 9. Mistakes made in earlier sessions — do not repeat
 
 - Reported a browser disconnect as `3090 of 3090 SUCCESS`. Check executed count vs the real total.
 - `git restore` on the user's demo files after misreading their in-progress work as corruption.

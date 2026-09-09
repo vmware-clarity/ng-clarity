@@ -23,8 +23,10 @@ export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: (keyof ClrContextSnapshotOptions
 
 /**
  * Reduces whatever an untrusted caller passed to the budgets it is allowed to set,
- * discarding everything else. Anything that is not a number or a boolean is dropped, so
- * a caller cannot smuggle a getter or an object through.
+ * discarding everything else. Anything that is not a finite number or a boolean is
+ * dropped, so a caller cannot smuggle a getter or an object through — nor a `NaN` or an
+ * `Infinity`, which a budget check would never see as exhausted. The numbers that
+ * survive are still held to their ranges when the snapshot is built.
  */
 export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextSnapshotOptions | undefined {
   if (!options || typeof options !== 'object') {
@@ -34,7 +36,7 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
   const sanitized: ClrContextSnapshotOptions = {};
   for (const key of CLR_CONTEXT_UNTRUSTED_OPTION_KEYS) {
     const value = candidate[key];
-    if (typeof value === 'number' || typeof value === 'boolean') {
+    if ((typeof value === 'number' && Number.isFinite(value)) || typeof value === 'boolean') {
       (sanitized as Record<string, unknown>)[key] = value;
     }
   }

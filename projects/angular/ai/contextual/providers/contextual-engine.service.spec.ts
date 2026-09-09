@@ -11,6 +11,7 @@ import { provideRouter, Router } from '@angular/router';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextualEngineService } from './contextual-engine.service';
+import { ClrComponentContext, ClrPageContext } from '../interfaces/context.interface';
 
 @Component({ template: '' })
 class RoutedComponent {}
@@ -220,5 +221,68 @@ describe('ClrContextualEngineService', () => {
       expect(route?.queryParams).toEqual({ tab: 'general' });
       expect(route?.data).toEqual({ section: 'items', tags: ['inventory'], meta: { owner: 'core-team' } });
     });
+  });
+});
+
+describe('ClrContextualEngineService, the global accessor as a boundary', () => {
+  let engine: ClrContextualEngineService;
+  let form: HTMLElement;
+
+  function snapshotVia(options?: unknown): ClrPageContext {
+    const accessor = (window as unknown as Record<string, unknown>)['testClrContext'] as (
+      options?: unknown
+    ) => ClrPageContext;
+    return accessor(options);
+  }
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    engine = TestBed.inject(ClrContextualEngineService);
+    form = document.createElement('div');
+    form.innerHTML = '<button>one</button><button>two</button><button>three</button>';
+    document.body.appendChild(form);
+  });
+
+  afterEach(() => {
+    engine.disableGlobalAccess();
+    delete (window as unknown as Record<string, unknown>)['testClrContext'];
+    delete (window as unknown as Record<string, unknown>)['testClrContextTaken'];
+    form.remove();
+  });
+
+  it('refuses a name that is not a plain identifier', () => {
+    expect(() => engine.enableGlobalAccess('clr.context')).toThrowError(/not a valid name/);
+    expect(() => engine.enableGlobalAccess('')).toThrowError(/not a valid name/);
+  });
+
+  it('refuses to overwrite something the page already has under that name', () => {
+    (window as unknown as Record<string, unknown>)['testClrContextTaken'] = () => 'someone else';
+
+    expect(() => engine.enableGlobalAccess('testClrContextTaken')).toThrowError(/already exists/);
+  });
+
+  it('can be re-enabled under the same name, replacing only its own accessor', () => {
+    engine.enableGlobalAccess('testClrContext');
+    expect(() => engine.enableGlobalAccess('testClrContext')).not.toThrow();
+    expect(typeof (window as unknown as Record<string, unknown>)['testClrContext']).toBe('function');
+  });
+
+  function nodeCount(snapshot: ClrPageContext): number {
+    const count = (nodes: ClrComponentContext[]): number =>
+      nodes.reduce((total, node) => total + 1 + count(node.children ?? []), 0);
+    return count(snapshot.components);
+  }
+
+  it('lets a caller ask for less than the application allows, never for more', () => {
+    engine.enableGlobalAccess('testClrContext', { maxComponents: 2 });
+
+    expect(nodeCount(snapshotVia({ maxComponents: 1 }))).toBe(1);
+    expect(nodeCount(snapshotVia({ maxComponents: 50 }))).toBe(2);
+  });
+
+  it('drops a budget that is not a finite number rather than walking without bound', () => {
+    engine.enableGlobalAccess('testClrContext', { maxComponents: 2 });
+
+    expect(nodeCount(snapshotVia({ maxComponents: Number.NaN }))).toBe(2);
   });
 });

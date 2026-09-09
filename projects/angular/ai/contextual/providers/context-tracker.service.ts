@@ -7,8 +7,9 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { DOCUMENT, Inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, Subscription } from 'rxjs';
 
+import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextualEngineService } from './contextual-engine.service';
 import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '../dom/dom-context-collector';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
@@ -48,7 +49,8 @@ const IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
  * itself into the page context.
  *
  * `input` and `change` are watched as well as mutations, because typing changes a
- * property rather than an attribute and is invisible to a `MutationObserver`.
+ * property rather than an attribute and is invisible to a `MutationObserver`. So are
+ * the application's own `clrContext` annotations, whose state lives outside the DOM.
  *
  * Every emission is a freshly computed snapshot of the live DOM at that moment — the
  * tracker stores only the latest emission and never merges or accumulates, so context
@@ -66,12 +68,14 @@ export class ClrContextTrackerService implements OnDestroy {
   private quietTimer: ReturnType<typeof setTimeout> | null = null;
   private maxWaitTimer: ReturnType<typeof setTimeout> | null = null;
   private valueListener: ((event: Event) => void) | null = null;
+  private registrySubscription: Subscription | null = null;
   private latest: ClrPageContext | null = null;
 
   constructor(
     @Inject(PLATFORM_ID) private readonly platformId: unknown,
     @Inject(DOCUMENT) private readonly document: Document,
     private readonly contextEngine: ClrContextualEngineService,
+    private readonly contextRegistry: ClrContextRegistryService,
     private readonly zone: NgZone
   ) {
     this.context$ = this.contextSubject.asObservable();
@@ -84,6 +88,10 @@ export class ClrContextTrackerService implements OnDestroy {
 
   ngOnDestroy(): void {
     this.stop();
+    // Nothing outlives the injector that owned this service; the snapshot it was
+    // holding — a description of the whole page — should not either.
+    this.latest = null;
+    this.contextSubject.complete();
   }
 
   /**
@@ -115,6 +123,9 @@ export class ClrContextTrackerService implements OnDestroy {
       this.valueListener = event => this.onValueChange(event);
       this.document.body.addEventListener('input', this.valueListener, true);
       this.document.body.addEventListener('change', this.valueListener, true);
+
+      // An annotation's state is application data, changed without any DOM change.
+      this.registrySubscription = this.contextRegistry.changes.subscribe(() => this.scheduleScrape());
     });
   }
 
@@ -128,6 +139,8 @@ export class ClrContextTrackerService implements OnDestroy {
       this.document.body.removeEventListener('change', this.valueListener, true);
       this.valueListener = null;
     }
+    this.registrySubscription?.unsubscribe();
+    this.registrySubscription = null;
     this.clearTimers();
   }
 
@@ -157,6 +170,9 @@ export class ClrContextTrackerService implements OnDestroy {
    * window, so a burst of typing still results in a single scrape.
    */
   private scheduleScrape(): void {
+    if (!this.tracking) {
+      return;
+    }
     if (this.quietTimer !== null) {
       clearTimeout(this.quietTimer);
     }
@@ -200,10 +216,18 @@ function isInsideIgnoredRegion(node: Node): boolean {
   return !!element?.closest(IGNORE_SELECTOR);
 }
 
-/** Compares two snapshots for meaningful equality, ignoring the capture timestamp. */
+/**
+ * Compares two snapshots for meaningful equality, ignoring the capture timestamp. A
+ * snapshot that cannot be serialised — a provider handed over something circular —
+ * counts as changed, so it is at least emitted rather than silently dropped.
+ */
 function contextEquals(a: ClrPageContext, b: ClrPageContext | null): boolean {
   if (!b) {
     return false;
   }
-  return JSON.stringify({ ...a, collectedAt: undefined }) === JSON.stringify({ ...b, collectedAt: undefined });
+  try {
+    return JSON.stringify({ ...a, collectedAt: undefined }) === JSON.stringify({ ...b, collectedAt: undefined });
+  } catch {
+    return false;
+  }
 }
